@@ -91,7 +91,7 @@ Representative captures:
 | Existing browser regression/customization scripts | Both pass, zero failures/errors                                                                          |
 | Existing interaction script                       | Initial live-style timeout; corrected test window passes, all 1-second expiry assertions retained        |
 | Build                                             | Initial test-helper generic inference error; corrected `flatMap<unknown>` annotation, final build passes |
-| Lint and formatting                               | Pass                                                                                                     |
+| Initial milestone lint / formatting               | Lint exit 0 with four unnecessary-escape warnings; formatting passes. Warnings corrected below.          |
 | Independent reviewer and re-review                | No actionable defects; real API/metadata and test-window adjustment checked                              |
 
 The initial interaction probe used a one-second notice for three live settings
@@ -149,3 +149,65 @@ versions. React 19 is the verified ref-forwarding boundary. The fixture uses
 in-memory state, with no backend, persistence, message delivery, table sorting
 or pagination. Existing application data/notice strings are not translated
 automatically when language changes. Unsupported capabilities stay explicit.
+
+## Focused cleanup — 2026-10-13
+
+Follow-up to `e2b401ae1c0c8d3b45bc658316c9102bfdb01d3d` on
+`milestone/ai-instructions`. The bundled command now says **عرض التفضيلات الحالية**
+(Show current preferences) and displays the current notification setting. It
+uses in-memory state only, with no persistence. Component implementations,
+configuration, registry metadata, workbench and documentation layout are unchanged.
+
+The registry integrity check now compares each documented component prop and
+configuration field's required flag exactly with the exported TypeScript symbol,
+so both false-required and false-optional claims fail. The same validator is
+exercised with corrupted copies of `tabs.label`, `tabs.value`, `configuration.radius`
+and `configuration.typography`. Button's union-level `aria-label` remains optional,
+with `requiredWhen: { iconOnly: true }`; source union branches require the label
+only for the icon-only branch. Mutations making the label unconditionally
+required or deleting its condition are also rejected.
+
+Before the validator fix, the new suite had four expected failures and four
+passes: the false-required Tabs flag was already rejected, while the opposite
+flag, both configuration mutations and the missing Button condition exposed
+gaps. [Failing checks](ai-instruction-evidence/cleanup/red.txt). Afterward,
+[all eight focused checks pass](ai-instruction-evidence/cleanup/focused.txt),
+including compilation of linked examples and the relocated source-only example.
+
+| Cleanup check                 | Result                                                                                                                                       |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Full unit suite               | 88/88 tests in 11 files; generated-usage compilation included                                                                                |
+| Build                         | TypeScript and Vite pass                                                                                                                     |
+| Lint                          | Exit 0, zero warnings after removing all four unnecessary escapes                                                                            |
+| Formatting                    | Project formatting and changed verification script/report checks pass                                                                        |
+| Bundled example browser smoke | Five checks pass, zero page errors: honest accessible menu name, enabled/disabled preference display, unchanged storage, reload resets state |
+
+The two selector strings in the consumer verifier are unchanged at runtime;
+only their four redundant backslashes were removed. The historical lint log
+contained four warnings despite exiting 0; the earlier table is corrected above.
+The workbench/component browser suites and independent consumer matrix were not
+rerun because their behavior did not change. Only the changed bundled example
+was rendered in Chrome at 800 × 600 Arabic/RTL with default light configuration.
+Its enabled/disabled captures were visually inspected. This focused check does
+not extend the previous browser/accessibility coverage or claim a new independent
+review. The original milestone logs and file hashes describe that earlier
+revision and remain historical evidence.
+
+New evidence stays in [cleanup](ai-instruction-evidence/cleanup/verification.json):
+[unit results](ai-instruction-evidence/cleanup/test.txt),
+[build](ai-instruction-evidence/cleanup/build.txt),
+[lint](ai-instruction-evidence/cleanup/lint.txt),
+[formatting](ai-instruction-evidence/cleanup/format.txt),
+[example results](ai-instruction-evidence/cleanup/example-results.json),
+[enabled preference](ai-instruction-evidence/cleanup/example-enabled.png),
+[disabled preference](ai-instruction-evidence/cleanup/example-disabled.png).
+The [example smoke script](ai-instruction-evidence/cleanup/example-smoke.mjs)
+can be run from the repository root with the same browser environment overrides;
+it starts and closes a temporary Vite host on port 5192 and accepts
+`TIRAZ_EVIDENCE` for a separate output directory.
+
+The original checkout remains on main at `ce78408818b6a9866ab0faa7748404cba44d8939`.
+Its HEAD, branch, status, raw index, binary diff and README/layout CSS hashes match
+in the cleanup [before](ai-instruction-evidence/cleanup/original-before.json) and
+[after](ai-instruction-evidence/cleanup/original-after.json) records. No original
+file was staged or committed. No merge, deployment or release is part of this cleanup.

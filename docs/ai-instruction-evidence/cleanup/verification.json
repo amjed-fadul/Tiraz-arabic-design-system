@@ -1,0 +1,58 @@
+{
+  "baseline": "e2b401ae1c0c8d3b45bc658316c9102bfdb01d3d",
+  "scope": "Focused AI instruction cleanup; source hashes identify the verified follow-up tree before commit.",
+  "checks": {
+    "red": {
+      "exitCode": 1,
+      "failed": 4,
+      "passed": 4,
+      "reason": "Expected missing validation failures before strengthening the source-based validator"
+    },
+    "focused": {
+      "exitCode": 0,
+      "passed": 8
+    },
+    "unit": {
+      "exitCode": 0,
+      "passed": 88,
+      "files": 11
+    },
+    "build": {
+      "exitCode": 0
+    },
+    "lint": {
+      "exitCode": 0,
+      "warnings": 0
+    },
+    "format": {
+      "exitCode": 0
+    },
+    "supplementalFormat": {
+      "initialExitCode": 1,
+      "reason": "New evidence JSON needed formatting; corrected without source changes",
+      "finalExitCode": 0
+    },
+    "exampleBrowser": {
+      "exitCode": 0,
+      "checks": 5,
+      "pageErrors": 0,
+      "viewport": [800, 600],
+      "direction": "rtl",
+      "language": "ar",
+      "theme": "default light",
+      "browser": "Chrome 154 on macOS"
+    }
+  },
+  "unchangedBehavior": [
+    "Component implementations and public types",
+    "Workbench and documentation layout",
+    "AI consumer verifier selectors at runtime"
+  ],
+  "browserScope": "Only the changed usage example rerun; existing component/workbench/consumer matrices remain historical evidence.",
+  "preservation": "Original HEAD, branch, status, raw index, binary diff and README/layout CSS bytes match before/after.",
+  "verifiedFileSha256": {
+    "src/system/ai-registry.test.ts": "9e036ee86eac9525aae6758cac672a7cd6d8b3693a439d1627536e983691ac7d",
+    "src/system/ai/examples/usage.tsx": "462e4e0f1de07084a020ea065ab3d6730521f628e67e67fbc5a6579016137baf",
+    "tests/ai-exercise/verify.mjs": "255b6174ba8b581d99fd60b90a40448ec97103154b954f7269ac1db212450679"
+  }
+}

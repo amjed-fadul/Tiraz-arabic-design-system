@@ -17,6 +17,121 @@ import { defaultConfig } from "./config";
 const root = resolve("src/system");
 const readRegistry = () =>
   JSON.parse(readFileSync(resolve(root, "ai/registry.json"), "utf8"));
+// The same source-based validator is exercised by the integrity check and
+// corrupted metadata cases below; mutations never alter registry.json.
+let contract:
+  | { checker: ts.TypeChecker; source: ts.SourceFile; symbols: ts.Symbol[] }
+  | undefined;
+function sourceContract() {
+  if (!contract) {
+    const program = ts.createProgram([resolve(root, "index.ts")], {
+      target: ts.ScriptTarget.ES2023,
+      module: ts.ModuleKind.ESNext,
+      moduleResolution: ts.ModuleResolutionKind.Bundler,
+      jsx: ts.JsxEmit.ReactJSX,
+      strict: true,
+      noEmit: true,
+      skipLibCheck: true,
+      types: ["vite/client"],
+    });
+    const checker = program.getTypeChecker();
+    const source = program.getSourceFile(resolve(root, "index.ts"))!;
+    contract = {
+      checker,
+      source,
+      symbols: checker.getExportsOfModule(checker.getSymbolAtLocation(source)!),
+    };
+  }
+  return contract;
+}
+function validateRequiredFlags(registry: ReturnType<typeof readRegistry>) {
+  const { checker, source, symbols } = sourceContract();
+  for (const component of registry.components) {
+    let symbol = symbols.find((s) => s.name === component.api)!;
+    if (symbol.flags & ts.SymbolFlags.Alias)
+      symbol = checker.getAliasedSymbol(symbol);
+    const fn = checker
+      .getTypeOfSymbolAtLocation(symbol, source)
+      .getCallSignatures()[0];
+    const props = checker.getTypeOfSymbolAtLocation(fn.parameters[0], source);
+    for (const prop of component.props) {
+      const actual = checker.getPropertyOfType(props, prop.name)!;
+      expect(
+        !(actual.flags & ts.SymbolFlags.Optional),
+        `${component.id}.${prop.name} required/optional`,
+      ).toBe(prop.required);
+    }
+    if (component.id === "button") {
+      const aria = component.props.find(
+        (prop: { name: string }) => prop.name === "aria-label",
+      );
+      expect(
+        aria.requiredWhen,
+        "button.aria-label conditional requirement",
+      ).toEqual({ iconOnly: true });
+      // The union-level property is optional; only the icon-only branch
+      // requires a name. Check the actual exported branches as well.
+      expect(props.isUnion()).toBe(true);
+      const branches = (props as ts.UnionType).types;
+      expect(branches).toHaveLength(2);
+      const requiredByBranch = branches.map((branch) => {
+        const iconOnly = branch.getProperty("iconOnly")!;
+        const iconType = checker.getTypeOfSymbolAtLocation(iconOnly, source);
+        const name = branch.getProperty("aria-label")!;
+        return {
+          iconOnly: checker.typeToString(iconType),
+          required: !(name.flags & ts.SymbolFlags.Optional),
+        };
+      });
+      expect(requiredByBranch).toEqual(
+        expect.arrayContaining([
+          { iconOnly: "true", required: true },
+          { iconOnly: "false | undefined", required: false },
+        ]),
+      );
+    }
+  }
+  let configSymbol = symbols.find((symbol) => symbol.name === "SystemConfig")!;
+  if (configSymbol.flags & ts.SymbolFlags.Alias)
+    configSymbol = checker.getAliasedSymbol(configSymbol);
+  const config = checker.getDeclaredTypeOfSymbol(configSymbol);
+  for (const field of registry.configuration.fields) {
+    const actual = config.getProperty(field.name)!;
+    expect(
+      !(actual.flags & ts.SymbolFlags.Optional),
+      `configuration.${field.name} required/optional`,
+    ).toBe(field.required);
+  }
+}
+for (const [group, field, incorrect] of [
+  ["tabs", "label", false],
+  ["tabs", "value", true],
+  ["configuration", "radius", false],
+  ["configuration", "typography", true],
+] as const) {
+  it(`rejects incorrect required=${incorrect} for ${group}.${field}`, () => {
+    const registry = readRegistry();
+    const props =
+      group === "configuration"
+        ? registry.configuration.fields
+        : registry.components.find((c: { id: string }) => c.id === group).props;
+    props.find((p: { name: string }) => p.name === field).required = incorrect;
+    expect(() => validateRequiredFlags(registry)).toThrow(
+      `${group}.${field} required/optional`,
+    );
+  });
+}
+it("rejects making Button's accessible name unconditionally required or dropping its conditional requirement", () => {
+  for (const mutation of ["unconditional", "missing-condition"] as const) {
+    const registry = readRegistry();
+    const aria = registry.components
+      .find((c: { id: string }) => c.id === "button")
+      .props.find((p: { name: string }) => p.name === "aria-label");
+    if (mutation === "unconditional") aria.required = true;
+    else delete aria.requiredWhen;
+    expect(() => validateRequiredFlags(registry)).toThrow();
+  }
+});
 it("compiles the bundled example after copying only the library to a different application path", () => {
   const temporary = mkdtempSync(resolve(tmpdir(), "tiraz-source-consumer-"));
   try {
@@ -161,11 +276,6 @@ it("documents real public exports and supported prop values and compiles the lin
             checker.getTypeOfSymbolAtLocation(actual!, source),
           ).sort(),
         );
-      if (prop.required)
-        expect(
-          actual!.flags & ts.SymbolFlags.Optional,
-          `${component.id}.${prop.name} required`,
-        ).toBe(0);
     }
     // Curated wrappers must document their complete explicit interface.
     if (["tabs", "dropdown", "sheet", "toast"].includes(component.id))
@@ -198,6 +308,7 @@ it("documents real public exports and supported prop values and compiles the lin
         );
     }
   }
+  validateRequiredFlags(registry);
   const configType = checker.getDeclaredTypeOfSymbol(named("SystemConfig"));
   expect(
     registry.configuration.fields.map((f: { name: string }) => f.name).sort(),

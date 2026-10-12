@@ -23,9 +23,13 @@ function DashboardTask() {
   const { toast } = useToast();
   const actions = [
     {
-      id: "save",
-      label: "حفظ التفضيلات",
-      onSelect: () => toast({ title: "تم حفظ التفضيلات", tone: "success" }),
+      id: "show-preferences",
+      label: "عرض التفضيلات الحالية",
+      onSelect: () =>
+        toast({
+          title: "التفضيلات الحالية",
+          description: notifications ? "الإشعارات مفعلة" : "الإشعارات متوقفة",
+        }),
     },
   ];
   return (

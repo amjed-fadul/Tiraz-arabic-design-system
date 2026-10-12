@@ -299,7 +299,7 @@ await check(
     }));
     await page.keyboard.press("Escape");
     await page.waitForTimeout(30);
-    if (await page.locator('.tz-sheet[data-state=\"open\"]').count()) {
+    if (await page.locator('.tz-sheet[data-state="open"]').count()) {
       evidence.limitations.push(
         "Active Toast is a newer Radix DismissableLayer and consumes first Escape before Sheet.",
       );
@@ -467,7 +467,7 @@ await check("Toast close, subsequent expiry, accessible viewport", async () => {
   );
   assert(
     (await page
-      .locator('.tz-toast[data-state=\"open\"]')
+      .locator('.tz-toast[data-state="open"]')
       .evaluate((el) => el.closest("[lang]")?.getAttribute("lang"))) === "en",
     "toast inherited language",
   );

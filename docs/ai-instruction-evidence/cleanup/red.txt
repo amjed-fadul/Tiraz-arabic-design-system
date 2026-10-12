@@ -1,0 +1,49 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz
+
+ ❯ src/system/ai-registry.test.ts (8 tests | 4 failed) 1841ms
+   × rejects incorrect required=false for tabs.label 538ms
+   × rejects incorrect required=false for configuration.radius 1ms
+   × rejects incorrect required=true for configuration.typography 1ms
+   × rejects making Button's accessible name unconditionally required or dropping its conditional requirement 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/ai-registry.test.ts > rejects incorrect required=false for tabs.label
+ FAIL  src/system/ai-registry.test.ts > rejects incorrect required=false for configuration.radius
+ FAIL  src/system/ai-registry.test.ts > rejects incorrect required=true for configuration.typography
+AssertionError: expected [Function] to throw an error
+
+- Expected:
+null
+
++ Received:
+undefined
+
+ ❯ src/system/ai-registry.test.ts:59:51
+     57|     const props = group === "configuration" ? registry.configuration.f…
+     58|     props.find((p: { name: string }) => p.name === field).required = i…
+     59|     expect(() => validateRequiredFlags(registry)).toThrow(`${group}.${…
+       |                                                   ^
+     60|   });
+     61| }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/system/ai-registry.test.ts > rejects making Button's accessible name unconditionally required or dropping its conditional requirement
+AssertionError: expected [Function] to throw an error
+ ❯ src/system/ai-registry.test.ts:68:51
+     66|     if (mutation === "unconditional") aria.required = true;
+     67|     else delete aria.requiredWhen;
+     68|     expect(() => validateRequiredFlags(registry)).toThrow();
+       |                                                   ^
+     69|   }
+     70| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 4 passed (8)
+   Start at  00:52:08
+   Duration  3.09s (tests 62%, environment 24%, import 6%, setup 5%, transform 3%)
