@@ -346,9 +346,11 @@ export function Workbench() {
                   <p className="prompt-preview" dir="auto">
                     {prompt
                       .replace(/\s+/g, " ")
-                      .split(/(README\.md|src\/[\w/.-]+)/)
+                      .split(
+                        /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
+                      )
                       .map((part, index) =>
-                        part === "README.md" || part.startsWith("src/") ? (
+                        index % 2 === 1 ? (
                           <bdi dir="ltr" key={index}>
                             {part}
                           </bdi>

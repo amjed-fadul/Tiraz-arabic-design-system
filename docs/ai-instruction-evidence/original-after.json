@@ -1,0 +1,11 @@
+{
+  "head": "ce78408818b6a9866ab0faa7748404cba44d8939",
+  "branch": "main",
+  "status": " M README.md\n M src/workbench/workbench.css\n",
+  "diff": "60c40d75854dc2d4fe61a0257dd2470837f36dc8041d80db18e17cdc2e8b2d08",
+  "index": "0fac213d2402f99052ce6ba16bffa513ce01c3789e0e0d8f45ef876d8de951db",
+  "files": {
+    "README.md": "696ab7af24841c2dfb11f77d4a0c12c5c3845147aaedd3dba784de444b412be4",
+    "src/workbench/workbench.css": "55575d1ff26b311638583bf5b9cebc09bcb7612d68004880eaa5bc33edde367a"
+  }
+}

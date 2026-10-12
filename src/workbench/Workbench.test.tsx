@@ -15,6 +15,25 @@ function navigation() {
 function preview() {
   return within(screen.getByRole("region", { name: "المعاينة التفاعلية" }));
 }
+it("isolates portable library paths as complete LTR runs inside the Arabic prompt", () => {
+  const { container } = render(<Workbench />);
+  const paths = Array.from(container.querySelectorAll(".prompt-preview bdi"));
+  for (const path of [
+    "ai/README.md",
+    "ai/registry.json",
+    "ai/composition.md",
+    "Button.tsx",
+    "./system",
+    "./system/tokens.css",
+  ])
+    expect(
+      paths.some(
+        (node) =>
+          node.textContent === path && node.getAttribute("dir") === "ltr",
+      ),
+      path,
+    ).toBe(true);
+});
 it("places only navigation in its sidebar and both customization sections in the separate rail", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });

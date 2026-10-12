@@ -319,7 +319,12 @@ await check(
     await page.waitForTimeout(1350);
     assert.equal(await toast.count(), 0);
     result.toast.push("focus pauses and leaving resumes expiry");
+    // Expiry checks above intentionally use 1000 ms. Give the separate live
+    // customization inspection the normal 5000 ms window so UI actions cannot
+    // consume its entire lifetime before the style assertion.
+    await rail.getByLabel("Duration · ms", { exact: true }).fill("5000");
     await trigger.click();
+    const styleStarted = Date.now();
     await rail.getByLabel("Accent", { exact: true }).selectOption("plum");
     await rail.getByLabel("Typography", { exact: true }).selectOption("large");
     await page
@@ -335,7 +340,11 @@ await check(
     assert.equal(m.font, "16px");
     assert.equal(m.tone, "success");
     assert.equal(m.icon, "rgb(165, 212, 179)");
-    result.toast.push(m);
+    result.toast.push({
+      ...m,
+      duration: 5000,
+      styleElapsedMs: Date.now() - styleStarted,
+    });
     await toast.locator("button").click();
     await page.waitForFunction(
       () => !document.querySelector(".playground-region .tz-toast"),

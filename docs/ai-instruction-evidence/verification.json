@@ -1,0 +1,48 @@
+{
+  "baseCommit": "ce78408818b6a9866ab0faa7748404cba44d8939",
+  "branch": "milestone/ai-instructions",
+  "unitTests": {
+    "files": 11,
+    "passed": 83
+  },
+  "registryFinalChecks": 3,
+  "generatedExamples": "Existing generated-code strict compilation passed in full test suite; bundled usage and source-copy dashboard compile strictly.",
+  "browser": {
+    "engine": "Google Chrome 154.0.8037.99 on macOS",
+    "promptChecks": 4,
+    "independentConsumerGroups": 13,
+    "freshCopyConsumerGroups": 13,
+    "regressions": 0,
+    "customization": 0,
+    "interactionsInitial": 1,
+    "interactionsFinal": 0
+  },
+  "buildInitial": "Failed: new test helper flatMap literal type inference",
+  "buildFinal": 0,
+  "lint": 0,
+  "formatCheck": 0,
+  "originalCheckoutAndIndexUnchanged": true,
+  "componentBehaviorApiStylesAndGeneratedCodeUnchanged": true,
+  "independentReview": "No actionable findings; test-window and React19 wording re-reviewed.",
+  "verifiedFileSha256": {
+    "AGENTS.md": "a5f5feb7d7139e9d28f8222883524e21ee7ea39b2dbe09747e6b15d9858a28bb",
+    "src/system/ai-registry.test.ts": "155fdefcc67185b4ef840d9db787520050b906b38d646c7acd6ebe34cf7652f7",
+    "src/workbench/generate.ts": "5ec4357d4049b7ccb33bf1ebea409f547c0347d533f9b97b83db3f77bed7534a",
+    "src/workbench/generate-prompts.test.ts": "a89376371827180979d3f3f368941c09a837e12979cfe8a85bf0d8c9e5f6c044",
+    "src/workbench/Workbench.tsx": "1e84a14073516d06266e12f933c2efb8458de924647bbfa3cf9baf99dd94d056",
+    "src/workbench/Workbench.test.tsx": "a8ded54892c0395e9bb57d22a76d962dd619c08e1c305d8b3447ae09a2f81920",
+    "tests/browser/ai-prompts.mjs": "ea39c85aa34a5e1ac6ea6ec4de7a4dd86e0342d10cea9e6195ff74a06d8f8cf7",
+    "tests/browser/interactions.mjs": "90fb565ac81afa1f4a45a740e51524623881b3c6315cfe15050e80eafbbbda56",
+    "src/system/ai/registry.json": "19d712725b82cb893db3d086d7b1ff7570ae07d8e30a509bedbf482958da9f0e",
+    "src/system/ai/composition.md": "695235a5ea7749177ad9b0388ab14b5f4b43b1b9387ad03a6e4e92768b3d2041",
+    "src/system/ai/README.md": "8dd60956c9417aaf55a2f4d0aa65c402f235f28091ade9664b7430e680632c9d",
+    "src/system/ai/examples/usage.tsx": "ad6a2051c70803e0b0852d8fec8547b68ab806fd3cabc0bebfaf4ac4679bdab6",
+    "tests/ai-exercise/App.tsx": "42a1505782cd510be7757f8bc3019631c950147ce96a2f2d80f88a2ccb6d7913",
+    "tests/ai-exercise/main.tsx": "3e3295c773d11e4e448469f76c27d78974883fe613fe8aee9ea063e714aa31bf",
+    "tests/ai-exercise/index.html": "802296b36da5f604cac2684c953f6e283003d300aafa7fb0559c9b0dcadc018d",
+    "tests/ai-exercise/styles.css": "3b13117cbc14eff0271a59ce1712680ccac087cb1b660aed5666c85aa02c4e72",
+    "tests/ai-exercise/verify.mjs": "088216475a733b6caf34bef236028dcc6d19f43a633827c8ee5d21bf01ba9222",
+    "tests/ai-exercise/exercise-notes.md": "93fa0c4be0584e4a5b4f778c4814acb75c48e1533ef442339a28464d73fcf7de",
+    "tests/ai-exercise/prepare.mjs": "3f34cd41a2abcfd3b3f4d61056e6be50ae550567792d8dbb03cf53131d5da6fd"
+  }
+}

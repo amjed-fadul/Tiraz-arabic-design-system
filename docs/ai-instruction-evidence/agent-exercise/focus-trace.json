@@ -1,0 +1,188 @@
+[
+  {
+    "label": "after select",
+    "active": "<button data-testid=\"project-menu\" id=\"radix-_r_g_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">اختيار المشروع</span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "after hover Escape",
+    "active": "<button data-testid=\"project-menu\" id=\"radix-_r_g_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">اختيار المشروع</span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab dismissal",
+    "active": "<button data-testid=\"project-menu\" id=\"radix-_r_g_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">اختيار المشروع</span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "after200",
+    "active": "<button data-testid=\"project-menu\" id=\"radix-_r_g_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">اختيار المشروع</span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab0",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab1",
+    "active": "<button type=\"button\" role=\"switch\" aria-checked=\"true\" data-state=\"checked\" value=\"on\" id=\"sheet-reminders\" aria-describedby=\"sheet-reminders-description\" class=\"tz-switch\"><span data-state=\"checked\" class=\"tz-switch-thumb\"></span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab2",
+    "active": "<button data-testid=\"project-menu\" id=\"radix-_r_g_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">اختيار المشروع</span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab3",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab4",
+    "active": "<button type=\"button\" role=\"switch\" aria-checked=\"true\" data-state=\"checked\" value=\"on\" id=\"sheet-reminders\" aria-describedby=\"sheet-reminders-description\" class=\"tz-switch\"><span data-state=\"checked\" class=\"tz-switch-thumb\"></span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab5",
+    "active": "<button data-testid=\"project-menu\" id=\"radix-_r_g_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">اختيار المشروع</span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab6",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab7",
+    "active": "<button type=\"button\" role=\"switch\" aria-checked=\"true\" data-state=\"checked\" value=\"on\" id=\"sheet-reminders\" aria-describedby=\"sheet-reminders-description\" class=\"tz-switch\"><span data-state=\"checked\" class=\"tz-switch-thumb\"></span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab8",
+    "active": "<button data-testid=\"project-menu\" id=\"radix-_r_g_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">اختيار المشروع</span></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Tab9",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "before Sheet Escape",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "after Sheet Escape",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "after300",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "open"
+      }
+    ]
+  },
+  {
+    "label": "Escape again",
+    "active": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": [],
+    "sheets": [
+      {
+        "state": "closed"
+      }
+    ]
+  },
+  {
+    "label": "after second300",
+    "active": "<button data-testid=\"sheet-trigger\" aria-haspopup=\"dialog\" aria-expanded=\"false\" data-state=\"idle\" type=\"button\" data-variant=\"secondary\" data-size=\"sm\" class=\"tz-button \"><span class=\"tz-button-label\">إعدادات المتابعة</span></button>",
+    "menus": [],
+    "sheets": []
+  }
+]

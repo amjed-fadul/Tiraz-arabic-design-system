@@ -31,19 +31,24 @@ for (const language of ["ar", "en"] as const) {
       const prompt = generatePrompt(entry.id, model, config, language);
       // Read targets must exist; src/Example.tsx is explicitly a proposed output file.
       for (const path of [
-        "README.md",
+        "src/system/ai/README.md",
+        "src/system/ai/registry.json",
+        "src/system/ai/composition.md",
         `src/system/${entry.file}`,
         "src/system/index.ts",
         "src/system/config.ts",
-        "src/main.tsx",
       ]) {
         expect(existsSync(resolve(projectRoot, path))).toBe(true);
-        expect(prompt).toContain(path);
+        expect(prompt).toContain(path.replace("src/system/", ""));
       }
       expect(prompt).not.toMatch(/(?<![\w.:/])\/(?!\/)[\w-]+\//);
       expect(prompt).not.toMatch(/[A-Za-z]:\\/);
       expect(prompt).not.toContain(projectRoot.replace(/\/$/, ""));
-      expect(prompt).not.toContain("AGENTS.md");
+      expect(prompt).not.toContain("Create src/Example.tsx under that root");
+      expect(prompt).toContain(
+        language === "ar" ? "نسخة المصدر" : "source copy",
+      );
+      expect(prompt).toContain(language === "ar" ? "عدّل" : "Adjust");
       expect(prompt).not.toContain("npx");
       expect(prompt).toContain(generateCode(entry.id, model, config, language));
       expect(prompt).toContain(JSON.stringify(config));

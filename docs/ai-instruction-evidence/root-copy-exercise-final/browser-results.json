@@ -1,0 +1,79 @@
+{
+  "checks": [
+    "Arabic RTL compact light default and local fonts",
+    "RTL Tabs ArrowLeft, automatic activation, Home, End",
+    "Keyboard Switch Space and shared customization",
+    "Form validation persists inline, success creates actual local invoice, rapid repetition",
+    "Sheet keyboard, reminder Space, early 40ms End then Enter in scrolling menu",
+    "Real pointer hover after keyboard menu navigation",
+    "Nested focus scope and Tab dismissal, Sheet Escape restoration",
+    "Contextual menu changes payment data",
+    "English LTR labels, Tabs ArrowRight, theme switching",
+    "Reduced motion app config and OS preference, English overlay placement",
+    "English dark and reset compact/light, all accent values propagate",
+    "Toast close, subsequent expiry, accessible viewport",
+    "Narrow/short viewport wrapping, internal table and menu scroll"
+  ],
+  "errors": [],
+  "fonts": [
+    {
+      "url": "http://127.0.0.1:5190/@fs/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-latin-400-normal.woff2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5190/@fs/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-latin-500-normal.woff2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5190/@fs/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-latin-600-normal.woff2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5190/@fs/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-600-normal.woff2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5190/@fs/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-400-normal.woff2",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:5190/@fs/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/node_modules/@fontsource/ibm-plex-sans-arabic/files/ibm-plex-sans-arabic-arabic-500-normal.woff2",
+      "status": 200
+    }
+  ],
+  "requests": [],
+  "limitations": [
+    "Active Toast is a newer Radix DismissableLayer and consumes first Escape before Sheet."
+  ],
+  "customization": {
+    "bg": "rgb(214, 182, 229)",
+    "radius": "16px",
+    "font": "16px",
+    "height": 36
+  },
+  "earlyEnd40": {
+    "focused": "تعيين المشروع 48",
+    "scroll": 1286,
+    "scrollHeight": 1928,
+    "height": 642,
+    "insideSheet": true,
+    "action": "#D6B6E5",
+    "body": "16px",
+    "radius": "20px"
+  },
+  "escapeBefore": {
+    "focus": "<button type=\"button\" class=\"tz-icon-button\" aria-label=\"إغلاق إعدادات المتابعة\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg></button>",
+    "menus": 0,
+    "toasts": [
+      "open",
+      "open",
+      "open"
+    ]
+  },
+  "narrow": {
+    "doc": 390,
+    "view": 390,
+    "table": 521,
+    "tableBox": 356
+  }
+}

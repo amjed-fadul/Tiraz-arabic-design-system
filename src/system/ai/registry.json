@@ -1,0 +1,830 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "Directory containing index.ts, config.ts, tokens.css, components.css and ai/. All paths in this registry resolve from that directory; preserve ai/ when relocating it.",
+  "entry": "ai/README.md",
+  "composition": "ai/composition.md",
+  "publicExports": [
+    {
+      "name": "Direction",
+      "source": "config.ts"
+    },
+    {
+      "name": "Accent",
+      "source": "config.ts"
+    },
+    {
+      "name": "SystemConfig",
+      "source": "config.ts"
+    },
+    {
+      "name": "defaultConfig",
+      "source": "config.ts"
+    },
+    {
+      "name": "accentColors",
+      "source": "config.ts"
+    },
+    {
+      "name": "SystemProvider",
+      "source": "Provider.tsx"
+    },
+    {
+      "name": "Button",
+      "source": "Button.tsx"
+    },
+    {
+      "name": "ButtonProps",
+      "source": "Button.tsx"
+    },
+    {
+      "name": "ButtonState",
+      "source": "Button.tsx"
+    },
+    {
+      "name": "ButtonVariant",
+      "source": "Button.tsx"
+    },
+    {
+      "name": "Tabs",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsProps",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabItem",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "Switch",
+      "source": "Switch.tsx"
+    },
+    {
+      "name": "SwitchProps",
+      "source": "Switch.tsx"
+    },
+    {
+      "name": "DropdownMenu",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuProps",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "MenuItem",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "Sheet",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetProps",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "ToastProvider",
+      "source": "Toast.tsx"
+    },
+    {
+      "name": "useSystem",
+      "source": "useSystem.ts"
+    },
+    {
+      "name": "useToast",
+      "source": "useToast.ts"
+    },
+    {
+      "name": "ToastMessage",
+      "source": "useToast.ts"
+    }
+  ],
+  "configuration": {
+    "source": "config.ts",
+    "fields": [
+      {
+        "name": "theme",
+        "type": "light | dark",
+        "required": true,
+        "default": "undefined",
+        "values": ["light", "dark"]
+      },
+      {
+        "name": "direction",
+        "type": "Direction",
+        "required": true,
+        "default": "undefined",
+        "values": ["rtl", "ltr"]
+      },
+      {
+        "name": "density",
+        "type": "standard | compact",
+        "required": true,
+        "default": "undefined",
+        "values": ["standard", "compact"]
+      },
+      {
+        "name": "accent",
+        "type": "Accent",
+        "required": true,
+        "default": "undefined",
+        "values": ["sage", "blue", "plum", "clay"]
+      },
+      {
+        "name": "radius",
+        "type": "number",
+        "required": true,
+        "default": "undefined",
+        "note": "Pixels. No runtime validation/clamp; use a finite nonnegative value. 0–16 is the workbench range, not a type/API restriction."
+      },
+      {
+        "name": "reducedMotion",
+        "type": "boolean",
+        "required": true,
+        "default": "undefined",
+        "values": [false, true],
+        "note": "true additionally reduces motion; false never overrides OS prefers-reduced-motion."
+      },
+      {
+        "name": "typography",
+        "type": "standard | large",
+        "required": false,
+        "default": "standard",
+        "values": ["standard", "large"]
+      }
+    ],
+    "defaults": {
+      "theme": "light",
+      "direction": "rtl",
+      "density": "compact",
+      "accent": "sage",
+      "radius": 8,
+      "reducedMotion": false,
+      "typography": "standard"
+    }
+  },
+  "components": [
+    {
+      "id": "button",
+      "api": "Button",
+      "source": "Button.tsx",
+      "exports": ["Button", "ButtonProps", "ButtonState", "ButtonVariant"],
+      "purpose": "Perform an explicit action.",
+      "useWhen": "Save, submit, create, or open an overlay.",
+      "alternative": "Use Switch for a persistent boolean setting; Tabs for related views.",
+      "props": [
+        {
+          "name": "variant",
+          "type": "ButtonVariant",
+          "required": false,
+          "default": "primary",
+          "values": ["primary", "secondary", "ghost", "destructive"]
+        },
+        {
+          "name": "state",
+          "type": "ButtonState",
+          "required": false,
+          "default": "idle",
+          "values": ["idle", "loading", "success", "error"],
+          "note": "Caller-owned state; no automatic loading/feedback lifecycle. Loading disables activation and sets aria-busy; success/error do not disable the button."
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "iconOnly",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true],
+          "note": "When true, aria-label is required by ButtonProps; provide a nonempty accessible name."
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Required when iconOnly=true, optional otherwise. Not forwarded via the ordinary inherited base; reintroduced by the conditional union.",
+          "requiredWhen": {
+            "iconOnly": true
+          }
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Visible meaningful action label, or one decorative icon in iconOnly idle state. State icons replace icon-only children outside idle."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        },
+        {
+          "name": "type",
+          "type": "button | submit | reset",
+          "required": false,
+          "default": "button",
+          "values": ["button", "submit", "reset"]
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ],
+      "inheritedProps": "ButtonHTMLAttributes<HTMLButtonElement> except aria-label, which is reintroduced conditionally. Native form attributes, id, style, event handlers, ARIA/data attributes are accepted; className is appended. No ref prop in ButtonProps.",
+      "exclusions": [
+        "No asChild or href/link API. Caller aria-busy is overridden by state; internal data-state/data-variant/data-size and className are owned by the wrapper."
+      ],
+      "state": "state is fully caller-controlled; disabled is also forced while loading.",
+      "events": [
+        "onClick and native button events; connect actions to application logic."
+      ],
+      "accessibility": [
+        "Icon-only needs aria-label. Use descriptive visible text otherwise. Decorative icons should be aria-hidden. Set type=submit explicitly for submission."
+      ],
+      "limitations": [
+        "No built-in async operation, persistence, retry or automatic transition back to idle."
+      ],
+      "providers": [
+        "SystemProvider for styling/configuration; Button itself reads CSS tokens."
+      ],
+      "examples": ["ai/examples/usage.tsx"]
+    },
+    {
+      "id": "tabs",
+      "api": "Tabs",
+      "source": "Tabs.tsx",
+      "exports": ["Tabs", "TabsProps", "TabItem"],
+      "purpose": "Switch between related content panels.",
+      "useWhen": "Related dashboard views under one meaningful group label.",
+      "alternative": "Use DropdownMenu for commands; navigation links for unrelated routes (not supplied).",
+      "props": [
+        {
+          "name": "items",
+          "type": "TabItem[]",
+          "required": true,
+          "default": "undefined",
+          "note": "Unique nonempty values; supply at least one enabled item and valid active value."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Nonempty accessible name for the tablist."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Controlled active value; pair with onValueChange updating caller state."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "first enabled item value",
+          "note": "Initial uncontrolled value; later defaultValue changes do not reset local selection."
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "variant",
+          "type": "underline | segment",
+          "required": false,
+          "default": "underline",
+          "values": ["underline", "segment"]
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ],
+      "inheritedProps": "None beyond TabsProps. Radix Root/List/Trigger/Content props are not spread through this wrapper.",
+      "exclusions": [
+        "No orientation, activationMode, asChild, forceMount, id or arbitrary native/Radix prop passthrough."
+      ],
+      "state": "value controls selection; otherwise internal state initializes from defaultValue or first enabled item.",
+      "events": [
+        "onValueChange receives selected value; local state also updates."
+      ],
+      "accessibility": [
+        "Required label; each item label is a meaningful ReactNode. Radix supplies roles, keyboard navigation, disabled behavior and panel linkage. Test direction-aware arrows and focus."
+      ],
+      "limitations": [
+        "Horizontal only, Radix default automatic activation; no routing, lazy data loading, or library enforcement of unique/valid values."
+      ],
+      "providers": [
+        "SystemProvider provides direction, density and scoped CSS."
+      ],
+      "examples": ["ai/examples/usage.tsx"]
+    },
+    {
+      "id": "switch",
+      "api": "Switch",
+      "source": "Switch.tsx",
+      "exports": ["Switch", "SwitchProps"],
+      "purpose": "Change a persistent two-state setting.",
+      "useWhen": "Immediate enabled/disabled preference.",
+      "alternative": "Use Button for a command; an application checkbox may be more appropriate for a form choice (no Tiraz Checkbox).",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Nonempty visible label associated with generated or caller id."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true],
+          "note": "Controlled; pair with onCheckedChange."
+        },
+        {
+          "name": "defaultChecked",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        },
+        {
+          "name": "onCheckedChange",
+          "type": "(checked: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "string | number | readonly string[]",
+          "required": false,
+          "default": "on"
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": "React useId"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "",
+          "note": "Applied to outer field wrapper; style and inherited native props target the Radix button."
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Merged with the generated description id, not replaced."
+        }
+      ],
+      "inheritedProps": "ComponentProps<typeof Radix Switch.Root> minus children/asChild; includes native button/form attributes, style, ARIA/data attributes, events and ref to the button. Consult installed Radix type definitions for the full inherited set.",
+      "exclusions": [
+        "children and asChild excluded; wrapper owns Thumb and label/help markup."
+      ],
+      "state": "checked/onCheckedChange controls state; defaultChecked initializes Radix internal state otherwise.",
+      "events": [
+        "onCheckedChange receives boolean, plus inherited native events."
+      ],
+      "accessibility": [
+        "Use visible label, unique id if supplied, and description for supporting text. Space toggles. Native required/name/value/form are inherited."
+      ],
+      "limitations": [
+        "Not a custom content slot; inspector choices/allowed attributes do not restrict the public inherited API."
+      ],
+      "providers": ["SystemProvider for shared CSS tokens."],
+      "examples": ["ai/examples/usage.tsx"]
+    },
+    {
+      "id": "dropdown",
+      "api": "DropdownMenu",
+      "source": "DropdownMenu.tsx",
+      "exports": ["DropdownMenu", "DropdownMenuProps", "MenuItem"],
+      "purpose": "Present contextual commands.",
+      "useWhen": "Several actions behind a focusable trigger.",
+      "alternative": "Use Tabs for views; use an application select for choosing form data (no Tiraz Select).",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "ReactElement",
+          "required": true,
+          "default": "undefined",
+          "note": "Single focusable trigger accepting injected Radix props/ref. Tiraz Button works; arbitrary custom triggers must forward them."
+        },
+        {
+          "name": "items",
+          "type": "MenuItem[]",
+          "required": true,
+          "default": "undefined",
+          "note": "Unique ids and meaningful labels; callbacks are per item."
+        },
+        {
+          "name": "align",
+          "type": "start | end",
+          "required": false,
+          "default": "start",
+          "values": ["start", "end"]
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": "false when uncontrolled",
+          "values": [false, true]
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "None beyond DropdownMenuProps. Trigger uses Radix asChild; props configured on the trigger element remain its own API.",
+      "exclusions": [
+        "No defaultOpen, modal, side, collision settings, content className, arbitrary native props or Radix submenu/checkbox/radio item API."
+      ],
+      "state": "open controls visibility when supplied; otherwise local state starts false. Pair controlled open with onOpenChange updating caller.",
+      "events": [
+        "onOpenChange; MenuItem.onSelect() invokes application action (no event argument in public type)."
+      ],
+      "accessibility": [
+        "Name trigger and all commands. Arrow keys, Home/End, typeahead, Enter, Escape and Tab dismissal are supported; focus returns to trigger. Preserve early-opening keyboard focus and real hover."
+      ],
+      "limitations": [
+        "Nonmodal menu; no nested submenus. Shortcut text is decorative and registers no shortcut. Long content scrolls within available viewport height."
+      ],
+      "providers": [
+        "SystemProvider supplies direction and portal container; nested menus inside Sheet portal into Sheet content to remain within modal focus scope."
+      ],
+      "examples": ["ai/examples/usage.tsx"]
+    },
+    {
+      "id": "sheet",
+      "api": "Sheet",
+      "source": "Sheet.tsx",
+      "exports": ["Sheet", "SheetProps"],
+      "purpose": "Show modal details or a focused editing task.",
+      "useWhen": "A detail view or small form without leaving the dashboard.",
+      "alternative": "Use DropdownMenu for a short command list; ordinary inline content for nonmodal tasks.",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "ReactElement",
+          "required": true,
+          "default": "undefined",
+          "note": "Single focusable element accepting injected Radix props/ref."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Meaningful dialog title."
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Meaningful dialog description; do not omit or pass an empty string just to satisfy the type."
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Nonempty accessible name for close icon."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": "false when uncontrolled",
+          "values": [false, true]
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "side",
+          "type": "right | left",
+          "required": false,
+          "default": "right in RTL, left in LTR",
+          "values": ["right", "left"]
+        }
+      ],
+      "inheritedProps": "None beyond SheetProps. Radix Dialog props are curated, not spread.",
+      "exclusions": [
+        "No defaultOpen, modal=false, asChild, content className, native attrs or custom focus-event passthrough."
+      ],
+      "state": "open/onOpenChange controls visibility; otherwise Radix internal state starts closed. Draft save/cancel semantics belong to the application.",
+      "events": [
+        "onOpenChange for trigger, Escape, backdrop or close dismissal."
+      ],
+      "accessibility": [
+        "Required title, description and closeLabel; modal focus management, Escape dismissal and trigger restoration. Keep nested actions within Sheet scope."
+      ],
+      "limitations": [
+        "Modal only; width is styled by library CSS. No built-in form validation, data persistence or dirty-dismiss confirmation.",
+        "An active Toast can receive Escape first; do not assume every Escape closes this Sheet."
+      ],
+      "providers": [
+        "SystemProvider config/portal container; Sheet supplies descendants the current config with its content as portal container."
+      ],
+      "examples": ["ai/examples/usage.tsx"]
+    },
+    {
+      "id": "toast",
+      "api": "ToastProvider",
+      "source": "Toast.tsx",
+      "exports": ["ToastProvider", "useToast", "ToastMessage"],
+      "purpose": "Announce transient success/error/info feedback.",
+      "useWhen": "Outcome of a completed action; secondary information.",
+      "alternative": "Use persistent inline text for essential errors/instructions, Sheet for a decision needing action. No Alert/Dialog family is supplied.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Localized notification/viewport label used by Radix."
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Nonempty localized accessible close name."
+        }
+      ],
+      "inheritedProps": "None beyond the three provider props. ToastMessage controls individual notices.",
+      "exclusions": [
+        "No public Toast component, open/onOpenChange, provider duration prop, arbitrary Radix attrs or action slot."
+      ],
+      "state": "useToast().toast(message) adds an internally managed notice; automatic/manual dismissal. At most three active messages; older active messages are dropped, not queued indefinitely.",
+      "events": ["toast(message): void; message fields described in records."],
+      "accessibility": [
+        "useToast must run in a descendant of ToastProvider (not in the same component before it returns the provider); outside it throws. Place ToastProvider inside SystemProvider. Keep important feedback available persistently too; inspect announcements manually."
+      ],
+      "limitations": [
+        "Default duration 5000 ms, info tone; hover/focus pauses expiry. F8 viewport navigation, manual close and down swipe supported. Scoped inline viewport, not a global portal. No guarantee that automated checks prove accessibility.",
+        "An active Toast participates in Radix dismissable-layer ordering: Escape can dismiss it before a Sheet even when focus is inside the Sheet. Check layer dismissal and restoration separately."
+      ],
+      "providers": [
+        "SystemProvider for styling/config; ToastProvider for useToast callers."
+      ],
+      "examples": ["ai/examples/usage.tsx"]
+    }
+  ],
+  "records": [
+    {
+      "type": "TabItem",
+      "source": "Tabs.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "content",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        }
+      ]
+    },
+    {
+      "type": "MenuItem",
+      "source": "DropdownMenu.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "shortcut",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        },
+        {
+          "name": "destructive",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        },
+        {
+          "name": "separatorBefore",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        },
+        {
+          "name": "onSelect",
+          "type": "() => void",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "ToastMessage",
+      "source": "useToast.ts",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "tone",
+          "type": "success | error | info",
+          "required": false,
+          "default": "info",
+          "values": ["success", "error", "info"]
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "default": 5000,
+          "note": "Milliseconds. Supply a positive finite duration. No Tiraz clamp; 1000–60000 is only the workbench editing range."
+        }
+      ]
+    }
+  ],
+  "support": [
+    {
+      "id": "system-provider",
+      "exports": ["SystemProvider"],
+      "source": "Provider.tsx",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "config",
+          "type": "SystemConfig",
+          "required": false,
+          "default": "defaultConfig",
+          "note": "When supplied, full required config fields are needed; partial overrides are not merged. Use {...defaultConfig, ...overrides}."
+        }
+      ],
+      "purpose": "Scope tokens, direction and portal container; accepts no other wrapper attributes. Set lang on a host ancestor above the provider/document so all scoped overlays and notices inherit it."
+    },
+    {
+      "id": "configuration",
+      "exports": [
+        "SystemConfig",
+        "Direction",
+        "Accent",
+        "defaultConfig",
+        "accentColors"
+      ],
+      "source": "config.ts",
+      "purpose": "Typed shared settings, Arabic/compact defaults and paired light/dark accent values; configuration.fields is authoritative metadata."
+    },
+    {
+      "id": "system-context",
+      "exports": ["useSystem"],
+      "source": "useSystem.ts",
+      "purpose": "Returns {config, container: HTMLDivElement | null}. Outside a provider returns defaultConfig/null; CSS styling is not installed automatically. SystemContext is internal, not a barrel export."
+    },
+    {
+      "id": "toast-provider",
+      "exports": ["ToastProvider"],
+      "source": "Toast.tsx",
+      "componentId": "toast",
+      "purpose": "Provider props and lifecycle are documented by the toast family."
+    },
+    {
+      "id": "toast-hook",
+      "exports": ["useToast", "ToastMessage"],
+      "source": "useToast.ts",
+      "purpose": "Returns {toast(message: ToastMessage): void}; use within ToastProvider or it throws. ToastContext is internal, not a barrel export; ToastMessage fields are in records."
+    }
+  ],
+  "conventions": {
+    "defaults": "Default fields contain literal JSON scalars or descriptive expressions. The string undefined means omitted/no default, not a string value to pass. configuration.defaults contains the actual literal defaultConfig.",
+    "authority": "Public source/types win; inherited prop details depend on the installed React/Radix versions. Workbench editing limits are not public API limits."
+  }
+}
