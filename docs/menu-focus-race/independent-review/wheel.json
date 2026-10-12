@@ -1,0 +1,16 @@
+[
+  {
+    "direction": "rtl",
+    "scroll": 800,
+    "choice": "Item 26",
+    "selected": "Selected 26",
+    "restored": "Nested menu trigger"
+  },
+  {
+    "direction": "ltr",
+    "scroll": 800,
+    "choice": "Item 26",
+    "selected": "Selected 26",
+    "restored": "Nested menu trigger"
+  }
+]

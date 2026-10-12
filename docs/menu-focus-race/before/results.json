@@ -1,0 +1,1132 @@
+[
+  {
+    "name": "rtl-light-motion-early-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [
+      "Item 40 must retain focus\n+ actual - expected\n\n+ 'Item 1'\n- 'Item 40'\n        ^\n",
+      "Item 40 must be visible",
+      "Item 40 must stay focused throughout animation after receiving focus",
+      "Enter must select Item 40\n+ actual - expected\n\n+ 'Selected 1'\n- 'Selected 40'\n            ^\n"
+    ],
+    "beforeEnter": {
+      "focused": "Item 1",
+      "visible": false,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 16.673000003266104,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 731.3999999910593,
+          "focused": "Item 40"
+        },
+        {
+          "time": 747.6999999880791,
+          "focused": "menu"
+        },
+        {
+          "time": 748,
+          "focused": "Item 40"
+        },
+        {
+          "time": 864.1999999880791,
+          "focused": "menu"
+        },
+        {
+          "time": 864.2999999970198,
+          "focused": "Item 1"
+        }
+      ]
+    },
+    "selected": "Selected 1",
+    "restored": true,
+    "trace": [
+      {
+        "time": 543.1999999880791,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 654,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 687.3999999910593,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 687.6999999880791,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 687.7999999970198,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 714.5999999940395,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 718,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 730.6999999880791,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 731.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 747.3999999910593,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 747.6999999880791,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 747.7999999970198,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 748,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 754,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 754,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 863.8999999910593,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 864.1999999880791,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 864.2999999970198,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 864.2999999970198,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 865.3999999910593,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 37",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 865.3999999910593,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 946.7999999970198,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1101.0999999940395,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "Enter"
+      },
+      {
+        "time": 1163.0999999940395,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1312.699999988079,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1316.8999999910593,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-light-motion-early-1",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [
+      "Item 40 must retain focus\n+ actual - expected\n\n+ 'Item 1'\n- 'Item 40'\n        ^\n",
+      "Item 40 must be visible",
+      "Item 40 must stay focused throughout animation after receiving focus",
+      "Enter must select Item 40\n+ actual - expected\n\n+ 'Selected 1'\n- 'Selected 40'\n            ^\n"
+    ],
+    "beforeEnter": {
+      "focused": "Item 1",
+      "visible": false,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 16.69899999930896,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 247.09999999403954,
+          "focused": "Item 40"
+        },
+        {
+          "time": 263.40000000596046,
+          "focused": "menu"
+        },
+        {
+          "time": 263.5,
+          "focused": "Item 40"
+        },
+        {
+          "time": 397,
+          "focused": "menu"
+        },
+        {
+          "time": 397.09999999403954,
+          "focused": "Item 1"
+        }
+      ]
+    },
+    "selected": "Selected 1",
+    "restored": true,
+    "trace": [
+      {
+        "time": 132.59999999403954,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 187.5,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 215,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 215.09999999403954,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 215.20000000298023,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 230.59999999403954,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 239.70000000298023,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 246.79999999701977,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 247.09999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 263.09999999403954,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 263.40000000596046,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 263.5,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 263.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 268.90000000596046,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 269,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 396.70000000298023,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 397,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 397,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 397.09999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 398,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 37",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 398,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 462.90000000596046,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 623.4000000059605,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "Enter"
+      },
+      {
+        "time": 679.5999999940395,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 828.5,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 830.2999999970198,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-light-motion-early-2",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [
+      "Item 40 must retain focus\n+ actual - expected\n\n+ 'Item 1'\n- 'Item 40'\n        ^\n",
+      "Item 40 must be visible",
+      "Item 40 must stay focused throughout animation after receiving focus",
+      "Enter must select Item 40\n+ actual - expected\n\n+ 'Selected 1'\n- 'Selected 40'\n            ^\n"
+    ],
+    "beforeEnter": {
+      "focused": "Item 1",
+      "visible": false,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 16.673000000580224,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 211.09999999403954,
+          "focused": "Item 40"
+        },
+        {
+          "time": 227.5,
+          "focused": "menu"
+        },
+        {
+          "time": 227.59999999403954,
+          "focused": "Item 40"
+        },
+        {
+          "time": 360.29999999701977,
+          "focused": "menu"
+        },
+        {
+          "time": 360.70000000298023,
+          "focused": "Item 1"
+        }
+      ]
+    },
+    "selected": "Selected 1",
+    "restored": true,
+    "trace": [
+      {
+        "time": 97.20000000298023,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 142.09999999403954,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 168.29999999701977,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 168.5,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 168.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 193.59999999403954,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 197.29999999701977,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 210.90000000596046,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 211.09999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 227.20000000298023,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 227.5,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 227.59999999403954,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 227.59999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 233.29999999701977,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 233.40000000596046,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 360,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 360.29999999701977,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 360.40000000596046,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 360.70000000298023,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 361.79999999701977,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 37",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 361.90000000596046,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 426,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 595.9000000059605,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "Enter"
+      },
+      {
+        "time": 659.9000000059605,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 810.0999999940395,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 812.5,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-light-motion-early-3",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [
+      "Item 40 must retain focus\n+ actual - expected\n\n+ 'Item 1'\n- 'Item 40'\n        ^\n",
+      "Item 40 must be visible",
+      "Item 40 must stay focused throughout animation after receiving focus",
+      "Enter must select Item 40\n+ actual - expected\n\n+ 'Selected 1'\n- 'Selected 40'\n            ^\n"
+    ],
+    "beforeEnter": {
+      "focused": "Item 1",
+      "visible": false,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 16.696999987075106,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 213.5,
+          "focused": "Item 40"
+        },
+        {
+          "time": 230.09999999403954,
+          "focused": "menu"
+        },
+        {
+          "time": 230.29999999701977,
+          "focused": "Item 40"
+        },
+        {
+          "time": 363.20000000298023,
+          "focused": "menu"
+        },
+        {
+          "time": 363.5,
+          "focused": "Item 1"
+        }
+      ]
+    },
+    "selected": "Selected 1",
+    "restored": true,
+    "trace": [
+      {
+        "time": 100.09999999403954,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 148.20000000298023,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 175.79999999701977,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 175.90000000596046,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 175.90000000596046,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 199.20000000298023,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 202.09999999403954,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 213.20000000298023,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 213.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 229.90000000596046,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 230.09999999403954,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 230.20000000298023,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 230.29999999701977,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 235.90000000596046,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 236.09999999403954,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 363,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 363.20000000298023,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 363.29999999701977,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 363.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 364.70000000298023,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 37",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 364.70000000298023,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 429.09999999403954,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 575.0999999940395,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "Enter"
+      },
+      {
+        "time": 645.9000000059605,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 796.0999999940395,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 799.5,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-light-motion-early-4",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [
+      "Item 40 must retain focus\n+ actual - expected\n\n+ 'Item 1'\n- 'Item 40'\n        ^\n",
+      "Item 40 must be visible",
+      "Item 40 must stay focused throughout animation after receiving focus",
+      "Enter must select Item 40\n+ actual - expected\n\n+ 'Selected 1'\n- 'Selected 40'\n            ^\n"
+    ],
+    "beforeEnter": {
+      "focused": "Item 1",
+      "visible": false,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 50.07699999216386,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 281.09999999403954,
+          "focused": "Item 40"
+        },
+        {
+          "time": 296.5,
+          "focused": "menu"
+        },
+        {
+          "time": 296.59999999403954,
+          "focused": "Item 40"
+        },
+        {
+          "time": 380,
+          "focused": "menu"
+        },
+        {
+          "time": 380.20000000298023,
+          "focused": "Item 1"
+        }
+      ]
+    },
+    "selected": "Selected 1",
+    "restored": true,
+    "trace": [
+      {
+        "time": 117.20000000298023,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 183.70000000298023,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 211.09999999403954,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 211.29999999701977,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 211.29999999701977,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 232.29999999701977,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 264.20000000298023,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 269.20000000298023,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 280.70000000298023,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 281.09999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 296.09999999403954,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 296.20000000298023,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 296.5,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 296.59999999403954,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 296.59999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 302.8999999910593,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 303.09999999403954,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 379.70000000298023,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 380,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 380.09999999403954,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 380.20000000298023,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 381.29999999701977,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 37",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 381.29999999701977,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 463.20000000298023,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 665.8999999910593,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "Enter"
+      },
+      {
+        "time": 746,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 896,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 898.7999999970198,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  }
+]

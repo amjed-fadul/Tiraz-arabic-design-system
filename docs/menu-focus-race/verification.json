@@ -1,0 +1,62 @@
+{
+  "baseCommit": "dd87f63b7d30a83252e1d38306d322a12ea99e59",
+  "branch": "fix/nested-menu-focus-race",
+  "nodeVersion": "v24.19.0",
+  "browser": "Google Chrome 154.0.8037.99 on macOS",
+  "viewport": {
+    "width": 800,
+    "height": 400
+  },
+  "testedFileSha256": {
+    "src/system/DropdownMenu.tsx": "4b573e959e348ef3d9bbe7c270190ab9eed8d0a03fd561303335ac2c90e7899f",
+    "tests/browser/menu-focus-race.mjs": "330674d668892f52702a79659ec6056266d58f3419d1dc9a69c2f3f131a83fb8"
+  },
+  "unitTests": {
+    "files": 10,
+    "passed": 79,
+    "exitCode": 0
+  },
+  "build": 0,
+  "lint": 0,
+  "formatCheck": 0,
+  "focused": {
+    "before": {
+      "runs": 5,
+      "passed": 0,
+      "failed": 5
+    },
+    "matrix": {
+      "runs": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    "reliability": {
+      "runs": 20,
+      "passed": 20,
+      "failed": 0
+    }
+  },
+  "browserScripts": [
+    {
+      "script": "regressions",
+      "exitCode": 0
+    },
+    {
+      "script": "customization",
+      "exitCode": 0
+    },
+    {
+      "script": "interactions",
+      "exitCode": 0
+    }
+  ],
+  "originalCheckoutUnchanged": true,
+  "previousTrackedChanges": [
+    "src/system/DropdownMenu.tsx"
+  ],
+  "baselineArchive": {
+    "trackedFilesVerifiedAgainstBase": 193,
+    "fontServingHttpStatus": 200,
+    "sourceUnchanged": true
+  }
+}

@@ -1,0 +1,386 @@
+[
+  {
+    "direction": "rtl",
+    "pointer": null,
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 378.20000000298023
+      },
+      {
+        "text": "Item 1",
+        "time": 378.70000000298023
+      },
+      {
+        "text": "Item 40",
+        "time": 424.3999999910593
+      }
+    ]
+  },
+  {
+    "direction": "rtl",
+    "pointer": {
+      "x": 728,
+      "y": 100
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 206.8999999910593
+      },
+      {
+        "text": "Item 1",
+        "time": 207
+      },
+      {
+        "text": "Item 40",
+        "time": 241.29999999701977
+      }
+    ]
+  },
+  {
+    "direction": "rtl",
+    "pointer": {
+      "x": 728,
+      "y": 200
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 181
+      },
+      {
+        "text": "Item 1",
+        "time": 181.19999998807907
+      },
+      {
+        "text": "Item 40",
+        "time": 213.19999998807907
+      }
+    ]
+  },
+  {
+    "direction": "rtl",
+    "pointer": {
+      "x": 728,
+      "y": 250
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 179.70000000298023
+      },
+      {
+        "text": "Item 1",
+        "time": 179.8999999910593
+      },
+      {
+        "text": "Item 40",
+        "time": 214
+      }
+    ]
+  },
+  {
+    "direction": "rtl",
+    "pointer": {
+      "x": 728,
+      "y": 300
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 167.79999999701977
+      },
+      {
+        "text": "Item 1",
+        "time": 167.90000000596046
+      },
+      {
+        "text": "Item 40",
+        "time": 200.09999999403954
+      }
+    ]
+  },
+  {
+    "direction": "rtl",
+    "pointer": {
+      "x": 728,
+      "y": 360
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 179.5
+      },
+      {
+        "text": "Item 1",
+        "time": 179.70000000298023
+      },
+      {
+        "text": "Item 40",
+        "time": 215.29999999701977
+      },
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 365.40000000596046
+      },
+      {
+        "text": "Item 40",
+        "time": 365.5
+      }
+    ]
+  },
+  {
+    "direction": "rtl",
+    "pointer": {
+      "x": 728,
+      "y": 385
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 182.5
+      },
+      {
+        "text": "Item 1",
+        "time": 182.6000000089407
+      },
+      {
+        "text": "Item 40",
+        "time": 221.5
+      }
+    ]
+  },
+  {
+    "direction": "rtl",
+    "hover": 39,
+    "focused": "Item 39"
+  },
+  {
+    "direction": "rtl",
+    "hover": 38,
+    "focused": "Item 38"
+  },
+  {
+    "direction": "rtl",
+    "leave": true,
+    "activeRole": "menu"
+  },
+  {
+    "direction": "rtl",
+    "home": true,
+    "focused": "Item 1"
+  },
+  {
+    "direction": "rtl",
+    "down": true,
+    "focused": "Item 2"
+  },
+  {
+    "direction": "rtl",
+    "escape": true,
+    "focused": "Nested menu trigger"
+  },
+  {
+    "direction": "ltr",
+    "pointer": null,
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 159.09999999403954
+      },
+      {
+        "text": "Item 1",
+        "time": 159.29999999701977
+      },
+      {
+        "text": "Item 40",
+        "time": 192.59999999403954
+      }
+    ]
+  },
+  {
+    "direction": "ltr",
+    "pointer": {
+      "x": 90,
+      "y": 100
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 169.79999999701977
+      },
+      {
+        "text": "Item 1",
+        "time": 169.90000000596046
+      },
+      {
+        "text": "Item 40",
+        "time": 200
+      }
+    ]
+  },
+  {
+    "direction": "ltr",
+    "pointer": {
+      "x": 90,
+      "y": 200
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 162.80000001192093
+      },
+      {
+        "text": "Item 1",
+        "time": 163
+      },
+      {
+        "text": "Item 40",
+        "time": 196
+      }
+    ]
+  },
+  {
+    "direction": "ltr",
+    "pointer": {
+      "x": 90,
+      "y": 250
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 183.90000000596046
+      },
+      {
+        "text": "Item 1",
+        "time": 184.20000000298023
+      },
+      {
+        "text": "Item 40",
+        "time": 218.79999999701977
+      }
+    ]
+  },
+  {
+    "direction": "ltr",
+    "pointer": {
+      "x": 90,
+      "y": 300
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 3502.2000000029802
+      },
+      {
+        "text": "Item 1",
+        "time": 3502.5999999940395
+      },
+      {
+        "text": "Item 40",
+        "time": 3799.2999999970198
+      }
+    ]
+  },
+  {
+    "direction": "ltr",
+    "pointer": {
+      "x": 90,
+      "y": 360
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 823.2000000029802
+      },
+      {
+        "text": "Item 1",
+        "time": 823.4000000059605
+      },
+      {
+        "text": "Item 40",
+        "time": 927.9000000059605
+      }
+    ]
+  },
+  {
+    "direction": "ltr",
+    "pointer": {
+      "x": 90,
+      "y": 385
+    },
+    "focused": "Item 40",
+    "scroll": 1234,
+    "trace": [
+      {
+        "text": "Item 1Item 2Item 3Item 4Item 5Item 6Item 7Item 8Item 9Item 10Item 11Item 12Item 13Item 14Item 15Item 16Item 17Item 18Item 19Item 20Item 21Item 22Item 23Item 24Item 25Item 26Item 27Item 28Item 29Item 30Item 31Item 32Item 33Item 34Item 35Item 36Item 37Item 38Item 39Item 40",
+        "time": 264.29999999701977
+      },
+      {
+        "text": "Item 1",
+        "time": 264.3999999910593
+      },
+      {
+        "text": "Item 40",
+        "time": 306.70000000298023
+      }
+    ]
+  },
+  {
+    "direction": "ltr",
+    "hover": 39,
+    "focused": "Item 39"
+  },
+  {
+    "direction": "ltr",
+    "hover": 38,
+    "focused": "Item 38"
+  },
+  {
+    "direction": "ltr",
+    "leave": true,
+    "activeRole": "menu"
+  },
+  {
+    "direction": "ltr",
+    "home": true,
+    "focused": "Item 1"
+  },
+  {
+    "direction": "ltr",
+    "down": true,
+    "focused": "Item 2"
+  },
+  {
+    "direction": "ltr",
+    "escape": true,
+    "focused": "Nested menu trigger"
+  }
+]

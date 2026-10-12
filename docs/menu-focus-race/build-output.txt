@@ -1,0 +1,32 @@
+
+> tiraz@0.1.0 build
+> tsc -b && vite build
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2010 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                         0.80 kB │ gzip:   0.51 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-400-normal-BeVLg08x.woff     5.10 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-500-normal-eJxPnL1P.woff     5.11 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-600-normal-DT29Q8HW.woff     5.12 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-500-normal-Ck_W4G78.woff2    6.54 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-400-normal-BpLfq-63.woff2    6.65 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-600-normal-DjDAeNQD.woff2    6.68 kB
+dist/assets/ibm-plex-sans-arabic-latin-400-normal-CFZh1unN.woff        17.51 kB
+dist/assets/ibm-plex-sans-arabic-latin-500-normal-BletK1Hp.woff        18.64 kB
+dist/assets/ibm-plex-sans-arabic-latin-600-normal-Dk5eISD_.woff        18.88 kB
+dist/assets/ibm-plex-sans-arabic-latin-400-normal-Bo5KPYvw.woff2       19.16 kB
+dist/assets/ibm-plex-sans-arabic-latin-500-normal-Cd6jVIg7.woff2       20.08 kB
+dist/assets/ibm-plex-sans-arabic-latin-600-normal-KrqB56Mw.woff2       20.50 kB
+dist/assets/ibm-plex-sans-arabic-arabic-400-normal-CyU-ddYS.woff2      42.84 kB
+dist/assets/ibm-plex-sans-arabic-arabic-400-normal-EA1o-u_Q.woff       44.13 kB
+dist/assets/ibm-plex-sans-arabic-arabic-500-normal-C4MQITzh.woff2      45.29 kB
+dist/assets/ibm-plex-sans-arabic-arabic-600-normal-0pRdybE_.woff2      45.68 kB
+dist/assets/ibm-plex-sans-arabic-arabic-600-normal-MJZ0liF5.woff       46.78 kB
+dist/assets/ibm-plex-sans-arabic-arabic-500-normal-DPXcppbm.woff       46.92 kB
+dist/assets/index-DHn31--q.css                                         54.23 kB │ gzip:  17.00 kB
+dist/assets/index-B6H4nrZs.js                                         405.32 kB │ gzip: 127.80 kB
+
+✓ built in 1.26s

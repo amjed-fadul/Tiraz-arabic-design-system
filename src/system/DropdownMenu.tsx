@@ -63,6 +63,16 @@ export function DropdownMenu({
                 disabled={item.disabled}
                 data-destructive={item.destructive || undefined}
                 onSelect={item.onSelect}
+                onPointerLeave={(event) => {
+                  // Animation/scrolling can move an unfocused item away from a
+                  // stationary pointer. Its leave must not clear keyboard focus.
+                  if (
+                    event.currentTarget !==
+                    event.currentTarget.ownerDocument.activeElement
+                  ) {
+                    event.preventDefault();
+                  }
+                }}
               >
                 {item.icon && <span aria-hidden="true">{item.icon}</span>}
                 <span>{item.label}</span>

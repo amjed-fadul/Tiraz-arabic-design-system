@@ -1,0 +1,11 @@
+{
+  "head": "dd87f63b7d30a83252e1d38306d322a12ea99e59",
+  "branch": "review/component-customization",
+  "status": " M README.md\n M src/workbench/workbench.css\n",
+  "diff": "60c40d75854dc2d4fe61a0257dd2470837f36dc8041d80db18e17cdc2e8b2d08",
+  "index": "b1d9a0d030c01fe06673553f0d1e4a3dd2a3f1058f5c792c6a49231cb22417ab",
+  "files": {
+    "README.md": "696ab7af24841c2dfb11f77d4a0c12c5c3845147aaedd3dba784de444b412be4",
+    "src/workbench/workbench.css": "55575d1ff26b311638583bf5b9cebc09bcb7612d68004880eaa5bc33edde367a"
+  }
+}
