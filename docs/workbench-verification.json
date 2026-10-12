@@ -1,0 +1,773 @@
+{
+  "date": "2026-10-12",
+  "url": "http://127.0.0.1:5173/",
+  "checks": {
+    "vitest": {
+      "files": 6,
+      "tests": 33,
+      "passed": true
+    },
+    "generatedModules": {
+      "cases": 19,
+      "strictTypeScript": true
+    },
+    "lint": true,
+    "build": true,
+    "format": true,
+    "independentReview": {
+      "rounds": 3,
+      "findingsResolved": [
+        "in-flight Button timer interrupted by unrelated property edit",
+        "invalid native attribute value types",
+        "Toast trigger variant mismatch",
+        "unknown collection fields breaking copied TypeScript"
+      ],
+      "lastReview": "No further actionable findings"
+    },
+    "browserErrorsAfterFinalReload": []
+  },
+  "browser": {
+    "pages": ["Button", "Tabs", "Switch", "DropdownMenu", "Sheet", "Toast"],
+    "scalarControls": [
+      {
+        "page": "Button",
+        "label": "التسميةchildren",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "النوعvariant",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "الحجمsize",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "الحالةstate",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "معطّل",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "أيقونة فقط",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "أيقونة المحتوىchildren · preset",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "الاسم المعلنaria-label",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "نوع عنصر HTMLtype",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "سلوك الضغطonClick · demo",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "نتيجة المحاكاةonClick · demo",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "معرّف العنصرid",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "فئة CSSclassName",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "نمط عنصر جاهزstyle",
+        "codeChanged": true
+      },
+      {
+        "page": "Button",
+        "label": "مظهر هذه المعاينةSystemProvider.theme",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "Button",
+        "label": "لون هذه المعاينةSystemProvider.accent",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "Tabs",
+        "label": "النمطvariant",
+        "codeChanged": true
+      },
+      {
+        "page": "Tabs",
+        "label": "التبويب المحددvalue / defaultValue",
+        "codeChanged": true
+      },
+      {
+        "page": "Tabs",
+        "label": "اسم مجموعة التبويباتlabel",
+        "codeChanged": true
+      },
+      {
+        "page": "Tabs",
+        "label": "إدارة الحالةvalue / defaultValue",
+        "codeChanged": true
+      },
+      {
+        "page": "Tabs",
+        "label": "فئة CSSclassName",
+        "codeChanged": true
+      },
+      {
+        "page": "Tabs",
+        "label": "مظهر هذه المعاينةSystemProvider.theme",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "Tabs",
+        "label": "لون هذه المعاينةSystemProvider.accent",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "Switch",
+        "label": "التسميةlabel",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "النص المساعدdescription",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "مفعّل",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "معطّل",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "إدارة الحالةchecked / defaultChecked",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "نوع عنصر HTMLtype",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "مطلوب في النموذج",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "اسم حقل النموذجname",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "قيمة حقل النموذجvalue",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "معرّف العنصرid",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "فئة CSSclassName",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "نمط عنصر جاهزstyle",
+        "codeChanged": true
+      },
+      {
+        "page": "Switch",
+        "label": "مظهر هذه المعاينةSystemProvider.theme",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "Switch",
+        "label": "لون هذه المعاينةSystemProvider.accent",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "تسمية زر الفتحtrigger · Button.children",
+        "codeChanged": true
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "المحاذاةalign",
+        "codeChanged": true
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "القائمة مفتوحة",
+        "codeChanged": true
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "نوع زر الفتحtrigger · Button.variant",
+        "codeChanged": true
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "حجم زر الفتحtrigger · Button.size",
+        "codeChanged": true
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "إدارة الحالةopen / onOpenChange",
+        "codeChanged": true
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "مظهر هذه المعاينةSystemProvider.theme",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "DropdownMenu",
+        "label": "لون هذه المعاينةSystemProvider.accent",
+        "codeChanged": false,
+        "note": "Inheritance changed to an explicit value identical to the current global setting. Different-value overrides separately checked on all pages."
+      },
+      {
+        "page": "Sheet",
+        "label": "تسمية زر الفتحtrigger · Button.children",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "عنوان اللوحةtitle",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "وصف اللوحةdescription",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "جانب الظهورside",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "اللوحة مفتوحة",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "نوع زر الفتحtrigger · Button.variant",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "حجم زر الفتحtrigger · Button.size",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "محتوى اللوحةchildren · text preset",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "تسمية الإغلاقcloseLabel",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "إظهار التذييل",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "تسمية زر التذييلfooter · Button.children",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "إدارة الحالةopen / onOpenChange",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "مظهر هذه المعاينةSystemProvider.theme",
+        "codeChanged": true
+      },
+      {
+        "page": "Sheet",
+        "label": "لون هذه المعاينةSystemProvider.accent",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "عنوان التنبيهtitle",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "وصف التنبيهdescription",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "نوع التنبيهtoast.tone",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "المدة بالمللي ثانيةtoast.duration",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "تسمية زر العرضToastProvider.children · demo",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "اسم منطقة التنبيهاتToastProvider.label",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "تسمية الإغلاقToastProvider.closeLabel",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "مظهر هذه المعاينةSystemProvider.theme",
+        "codeChanged": true
+      },
+      {
+        "page": "Toast",
+        "label": "لون هذه المعاينةSystemProvider.accent",
+        "codeChanged": true
+      }
+    ],
+    "structuredEditors": [
+      "Button native attributes: valid title/tabIndex/data-*, invalid tabIndex rejected",
+      "Switch native attributes: title/tabIndex applied",
+      "Tabs: mixed-language records, invalid extra keys rejected, RTL ArrowLeft selection",
+      "DropdownMenu: icon/shortcut/separator/disabled/destructive records and live onSelect"
+    ],
+    "clipboard": [
+      {
+        "page": "Button",
+        "codeMatches": true,
+        "promptContainsCode": true
+      },
+      {
+        "page": "Tabs",
+        "codeMatches": true,
+        "promptContainsCode": true
+      },
+      {
+        "page": "Switch",
+        "codeMatches": true,
+        "promptContainsCode": true
+      },
+      {
+        "page": "Dropdown menu",
+        "codeMatches": true,
+        "promptContainsCode": true
+      },
+      {
+        "page": "Sheet",
+        "codeMatches": true,
+        "promptContainsCode": true
+      },
+      {
+        "page": "Toast",
+        "codeMatches": true,
+        "promptContainsCode": true
+      }
+    ],
+    "scopedOverrides": [
+      {
+        "page": "الأزرار",
+        "preview": "dark",
+        "examples": "light",
+        "codeMatches": true,
+        "promptMatches": true,
+        "actualPaths": true
+      },
+      {
+        "page": "التبويبات",
+        "preview": "dark",
+        "examples": "light",
+        "codeMatches": true,
+        "promptMatches": true,
+        "actualPaths": true
+      },
+      {
+        "page": "مفتاح التبديل",
+        "preview": "dark",
+        "examples": "light",
+        "codeMatches": true,
+        "promptMatches": true,
+        "actualPaths": true
+      },
+      {
+        "page": "القائمة المنسدلة",
+        "preview": "dark",
+        "examples": "light",
+        "codeMatches": true,
+        "promptMatches": true,
+        "actualPaths": true
+      },
+      {
+        "page": "اللوحة الجانبية",
+        "preview": "dark",
+        "examples": "light",
+        "codeMatches": true,
+        "promptMatches": true,
+        "actualPaths": true
+      },
+      {
+        "page": "التنبيهات",
+        "preview": "dark",
+        "examples": "light",
+        "codeMatches": true,
+        "promptMatches": true,
+        "actualPaths": true
+      }
+    ],
+    "paletteChecks": [
+      {
+        "theme": "light",
+        "accent": "sage",
+        "violations": 0
+      },
+      {
+        "theme": "light",
+        "accent": "blue",
+        "violations": 0
+      },
+      {
+        "theme": "light",
+        "accent": "plum",
+        "violations": 0
+      },
+      {
+        "theme": "light",
+        "accent": "clay",
+        "violations": 0
+      },
+      {
+        "theme": "dark",
+        "accent": "sage",
+        "violations": 0,
+        "settledRepeat": true
+      },
+      {
+        "theme": "dark",
+        "accent": "blue",
+        "violations": 0
+      },
+      {
+        "theme": "dark",
+        "accent": "plum",
+        "violations": 0
+      },
+      {
+        "theme": "dark",
+        "accent": "clay",
+        "violations": 0
+      }
+    ],
+    "narrowLayouts": [
+      {
+        "page": "Button",
+        "direction": "ltr",
+        "doc": "dark",
+        "pageWidth": 307,
+        "preview": "dark",
+        "width": 320
+      },
+      {
+        "page": "Tabs",
+        "direction": "ltr",
+        "doc": "dark",
+        "pageWidth": 307,
+        "preview": "dark",
+        "width": 320
+      },
+      {
+        "page": "Switch",
+        "direction": "ltr",
+        "doc": "dark",
+        "pageWidth": 307,
+        "preview": "dark",
+        "width": 320
+      },
+      {
+        "page": "Dropdown menu",
+        "direction": "ltr",
+        "doc": "dark",
+        "pageWidth": 307,
+        "preview": "dark",
+        "width": 320
+      },
+      {
+        "page": "Sheet",
+        "direction": "ltr",
+        "doc": "dark",
+        "pageWidth": 307,
+        "preview": "light",
+        "width": 320
+      },
+      {
+        "page": "Toast",
+        "direction": "ltr",
+        "doc": "dark",
+        "pageWidth": 307,
+        "preview": "dark",
+        "width": 320
+      }
+    ],
+    "interactionChecks": [
+      "Button async success/error; editing variant during pending operation still completes",
+      "Tabs RTL ArrowLeft and disabled selection; generated value sync",
+      "Switch Space callback; controlled/uncontrolled props",
+      "Menu ArrowDown/Enter callback; close and trigger focus restoration",
+      "Sheet Escape and Tab trap; native width440; LTR/RTL sides; preview override inheritance",
+      "Sheet form saves changes and discards cancelled drafts",
+      "Toast callback, theme inheritance and manual dismissal",
+      "System settings change preview tokens without changing shell/header/control computed style",
+      "System and playground reset preserve other state layers",
+      "Independent state persists after reload including mixed Arabic/English label and md size",
+      "Inspector and system panel collapse/reopen preserve navigation",
+      "Mobile navigation hands off to one preview Sheet without competing dialogs",
+      "Mobile customization is doc-themed despite dark previews",
+      "Long prompt/code/API disclosure cannot widen320px page",
+      "OS and component reduced motion verified at0.01ms",
+      "Sheet and backdrop verified visually and with elementFromPoint above later examples"
+    ],
+    "scans": [
+      {
+        "name": "Arabic light Button, expanded inspector",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic Tabs collection, RTL keyboard",
+        "passes": 28,
+        "violations": []
+      },
+      {
+        "name": "Arabic Switch with native attributes",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Light Arabic docs / dark menu, system large standard blue",
+        "passes": 29,
+        "violations": []
+      },
+      {
+        "name": "Light Arabic docs, light plum Sheet override / dark blue examples",
+        "passes": 22,
+        "violations": []
+      },
+      {
+        "name": "Arabic dark Toast on light documentation",
+        "passes": 28,
+        "violations": []
+      },
+      {
+        "name": "English dark documentation / light previews: Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "English dark documentation / light previews: Tabs",
+        "passes": 28,
+        "violations": []
+      },
+      {
+        "name": "English dark documentation / light previews: Switch",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "English dark documentation / light previews: Dropdown menu",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "English dark documentation / light previews: Sheet",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "English dark documentation / light previews: Toast",
+        "passes": 27,
+        "violations": []
+      },
+      {
+        "name": "390px Arabic navigation drawer",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "390px Arabic customization drawer",
+        "passes": 23,
+        "violations": []
+      },
+      {
+        "name": "320px dark English Button",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px dark English Tabs",
+        "passes": 27,
+        "violations": []
+      },
+      {
+        "name": "320px dark English Switch",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px dark English Dropdown menu",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px dark English Sheet",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px dark English Toast",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic light docs / light sage Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic light docs / light blue Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic light docs / light plum Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic light docs / light clay Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic light docs / dark sage Button",
+        "passes": 26,
+        "violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "nodes": [
+              {
+                "summary": "Fix any of the following:\n  Element has insufficient color contrast of 1.06 (foreground color: #f0a4a5, background color: #beafaf, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+                "target": [
+                  "button[data-variant=\"destructive\"] > .tz-button-label"
+                ]
+              },
+              {
+                "summary": "Fix any of the following:\n  Element has insufficient color contrast of 1.73 (foreground color: #ecf0ec, background color: #b6b8b7, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+                "target": ["button[data-size=\"md\"] > .tz-button-label"]
+              }
+            ]
+          }
+        ],
+        "supersededBy": "Stable Arabic light docs / dark sage Button",
+        "note": "Scanned while theme colors were transitioning. Repeated after settling with zero violations."
+      },
+      {
+        "name": "Arabic light docs / dark blue Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic light docs / dark plum Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Arabic light docs / dark clay Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Stable Arabic light docs / dark sage Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Final default Arabic Button",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Final reload, default Arabic documentation and previews",
+        "passes": 26,
+        "violations": []
+      }
+    ]
+  },
+  "screenshots": [
+    "workbench-light-rtl.jpg",
+    "workbench-light-docs-dark-preview.jpg",
+    "workbench-dark-ltr.jpg",
+    "workbench-usage.jpg",
+    "workbench-mobile-rtl.jpg",
+    "workbench-mobile-settings.jpg",
+    "workbench-sheet-rtl.jpg"
+  ],
+  "limitations": [
+    "Physical device touch not tested",
+    "Manual screen-reader pass not performed",
+    "Axe checks do not establish full WCAG conformance",
+    "ReactNode/style editors use representative text/presets rather than arbitrary JSX/functions",
+    "No push, merge, publish or deploy performed"
+  ]
+}

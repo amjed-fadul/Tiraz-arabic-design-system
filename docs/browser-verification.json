@@ -1,0 +1,244 @@
+{
+  "date": "2026-10-12",
+  "timezone": "Asia/Dubai",
+  "browser": "Chromium in Codex in-app browser",
+  "axeTags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21aa"
+  ],
+  "verifiedScans": [
+    {
+      "label": "light RTL الأزرار",
+      "issues": []
+    },
+    {
+      "label": "light RTL التبويبات",
+      "issues": []
+    },
+    {
+      "label": "light RTL مفتاح التبديل",
+      "issues": []
+    },
+    {
+      "label": "light RTL القائمة المنسدلة",
+      "issues": []
+    },
+    {
+      "label": "light RTL اللوحة الجانبية",
+      "issues": []
+    },
+    {
+      "label": "light RTL التنبيهات",
+      "issues": []
+    },
+    {
+      "label": "dark LTR الأزرار",
+      "issues": []
+    },
+    {
+      "label": "dark LTR التبويبات",
+      "issues": []
+    },
+    {
+      "label": "dark LTR مفتاح التبديل",
+      "issues": []
+    },
+    {
+      "label": "dark LTR القائمة المنسدلة",
+      "issues": []
+    },
+    {
+      "label": "dark LTR اللوحة الجانبية",
+      "issues": []
+    },
+    {
+      "label": "dark LTR التنبيهات",
+      "issues": []
+    },
+    {
+      "label": "فاتح accent المريمية",
+      "issues": []
+    },
+    {
+      "label": "فاتح accent البرقوق",
+      "issues": []
+    },
+    {
+      "label": "داكن accent المريمية",
+      "issues": []
+    },
+    {
+      "label": "داكن accent الأزرق",
+      "issues": []
+    },
+    {
+      "label": "داكن accent البرقوق",
+      "issues": []
+    },
+    {
+      "label": "داكن accent الطين",
+      "issues": []
+    },
+    {
+      "label": "final light accent الأزرق",
+      "issues": []
+    },
+    {
+      "label": "final light accent الطين",
+      "issues": []
+    },
+    {
+      "label": "mobile RTL button 390",
+      "issues": []
+    },
+    {
+      "label": "mobile customization Sheet",
+      "issues": []
+    },
+    {
+      "label": "mobile dark LTR compact plum customization",
+      "issues": []
+    },
+    {
+      "label": "final 320px RTL toast with keyboard code region",
+      "issues": []
+    },
+    {
+      "label": "final light RTL open Sheet with mixed URL/email",
+      "issues": []
+    },
+    {
+      "label": "final light RTL open non-modal menu",
+      "issues": []
+    },
+    {
+      "label": "light LTR الأزرار",
+      "issues": []
+    },
+    {
+      "label": "light LTR التبويبات",
+      "issues": []
+    },
+    {
+      "label": "light LTR مفتاح التبديل",
+      "issues": []
+    },
+    {
+      "label": "light LTR القائمة المنسدلة",
+      "issues": []
+    },
+    {
+      "label": "light LTR اللوحة الجانبية",
+      "issues": []
+    },
+    {
+      "label": "light LTR التنبيهات",
+      "issues": []
+    },
+    {
+      "label": "dark RTL الأزرار",
+      "issues": []
+    },
+    {
+      "label": "dark RTL التبويبات",
+      "issues": []
+    },
+    {
+      "label": "dark RTL مفتاح التبديل",
+      "issues": []
+    },
+    {
+      "label": "dark RTL القائمة المنسدلة",
+      "issues": []
+    },
+    {
+      "label": "dark RTL اللوحة الجانبية",
+      "issues": []
+    },
+    {
+      "label": "dark RTL التنبيهات",
+      "issues": []
+    },
+    {
+      "label": "dark LTR open Sheet",
+      "issues": []
+    },
+    {
+      "label": "final RTL Sheet screenshot state",
+      "issues": []
+    },
+    {
+      "label": "final usage and keyboard code regions",
+      "issues": []
+    }
+  ],
+  "responsiveChecks": [
+    {
+      "component": "الأزرار",
+      "pageWidth": 307,
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "component": "التبويبات",
+      "pageWidth": 307,
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "component": "مفتاح التبديل",
+      "pageWidth": 307,
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "component": "القائمة المنسدلة",
+      "pageWidth": 307,
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "component": "اللوحة الجانبية",
+      "pageWidth": 307,
+      "width": 320,
+      "overflow": false
+    },
+    {
+      "component": "التنبيهات",
+      "pageWidth": 307,
+      "width": 320,
+      "overflow": false
+    }
+  ],
+  "manualChecks": [
+    "Sheet Tab wraps focus; Escape/backdrop/close restore focus",
+    "Dropdown arrows skip disabled actions; Escape and Tab restore focus",
+    "RTL ArrowLeft and LTR ArrowRight select the next Tab",
+    "Native email validation blocks invalid Sheet submission",
+    "Theme/direction/density/accent/radius persist across reload",
+    "Code/config clipboard actions report successful native copy",
+    "OS reduced-motion overrides disabled preview setting",
+    "Preview reduced-motion sets transitions to 0s and animations to one 0.01ms iteration",
+    "Nested LTR Switch inside RTL ancestor keeps thumb inside track",
+    "Emails/URLs/identifiers isolated LTR",
+    "Fresh reload: no new browser errors/warnings"
+  ],
+  "resolvedFindings": [
+    "State button hover colors",
+    "Session Sheet form save/cancel",
+    "Mobile slider unique IDs",
+    "Visible mobile reset control",
+    "Nested Switch effective direction",
+    "Light metadata contrast including two accent palettes",
+    "Readable disabled Switch descriptions",
+    "Non-modal menu background accessibility",
+    "Keyboard focus for overflowing code and API tables",
+    "Initial disabled Tabs default selection"
+  ],
+  "limitations": [
+    "No manual screen-reader pass",
+    "No physical touch-device pass",
+    "Automated accessibility checks do not establish full conformance"
+  ]
+}

@@ -1,0 +1,685 @@
+{
+  "date": "2026-10-12",
+  "url": "http://127.0.0.1:5173/",
+  "rootCause": {
+    "reproduction": [
+      "Select Button and set demonstrated state to idle",
+      "Save a Blue playground override in the old advanced controls",
+      "Select Purple as the global system accent",
+      "Playground remains Blue while examples become Purple",
+      "Reload; the mismatch persists"
+    ],
+    "cause": "previewConfig reapplied persisted previewAccent/previewTheme after the current global config. Preview provider --action differed from examples. No stale dependency or provider snapshot was found.",
+    "smallestFix": "previewConfig returns current global configuration; migrated playgrounds omit obsolete appearance fields.",
+    "regression": "Observed failing before implementation; passes after fix.",
+    "semanticNote": "Success/error/destructive colors remain intentional feedback colors. The diagnosed green success Button already received the new accent token.",
+    "trace": "docs/accent-root-cause.json"
+  },
+  "checks": {
+    "commands": [
+      "npm test",
+      "npm run lint",
+      "npm run build",
+      "npm run format:check"
+    ],
+    "vitest": {
+      "files": 6,
+      "tests": 38,
+      "passed": true
+    },
+    "generatedModules": {
+      "cases": 19,
+      "strictTypeScript": true
+    },
+    "lint": true,
+    "build": true,
+    "format": true,
+    "browserErrorsAfterFinalReload": []
+  },
+  "migration": {
+    "precedence": [
+      "valid tiraz.theme.v1",
+      "valid previous tiraz.documentation.v1.theme",
+      "valid previous tiraz.system.v2.theme",
+      "valid milestone tiraz.preferences.v1.theme",
+      "light"
+    ],
+    "browserEvidence": {
+      "button": {
+        "action": "simulate",
+        "ariaLabel": "",
+        "attributes": {},
+        "children": "اعتماد · Migrated",
+        "className": "",
+        "disabled": false,
+        "icon": "none",
+        "iconOnly": false,
+        "id": "",
+        "outcome": "success",
+        "size": "md",
+        "state": "idle",
+        "stylePreset": "none",
+        "type": "button",
+        "variant": "primary"
+      },
+      "documentation": {
+        "active": "button",
+        "inspectorOpen": true,
+        "language": "ar",
+        "systemPanelOpen": true
+      },
+      "system": {
+        "accent": "plum",
+        "density": "compact",
+        "radius": 8,
+        "reducedMotion": false,
+        "typography": "standard"
+      },
+      "theme": "dark"
+    },
+    "systemReset": "Light, Green, compact, standard text, radius8, reducedMotion false; props/language retained",
+    "componentReset": "Selected properties only; theme/settings retained"
+  },
+  "browser": {
+    "controls": [
+      {
+        "page": "الأزرار",
+        "label": "التسمية",
+        "codeChanged": true
+      },
+      {
+        "page": "الأزرار",
+        "label": "النوع",
+        "codeChanged": true
+      },
+      {
+        "page": "الأزرار",
+        "label": "الحجم",
+        "codeChanged": true
+      },
+      {
+        "page": "الأزرار",
+        "label": "الحالة",
+        "codeChanged": true
+      },
+      {
+        "page": "الأزرار",
+        "label": "الأيقونة",
+        "codeChanged": true
+      },
+      {
+        "page": "الأزرار",
+        "label": "أيقونة فقط",
+        "codeChanged": true
+      },
+      {
+        "page": "التبويبات",
+        "label": "النمط",
+        "codeChanged": true
+      },
+      {
+        "page": "التبويبات",
+        "label": "التحديد",
+        "codeChanged": true
+      },
+      {
+        "page": "مفتاح التبديل",
+        "label": "التسمية",
+        "codeChanged": true
+      },
+      {
+        "page": "مفتاح التبديل",
+        "label": "مفعّل",
+        "codeChanged": true
+      },
+      {
+        "page": "مفتاح التبديل",
+        "label": "معطّل",
+        "codeChanged": true
+      },
+      {
+        "page": "القائمة المنسدلة",
+        "label": "زر الفتح",
+        "codeChanged": true
+      },
+      {
+        "page": "القائمة المنسدلة",
+        "label": "المحاذاة",
+        "codeChanged": true
+      },
+      {
+        "page": "اللوحة الجانبية",
+        "label": "العنوان",
+        "codeChanged": true
+      },
+      {
+        "page": "اللوحة الجانبية",
+        "label": "المحتوى",
+        "codeChanged": true
+      },
+      {
+        "page": "اللوحة الجانبية",
+        "label": "الجانب",
+        "codeChanged": true
+      },
+      {
+        "page": "التنبيهات",
+        "label": "العنوان",
+        "codeChanged": true
+      },
+      {
+        "page": "التنبيهات",
+        "label": "الوصف",
+        "codeChanged": true
+      },
+      {
+        "page": "التنبيهات",
+        "label": "النوع",
+        "codeChanged": true
+      },
+      {
+        "page": "التنبيهات",
+        "label": "المدة · ms",
+        "codeChanged": true
+      }
+    ],
+    "menuCollection": "Valid icon/disabled/destructive/separator items demonstrated onSelect; unknown keys rejected",
+    "clipboard": [
+      {
+        "page": "الأزرار",
+        "promptContainsCode": true,
+        "hasActualPaths": true
+      },
+      {
+        "page": "التبويبات",
+        "promptContainsCode": true,
+        "hasActualPaths": true
+      },
+      {
+        "page": "مفتاح التبديل",
+        "promptContainsCode": true,
+        "hasActualPaths": true
+      },
+      {
+        "page": "القائمة المنسدلة",
+        "promptContainsCode": true,
+        "hasActualPaths": true
+      },
+      {
+        "page": "اللوحة الجانبية",
+        "promptContainsCode": true,
+        "hasActualPaths": true
+      },
+      {
+        "page": "التنبيهات",
+        "promptContainsCode": true,
+        "hasActualPaths": true
+      }
+    ],
+    "prompt": {
+      "singleLine": true,
+      "ellipsis": true,
+      "fullUntruncatedCodeCopied": true,
+      "copyWidthAt320": 30,
+      "copyFailureRecovery": true
+    },
+    "accentSelections": [
+      {
+        "accent": "sage",
+        "docTheme": "light",
+        "examplesAction": "#355E4C",
+        "previewAction": "#355E4C",
+        "shellFont": "14px"
+      },
+      {
+        "accent": "blue",
+        "docTheme": "light",
+        "examplesAction": "#365B87",
+        "previewAction": "#365B87",
+        "shellFont": "14px"
+      },
+      {
+        "accent": "plum",
+        "docTheme": "light",
+        "examplesAction": "#6B487A",
+        "previewAction": "#6B487A",
+        "shellFont": "14px"
+      },
+      {
+        "accent": "clay",
+        "docTheme": "light",
+        "examplesAction": "#88543F",
+        "previewAction": "#88543F",
+        "shellFont": "14px"
+      },
+      {
+        "accent": "blue",
+        "docTheme": "light",
+        "examplesAction": "#365B87",
+        "previewAction": "#365B87",
+        "shellFont": "14px"
+      }
+    ],
+    "semanticColors": [
+      {
+        "accent": "blue",
+        "action": "#365B87",
+        "bg": "rgb(251, 239, 239)",
+        "color": "rgb(169, 55, 56)"
+      },
+      {
+        "accent": "plum",
+        "action": "#6B487A",
+        "bg": "rgb(251, 239, 239)",
+        "color": "rgb(169, 55, 56)"
+      }
+    ],
+    "lightPortals": [
+      {
+        "name": "Dropdown menu",
+        "action": "#355E4C",
+        "theme": "light"
+      },
+      {
+        "name": "Sheet",
+        "action": "#355E4C",
+        "theme": "light"
+      },
+      {
+        "name": "Toast",
+        "action": "#355E4C",
+        "theme": "light"
+      }
+    ],
+    "geometry": [
+      {
+        "size": "1439 CSS px",
+        "copy": {
+          "height": 29.99741554260254,
+          "width": 29.99741554260254,
+          "x": 392.6329956054687,
+          "y": 270.3770446777344
+        },
+        "main": {
+          "height": 1379.7197265625,
+          "width": 729.9973754882812,
+          "x": 383.638916015625,
+          "y": 93.99534606933594
+        },
+        "nav": {
+          "height": 941.9937744140624,
+          "width": 189.9987030029297,
+          "x": 1237.27392578125,
+          "y": 57.99973678588867
+        },
+        "pageWidth": 1427,
+        "prompt": {
+          "height": 21.60382080078125,
+          "lineHeight": "21.6px",
+          "scrollWidth": 8025,
+          "textOverflow": "ellipsis",
+          "whiteSpace": "nowrap",
+          "width": 674.0120849609375,
+          "x": 430.630126953125,
+          "y": 274.5738525390625
+        },
+        "rail": {
+          "height": 565.541015625,
+          "width": 259.99481201171875,
+          "x": 0,
+          "y": 57.99973678588867
+        },
+        "railSurface": {
+          "height": 545.5513916015625,
+          "width": 240.00515747070312,
+          "x": 9.994833946228027,
+          "y": 67.99457550048828
+        },
+        "viewport": {
+          "height": 1000,
+          "width": 1439
+        }
+      },
+      {
+        "size": "1920 CSS px wide",
+        "copy": {
+          "height": 29.99741554260254,
+          "width": 29.99741554260254,
+          "x": 633.1288452148438,
+          "y": 270.3770446777344
+        },
+        "main": {
+          "height": 1396.0614013671875,
+          "width": 729.9973754882812,
+          "x": 624.134765625,
+          "y": 93.99534606933594
+        },
+        "nav": {
+          "height": 941.9937744140624,
+          "width": 189.9987030029297,
+          "x": 1718.265625,
+          "y": 57.99973678588867
+        },
+        "pageWidth": 1908,
+        "prompt": {
+          "height": 21.60382080078125,
+          "lineHeight": "21.6px",
+          "scrollWidth": 7991,
+          "textOverflow": "ellipsis",
+          "whiteSpace": "nowrap",
+          "width": 674.0120849609375,
+          "x": 671.1259765625,
+          "y": 274.5738525390625
+        },
+        "rail": {
+          "height": 565.541015625,
+          "width": 259.99481201171875,
+          "x": 0,
+          "y": 57.99973678588867
+        },
+        "railSurface": {
+          "height": 545.5513916015625,
+          "width": 240.00515747070312,
+          "x": 9.994833946228027,
+          "y": 67.99457550048828
+        },
+        "viewport": {
+          "height": 1000,
+          "width": 1920
+        }
+      },
+      {
+        "size": "1439 × 479 CSS px short",
+        "copy": {
+          "height": 29.99741554260254,
+          "width": 29.99741554260254,
+          "x": 392.6329956054687,
+          "y": 270.3770446777344
+        },
+        "main": {
+          "height": 1396.0614013671875,
+          "width": 729.9973754882812,
+          "x": 383.638916015625,
+          "y": 93.99534606933594
+        },
+        "nav": {
+          "height": 421.3326110839844,
+          "width": 189.9987030029297,
+          "x": 1237.27392578125,
+          "y": 57.99973678588867
+        },
+        "pageWidth": 1427,
+        "prompt": {
+          "height": 21.60382080078125,
+          "lineHeight": "21.6px",
+          "scrollWidth": 7991,
+          "textOverflow": "ellipsis",
+          "whiteSpace": "nowrap",
+          "width": 674.0120849609375,
+          "x": 430.630126953125,
+          "y": 274.5738525390625
+        },
+        "rail": {
+          "height": 411.3248596191406,
+          "width": 259.99481201171875,
+          "x": 0,
+          "y": 57.99973678588867
+        },
+        "railSurface": {
+          "height": 391.335205078125,
+          "width": 240.00515747070312,
+          "x": 9.994833946228027,
+          "y": 67.99457550048828
+        },
+        "viewport": {
+          "height": 479,
+          "width": 1439
+        }
+      },
+      {
+        "size": "1280 × 800 CSS px ordinary",
+        "copy": {
+          "height": 29.99741554260254,
+          "width": 29.99741554260254,
+          "x": 312.9842224121094,
+          "y": 270.3770446777344
+        },
+        "main": {
+          "height": 1379.7197265625,
+          "width": 729.7843017578125,
+          "x": 303.99017333984375,
+          "y": 93.99534606933594
+        },
+        "nav": {
+          "height": 741.9937744140625,
+          "width": 189.9987030029297,
+          "x": 1077.769775390625,
+          "y": 57.99973678588867
+        },
+        "pageWidth": 1267,
+        "prompt": {
+          "height": 21.60382080078125,
+          "lineHeight": "21.6px",
+          "scrollWidth": 8027,
+          "textOverflow": "ellipsis",
+          "whiteSpace": "nowrap",
+          "width": 673.7990112304688,
+          "x": 350.98138427734375,
+          "y": 274.5738525390625
+        },
+        "rail": {
+          "height": 565.541015625,
+          "width": 259.99481201171875,
+          "x": 0,
+          "y": 57.99973678588867
+        },
+        "railSurface": {
+          "height": 545.5513916015625,
+          "width": 240.00515747070312,
+          "x": 9.994833946228027,
+          "y": 67.99457550048828
+        },
+        "viewport": {
+          "height": 800,
+          "width": 1280
+        }
+      }
+    ],
+    "englishMirroring": {
+      "navigationSide": "left",
+      "customizationSide": "right",
+      "railWidth": 240,
+      "clientEdgeSpacing": 10
+    },
+    "mobile": [
+      {
+        "name": "Button",
+        "copyWidth": 29.99741554260254,
+        "pageWidth": 307,
+        "promptHeight": 19.802427291870117,
+        "theme": "dark",
+        "width": 320
+      },
+      {
+        "name": "Tabs",
+        "copyWidth": 29.99741554260254,
+        "pageWidth": 307,
+        "promptHeight": 19.802427291870117,
+        "theme": "dark",
+        "width": 320
+      },
+      {
+        "name": "Switch",
+        "copyWidth": 29.99741554260254,
+        "pageWidth": 307,
+        "promptHeight": 19.802427291870117,
+        "theme": "dark",
+        "width": 320
+      },
+      {
+        "name": "Dropdown menu",
+        "copyWidth": 29.99741554260254,
+        "pageWidth": 307,
+        "promptHeight": 19.802427291870117,
+        "theme": "dark",
+        "width": 320
+      },
+      {
+        "name": "Sheet",
+        "copyWidth": 29.99741554260254,
+        "pageWidth": 307,
+        "promptHeight": 19.802427291870117,
+        "theme": "dark",
+        "width": 320
+      },
+      {
+        "name": "Toast",
+        "copyWidth": 29.99741554260254,
+        "pageWidth": 307,
+        "promptHeight": 19.802427291870117,
+        "theme": "dark",
+        "width": 320
+      }
+    ],
+    "shortMobileDrawer": {
+      "clientHeight": 413,
+      "scrollHeight": 572,
+      "overflow": "auto"
+    },
+    "keyboard": [
+      "RTL ArrowLeft selects invoices and logs onValueChange",
+      "Switch Space logs onCheckedChange",
+      "Menu ArrowDown opens; Escape dismisses through focused item",
+      "Sheet Escape restores trigger focus",
+      "Tab reaches copy/reset controls with visible focus",
+      "Combined customization drawer Escape restores trigger focus",
+      "Internal scroll regions keep offscreen controls reachable"
+    ],
+    "motion": {
+      "osDrawerAnimationSeconds": 1e-5,
+      "previewSettingVerified": true
+    },
+    "theme": "Both sidebars, documentation, controls, all previews/examples and Menu/Sheet/Toast share the header preference",
+    "scans": [
+      {
+        "name": "Compact Arabic desktop",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Shared dark Arabic desktop, blue",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Shared dark Arabic Dropdown portal",
+        "passes": 29,
+        "violations": []
+      },
+      {
+        "name": "Shared dark Arabic Sheet portal",
+        "passes": 22,
+        "violations": []
+      },
+      {
+        "name": "Shared dark Arabic Toast",
+        "passes": 28,
+        "violations": []
+      },
+      {
+        "name": "Common controls: الأزرار",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Common controls: التبويبات",
+        "passes": 28,
+        "violations": []
+      },
+      {
+        "name": "Common controls: مفتاح التبديل",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Common controls: القائمة المنسدلة",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Common controls: اللوحة الجانبية",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "Common controls: التنبيهات",
+        "passes": 27,
+        "violations": []
+      },
+      {
+        "name": "Short desktop rail, keyboard focus",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "320px shared dark English Button",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px shared dark English Tabs",
+        "passes": 27,
+        "violations": []
+      },
+      {
+        "name": "320px shared dark English Switch",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px shared dark English Dropdown menu",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px shared dark English Sheet",
+        "passes": 25,
+        "violations": []
+      },
+      {
+        "name": "320px shared dark English Toast",
+        "passes": 26,
+        "violations": []
+      },
+      {
+        "name": "320px dark English combined customization drawer",
+        "passes": 24,
+        "violations": []
+      },
+      {
+        "name": "Final 390px combined customization drawer",
+        "passes": 24,
+        "violations": []
+      }
+    ]
+  },
+  "screenshots": [
+    "compact-light-rtl.jpg",
+    "compact-dark-ltr.jpg",
+    "compact-mobile-rtl.jpg",
+    "compact-mobile-customization.jpg",
+    "compact-sheet-dark.jpg"
+  ],
+  "limitations": [
+    "No physical-device touch pass",
+    "No manual screen-reader pass",
+    "Axe does not establish full WCAG conformance",
+    "Inspector intentionally shows common properties; complete APIs remain documented",
+    "No push, merge, publish or deploy"
+  ],
+  "review": {
+    "first": "No code defects; stale README identified",
+    "fix": "README rewritten with current layout, migration precedence and reset defaults",
+    "second": "Complete: no remaining actionable issues. Reviewer reran workbench/storage suites: 17 tests passed across 2 files."
+  }
+}

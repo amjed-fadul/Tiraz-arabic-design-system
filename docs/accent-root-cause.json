@@ -1,0 +1,90 @@
+[
+  {
+    "step": "Existing success state, global accent blue",
+    "dom": {
+      "button": {
+        "background": "rgb(237, 245, 238)",
+        "state": "success",
+        "variant": "primary"
+      },
+      "examples": {
+        "action": "#365B87",
+        "inline": "--action: #365B87; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "preview": {
+        "action": "#365B87",
+        "inline": "--action: #365B87; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "selected": "blue"
+    },
+    "saved": "{\"system\":{\"theme\":\"light\",\"direction\":\"rtl\",\"density\":\"compact\",\"accent\":\"blue\",\"radius\":8,\"reducedMotion\":false,\"typography\":\"standard\"},\"button\":{\"previewTheme\":\"inherit\",\"previewAccent\":\"inherit\",\"id\":\"\",\"className\":\"\",\"attributes\":{},\"stylePreset\":\"none\",\"children\":\"حفظ الفاتورة\",\"variant\":\"primary\",\"size\":\"sm\",\"state\":\"success\",\"disabled\":false,\"iconOnly\":false,\"ariaLabel\":\"\",\"icon\":\"none\",\"type\":\"button\",\"action\":\"simulate\",\"outcome\":\"success\"}}"
+  },
+  {
+    "step": "Switch demonstrated state to idle, global blue",
+    "dom": {
+      "button": {
+        "background": "rgb(54, 91, 135)",
+        "state": "idle",
+        "variant": "primary"
+      },
+      "examples": {
+        "action": "#365B87",
+        "inline": "--action: #365B87; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "preview": {
+        "action": "#365B87",
+        "inline": "--action: #365B87; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "selected": "blue"
+    },
+    "saved": "{\"system\":{\"theme\":\"light\",\"direction\":\"rtl\",\"density\":\"compact\",\"accent\":\"blue\",\"radius\":8,\"reducedMotion\":false,\"typography\":\"standard\"},\"button\":{\"previewTheme\":\"inherit\",\"previewAccent\":\"inherit\",\"id\":\"\",\"className\":\"\",\"attributes\":{},\"stylePreset\":\"none\",\"children\":\"حفظ الفاتورة\",\"variant\":\"primary\",\"size\":\"sm\",\"state\":\"idle\",\"disabled\":false,\"iconOnly\":false,\"ariaLabel\":\"\",\"icon\":\"none\",\"type\":\"button\",\"action\":\"simulate\",\"outcome\":\"success\"}}"
+  },
+  {
+    "step": "Persist per-page blue override, then change global accent to plum",
+    "dom": {
+      "button": {
+        "background": "rgb(54, 91, 135)",
+        "state": "idle",
+        "variant": "primary"
+      },
+      "examples": {
+        "action": "#6B487A",
+        "inline": "--action: #6B487A; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "preview": {
+        "action": "#365B87",
+        "inline": "--action: #365B87; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "selected": "plum"
+    },
+    "saved": "{\"system\":{\"theme\":\"light\",\"direction\":\"rtl\",\"density\":\"compact\",\"accent\":\"plum\",\"radius\":8,\"reducedMotion\":false,\"typography\":\"standard\"},\"button\":{\"previewTheme\":\"inherit\",\"previewAccent\":\"blue\",\"id\":\"\",\"className\":\"\",\"attributes\":{},\"stylePreset\":\"none\",\"children\":\"حفظ الفاتورة\",\"variant\":\"primary\",\"size\":\"sm\",\"state\":\"idle\",\"disabled\":false,\"iconOnly\":false,\"ariaLabel\":\"\",\"icon\":\"none\",\"type\":\"button\",\"action\":\"simulate\",\"outcome\":\"success\"}}"
+  },
+  {
+    "step": "Reload with global plum and saved per-page blue override",
+    "dom": {
+      "button": {
+        "background": "rgb(54, 91, 135)",
+        "state": "idle",
+        "variant": "primary"
+      },
+      "examples": {
+        "action": "#6B487A",
+        "inline": "--action: #6B487A; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "preview": {
+        "action": "#365B87",
+        "inline": "--action: #365B87; --radius: 8px; color-scheme: light;",
+        "theme": "light"
+      },
+      "selected": "plum"
+    },
+    "saved": "{\"system\":{\"theme\":\"light\",\"direction\":\"rtl\",\"density\":\"compact\",\"accent\":\"plum\",\"radius\":8,\"reducedMotion\":false,\"typography\":\"standard\"},\"button\":{\"previewTheme\":\"inherit\",\"previewAccent\":\"blue\",\"id\":\"\",\"className\":\"\",\"attributes\":{},\"stylePreset\":\"none\",\"children\":\"حفظ الفاتورة\",\"variant\":\"primary\",\"size\":\"sm\",\"state\":\"idle\",\"disabled\":false,\"iconOnly\":false,\"ariaLabel\":\"\",\"icon\":\"none\",\"type\":\"button\",\"action\":\"simulate\",\"outcome\":\"success\"}}"
+  }
+]

@@ -1,0 +1,127 @@
+/* Tiraz semantic foundations. All six components consume this vocabulary. */
+.tiraz-system {
+  --surface-page: #f7f8f7;
+  --surface: #ffffff;
+  --surface-subtle: #f2f4f2;
+  --surface-hover: #eaecea;
+  --text: #232a26;
+  --text-secondary: #616b64;
+  --text-muted: #5f6b62;
+  --border: #e2e7e3;
+  --border-strong: #c5cec7;
+  --action-text: #ffffff;
+  --action-hover: color-mix(in srgb, var(--action), black 12%);
+  --action-soft: color-mix(in srgb, var(--action) 8%, var(--surface));
+  --action-border: color-mix(in srgb, var(--action) 24%, var(--border));
+  --success: #316746;
+  --success-soft: #edf5ee;
+  --danger: #a93738;
+  --danger-soft: #fbefef;
+  --info: #355c87;
+  --info-soft: #eef3f9;
+  --focus: var(--action);
+  --switch-track: #77857b;
+  --font: "IBM Plex Sans Arabic", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --text-title: 24px;
+  --text-heading: 18px;
+  --text-body: 14px;
+  --text-meta: 12px;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --line-height: 1.8;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --radius-small: max(2px, calc(var(--radius) - 3px));
+  --radius-panel: calc(var(--radius) + 4px);
+  --control-height: 40px;
+  --control-small: 32px;
+  --control-padding: 16px;
+  --row-gap: 16px;
+  --shadow-control: 0 1px 2px #152c1d0d, inset 0 1px 0 #ffffff12;
+  --shadow-popover: 0 4px 8px #12231a08, 0 12px 32px #12231a14;
+  --shadow-overlay: 0 12px 60px #00000026;
+  --motion-fast: 120ms;
+  --motion-state: 180ms;
+  --motion-enter: 240ms;
+  --motion-exit: 160ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+  color: var(--text);
+  background: var(--surface-page);
+}
+.tiraz-system[data-theme="dark"] {
+  --surface-page: #161b18;
+  --surface: #1c221e;
+  --surface-subtle: #232b25;
+  --surface-hover: #2b352e;
+  --text: #ecf0ec;
+  --text-secondary: #adb9af;
+  --text-muted: #99a69c;
+  --border: #333e36;
+  --border-strong: #546259;
+  --action-text: #17241c;
+  --action-hover: color-mix(in srgb, var(--action), white 10%);
+  --action-soft: color-mix(in srgb, var(--action) 9%, var(--surface));
+  --switch-track: #67776b;
+  --success: #a5d4b3;
+  --success-soft: #24372a;
+  --danger: #f0a4a5;
+  --danger-soft: #3e2729;
+  --info: #adcaf0;
+  --info-soft: #253347;
+  --shadow-control: 0 1px 2px #00000022, inset 0 1px 0 #ffffff08;
+  --shadow-popover: 0 4px 8px #00000022, 0 12px 32px #00000033;
+}
+.tiraz-system[data-density="compact"] {
+  --control-height: 34px;
+  --control-small: 32px;
+  --control-padding: 12px;
+  --row-gap: 12px;
+}
+.tiraz-system[data-reduced-motion="true"] {
+  --motion-fast: 0ms;
+  --motion-state: 0ms;
+  --motion-enter: 0ms;
+  --motion-exit: 0ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tiraz-system {
+    --motion-fast: 0ms;
+    --motion-state: 0ms;
+    --motion-enter: 0ms;
+    --motion-exit: 0ms;
+  }
+  .tiraz-system *,
+  .tiraz-system *::before,
+  .tiraz-system *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+.tiraz-system[data-reduced-motion="true"] *,
+.tiraz-system[data-reduced-motion="true"] *::before,
+.tiraz-system[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0ms !important;
+  scroll-behavior: auto !important;
+}
+
+.tiraz-system[data-typography="large"] {
+  --text-body: 16px;
+  --text-meta: 14px;
+  --text-heading: 20px;
+  --text-title: 26px;
+}
