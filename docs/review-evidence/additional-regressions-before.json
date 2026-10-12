@@ -1,0 +1,735 @@
+{
+  "metrics": [
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "sm",
+      "variant": "primary",
+      "height": 36,
+      "width": 129.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "sm",
+      "variant": "secondary",
+      "height": 36,
+      "width": 129.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "sm",
+      "variant": "ghost",
+      "height": 36,
+      "width": 129.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "sm",
+      "variant": "destructive",
+      "height": 36,
+      "width": 129.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "md",
+      "variant": "primary",
+      "height": 40,
+      "width": 137.296875,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "md",
+      "variant": "secondary",
+      "height": 40,
+      "width": 137.296875,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "md",
+      "variant": "ghost",
+      "height": 40,
+      "width": 137.296875,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "standard",
+      "size": "md",
+      "variant": "destructive",
+      "height": 40,
+      "width": 137.296875,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "sm",
+      "variant": "primary",
+      "height": 32,
+      "width": 123.296875,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "sm",
+      "variant": "secondary",
+      "height": 32,
+      "width": 123.296875,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "sm",
+      "variant": "ghost",
+      "height": 32,
+      "width": 123.296875,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "sm",
+      "variant": "destructive",
+      "height": 32,
+      "width": 123.296875,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "md",
+      "variant": "primary",
+      "height": 36,
+      "width": 127.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "md",
+      "variant": "secondary",
+      "height": 36,
+      "width": 127.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "md",
+      "variant": "ghost",
+      "height": 36,
+      "width": 127.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "standard",
+      "density": "compact",
+      "size": "md",
+      "variant": "destructive",
+      "height": 36,
+      "width": 127.296875,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "14px",
+      "lineHeight": "22.4px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "sm",
+      "variant": "primary",
+      "height": 36,
+      "width": 140.625,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "sm",
+      "variant": "secondary",
+      "height": 36,
+      "width": 140.625,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "sm",
+      "variant": "ghost",
+      "height": 36,
+      "width": 140.625,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "sm",
+      "variant": "destructive",
+      "height": 36,
+      "width": 140.625,
+      "paddingInline": "12px",
+      "paddingBlock": "2px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "md",
+      "variant": "primary",
+      "height": 40,
+      "width": 148.625,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "md",
+      "variant": "secondary",
+      "height": 40,
+      "width": 148.625,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "md",
+      "variant": "ghost",
+      "height": 40,
+      "width": 148.625,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "standard",
+      "size": "md",
+      "variant": "destructive",
+      "height": 40,
+      "width": 148.625,
+      "paddingInline": "16px",
+      "paddingBlock": "3px",
+      "gap": "8px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "sm",
+      "variant": "primary",
+      "height": 32,
+      "width": 134.625,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "sm",
+      "variant": "secondary",
+      "height": 32,
+      "width": 134.625,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "sm",
+      "variant": "ghost",
+      "height": 32,
+      "width": 134.625,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "sm",
+      "variant": "destructive",
+      "height": 32,
+      "width": 134.625,
+      "paddingInline": "10px",
+      "paddingBlock": "2px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "md",
+      "variant": "primary",
+      "height": 36,
+      "width": 138.625,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "md",
+      "variant": "secondary",
+      "height": 36,
+      "width": 138.625,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "md",
+      "variant": "ghost",
+      "height": 36,
+      "width": 138.625,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    },
+    {
+      "typography": "large",
+      "density": "compact",
+      "size": "md",
+      "variant": "destructive",
+      "height": 36,
+      "width": 138.625,
+      "paddingInline": "12px",
+      "paddingBlock": "3px",
+      "gap": "6px",
+      "fontSize": "16px",
+      "lineHeight": "25.6px",
+      "border": "1px",
+      "iconWidth": 16,
+      "iconHeight": 16
+    }
+  ],
+  "checks": [
+    "standard sm visibly changes density",
+    "standard sm standard equivalent variants",
+    "standard sm compact equivalent variants",
+    "standard md visibly changes density",
+    "standard md standard equivalent variants",
+    "standard md compact equivalent variants",
+    "large sm visibly changes density",
+    "large sm standard equivalent variants",
+    "large sm compact equivalent variants",
+    "large md visibly changes density",
+    "large md standard equivalent variants",
+    "large md compact equivalent variants",
+    "simulation returns to idle without persisting feedback",
+    {
+      "direction": "rtl",
+      "long": {
+        "top": 63,
+        "bottom": 388,
+        "height": 325,
+        "scrollHeight": 1576,
+        "clientHeight": 323,
+        "overflowY": "auto"
+      }
+    },
+    "long menu fits short viewport rtl",
+    "nested menu is visible and focusable rtl",
+    {
+      "direction": "ltr",
+      "long": {
+        "top": 63,
+        "bottom": 388,
+        "height": 325,
+        "scrollHeight": 1576,
+        "clientHeight": 323,
+        "overflowY": "auto"
+      }
+    },
+    "long menu fits short viewport ltr",
+    "nested menu is visible and focusable ltr",
+    {
+      "densityMeasurements": [
+        {
+          "name": "Tabs",
+          "typography": "standard",
+          "density": "standard",
+          "height": 41.1875,
+          "gap": "normal",
+          "padding": "8px"
+        },
+        {
+          "name": "Tabs",
+          "typography": "standard",
+          "density": "compact",
+          "height": 41.1875,
+          "gap": "normal",
+          "padding": "8px"
+        },
+        {
+          "name": "Tabs",
+          "typography": "large",
+          "density": "standard",
+          "height": 44.796875,
+          "gap": "normal",
+          "padding": "8px"
+        },
+        {
+          "name": "Tabs",
+          "typography": "large",
+          "density": "compact",
+          "height": 44.796875,
+          "gap": "normal",
+          "padding": "8px"
+        }
+      ]
+    },
+    {
+      "densityMeasurements": [
+        {
+          "name": "Switch",
+          "typography": "standard",
+          "density": "standard",
+          "height": 48.78125,
+          "gap": "24px",
+          "padding": "0px"
+        },
+        {
+          "name": "Switch",
+          "typography": "standard",
+          "density": "compact",
+          "height": 48.78125,
+          "gap": "24px",
+          "padding": "0px"
+        },
+        {
+          "name": "Switch",
+          "typography": "large",
+          "density": "standard",
+          "height": 55.984375,
+          "gap": "24px",
+          "padding": "0px"
+        },
+        {
+          "name": "Switch",
+          "typography": "large",
+          "density": "compact",
+          "height": 55.984375,
+          "gap": "24px",
+          "padding": "0px"
+        }
+      ]
+    },
+    {
+      "densityMeasurements": [
+        {
+          "name": "Dropdown menu",
+          "typography": "standard",
+          "density": "standard",
+          "height": 38.800018310546875,
+          "gap": "12px",
+          "padding": "7px"
+        },
+        {
+          "name": "Dropdown menu",
+          "typography": "standard",
+          "density": "compact",
+          "height": 39.1875,
+          "gap": "12px",
+          "padding": "7px"
+        },
+        {
+          "name": "Dropdown menu",
+          "typography": "large",
+          "density": "standard",
+          "height": 42.796875,
+          "gap": "12px",
+          "padding": "7px"
+        },
+        {
+          "name": "Dropdown menu",
+          "typography": "large",
+          "density": "compact",
+          "height": 42.796875,
+          "gap": "12px",
+          "padding": "7px"
+        }
+      ]
+    },
+    "icon-only standard sm idle stays square and contains one icon",
+    "icon-only standard md idle stays square and contains one icon",
+    "icon-only compact sm idle stays square and contains one icon",
+    "icon-only compact md idle stays square and contains one icon"
+  ],
+  "failures": [
+    {
+      "name": "Tabs density changes rendered geometry at both text scales",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(measurements[i].height>measurements[i+1].height)\n"
+    },
+    {
+      "name": "Switch density changes rendered geometry at both text scales",
+      "error": "Expected \"actual\" to be strictly unequal to:\n\n'24px'"
+    },
+    {
+      "name": "Dropdown menu density changes rendered geometry at both text scales",
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok(measurements[i].height>measurements[i+1].height)\n"
+    },
+    {
+      "name": "icon-only standard sm loading stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only standard sm success stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only standard sm error stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only standard md loading stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only standard md success stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only standard md error stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only compact sm loading stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only compact sm success stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only compact sm error stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only compact md loading stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only compact md success stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "icon-only compact md error stays square and contains one icon",
+      "error": "Expected values to be strictly equal:\n\n2 !== 1\n"
+    },
+    {
+      "name": "nested standard provider keeps its own density gap",
+      "error": "Expected values to be strictly equal:\n\n'6px' !== '8px'\n"
+    }
+  ]
+}

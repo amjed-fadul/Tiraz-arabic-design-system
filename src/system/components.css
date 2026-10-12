@@ -22,13 +22,15 @@
   flex-shrink: 0;
 }
 .tz-button {
+  --button-height: var(--control-height);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  min-block-size: var(--control-height);
+  gap: var(--control-gap);
+  min-block-size: var(--button-height);
   padding-inline: var(--control-padding);
-  padding-block: 5px;
+  padding-block: 3px;
+  font-size: var(--text-body);
   border: 1px solid transparent;
   border-radius: var(--radius);
   font-weight: var(--weight-medium);
@@ -62,11 +64,13 @@
   .tz-button[data-state="idle"]:not(:disabled):hover {
     background: var(--action-hover);
   }
-  .tz-button[data-variant="secondary"]:not(:disabled):hover,
-  .tz-button[data-variant="ghost"]:not(:disabled):hover {
+  .tz-button[data-state="idle"][data-variant="secondary"]:not(:disabled):hover,
+  .tz-button[data-state="idle"][data-variant="ghost"]:not(:disabled):hover {
     background: var(--surface-hover);
   }
-  .tz-button[data-variant="destructive"]:not(:disabled):hover {
+  .tz-button[data-state="idle"][data-variant="destructive"]:not(
+      :disabled
+    ):hover {
     background: color-mix(in srgb, var(--danger) 15%, var(--surface));
   }
 }
@@ -92,18 +96,18 @@
   border-color: color-mix(in srgb, var(--danger) 25%, var(--surface));
 }
 .tz-button[data-size="sm"] {
-  min-block-size: var(--control-small);
-  font-size: var(--text-body);
-  padding-inline: 12px;
+  --button-height: var(--control-small);
+  padding-block: 2px;
+  padding-inline: var(--control-small-padding);
 }
 .tz-button[data-icon-only] {
-  inline-size: var(--control-height);
+  inline-size: var(--button-height);
   padding-inline: 0;
 }
 .tz-button-label {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--control-gap);
   animation: tz-label-in var(--motion-state) var(--ease);
 }
 .tz-spinner {
@@ -138,7 +142,7 @@
   background: transparent;
   min-block-size: var(--control-height);
   padding-inline: var(--space-5);
-  padding-block: var(--space-2);
+  padding-block: var(--tab-padding);
   font-weight: var(--weight-medium);
 }
 .tz-tab[data-state="active"] {
@@ -186,7 +190,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-6);
+  gap: var(--row-gap);
+  min-block-size: var(--control-height);
 }
 .tz-switch-copy label {
   font-weight: var(--weight-medium);
@@ -243,6 +248,12 @@
   z-index: 60;
   inline-size: 224px;
   max-inline-size: calc(100vw - 24px);
+  max-block-size: var(
+    --radix-dropdown-menu-content-available-height,
+    calc(100dvh - 24px)
+  );
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: var(--space-1);
   border-radius: var(--radius-panel);
   background: var(--surface);
@@ -259,7 +270,7 @@
   align-items: center;
   gap: var(--space-3);
   border-radius: var(--radius-small);
-  padding-block: 7px;
+  padding-block: var(--menu-item-padding);
   padding-inline: var(--space-3);
   outline: none;
   cursor: pointer;

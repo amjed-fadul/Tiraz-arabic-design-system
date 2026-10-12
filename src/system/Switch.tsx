@@ -13,6 +13,7 @@ export function Switch({
   description,
   id,
   className = "",
+  "aria-describedby": describedBy,
   ...props
 }: SwitchProps) {
   const uid = useId();
@@ -29,7 +30,11 @@ export function Switch({
       <Primitive.Root
         {...props}
         id={controlId}
-        aria-describedby={description ? `${controlId}-description` : undefined}
+        aria-describedby={
+          [describedBy, description ? `${controlId}-description` : undefined]
+            .filter(Boolean)
+            .join(" ") || undefined
+        }
         className="tz-switch"
       >
         <Primitive.Thumb className="tz-switch-thumb" />

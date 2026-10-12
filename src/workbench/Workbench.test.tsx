@@ -168,7 +168,7 @@ it("retains continuous documentation, synchronized prompt content and API inform
     expect(screen.getByText("دليل الخصائص")).toBeInTheDocument();
   }
 });
-it("finishes simulated saves after unrelated edits and demonstrates both outcomes", async () => {
+it("demonstrates both simulated outcomes", async () => {
   persist(storageKeys.playgrounds, {
     ...defaultPlaygrounds("ar"),
     button: { ...defaultPlaygrounds("ar").button, outcome: "error" },
@@ -176,10 +176,6 @@ it("finishes simulated saves after unrelated edits and demonstrates both outcome
   render(<Workbench />);
   await userEvent.click(preview().getByRole("button"));
   expect(preview().getByRole("button")).toHaveAttribute("aria-busy", "true");
-  await userEvent.selectOptions(
-    controls().getByLabelText("النوع"),
-    "secondary",
-  );
   await waitFor(
     () =>
       expect(preview().getByRole("button")).toHaveAttribute(

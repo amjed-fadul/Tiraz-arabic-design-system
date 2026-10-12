@@ -48,9 +48,11 @@ export function Button({
           size={16}
         />
       )}
-      <span className="tz-button-label" key={state}>
-        {children}
-      </span>
+      {(!iconOnly || state === "idle") && (
+        <span className="tz-button-label" key={state}>
+          {children}
+        </span>
+      )}
     </button>
   );
 }

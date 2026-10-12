@@ -59,7 +59,32 @@ export function generateCode(
     };
     const icon = icons[p.icon];
     if (icon) otherImports.add(`import { ${icon} } from "lucide-react";`);
-    declarations = `${p.action === "simulate" ? `const [state, setState] = useState<ButtonState>(${json(p.state)});\n  ` : ""}${p.action === "simulate" ? "async " : ""}function handleClick() {\n    setEvent("onClick");${p.action === "simulate" ? `\n    setState("loading");\n    await new Promise((resolve) => setTimeout(resolve, 1200));\n    setState(${json(p.outcome)});\n    setEvent(${json(`onClick → ${p.outcome}`)});` : ""}\n  }`;
+    declarations =
+      p.action === "simulate"
+        ? `const [state, setState] = useState<ButtonState>(${json(p.state)});
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const busy = useRef(false);
+  useEffect(() => () => {
+    if (timer.current !== null) clearTimeout(timer.current);
+  }, []);
+  function handleClick() {
+    if (busy.current || ${p.disabled} || state === "loading") return;
+    if (timer.current !== null) clearTimeout(timer.current);
+    busy.current = true;
+    setEvent("onClick → loading");
+    setState("loading");
+    timer.current = setTimeout(() => {
+      busy.current = false;
+      setState(${json(p.outcome)});
+      setEvent(${json(`onClick → ${p.outcome}`)});
+      timer.current = setTimeout(() => {
+        timer.current = null;
+        setState(${json(p.state)});
+        setEvent(${json(`state → ${p.state}`)});
+      }, 1000);
+    }, 1200);
+  }`
+        : `function handleClick() { setEvent("onClick"); }`;
     const iconChild = icon ? `<${icon} size={16} />` : "";
     jsx = `<Button\n        variant="${p.variant}"\n        size="${p.size}"\n        ${p.action === "simulate" ? "state={state}" : `state="${p.state}"`}\n        disabled={${p.disabled}}\n        type="${p.type}"\n        ${p.iconOnly ? `iconOnly\n        ${attribute("aria-label", p.ariaLabel || (typeof p.attributes["aria-label"] === "string" ? p.attributes["aria-label"] : "") || p.children || t("زر الإجراء", "Action button"))}` : p.ariaLabel ? attribute("aria-label", p.ariaLabel) : ""}\n        ${nativeCode(p)}\n        onClick={handleClick}\n      >\n        ${iconChild}${p.iconOnly && !icon ? '<span aria-hidden="true">+</span>' : !p.iconOnly ? `<bdi dir="auto">{${json(p.children)}}</bdi>` : ""}\n      </Button>`;
   } else if (component === "tabs") {
@@ -118,7 +143,7 @@ export function generateCode(
     declarations = "const { toast } = useToast();";
     jsx = `<Button variant="secondary" onClick={() => {\n        toast(${JSON.stringify({ title: p.title, description: p.description, tone: p.tone, duration: p.duration }, null, 2)});\n        setEvent("toast: ${p.tone}");\n      }}>{${json(p.triggerLabel)}}</Button>`;
   }
-  const importsCode = `import { useState } from "react";\nimport { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "./system/tokens.css";\nimport "./system/components.css";`;
+  const importsCode = `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\nimport { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "./system/tokens.css";\nimport "./system/components.css";`;
   const configCode = `const config: SystemConfig = {\n  ...defaultConfig,\n  theme: "${c.theme}",\n  direction: "${c.direction}",\n  density: "${c.density}",\n  accent: "${c.accent}",\n  typography: "${c.typography ?? "standard"}",\n  radius: ${c.radius},\n  reducedMotion: ${c.reducedMotion},\n};`;
   const inner = `function Demo() {\n  const [event, setEvent] = useState("");\n  ${declarations}\n  return (\n    <>\n      ${jsx}\n      <output aria-live="polite" dir="auto">{event}</output>\n    </>\n  );\n}`;
   const p = model as ToastModel;

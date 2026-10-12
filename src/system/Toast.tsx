@@ -1,5 +1,5 @@
 import * as Primitive from "@radix-ui/react-toast";
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { CircleCheck, CircleAlert, Info, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { ToastContext } from "./useToast";
@@ -7,6 +7,7 @@ import type { ToastMessage } from "./useToast";
 interface Entry extends ToastMessage {
   id: string;
   open: boolean;
+  returnFocus: HTMLElement | null;
 }
 export function ToastProvider({
   children,
@@ -17,18 +18,41 @@ export function ToastProvider({
   closeLabel: string;
   label: string;
 }) {
-  const [entries, setEntries] = useState<Entry[]>([]);
+  const [{ entries, generation }, setSession] = useState({
+    entries: [] as Entry[],
+    generation: 0,
+  });
   const uid = useId();
+  const viewport = useRef<HTMLOListElement>(null);
   function toast(message: ToastMessage) {
-    setEntries((prev) => [
-      ...prev.slice(-2),
-      { ...message, id: `${uid}-${crypto.randomUUID()}`, open: true },
-    ]);
+    const returnFocus =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    const entry: Entry = {
+      ...message,
+      id: `${uid}-${crypto.randomUUID()}`,
+      open: true,
+      returnFocus,
+    };
+    setSession((prev) => {
+      const active = prev.entries.filter((item) => item.open);
+      return {
+        entries: [...active.slice(-2), entry],
+        generation: active.length ? prev.generation : prev.generation + 1,
+      };
+    });
   }
   return (
     <ToastContext.Provider value={{ toast }}>
-      <Primitive.Provider duration={5000} swipeDirection="down" label={label}>
-        {children}
+      {children}
+      {/* Reset Radix's pause state for a new batch without remounting callers. */}
+      <Primitive.Provider
+        key={generation}
+        duration={5000}
+        swipeDirection="down"
+        label={label}
+      >
         {entries.map((entry) => {
           const Icon =
             entry.tone === "error"
@@ -44,12 +68,25 @@ export function ToastProvider({
               open={entry.open}
               duration={entry.duration}
               onOpenChange={(open) => {
-                if (!open)
-                  setEntries((prev) =>
-                    prev.map((item) =>
+                if (!open) {
+                  // Leave the viewport before its last toast removes Radix's
+                  // focus/hover resume listeners; future messages must expire.
+                  if (
+                    viewport.current &&
+                    document.activeElement === viewport.current
+                  ) {
+                    if (entry.returnFocus?.isConnected)
+                      entry.returnFocus.focus();
+                    if (viewport.current.contains(document.activeElement))
+                      (document.activeElement as HTMLElement).blur();
+                  }
+                  setSession((prev) => ({
+                    ...prev,
+                    entries: prev.entries.map((item) =>
                       item.id === entry.id ? { ...item, open: false } : item,
                     ),
-                  );
+                  }));
+                }
               }}
             >
               <Icon className="tz-toast-icon" aria-hidden="true" size={21} />
@@ -72,7 +109,11 @@ export function ToastProvider({
             </Primitive.Root>
           );
         })}
-        <Primitive.Viewport className="tz-toast-viewport" label={label} />
+        <Primitive.Viewport
+          ref={viewport}
+          className="tz-toast-viewport"
+          label={label}
+        />
       </Primitive.Provider>
     </ToastContext.Provider>
   );

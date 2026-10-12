@@ -22,7 +22,7 @@ import { nativeAttributes } from "./model";
 import type { ComponentId } from "./catalog";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
-import type { ButtonProps } from "../system";
+import type { ButtonProps, ButtonState } from "../system";
 interface Props {
   component: ComponentId;
   model: PlaygroundModel;
@@ -30,6 +30,7 @@ interface Props {
   onPatch: (patch: Record<string, unknown>) => void;
   onEvent: (name: string, value?: unknown) => void;
   onButtonAction: () => void;
+  buttonState?: ButtonState;
 }
 export function ContentIcon({ icon }: { icon: string }) {
   const Icon =
@@ -74,6 +75,7 @@ export function Playground({
   onPatch,
   onEvent,
   onButtonAction,
+  buttonState,
 }: Props) {
   const t = words(language);
   if (component === "button") {
@@ -89,7 +91,7 @@ export function Playground({
       style: p.stylePreset === "wide" ? { minInlineSize: 180 } : undefined,
       variant: p.variant,
       size: p.size,
-      state: p.state,
+      state: buttonState ?? p.state,
       disabled: p.disabled,
       type: p.type,
       onClick: onButtonAction,

@@ -42,8 +42,12 @@
   --radius-small: max(2px, calc(var(--radius) - 3px));
   --radius-panel: calc(var(--radius) + 4px);
   --control-height: 40px;
-  --control-small: 32px;
+  --control-small: 36px;
+  --control-small-padding: 12px;
   --control-padding: 16px;
+  --control-gap: 8px;
+  --tab-padding: 8px;
+  --menu-item-padding: 5px;
   --row-gap: 16px;
   --shadow-control: 0 1px 2px #152c1d0d, inset 0 1px 0 #ffffff12;
   --shadow-popover: 0 4px 8px #12231a08, 0 12px 32px #12231a14;
@@ -83,9 +87,13 @@
   --shadow-popover: 0 4px 8px #00000022, 0 12px 32px #00000033;
 }
 .tiraz-system[data-density="compact"] {
-  --control-height: 34px;
+  --control-height: 36px;
   --control-small: 32px;
+  --control-small-padding: 10px;
   --control-padding: 12px;
+  --control-gap: 6px;
+  --tab-padding: 4px;
+  --menu-item-padding: 3px;
   --row-gap: 12px;
 }
 .tiraz-system[data-reduced-motion="true"] {

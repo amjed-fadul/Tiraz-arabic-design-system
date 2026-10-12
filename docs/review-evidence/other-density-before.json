@@ -1,0 +1,98 @@
+[
+  {
+    "name": "Tabs",
+    "typography": "standard",
+    "density": "standard",
+    "height": 41.1875,
+    "paddingBlock": "8px",
+    "gap": "normal"
+  },
+  {
+    "name": "Tabs",
+    "typography": "standard",
+    "density": "compact",
+    "height": 41.1875,
+    "paddingBlock": "8px",
+    "gap": "normal"
+  },
+  {
+    "name": "Tabs",
+    "typography": "large",
+    "density": "standard",
+    "height": 44.796875,
+    "paddingBlock": "8px",
+    "gap": "normal"
+  },
+  {
+    "name": "Tabs",
+    "typography": "large",
+    "density": "compact",
+    "height": 44.796875,
+    "paddingBlock": "8px",
+    "gap": "normal"
+  },
+  {
+    "name": "Switch",
+    "typography": "standard",
+    "density": "standard",
+    "height": 48.78125,
+    "paddingBlock": "0px",
+    "gap": "24px"
+  },
+  {
+    "name": "Switch",
+    "typography": "standard",
+    "density": "compact",
+    "height": 48.78125,
+    "paddingBlock": "0px",
+    "gap": "24px"
+  },
+  {
+    "name": "Switch",
+    "typography": "large",
+    "density": "standard",
+    "height": 55.984375,
+    "paddingBlock": "0px",
+    "gap": "24px"
+  },
+  {
+    "name": "Switch",
+    "typography": "large",
+    "density": "compact",
+    "height": 55.984375,
+    "paddingBlock": "0px",
+    "gap": "24px"
+  },
+  {
+    "name": "Dropdown menu",
+    "typography": "standard",
+    "density": "standard",
+    "height": 39.137542724609375,
+    "paddingBlock": "7px",
+    "gap": "12px"
+  },
+  {
+    "name": "Dropdown menu",
+    "typography": "standard",
+    "density": "compact",
+    "height": 38.833404541015625,
+    "paddingBlock": "7px",
+    "gap": "12px"
+  },
+  {
+    "name": "Dropdown menu",
+    "typography": "large",
+    "density": "standard",
+    "height": 42.629119873046875,
+    "paddingBlock": "7px",
+    "gap": "12px"
+  },
+  {
+    "name": "Dropdown menu",
+    "typography": "large",
+    "density": "compact",
+    "height": 42.796875,
+    "paddingBlock": "7px",
+    "gap": "12px"
+  }
+]

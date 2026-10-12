@@ -1,18 +1,39 @@
 import * as ts from "typescript";
 import { expect, it } from "vitest";
 import { defaultConfig } from "../system";
+import type { SystemConfig } from "../system";
 import { catalog } from "./catalog";
 import { defaultPlaygrounds } from "./model";
 import type { PlaygroundModel } from "./model";
 import type { ComponentId } from "./catalog";
 import { generateCode } from "./generate";
 it("type-checks copied code for every component, state mode and composition preset", () => {
-  const cases: Array<[ComponentId, PlaygroundModel]> = [];
+  const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = [];
   for (const language of ["ar", "en"] as const) {
     const defaults = defaultPlaygrounds(language);
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const variant of [
+    "primary",
+    "secondary",
+    "ghost",
+    "destructive",
+  ] as const)
+    for (const size of ["sm", "md"] as const)
+      for (const density of ["standard", "compact"] as const)
+        for (const typography of ["standard", "large"] as const)
+          cases.push([
+            "button",
+            { ...p.button, variant, size, iconOnly: true, icon: "settings" },
+            { ...defaultConfig, density, typography },
+          ]);
+  for (const state of ["idle", "loading", "success", "error"] as const)
+    cases.push(["button", { ...p.button, state }]);
+  cases.push([
+    "switch",
+    { ...p.switch, attributes: { "aria-describedby": "external-description" } },
+  ]);
   cases.push(
     [
       "button",
@@ -59,9 +80,9 @@ it("type-checks copied code for every component, state mode and composition pres
   );
   const root = ts.sys.getCurrentDirectory();
   const sources = new Map(
-    cases.map(([id, model], index) => [
+    cases.map(([id, model, config], index) => [
       `${root}/src/__generated_${index}.tsx`,
-      generateCode(id, model, defaultConfig, "en"),
+      generateCode(id, model, config ?? defaultConfig, "en"),
     ]),
   );
   const options: ts.CompilerOptions = {

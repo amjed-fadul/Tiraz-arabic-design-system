@@ -1,0 +1,65 @@
+{
+  "full_suite": {
+    "files": 10,
+    "tests": 79,
+    "result": "pass"
+  },
+  "generated_example_compilation": {
+    "modules": 88,
+    "result": "pass"
+  },
+  "focused_independent_regressions": {
+    "tests": 28,
+    "result": "pass"
+  },
+  "lint": {
+    "exit_code": 0,
+    "warnings": 0
+  },
+  "build": {
+    "exit_code": 0,
+    "typescript": "pass",
+    "vite": "pass"
+  },
+  "format_check": {
+    "exit_code": 0,
+    "extra_browser_and_report_check": true
+  },
+  "regressions": {
+    "failures": [],
+    "errors": []
+  },
+  "customization": {
+    "failures": [],
+    "errors": [],
+    "system": 55,
+    "contextual": 12,
+    "pages": 72,
+    "clipboard": 12,
+    "persistence": 12,
+    "resets": 24
+  },
+  "interactions": {
+    "failures": [],
+    "errors": [],
+    "live_setting_transitions": 17,
+    "action_sequences": [
+      [
+        "loading",
+        "success",
+        "idle"
+      ],
+      [
+        "loading",
+        "error",
+        "idle"
+      ]
+    ],
+    "sheet_example": {
+      "example": "Sheet form",
+      "save": true,
+      "cancel": true,
+      "focusRestored": true
+    }
+  }
+}

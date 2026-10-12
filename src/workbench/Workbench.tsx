@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Moon, Sun, SlidersHorizontal, Menu } from "lucide-react";
 import { SystemProvider, defaultConfig } from "../system";
-import type { SystemConfig } from "../system";
+import type { ButtonState, SystemConfig } from "../system";
 import { catalog } from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
@@ -68,7 +68,18 @@ export function Workbench() {
   const [navigationOpen, setNavigationOpen] = useState(false),
     [settingsOpen, setSettingsOpen] = useState(false);
   const buttonTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const actionId = useRef(0);
+  const [buttonFeedback, setButtonFeedback] = useState<ButtonState | null>(
+    null,
+  );
   const busy = useRef(false);
+  const cancelButtonAction = useCallback(() => {
+    if (buttonTimer.current !== null) clearTimeout(buttonTimer.current);
+    buttonTimer.current = null;
+    actionId.current += 1;
+    busy.current = false;
+    setButtonFeedback(null);
+  }, []);
   const pendingOpen = useRef<{
     component: ComponentId;
     patch: Record<string, unknown>;
@@ -102,12 +113,14 @@ export function Workbench() {
   useEffect(() => persist(storageKeys.theme, theme), [theme]);
   useEffect(() => persist(storageKeys.system, settings), [settings]);
   useEffect(() => persist(storageKeys.playgrounds, playgrounds), [playgrounds]);
-  useEffect(
-    () => () => {
-      if (buttonTimer.current) clearTimeout(buttonTimer.current);
-    },
-    [],
-  );
+  useEffect(() => {
+    return () => {
+      if (buttonTimer.current !== null) clearTimeout(buttonTimer.current);
+      buttonTimer.current = null;
+      actionId.current += 1;
+      busy.current = false;
+    };
+  }, [active, language]);
   function record(component: ComponentId, name: string, value?: unknown) {
     setEvents((prev) => ({
       ...prev,
@@ -123,11 +136,7 @@ export function Workbench() {
     );
   }
   function fromInspector(patch: Record<string, unknown>) {
-    if (active === "button" && "state" in patch && buttonTimer.current) {
-      clearTimeout(buttonTimer.current);
-      buttonTimer.current = null;
-      busy.current = false;
-    }
+    if (active === "button") cancelButtonAction();
     if (
       patch.open === true &&
       settingsOpen &&
@@ -141,15 +150,12 @@ export function Workbench() {
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
   function resetSystem() {
+    cancelButtonAction();
     setSettings({ ...defaultSettings });
     setTheme(defaultConfig.theme);
   }
   function resetPlayground() {
-    if (active === "button" && buttonTimer.current) {
-      clearTimeout(buttonTimer.current);
-      buttonTimer.current = null;
-      busy.current = false;
-    }
+    if (active === "button") cancelButtonAction();
     setPlaygrounds((prev) => ({
       ...prev,
       [active]: defaultPlaygrounds(language)[active],
@@ -159,6 +165,7 @@ export function Workbench() {
   }
   function changeLanguage(next: Language) {
     if (next === language) return;
+    cancelButtonAction();
     setPlaygrounds((prev) => translateDefaults(prev, language, next));
     setDocumentation((prev) => ({ ...prev, language: next }));
   }
@@ -167,14 +174,22 @@ export function Workbench() {
     if (busy.current || p.disabled || p.state === "loading") return;
     record("button", "onClick");
     if (p.action === "simulate") {
+      cancelButtonAction();
+      const id = actionId.current;
       busy.current = true;
-      patchPage("button", { state: "loading" });
+      setButtonFeedback("loading");
       record("button", "state", "loading");
       buttonTimer.current = setTimeout(() => {
+        if (id !== actionId.current) return;
         busy.current = false;
-        buttonTimer.current = null;
-        patchPage("button", { state: p.outcome });
+        setButtonFeedback(p.outcome);
         record("button", "state", p.outcome);
+        buttonTimer.current = setTimeout(() => {
+          if (id !== actionId.current) return;
+          buttonTimer.current = null;
+          setButtonFeedback(null);
+          record("button", "state", p.state);
+        }, 1000);
       }, 1200);
     }
   }
@@ -211,6 +226,7 @@ export function Workbench() {
             key={item.id}
             aria-current={active === item.id ? "page" : undefined}
             onClick={() => {
+              cancelButtonAction();
               setDocumentation((prev) => ({ ...prev, active: item.id }));
               setNavigationOpen(false);
             }}
@@ -239,9 +255,10 @@ export function Workbench() {
           <a
             className="docs-brand"
             href="#main-content"
-            onClick={() =>
-              setDocumentation((prev) => ({ ...prev, active: "button" }))
-            }
+            onClick={() => {
+              cancelButtonAction();
+              setDocumentation((prev) => ({ ...prev, active: "button" }));
+            }}
           >
             <BrandMark />
             <span>{t("طِراز", "Tiraz")}</span>
@@ -374,6 +391,7 @@ export function Workbench() {
                         onPatch={(patch) => patchPage(active, patch)}
                         onEvent={(name, value) => record(active, name, value)}
                         onButtonAction={buttonAction}
+                        buttonState={buttonFeedback ?? undefined}
                       />
                     </div>
                   </SystemProvider>

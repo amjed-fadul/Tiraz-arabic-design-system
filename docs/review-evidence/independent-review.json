@@ -1,0 +1,32 @@
+{
+  "baseline": "97a532ac2ab129f932af21c092a899713d474f5c",
+  "branch": "review/component-customization",
+  "date": "2026-10-12",
+  "reviewer": "independent_review",
+  "rounds": [
+    {
+      "findings": [
+        "Icon-only feedback icon overflow",
+        "Outer compact provider overriding nested standard gap"
+      ],
+      "resolution": "Fixed with failing component/browser regressions and re-reviewed"
+    },
+    {
+      "findings": [
+        "Pointer-only dismissal leaves subsequent Toast expiry paused",
+        "Preserve sibling-toast focus during dismissal"
+      ],
+      "resolution": "New primitive provider generation for a new batch; exact viewport focus guard; regressions and re-review"
+    },
+    {
+      "findings": [],
+      "scope": "Idle-only feedback hover selectors, event-based action cancellation, repeated-action/language/iconOnly tests",
+      "focused_tests_passed": 28,
+      "assessment": "No actionable findings"
+    }
+  ],
+  "preserved_user_files": [
+    "README.md",
+    "src/workbench/workbench.css"
+  ]
+}
