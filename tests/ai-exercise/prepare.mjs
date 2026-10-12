@@ -59,7 +59,7 @@ await build({
   plugins: [react()],
   logLevel: "warn",
 });
-const evidence = process.env.TIRAZ_EVIDENCE || join(app, "evidence");
+const evidence = resolve(process.env.TIRAZ_EVIDENCE || join(app, "evidence"));
 await mkdir(evidence, { recursive: true });
 await writeFile(
   join(evidence, "copy-build.json"),

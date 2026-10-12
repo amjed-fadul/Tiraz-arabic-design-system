@@ -78,6 +78,35 @@ it("type-checks copied code for every component, state mode and composition pres
     ["sheet", { ...p.sheet, mode: "uncontrolled" }],
     ["sheet", { ...p.sheet, footer: false, side: "left" }],
   );
+  for (const type of [
+    "text",
+    "email",
+    "password",
+    "search",
+    "tel",
+    "url",
+  ] as const)
+    for (const mode of ["controlled", "uncontrolled"] as const) {
+      cases.push([
+        "input",
+        {
+          ...p.input,
+          type,
+          mode,
+          readOnly: true,
+          required: true,
+          error: "Correct this",
+        },
+      ]);
+      cases.push([
+        "select",
+        { ...p.select, mode, required: true, value: "active", disabled: true },
+      ]);
+    }
+  cases.push([
+    "field",
+    { ...p.field, error: "Application error", required: true },
+  ]);
   const root = ts.sys.getCurrentDirectory();
   const sources = new Map(
     cases.map(([id, model, config], index) => [

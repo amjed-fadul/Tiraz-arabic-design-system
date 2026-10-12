@@ -1,8 +1,10 @@
 import { createRequire } from "node:module";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url),
   { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
+const evidenceDir = process.env.TIRAZ_EVIDENCE || "docs/review-evidence";
+await mkdir(evidenceDir, { recursive: true });
 const browser = await chromium.launch({
   headless: true,
   ...(process.env.TIRAZ_BROWSER
@@ -91,7 +93,7 @@ await check(
         result.overlays.push({ key, value, styles });
       }
     await page.screenshot({
-      path: "docs/review-evidence/live-nested-overlay.png",
+      path: `${evidenceDir}/live-nested-overlay.png`,
     });
     await page.keyboard.press("Escape");
     await page.waitForFunction(() => !document.querySelector(".tz-menu"));
@@ -133,7 +135,7 @@ await check(
     assert.equal(loading.action, "#A8C6EF");
     assert.equal(loading.radius, "16px");
     await page.screenshot({
-      path: "docs/review-evidence/live-action-loading.png",
+      path: `${evidenceDir}/live-action-loading.png`,
     });
     await page.waitForFunction(
       () =>
@@ -141,7 +143,7 @@ await check(
           .state === "success",
     );
     await page.screenshot({
-      path: "docs/review-evidence/live-action-success.png",
+      path: `${evidenceDir}/live-action-success.png`,
     });
     await page.waitForFunction(
       () =>
@@ -149,7 +151,7 @@ await check(
           .state === "idle",
     );
     await page.screenshot({
-      path: "docs/review-evidence/live-action-idle.png",
+      path: `${evidenceDir}/live-action-idle.png`,
     });
     result.actions.push({ loading, sequence: ["loading", "success", "idle"] });
     await button.click();
@@ -212,7 +214,7 @@ await check("simulated error feedback returns to idle", async () => {
       document.querySelector(".playground-canvas .tz-button").dataset.state ===
       "error",
   );
-  await page.screenshot({ path: "docs/review-evidence/live-action-error.png" });
+  await page.screenshot({ path: `${evidenceDir}/live-action-error.png` });
   await page.waitForFunction(
     () =>
       document.querySelector(".playground-canvas .tz-button").dataset.state ===
@@ -353,7 +355,7 @@ await check(
   },
 );
 await writeFile(
-  "docs/review-evidence/interactions.json",
+  `${evidenceDir}/interactions.json`,
   JSON.stringify(result, null, 2),
 );
 console.log(JSON.stringify(result, null, 2));

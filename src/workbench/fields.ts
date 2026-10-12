@@ -1,6 +1,6 @@
 import type { ComponentId } from "./catalog";
 import type { Localized } from "./i18n";
-export interface Field {
+export interface WorkbenchField {
   key: string;
   kind: "text" | "select" | "boolean" | "number" | "collection" | "attributes";
   title: Localized;
@@ -13,12 +13,12 @@ export interface Field {
 }
 const field = (
   key: string,
-  kind: Field["kind"],
+  kind: WorkbenchField["kind"],
   ar: string,
   en: string,
   api = key,
-  extra: Partial<Field> = {},
-): Field => ({ key, kind, title: [ar, en], api, ...extra });
+  extra: Partial<WorkbenchField> = {},
+): WorkbenchField => ({ key, kind, title: [ar, en], api, ...extra });
 const mode = field(
   "mode",
   "select",
@@ -27,7 +27,7 @@ const mode = field(
   "value / defaultValue",
   { advanced: true, options: ["controlled", "uncontrolled"] },
 );
-const native: Field[] = [
+const native: WorkbenchField[] = [
   field("id", "text", "معرّف العنصر", "Element ID"),
   field("className", "text", "فئة CSS", "CSS class"),
   field("stylePreset", "select", "نمط عنصر جاهز", "Style preset", "style", {
@@ -47,7 +47,7 @@ const native: Field[] = [
     },
   ),
 ].map((item) => ({ ...item, advanced: true }));
-const trigger: Field[] = [
+const trigger: WorkbenchField[] = [
   field(
     "triggerLabel",
     "text",
@@ -75,7 +75,35 @@ const trigger: Field[] = [
     { advanced: true, options: ["sm", "md"] },
   ),
 ];
-export const fields: Record<ComponentId, Field[]> = {
+export const fields: Record<ComponentId, WorkbenchField[]> = {
+  field: [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+  ],
+  input: [
+    field("label", "text", "التسمية", "Label"),
+    field("placeholder", "text", "النص المؤقت", "Placeholder"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+    field("type", "select", "نوع الإدخال", "Input type", "type", {
+      options: ["text", "email", "password", "search", "tel", "url"],
+    }),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+    field("invalid", "boolean", "غير صالح", "Invalid"),
+    field("required", "boolean", "مطلوب", "Required"),
+    mode,
+  ],
+  select: [
+    field("label", "text", "التسمية", "Label"),
+    field("placeholder", "text", "النص المؤقت", "Placeholder"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("options", "collection", "الخيارات", "Options"),
+    field("required", "boolean", "مطلوب", "Required"),
+    mode,
+  ],
   button: [
     field("children", "text", "التسمية", "Label", "children"),
     field("variant", "select", "النوع", "Variant", "variant", {
@@ -322,6 +350,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  field: ["label", "helper", "error", "required"],
+  input: ["placeholder", "size", "disabled", "readOnly", "invalid"],
+  select: ["placeholder", "size", "disabled", "options"],
   button: ["children", "variant", "size", "state", "icon", "iconOnly"],
   tabs: ["variant", "value"],
   switch: ["label", "checked", "disabled"],
@@ -336,7 +367,7 @@ export const commonFields = Object.fromEntries(
       fields[component as ComponentId].find((field) => field.key === key)!,
     ),
   ]),
-) as Record<ComponentId, Field[]>;
+) as Record<ComponentId, WorkbenchField[]>;
 
 const shortTitles: Record<string, Localized> = {
   children: ["التسمية", "Label"],

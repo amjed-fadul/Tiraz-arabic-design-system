@@ -90,6 +90,31 @@ export interface ToastModel {
   providerLabel: string;
   closeLabel: string;
 }
+export interface FieldModel {
+  label: string;
+  helper: string;
+  error: string;
+  required: boolean;
+}
+export interface InputModel extends FieldModel, Stateful {
+  value: string;
+  placeholder: string;
+  size: "sm" | "md";
+  type: "text" | "email" | "password" | "search" | "tel" | "url";
+  disabled: boolean;
+  readOnly: boolean;
+  invalid: boolean;
+  name: string;
+}
+export interface SelectModel extends FieldModel, Stateful {
+  value: string;
+  placeholder: string;
+  size: "sm" | "md";
+  disabled: boolean;
+  invalid: boolean;
+  name: string;
+  options: { value: string; label: string; disabled?: boolean }[];
+}
 export interface Playgrounds {
   button: ButtonModel;
   tabs: TabsModel;
@@ -97,6 +122,9 @@ export interface Playgrounds {
   dropdown: MenuModel;
   sheet: SheetModel;
   toast: ToastModel;
+  field: FieldModel;
+  input: InputModel;
+  select: SelectModel;
 }
 export type PlaygroundModel = Playgrounds[ComponentId];
 const native: NativeModel = {
@@ -113,6 +141,45 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    field: {
+      label: t("اسم العميل", "Customer name"),
+      helper: t("كما يظهر في الفاتورة", "As shown on the invoice"),
+      error: "",
+      required: true,
+    },
+    input: {
+      label: t("اسم العميل", "Customer name"),
+      helper: "",
+      error: "",
+      required: false,
+      value: "",
+      placeholder: t("مثل: شركة مدار", "e.g. Madar Technology"),
+      mode: "controlled",
+      size: "sm",
+      type: "text",
+      disabled: false,
+      readOnly: false,
+      invalid: false,
+      name: "customerName",
+    },
+    select: {
+      label: t("الحالة", "Status"),
+      helper: "",
+      error: "",
+      required: false,
+      value: "",
+      placeholder: t("اختر الحالة", "Choose status"),
+      mode: "controlled",
+      size: "sm",
+      disabled: false,
+      invalid: false,
+      name: "status",
+      options: [
+        { value: "active", label: t("نشط", "Active") },
+        { value: "paused", label: t("متوقف", "Paused") },
+        { value: "archived", label: t("مؤرشف", "Archived"), disabled: true },
+      ],
+    },
     button: {
       ...native,
       children: t("حفظ الفاتورة", "Save invoice"),
@@ -295,7 +362,7 @@ export function nativeAttributes(
   );
 }
 export function validateCollection(
-  component: "tabs" | "dropdown",
+  component: "tabs" | "dropdown" | "select",
   value: unknown,
 ): boolean {
   if (!Array.isArray(value) || value.length < 1 || value.length > 12)
@@ -304,19 +371,21 @@ export function validateCollection(
   const valid = value.every((item) => {
     if (!item || typeof item !== "object" || Array.isArray(item)) return false;
     const allowed =
-      component === "tabs"
-        ? ["value", "label", "content", "disabled"]
-        : [
-            "id",
-            "label",
-            "icon",
-            "shortcut",
-            "disabled",
-            "destructive",
-            "separatorBefore",
-          ];
+      component === "select"
+        ? ["value", "label", "disabled"]
+        : component === "tabs"
+          ? ["value", "label", "content", "disabled"]
+          : [
+              "id",
+              "label",
+              "icon",
+              "shortcut",
+              "disabled",
+              "destructive",
+              "separatorBefore",
+            ];
     if (Object.keys(item).some((key) => !allowed.includes(key))) return false;
-    const id = component === "tabs" ? item.value : item.id;
+    const id = component === "dropdown" ? item.id : item.value;
     if (
       typeof id !== "string" ||
       !id.trim() ||
@@ -328,6 +397,7 @@ export function validateCollection(
     identifiers.add(id);
     if (item.disabled !== undefined && typeof item.disabled !== "boolean")
       return false;
+    if (component === "select") return true;
     if (component === "tabs") return typeof item.content === "string";
     return (
       (item.icon === undefined ||
@@ -339,7 +409,7 @@ export function validateCollection(
     );
   });
   return (
-    valid && (component !== "tabs" || value.some((item) => !item.disabled))
+    valid && (component === "dropdown" || value.some((item) => !item.disabled))
   );
 }
 export function normalizePlaygrounds(
@@ -355,9 +425,16 @@ export function normalizePlaygrounds(
     const defaults = result[component] as unknown as Record<string, unknown>;
     for (const [key, item] of Object.entries(saved)) {
       if (!(key in defaults)) continue;
-      if (key === "items") {
+      if (key === "items" || key === "options") {
         if (
-          validateCollection(component === "tabs" ? "tabs" : "dropdown", item)
+          validateCollection(
+            component === "select"
+              ? "select"
+              : component === "tabs"
+                ? "tabs"
+                : "dropdown",
+            item,
+          )
         )
           defaults[key] = item;
         continue;
@@ -382,7 +459,10 @@ export function normalizePlaygrounds(
       size: ["sm", "md"],
       state: ["idle", "loading", "success", "error"],
       icon: ["none", "plus", "download", "settings"],
-      type: ["button", "submit", "reset"],
+      type:
+        component === "input"
+          ? ["text", "email", "password", "search", "tel", "url"]
+          : ["button", "submit", "reset"],
       action: ["simulate", "log"],
       outcome: ["success", "error"],
       stylePreset: ["none", "wide"],
@@ -405,6 +485,14 @@ export function normalizePlaygrounds(
         Number(r.duration) > 60000)
     )
       r.duration = 5000;
+    if (
+      component === "select" &&
+      r.value !== "" &&
+      !(r.options as SelectModel["options"]).some(
+        (option) => option.value === r.value && !option.disabled,
+      )
+    )
+      r.value = "";
     if (component === "tabs") {
       const items = r.items as TabRecord[];
       if (!items.some((item) => item.value === r.value && !item.disabled))

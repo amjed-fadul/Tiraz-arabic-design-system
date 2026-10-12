@@ -13,6 +13,132 @@ export function ApiReference({
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    field: [
+      [
+        "label / helper / error",
+        "string / string? / string?",
+        t(
+          "التطبيق يملك قواعد التحقق. error يعرض الرسالة ويعلن عدم الصلاحية فقط.",
+          "The application owns validation rules. error only displays feedback and marks the control invalid.",
+        ),
+      ],
+      [
+        "children",
+        "(control: FieldControlProps) => ReactNode",
+        t(
+          "عنصر واحد: مرر control عبر field إلى Input أو Select؛ لا نسخ تلقائيًا للعناصر.",
+          "One control: pass control as field to Input or Select; children are never cloned.",
+        ),
+      ],
+      [
+        "required / id / className / aria-describedby",
+        "boolean? / string? / string? / string?",
+        t(
+          "معرف ثابت مولّد، أو id فريد من التطبيق. تجمع معرفات الأوصاف الخارجية.",
+          "Stable generated ID or unique caller ID. External description IDs are merged.",
+        ),
+      ],
+      [
+        "FieldControlProps",
+        "id, aria-labelledby, aria-describedby?, aria-invalid?, required?",
+        t(
+          "يربط التسمية والمساعدة والخطأ؛ field يملك id. required يعلن النجمة ويمرر القيد الأصلي.",
+          "Associates label, help and error; field owns id. required shows an indicator and forwards the native constraint.",
+        ),
+      ],
+    ],
+    input: [
+      [
+        "type / size",
+        "InputType / sm | md",
+        t(
+          "text افتراضي. يدعم text/email/password/search/tel/url فقط. sm افتراضي.",
+          "Defaults to text and sm. Supports text/email/password/search/tel/url only.",
+        ),
+      ],
+      [
+        "value / defaultValue / onChange",
+        "Native input props",
+        t(
+          "القيمة المتحكم بها تحتاج onChange. reset أصلي للقيم الداخلية؛ عالج onReset في التطبيق للقيم المتحكم بها.",
+          "Controlled value requires onChange. Uncontrolled reset is native; handle onReset in the application for controlled values.",
+        ),
+      ],
+      [
+        "field / invalid",
+        "FieldControlProps? / boolean?",
+        t(
+          "الاسم من Field أو label/aria-label/aria-labelledby خارجي. الوصف الخارجي يُجمع.",
+          "Name with Field or an external label/aria-label/aria-labelledby. External descriptions are merged.",
+        ),
+      ],
+      [
+        "placeholder / disabled / readOnly / required / name / form / autoComplete",
+        "Native input attributes",
+        t(
+          "يحافظ على التحرير والتحديد والملء التلقائي وسلوك النموذج الأصلي.",
+          "Preserves native editing, selection, autofill and form behavior.",
+        ),
+      ],
+      [
+        "ref / id / className / style / ARIA / data-* / native events",
+        "Ref<HTMLInputElement> / ComponentPropsWithRef<input>",
+        t(
+          "React 19: ref يصل إلى input. excludes size/type/children تستبدل الواجهة الأصلية.",
+          "React 19 ref targets input. Native size/type/children are excluded in favor of the typed component API.",
+        ),
+      ],
+    ],
+    select: [
+      [
+        "options",
+        "SelectOption[]: value, label, disabled?",
+        t(
+          "قيم فريدة غير فارغة وتسميات واضحة. القيمة الفارغة تعرض placeholder. لا بحث أو اختيار متعدد.",
+          "Unique nonempty values and meaningful labels. Empty value shows the placeholder. Single select; no search or multi-select.",
+        ),
+      ],
+      [
+        "value / defaultValue / onValueChange",
+        "string / string? / (string) => void",
+        t(
+          "Radix Select يدير القيمة الداخلية. المتحكم بها تحتاج تحديث التطبيق؛ reset يطلب القيمة الأولية عبر callback.",
+          "Radix Select manages uncontrolled values. Controlled values require application updates; reset requests the initial value through the callback.",
+        ),
+      ],
+      [
+        "size / placeholder / disabled / required / invalid / field",
+        "sm | md / string? / booleans / FieldControlProps?",
+        t(
+          "sm افتراضي؛ تسمية خارجية أو Field. لا يحقق قواعد التطبيق.",
+          "sm default; name with an external label or Field. Does not perform application validation.",
+        ),
+      ],
+      [
+        "name / form / autoComplete",
+        "string?",
+        t(
+          "select أصلي مخفي من Radix يدعم FormData وreset وrequired. الخطأ الأصلي يركز زر الاختيار. onInvalid خاصية زر فقط؛ قواعد ورسائل التحقق في التطبيق.",
+          "Radix’s hidden native select supports FormData, reset and required. Native invalid focuses the trigger. onInvalid is a button prop; application code owns validation rules/messages.",
+        ),
+      ],
+      [
+        "ref / id / className / style / ARIA / data-* / button events",
+        "Ref<HTMLButtonElement> / native button props",
+        t(
+          "ref يصل لزر الفتح. children/type/value/defaultValue/onChange مستبدلة؛ name/form للعنصر الأصلي. لا open/defaultOpen أو تخصيص popup في هذه الواجهة.",
+          "ref targets trigger. children/type/value/defaultValue/onChange are replaced; name/form target native form participation. No open/defaultOpen or popup customization API.",
+        ),
+      ],
+      [
+        "keyboard / popup",
+        "Radix Select 2.4.1",
+        t(
+          "أسهم وHome/End والكتابة وEnter/Escape، واستعادة التركيز. محتوى داخل SystemProvider وSheet، وتمرر القائمة داخليًا. الحركة شفافية فقط وتحترم تقليل الحركة.",
+          "Arrows, Home/End, typeahead, Enter/Escape and focus restoration. Popup stays within SystemProvider/Sheet and scrolls internally. Opacity motion respects app and OS reduction.",
+        ),
+      ],
+    ],
     button: [
       [
         "variant / state / size",

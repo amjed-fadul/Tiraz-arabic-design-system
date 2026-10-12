@@ -2,6 +2,9 @@ import type { SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
 import { catalog } from "./catalog";
 import type {
+  FieldModel,
+  InputModel,
+  SelectModel,
   ButtonModel,
   MenuModel,
   PlaygroundModel,
@@ -48,7 +51,39 @@ export function generateCode(
   let declarations = "",
     jsx = "";
   const recordEvent = "setEvent";
-  if (component === "button") {
+  if (
+    component === "field" ||
+    component === "input" ||
+    component === "select"
+  ) {
+    const p = model as FieldModel | InputModel | SelectModel;
+    imports.add("Field");
+    const controlName = component === "select" ? "Select" : "Input";
+    imports.add(controlName);
+    const f = `<Field ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}}>`;
+    if (component === "field")
+      jsx = `${f}{field => <Input field={field} onChange={event => setEvent("onChange: " + event.currentTarget.value)} />}</Field>`;
+    else {
+      const control = p as InputModel | SelectModel;
+      declarations =
+        control.mode === "controlled"
+          ? `const [value, setValue] = useState(${json(control.value)});`
+          : "";
+      const state =
+        control.mode === "controlled"
+          ? "value={value}"
+          : attribute("defaultValue", control.value);
+      const change =
+        component === "input"
+          ? `onChange={event => { ${control.mode === "controlled" ? "setValue(event.currentTarget.value);" : ""} setEvent("onChange: " + event.currentTarget.value); }}`
+          : `onValueChange={next => { ${control.mode === "controlled" ? "setValue(next);" : ""} setEvent("onValueChange: " + next); }}`;
+      const extras =
+        component === "input"
+          ? `type="${(p as InputModel).type}" readOnly={${(p as InputModel).readOnly}}`
+          : `options={${json((p as SelectModel).options)}}`;
+      jsx = `${f}{field => <${controlName} field={field} ${state} ${attribute("placeholder", control.placeholder)} ${attribute("name", control.name)} size="${control.size}" disabled={${control.disabled}} invalid={${control.invalid}} ${extras} ${change} />}</Field>`;
+    }
+  } else if (component === "button") {
     const p = model as ButtonModel;
     imports.add("Button");
     const icons = {

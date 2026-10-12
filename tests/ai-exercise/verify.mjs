@@ -71,6 +71,42 @@ await page.screenshot({
   path: out + "01-arabic-rtl-light.png",
   fullPage: true,
 });
+await check("Copied form components and Select keyboard scope", async () => {
+  assert(
+    await page
+      .locator("#client")
+      .evaluate((el) => el.classList.contains("tz-input")),
+    "copied Input",
+  );
+  await page.getByTestId("sheet-trigger").click();
+  await page.getByTestId("project-select").focus();
+  await page.keyboard.press("ArrowDown");
+  await page.getByRole("listbox").waitFor();
+  assert(
+    await page
+      .getByRole("dialog")
+      .evaluate((el) =>
+        el.contains(document.querySelector(".tz-select-popup")),
+      ),
+    "Select stays inside Sheet",
+  );
+  await page.keyboard.press("End");
+  await page.waitForTimeout(40);
+  await page.keyboard.press("Enter");
+  await page.waitForFunction(() => !document.querySelector(".tz-select-popup"));
+  assert(
+    (await page.getByTestId("project").textContent()).includes("48"),
+    "actual project value",
+  );
+  assert(
+    await page
+      .getByTestId("project-select")
+      .evaluate((el) => el === document.activeElement),
+    "Select restores trigger",
+  );
+  await page.keyboard.press("Escape");
+  await page.waitForFunction(() => !document.querySelector(".tz-sheet"));
+});
 await check("RTL Tabs ArrowLeft, automatic activation, Home, End", async () => {
   await page.getByRole("tab", { name: "كل الفواتير", exact: true }).focus();
   await page.keyboard.press("ArrowLeft");
@@ -143,6 +179,11 @@ await check(
       "invalid associated input",
     );
     assert(
+      (await page.locator("#client").getAttribute("aria-describedby")) ===
+        "draft-help",
+      "one persistent external validation description",
+    );
+    assert(
       (await page.locator("#draft-help").getAttribute("role")) === "alert",
       "inline error retained",
     );
@@ -192,9 +233,14 @@ await check(
     );
     await page.getByTestId("project-menu").focus();
     await page.keyboard.press("ArrowDown");
+    await page.waitForFunction(
+      () => document.activeElement?.getAttribute("role") === "menuitem",
+    );
     await page.waitForTimeout(40);
     await page.keyboard.press("End");
-    await page.waitForTimeout(10);
+    await page.waitForFunction(
+      () => document.activeElement?.textContent?.trim() === "تعيين المشروع 48",
+    );
     const early = await page.locator(".tz-menu").evaluate((menu) => ({
       focused: document.activeElement?.textContent,
       scroll: menu.scrollTop,

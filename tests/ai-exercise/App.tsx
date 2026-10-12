@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Receipt, Plus, ArrowUpRight } from "lucide-react";
 import {
+  Field,
+  Input,
+  Select,
   Button,
   Tabs,
   Switch,
@@ -258,6 +261,21 @@ function Dashboard({
                 {t("المشروع", "Project")}{" "}
                 <bdi dir="ltr">{String(project).padStart(2, "0")}</bdi>
               </p>
+              <Field label={t("اختيار قيمة المشروع", "Project value")}>
+                {(field) => (
+                  <Select
+                    field={field}
+                    aria-label={t("اختيار قيمة المشروع", "Project value")}
+                    data-testid="project-select"
+                    value={String(project)}
+                    onValueChange={(value) => setProject(Number(value))}
+                    options={Array.from({ length: 48 }, (_, index) => ({
+                      value: String(index + 1),
+                      label: `${t("المشروع", "Project")} ${String(index + 1).padStart(2, "0")}`,
+                    }))}
+                  />
+                )}
+              </Field>
               <DropdownMenu
                 open={menuOpen}
                 onOpenChange={setMenuOpen}
@@ -343,20 +361,29 @@ function Dashboard({
             noValidate
           >
             <div>
-              <label htmlFor="client">
-                {t("اسم العميل لفاتورة جديدة", "Client for a new invoice")}
-              </label>
-              <input
+              <Field
                 id="client"
-                value={client}
-                onChange={(event) => {
-                  setClient(event.target.value);
-                  setCreated(false);
-                }}
-                aria-invalid={error || undefined}
-                aria-describedby="draft-help"
-                placeholder={t("مثل: استوديو فلك", "e.g. Falak Studio")}
-              />
+                label={t(
+                  "اسم العميل لفاتورة جديدة",
+                  "Client for a new invoice",
+                )}
+                required
+              >
+                {(field) => (
+                  <Input
+                    field={field}
+                    id="client"
+                    value={client}
+                    onChange={(event) => {
+                      setClient(event.target.value);
+                      setCreated(false);
+                    }}
+                    aria-invalid={error || undefined}
+                    aria-describedby="draft-help"
+                    placeholder={t("مثل: استوديو فلك", "e.g. Falak Studio")}
+                  />
+                )}
+              </Field>
             </div>
             <Button
               type="submit"
@@ -467,8 +494,8 @@ function Dashboard({
       </div>
       <footer className="page-footer">
         {t(
-          "تجربة استهلاك مستقلة لـ Tiraz · ست عائلات موثّقة · جدول يملكه التطبيق",
-          "Independent Tiraz consumption exercise · Six documented families · Application-owned table",
+          "تجربة استهلاك مستقلة لـ Tiraz · تسع عائلات موثّقة · جدول يملكه التطبيق",
+          "Independent Tiraz consumption exercise · Nine documented families · Application-owned table",
         )}
       </footer>
     </main>

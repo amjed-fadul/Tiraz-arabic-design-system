@@ -1,0 +1,301 @@
+{
+  "overlays": [
+    {
+      "key": "theme",
+      "value": "dark",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(28, 34, 30)",
+        "action": "#A5C9B4",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "theme",
+      "value": "light",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "accent",
+      "value": "blue",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#365B87",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "accent",
+      "value": "plum",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#6B487A",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "accent",
+      "value": "clay",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#88543F",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "accent",
+      "value": "sage",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "typography",
+      "value": "large",
+      "styles": {
+        "font": "16px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "typography",
+      "value": "standard",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "density",
+      "value": "standard",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 40,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "density",
+      "value": "compact",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "radius",
+      "value": "16",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "20px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "radius",
+      "value": "0",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "4px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "radius",
+      "value": "8",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "reducedMotion",
+      "value": "true",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "1e-05s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "reducedMotion",
+      "value": "false",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "key": "direction",
+      "value": "ltr",
+      "styles": {
+        "font": "14px",
+        "direction": "ltr",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "left"
+      }
+    },
+    {
+      "key": "direction",
+      "value": "rtl",
+      "styles": {
+        "font": "14px",
+        "direction": "rtl",
+        "radius": "12px",
+        "surface": "rgb(255, 255, 255)",
+        "action": "#355E4C",
+        "motion": "0.24s",
+        "itemHeight": 36,
+        "insideSheet": true,
+        "sheetSide": "right"
+      }
+    },
+    {
+      "example": "Sheet form",
+      "save": true,
+      "cancel": true,
+      "focusRestored": true
+    }
+  ],
+  "actions": [
+    {
+      "loading": {
+        "state": "loading",
+        "font": "16px",
+        "radius": "16px",
+        "action": "#A8C6EF"
+      },
+      "sequence": [
+        "loading",
+        "success",
+        "idle"
+      ]
+    },
+    {
+      "sequence": [
+        "loading",
+        "error",
+        "idle"
+      ],
+      "persisted": "idle"
+    }
+  ],
+  "toast": [
+    "pointer-only dismissal then next toast expires",
+    "focus pauses and leaving resumes expiry",
+    {
+      "surface": "rgb(28, 34, 30)",
+      "font": "16px",
+      "tone": "success",
+      "icon": "rgb(165, 212, 179)",
+      "duration": 5000,
+      "styleElapsedMs": 885
+    }
+  ],
+  "failures": []
+}

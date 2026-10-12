@@ -3,11 +3,11 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the six registry families. Prefer an inline task and a
+  Map each need to the nine registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
-  Select, navigation links, Alert, Table, chart, date picker or rich form APIs.
+  navigation links, Alert, Table, chart or date picker APIs.
   For an unavailable request, name the gap and propose a concrete alternative:
   for example, an application-owned semantic HTML table styled with shared
   tokens, with Tiraz Button/menu actions. Do not import an invented `Table`,
@@ -78,3 +78,13 @@
    axe or browser assertions are evidence, not a guarantee of accessibility.
 6. Report verified behavior, unavailable capabilities and untested conditions
    honestly. Keep source-copy checks independent of workbench entry files.
+
+## Form foundation
+
+Use Field for one labeled control: `<Field label="Name" required error={error}>{field => <Input field={field} name="name" />}</Field>`. This typed render contract also works with Select. Field never clones arbitrary children or performs validation. Supply rules, errors and focus management in application code. Input/Select merge external aria-describedby IDs; field owns the control ID. Native required/invalid state is forwarded, but error display does not mean Tiraz validated anything.
+
+Input supports text/email/password/search/tel/url, default text/sm; use its native events, value/defaultValue, form/name/autocomplete and React 19 input ref. Uncontrolled native reset works; controlled Input requires host onReset to restore its value. Select accepts options with unique nonempty value, string label and optional disabled. Empty value shows placeholder. Controlled Select must update value on onValueChange, including reset callbacks. Radix's hidden native select handles FormData/reset/required; invalid focuses the visible trigger. App validation supplies persistent associated messages and focuses the first invalid control.
+
+Select uses Radix Select rather than DropdownMenu. Scope its portal to the nearest provider/Sheet, constrain available height and preserve internal scroll and keyboard/typeahead/focus behavior. Do not move it to body. Opening fades only, preserving stationary-pointer hit targets. Honor both reduced-motion sources. Search and multi-select are future scope.
+
+The CreateCustomer example is application code: required name, optional validated email, single status, semantic list, synchronous save guard and Toast. Discard drafts on all dismissals, verify a clean reopen and keep the trigger mounted for focus restoration. State exists only while mounted, with no backend persistence.

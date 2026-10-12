@@ -1,6 +1,6 @@
 # Independent consumption exercise
 
-This is an independent consumer verification fixture, outside the production entry. Imports target `./vendor/tiraz`; the external host copies the complete `src/system` bundle there, excluding tests. All six documented families are used for invoice draft creation, related invoice views, reminder/theme/motion preferences, contextual payment actions, a modal settings Sheet with 48 scrolling project commands, and local outcome notices.
+This is an independent consumer verification fixture, outside the production entry. Imports target `./vendor/tiraz`; the external host copies the complete `src/system` bundle there, excluding tests. All nine documented families are used for invoice draft creation, related invoice views, reminder/theme/motion preferences, contextual payment actions, a modal settings Sheet with 48 scrolling project commands, and local outcome notices.
 
 ## Deliberate capability gap
 
@@ -8,7 +8,7 @@ Tiraz has no `DataTable` export or table family. No `DataTable` import or invent
 
 ## Contract understanding
 
-The source root contains the barrel, config, tokens, components and `ai/`; registry paths are relative to it. Configuration starts with `defaultConfig`, labels and language belong to the consumer, and direction must be coordinated explicitly. Toast is the `ToastProvider`/`useToast` family. Native selects and text inputs are application HTML controls, not added Tiraz families. The modal and nested menu stay under the SystemProvider and Sheet context. No runtime component, production entry or dependency was changed.
+The source root contains the barrel, config, tokens, components and `ai/`; registry paths are relative to it. Configuration starts with `defaultConfig`, labels and language belong to the consumer, and direction must be coordinated explicitly. Toast is the `ToastProvider`/`useToast` family. Field/Input compose the client draft; Select supplies a 48-value project choice inside Sheet. Native selects used for host customization remain application controls. The modal and nested menu stay under the SystemProvider and Sheet context. The copied library is consumed independently of workbench files.
 
 ## Verified result
 

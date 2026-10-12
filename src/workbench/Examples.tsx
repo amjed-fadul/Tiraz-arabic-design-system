@@ -1,13 +1,16 @@
 import { useState } from "react";
 import {
+  Field,
+  Input,
+  Sheet,
   Button,
   Tabs,
   Switch,
   DropdownMenu,
-  Sheet,
   ToastProvider,
   useToast,
 } from "../system";
+import { CreateCustomer } from "../system/ai/examples/CreateCustomer";
 import { Settings2 } from "lucide-react";
 import type { ComponentId } from "./catalog";
 import type { Language } from "./i18n";
@@ -90,26 +93,38 @@ function EditableSheet({ language }: { language: Language }) {
             );
           }}
         >
-          <label htmlFor="example-customer-name">
-            {t("اسم الشركة", "Company name")}
-          </label>
-          <input
+          <Field
             id="example-customer-name"
-            required
-            value={draft.name}
-            onChange={(e) => setDraft({ ...draft, name: e.target.value })}
-          />
-          <label htmlFor="example-customer-email">
-            {t("البريد الإلكتروني", "Email address")}
-          </label>
-          <input
+            label={t("اسم الشركة", "Company name")}
+          >
+            {(field) => (
+              <Input
+                required
+                field={field}
+                value={draft.name}
+                onChange={(e) =>
+                  setDraft({ ...draft, name: e.currentTarget.value })
+                }
+              />
+            )}
+          </Field>
+          <Field
             id="example-customer-email"
-            required
-            type="email"
-            dir="ltr"
-            value={draft.email}
-            onChange={(e) => setDraft({ ...draft, email: e.target.value })}
-          />
+            label={t("البريد الإلكتروني", "Email address")}
+          >
+            {(field) => (
+              <Input
+                required
+                field={field}
+                type="email"
+                dir="ltr"
+                value={draft.email}
+                onChange={(e) =>
+                  setDraft({ ...draft, email: e.currentTarget.value })
+                }
+              />
+            )}
+          </Field>
           <p>
             <bdi dir="ltr">CUS-0082</bdi> ·{" "}
             <bdi dir="ltr">https://madar.example</bdi>
@@ -289,16 +304,22 @@ export function Examples({
         </p>
       </div>
     );
-  if (component === "sheet")
+  if (["sheet", "field", "input", "select"].includes(component))
     return (
       <div className="quiet-examples">
         <p className="example-caption">
           {t(
-            "نموذج محلي: حفظ التعديلات، أو تجاهل المسودة عند الإلغاء.",
-            "A local form: save changes or discard a cancelled draft.",
+            "إنشاء عميل: تحقق من البيانات ثم احفظها في ذاكرة المثال.",
+            "Create a customer: validate, then save in this example’s memory.",
           )}
         </p>
-        <EditableSheet language={language} />
+        {component === "sheet" && <EditableSheet language={language} />}
+        <ToastProvider
+          label={t("تنبيهات العملاء", "Customer notifications")}
+          closeLabel={t("إغلاق التنبيه", "Dismiss notification")}
+        >
+          <CreateCustomer language={language} />
+        </ToastProvider>
       </div>
     );
   return (

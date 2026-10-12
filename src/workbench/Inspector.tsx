@@ -3,7 +3,7 @@ import { RotateCcw } from "lucide-react";
 import { Switch } from "../system";
 import type { ComponentId } from "./catalog";
 import { commonFields, optionNames } from "./fields";
-import type { Field } from "./fields";
+import type { WorkbenchField } from "./fields";
 import { localize, label } from "./i18n";
 import type { Language } from "./i18n";
 import { validateCollection } from "./model";
@@ -23,7 +23,7 @@ function CollectionEditor({
   language,
   onChange,
 }: {
-  field: Field;
+  field: WorkbenchField;
   value: unknown;
   language: Language;
   onChange: (value: unknown) => void;
@@ -34,7 +34,13 @@ function CollectionEditor({
   function apply() {
     try {
       const parsed: unknown = JSON.parse(draft);
-      if (!validateCollection("dropdown", parsed)) throw Error();
+      if (
+        !validateCollection(
+          field.key === "options" ? "select" : "dropdown",
+          parsed,
+        )
+      )
+        throw Error();
       onChange(parsed);
       setError(false);
     } catch {
@@ -70,7 +76,7 @@ function Control({
   language,
   onPatch,
 }: {
-  field: Field;
+  field: WorkbenchField;
   model: PlaygroundModel;
   component: ComponentId;
   language: Language;

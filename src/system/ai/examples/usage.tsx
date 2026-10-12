@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CreateCustomer } from "./CreateCustomer";
 import { Settings } from "lucide-react";
 import {
   Button,
@@ -35,6 +36,7 @@ function DashboardTask() {
   return (
     <main lang="ar">
       <h1>إدارة الحساب</h1>
+      <CreateCustomer />
       <p>
         الحساب <bdi dir="ltr">ACC-42</bdi>
       </p>

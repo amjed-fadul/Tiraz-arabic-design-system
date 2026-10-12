@@ -54,6 +54,33 @@ export const catalog = [
     ],
     file: "Toast.tsx",
   },
+  {
+    id: "field",
+    name: ["الحقل", "Field"],
+    description: [
+      "تسمية ومساعدة وأخطاء مرتبطة بعنصر واحد. التطبيق يملك التحقق.",
+      "Label, help and errors associated with one control. The application owns validation.",
+    ],
+    file: "Field.tsx",
+  },
+  {
+    id: "input",
+    name: ["الإدخال", "Input"],
+    description: [
+      "إدخال نص أصلي بأحجام مدمجة وحالات واضحة.",
+      "Native text entry with compact sizes and clear states.",
+    ],
+    file: "Input.tsx",
+  },
+  {
+    id: "select",
+    name: ["الاختيار", "Select"],
+    description: [
+      "اختيار قيمة واحدة بلوحة المفاتيح ودعم النماذج.",
+      "Choose one value with keyboard and form support.",
+    ],
+    file: "Select.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;

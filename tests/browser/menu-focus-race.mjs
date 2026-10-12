@@ -70,6 +70,20 @@ for (const scenario of cases) {
             type,
             (event) => {
               const role = event.target.getAttribute?.("role");
+              if (type === "keydown" && event.key === "End") {
+                // Sample at the actual key event, not a later protocol roundtrip.
+                // A busy machine can finish the animation between those moments.
+                window.endAnimations =
+                  document
+                    .querySelector(".tz-menu")
+                    ?.getAnimations()
+                    .map((a) => ({
+                      name: a.animationName,
+                      time: a.currentTime,
+                      duration: a.effect.getTiming().duration,
+                      playState: a.playState,
+                    })) ?? [];
+              }
               if (type === "pointerdown" || type === "pointermove")
                 window.pointerPosition = { x: event.clientX, y: event.clientY };
               if (type === "focusin") {
@@ -133,17 +147,6 @@ for (const scenario of cases) {
       if (scenario.settled) await page.waitForTimeout(300);
       // The regression intentionally does NOT wait for opening motion before End.
       await page.keyboard.press("End");
-      await page.evaluate(() => {
-        window.endAnimations = document
-          .querySelector(".tz-menu")
-          .getAnimations()
-          .map((a) => ({
-            name: a.animationName,
-            time: a.currentTime,
-            duration: a.effect.getTiming().duration,
-            playState: a.playState,
-          }));
-      });
       await page.waitForTimeout(350);
       result.beforeEnter = await page.evaluate(() => {
         const menu = document.querySelector(".tz-menu"),

@@ -1179,3 +1179,11 @@ bdi {
 .copy-icon[data-copy-state="failed"] {
   color: var(--danger);
 }
+
+.playground-form {
+  inline-size: min(100%, 320px);
+  min-inline-size: 0;
+}
+.customer-example {
+  inline-size: 100%;
+}

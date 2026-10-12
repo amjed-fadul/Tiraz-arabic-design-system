@@ -2,6 +2,7 @@ import { createRequire } from "node:module";
 import { writeFile, mkdir } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
+const evidenceDir = process.env.TIRAZ_EVIDENCE || "docs/review-evidence";
 const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const browser = await chromium.launch({
   headless: true,
@@ -27,18 +28,7 @@ const report = {
   failures: [],
 };
 page.on("pageerror", (e) => report.errors.push(e.message));
-const names = {
-  en: ["Button", "Tabs", "Switch", "Dropdown menu", "Sheet", "Toast"],
-  ar: [
-    "الأزرار",
-    "التبويبات",
-    "مفتاح التبديل",
-    "القائمة المنسدلة",
-    "اللوحة الجانبية",
-    "التنبيهات",
-  ],
-};
-const ids = ["button", "tabs", "switch", "dropdown", "sheet", "toast"];
+import { ids, names } from "./inventory.mjs";
 let lang = "en";
 const label = (en, ar) => (lang === "en" ? en : ar);
 const rail = () => page.locator(".customization-rail");
@@ -113,12 +103,12 @@ async function metrics() {
     return {
       preview: [
         ...document.querySelectorAll(
-          ".playground-canvas :is(.tz-button,.tz-tab,.tz-switch,.tz-switch-field)",
+          ".playground-canvas :is(.tz-button,.tz-tab,.tz-switch,.tz-switch-field,.tz-input,.tz-select-trigger)",
         ),
       ].map(read),
       examples: [
         ...document.querySelectorAll(
-          ".examples-canvas :is(.tz-button,.tz-tab,.tz-switch)",
+          ".examples-canvas :is(.tz-button,.tz-tab,.tz-switch,.tz-input,.tz-select-trigger)",
         ),
       ].map(read),
       providers: [
@@ -142,10 +132,10 @@ async function saved() {
     docs: JSON.parse(localStorage.getItem("tiraz.documentation.v2")),
   }));
 }
-await mkdir("docs/review-evidence", { recursive: true });
+await mkdir(evidenceDir, { recursive: true });
 await page.goto(base);
 await page.getByLabel("لغة التوثيق").selectOption("en");
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < ids.length; i++) {
   await nav(i);
   await check(`${ids[i]} system controls`, async () => {
     await rail()
@@ -215,7 +205,7 @@ for (let i = 0; i < 6; i++) {
 for (const language of ["en", "ar"]) {
   lang = language;
   await page.locator(".language-control").selectOption(lang);
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < ids.length; i++) {
     await nav(i);
     await check(`${ids[i]} contextual controls ${lang}`, async () => {
       await rail()
@@ -432,6 +422,71 @@ for (const language of ["en", "ar"]) {
               .evaluate((el) => el === document.activeElement),
           );
         }
+      } else if (i === 6) {
+        await fill("Label", "التسمية", "QA field");
+        await fill("Helper text", "النص المساعد", "QA helper");
+        await fill("Error message", "رسالة الخطأ", "QA error");
+        const input = canvas().getByRole("textbox", { name: "QA field" });
+        assert.equal(await input.getAttribute("aria-invalid"), "true");
+        assert.ok(
+          (await input.getAttribute("aria-describedby")).includes("-help"),
+        );
+        assert.ok(
+          (await input.getAttribute("aria-describedby")).includes("-error"),
+        );
+      } else if (i === 7) {
+        await fill("Placeholder", "النص المؤقت", "QA placeholder");
+        await select("Size", "الحجم", "md");
+        const input = canvas().getByRole("textbox");
+        await input.fill("QA input · مدار");
+        assert.equal(await input.inputValue(), "QA input · مدار");
+        await rail()
+          .getByRole("switch", {
+            name: label("Read only", "للقراءة فقط"),
+            exact: true,
+          })
+          .click();
+        assert.equal(await input.getAttribute("readonly"), "");
+        await rail()
+          .getByRole("switch", {
+            name: label("Invalid", "غير صالح"),
+            exact: true,
+          })
+          .click();
+        assert.equal(await input.getAttribute("aria-invalid"), "true");
+      } else if (i === 8) {
+        await fill("Placeholder", "النص المؤقت", "QA choose");
+        await select("Size", "الحجم", "md");
+        const options = [
+          { value: "one", label: "QA One" },
+          { value: "off", label: "QA Disabled", disabled: true },
+          { value: "two", label: "QA Two" },
+        ];
+        await rail()
+          .getByLabel(label("Options", "الخيارات"), { exact: true })
+          .fill(JSON.stringify(options));
+        await rail()
+          .getByRole("button", {
+            name: label("Apply collection", "تطبيق البيانات"),
+            exact: true,
+          })
+          .click();
+        await canvas().getByRole("combobox").focus();
+        await page.keyboard.press("ArrowDown");
+        await page.getByRole("listbox").waitFor();
+        await page.keyboard.press("End");
+        await page.waitForFunction(() =>
+          document.activeElement?.textContent?.includes("QA Two"),
+        );
+        await page.keyboard.press("Enter");
+        await page.waitForFunction(
+          () => !document.querySelector(".tz-select-popup"),
+        );
+        assert.ok(
+          (await canvas().getByRole("combobox").textContent()).includes(
+            "QA Two",
+          ),
+        );
       } else {
         await fill("Title", "العنوان", "QA toast");
         await fill("Description", "الوصف", "QA description · وصف");
@@ -463,7 +518,7 @@ for (const language of ["en", "ar"]) {
         props: customized.props[ids[i]],
         metrics: await metrics(),
       });
-      await nav((i + 1) % 6);
+      await nav((i + 1) % ids.length);
       await nav(i);
       assert.deepEqual((await saved()).props[ids[i]], customized.props[ids[i]]);
       await page.reload();
@@ -582,7 +637,7 @@ for (const language of ["ar", "en"])
             exact: true,
           })
           .click();
-      for (let i = 0; i < 6; i++)
+      for (let i = 0; i < ids.length; i++)
         await check(`${ids[i]} ${lang} ${theme} ${viewport.name}`, async () => {
           await nav(i);
           await page.evaluate(() => document.fonts.ready);
@@ -634,13 +689,14 @@ for (const language of ["ar", "en"])
           }
           if (i === 5) {
             await canvas().getByRole("button").click();
+            await page.locator(".playground-region .tz-toast button").focus();
             await page.locator(".playground-region .tz-toast button").click();
             await page.waitForFunction(
               () => !document.querySelector(".playground-region .tz-toast"),
             );
           }
           await page.screenshot({
-            path: `docs/review-evidence/${ids[i]}-${lang}-${theme}-${viewport.name}.jpg`,
+            path: `${evidenceDir}/${ids[i]}-${lang}-${theme}-${viewport.name}.jpg`,
             quality: 65,
           });
           report.pages.push({
@@ -657,7 +713,7 @@ for (const language of ["ar", "en"]) {
   lang = language;
   await page.setViewportSize({ width: 320, height: 420 });
   await page.locator(".language-control").selectOption(lang);
-  for (let i = 0; i < 6; i++)
+  for (let i = 0; i < ids.length; i++)
     await check(`${ids[i]} responsive customization ${lang}`, async () => {
       await nav(i);
       const trigger = page.locator(".mobile-settings button");
@@ -701,7 +757,7 @@ for (const language of ["ar", "en"]) {
       assert.deepEqual((await saved()).props, props);
       assert.equal((await saved()).system.accent, "sage");
       await page.screenshot({
-        path: `docs/review-evidence/drawer-${ids[i]}-${lang}.jpg`,
+        path: `${evidenceDir}/drawer-${ids[i]}-${lang}.jpg`,
         quality: 65,
       });
       await page.keyboard.press("Escape");
@@ -731,7 +787,7 @@ await check("OS reduced motion overrides enabled animation", async () => {
   await select("State", "الحالة", "idle");
 });
 await writeFile(
-  "docs/review-evidence/customization.json",
+  `${evidenceDir}/customization.json`,
   JSON.stringify(report, null, 2),
 );
 console.log(

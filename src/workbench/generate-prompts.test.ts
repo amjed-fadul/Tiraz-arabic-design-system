@@ -100,7 +100,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       cwd: second,
       encoding: "utf8",
     });
-    expect(JSON.parse(original)).toHaveLength(12);
+    expect(JSON.parse(original)).toHaveLength(catalog.length * 2);
     expect(relocated).toBe(original);
     expect(original).not.toContain(first);
     expect(relocated).not.toContain(second);

@@ -516,3 +516,159 @@
     background: ButtonText;
   }
 }
+
+.tz-field {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.tz-field-label {
+  font-weight: var(--weight-medium);
+  font-size: var(--text-body);
+}
+.tz-field-required,
+.tz-field-error {
+  color: var(--danger);
+}
+.tz-field-help,
+.tz-field-error {
+  margin: 0;
+  font-size: var(--text-meta);
+  overflow-wrap: anywhere;
+}
+.tz-field-help {
+  color: var(--text-secondary);
+}
+.tz-input,
+.tz-select-trigger {
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: var(--control-height);
+  padding-inline: var(--control-padding);
+  padding-block: 2px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  transition:
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast);
+}
+.tz-input[data-size="sm"],
+.tz-select-trigger[data-size="sm"] {
+  block-size: var(--control-small);
+  padding-inline: var(--control-small-padding);
+}
+.tz-input::placeholder,
+.tz-select-trigger[data-placeholder] {
+  color: var(--text-muted);
+}
+.tz-input[aria-invalid="true"],
+.tz-select-trigger[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.tz-input:disabled,
+.tz-select-trigger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.tz-input:read-only {
+  background: var(--surface-subtle);
+}
+.tz-select {
+  display: block;
+  min-inline-size: 0;
+}
+.tz-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--control-gap);
+  text-align: start;
+}
+.tz-select-trigger > span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tz-select-popup {
+  z-index: 65;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-popover);
+  min-inline-size: min(var(--radix-select-trigger-width), calc(100vw - 24px));
+  max-inline-size: calc(100vw - 24px);
+  max-block-size: var(--radix-select-content-available-height);
+  overflow: hidden;
+  /* Opacity only: opening never moves an option under a stationary pointer. */
+  animation: tz-select-in var(--motion-fast) var(--ease);
+}
+.tz-select-viewport {
+  padding: var(--space-1);
+}
+.tz-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-inline: var(--space-2);
+  padding-block: var(--menu-item-padding);
+  min-block-size: var(--control-small);
+  border-radius: var(--radius-small);
+  outline-offset: -2px !important;
+  font-size: var(--text-body);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.tz-select-option[data-highlighted] {
+  background: var(--action-soft);
+  color: var(--action);
+}
+.tz-select-option[data-disabled] {
+  color: var(--text-muted);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.tz-select-scroll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  block-size: var(--space-5);
+}
+@keyframes tz-select-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@media (forced-colors: active) {
+  .tz-input,
+  .tz-select-trigger,
+  .tz-select-popup {
+    border-color: ButtonText;
+  }
+}
+/* Application example layout; controls continue to use system tokens. */
+.customer-form {
+  display: grid;
+  gap: var(--row-gap);
+}
+.customer-list {
+  list-style: none;
+  margin-block: var(--space-4);
+  padding: 0;
+}
+.customer-list li {
+  padding-block: var(--space-2);
+  border-block-end: 1px solid var(--border);
+  overflow-wrap: anywhere;
+}
+.customer-list span {
+  color: var(--text-secondary);
+}

@@ -1,5 +1,6 @@
 import { expect, it } from "vitest";
 import {
+  normalizePlaygrounds,
   defaultPlaygrounds,
   translateDefaults,
   previewConfig,
@@ -107,4 +108,36 @@ it("uses the latest global accent and theme despite obsolete saved preview overr
     accent: "plum",
     theme: "light",
   });
+});
+
+it("normalizes forms, rejects invalid options and retains valid text while translating defaults", () => {
+  const p = defaultPlaygrounds("ar");
+  expect(validateCollection("select", [{ value: "", label: "Empty" }])).toBe(
+    false,
+  );
+  expect(
+    validateCollection("select", [
+      { value: "a", label: "A" },
+      { value: "a", label: "B" },
+    ]),
+  ).toBe(false);
+  expect(
+    validateCollection("select", [
+      { value: "a", label: "A", disabled: "true" },
+    ]),
+  ).toBe(false);
+  const normalized = normalizePlaygrounds(
+    {
+      input: { ...p.input, type: "date", size: "xx", value: "مدار" },
+      select: { ...p.select, value: "archived", options: p.select.options },
+    },
+    "ar",
+  );
+  expect(normalized.input.type).toBe("text");
+  expect(normalized.input.size).toBe("sm");
+  expect(normalized.input.value).toBe("مدار");
+  expect(normalized.select.value).toBe("");
+  const translated = translateDefaults(normalized, "ar", "en");
+  expect(translated.input.value).toBe("مدار");
+  expect(translated.select.options[0].label).toBe("Active");
 });

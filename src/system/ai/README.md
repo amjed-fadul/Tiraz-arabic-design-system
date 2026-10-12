@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **six**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet and Toast.
+Tiraz is an Arabic-first, source-owned React dashboard library with **nine**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input and Select.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 
 1. Locate the directory containing `index.ts`, `config.ts`, `tokens.css`,
@@ -34,7 +34,7 @@ Use the existing project toolchain. The current checkout uses React/React DOM
 through Button/Switch and Radix triggers; earlier React versions are not
 verified. Consumer projects need compatible React compilation,
 `lucide-react` and Radix packages for direction, tabs, switch, dropdown-menu,
-dialog and toast. Read the checkout's package/lock files when available;
+dialog, toast and select (verified with @radix-ui/react-select 2.4.1). Read the checkout's package/lock files when available;
 otherwise inspect imports and resolve compatible dependencies in the host.
 No Tiraz installer, CLI, backend or MCP service is needed.
 
@@ -56,3 +56,5 @@ on `<main>` is insufficient. SystemProvider does not accept a `lang` prop.
 
 The source/type contract wins if metadata drifts. State the discrepancy and
 validate against the real implementation; do not silently invent capabilities.
+
+The connected [Create customer example](examples/CreateCustomer.tsx) composes Field/Input/Select with Sheet/Button/Toast. It belongs to the host application and is not a barrel export. Its data lives only while mounted.

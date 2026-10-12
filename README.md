@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with six source-owned components and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with nine source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -26,7 +26,7 @@ Each component has one continuous page: title and description → a single-line 
 
 Arabic mode has navigation only in the compact 190px right sidebar. A separate 240px rail sits 10px from the viewport's left edge, with compact system settings above the contextual component inspector, each on its own rounded surface with a 16px gap. Its bounded scroll region supports keyboard access and shorter windows. English mode mirrors both rails through logical layout. They reserve their own grid space outside the centered article. Navigation scrolls independently for a growing library.
 
-The inspector presents common controls without technical subtitles or an advanced disclosure. Button has label, variant, size, one state selector (including disabled/loading), icon preset and icon-only mode. Tabs has variant/selection; Switch has label/checked/disabled; Menu has trigger label/alignment/validated items; Sheet has title/content/side; Toast has title/description/tone/duration. Other public props, native attributes, functions and refs remain documented and supported by the library. Per-component edits survive navigation and reload.
+The inspector presents common controls without technical subtitles or an advanced disclosure. Button has label, variant, size, one state selector (including disabled/loading), icon preset and icon-only mode. Tabs has variant/selection; Switch has label/checked/disabled; Menu has trigger label/alignment/validated items; Sheet has title/content/side; Toast has title/description/tone/duration. Field has label/help/error/required; Input has placeholder/size/disabled/read-only/invalid; Select has placeholder/size/disabled/options. Other public props, native attributes, functions and refs remain documented and supported by the library. Per-component edits survive navigation and reload.
 
 One header light/dark preference updates documentation, both rails, controls, playgrounds, examples and scoped portals. One language selector pairs Arabic + RTL and English + LTR. Rail settings affect preview/example accent, text scale, density, corners and motion; documentation typography and layout stay stable. Color labels are Green, Blue, Purple and Brown, with their original paired values and internal palette IDs retained.
 
@@ -65,6 +65,10 @@ src/system/                 Reusable library, exported TypeScript APIs
   DropdownMenu.tsx          Anchored, non-modal action menu
   Sheet.tsx                 Modal panel with focus trap and dismissal
   Toast.tsx                 Bounded feedback stack and announcements
+  Field.tsx                 Typed label/helper/error associations
+  Input.tsx                 Native text entry and form behavior
+  Select.tsx                Radix single choice with scoped scrolling popup
+  ai/                       Portable registry, guidance and compiling examples
   index.ts                  Public exports
 src/workbench/              Documentation shell, inspector, models and generators
   model.ts / fields.ts      Validated props and API-derived controls
@@ -114,7 +118,7 @@ Hover/press feedback uses 120ms, state changes 180ms, overlay entrance 240ms and
 
 ## Verification and screenshots
 
-The compact update passed the full Vitest suite, strict compilation of **19 generated usage modules**, Oxlint, TypeScript/Vite production build and formatting. Browser checks cover all six pages, all 20 scalar inspector controls plus the menu editor, clipboard contents, shared portal themes, immediate successive accent updates, navigation/reset/reload, legacy migration, keyboard/focus, reduced motion and 320/390px mobile layouts. Ordinary and wide desktop geometry confirms the rail stays 10px from the viewport edge without overlapping content; short windows have accessible internal scrolling.
+The compact update passed the full Vitest suite, strict compilation of **19 generated usage modules**, Oxlint, TypeScript/Vite production build and formatting. Browser checks cover all nine pages, all 20 scalar inspector controls plus the menu editor, clipboard contents, shared portal themes, immediate successive accent updates, navigation/reset/reload, legacy migration, keyboard/focus, reduced motion and 320/390px mobile layouts. Ordinary and wide desktop geometry confirms the rail stays 10px from the viewport edge without overlapping content; short windows have accessible internal scrolling.
 
 Independent source review and re-review were performed. Details: [docs/compact-workbench-verification.json](docs/compact-workbench-verification.json). The earlier [workbench verification record](docs/workbench-verification.json) describes the previous design and is retained as history.
 
@@ -131,3 +135,9 @@ Physical-device touch and a manual screen-reader pass remain unverified. Axe sca
 The reading order was informed by the public [FormicAI component preview](https://formicai.dev/preview.html#/button), reviewed in the browser. Tiraz has its own layout and implementation; no premium source was copied.
 
 [MIT](LICENSE). Font and dependency licenses remain with their respective packages.
+
+## Form foundation
+
+Field provides a typed render function: `<Field label="Name" required>{field => <Input field={field} name="name" />}</Field>`. Input and Select merge caller description IDs with Field's label/help/error associations. Error display never performs validation. Input supports text, email, password, search, tel and url, with React 19 refs and native form behavior. Select uses Radix Select 2.4.1; its hidden native select participates in submission/reset and required validation. Controlled values require application callbacks (Input reset also needs application onReset).
+
+The Field, Input, Select and Sheet pages include an application-owned Create customer example. Customer name is required, email optional and validated when supplied, and status is a single Select. Cancel/dismiss discards the draft; saving adds a semantic list entry and Toast. Data exists only while the example is mounted, with no backend or reload persistence.

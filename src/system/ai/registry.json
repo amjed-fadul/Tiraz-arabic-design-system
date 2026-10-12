@@ -99,6 +99,42 @@
     {
       "name": "ToastMessage",
       "source": "useToast.ts"
+    },
+    {
+      "name": "Field",
+      "source": "Field.tsx"
+    },
+    {
+      "name": "FieldProps",
+      "source": "Field.tsx"
+    },
+    {
+      "name": "FieldControlProps",
+      "source": "Field.tsx"
+    },
+    {
+      "name": "Input",
+      "source": "Input.tsx"
+    },
+    {
+      "name": "InputProps",
+      "source": "Input.tsx"
+    },
+    {
+      "name": "InputType",
+      "source": "Input.tsx"
+    },
+    {
+      "name": "Select",
+      "source": "Select.tsx"
+    },
+    {
+      "name": "SelectProps",
+      "source": "Select.tsx"
+    },
+    {
+      "name": "SelectOption",
+      "source": "Select.tsx"
     }
   ],
   "configuration": {
@@ -452,7 +488,7 @@
       "exports": ["DropdownMenu", "DropdownMenuProps", "MenuItem"],
       "purpose": "Present contextual commands.",
       "useWhen": "Several actions behind a focusable trigger.",
-      "alternative": "Use Tabs for views; use an application select for choosing form data (no Tiraz Select).",
+      "alternative": "Use Select for choosing one form value; Tabs for related views.",
       "props": [
         {
           "name": "trigger",
@@ -645,6 +681,309 @@
         "SystemProvider for styling/config; ToastProvider for useToast callers."
       ],
       "examples": ["ai/examples/usage.tsx"]
+    },
+    {
+      "events": [],
+      "accessibility": [
+        "Label htmlFor and aria-labelledby target field.id; helper/error and external description IDs are merged. required forwards the constraint and shows a decorative indicator."
+      ],
+      "limitations": [
+        "Required indication/error display do not validate application rules."
+      ],
+      "providers": ["SystemProvider for shared styling and configuration."],
+      "examples": ["ai/examples/usage.tsx", "ai/examples/CreateCustomer.tsx"],
+      "id": "field",
+      "api": "Field",
+      "source": "Field.tsx",
+      "exports": ["Field", "FieldProps", "FieldControlProps"],
+      "purpose": "Associate one labeled control with helper and error text.",
+      "useWhen": "Label an Input or Select with persistent application validation feedback.",
+      "alternative": "Standalone Input/Select accepts external native labels or ARIA naming.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "children",
+          "type": "(control: FieldControlProps) => ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Display only. Application owns validation; nonempty error marks the composed control invalid."
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "default": "React useId"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "None beyond FieldProps. Render one control using field={control}.",
+      "exclusions": [
+        "No arbitrary-child cloning, validation rules, nested fields or form state management."
+      ],
+      "state": "Application supplies error; Field generates stable association IDs."
+    },
+    {
+      "events": [
+        "onChange receives React.ChangeEvent<HTMLInputElement>; other native input events."
+      ],
+      "accessibility": [
+        "Name with Field or native label/aria-label/aria-labelledby. field owns id; caller description IDs are merged. invalid/error supplies aria-invalid without performing validation."
+      ],
+      "limitations": [
+        "Application owns validation messages/rules and controlled reset."
+      ],
+      "providers": ["SystemProvider for shared styling and configuration."],
+      "examples": ["ai/examples/usage.tsx", "ai/examples/CreateCustomer.tsx"],
+      "id": "input",
+      "api": "Input",
+      "source": "Input.tsx",
+      "exports": ["Input", "InputProps", "InputType"],
+      "purpose": "Native text entry.",
+      "useWhen": "Short customer names, emails and other single-line text.",
+      "alternative": "Select for predefined single values.",
+      "props": [
+        {
+          "name": "type",
+          "type": "InputType",
+          "required": false,
+          "default": "text",
+          "values": ["text", "email", "password", "search", "tel", "url"]
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "native input value",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "native input defaultValue",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "ComponentPropsWithRef<input> except size/type/children. Native editing, autofill, selection, form, style, ARIA/data and typed events are forwarded; React 19 ref targets input.",
+      "exclusions": [
+        "Text-entry types only: no number/date/file/checkbox/radio or multiline API."
+      ],
+      "state": "value/onChange controls; defaultValue initializes native uncontrolled value. Native reset restores uncontrolled default; controlled reset needs host onReset."
+    },
+    {
+      "events": [
+        "onValueChange(string), including native reset request; native trigger button events."
+      ],
+      "accessibility": [
+        "Radix arrows/Home/End/typeahead/Enter/Space/Escape and trigger restoration; disabled options skipped. Name with Field or external label/ARIA. Native required invalid focuses visible trigger."
+      ],
+      "limitations": [
+        "Unique nonempty option values and meaningful string labels are caller requirements. Native hidden select supports submission/reset/required; application owns validation rules/messages. onInvalid on trigger does not expose hidden select event. Popup fades without moving hit targets and scrolls within available viewport."
+      ],
+      "providers": [
+        "SystemProvider supplies direction/configuration and portal container; nested Sheet supplies its own content container."
+      ],
+      "examples": ["ai/examples/usage.tsx", "ai/examples/CreateCustomer.tsx"],
+      "id": "select",
+      "api": "Select",
+      "source": "Select.tsx",
+      "exports": ["Select", "SelectProps", "SelectOption"],
+      "purpose": "Choose a single predefined form value.",
+      "useWhen": "Customer status or another finite single choice.",
+      "alternative": "Input for free text; DropdownMenu for commands.",
+      "props": [
+        {
+          "name": "options",
+          "type": "SelectOption[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "autoComplete",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLButtonElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "ComponentPropsWithRef<button> except children/value/defaultValue/onChange/type, plus explicit SelectProps. Native trigger style/ARIA/data/events are supported; ref targets trigger. name/form/autoComplete target Radix native select.",
+      "exclusions": [
+        "No search, multi-select, controlled open, defaultOpen, custom popup/positioning or children slots."
+      ],
+      "state": "Radix Select 2.4.1 value/onValueChange or defaultValue. Native form reset restores initial value; controlled owner must accept reset callback. Empty string denotes placeholder."
     }
   ],
   "records": [
@@ -765,6 +1104,69 @@
           "required": false,
           "default": 5000,
           "note": "Milliseconds. Supply a positive finite duration. No Tiraz clamp; 1000–60000 is only the workbench editing range."
+        }
+      ]
+    },
+    {
+      "type": "FieldControlProps",
+      "source": "Field.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "aria-labelledby",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "aria-invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        }
+      ]
+    },
+    {
+      "type": "SelectOption",
+      "source": "Select.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
         }
       ]
     }

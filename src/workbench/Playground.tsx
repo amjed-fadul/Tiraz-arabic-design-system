@@ -1,6 +1,9 @@
 import { Plus, Download, Settings2 } from "lucide-react";
 import { Close as SheetClose } from "@radix-ui/react-dialog";
 import {
+  Field,
+  Input,
+  Select,
   Button,
   Tabs,
   Switch,
@@ -10,6 +13,9 @@ import {
   useToast,
 } from "../system";
 import type {
+  FieldModel,
+  InputModel,
+  SelectModel,
   ButtonModel,
   MenuModel,
   PlaygroundModel,
@@ -78,6 +84,71 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "field") {
+    const p = model as FieldModel;
+    return (
+      <div className="playground-form">
+        <Field {...p}>
+          {(field) => (
+            <Input
+              field={field}
+              placeholder={t("اسم العميل", "Customer name")}
+            />
+          )}
+        </Field>
+      </div>
+    );
+  }
+  if (component === "input" || component === "select") {
+    const p = model as InputModel | SelectModel;
+    const control = (field: import("../system").FieldControlProps) =>
+      component === "input" ? (
+        <Input
+          field={field}
+          type={(p as InputModel).type}
+          readOnly={(p as InputModel).readOnly}
+          placeholder={p.placeholder}
+          size={p.size}
+          disabled={p.disabled}
+          invalid={p.invalid}
+          name={p.name}
+          value={p.mode === "controlled" ? p.value : undefined}
+          defaultValue={p.mode === "uncontrolled" ? p.value : undefined}
+          onChange={(event) => {
+            onPatch({ value: event.currentTarget.value });
+            onEvent("onChange", event.currentTarget.value);
+          }}
+        />
+      ) : (
+        <Select
+          field={field}
+          options={(p as SelectModel).options}
+          placeholder={p.placeholder}
+          size={p.size}
+          disabled={p.disabled}
+          invalid={p.invalid}
+          name={p.name}
+          value={p.mode === "controlled" ? p.value : undefined}
+          defaultValue={p.value}
+          onValueChange={(value) => {
+            onPatch({ value });
+            onEvent("onValueChange", value);
+          }}
+        />
+      );
+    return (
+      <div className="playground-form">
+        <Field
+          label={p.label}
+          helper={p.helper}
+          error={p.error}
+          required={p.required}
+        >
+          {control}
+        </Field>
+      </div>
+    );
+  }
   if (component === "button") {
     const p = model as ButtonModel;
     const native = nativeAttributes(p.attributes, component);
