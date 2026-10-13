@@ -13,6 +13,64 @@ export function ApiReference({
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "data-table": [
+      [
+        "data / columns / getRowId",
+        "readonly T[] / readonly DataTableColumn<T>[] / (row: T) => Key",
+        t(
+          "التطبيق يملك البيانات والتصفية والإجراءات. مفتاح ثابت وفريد لكل صف.",
+          "Application owns data, filtering and actions. Supply a stable unique row ID.",
+        ),
+      ],
+      [
+        "DataTableColumn<T>",
+        "id: string; header: string; cell: (row: T) => ReactNode; sortValue?: (row: T) => string; rowHeader?: boolean",
+        t(
+          "sortValue يتيح فرز النص. rowHeader يحدد عنوان الصف الأصلي.",
+          "sortValue enables text sorting. rowHeader renders a native row header.",
+        ),
+      ],
+      [
+        "caption / locale",
+        "string / string",
+        t(
+          "عنوان أصلي ولغة Intl.Collator مع numeric=true وsensitivity=base.",
+          "Native caption and Intl.Collator locale with numeric=true and sensitivity=base.",
+        ),
+      ],
+      [
+        "labels",
+        "DataTableLabels",
+        t(
+          "previous، next، pagination أسماء مترجمة. sortAscending(header)، sortDescending(header)، resultCount(from,to,total) تعيد نصًا.",
+          "Translated previous, next, pagination strings. sortAscending(header), sortDescending(header), resultCount(from,to,total) return strings.",
+        ),
+      ],
+      [
+        "emptyContent / loading",
+        "ReactNode / boolean? = false",
+        t(
+          "محتوى التطبيق للفراغ والتحميل والخطأ. loading يعلن aria-busy ويعطل أزرار الصفحات؛ مرر بيانات فارغة للتحميل.",
+          "Application content for empty, loading and error states. loading sets aria-busy and disables page controls; supply empty data while loading.",
+        ),
+      ],
+      [
+        "pageSize / resetKey",
+        "number? = 10 / string | number?",
+        t(
+          "حجم موجب يُقرب لعدد صحيح. تغيير resetKey يعيد الصفحة الأولى. الفرز يعيدها تلقائيًا؛ تقليل البيانات يثبت الصفحة ضمن النطاق.",
+          "Positive size rounded down; invalid sizes normalize to 1 (nonfinite to 10). Change resetKey when filters change to return to page one. Sort resets automatically; shrinking data clamps the page permanently.",
+        ),
+      ],
+      [
+        "Scope",
+        "Client-side only",
+        t(
+          "لا تحديد أو تحرير أو حذف أو افتراضية أو أعمدة ثابتة أو بيانات خادم. Table يبقى أساس HTML البسيط.",
+          "No selection, editing, deletion, virtualization, sticky columns or server framework. Table remains the simple HTML foundation.",
+        ),
+      ],
+    ],
     table: [
       [
         "Table · caption",

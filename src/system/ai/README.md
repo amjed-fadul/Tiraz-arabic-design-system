@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **ten**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select and Table.
+Tiraz is an Arabic-first, source-owned React dashboard library with **eleven**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table and DataTable.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -63,3 +63,9 @@ validate against the real implementation; do not silently invent capabilities.
 The connected [Create customer example](examples/CreateCustomer.tsx) composes Field/Input/Select/Table with Sheet/Button/Toast. It belongs to the host application and is not a barrel export. Its data lives only while mounted.
 
 Table is a small native HTML foundation. Use [the populated/empty example](examples/TableExample.tsx) for composition; its data stays in the application. Table is not a DataTable or data-grid engine.
+
+DataTable adds client-side text sorting and pagination to Table. Use
+[the connected customer example](examples/CustomerDataTable.tsx) for search,
+status filtering, create/Toast and row-specific details Sheets. These are
+application behaviors, not a general grid API. Explicit populated/loading/empty/
+no-results/error presets demonstrate states without fake services.

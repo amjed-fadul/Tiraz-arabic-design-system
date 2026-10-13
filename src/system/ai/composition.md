@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the ten registry families. Prefer an inline task and a
+  Map each need to the eleven registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
@@ -105,3 +105,36 @@ a 32rem table minimum gives columns space and stays inside its scrolling contain
 Use bdi for mixed Arabic/English names and bdi dir="ltr" for email addresses.
 There is no sorting, filtering, pagination, selection, editing, virtualization or
 sticky-column API. Keep the connected CreateCustomer flow on the Sheet page.
+
+## DataTable v1
+
+Use Table for simple tabular content or full native cell composition. Use
+DataTable when local data needs text sorting and pagination (10 rows by default).
+Supply typed columns (`id`, `header`, `cell`, optional `sortValue` and `rowHeader`),
+`data`, stable unique `getRowId`, `caption`, `locale`, translated `labels`, and
+`emptyContent`. Sorting uses Intl.Collator with numeric ordering and base
+sensitivity; equal values retain their input order. Do not mutate records or
+use array positions as IDs. DataTable owns one internal sort/page state; there
+are no controlled modes or server data framework. Changing sort resets page one.
+
+The application filters before passing data. Change `resetKey` when search or
+filters change, even if the count stays equal. A shrinking result clamps the
+page permanently. `pageSize` is a positive integer (default 10); fractions are
+floored, values below one clamp to one, nonfinite values use ten.
+`labels` contains previous/next/pagination strings and sortAscending(header),
+sortDescending(header), resultCount(from,to,total) text functions.
+
+Use application-owned emptyContent to distinguish zero source records from
+filtered-out results. For loading/error, pass empty data and useful persistent
+content; loading=true announces busy and disables pagination. Retry belongs to
+the host. The example's explicit presets do not fetch data or randomly fail.
+
+Keep filters, records, validation and create/details Sheets in the application.
+Creating records must preserve active filters; a newly saved customer may be
+filtered out. Reuse CreateCustomer's validated flow with an optional initial
+list and render callback, keeping its synchronous duplicate-save guard, draft
+discard and trigger restoration. CustomerDataTable demonstrates a menu-to-Sheet
+transition and restores the originating row action after closing details.
+Use bdi for names and bdi dir=ltr for emails. Keep source data in memory.
+There is no selection, bulk action, editing, deletion, virtualization or sticky
+column API. No extra dependency is required.

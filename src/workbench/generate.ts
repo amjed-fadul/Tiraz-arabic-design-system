@@ -1,3 +1,6 @@
+import customerSource from "../system/ai/examples/CustomerDataTable.tsx?raw";
+import createSource from "../system/ai/examples/CreateCustomer.tsx?raw";
+import type { DataTableModel } from "./model";
 import type { SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
 import { catalog } from "./catalog";
@@ -45,6 +48,26 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (component === "data-table") {
+    const p = model as DataTableModel;
+    const source = (text: string) => text.replace(/^import[\s\S]*?;\n/gm, "");
+    return `import { useId, useRef, useState } from "react";
+import type { ReactNode } from "react";
+import { MoreHorizontal } from "lucide-react";
+import { Button, Field, Input, Select, Sheet, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, useToast, DataTable, DropdownMenu, SystemProvider, ToastProvider, defaultConfig } from "./system";
+import type { DataTableColumn } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+${source(createSource)}
+${source(customerSource)}
+export default function Example() {
+  return <div lang={${json(language)}}><SystemProvider config={{ ...defaultConfig, ...${json(config)} }}><ToastProvider label={${json(language === "ar" ? "تنبيهات العملاء" : "Customer notifications")}} closeLabel={${json(language === "ar" ? "إغلاق التنبيه" : "Dismiss notification")}}><CustomerDataTable language={${json(language)}} caption={${json(p.caption)}} preset={${json(p.preset)}} /></ToastProvider></SystemProvider></div>;
+}
+`;
+  }
   const c = previewConfig(config, model),
     imports = new Set(["SystemProvider", "defaultConfig"]),
     otherImports = new Set<string>();

@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/data-table.test.tsx src/workbench/customer-data-table.test.tsx src/workbench/customer-flow.test.tsx src/workbench/data-table-page.test.tsx src/workbench/generated-code.test.ts src/system/ai-registry.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/data-table-v1/Tiraz
+
+
+ Test Files  6 passed (6)
+      Tests  17 passed (17)
+   Start at  16:39:51
+   Duration  5.67s (tests 48%, environment 31%, import 9%, transform 7%, setup 5%)

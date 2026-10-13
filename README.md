@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with ten source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with eleven source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -118,7 +118,7 @@ Hover/press feedback uses 120ms, state changes 180ms, overlay entrance 240ms and
 
 ## Verification and screenshots
 
-The compact update passed the full Vitest suite, strict compilation of **19 generated usage modules**, Oxlint, TypeScript/Vite production build and formatting. The original browser checks covered nine pages (current navigation has nine, with Field under Input), all 20 scalar inspector controls plus the menu editor, clipboard contents, shared portal themes, immediate successive accent updates, navigation/reset/reload, legacy migration, keyboard/focus, reduced motion and 320/390px mobile layouts. Ordinary and wide desktop geometry confirms the rail stays 10px from the viewport edge without overlapping content; short windows have accessible internal scrolling.
+The compact update passed the full Vitest suite, strict compilation of **19 generated usage modules**, Oxlint, TypeScript/Vite production build and formatting. The original browser checks covered nine pages (current navigation has ten, with Field under Input), all 20 scalar inspector controls plus the menu editor, clipboard contents, shared portal themes, immediate successive accent updates, navigation/reset/reload, legacy migration, keyboard/focus, reduced motion and 320/390px mobile layouts. Ordinary and wide desktop geometry confirms the rail stays 10px from the viewport edge without overlapping content; short windows have accessible internal scrolling.
 
 Independent source review and re-review were performed. Details: [docs/compact-workbench-verification.json](docs/compact-workbench-verification.json). The earlier [workbench verification record](docs/workbench-verification.json) describes the previous design and is retained as history.
 
@@ -153,3 +153,19 @@ focusable and inherits the table name. Shared density, text scale, theme and
 RTL/LTR apply. Cells wrap and narrow screens scroll internally. This foundation
 has no sorting, filtering, pagination, selection, editing, virtualization or sticky
 columns. The connected Sheet customer example displays saved customers in Table.
+
+### DataTable v1
+
+Use Table for plain native tabular composition. DataTable adds typed columns,
+locale-aware text sorting and client pagination (10 rows by default). The
+application supplies filtered records, stable IDs, translated labels, empty
+content and row actions. Change resetKey with search/filter changes; sorting
+returns to page one and shrinking results clamp the page.
+
+The distinct جدول البيانات / DataTable documentation page demonstrates 26
+Arabic/English customers, search, status filtering, create with validation and
+Toast, and row-specific details Sheets. Caption and explicit example-state
+presets are its only contextual controls. Copied code includes the connected
+application and compiles against a relocated source bundle. Data remains in
+memory. No selection, bulk actions, editing, deletion, virtualization, sticky
+columns, backend, persistence or server grid framework is included.

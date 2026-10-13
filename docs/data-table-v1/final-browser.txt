@@ -1,0 +1,22 @@
+{
+  "checks": [
+    {
+      "check": "live accent in menu; density/type/radius/theme/language/direction in open Sheet; filter, sort and records preserved",
+      "tokens": {
+        "text": "16px",
+        "radius": "16px",
+        "control": "36px",
+        "theme": "dark",
+        "direction": "rtl"
+      }
+    },
+    {
+      "check": "320px Arabic no document overflow; OS reduced motion with application reduction false",
+      "duration": "1e-05s"
+    },
+    {
+      "check": "actual clipboard source in standalone copied library app: pagination/search/create-once/Toast/details/keyboard focus restoration"
+    }
+  ],
+  "errors": []
+}

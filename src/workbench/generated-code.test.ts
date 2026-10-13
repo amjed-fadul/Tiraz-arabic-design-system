@@ -118,6 +118,27 @@ it("type-checks copied code for every component, state mode and composition pres
       generateCode(id, model, config ?? defaultConfig, "en"),
     ]),
   );
+  for (const language of ["ar", "en"] as const)
+    for (const preset of [
+      "populated",
+      "loading",
+      "empty",
+      "no-results",
+      "error",
+    ] as const)
+      sources.set(
+        `${root}/src/__generated_datatable_${language}_${preset}.tsx`,
+        generateCode(
+          "data-table",
+          {
+            ...defaultPlaygrounds(language)["data-table"],
+            preset,
+            caption: "",
+          },
+          { ...defaultConfig, direction: language === "ar" ? "rtl" : "ltr" },
+          language,
+        ),
+      );
   sources.set(
     `${root}/src/__generated_input_contract.tsx`,
     `

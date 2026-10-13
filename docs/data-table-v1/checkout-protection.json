@@ -1,0 +1,16 @@
+{
+  "originalCheckout": "/Users/amjedfadul/Tiraz",
+  "originalBranch": "main",
+  "originalHead": "ce78408818b6a9866ab0faa7748404cba44d8939",
+  "baseline": "06a8b13d237d303b48979edeac223f726126d57f",
+  "workingBranch": "codex/data-table-v1",
+  "workingCheckout": "/Users/amjedfadul/.codex/worktrees/data-table-v1/Tiraz",
+  "preview": "http://127.0.0.1:5204",
+  "originalBeforeAndAfterSha1": {
+    ".git/index": "91150b79e7091167e2133ae89525aa0c5395852e",
+    "README.md": "d170db61dde068efba64fc7188689f710a634ea3",
+    "src/workbench/workbench.css": "3e57b8b0c6526ed1fbb2ba74f8c06891a129c347"
+  },
+  "originalBinaryDiffUnchanged": true,
+  "dependenciesAdded": false
+}

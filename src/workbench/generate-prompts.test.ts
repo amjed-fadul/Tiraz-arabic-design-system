@@ -90,6 +90,16 @@ it("generates identical prompts when the same checkout is relocated", () => {
         }).outputText,
       );
     }
+    // Mirror Vite's ?raw loader using the real example source in both relocated trees.
+    for (const name of ["CreateCustomer", "CustomerDataTable"]) {
+      const path = `src/system/ai/examples/${name}.tsx`;
+      const outputPath = join(first, path + "?raw");
+      mkdirSync(dirname(outputPath), { recursive: true });
+      writeFileSync(
+        outputPath,
+        `Object.defineProperty(exports, "__esModule", { value: true }); exports.default = ${JSON.stringify(readFileSync(join(projectRoot, path), "utf8"))};`,
+      );
+    }
     cpSync(first, second, { recursive: true });
     const run = `const {generatePrompt}=require('./src/workbench/generate.js');const {catalog}=require('./src/workbench/catalog.js');const {defaultPlaygrounds}=require('./src/workbench/model.js');const {defaultConfig}=require('./src/system/config.js');console.log(JSON.stringify(['ar','en'].flatMap(language=>catalog.map(entry=>generatePrompt(entry.id,defaultPlaygrounds(language)[entry.id],defaultConfig,language)))));`;
     const original = execFileSync(process.execPath, ["-e", run], {

@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/data-table-v1/Tiraz
+
+
+ Test Files  20 passed (20)
+      Tests  176 passed (176)
+   Start at  16:32:01
+   Duration  9.82s (tests 58%, environment 24%, import 9%, transform 5%, setup 4%)
+
+    Isolate  20 workers spawned · ~785ms startup each (spawn + environment, per file)
+             at least ~1.46s faster with isolate: false — reuses workers across files instead of one per file

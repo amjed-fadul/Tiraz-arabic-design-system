@@ -163,6 +163,22 @@
     {
       "name": "TableCell",
       "source": "Table.tsx"
+    },
+    {
+      "name": "DataTable",
+      "source": "DataTable.tsx"
+    },
+    {
+      "name": "DataTableProps",
+      "source": "DataTable.tsx"
+    },
+    {
+      "name": "DataTableColumn",
+      "source": "DataTable.tsx"
+    },
+    {
+      "name": "DataTableLabels",
+      "source": "DataTable.tsx"
     }
   ],
   "configuration": {
@@ -1086,6 +1102,100 @@
         "ai/examples/TableExample.tsx",
         "ai/examples/CreateCustomer.tsx"
       ]
+    },
+    {
+      "id": "data-table",
+      "api": "DataTable",
+      "source": "DataTable.tsx",
+      "exports": [
+        "DataTable",
+        "DataTableProps",
+        "DataTableColumn",
+        "DataTableLabels"
+      ],
+      "purpose": "Native Table with client-side text sorting and pagination.",
+      "useWhen": "Local records need sortable text columns and pagination.",
+      "alternative": "Use Table for plain native tabular composition; no server data framework.",
+      "props": [
+        {
+          "name": "data",
+          "type": "readonly T[]",
+          "required": true,
+          "default": "undefined",
+          "note": "Application-filtered records. Supply [] for loading/error."
+        },
+        {
+          "name": "columns",
+          "type": "readonly DataTableColumn<T>[]",
+          "required": true,
+          "default": "undefined",
+          "note": "Unique IDs; header, cell, optional sortValue and rowHeader."
+        },
+        {
+          "name": "getRowId",
+          "type": "(row: T) => Key",
+          "required": true,
+          "default": "undefined",
+          "note": "Stable unique row keys; never use array positions."
+        },
+        {
+          "name": "caption",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Native caption; when empty, table name falls back to labels.pagination."
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Intl.Collator(locale, {numeric: true, sensitivity: \"base\"}); stable sorting on ties."
+        },
+        {
+          "name": "labels",
+          "type": "DataTableLabels",
+          "required": true,
+          "default": "undefined",
+          "note": "Caller translations for controls and result announcements."
+        },
+        {
+          "name": "emptyContent",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined",
+          "note": "Caller distinguishes empty source, filtered-out results, loading and error/Retry."
+        },
+        {
+          "name": "pageSize",
+          "type": "number",
+          "required": false,
+          "default": 10,
+          "note": "Positive integer; floors fractions, clamps below 1 to 1; nonfinite values use 10."
+        },
+        {
+          "name": "resetKey",
+          "type": "string | number",
+          "required": false,
+          "default": "undefined",
+          "note": "Change with application filters, even when the result count stays equal. Sort resets internally. Data shrink permanently clamps current page."
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Sets table aria-busy; disables pagination. Does not fetch data."
+        }
+      ],
+      "examples": [
+        "ai/examples/CustomerDataTable.tsx",
+        "ai/examples/CreateCustomer.tsx"
+      ],
+      "behavior": [
+        "One internal sorting/pagination mode, default 10 rows; no selection, bulk actions, editing, deletion, virtualization, sticky columns or server framework.",
+        "Native header buttons and aria-sort; no row motion. Parent supplies filters and row actions."
+      ]
     }
   ],
   "records": [
@@ -1269,6 +1379,82 @@
           "required": false,
           "default": "undefined",
           "values": [false, true]
+        }
+      ]
+    },
+    {
+      "type": "DataTableColumn",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "header",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "cell",
+          "type": "(row: T) => ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "sortValue",
+          "type": "(row: T) => string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "rowHeader",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "DataTableLabels",
+      "props": [
+        {
+          "name": "previous",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "next",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "pagination",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "sortAscending",
+          "type": "(header: string) => string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "sortDescending",
+          "type": "(header: string) => string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "resultCount",
+          "type": "(from: number, to: number, total: number) => string",
+          "required": true,
+          "default": "undefined"
         }
       ]
     }

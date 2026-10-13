@@ -149,6 +149,15 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "data-table")
+    return (
+      <p className="example-caption">
+        {t(
+          "Table للمحتوى الجدولي البسيط. DataTable للفرز وتقسيم الصفحات في الذاكرة؛ التطبيق يملك التصفية والإجراءات. اختر حالة المثال أعلاه لعرض التحميل أو الخطأ أو الفراغ.",
+          "Use Table for simple tabular content. DataTable handles in-memory sorting and pagination; the application owns filtering and actions. Choose an example state above to demonstrate loading, error or empty data.",
+        )}
+      </p>
+    );
   if (component === "table")
     return (
       <div className="quiet-examples">

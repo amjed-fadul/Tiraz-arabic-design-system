@@ -149,6 +149,7 @@ export function Workbench() {
     patchPage(active, patch);
     // Keep Input's IDs and native editing state through label/help/error edits.
     // Mode/default-value changes still need a fresh uncontrolled demonstration.
+    if (active === "data-table") return;
     if (active === "input" && !("mode" in patch) && !("value" in patch)) return;
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }

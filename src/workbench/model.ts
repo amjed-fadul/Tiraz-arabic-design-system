@@ -118,7 +118,12 @@ export interface TableModel {
   caption: string;
   preset: "populated" | "empty";
 }
+export interface DataTableModel {
+  caption: string;
+  preset: "populated" | "loading" | "empty" | "no-results" | "error";
+}
 export interface Playgrounds {
+  "data-table": DataTableModel;
   table: TableModel;
   button: ButtonModel;
   tabs: TabsModel;
@@ -145,6 +150,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "data-table": { caption: t("العملاء", "Customers"), preset: "populated" },
     table: { caption: t("العملاء", "Customers"), preset: "populated" },
     field: {
       label: t("اسم العميل", "Customer name"),
@@ -465,7 +471,10 @@ export function normalizePlaygrounds(
       );
     const r = defaults;
     const enums: Record<string, string[]> = {
-      preset: ["populated", "empty"],
+      preset:
+        component === "data-table"
+          ? ["populated", "loading", "empty", "no-results", "error"]
+          : ["populated", "empty"],
       mode: ["controlled", "uncontrolled"],
       variant:
         component === "tabs"

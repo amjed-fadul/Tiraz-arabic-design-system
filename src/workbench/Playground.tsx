@@ -1,3 +1,5 @@
+import { CustomerDataTable } from "../system/ai/examples/CustomerDataTable";
+import type { DataTableModel } from "./model";
 import { TableExample } from "../system/ai/examples/TableExample";
 import { Plus, Download, Settings2 } from "lucide-react";
 import { Close as SheetClose } from "@radix-ui/react-dialog";
@@ -86,6 +88,22 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "data-table") {
+    const p = model as DataTableModel;
+    return (
+      <ToastProvider
+        label={t("تنبيهات العملاء", "Customer notifications")}
+        closeLabel={t("إغلاق التنبيه", "Dismiss notification")}
+      >
+        <CustomerDataTable
+          key={p.preset}
+          language={language}
+          caption={p.caption}
+          preset={p.preset}
+        />
+      </ToastProvider>
+    );
+  }
   if (component === "table") {
     const p = model as TableModel;
     return (

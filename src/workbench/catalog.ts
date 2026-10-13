@@ -90,6 +90,15 @@ export const catalog = [
     ],
     file: "Table.tsx",
   },
+  {
+    id: "data-table",
+    name: ["جدول البيانات", "DataTable"],
+    description: [
+      "إدارة العملاء مع البحث والتصفية والفرز وتقسيم الصفحات. استخدم Table للجداول البسيطة.",
+      "Manage customers with search, filtering, sorting and pagination. Use Table for simple tables.",
+    ],
+    file: "DataTable.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;
