@@ -1,5 +1,6 @@
 import { createRef, useState } from "react";
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -7,7 +8,7 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import {
   Avatar,
   AvatarGroup,
@@ -366,3 +367,78 @@ it("dismisses nested Select on Escape while preserving Modal and restoring Selec
   await user.keyboard("{Escape}");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 });
+
+it.each(["click", "Escape"] as const)(
+  "reopens on a new hover after %s dismissal while the trigger stays focused",
+  (dismissal) => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      const ref = createRef<HTMLButtonElement>();
+      const click = vi.fn(),
+        enter = vi.fn(),
+        leave = vi.fn(),
+        focus = vi.fn();
+      render(
+        <SystemProvider>
+          <p id="hover-help">Existing help</p>
+          <Tooltip
+            delayDuration={80}
+            content="Hover explanation"
+            trigger={
+              <button
+                ref={ref}
+                aria-describedby="hover-help"
+                onClick={click}
+                onPointerEnter={enter}
+                onPointerLeave={leave}
+                onFocus={focus}
+              >
+                Details
+              </button>
+            }
+          />
+        </SystemProvider>,
+      );
+      const trigger = screen.getByRole("button", { name: "Details" });
+      const advance = (ms: number) => {
+        act(() => vi.advanceTimersByTime(ms));
+      };
+      fireEvent.pointerEnter(trigger, { pointerType: "mouse" });
+      advance(80);
+      expect(screen.getByRole("tooltip", { hidden: true })).toBeInTheDocument();
+      if (dismissal === "click") {
+        fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+        act(() => trigger.focus());
+        fireEvent.click(trigger);
+        expect(click).toHaveBeenCalledTimes(1);
+      } else {
+        act(() => trigger.focus());
+        fireEvent.keyDown(trigger, { key: "Escape" });
+      }
+      expect(trigger).toHaveFocus();
+      expect(ref.current).toBe(trigger);
+      expect(focus).toHaveBeenCalledTimes(1);
+      expect(screen.queryByRole("tooltip", { hidden: true })).toBeNull();
+      expect(trigger).toHaveAccessibleDescription("Existing help");
+      advance(200);
+      expect(screen.queryByRole("tooltip", { hidden: true })).toBeNull();
+      fireEvent.pointerLeave(trigger, { pointerType: "mouse" });
+      expect(trigger).toHaveFocus();
+      fireEvent.pointerEnter(trigger, { pointerType: "mouse" });
+      expect(screen.queryByRole("tooltip", { hidden: true })).toBeNull();
+      advance(79);
+      expect(screen.queryByRole("tooltip", { hidden: true })).toBeNull();
+      advance(1);
+      expect(screen.getByRole("tooltip", { hidden: true })).toBeInTheDocument();
+      expect(trigger).toHaveFocus();
+      expect(trigger).toHaveAccessibleName("Details");
+      expect(trigger).toHaveAccessibleDescription(
+        "Existing help Hover explanation",
+      );
+      expect(enter).toHaveBeenCalledTimes(2);
+      expect(leave).toHaveBeenCalledTimes(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  },
+);

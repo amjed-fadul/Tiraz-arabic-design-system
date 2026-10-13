@@ -1,5 +1,26 @@
 # Avatar, overlays and empty states verification
 
+Latest correction: Tooltip hover recovery starting from `a6c6b0573838d02231258db7630bb33816956792`, verified locally on the Mac on 13 October 2026 (Asia/Dubai). The fix commit is recorded in the final chat response. [Correction evidence and commands](tooltip-hover-fix/README.md) preserve the original batch evidence below.
+
+## Tooltip focused hover correction
+
+The original click/Escape dismissal stayed suppressed after pointer leave/re-entry when the trigger retained focus. The production correction moves one assignment: pointer leave resets dismissal regardless of focus, while the existing unfocused-only delayed hide stays intact. Stationary-pointer dismissal, hover delay, trigger/content handoff, fresh keyboard focus, refs/descriptions/handlers, Modal Escape ordering and reduced-motion CSS are preserved. No API, style, dependency or other component changed.
+
+Both regressions failed on the original source (the Tooltip remained absent after the configured delay). Real Chrome reproduced the click failure in the actual TooltipExample with its trigger still focused. After correction:
+
+- Focused checks passed: **6 files / 49 tests** ([log](tooltip-hover-fix/focused.txt)), including generated and relocated portable compilation.
+- Complete standalone unit suite passed: **29 files / 241 tests** ([log](tooltip-hover-fix/unit.txt)), using two local workers and unchanged timeouts/configuration.
+- Build, lint and formatting passed ([build](tooltip-hover-fix/build.txt), [lint](tooltip-hover-fix/lint.txt), [format](tooltip-hover-fix/format.txt), [browser format](tooltip-hover-fix/browser-format.txt)). The existing nonblocking documentation bundle-size warning remains.
+- Real Arabic/English documentation checks passed at 320×568: click/Escape dismiss immediately and stay closed under a stationary pointer for 600ms; genuine leave/re-entry stays closed at 250ms and subsequently reopens with trigger focus retained; content remains hoverable ([results](tooltip-hover-fix/browser/documentation-results.json)).
+- The complete existing browser matrix passed **48 combinations**, with zero page errors ([results](tooltip-hover-fix/browser/results.json), [log](tooltip-hover-fix/browser.txt)). It reconfirmed unfocused handoff past the leave grace period, fresh focus/ref/descriptions, scoped Tooltip-before-Modal Escape, collisions, live customization and application/OS reduced motion.
+- Independent re-review reported **no actionable findings**, with 22/22 focused tests and separate Chrome checks of focused and unfocused handoff, fresh focus, refs/descriptions and Tooltip-before-Modal Escape ([review](review.md#tooltip-focused-hover-correction-re-review)).
+
+Focused re-hover captures: [Arabic narrow](tooltip-hover-fix/browser/tooltip-focused-rehover-ar-narrow.png) and [English narrow](tooltip-hover-fix/browser/tooltip-focused-rehover-en-narrow.png).
+
+The original checkout/index/edits and other servers remain preserved. The same port-5206 server serves the updated source and stays running. This correction is a local commit only; no push, merge or deployment is authorized.
+
+## Original batch verification (historical)
+
 Implemented and verified locally on the user's Mac on 13 October 2026 (Asia/Dubai).
 
 Baseline: `d28bea820bb6f1c64e86c1738ab9876013b26d30` (verified local commit).

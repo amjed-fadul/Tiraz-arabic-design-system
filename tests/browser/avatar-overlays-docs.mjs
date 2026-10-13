@@ -10,7 +10,8 @@ const browser = await chromium.launch({
 });
 const page = await browser.newPage();
 const base = "http://127.0.0.1:5206",
-  out = "docs/avatar-overlays-empty-state/browser";
+  out =
+    process.env.TIRAZ_EVIDENCE || "docs/avatar-overlays-empty-state/browser";
 await mkdir(out, { recursive: true });
 const report = { checks: [], errors: [] };
 page.on("pageerror", (e) => report.errors.push(e.message));
@@ -76,13 +77,17 @@ try {
         await dialog.waitFor({ state: "detached" });
       }
       if (active === "tooltip") {
-        const trigger = canvas.getByRole("button", {
-          name: language === "ar" ? "عرض التفاصيل" : "Show details",
-        });
-        await trigger.focus();
-        await page.getByRole("tooltip").waitFor();
-        await page.keyboard.press("Escape");
+        const trigger = canvas.locator("button");
+        const tooltip = page.getByRole("tooltip");
+        await trigger.hover();
+        assert.equal(await tooltip.count(), 0);
+        await tooltip.waitFor();
         await trigger.click();
+        assert.equal(await tooltip.count(), 0);
+        assert.equal(
+          await trigger.evaluate((el) => el === document.activeElement),
+          true,
+        );
         assert.equal(
           await canvas
             .getByText(
@@ -93,6 +98,53 @@ try {
             .count(),
           1,
         );
+        await page.waitForTimeout(600);
+        assert.equal(await tooltip.count(), 0);
+        report.tooltipRecovery = {
+          language,
+          phase: "click dismissal followed by focused pointer leave/re-entry",
+          focused: await trigger.evaluate(
+            (el) => el === document.activeElement,
+          ),
+        };
+        await page.mouse.move(0, 0);
+        await trigger.hover();
+        assert.equal(await tooltip.count(), 0);
+        await page.waitForTimeout(250);
+        assert.equal(await tooltip.count(), 0);
+        await tooltip.waitFor({ timeout: 1500 });
+        assert.equal(
+          await trigger.evaluate((el) => el === document.activeElement),
+          true,
+        );
+        await page.keyboard.press("Escape");
+        assert.equal(await tooltip.count(), 0);
+        await page.waitForTimeout(600);
+        assert.equal(await tooltip.count(), 0);
+        report.tooltipRecovery.phase =
+          "Escape dismissal followed by focused pointer leave/re-entry";
+        await page.mouse.move(0, 0);
+        await trigger.hover();
+        assert.equal(await tooltip.count(), 0);
+        await page.waitForTimeout(250);
+        assert.equal(await tooltip.count(), 0);
+        await tooltip.waitFor({ timeout: 1500 });
+        assert.equal(
+          await trigger.evaluate((el) => el === document.activeElement),
+          true,
+        );
+        await page.screenshot({
+          path: out + `/tooltip-focused-rehover-${language}-narrow.png`,
+        });
+        await tooltip.hover();
+        await page.waitForTimeout(125);
+        assert.equal(await tooltip.count(), 1);
+        await page.keyboard.press("Escape");
+        report.checks.push({
+          language,
+          tooltip:
+            "click/Escape stay dismissed under stationary pointer; genuine leave/re-entry reopens after hover delay with trigger focused; content stays hoverable",
+        });
       }
       if (active === "empty-state" && language === "ar")
         await page.screenshot({

@@ -34,10 +34,10 @@ export function Tooltip({
   }
   function leave() {
     cancel();
+    dismissed.current = false;
     if (!focused.current)
       timer.current = setTimeout(() => {
         setOpen(false);
-        dismissed.current = false;
       }, 100);
   }
   useEffect(

@@ -12,7 +12,8 @@ const browser = await chromium.launch({
 const page = await browser.newPage();
 page.setDefaultTimeout(10000);
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5206";
-const out = "docs/avatar-overlays-empty-state/browser";
+const out =
+  process.env.TIRAZ_EVIDENCE || "docs/avatar-overlays-empty-state/browser";
 await mkdir(out, { recursive: true });
 const report = { checks: [], matrix: [], errors: [] };
 page.on("pageerror", (error) => report.errors.push(error.message));
@@ -71,6 +72,7 @@ try {
   await page.getByRole("tooltip").waitFor();
   const tip = page.getByRole("tooltip");
   await tip.hover();
+  await page.waitForTimeout(125);
   assert.equal(await tip.count(), 1);
   await page.keyboard.press("Escape");
   assert.equal(await tip.count(), 0);

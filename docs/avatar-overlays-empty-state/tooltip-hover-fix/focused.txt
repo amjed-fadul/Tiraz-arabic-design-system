@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/avatar-overlays-empty-state.test.tsx src/system/overlay-regressions.test.tsx src/workbench/generated-batch.test.tsx src/workbench/avatar-overlays-pages.test.tsx src/workbench/generated-code.test.ts src/system/ai-registry.test.ts --maxWorkers=4
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+
+ Test Files  6 passed (6)
+      Tests  49 passed (49)
+   Start at  22:09:36
+   Duration  11.43s (tests 57%, environment 21%, transform 12%, import 7%, setup 3%)
+
+    Isolate  6 workers spawned · ~1.64s startup each (spawn + environment, per file)
+             at least ~822ms faster with isolate: false — reuses workers across files instead of one per file
+

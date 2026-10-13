@@ -1,0 +1,17 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+
+ Test Files  29 passed (29)
+      Tests  241 passed (241)
+   Start at  22:12:50
+   Duration  33.31s (tests 56%, environment 26%, import 10%, setup 5%, transform 3%)
+
+Environment  jsdom was created 29 times · 16.43s total, 26% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
