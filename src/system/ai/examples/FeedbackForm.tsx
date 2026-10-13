@@ -19,15 +19,18 @@ export function FeedbackForm({ language = "ar" }: { language?: "ar" | "en" }) {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if (!String(data.get("notes") ?? "").trim()) {
-          setError(t("أدخل ملاحظة قبل الحفظ.", "Enter a note before saving."));
+          setError(
+            t(
+              "أدخل ملاحظة لإكمال التحقق من النموذج.",
+              "Enter a note to complete the form check.",
+            ),
+          );
           setFeedback("");
           notes.current?.focus();
           return;
         }
         setError("");
-        setFeedback(
-          t("حُفظت التفضيلات خلال هذه الجلسة.", "Saved for this session."),
-        );
+        setFeedback(t("تم التحقق من النموذج بنجاح.", "Form check passed."));
       }}
     >
       <Checkbox
@@ -60,7 +63,7 @@ export function FeedbackForm({ language = "ar" }: { language?: "ar" | "en" }) {
         rows={3}
       />
       <div className="tz-preferences-actions">
-        <Button type="submit">{t("حفظ التفضيلات", "Save preferences")}</Button>
+        <Button type="submit">{t("تحقق من النموذج", "Check form")}</Button>
         <Button type="reset" variant="secondary">
           {t("إعادة الضبط", "Reset")}
         </Button>

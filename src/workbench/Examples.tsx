@@ -201,8 +201,8 @@ export function Examples({
       <div className="quiet-examples">
         <p className="example-caption">
           {t(
-            "نموذج صغير · التطبيق يملك التحقق والحفظ",
-            "Small form · application-owned validation and saving",
+            "نموذج صغير · التطبيق يملك التحقق",
+            "Small form · application-owned validation",
           )}
         </p>
         <FeedbackForm language={language} />

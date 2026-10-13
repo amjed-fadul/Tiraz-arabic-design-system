@@ -1,5 +1,9 @@
 # Badge and native form controls verification
 
+Latest verification covers the two review corrections starting from `099cb27fbd65964aeb0379d92c828f512f0515dd`: validation-focused FeedbackForm copy and the Switch-to-Checkbox recommendation. The local fix has 205 passing tests, successful build/lint/format checks and revised Arabic/English browser evidence. See [review corrections](#review-corrections) below. Its local tested commit is recorded in the final chat response.
+
+The original batch records and `browser/` captures below are historical evidence from `099cb27fbd65964aeb0379d92c828f512f0515dd`. The revised example captures are in [review-fixes/browser](review-fixes/browser/results.json).
+
 Implemented and verified locally on the user's Mac, 13 October 2026 (Asia/Dubai).
 Baseline: `c913c58df76a100b87044f65e7d04fdd0e4c33a2`.
 Checkout: `/Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz`.
@@ -49,7 +53,7 @@ node tests/browser/small-controls.mjs
 
 Native checks cover checkbox Space, radio arrow navigation/wrapping and disabled-option skipping, one checked choice, FormData, native uncontrolled reset and cancellation, external form association, application-owned controlled reset, textarea editing/selection/vertical resizing and interactive native required-field focus. Unit checks cover refs, accessible names/descriptions, deduplicated caller/helper/error IDs, controlled callbacks, disabled state and readOnly behavior.
 
-Live customization changes mounted controls through theme, accent, density, text scale, corners and reduced motion. A mounted documentation textarea retains its node and draft through shared customization changes. Both configuration reduction and OS reduced motion yield zero transitions, including when configuration is false. The combined form validates, focuses the associated error, saves and resets.
+Live customization changes mounted controls through theme, accent, density, text scale, corners and reduced motion. A mounted documentation textarea retains its node and draft through shared customization changes. Both configuration reduction and OS reduced motion yield zero transitions, including when configuration is false. The combined form checks required notes, focuses the associated error, reports the validation result and resets.
 
 All Badge tones measured at least 5.0055:1 text/background contrast in light and dark. A representative form documentation page had zero axe violations with color-contrast excluded from that scan and Badge contrast measured separately. These are browser/DOM checks; actual assistive-technology speech and other browser engines were not tested.
 
@@ -60,3 +64,36 @@ Visual inspection found legacy `.example-form input` styles stretching form radi
 Independent source review, focused tests and RTL browser inspection were followed by review of the confirmed layout fix and Badge documentation correction. The reviewer confirmed compact/readable Arabic 320px radios and no remaining actionable findings. See `independent-review.md`.
 
 The original checkout remains at `ce78408818b6a9866ab0faa7748404cba44d8939` with its existing README/workbench CSS edits. Binary working diff SHA-256 remains `60c40d75854dc2d4fe61a0257dd2470837f36dc8041d80db18e17cdc2e8b2d08`; staged diff remains empty. All 17 pre-existing Node server PID/port pairs remain present. The only added preview is PID 59300 on 5205. No push, merge, deploy, publish or subsequent batch was performed.
+
+## Review corrections
+
+Starting commit: `099cb27fbd65964aeb0379d92c828f512f0515dd`. Work remains local on `codex/form-controls-and-badge` in the same isolated checkout.
+
+FeedbackForm's submit action is now “Check form” / “تحقق من النموذج”. Valid notes report “Form check passed.” / “تم التحقق من النموذج بنجاح.” Blank or whitespace notes receive a validation-focused error. The example description, portable README/composition and unit/browser assertions describe checking rather than saving. The existing rules, associated error, first-invalid notes focus and native uncontrolled reset are preserved. No persistence, backend or submitted-state subsystem was introduced.
+
+Switch's registry alternative now reads: “Use Button for a command; use Tiraz Checkbox for a form choice.” A focused registry assertion prevents the obsolete capability claim from returning.
+
+### Current local checks
+
+Using the same installed Node v24.21.0 on the user's Mac:
+
+- Test-first regression run: the English/Arabic action tests and Switch alternative test failed as expected before the fixes ([red log](review-fixes/red.txt)).
+- Focused controls, form pages, generated examples and registry/source-copy checks: **4 files, 19 tests passed** ([focused log](review-fixes/focused.txt)). Command: `npm test -- src/system/form-controls.test.tsx src/workbench/form-controls-pages.test.tsx src/workbench/generated-code.test.ts src/system/ai-registry.test.ts`.
+- Relevant full suite: **26 files, 205 tests passed**, including all generated prompts and relocated portable-source compilation ([unit log](review-fixes/unit.txt)); command `npm test`.
+- `npm run build` passed ([build log](review-fixes/build.txt)); the existing nonblocking bundle-size warning remains.
+- `npm run lint` passed without warnings ([lint log](review-fixes/lint.txt)). `npm run format:check` and Prettier checks for both affected browser scripts passed ([format log](review-fixes/format.txt), [browser-format log](review-fixes/browser-format.txt)). `git diff --check` passed.
+
+`tests/browser/form-validation-review.mjs` verifies the revised example at Arabic/English × desktop 1440px/light/compact/standard text and narrow 320px/dark/standard/large text: **4 cases, 8 error/success captures, no page errors or document overflow**. It checks exact action/description/error/status copy, empty and whitespace rejection, accessible description IDs, first-invalid focus, successful validation, native checkbox/radio/textarea reset and clearing errors/status. Browser script `small-controls.mjs` also uses the corrected validation wording and assertions.
+
+```sh
+export PATH=/Users/amjedfadul/.nvm/versions/node/v24.21.0/bin:$PATH
+export TIRAZ_PLAYWRIGHT=/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright
+export TIRAZ_BROWSER='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+node tests/browser/form-validation-review.mjs
+```
+
+[Browser results](review-fixes/browser/results.json), [browser log](review-fixes/browser.txt), [Arabic narrow error](review-fixes/browser/ar-320-error.png), [Arabic desktop success](review-fixes/browser/ar-1440-valid.png), [English desktop error](review-fixes/browser/en-1440-error.png), [English narrow success](review-fixes/browser/en-320-valid.png). These representative captures were visually inspected for readable Arabic shaping, wrapping, action wording, persistent errors, focus and accurate success feedback. The prior full component matrix remains historical; no component API/style behavior changed in this fix.
+
+An independent reviewer re-reviewed both fixes against the starting commit, checked source/guidance consistency and scope, and ran the targeted validation and Switch tests: **3 passed**. No actionable findings; see [review record](review-fixes/independent-review.md).
+
+The original checkout HEAD, working diff SHA-256 and empty staged diff remain unchanged. Its unrelated edits and all server PID/port pairs present at the start of this fix were preserved. The same preview process (PID 59300) remains on <http://127.0.0.1:5205/> with the updated branch and HTTP 200. No push, merge, deployment or further component work was performed during these corrections. Actual screen-reader speech and other browser engines were not tested.

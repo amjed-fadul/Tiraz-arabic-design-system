@@ -373,9 +373,7 @@ try {
     "Mounted textarea retains draft and node through live accent/density/text scale/corners/reduced-motion changes",
   );
   const form = page.locator(".examples-section form");
-  await form
-    .getByRole("button", { name: "Save preferences", exact: true })
-    .click();
+  await form.getByRole("button", { name: "Check form", exact: true }).click();
   assert.equal(
     await form
       .getByRole("textbox", { name: "Notes", exact: true })
@@ -385,10 +383,11 @@ try {
   await form
     .getByRole("textbox", { name: "Notes", exact: true })
     .fill("Useful note");
-  await form
-    .getByRole("button", { name: "Save preferences", exact: true })
-    .click();
-  assert.match(await form.getByRole("status").innerText(), /Saved/);
+  await form.getByRole("button", { name: "Check form", exact: true }).click();
+  assert.equal(
+    await form.getByRole("status").innerText(),
+    "Form check passed.",
+  );
   await form.getByRole("button", { name: "Reset", exact: true }).click();
   assert.equal(
     await form
@@ -397,7 +396,7 @@ try {
     "",
   );
   report.checks.push(
-    "Connected form validates, focuses error, submits and resets",
+    "Connected form checks required notes, focuses error, reports validation and resets",
   );
   const axeSource = require.resolve("axe-core/axe.min.js");
   await page.addScriptTag({ path: axeSource });

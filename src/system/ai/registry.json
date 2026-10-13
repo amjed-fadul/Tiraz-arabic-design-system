@@ -465,7 +465,7 @@
       "exports": ["Switch", "SwitchProps"],
       "purpose": "Change a persistent two-state setting.",
       "useWhen": "Immediate enabled/disabled preference.",
-      "alternative": "Use Button for a command; an application checkbox may be more appropriate for a form choice (no Tiraz Checkbox).",
+      "alternative": "Use Button for a command; use Tiraz Checkbox for a form choice.",
       "props": [
         {
           "name": "label",

@@ -32,28 +32,61 @@ it("adds four continuous documentation pages with complete prompt/code and prese
   }
   expect(nav.queryByRole("button", { name: "الحقل" })).not.toBeInTheDocument();
 });
-it("demonstrates application-owned validation and native reset in the small composed form", async () => {
-  render(<FeedbackForm language="en" />);
-  const user = userEvent.setup();
-  await user.click(screen.getByRole("button", { name: "Save preferences" }));
-  expect(
-    screen.getByRole("textbox", { name: "Notes" }),
-  ).toHaveAccessibleDescription(
-    "Add a short note. Enter a note before saving.",
-  );
-  expect(screen.getByRole("textbox", { name: "Notes" })).toHaveFocus();
-  await user.type(
-    screen.getByRole("textbox", { name: "Notes" }),
-    "A useful note",
-  );
-  await user.click(screen.getByLabelText("Receive updates"));
-  await user.click(screen.getByLabelText("Monthly"));
-  await user.click(screen.getByRole("button", { name: "Save preferences" }));
-  expect(screen.getByRole("status")).toHaveTextContent(
-    "Saved for this session.",
-  );
-  await user.click(screen.getByRole("button", { name: "Reset" }));
-  expect(screen.getByRole("textbox", { name: "Notes" })).toHaveValue("");
-  expect(screen.getByLabelText("Weekly")).toBeChecked();
-  expect(screen.getByLabelText("Receive updates")).not.toBeChecked();
-});
+for (const copy of [
+  {
+    language: "en",
+    action: "Check form",
+    notes: "Notes",
+    helper: "Add a short note.",
+    error: "Enter a note to complete the form check.",
+    success: "Form check passed.",
+    updates: "Receive updates",
+    weekly: "Weekly",
+    monthly: "Monthly",
+    reset: "Reset",
+  },
+  {
+    language: "ar",
+    action: "تحقق من النموذج",
+    notes: "ملاحظات",
+    helper: "أضف ملاحظة قصيرة.",
+    error: "أدخل ملاحظة لإكمال التحقق من النموذج.",
+    success: "تم التحقق من النموذج بنجاح.",
+    updates: "تلقي التحديثات",
+    weekly: "أسبوعيًا",
+    monthly: "شهريًا",
+    reset: "إعادة الضبط",
+  },
+] as const) {
+  it(`checks the ${copy.language} form accurately with associated errors, focus and native reset`, async () => {
+    render(<FeedbackForm language={copy.language} />);
+    const user = userEvent.setup(),
+      notes = screen.getByRole("textbox", { name: copy.notes }),
+      status = screen.getByRole("status");
+    await user.click(screen.getByRole("button", { name: copy.action }));
+    expect(notes).toHaveAccessibleDescription(`${copy.helper} ${copy.error}`);
+    expect(notes).toHaveAttribute("aria-invalid", "true");
+    expect(notes).toHaveFocus();
+    expect(status).toBeEmptyDOMElement();
+    await user.type(notes, "   ");
+    await user.click(screen.getByRole("button", { name: copy.action }));
+    expect(notes).toHaveFocus();
+    expect(status).toBeEmptyDOMElement();
+    await user.type(notes, "A useful note");
+    await user.click(screen.getByLabelText(copy.updates));
+    await user.click(screen.getByLabelText(copy.monthly));
+    await user.click(screen.getByRole("button", { name: copy.action }));
+    expect(status).toHaveTextContent(copy.success);
+    expect(notes).toHaveAccessibleDescription(copy.helper);
+    expect(notes).not.toHaveAttribute("aria-invalid", "true");
+    await user.click(screen.getByRole("button", { name: copy.reset }));
+    expect(notes).toHaveValue("");
+    expect(screen.getByLabelText(copy.weekly)).toBeChecked();
+    expect(screen.getByLabelText(copy.updates)).not.toBeChecked();
+    expect(status).toBeEmptyDOMElement();
+    await user.click(screen.getByRole("button", { name: copy.action }));
+    await user.click(screen.getByRole("button", { name: copy.reset }));
+    expect(notes).toHaveAccessibleDescription(copy.helper);
+    expect(notes).not.toHaveAttribute("aria-invalid", "true");
+  });
+}

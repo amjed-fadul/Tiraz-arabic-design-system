@@ -17,6 +17,20 @@ import { defaultConfig } from "./config";
 const root = resolve("src/system");
 const readRegistry = () =>
   JSON.parse(readFileSync(resolve(root, "ai/registry.json"), "utf8"));
+it("recommends the available Tiraz Checkbox for Switch form choices", () => {
+  const registry = readRegistry();
+  const alternative = registry.components.find(
+    (c: { id: string }) => c.id === "switch",
+  ).alternative;
+  expect(
+    registry.components.some(
+      (c: { id: string; api: string }) =>
+        c.id === "checkbox" && c.api === "Checkbox",
+    ),
+  ).toBe(true);
+  expect(alternative).toContain("Tiraz Checkbox for a form choice");
+  expect(alternative).not.toContain("no Tiraz Checkbox");
+});
 // The same source-based validator is exercised by the integrity check and
 // corrupted metadata cases below; mutations never alter registry.json.
 let contract:
