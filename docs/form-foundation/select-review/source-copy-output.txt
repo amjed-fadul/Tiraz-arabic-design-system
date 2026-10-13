@@ -1,0 +1,16 @@
+4:59:26 AM [vite] (client) Re-optimizing dependencies because vite config has changed
+PASS Arabic RTL compact light default and local fonts
+PASS Copied form components and Select keyboard scope
+PASS RTL Tabs ArrowLeft, automatic activation, Home, End
+PASS Keyboard Switch Space and shared customization
+PASS Form validation persists inline, success creates actual local invoice, rapid repetition
+PASS Sheet keyboard, reminder Space, early 40ms End then Enter in scrolling menu
+PASS Real pointer hover after keyboard menu navigation
+PASS Nested focus scope and Tab dismissal, Sheet Escape restoration
+PASS Contextual menu changes payment data
+PASS English LTR labels, Tabs ArrowRight, theme switching
+PASS Reduced motion app config and OS preference, English overlay placement
+PASS English dark and reset compact/light, all accent values propagate
+PASS Toast close, subsequent expiry, accessible viewport
+PASS Narrow/short viewport wrapping, internal table and menu scroll
+Standalone source-copy build and browser exercise passed.

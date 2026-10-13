@@ -1,0 +1,1076 @@
+{
+  "checks": [
+    {
+      "name": "reset controlled nested none click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled nested none reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled nested bubble click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled nested bubble reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled nested capture click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled nested capture reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled external none click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled external none reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled external bubble click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled external bubble reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled external capture click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset controlled external capture reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled nested none click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled nested none reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled nested bubble click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled nested bubble reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled nested capture click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled nested capture reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled external none click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled external none reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Alpha",
+        "submitted": "a",
+        "application": "a",
+        "changes": [
+          "a"
+        ],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled external bubble click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled external bubble reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled external capture click",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "reset uncontrolled external capture reset",
+      "before": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      },
+      "after": {
+        "display": "Beta",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "static nested checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "static nested controlCheckValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "static external checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "static external controlCheckValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=false checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=false reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=false requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=false click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "submit"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=false enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=true checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=true reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=true requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=true click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested bubble summary=true enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=false checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=false reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=false requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=false click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "submit"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=false enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=true checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=true reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=true requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=true click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership nested capture summary=true enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=false checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=false reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=false requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=false click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "submit"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=false enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=true checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=true reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=true requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=true click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external bubble summary=true enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=false checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=false reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=false requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "anchor"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=false click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "submit"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=false enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": ""
+      }
+    },
+    {
+      "name": "application ownership external capture summary=true checkValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=true reportValidity",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=true requestSubmit",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=true click",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "application ownership external capture summary=true enter",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "summary"
+      }
+    },
+    {
+      "name": "interactive reportValidity selects",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive reportValidity select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive reportValidity input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive reportValidity external-input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive reportValidity external-select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive requestSubmit selects",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive requestSubmit select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive requestSubmit input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive requestSubmit external-input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive requestSubmit external-select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive click selects",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive click select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive click input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive click external-input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive click external-select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive enter selects",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive enter select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "interactive enter input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive enter external-input-before-select",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "invalid-input"
+      }
+    },
+    {
+      "name": "interactive enter external-select-before-input",
+      "after": {
+        "display": "",
+        "submitted": "",
+        "application": "a",
+        "changes": [],
+        "focus": "first-choice"
+      }
+    },
+    {
+      "name": "control reportValidity nested"
+    },
+    {
+      "name": "control reportValidity external"
+    }
+  ],
+  "failures": [],
+  "errors": []
+}

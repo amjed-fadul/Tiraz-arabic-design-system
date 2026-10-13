@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/select-form-regressions.test.tsx src/system/forms.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.4 /Users/amjedfadul/.codex/worktrees/form-foundation/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  23 passed (23)
+   Start at  05:11:27
+   Duration  2.52s (tests 44%, environment 35%, import 9%, setup 7%, transform 4%)

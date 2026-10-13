@@ -870,10 +870,10 @@
     },
     {
       "events": [
-        "onValueChange(string), including native reset request; native trigger button events."
+        "onValueChange(string), including uncancelled reset request after event dispatch; native trigger button events."
       ],
       "accessibility": [
-        "Radix arrows/Home/End/typeahead/Enter/Space/Escape and trigger restoration; disabled options skipped. Name with Field or external label/ARIA. Native required invalid focuses visible trigger."
+        "Radix arrows/Home/End/typeahead/Enter/Space/Escape and trigger restoration; disabled options skipped. Name with Field or external label/ARIA. Static checkValidity never moves focus. Interactive native focus redirects hidden select to visible trigger; ancestor invalid cancellation and application summary focus are respected."
       ],
       "limitations": [
         "Unique nonempty option values and meaningful string labels are caller requirements. Native hidden select supports submission/reset/required; application owns validation rules/messages. onInvalid on trigger does not expose hidden select event. Popup fades without moving hit targets and scrolls within available viewport."
@@ -983,7 +983,7 @@
       "exclusions": [
         "No search, multi-select, controlled open, defaultOpen, custom popup/positioning or children slots."
       ],
-      "state": "Radix Select 2.4.1 value/onValueChange or defaultValue. Native form reset restores initial value; controlled owner must accept reset callback. Empty string denotes placeholder."
+      "state": "Radix Select 2.4.1 is internally controlled by Tiraz: public value/onValueChange or local state initialized by defaultValue. Successful form reset requests the initial value after event dispatch; controlled owner must accept callback. Cancelled onReset/onResetCapture preserves state and emits no reset change, including external form association. Empty string denotes placeholder."
     }
   ],
   "records": [

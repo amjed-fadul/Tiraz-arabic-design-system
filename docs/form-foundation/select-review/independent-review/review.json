@@ -1,0 +1,21 @@
+{
+  "verdict": "No actionable findings",
+  "role": "Independent reviewer; no repository edits",
+  "chromiumCases": 90,
+  "pageErrors": 0,
+  "additionalProbes": [
+    "Controlled/uncontrolled external form reassociation with onReset and onResetCapture cancellation",
+    "Successful reset callback count",
+    "Latest callback used by deferred commit",
+    "Pending reset cleanup on unmount",
+    "Ancestor focus ownership survives bridge focus",
+    "Direct bridge focus redirects to trigger",
+    "Unchanged value reset emits no callback"
+  ],
+  "trace": [
+    "Installed Radix eager reset listener",
+    "Removed Tiraz invalid-focus timer"
+  ],
+  "metadata": "Matches implementation",
+  "limits": ["Chromium independently verified; other engines not tested"]
+}

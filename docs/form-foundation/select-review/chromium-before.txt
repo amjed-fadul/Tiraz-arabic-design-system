@@ -1,0 +1,250 @@
+{
+  "passed": 29,
+  "failures": [
+    {
+      "name": "reset controlled nested bubble click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset controlled nested bubble reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset controlled nested capture click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset controlled nested capture reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset controlled external bubble click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset controlled external bubble reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset controlled external capture click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset controlled external capture reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled nested bubble click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled nested bubble reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled nested capture click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled nested capture reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled external bubble click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled external bubble reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled external capture click",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "reset uncontrolled external capture reset",
+      "error": "{\"display\":\"Alpha\",\"submitted\":\"a\",\"application\":\"a\",\"changes\":[\"a\"],\"focus\":\"\"}"
+    },
+    {
+      "name": "static nested checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "static nested controlCheckValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "static external checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "static external controlCheckValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=false checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=false reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=false requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=false click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'submit'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=false enter",
+      "error": "Expected values to be strictly equal:\n\n'first-choice' !== ''\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=true checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=true reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=true requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=true click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested bubble summary=true enter",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=false checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=false reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=false requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=false click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'submit'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=false enter",
+      "error": "Expected values to be strictly equal:\n\n'first-choice' !== ''\n"
+    },
+    {
+      "name": "application ownership nested capture summary=true checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=true reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=true requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=true click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership nested capture summary=true enter",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=false checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=false reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=false requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=false click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'submit'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=false enter",
+      "error": "Expected values to be strictly equal:\n\n'first-choice' !== ''\n"
+    },
+    {
+      "name": "application ownership external bubble summary=true checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=true reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=true requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=true click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external bubble summary=true enter",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external capture summary=false checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership external capture summary=false reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership external capture summary=false requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'anchor'\n"
+    },
+    {
+      "name": "application ownership external capture summary=false click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'submit'\n"
+    },
+    {
+      "name": "application ownership external capture summary=false enter",
+      "error": "Expected values to be strictly equal:\n\n'first-choice' !== ''\n"
+    },
+    {
+      "name": "application ownership external capture summary=true checkValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external capture summary=true reportValidity",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external capture summary=true requestSubmit",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external capture summary=true click",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "application ownership external capture summary=true enter",
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'first-choice'\n- 'summary'\n"
+    },
+    {
+      "name": "control reportValidity nested",
+      "error": "Expected values to be strictly equal:\n\n'' !== 'first-choice'\n"
+    }
+  ],
+  "errors": []
+}

@@ -102,8 +102,8 @@ export function ApiReference({
         "value / defaultValue / onValueChange",
         "string / string? / (string) => void",
         t(
-          "Radix Select يدير القيمة الداخلية. المتحكم بها تحتاج تحديث التطبيق؛ reset يطلب القيمة الأولية عبر callback.",
-          "Radix Select manages uncontrolled values. Controlled values require application updates; reset requests the initial value through the callback.",
+          "طِراز يدير القيمة الداخلية. reset الناجح يطلب القيمة الأولية بعد اكتمال الحدث؛ الإلغاء يحفظ القيمة دون callback.",
+          "Tiraz manages uncontrolled values. Successful reset requests the initial value after event dispatch; cancellation preserves the value without a callback.",
         ),
       ],
       [
@@ -118,8 +118,8 @@ export function ApiReference({
         "name / form / autoComplete",
         "string?",
         t(
-          "select أصلي مخفي من Radix يدعم FormData وreset وrequired. الخطأ الأصلي يركز زر الاختيار. onInvalid خاصية زر فقط؛ قواعد ورسائل التحقق في التطبيق.",
-          "Radix’s hidden native select supports FormData, reset and required. Native invalid focuses the trigger. onInvalid is a button prop; application code owns validation rules/messages.",
+          "select أصلي مخفي يدعم FormData وreset وrequired. checkValidity لا يغير التركيز. يُعاد التركيز لزر الاختيار عند التركيز الأصلي فقط؛ يمكن للتطبيق إلغاء invalid وتحديد ملخص الأخطاء عبر حاوية الحقل.",
+          "The hidden select supports FormData, reset and required. checkValidity does not move focus. Actual native focus redirects to the trigger; ancestor invalid handlers can cancel reporting and focus an error summary. onInvalid remains a trigger-button prop.",
         ),
       ],
       [

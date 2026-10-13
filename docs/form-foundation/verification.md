@@ -1,12 +1,12 @@
 # Tiraz form foundation — 2026-10-13
 
-Base: `2a84c371dc87110c0bb9aa271fb5c003a8255f02`. Branch: `codex/form-foundation` in an isolated managed worktree. Original checkout/index/README/layout edits remain untouched. Local commit only.
+Base: `2a84c371dc87110c0bb9aa271fb5c003a8255f02`. Branch: `codex/form-foundation` in an isolated managed worktree. Original checkout/index/README/layout edits remain untouched. The milestone results below are historical; the latest Select review fixes and branch push are recorded in the [follow-up report](select-review/README.md).
 
 ## Chosen APIs
 
 - `Field({label, helper?, error?, required?, id?, className?, 'aria-describedby'?, children})`: children is `(control: FieldControlProps) => ReactNode`. Pass `field={control}` to one Input or Select. Stable IDs link label/help/error; external description IDs are deduplicated and preserved. No cloning or validation engine; application rules supply errors. Workbench metadata is `WorkbenchField`.
 - `Input`: native `ComponentPropsWithRef<'input'>` with native size/type/children replaced; supported text/email/password/search/tel/url types, default text/sm, sm/md, invalid and field. React 19 ref targets HTMLInputElement. Native editing/selection/autofill/form behavior remain; controlled reset is application-owned.
-- `Select`: Radix Select 2.4.1, unique nonempty `{value,label,disabled?}` options, value/defaultValue/onValueChange, placeholder, required/disabled, sm/md (sm default), invalid/field and native button attributes/ref. name/form/autoComplete configure the hidden native select. Native submission/reset/required work; controlled reset requires accepting the value callback. Native invalid focuses the first invalid control in form order. Popup uses nearest SystemProvider/Sheet container, popper collision handling, bounded internal scrolling and opacity-only motion.
+- `Select`: Radix Select 2.4.1, unique nonempty `{value,label,disabled?}` options, value/defaultValue/onValueChange, placeholder, required/disabled, sm/md (sm default), invalid/field and native button attributes/ref. name/form/autoComplete configure the hidden native select. Native submission/reset/required work; controlled reset requires accepting the value callback. Static checkValidity leaves focus unchanged. Interactive native focus follows browser validation order and redirects the hidden select to its trigger; application invalid cancellation/summary focus are respected. Cancelled reset preserves value and emits no reset callback; successful reset waits until event dispatch completes. Popup uses nearest SystemProvider/Sheet container, popper collision handling, bounded internal scrolling and opacity-only motion.
 
 Dependency check: inspected [official Radix Select API](https://www.radix-ui.com/primitives/docs/components/select), package peer dependencies (React 19 supported), installed types and native reset implementation before integration. Existing locked package versions retained.
 
@@ -61,3 +61,7 @@ See [changed implementation files](changed-files.md) for the complete source/tes
 - [Native validation ordering](native-validation/results.json)
 - [Copied-source browser results](source-copy/browser-results.json)
 - [Original checkout preservation](original-preservation.json)
+
+## Select review follow-up
+
+See [cancelled-reset and focus-ownership verification](select-review/README.md) for the regressions, Radix trace, before/after Chromium results and independent re-review of the fixes starting at `32622da0862f6702cc7b88012867aa16adfb5e9a`. The public API and dependency lock remain unchanged.

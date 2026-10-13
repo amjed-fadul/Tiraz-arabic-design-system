@@ -1,6 +1,6 @@
 import * as Primitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useSelectValue } from "./useSelectValue";
 import type { ComponentPropsWithRef } from "react";
 import { associateControl } from "./control-associations";
 import type { FieldControlProps } from "./Field";
@@ -43,54 +43,35 @@ export function Select({
   ...props
 }: SelectProps) {
   const { container, config } = useSystem();
-  const invalidFocusTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(
-    () => () => {
-      if (invalidFocusTimer.current !== null)
-        clearTimeout(invalidFocusTimer.current);
-    },
-    [],
-  );
+  const {
+    value: selectedValue,
+    onValueChange: changeValue,
+    setScope,
+  } = useSelectValue(value, defaultValue, onValueChange, form);
   const associations = associateControl(field, { ...props, required }, invalid);
   return (
     <span
       className="tz-select"
-      onInvalidCapture={(event) => {
-        // Radix's hidden select participates in native validation. Preserve
-        // form order: later invalid controls must not steal the first one's focus.
-        event.preventDefault();
-        const native = event.target as HTMLSelectElement;
-        const firstInvalid = Array.from(native.form?.elements ?? []).find(
-          (element) =>
-            "willValidate" in element &&
-            (element as HTMLInputElement).willValidate &&
-            !(element as HTMLInputElement).validity.valid,
-        );
-        if (firstInvalid === native) {
-          const trigger =
-            event.currentTarget.querySelector<HTMLButtonElement>(
-              ".tz-select-trigger",
-            );
-          // Native validation may focus a later uncancelled input after all
-          // invalid events. Restore the first Select after that native phase.
-          if (invalidFocusTimer.current !== null)
-            clearTimeout(invalidFocusTimer.current);
-          invalidFocusTimer.current = setTimeout(() => {
-            invalidFocusTimer.current = null;
-            if (
-              trigger?.isConnected &&
-              !trigger.disabled &&
-              !native.validity.valid
-            )
-              trigger.focus();
-          }, 0);
+      ref={setScope}
+      onFocusCapture={(event) => {
+        const native = event.currentTarget.querySelector("select");
+        // Static validation never focuses the bridge; cancelled invalid events
+        // never reach native focus. Follow the browser's actual focus decision,
+        // preserving application focus if an earlier handler moved it elsewhere.
+        if (
+          native &&
+          event.target === native &&
+          native === native.ownerDocument.activeElement
+        ) {
+          event.currentTarget
+            .querySelector<HTMLButtonElement>(".tz-select-trigger")
+            ?.focus();
         }
       }}
     >
       <Primitive.Root
-        value={value}
-        defaultValue={defaultValue}
-        onValueChange={onValueChange}
+        value={selectedValue}
+        onValueChange={changeValue}
         name={name}
         form={form}
         autoComplete={autoComplete}

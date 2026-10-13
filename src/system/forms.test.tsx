@@ -225,7 +225,7 @@ it("keeps Field IDs stable when errors change and removes only its error descrip
     "true",
   );
 });
-it("redirects native validation to the first invalid Select in form order", async () => {
+it("keeps static validation focus unchanged and redirects actual native focus", async () => {
   render(
     <SystemProvider>
       <form aria-label="Required choices">
@@ -244,9 +244,13 @@ it("redirects native validation to the first invalid Select in form order", asyn
       </form>
     </SystemProvider>,
   );
+  const before = document.activeElement;
   expect((screen.getByRole("form") as HTMLFormElement).checkValidity()).toBe(
     false,
   );
+  await new Promise((resolve) => setTimeout(resolve, 10));
+  expect(document.activeElement).toBe(before);
+  document.querySelector<HTMLSelectElement>('select[name="first"]')!.focus();
   await waitFor(() =>
     expect(screen.getByRole("combobox", { name: "First" })).toHaveFocus(),
   );

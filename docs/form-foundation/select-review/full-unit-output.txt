@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.4 /Users/amjedfadul/.codex/worktrees/form-foundation/Tiraz
+
+
+ Test Files  15 passed (15)
+      Tests  121 passed (121)
+   Start at  05:11:30
+   Duration  12.26s (tests 59%, environment 25%, import 10%, setup 4%, transform 1%)
+
+    Isolate  15 workers spawned · ~460ms startup each (spawn + environment, per file)
+             at least ~2.99s faster with isolate: false — reuses workers across files instead of one per file

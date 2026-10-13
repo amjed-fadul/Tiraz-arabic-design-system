@@ -38,5 +38,6 @@
     "in-memory only",
     "single select; no search/multi-select/Table",
     "Chromium verified; other engines, screen readers and touch not manually verified"
-  ]
+  ],
+  "selectReviewFollowUp": "select-review/verification.json"
 }

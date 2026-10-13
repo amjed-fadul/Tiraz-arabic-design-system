@@ -92,6 +92,10 @@ try {
           await page
             .getByRole("button", { name: "Reset", exact: true })
             .click();
+          await page
+            .getByRole("combobox", { name: "Uncontrolled choice", exact: true })
+            .getByText("One", { exact: true })
+            .waitFor();
           assert.ok(
             (
               await page
@@ -161,6 +165,10 @@ try {
     },
   );
   await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await page
+    .getByRole("combobox", { name: "Controlled choice", exact: true })
+    .getByText("One", { exact: true })
+    .waitFor();
   assert.equal(
     await page
       .getByRole("textbox", { name: "Controlled text", exact: true })
