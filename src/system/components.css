@@ -672,3 +672,47 @@
 .customer-list span {
   color: var(--text-secondary);
 }
+
+/* Native table foundation: appearance follows the surrounding SystemProvider. */
+.tz-table-container {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.tz-table {
+  inline-size: 100%;
+  min-inline-size: 32rem;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+  color: var(--text);
+  text-align: start;
+}
+.tz-table caption {
+  padding: var(--space-2) var(--control-padding);
+  text-align: start;
+  font-weight: var(--weight-medium);
+}
+.tz-table :where(th, td) {
+  padding-block: var(--tab-padding);
+  padding-inline: var(--control-padding);
+  text-align: start;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+  border-block-end: 1px solid var(--border);
+}
+.tz-table th {
+  font-weight: var(--weight-medium);
+}
+.tz-table thead {
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
+}
+.tz-table tbody tr:last-child :where(th, td) {
+  border-block-end: 0;
+}

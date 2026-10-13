@@ -12,6 +12,7 @@ import type {
   SwitchModel,
   TabsModel,
   ToastModel,
+  TableModel,
 } from "./model";
 import { nativeAttributes, previewConfig } from "./model";
 import type { Language } from "./i18n";
@@ -51,7 +52,56 @@ export function generateCode(
   let declarations = "",
     jsx = "";
   const recordEvent = "setEvent";
-  if (
+  if (component === "table") {
+    const p = model as TableModel;
+    for (const name of [
+      "Table",
+      "TableHeader",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "TableCell",
+    ])
+      imports.add(name);
+    declarations =
+      p.preset === "empty"
+        ? ""
+        : `const rows = ${json([
+            {
+              id: "madar",
+              name: t("شركة مدار للتقنية", "Madar Technology"),
+              email: "hello@madar.example",
+              status: t("نشط", "Active"),
+            },
+            {
+              id: "nour",
+              name: t(
+                "مؤسسة نور للخدمات والاستشارات",
+                "Nour Services and Consulting",
+              ),
+              email: "team@nour.example",
+              status: t("متوقف", "Paused"),
+            },
+          ])};`;
+    jsx = `<Table ${attribute("caption", p.caption)} ${p.caption ? "" : attribute("aria-label", t("العملاء", "Customers"))}>
+        <TableHeader><TableRow>
+          <TableHead>{${json(t("الاسم", "Name"))}}</TableHead>
+          <TableHead>{${json(t("البريد الإلكتروني", "Email"))}}</TableHead>
+          <TableHead>{${json(t("الحالة", "Status"))}}</TableHead>
+        </TableRow></TableHeader>
+        <TableBody>
+          ${
+            p.preset === "empty"
+              ? `<TableRow><TableCell colSpan={3}>{${json(t("لا يوجد عملاء بعد.", "No customers yet."))}}</TableCell></TableRow>`
+              : `{rows.map(row => <TableRow key={row.id}>
+            <TableHead scope="row"><bdi>{row.name}</bdi></TableHead>
+            <TableCell><bdi dir="ltr">{row.email}</bdi></TableCell>
+            <TableCell>{row.status}</TableCell>
+          </TableRow>)}`
+          }
+        </TableBody>
+      </Table>`;
+  } else if (
     component === "field" ||
     component === "input" ||
     component === "select"
@@ -182,9 +232,9 @@ export function generateCode(
     declarations = "const { toast } = useToast();";
     jsx = `<Button variant="secondary" onClick={() => {\n        toast(${JSON.stringify({ title: p.title, description: p.description, tone: p.tone, duration: p.duration }, null, 2)});\n        setEvent("toast: ${p.tone}");\n      }}>{${json(p.triggerLabel)}}</Button>`;
   }
-  const importsCode = `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\nimport { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "./system/tokens.css";\nimport "./system/components.css";`;
+  const importsCode = `${component === "table" ? "" : `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\n`}import { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "./system/tokens.css";\nimport "./system/components.css";`;
   const configCode = `const config: SystemConfig = {\n  ...defaultConfig,\n  theme: "${c.theme}",\n  direction: "${c.direction}",\n  density: "${c.density}",\n  accent: "${c.accent}",\n  typography: "${c.typography ?? "standard"}",\n  radius: ${c.radius},\n  reducedMotion: ${c.reducedMotion},\n};`;
-  const inner = `function Demo() {\n  const [event, setEvent] = useState("");\n  ${declarations}\n  return (\n    <>\n      ${jsx}\n      <output aria-live="polite" dir="auto">{event}</output>\n    </>\n  );\n}`;
+  const inner = `function Demo() {\n  ${component === "table" ? "" : 'const [event, setEvent] = useState("");'}\n  ${declarations}\n  return (\n    <>\n      ${jsx}\n      ${component === "table" ? "" : '<output aria-live="polite" dir="auto">{event}</output>'}\n    </>\n  );\n}`;
   const p = model as ToastModel;
   return `${importsCode}\n\n${configCode}\n\n${inner}\n\nexport default function Example() {\n  return (\n    <SystemProvider config={config}>\n      ${component === "toast" ? `<ToastProvider ${attribute("label", p.providerLabel)} ${attribute("closeLabel", p.closeLabel)}>\n        <Demo />\n      </ToastProvider>` : "<Demo />"}\n    </SystemProvider>\n  );\n}\n`;
 }

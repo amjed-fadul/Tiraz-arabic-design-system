@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/table-foundation/Tiraz
+
+
+ Test Files  20 passed (20)
+      Tests  176 passed (176)
+   Start at  15:51:43
+   Duration  18.89s (tests 58%, environment 25%, import 9%, setup 5%, transform 2%)
+
+Environment  jsdom was created 20 times · 8.97s total, 25% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

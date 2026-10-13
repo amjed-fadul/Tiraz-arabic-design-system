@@ -13,3 +13,4 @@ export { Field } from "./Field";
 export type { FieldProps, FieldControlProps } from "./Field";
 export * from "./Input";
 export * from "./Select";
+export * from "./Table";

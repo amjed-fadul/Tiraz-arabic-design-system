@@ -331,11 +331,11 @@ try {
             await gone(".tz-sheet");
             assert.equal(
               await page
-                .getByRole("list", {
+                .getByRole("table", {
                   name: ar ? "العملاء" : "Customers",
                   exact: true,
                 })
-                .locator("li")
+                .locator("tbody tr")
                 .count(),
               1,
             );

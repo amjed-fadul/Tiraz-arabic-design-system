@@ -3,14 +3,14 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the nine registry families. Prefer an inline task and a
+  Map each need to the ten registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
-  navigation links, Alert, Table, chart or date picker APIs.
+  navigation links, Alert, chart or date picker APIs. Use Table for native tabular content.
   For an unavailable request, name the gap and propose a concrete alternative:
-  for example, an application-owned semantic HTML table styled with shared
-  tokens, with Tiraz Button/menu actions. Do not import an invented `Table`,
+  for example, an application-owned native date input styled with shared
+  tokens. Do not import an invented `DatePicker`,
   silently add a family, or describe ordinary HTML as a Tiraz component.
 
 ## Content and configuration
@@ -87,4 +87,21 @@ Input supports text/email/password/search/tel/url, default text/sm; use its nati
 
 Select uses Radix Select rather than DropdownMenu. Scope its portal to the nearest provider/Sheet, constrain available height and preserve internal scroll and keyboard/typeahead/focus behavior. Do not move it to body. Opening fades only, preserving stationary-pointer hit targets. Honor both reduced-motion sources. Search and multi-select are future scope.
 
-The CreateCustomer example is application code: required name, optional validated email, single status, semantic list, synchronous save guard and Toast. Discard drafts on all dismissals, verify a clean reopen and keep the trigger mounted for focus restoration. State exists only while mounted, with no backend persistence.
+The CreateCustomer example is application code: required name, optional validated email, single status, semantic Table, synchronous save guard and Toast. Discard drafts on all dismissals, verify a clean reopen and keep the trigger mounted for focus restoration. State exists only while mounted, with no backend persistence.
+
+## Table foundation
+
+Compose Table with TableHeader, TableBody, TableRow, TableHead and TableCell.
+Table renders a native table inside a keyboard-focusable horizontal scroll container.
+Use caption for a visible native table name, or aria-label/aria-labelledby when no
+caption is supplied. The scroll region inherits this name; containerProps exposes
+separate native div attributes/ref. Table's attributes, className/style and ref stay
+on the table. Preserve the container's default tabIndex=0 for keyboard scrolling.
+TableHead defaults to scope="col"; use scope="row" for row headers. Native colSpan
+and headers work. Use stable unique data IDs as React row keys. Render empty text
+as a cell spanning the columns; Table never manufactures data or empty messages.
+Shared density/text scale/theme/direction apply through SystemProvider. Cells wrap;
+a 32rem table minimum gives columns space and stays inside its scrolling container.
+Use bdi for mixed Arabic/English names and bdi dir="ltr" for email addresses.
+There is no sorting, filtering, pagination, selection, editing, virtualization or
+sticky-column API. Keep the connected CreateCustomer flow on the Sheet page.

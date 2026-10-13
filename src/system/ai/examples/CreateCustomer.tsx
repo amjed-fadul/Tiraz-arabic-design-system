@@ -1,5 +1,18 @@
 import { useId, useRef, useState } from "react";
-import { Button, Field, Input, Select, Sheet, useToast } from "../../index";
+import {
+  Button,
+  Field,
+  Input,
+  Select,
+  Sheet,
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  useToast,
+} from "../../index";
 interface Customer {
   id: number;
   name: string;
@@ -150,30 +163,41 @@ export function CreateCustomer({
           </Field>
         </form>
       </Sheet>
-      {customers.length ? (
-        <ul aria-label={t("العملاء", "Customers")} className="customer-list">
-          {customers.map((customer) => (
-            <li key={customer.id}>
-              <strong>
-                <bdi>{customer.name}</bdi>
-              </strong>{" "}
-              <span>
-                {
-                  options.find((option) => option.value === customer.status)
-                    ?.label
-                }
-              </span>
-              {customer.email && (
-                <div>
-                  <bdi dir="ltr">{customer.email}</bdi>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>{t("لا يوجد عملاء بعد.", "No customers yet.")}</p>
-      )}
+      <Table caption={t("العملاء", "Customers")}>
+        <TableHeader>
+          <TableRow>
+            <TableHead>{t("الاسم", "Name")}</TableHead>
+            <TableHead>{t("البريد الإلكتروني", "Email")}</TableHead>
+            <TableHead>{t("الحالة", "Status")}</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {customers.length ? (
+            customers.map((customer) => (
+              <TableRow key={customer.id}>
+                <TableHead scope="row">
+                  <bdi>{customer.name}</bdi>
+                </TableHead>
+                <TableCell>
+                  <bdi dir="ltr">{customer.email || "—"}</bdi>
+                </TableCell>
+                <TableCell>
+                  {
+                    options.find((option) => option.value === customer.status)
+                      ?.label
+                  }
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={3}>
+                {t("لا يوجد عملاء بعد.", "No customers yet.")}
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }

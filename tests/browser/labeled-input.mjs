@@ -168,11 +168,11 @@ try {
           await page.getByRole("dialog").waitFor({ state: "detached" });
           assert.equal(
             await page
-              .getByRole("list", {
+              .getByRole("table", {
                 name: language === "ar" ? "العملاء" : "Customers",
                 exact: true,
               })
-              .locator("li")
+              .locator("tbody tr")
               .count(),
             1,
           );

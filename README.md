@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with nine source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with ten source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -118,7 +118,7 @@ Hover/press feedback uses 120ms, state changes 180ms, overlay entrance 240ms and
 
 ## Verification and screenshots
 
-The compact update passed the full Vitest suite, strict compilation of **19 generated usage modules**, Oxlint, TypeScript/Vite production build and formatting. The original browser checks covered nine pages (current navigation has eight, with Field under Input), all 20 scalar inspector controls plus the menu editor, clipboard contents, shared portal themes, immediate successive accent updates, navigation/reset/reload, legacy migration, keyboard/focus, reduced motion and 320/390px mobile layouts. Ordinary and wide desktop geometry confirms the rail stays 10px from the viewport edge without overlapping content; short windows have accessible internal scrolling.
+The compact update passed the full Vitest suite, strict compilation of **19 generated usage modules**, Oxlint, TypeScript/Vite production build and formatting. The original browser checks covered nine pages (current navigation has nine, with Field under Input), all 20 scalar inspector controls plus the menu editor, clipboard contents, shared portal themes, immediate successive accent updates, navigation/reset/reload, legacy migration, keyboard/focus, reduced motion and 320/390px mobile layouts. Ordinary and wide desktop geometry confirms the rail stays 10px from the viewport edge without overlapping content; short windows have accessible internal scrolling.
 
 Independent source review and re-review were performed. Details: [docs/compact-workbench-verification.json](docs/compact-workbench-verification.json). The earlier [workbench verification record](docs/workbench-verification.json) describes the previous design and is retained as history.
 
@@ -140,4 +140,16 @@ The reading order was informed by the public [FormicAI component preview](https:
 
 Input is the starting point for text entry: `<Input label="Name" helper="As shown on the invoice" error={error} required name="name" />`. Labeled mode reuses Field internally. Helper/error accompany label; label/helper/error and field composition are mutually exclusive. Ref, className/style and native attributes remain on the actual input. Field remains exported for lower-level composition and existing consumers, with stable label/help/error associations and external description IDs. Error display never performs validation. Input supports text, email, password, search, tel and url, with React 19 refs and native form behavior. Select uses Radix Select 2.4.1; its hidden native select participates in submission and required validation. Cancelled reset preserves value and emits no change; successful reset is applied after event dispatch. Static checkValidity preserves focus, while interactive native focus redirects to the trigger. Application invalid cancellation and error-summary focus are respected. Controlled values require application callbacks (Input reset also needs application onReset).
 
-The Sheet page includes the application-owned Create customer example. Input has focused basic, labeled/helper, required/error, disabled and read-only examples; Select has a small status example. Field is documented under Input, and a saved Field page redirects to Input without losing its customization. Customer name is required, email optional and validated when supplied, and status is a single Select. Cancel/dismiss discards the draft; saving adds a semantic list entry and Toast. Data exists only while the example is mounted, with no backend or reload persistence.
+The Sheet page includes the application-owned Create customer example. Input has focused basic, labeled/helper, required/error, disabled and read-only examples; Select has a small status example. Field is documented under Input, and a saved Field page redirects to Input without losing its customization. Customer name is required, email optional and validated when supplied, and status is a single Select. Cancel/dismiss discards the draft; saving adds a semantic Table row and Toast. Data exists only while the example is mounted, with no backend or reload persistence.
+
+### Table foundation
+
+Use native composition: `Table` (optional `caption`, separate `containerProps`),
+`TableHeader`, `TableBody`, `TableRow`, `TableHead`, and `TableCell`. Table props/ref
+stay on the actual table; other wrappers accept their native HTML attributes/ref.
+Headers default to column scope. Rows need stable application keys; empty content
+is a spanning cell supplied by the application. The scroll container is keyboard
+focusable and inherits the table name. Shared density, text scale, theme and
+RTL/LTR apply. Cells wrap and narrow screens scroll internally. This foundation
+has no sorting, filtering, pagination, selection, editing, virtualization or sticky
+columns. The connected Sheet customer example displays saved customers in Table.

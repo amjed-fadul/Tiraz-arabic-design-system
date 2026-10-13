@@ -13,6 +13,56 @@ export function ApiReference({
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    table: [
+      [
+        "Table · caption",
+        "ReactNode?",
+        t(
+          "عنوان caption أصلي. بدونه سمّ الجدول عبر aria-label أو aria-labelledby.",
+          "Native caption. Without it, name the table with aria-label or aria-labelledby.",
+        ),
+      ],
+      [
+        "Table · native attributes / ref",
+        "ComponentPropsWithRef<table>",
+        t(
+          "الخصائص والأحداث والتنسيق وref على table نفسه.",
+          "Attributes, events, className/style and ref target the table itself.",
+        ),
+      ],
+      [
+        "Table · containerProps",
+        "ComponentPropsWithRef<div>?",
+        t(
+          "حاوية تمرير أفقية قابلة للتركيز، تسميتها من الجدول. خصائصها وref منفصلة؛ احفظ tabIndex=0 للوصول بلوحة المفاتيح.",
+          "Focusable horizontal scroll container named from the table. Separate attributes/ref; retain tabIndex=0 for keyboard access.",
+        ),
+      ],
+      [
+        "TableHeader / TableBody / TableRow",
+        "Native thead / tbody / tr props and refs",
+        t(
+          "تركيب HTML أصلي؛ استخدم مفتاحًا ثابتًا وفريدًا لكل صف بيانات.",
+          "Native HTML composition; use stable unique keys for data rows.",
+        ),
+      ],
+      [
+        "TableHead / TableCell",
+        "Native th / td props and refs",
+        t(
+          "scope=col افتراضي للعناوين، أو scope=row. الخلايا تقبل colSpan وheaders. الحالة الفارغة محتوى التطبيق.",
+          "Headers default to scope=col; use scope=row for row headers. Cells accept colSpan/headers. Empty content belongs to the application.",
+        ),
+      ],
+      [
+        "Appearance / scope",
+        "SystemProvider",
+        t(
+          "الكثافة وحجم النص والاتجاه من النظام. التفاف النص وتمرير أفقي؛ لا فرز أو تصفية أو تقسيم صفحات أو تحديد أو تحرير أو افتراضية أو أعمدة ثابتة.",
+          "Shared density, text scale and direction. Wrapping and horizontal scroll; no sorting, filtering, pagination, selection, editing, virtualization or sticky columns.",
+        ),
+      ],
+    ],
     field: [
       [
         "label / helper / error",

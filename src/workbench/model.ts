@@ -114,7 +114,12 @@ export interface SelectModel extends FieldModel, Stateful {
   name: string;
   options: { value: string; label: string; disabled?: boolean }[];
 }
+export interface TableModel {
+  caption: string;
+  preset: "populated" | "empty";
+}
 export interface Playgrounds {
+  table: TableModel;
   button: ButtonModel;
   tabs: TabsModel;
   switch: SwitchModel;
@@ -140,6 +145,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    table: { caption: t("العملاء", "Customers"), preset: "populated" },
     field: {
       label: t("اسم العميل", "Customer name"),
       helper: t("كما يظهر في الفاتورة", "As shown on the invoice"),
@@ -459,6 +465,7 @@ export function normalizePlaygrounds(
       );
     const r = defaults;
     const enums: Record<string, string[]> = {
+      preset: ["populated", "empty"],
       mode: ["controlled", "uncontrolled"],
       variant:
         component === "tabs"

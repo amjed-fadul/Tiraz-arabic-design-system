@@ -21,3 +21,11 @@ begin another milestone only when requested.
 and after completion, serving the current working branch. Return its URL and
 checkout/branch, and verify it responds. Preserve unrelated localhost servers;
 use a free port for an isolated checkout.
+
+**Local implementation and verification:** run implementation, tests, builds,
+lint, formatting, and browser inspection on the user's Mac through this Codex
+session, using the local Tiraz checkout/worktree. Do not use GitHub Actions or
+remote Codex tasks for verification. Start with focused checks, then run the
+relevant full checks. Report the local checkout, tested commit, commands/results,
+and any untested behavior. Keep its documentation preview running for the user.
+GitHub is for source review and explicitly authorized pushes/merges.

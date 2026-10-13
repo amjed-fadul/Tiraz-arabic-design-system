@@ -1,3 +1,4 @@
+import { TableExample } from "../system/ai/examples/TableExample";
 import { Plus, Download, Settings2 } from "lucide-react";
 import { Close as SheetClose } from "@radix-ui/react-dialog";
 import {
@@ -23,6 +24,7 @@ import type {
   SwitchModel,
   TabsModel,
   ToastModel,
+  TableModel,
 } from "./model";
 import { nativeAttributes } from "./model";
 import type { ComponentId } from "./catalog";
@@ -84,6 +86,16 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "table") {
+    const p = model as TableModel;
+    return (
+      <TableExample
+        language={language}
+        caption={p.caption}
+        empty={p.preset === "empty"}
+      />
+    );
+  }
   if (component === "field") {
     const p = model as FieldModel;
     return (

@@ -76,6 +76,12 @@ const trigger: WorkbenchField[] = [
   ),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  table: [
+    field("caption", "text", "عنوان الجدول", "Caption", "caption"),
+    field("preset", "select", "المحتوى", "Content", "children", {
+      options: ["populated", "empty"],
+    }),
+  ],
   field: [
     field("label", "text", "التسمية", "Label"),
     field("helper", "text", "النص المساعد", "Helper text"),
@@ -337,6 +343,8 @@ export const optionNames: Record<string, Localized> = {
   right: ["اليمين", "Right"],
   left: ["اليسار", "Left"],
   info: ["معلومة", "Information"],
+  populated: ["صفوف نموذجية", "Populated"],
+  empty: ["فارغ", "Empty"],
   inherit: ["إعداد النظام", "System setting"],
   light: ["فاتح", "Light"],
   dark: ["داكن", "Dark"],
@@ -351,6 +359,7 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  table: ["caption", "preset"],
   field: ["label", "helper", "error", "required"],
   input: [
     "label",

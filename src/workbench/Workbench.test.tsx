@@ -37,7 +37,7 @@ it("isolates portable library paths as complete LTR runs inside the Arabic promp
 it("places only navigation in its sidebar and both customization sections in the separate rail", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
-  expect(within(nav).getAllByRole("button")).toHaveLength(8);
+  expect(within(nav).getAllByRole("button")).toHaveLength(9);
   expect(within(nav).queryByText("خصائص المكوّن")).not.toBeInTheDocument();
   expect(
     controls().getByRole("heading", { name: "تخصيص المكونات" }),

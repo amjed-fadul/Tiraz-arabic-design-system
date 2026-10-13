@@ -1,0 +1,1486 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/table.test.tsx src/workbench/table-page.test.tsx src/workbench/customer-flow.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/table-foundation/Tiraz
+
+ ❯ src/system/table.test.tsx (3 tests | 3 failed) 22ms
+   × renders a captioned native table with column and row headers in a keyboard scrolling region 5ms
+   × keeps native table attributes and ref on the table, separate from the scroll container 12ms
+   × supports external table naming and empty content without inventing data semantics 4ms
+ ❯ src/workbench/customer-flow.test.tsx (2 tests | 2 failed) 917ms
+   × validates, focuses the first invalid field, keeps corrections and saves once 176ms
+   × discards drafts and errors on cancel and dismissal, permits repeat saves with optional email 741ms
+ ❯ src/workbench/table-page.test.tsx (1 test | 1 failed) 339ms
+   × opens a saved Table page, edits content, and copies the complete current example and prompt 338ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/table.test.tsx > renders a captioned native table with column and row headers in a keyboard scrolling region
+AssertionError: expected undefined to be type of 'function'
+
+Expected: "function"
+Received: "undefined"
+
+ ❯ src/system/table.test.tsx:7:17
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/system/table.test.tsx > keeps native table attributes and ref on the table, separate from the scroll container
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/system/table.test.tsx > supports external table naming and empty content without inventing data semantics
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ createChild node_modules/react-dom/cjs/react-dom-client.development.js:6701:26
+ ❯ reconcileChildrenArray node_modules/react-dom/cjs/react-dom-client.development.js:7033:25
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7357:20
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/workbench/customer-flow.test.tsx > validates, focuses the first invalid field, keeps corrections and saves once
+TestingLibraryElementError: Unable to find an accessible element with the role "table" and name "Customers"
+
+Here are the accessible roles:
+
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Create customer":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33maria-haspopup[39m=[32m"dialog"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Notifications":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Notifications"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mstyle[39m=[32m"pointer-events: none;"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol[39m
+    [33mclass[39m=[32m"tz-toast-viewport"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"rtl"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"customer-example"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0mData lives in this example's memory only; reloading or leaving the example clears it.[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33maria-expanded[39m=[32m"false"[39m
+          [33maria-haspopup[39m=[32m"dialog"[39m
+          [33mclass[39m=[32m"tz-button "[39m
+          [33mdata-size[39m=[32m"sm"[39m
+          [33mdata-state[39m=[32m"idle"[39m
+          [33mdata-variant[39m=[32m"primary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"tz-button-label"[39m
+          [36m>[39m
+            [0mCreate customer[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<p>[39m
+          [0mNo customers yet.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Notifications"[39m
+        [33mrole[39m=[32m"region"[39m
+        [33mstyle[39m=[32m"pointer-events: none;"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<ol[39m
+          [33mclass[39m=[32m"tz-toast-viewport"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/customer-flow.test.tsx:18:17
+     16| it("validates, focuses the first invalid field, keeps corrections and …
+     17|   const user = setup();
+     18|   expect(screen.getByRole("table", { name: "Customers" })).toHaveTextC…
+       |                 ^
+     19|   await user.click(screen.getByRole("button", { name: "Create customer…
+     20|   await user.click(screen.getByRole("button", { name: "Save customer" …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  src/workbench/customer-flow.test.tsx > discards drafts and errors on cancel and dismissal, permits repeat saves with optional email
+TestingLibraryElementError: Unable to find an accessible element with the role "table" and name "Customers"
+
+Here are the accessible roles:
+
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Create customer":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33maria-haspopup[39m=[32m"dialog"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Dismiss notification":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Dismiss notification"[39m
+    [33mclass[39m=[32m"tz-icon-button"[39m
+    [33mdata-radix-toast-announce-exclude[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "Customers":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Customers"[39m
+    [33mclass[39m=[32m"customer-list"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<ol[39m
+    [33mclass[39m=[32m"tz-toast-viewport"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-toast"[39m
+    [33mdata-radix-collection-item[39m=[32m""[39m
+    [33mdata-state[39m=[32m"open"[39m
+    [33mdata-swipe-direction[39m=[32m"down"[39m
+    [33mdata-tone[39m=[32m"success"[39m
+    [33mstyle[39m=[32m"user-select: none; touch-action: none;"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Notifications":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Notifications"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mstyle[39m=[32m""[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------status:
+
+  Name "":
+  [36m<span[39m
+    [33maria-live[39m=[32m"assertive"[39m
+    [33mrole[39m=[32m"status"[39m
+    [33mstyle[39m=[32m"position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m""[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"rtl"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"customer-example"[39m
+      [36m>[39m
+        [36m<p>[39m
+          [0mData lives in this example's memory only; reloading or leaving the example clears it.[0m
+        [36m</p>[39m
+        [36m<button[39m
+          [33maria-expanded[39m=[32m"false"[39m
+          [33maria-haspopup[39m=[32m"dialog"[39m
+          [33mclass[39m=[32m"tz-button "[39m
+          [33mdata-size[39m=[32m"sm"[39m
+          [33mdata-state[39m=[32m"idle"[39m
+          [33mdata-variant[39m=[32m"primary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"tz-button-label"[39m
+          [36m>[39m
+            [0mCreate customer[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<ul[39m
+          [33maria-label[39m=[32m"Customers"[39m
+          [33mclass[39m=[32m"customer-list"[39m
+        [36m>[39m
+          [36m<li>[39m
+            [36m<strong>[39m
+              [36m<bdi>[39m
+                [0mFirst[0m
+              [36m</bdi>[39m
+            [36m</strong>[39m
+            [0m [0m
+            [36m<span>[39m
+              [0mActive[0m
+            [36m</span>[39m
+          [36m</li>[39m
+        [36m</ul>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Notifications"[39m
+        [33mrole[39m=[32m"region"[39m
+        [33mstyle[39m=[32m""[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+        [36m<ol[39m
+          [33mclass[39m=[32m"tz-toast-viewport"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+        [36m>[39m
+          [36m<li[39m
+            [33mclass[39m=[32m"tz-toast"[39m
+            [33mdata-radix-collection-item[39m=[32m""[39m
+            [33mdata-state[39m=[32m"open"[39m
+            [33mdata-swipe-direction[39m=[32m"down"[39m
+            [33mdata-tone[39m=[32m"success"[39m
+            [33mstyle[39m=[32m"user-select: none; touch-action: none;"[39m
+            [33mtabindex[39m=[32m"0"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-circle-check lucide-check-circle-2 tz-toast-icon"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"21"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"21"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<circle[39m
+                [33mcx[39m=[32m"12"[39m
+                [33mcy[39m=[32m"12"[39m
+                [33mr[39m=[32m"10"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m16 9-5.5 5.5L8 12"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"tz-toast-title"[39m
+              [36m>[39m
+                [0mCustomer created[0m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"tz-toast-description"[39m
+              [36m>[39m
+                [0mFirst[0m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Dismiss notification"[39m
+              [33mclass[39m=[32m"tz-icon-button"[39m
+              [33mdata-radix-toast-announce-exclude[39m=[32m""[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-x"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"16"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"16"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M18 6 6 18"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m6 6 12 12"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</li>[39m
+        [36m</ol>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+  [36m<span[39m
+    [33maria-live[39m=[32m"assertive"[39m
+    [33mrole[39m=[32m"status"[39m
+    [33mstyle[39m=[32m"position: absolute; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+  [36m/>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/customer-flow.test.tsx:85:32
+     83|       expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+     84|     );
+     85|     const rows = within(screen.getByRole("table", { name: "Customers" …
+       |                                ^
+     86|     if (firstRow) expect(rows[1]).toBe(firstRow);
+     87|     else firstRow = rows[1];
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  src/workbench/table-page.test.tsx > opens a saved Table page, edits content, and copies the complete current example and prompt
+TestingLibraryElementError: Unable to find an accessible element with the role "heading" and name "Table"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "Skip to content":
+  [36m<a[39m
+    [33mclass[39m=[32m"skip-link"[39m
+    [33mhref[39m=[32m"#main-content"[39m
+  [36m/>[39m
+
+  Name "Tiraz":
+  [36m<a[39m
+    [33mclass[39m=[32m"docs-brand"[39m
+    [33mhref[39m=[32m"#main-content"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"docs-header"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"component-heading"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<header />[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Components":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33maria-haspopup[39m=[32m"dialog"[39m
+    [33mclass[39m=[32m"doc-button"[39m
+    [33mdata-state[39m=[32m"closed"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "System settings":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33maria-haspopup[39m=[32m"dialog"[39m
+    [33mclass[39m=[32m"doc-button"[39m
+    [33mdata-state[39m=[32m"closed"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Toggle theme":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Toggle theme"[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"doc-icon-button"[39m
+    [33mtitle[39m=[32m"Toggle theme"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Button":
+  [36m<button[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Tabs":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Switch":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Dropdown menu":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Sheet":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Toast":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Input":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Select":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Copy agent prompt":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Copy agent prompt"[39m
+    [33mclass[39m=[32m"doc-button copy-button copy-icon"[39m
+    [33mdata-copy-state[39m=[32m"idle"[39m
+    [33mtitle[39m=[32m"Copy agent prompt"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Save invoice":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Primary":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Secondary":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Ghost":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"ghost"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Destructive":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"destructive"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Example settings":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Example settings"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-icon-only[39m=[32m"true"[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Disabled":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Saving":
+  [36m<button[39m
+    [33maria-busy[39m=[32m"true"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"loading"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Saved":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"success"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Save failed":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"error"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Regular · md":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"md"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Copy code":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Copy code"[39m
+    [33mclass[39m=[32m"doc-button copy-button"[39m
+    [33mdata-copy-state[39m=[32m"idle"[39m
+    [33mtitle[39m=[32m"Copy code"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Copy system configuration":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Copy system configuration"[39m
+    [33mclass[39m=[32m"doc-button copy-button copy-icon"[39m
+    [33mdata-copy-state[39m=[32m"idle"[39m
+    [33mtitle[39m=[32m"Copy system configuration"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Reset system":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Reset system"[39m
+    [33mclass[39m=[32m"doc-icon-button"[39m
+    [33mtitle[39m=[32m"Reset system"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Collapse system settings":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"true"[39m
+    [33maria-label[39m=[32m"Collapse system settings"[39m
+    [33mclass[39m=[32m"doc-icon-button"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Reset playground":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Reset playground"[39m
+    [33mclass[39m=[32m"doc-icon-button"[39m
+    [33mtitle[39m=[32m"Reset playground"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Documentation language":
+  [36m<select[39m
+    [33maria-label[39m=[32m"Documentation language"[39m
+    [33mclass[39m=[32m"language-control"[39m
+  [36m/>[39m
+
+  Name "Accent":
+  [36m<select[39m
+    [33mid[39m=[32m"_r_6_-accent"[39m
+  [36m/>[39m
+
+  Name "Typography":
+  [36m<select[39m
+    [33mid[39m=[32m"_r_6_-typography"[39m
+  [36m/>[39m
+
+  Name "Density":
+  [36m<select[39m
+    [33mid[39m=[32m"_r_6_-density"[39m
+  [36m/>[39m
+
+  Name "Variant":
+  [36m<select[39m
+    [33mid[39m=[32m"_r_9_"[39m
+  [36m/>[39m
+
+  Name "Size":
+  [36m<select[39m
+    [33mid[39m=[32m"_r_a_"[39m
+  [36m/>[39m
+
+  Name "State":
+  [36m<select[39m
+    [33mid[39m=[32m"_r_b_"[39m
+  [36m/>[39m
+
+  Name "Icon":
+  [36m<select[39m
+    [33mid[39m=[32m"_r_c_"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  option:
+
+  Name "العربية":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ar"[39m
+  [36m/>[39m
+
+  Name "English":
+  [36m<option[39m
+    [33mvalue[39m=[32m"en"[39m
+  [36m/>[39m
+
+  Name "Green":
+  [36m<option[39m
+    [33mvalue[39m=[32m"sage"[39m
+  [36m/>[39m
+
+  Name "Blue":
+  [36m<option[39m
+    [33mvalue[39m=[32m"blue"[39m
+  [36m/>[39m
+
+  Name "Purple":
+  [36m<option[39m
+    [33mvalue[39m=[32m"plum"[39m
+  [36m/>[39m
+
+  Name "Brown":
+  [36m<option[39m
+    [33mvalue[39m=[32m"clay"[39m
+  [36m/>[39m
+
+  Name "Standard · 14px":
+  [36m<option[39m
+    [33mvalue[39m=[32m"standard"[39m
+  [36m/>[39m
+
+  Name "Large · 16px":
+  [36m<option[39m
+    [33mvalue[39m=[32m"large"[39m
+  [36m/>[39m
+
+  Name "Compact":
+  [36m<option[39m
+    [33mvalue[39m=[32m"compact"[39m
+  [36m/>[39m
+
+  Name "Standard":
+  [36m<option[39m
+    [33mvalue[39m=[32m"standard"[39m
+  [36m/>[39m
+
+  Name "Primary":
+  [36m<option[39m
+    [33mvalue[39m=[32m"primary"[39m
+  [36m/>[39m
+
+  Name "Secondary":
+  [36m<option[39m
+    [33mvalue[39m=[32m"secondary"[39m
+  [36m/>[39m
+
+  Name "Ghost":
+  [36m<option[39m
+    [33mvalue[39m=[32m"ghost"[39m
+  [36m/>[39m
+
+  Name "Destructive":
+  [36m<option[39m
+    [33mvalue[39m=[32m"destructive"[39m
+  [36m/>[39m
+
+  Name "Small · sm":
+  [36m<option[39m
+    [33mvalue[39m=[32m"sm"[39m
+  [36m/>[39m
+
+  Name "Regular · md":
+  [36m<option[39m
+    [33mvalue[39m=[32m"md"[39m
+  [36m/>[39m
+
+  Name "Idle":
+  [36m<option[39m
+    [33mvalue[39m=[32m"idle"[39m
+  [36m/>[39m
+
+  Name "Loading":
+  [36m<option[39m
+    [33mvalue[39m=[32m"loading"[39m
+  [36m/>[39m
+
+  Name "Success":
+  [36m<option[39m
+    [33mvalue[39m=[32m"success"[39m
+  [36m/>[39m
+
+  Name "Error":
+  [36m<option[39m
+    [33mvalue[39m=[32m"error"[39m
+  [36m/>[39m
+
+  Name "Disabled":
+  [36m<option[39m
+    [33mvalue[39m=[32m"disabled"[39m
+  [36m/>[39m
+
+  Name "None":
+  [36m<option[39m
+    [33mvalue[39m=[32m"none"[39m
+  [36m/>[39m
+
+  Name "Plus":
+  [36m<option[39m
+    [33mvalue[39m=[32m"plus"[39m
+  [36m/>[39m
+
+  Name "Download":
+  [36m<option[39m
+    [33mvalue[39m=[32m"download"[39m
+  [36m/>[39m
+
+  Name "Settings":
+  [36m<option[39m
+    [33mvalue[39m=[32m"settings"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  complementary:
+
+  Name "Component navigation":
+  [36m<aside[39m
+    [33maria-label[39m=[32m"Component navigation"[39m
+    [33mclass[39m=[32m"docs-sidebar"[39m
+  [36m/>[39m
+
+  Name "Customization":
+  [36m<aside[39m
+    [33maria-label[39m=[32m"Customization"[39m
+    [33mclass[39m=[32m"customization-rail"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Components":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Components"[39m
+    [33mclass[39m=[32m"component-nav"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"component-page"[39m
+    [33mid[39m=[32m"main-content"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"component-kicker"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"prompt-preview"[39m
+    [33mdir[39m=[32m"auto"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"playground-help"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"usage-guidance"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"api-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"sr-only"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Button":
+  [36m<h1 />[39m
+
+  Name "Use it in your app":
+  [36m<h2[39m
+    [33mid[39m=[32m"agent-heading"[39m
+  [36m/>[39m
+
+  Name "Interactive playground":
+  [36m<h2[39m
+    [33mid[39m=[32m"playground-heading"[39m
+  [36m/>[39m
+
+  Name "Examples":
+  [36m<h2[39m
+    [33mid[39m=[32m"examples-heading"[39m
+  [36m/>[39m
+
+  Name "Usage example":
+  [36m<h2[39m
+    [33mid[39m=[32m"usage-heading"[39m
+  [36m/>[39m
+
+  Name "System settings":
+  [36m<h2 />[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<span[39m
+    [33mclass[39m=[32m"sr-only"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "Latest event":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Latest event"[39m
+    [33mclass[39m=[32m"event-feedback"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"example-feedback"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<span[39m
+    [33mclass[39m=[32m"sr-only"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<span[39m
+    [33mclass[39m=[32m"sr-only"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<output[39m
+    [33mdir[39m=[32m"ltr"[39m
+    [33mfor[39m=[32m"_r_6_-radius"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Interactive playground":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Interactive playground"[39m
+    [33mclass[39m=[32m"playground-region"[39m
+    [33mrole[39m=[32m"region"[39m
+  [36m/>[39m
+
+  Name "Usage example":
+  [36m<pre[39m
+    [33maria-label[39m=[32m"Usage example"[39m
+    [33mdir[39m=[32m"ltr"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "API reference":
+  [36m<div[39m
+    [33maria-label[39m=[32m"API reference"[39m
+    [33mclass[39m=[32m"api-scroll"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "System settings and component properties":
+  [36m<div[39m
+    [33maria-label[39m=[32m"System settings and component properties"[39m
+    [33mclass[39m=[32m"customization-scroll"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  code:
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code />[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"api-reference"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"playground-inspector"[39m
+    [33mopen[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  table:
+
+  Name "":
+  [36m<table />[39m
+
+  --------------------------------------------------
+  rowgroup:
+
+  Name "":
+  [36m<thead />[39m
+
+  Name "":
+  [36m<tbody />[39m
+
+  --------------------------------------------------
+  row:
+
+  Name "Property Type and behavior":
+  [36m<tr />[39m
+
+  Name "variant / state / size ButtonVariant / ButtonState / sm | md sm is the default. Loading blocks clicks and manages aria-busy.":
+  [36m<tr />[39m
+
+  Name "children / iconOnly / aria-label ReactNode / boolean / string An accessible name is required for iconOnly. Icons compose inside children.":
+  [36m<tr />[39m
+
+  Name "disabled / type / id / className / style HTML button attributes Native attributes. The wide preset demonstrates style.":
+  [36m<tr />[39m
+
+  Name "...HTML / ARIA / data-* ButtonHTMLAttributes Includes title, name, value, form*, tabIndex, dir, autoFocus and other native attributes. Pass these attributes in your application code.":
+  [36m<tr />[39m
+
+  Name "onClick / ...native events React event handlers Simulation and logging demonstrate onClick. Other event handlers are functions supplied by your application.":
+  [36m<tr />[39m
+
+  Name "ref No explicit typed ref prop ButtonProps has no explicit ref prop; there is no pretend editor for it.":
+  [36m<tr />[39m
+
+  --------------------------------------------------
+  columnheader:
+
+  Name "Property":
+  [36m<th />[39m
+
+  Name "Type and behavior":
+  [36m<th />[39m
+
+  --------------------------------------------------
+  cell:
+
+  Name "variant / state / size":
+  [36m<td />[39m
+
+  Name "ButtonVariant / ButtonState / sm | md sm is the default. Loading blocks clicks and manages aria-busy.":
+  [36m<td />[39m
+
+  Name "children / iconOnly / aria-label":
+  [36m<td />[39m
+
+  Name "ReactNode / boolean / string An accessible name is required for iconOnly. Icons compose inside children.":
+  [36m<td />[39m
+
+  Name "disabled / type / id / className / style":
+  [36m<td />[39m
+
+  Name "HTML button attributes Native attributes. The wide preset demonstrates style.":
+  [36m<td />[39m
+
+  Name "...HTML / ARIA / data-*":
+  [36m<td />[39m
+
+  Name "ButtonHTMLAttributes Includes title, name, value, form*, tabIndex, dir, autoFocus and other native attributes. Pass these attributes in your application code.":
+  [36m<td />[39m
+
+  Name "onClick / ...native events":
+  [36m<td />[39m
+
+  Name "React event handlers Simulation and logging demonstrate onClick. Other event handlers are functions supplied by your application.":
+  [36m<td />[39m
+
+  Name "ref":
+  [36m<td />[39m
+
+  Name "No explicit typed ref prop ButtonProps has no explicit ref prop; there is no pretend editor for it.":
+  [36m<td />[39m
+
+  --------------------------------------------------
+  slider:
+
+  Name "Corner radius":
+  [36m<input[39m
+    [33mid[39m=[32m"_r_6_-radius"[39m
+    [33mmax[39m=[32m"16"[39m
+    [33mmin[39m=[32m"0"[39m
+    [33mstep[39m=[32m"2"[39m
+    [33mtype[39m=[32m"range"[39m
+    [33mvalue[39m=[32m"8"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  switch:
+
+  Name "Reduce motion":
+  [36m<button[39m
+    [33maria-checked[39m=[32m"false"[39m
+    [33mclass[39m=[32m"tz-switch"[39m
+    [33mdata-state[39m=[32m"unchecked"[39m
+    [33mid[39m=[32m"_r_7_"[39m
+    [33mrole[39m=[32m"switch"[39m
+    [33mtype[39m=[32m"button"[39m
+    [33mvalue[39m=[32m"on"[39m
+  [36m/>[39m
+
+  Name "Icon only":
+  [36m<button[39m
+    [33maria-checked[39m=[32m"false"[39m
+    [33mclass[39m=[32m"tz-switch"[39m
+    [33mdata-state[39m=[32m"unchecked"[39m
+    [33mid[39m=[32m"_r_e_"[39m
+    [33mrole[39m=[32m"switch"[39m
+    [33mtype[39m=[32m"button"[39m
+    [33mvalue[39m=[32m"on"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Label":
+  [36m<input[39m
+    [33mdir[39m=[32m"auto"[39m
+    [33mid[39m=[32m"_r_8_"[39m
+    [33mtype[39m=[32m"text"[39m
+    [33mvalue[39m=[32m"Save invoice"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"standard"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"ltr"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 6px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"docs-shell"[39m
+        [33mdata-doc-theme[39m=[32m"light"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"skip-link"[39m
+          [33mhref[39m=[32m"#main-content"[39m
+        [36m>[39m
+          [0mSkip to content[0m
+        [36m</a>[39m
+        [36m<header[39m
+          [33mclass[39m=[32m"docs-header"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"docs-brand"[39m
+            [33mhref[39m=[32m"#main-content"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mviewBox[39m=[32m"0 0 32 32"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M5 6h8v8H5zM19 6h8v8h-8zM5 20h8v8H5zM19 20h8v8h-8z"[39m
+                [33mfill[39m=[32m"currentColor"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M13 10h6M9 14v6m14-6v6m-10 4h6"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"3"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mTiraz[0m
+            [36m</span>[39m
+          [36m</a>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"header-description"[39m
+          [36m>[39m
+            [0mComponent documentation[0m
+          [36m</span>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mobile-navigation"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33maria-expanded[39m=[32m"false"[39m
+                [33maria-haspopup[39m=[32m"dialog"[39m
+                [33mclass[39m=[32m"doc-button"[39m
+                [33mdata-state[39m=[32m"closed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-menu"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"14"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"14"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M4 5h16"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M4 12h16"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M4 19h16"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mComponents[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"mobile-settings"[39m
+            [36m>[39m
+              [36m<button[39m
+                [33maria-expanded[39m=[32m"false"[39m
+                [33maria-haspopup[39m=[32m"dialog"[39m
+                [33mclass[39m=[32m"doc-button"[39m
+                [33mdata-state[39m=[32m"closed"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-sliders-horizontal"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"14"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"14"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M10 5H3"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 19H3"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M14 3v4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M16 17v4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 12h-9"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 19h-5"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 5h-7"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M8 10v4"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M8 12H3"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0mSystem settings[0m
+              [36m</button>[39m
+            [36m</div>[39m
+            [36m<select[39m
+              [33maria-label[39m=[32m"Documentation language"[39m
+              [33mclass[39m=[32m"language-control"[39m
+            [36m>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"ar"[39m
+              [36m>[39m
+                [0mالعربية[0m
+              [36m</option>[39m
+              [36m<option[39m
+                [33mvalue[39m=[32m"en"[39m
+              [36m>[39m
+                [0mEnglish[0m
+              [36m</option>[39m
+            [36m</select>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Toggle theme"[39m
+              [33maria-pressed[39m=[32m"false"[39m
+              [33mclass[39m=[32m"doc-icon-button"[39m
+              [33mtitle[39m=[32m"Toggle theme"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+        ...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/table-page.test.tsx:11:17
+      9|   persist(storageKeys.documentation, { language: "en", active: "table"…
+     10|   render(<Workbench />);
+     11|   expect(screen.getByRole("heading", { level: 1, name: "Table" })).toB…
+       |                 ^
+     12|   const canvas = document.querySelector(".playground-canvas") as HTMLE…
+     13|   expect(within(canvas).getByRole("table", { name: "Customers" })).toH…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  3 failed (3)
+      Tests  6 failed (6)
+   Start at  15:42:26
+   Duration  2.82s (environment 43%, tests 30%, import 12%, setup 8%, transform 7%)
+
+    Isolate  3 workers spawned · ~763ms startup each (spawn + environment, per file)
+             at least ~381ms faster with isolate: false — reuses workers across files instead of one per file

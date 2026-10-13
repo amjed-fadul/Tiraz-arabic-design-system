@@ -81,6 +81,15 @@ export const catalog = [
     ],
     file: "Select.tsx",
   },
+  {
+    id: "table",
+    name: ["الجدول", "Table"],
+    description: [
+      "جدول HTML للعناوين والصفوف، مع تمرير أفقي داخل الحاوية.",
+      "A native HTML table with headers, rows and internal horizontal scrolling.",
+    ],
+    file: "Table.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;

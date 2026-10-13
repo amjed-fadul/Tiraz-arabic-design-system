@@ -103,6 +103,10 @@ it("type-checks copied code for every component, state mode and composition pres
         { ...p.select, mode, required: true, value: "active", disabled: true },
       ]);
     }
+  cases.push(
+    ["table", { ...p.table, preset: "empty" }],
+    ["table", { ...p.table, caption: "" }],
+  );
   cases.push([
     "field",
     { ...p.field, error: "Application error", required: true },

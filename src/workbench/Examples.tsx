@@ -11,6 +11,7 @@ import {
   ToastProvider,
   useToast,
 } from "../system";
+import { TableExample } from "../system/ai/examples/TableExample";
 import { CreateCustomer } from "../system/ai/examples/CreateCustomer";
 import { Settings2 } from "lucide-react";
 import type { ComponentId } from "./catalog";
@@ -148,6 +149,24 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "table")
+    return (
+      <div className="quiet-examples">
+        <div className="example-row">
+          <TableExample
+            language={language}
+            caption={t("عملاء نموذجيون", "Sample customers")}
+          />
+        </div>
+        <div className="example-row">
+          <TableExample
+            language={language}
+            caption={t("قائمة فارغة", "Empty list")}
+            empty
+          />
+        </div>
+      </div>
+    );
   if (component === "button")
     return (
       <div className="quiet-examples">

@@ -135,6 +135,34 @@
     {
       "name": "SelectOption",
       "source": "Select.tsx"
+    },
+    {
+      "name": "Table",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableProps",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableHeader",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableBody",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableRow",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableHead",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableCell",
+      "source": "Table.tsx"
     }
   ],
   "configuration": {
@@ -1006,6 +1034,58 @@
         "No search, multi-select, controlled open, defaultOpen, custom popup/positioning or children slots."
       ],
       "state": "Radix Select 2.4.1 is internally controlled by Tiraz: public value/onValueChange or local state initialized by defaultValue. Successful form reset requests the initial value after event dispatch; controlled owner must accept callback. Cancelled onReset/onResetCapture preserves state and emits no reset change, including external form association. Reset resolves the current native form at dispatch, supporting late form insertion and same-ID replacement without remounting Select. Replacement preserves selection; former form reset is ignored. Empty string denotes placeholder."
+    },
+    {
+      "id": "table",
+      "api": "Table",
+      "source": "Table.tsx",
+      "exports": [
+        "Table",
+        "TableProps",
+        "TableHeader",
+        "TableBody",
+        "TableRow",
+        "TableHead",
+        "TableCell"
+      ],
+      "purpose": "Display a small native HTML table.",
+      "useWhen": "Read-only tabular records such as customer name, email and status.",
+      "alternative": "Plain content for non-tabular information. Advanced data-grid interactions are outside this foundation.",
+      "props": [
+        {
+          "name": "caption",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "containerProps",
+          "type": "ComponentPropsWithRef<div>",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLTableElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "ComponentPropsWithRef<table>. Native attributes, events, className/style and ref target the table. containerProps is separate native div attributes/ref; retain tabIndex=0 for keyboard scroll. TableHeader/TableBody/TableRow/TableHead/TableCell accept native thead/tbody/tr/th/td props and refs. TableHead defaults scope to col, override with row when appropriate.",
+      "events": ["Native table and element events; no data operations."],
+      "accessibility": [
+        "Native caption names the table and scroll region. Without caption, supply aria-label or aria-labelledby. Default container tabIndex=0 enables keyboard horizontal scroll. Native headers/scope, colSpan and headers remain available; isolate mixed-direction cell content with bdi."
+      ],
+      "limitations": [
+        "No sorting, filtering, pagination, selection, editing, virtualization or sticky columns. Data, stable unique row keys and empty content are application-owned. The table has a 32rem minimum width and wraps cells; narrow layouts scroll inside the container."
+      ],
+      "providers": [
+        "SystemProvider supplies tokens, density, typography, theme and direction."
+      ],
+      "examples": [
+        "ai/examples/TableExample.tsx",
+        "ai/examples/CreateCustomer.tsx"
+      ]
     }
   ],
   "records": [

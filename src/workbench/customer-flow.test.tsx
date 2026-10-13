@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
 import { SystemProvider, ToastProvider } from "../system";
@@ -15,6 +15,9 @@ function setup() {
 }
 it("validates, focuses the first invalid field, keeps corrections and saves once", async () => {
   const user = setup();
+  expect(screen.getByRole("table", { name: "Customers" })).toHaveTextContent(
+    "No customers yet.",
+  );
   await user.click(screen.getByRole("button", { name: "Create customer" }));
   await user.click(screen.getByRole("button", { name: "Save customer" }));
   expect(screen.getByRole("textbox", { name: "Customer name" })).toHaveFocus();
@@ -38,7 +41,9 @@ it("validates, focuses the first invalid field, keeps corrections and saves once
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
   );
   expect(
-    Array.from(screen.getByRole("list", { name: "Customers" }).children),
+    within(screen.getByRole("table", { name: "Customers" }))
+      .getAllByRole("row")
+      .slice(1),
   ).toHaveLength(1);
   expect(screen.getByRole("button", { name: "Create customer" })).toHaveFocus();
   await user.click(screen.getByRole("button", { name: "Create customer" }));
@@ -67,6 +72,7 @@ it("discards drafts and errors on cancel and dismissal, permits repeat saves wit
   await waitFor(() =>
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
   );
+  let firstRow: HTMLElement | undefined;
   for (const name of ["First", "Second"]) {
     await user.click(screen.getByRole("button", { name: "Create customer" }));
     expect(
@@ -80,8 +86,15 @@ it("discards drafts and errors on cancel and dismissal, permits repeat saves wit
     await waitFor(() =>
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
     );
+    const rows = within(
+      screen.getByRole("table", { name: "Customers" }),
+    ).getAllByRole("row");
+    if (firstRow) expect(rows[1]).toBe(firstRow);
+    else firstRow = rows[1];
   }
-  expect(screen.getByRole("list", { name: "Customers" }).children).toHaveLength(
-    2,
-  );
+  expect(
+    within(screen.getByRole("table", { name: "Customers" })).getAllByRole(
+      "row",
+    ),
+  ).toHaveLength(3);
 });
