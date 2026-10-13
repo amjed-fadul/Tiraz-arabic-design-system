@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/Workbench.test.tsx src/workbench/labeled-input-page.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  18 passed (18)
+   Start at  01:42:47
+   Duration  7.70s (tests 59%, environment 20%, transform 10%, import 8%, setup 3%)
+

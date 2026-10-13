@@ -1375,3 +1375,189 @@
 .tz-feedback-examples > .tz-button {
   justify-self: start;
 }
+
+/* Quiet structure and native navigation. */
+.tz-card {
+  min-inline-size: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-wrap: anywhere;
+}
+.tz-card-header,
+.tz-card-content,
+.tz-card-footer {
+  padding: var(--row-gap);
+}
+.tz-card-header + .tz-card-content,
+.tz-card-content + .tz-card-footer {
+  padding-block-start: 0;
+}
+.tz-card-header {
+  display: grid;
+  gap: var(--space-1);
+}
+.tz-card-title {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+.tz-card-description {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.tz-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tz-accordion {
+  inline-size: 100%;
+  min-inline-size: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.tz-accordion-item + .tz-accordion-item {
+  border-block-start: 1px solid var(--border);
+}
+.tz-accordion-heading {
+  margin: 0;
+  font-size: var(--text-body);
+}
+.tz-accordion-trigger {
+  display: flex;
+  inline-size: 100%;
+  min-block-size: var(--control-height);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--row-gap);
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text);
+  text-align: start;
+  font-weight: var(--weight-medium);
+  overflow-wrap: anywhere;
+  transition: background var(--motion-fast);
+}
+.tz-accordion-trigger > span {
+  min-inline-size: 0;
+}
+.tz-accordion-trigger[data-state="open"] {
+  color: var(--action);
+}
+@media (hover: hover) {
+  .tz-accordion-trigger:not(:disabled):hover {
+    background: var(--surface-subtle);
+  }
+}
+.tz-accordion-trigger:disabled {
+  opacity: 0.48;
+}
+.tz-accordion-chevron {
+  transition: transform var(--motion-state) var(--ease);
+}
+.tz-accordion-trigger[data-state="open"] .tz-accordion-chevron {
+  transform: rotate(180deg);
+}
+.tz-accordion-panel {
+  overflow: hidden;
+  animation: tz-accordion-open var(--motion-state) var(--ease);
+}
+.tz-accordion-panel[data-state="closed"] {
+  animation: tz-accordion-close var(--motion-exit) var(--ease);
+}
+.tz-accordion-content {
+  padding: var(--space-2) var(--row-gap) var(--row-gap);
+  overflow-wrap: anywhere;
+}
+.tz-accordion-content > :first-child {
+  margin-block-start: 0;
+}
+.tz-accordion-content > :last-child {
+  margin-block-end: 0;
+}
+@keyframes tz-accordion-open {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+}
+@keyframes tz-accordion-close {
+  from {
+    height: var(--radix-accordion-content-height);
+    opacity: 1;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
+}
+.tz-breadcrumbs,
+.tz-pagination {
+  min-inline-size: 0;
+}
+.tz-breadcrumbs ol,
+.tz-pagination ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tz-breadcrumbs li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.tz-breadcrumbs a {
+  color: var(--text-secondary);
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+  transition: color var(--motion-fast);
+}
+.tz-breadcrumbs a:hover {
+  color: var(--action);
+}
+.tz-breadcrumbs [aria-current] {
+  font-weight: var(--weight-medium);
+}
+.tz-breadcrumb-separator {
+  align-self: center;
+  color: var(--text-muted);
+}
+.tz-breadcrumb-separator:dir(rtl) {
+  transform: rotate(180deg);
+}
+.tz-pagination .tz-button[aria-current="page"] {
+  background: var(--action-soft);
+  color: var(--action);
+  border-color: var(--action-border);
+}
+.tz-pagination .tz-button {
+  min-inline-size: var(--control-small);
+}
+.tz-pagination-gap {
+  display: inline-flex;
+  justify-content: center;
+  min-inline-size: var(--space-4);
+  color: var(--text-muted);
+}
+.tz-structure-example {
+  display: grid;
+  gap: var(--row-gap);
+  min-inline-size: 0;
+  inline-size: 100%;
+}

@@ -1,0 +1,1 @@
+[{"language":"ar","theme":"light","focus":{"outline":"2px","style":"solid"},"passed":true},{"language":"ar","theme":"dark","focus":{"outline":"2px","style":"solid"},"passed":true},{"language":"en","theme":"light","focus":{"outline":"2px","style":"solid"},"passed":true},{"language":"en","theme":"dark","focus":{"outline":"2px","style":"solid"},"passed":true}]

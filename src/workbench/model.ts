@@ -191,7 +191,28 @@ export interface SpinnerModel {
   size: "sm" | "md";
   decorative: boolean;
 }
+export interface CardModel {
+  title: string;
+  description: string;
+  actions: boolean;
+}
+export interface AccordionModel {
+  mode: "controlled" | "uncontrolled";
+  collapsible: boolean;
+}
+export interface BreadcrumbsModel {
+  label: string;
+  current: string;
+}
+export interface PaginationModel {
+  page: number;
+  totalPages: number;
+}
 export interface Playgrounds {
+  card: CardModel;
+  accordion: AccordionModel;
+  breadcrumbs: BreadcrumbsModel;
+  pagination: PaginationModel;
   alert: AlertModel;
   skeleton: SkeletonModel;
   progress: ProgressModel;
@@ -232,6 +253,20 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    card: {
+      title: t("دليل القراءة", "Reading guide"),
+      description: t(
+        "ملاحظات قصيرة لتنسيق المحتوى.",
+        "Short notes for arranging content.",
+      ),
+      actions: true,
+    },
+    accordion: { mode: "controlled", collapsible: true },
+    breadcrumbs: {
+      label: t("مسار الصفحة", "Page path"),
+      current: t("القراءة", "Reading"),
+    },
+    pagination: { page: 1, totalPages: 12 },
     alert: {
       title: t("المعاينة جاهزة", "Preview ready"),
       description: t(
@@ -685,6 +720,17 @@ export function normalizePlaygrounds(
     for (const [key, allowed] of Object.entries(enums))
       if (key in r && !allowed.includes(r[key] as string))
         r[key] = original[key];
+    if (component === "pagination") {
+      r.totalPages = Number.isFinite(r.totalPages)
+        ? Math.min(20, Math.max(1, Math.floor(Number(r.totalPages))))
+        : 12;
+      r.page = Number.isFinite(r.page)
+        ? Math.max(
+            1,
+            Math.min(Number(r.totalPages), Math.floor(Number(r.page))),
+          )
+        : 1;
+    }
     if (component === "progress")
       r.value = Number.isFinite(r.value)
         ? Math.max(0, Math.min(100, Number(r.value)))

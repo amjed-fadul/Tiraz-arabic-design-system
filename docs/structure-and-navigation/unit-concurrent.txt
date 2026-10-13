@@ -1,0 +1,413 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz
+
+ ❯ src/workbench/avatar-overlays-pages.test.tsx (1 test | 1 failed) 5199ms
+   × adds five focused continuous pages with complete generated prompts 5198ms
+ ❯ src/workbench/generated-code.test.ts (1 test | 1 failed) 17566ms
+   × type-checks copied code for every component, state mode and composition preset 17564ms
+ ❯ src/workbench/customer-flow.test.tsx (2 tests | 1 failed) 8230ms
+   × validates, focuses the first invalid field, keeps corrections and saves once 5025ms
+ ❯ src/workbench/feedback-photos-pages.test.tsx (2 tests | 2 failed) 12025ms
+   × documents four feedback pages with complete copied code and prompts 5178ms
+   × exposes existing src with a minimal photo choice and accurate imports 6783ms
+ ❯ src/workbench/structure-navigation-pages.test.tsx (2 tests | 2 failed) 15569ms
+   × documents four structure/navigation pages with working previews and complete copied prompts 5106ms
+   × connects Card reveal, Accordion disclosure, Breadcrumb destinations and Pagination content 10380ms
+ ❯ src/system/overlay-regressions.test.tsx (13 tests | 4 failed) 20717ms
+   × keeps a nested menu inside its modal's theme and focus scope in rtl 9001ms
+   × restores caller focus after manually closing a toast 475ms
+   × expires subsequent toasts after a manual dismissal 609ms
+   × keeps focus in a sibling toast when another toast closes 808ms
+ ❯ src/workbench/generated-data-table.test.tsx (2 tests | 1 failed) 9240ms
+   × runs copied create → filtered table → details code without any workbench dependency 7420ms
+ ❯ src/workbench/generated-batch.test.tsx (5 tests | 2 failed) 18313ms
+   × runs the copied Tooltip details action without workbench dependencies 9352ms
+   × runs copied Modal controlled=true preview, nested reset and footer dismissal 6024ms
+ ❯ src/workbench/form-controls-pages.test.tsx (3 tests | 1 failed) 8242ms
+   × adds four continuous documentation pages with complete prompt/code and preserves Field under Input 5312ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 15 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/overlay-regressions.test.tsx > keeps a nested menu inside its modal's theme and focus scope in rtl
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/overlay-regressions.test.tsx:62:33
+     60|   },
+     61| );
+     62| it.each(["rtl", "ltr"] as const)(
+       |                                 ^
+     63|   "keeps a nested menu inside its modal's theme and focus scope in %s",
+     64|   async (direction) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/15]⎯
+
+ FAIL  src/system/overlay-regressions.test.tsx > restores caller focus after manually closing a toast
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Dismiss"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Notify":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Notifications":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Notifications"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mstyle[39m=[32m""[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol[39m
+    [33mclass[39m=[32m"tz-toast-viewport"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m""[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"rtl"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"tz-button "[39m
+        [33mdata-size[39m=[32m"sm"[39m
+        [33mdata-state[39m=[32m"idle"[39m
+        [33mdata-variant[39m=[32m"primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"tz-button-label"[39m
+        [36m>[39m
+          [0mNotify[0m
+        [36m</span>[39m
+      [36m</button>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Notifications"[39m
+        [33mrole[39m=[32m"region"[39m
+        [33mstyle[39m=[32m""[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+        [36m<ol[39m
+          [33mclass[39m=[32m"tz-toast-viewport"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/overlay-regressions.test.tsx:143:32
+    141|   const trigger = screen.getByRole("button", { name: "Notify" });
+    142|   await userEvent.click(trigger);
+    143|   await userEvent.click(screen.getByRole("button", { name: "Dismiss" }…
+       |                                ^
+    144|   await waitFor(() => expect(trigger).toHaveFocus());
+    145| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/15]⎯
+
+ FAIL  src/system/overlay-regressions.test.tsx > expires subsequent toasts after a manual dismissal
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Dismiss"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Notify":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Notifications":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Notifications"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mstyle[39m=[32m""[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol[39m
+    [33mclass[39m=[32m"tz-toast-viewport"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m""[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"rtl"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"tz-button "[39m
+        [33mdata-size[39m=[32m"sm"[39m
+        [33mdata-state[39m=[32m"idle"[39m
+        [33mdata-variant[39m=[32m"primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"tz-button-label"[39m
+        [36m>[39m
+          [0mNotify[0m
+        [36m</span>[39m
+      [36m</button>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Notifications"[39m
+        [33mrole[39m=[32m"region"[39m
+        [33mstyle[39m=[32m""[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+        [36m<ol[39m
+          [33mclass[39m=[32m"tz-toast-viewport"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/overlay-regressions.test.tsx:156:32
+    154|   const trigger = screen.getByRole("button", { name: "Notify" });
+    155|   await userEvent.click(trigger);
+    156|   await userEvent.click(screen.getByRole("button", { name: "Dismiss" }…
+       |                                ^
+    157|   await userEvent.click(trigger);
+    158|   expect(screen.getAllByText("Timed message").length).toBeGreaterThan(…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/15]⎯
+
+ FAIL  src/system/overlay-regressions.test.tsx > keeps focus in a sibling toast when another toast closes
+TypeError: Cannot read properties of undefined (reading 'focus')
+ ❯ src/system/overlay-regressions.test.tsx:177:14
+    175|   await userEvent.click(trigger);
+    176|   const dismiss = screen.getAllByRole("button", { name: "Dismiss" });
+    177|   dismiss[1].focus();
+       |              ^
+    178|   fireEvent.click(dismiss[0]);
+    179|   expect(dismiss[1]).toHaveFocus();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/15]⎯
+
+ FAIL  src/workbench/avatar-overlays-pages.test.tsx > adds five focused continuous pages with complete generated prompts
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/avatar-overlays-pages.test.tsx:8:1
+      6| import { defaultPlaygrounds } from "./model";
+      7| import { generateCode, generatePrompt } from "./generate";
+      8| it("adds five focused continuous pages with complete generated prompts…
+       | ^
+      9|   render(<Workbench />);
+     10|   const user = userEvent.setup();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/15]⎯
+
+ FAIL  src/workbench/customer-flow.test.tsx > validates, focuses the first invalid field, keeps corrections and saves once
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/customer-flow.test.tsx:16:1
+     14|   return userEvent.setup();
+     15| }
+     16| it("validates, focuses the first invalid field, keeps corrections and …
+       | ^
+     17|   const user = setup();
+     18|   expect(screen.getByRole("table", { name: "Customers" })).toHaveTextC…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/15]⎯
+
+ FAIL  src/workbench/feedback-photos-pages.test.tsx > documents four feedback pages with complete copied code and prompts
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/feedback-photos-pages.test.tsx:5:1
+      3| import { expect, it, vi } from "vitest";
+      4| import { Workbench } from "./Workbench";
+      5| it("documents four feedback pages with complete copied code and prompt…
+       | ^
+      6|   render(<Workbench />);
+      7|   const user = userEvent.setup(),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/15]⎯
+
+ FAIL  src/workbench/feedback-photos-pages.test.tsx > exposes existing src with a minimal photo choice and accurate imports
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/feedback-photos-pages.test.tsx:29:1
+     27|   }
+     28| });
+     29| it("exposes existing src with a minimal photo choice and accurate impo…
+       | ^
+     30|   localStorage.setItem(
+     31|     "tiraz.documentation.v2",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/15]⎯
+
+ FAIL  src/workbench/form-controls-pages.test.tsx > adds four continuous documentation pages with complete prompt/code and preserves Field under Input
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/form-controls-pages.test.tsx:10:1
+      8| import { FeedbackForm } from "../system/ai/examples/FeedbackForm";
+      9|
+     10| it("adds four continuous documentation pages with complete prompt/code…
+       | ^
+     11|   render(<Workbench />);
+     12|   const user = userEvent.setup();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/15]⎯
+
+ FAIL  src/workbench/generated-batch.test.tsx > runs the copied Tooltip details action without workbench dependencies
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-batch.test.tsx:50:1
+     48|   return exports.default!;
+     49| }
+     50| it("runs the copied Tooltip details action without workbench dependenc…
+       | ^
+     51|   const Example = copiedExample("tooltip");
+     52|   render(<Example />);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/15]⎯
+
+ FAIL  src/workbench/generated-batch.test.tsx > runs copied Modal controlled=true preview, nested reset and footer dismissal
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-batch.test.tsx:60:23
+     58|   expect(screen.queryByText("This is a local component preview.")).toB…
+     59| });
+     60| it.each([true, false])(
+       |                       ^
+     61|   "runs copied Modal controlled=%s preview, nested reset and footer di…
+     62|   async (controlled) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/15]⎯
+
+ FAIL  src/workbench/generated-code.test.ts > type-checks copied code for every component, state mode and composition preset
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-code.test.ts:10:1
+      8| import type { ComponentId } from "./catalog";
+      9| import { generateCode } from "./generate";
+     10| it("type-checks copied code for every component, state mode and compos…
+       | ^
+     11|   const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = …
+     12|   for (const language of ["ar", "en"] as const) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/15]⎯
+
+ FAIL  src/workbench/generated-data-table.test.tsx > runs copied create → filtered table → details code without any workbench dependency
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-data-table.test.tsx:37:1
+     35|   return exports.default!;
+     36| }
+     37| it("runs copied create → filtered table → details code without any wor…
+       | ^
+     38|   const user = userEvent.setup();
+     39|   const Example = example();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/15]⎯
+
+ FAIL  src/workbench/structure-navigation-pages.test.tsx > documents four structure/navigation pages with working previews and complete copied prompts
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/structure-navigation-pages.test.tsx:5:1
+      3| import { expect, it, vi } from "vitest";
+      4| import { Workbench } from "./Workbench";
+      5| it("documents four structure/navigation pages with working previews an…
+       | ^
+      6|   render(<Workbench />);
+      7|   const user = userEvent.setup(),
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/15]⎯
+
+ FAIL  src/workbench/structure-navigation-pages.test.tsx > connects Card reveal, Accordion disclosure, Breadcrumb destinations and Pagination content
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/structure-navigation-pages.test.tsx:28:1
+     26|   }
+     27| });
+     28| it("connects Card reveal, Accordion disclosure, Breadcrumb destination…
+       | ^
+     29|   localStorage.setItem(
+     30|     "tiraz.documentation.v2",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/15]⎯
+
+
+ Test Files  9 failed | 25 passed (34)
+      Tests  15 failed | 299 passed (314)
+   Start at  01:47:13
+   Duration  57.72s (tests 59%, environment 19%, import 12%, setup 5%, transform 5%)
+
+    Isolate  34 workers spawned · ~2.45s startup each (spawn + environment, per file)
+             at least ~9.46s faster with isolate: false — reuses workers across files instead of one per file
+

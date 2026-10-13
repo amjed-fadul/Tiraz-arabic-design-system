@@ -162,6 +162,30 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (["card", "accordion", "breadcrumbs", "pagination"].includes(component))
+    return (
+      <p className="example-caption">
+        {component === "card"
+          ? t(
+              "البطاقة سطح للمحتوى. يملك التطبيق إجراءات الرأس والتذييل؛ ليست عنصرًا قابلًا للنقر.",
+              "Card groups content. The application supplies header/footer actions; the surface has no interaction.",
+            )
+          : component === "accordion"
+            ? t(
+                "Accordion يظهر التفاصيل تحت العناوين. Tabs يبدّل بين عروض مرتبطة. قيم العناصر ثابتة وفريدة؛ لا تضع عناصر تفاعلية داخل التسميات.",
+                "Accordion reveals details below headings. Tabs switches related views. Use stable unique values and no interactive content inside labels.",
+              )
+            : component === "breadcrumbs"
+              ? t(
+                  "الروابط تصل إلى أقسام فعلية في المثال. يحدد التطبيق الوجهات؛ الصفحة الحالية نص.",
+                  "Links reach actual example sections. The caller supplies destinations; the current page is text.",
+                )
+              : t(
+                  "المثال يقسم قائمة محلية صغيرة. Pagination يطلب الصفحة فقط؛ التطبيق يملك الحجم والتصفية والجلب. DataTable يملك حالة الفرز والصفحات الداخلية الخاصة به.",
+                  "This example slices a small local list. Pagination requests a page; the caller owns size, filtering and fetching. DataTable retains its internal sorting and page state.",
+                )}
+      </p>
+    );
   if (component === "alert") return <AlertExamples language={language} />;
   if (component === "skeleton") return <SkeletonExamples language={language} />;
   if (component === "progress") return <ProgressExamples language={language} />;

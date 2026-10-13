@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **twenty-four**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress and Spinner.
+Tiraz is an Arabic-first, source-owned React dashboard library with **twenty-eight**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs and Pagination.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -37,7 +37,7 @@ Use the existing project toolchain. The current checkout uses React/React DOM
 through Button/Switch and Radix triggers; earlier React versions are not
 verified. Consumer projects need compatible React compilation,
 `lucide-react` and Radix packages for direction, tabs, switch, dropdown-menu,
-dialog, toast, select and popper (verified with @radix-ui/react-select 2.4.1). Read the checkout's package/lock files when available;
+dialog, toast, select, popper and accordion (verified with @radix-ui/react-select 2.4.1). Read the checkout's package/lock files when available;
 otherwise inspect imports and resolve compatible dependencies in the host.
 No Tiraz installer, CLI, backend or MCP service is needed.
 
@@ -112,3 +112,43 @@ Progress requires a visible accessible label. Finite value clamps to 0–100; mi
 Avatar's src API and loading/failure/source-change fallback are unchanged. The documentation offers initials/photo plus an optional image URL; a blank photo URL selects [sara.jpg](assets/sara.jpg). Group examples mix Sara/Omar photos with initials. These are fictional AI-generated samples, bundled under the project MIT license; see [provenance](assets/README.md) and [license](assets/LICENSE.txt). They identify no real people.
 
 Copy ai/assets with the library and preserve local asset imports in generated examples. A consumer needs image-module declarations/bundling (for Vite, vite/client), not a remote service. Custom URLs are application-owned; documentation neither uploads nor stores images. Test loading, errors, source replacement/removal and single accessible naming.
+
+## Structure and navigation
+
+Use [StructureExamples](examples/StructureExamples.tsx) for four small connected
+examples. Card groups content with CardHeader, CardTitle (native h3),
+CardDescription (p), CardContent and CardFooter. Every part preserves native
+attributes/ref. Title, description, header and footer are optional through
+composition; use native headings when another level fits the page. Compose
+application actions inside header/footer. Card is a surface, never an interactive
+control; do not invent a clickable-card or variant API.
+
+Accordion uses @radix-ui/react-accordion (see package/lock for the verified version).
+It reveals one section below persistent headings; Tabs switches related views.
+Supply items with unique nonempty stable value, label, content and optional
+disabled. Keep label free of nested controls. value/onValueChange controls it;
+defaultValue initializes internal state and omission starts closed. Empty string
+means none open. collapsible defaults false; headingLevel defaults 3 (2–6).
+Radix owns ArrowUp/Down, Home/End and Enter/Space and button/panel associations.
+Closed panels become inert and aria-hidden immediately while visual exit motion finishes. No multi-open or nested configuration. Application and OS reduced motion both win.
+
+Breadcrumbs requires items and a translated label for its nav landmark. Items
+have label and optional href; ancestors with href are native links, and the final
+item is always current-page text with aria-current=page. An ancestor without href
+is static text. Caller supplies real destinations; the example targets real local
+sections using useId. Separators are decorative and mirror in RTL; content wraps.
+No routing or overflow menu is supplied.
+
+Pagination requires page, totalPages, onPageChange and labels with navigation,
+previous, next and page(number) names. It is controlled; update caller state in
+onPageChange. Finite values floor, total clamps to 1–MAX_SAFE_INTEGER and page
+clamps to 1–normalized total; nonfinite inputs become 1. Zero total displays one
+inert page. Normalization never emits a callback during rendering. Clicking the
+current number emits none. At most seven number/ellipsis slots; ellipses are
+noninteractive. disabled disables all Buttons. locale=ar/en defaults from direction
+and controls displayed digits independently of translated labels.
+
+The caller owns fetching, filtering, page size, reset and content selection. The
+example slices a bounded local list (one guide note per page, at most 20 pages).
+That limit is for the example, not the component. DataTable keeps its existing
+internal sorting, reset/clamping, busy state and connected actions unchanged.

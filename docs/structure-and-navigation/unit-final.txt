@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz
+
+
+ Test Files  34 passed (34)
+      Tests  314 passed (314)
+   Start at  01:48:48
+   Duration  29.87s (tests 59%, environment 24%, import 11%, setup 4%, transform 2%)
+
+    Isolate  34 workers spawned · ~477ms startup each (spawn + environment, per file)
+             at least ~7.63s faster with isolate: false — reuses workers across files instead of one per file
+

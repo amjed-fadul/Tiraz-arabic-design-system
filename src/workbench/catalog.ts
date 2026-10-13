@@ -216,6 +216,42 @@ export const catalog = [
     ],
     file: "Spinner.tsx",
   },
+  {
+    id: "card",
+    name: ["البطاقة", "Card"],
+    description: [
+      "سطح هادئ مع عنوان ومحتوى وإجراءات من التطبيق.",
+      "A quiet surface with composable heading, content and application actions.",
+    ],
+    file: "Card.tsx",
+  },
+  {
+    id: "accordion",
+    name: ["الأكورديون", "Accordion"],
+    description: [
+      "إظهار قسم واحد مع بقاء العناوين متاحة.",
+      "Reveal one section while keeping headings available.",
+    ],
+    file: "Accordion.tsx",
+  },
+  {
+    id: "breadcrumbs",
+    name: ["مسار التنقل", "Breadcrumbs"],
+    description: [
+      "روابط أصلية للمسار مع نص للصفحة الحالية.",
+      "Native path links with current-page text.",
+    ],
+    file: "Breadcrumbs.tsx",
+  },
+  {
+    id: "pagination",
+    name: ["تقسيم الصفحات", "Pagination"],
+    description: [
+      "تنقل مضبوط بين الصفحات؛ التطبيق يملك البيانات.",
+      "Controlled page navigation; the application owns data.",
+    ],
+    file: "Pagination.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;

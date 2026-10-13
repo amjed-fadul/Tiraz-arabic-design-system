@@ -1,3 +1,15 @@
+import {
+  CardExample,
+  AccordionExample,
+  BreadcrumbsExample,
+  PaginationExample,
+} from "../system/ai/examples/StructureExamples";
+import type {
+  CardModel,
+  AccordionModel,
+  BreadcrumbsModel,
+  PaginationModel,
+} from "./model";
 import { saraPortrait } from "../system/ai/examples/portraits";
 import {
   Alert,
@@ -124,6 +136,39 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "card")
+    return <CardExample language={language} {...(model as CardModel)} />;
+  if (component === "accordion") {
+    const p = model as AccordionModel;
+    return (
+      <AccordionExample
+        key={p.mode}
+        language={language}
+        controlled={p.mode === "controlled"}
+        collapsible={p.collapsible}
+      />
+    );
+  }
+  if (component === "breadcrumbs")
+    return (
+      <BreadcrumbsExample
+        language={language}
+        {...(model as BreadcrumbsModel)}
+      />
+    );
+  if (component === "pagination") {
+    const p = model as PaginationModel;
+    return (
+      <PaginationExample
+        language={language}
+        {...p}
+        onPageChange={(page) => {
+          onPatch({ page });
+          onEvent("onPageChange", page);
+        }}
+      />
+    );
+  }
   if (component === "alert") return <Alert {...(model as AlertModel)} />;
   if (component === "skeleton")
     return <Skeleton {...(model as SkeletonModel)} />;

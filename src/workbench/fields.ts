@@ -76,6 +76,43 @@ const trigger: WorkbenchField[] = [
   ),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  card: [
+    field("title", "text", "العنوان", "Title", "CardTitle.children"),
+    field(
+      "description",
+      "text",
+      "الوصف",
+      "Description",
+      "CardDescription.children",
+    ),
+    field(
+      "actions",
+      "boolean",
+      "إجراء الملاحظات",
+      "Notes action",
+      "CardFooter.children · example",
+    ),
+  ],
+  accordion: [
+    field("collapsible", "boolean", "السماح بالإغلاق", "Allow collapse"),
+    mode,
+  ],
+  breadcrumbs: [
+    field("label", "text", "اسم المسار", "Path label"),
+    field(
+      "current",
+      "text",
+      "الصفحة الحالية",
+      "Current page",
+      "items · example",
+    ),
+  ],
+  pagination: [
+    field("totalPages", "number", "عدد الصفحات", "Total pages", "totalPages", {
+      min: 1,
+      max: 20,
+    }),
+  ],
   alert: [
     field("title", "text", "العنوان", "Title"),
     field("description", "text", "الوصف", "Description"),
@@ -502,6 +539,10 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  card: ["title", "description", "actions"],
+  accordion: ["collapsible", "mode"],
+  breadcrumbs: ["label", "current"],
+  pagination: ["totalPages"],
   alert: ["title", "description", "tone"],
   skeleton: ["shape"],
   progress: ["label", "value", "indeterminate", "showValue"],

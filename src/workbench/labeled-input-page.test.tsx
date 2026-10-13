@@ -38,7 +38,7 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
-  expect(nav.getAllByRole("button")).toHaveLength(23);
+  expect(nav.getAllByRole("button")).toHaveLength(27);
   const rail = within(
     screen.getByRole("complementary", { name: "Customization" }),
   );

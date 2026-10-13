@@ -125,6 +125,13 @@ it("type-checks copied code for every component, state mode and composition pres
     "field",
     { ...p.field, error: "Application error", required: true },
   ]);
+  for (const mode of ["controlled", "uncontrolled"] as const)
+    for (const collapsible of [false, true])
+      cases.push(["accordion", { mode, collapsible }]);
+  cases.push(["card", { ...p.card, actions: false, description: "" }]);
+  for (const page of [1, 4, 10, 20])
+    cases.push(["pagination", { page, totalPages: 20 }]);
+  cases.push(["breadcrumbs", { label: "Page path", current: "DOC-24 / دليل" }]);
   cases.push(["modal", { ...p.modal, mode: "uncontrolled", footer: false }]);
   for (const illustration of [
     "no-records",

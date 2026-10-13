@@ -30,3 +30,7 @@ export * from "./Alert";
 export * from "./Skeleton";
 export * from "./Progress";
 export * from "./Spinner";
+export * from "./Card";
+export * from "./Accordion";
+export * from "./Breadcrumbs";
+export * from "./Pagination";

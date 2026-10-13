@@ -13,6 +13,102 @@ export function ApiReference({
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    card: [
+      [
+        "Card / CardHeader / CardContent / CardFooter",
+        "native div props / ref",
+        t(
+          "سطح غير تفاعلي؛ السمات والأحداث وref أصلية لكل جزء.",
+          "Noninteractive surface; each part preserves native attributes, events and ref.",
+        ),
+      ],
+      [
+        "CardTitle / CardDescription",
+        "native h3 / p props",
+        t(
+          "العنوان والوصف اختياريان عبر التركيب. استخدم عنوانًا أصليًا آخر عند الحاجة لمستوى مختلف.",
+          "Optional composed title and description. Use a native heading when another level is needed.",
+        ),
+      ],
+      [
+        "children",
+        "ReactNode",
+        t(
+          "ضع إجراءات التطبيق داخل الرأس أو التذييل. لا يوجد نمط بطاقة قابلة للنقر.",
+          "Compose application actions in the header or footer. No clickable-card API.",
+        ),
+      ],
+    ],
+    accordion: [
+      [
+        "items",
+        "readonly AccordionItem[]",
+        t(
+          "value ثابت وفريد وغير فارغ؛ label وcontent ومؤشر disabled اختياري. لا تضع أزرارًا داخل label.",
+          "Stable unique nonempty value, label, content and optional disabled. No interactive children inside label.",
+        ),
+      ],
+      [
+        "value / defaultValue / onValueChange",
+        "string? / string? / (value: string) => void",
+        t(
+          "حالة مضبوطة أو داخلية. السلسلة الفارغة تعني إغلاق الجميع. دون defaultValue يبدأ مغلقًا.",
+          "Controlled or internal state. Empty string means none open; omitted defaultValue starts closed.",
+        ),
+      ],
+      [
+        "collapsible / headingLevel / className",
+        "boolean? / 2 | 3 | 4 | 5 | 6 / string?",
+        t(
+          "الإغلاق false افتراضيًا؛ مستوى العنوان 3. Radix يملك ArrowUp/Down وHome/End وEnter/Space. الأقسام المغلقة غير تفاعلية فورًا أثناء حركة الإغلاق. قسم واحد؛ Tabs للعروض المرتبطة.",
+          "Collapse defaults false; heading level 3. Radix handles ArrowUp/Down, Home/End and Enter/Space. Closed panels are immediately inert during exit motion. One disclosure; use Tabs for related views.",
+        ),
+      ],
+    ],
+    breadcrumbs: [
+      [
+        "items / label",
+        "readonly BreadcrumbItem[] / string",
+        t(
+          "label اسم ميسر مترجم. عناصر المسار تحوي label وhref اختياريًا؛ آخر عنصر نص الصفحة الحالية حتى لو حوى href.",
+          "Translated landmark label. Items have label and optional href; final item is current-page text even with href.",
+        ),
+      ],
+      [
+        "native nav props / ref",
+        "ComponentPropsWithRef<nav>",
+        t(
+          "روابط أصلية؛ عناصر دون وجهة نص. الفواصل زخرفية وتتبع الاتجاه، والمسار يلتف.",
+          "Native links; items without destinations are text. Decorative direction-aware separators and wrapping.",
+        ),
+      ],
+    ],
+    pagination: [
+      [
+        "page / totalPages / onPageChange",
+        "number / number / (page: number) => void",
+        t(
+          "مضبوط فقط. القيم المحدودة تُقرب للأسفل وتثبت؛ غير المحدودة تصبح 1. مجموع الصفحات بين 1 وMAX_SAFE_INTEGER. لا استدعاء أثناء العرض.",
+          "Controlled only. Finite values floor and clamp; nonfinite values become 1. Total is 1–MAX_SAFE_INTEGER. No render-time callbacks.",
+        ),
+      ],
+      [
+        "labels",
+        "PaginationLabels",
+        t(
+          "navigation وprevious وnext ودالة page(number) بأسماء مترجمة.",
+          "Translated navigation, previous, next and page(number) names.",
+        ),
+      ],
+      [
+        "locale / disabled / native nav props / ref",
+        "ar | en / boolean? / native nav",
+        t(
+          "locale يتبع الاتجاه افتراضيًا. disabled يعطل كل الأزرار. 7 مواضع كحد أقصى، والفواصل غير تفاعلية. التطبيق يملك البيانات والحجم والتصفية؛ DataTable منفصل.",
+          "Locale defaults from direction. disabled disables all buttons. At most seven slots with static ellipses. Caller owns data, size and filtering; DataTable is separate.",
+        ),
+      ],
+    ],
     alert: [
       [
         "title / description",

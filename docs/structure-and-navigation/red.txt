@@ -1,0 +1,95 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/structure-navigation.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz
+
+ ❯ src/system/structure-navigation.test.tsx (17 tests | 17 failed) 28ms
+   × composes a quiet native Card with attributes, refs and application actions 13ms
+   × opens one Accordion item, collapses optionally and associates heading/buttons/panels 2ms
+   × keeps noncollapsible Accordion open and delegates arrows/Home/End/Space to the primitive 1ms
+   × honors controlled Accordion state and preserves selection by stable value on reorder 1ms
+   × lets an application update controlled Accordion and retain uncontrolled initial value 2ms
+   × renders Breadcrumbs with native destinations, final current text and decorative separators 1ms
+   × normalizes page 0 and total 0 consistently without calling back 1ms
+   × normalizes page -10 and total 9 consistently without calling back 1ms
+   × normalizes page 2.8 and total 4.9 consistently without calling back 1ms
+   × normalizes page 99 and total 4 consistently without calling back 1ms
+   × normalizes page NaN and total Infinity consistently without calling back 0ms
+   × normalizes page Infinity and total 5 consistently without calling back 0ms
+   × shows a compact range for page 1 with noninteractive ellipses 1ms
+   × shows a compact range for page 10 with noninteractive ellipses 0ms
+   × shows a compact range for page 20 with noninteractive ellipses 0ms
+   × Pagination requests valid pages, keeps control with the caller and forwards nav/ref 1ms
+   × uses explicit translated labels and Arabic digits independently of direction 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/structure-navigation.test.tsx > composes a quiet native Card with attributes, refs and application actions
+ FAIL  src/system/structure-navigation.test.tsx > opens one Accordion item, collapses optionally and associates heading/buttons/panels
+ FAIL  src/system/structure-navigation.test.tsx > keeps noncollapsible Accordion open and delegates arrows/Home/End/Space to the primitive
+ FAIL  src/system/structure-navigation.test.tsx > honors controlled Accordion state and preserves selection by stable value on reorder
+ FAIL  src/system/structure-navigation.test.tsx > renders Breadcrumbs with native destinations, final current text and decorative separators
+ FAIL  src/system/structure-navigation.test.tsx > normalizes page 0 and total 0 consistently without calling back
+ FAIL  src/system/structure-navigation.test.tsx > normalizes page -10 and total 9 consistently without calling back
+ FAIL  src/system/structure-navigation.test.tsx > normalizes page 2.8 and total 4.9 consistently without calling back
+ FAIL  src/system/structure-navigation.test.tsx > normalizes page 99 and total 4 consistently without calling back
+ FAIL  src/system/structure-navigation.test.tsx > normalizes page NaN and total Infinity consistently without calling back
+ FAIL  src/system/structure-navigation.test.tsx > normalizes page Infinity and total 5 consistently without calling back
+ FAIL  src/system/structure-navigation.test.tsx > shows a compact range for page 1 with noninteractive ellipses
+ FAIL  src/system/structure-navigation.test.tsx > shows a compact range for page 10 with noninteractive ellipses
+ FAIL  src/system/structure-navigation.test.tsx > shows a compact range for page 20 with noninteractive ellipses
+ FAIL  src/system/structure-navigation.test.tsx > Pagination requests valid pages, keeps control with the caller and forwards nav/ref
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  src/system/structure-navigation.test.tsx > lets an application update controlled Accordion and retain uncontrolled initial value
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `Controlled`.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10585:7
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  src/system/structure-navigation.test.tsx > uses explicit translated labels and Arabic digits independently of direction
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12468:13
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  17 failed (17)
+   Start at  01:31:58
+   Duration  3.31s (environment 64%, transform 13%, import 12%, setup 10%, tests 1%)
+

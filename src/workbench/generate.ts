@@ -55,6 +55,10 @@ export function generateCode(
 ): string {
   if (
     [
+      "card",
+      "accordion",
+      "breadcrumbs",
+      "pagination",
       "alert",
       "skeleton",
       "progress",

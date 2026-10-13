@@ -274,7 +274,7 @@ it("documents real public exports and supported prop values and compiles the lin
   }
   const literalValues = (type: ts.Type): unknown[] =>
     (type.isUnion() ? type.types : [type]).flatMap<unknown>((t) =>
-      t.isStringLiteral()
+      t.isStringLiteral() || t.isNumberLiteral()
         ? [t.value]
         : t.flags & ts.TypeFlags.BooleanLiteral
           ? [
@@ -307,6 +307,7 @@ it("documents real public exports and supported prop values and compiles the lin
         "progress",
         "spinner",
         "tabs",
+        "accordion",
         "dropdown",
         "sheet",
         "toast",

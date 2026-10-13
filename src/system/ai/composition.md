@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the twenty-four registry families. Prefer an inline task and a
+  Map each need to the twenty-eight registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
@@ -172,3 +172,37 @@ Use Skeleton to reserve simple text/rectangle/circle space, always hidden from a
 Progress is a named 0–100 bar: value=0 is real zero, value=100 is completion, finite out-of-range values clamp. Omit value or pass null for unknown progress; nonfinite values also omit numeric claims. Explicit locale handles language independently of direction. Updates and completion behavior belong to the host. Use explicit example states without timers or fake requests.
 
 Avatar photo examples import bundled ai/assets/sara.jpg and omar.jpg. Copy those assets and their provenance/license alongside the source. Initials-only, custom URL and mixed groups are compositions of the existing src prop; they add no public appearance or upload API.
+
+## Structure and navigation
+
+- Card is a quiet surface. Compose CardHeader, optional CardTitle (h3) and
+  CardDescription (p), CardContent and CardFooter. All retain native attributes,
+  events and React 19 refs. Use native headings for the correct document outline.
+  Place Buttons/links inside the header/footer; never add a clickable surface,
+  role=button or a tab stop as a library pattern.
+- Accordion reveals detail beneath headings; Tabs switches related views.
+  Supply unique stable nonempty values and noninteractive label content. Start
+  closed or use an enabled defaultValue; controlled value requires onValueChange
+  updating the host. Empty string closes all. collapsible defaults false,
+  headingLevel=3. Use the compatible Radix Accordion dependency; do not build a
+  keyboard engine, nested arrangement or multi-open configuration. Verify disabled
+  skipping, arrows/Home/End, Enter/Space and linked regions in both directions.
+  Closed panels are immediately inert and aria-hidden during exit motion.
+- Breadcrumbs names a native nav with caller-translated label. Supply label/href
+  items with real destinations; final item is text with aria-current=page even if
+  href was supplied. Missing ancestor href is static text. Decorative separators
+  mirror in RTL. Allow wrapping and isolate mixed identifiers with bdi.
+- Pagination is controlled navigation only. Supply page, totalPages,
+  onPageChange and translated labels.navigation/previous/next/page(number).
+  Normalize inputs in application state when the data requires it; the component
+  only normalizes display and requested target pages, with no render callback.
+  Finite values floor/clamp, nonfinite become 1; zero total displays one inert page.
+  Locale controls digits separately from names. Boundaries and disabled prevent
+  navigation; current number has aria-current and emits no change. Ellipses have
+  no action. Keep content slicing, page size, filter/reset, loading/fetching and
+  announcements in the application. DataTable has its own internal data lifecycle;
+  do not wrap it with a second page state or invent a server data API.
+
+[StructureExamples](examples/StructureExamples.tsx) demonstrates local note
+reveal, disclosure, real anchor destinations and slicing a small list. It adds no
+backend, saved state, fake service or customer workflow.

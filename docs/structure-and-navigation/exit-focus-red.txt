@@ -1,0 +1,53 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/structure-navigation.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz
+
+ ❯ src/system/structure-navigation.test.tsx (24 tests | 2 failed) 614ms
+   × removes closed Accordion panels from focus and accessibility immediately (controlled=false) 22ms
+   × removes closed Accordion panels from focus and accessibility immediately (controlled=true) 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/structure-navigation.test.tsx > removes closed Accordion panels from focus and accessibility immediately (controlled=false)
+Error: expect(element).toHaveAttribute("inert") // element.hasAttribute("inert")
+
+Expected the element to have attribute:
+  inert
+Received:
+  null
+ ❯ src/system/structure-navigation.test.tsx:400:17
+    398|   if (controlled) rerender(<Accordion items={items} value="delivery" c…
+    399|   else await user.click(screen.getByRole("button", { name: "Delivery" …
+    400|   expect(panel).toHaveAttribute("inert");
+       |                 ^
+    401|   expect(panel).toHaveAttribute("aria-hidden", "true");
+    402| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/system/structure-navigation.test.tsx > removes closed Accordion panels from focus and accessibility immediately (controlled=true)
+Error: expect(element).toHaveAttribute("inert") // element.hasAttribute("inert")
+
+Expected the element to have attribute:
+  inert
+Received:
+  null
+ ❯ src/system/structure-navigation.test.tsx:400:17
+    398|   if (controlled) rerender(<Accordion items={items} value="delivery" c…
+    399|   else await user.click(screen.getByRole("button", { name: "Delivery" …
+    400|   expect(panel).toHaveAttribute("inert");
+       |                 ^
+    401|   expect(panel).toHaveAttribute("aria-hidden", "true");
+    402| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 22 passed (24)
+   Start at  01:45:57
+   Duration  1.77s (tests 37%, environment 33%, import 12%, transform 11%, setup 7%)
+

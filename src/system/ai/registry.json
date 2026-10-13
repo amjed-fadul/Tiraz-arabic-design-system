@@ -307,6 +307,70 @@
     {
       "name": "SpinnerProps",
       "source": "Spinner.tsx"
+    },
+    {
+      "name": "Card",
+      "source": "Card.tsx"
+    },
+    {
+      "name": "CardProps",
+      "source": "Card.tsx"
+    },
+    {
+      "name": "CardHeader",
+      "source": "Card.tsx"
+    },
+    {
+      "name": "CardTitle",
+      "source": "Card.tsx"
+    },
+    {
+      "name": "CardDescription",
+      "source": "Card.tsx"
+    },
+    {
+      "name": "CardContent",
+      "source": "Card.tsx"
+    },
+    {
+      "name": "CardFooter",
+      "source": "Card.tsx"
+    },
+    {
+      "name": "Accordion",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionProps",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionItem",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "Breadcrumbs",
+      "source": "Breadcrumbs.tsx"
+    },
+    {
+      "name": "BreadcrumbsProps",
+      "source": "Breadcrumbs.tsx"
+    },
+    {
+      "name": "BreadcrumbItem",
+      "source": "Breadcrumbs.tsx"
+    },
+    {
+      "name": "Pagination",
+      "source": "Pagination.tsx"
+    },
+    {
+      "name": "PaginationProps",
+      "source": "Pagination.tsx"
+    },
+    {
+      "name": "PaginationLabels",
+      "source": "Pagination.tsx"
     }
   ],
   "configuration": {
@@ -2131,6 +2195,207 @@
       ],
       "examples": ["ai/examples/FeedbackExamples.tsx"],
       "purpose": "Small status indicator. Reduced motion stops rotation while preserving static loading icon and name. No Button API changes."
+    },
+    {
+      "id": "card",
+      "api": "Card",
+      "source": "Card.tsx",
+      "exports": [
+        "Card",
+        "CardProps",
+        "CardHeader",
+        "CardTitle",
+        "CardDescription",
+        "CardContent",
+        "CardFooter"
+      ],
+      "purpose": "Quiet noninteractive surface with composable native parts.",
+      "useWhen": "Group related content with optional headings, descriptions and application-supplied actions.",
+      "alternative": "Use Button or a native link for an action; never turn Card into an interactive control.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Card/CardHeader/CardContent/CardFooter accept ComponentPropsWithRef<div>; CardTitle native h3 props/ref; CardDescription native p props/ref. Native attributes, events, className/style and refs stay on each element. CardTitle is optional; use a native heading in CardHeader when a different heading level is needed.",
+      "limitations": [
+        "No clickable-card abstraction, variants, navigation, implicit role or tab stop."
+      ],
+      "examples": ["ai/examples/StructureExamples.tsx"]
+    },
+    {
+      "id": "accordion",
+      "api": "Accordion",
+      "source": "Accordion.tsx",
+      "exports": ["Accordion", "AccordionProps", "AccordionItem"],
+      "purpose": "One vertical disclosure open at a time.",
+      "useWhen": "Reveal details below persistent headings.",
+      "alternative": "Use Tabs for switching related content views.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly AccordionItem[]",
+          "required": true,
+          "default": "undefined",
+          "note": "Stable unique nonempty values; labels contain no interactive controls."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Controlled open value; empty string means none. Supply an enabled item value or empty string."
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Initial uncontrolled value; omission starts closed. Later changes do not reset it."
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "collapsible",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Whether an open trigger can collapse itself."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6]
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": ""
+        }
+      ],
+      "inheritedProps": "None beyond AccordionProps. No arbitrary Radix Root props.",
+      "state": "Controlled value/onValueChange or internal state initialized once from defaultValue. Radix owns change requests and keyboard behavior. No initial selection is manufactured.",
+      "accessibility": [
+        "Radix single/vertical primitive supplies heading/button/panel linkage, disabled items, ArrowUp/Down, Home/End and Enter/Space. Native headings match headingLevel. Closed panels become inert and aria-hidden immediately during exit animation. Motion respects application and OS reduction."
+      ],
+      "limitations": [
+        "No nested, multi-open, horizontal, data loading or router API. Caller supplies valid stable values."
+      ],
+      "dependencies": ["@radix-ui/react-accordion"],
+      "examples": ["ai/examples/StructureExamples.tsx"]
+    },
+    {
+      "id": "breadcrumbs",
+      "api": "Breadcrumbs",
+      "source": "Breadcrumbs.tsx",
+      "exports": ["Breadcrumbs", "BreadcrumbsProps", "BreadcrumbItem"],
+      "purpose": "Native navigation trail with current-page text.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly BreadcrumbItem[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Translated nonempty accessible navigation name."
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Omit<ComponentPropsWithRef<nav>, children>. Native nav attributes/events, className/style and ref are preserved. label supplies aria-label.",
+      "accessibility": [
+        "Ancestors with href are native links. Missing href renders text. Final item always renders span aria-current=page, including when it has href. Decorative separator mirrors in RTL; items wrap on narrow screens."
+      ],
+      "limitations": [
+        "No router dependency, automatic overflow or navigation state."
+      ],
+      "examples": ["ai/examples/StructureExamples.tsx"]
+    },
+    {
+      "id": "pagination",
+      "api": "Pagination",
+      "source": "Pagination.tsx",
+      "exports": ["Pagination", "PaginationProps", "PaginationLabels"],
+      "purpose": "Controlled page navigation with Previous/Next, compact numbers and static ellipses.",
+      "props": [
+        {
+          "name": "page",
+          "type": "number",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "totalPages",
+          "type": "number",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "onPageChange",
+          "type": "(page: number) => void",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "PaginationLabels",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "locale",
+          "type": "ar | en",
+          "required": false,
+          "default": "direction: rtl=ar, ltr=en",
+          "values": ["ar", "en"]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Omit<ComponentPropsWithRef<nav>, children | onChange>. Native nav attributes/events, className/style and ref preserved. labels.navigation supplies aria-label.",
+      "state": "Controlled only. Finite total floors/clamps to 1–MAX_SAFE_INTEGER; nonfinite total is 1. Finite page floors/clamps to 1–normalized total; nonfinite page is 1. Normalization affects display/callback targets, never emits during rendering. Clicking current page emits no callback.",
+      "accessibility": [
+        "Translated labels.navigation, previous, next, page(number). One aria-current=page Button. At most seven page slots; ellipses are aria-hidden spans without focus or action. Previous/Next disable at boundaries; disabled disables all buttons. Arabic digits explicit in ar."
+      ],
+      "limitations": [
+        "No fetching, filtering, page-size, reset or data engine. DataTable retains its separate internal data/paging lifecycle. Zero total displays one inert page."
+      ],
+      "examples": ["ai/examples/StructureExamples.tsx"]
     }
   ],
   "records": [
@@ -2444,6 +2709,85 @@
           "name": "fallback",
           "type": "string",
           "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "AccordionItem",
+      "source": "Accordion.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "content",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "values": [false, true]
+        }
+      ]
+    },
+    {
+      "type": "BreadcrumbItem",
+      "source": "Breadcrumbs.tsx",
+      "props": [
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "PaginationLabels",
+      "source": "Pagination.tsx",
+      "props": [
+        {
+          "name": "navigation",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "previous",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "next",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "page",
+          "type": "(page: number) => string",
+          "required": true,
           "default": "undefined"
         }
       ]

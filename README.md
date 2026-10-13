@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with twenty-four source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with twenty-eight source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -175,3 +175,14 @@ columns, backend, persistence or server grid framework is included.
 Badge renders static status text with neutral/success/error/info tones; the customer DataTable uses it for statuses. Checkbox preserves native input state/form/ref behavior with label/helper/error. RadioGroup uses native radios in fieldset/legend with stable names and values. Textarea mirrors Input associations and preserves native editing/selection, rows and vertical resizing. All consume shared configuration.
 
 The focused documentation pages retain the continuous layout and complete copied prompts. `src/system/ai/examples/FeedbackForm.tsx` demonstrates all three form controls with application-owned validation and native reset. Field remains documented under Input. No indeterminate state, table selection, selection cards, automatic textarea growth or new dependencies are included.
+
+### Structure and navigation
+
+Card groups content with native CardHeader, CardTitle, CardDescription,
+CardContent and CardFooter; application Buttons own actions. Accordion uses
+Radix single-open disclosures with optional collapse and controlled/uncontrolled
+state. Breadcrumbs uses native links and current-page text. Pagination provides
+controlled page navigation while the caller owns data and page size; DataTable
+keeps its existing internal lifecycle. See the portable
+[composition guidance](src/system/ai/composition.md#structure-and-navigation) and
+[complete examples](src/system/ai/examples/StructureExamples.tsx).

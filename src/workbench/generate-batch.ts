@@ -1,3 +1,10 @@
+import structureSource from "../system/ai/examples/StructureExamples.tsx?raw";
+import type {
+  CardModel,
+  AccordionModel,
+  BreadcrumbsModel,
+  PaginationModel,
+} from "./model";
 import overlaySource from "../system/ai/examples/OverlayExamples.tsx?raw";
 import type { SystemConfig } from "../system";
 import { teamMembers } from "../system/ai/examples/team";
@@ -26,7 +33,49 @@ export function generateBatchCode(
     extra = "",
     source = "",
     jsx = "";
-  if (component === "alert") {
+  if (["card", "accordion", "breadcrumbs", "pagination"].includes(component)) {
+    const name = {
+      card: "CardExample",
+      accordion: "AccordionExample",
+      breadcrumbs: "BreadcrumbsExample",
+      pagination: "PaginationExample",
+    }[component as "card" | "accordion" | "breadcrumbs" | "pagination"];
+    const start = structureSource.indexOf(`export function ${name}`);
+    const end = structureSource.indexOf("export function", start + 1);
+    source =
+      'type Language = "ar" | "en";\n' +
+      structureSource.slice(start, end === -1 ? undefined : end);
+    imports =
+      component === "card"
+        ? "Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Button"
+        : component === "accordion"
+          ? "Accordion"
+          : component === "breadcrumbs"
+            ? "Breadcrumbs"
+            : "Pagination";
+    extra =
+      component === "card"
+        ? 'import { useId, useState } from "react";'
+        : component === "breadcrumbs"
+          ? 'import { useId } from "react";'
+          : 'import { useState } from "react";';
+    if (component === "card") {
+      const p = model as CardModel;
+      jsx = `<CardExample language="${language}" title={${json(p.title)}} description={${json(p.description)}} actions={${p.actions}} />`;
+    }
+    if (component === "accordion") {
+      const p = model as AccordionModel;
+      jsx = `<AccordionExample language="${language}" controlled={${p.mode === "controlled"}} collapsible={${p.collapsible}} />`;
+    }
+    if (component === "breadcrumbs") {
+      const p = model as BreadcrumbsModel;
+      jsx = `<BreadcrumbsExample language="${language}" label={${json(p.label)}} current={${json(p.current)}} />`;
+    }
+    if (component === "pagination") {
+      const p = model as PaginationModel;
+      jsx = `<PaginationExample language="${language}" initialPage={${p.page}} totalPages={${p.totalPages}} />`;
+    }
+  } else if (component === "alert") {
     const p = model as AlertModel;
     imports = "Alert";
     jsx = `<Alert title={${json(p.title)}} description={${json(p.description)}} tone="${p.tone}" />`;
