@@ -1,0 +1,19 @@
+{
+  "checks": [
+    "Saved Field redirects while preserving Input data and migrating invalid into editable error",
+    "Visible label activates native input",
+    "Error removal clears invalid and error description and preserves controlled value",
+    "Eight navigation items and five focused Input examples; no document overflow at 390/320px"
+  ],
+  "observations": [
+    {
+      "inspectorErrorUpdate": {
+        "initialId": "tz-field-_r_6_",
+        "errorId": "tz-field-_r_o_",
+        "idChanged": true,
+        "valuePreserved": true
+      }
+    }
+  ],
+  "errors": []
+}

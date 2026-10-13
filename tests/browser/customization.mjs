@@ -423,18 +423,9 @@ for (const language of ["en", "ar"]) {
           );
         }
       } else if (i === 6) {
-        await fill("Label", "التسمية", "QA field");
+        await fill("Label", "التسمية", "QA input");
         await fill("Helper text", "النص المساعد", "QA helper");
         await fill("Error message", "رسالة الخطأ", "QA error");
-        const input = canvas().getByRole("textbox", { name: "QA field" });
-        assert.equal(await input.getAttribute("aria-invalid"), "true");
-        assert.ok(
-          (await input.getAttribute("aria-describedby")).includes("-help"),
-        );
-        assert.ok(
-          (await input.getAttribute("aria-describedby")).includes("-error"),
-        );
-      } else if (i === 7) {
         await fill("Placeholder", "النص المؤقت", "QA placeholder");
         await select("Size", "الحجم", "md");
         const input = canvas().getByRole("textbox");
@@ -447,14 +438,8 @@ for (const language of ["en", "ar"]) {
           })
           .click();
         assert.equal(await input.getAttribute("readonly"), "");
-        await rail()
-          .getByRole("switch", {
-            name: label("Invalid", "غير صالح"),
-            exact: true,
-          })
-          .click();
         assert.equal(await input.getAttribute("aria-invalid"), "true");
-      } else if (i === 8) {
+      } else if (i === 7) {
         await fill("Placeholder", "النص المؤقت", "QA choose");
         await select("Size", "الحجم", "md");
         const options = [

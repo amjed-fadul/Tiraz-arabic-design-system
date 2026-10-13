@@ -57,7 +57,7 @@ export function generateCode(
     component === "select"
   ) {
     const p = model as FieldModel | InputModel | SelectModel;
-    imports.add("Field");
+    if (component !== "input") imports.add("Field");
     const controlName = component === "select" ? "Select" : "Input";
     imports.add(controlName);
     const f = `<Field ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}}>`;
@@ -81,7 +81,11 @@ export function generateCode(
         component === "input"
           ? `type="${(p as InputModel).type}" readOnly={${(p as InputModel).readOnly}}`
           : `options={${json((p as SelectModel).options)}}`;
-      jsx = `${f}{field => <${controlName} field={field} ${state} ${attribute("placeholder", control.placeholder)} ${attribute("name", control.name)} size="${control.size}" disabled={${control.disabled}} invalid={${control.invalid}} ${extras} ${change} />}</Field>`;
+      const common = `${state} ${attribute("placeholder", control.placeholder)} ${attribute("name", control.name)} size="${control.size}" disabled={${control.disabled}} ${extras} ${change}`;
+      jsx =
+        component === "input"
+          ? `<Input ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}} ${common} />`
+          : `${f}{field => <Select field={field} invalid={${(p as SelectModel).invalid}} ${common} />}</Field>`;
     }
   } else if (component === "button") {
     const p = model as ButtonModel;

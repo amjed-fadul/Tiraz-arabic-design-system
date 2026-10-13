@@ -1,0 +1,45 @@
+{
+  "verdict": "No outstanding actionable findings after remount fix re-review",
+  "scope": "Uncommitted labeled Input API/docs/workbench/portable guidance change on codex/labeled-input",
+  "reviewer": "Independent input_review subagent",
+  "findings": [],
+  "resolved": [
+    {
+      "severity": "P2",
+      "issue": "Input inspector label/helper/error edits remounted preview through revision key, replacing native control and generated IDs",
+      "resolution": "Workbench.fromInspector keeps Input mounted for ordinary patches, retaining mode/value and reset remount behavior",
+      "evidence": "remount-fix.json"
+    }
+  ],
+  "verification": {
+    "tests": "30 distinct tests independently passed across 7 files; latest labeled tests 12/12, generated-code 1/1, portability/form/customer/storage 17/17",
+    "browser": [
+      "Legacy Field page redirects preserving Input value/size and editable invalid migration",
+      "Visible label activates actual native input",
+      "Controlled and uncontrolled node/ID/labelID/value retained across four error changes plus label/helper/required/size/readOnly/disabled edits",
+      "Five focused Input examples and eight navigation items",
+      "English 320/390px no document overflow; Arabic desktop visually inspected",
+      "No browser page errors in layout probe"
+    ],
+    "evidence": [
+      "review-probe.json",
+      "remount-fix.json",
+      "examples-en-1440.png",
+      "examples-en-390.png",
+      "examples-en-320.png",
+      "examples-ar-1440.png"
+    ]
+  },
+  "consideredAndSetAside": [
+    "Standalone Input and Field+Input retain existing association implementation and DOM shape; new tests exercise both",
+    "Helper/error require label and convenience mode excludes field through TypeScript union; generated positive and negative compilation passed",
+    "Native form/ref/className/style/attributes/events remain actual input props, and external description IDs are deduplicated by unchanged association utility",
+    "Validation remains application-owned; no automatic live alert or validation rules added",
+    "Changing between labeled/standalone modes can change structure; requirement concerned helper/error changes while labeled mode stays mounted",
+    "Workbench mode/value/reset remounts remain intentional to demonstrate uncontrolled initialization",
+    "Field public export and registry remain nine-family inventory while navigation is eight pages",
+    "Portable CreateCustomer and guidance resolve from source-root and compile after library-only copy; no workbench source-copy dependency",
+    "Select API/source unchanged; focused status example uses existing Field composition",
+    "Focused examples reviewed at narrow English and Arabic desktop; baseline code horizontal scroll and focused skip link artifacts are unrelated to change"
+  ]
+}

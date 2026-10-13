@@ -16,3 +16,8 @@ example compilation), build, lint and formatting. Inspect rendered interaction
 changes and accessible names/focus in a browser; automated checks do not prove
 accessibility. Keep unrelated local edits untouched. Publish, push, merge or
 begin another milestone only when requested.
+
+**Working preview:** keep the documentation server running during development
+and after completion, serving the current working branch. Return its URL and
+checkout/branch, and verify it responds. Preserve unrelated localhost servers;
+use a free port for an isolated checkout.

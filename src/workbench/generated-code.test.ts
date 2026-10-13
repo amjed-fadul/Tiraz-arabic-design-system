@@ -114,6 +114,23 @@ it("type-checks copied code for every component, state mode and composition pres
       generateCode(id, model, config ?? defaultConfig, "en"),
     ]),
   );
+  sources.set(
+    `${root}/src/__generated_input_contract.tsx`,
+    `
+    import { Input, Field } from "./system";
+    import type { FieldControlProps } from "./system";
+    const field: FieldControlProps = { id: "composed", "aria-labelledby": "composed-label" };
+    <Input label="Name" helper="Help" error="Error" required />;
+    <Input aria-label="Native" />;
+    <Field label="Composed">{field => <Input field={field} />}</Field>;
+    // @ts-expect-error convenience mode cannot also receive Field composition
+    <Input label="Duplicate" field={field} />;
+    // @ts-expect-error helper only accompanies labeled mode
+    <Input helper="Orphan help" />;
+    // @ts-expect-error error only accompanies labeled mode
+    <Input field={field} error="Duplicate error" />;
+  `,
+  );
   const options: ts.CompilerOptions = {
     target: ts.ScriptTarget.ES2023,
     module: ts.ModuleKind.ESNext,

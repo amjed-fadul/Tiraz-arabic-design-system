@@ -100,7 +100,7 @@ export function CreateCustomer({
             });
           }}
         >
-          <Field
+          <Input
             label={t("اسم العميل", "Customer name")}
             required
             error={
@@ -108,21 +108,15 @@ export function CreateCustomer({
                 ? t("أدخل اسم العميل.", "Enter a customer name.")
                 : undefined
             }
-          >
-            {(field) => (
-              <Input
-                field={field}
-                ref={nameRef}
-                name="customerName"
-                autoComplete="organization"
-                value={draft.name}
-                onChange={(event) =>
-                  setDraft({ ...draft, name: event.currentTarget.value })
-                }
-              />
-            )}
-          </Field>
-          <Field
+            ref={nameRef}
+            name="customerName"
+            autoComplete="organization"
+            value={draft.name}
+            onChange={(event) =>
+              setDraft({ ...draft, name: event.currentTarget.value })
+            }
+          />
+          <Input
             label={t("البريد الإلكتروني", "Email")}
             helper={t("اختياري", "Optional")}
             error={
@@ -133,22 +127,16 @@ export function CreateCustomer({
                   )
                 : undefined
             }
-          >
-            {(field) => (
-              <Input
-                field={field}
-                ref={emailRef}
-                type="email"
-                name="email"
-                autoComplete="email"
-                dir="ltr"
-                value={draft.email}
-                onChange={(event) =>
-                  setDraft({ ...draft, email: event.currentTarget.value })
-                }
-              />
-            )}
-          </Field>
+            ref={emailRef}
+            type="email"
+            name="email"
+            autoComplete="email"
+            dir="ltr"
+            value={draft.email}
+            onChange={(event) =>
+              setDraft({ ...draft, email: event.currentTarget.value })
+            }
+          />
           <Field label={t("الحالة", "Status")}>
             {(field) => (
               <Select

@@ -91,7 +91,8 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     }),
     field("disabled", "boolean", "معطّل", "Disabled"),
     field("readOnly", "boolean", "للقراءة فقط", "Read only"),
-    field("invalid", "boolean", "غير صالح", "Invalid"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
     field("required", "boolean", "مطلوب", "Required"),
     mode,
   ],
@@ -351,7 +352,16 @@ export const optionNames: Record<string, Localized> = {
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
   field: ["label", "helper", "error", "required"],
-  input: ["placeholder", "size", "disabled", "readOnly", "invalid"],
+  input: [
+    "label",
+    "placeholder",
+    "helper",
+    "error",
+    "required",
+    "size",
+    "disabled",
+    "readOnly",
+  ],
   select: ["placeholder", "size", "disabled", "options"],
   button: ["children", "variant", "size", "state", "icon", "iconOnly"],
   tabs: ["variant", "value"],

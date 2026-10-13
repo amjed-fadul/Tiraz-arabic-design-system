@@ -3,6 +3,9 @@
 Tiraz is an Arabic-first, source-owned React dashboard library with **nine**
 component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input and Select.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
+Input is the normal starting point for text entry; use optional label/helper/error
+props for a complete labeled control. Field remains a public lower-level composition
+helper and is documented under Input rather than a standalone navigation page.
 
 1. Locate the directory containing `index.ts`, `config.ts`, `tokens.css`,
    `components.css` and `ai/`. Call that directory **source root**. In a full

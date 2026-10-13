@@ -1,0 +1,352 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/labeled-input.test.tsx src/workbench/labeled-input-page.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/labeled-input/Tiraz
+
+ ❯ src/system/labeled-input.test.tsx (6 tests | 4 failed) 191ms
+   × labels, describes and marks a required input without validating its value 104ms
+   × keeps IDs, value and external descriptions stable as error text changes 26ms
+   × keeps ref, class, style, native attributes and external form reset on the actual input 16ms
+   × keeps controlled events application-owned and only marks errors supplied by the owner 9ms
+ ❯ src/workbench/labeled-input-page.test.tsx (3 tests | 3 failed) 232ms
+   × redirects the saved Field page without losing Input customization 16ms
+   × makes Input the complete entry page while retaining Field in its API disclosure 183ms
+   × copies complete direct Input code and guidance despite the collapsed prompt row 31ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/labeled-input.test.tsx > labels, describes and marks a required input without validating its value
+TestingLibraryElementError: Unable to find an accessible element with the role "textbox" and name "اسم العميل"
+
+Here are the accessible roles:
+
+  textbox:
+
+  Name "":
+  [36m<input[39m
+    [33mclass[39m=[32m"tz-input "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33merror[39m=[32m"أدخل الاسم"[39m
+    [33mhelper[39m=[32m"كما يظهر في الفاتورة"[39m
+    [33mlabel[39m=[32m"اسم العميل"[39m
+    [33mrequired[39m=[32m""[39m
+    [33mtype[39m=[32m"text"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<input[39m
+      [33mclass[39m=[32m"tz-input "[39m
+      [33mdata-size[39m=[32m"sm"[39m
+      [33merror[39m=[32m"أدخل الاسم"[39m
+      [33mhelper[39m=[32m"كما يظهر في الفاتورة"[39m
+      [33mlabel[39m=[32m"اسم العميل"[39m
+      [33mrequired[39m=[32m""[39m
+      [33mtype[39m=[32m"text"[39m
+      [33mvalue[39m=[32m""[39m
+    [36m/>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/labeled-input.test.tsx:17:24
+     15|     />,
+     16|   );
+     17|   const input = screen.getByRole("textbox", { name: "اسم العميل" });
+       |                        ^
+     18|   expect(input).toBeRequired();
+     19|   expect(input).toHaveAccessibleDescription("كما يظهر في الفاتورة أدخل…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  src/system/labeled-input.test.tsx > keeps IDs, value and external descriptions stable as error text changes
+TestingLibraryElementError: Unable to find an accessible element with the role "textbox" and name "Name"
+
+Here are the accessible roles:
+
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mid[39m=[32m"external"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "":
+  [36m<input[39m
+    [33maria-describedby[39m=[32m"external"[39m
+    [33mclass[39m=[32m"tz-input "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mhelper[39m=[32m"Help"[39m
+    [33mlabel[39m=[32m"Name"[39m
+    [33mtype[39m=[32m"text"[39m
+    [33mvalue[39m=[32m"Draft"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<p[39m
+      [33mid[39m=[32m"external"[39m
+    [36m>[39m
+      [0mExternal[0m
+    [36m</p>[39m
+    [36m<input[39m
+      [33maria-describedby[39m=[32m"external"[39m
+      [33mclass[39m=[32m"tz-input "[39m
+      [33mdata-size[39m=[32m"sm"[39m
+      [33mhelper[39m=[32m"Help"[39m
+      [33mlabel[39m=[32m"Name"[39m
+      [33mtype[39m=[32m"text"[39m
+      [33mvalue[39m=[32m"Draft"[39m
+    [36m/>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/labeled-input.test.tsx:37:24
+     35|     </>,
+     36|   );
+     37|   const input = screen.getByRole("textbox", { name: "Name" });
+       |                        ^
+     38|   const id = input.id,
+     39|     labelId = input.getAttribute("aria-labelledby");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  src/system/labeled-input.test.tsx > keeps ref, class, style, native attributes and external form reset on the actual input
+TestingLibraryElementError: Unable to find an accessible element with the role "textbox" and name "Email"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Reset":
+  [36m<button[39m
+    [33mtype[39m=[32m"reset"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "":
+  [36m<input[39m
+    [33mautocomplete[39m=[32m"email"[39m
+    [33mclass[39m=[32m"tz-input custom-input"[39m
+    [33mdata-purpose[39m=[32m"billing"[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mform[39m=[32m"customer"[39m
+    [33mid[39m=[32m"email"[39m
+    [33mlabel[39m=[32m"Email"[39m
+    [33mmaxlength[39m=[32m"80"[39m
+    [33mname[39m=[32m"email"[39m
+    [33mplaceholder[39m=[32m"Email here"[39m
+    [33mstyle[39m=[32m"width: 180px;"[39m
+    [33mtype[39m=[32m"email"[39m
+    [33mvalue[39m=[32m"a@example.com"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<form[39m
+      [33mid[39m=[32m"customer"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mtype[39m=[32m"reset"[39m
+      [36m>[39m
+        [0mReset[0m
+      [36m</button>[39m
+    [36m</form>[39m
+    [36m<input[39m
+      [33mautocomplete[39m=[32m"email"[39m
+      [33mclass[39m=[32m"tz-input custom-input"[39m
+      [33mdata-purpose[39m=[32m"billing"[39m
+      [33mdata-size[39m=[32m"sm"[39m
+      [33mform[39m=[32m"customer"[39m
+      [33mid[39m=[32m"email"[39m
+      [33mlabel[39m=[32m"Email"[39m
+      [33mmaxlength[39m=[32m"80"[39m
+      [33mname[39m=[32m"email"[39m
+      [33mplaceholder[39m=[32m"Email here"[39m
+      [33mstyle[39m=[32m"width: 180px;"[39m
+      [33mtype[39m=[32m"email"[39m
+      [33mvalue[39m=[32m"a@example.com"[39m
+    [36m/>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/labeled-input.test.tsx:104:24
+    102|     </>,
+    103|   );
+    104|   const input = screen.getByRole("textbox", { name: "Email" });
+       |                        ^
+    105|   expect(ref.current).toBe(input);
+    106|   expect(input.id).toBe("email");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  src/system/labeled-input.test.tsx > keeps controlled events application-owned and only marks errors supplied by the owner
+TestingLibraryElementError: Unable to find an accessible element with the role "textbox" and name "Name"
+
+Here are the accessible roles:
+
+  textbox:
+
+  Name "":
+  [36m<input[39m
+    [33mclass[39m=[32m"tz-input "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mlabel[39m=[32m"Name"[39m
+    [33mrequired[39m=[32m""[39m
+    [33mtype[39m=[32m"text"[39m
+    [33mvalue[39m=[32m""[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<input[39m
+      [33mclass[39m=[32m"tz-input "[39m
+      [33mdata-size[39m=[32m"sm"[39m
+      [33mlabel[39m=[32m"Name"[39m
+      [33mrequired[39m=[32m""[39m
+      [33mtype[39m=[32m"text"[39m
+      [33mvalue[39m=[32m""[39m
+    [36m/>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/labeled-input.test.tsx:135:24
+    133|   }
+    134|   render(<Demo />);
+    135|   const input = screen.getByRole("textbox", { name: "Name" });
+       |                        ^
+    136|   expect(input).not.toHaveAttribute("aria-invalid", "true");
+    137|   await userEvent.type(input, "Customer");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  src/workbench/labeled-input-page.test.tsx > redirects the saved Field page without losing Input customization
+AssertionError: expected 'field' to be 'input' // Object.is equality
+
+Expected: "input"
+Received: "field"
+
+ ❯ src/workbench/labeled-input-page.test.tsx:27:38
+     25|     },
+     26|   });
+     27|   expect(readDocumentation().active).toBe("input");
+       |                                      ^
+     28|   expect(readPlaygrounds("en").input).toMatchObject({
+     29|     label: "Saved label",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  src/workbench/labeled-input-page.test.tsx > makes Input the complete entry page while retaining Field in its API disclosure
+AssertionError: expected <button type="button"></button> to be null
+
+- Expected:
+null
+
++ Received:
+<button
+  type="button"
+>
+  Field
+</button>
+
+ ❯ src/workbench/labeled-input-page.test.tsx:40:69
+     38|   render(<Workbench />);
+     39|   const nav = within(screen.getByRole("navigation", { name: "Component…
+     40|   expect(nav.queryByRole("button", { name: "Field", exact: true })).to…
+       |                                                                     ^
+     41|   expect(nav.getAllByRole("button")).toHaveLength(8);
+     42|   const rail = within(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  src/workbench/labeled-input-page.test.tsx > copies complete direct Input code and guidance despite the collapsed prompt row
+AssertionError: expected 'import { useState } from "react";\nim…' to contain '<Input label={"Invoice name"}'
+
+- Expected
++ Received
+
+- <Input label={"Invoice name"}
++ import { useState } from "react";
++ import { SystemProvider, defaultConfig, Field, Input } from "./system";
++ import type { SystemConfig } from "./system";
++
++ import "./system/tokens.css";
++ import "./system/components.css";
++
++ const config: SystemConfig = {
++   ...defaultConfig,
++   theme: "light",
++   direction: "rtl",
++   density: "compact",
++   accent: "sage",
++   typography: "standard",
++   radius: 8,
++   reducedMotion: false,
++ };
++
++ function Demo() {
++   const [event, setEvent] = useState("");
++   const [value, setValue] = useState("");
++   return (
++     <>
++       <Field label={"Invoice name"} helper={"Invoice helper"} error={"Invoice error"} required={true}>{field => <Input field={field} value={value} placeholder={"e.g. Madar Technology"} name={"customerName"} size="sm" disabled={false} invalid={false} type="text" readOnly={false} onChange={event => { setValue(event.currentTarget.value); setEvent("onChange: " + event.currentTarget.value); }} />}</Field>
++       <output aria-live="polite" dir="auto">{event}</output>
++     </>
++   );
++ }
++
++ export default function Example() {
++   return (
++     <SystemProvider config={config}>
++       <Demo />
++     </SystemProvider>
++   );
++ }
++
+
+ ❯ src/workbench/labeled-input-page.test.tsx:97:16
+     95|   const code = generateCode("input", model, defaultConfig, "en"),
+     96|     prompt = generatePrompt("input", model, defaultConfig, "en");
+     97|   expect(code).toContain('<Input label={"Invoice name"}');
+       |                ^
+     98|   expect(code).not.toContain("<Field");
+     99|   await user.click(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  7 failed | 2 passed (9)
+   Start at  14:41:27
+   Duration  1.85s (environment 55%, import 14%, tests 13%, transform 10%, setup 8%)

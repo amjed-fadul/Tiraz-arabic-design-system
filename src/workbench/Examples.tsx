@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Field,
   Input,
+  Select,
   Sheet,
   Button,
   Tabs,
@@ -304,7 +305,80 @@ export function Examples({
         </p>
       </div>
     );
-  if (["sheet", "field", "input", "select"].includes(component))
+  if (component === "input")
+    return (
+      <div className="quiet-examples">
+        <div className="example-row">
+          <p>{t("إدخال أساسي", "Basic input")}</p>
+          <Input
+            aria-label={t("إدخال أساسي", "Basic input")}
+            placeholder={t("أدخل الاسم", "Enter a name")}
+          />
+        </div>
+        <div className="example-row">
+          <p>{t("تسمية ومساعدة", "Label and helper")}</p>
+          <Input
+            label={t("اسم العميل", "Customer name")}
+            helper={t("كما يظهر في الفاتورة", "As shown on the invoice")}
+            placeholder={t("أدخل الاسم", "Enter a name")}
+          />
+        </div>
+        <div className="example-row">
+          <p>{t("مطلوب مع خطأ", "Required with error")}</p>
+          <Input
+            label={t("اسم الحساب", "Account name")}
+            required
+            error={t("أدخل اسم الحساب.", "Enter an account name.")}
+          />
+        </div>
+        <div className="example-row">
+          <p>{t("حالات الإدخال", "Input states")}</p>
+          <div className="example-inline">
+            <Input
+              label={t("معطّل", "Disabled")}
+              disabled
+              defaultValue={t("غير متاح", "Unavailable")}
+            />
+            <Input
+              label={t("للقراءة فقط", "Read only")}
+              readOnly
+              defaultValue={t("مدار", "Madar")}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  if (component === "select")
+    return (
+      <div className="quiet-examples">
+        <Field
+          label={t("الحالة", "Status")}
+          helper={t("اختر حالة واحدة.", "Choose one status.")}
+        >
+          {(field) => (
+            <Select
+              field={field}
+              value={event}
+              onValueChange={setEvent}
+              placeholder={t("اختر الحالة", "Choose status")}
+              options={[
+                { value: "active", label: t("نشط", "Active") },
+                { value: "paused", label: t("متوقف", "Paused") },
+                {
+                  value: "archived",
+                  label: t("مؤرشف — غير متاح", "Archived — unavailable"),
+                  disabled: true,
+                },
+              ]}
+            />
+          )}
+        </Field>
+        <output className="example-feedback" aria-live="polite">
+          {event}
+        </output>
+      </div>
+    );
+  if (component === "sheet")
     return (
       <div className="quiet-examples">
         <p className="example-caption">

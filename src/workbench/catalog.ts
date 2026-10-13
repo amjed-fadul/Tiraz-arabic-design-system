@@ -67,8 +67,8 @@ export const catalog = [
     id: "input",
     name: ["الإدخال", "Input"],
     description: [
-      "إدخال نص أصلي بأحجام مدمجة وحالات واضحة.",
-      "Native text entry with compact sizes and clear states.",
+      "إدخال نص أصلي مع تسمية ومساعدة ورسالة خطأ اختيارية.",
+      "Native text entry with optional label, helper and error text.",
     ],
     file: "Input.tsx",
   },
@@ -88,3 +88,6 @@ export const catalog = [
   file: string;
 }>;
 export type ComponentId = (typeof catalog)[number]["id"];
+
+// Field remains a public family; its composition reference lives under Input.
+export const navigationCatalog = catalog.filter((item) => item.id !== "field");

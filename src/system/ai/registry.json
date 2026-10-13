@@ -696,7 +696,7 @@
       "api": "Field",
       "source": "Field.tsx",
       "exports": ["Field", "FieldProps", "FieldControlProps"],
-      "purpose": "Associate one labeled control with helper and error text.",
+      "purpose": "Lower-level label/helper/error composition for one Input or Select; documented under Input and still publicly exported.",
       "useWhen": "Label an Input or Select with persistent application validation feedback.",
       "alternative": "Standalone Input/Select accepts external native labels or ARIA naming.",
       "props": [
@@ -755,14 +755,15 @@
       "exclusions": [
         "No arbitrary-child cloning, validation rules, nested fields or form state management."
       ],
-      "state": "Application supplies error; Field generates stable association IDs."
+      "state": "Application supplies error; Field generates stable association IDs. Lower-level composition helper documented under Input, with no standalone navigation item. Existing export and API remain supported."
     },
     {
       "events": [
         "onChange receives React.ChangeEvent<HTMLInputElement>; other native input events."
       ],
       "accessibility": [
-        "Name with Field or native label/aria-label/aria-labelledby. field owns id; caller description IDs are merged. invalid/error supplies aria-invalid without performing validation."
+        "Start with Input label for accessible labeled text entry; internal Field supplies required indicator and stable helper/error associations. Without label, name the standalone input with a native label or ARIA. Existing field composition remains available, mutually exclusive with convenience mode.",
+        "External aria-describedby IDs are preserved and deduplicated. Error text marks invalid without application validation rules. Ref/className/style target the actual input."
       ],
       "limitations": [
         "Application owns validation messages/rules and controlled reset."
@@ -773,10 +774,31 @@
       "api": "Input",
       "source": "Input.tsx",
       "exports": ["Input", "InputProps", "InputType"],
-      "purpose": "Native text entry.",
+      "purpose": "Native text entry with optional label, helper and error text.",
       "useWhen": "Short customer names, emails and other single-line text.",
       "alternative": "Select for predefined single values.",
       "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Labeled mode reuses Field internally. Mutually exclusive with field composition."
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Only with label; associated helper text."
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Only with label; associated error message marks invalid without running validation."
+        },
         {
           "name": "type",
           "type": "InputType",
@@ -862,11 +884,11 @@
           "default": "undefined"
         }
       ],
-      "inheritedProps": "ComponentPropsWithRef<input> except size/type/children. Native editing, autofill, selection, form, style, ARIA/data and typed events are forwarded; React 19 ref targets input.",
+      "inheritedProps": "ComponentPropsWithRef<input> except size/type/children. Native attributes/events/form, external ARIA descriptions, className/style and React 19 ref stay on the input in both modes. label/helper/error convenience mode cannot be combined with field; without label, helper/error are not accepted.",
       "exclusions": [
         "Text-entry types only: no number/date/file/checkbox/radio or multiline API."
       ],
-      "state": "value/onChange controls; defaultValue initializes native uncontrolled value. Native reset restores uncontrolled default; controlled reset needs host onReset."
+      "state": "value/onChange controls; defaultValue initializes native uncontrolled value. Native reset restores uncontrolled default; controlled reset needs host onReset. Input is the normal starting point for text entry. With label, internal Field supplies stable label/helper/error associations and required indicator. Error text marks invalid; validation remains application-owned. Field is available for explicit lower-level composition."
     },
     {
       "events": [

@@ -1,7 +1,7 @@
 import { defaultConfig } from "../system/config";
 import type { SystemConfig } from "../system/config";
 import type { ComponentId } from "./catalog";
-import { catalog } from "./catalog";
+import { navigationCatalog } from "./catalog";
 import type { Language } from "./i18n";
 import { normalizePlaygrounds } from "./model";
 import type { Playgrounds } from "./model";
@@ -72,9 +72,12 @@ export function readDocumentation(): DocumentationPreferences {
   if (!p) return { ...defaultDocumentation };
   return {
     language: p.language === "en" ? "en" : "ar",
-    active: catalog.some((item) => item.id === p.active)
-      ? (p.active as ComponentId)
-      : "button",
+    active:
+      p.active === "field"
+        ? "input"
+        : navigationCatalog.some((item) => item.id === p.active)
+          ? (p.active as ComponentId)
+          : "button",
     systemPanelOpen:
       typeof p.systemPanelOpen === "boolean" ? p.systemPanelOpen : true,
     inspectorOpen:

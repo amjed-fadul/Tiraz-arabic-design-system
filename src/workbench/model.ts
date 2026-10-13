@@ -103,7 +103,6 @@ export interface InputModel extends FieldModel, Stateful {
   type: "text" | "email" | "password" | "search" | "tel" | "url";
   disabled: boolean;
   readOnly: boolean;
-  invalid: boolean;
   name: string;
 }
 export interface SelectModel extends FieldModel, Stateful {
@@ -159,7 +158,6 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       type: "text",
       disabled: false,
       readOnly: false,
-      invalid: false,
       name: "customerName",
     },
     select: {
@@ -449,6 +447,16 @@ export function normalizePlaygrounds(
       )
         defaults[key] = item;
     }
+    // Carry the old invalid preset into the single error control.
+    if (
+      component === "input" &&
+      (saved as Record<string, unknown>).invalid === true &&
+      !defaults.error
+    )
+      defaults.error = words(language)(
+        "راجع القيمة المدخلة.",
+        "Check the entered value.",
+      );
     const r = defaults;
     const enums: Record<string, string[]> = {
       mode: ["controlled", "uncontrolled"],

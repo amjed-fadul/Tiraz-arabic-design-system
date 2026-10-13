@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Moon, Sun, SlidersHorizontal, Menu } from "lucide-react";
 import { SystemProvider, defaultConfig } from "../system";
 import type { ButtonState, SystemConfig } from "../system";
-import { catalog } from "./catalog";
+import { catalog, navigationCatalog } from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
 import type { Language } from "./i18n";
@@ -147,6 +147,9 @@ export function Workbench() {
       return;
     }
     patchPage(active, patch);
+    // Keep Input's IDs and native editing state through label/help/error edits.
+    // Mode/default-value changes still need a fresh uncontrolled demonstration.
+    if (active === "input" && !("mode" in patch) && !("value" in patch)) return;
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
   function resetSystem() {
@@ -220,7 +223,7 @@ export function Workbench() {
     <>
       <div className="navigation-label">{label("components", language)}</div>
       <nav className="component-nav" aria-label={label("components", language)}>
-        {catalog.map((item) => (
+        {navigationCatalog.map((item) => (
           <button
             type="button"
             key={item.id}

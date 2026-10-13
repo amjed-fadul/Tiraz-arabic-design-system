@@ -7,7 +7,7 @@ const source = await readFile(
 const code = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.ESNext },
 }).outputText;
-const { catalog } = await import(
+const { navigationCatalog: catalog } = await import(
   `data:text/javascript;base64,${Buffer.from(code).toString("base64")}`
 );
 export const ids = catalog.map((item) => item.id);

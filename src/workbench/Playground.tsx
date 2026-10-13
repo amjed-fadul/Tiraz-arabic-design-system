@@ -99,18 +99,20 @@ export function Playground({
       </div>
     );
   }
-  if (component === "input" || component === "select") {
-    const p = model as InputModel | SelectModel;
-    const control = (field: import("../system").FieldControlProps) =>
-      component === "input" ? (
+  if (component === "input") {
+    const p = model as InputModel;
+    return (
+      <div className="playground-form">
         <Input
-          field={field}
-          type={(p as InputModel).type}
-          readOnly={(p as InputModel).readOnly}
+          label={p.label}
+          helper={p.helper}
+          error={p.error}
+          required={p.required}
+          type={p.type}
+          readOnly={p.readOnly}
           placeholder={p.placeholder}
           size={p.size}
           disabled={p.disabled}
-          invalid={p.invalid}
           name={p.name}
           value={p.mode === "controlled" ? p.value : undefined}
           defaultValue={p.mode === "uncontrolled" ? p.value : undefined}
@@ -119,23 +121,11 @@ export function Playground({
             onEvent("onChange", event.currentTarget.value);
           }}
         />
-      ) : (
-        <Select
-          field={field}
-          options={(p as SelectModel).options}
-          placeholder={p.placeholder}
-          size={p.size}
-          disabled={p.disabled}
-          invalid={p.invalid}
-          name={p.name}
-          value={p.mode === "controlled" ? p.value : undefined}
-          defaultValue={p.value}
-          onValueChange={(value) => {
-            onPatch({ value });
-            onEvent("onValueChange", value);
-          }}
-        />
-      );
+      </div>
+    );
+  }
+  if (component === "select") {
+    const p = model as SelectModel;
     return (
       <div className="playground-form">
         <Field
@@ -144,7 +134,23 @@ export function Playground({
           error={p.error}
           required={p.required}
         >
-          {control}
+          {(field) => (
+            <Select
+              field={field}
+              options={p.options}
+              placeholder={p.placeholder}
+              size={p.size}
+              disabled={p.disabled}
+              invalid={p.invalid}
+              name={p.name}
+              value={p.mode === "controlled" ? p.value : undefined}
+              defaultValue={p.value}
+              onValueChange={(value) => {
+                onPatch({ value });
+                onEvent("onValueChange", value);
+              }}
+            />
+          )}
         </Field>
       </div>
     );

@@ -49,6 +49,14 @@ export function ApiReference({
     ],
     input: [
       [
+        "label / helper / error",
+        "string? / string? / string?",
+        t(
+          "ابدأ بـ Input: label يضيف Field داخليًا للتسمية والمساعدة والخطأ. helper وerror مع label فقط، ولا تجمع label مع field. الخطأ يعلن عدم الصلاحية دون تنفيذ التحقق.",
+          "Start with Input. label adds Field internally for label, helper and error. helper/error require label; label and field cannot be combined. error marks invalid without running validation rules.",
+        ),
+      ],
+      [
         "type / size",
         "InputType / sm | md",
         t(
@@ -68,8 +76,8 @@ export function ApiReference({
         "field / invalid",
         "FieldControlProps? / boolean?",
         t(
-          "الاسم من Field أو label/aria-label/aria-labelledby خارجي. الوصف الخارجي يُجمع.",
-          "Name with Field or an external label/aria-label/aria-labelledby. External descriptions are merged.",
+          "بدون label يبقى input مستقلًا: تسمية HTML أو ARIA خارجية، أو field للتركيب منخفض المستوى. تُجمع الأوصاف الخارجية.",
+          "Without label, Input stays standalone: use a native label/ARIA or field for lower-level composition. External descriptions are merged.",
         ),
       ],
       [
@@ -84,8 +92,8 @@ export function ApiReference({
         "ref / id / className / style / ARIA / data-* / native events",
         "Ref<HTMLInputElement> / ComponentPropsWithRef<input>",
         t(
-          "React 19: ref يصل إلى input. excludes size/type/children تستبدل الواجهة الأصلية.",
-          "React 19 ref targets input. Native size/type/children are excluded in favor of the typed component API.",
+          "React 19: ref وclassName وstyle تبقى على input، حتى مع التسمية. size/type/children تستبدل الواجهة الأصلية.",
+          "React 19 ref, className and style target input even in labeled mode. Native size/type/children are replaced by the typed API.",
         ),
       ],
     ],
@@ -440,6 +448,34 @@ export function ApiReference({
                 </td>
               </tr>
             ))}
+            {component === "input" && (
+              <>
+                <tr>
+                  <td colSpan={2}>
+                    <h3>
+                      {t("Field · مساعد تركيب", "Field · composition helper")}
+                    </h3>
+                    <p>
+                      {t(
+                        "واجهة منخفضة المستوى لعناصر Input وSelect. يبقى التصدير والتركيب الحاليان متاحين.",
+                        "Lower-level composition for Input and Select. Its public export and existing composition remain available.",
+                      )}
+                    </p>
+                  </td>
+                </tr>
+                {rows.field.map(([name, type, note]) => (
+                  <tr key={`field-${name}`}>
+                    <td>
+                      <code dir="ltr">Field: {name}</code>
+                    </td>
+                    <td>
+                      <code dir="ltr">{type}</code>
+                      <p>{note}</p>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>
