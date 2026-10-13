@@ -6,6 +6,7 @@ import {
   mkdirSync,
   symlinkSync,
   rmSync,
+  writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
@@ -206,6 +207,13 @@ it("resolves every registry source and example from a movable library root", () 
   const paths = [
     registry.entry,
     registry.composition,
+    ...registry.assets.flatMap(
+      (asset: { path: string; provenance: string; license: string }) => [
+        asset.path,
+        asset.provenance,
+        asset.license,
+      ],
+    ),
     ...registry.publicExports.map((e: { source: string }) => e.source),
     ...registry.components.flatMap(
       (c: { source: string; examples: string[] }) => [c.source, ...c.examples],
@@ -294,6 +302,10 @@ it("documents real public exports and supported prop values and compiles the lin
     // Curated wrappers must document their complete explicit interface.
     if (
       [
+        "alert",
+        "skeleton",
+        "progress",
+        "spinner",
         "tabs",
         "dropdown",
         "sheet",
@@ -358,4 +370,63 @@ it("documents real public exports and supported prop values and compiles the lin
           `${dirname(d.file?.fileName ?? "")}: ${ts.flattenDiagnosticMessageText(d.messageText, " ")}`,
       ),
   ).toEqual([]);
+}, 15000);
+
+it("bundles relocated portraits from copied source with provenance and license", async () => {
+  const temporary = mkdtempSync(resolve(tmpdir(), "tiraz-photo-consumer-"));
+  try {
+    const copied = resolve(temporary, "app/ui/vendor/tiraz");
+    mkdirSync(dirname(copied), { recursive: true });
+    cpSync(root, copied, {
+      recursive: true,
+      filter: (path) => !/\.test\.[cm]?[jt]sx?$/.test(path),
+    });
+    symlinkSync(
+      resolve("node_modules"),
+      resolve(temporary, "node_modules"),
+      "dir",
+    );
+    writeFileSync(
+      resolve(temporary, "index.html"),
+      '<div id="root"></div><script type="module" src="/entry.tsx"></script>',
+    );
+    writeFileSync(
+      resolve(temporary, "entry.tsx"),
+      `import {createRoot} from "react-dom/client";import {SystemProvider} from "./app/ui/vendor/tiraz";import {AvatarExamples} from "./app/ui/vendor/tiraz/ai/examples/AvatarExamples";import "./app/ui/vendor/tiraz/tokens.css";import "./app/ui/vendor/tiraz/components.css";createRoot(document.getElementById("root")!).render(<SystemProvider><AvatarExamples/></SystemProvider>);`,
+    );
+    const { build } = await import("vite");
+    const { default: react } = await import("@vitejs/plugin-react");
+    const result = await build({
+      root: temporary,
+      configFile: false,
+      plugins: [react()],
+      logLevel: "silent",
+      build: { write: false },
+    });
+    const output = (Array.isArray(result) ? result[0] : result) as {
+      output: Array<{
+        type: string;
+        fileName: string;
+        source?: Uint8Array | string;
+      }>;
+    };
+    for (const name of ["sara", "omar"]) {
+      const asset = output.output.find(
+        (file) =>
+          file.type === "asset" &&
+          file.fileName.includes(name) &&
+          file.fileName.endsWith(".jpg"),
+      );
+      expect(asset, name).toBeDefined();
+      expect(Buffer.from(asset!.source!)).toEqual(
+        readFileSync(resolve(root, `ai/assets/${name}.jpg`)),
+      );
+    }
+    for (const file of ["README.md", "LICENSE.txt"])
+      expect(readFileSync(resolve(copied, "ai/assets", file))).toEqual(
+        readFileSync(resolve(root, "ai/assets", file)),
+      );
+  } finally {
+    rmSync(temporary, { recursive: true, force: true });
+  }
 }, 15000);

@@ -275,6 +275,38 @@
     {
       "name": "GettingStartedIllustration",
       "source": "EmptyStateIllustrations.tsx"
+    },
+    {
+      "name": "Alert",
+      "source": "Alert.tsx"
+    },
+    {
+      "name": "AlertProps",
+      "source": "Alert.tsx"
+    },
+    {
+      "name": "Skeleton",
+      "source": "Skeleton.tsx"
+    },
+    {
+      "name": "SkeletonProps",
+      "source": "Skeleton.tsx"
+    },
+    {
+      "name": "Progress",
+      "source": "Progress.tsx"
+    },
+    {
+      "name": "ProgressProps",
+      "source": "Progress.tsx"
+    },
+    {
+      "name": "Spinner",
+      "source": "Spinner.tsx"
+    },
+    {
+      "name": "SpinnerProps",
+      "source": "Spinner.tsx"
     }
   ],
   "configuration": {
@@ -1958,6 +1990,147 @@
         "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
       ],
       "examples": ["ai/examples/EmptyStateExamples.tsx"]
+    },
+    {
+      "id": "alert",
+      "api": "Alert",
+      "exports": ["Alert", "AlertProps"],
+      "source": "Alert.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "tone",
+          "type": "BadgeTone",
+          "required": false,
+          "default": "info",
+          "values": ["neutral", "success", "error", "info"]
+        },
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "announcement",
+          "type": "\"off\" | \"polite\" | \"assertive\"",
+          "required": false,
+          "default": "off",
+          "values": ["off", "polite", "assertive"]
+        }
+      ],
+      "examples": ["ai/examples/FeedbackExamples.tsx"],
+      "purpose": "Persistent inline feedback. Static content defaults silent; polite uses status, assertive uses alert for urgent updates. Actions/dismissal belong to the application."
+    },
+    {
+      "id": "skeleton",
+      "api": "Skeleton",
+      "exports": ["Skeleton", "SkeletonProps"],
+      "source": "Skeleton.tsx",
+      "props": [
+        {
+          "name": "shape",
+          "type": "\"text\" | \"rectangle\" | \"circle\"",
+          "required": false,
+          "default": "text",
+          "values": ["text", "rectangle", "circle"]
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "examples": ["ai/examples/FeedbackExamples.tsx"],
+      "purpose": "Always aria-hidden decorative placeholders. Host owns aria-busy and loading announcements. Native style sets size; application and OS reduced motion stop animation."
+    },
+    {
+      "id": "progress",
+      "api": "Progress",
+      "exports": ["Progress", "ProgressProps"],
+      "source": "Progress.tsx",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "number | null",
+          "required": false,
+          "default": "undefined",
+          "note": "0–100; finite values clamp; missing, null and nonfinite values are indeterminate and omit aria-valuenow/aria-valuetext."
+        },
+        {
+          "name": "showValue",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "locale",
+          "type": "\"ar\" | \"en\"",
+          "required": false,
+          "default": "direction: rtl=ar, ltr=en",
+          "values": ["ar", "en"],
+          "note": "ar explicitly uses Arabic digits; display rounds to a whole percent, aria-valuenow retains the clamped value."
+        }
+      ],
+      "examples": ["ai/examples/FeedbackExamples.tsx"],
+      "purpose": "Named progressbar with visible label and optional localized value text. No numeric claim in indeterminate mode. The host controls updates."
+    },
+    {
+      "id": "spinner",
+      "api": "Spinner",
+      "exports": ["Spinner", "SpinnerProps"],
+      "source": "Spinner.tsx",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\"",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Required unless decorative=true. Decorative mode has no role/name and is aria-hidden; adjacent host text announces loading.",
+          "requiredWhen": {
+            "decorative": false
+          }
+        }
+      ],
+      "examples": ["ai/examples/FeedbackExamples.tsx"],
+      "purpose": "Small status indicator. Reduced motion stops rotation while preserving static loading icon and name. No Button API changes."
     }
   ],
   "records": [
@@ -2334,5 +2507,19 @@
     "defaults": "Default fields contain literal JSON scalars or descriptive expressions. The string undefined means omitted/no default, not a string value to pass. configuration.defaults contains the actual literal defaultConfig.",
     "authority": "Public source/types win; inherited prop details depend on the installed React/Radix versions. Workbench editing limits are not public API limits.",
     "overlayDependencies": "Use one resolved @radix-ui/react-dismissable-layer 1.2.1 and @radix-ui/react-focus-scope 1.3.1; source-copy hosts preserve overrides from ai/README.md. @radix-ui/react-popper 1.4.0 supplies Tooltip positioning."
-  }
+  },
+  "assets": [
+    {
+      "path": "ai/assets/sara.jpg",
+      "provenance": "ai/assets/README.md",
+      "license": "ai/assets/LICENSE.txt",
+      "purpose": "Bundled fictional AI-generated sample portrait; copy binary assets with ai/."
+    },
+    {
+      "path": "ai/assets/omar.jpg",
+      "provenance": "ai/assets/README.md",
+      "license": "ai/assets/LICENSE.txt",
+      "purpose": "Bundled fictional AI-generated sample portrait; copy binary assets with ai/."
+    }
+  ]
 }

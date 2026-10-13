@@ -1,4 +1,5 @@
 import { teamMembers } from "./team";
+import { photoMembers } from "./portraits";
 import { useRef, useState } from "react";
 import { Close } from "@radix-ui/react-dialog";
 import {
@@ -13,15 +14,17 @@ type Language = "ar" | "en";
 export function TeamExample({
   language = "ar",
   maxVisible = 3,
+  photos = false,
   size = "sm",
 }: {
   language?: Language;
   maxVisible?: number;
+  photos?: boolean;
   size?: "sm" | "md";
 }) {
   return (
     <AvatarGroup
-      members={teamMembers(language)}
+      members={photos ? photoMembers(language) : teamMembers(language)}
       maxVisible={maxVisible}
       size={size}
       label={language === "ar" ? "فريق المشروع" : "Project team"}

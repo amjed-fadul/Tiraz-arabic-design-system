@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/feedback-and-avatar-photos/Tiraz
+
+
+ Test Files  31 passed (31)
+      Tests  276 passed (276)
+   Start at  23:34:22
+   Duration  27.26s (tests 59%, environment 24%, import 11%, setup 4%, transform 2%)
+
+    Isolate  31 workers spawned · ~481ms startup each (spawn + environment, per file)
+             at least ~6.97s faster with isolate: false — reuses workers across files instead of one per file

@@ -6,6 +6,9 @@ import * as jsx from "react/jsx-runtime";
 import * as dialog from "@radix-ui/react-dialog";
 import * as system from "../system";
 import * as ts from "typescript";
+import { saraPortrait, omarPortrait } from "../system/ai/examples/portraits";
+import type { ComponentId } from "./catalog";
+import type { PlaygroundModel } from "./model";
 import { generateCode } from "./generate";
 import { defaultPlaygrounds } from "./model";
 function copiedExample(component: "modal" | "tooltip", controlled = true) {
@@ -76,3 +79,94 @@ it.each([true, false])(
     expect(screen.getByRole("status")).toHaveTextContent("Layout: List");
   },
 );
+
+function feedbackCopy(
+  component: ComponentId,
+  model: PlaygroundModel,
+  language: "ar" | "en" = "en",
+) {
+  const code = generateCode(
+    component,
+    model,
+    { ...system.defaultConfig, direction: language === "ar" ? "rtl" : "ltr" },
+    language,
+  );
+  const js = ts.transpileModule(code, {
+    compilerOptions: {
+      module: ts.ModuleKind.CommonJS,
+      jsx: ts.JsxEmit.ReactJSX,
+    },
+  }).outputText;
+  const exports: { default?: React.ComponentType } = {};
+  const modules: Record<string, unknown> = {
+    "react/jsx-runtime": jsx,
+    "./system": system,
+    "./system/ai/assets/sara.jpg": saraPortrait,
+    "./system/ai/assets/omar.jpg": omarPortrait,
+  };
+  new Function("require", "exports", js)(
+    (name: string) => (name.endsWith(".css") ? {} : modules[name]),
+    exports,
+  );
+  return exports.default!;
+}
+it("runs copied feedback modes and photo compositions without workbench imports", () => {
+  const p = defaultPlaygrounds("en");
+  for (const [id, model] of [
+    ["alert", p.alert],
+    ["skeleton", p.skeleton],
+    ["progress", p.progress],
+    ["progress", { ...p.progress, indeterminate: true }],
+    ["spinner", p.spinner],
+    ["spinner", { ...p.spinner, decorative: true }],
+    ["avatar", { ...p.avatar, appearance: "photo" }],
+    ["avatar-group", p["avatar-group"]],
+  ] as Array<[ComponentId, PlaygroundModel]>) {
+    const Example = feedbackCopy(id, model);
+    const { container, unmount } = render(<Example />);
+    if (id === "alert") {
+      expect(screen.getByText(p.alert.title)).toBeInTheDocument();
+      expect(screen.queryByRole("alert")).toBeNull();
+    }
+    if (id === "skeleton")
+      expect(container.querySelector(".tz-skeleton")).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+    if (id === "progress") {
+      const bar = screen.getByRole("progressbar", { name: p.progress.label });
+      if ((model as { indeterminate: boolean }).indeterminate)
+        expect(bar).not.toHaveAttribute("aria-valuenow");
+      else expect(bar).toHaveAttribute("aria-valuenow", "64");
+    }
+    if (id === "spinner") expect(screen.getAllByRole("status")).toHaveLength(1);
+    if (id === "avatar")
+      expect(container.querySelector("img")).toHaveAttribute(
+        "src",
+        saraPortrait,
+      );
+    if (id === "avatar-group") {
+      expect(container.querySelectorAll("img")).toHaveLength(2);
+      expect(container.querySelector("img")).toHaveAttribute(
+        "src",
+        saraPortrait,
+      );
+    }
+    unmount();
+  }
+});
+it("copies a custom photo URL exactly and ignores it in initials mode", () => {
+  const p = defaultPlaygrounds("en").avatar;
+  const url = "/my-profile.jpg";
+  expect(
+    generateCode(
+      "avatar",
+      { ...p, appearance: "photo", src: url },
+      system.defaultConfig,
+      "en",
+    ),
+  ).toContain(`src={"${url}"}`);
+  expect(
+    generateCode("avatar", { ...p, src: url }, system.defaultConfig, "en"),
+  ).not.toContain(url);
+});

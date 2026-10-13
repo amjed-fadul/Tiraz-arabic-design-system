@@ -180,6 +180,42 @@ export const catalog = [
     ],
     file: "EmptyState.tsx",
   },
+  {
+    id: "alert",
+    name: ["الرسالة الدلالية", "Alert"],
+    description: [
+      "رسالة ثابتة داخل المحتوى، مع إعلان اختياري.",
+      "Persistent inline feedback with optional announcements.",
+    ],
+    file: "Alert.tsx",
+  },
+  {
+    id: "skeleton",
+    name: ["هيكل التحميل", "Skeleton"],
+    description: [
+      "عناصر مؤقتة زخرفية أثناء تحميل المحتوى.",
+      "Decorative placeholders while content is loading.",
+    ],
+    file: "Skeleton.tsx",
+  },
+  {
+    id: "progress",
+    name: ["التقدم", "Progress"],
+    description: [
+      "تقدم محدد أو انتظار دون قيمة رقمية.",
+      "Determinate progress or waiting without a numeric value.",
+    ],
+    file: "Progress.tsx",
+  },
+  {
+    id: "spinner",
+    name: ["مؤشر التحميل", "Spinner"],
+    description: [
+      "مؤشر صغير مع تسمية أو بجوار نص مكافئ.",
+      "A small named indicator or decoration beside equivalent text.",
+    ],
+    file: "Spinner.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;

@@ -200,16 +200,31 @@ export function Inspector({
             <RotateCcw size={13} />
           </button>
         </div>
-        {commonFields[component].map((field) => (
-          <Control
-            key={field.key}
-            field={field}
-            model={model}
-            component={component}
-            language={language}
-            onPatch={onPatch}
-          />
-        ))}
+        {commonFields[component]
+          .filter(
+            (field) =>
+              !(
+                component === "avatar" &&
+                field.key === "src" &&
+                (model as unknown as { appearance: string }).appearance !==
+                  "photo"
+              ) &&
+              !(
+                component === "progress" &&
+                field.key === "value" &&
+                (model as unknown as { indeterminate: boolean }).indeterminate
+              ),
+          )
+          .map((field) => (
+            <Control
+              key={field.key}
+              field={field}
+              model={model}
+              component={component}
+              language={language}
+              onPatch={onPatch}
+            />
+          ))}
       </div>
     </details>
   );

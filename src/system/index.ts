@@ -26,3 +26,7 @@ export * from "./Tooltip";
 export * from "./Modal";
 export * from "./EmptyState";
 export * from "./EmptyStateIllustrations";
+export * from "./Alert";
+export * from "./Skeleton";
+export * from "./Progress";
+export * from "./Spinner";

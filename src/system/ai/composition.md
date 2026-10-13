@@ -3,11 +3,11 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the twenty registry families. Prefer an inline task and a
+  Map each need to the twenty-four registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
-  navigation links, Alert, chart or date picker APIs. Use Table for native tabular content.
+  navigation links, chart or date picker APIs. Use Table for native tabular content.
   For an unavailable request, name the gap and propose a concrete alternative:
   for example, an application-owned native date input styled with shared
   tokens. Do not import an invented `DatePicker`,
@@ -162,3 +162,13 @@ Modal requires title, description and translated closeLabel; trigger/children an
 EmptyState(title, description?, illustration?, action?) leaves content and actions to the application. Omit illustration, use one exported geometric SVG or supply a custom decorative node. The slot is aria-hidden; never place interactive controls there. Text conveys meaning, action conveys its actual result. Use the three original exports NoRecordsIllustration, NoSearchResultsIllustration and GettingStartedIllustration with tokens in either theme. [EmptyStateExamples](examples/EmptyStateExamples.tsx) reveals a guide and returns with Back; it does not create a customer, persist values or pretend to call a service.
 
 For nested Select/Menu in Sheet/Modal, use a single resolved Radix dismissable-layer and focus-scope module. The verified dependency graph needs the host overrides in [README.md](README.md#shared-radix-overlay-infrastructure), because source copies do not include root package.json. Test Select Escape as well as selection: one Escape closes Select and restores its trigger, the next closes the dialog. Merely putting portals inside a dialog does not unify duplicated primitive contexts.
+
+## Persistent feedback and loading
+
+Use Alert for inline persistent feedback; Toast for transient event feedback. Tone conveys meaning independently of accent. Static examples use announcement=off. Choose polite for routine live updates and assertive only for urgency; do not announce all error-colored content as urgent. Supply action ReactNode and own any dismissal in application state.
+
+Use Skeleton to reserve simple text/rectangle/circle space, always hidden from assistive technology. The host sets aria-busy and provides a single loading status. Use Spinner with label for a standalone status; use decorative beside equivalent announced text. Reduced motion stops shimmer/pulse/rotation; text and static shapes keep loading understandable.
+
+Progress is a named 0–100 bar: value=0 is real zero, value=100 is completion, finite out-of-range values clamp. Omit value or pass null for unknown progress; nonfinite values also omit numeric claims. Explicit locale handles language independently of direction. Updates and completion behavior belong to the host. Use explicit example states without timers or fake requests.
+
+Avatar photo examples import bundled ai/assets/sara.jpg and omar.jpg. Copy those assets and their provenance/license alongside the source. Initials-only, custom URL and mixed groups are compositions of the existing src prop; they add no public appearance or upload API.

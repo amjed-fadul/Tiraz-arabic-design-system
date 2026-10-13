@@ -1200,3 +1200,178 @@
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
   gap: var(--row-gap);
 }
+
+/* Persistent feedback and loading affordances. */
+.tz-alert {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--row-gap);
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: var(--control-padding);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--info-soft);
+  color: var(--info);
+  overflow-wrap: anywhere;
+}
+.tz-alert[data-tone="neutral"] {
+  background: var(--surface-subtle);
+  color: var(--text);
+  border-color: var(--border);
+}
+.tz-alert[data-tone="success"] {
+  background: var(--success-soft);
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 25%, var(--surface));
+}
+.tz-alert[data-tone="error"] {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 25%, var(--surface));
+}
+.tz-alert[data-tone="info"] {
+  border-color: color-mix(in srgb, var(--info) 25%, var(--surface));
+}
+.tz-alert-copy {
+  flex: 1 1 16rem;
+  min-inline-size: 0;
+}
+.tz-alert strong {
+  font-weight: var(--weight-semibold);
+}
+.tz-alert p {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-body);
+}
+.tz-alert-action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--control-gap);
+  max-inline-size: 100%;
+}
+.tz-alert-action .tz-button {
+  white-space: normal;
+}
+.tz-skeleton {
+  display: block;
+  flex: none;
+  inline-size: 100%;
+  max-inline-size: 100%;
+  block-size: var(--text-body);
+  border-radius: var(--radius-small);
+  background: var(--surface-hover);
+  animation: tz-placeholder-pulse calc(var(--motion-state) * 8) var(--ease)
+    infinite;
+}
+.tz-skeleton[data-shape="rectangle"] {
+  block-size: calc(var(--control-height) * 2);
+  border-radius: var(--radius);
+}
+.tz-skeleton[data-shape="circle"] {
+  inline-size: var(--control-small);
+  block-size: var(--control-small);
+  border-radius: 50%;
+}
+.tz-progress {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+.tz-progress-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-block-end: var(--space-1);
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.tz-progress-track {
+  block-size: calc(var(--control-small) / 4);
+  border-radius: var(--radius-small);
+  background: var(--surface-hover);
+  overflow: hidden;
+}
+.tz-progress-indicator {
+  display: block;
+  block-size: 100%;
+  margin-inline-end: auto;
+  background: var(--action);
+  border-radius: inherit;
+  transition: inline-size var(--motion-state) var(--ease);
+}
+.tz-progress-track[data-indeterminate="true"] .tz-progress-indicator {
+  inline-size: 35%;
+  animation: tz-placeholder-pulse calc(var(--motion-state) * 8) var(--ease)
+    infinite;
+}
+.tz-loading-spinner {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  color: var(--text-secondary);
+  vertical-align: middle;
+}
+.tz-loading-spinner[data-size="md"] {
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+}
+.tz-loading-spinner svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+@keyframes tz-placeholder-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+.tiraz-system[data-reduced-motion="true"] .tz-skeleton,
+.tiraz-system[data-reduced-motion="true"]
+  .tz-progress-track[data-indeterminate="true"]
+  .tz-progress-indicator,
+.tiraz-system[data-reduced-motion="true"] .tz-loading-spinner .tz-spinner {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-skeleton,
+  .tz-progress-track[data-indeterminate="true"] .tz-progress-indicator,
+  .tz-loading-spinner .tz-spinner {
+    animation: none;
+  }
+}
+
+.tz-feedback-examples {
+  display: grid;
+  gap: var(--space-4);
+  inline-size: 100%;
+}
+.tz-feedback-examples > p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.tz-feedback-placeholder {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  min-block-size: calc(var(--control-height) * 2);
+}
+.tz-feedback-lines {
+  display: grid;
+  gap: var(--space-2);
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-feedback-examples > .tz-button {
+  justify-self: start;
+}

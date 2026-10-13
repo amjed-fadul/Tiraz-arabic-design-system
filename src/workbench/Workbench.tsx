@@ -408,6 +408,10 @@ export function Workbench() {
                   </SystemProvider>
                 </div>
                 {![
+                  "alert",
+                  "skeleton",
+                  "progress",
+                  "spinner",
                   "badge",
                   "avatar",
                   "avatar-group",

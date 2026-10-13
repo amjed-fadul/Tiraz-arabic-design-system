@@ -1,3 +1,10 @@
+import {
+  AlertExamples,
+  SkeletonExamples,
+  ProgressExamples,
+  SpinnerExamples,
+} from "../system/ai/examples/FeedbackExamples";
+import { TeamExample } from "../system/ai/examples/OverlayExamples";
 import { AvatarExamples } from "../system/ai/examples/AvatarExamples";
 import { EmptyStateExamples } from "../system/ai/examples/EmptyStateExamples";
 import { FeedbackForm } from "../system/ai/examples/FeedbackForm";
@@ -155,26 +162,37 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "alert") return <AlertExamples language={language} />;
+  if (component === "skeleton") return <SkeletonExamples language={language} />;
+  if (component === "progress") return <ProgressExamples language={language} />;
+  if (component === "spinner") return <SpinnerExamples language={language} />;
+  if (component === "avatar-group")
+    return (
+      <div className="tz-feedback-examples">
+        <TeamExample language={language} photos />
+        <p>
+          {t(
+            "صور محلية وأحرف ثابتة. الأسماء متاحة حتى للأعضاء المخفيين.",
+            "Bundled portraits and stable initials. Names remain available for hidden members.",
+          )}
+        </p>
+      </div>
+    );
   if (component === "avatar") return <AvatarExamples language={language} />;
   if (component === "empty-state")
     return <EmptyStateExamples language={language} />;
-  if (["avatar-group", "tooltip", "modal"].includes(component))
+  if (["tooltip", "modal"].includes(component))
     return (
       <p className="example-caption">
-        {component === "avatar-group"
+        {component === "tooltip"
           ? t(
-              "الترتيب يتبع اتجاه النظام. العدد الإضافي نص ثابت؛ أسماء جميع الأعضاء متاحة لقارئات الشاشة.",
-              "Order follows system direction. Overflow is static text; all member names are available to assistive technology.",
+              "مرّر المؤشر أو ركّز بلوحة المفاتيح لعرض التوضيح. Escape يغلقه؛ الزر يعرض التفاصيل.",
+              "Hover or focus to see the explanation. Escape dismisses it; the button toggles details.",
             )
-          : component === "tooltip"
-            ? t(
-                "مرّر المؤشر أو ركّز بلوحة المفاتيح لعرض التوضيح. Escape يغلقه؛ الزر يعرض التفاصيل.",
-                "Hover or focus to see the explanation. Escape dismisses it; the button toggles details.",
-              )
-            : t(
-                "نافذة واحدة. الاختيار يغيّر المعاينة، والقائمة تستعيد التخطيط الافتراضي. الإغلاق يعيد التركيز.",
-                "One dialog. Select changes the preview, the menu resets its layout, and dismissal restores focus.",
-              )}
+          : t(
+              "نافذة واحدة. الاختيار يغيّر المعاينة، والقائمة تستعيد التخطيط الافتراضي. الإغلاق يعيد التركيز.",
+              "One dialog. Select changes the preview, the menu resets its layout, and dismissal restores focus.",
+            )}
       </p>
     );
   if (component === "badge")

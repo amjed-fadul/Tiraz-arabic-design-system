@@ -1,4 +1,9 @@
+import { saraPortrait } from "../system/ai/examples/portraits";
 import {
+  Alert,
+  Skeleton,
+  Progress,
+  Spinner,
   Avatar,
   EmptyState,
   GettingStartedIllustration,
@@ -11,6 +16,10 @@ import {
   ModalExample,
 } from "../system/ai/examples/OverlayExamples";
 import type {
+  AlertModel,
+  SkeletonModel,
+  ProgressModel,
+  SpinnerModel,
   AvatarModel,
   AvatarGroupModel,
   TooltipModel,
@@ -115,9 +124,47 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
-  if (component === "avatar") return <Avatar {...(model as AvatarModel)} />;
+  if (component === "alert") return <Alert {...(model as AlertModel)} />;
+  if (component === "skeleton")
+    return <Skeleton {...(model as SkeletonModel)} />;
+  if (component === "progress") {
+    const { indeterminate, ...p } = model as ProgressModel;
+    return (
+      <Progress
+        {...p}
+        value={indeterminate ? null : p.value}
+        locale={language}
+      />
+    );
+  }
+  if (component === "spinner") {
+    const p = model as SpinnerModel;
+    return p.decorative ? (
+      <div role="status" className="tz-preferences-actions">
+        <Spinner decorative size={p.size} />
+        <span>{p.label}</span>
+      </div>
+    ) : (
+      <Spinner label={p.label} size={p.size} />
+    );
+  }
+  if (component === "avatar") {
+    const { appearance, src, ...p } = model as AvatarModel;
+    return (
+      <Avatar
+        {...p}
+        src={appearance === "photo" ? src.trim() || saraPortrait : undefined}
+      />
+    );
+  }
   if (component === "avatar-group")
-    return <TeamExample language={language} {...(model as AvatarGroupModel)} />;
+    return (
+      <TeamExample
+        language={language}
+        {...(model as AvatarGroupModel)}
+        photos={(model as AvatarGroupModel).appearance === "mixed"}
+      />
+    );
   if (component === "tooltip")
     return (
       <TooltipExample

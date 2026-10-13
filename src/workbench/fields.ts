@@ -76,12 +76,74 @@ const trigger: WorkbenchField[] = [
   ),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  alert: [
+    field("title", "text", "العنوان", "Title"),
+    field("description", "text", "الوصف", "Description"),
+    field("tone", "select", "النوع", "Tone", "tone", {
+      options: ["neutral", "success", "error", "info"],
+    }),
+  ],
+  skeleton: [
+    field("shape", "select", "الشكل", "Shape", "shape", {
+      options: ["text", "rectangle", "circle"],
+    }),
+  ],
+  progress: [
+    field("label", "text", "التسمية", "Label"),
+    field("value", "number", "النسبة · %", "Value · %", "value", {
+      min: 0,
+      max: 100,
+    }),
+    field(
+      "indeterminate",
+      "boolean",
+      "غير محدد",
+      "Indeterminate",
+      "value=null",
+    ),
+    field("showValue", "boolean", "إظهار النسبة", "Show value"),
+  ],
+  spinner: [
+    field("label", "text", "التسمية", "Label"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+    field(
+      "decorative",
+      "boolean",
+      "بجوار نص معلن",
+      "Beside announced text",
+      "decorative",
+    ),
+  ],
   avatar: [
+    field("appearance", "select", "المظهر", "Appearance", "src · example", {
+      options: ["initials", "photo"],
+    }),
+    field(
+      "src",
+      "text",
+      "رابط الصورة · اختياري",
+      "Image URL · optional",
+      "src",
+      {
+        help: [
+          "فارغ يستخدم صورة سارة المحلية.",
+          "Leave blank for the bundled Sara portrait.",
+        ],
+      },
+    ),
     field("name", "text", "الاسم", "Name"),
     field("fallback", "text", "الأحرف البديلة", "Initials"),
     field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
   ],
   "avatar-group": [
+    field(
+      "appearance",
+      "select",
+      "المظهر",
+      "Appearance",
+      "members[].src · example",
+      { options: ["initials", "mixed"] },
+    ),
     field(
       "maxVisible",
       "number",
@@ -388,6 +450,12 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
 };
 export const optionNames: Record<string, Localized> = {
+  initials: ["أحرف", "Initials"],
+  photo: ["صورة", "Photo"],
+  mixed: ["صور وأحرف", "Photos and initials"],
+  text: ["نص", "Text"],
+  rectangle: ["مستطيل", "Rectangle"],
+  circle: ["دائرة", "Circle"],
   primary: ["أساسي", "Primary"],
   secondary: ["ثانوي", "Secondary"],
   ghost: ["خفيف", "Ghost"],
@@ -434,8 +502,12 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
-  avatar: ["name", "fallback", "size"],
-  "avatar-group": ["maxVisible", "size"],
+  alert: ["title", "description", "tone"],
+  skeleton: ["shape"],
+  progress: ["label", "value", "indeterminate", "showValue"],
+  spinner: ["label", "size", "decorative"],
+  avatar: ["appearance", "src", "name", "fallback", "size"],
+  "avatar-group": ["appearance", "maxVisible", "size"],
   tooltip: ["content"],
   modal: ["title", "description", "footer"],
   "empty-state": ["title", "description", "illustration"],
@@ -505,7 +577,9 @@ for (const component of Object.keys(commonFields) as ComponentId[])
   commonFields[component] = commonFields[component].map((f) => ({
     ...f,
     title:
-      component === "sheet" && f.key === "children"
-        ? ["المحتوى", "Content"]
-        : (shortTitles[f.key] ?? f.title),
+      component === "progress" && f.key === "value"
+        ? ["النسبة · %", "Value · %"]
+        : component === "sheet" && f.key === "children"
+          ? ["المحتوى", "Content"]
+          : (shortTitles[f.key] ?? f.title),
   }));

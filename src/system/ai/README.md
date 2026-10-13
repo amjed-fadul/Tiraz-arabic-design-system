@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **twenty**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal and EmptyState.
+Tiraz is an Arabic-first, source-owned React dashboard library with **twenty-four**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress and Spinner.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -27,7 +27,7 @@ helper and is documented under Input rather than a standalone navigation page.
 ## Copy and setup
 
 Copy the **whole source-root directory**, keeping `ai/`, its JSON/Markdown and
-`ai/examples/`; tests (`*.test.*`) may be excluded. Do not copy only the barrel
+`ai/examples/` and `ai/assets/` (including binary portraits, provenance and license); tests (`*.test.*`) may be excluded. Do not copy only the barrel
 or strip documentation from the bundle. No workbench files, root README or
 root AGENTS.md are required to consume it. A host agent entry file may point
 at the copied `ai/README.md`.
@@ -74,7 +74,7 @@ Badge is static status text, not an action or live region; neutral is the defaul
 
 Use Checkbox for an independent form value, RadioGroup for one choice with native fieldset/legend and a stable shared name, and Textarea for multiline text. [The small preferences form](examples/FeedbackForm.tsx) combines all three with application-owned validation. Its Check form action checks required notes and reports the validation result; native reset restores the controls. These examples are host application code, not barrel exports.
 
-Use Avatar with name and an explicit fallback for deliberate Arabic initials. Its internal image/fallback is decorative; the outer span announces name once. Set decorative when equivalent adjacent text supplies that name. No remote image is required: [AvatarExamples](examples/AvatarExamples.tsx) uses a local SVG portrait.
+Use Avatar with name and an explicit fallback for deliberate Arabic initials. Its internal image/fallback is decorative; the outer span announces name once. Set decorative when equivalent adjacent text supplies that name. No remote image is required: [AvatarExamples](examples/AvatarExamples.tsx) uses bundled local JPEG portraits with provenance and licensing in ai/assets.
 
 AvatarGroup composes members with stable unique id, name and optional src/fallback. Supply a group label and translated overflowLabel(count). The +N indicator is static; hidden member names remain available. [OverlayExamples](examples/OverlayExamples.tsx) contains a team, a Tooltip details toggle and one Modal display preview. Select and menu actions change/reset that preview; no values are persisted.
 
@@ -98,3 +98,17 @@ Source-only copies do not carry the repository package.json. For the verified Di
 ```
 
 These patches are already used by Select. Without a single resolved copy of each primitive, Radix layers maintain separate contexts: Escape in Select can dismiss its surrounding dialog too. Inspect the installed graph (`npm ls @radix-ui/react-dismissable-layer @radix-ui/react-focus-scope` for npm); verify nested Select Escape closes only Select, restores its trigger, then a second Escape closes Sheet/Modal. The required source dependencies include @radix-ui/react-popper 1.4.0 for Tooltip. Do not strip this dependency guidance when copying ai/.
+
+## Inline feedback and loading
+
+Use [FeedbackExamples](examples/FeedbackExamples.tsx) for explicit local states and application-owned actions. Alert requires title; optional description, action and neutral/success/error/info tone. `announcement="off"` is the static default; `polite` uses status for routine updates and `assertive` uses alert for urgent updates only. Semantic tones do not follow accent. The application owns dismissal; do not invent an internal queue or dismissal API.
+
+Skeleton is always decorative/aria-hidden. Its shape is text (default), rectangle or circle; style/className provide native sizing. The host supplies aria-busy and one loading announcement. Spinner requires label unless decorative=true; adjacent text owns the announcement in decorative mode. It has sm/md sizes and no Button integration API. Both loading animations stop for application or OS reduced motion, with a static indicator retained.
+
+Progress requires a visible accessible label. Finite value clamps to 0–100; missing, null, NaN and infinity select indeterminate mode with no aria-valuenow or value text. showValue defaults false. locale defaults from provider direction (rtl=ar/ltr=en); explicitly set locale if language differs from direction. Arabic uses Arabic digits. Visible/accessible percentage rounds to an integer while aria-valuenow retains the clamped numeric value. Do not invent totals, steps or completion callbacks.
+
+## Bundled Avatar photos
+
+Avatar's src API and loading/failure/source-change fallback are unchanged. The documentation offers initials/photo plus an optional image URL; a blank photo URL selects [sara.jpg](assets/sara.jpg). Group examples mix Sara/Omar photos with initials. These are fictional AI-generated samples, bundled under the project MIT license; see [provenance](assets/README.md) and [license](assets/LICENSE.txt). They identify no real people.
+
+Copy ai/assets with the library and preserve local asset imports in generated examples. A consumer needs image-module declarations/bundling (for Vite, vite/client), not a remote service. Custom URLs are application-owned; documentation neither uploads nor stores images. Test loading, errors, source replacement/removal and single accessible naming.

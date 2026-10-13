@@ -13,6 +13,102 @@ export function ApiReference({
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    alert: [
+      [
+        "title / description",
+        "string / string?",
+        t(
+          "عنوان مطلوب ووصف اختياري.",
+          "Required title and optional description.",
+        ),
+      ],
+      [
+        "tone",
+        "neutral | success | error | info",
+        t(
+          "info افتراضي؛ الألوان الدلالية مستقلة عن لون الهوية.",
+          "Defaults to info; semantic colors stay independent of accent.",
+        ),
+      ],
+      [
+        "action",
+        "ReactNode?",
+        t(
+          "إجراء يقدمه التطبيق؛ التطبيق يملك الإغلاق.",
+          "Application-supplied action; the application owns dismissal.",
+        ),
+      ],
+      [
+        "announcement",
+        "off | polite | assertive",
+        t(
+          "off افتراضي للرسائل الثابتة. polite يستخدم status؛ assertive يستخدم alert للتحديثات العاجلة فقط.",
+          "Defaults to off for static messages. polite uses status; assertive uses alert for urgent updates only.",
+        ),
+      ],
+    ],
+    skeleton: [
+      [
+        "shape",
+        "text | rectangle | circle",
+        t(
+          "text افتراضي. زخرفي دائمًا؛ التطبيق يعلن التحميل.",
+          "Defaults to text. Always decorative; the host announces loading.",
+        ),
+      ],
+      [
+        "style / className",
+        "CSSProperties? / string?",
+        t(
+          "حجم CSS أصلي؛ افتراضيات من الرموز المشتركة. تتوقف الحركة مع تقليل الحركة.",
+          "Native CSS sizing with token defaults. Motion stops with either reduced-motion setting.",
+        ),
+      ],
+    ],
+    progress: [
+      [
+        "label",
+        "string",
+        t(
+          "اسم مطلوب؛ يظهر بصريًا ويعلن مرة واحدة.",
+          "Required name; visible and announced once.",
+        ),
+      ],
+      [
+        "value",
+        "number | null | undefined",
+        t(
+          "من 0 إلى 100. القيم خارج النطاق تثبت؛ null والقيم غير المحدودة تحذف القيمة المعلنة.",
+          "0–100. Out-of-range values clamp; null, missing and nonfinite values omit the numeric announcement.",
+        ),
+      ],
+      [
+        "showValue / locale",
+        "boolean? / ar | en",
+        t(
+          "النسبة مخفية افتراضيًا؛ locale يتبع اتجاه النظام افتراضيًا. أرقام عربية في ar، ونسبة مقربة للعرض فقط.",
+          "Value text defaults off; locale defaults from system direction. Arabic digits for ar; percentage rounds only for display.",
+        ),
+      ],
+    ],
+    spinner: [
+      [
+        "label / decorative",
+        "string / boolean?",
+        t(
+          "label مطلوب إلا مع decorative=true؛ عندها يملك النص المجاور الإعلان.",
+          "label is required unless decorative=true; adjacent text then owns the announcement.",
+        ),
+      ],
+      [
+        "size",
+        "sm | md",
+        t(
+          "sm افتراضي. تتوقف الحركة مع تقليل الحركة مع بقاء المؤشر والتسمية.",
+          "Defaults to sm. Reduced motion stops rotation while keeping the indicator and name.",
+        ),
+      ],
+    ],
     avatar: [
       [
         "name / src / fallback",

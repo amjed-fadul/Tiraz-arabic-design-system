@@ -137,6 +137,24 @@ it("type-checks copied code for every component, state mode and composition pres
     ["avatar", { ...p.avatar, size: "md" }],
     ["avatar-group", { ...p["avatar-group"], maxVisible: 1, size: "md" }],
   );
+  for (const appearance of ["initials", "photo"] as const)
+    for (const src of ["", "/local-custom.jpg"])
+      cases.push(["avatar", { ...p.avatar, appearance, src }]);
+  cases.push([
+    "avatar-group",
+    { ...p["avatar-group"], appearance: "initials" },
+  ]);
+  for (const tone of ["neutral", "success", "error", "info"] as const)
+    cases.push(["alert", { ...p.alert, tone, description: "" }]);
+  for (const shape of ["text", "rectangle", "circle"] as const)
+    cases.push(["skeleton", { shape }]);
+  for (const value of [0, 100, -20, 120])
+    for (const indeterminate of [true, false])
+      cases.push([
+        "progress",
+        { ...p.progress, value, indeterminate, showValue: false },
+      ]);
+  cases.push(["spinner", { ...p.spinner, decorative: true, size: "md" }]);
   const root = ts.sys.getCurrentDirectory();
   const sources = new Map(
     cases.map(([id, model, config], index) => [
@@ -180,6 +198,18 @@ it("type-checks copied code for every component, state mode and composition pres
     <Input helper="Orphan help" />;
     // @ts-expect-error error only accompanies labeled mode
     <Input field={field} error="Duplicate error" />;
+  `,
+  );
+  sources.set(
+    `${root}/src/__generated_spinner_contract.tsx`,
+    `
+    import { Spinner } from "./system";
+    <Spinner label="Loading"/>;
+    <Spinner decorative/>;
+    // @ts-expect-error named mode requires label
+    <Spinner/>;
+    // @ts-expect-error decorative mode uses the adjacent host announcement
+    <Spinner decorative label="Duplicate"/>;
   `,
   );
   const options: ts.CompilerOptions = {

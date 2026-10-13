@@ -147,11 +147,14 @@ export interface TextareaModel extends FieldModel, Stateful {
   rows: number;
 }
 export interface AvatarModel {
+  appearance: "initials" | "photo";
+  src: string;
   name: string;
   fallback: string;
   size: "sm" | "md";
 }
 export interface AvatarGroupModel {
+  appearance: "initials" | "mixed";
   maxVisible: number;
   size: "sm" | "md";
 }
@@ -169,7 +172,30 @@ export interface EmptyStateModel {
   description: string;
   illustration: "no-records" | "no-results" | "getting-started" | "none";
 }
+export interface AlertModel {
+  title: string;
+  description: string;
+  tone: "neutral" | "success" | "error" | "info";
+}
+export interface SkeletonModel {
+  shape: "text" | "rectangle" | "circle";
+}
+export interface ProgressModel {
+  label: string;
+  value: number;
+  indeterminate: boolean;
+  showValue: boolean;
+}
+export interface SpinnerModel {
+  label: string;
+  size: "sm" | "md";
+  decorative: boolean;
+}
 export interface Playgrounds {
+  alert: AlertModel;
+  skeleton: SkeletonModel;
+  progress: ProgressModel;
+  spinner: SpinnerModel;
   avatar: AvatarModel;
   "avatar-group": AvatarGroupModel;
   tooltip: TooltipModel;
@@ -206,12 +232,34 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    alert: {
+      title: t("المعاينة جاهزة", "Preview ready"),
+      description: t(
+        "هذه رسالة ثابتة داخل الصفحة.",
+        "This is persistent feedback within the page.",
+      ),
+      tone: "info",
+    },
+    skeleton: { shape: "text" },
+    progress: {
+      label: t("تجهيز التقرير", "Preparing report"),
+      value: 64,
+      indeterminate: false,
+      showValue: true,
+    },
+    spinner: {
+      label: t("جارٍ التحميل", "Loading"),
+      size: "sm",
+      decorative: false,
+    },
     avatar: {
+      appearance: "initials",
+      src: "",
       name: t("سارة علي", "Sara Ali"),
       fallback: t("س ع", "SA"),
       size: "sm",
     },
-    "avatar-group": { maxVisible: 3, size: "sm" },
+    "avatar-group": { maxVisible: 3, size: "sm", appearance: "mixed" },
     tooltip: {
       content: t(
         "عرض معلومات إضافية في هذه المعاينة.",
@@ -604,6 +652,9 @@ export function normalizePlaygrounds(
         component === "data-table"
           ? ["populated", "loading", "empty", "no-results", "error"]
           : ["populated", "empty"],
+      appearance:
+        component === "avatar" ? ["initials", "photo"] : ["initials", "mixed"],
+      shape: ["text", "rectangle", "circle"],
       illustration: ["no-records", "no-results", "getting-started", "none"],
       mode: ["controlled", "uncontrolled"],
       variant:
@@ -624,10 +675,9 @@ export function normalizePlaygrounds(
       triggerSize: ["sm", "md"],
       align: ["start", "end"],
       side: ["auto", "left", "right"],
-      tone:
-        component === "badge"
-          ? ["neutral", "success", "error", "info"]
-          : ["success", "error", "info"],
+      tone: ["badge", "alert"].includes(component)
+        ? ["neutral", "success", "error", "info"]
+        : ["success", "error", "info"],
     };
     const original = defaultPlaygrounds(language)[
       component
@@ -635,6 +685,10 @@ export function normalizePlaygrounds(
     for (const [key, allowed] of Object.entries(enums))
       if (key in r && !allowed.includes(r[key] as string))
         r[key] = original[key];
+    if (component === "progress")
+      r.value = Number.isFinite(r.value)
+        ? Math.max(0, Math.min(100, Number(r.value)))
+        : 64;
     if (component === "avatar-group")
       r.maxVisible = Number.isFinite(r.maxVisible)
         ? Math.max(1, Math.min(5, Math.floor(Number(r.maxVisible))))

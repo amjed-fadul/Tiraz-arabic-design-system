@@ -1,0 +1,16 @@
+{
+  "branch": "codex/feedback-and-avatar-photos",
+  "baseline": "96d14668b6e2011b2b42dd0c792582d4ee9d82ba",
+  "diff_check": 0,
+  "avatar_button_source_diff": "",
+  "original_head": "ce78408818b6a9866ab0faa7748404cba44d8939",
+  "original_branch": "main",
+  "original_status": "M README.md\n M src/workbench/workbench.css",
+  "original_staged_diff": "",
+  "preview_status": {
+    "http://127.0.0.1:5206/": 200,
+    "http://127.0.0.1:5207/": 200
+  },
+  "preview_cwd": "p68472\nfcwd\nn/Users/amjedfadul/.codex/worktrees/feedback-and-avatar-photos/Tiraz",
+  "preserved_servers": "COMMAND     PID       USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME\nrapportd    911 amjedfadul   11u  IPv4 0x1aa20fdd187d2f82      0t0  TCP *:58004 (LISTEN)\nrapportd    911 amjedfadul   13u  IPv6 0x812fe08f82ab064e      0t0  TCP *:58004 (LISTEN)\nrapportd    911 amjedfadul   19u  IPv6 0x9ce5f97a1d1e97a5      0t0  TCP *:55429 (LISTEN)\nrapportd    911 amjedfadul   21u  IPv6 0xf0f439fdc59c7570      0t0  TCP *:55430 (LISTEN)\nPython     1061 amjedfadul    3u  IPv4 0xe9697a4e1b6f9fed      0t0  TCP 127.0.0.1:5311 (LISTEN)\nControlCe  1369 amjedfadul    9u  IPv4 0x57648b31edd026b3      0t0  TCP *:7000 (LISTEN)\nControlCe  1369 amjedfadul   10u  IPv6 0x8b1330e04bfe68b0      0t0  TCP *:7000 (LISTEN)\nControlCe  1369 amjedfadul   11u  IPv4 0x4eea9dc898d3d2d2      0t0  TCP *:5000 (LISTEN)\nControlCe  1369 amjedfadul   12u  IPv6 0x252965b974d4dd64      0t0  TCP *:5000 (LISTEN)\nNeatDownl  1936 amjedfadul    6u  IPv4 0x973f7b736c08f373      0t0  TCP 127.0.0.1:10007 (LISTEN)\nnode      11050 amjedfadul   20u  IPv4 0xdb6e451773e99dcc      0t0  TCP 127.0.0.1:19054 (LISTEN)\nnode      25221 amjedfadul   25u  IPv4 0xfcb63f7edc2bd995      0t0  TCP 127.0.0.1:5206 (LISTEN)\nnode      34752 amjedfadul   16u  IPv4 0xaef07edca1b9ab27      0t0  TCP 127.0.0.1:5191 (LISTEN)\nnode      42704 amjedfadul   21u  IPv4 0x817851a00b866392      0t0  TCP 127.0.0.1:8792 (LISTEN)\nlogioptio 44626 amjedfadul   47u  IPv4 0xc4ece79438eab86d      0t0  TCP *:59869 (LISTEN)\nAdobeReso 45448 amjedfadul   10u  IPv4 0x349456ea800ab351      0t0  TCP 127.0.0.1:19292 (LISTEN)\nLogiPlugi 45466 amjedfadul  293u  IPv4 0x6774075e909aed6f      0t0  TCP 127.0.0.1:58736 (LISTEN)\nLogiPlugi 45466 amjedfadul  311u  IPv4 0xddcd43c512abfdd2      0t0  TCP 127.0.0.1:58738 (LISTEN)\nLogiPlugi 45466 amjedfadul  354u  IPv4 0xbf31b25d1a6ebe73      0t0  TCP 127.0.0.1:58740 (LISTEN)\nnode      46431 amjedfadul   13u  IPv4 0xb86576aa8d9fb7dc      0t0  TCP 127.0.0.1:18894 (LISTEN)\nnode      46433 amjedfadul   22u  IPv4 0x9d4fc84220a062c4      0t0  TCP 127.0.0.1:18893 (LISTEN)\nnode      46517 amjedfadul   20u  IPv4 0xf2f77d486d5e6e9e      0t0  TCP 127.0.0.1:5193 (LISTEN)\nnode      59300 amjedfadul   25u  IPv4  0xe790d6274cc6518      0t0  TCP 127.0.0.1:5205 (LISTEN)\nphp       63532 amjedfadul    7u  IPv4 0x70d66859706bb4e1      0t0  TCP 127.0.0.1:8000 (LISTEN)\nnode      68472 amjedfadul   25u  IPv4  0xba5a5afdcad62d0      0t0  TCP 127.0.0.1:5207 (LISTEN)\nnode      76935 amjedfadul   29u  IPv4 0xb42115461f8abc6f      0t0  TCP 127.0.0.1:5189 (LISTEN)\nnode      86569 amjedfadul   21u  IPv4 0xbbb9defd84f07f80      0t0  TCP 127.0.0.1:18872 (LISTEN)"
+}
