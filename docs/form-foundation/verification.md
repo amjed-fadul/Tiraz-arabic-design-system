@@ -1,6 +1,6 @@
 # Tiraz form foundation — 2026-10-13
 
-Base: `2a84c371dc87110c0bb9aa271fb5c003a8255f02`. Branch: `codex/form-foundation` in an isolated managed worktree. Original checkout/index/README/layout edits remain untouched. The milestone results below are historical; the latest Select review fixes and branch push are recorded in the [follow-up report](select-review/README.md).
+Base: `2a84c371dc87110c0bb9aa271fb5c003a8255f02`. Branch: `codex/form-foundation` in an isolated managed worktree. Original checkout/index/README/layout edits remain untouched. The milestone results below are historical; the Select cancellation/focus fixes are recorded in their [follow-up report](select-review/README.md), and the latest external-form fix is recorded in the [association report](select-association/README.md).
 
 ## Chosen APIs
 
@@ -65,3 +65,7 @@ See [changed implementation files](changed-files.md) for the complete source/tes
 ## Select review follow-up
 
 See [cancelled-reset and focus-ownership verification](select-review/README.md) for the regressions, Radix trace, before/after Chromium results and independent re-review of the fixes starting at `32622da0862f6702cc7b88012867aa16adfb5e9a`. The public API and dependency lock remain unchanged.
+
+## External form association follow-up
+
+See [mounted Select external-form verification](select-association/README.md) for replacement/late insertion regressions, current-form reset routing, previous-fix coverage and independent re-review starting at `cf6f173659f22b14030862c331f725ecc5a05631`. No public API or dependency changes.

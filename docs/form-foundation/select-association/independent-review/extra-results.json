@@ -1,0 +1,79 @@
+{
+  "results": [
+    {
+      "mode": "controlled",
+      "cancel": false,
+      "scenario": "4 DOM-only replacements; mixed connected/detached historical resets; native reset and button",
+      "sample": {
+        "display": "Beta",
+        "native": "b",
+        "data": "b",
+        "app": "b",
+        "changes": []
+      }
+    },
+    {
+      "mode": "controlled",
+      "cancel": true,
+      "scenario": "4 DOM-only replacements; mixed connected/detached historical resets; native reset and button",
+      "sample": {
+        "display": "Beta",
+        "native": "b",
+        "data": "b",
+        "app": "b",
+        "changes": []
+      }
+    },
+    {
+      "mode": "uncontrolled",
+      "cancel": false,
+      "scenario": "4 DOM-only replacements; mixed connected/detached historical resets; native reset and button",
+      "sample": {
+        "display": "Beta",
+        "native": "b",
+        "data": "b",
+        "app": "b",
+        "changes": []
+      }
+    },
+    {
+      "mode": "uncontrolled",
+      "cancel": true,
+      "scenario": "4 DOM-only replacements; mixed connected/detached historical resets; native reset and button",
+      "sample": {
+        "display": "Beta",
+        "native": "b",
+        "data": "b",
+        "app": "b",
+        "changes": []
+      }
+    },
+    {
+      "mode": "controlled",
+      "scenario": "native form mounts late without React rerender",
+      "sample": {
+        "display": "Alpha",
+        "native": "a",
+        "data": "a",
+        "app": "a",
+        "changes": [
+          "a"
+        ]
+      }
+    },
+    {
+      "mode": "uncontrolled",
+      "scenario": "native form mounts late without React rerender",
+      "sample": {
+        "display": "Alpha",
+        "native": "a",
+        "data": "a",
+        "app": "a",
+        "changes": [
+          "a"
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

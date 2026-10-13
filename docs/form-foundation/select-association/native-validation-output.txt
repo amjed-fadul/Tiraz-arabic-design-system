@@ -1,0 +1,17 @@
+[
+  "requestSubmit: selects",
+  "requestSubmit: select-before-input",
+  "requestSubmit: input-before-select",
+  "requestSubmit: external-input-before-select",
+  "requestSubmit: external-select-before-input",
+  "click: selects",
+  "click: select-before-input",
+  "click: input-before-select",
+  "click: external-input-before-select",
+  "click: external-select-before-input",
+  "enter: selects",
+  "enter: select-before-input",
+  "enter: input-before-select",
+  "enter: external-input-before-select",
+  "enter: external-select-before-input"
+]

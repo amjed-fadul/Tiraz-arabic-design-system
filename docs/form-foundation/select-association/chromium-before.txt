@@ -1,0 +1,150 @@
+{
+  "passed": 24,
+  "failures": [
+    {
+      "name": "controlled replace none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled replace none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    }
+  ],
+  "errors": []
+}

@@ -57,9 +57,17 @@ export function useSelectValue(
     [commitValue],
   );
   useEffect(() => {
+    if (!scope) return;
     const form = scope?.querySelector<HTMLSelectElement>("select")?.form;
-    if (!form) return;
     const onReset = (event: Event) => {
+      const resetForm = event.target;
+      const currentForm =
+        scope.querySelector<HTMLSelectElement>("select")?.form;
+      if (
+        (resetForm !== currentForm && resetForm !== form) ||
+        resetEvent.current === event
+      )
+        return;
       resetEvent.current = event;
       // A microtask can run between native listeners for a trusted reset click.
       // The next task observes cancellation from both React event phases.
@@ -69,16 +77,22 @@ export function useSelectValue(
         if (
           !event.defaultPrevented &&
           scope?.isConnected &&
-          scope.querySelector<HTMLSelectElement>("select")?.form === form
+          scope.querySelector<HTMLSelectElement>("select")?.form === resetForm
         )
           commitValue(initialValue.current);
       }, 0);
       resetTimers.current.add(timer);
     };
-    // Capture at the associated form before Radix's native target listener;
-    // association is read from the real bridge, including external form IDs.
-    form.addEventListener("reset", onReset, true);
-    return () => form.removeEventListener("reset", onReset, true);
-  }, [scope, formId, commitValue]);
+    // Resolve association at dispatch, including forms inserted/replaced without
+    // rerendering Select. Keep a capture listener on Radix's last bound form too:
+    // a detached former form cannot reach the document, but can call Radix reset.
+    scope.ownerDocument.addEventListener("reset", onReset, true);
+    form?.addEventListener("reset", onReset, true);
+    return () => {
+      scope.ownerDocument.removeEventListener("reset", onReset, true);
+      form?.removeEventListener("reset", onReset, true);
+    };
+    // Radix rebinds its reset listener when its controlled value changes.
+  }, [scope, formId, currentValue, commitValue]);
   return { value: currentValue, onValueChange: changeValue, setScope };
 }

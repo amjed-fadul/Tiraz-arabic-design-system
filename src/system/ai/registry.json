@@ -983,7 +983,7 @@
       "exclusions": [
         "No search, multi-select, controlled open, defaultOpen, custom popup/positioning or children slots."
       ],
-      "state": "Radix Select 2.4.1 is internally controlled by Tiraz: public value/onValueChange or local state initialized by defaultValue. Successful form reset requests the initial value after event dispatch; controlled owner must accept callback. Cancelled onReset/onResetCapture preserves state and emits no reset change, including external form association. Empty string denotes placeholder."
+      "state": "Radix Select 2.4.1 is internally controlled by Tiraz: public value/onValueChange or local state initialized by defaultValue. Successful form reset requests the initial value after event dispatch; controlled owner must accept callback. Cancelled onReset/onResetCapture preserves state and emits no reset change, including external form association. Reset resolves the current native form at dispatch, supporting late form insertion and same-ID replacement without remounting Select. Replacement preserves selection; former form reset is ignored. Empty string denotes placeholder."
     }
   ],
   "records": [

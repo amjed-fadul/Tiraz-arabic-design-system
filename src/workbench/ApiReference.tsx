@@ -102,8 +102,8 @@ export function ApiReference({
         "value / defaultValue / onValueChange",
         "string / string? / (string) => void",
         t(
-          "طِراز يدير القيمة الداخلية. reset الناجح يطلب القيمة الأولية بعد اكتمال الحدث؛ الإلغاء يحفظ القيمة دون callback.",
-          "Tiraz manages uncontrolled values. Successful reset requests the initial value after event dispatch; cancellation preserves the value without a callback.",
+          "طِراز يدير القيمة الداخلية. reset الناجح يطلب القيمة الأولية بعد اكتمال الحدث؛ الإلغاء يحفظ القيمة دون callback. يتبع النموذج الحالي عند استبداله أو إضافته لاحقًا دون إعادة تركيب Select.",
+          "Tiraz manages uncontrolled values. Successful reset requests the initial value after event dispatch; cancellation preserves the value without a callback. Reset follows the current form after replacement or late insertion without remounting Select.",
         ),
       ],
       [

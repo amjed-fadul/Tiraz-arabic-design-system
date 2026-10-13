@@ -1,0 +1,45 @@
+Nested case rtl light compact normal { width: 320, height: 420 }
+Nested case rtl light compact normal { width: 800, height: 340 }
+Nested case rtl light compact reduce { width: 320, height: 420 }
+Nested case rtl light compact reduce { width: 800, height: 340 }
+Nested case rtl light standard normal { width: 320, height: 420 }
+Nested case rtl light standard normal { width: 800, height: 340 }
+Nested case rtl light standard reduce { width: 320, height: 420 }
+Nested case rtl light standard reduce { width: 800, height: 340 }
+Nested case rtl dark compact normal { width: 320, height: 420 }
+Nested case rtl dark compact normal { width: 800, height: 340 }
+Nested case rtl dark compact reduce { width: 320, height: 420 }
+Nested case rtl dark compact reduce { width: 800, height: 340 }
+Nested case rtl dark standard normal { width: 320, height: 420 }
+Nested case rtl dark standard normal { width: 800, height: 340 }
+Nested case rtl dark standard reduce { width: 320, height: 420 }
+Nested case rtl dark standard reduce { width: 800, height: 340 }
+Nested case ltr light compact normal { width: 320, height: 420 }
+Nested case ltr light compact normal { width: 800, height: 340 }
+Nested case ltr light compact reduce { width: 320, height: 420 }
+Nested case ltr light compact reduce { width: 800, height: 340 }
+Nested case ltr light standard normal { width: 320, height: 420 }
+Nested case ltr light standard normal { width: 800, height: 340 }
+Nested case ltr light standard reduce { width: 320, height: 420 }
+Nested case ltr light standard reduce { width: 800, height: 340 }
+Nested case ltr dark compact normal { width: 320, height: 420 }
+Nested case ltr dark compact normal { width: 800, height: 340 }
+Nested case ltr dark compact reduce { width: 320, height: 420 }
+Nested case ltr dark compact reduce { width: 800, height: 340 }
+Nested case ltr dark standard normal { width: 320, height: 420 }
+Nested case ltr dark standard normal { width: 800, height: 340 }
+Nested case ltr dark standard reduce { width: 320, height: 420 }
+Nested case ltr dark standard reduce { width: 800, height: 340 }
+{
+  "checks": [
+    "All 16 provider combinations; aligned Button/Input/Select geometry; density at both typography scales; uncontrolled reset after real selection",
+    "Native FormData, required visible focus, disabled exclusion, readonly value, controlled reset callback and host Input reset",
+    "32 compact/standard narrow/short nested popup and customer flow combinations; early End/Enter with stationary pointer; Escape, Tab, validation, cancellation, duplicate save guard and clean reopening",
+    "Multiple invalid native Selects preserve first-control form order",
+    "Long list internal scroll, disabled option skipped, typeahead, real hover/click",
+    "OS reduced motion overrides application motion"
+  ],
+  "measurements": 16,
+  "popups": 32,
+  "errors": []
+}

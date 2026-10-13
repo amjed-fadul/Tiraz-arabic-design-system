@@ -32,3 +32,7 @@ Commands: `npm test -- src/system/select-form-regressions.test.tsx src/system/fo
 See [machine-readable summary](verification.json), [full suite output](full-unit-output.txt), [build](build-output.txt), [lint](lint-output.txt), [format](format-output.txt), [additional formatting](added-format-output.txt), [forms](forms/results.json), [native validation](native-validation/results.json), [interactions](interactions/interactions.json), [additional regressions](regressions/regressions.json) and [source-copy build](source-copy/copy-build.json).
 
 Limits: verified in Chromium; other engines, touch and screen readers were not tested. Successful Select reset now commits in the next task after event dispatch; controlled consumers must accept the reset callback. This follow-up changes no public API and begins no other milestone.
+
+## External-form follow-up
+
+The subsequent [association report](../select-association/README.md) records reset handling for a form replaced under the same ID or mounted after Select, with the Select kept mounted. These cancellation and validation-focus results remain covered.

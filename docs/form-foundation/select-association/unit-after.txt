@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/select-association.test.tsx src/system/select-form-regressions.test.tsx src/system/forms.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.4 /Users/amjedfadul/.codex/worktrees/form-foundation/Tiraz
+
+
+ Test Files  3 passed (3)
+      Tests  59 passed (59)
+   Start at  05:59:31
+   Duration  5.31s (tests 68%, environment 20%, import 6%, setup 4%, transform 2%)
+
+    Isolate  3 workers spawned · ~664ms startup each (spawn + environment, per file)
+             at least ~332ms faster with isolate: false — reuses workers across files instead of one per file
