@@ -4,6 +4,10 @@ import { TableExample } from "../system/ai/examples/TableExample";
 import { Plus, Download, Settings2 } from "lucide-react";
 import { Close as SheetClose } from "@radix-ui/react-dialog";
 import {
+  Badge,
+  Checkbox,
+  RadioGroup,
+  Textarea,
   Field,
   Input,
   Select,
@@ -16,6 +20,10 @@ import {
   useToast,
 } from "../system";
 import type {
+  BadgeModel,
+  CheckboxModel,
+  RadioGroupModel,
+  TextareaModel,
   FieldModel,
   InputModel,
   SelectModel,
@@ -88,6 +96,78 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "badge") {
+    const p = model as BadgeModel;
+    return <Badge tone={p.tone}>{p.children}</Badge>;
+  }
+  if (component === "checkbox") {
+    const p = model as CheckboxModel;
+    return (
+      <div className="playground-form">
+        <Checkbox
+          label={p.label}
+          helper={p.helper}
+          error={p.error}
+          required={p.required}
+          disabled={p.disabled}
+          name={p.name}
+          value={p.value}
+          checked={p.mode === "controlled" ? p.checked : undefined}
+          defaultChecked={p.mode === "uncontrolled" ? p.checked : undefined}
+          onChange={(e) => {
+            onPatch({ checked: e.currentTarget.checked });
+            onEvent("onChange", e.currentTarget.checked);
+          }}
+        />
+      </div>
+    );
+  }
+  if (component === "radio-group") {
+    const p = model as RadioGroupModel;
+    return (
+      <div className="playground-form">
+        <RadioGroup
+          label={p.label}
+          helper={p.helper}
+          error={p.error}
+          required={p.required}
+          disabled={p.disabled}
+          name={p.name}
+          options={p.options}
+          value={p.mode === "controlled" ? p.value : undefined}
+          defaultValue={p.mode === "uncontrolled" ? p.value : undefined}
+          onValueChange={(value) => {
+            onPatch({ value });
+            onEvent("onValueChange", value);
+          }}
+        />
+      </div>
+    );
+  }
+  if (component === "textarea") {
+    const p = model as TextareaModel;
+    return (
+      <div className="playground-form">
+        <Textarea
+          label={p.label}
+          helper={p.helper}
+          error={p.error}
+          required={p.required}
+          disabled={p.disabled}
+          readOnly={p.readOnly}
+          name={p.name}
+          rows={p.rows}
+          placeholder={p.placeholder}
+          value={p.mode === "controlled" ? p.value : undefined}
+          defaultValue={p.mode === "uncontrolled" ? p.value : undefined}
+          onChange={(e) => {
+            onPatch({ value: e.currentTarget.value });
+            onEvent("onChange", e.currentTarget.value);
+          }}
+        />
+      </div>
+    );
+  }
   if (component === "data-table") {
     const p = model as DataTableModel;
     return (

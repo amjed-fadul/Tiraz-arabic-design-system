@@ -16,3 +16,7 @@ export * from "./Select";
 export * from "./Table";
 
 export * from "./DataTable";
+export * from "./Badge";
+export * from "./Checkbox";
+export * from "./RadioGroup";
+export * from "./Textarea";

@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the eleven registry families. Prefer an inline task and a
+  Map each need to the fifteen registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
@@ -138,3 +138,15 @@ transition and restores the originating row action after closing details.
 Use bdi for names and bdi dir=ltr for emails. Keep source data in memory.
 There is no selection, bulk action, editing, deletion, virtualization or sticky
 column API. No extra dependency is required.
+
+## Small native controls
+
+Badge displays meaningful status text using neutral (default), success, error or info; meaning must remain readable without color. Keep it noninteractive. It has no automatic announcement, dismissal, size or variant API.
+
+Checkbox requires label and supports helper/error, invalid and native checked/defaultChecked, onChange, required, disabled, name/value, form and HTMLInputElement ref. Read event.currentTarget.checked in onChange. It reuses Field associations internally; className/style/ref stay on input. Error marks invalid without validating. No indeterminate or DataTable selection capability.
+
+RadioGroup requires label, name and options (unique nonempty stable value, string label, optional disabled). Use a distinct shared name for each independent group; native radios enforce one choice. Fieldset/legend provides the group name; helper/error/external aria-describedby describe group and inputs. disabled disables the whole fieldset, options may be independently disabled, required forwards to inputs and form associates each input externally. Ref targets HTMLFieldSetElement. Use value/onValueChange for controlled mode or defaultValue for native uncontrolled selection. Do not add a custom keyboard handler or selection-card behavior.
+
+Textarea mirrors Input's optional label/helper/error convenience mode and separate Field composition mode. Do not combine those modes. Without label, supply a native label or accessible name. Native rows (default 3), name/form, value/defaultValue, editing/selection events, disabled, readOnly, className/style and HTMLTextAreaElement ref remain on the textarea. Resize vertically; no automatic growth or character counter.
+
+All three native controls preserve uncontrolled form submission/reset and cancellation of reset. Native reset does not emit change callbacks. Controlled modes require caller state updates and application onReset to restore controlled values. Keep validation rules/messages/focus in the application. Use [FeedbackForm](examples/FeedbackForm.tsx) for a small combined example; it demonstrates a persistent associated error and native reset, with no service or customer workflow expansion.

@@ -122,7 +122,35 @@ export interface DataTableModel {
   caption: string;
   preset: "populated" | "loading" | "empty" | "no-results" | "error";
 }
+export interface BadgeModel {
+  children: string;
+  tone: "neutral" | "success" | "error" | "info";
+}
+export interface CheckboxModel extends FieldModel, Stateful {
+  checked: boolean;
+  disabled: boolean;
+  name: string;
+  value: string;
+}
+export interface RadioGroupModel extends FieldModel, Stateful {
+  value: string;
+  disabled: boolean;
+  name: string;
+  options: { value: string; label: string; disabled?: boolean }[];
+}
+export interface TextareaModel extends FieldModel, Stateful {
+  value: string;
+  placeholder: string;
+  disabled: boolean;
+  readOnly: boolean;
+  name: string;
+  rows: number;
+}
 export interface Playgrounds {
+  badge: BadgeModel;
+  checkbox: CheckboxModel;
+  "radio-group": RadioGroupModel;
+  textarea: TextareaModel;
   "data-table": DataTableModel;
   table: TableModel;
   button: ButtonModel;
@@ -150,6 +178,50 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    badge: { children: t("نشط", "Active"), tone: "neutral" },
+    checkbox: {
+      label: t("تلقي التحديثات", "Receive updates"),
+      helper: t("تحديثات الحساب الاختيارية", "Optional account updates"),
+      error: "",
+      required: false,
+      checked: false,
+      disabled: false,
+      name: "updates",
+      value: "yes",
+      mode: "controlled",
+    },
+    "radio-group": {
+      label: t("وتيرة التحديثات", "Update frequency"),
+      helper: "",
+      error: "",
+      required: false,
+      disabled: false,
+      name: "frequency",
+      value: "weekly",
+      mode: "controlled",
+      options: [
+        { value: "weekly", label: t("أسبوعيًا", "Weekly") },
+        { value: "monthly", label: t("شهريًا", "Monthly") },
+        {
+          value: "daily",
+          label: t("يوميًا · غير متاح", "Daily · unavailable"),
+          disabled: true,
+        },
+      ],
+    },
+    textarea: {
+      label: t("ملاحظات", "Notes"),
+      helper: "",
+      error: "",
+      required: false,
+      value: "",
+      placeholder: t("أضف تفاصيل مفيدة", "Add useful details"),
+      disabled: false,
+      readOnly: false,
+      name: "notes",
+      rows: 3,
+      mode: "controlled",
+    },
     "data-table": { caption: t("العملاء", "Customers"), preset: "populated" },
     table: { caption: t("العملاء", "Customers"), preset: "populated" },
     field: {
@@ -438,7 +510,7 @@ export function normalizePlaygrounds(
       if (key === "items" || key === "options") {
         if (
           validateCollection(
-            component === "select"
+            component === "select" || component === "radio-group"
               ? "select"
               : component === "tabs"
                 ? "tabs"
@@ -494,7 +566,10 @@ export function normalizePlaygrounds(
       triggerSize: ["sm", "md"],
       align: ["start", "end"],
       side: ["auto", "left", "right"],
-      tone: ["success", "error", "info"],
+      tone:
+        component === "badge"
+          ? ["neutral", "success", "error", "info"]
+          : ["success", "error", "info"],
     };
     const original = defaultPlaygrounds(language)[
       component
@@ -503,6 +578,11 @@ export function normalizePlaygrounds(
       if (key in r && !allowed.includes(r[key] as string))
         r[key] = original[key];
     if (
+      component === "textarea" &&
+      (!Number.isInteger(r.rows) || Number(r.rows) < 1 || Number(r.rows) > 12)
+    )
+      r.rows = 3;
+    if (
       component === "toast" &&
       (!Number.isFinite(r.duration) ||
         Number(r.duration) < 1000 ||
@@ -510,7 +590,7 @@ export function normalizePlaygrounds(
     )
       r.duration = 5000;
     if (
-      component === "select" &&
+      (component === "select" || component === "radio-group") &&
       r.value !== "" &&
       !(r.options as SelectModel["options"]).some(
         (option) => option.value === r.value && !option.disabled,

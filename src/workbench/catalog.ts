@@ -99,6 +99,42 @@ export const catalog = [
     ],
     file: "DataTable.tsx",
   },
+  {
+    id: "badge",
+    name: ["الشارة", "Badge"],
+    description: [
+      "حالة واضحة بالنص وألوان دلالية هادئة.",
+      "Static status text with subtle semantic tones.",
+    ],
+    file: "Badge.tsx",
+  },
+  {
+    id: "checkbox",
+    name: ["مربع الاختيار", "Checkbox"],
+    description: [
+      "اختيار أصلي مستقل مع تسمية ومساعدة وأخطاء.",
+      "An independent native checkbox with label, help and errors.",
+    ],
+    file: "Checkbox.tsx",
+  },
+  {
+    id: "radio-group",
+    name: ["مجموعة الخيارات", "RadioGroup"],
+    description: [
+      "اختيار واحد ضمن مجموعة أصلية مسماة.",
+      "One native choice within a named group.",
+    ],
+    file: "RadioGroup.tsx",
+  },
+  {
+    id: "textarea",
+    name: ["النص المتعدد", "Textarea"],
+    description: [
+      "نص متعدد الأسطر مع تغيير الحجم عموديًا.",
+      "Native multiline text with vertical resizing.",
+    ],
+    file: "Textarea.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;

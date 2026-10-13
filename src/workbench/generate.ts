@@ -5,6 +5,10 @@ import type { SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
 import { catalog } from "./catalog";
 import type {
+  BadgeModel,
+  CheckboxModel,
+  RadioGroupModel,
+  TextareaModel,
   FieldModel,
   InputModel,
   SelectModel,
@@ -54,7 +58,7 @@ export function generateCode(
     return `import { useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { MoreHorizontal } from "lucide-react";
-import { Button, Field, Input, Select, Sheet, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, useToast, DataTable, DropdownMenu, SystemProvider, ToastProvider, defaultConfig } from "./system";
+import { Button, Field, Input, Select, Sheet, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, useToast, DataTable, Badge, DropdownMenu, SystemProvider, ToastProvider, defaultConfig } from "./system";
 import type { DataTableColumn } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";
@@ -75,7 +79,36 @@ export default function Example() {
   let declarations = "",
     jsx = "";
   const recordEvent = "setEvent";
-  if (component === "table") {
+  if (component === "badge") {
+    const p = model as BadgeModel;
+    imports.add("Badge");
+    jsx = `<Badge tone="${p.tone}">{${json(p.children)}}</Badge>`;
+  } else if (component === "checkbox") {
+    const p = model as CheckboxModel;
+    imports.add("Checkbox");
+    declarations =
+      p.mode === "controlled"
+        ? `const [checked, setChecked] = useState(${p.checked});`
+        : "";
+    jsx = `<Checkbox ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}} disabled={${p.disabled}} ${attribute("name", p.name)} ${attribute("value", p.value)} ${p.mode === "controlled" ? "checked={checked}" : `defaultChecked={${p.checked}}`} onChange={event => { ${p.mode === "controlled" ? "setChecked(event.currentTarget.checked);" : ""} setEvent("onChange: " + event.currentTarget.checked); }} />`;
+  } else if (component === "radio-group" || component === "textarea") {
+    const p = model as RadioGroupModel | TextareaModel;
+    const name = component === "radio-group" ? "RadioGroup" : "Textarea";
+    imports.add(name);
+    declarations =
+      p.mode === "controlled"
+        ? `const [value, setValue] = useState(${json(p.value)});`
+        : "";
+    const change =
+      component === "radio-group"
+        ? `onValueChange={next => { ${p.mode === "controlled" ? "setValue(next);" : ""} setEvent("onValueChange: " + next); }}`
+        : `onChange={event => { ${p.mode === "controlled" ? "setValue(event.currentTarget.value);" : ""} setEvent("onChange: " + event.currentTarget.value); }}`;
+    const extras =
+      component === "radio-group"
+        ? `options={${json((p as RadioGroupModel).options)}}`
+        : `rows={${(p as TextareaModel).rows}} readOnly={${(p as TextareaModel).readOnly}} ${attribute("placeholder", (p as TextareaModel).placeholder)}`;
+    jsx = `<${name} ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}} disabled={${p.disabled}} ${attribute("name", p.name)} ${p.mode === "controlled" ? "value={value}" : attribute("defaultValue", p.value)} ${extras} ${change} />`;
+  } else if (component === "table") {
     const p = model as TableModel;
     for (const name of [
       "Table",
@@ -255,11 +288,11 @@ export default function Example() {
     declarations = "const { toast } = useToast();";
     jsx = `<Button variant="secondary" onClick={() => {\n        toast(${JSON.stringify({ title: p.title, description: p.description, tone: p.tone, duration: p.duration }, null, 2)});\n        setEvent("toast: ${p.tone}");\n      }}>{${json(p.triggerLabel)}}</Button>`;
   }
-  const importsCode = `${component === "table" ? "" : `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\n`}import { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "./system/tokens.css";\nimport "./system/components.css";`;
+  const importsCode = `${["table", "badge"].includes(component) ? "" : `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\n`}import { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "@fontsource/ibm-plex-sans-arabic/400.css";\nimport "@fontsource/ibm-plex-sans-arabic/500.css";\nimport "@fontsource/ibm-plex-sans-arabic/600.css";\nimport "./system/tokens.css";\nimport "./system/components.css";`;
   const configCode = `const config: SystemConfig = {\n  ...defaultConfig,\n  theme: "${c.theme}",\n  direction: "${c.direction}",\n  density: "${c.density}",\n  accent: "${c.accent}",\n  typography: "${c.typography ?? "standard"}",\n  radius: ${c.radius},\n  reducedMotion: ${c.reducedMotion},\n};`;
-  const inner = `function Demo() {\n  ${component === "table" ? "" : 'const [event, setEvent] = useState("");'}\n  ${declarations}\n  return (\n    <>\n      ${jsx}\n      ${component === "table" ? "" : '<output aria-live="polite" dir="auto">{event}</output>'}\n    </>\n  );\n}`;
+  const inner = `function Demo() {\n  ${["table", "badge"].includes(component) ? "" : 'const [event, setEvent] = useState("");'}\n  ${declarations}\n  return (\n    <>\n      ${jsx}\n      ${["table", "badge"].includes(component) ? "" : '<output aria-live="polite" dir="auto">{event}</output>'}\n    </>\n  );\n}`;
   const p = model as ToastModel;
-  return `${importsCode}\n\n${configCode}\n\n${inner}\n\nexport default function Example() {\n  return (\n    <SystemProvider config={config}>\n      ${component === "toast" ? `<ToastProvider ${attribute("label", p.providerLabel)} ${attribute("closeLabel", p.closeLabel)}>\n        <Demo />\n      </ToastProvider>` : "<Demo />"}\n    </SystemProvider>\n  );\n}\n`;
+  return `${importsCode}\n\n${configCode}\n\n${inner}\n\nexport default function Example() {\n  return (\n    <div lang={${json(language)}}><SystemProvider config={config}>\n      ${component === "toast" ? `<ToastProvider ${attribute("label", p.providerLabel)} ${attribute("closeLabel", p.closeLabel)}>\n        <Demo />\n      </ToastProvider>` : "<Demo />"}\n    </SystemProvider></div>\n  );\n}\n`;
 }
 export function generatePrompt(
   component: ComponentId,

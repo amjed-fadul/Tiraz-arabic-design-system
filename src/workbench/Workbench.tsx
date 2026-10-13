@@ -151,6 +151,11 @@ export function Workbench() {
     // Mode/default-value changes still need a fresh uncontrolled demonstration.
     if (active === "data-table") return;
     if (active === "input" && !("mode" in patch) && !("value" in patch)) return;
+    if (
+      ["textarea", "checkbox", "radio-group"].includes(active) &&
+      !("mode" in patch)
+    )
+      return;
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
   function resetSystem() {
@@ -402,24 +407,26 @@ export function Workbench() {
                     </div>
                   </SystemProvider>
                 </div>
-                <div
-                  className="event-feedback"
-                  role="status"
-                  aria-label={label("lastEvent", language)}
-                >
-                  <span>{label("lastEvent", language)}</span>
-                  <code dir="ltr">
-                    {events[active]?.length
-                      ? events[active]!.map(
-                          (event) =>
-                            `${event.name}${event.value !== undefined ? `(${JSON.stringify(event.value)})` : ""}`,
-                        ).join(" → ")
-                      : ""}
-                  </code>
-                  {!events[active]?.length && (
-                    <p>{label("waiting", language)}</p>
-                  )}
-                </div>
+                {active !== "badge" && (
+                  <div
+                    className="event-feedback"
+                    role="status"
+                    aria-label={label("lastEvent", language)}
+                  >
+                    <span>{label("lastEvent", language)}</span>
+                    <code dir="ltr">
+                      {events[active]?.length
+                        ? events[active]!.map(
+                            (event) =>
+                              `${event.name}${event.value !== undefined ? `(${JSON.stringify(event.value)})` : ""}`,
+                          ).join(" → ")
+                        : ""}
+                    </code>
+                    {!events[active]?.length && (
+                      <p>{label("waiting", language)}</p>
+                    )}
+                  </div>
+                )}
                 {active === "button" &&
                   (model as ButtonModel).action === "simulate" && (
                     <p className="playground-help">

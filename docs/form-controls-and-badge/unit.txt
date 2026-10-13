@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+
+ Test Files  26 passed (26)
+      Tests  203 passed (203)
+   Start at  19:32:48
+   Duration  12.37s (tests 58%, environment 23%, import 9%, transform 6%, setup 4%)
+
+    Isolate  26 workers spawned · ~841ms startup each (spawn + environment, per file)
+             at least ~2.28s faster with isolate: false — reuses workers across files instead of one per file

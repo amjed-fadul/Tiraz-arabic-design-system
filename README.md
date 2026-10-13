@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with eleven source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with fifteen source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -169,3 +169,9 @@ presets are its only contextual controls. Copied code includes the connected
 application and compiles against a relocated source bundle. Data remains in
 memory. No selection, bulk actions, editing, deletion, virtualization, sticky
 columns, backend, persistence or server grid framework is included.
+
+### Badge and native form controls
+
+Badge renders static status text with neutral/success/error/info tones; the customer DataTable uses it for statuses. Checkbox preserves native input state/form/ref behavior with label/helper/error. RadioGroup uses native radios in fieldset/legend with stable names and values. Textarea mirrors Input associations and preserves native editing/selection, rows and vertical resizing. All consume shared configuration.
+
+The focused documentation pages retain the continuous layout and complete copied prompts. `src/system/ai/examples/FeedbackForm.tsx` demonstrates all three form controls with application-owned validation and native reset. Field remains documented under Input. No indeterminate state, table selection, selection cards, automatic textarea growth or new dependencies are included.

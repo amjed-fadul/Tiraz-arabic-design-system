@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/ai-registry.test.ts src/workbench/generated-code.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  19:15:05
+   Duration  6.74s (tests 81%, environment 10%, import 4%, transform 3%, setup 2%)

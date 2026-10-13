@@ -13,6 +13,126 @@ export function ApiReference({
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    badge: [
+      [
+        "children / tone",
+        "ReactNode / neutral | success | error | info",
+        t(
+          "النص يوضح المعنى. محايد افتراضيًا؛ لا يوجد إجراء أو إعلان تلقائي.",
+          "Text carries meaning. Defaults to neutral; no action or automatic announcement.",
+        ),
+      ],
+      [
+        "native attributes / ref",
+        "ComponentPropsWithRef<span>",
+        t(
+          "خصائص span وref عليه. تجنب جعل الشارة زرًا.",
+          "Span attributes and ref stay on the span. Keep the badge noninteractive.",
+        ),
+      ],
+    ],
+    checkbox: [
+      [
+        "label / helper / error",
+        "string / string? / string?",
+        t(
+          "تسمية مطلوبة مع مساعدة وخطأ مرتبطين. التطبيق يملك التحقق.",
+          "Required label with associated help and error. Application owns validation.",
+        ),
+      ],
+      [
+        "checked / defaultChecked / onChange",
+        "boolean? / boolean? / ChangeEventHandler<HTMLInputElement>",
+        t(
+          "التحكم يحتاج تحديث checked من onChange. القيمة الافتراضية تدعم إعادة الضبط الأصلية.",
+          "Controlled usage updates checked from onChange. Uncontrolled defaults support native reset.",
+        ),
+      ],
+      [
+        "disabled / required / name / value / form / ref",
+        "Native input attributes / HTMLInputElement ref",
+        t(
+          "الخصائص والأحداث وclassName/style وref على input. لا يدعم الحالة غير المحددة أو اختيار الصفوف.",
+          "Attributes, events, className/style and ref target input. No indeterminate state or row selection.",
+        ),
+      ],
+      [
+        "invalid / aria-describedby",
+        "boolean? / string?",
+        t(
+          "الخطأ يعلّم العنصر غير صالح، وتُدمج معرفات الوصف الخارجية دون تكرار.",
+          "Error marks invalid; external description IDs are merged without duplicates.",
+        ),
+      ],
+    ],
+    "radio-group": [
+      [
+        "label / name / options",
+        "string / string / readonly RadioOption[]",
+        t(
+          "تسمية legend واسم مشترك مطلوبان. قيم فريدة ثابتة وتسميات نصية وdisabled اختياري لكل خيار.",
+          "Required legend label and shared name. Unique stable values, string labels and optional disabled per option.",
+        ),
+      ],
+      [
+        "value / defaultValue / onValueChange",
+        "string? / string? / (value: string) => void",
+        t(
+          "خيارات أصلية؛ احفظ تنقل الأسهم والاختيار الواحد. التحكم يحتاج تحديث القيمة من callback.",
+          "Native radios retain arrow navigation and one choice. Controlled usage updates value from the callback.",
+        ),
+      ],
+      [
+        "required / disabled / helper / error",
+        "boolean? / boolean? / string? / string?",
+        t(
+          "required على المدخلات؛ disabled على المجموعة. المساعدة والخطأ مرتبطان بالمجموعة وكل خيار.",
+          "Required applies to inputs; disabled to the fieldset. Help/error describe the group and each option.",
+        ),
+      ],
+      [
+        "native attributes / form / ref",
+        "ComponentPropsWithRef<fieldset> / HTMLFieldSetElement ref",
+        t(
+          "ref وclassName/style والأحداث على fieldset. form ينتقل إلى المدخلات. إعادة الضبط أصلية دون callback؛ الوضع المتحكم به يحتاج onReset من التطبيق.",
+          "Ref, className/style and events target fieldset. Form association reaches inputs. Native uncontrolled reset emits no callback; controlled reset needs application onReset.",
+        ),
+      ],
+    ],
+    textarea: [
+      [
+        "label / helper / error / field",
+        "Same convenience/composition modes as Input",
+        t(
+          "المساعدة والخطأ يرافقان التسمية. لا تجمع label/helper/error مع field. Field موثق تحت Input.",
+          "Help/error accompany label. Do not combine label/helper/error with field. Field is documented under Input.",
+        ),
+      ],
+      [
+        "value / defaultValue / onChange",
+        "Native textarea attributes",
+        t(
+          "التحكم وإعادة الضبط من التطبيق عند استخدام value. الوضع الافتراضي يحفظ إعادة الضبط الأصلية.",
+          "Value mode needs application state and reset handling. DefaultValue retains native reset.",
+        ),
+      ],
+      [
+        "rows / disabled / readOnly / required / name / form / ref",
+        "Native attributes / HTMLTextAreaElement ref",
+        t(
+          "٣ أسطر افتراضيًا. التحرير والتحديد والخصائص والأحداث وref على textarea. تغيير الحجم عمودي؛ لا نمو تلقائي أو عداد.",
+          "Defaults to 3 rows. Editing, selection, attributes, events and ref target textarea. Vertical resizing; no automatic growth or counter.",
+        ),
+      ],
+      [
+        "invalid / aria-describedby / className / style",
+        "Same as Input",
+        t(
+          "دمج معرفات الوصف الخارجية وحالة عدم الصلاحية على المدخل نفسه؛ التحقق من التطبيق.",
+          "External descriptions and invalid state stay on the control; validation belongs to the application.",
+        ),
+      ],
+    ],
     "data-table": [
       [
         "data / columns / getRowId",

@@ -1,0 +1,16 @@
+{ input: 252, label: 0, option: 252 }
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Form radio must retain compact geometry
+    at file:///private/tmp/tiraz-form-geometry.mjs:4:510 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

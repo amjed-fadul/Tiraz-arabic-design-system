@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { FeedbackForm } from "./FeedbackForm";
 import { CreateCustomer } from "./CreateCustomer";
 import { Settings } from "lucide-react";
 import {
+  Badge,
   Button,
   Tabs,
   Switch,
@@ -40,6 +42,8 @@ function DashboardTask() {
       <p>
         الحساب <bdi dir="ltr">ACC-42</bdi>
       </p>
+      <Badge tone="success">نشط</Badge>
+      <FeedbackForm />
       <Tabs
         label="معلومات الحساب"
         value={view}

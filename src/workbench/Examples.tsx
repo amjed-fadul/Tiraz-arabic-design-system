@@ -1,5 +1,9 @@
+import { FeedbackForm } from "../system/ai/examples/FeedbackForm";
 import { useState } from "react";
 import {
+  Badge,
+  Checkbox,
+  RadioGroup,
   Field,
   Input,
   Select,
@@ -149,6 +153,61 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "badge")
+    return (
+      <div className="example-inline">
+        <Badge>{t("متوقف", "Paused")}</Badge>
+        <Badge tone="success">{t("نشط", "Active")}</Badge>
+        <Badge tone="error">{t("تعذّر الإرسال", "Delivery failed")}</Badge>
+        <Badge tone="info">{t("قيد المراجعة", "Under review")}</Badge>
+      </div>
+    );
+  if (component === "checkbox")
+    return (
+      <div className="quiet-examples">
+        <Checkbox
+          label={t("موافقة مطلوبة", "Required consent")}
+          error={t("أكد الموافقة للمتابعة.", "Confirm consent to continue.")}
+          required
+        />
+        <Checkbox
+          label={t("خيار غير متاح", "Unavailable option")}
+          disabled
+          defaultChecked
+        />
+      </div>
+    );
+  if (component === "radio-group")
+    return (
+      <RadioGroup
+        label={t("طريقة التواصل", "Contact method")}
+        name="example-contact"
+        helper={t("اختر طريقة واحدة.", "Choose one method.")}
+        error={t("حدد اختيارًا للمتابعة.", "Choose an option to continue.")}
+        required
+        options={[
+          { value: "email", label: t("البريد", "Email") },
+          { value: "phone", label: t("الهاتف", "Phone") },
+          {
+            value: "post",
+            label: t("البريد العادي · غير متاح", "Post · unavailable"),
+            disabled: true,
+          },
+        ]}
+      />
+    );
+  if (component === "textarea")
+    return (
+      <div className="quiet-examples">
+        <p className="example-caption">
+          {t(
+            "نموذج صغير · التطبيق يملك التحقق والحفظ",
+            "Small form · application-owned validation and saving",
+          )}
+        </p>
+        <FeedbackForm language={language} />
+      </div>
+    );
   if (component === "data-table")
     return (
       <p className="example-caption">

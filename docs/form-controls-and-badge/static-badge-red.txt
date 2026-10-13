@@ -1,0 +1,45 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/form-controls-pages.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+ ❯ src/workbench/form-controls-pages.test.tsx (2 tests | 1 failed) 351ms
+   × adds four continuous documentation pages with complete prompt/code and preserves Field under Input 192ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/form-controls-pages.test.tsx > adds four continuous documentation pages with complete prompt/code and preserves Field under Input
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <div
+  aria-label="آخر حدث"
+  class="event-feedback"
+  role="status"
+>
+  <span>
+    آخر حدث
+  </span>
+  <code
+    dir="ltr"
+  />
+  <p>
+    تفاعل مع المكوّن لرؤية الحدث هنا.
+  </p>
+</div> instead
+ ❯ src/workbench/form-controls-pages.test.tsx:28:84
+     26|     expect(generatePrompt(id, p, defaultConfig, "ar")).toContain(code);
+     27|     expect(code).toContain("./system");
+     28|     if (id === "badge") expect(screen.queryByRole("status", {name:"آخر…
+       |                                                                                    ^
+     29|   }
+     30|   expect(nav.queryByRole("button", { name: "الحقل" })).not.toBeInTheDo…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  19:28:56
+   Duration  1.73s (environment 38%, tests 22%, transform 19%, import 14%, setup 8%)

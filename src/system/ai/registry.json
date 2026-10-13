@@ -179,6 +179,46 @@
     {
       "name": "DataTableLabels",
       "source": "DataTable.tsx"
+    },
+    {
+      "name": "Badge",
+      "source": "Badge.tsx"
+    },
+    {
+      "name": "BadgeProps",
+      "source": "Badge.tsx"
+    },
+    {
+      "name": "BadgeTone",
+      "source": "Badge.tsx"
+    },
+    {
+      "name": "Checkbox",
+      "source": "Checkbox.tsx"
+    },
+    {
+      "name": "CheckboxProps",
+      "source": "Checkbox.tsx"
+    },
+    {
+      "name": "RadioGroup",
+      "source": "RadioGroup.tsx"
+    },
+    {
+      "name": "RadioGroupProps",
+      "source": "RadioGroup.tsx"
+    },
+    {
+      "name": "RadioOption",
+      "source": "RadioGroup.tsx"
+    },
+    {
+      "name": "Textarea",
+      "source": "Textarea.tsx"
+    },
+    {
+      "name": "TextareaProps",
+      "source": "Textarea.tsx"
     }
   ],
   "configuration": {
@@ -740,7 +780,7 @@
       "api": "Field",
       "source": "Field.tsx",
       "exports": ["Field", "FieldProps", "FieldControlProps"],
-      "purpose": "Lower-level label/helper/error composition for one Input or Select; documented under Input and still publicly exported.",
+      "purpose": "Lower-level label/helper/error composition for one Input, Select or Textarea; documented under Input and still publicly exported.",
       "useWhen": "Label an Input or Select with persistent application validation feedback.",
       "alternative": "Standalone Input/Select accepts external native labels or ARIA naming.",
       "props": [
@@ -1196,6 +1236,373 @@
         "One internal sorting/pagination mode, default 10 rows; no selection, bulk actions, editing, deletion, virtualization, sticky columns or server framework.",
         "Native header buttons and aria-sort; no row motion. Parent supplies filters and row actions."
       ]
+    },
+    {
+      "id": "badge",
+      "api": "Badge",
+      "source": "Badge.tsx",
+      "exports": ["Badge", "BadgeProps", "BadgeTone"],
+      "purpose": "Show static status text.",
+      "useWhen": "Show static status text.",
+      "alternative": "Use the appropriate native Tiraz control for the task.",
+      "props": [
+        {
+          "name": "tone",
+          "type": "BadgeTone",
+          "required": false,
+          "default": "neutral",
+          "values": ["neutral", "success", "error", "info"]
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLSpanElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "ComponentPropsWithRef<span>. Native span attributes, className/style and React 19 ref target the span.",
+      "state": "Static; no interactive or live-region behavior.",
+      "events": [],
+      "accessibility": ["Use meaningful text; color is supplementary."],
+      "limitations": [
+        "No action, dismissal or automatic announcement. Small token-based sizing; no size prop."
+      ],
+      "providers": [
+        "SystemProvider for shared density, typography, theme, accent, corners, direction and reduced motion."
+      ],
+      "examples": ["ai/examples/usage.tsx", "ai/examples/CustomerDataTable.tsx"]
+    },
+    {
+      "id": "checkbox",
+      "api": "Checkbox",
+      "source": "Checkbox.tsx",
+      "exports": ["Checkbox", "CheckboxProps"],
+      "purpose": "Choose an independent boolean form value.",
+      "useWhen": "Choose an independent boolean form value.",
+      "alternative": "Use the appropriate native Tiraz control for the task.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "defaultChecked",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "onChange",
+          "type": "ChangeEventHandler<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "native input value",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "ComponentPropsWithRef<input> except type/size/children. React 19 ref, attributes, events, className/style and form behavior stay on the native checkbox.",
+      "state": "checked/onChange controls selection; defaultChecked initializes native state. Native uncontrolled form reset restores defaults without firing onChange; controlled reset belongs to the application.",
+      "events": ["Native input onChange and other events."],
+      "accessibility": [
+        "Field supplies the label and deduplicates helper/error/external description IDs. Error marks invalid; validation remains application-owned. Space toggles the focused native input."
+      ],
+      "limitations": ["No indeterminate API or table selection."],
+      "providers": [
+        "SystemProvider for shared density, typography, theme, accent, corners, direction and reduced motion."
+      ],
+      "examples": ["ai/examples/FeedbackForm.tsx"]
+    },
+    {
+      "id": "radio-group",
+      "api": "RadioGroup",
+      "source": "RadioGroup.tsx",
+      "exports": ["RadioGroup", "RadioGroupProps", "RadioOption"],
+      "purpose": "Select one option in a named native group.",
+      "useWhen": "Select one option in a named native group.",
+      "alternative": "Use the appropriate native Tiraz control for the task.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "options",
+          "type": "readonly RadioOption[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLFieldSetElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "ComponentPropsWithRef<fieldset> except children/name/defaultValue. Native attributes/events, className/style and React 19 ref stay on fieldset. form is also forwarded to every native radio.",
+      "state": "value/onValueChange controls selection; defaultValue selects an uncontrolled default. Uncontrolled native reset restores defaults without onValueChange. Controlled reset needs application onReset. Use a distinct stable name per independent group, nonempty unique stable option values and meaningful labels.",
+      "events": [
+        "onValueChange(value) from native radio onChange; native fieldset events bubble from its inputs."
+      ],
+      "accessibility": [
+        "fieldset/legend names the group. Required applies to native radios; disabled fieldset disables the entire group. Helper/error/external descriptions reach each radio and group. Preserve native Tab/arrow/Space navigation and one-choice semantics."
+      ],
+      "limitations": [
+        "No custom keyboard engine, selection cards, per-option ref API or application validation."
+      ],
+      "providers": [
+        "SystemProvider for shared density, typography, theme, accent, corners, direction and reduced motion."
+      ],
+      "examples": ["ai/examples/FeedbackForm.tsx"]
+    },
+    {
+      "id": "textarea",
+      "api": "Textarea",
+      "source": "Textarea.tsx",
+      "exports": ["Textarea", "TextareaProps"],
+      "purpose": "Enter multiline text.",
+      "useWhen": "Enter multiline text.",
+      "alternative": "Use the appropriate native Tiraz control for the task.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Labeled mode reuses Field internally. Mutually exclusive with field composition."
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Only with label; associated helper text."
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Only with label; associated error message marks invalid without running validation."
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "native textarea value",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "native textarea defaultValue",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLTextAreaElement>",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "required": false,
+          "default": "3"
+        }
+      ],
+      "inheritedProps": "ComponentPropsWithRef<textarea> except children. Native attributes/events, selection, editing, className/style and React 19 ref target textarea. Convenience label/helper/error mode is mutually exclusive with field; helper/error need label.",
+      "state": "value/onChange controls editing; defaultValue initializes native state. Native uncontrolled reset works; controlled reset needs application onReset. rows defaults to 3.",
+      "events": ["Native textarea events, including onChange."],
+      "accessibility": [
+        "Same Field associations and external description merging as Input. Error marks invalid; validation remains application-owned. Preserve a native label or ARIA name in standalone mode."
+      ],
+      "limitations": [
+        "Vertical resizing only; no automatic growth or character counter."
+      ],
+      "providers": [
+        "SystemProvider for shared density, typography, theme, accent, corners, direction and reduced motion."
+      ],
+      "examples": ["ai/examples/FeedbackForm.tsx"]
     }
   ],
   "records": [
@@ -1457,6 +1864,31 @@
           "default": "undefined"
         }
       ]
+    },
+    {
+      "type": "RadioOption",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        }
+      ],
+      "source": "RadioGroup.tsx"
     }
   ],
   "support": [

@@ -1,0 +1,34 @@
+{
+  "matrix": 128,
+  "checks": [
+    {
+      "native": "checkbox Space; radios arrows/wrap/skip disabled; uncontrolled submit/reset/cancel/external forms; controlled reset; textarea editing/selection/resize; native required focus",
+      "customization": {
+        "before": {
+          "background": "rgb(53, 94, 76)",
+          "font": "14px",
+          "corner": "5px"
+        },
+        "after": {
+          "background": "rgb(214, 182, 229)",
+          "font": "16px",
+          "corner": "2px",
+          "motion": "0s"
+        }
+      }
+    },
+    "OS reduced motion overrides config false",
+    "Mounted textarea retains draft and node through live accent/density/text scale/corners/reduced-motion changes",
+    "Connected form validates, focuses error, submits and resets",
+    {
+      "axeViolations": 0,
+      "colorContrast": "All Badge tones measured >=4.5:1 across both themes",
+      "fonts": {
+        "ready": "loaded",
+        "arabic": true,
+        "loaded": 4
+      }
+    }
+  ],
+  "errors": []
+}

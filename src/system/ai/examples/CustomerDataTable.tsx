@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { MoreHorizontal } from "lucide-react";
 import {
+  Badge,
   Button,
   DataTable,
   DropdownMenu,
@@ -163,10 +164,13 @@ export function CustomerDataTable({
     {
       id: "status",
       header: t("الحالة", "Status"),
-      cell: (customer) =>
-        customer.status === "active"
-          ? t("نشط", "Active")
-          : t("متوقف", "Paused"),
+      cell: (customer) => (
+        <Badge tone={customer.status === "active" ? "success" : "neutral"}>
+          {customer.status === "active"
+            ? t("نشط", "Active")
+            : t("متوقف", "Paused")}
+        </Badge>
+      ),
     },
     {
       id: "actions",

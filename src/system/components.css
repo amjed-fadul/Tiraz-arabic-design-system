@@ -811,3 +811,196 @@
 .customer-data-example .tz-table {
   min-inline-size: 36rem;
 }
+
+/* Static status and native form controls. */
+.tz-badge {
+  display: inline-flex;
+  align-items: center;
+  max-inline-size: 100%;
+  padding-block: calc(var(--space-1) / 2);
+  padding-inline: var(--control-gap);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--line-height);
+  overflow-wrap: anywhere;
+}
+.tz-badge[data-tone="success"] {
+  background: var(--success-soft);
+  color: var(--success);
+  border-color: color-mix(in srgb, var(--success) 25%, var(--surface));
+}
+.tz-badge[data-tone="error"] {
+  background: var(--danger-soft);
+  color: var(--danger);
+  border-color: color-mix(in srgb, var(--danger) 25%, var(--surface));
+}
+.tz-badge[data-tone="info"] {
+  background: var(--info-soft);
+  color: var(--info);
+  border-color: color-mix(in srgb, var(--info) 25%, var(--surface));
+}
+.tz-checkbox-field {
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--control-gap);
+  align-items: center;
+  min-block-size: var(--control-small);
+}
+.tz-checkbox-field > .tz-field-label {
+  grid-column: 2;
+  grid-row: 1;
+  cursor: pointer;
+}
+.tz-checkbox-field > .tz-choice-input {
+  grid-column: 1;
+  grid-row: 1;
+}
+.tz-checkbox-field > p {
+  grid-column: 2;
+}
+.tz-choice-input {
+  appearance: none;
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
+  inline-size: calc(var(--text-body) + var(--space-1));
+  block-size: calc(var(--text-body) + var(--space-1));
+  margin: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface);
+  color: var(--action-text);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast),
+    border-color var(--motion-fast);
+}
+.tz-choice-input:hover:not(:disabled) {
+  border-color: var(--action);
+}
+.tz-choice-input:checked {
+  background: var(--action);
+  border-color: var(--action);
+}
+.tz-choice-input::before {
+  content: "";
+  inline-size: var(--space-3);
+  block-size: var(--space-3);
+  background: currentColor;
+  transform: scale(0);
+}
+.tz-checkbox::before {
+  clip-path: polygon(14% 44%, 0 59%, 40% 100%, 100% 20%, 85% 8%, 38% 73%);
+}
+.tz-choice-input:checked::before {
+  transform: scale(1);
+}
+.tz-choice-input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.tz-choice-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.tz-checkbox-field:has(input:disabled) > label {
+  cursor: not-allowed;
+}
+.tz-radio-group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.tz-radio-group > legend {
+  padding: 0;
+  margin-block-end: var(--space-1);
+}
+.tz-radio-group > p {
+  margin-block-start: var(--space-1);
+}
+.tz-radio-options {
+  display: grid;
+  gap: var(--space-1);
+}
+.tz-radio-option {
+  display: flex;
+  align-items: center;
+  gap: var(--control-gap);
+  min-block-size: var(--control-small);
+  font-size: var(--text-body);
+  cursor: pointer;
+}
+.tz-radio-option > bdi,
+.tz-checkbox-field > label {
+  overflow-wrap: anywhere;
+  min-inline-size: 0;
+}
+.tz-radio-option:has(:disabled),
+.tz-radio-group:disabled .tz-radio-option {
+  cursor: not-allowed;
+  color: var(--text-muted);
+}
+.tz-radio,
+.tz-radio::before {
+  border-radius: 50%;
+}
+.tz-radio::before {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+}
+.tz-textarea {
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding: var(--control-gap) var(--control-small-padding);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+  resize: vertical;
+  transition:
+    border-color var(--motion-fast),
+    box-shadow var(--motion-fast);
+}
+.tz-textarea::placeholder {
+  color: var(--text-muted);
+}
+.tz-textarea[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.tz-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.tz-textarea:read-only {
+  background: var(--surface-subtle);
+}
+@media (forced-colors: active) {
+  .tz-choice-input {
+    appearance: auto;
+  }
+  .tz-choice-input::before {
+    display: none;
+  }
+}
+
+.tz-preferences-form {
+  display: grid;
+  gap: var(--row-gap);
+  min-inline-size: 0;
+}
+
+.tz-preferences-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--control-gap);
+}
+.tz-preferences-form > [role="status"] {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}

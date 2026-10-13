@@ -107,6 +107,20 @@ it("type-checks copied code for every component, state mode and composition pres
     ["table", { ...p.table, preset: "empty" }],
     ["table", { ...p.table, caption: "" }],
   );
+  for (const mode of ["controlled", "uncontrolled"] as const) {
+    cases.push([
+      "checkbox",
+      { ...p.checkbox, mode, required: true, disabled: true, error: "Confirm" },
+    ]);
+    cases.push([
+      "radio-group",
+      { ...p["radio-group"], mode, required: true, error: "Choose one" },
+    ]);
+    cases.push([
+      "textarea",
+      { ...p.textarea, mode, rows: 5, readOnly: true, error: "Add details" },
+    ]);
+  }
   cases.push([
     "field",
     { ...p.field, error: "Application error", required: true },

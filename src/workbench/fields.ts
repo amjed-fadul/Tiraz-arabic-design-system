@@ -76,6 +76,38 @@ const trigger: WorkbenchField[] = [
   ),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  badge: [
+    field("children", "text", "النص", "Text"),
+    field("tone", "select", "النوع", "Tone", "tone", {
+      options: ["neutral", "success", "error", "info"],
+    }),
+  ],
+  checkbox: [
+    field("label", "text", "التسمية", "Label"),
+    field("checked", "boolean", "محدد", "Checked"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
+  "radio-group": [
+    field("label", "text", "التسمية", "Label"),
+    field("options", "collection", "الخيارات", "Options"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
+  textarea: [
+    field("label", "text", "التسمية", "Label"),
+    field("placeholder", "text", "النص المؤقت", "Placeholder"),
+    field("rows", "number", "الأسطر", "Rows", "rows", { min: 1, max: 12 }),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+  ],
   "data-table": [
     field("caption", "text", "العنوان", "Caption", "caption"),
     field(
@@ -353,6 +385,7 @@ export const optionNames: Record<string, Localized> = {
   auto: ["بحسب الاتجاه", "Direction default"],
   right: ["اليمين", "Right"],
   left: ["اليسار", "Left"],
+  neutral: ["محايد", "Neutral"],
   info: ["معلومة", "Information"],
   "no-results": ["لا توجد نتائج مطابقة", "No matching results"],
   populated: ["صفوف نموذجية", "Populated"],
@@ -371,6 +404,26 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  badge: ["children", "tone"],
+  checkbox: ["label", "checked", "helper", "error", "required", "disabled"],
+  "radio-group": [
+    "label",
+    "options",
+    "helper",
+    "error",
+    "required",
+    "disabled",
+  ],
+  textarea: [
+    "label",
+    "placeholder",
+    "rows",
+    "helper",
+    "error",
+    "required",
+    "disabled",
+    "readOnly",
+  ],
   "data-table": ["caption", "preset"],
   table: ["caption", "preset"],
   field: ["label", "helper", "error", "required"],
