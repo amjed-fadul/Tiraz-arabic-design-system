@@ -219,6 +219,62 @@
     {
       "name": "TextareaProps",
       "source": "Textarea.tsx"
+    },
+    {
+      "name": "Avatar",
+      "source": "Avatar.tsx"
+    },
+    {
+      "name": "AvatarProps",
+      "source": "Avatar.tsx"
+    },
+    {
+      "name": "AvatarGroup",
+      "source": "AvatarGroup.tsx"
+    },
+    {
+      "name": "AvatarGroupProps",
+      "source": "AvatarGroup.tsx"
+    },
+    {
+      "name": "AvatarMember",
+      "source": "AvatarGroup.tsx"
+    },
+    {
+      "name": "Tooltip",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipProps",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "Modal",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalProps",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "EmptyState",
+      "source": "EmptyState.tsx"
+    },
+    {
+      "name": "EmptyStateProps",
+      "source": "EmptyState.tsx"
+    },
+    {
+      "name": "NoRecordsIllustration",
+      "source": "EmptyStateIllustrations.tsx"
+    },
+    {
+      "name": "NoSearchResultsIllustration",
+      "source": "EmptyStateIllustrations.tsx"
+    },
+    {
+      "name": "GettingStartedIllustration",
+      "source": "EmptyStateIllustrations.tsx"
     }
   ],
   "configuration": {
@@ -1603,6 +1659,305 @@
         "SystemProvider for shared density, typography, theme, accent, corners, direction and reduced motion."
       ],
       "examples": ["ai/examples/FeedbackForm.tsx"]
+    },
+    {
+      "id": "avatar",
+      "api": "Avatar",
+      "source": "Avatar.tsx",
+      "exports": ["Avatar", "AvatarProps"],
+      "purpose": "Identify a person with an image or stable initials.",
+      "useWhen": "Identify a person with an image or stable initials.",
+      "alternative": "Compose existing Tiraz components for the task.",
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Announced once by the outer span; internal image has empty alt."
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Fallback remains while loading, after failure, or without source. A changed source retries."
+        },
+        {
+          "name": "fallback",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Supply deliberate Arabic initials; otherwise first Unicode characters of up to two words, uppercased."
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "decorative",
+          "type": "boolean",
+          "required": false,
+          "default": "false",
+          "note": "Hide beside equivalent accessible text.",
+          "values": [false, true]
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLSpanElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native span props except children/role/aria-label. name owns the accessible name.",
+      "state": "No application state is stored.",
+      "events": [],
+      "accessibility": [
+        "See source and ai/composition.md for naming, descriptions, focus and decorative-content requirements."
+      ],
+      "limitations": ["No random colors or image fetching service."],
+      "providers": [
+        "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
+      ],
+      "examples": ["ai/examples/AvatarExamples.tsx"]
+    },
+    {
+      "id": "avatar-group",
+      "api": "AvatarGroup",
+      "source": "AvatarGroup.tsx",
+      "exports": ["AvatarGroup", "AvatarGroupProps", "AvatarMember"],
+      "purpose": "Show ordered members with static overflow.",
+      "useWhen": "Show ordered members with static overflow.",
+      "alternative": "Compose existing Tiraz components for the task.",
+      "props": [
+        {
+          "name": "members",
+          "type": "AvatarMember[]",
+          "required": true,
+          "default": "undefined",
+          "note": "Unique stable ids and meaningful names, in reading order."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "overflowLabel",
+          "type": "(count: number) => string",
+          "required": true,
+          "default": "undefined",
+          "note": "Translated overflow text; hidden names are appended."
+        },
+        {
+          "name": "maxVisible",
+          "type": "number",
+          "required": false,
+          "default": "4",
+          "note": "Floor fractions; clamp below 1 to 1; nonfinite uses 4."
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        }
+      ],
+      "inheritedProps": "None; compose members, not children.",
+      "state": "No application state is stored.",
+      "events": [],
+      "accessibility": [
+        "See source and ai/composition.md for naming, descriptions, focus and decorative-content requirements."
+      ],
+      "limitations": ["Overflow is noninteractive. No popup or member picker."],
+      "providers": [
+        "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
+      ],
+      "examples": ["ai/examples/OverlayExamples.tsx"]
+    },
+    {
+      "id": "tooltip",
+      "api": "Tooltip",
+      "source": "Tooltip.tsx",
+      "exports": ["Tooltip", "TooltipProps"],
+      "purpose": "Explain a focusable trigger briefly.",
+      "useWhen": "Explain a focusable trigger briefly.",
+      "alternative": "Compose existing Tiraz components for the task.",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "ReactElement",
+          "required": true,
+          "default": "undefined",
+          "note": "Focusable element forwarding native handlers, ARIA and ref."
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Short, noninteractive explanation; preserve trigger name and external description IDs."
+        },
+        {
+          "name": "delayDuration",
+          "type": "number",
+          "required": false,
+          "default": "500",
+          "note": "Hover delay in ms. Focus is immediate. Negative clamps to zero, nonfinite uses 500."
+        }
+      ],
+      "inheritedProps": "None; native props belong on trigger.",
+      "state": "Tooltip owns transient open state; Escape, blur and pointer leave dismiss.",
+      "events": [],
+      "accessibility": [
+        "See source and ai/composition.md for naming, descriptions, focus and decorative-content requirements."
+      ],
+      "limitations": ["Text only; no actions, links or interactive content."],
+      "providers": [
+        "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
+      ],
+      "examples": ["ai/examples/OverlayExamples.tsx"]
+    },
+    {
+      "id": "modal",
+      "api": "Modal",
+      "source": "Modal.tsx",
+      "exports": ["Modal", "ModalProps"],
+      "purpose": "Show one centered dialog for a focused task.",
+      "useWhen": "Show one centered dialog for a focused task.",
+      "alternative": "Use Sheet for side detail or inline content for an ordinary task.",
+      "props": [
+        {
+          "name": "trigger",
+          "type": "ReactElement",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "closeLabel",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "values": [false, true]
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "initialFocusRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false,
+          "default": "undefined",
+          "note": "Focusable descendant; otherwise Radix initial focus applies."
+        }
+      ],
+      "inheritedProps": "None; matches the small Sheet contract with optional initialFocusRef.",
+      "state": "Omit open for internal state; when controlled update open in onOpenChange.",
+      "events": ["onOpenChange"],
+      "accessibility": [
+        "See source and ai/composition.md for naming, descriptions, focus and decorative-content requirements."
+      ],
+      "limitations": [
+        "One dialog only; no defaultOpen, nesting, stacks or manager."
+      ],
+      "providers": [
+        "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
+      ],
+      "examples": ["ai/examples/OverlayExamples.tsx"]
+    },
+    {
+      "id": "empty-state",
+      "api": "EmptyState",
+      "source": "EmptyState.tsx",
+      "exports": [
+        "EmptyState",
+        "EmptyStateProps",
+        "NoRecordsIllustration",
+        "NoSearchResultsIllustration",
+        "GettingStartedIllustration"
+      ],
+      "purpose": "Explain empty content and optionally offer an application action.",
+      "useWhen": "Explain empty content and optionally offer an application action.",
+      "alternative": "Compose existing Tiraz components for the task.",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "illustration",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Optional custom decorative content, hidden from assistive technology; no focusable controls."
+        },
+        {
+          "name": "action",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Application supplies and connects the action to its result."
+        }
+      ],
+      "inheritedProps": "None; illustration/action slots accept caller content.",
+      "state": "No application state is stored.",
+      "events": [],
+      "accessibility": [
+        "See source and ai/composition.md for naming, descriptions, focus and decorative-content requirements."
+      ],
+      "limitations": [
+        "No data loading, persistence, framework or raster dependency."
+      ],
+      "providers": [
+        "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
+      ],
+      "examples": ["ai/examples/EmptyStateExamples.tsx"]
     }
   ],
   "records": [
@@ -1889,6 +2244,36 @@
         }
       ],
       "source": "RadioGroup.tsx"
+    },
+    {
+      "type": "AvatarMember",
+      "source": "AvatarGroup.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "src",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "fallback",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
     }
   ],
   "support": [
@@ -1947,6 +2332,7 @@
   ],
   "conventions": {
     "defaults": "Default fields contain literal JSON scalars or descriptive expressions. The string undefined means omitted/no default, not a string value to pass. configuration.defaults contains the actual literal defaultConfig.",
-    "authority": "Public source/types win; inherited prop details depend on the installed React/Radix versions. Workbench editing limits are not public API limits."
+    "authority": "Public source/types win; inherited prop details depend on the installed React/Radix versions. Workbench editing limits are not public API limits.",
+    "overlayDependencies": "Use one resolved @radix-ui/react-dismissable-layer 1.2.1 and @radix-ui/react-focus-scope 1.3.1; source-copy hosts preserve overrides from ai/README.md. @radix-ui/react-popper 1.4.0 supplies Tooltip positioning."
   }
 }

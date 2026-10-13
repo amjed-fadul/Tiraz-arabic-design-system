@@ -1,3 +1,4 @@
+import { generateBatchCode } from "./generate-batch";
 import customerSource from "../system/ai/examples/CustomerDataTable.tsx?raw";
 import createSource from "../system/ai/examples/CreateCustomer.tsx?raw";
 import type { DataTableModel } from "./model";
@@ -52,6 +53,12 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (
+    ["avatar", "avatar-group", "tooltip", "modal", "empty-state"].includes(
+      component,
+    )
+  )
+    return generateBatchCode(component, model, config, language);
   if (component === "data-table") {
     const p = model as DataTableModel;
     const source = (text: string) => text.replace(/^import[\s\S]*?;\n/gm, "");

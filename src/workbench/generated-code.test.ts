@@ -125,6 +125,18 @@ it("type-checks copied code for every component, state mode and composition pres
     "field",
     { ...p.field, error: "Application error", required: true },
   ]);
+  cases.push(["modal", { ...p.modal, mode: "uncontrolled", footer: false }]);
+  for (const illustration of [
+    "no-records",
+    "no-results",
+    "getting-started",
+    "none",
+  ] as const)
+    cases.push(["empty-state", { ...p["empty-state"], illustration }]);
+  cases.push(
+    ["avatar", { ...p.avatar, size: "md" }],
+    ["avatar-group", { ...p["avatar-group"], maxVisible: 1, size: "md" }],
+  );
   const root = ts.sys.getCurrentDirectory();
   const sources = new Map(
     cases.map(([id, model, config], index) => [

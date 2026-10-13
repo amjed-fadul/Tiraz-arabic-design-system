@@ -407,7 +407,14 @@ export function Workbench() {
                     </div>
                   </SystemProvider>
                 </div>
-                {active !== "badge" && (
+                {![
+                  "badge",
+                  "avatar",
+                  "avatar-group",
+                  "empty-state",
+                  "tooltip",
+                  "modal",
+                ].includes(active) && (
                   <div
                     className="event-feedback"
                     role="status"

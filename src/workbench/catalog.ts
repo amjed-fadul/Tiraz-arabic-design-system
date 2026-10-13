@@ -135,6 +135,51 @@ export const catalog = [
     ],
     file: "Textarea.tsx",
   },
+  {
+    id: "avatar",
+    name: ["الصورة الشخصية", "Avatar"],
+    description: [
+      "صورة أو أحرف بديلة ثابتة باسم واضح.",
+      "An image or stable initials with a meaningful name.",
+    ],
+    file: "Avatar.tsx",
+  },
+  {
+    id: "avatar-group",
+    name: ["مجموعة الصور", "AvatarGroup"],
+    description: [
+      "أعضاء بترتيب واضح مع عدد إضافي غير تفاعلي.",
+      "Ordered members with a static overflow count.",
+    ],
+    file: "AvatarGroup.tsx",
+  },
+  {
+    id: "tooltip",
+    name: ["التلميح", "Tooltip"],
+    description: [
+      "توضيح قصير عند المرور أو التركيز بلوحة المفاتيح.",
+      "A short explanation on hover or keyboard focus.",
+    ],
+    file: "Tooltip.tsx",
+  },
+  {
+    id: "modal",
+    name: ["النافذة الحوارية", "Modal"],
+    description: [
+      "حوار مركزي لمهمة محددة مع إدارة التركيز.",
+      "A centered dialog for one focused task with managed focus.",
+    ],
+    file: "Modal.tsx",
+  },
+  {
+    id: "empty-state",
+    name: ["الحالة الفارغة", "EmptyState"],
+    description: [
+      "عنوان ووصف ورسوم زخرفية اختيارية وإجراء من التطبيق.",
+      "Clear text, optional decorative artwork and an application action.",
+    ],
+    file: "EmptyState.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;

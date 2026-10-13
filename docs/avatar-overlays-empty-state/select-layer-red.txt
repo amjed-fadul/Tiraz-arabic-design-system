@@ -1,0 +1,106 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/avatar-overlays-empty-state.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+ ❯ src/system/avatar-overlays-empty-state.test.tsx (20 tests | 1 failed) 1457ms
+   × dismisses nested Select on Escape while preserving Modal and restoring Select focus 89ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > dismisses nested Select on Escape while preserving Modal and restoring Select focus
+TestingLibraryElementError: Unable to find an accessible element with the role "dialog"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Open modal":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33maria-haspopup[39m=[32m"dialog"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Outside":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m"pointer-events: none;"[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"dark"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"rtl"[39m
+      [33mstyle[39m=[32m"--action: #A5C9B4; --radius: 8px; color-scheme: dark;"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33maria-expanded[39m=[32m"false"[39m
+        [33maria-haspopup[39m=[32m"dialog"[39m
+        [33mclass[39m=[32m"tz-button "[39m
+        [33mdata-size[39m=[32m"sm"[39m
+        [33mdata-state[39m=[32m"idle"[39m
+        [33mdata-variant[39m=[32m"primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"tz-button-label"[39m
+        [36m>[39m
+          [0mOpen modal[0m
+        [36m</span>[39m
+      [36m</button>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"tz-button "[39m
+        [33mdata-size[39m=[32m"sm"[39m
+        [33mdata-state[39m=[32m"idle"[39m
+        [33mdata-variant[39m=[32m"primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"tz-button-label"[39m
+        [36m>[39m
+          [0mOutside[0m
+        [36m</span>[39m
+      [36m</button>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/avatar-overlays-empty-state.test.tsx:362:17
+    360|   await user.keyboard("{Escape}");
+    361|   await waitFor(()=>expect(screen.queryByRole("listbox")).toBeNull());
+    362|   expect(screen.getByRole("dialog")).toBeInTheDocument();
+       |                 ^
+    363|   await waitFor(()=>expect(select).toHaveFocus());
+    364|   await user.keyboard("{Escape}");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  21:44:39
+   Duration  2.58s (tests 59%, environment 24%, import 7%, transform 5%, setup 4%)
+

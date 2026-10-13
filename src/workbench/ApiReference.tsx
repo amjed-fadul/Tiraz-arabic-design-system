@@ -13,6 +13,128 @@ export function ApiReference({
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    avatar: [
+      [
+        "name / src / fallback",
+        "string / string? / string?",
+        t(
+          "name مطلوب. الصورة زخرفية داخليًا؛ الاسم يعلن مرة واحدة. الأحرف ثابتة عند غياب الصورة أو فشلها؛ مرّر الأحرف العربية عمدًا.",
+          "name is required and announced once. Image content is decorative internally. Stable initials cover missing/loading/failed images; supply deliberate Arabic initials.",
+        ),
+      ],
+      [
+        "size / decorative",
+        "sm | md / boolean?",
+        t(
+          "sm افتراضي؛ decorative يخفي الصورة من قارئات الشاشة بجوار نص مكافئ.",
+          "Defaults to sm. decorative hides the Avatar beside equivalent text.",
+        ),
+      ],
+      [
+        "native span props / ref",
+        "ComponentPropsWithRef<span>",
+        t(
+          "باستثناء children وrole وaria-label. الاسم يحدد التسمية؛ ref على span.",
+          "Except children, role and aria-label. name owns labeling; ref targets span.",
+        ),
+      ],
+    ],
+    "avatar-group": [
+      [
+        "members / label",
+        "AvatarMember[] / string",
+        t(
+          "مطلوبة. العضو: id ثابت وفريد، name، src?، fallback?. الترتيب يتبع الاتجاه.",
+          "Required. Members have stable unique id, name, optional src/fallback. Order follows direction.",
+        ),
+      ],
+      [
+        "maxVisible / size",
+        "number? / sm | md",
+        t(
+          "الحد الافتراضي 4. تُقرب الكسور للأسفل وتُثبت القيم دون 1 عند 1؛ غير المحدودة تستخدم 4. الحجم sm.",
+          "Limit defaults to 4. Fractions floor, values below 1 clamp to 1, nonfinite values use 4. Size defaults to sm.",
+        ),
+      ],
+      [
+        "overflowLabel",
+        "(count: number) => string",
+        t(
+          "مطلوب لترجمة العدد الإضافي. أسماء الأعضاء المخفيين متاحة مع النص. ليس زرًا.",
+          "Required translated overflow text. Hidden member names accompany it. Overflow is noninteractive.",
+        ),
+      ],
+    ],
+    tooltip: [
+      [
+        "trigger / content",
+        "ReactElement / string",
+        t(
+          "مطلوبة. عنصر قابل للتركيز يحفظ refs والأحداث والاسم ومعرّفات الوصف. نص قصير غير تفاعلي فقط.",
+          "Required. Use a focusable trigger; refs, events, name and existing description IDs are preserved. Short noninteractive text only.",
+        ),
+      ],
+      [
+        "delayDuration",
+        "number? (milliseconds)",
+        t(
+          "500 افتراضي للمرور؛ التركيز فوري. Escape يغلق التلميح أولًا. البوابة ضمن أقرب مزود أو حوار.",
+          "Hover defaults to 500ms; focus is immediate. Escape dismisses Tooltip first. Portal uses the nearest provider or overlay.",
+        ),
+      ],
+    ],
+    modal: [
+      [
+        "trigger / title / description / closeLabel / children",
+        "ReactElement / string / string / string / ReactNode",
+        t(
+          "مطلوبة؛ زر الفتح يبقى موجودًا لاستعادة التركيز. يترجم التطبيق النصوص.",
+          "Required; keep trigger mounted for focus restoration. Application translates copy.",
+        ),
+      ],
+      [
+        "footer / open / onOpenChange",
+        "ReactNode? / boolean? / ((open: boolean) => void)?",
+        t(
+          "حالة داخلية عند حذف open؛ التحكم يحتاج تحديث open. التذييل اختياري؛ استخدم Radix Dialog.Close للإغلاق في الحالتين.",
+          "Omit open for internal state; controlled usage updates open. Optional footer; Radix Dialog.Close works in both modes.",
+        ),
+      ],
+      [
+        "initialFocusRef",
+        "RefObject<HTMLElement | null>?",
+        t(
+          "عنصر قابل للتركيز داخل المحتوى. عند غيابه يستخدم Radix أول عنصر قابل للتركيز. Tab محصور؛ Escape والخارج يغلقان الحوار.",
+          "A focusable element inside content. Otherwise Radix focuses the first focusable element. Tab is contained; Escape and outside dismiss.",
+        ),
+      ],
+      [
+        "nested overlays / viewport",
+        "Scoped portal / internal scrolling",
+        t(
+          "القائمة والاختيار والتلميح داخل نطاق الحوار. لا توجد إدارة مكدس أو عرض قابل للتعديل.",
+          "Menu, Select and Tooltip stay inside dialog scope. No stack manager or configurable width.",
+        ),
+      ],
+    ],
+    "empty-state": [
+      [
+        "title / description / illustration / action",
+        "string / string? / ReactNode? / ReactNode?",
+        t(
+          "عنوان مطلوب. الرسم اختياري أو مخصص وزخرفي؛ الإجراء من التطبيق ويجب ربطه بنتيجة فعلية.",
+          "Required title. Illustration is optional/custom and decorative; application supplies an action connected to a real result.",
+        ),
+      ],
+      [
+        "NoRecordsIllustration / NoSearchResultsIllustration / GettingStartedIllustration",
+        "() => JSX.Element",
+        t(
+          "تصديرات SVG أصلية بلا نص، مخفية من قارئات الشاشة وتستخدم رموز النظام.",
+          "Original text-free SVG exports, hidden from assistive technology and using shared tokens.",
+        ),
+      ],
+    ],
     badge: [
       [
         "children / tone",

@@ -1004,3 +1004,199 @@
   color: var(--text-secondary);
   font-size: var(--text-meta);
 }
+
+.tz-avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  inline-size: max(var(--control-small), calc(var(--text-meta) * 2.8));
+  block-size: max(var(--control-small), calc(var(--text-meta) * 2.8));
+  border: 1px solid var(--action-border);
+  border-radius: var(--radius);
+  background: var(--action-soft);
+  color: var(--action);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  vertical-align: middle;
+  overflow: hidden;
+}
+.tz-avatar[data-size="md"] {
+  inline-size: max(var(--control-height), calc(var(--text-body) * 2.8));
+  block-size: max(var(--control-height), calc(var(--text-body) * 2.8));
+  font-size: var(--text-body);
+}
+.tz-avatar img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+.tz-avatar-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) 0;
+  max-inline-size: 100%;
+  padding-inline-start: var(--space-2);
+  isolation: isolate;
+}
+.tz-avatar-group > * {
+  margin-inline-start: calc(-1 * var(--space-2));
+  border: 2px solid var(--surface);
+}
+.tz-avatar-overflow {
+  display: inline-flex;
+  border: 0;
+}
+.tz-avatar-overflow > .tz-avatar {
+  border: 2px solid var(--surface);
+}
+.tz-visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.tz-tooltip {
+  z-index: 110;
+  max-inline-size: min(18rem, calc(100vw - var(--space-6)));
+  max-block-size: var(--radix-popper-available-height);
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-popover);
+  font-size: var(--text-meta);
+  overflow-wrap: anywhere;
+  animation: tz-fade-in var(--motion-fast) var(--ease);
+}
+.tz-modal {
+  position: fixed;
+  z-index: 91;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  inline-size: min(32rem, calc(100vw - var(--space-8)));
+  max-block-size: calc(100dvh - var(--space-8));
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-overlay);
+  overflow-wrap: anywhere;
+  animation: tz-fade-in var(--motion-enter) var(--ease);
+}
+.tz-modal[data-state="closed"] {
+  animation: tz-fade-out var(--motion-exit) var(--ease);
+}
+.tz-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--control-padding);
+  flex: none;
+  border-block-end: 1px solid var(--border);
+}
+.tz-modal-header > div {
+  min-inline-size: 0;
+}
+.tz-modal-header h2 {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+.tz-modal-header p {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+.tz-modal-scroll {
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: inherit;
+}
+.tz-modal-body {
+  min-inline-size: 0;
+  padding: var(--control-padding);
+}
+.tz-modal-footer {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--control-gap);
+  padding: var(--control-padding);
+  border-block-start: 1px solid var(--border);
+}
+.tz-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--row-gap);
+  text-align: center;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-empty-state h3 {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+.tz-empty-state > p {
+  margin: 0;
+  max-inline-size: 36ch;
+  color: var(--text-secondary);
+}
+.tz-empty-action {
+  margin-block-start: var(--space-1);
+  max-inline-size: 100%;
+}
+.tz-empty-illustration {
+  inline-size: min(10rem, 100%);
+}
+.tz-illustration {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+.tz-illustration-wash {
+  fill: var(--action-soft);
+}
+.tz-illustration-paper {
+  fill: var(--surface);
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.tz-illustration-detail {
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tz-illustration-accent {
+  fill: var(--action);
+}
+.tz-illustration-accent-line {
+  stroke: var(--action);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tz-empty-examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--row-gap);
+}

@@ -292,7 +292,18 @@ it("documents real public exports and supported prop values and compiles the lin
         );
     }
     // Curated wrappers must document their complete explicit interface.
-    if (["tabs", "dropdown", "sheet", "toast"].includes(component.id))
+    if (
+      [
+        "tabs",
+        "dropdown",
+        "sheet",
+        "toast",
+        "avatar-group",
+        "tooltip",
+        "modal",
+        "empty-state",
+      ].includes(component.id)
+    )
       expect(
         component.props.map((p: { name: string }) => p.name).sort(),
       ).toEqual(

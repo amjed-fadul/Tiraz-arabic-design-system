@@ -1,3 +1,5 @@
+import { AvatarExamples } from "../system/ai/examples/AvatarExamples";
+import { EmptyStateExamples } from "../system/ai/examples/EmptyStateExamples";
 import { FeedbackForm } from "../system/ai/examples/FeedbackForm";
 import { useState } from "react";
 import {
@@ -153,6 +155,28 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "avatar") return <AvatarExamples language={language} />;
+  if (component === "empty-state")
+    return <EmptyStateExamples language={language} />;
+  if (["avatar-group", "tooltip", "modal"].includes(component))
+    return (
+      <p className="example-caption">
+        {component === "avatar-group"
+          ? t(
+              "الترتيب يتبع اتجاه النظام. العدد الإضافي نص ثابت؛ أسماء جميع الأعضاء متاحة لقارئات الشاشة.",
+              "Order follows system direction. Overflow is static text; all member names are available to assistive technology.",
+            )
+          : component === "tooltip"
+            ? t(
+                "مرّر المؤشر أو ركّز بلوحة المفاتيح لعرض التوضيح. Escape يغلقه؛ الزر يعرض التفاصيل.",
+                "Hover or focus to see the explanation. Escape dismisses it; the button toggles details.",
+              )
+            : t(
+                "نافذة واحدة. الاختيار يغيّر المعاينة، والقائمة تستعيد التخطيط الافتراضي. الإغلاق يعيد التركيز.",
+                "One dialog. Select changes the preview, the menu resets its layout, and dismissal restores focus.",
+              )}
+      </p>
+    );
   if (component === "badge")
     return (
       <div className="example-inline">

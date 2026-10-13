@@ -1,0 +1,6 @@
+
+> tiraz@0.1.0 build
+> tsc -b && vite build
+
+src/system/avatar-overlays-empty-state.test.tsx(52,114): error TS2322: Type '{ children: string; ref: RefObject<HTMLButtonElement | null>; "aria-describedby": string; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'ref' does not exist on type 'IntrinsicAttributes & ButtonProps'.

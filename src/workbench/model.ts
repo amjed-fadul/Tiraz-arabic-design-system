@@ -146,7 +146,35 @@ export interface TextareaModel extends FieldModel, Stateful {
   name: string;
   rows: number;
 }
+export interface AvatarModel {
+  name: string;
+  fallback: string;
+  size: "sm" | "md";
+}
+export interface AvatarGroupModel {
+  maxVisible: number;
+  size: "sm" | "md";
+}
+export interface TooltipModel {
+  content: string;
+}
+export interface ModalModel {
+  title: string;
+  description: string;
+  footer: boolean;
+  mode: "controlled" | "uncontrolled";
+}
+export interface EmptyStateModel {
+  title: string;
+  description: string;
+  illustration: "no-records" | "no-results" | "getting-started" | "none";
+}
 export interface Playgrounds {
+  avatar: AvatarModel;
+  "avatar-group": AvatarGroupModel;
+  tooltip: TooltipModel;
+  modal: ModalModel;
+  "empty-state": EmptyStateModel;
   badge: BadgeModel;
   checkbox: CheckboxModel;
   "radio-group": RadioGroupModel;
@@ -178,6 +206,35 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    avatar: {
+      name: t("سارة علي", "Sara Ali"),
+      fallback: t("س ع", "SA"),
+      size: "sm",
+    },
+    "avatar-group": { maxVisible: 3, size: "sm" },
+    tooltip: {
+      content: t(
+        "عرض معلومات إضافية في هذه المعاينة.",
+        "Show extra information in this preview.",
+      ),
+    },
+    modal: {
+      title: t("خيارات العرض", "Display options"),
+      description: t(
+        "اختر تخطيطًا لهذه المعاينة فقط.",
+        "Choose a layout for this preview only.",
+      ),
+      footer: true,
+      mode: "controlled",
+    },
+    "empty-state": {
+      title: t("لا توجد سجلات بعد", "No records yet"),
+      description: t(
+        "ستظهر سجلاتك هنا عند إضافتها.",
+        "Your records will appear here when added.",
+      ),
+      illustration: "no-records",
+    },
     badge: { children: t("نشط", "Active"), tone: "neutral" },
     checkbox: {
       label: t("تلقي التحديثات", "Receive updates"),
@@ -547,6 +604,7 @@ export function normalizePlaygrounds(
         component === "data-table"
           ? ["populated", "loading", "empty", "no-results", "error"]
           : ["populated", "empty"],
+      illustration: ["no-records", "no-results", "getting-started", "none"],
       mode: ["controlled", "uncontrolled"],
       variant:
         component === "tabs"
@@ -577,6 +635,10 @@ export function normalizePlaygrounds(
     for (const [key, allowed] of Object.entries(enums))
       if (key in r && !allowed.includes(r[key] as string))
         r[key] = original[key];
+    if (component === "avatar-group")
+      r.maxVisible = Number.isFinite(r.maxVisible)
+        ? Math.max(1, Math.min(5, Math.floor(Number(r.maxVisible))))
+        : 3;
     if (
       component === "textarea" &&
       (!Number.isInteger(r.rows) || Number(r.rows) < 1 || Number(r.rows) > 12)

@@ -76,6 +76,36 @@ const trigger: WorkbenchField[] = [
   ),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  avatar: [
+    field("name", "text", "الاسم", "Name"),
+    field("fallback", "text", "الأحرف البديلة", "Initials"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+  ],
+  "avatar-group": [
+    field(
+      "maxVisible",
+      "number",
+      "الأعضاء الظاهرون",
+      "Visible members",
+      "maxVisible",
+      { min: 1, max: 5 },
+    ),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+  ],
+  tooltip: [field("content", "text", "التوضيح", "Explanation")],
+  modal: [
+    field("title", "text", "العنوان", "Title"),
+    field("description", "text", "الوصف", "Description"),
+    field("footer", "boolean", "التذييل", "Footer"),
+    mode,
+  ],
+  "empty-state": [
+    field("title", "text", "العنوان", "Title"),
+    field("description", "text", "الوصف", "Description"),
+    field("illustration", "select", "الرسم", "Illustration", "illustration", {
+      options: ["no-records", "no-results", "getting-started", "none"],
+    }),
+  ],
   badge: [
     field("children", "text", "النص", "Text"),
     field("tone", "select", "النوع", "Tone", "tone", {
@@ -404,6 +434,11 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  avatar: ["name", "fallback", "size"],
+  "avatar-group": ["maxVisible", "size"],
+  tooltip: ["content"],
+  modal: ["title", "description", "footer"],
+  "empty-state": ["title", "description", "illustration"],
   badge: ["children", "tone"],
   checkbox: ["label", "checked", "helper", "error", "required", "disabled"],
   "radio-group": [

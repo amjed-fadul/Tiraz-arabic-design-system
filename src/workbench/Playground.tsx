@@ -1,3 +1,22 @@
+import {
+  Avatar,
+  EmptyState,
+  GettingStartedIllustration,
+  NoRecordsIllustration,
+  NoSearchResultsIllustration,
+} from "../system";
+import {
+  TeamExample,
+  TooltipExample,
+  ModalExample,
+} from "../system/ai/examples/OverlayExamples";
+import type {
+  AvatarModel,
+  AvatarGroupModel,
+  TooltipModel,
+  ModalModel,
+  EmptyStateModel,
+} from "./model";
 import { CustomerDataTable } from "../system/ai/examples/CustomerDataTable";
 import type { DataTableModel } from "./model";
 import { TableExample } from "../system/ai/examples/TableExample";
@@ -96,6 +115,47 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "avatar") return <Avatar {...(model as AvatarModel)} />;
+  if (component === "avatar-group")
+    return <TeamExample language={language} {...(model as AvatarGroupModel)} />;
+  if (component === "tooltip")
+    return (
+      <TooltipExample
+        language={language}
+        content={(model as TooltipModel).content}
+      />
+    );
+  if (component === "modal") {
+    const p = model as ModalModel;
+    return (
+      <ModalExample
+        language={language}
+        title={p.title}
+        description={p.description}
+        footer={p.footer}
+        controlled={p.mode === "controlled"}
+      />
+    );
+  }
+  if (component === "empty-state") {
+    const p = model as EmptyStateModel;
+    return (
+      <EmptyState
+        title={p.title}
+        description={p.description}
+        illustration={
+          p.illustration === "none" ? undefined : p.illustration ===
+            "no-results" ? (
+            <NoSearchResultsIllustration />
+          ) : p.illustration === "getting-started" ? (
+            <GettingStartedIllustration />
+          ) : (
+            <NoRecordsIllustration />
+          )
+        }
+      />
+    );
+  }
   if (component === "badge") {
     const p = model as BadgeModel;
     return <Badge tone={p.tone}>{p.children}</Badge>;

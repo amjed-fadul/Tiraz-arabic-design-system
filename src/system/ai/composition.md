@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the fifteen registry families. Prefer an inline task and a
+  Map each need to the twenty registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
@@ -150,3 +150,15 @@ RadioGroup requires label, name and options (unique nonempty stable value, strin
 Textarea mirrors Input's optional label/helper/error convenience mode and separate Field composition mode. Do not combine those modes. Without label, supply a native label or accessible name. Native rows (default 3), name/form, value/defaultValue, editing/selection events, disabled, readOnly, className/style and HTMLTextAreaElement ref remain on the textarea. Resize vertically; no automatic growth or character counter.
 
 All three native controls preserve uncontrolled form submission/reset and cancellation of reset. Native reset does not emit change callbacks. Controlled modes require caller state updates and application onReset to restore controlled values. Keep validation rules/messages/focus in the application. Use [FeedbackForm](examples/FeedbackForm.tsx) for a small combined example; its Check form action validates required notes and reports the result. It demonstrates a persistent associated error, first-invalid focus and native reset. It does not save values or add a service or customer workflow.
+
+## Avatars, tooltips, centered dialogs and empty content
+
+Use Avatar(name, src?, fallback?, size?) with sm by default. Supply meaningful name and deliberate Arabic fallback; fallback remains during loading/failure and resets when src changes. Internal portrait/initials are hidden from AT so name is announced once. Use decorative beside equivalent text. AvatarGroup uses members in reading order with unique stable ids, label and translated overflowLabel(count); its noninteractive +N includes the remaining names for AT. Limits floor/clamp to at least one, default four for nonfinite values; groups wrap within narrow containers.
+
+Tooltip trigger must forward ref, native events and ARIA to a focusable element. Do not replace its accessible name with tooltip content or put essential instructions only in a tooltip. content is a short string, never a button/link/form. Hover delays 500ms, focus is immediate, Escape dismisses without losing trigger focus. The tooltip can be hovered and portals into the surrounding provider/overlay. Preserve descriptions already supplied on the trigger. Positioning/collision uses @radix-ui/react-popper 1.4.0.
+
+Modal requires title, description and translated closeLabel; trigger/children and optional footer mirror Sheet. initialFocusRef may select a focusable descendant; otherwise Radix chooses its first focusable element. Controlled open requires onOpenChange to update it; omit open for internal usage. There is no defaultOpen. For either mode, a footer may use @radix-ui/react-dialog Close asChild with Button. Tab stays contained, Escape/outside dismiss and the mounted trigger receives focus again. Menus/Select/Tooltip must retain the nearest Modal container; test dismissal of each layer before the dialog. Do not add stacked/nested dialog examples or a manager.
+
+EmptyState(title, description?, illustration?, action?) leaves content and actions to the application. Omit illustration, use one exported geometric SVG or supply a custom decorative node. The slot is aria-hidden; never place interactive controls there. Text conveys meaning, action conveys its actual result. Use the three original exports NoRecordsIllustration, NoSearchResultsIllustration and GettingStartedIllustration with tokens in either theme. [EmptyStateExamples](examples/EmptyStateExamples.tsx) reveals a guide and returns with Back; it does not create a customer, persist values or pretend to call a service.
+
+For nested Select/Menu in Sheet/Modal, use a single resolved Radix dismissable-layer and focus-scope module. The verified dependency graph needs the host overrides in [README.md](README.md#shared-radix-overlay-infrastructure), because source copies do not include root package.json. Test Select Escape as well as selection: one Escape closes Select and restores its trigger, the next closes the dialog. Merely putting portals inside a dialog does not unify duplicated primitive contexts.

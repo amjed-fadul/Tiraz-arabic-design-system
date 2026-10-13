@@ -72,6 +72,8 @@ it("generates identical prompts when the same checkout is relocated", () => {
     // same checkout from two physical locations/cwds, without mocking the generator.
     for (const path of [
       "src/workbench/generate.ts",
+      "src/workbench/generate-batch.ts",
+      "src/system/ai/examples/team.ts",
       "src/workbench/catalog.ts",
       "src/workbench/model.ts",
       "src/workbench/i18n.ts",
@@ -91,7 +93,11 @@ it("generates identical prompts when the same checkout is relocated", () => {
       );
     }
     // Mirror Vite's ?raw loader using the real example source in both relocated trees.
-    for (const name of ["CreateCustomer", "CustomerDataTable"]) {
+    for (const name of [
+      "CreateCustomer",
+      "CustomerDataTable",
+      "OverlayExamples",
+    ]) {
       const path = `src/system/ai/examples/${name}.tsx`;
       const outputPath = join(first, path + "?raw");
       mkdirSync(dirname(outputPath), { recursive: true });
