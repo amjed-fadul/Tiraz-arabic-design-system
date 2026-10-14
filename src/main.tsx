@@ -6,9 +6,14 @@ import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "./system/tokens.css";
 import "./system/components.css";
 import "./workbench/workbench.css";
+import { Dashboard } from "./examples/dashboard/Dashboard";
 import { Workbench } from "./workbench/Workbench";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Workbench />
+    {window.location.pathname.replace(/\/$/, "") === "/examples/dashboard" ? (
+      <Dashboard />
+    ) : (
+      <Workbench />
+    )}
   </StrictMode>,
 );

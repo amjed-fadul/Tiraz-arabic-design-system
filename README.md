@@ -20,6 +20,16 @@ npm run build
 npm run format:check
 ```
 
+## Customer dashboard example
+
+Open **Dashboard example** in the documentation header, or visit
+`/examples/dashboard` on the local server. This full-page Arabic-first customer
+dashboard connects metrics, period-filtered charts, searchable/filterable
+DataTable and validated customer creation using existing Tiraz components.
+Records and preferences live in memory; reload restores the deterministic sample.
+Secondary preview controls demonstrate loading, empty and error states.
+See [run/reuse and behavior notes](docs/dashboard-example/README.md).
+
 ## Documentation workbench
 
 Each component has one continuous page: title and description → a single-line agent prompt with its copy button → playground → useful examples → generated usage code and an API disclosure. The visible prompt truncates with an ellipsis; copying includes the entire prompt, current configuration and compiling usage module. Latin paths are isolated within Arabic text. Prompts first ask the agent to locate Tiraz within the current project and clearly report if the system cannot be found. Source, export, configuration, font-entry and README guidance paths are relative to the located Tiraz root; prompts contain no machine-specific project root, installer or invented instruction file.

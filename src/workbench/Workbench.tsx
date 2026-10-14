@@ -276,6 +276,9 @@ export function Workbench() {
             {t("توثيق المكوّنات", "Component documentation")}
           </span>
           <div className="header-actions">
+            <a className="doc-button" href="/examples/dashboard">
+              {t("مثال لوحة العملاء", "Dashboard example")}
+            </a>
             <div className="mobile-navigation">
               <DocsDrawer
                 title={label("components", language)}

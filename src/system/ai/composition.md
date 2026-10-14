@@ -217,3 +217,24 @@ meaning; tooltips add detail. Share ordered series definitions and explicit toke
 colors across comparable charts. Compose Card/Field/Select around charts; period
 selection, data slicing and totals belong to the application. See ChartExamples.
 No stacked plots, generic configuration, backend, saving or DataTable changes.
+
+## Connected dashboard composition
+
+Keep full-page example layout, navigation anchors, records and filters in the
+host. One provider coordinates language/direction and theme across all controls
+and portals. An overview can use a native definition list rather than a Card per
+metric. Derive chart rows, channel totals and period metrics from one filtered
+order dataset; count customers independently. Creating a customer adds no orders.
+
+Preserve active customer filters when saving. If they hide the new record,
+explain that persistently and provide a reveal action that selects that record
+and resets DataTable's page, plus a clear-filters action to return to everyone.
+Explicit loading/error previews should withhold unavailable numbers rather than
+claim zero; an empty source dataset and no matching filter results need different
+messages. Preview state belongs to the example, with no fake fetch or persistence.
+
+For section links inside a navigation Sheet, hand focus to the destination after
+Radix restores the mounted trigger (for example, from the trigger's focus event).
+Scheduling destination focus immediately on click can race dialog dismissal.
+Cancel/Escape still restores the trigger. Keep section targets focusable with
+`tabIndex={-1}` and retain native links for real destinations.
