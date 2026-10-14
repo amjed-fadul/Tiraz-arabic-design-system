@@ -166,8 +166,8 @@ export function ApiReference({
         "Clipboard / lifecycle",
         "navigator.clipboard.writeText",
         t(
-          "النجاح يُعلن بعد اكتمال النسخ ويزول بعد ثانيتين. الفشل يبقى لإرشاد النسخ اليدوي. تغيير القيمة أو إلغاء التركيب يلغي النتائج المؤجلة والمؤقتات.",
-          "Success is announced after writing and clears after two seconds. Failure persists for manual copying. Value replacement/unmount cancels pending feedback and timers.",
+          "زر النسخ داخل الحقل عند النهاية المنطقية، مع مساحة للنص وتركيز واضح. النجاح علامة صح وإعلان مخفي لثانيتين دون صف نصي ظاهر. الفشل يبقى لإرشاد النسخ اليدوي. تغيير القيمة أو إلغاء التركيب يلغي النتائج المؤجلة والمؤقتات.",
+          "Copy button sits inside the logical-end edge with reserved text padding and keyboard focus. Success shows a check and hidden polite announcement for two seconds, with no visible success row/text. Failure persists for manual copying. Value replacement/unmount cancels pending feedback and timers.",
         ),
       ],
     ],

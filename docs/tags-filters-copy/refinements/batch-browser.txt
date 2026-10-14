@@ -1,0 +1,7 @@
+PASS 48 component/language/theme/density/viewport layouts: no overflow/overlap or axe A/AA findings; real clipboard succeeds in both directions/themes/densities
+PASS tag trimming, duplicate announcement, IME, keyboard removal/focus, committed form data/reset and native literal paste
+PASS live maximum/read-only/disabled controls preserve existing tags
+PASS combined local filters, individual removal, Clear all and focus
+PASS exact long clipboard value, keyboard selection, honest simulated failure/unavailable access and cancellation of a pending write
+PASS live accent/typography/corners, app and OS reduced-motion settings
+PASS all three examples fit a 320px viewport

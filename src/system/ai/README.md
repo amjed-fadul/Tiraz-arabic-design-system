@@ -275,6 +275,9 @@ uncommitted draft is omitted. Disabled entries are omitted, read-only entries
 submit. Native uncanceled reset restores initial uncontrolled defaultValue without
 onValueChange; controlled arrays need application onReset. Both modes clear draft
 and feedback after uncanceled reset, including external `form` association.
+When the draft is focused, its rounded container supplies the native-style focus
+ring; the draft has no second outline/shadow. Tag-remove buttons keep their own
+keyboard rings. An invalid border and focus ring remain visible together.
 
 FilterBar is a named group (`label`) containing `search` and `children` ReactNode
 slots. Compose existing Input, Select and Button using their own props. Supply
@@ -290,9 +293,12 @@ search/status/filter reset, sorting, pagination and hidden-new-customer reveal.
 InputCopy requires a string value and uses the same Field convenience/composition
 contract as Input. Native attributes/ref and selection remain on a read-only
 input; copy writes the full underlying string, including visually hidden text.
-`labels` translates copy, copied and failure (defaults follow direction). Success
-appears and announces only after clipboard writing resolves, clearing after two
-seconds. Rejection/unavailable clipboard gives persistent manual-copy guidance;
+The real copy button sits inside the input boundary at logical end (right in LTR,
+left in RTL), with reserved input padding and its own keyboard focus indicator.
+`labels` translates copy, copied and failure (defaults follow direction). After
+clipboard writing resolves, the icon becomes a check for two seconds and a
+visually hidden polite status announces success. No visible success text or row. Pending copying keeps button focus, marks the
+control busy and prevents repeated activation. Rejection/unavailable clipboard gives persistent manual-copy guidance;
 the value remains selectable. Value replacement/unmount invalidates pending
 feedback and clears timers. Disabled disables input/copy. Clipboard capability
 and permission belong to the browser; there is no execCommand fallback or

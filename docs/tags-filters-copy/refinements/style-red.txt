@@ -1,0 +1,18 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: draft must defer to the outer ring
+
+'2px' !== '0px'
+
+    at file:///Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/tests/browser/entry-refinements.mjs:58:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '2px',
+  expected: '0px',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

@@ -73,6 +73,7 @@ async function start(
         : language === "ar"
           ? "إدخال النسخ"
           : "InputCopy";
+  await page.getByRole("heading", { level: 1, name, exact: true }).waitFor();
   assert.equal(
     await page.getByRole("heading", { level: 1, name, exact: true }).count(),
     1,

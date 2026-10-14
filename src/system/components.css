@@ -1999,6 +1999,15 @@
 .tz-tag-input:focus-within {
   border-color: var(--focus);
 }
+/* The composite owns draft focus; remove actions keep their native focus ring. */
+.tz-tag-input:has(> .tz-tag-draft:focus) {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-tag-input:has(> .tz-tag-draft:focus) > .tz-tag-draft:focus {
+  outline: 0;
+  box-shadow: none;
+}
 .tz-tag-input[data-invalid="true"] {
   border-color: var(--danger);
 }
@@ -2072,18 +2081,28 @@
   color: var(--danger);
 }
 .tz-input-copy {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
   min-inline-size: 0;
 }
 .tz-input-copy > .tz-input {
   flex: 1 1 0;
   min-inline-size: 0;
   text-overflow: ellipsis;
+  padding-inline-end: calc(28px + var(--control-padding));
 }
 .tz-input-copy > .tz-button {
-  flex-shrink: 0;
+  --button-height: 24px;
+  position: absolute;
+  inset-inline-end: 4px;
+  inset-block: 0;
+  margin-block: auto;
+  block-size: 24px;
+  padding: 0;
+}
+.tz-input-copy > .tz-button:focus-visible {
+  outline-offset: 1px;
 }
 .tz-filter-bar {
   display: grid;

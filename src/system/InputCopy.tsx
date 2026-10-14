@@ -75,6 +75,7 @@ export function InputCopy({
     };
   }, [value]);
   async function copy() {
+    if (props.disabled || busy) return;
     const request = ++generation.current.value;
     for (const timer of timers.current) clearTimeout(timer);
     timers.current.clear();
@@ -107,7 +108,7 @@ export function InputCopy({
         : "";
   const control = (association = field) => (
     <>
-      <div className="tz-input-copy">
+      <div className="tz-input-copy" aria-busy={busy || undefined}>
         <Input
           {...props}
           field={association}
@@ -131,8 +132,8 @@ export function InputCopy({
               ? `نسخ${label ? ` ${label}` : " القيمة"}`
               : `Copy${label ? ` ${label}` : " value"}`)
           }
-          disabled={props.disabled || busy}
-          aria-busy={busy || undefined}
+          disabled={props.disabled}
+          aria-disabled={busy || undefined}
           onClick={copy}
         >
           {result === "success" ? (
@@ -145,7 +146,10 @@ export function InputCopy({
       <span
         id={statusId}
         role="status"
-        className="tz-entry-feedback"
+        aria-live="polite"
+        className={
+          result === "failure" ? "tz-entry-feedback" : "tz-visually-hidden"
+        }
         data-error={result === "failure" || undefined}
       >
         {text}

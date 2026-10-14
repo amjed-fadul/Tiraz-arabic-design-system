@@ -114,3 +114,46 @@ it("clears success timers on replacement/unmount and never revives old feedback"
   unmount();
   expect(vi.getTimerCount()).toBe(0);
 });
+
+it("uses check-only success with a hidden polite status, keeping failure guidance visible", async () => {
+  const write = vi.fn().mockResolvedValue(undefined);
+  clipboard(write);
+  const { container } = mount(<InputCopy label="Code" value="Exact source" />);
+  fireEvent.click(screen.getByRole("button", { name: "Copy Code" }));
+  await waitFor(() =>
+    expect(screen.getByRole("status")).toHaveTextContent("Copied."),
+  );
+  expect(screen.getByRole("status")).toHaveClass("tz-visually-hidden");
+  expect(screen.getByRole("status")).toHaveAttribute("aria-live", "polite");
+  expect(container.querySelector(".lucide-check")).toBeInTheDocument();
+  write.mockRejectedValueOnce(new Error("Denied"));
+  fireEvent.click(screen.getByRole("button", { name: "Copy Code" }));
+  await waitFor(() =>
+    expect(screen.getByRole("status")).toHaveTextContent(/could not copy/i),
+  );
+  expect(screen.getByRole("status")).not.toHaveClass("tz-visually-hidden");
+  expect(container.querySelector(".lucide-check")).toBeNull();
+});
+
+it("keeps keyboard focus while copying and ignores repeated busy activation", async () => {
+  let finish!: () => void;
+  const write = vi.fn(
+    () =>
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      }),
+  );
+  clipboard(write);
+  mount(<InputCopy label="Code" value="Exact value" />);
+  const button = screen.getByRole("button", { name: "Copy Code" });
+  button.focus();
+  fireEvent.click(button);
+  expect(button.closest(".tz-input-copy")).toHaveAttribute("aria-busy", "true");
+  expect(button).toHaveAttribute("aria-disabled", "true");
+  expect(button).not.toBeDisabled();
+  fireEvent.click(button);
+  expect(write).toHaveBeenCalledTimes(1);
+  await act(async () => finish());
+  expect(button).toHaveFocus();
+  expect(button).not.toHaveAttribute("aria-disabled", "true");
+});

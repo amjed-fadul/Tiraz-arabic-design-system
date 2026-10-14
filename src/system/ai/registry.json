@@ -700,7 +700,8 @@
       ],
       "accessibility": [
         "Field helper/error and external description IDs are merged; supply standalone native/ARIA label when omitting label.",
-        "IME composition Enter is ignored. Empty Backspace removes the last tag; remove buttons focus the text input. Disabled/readOnly prevent changes. labels can translate remove(tag), duplicate and maximum(count); defaults follow direction."
+        "IME composition Enter is ignored. Empty Backspace removes the last tag; remove buttons focus the text input. Disabled/readOnly prevent changes. labels can translate remove(tag), duplicate and maximum(count); defaults follow direction.",
+        "Draft focus is shown once on the rounded container, matching Input outline width/offset. Only while the outer ring is present is the inner draft outline/shadow suppressed. Remove actions retain separate native keyboard rings; invalid border and focus ring coexist."
       ],
       "limitations": [
         "No autocomplete, bulk paste parsing, validation engine or required tag API.",
@@ -787,7 +788,7 @@
       "providers": [
         "SystemProvider for shared direction, theme, accent, density, typography, corners and reduced motion."
       ],
-      "purpose": "Read-only selectable value with an adjacent copy action.",
+      "purpose": "Read-only selectable value with an internal copy button at logical end.",
       "useWhen": "Copy paths, identifiers or links the application actually provides.",
       "alternative": "Input for editable text.",
       "props": [
@@ -854,9 +855,10 @@
         }
       ],
       "inheritedProps": "Native input props/ref except value/defaultValue/type/children/size/readOnly/onChange. Always read-only. label/helper/error convenience mode is mutually exclusive with field; helper/error require label. Ref, name/form, selection events, className/style target input.",
-      "state": "Success only after navigator.clipboard.writeText resolves; announced/visible for two seconds. Rejection/unavailable clipboard reports persistent manual-copy guidance. Value replacement/unmount invalidate pending results and clear timers/feedback. No synthetic success.",
+      "state": "Success only after navigator.clipboard.writeText resolves: a check icon for two seconds and a visually hidden polite announcement, no visible success text/row. Rejection/unavailable clipboard retains persistent visible manual-copy guidance. Value replacement/unmount invalidate pending results and clear timers/feedback. No synthetic success. Pending writes retain keyboard focus: the wrapper is aria-busy, the button is aria-disabled rather than natively disabled, and repeated activation is ignored. External disabled still uses native disabled on input and button.",
       "accessibility": [
-        "Native selectable input remains usable for manual copying. Field associations match Input. Supply an accessible input name in standalone mode and labels.copy for a context-specific action. labels.copied/failure translate status; defaults follow direction."
+        "Native selectable input remains usable for manual copying. Field associations match Input. Supply an accessible input name in standalone mode and labels.copy for a context-specific action. labels.copied/failure translate status; defaults follow direction.",
+        "Copy is a real button inside the input boundary: right in LTR, left in RTL. Input padding reserves the button area; native keyboard focus stays visible and success does not change control geometry."
       ],
       "limitations": [
         "Clipboard availability/permission belongs to browser; no deprecated execCommand fallback or automatic permission flow."

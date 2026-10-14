@@ -273,7 +273,9 @@ selection and plain paste native. Ref/className/style target the draft input,
 whose onChange is separate from array onValueChange. Submit committed arrays with
 repeated name entries; use FormData.getAll. Draft is omitted, disabled omits values,
 read-only submits. Uncontrolled reset restores initial tags without callback after
-cancellation checks; reset controlled arrays in the host onReset. No native
+cancellation checks; reset controlled arrays in the host onReset. The container
+owns draft focus styling; remove buttons retain distinct keyboard rings. Error
+borders remain visible alongside focus. No native
 required-tag validation or autocomplete. labels translates built-in feedback.
 
 FilterBar is layout and removable active chips. Put existing Input in search and
@@ -286,7 +288,11 @@ customer reveal and clear behavior; no additional dashboard data model.
 Compose InputCopy for a real value supplied by the application. Field naming and
 native selection match Input; ref remains on the read-only input. Copy full value
 with navigator.clipboard.writeText and report success only after resolution.
-Translate copy/copied/failure with labels. On failure keep the selectable input;
+Keep the button inside the input at logical end with reserved text padding. Success
+uses a temporary check icon and a visually hidden polite announcement, with no
+visible success row or text. Keep the busy button focusable with aria-disabled and
+guard repeated copying. Preserve the button keyboard ring and native input
+selection. Translate copy/copied/failure with labels. On failure keep the selectable input;
 never manufacture success or add execCommand. Replacing value or unmounting cancels
 pending results/timers. [TagInputExamples](examples/TagInputExamples.tsx),
 [FilterBarExamples](examples/FilterBarExamples.tsx) and
