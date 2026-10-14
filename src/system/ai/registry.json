@@ -411,6 +411,70 @@
     {
       "name": "DonutChartProps",
       "source": "Charts.tsx"
+    },
+    {
+      "name": "Sidebar",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarHeader",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarContent",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarFooter",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarLabel",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarGroup",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarItem",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarAction",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarToggle",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarDisclosure",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarGroupProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarItemProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarActionProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarToggleProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarDisclosureProps",
+      "source": "Sidebar.tsx"
     }
   ],
   "configuration": {
@@ -478,6 +542,84 @@
     }
   },
   "components": [
+    {
+      "id": "sidebar",
+      "api": "Sidebar",
+      "source": "Sidebar.tsx",
+      "exports": [
+        "Sidebar",
+        "SidebarHeader",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarLabel",
+        "SidebarGroup",
+        "SidebarItem",
+        "SidebarAction",
+        "SidebarToggle",
+        "SidebarDisclosure",
+        "SidebarProps",
+        "SidebarGroupProps",
+        "SidebarItemProps",
+        "SidebarActionProps",
+        "SidebarToggleProps",
+        "SidebarDisclosureProps"
+      ],
+      "purpose": "Compact composable navigation surface with expanded and icon rail states.",
+      "useWhen": "Persistent desktop navigation or the same content composed inside an existing Sheet on mobile.",
+      "alternative": "Use native links for destinations, SidebarAction for commands and SidebarDisclosure for one level of children. Sheet supplies mobile modality.",
+      "props": [
+        {
+          "name": "collapsed",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultCollapsed",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "onCollapsedChange",
+          "type": "(collapsed: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Sidebar accepts native aside props/ref. SidebarHeader/Footer native div, SidebarContent native nav (supply aria-label), SidebarLabel native span. SidebarGroup native div plus optional heading:string. SidebarItem native anchor excluding children plus required label:string, icon:ReactNode, optional count:string|number, active:boolean=false; real href supplied by caller. SidebarAction native button excluding children plus label, icon, count. SidebarToggle native button plus required collapseLabel/expandLabel strings. SidebarDisclosure native button excluding children plus required label/icon/children, optional count, activeChild=false, open/defaultOpen=false/onOpenChange. All native attributes/events/ref/className/style remain on the underlying element. Buttons default type=button. Preventing default in click cancels built-in toggle/disclosure behavior.",
+      "state": "collapsed/onCollapsedChange controls root; omission initializes internal state from defaultCollapsed once. Disclosure open/onOpenChange or internal defaultOpen. Rail disclosure requests root expansion and opens children. Both controlled callbacks must update caller state. Previously open children reappear when root expands. activeChild is explicit caller state, not inferred from routing or DOM.",
+      "accessibility": [
+        "Native links preserve browser destination/modifier behavior; required label supplies accessible name independent of hidden text. Counts and icons are decorative; include essential count meaning in an explicit aria-label if needed. Existing Tooltip supplies rail labels.",
+        "Collapse/disclosure hides children with hidden/inert. Focus moves from hidden descendants to their disclosure parent, otherwise a visible toggle/item. Wrap slot text in SidebarLabel; hidden labels are inert. Keep essential actions as SidebarAction.",
+        "Logical indentation and chevrons mirror direction. Header/footer persist while SidebarContent scrolls; host supplies bounded height and inline-start placement. Both OS and application reduced motion suppress transitions.",
+        "Reuse the same content in Sheet on mobile. Keep trigger mounted; hand destination focus after trigger restoration. Escape/outside dismissal restores trigger."
+      ],
+      "limitations": [
+        "One disclosure level supported. No routing, permission, workspace switching, shell, mobile overlay or persistence framework.",
+        "Give every interactive rail item an icon. Host positions Sidebar on the right for RTL, left for LTR. Header/footer are arbitrary composition slots; use SidebarLabel to hide text.",
+        "Counts truncate visually and do not convey essential meaning on their own."
+      ],
+      "examples": ["ai/examples/SidebarExamples.tsx"]
+    },
     {
       "id": "button",
       "api": "Button",
@@ -3374,6 +3516,23 @@
       "exports": ["useToast", "ToastMessage"],
       "source": "useToast.ts",
       "purpose": "Returns {toast(message: ToastMessage): void}; use within ToastProvider or it throws. ToastContext is internal, not a barrel export; ToastMessage fields are in records."
+    },
+    {
+      "id": "sidebar-parts",
+      "exports": [
+        "SidebarHeader",
+        "SidebarContent",
+        "SidebarFooter",
+        "SidebarLabel",
+        "SidebarGroup",
+        "SidebarItem",
+        "SidebarAction",
+        "SidebarToggle",
+        "SidebarDisclosure"
+      ],
+      "source": "Sidebar.tsx",
+      "componentId": "sidebar",
+      "purpose": "Sidebar accepts native aside props/ref. SidebarHeader/Footer native div, SidebarContent native nav (supply aria-label), SidebarLabel native span. SidebarGroup native div plus optional heading:string. SidebarItem native anchor excluding children plus required label:string, icon:ReactNode, optional count:string|number, active:boolean=false; real href supplied by caller. SidebarAction native button excluding children plus label, icon, count. SidebarToggle native button plus required collapseLabel/expandLabel strings. SidebarDisclosure native button excluding children plus required label/icon/children, optional count, activeChild=false, open/defaultOpen=false/onOpenChange. All native attributes/events/ref/className/style remain on the underlying element. Buttons default type=button. Preventing default in click cancels built-in toggle/disclosure behavior."
     }
   ],
   "conventions": {

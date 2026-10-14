@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-two**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart and DonutChart.
+Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-three**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart and Sidebar.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -196,3 +196,41 @@ not manually verified. VoiceOver needs QuickNav off according to Recharts' own
 accessibility guidance. Never rely on hover for essential information; provide
 an adequate summary and enable the semantic data table for exact values. Do not
 claim automated scans establish screen-reader support or full conformance.
+
+## Sidebar
+
+Use [SidebarExamples](examples/SidebarExamples.tsx) for expanded/rail, grouped,
+nested and footer navigation, with working local notes and an account details
+action. Sidebar is a native aside; SidebarHeader/Footer are slots, SidebarContent
+is a named nav that scrolls within the host's bounded height. Position the root at
+inline-start in your layout (right in Arabic, left in English). Compact defaults
+consume existing tokens and IBM Plex Sans Arabic; no additional dependency.
+
+Use SidebarGroup(heading?) and SidebarItem(label, icon, href, active?, count?) for
+native destinations. SidebarAction is a native button for commands. Count is
+static/decorative; put essential count meaning in aria-label. All native attributes
+and React 19 refs survive. SidebarLabel hides branding/account text in the rail
+and makes it inert; keep essential actions outside it. SidebarToggle requires
+translated collapseLabel and expandLabel. collapsed/onCollapsedChange controls
+the root; otherwise defaultCollapsed initializes internal state once (false).
+
+SidebarDisclosure(label, icon, children) supports one level. open/onOpenChange
+controls it or defaultOpen initializes internal state. Supply activeChild when a
+child is current. Activating a rail parent requests root expansion and opens its
+children; controlled roots/disclosures must update both state callbacks. Hidden
+children are not keyboard-focusable. External collapse moves child focus to its
+visible parent; hidden slot text moves focus to a toggle or visible item. Existing
+Tooltip labels and accessible names remain on rail items. Width/text transitions
+respect system and OS reduced motion.
+
+Reuse navigation content in the existing Sheet on mobile. Keep its trigger
+mounted and destination headings focusable with tabIndex=-1. Hand destination
+focus after Sheet restores its trigger; Escape/outside dismissal restores that
+trigger. Sidebar supplies no overlay, router, permissions, workspace service or
+application shell. Test long text/counts, short-height scrolling, keyboard focus,
+RTL/LTR, both themes and reduced motion in the actual host layout.
+
+The local SidebarExample uses stable `idPrefix` note URLs and follows native hash
+history/reloads. Its default is `tiraz-sidebar`; supply distinct stable prefixes
+when mounting multiple examples. Keep modified clicks native; apply same-page
+selection/dismissal/focus only for unmodified primary clicks.

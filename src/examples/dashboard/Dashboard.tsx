@@ -1,6 +1,23 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpLeft, ArrowUpRight, Menu, Moon, Sun } from "lucide-react";
 import {
+  ArrowUpLeft,
+  ArrowUpRight,
+  Menu,
+  Moon,
+  Sun,
+  Home,
+  ShoppingBag,
+  Users,
+} from "lucide-react";
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarItem,
+  SidebarToggle,
+  SidebarLabel,
   Alert,
   AreaChart,
   Avatar,
@@ -85,6 +102,21 @@ function DashboardContent({
   const [newCustomer, setNewCustomer] = useState<Customer | null>(null);
   const [spotlightId, setSpotlightId] = useState<number | null>(null);
   const [navOpen, setNavOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+  const [activeSection, setActiveSection] = useState(() =>
+    ["overview", "orders", "customers"].includes(window.location.hash.slice(1))
+      ? window.location.hash.slice(1)
+      : "overview",
+  );
+  useEffect(() => {
+    const update = () => {
+      const id = window.location.hash.slice(1);
+      if (["overview", "orders", "customers"].includes(id))
+        setActiveSection(id);
+    };
+    window.addEventListener("hashchange", update);
+    return () => window.removeEventListener("hashchange", update);
+  }, []);
   const pendingDestination = useRef<string | null>(null);
   const nextId = useRef(sampleCustomers.length + 1);
   const searchRef = useRef<HTMLInputElement>(null);
@@ -132,31 +164,82 @@ function DashboardContent({
     },
   ];
   const navItems = [
-    { id: "overview", label: t("نظرة عامة", "Overview") },
-    { id: "orders", label: t("الطلبات", "Orders") },
-    { id: "customers", label: t("العملاء", "Customers") },
+    { id: "overview", label: t("نظرة عامة", "Overview"), icon: Home },
+    { id: "orders", label: t("الطلبات", "Orders"), icon: ShoppingBag },
+    { id: "customers", label: t("العملاء", "Customers"), icon: Users },
   ];
   function navigation(mobile: boolean) {
     return (
-      <nav
-        aria-label={t("تنقّل لوحة العملاء", "Dashboard navigation")}
-        className={mobile ? "dashboard-mobile-links" : "dashboard-links"}
+      <Sidebar
+        className={mobile ? "dashboard-sheet-sidebar" : "dashboard-sidebar"}
+        aria-label={t("مساحة العملاء", "Customer workspace")}
+        collapsed={mobile ? false : collapsed}
+        onCollapsedChange={setCollapsed}
       >
-        {navItems.map((item) => (
-          <a
-            key={item.id}
-            href={`#${item.id}`}
-            onClick={() => {
-              if (mobile) {
-                pendingDestination.current = item.id;
-                setNavOpen(false);
-              }
-            }}
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
+        <SidebarHeader>
+          <div className="dashboard-sidebar-brand">
+            <span className="dashboard-mark" aria-hidden="true">
+              ✳
+            </span>
+            <SidebarLabel>{t("طِراز", "Tiraz")}</SidebarLabel>
+          </div>
+          {!mobile && (
+            <SidebarLabel className="dashboard-sidebar-workspace">
+              {t("مساحة العملاء", "Customer workspace")}
+            </SidebarLabel>
+          )}
+          {!mobile && (
+            <SidebarToggle
+              collapseLabel={t("طي التنقّل", "Collapse navigation")}
+              expandLabel={t("توسيع التنقّل", "Expand navigation")}
+            />
+          )}
+        </SidebarHeader>
+        <SidebarContent
+          aria-label={t("تنقّل لوحة العملاء", "Dashboard navigation")}
+        >
+          <SidebarGroup>
+            {navItems.map((item) => (
+              <SidebarItem
+                key={item.id}
+                href={`#${item.id}`}
+                label={item.label}
+                icon={<item.icon size={18} />}
+                active={activeSection === item.id}
+                onClick={(event) => {
+                  if (
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  )
+                    return;
+                  setActiveSection(item.id);
+                  if (mobile) {
+                    pendingDestination.current = item.id;
+                    setNavOpen(false);
+                  } else
+                    requestAnimationFrame(() =>
+                      document.getElementById(item.id)?.focus(),
+                    );
+                }}
+              />
+            ))}
+          </SidebarGroup>
+        </SidebarContent>
+        <SidebarFooter>
+          <span className="dashboard-sidebar-brand">
+            <Avatar
+              name={t("مساحة العملاء", "Customer workspace")}
+              fallback={t("ط", "T")}
+              decorative
+            />
+            <SidebarLabel>{t("بيانات تجريبية", "Sample data")}</SidebarLabel>
+          </span>
+        </SidebarFooter>
+      </Sidebar>
     );
   }
   const columns: DataTableColumn<Customer>[] = [
@@ -232,6 +315,7 @@ function DashboardContent({
       <a className="dashboard-skip" href="#overview">
         {t("انتقل إلى المحتوى", "Skip to content")}
       </a>
+      {navigation(false)}
       <header className="dashboard-header">
         <a
           className="dashboard-brand"
@@ -246,7 +330,6 @@ function DashboardContent({
             {t("مساحة العملاء", "Customer workspace")}
           </span>
         </a>
-        {navigation(false)}
         <div className="dashboard-header-actions">
           <div className="dashboard-mobile-nav">
             <Sheet

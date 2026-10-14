@@ -1,3 +1,5 @@
+import { SidebarExample } from "../system/ai/examples/SidebarExamples";
+import type { SidebarModel } from "./model";
 import { lazy, Suspense } from "react";
 import type { ChartKind } from "../system/ai/examples/ChartExamples";
 import type { ChartModel } from "./model";
@@ -144,6 +146,23 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "sidebar") {
+    const p = model as SidebarModel;
+    return (
+      <SidebarExample
+        key={`${p.mode}-${p.grouped}-${p.nested}-${p.footer}-${p.longLabels}`}
+        language={language}
+        idPrefix="sidebar-preview"
+        {...p}
+        collapsed={p.mode === "controlled" ? p.collapsed : undefined}
+        defaultCollapsed={p.collapsed}
+        onCollapsedChange={(value) => {
+          if (p.mode === "controlled") onPatch({ collapsed: value });
+          onEvent("collapse", value);
+        }}
+      />
+    );
+  }
   if (component.endsWith("-chart"))
     return (
       <Suspense

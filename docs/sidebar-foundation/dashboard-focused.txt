@@ -1,0 +1,9 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/sidebar-foundation/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  17:57:09
+   Duration  5.03s (tests 72%, environment 12%, import 8%, transform 5%, setup 3%)
+

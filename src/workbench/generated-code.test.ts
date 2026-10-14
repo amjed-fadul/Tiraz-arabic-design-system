@@ -14,6 +14,20 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const mode of ["controlled", "uncontrolled"] as const)
+    for (const collapsed of [false, true])
+      cases.push([
+        "sidebar",
+        {
+          ...p.sidebar,
+          mode,
+          collapsed,
+          grouped: false,
+          nested: false,
+          footer: false,
+          longLabels: true,
+        },
+      ]);
   for (const id of [
     "line-chart",
     "area-chart",

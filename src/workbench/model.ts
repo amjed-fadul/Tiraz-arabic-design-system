@@ -213,7 +213,16 @@ export interface ChartModel {
   legend: boolean;
   grid: boolean;
 }
+export interface SidebarModel {
+  collapsed: boolean;
+  grouped: boolean;
+  nested: boolean;
+  footer: boolean;
+  mode: "controlled" | "uncontrolled";
+  longLabels: boolean;
+}
 export interface Playgrounds {
+  sidebar: SidebarModel;
   "line-chart": ChartModel;
   "area-chart": ChartModel;
   "bar-chart": ChartModel;
@@ -262,6 +271,14 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    sidebar: {
+      collapsed: false,
+      grouped: true,
+      nested: true,
+      footer: true,
+      mode: "controlled",
+      longLabels: false,
+    },
     "line-chart": { sample: "multi", legend: true, grid: true },
     "area-chart": { sample: "multi", legend: true, grid: true },
     "bar-chart": { sample: "multi", legend: true, grid: true },

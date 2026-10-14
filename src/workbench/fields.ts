@@ -83,6 +83,20 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  sidebar: [
+    field("collapsed", "boolean", "شريط أيقونات", "Icon rail"),
+    field(
+      "grouped",
+      "boolean",
+      "عناوين المجموعات",
+      "Group headings",
+      "example",
+    ),
+    field("nested", "boolean", "تنقّل متداخل", "Nested navigation", "example"),
+    field("footer", "boolean", "تذييل الحساب", "Account footer", "example"),
+    field("longLabels", "boolean", "تسميات طويلة", "Long labels", "example"),
+    { ...mode, api: "collapsed / defaultCollapsed" },
+  ],
   "line-chart": chartFields,
   "area-chart": chartFields,
   "bar-chart": chartFields,
@@ -556,6 +570,7 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  sidebar: ["collapsed", "grouped", "nested", "footer", "longLabels", "mode"],
   "line-chart": ["sample", "legend", "grid"],
   "area-chart": ["sample", "legend", "grid"],
   "bar-chart": ["sample", "legend", "grid"],

@@ -1,3 +1,4 @@
+import { SidebarExamples } from "../system/ai/examples/SidebarExamples";
 import { lazy, Suspense } from "react";
 import type { ChartKind } from "../system/ai/examples/ChartExamples";
 import {
@@ -174,6 +175,7 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "sidebar") return <SidebarExamples language={language} />;
   if (component.endsWith("-chart"))
     return (
       <Suspense

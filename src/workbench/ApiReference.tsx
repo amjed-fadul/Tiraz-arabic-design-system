@@ -95,6 +95,69 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    sidebar: [
+      [
+        "Sidebar",
+        "native aside props/ref",
+        t(
+          "التطبيق يحدد الموضع والارتفاع. الرأس والتذييل ثابتان والمحتوى يتمرّر.",
+          "Host sets placement/height. Header/footer remain available while content scrolls.",
+        ),
+      ],
+      [
+        "collapsed / defaultCollapsed / onCollapsedChange",
+        "boolean / boolean / (value: boolean) => void",
+        t(
+          "وضع مضبوط أو داخلي. يبدأ موسّعًا افتراضيًا.",
+          "Controlled or internal state. Expanded by default.",
+        ),
+      ],
+      [
+        "SidebarHeader / SidebarContent / SidebarFooter",
+        "native div / nav / div props/ref",
+        t(
+          "فتحات بسيطة. سمّ عنصر nav. استخدم SidebarLabel للنص المخفي في الشريط.",
+          "Simple slots. Name the nav. Use SidebarLabel for text hidden in the rail.",
+        ),
+      ],
+      [
+        "SidebarGroup",
+        "native div props/ref · heading?: string",
+        t("عنوان اختياري للمجموعة.", "Optional group heading."),
+      ],
+      [
+        "SidebarItem / SidebarAction",
+        "native a / button props/ref · label, icon, count?",
+        t(
+          "روابط الوجهات وأزرار الإجراءات. active يعلن الصفحة الحالية؛ العدد نص زخرفي اختياري.",
+          "Destination links and action buttons. Item active announces current page; count is optional decorative text.",
+        ),
+      ],
+      [
+        "SidebarDisclosure",
+        "native button props/ref · label, icon, children",
+        t(
+          "مستوى واحد. open/defaultOpen/onOpenChange. activeChild يحدده التطبيق. من الشريط: يوسّع التنقّل ويفتح الأطفال.",
+          "One level. open/defaultOpen/onOpenChange. Caller supplies activeChild. From the rail: expands Sidebar and opens children.",
+        ),
+      ],
+      [
+        "SidebarToggle",
+        "native button props/ref · collapseLabel, expandLabel",
+        t(
+          "تسميات مترجمة مطلوبة. العناصر المخفية غير قابلة للتركيز، وينتقل التركيز إلى الأب أو زر الطي عند الحاجة.",
+          "Required translated labels. Hidden content is inert; focus moves to parent or toggle when needed.",
+        ),
+      ],
+      [
+        "Mobile",
+        "Sheet composition",
+        t(
+          "أعد استخدام المحتوى داخل Sheet. وجّه التركيز بعد استعادة زر الفتح؛ Escape يعيد التركيز إلى الزر.",
+          "Reuse content in Sheet. Focus destination after trigger restoration; Escape returns to trigger.",
+        ),
+      ],
+    ],
     "line-chart": chartRows,
     "area-chart": chartRows,
     "bar-chart": chartRows,

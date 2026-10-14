@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with thirty-two source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with thirty-three source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -199,7 +199,7 @@ keeps its existing internal lifecycle. See the portable
 
 ### Charts foundation
 
-LineChart, AreaChart, BarChart and DonutChart render with Recharts 3.10.1 and Tiraz
+LineChart, AreaChart, BarChart, DonutChart and Sidebar render with Recharts 3.10.1 and Tiraz
 tokens. Required label/summary accompany application data; optional keyboard
 legend toggles and a semantic data-table disclosure supply additional access.
 Missing values stay gaps, zero stays zero, and RTL keeps chronological order.
@@ -207,3 +207,9 @@ The four documentation pages include single/multiple series and edge samples,
 live shared settings, compiling usage, and sample analytics with a working period
 selector. See the portable [chart guide](src/system/ai/README.md#charts) for
 contracts, source-copy dependencies and honest screen-reader limitations.
+
+Sidebar provides compact expanded/rail navigation with native links, disclosure
+buttons and header/footer slots. See its continuous documentation page and
+[src/system/ai/examples/SidebarExamples.tsx](src/system/ai/examples/SidebarExamples.tsx).
+The connected dashboard uses Sidebar on desktop and the same content in Sheet
+on mobile, keeping Overview, Orders and Customers as real section destinations.

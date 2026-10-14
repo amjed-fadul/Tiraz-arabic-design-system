@@ -1,0 +1,31 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/sidebar-foundation/Tiraz
+
+ ❯ src/examples/dashboard/Dashboard.test.tsx (7 tests | 1 failed) 3445ms
+   × uses Sidebar links for the three real sections and retains connected data through collapse 84ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/examples/dashboard/Dashboard.test.tsx > uses Sidebar links for the three real sections and retains connected data through collapse
+Error: expect(element).toHaveAttribute("aria-current", "page") // element.getAttribute("aria-current") === "page"
+
+Expected the element to have attribute:
+  aria-current="page"
+Received:
+  null
+ ❯ src/examples/dashboard/Dashboard.test.tsx:160:67
+    158|   const navigation=screen.getByRole("navigation", {name:"Dashboard nav…
+    159|   expect(within(navigation).getAllByRole("link")).toHaveLength(3);
+    160|   expect(within(navigation).getByRole("link", {name:"Overview"})).toHa…
+       |                                                                   ^
+    161|   await user.click(within(navigation).getByRole("link", {name:"Custome…
+    162|   expect(within(navigation).getByRole("link", {name:"Customers"})).toH…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  17:56:24
+   Duration  4.86s (tests 72%, environment 13%, import 8%, transform 4%, setup 2%)
+

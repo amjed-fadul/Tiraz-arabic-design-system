@@ -35,3 +35,23 @@ export * from "./Accordion";
 export * from "./Breadcrumbs";
 export * from "./Pagination";
 export * from "./Charts";
+export {
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarFooter,
+  SidebarLabel,
+  SidebarGroup,
+  SidebarItem,
+  SidebarAction,
+  SidebarToggle,
+  SidebarDisclosure,
+} from "./Sidebar";
+export type {
+  SidebarProps,
+  SidebarGroupProps,
+  SidebarItemProps,
+  SidebarActionProps,
+  SidebarToggleProps,
+  SidebarDisclosureProps,
+} from "./Sidebar";

@@ -115,6 +115,48 @@ try {
       }
     }
   }
+  await page.setViewportSize({ width: 1440, height: 900 });
+  for (const language of ["ar", "en"])
+    for (const theme of ["light", "dark"]) {
+      await page.goto(`${root}/examples/dashboard`);
+      if (language === "en")
+        await page
+          .getByRole("button", { name: "English", exact: true })
+          .click();
+      if (theme === "dark")
+        await page
+          .getByRole("button", {
+            name: language === "ar" ? "الوضع الداكن" : "Dark mode",
+            exact: true,
+          })
+          .click();
+      const sidebar = page.locator(".dashboard-sidebar");
+      const originalPosition = await sidebar.boundingBox();
+      assert.equal(originalPosition.x, language === "ar" ? 1216 : 0);
+      await sidebar
+        .getByRole("button", {
+          name: language === "ar" ? "طي التنقّل" : "Collapse navigation",
+          exact: true,
+        })
+        .click();
+      await page.waitForTimeout(200);
+      assert.equal((await sidebar.boundingBox()).width, 56);
+      const orders = sidebar.getByRole("link", {
+        name: language === "ar" ? "الطلبات" : "Orders",
+        exact: true,
+      });
+      await orders.click();
+      assert.equal(await orders.getAttribute("aria-current"), "page");
+      await page.waitForFunction(() => document.activeElement?.id === "orders");
+      await page.evaluate(() => scrollTo(0, 0));
+      await page.screenshot({
+        path: `${evidence}/${language}-${theme}-rail.png`,
+      });
+      await overflow();
+    }
+  check(
+    "dashboard rail in both languages/themes: inline-start placement, active links, destination focus and no overflow",
+  );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(`${root}/examples/dashboard`);
   await page.getByRole("button", { name: "English", exact: true }).click();
@@ -378,6 +420,40 @@ try {
   check(
     "mobile navigation focuses real destination; wide table stays keyboard-scrollable inside page",
   );
+  await page.setViewportSize({ width: 390, height: 300 });
+  await navTrigger.click();
+  const shortNav = page.getByRole("dialog").locator(".tz-sidebar-content");
+  assert.ok(await shortNav.evaluate((el) => el.clientHeight - 16 >= 32));
+  assert.ok(
+    (await page.getByRole("dialog").locator(".tz-sidebar-footer").boundingBox())
+      .y +
+      (
+        await page
+          .getByRole("dialog")
+          .locator(".tz-sidebar-footer")
+          .boundingBox()
+      ).height <=
+      300,
+  );
+  await shortNav.hover();
+  await page.mouse.wheel(0, 250);
+  await page.waitForTimeout(100);
+  assert.ok(await shortNav.evaluate((el) => el.scrollTop > 0));
+  await page.screenshot({ path: `${evidence}/short-mobile-sheet.png` });
+  await page
+    .getByRole("dialog")
+    .getByRole("link", { name: "Customers", exact: true })
+    .click();
+  await waitClosed();
+  await page.waitForFunction(() => document.activeElement?.id === "customers");
+  await navTrigger.click();
+  await page.keyboard.press("Escape");
+  await waitClosed();
+  await assertFocus(navTrigger);
+  check(
+    "300px-high mobile Sheet retains usable scrolling navigation and contained footer",
+  );
+  await page.setViewportSize({ width: 320, height: 700 });
   // Reuse must not inherit link appearance from the documentation's global reset.
   await page.evaluate(() => {
     document
@@ -393,7 +469,15 @@ try {
     .getByRole("link", { name: "Customers", exact: true });
   const linkStyle = await portalLink.evaluate((el) => ({
     color: getComputedStyle(el).color,
-    parentColor: getComputedStyle(el.parentElement).color,
+    parentColor: (() => {
+      const probe = document.createElement("span");
+      probe.style.color =
+        el.dataset.active === "true" ? "var(--action)" : "inherit";
+      el.parentElement.append(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
+    })(),
     decoration: getComputedStyle(el).textDecorationLine,
   }));
   assert.equal(linkStyle.color, linkStyle.parentColor);

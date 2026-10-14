@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the thirty-two registry families. Prefer an inline task and a
+  Map each need to the thirty-three registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
@@ -238,3 +238,18 @@ Radix restores the mounted trigger (for example, from the trigger's focus event)
 Scheduling destination focus immediately on click can race dialog dismissal.
 Cancel/Escape still restores the trigger. Keep section targets focusable with
 `tabIndex={-1}` and retain native links for real destinations.
+
+## Sidebar navigation composition
+
+Compose a host-bounded Sidebar at inline-start, with Header, named Content/nav,
+and Footer. Group headings are optional. Item is a native anchor; Action and
+Disclosure are native buttons. Supply real destinations and connected actions.
+Use SidebarLabel for hideable slot text and Toggle for root collapse. Preserve
+native attributes/refs and modifiers; never replace links with router-like buttons.
+Caller owns active/activeChild and any destination focus. One level of children;
+rail parent activation expands the root and reveals those children. Controlled
+collapsed and open each need their change callback. Hidden content is inert,
+focus moves to its visible parent/toggle, and labels use existing Tooltip.
+Reuse this navigation inside Sheet on mobile, with mounted trigger and the
+post-restoration destination focus handoff described above. No new overlay system.
+See SidebarExamples for working local notes and account details.

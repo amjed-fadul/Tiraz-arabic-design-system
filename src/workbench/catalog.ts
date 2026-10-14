@@ -1,6 +1,15 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "sidebar",
+    name: ["شريط التنقّل", "Sidebar"],
+    description: [
+      "تنقّل جانبي مدمج، مع شريط أيقونات ولوحة Sheet على الهاتف.",
+      "Compact side navigation, an icon rail and mobile Sheet composition.",
+    ],
+    file: "Sidebar.tsx",
+  },
+  {
     id: "button",
     name: ["الأزرار", "Button"],
     description: [

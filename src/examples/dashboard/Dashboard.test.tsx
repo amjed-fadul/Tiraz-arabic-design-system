@@ -1,4 +1,10 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
 import { Dashboard } from "./Dashboard";
@@ -151,4 +157,38 @@ it("hands mobile navigation focus to the destination after the Sheet restores it
   await user.keyboard("{Escape}");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(trigger).toHaveFocus();
+});
+
+it("uses Sidebar links for the three real sections and retains connected data through collapse", async () => {
+  const user = await setup();
+  const navigation = screen.getByRole("navigation", {
+    name: "Dashboard navigation",
+  });
+  expect(within(navigation).getAllByRole("link")).toHaveLength(3);
+  expect(
+    within(navigation).getByRole("link", { name: "Overview" }),
+  ).toHaveAttribute("aria-current", "page");
+  await user.click(within(navigation).getByRole("link", { name: "Customers" }));
+  expect(
+    within(navigation).getByRole("link", { name: "Customers" }),
+  ).toHaveAttribute("aria-current", "page");
+  await user.type(screen.getByRole("searchbox"), "madar");
+  await user.click(screen.getByRole("button", { name: "Collapse navigation" }));
+  expect(
+    screen.getByRole("button", { name: "Expand navigation" }),
+  ).toBeInTheDocument();
+  expect(customerTable()).toHaveTextContent("شركة مدار");
+  expect(screen.getByRole("searchbox")).toHaveValue("madar");
+});
+
+it("preserves the current dashboard destination and focus on modified native links", async () => {
+  window.history.replaceState(null, "", "/");
+  await setup();
+  const nav = screen.getByRole("navigation", { name: "Dashboard navigation" });
+  const overview = within(nav).getByRole("link", { name: "Overview" });
+  const orders = within(nav).getByRole("link", { name: "Orders" });
+  orders.focus();
+  fireEvent.click(orders, { metaKey: true });
+  expect(overview).toHaveAttribute("aria-current", "page");
+  expect(orders).toHaveFocus();
 });

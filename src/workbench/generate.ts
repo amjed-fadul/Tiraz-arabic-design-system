@@ -1,3 +1,5 @@
+import sidebarSource from "../system/ai/examples/SidebarExamples.tsx?raw";
+import type { SidebarModel } from "./model";
 import { generateChartCode } from "./generate-charts";
 import type { ChartModel } from "./model";
 import { generateBatchCode } from "./generate-batch";
@@ -55,6 +57,25 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (component === "sidebar") {
+    const p = model as SidebarModel;
+    const source = sidebarSource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() {
+  const [collapsed, setCollapsed] = useState(${json(p.collapsed)});
+  return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><SidebarExample language={${json(language)}} grouped={${p.grouped}} nested={${p.nested}} footer={${p.footer}} longLabels={${p.longLabels}} ${p.mode === "controlled" ? "collapsed={collapsed} onCollapsedChange={setCollapsed}" : "defaultCollapsed={collapsed} onCollapsedChange={setCollapsed}"} /></SystemProvider></div>;
+}
+`;
+  }
   if (component.endsWith("-chart"))
     return generateChartCode(component, model as ChartModel, config, language);
   if (

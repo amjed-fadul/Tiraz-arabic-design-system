@@ -1,0 +1,13 @@
+{
+  "root": "http://127.0.0.1:5212",
+  "checks": [
+    "RTL/LTR light/dark expanded/rail, fixed widths, long-label/count separation, Tooltip names, active parent and rail disclosure",
+    "external controlled collapse preserves child focus; Enter/Space disclosure; hidden descendants absent",
+    "short bounded navigation scroll leaves header/footer available; footer action works",
+    "both system and OS reduced motion remove Sidebar transitions",
+    "mobile Sheet destinations focus after dismissal, Tab trap, Escape/outside restoration, short layout",
+    "sample native hash reload and browser Back keep note destination visible/current",
+    "continuous documentation, connected nested/footer examples, actual copied code and prompts"
+  ],
+  "errors": []
+}
