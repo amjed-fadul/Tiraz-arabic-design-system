@@ -12,6 +12,7 @@ import {
 import {
   Sidebar,
   SidebarHeader,
+  SidebarIdentity,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -177,17 +178,17 @@ function DashboardContent({
         onCollapsedChange={setCollapsed}
       >
         <SidebarHeader>
-          <div className="dashboard-sidebar-brand">
+          <SidebarIdentity>
             <span className="dashboard-mark" aria-hidden="true">
               ✳
             </span>
-            <SidebarLabel>{t("طِراز", "Tiraz")}</SidebarLabel>
-          </div>
-          {!mobile && (
-            <SidebarLabel className="dashboard-sidebar-workspace">
-              {t("مساحة العملاء", "Customer workspace")}
+            <SidebarLabel className="dashboard-sidebar-copy">
+              <span>{t("طِراز", "Tiraz")}</span>
+              {!mobile && (
+                <small>{t("مساحة العملاء", "Customer workspace")}</small>
+              )}
             </SidebarLabel>
-          )}
+          </SidebarIdentity>
           {!mobile && (
             <SidebarToggle
               collapseLabel={t("طي التنقّل", "Collapse navigation")}
@@ -230,14 +231,14 @@ function DashboardContent({
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          <span className="dashboard-sidebar-brand">
+          <SidebarIdentity>
             <Avatar
               name={t("مساحة العملاء", "Customer workspace")}
               fallback={t("ط", "T")}
               decorative
             />
             <SidebarLabel>{t("بيانات تجريبية", "Sample data")}</SidebarLabel>
-          </span>
+          </SidebarIdentity>
         </SidebarFooter>
       </Sidebar>
     );

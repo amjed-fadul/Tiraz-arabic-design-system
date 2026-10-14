@@ -207,10 +207,12 @@ try {
   const dialog = page.getByRole("dialog");
   assert.ok(await dialog.isVisible());
   const navMobile = dialog.getByRole("navigation");
-  await navMobile.getByRole("link", { name: "Reading", exact: true }).click();
+  await navMobile
+    .getByRole("link", { name: "Components", exact: true })
+    .click();
   await dialog.waitFor({ state: "hidden" });
   await page.waitForFunction(
-    () => document.activeElement?.textContent === "Reading",
+    () => document.activeElement?.textContent === "Components",
   );
   const trigger = page.getByRole("button", {
     name: "Open navigation",
@@ -263,23 +265,23 @@ try {
   await preview
     .getByRole("button", { name: "Collapse navigation", exact: true })
     .click();
-  await preview.getByRole("button", { name: "Notes", exact: true }).click();
-  await preview.getByRole("link", { name: "Layout", exact: true }).click();
+  await preview.getByRole("button", { name: "Library", exact: true }).click();
+  await preview.getByRole("link", { name: "Resources", exact: true }).click();
   assert.equal(
     await preview
-      .getByRole("link", { name: "Layout", exact: true })
+      .getByRole("link", { name: "Resources", exact: true })
       .getAttribute("aria-current"),
     "page",
   );
-  await preview.getByRole("link", { name: "Reading", exact: true }).click();
+  await preview.getByRole("link", { name: "Components", exact: true }).click();
   const readingUrl = page.url();
-  await preview.getByRole("link", { name: "Layout", exact: true }).click();
+  await preview.getByRole("link", { name: "Resources", exact: true }).click();
   await page.goBack();
   await page.waitForFunction(
     () =>
       document
         .querySelector('.playground-region a[aria-current="page"]')
-        ?.getAttribute("aria-label") === "Reading",
+        ?.getAttribute("aria-label") === "Components",
   );
   assert.equal(page.url(), readingUrl);
   await page.reload();
@@ -289,13 +291,13 @@ try {
   });
   assert.equal(
     await restoredPreview
-      .getByRole("link", { name: "Reading", exact: true })
+      .getByRole("link", { name: "Components", exact: true })
       .getAttribute("aria-current"),
     "page",
   );
   assert.ok(
     await restoredPreview
-      .getByRole("heading", { level: 4, name: "Reading", exact: true })
+      .getByRole("heading", { level: 4, name: "Components", exact: true })
       .isVisible(),
   );
   check(

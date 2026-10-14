@@ -253,3 +253,14 @@ focus moves to its visible parent/toggle, and labels use existing Tooltip.
 Reuse this navigation inside Sheet on mobile, with mounted trigger and the
 post-restoration destination focus handoff described above. No new overlay system.
 See SidebarExamples for working local notes and account details.
+
+Compose branding and account icon/avatar + SidebarLabel inside SidebarIdentity
+(native div attributes/ref). SidebarHeader places identity and toggle on opposite
+ends of a direction-aware row; the rail stacks centered logo then expand toggle.
+Footer identity centers the actual avatar box. Rail headings/label spacing and
+scrollbar width are removed while native navigation scrolling remains available.
+The richer SidebarExample has seven top-level entries in two groups, three library
+children and initially active Components. Documents/People/Notifications counts
+come from local sample lists. Selection, recent activity, reminder clearing,
+summary preferences and account details change real local content. These are
+fictional library examples, not services or saved product data.

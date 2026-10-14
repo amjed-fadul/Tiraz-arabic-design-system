@@ -1,0 +1,15 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: {"language":"ar","theme":"light","state":"expanded","geometry":{"root":{"x":973,"y":597.171875,"width":224,"height":360},"logo":{"x":1057,"y":445.171875,"width":24,"height":24},"toggle":{"x":1057,"y":481.171875,"width":40,"height":32},"avatar":{"x":1052.203125,"y":712.375,"width":33.59375,"height":33.59375},"icons":[{"x":1057,"y":558.765625,"width":24,"height":24},{"x":1057,"y":590.765625,"width":24,"height":24},{"x":1036,"y":622.765625,"width":24,"height":24},{"x":1036,"y":654.765625,"width":24,"height":24}],"action":{"x":1057,"y":753.171875,"width":24,"height":24}}}
+    at file:///Users/amjedfadul/.codex/worktrees/sidebar-foundation/Tiraz/tests/browser/sidebar-corrections.mjs:41:20 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

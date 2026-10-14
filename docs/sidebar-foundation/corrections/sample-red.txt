@@ -1,0 +1,33 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/sidebar-foundation/Tiraz
+
+ ❯ src/system/SidebarExamples.test.tsx (3 tests | 1 failed) 247ms
+   × demonstrates seven top-level library destinations in two groups, active children and local actions 63ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/SidebarExamples.test.tsx > demonstrates seven top-level library destinations in two groups, active children and local actions
+AssertionError: expected [ <div …(3)>…(3)</div> ] to have a length of 2 but got 1
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ src/system/SidebarExamples.test.tsx:53:45
+     51|   render(<SystemProvider><SidebarExample language="en"/></SystemProvid…
+     52|   const nav=screen.getByRole("navigation",{name:"Library navigation"});
+     53|   expect(within(nav).getAllByRole("group")).toHaveLength(2);
+       |                                             ^
+     54|   expect(within(nav).getByRole("button",{name:"Library"})).toHaveAttri…
+     55|   expect(within(nav).getByRole("link",{name:"Components"})).toHaveAttr…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  18:42:04
+   Duration  1.81s (environment 41%, import 24%, tests 15%, transform 12%, setup 8%)
+

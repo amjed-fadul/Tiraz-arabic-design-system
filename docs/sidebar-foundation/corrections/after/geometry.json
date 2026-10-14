@@ -1,0 +1,763 @@
+{
+  "root": "http://127.0.0.1:5212",
+  "records": [
+    {
+      "language": "ar",
+      "theme": "light",
+      "state": "expanded",
+      "geometry": {
+        "root": {
+          "x": 973,
+          "y": 697.171875,
+          "width": 224,
+          "height": 560
+        },
+        "logo": {
+          "x": 1065,
+          "y": 441.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 889,
+          "y": 441.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 1060.203125,
+          "y": 916.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 1057,
+            "y": 514.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 546.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1036,
+            "y": 578.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1036,
+            "y": 610.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1036,
+            "y": 642.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 674.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 706.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 784.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 816.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 848.359375,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 1057,
+          "y": 953.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "state": "collapsed",
+      "geometry": {
+        "root": {
+          "x": 1057,
+          "y": 685.171875,
+          "width": 56,
+          "height": 560
+        },
+        "logo": {
+          "x": 1057,
+          "y": 425.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 1057,
+          "y": 457.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 1057,
+          "y": 904.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 1057,
+            "y": 501.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 533.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 565.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 597.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 645.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 677.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 709.171875,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 1057,
+          "y": 941.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "state": "expanded",
+      "geometry": {
+        "root": {
+          "x": 973,
+          "y": 697.171875,
+          "width": 224,
+          "height": 560
+        },
+        "logo": {
+          "x": 1065,
+          "y": 441.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 889,
+          "y": 441.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 1060.203125,
+          "y": 916.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 1057,
+            "y": 514.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 546.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1036,
+            "y": 578.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1036,
+            "y": 610.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1036,
+            "y": 642.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 674.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 706.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 784.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 816.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 848.359375,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 1057,
+          "y": 953.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "state": "collapsed",
+      "geometry": {
+        "root": {
+          "x": 1057,
+          "y": 685.171875,
+          "width": 56,
+          "height": 560
+        },
+        "logo": {
+          "x": 1057,
+          "y": 425.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 1057,
+          "y": 457.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 1057,
+          "y": 904.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 1057,
+            "y": 501.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 533.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 565.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 597.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 645.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 677.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 1057,
+            "y": 709.171875,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 1057,
+          "y": 941.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "state": "expanded",
+      "geometry": {
+        "root": {
+          "x": 467,
+          "y": 697.171875,
+          "width": 224,
+          "height": 560
+        },
+        "logo": {
+          "x": 375,
+          "y": 441.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 551,
+          "y": 441.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 379.796875,
+          "y": 916.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 383,
+            "y": 514.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 546.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 404,
+            "y": 578.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 404,
+            "y": 610.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 404,
+            "y": 642.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 674.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 706.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 784.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 816.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 848.359375,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 383,
+          "y": 953.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "state": "collapsed",
+      "geometry": {
+        "root": {
+          "x": 383,
+          "y": 685.171875,
+          "width": 56,
+          "height": 560
+        },
+        "logo": {
+          "x": 383,
+          "y": 425.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 383,
+          "y": 457.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 383,
+          "y": 904.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 383,
+            "y": 501.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 533.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 565.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 597.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 645.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 677.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 709.171875,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 383,
+          "y": 941.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "state": "expanded",
+      "geometry": {
+        "root": {
+          "x": 467,
+          "y": 697.171875,
+          "width": 224,
+          "height": 560
+        },
+        "logo": {
+          "x": 375,
+          "y": 441.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 551,
+          "y": 441.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 379.796875,
+          "y": 916.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 383,
+            "y": 514.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 546.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 404,
+            "y": 578.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 404,
+            "y": 610.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 404,
+            "y": 642.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 674.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 706.765625,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 784.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 816.359375,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 848.359375,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 383,
+          "y": 953.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "state": "collapsed",
+      "geometry": {
+        "root": {
+          "x": 383,
+          "y": 685.171875,
+          "width": 56,
+          "height": 560
+        },
+        "logo": {
+          "x": 383,
+          "y": 425.171875,
+          "width": 24,
+          "height": 24
+        },
+        "toggle": {
+          "x": 383,
+          "y": 457.171875,
+          "width": 40,
+          "height": 32
+        },
+        "avatar": {
+          "x": 383,
+          "y": 904.375,
+          "width": 33.59375,
+          "height": 33.59375
+        },
+        "icons": [
+          {
+            "x": 383,
+            "y": 501.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 533.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 565.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 597.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 645.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 677.171875,
+            "width": 24,
+            "height": 24
+          },
+          {
+            "x": 383,
+            "y": 709.171875,
+            "width": 24,
+            "height": 24
+          }
+        ],
+        "action": {
+          "x": 383,
+          "y": 941.171875,
+          "width": 24,
+          "height": 24
+        }
+      }
+    }
+  ],
+  "dashboardGeometry": {
+    "root": {
+      "x": 1412,
+      "width": 56
+    },
+    "logo": {
+      "x": 1412,
+      "width": 24
+    },
+    "toggle": {
+      "x": 1412,
+      "width": 40
+    },
+    "avatar": {
+      "x": 1412,
+      "width": 33.59375
+    },
+    "icons": [
+      {
+        "x": 1412,
+        "width": 24
+      },
+      {
+        "x": 1412,
+        "width": 24
+      },
+      {
+        "x": 1412,
+        "width": 24
+      }
+    ]
+  },
+  "checks": [
+    "short rail keyboard scrolling retains header/footer and centers; disclosure/focus, long-label counts and both motion settings",
+    "300px-high rich mobile Sheet scrolls, contains footer, hands destination focus after dismissal and restores trigger on Escape",
+    "dashboard actual logo/toggle/icons/avatar boxes share the same rail axis; real three destinations retained"
+  ],
+  "errors": []
+}

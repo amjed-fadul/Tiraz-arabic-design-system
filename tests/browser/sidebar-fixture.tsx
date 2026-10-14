@@ -6,6 +6,7 @@ import {
   defaultConfig,
   Sidebar,
   SidebarHeader,
+  SidebarIdentity,
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
@@ -76,10 +77,10 @@ export function Fixture() {
             style={{ height: 300 }}
           >
             <SidebarHeader>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <SidebarIdentity>
                 <BookOpen aria-hidden="true" />
                 <SidebarLabel>طِراز · Tiraz</SidebarLabel>
-              </div>
+              </SidebarIdentity>
               <SidebarToggle
                 collapseLabel="Collapse navigation"
                 expandLabel="Expand navigation"
@@ -117,7 +118,9 @@ export function Fixture() {
               </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-              <Avatar name="Sara" fallback="SA" />
+              <SidebarIdentity>
+                <Avatar name="Sara" fallback="SA" />
+              </SidebarIdentity>
               <SidebarAction
                 label="Details"
                 icon={<Info size={18} />}

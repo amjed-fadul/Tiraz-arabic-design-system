@@ -113,11 +113,11 @@ export function ApiReference({
         ),
       ],
       [
-        "SidebarHeader / SidebarContent / SidebarFooter",
-        "native div / nav / div props/ref",
+        "SidebarHeader / SidebarContent / SidebarFooter / SidebarIdentity",
+        "native div / nav / div / div props/ref",
         t(
-          "فتحات بسيطة. سمّ عنصر nav. استخدم SidebarLabel للنص المخفي في الشريط.",
-          "Simple slots. Name the nav. Use SidebarLabel for text hidden in the rail.",
+          "سمّ nav. ركّب الأيقونة أو الصورة وSidebarLabel داخل SidebarIdentity. الرأس أفقي ويصبح عموديًا في الشريط؛ التذييل يوسّط الصورة نفسها.",
+          "Name the nav. Compose icon/avatar + SidebarLabel in SidebarIdentity. Header aligns identity and toggle in a row, stacking them in the rail; footer identity centers the avatar box.",
         ),
       ],
       [

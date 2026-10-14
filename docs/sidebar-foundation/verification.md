@@ -92,3 +92,10 @@ refreshes ran concurrently. No production workaround or timeout increase was
 introduced; limiting the full suite to four workers and running browser sweeps
 after source edits, sequentially, passed. The new grouping test's TypeScript
 option and the new browser script's documentation-drawer selector were corrected.
+
+## Follow-up shared layout corrections
+
+See [corrections verification](corrections/verification.md) for the final current
+layout, 366-test result, expanded library example, exact center measurements,
+before/after images and clean independent re-review. The working branch and
+preview port remain unchanged.

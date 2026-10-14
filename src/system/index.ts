@@ -38,6 +38,7 @@ export * from "./Charts";
 export {
   Sidebar,
   SidebarHeader,
+  SidebarIdentity,
   SidebarContent,
   SidebarFooter,
   SidebarLabel,

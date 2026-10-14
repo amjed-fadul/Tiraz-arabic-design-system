@@ -19,3 +19,15 @@ English at 1440px and 390px. Six implemented groups remain expanded and compact,
 with no navigation horizontal overflow. Page URLs/selection are preserved;
 mobile selection dismisses the drawer and restores its trigger. Two focused
 grouping tests passed. No reviewer edits.
+
+## Shared layout and richer example correction
+
+Independent review: clean. Exact logo/toggle/icon/avatar/action centers in all
+four language/theme combinations; expanded header row; no reserved rail heading
+gap. Rich sample has seven top-level entries, three children and real local
+content/actions. 390×300 Sheet has 43px usable scrolling height and a contained
+footer; Settings dismissal focuses its destination. Names/focus, scrolling,
+native history, reduced motion and copied code/prompts pass. Eighteen focused
+tests pass. Final re-review independently sampled width-motion frames: zero
+horizontal navigation-icon movement, all settled centers aligned, no actionable
+findings. No reviewer edits.

@@ -35,3 +35,26 @@ Files and AI patterns have no implemented page and remain absent.
 - [x] Add documentation group metadata and render in the existing desktop/mobile menu.
 - [x] Check page coverage/selection/localization, browser scrolling/layout, full
       verification, independent review and local commit. Keep preview on 5212.
+
+## Shared Sidebar correction
+
+User specifies a single expanded header row (branding at inline-start, toggle at
+inline-end), logo then expand toggle in the rail, no empty gap before navigation,
+and one rail axis for actual logo/toggle/icon/avatar/action boxes. Fix shared
+slots, not example offsets. Add a small native SidebarIdentity slot for both
+branding and account composition; hide collapsed label space inside it. Header
+owns row/stack layout; footer remains fixed, navigation scrolls. Rail scrollbars
+must not shift icons off-axis. Dashboard retains its three destinations.
+
+Documentation: seven top-level entries (Overview, expandable Library, Documents,
+People, Activity, Notifications, Settings) in two named groups. Library has three
+children, one initially active. Static documents/contributors and local reminders
+supply real counts; selected content, reminder clearing, summaries and account
+information are real local actions, with no service or persistence claim.
+
+- [x] Capture before state and failing geometry/sample regressions.
+- [x] Fix shared identity/header/footer/rail styling; synchronize exports/API/AI.
+- [x] Expand the portable example and generated snippets; retain native links,
+      history and mobile post-dismissal focus.
+- [x] Local geometry + keyboard + short/mobile + reduced-motion checks, full
+      suite/build/lint/format, independent review/fixes/re-review and local commit.

@@ -97,6 +97,19 @@ export function SidebarHeader({
 }: ComponentPropsWithRef<"div">) {
   return <div {...props} className={`tz-sidebar-header ${className}`} />;
 }
+/** Compose an icon/avatar and SidebarLabel without retaining rail text spacing. */
+export function SidebarIdentity({
+  className = "",
+  ...props
+}: ComponentPropsWithRef<"div">) {
+  return (
+    <div
+      {...props}
+      data-sidebar-identity=""
+      className={`tz-sidebar-identity ${className}`}
+    />
+  );
+}
 export function SidebarContent({
   className = "",
   ...props

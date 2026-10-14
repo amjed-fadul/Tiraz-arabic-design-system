@@ -234,3 +234,14 @@ The local SidebarExample uses stable `idPrefix` note URLs and follows native has
 history/reloads. Its default is `tiraz-sidebar`; supply distinct stable prefixes
 when mounting multiple examples. Keep modified clicks native; apply same-page
 selection/dismissal/focus only for unmodified primary clicks.
+
+Compose branding and account icon/avatar + SidebarLabel inside SidebarIdentity
+(native div attributes/ref). SidebarHeader places identity and toggle on opposite
+ends of a direction-aware row; the rail stacks centered logo then expand toggle.
+Footer identity centers the actual avatar box. Rail headings/label spacing and
+scrollbar width are removed while native navigation scrolling remains available.
+The richer SidebarExample has seven top-level entries in two groups, three library
+children and initially active Components. Documents/People/Notifications counts
+come from local sample lists. Selection, recent activity, reminder clearing,
+summary preferences and account details change real local content. These are
+fictional library examples, not services or saved product data.
