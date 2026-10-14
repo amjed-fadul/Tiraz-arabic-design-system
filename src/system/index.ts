@@ -56,3 +56,9 @@ export type {
   SidebarToggleProps,
   SidebarDisclosureProps,
 } from "./Sidebar";
+export { TagInput } from "./TagInput";
+export type { TagInputProps, TagInputLabels } from "./TagInput";
+export { FilterBar } from "./FilterBar";
+export type { FilterBarProps, FilterBarFilter } from "./FilterBar";
+export { InputCopy } from "./InputCopy";
+export type { InputCopyProps, InputCopyLabels } from "./InputCopy";

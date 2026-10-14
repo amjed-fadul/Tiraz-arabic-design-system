@@ -14,6 +14,39 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const mode of ["controlled", "uncontrolled"] as const) {
+    cases.push([
+      "tag-input",
+      {
+        ...p["tag-input"],
+        mode,
+        maxTags: 0,
+        disabled: true,
+        readOnly: true,
+        error: "Application error",
+      },
+    ]);
+  }
+  cases.push(
+    [
+      "input-copy",
+      {
+        ...p["input-copy"],
+        disabled: true,
+        error: "Application error",
+        value: "Long value",
+      },
+    ],
+    [
+      "filter-bar",
+      {
+        ...p["filter-bar"],
+        initialKind: "note",
+        initialQuery: "Design",
+        clearAll: false,
+      },
+    ],
+  );
   for (const mode of ["controlled", "uncontrolled"] as const)
     for (const collapsed of [false, true])
       cases.push([
@@ -219,6 +252,29 @@ it("type-checks copied code for every component, state mode and composition pres
           language,
         ),
       );
+  sources.set(
+    `${root}/src/__generated_entries_contract.tsx`,
+    `
+    import { Field, TagInput, InputCopy, FilterBar } from "./system";
+    <TagInput label="Tags" defaultValue={["One"]}/>;
+    <Field label="Tags">{field => <TagInput field={field}/>}</Field>;
+    <InputCopy label="Path" value="src/system"/>;
+    <Field label="Path">{field => <InputCopy field={field} value="src/system"/>}</Field>;
+    <FilterBar label="Filters" filters={[{id:"one",label:"One",removeLabel:"Remove one",onRemove:()=>{}}]}/>;
+    // @ts-expect-error mutually exclusive naming modes
+    <TagInput label="Tags" field={{id:"x","aria-labelledby":"y"}}/>;
+    // @ts-expect-error no native required tag validation
+    <TagInput label="Tags" required/>;
+    // @ts-expect-error value is an array
+    <TagInput label="Tags" value="One"/>;
+    // @ts-expect-error underlying copy value is required
+    <InputCopy label="Path"/>;
+    // @ts-expect-error helper requires labeled convenience mode
+    <InputCopy helper="Help" value="Path"/>;
+    // @ts-expect-error filter remove action needs accessible name
+    <FilterBar label="Filters" filters={[{id:"one",label:"One",onRemove:()=>{}}]}/>;
+  `,
+  );
   sources.set(
     `${root}/src/__generated_input_contract.tsx`,
     `

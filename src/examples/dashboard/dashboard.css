@@ -181,18 +181,14 @@
   margin-block-end: var(--space-4) !important;
 }
 .dashboard-filters {
-  display: flex;
-  gap: var(--space-3);
   margin-block-end: var(--space-4);
-  align-items: center;
-  flex-wrap: wrap;
 }
-.dashboard-filters > .tz-input {
+.dashboard-filters .tz-filter-search {
   max-inline-size: 320px;
   flex: 1 1 180px;
   min-inline-size: 0;
 }
-.dashboard-filters > .tz-select .tz-select-trigger {
+.dashboard-filters .tz-select .tz-select-trigger {
   inline-size: 136px;
 }
 .dashboard-customer {
@@ -323,7 +319,7 @@
     align-items: flex-start;
     gap: var(--space-2);
   }
-  .dashboard-filters > .tz-input {
+  .dashboard-filters .tz-filter-search {
     max-inline-size: none;
     flex-basis: 100%;
   }

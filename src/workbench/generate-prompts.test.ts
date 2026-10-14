@@ -101,6 +101,9 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "StructureExamples",
       "ChartExamples",
       "SidebarExamples",
+      "TagInputExamples",
+      "FilterBarExamples",
+      "InputCopyExamples",
     ]) {
       const path = `src/system/ai/examples/${name}.tsx`;
       const outputPath = join(first, path + "?raw");

@@ -192,3 +192,31 @@ it("preserves the current dashboard destination and focus on modified native lin
   expect(overview).toHaveAttribute("aria-current", "page");
   expect(orders).toHaveFocus();
 });
+
+it("uses FilterBar to remove individual customer filters while preserving sorting and page reset", async () => {
+  const user = await setup();
+  const filters = within(
+    screen.getByRole("group", { name: "Customer filters" }),
+  );
+  await user.click(
+    screen.getByRole("button", { name: "Sort Customer ascending" }),
+  );
+  await user.click(screen.getByRole("button", { name: "Next" }));
+  await user.type(screen.getByRole("searchbox"), "madar");
+  await select(user, "Customer status", "Paused");
+  expect(customerTable()).toHaveTextContent("No matching customers");
+  await user.click(
+    filters.getByRole("button", { name: "Remove customer status" }),
+  );
+  expect(customerTable()).toHaveTextContent("شركة مدار");
+  expect(customerTable().querySelector("th[aria-sort]")).toHaveAttribute(
+    "aria-sort",
+    "ascending",
+  );
+  await user.click(
+    filters.getByRole("button", { name: "Remove customer search" }),
+  );
+  expect(screen.getByRole("searchbox")).toHaveFocus();
+  expect(screen.getByText("1–6 of 18 customers")).toBeInTheDocument();
+  expect(filters.queryByRole("button", { name: "Clear filters" })).toBeNull();
+});

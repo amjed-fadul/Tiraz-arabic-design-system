@@ -2,7 +2,7 @@ import { mergeDescriptionIds } from "./control-associations";
 import { useId } from "react";
 import type { ReactNode } from "react";
 
-/** Explicit association contract for exactly one Input, Select or Textarea. */
+/** Explicit association contract for exactly one compatible Tiraz control. */
 export interface FieldControlProps {
   id: string;
   "aria-labelledby": string;

@@ -264,3 +264,32 @@ children and initially active Components. Documents/People/Notifications counts
 come from local sample lists. Selection, recent activity, reminder clearing,
 summary preferences and account details change real local content. These are
 fictional library examples, not services or saved product data.
+
+## Tags and list filters
+
+Compose TagInput with a label/helper/error or exactly one external Field. Enter
+commits trimmed strings; duplicates use exact case-sensitive matching. Keep IME,
+selection and plain paste native. Ref/className/style target the draft input,
+whose onChange is separate from array onValueChange. Submit committed arrays with
+repeated name entries; use FormData.getAll. Draft is omitted, disabled omits values,
+read-only submits. Uncontrolled reset restores initial tags without callback after
+cancellation checks; reset controlled arrays in the host onReset. No native
+required-tag validation or autocomplete. labels translates built-in feedback.
+
+FilterBar is layout and removable active chips. Put existing Input in search and
+Select/Button in children. Supply stable filter ids, label, removeLabel and
+onRemove; optional onClearAll/clearLabel. Own all filtering, counts and page resets.
+Disable composed controls yourself when disabling removal/Clear. Focus after
+removal goes to the next chip, a control or the group. Preserve the dashboard's
+customer reveal and clear behavior; no additional dashboard data model.
+
+Compose InputCopy for a real value supplied by the application. Field naming and
+native selection match Input; ref remains on the read-only input. Copy full value
+with navigator.clipboard.writeText and report success only after resolution.
+Translate copy/copied/failure with labels. On failure keep the selectable input;
+never manufacture success or add execCommand. Replacing value or unmounting cancels
+pending results/timers. [TagInputExamples](examples/TagInputExamples.tsx),
+[FilterBarExamples](examples/FilterBarExamples.tsx) and
+[InputCopyExamples](examples/InputCopyExamples.tsx)
+show local form values, filtering three actual sample documents and copying real
+source paths. Examples do not persist data or pretend to run services.

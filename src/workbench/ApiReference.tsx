@@ -95,6 +95,116 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "tag-input": [
+      [
+        "value / defaultValue / onValueChange",
+        "string[] / string[] / (next: string[]) => void",
+        t(
+          "قيمة مضبوطة أو داخلية. Enter يضيف النص المشذّب؛ التكرار حساس لحالة الأحرف.",
+          "Controlled or internal array. Enter adds trimmed text; duplicates use exact case-sensitive comparison.",
+        ),
+      ],
+      [
+        "label / helper / error / field",
+        "Input-style Field contract",
+        t(
+          "وضع التسمية أو Field مستقل، دون الجمع بينهما. ref والسمات والأحداث على حقل النص.",
+          "Use labeled convenience mode or separate Field composition. Ref, attributes and editing events target the draft input.",
+        ),
+      ],
+      [
+        "maxTags / disabled / readOnly / size / invalid / labels",
+        "number / boolean / boolean / sm | md / boolean / TagInputLabels",
+        t(
+          "حد اختياري صحيح غير سالب؛ القيم غير المحدودة تُتجاهل. labels تترجم الحذف والتكرار والحد. sm افتراضي.",
+          "Optional nonnegative integer cap; nonfinite values are ignored. labels translates removal, duplicate and maximum feedback. sm default.",
+        ),
+      ],
+      [
+        "name / form / reset",
+        "native form association",
+        t(
+          "حقول مخفية بالاسم نفسه ترسل الوسوم المؤكدة فقط. المعطّل لا يُرسل؛ القراءة فقط تُرسل. إعادة الضبط غير المضبوطة تعود إلى defaultValue دون callback وتحترم الإلغاء؛ القيمة المضبوطة تحتاج onReset من التطبيق.",
+          "Repeated hidden fields submit only committed tags. Disabled omits values; read-only submits. Uncontrolled reset restores initial defaultValue without callback and respects cancellation. Controlled reset needs application onReset.",
+        ),
+      ],
+      [
+        "Keyboard / paste / validation",
+        "native text editing",
+        t(
+          "Backspace الفارغ يحذف الأخير؛ الحذف يُركّز حقل النص. Enter أثناء IME لا يضيف. اللصق نص فقط. لا تحقق أصلي مطلوب للوسوم، أو تحليل دفعي أو إكمال تلقائي.",
+          "Empty Backspace removes the last tag; removal focuses the input. IME Enter does not add. Paste stays text. No tag required/native validation, bulk parsing or autocomplete.",
+        ),
+      ],
+    ],
+    "input-copy": [
+      [
+        "value",
+        "string · required",
+        t(
+          "قيمة للقراءة والتحديد؛ زر النسخ ينسخ القيمة كاملة.",
+          "Read-only selectable text; copy writes the full underlying value.",
+        ),
+      ],
+      [
+        "label / helper / error / field",
+        "Input-style Field contract",
+        t(
+          "وضع تسمية أو تركيب Field؛ اسم واضح مطلوب عند غياب التسمية. ref والسمات على input.",
+          "Labeled mode or Field composition; supply an accessible name without label. Ref and native attributes target input.",
+        ),
+      ],
+      [
+        "size / invalid / labels / disabled",
+        "sm | md / boolean / InputCopyLabels / boolean",
+        t(
+          "labels: copy وcopied وfailure. sm افتراضي؛ المعطّل يعطّل النص والنسخ.",
+          "labels: copy, copied and failure. sm default; disabled disables text and copy.",
+        ),
+      ],
+      [
+        "Clipboard / lifecycle",
+        "navigator.clipboard.writeText",
+        t(
+          "النجاح يُعلن بعد اكتمال النسخ ويزول بعد ثانيتين. الفشل يبقى لإرشاد النسخ اليدوي. تغيير القيمة أو إلغاء التركيب يلغي النتائج المؤجلة والمؤقتات.",
+          "Success is announced after writing and clears after two seconds. Failure persists for manual copying. Value replacement/unmount cancels pending feedback and timers.",
+        ),
+      ],
+    ],
+    "filter-bar": [
+      [
+        "label / search / children",
+        "string · required / ReactNode / ReactNode",
+        t(
+          "مجموعة مسماة؛ ركّب Input وSelect وButton بالخصائص الأصلية.",
+          "Named group; compose Input, Select and Button using their own APIs.",
+        ),
+      ],
+      [
+        "filters",
+        "FilterBarFilter[] · []",
+        t(
+          "معرّف ثابت، label وremoveLabel وonRemove لكل عامل نشط. احرص على أسماء واضحة.",
+          "Stable id, label, removeLabel and onRemove for each active filter. Supply meaningful accessible names.",
+        ),
+      ],
+      [
+        "onClearAll / clearLabel / disabled",
+        "() => void / string / boolean",
+        t(
+          "إجراء اختياري يظهر عند وجود عوامل؛ التطبيق يملك جميع قيم التصفية. disabled يعطّل إزالة العوامل فقط؛ عطّل عناصر التحكم بنفسك.",
+          "Optional Clear all appears with active filters. Application owns all filter values. disabled affects removal/Clear only; disable composed controls yourself.",
+        ),
+      ],
+      [
+        "Native props / focus / results",
+        "div attributes/ref",
+        t(
+          "صفوف تلتف، وعوامل طويلة لا تتداخل. الإزالة تنقل التركيز إلى العامل التالي أو التحكم أو المجموعة. التطبيق يملك البحث والتصفية وعدد النتائج.",
+          "Wrapping rows keep long filters separate. Removal focuses the next filter, a control or the group. Application owns search, filtering and result counts.",
+        ),
+      ],
+    ],
     sidebar: [
       [
         "Sidebar",

@@ -1,0 +1,8 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz
+
+
+ Test Files  5 passed (5)
+      Tests  26 passed (26)
+   Start at  20:49:35
+   Duration  5.74s (tests 54%, environment 25%, import 9%, transform 7%, setup 4%)

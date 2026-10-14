@@ -479,6 +479,42 @@
     {
       "name": "SidebarIdentity",
       "source": "Sidebar.tsx"
+    },
+    {
+      "name": "TagInput",
+      "source": "TagInput.tsx"
+    },
+    {
+      "name": "TagInputProps",
+      "source": "TagInput.tsx"
+    },
+    {
+      "name": "TagInputLabels",
+      "source": "TagInput.tsx"
+    },
+    {
+      "name": "FilterBar",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarProps",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarFilter",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "InputCopy",
+      "source": "InputCopy.tsx"
+    },
+    {
+      "name": "InputCopyProps",
+      "source": "InputCopy.tsx"
+    },
+    {
+      "name": "InputCopyLabels",
+      "source": "InputCopy.tsx"
     }
   ],
   "configuration": {
@@ -546,6 +582,286 @@
     }
   },
   "components": [
+    {
+      "id": "tag-input",
+      "api": "TagInput",
+      "source": "TagInput.tsx",
+      "exports": ["TagInput", "TagInputProps", "TagInputLabels"],
+      "examples": ["ai/examples/TagInputExamples.tsx"],
+      "providers": [
+        "SystemProvider for shared direction, theme, accent, density, typography, corners and reduced motion."
+      ],
+      "purpose": "Enter a string array with native text editing.",
+      "useWhen": "Several free-text tags in one labeled field.",
+      "alternative": "Input for one string; Select for a predefined single choice.",
+      "props": [
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string[]",
+          "required": false,
+          "default": []
+        },
+        {
+          "name": "onValueChange",
+          "type": "(next: string[]) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "maxTags",
+          "type": "number",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "TagInputLabels",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native input attributes/ref/events except value/defaultValue/type/children/size/required. label/helper/error or field are mutually exclusive; helper/error require label. Draft is internal; onChange observes native draft editing. name/form associate repeated hidden committed tag entries, never the draft.",
+      "state": "value/onValueChange controls the array; omit value for internal state initialized once by defaultValue. Enter trims candidate and rejects empty/exact case-sensitive duplicates. maxTags finite floors/clamps to zero; nonfinite means no cap. Externally supplied arrays are authoritative and never silently normalized or truncated.",
+      "events": [
+        "onValueChange only for user add/remove, not reset. Native input events preserve editing and may prevent default keyboard behavior."
+      ],
+      "accessibility": [
+        "Field helper/error and external description IDs are merged; supply standalone native/ARIA label when omitting label.",
+        "IME composition Enter is ignored. Empty Backspace removes the last tag; remove buttons focus the text input. Disabled/readOnly prevent changes. labels can translate remove(tag), duplicate and maximum(count); defaults follow direction."
+      ],
+      "limitations": [
+        "No autocomplete, bulk paste parsing, validation engine or required tag API.",
+        "Submission uses repeated hidden name entries; disabled tags omitted, read-only tags included, draft omitted. Uncontrolled reset restores initial defaultValue without callback after respecting cancellation; controlled arrays need application onReset. Unconfirmed draft and feedback clear on uncanceled reset."
+      ]
+    },
+    {
+      "id": "filter-bar",
+      "api": "FilterBar",
+      "source": "FilterBar.tsx",
+      "exports": ["FilterBar", "FilterBarProps", "FilterBarFilter"],
+      "examples": ["ai/examples/FilterBarExamples.tsx"],
+      "providers": [
+        "SystemProvider for shared direction, theme, accent, density, typography, corners and reduced motion."
+      ],
+      "purpose": "Compose search controls and removable active filters.",
+      "useWhen": "Controls above an application-owned list or table.",
+      "alternative": "Input/Select/Button separately when active filter chips are not needed.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "search",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "filters",
+          "type": "FilterBarFilter[]",
+          "required": false,
+          "default": []
+        },
+        {
+          "name": "onClearAll",
+          "type": "() => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native div attributes/ref except aria-label. Root role=group; label supplies its accessible name. search is a ReactNode slot and children is a controls slot; reuse existing control APIs. FilterBarFilter: required unique stable id:string, label:string, removeLabel:string, onRemove:()=>void.",
+      "state": "Application owns filters, search, filtering, result counts and reset logic. filters defaults empty. Optional Clear all renders only while filters exist; clearLabel defaults by provider direction. disabled prevents removal/Clear only; application disables composed controls.",
+      "accessibility": [
+        "Chips have explicit remove names, labels wrap and controls wrap responsively. Focus moves to next remove action, first available control or root group before removal. Clear all returns focus to a control/group."
+      ],
+      "limitations": [
+        "No filtering engine, data fetching, persistence, control API duplication or toolbar keyboard model."
+      ]
+    },
+    {
+      "id": "input-copy",
+      "api": "InputCopy",
+      "source": "InputCopy.tsx",
+      "exports": ["InputCopy", "InputCopyProps", "InputCopyLabels"],
+      "examples": ["ai/examples/InputCopyExamples.tsx"],
+      "providers": [
+        "SystemProvider for shared direction, theme, accent, density, typography, corners and reduced motion."
+      ],
+      "purpose": "Read-only selectable value with an adjacent copy action.",
+      "useWhen": "Copy paths, identifiers or links the application actually provides.",
+      "alternative": "Input for editable text.",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "InputCopyLabels",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native input props/ref except value/defaultValue/type/children/size/readOnly/onChange. Always read-only. label/helper/error convenience mode is mutually exclusive with field; helper/error require label. Ref, name/form, selection events, className/style target input.",
+      "state": "Success only after navigator.clipboard.writeText resolves; announced/visible for two seconds. Rejection/unavailable clipboard reports persistent manual-copy guidance. Value replacement/unmount invalidate pending results and clear timers/feedback. No synthetic success.",
+      "accessibility": [
+        "Native selectable input remains usable for manual copying. Field associations match Input. Supply an accessible input name in standalone mode and labels.copy for a context-specific action. labels.copied/failure translate status; defaults follow direction."
+      ],
+      "limitations": [
+        "Clipboard availability/permission belongs to browser; no deprecated execCommand fallback or automatic permission flow."
+      ]
+    },
     {
       "id": "sidebar",
       "api": "Sidebar",
@@ -1120,7 +1436,7 @@
       "api": "Field",
       "source": "Field.tsx",
       "exports": ["Field", "FieldProps", "FieldControlProps"],
-      "purpose": "Lower-level label/helper/error composition for one Input, Select or Textarea; documented under Input and still publicly exported.",
+      "purpose": "Lower-level label/helper/error composition for one Input, Select, Textarea, TagInput or InputCopy; documented under Input and still publicly exported.",
       "useWhen": "Label an Input or Select with persistent application validation feedback.",
       "alternative": "Standalone Input/Select accepts external native labels or ARIA naming.",
       "props": [

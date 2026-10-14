@@ -1,0 +1,11 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz
+
+
+ Test Files  45 passed (45)
+      Tests  390 passed (390)
+   Start at  20:50:57
+   Duration  28.68s (tests 59%, environment 20%, import 14%, setup 4%, transform 3%)
+
+    Isolate  45 workers spawned · ~581ms startup each (spawn + environment, per file)
+             at least ~5.96s faster with isolate: false — reuses workers across files instead of one per file

@@ -1,3 +1,6 @@
+import tagSource from "../system/ai/examples/TagInputExamples.tsx?raw";
+import filterSource from "../system/ai/examples/FilterBarExamples.tsx?raw";
+import copySource from "../system/ai/examples/InputCopyExamples.tsx?raw";
 import sidebarSource from "../system/ai/examples/SidebarExamples.tsx?raw";
 import type { SidebarModel } from "./model";
 import { generateChartCode } from "./generate-charts";
@@ -57,6 +60,33 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (["tag-input", "filter-bar", "input-copy"].includes(component)) {
+    const name =
+      component === "tag-input"
+        ? "TagInputExample"
+        : component === "filter-bar"
+          ? "FilterBarExample"
+          : "InputCopyExample";
+    const entrySource =
+      component === "tag-input"
+        ? tagSource
+        : component === "filter-bar"
+          ? filterSource
+          : copySource;
+    const source = entrySource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() { return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}} /></SystemProvider></div>; }
+`;
+  }
   if (component === "sidebar") {
     const p = model as SidebarModel;
     const source = sidebarSource.replace(

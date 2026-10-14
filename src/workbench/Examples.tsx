@@ -1,3 +1,9 @@
+import { TagInputExample } from "../system/ai/examples/TagInputExamples";
+import { FilterBarExample } from "../system/ai/examples/FilterBarExamples";
+import {
+  InputCopyExample,
+  EntryCompositionExample,
+} from "../system/ai/examples/InputCopyExamples";
 import { SidebarExamples } from "../system/ai/examples/SidebarExamples";
 import { lazy, Suspense } from "react";
 import type { ChartKind } from "../system/ai/examples/ChartExamples";
@@ -175,6 +181,29 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "tag-input")
+    return (
+      <TagInputExample language={language} mode="uncontrolled" maxTags={3} />
+    );
+  if (component === "filter-bar")
+    return <FilterBarExample language={language} initialKind="guide" />;
+  if (component === "input-copy")
+    return (
+      <div
+        style={{
+          display: "grid",
+          gap: 16,
+          inlineSize: "100%",
+          minInlineSize: 0,
+        }}
+      >
+        <InputCopyExample
+          language={language}
+          value="src/system/ai/examples/InputCopyExamples.tsx"
+        />
+        <EntryCompositionExample language={language} />
+      </div>
+    );
   if (component === "sidebar") return <SidebarExamples language={language} />;
   if (component.endsWith("-chart"))
     return (

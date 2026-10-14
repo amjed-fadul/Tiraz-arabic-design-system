@@ -1,3 +1,7 @@
+import { TagInputExample } from "../system/ai/examples/TagInputExamples";
+import { FilterBarExample } from "../system/ai/examples/FilterBarExamples";
+import { InputCopyExample } from "../system/ai/examples/InputCopyExamples";
+import type { TagInputModel, FilterBarModel, InputCopyModel } from "./model";
 import { SidebarExample } from "../system/ai/examples/SidebarExamples";
 import type { SidebarModel } from "./model";
 import { lazy, Suspense } from "react";
@@ -146,6 +150,18 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "tag-input")
+    return (
+      <TagInputExample language={language} {...(model as TagInputModel)} />
+    );
+  if (component === "filter-bar")
+    return (
+      <FilterBarExample language={language} {...(model as FilterBarModel)} />
+    );
+  if (component === "input-copy")
+    return (
+      <InputCopyExample language={language} {...(model as InputCopyModel)} />
+    );
   if (component === "sidebar") {
     const p = model as SidebarModel;
     return (

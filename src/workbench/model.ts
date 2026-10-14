@@ -221,7 +221,32 @@ export interface SidebarModel {
   mode: "controlled" | "uncontrolled";
   longLabels: boolean;
 }
+export interface TagInputModel {
+  label: string;
+  helper: string;
+  error: string;
+  placeholder: string;
+  maxTags: number;
+  disabled: boolean;
+  readOnly: boolean;
+  mode: "controlled" | "uncontrolled";
+}
+export interface InputCopyModel {
+  label: string;
+  value: string;
+  helper: string;
+  error: string;
+  disabled: boolean;
+}
+export interface FilterBarModel {
+  initialQuery: string;
+  initialKind: "all" | "guide" | "note";
+  clearAll: boolean;
+}
 export interface Playgrounds {
+  "tag-input": TagInputModel;
+  "input-copy": InputCopyModel;
+  "filter-bar": FilterBarModel;
   sidebar: SidebarModel;
   "line-chart": ChartModel;
   "area-chart": ChartModel;
@@ -271,6 +296,30 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "tag-input": {
+      label: t("وسوم الملاحظات", "Note tags"),
+      helper: t(
+        "Enter يضيف وسمًا. النص غير المؤكد لا يُرسل.",
+        "Enter adds a tag. Uncommitted text is not submitted.",
+      ),
+      error: "",
+      placeholder: t("أضف وسمًا…", "Add a tag…"),
+      maxTags: 5,
+      disabled: false,
+      readOnly: false,
+      mode: "controlled",
+    },
+    "input-copy": {
+      label: t("مسار المصدر", "Source path"),
+      value: "src/system/TagInput.tsx",
+      helper: t(
+        "حدّد النص أو انسخ القيمة كاملة.",
+        "Select the text or copy the full value.",
+      ),
+      error: "",
+      disabled: false,
+    },
+    "filter-bar": { initialQuery: "", initialKind: "all", clearAll: true },
     sidebar: {
       collapsed: false,
       grouped: true,
@@ -701,6 +750,17 @@ export function normalizePlaygrounds(
       )
         defaults[key] = item;
     }
+    if (component === "tag-input") {
+      const p = result[component];
+      p.maxTags = Number.isFinite(p.maxTags)
+        ? Math.max(0, Math.min(20, Math.floor(p.maxTags)))
+        : 5;
+    }
+    if (
+      component === "filter-bar" &&
+      !["all", "guide", "note"].includes(result[component].initialKind)
+    )
+      result[component].initialKind = "all";
     // Carry the old invalid preset into the single error control.
     if (
       component === "input" &&

@@ -30,6 +30,7 @@ import {
   NoRecordsIllustration,
   NoSearchResultsIllustration,
   Input,
+  FilterBar,
   Select,
   Sheet,
   Skeleton,
@@ -131,7 +132,6 @@ function DashboardContent({
   );
   const hiddenNew =
     newCustomer && !filtered.some((customer) => customer.id === newCustomer.id);
-  const hasFilters = !!query || status !== "all" || spotlightId !== null;
   function clearFilters() {
     setQuery("");
     setStatus("all");
@@ -303,11 +303,6 @@ function DashboardContent({
           "Try another name or clear your filters.",
         )}
         illustration={<NoSearchResultsIllustration />}
-        action={
-          <Button variant="secondary" onClick={clearFilters}>
-            {t("مسح التصفية", "Clear filters")}
-          </Button>
-        }
       />
     );
   const ExitArrow = language === "ar" ? ArrowUpLeft : ArrowUpRight;
@@ -597,22 +592,77 @@ function DashboardContent({
                   )}
             </span>
           </header>
-          <div className="dashboard-filters">
-            <Input
-              ref={searchRef}
-              type="search"
-              aria-label={t(
-                "البحث عن العملاء بالاسم أو البريد",
-                "Search customers by name or email",
-              )}
-              placeholder={t("ابحث بالاسم أو البريد…", "Search name or email…")}
-              disabled={blocked}
-              value={query}
-              onChange={(event) => {
-                setQuery(event.currentTarget.value);
-                setSpotlightId(null);
-              }}
-            />
+          <FilterBar
+            className="dashboard-filters"
+            label={t("تصفية العملاء", "Customer filters")}
+            disabled={blocked}
+            search={
+              <Input
+                ref={searchRef}
+                type="search"
+                aria-label={t(
+                  "البحث عن العملاء بالاسم أو البريد",
+                  "Search customers by name or email",
+                )}
+                placeholder={t(
+                  "ابحث بالاسم أو البريد…",
+                  "Search name or email…",
+                )}
+                disabled={blocked}
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.currentTarget.value);
+                  setSpotlightId(null);
+                }}
+              />
+            }
+            filters={[
+              ...(query
+                ? [
+                    {
+                      id: "query",
+                      label: query,
+                      removeLabel: t("إزالة البحث", "Remove customer search"),
+                      onRemove: () => {
+                        setQuery("");
+                        setSpotlightId(null);
+                      },
+                    },
+                  ]
+                : []),
+              ...(status !== "all"
+                ? [
+                    {
+                      id: "status",
+                      label:
+                        status === "active"
+                          ? t("نشط", "Active")
+                          : t("متوقف", "Paused"),
+                      removeLabel: t("إزالة الحالة", "Remove customer status"),
+                      onRemove: () => {
+                        setStatus("all");
+                        setSpotlightId(null);
+                      },
+                    },
+                  ]
+                : []),
+              ...(spotlightId !== null
+                ? [
+                    {
+                      id: "spotlight",
+                      label: t("العميل الجديد", "New customer"),
+                      removeLabel: t(
+                        "إزالة تحديد العميل",
+                        "Remove customer spotlight",
+                      ),
+                      onRemove: () => setSpotlightId(null),
+                    },
+                  ]
+                : []),
+            ]}
+            onClearAll={clearFilters}
+            clearLabel={t("مسح التصفية", "Clear filters")}
+          >
             <Select
               aria-label={t("حالة العميل", "Customer status")}
               disabled={blocked}
@@ -627,12 +677,7 @@ function DashboardContent({
                 { value: "paused", label: t("متوقف", "Paused") },
               ]}
             />
-            {hasFilters && filtered.length > 0 && (
-              <Button variant="ghost" onClick={clearFilters}>
-                {t("مسح التصفية", "Clear filters")}
-              </Button>
-            )}
-          </div>
+          </FilterBar>
           {hiddenNew && !blocked && (
             <Alert
               title={t(

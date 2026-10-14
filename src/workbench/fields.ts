@@ -83,6 +83,33 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "tag-input": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "المساعدة", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
+    field("maxTags", "number", "الحد الأقصى", "Maximum tags", "maxTags", {
+      min: 0,
+      max: 20,
+    }),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+    mode,
+  ],
+  "input-copy": [
+    field("label", "text", "التسمية", "Label"),
+    field("value", "text", "القيمة", "Value"),
+    field("helper", "text", "المساعدة", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
+  "filter-bar": [
+    field("initialQuery", "text", "البحث الأولي", "Initial search", "example"),
+    field("initialKind", "select", "النوع الأولي", "Initial kind", "example", {
+      options: ["all", "guide", "note"],
+    }),
+    field("clearAll", "boolean", "مسح الكل", "Clear all action", "onClearAll"),
+  ],
   sidebar: [
     field("collapsed", "boolean", "شريط أيقونات", "Icon rail"),
     field(
@@ -570,6 +597,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "tag-input": ["label", "helper", "error", "maxTags", "disabled", "readOnly"],
+  "input-copy": ["label", "value", "helper", "error", "disabled"],
+  "filter-bar": ["initialQuery", "initialKind", "clearAll"],
   sidebar: ["collapsed", "grouped", "nested", "footer", "longLabels", "mode"],
   "line-chart": ["sample", "legend", "grid"],
   "area-chart": ["sample", "legend", "grid"],
@@ -654,9 +684,11 @@ for (const component of Object.keys(commonFields) as ComponentId[])
   commonFields[component] = commonFields[component].map((f) => ({
     ...f,
     title:
-      component === "progress" && f.key === "value"
-        ? ["النسبة · %", "Value · %"]
-        : component === "sheet" && f.key === "children"
-          ? ["المحتوى", "Content"]
-          : (shortTitles[f.key] ?? f.title),
+      component === "input-copy" && f.key === "value"
+        ? ["القيمة", "Value"]
+        : component === "progress" && f.key === "value"
+          ? ["النسبة · %", "Value · %"]
+          : component === "sheet" && f.key === "children"
+            ? ["المحتوى", "Content"]
+            : (shortTitles[f.key] ?? f.title),
   }));

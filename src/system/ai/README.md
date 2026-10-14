@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-three**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart and Sidebar.
+Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-six**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar and InputCopy.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -245,3 +245,55 @@ children and initially active Components. Documents/People/Notifications counts
 come from local sample lists. Selection, recent activity, reminder clearing,
 summary preferences and account details change real local content. These are
 fictional library examples, not services or saved product data.
+
+## Tags, filter controls and copying
+
+[TagInputExamples](examples/TagInputExamples.tsx),
+[FilterBarExamples](examples/FilterBarExamples.tsx) and
+[InputCopyExamples](examples/InputCopyExamples.tsx) contain working
+local form, library-filter and copy examples. These store no backend data.
+
+TagInput accepts controlled `value: string[]` / `onValueChange` or an internal
+array initialized once from `defaultValue`. Enter adds a trimmed nonempty value;
+exact case-sensitive duplicates give feedback. IME Enter does not add. Empty
+Backspace removes the last tag; each remove button focuses the draft input.
+Paste remains native text, with no splitting, suggestions or autocomplete.
+`maxTags` is an optional finite nonnegative integer cap (floored/clamped;
+nonfinite means no cap); caller arrays remain authoritative. At capacity the
+input remains editable and removal remains available. Disabled/readOnly prevent
+addition/removal. `labels` translates remove(tag), duplicate and maximum(count);
+defaults follow direction, so provide labels if language differs from direction.
+
+TagInput shares Input's mutually exclusive label/helper/error convenience mode
+and separate `Field` / `field` composition. Without either, supply a native or
+ARIA name. External descriptions merge; ref, className/style and editing events
+belong to the draft input. `onChange` observes draft editing; `onValueChange`
+reports array additions/removals. Preventing default in onKeyDown cancels built-in
+key behavior. No required-tag/native validation API; application owns validation.
+`name` submits one hidden entry per committed tag (use FormData.getAll); the
+uncommitted draft is omitted. Disabled entries are omitted, read-only entries
+submit. Native uncanceled reset restores initial uncontrolled defaultValue without
+onValueChange; controlled arrays need application onReset. Both modes clear draft
+and feedback after uncanceled reset, including external `form` association.
+
+FilterBar is a named group (`label`) containing `search` and `children` ReactNode
+slots. Compose existing Input, Select and Button using their own props. Supply
+`filters` entries with unique stable id, label, removeLabel and onRemove; optional
+onClearAll/clearLabel appears only when active entries exist. The application owns
+values, filtering, counts and pagination reset. `disabled` affects removal/Clear
+only; disable composed controls separately. Native div attributes/ref remain.
+Controls/chips wrap. Removal focuses the next chip, available control or group;
+Clear all focuses a control/group. No engine, router, persistence or new keyboard
+model. Dashboard customers reuse this composition with the original connected
+search/status/filter reset, sorting, pagination and hidden-new-customer reveal.
+
+InputCopy requires a string value and uses the same Field convenience/composition
+contract as Input. Native attributes/ref and selection remain on a read-only
+input; copy writes the full underlying string, including visually hidden text.
+`labels` translates copy, copied and failure (defaults follow direction). Success
+appears and announces only after clipboard writing resolves, clearing after two
+seconds. Rejection/unavailable clipboard gives persistent manual-copy guidance;
+the value remains selectable. Value replacement/unmount invalidates pending
+feedback and clears timers. Disabled disables input/copy. Clipboard capability
+and permission belong to the browser; there is no execCommand fallback or
+permission manager. No native onChange/defaultValue/readOnly/type API.

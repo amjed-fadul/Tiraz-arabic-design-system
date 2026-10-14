@@ -1,6 +1,33 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "tag-input",
+    name: ["إدخال الوسوم", "TagInput"],
+    description: [
+      "قيم نصية متعددة مع إزالة واضحة وسلوك لوحة مفاتيح أصلي.",
+      "Multiple text values with explicit removal and native text editing.",
+    ],
+    file: "TagInput.tsx",
+  },
+  {
+    id: "filter-bar",
+    name: ["شريط التصفية", "FilterBar"],
+    description: [
+      "تركيب خفيف للبحث وعوامل التصفية التي يملكها التطبيق.",
+      "A lightweight composition of application-owned search and filters.",
+    ],
+    file: "FilterBar.tsx",
+  },
+  {
+    id: "input-copy",
+    name: ["إدخال النسخ", "InputCopy"],
+    description: [
+      "قيمة قابلة للتحديد مع نسخ كامل ونتيجة صادقة.",
+      "Selectable text with full-value copying and honest feedback.",
+    ],
+    file: "InputCopy.tsx",
+  },
+  {
     id: "sidebar",
     name: ["شريط التنقّل", "Sidebar"],
     description: [
@@ -316,6 +343,8 @@ const documentationGroups = [
     ids: [
       "button",
       "input",
+      "tag-input",
+      "input-copy",
       "select",
       "checkbox",
       "radio-group",
@@ -328,7 +357,11 @@ const documentationGroups = [
     name: ["التنقّل", "Navigation"],
     ids: ["sidebar", "tabs", "breadcrumbs", "pagination"],
   },
-  { id: "data", name: ["البيانات", "Data"], ids: ["table", "data-table"] },
+  {
+    id: "data",
+    name: ["البيانات", "Data"],
+    ids: ["filter-bar", "table", "data-table"],
+  },
   {
     id: "display",
     name: ["العرض والتنبيهات", "Display & feedback"],

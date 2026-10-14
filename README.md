@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with thirty-three source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with thirty-six source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -199,7 +199,7 @@ keeps its existing internal lifecycle. See the portable
 
 ### Charts foundation
 
-LineChart, AreaChart, BarChart, DonutChart and Sidebar render with Recharts 3.10.1 and Tiraz
+LineChart, AreaChart, BarChart, DonutChart render with Recharts 3.10.1 and Tiraz
 tokens. Required label/summary accompany application data; optional keyboard
 legend toggles and a semantic data-table disclosure supply additional access.
 Missing values stay gaps, zero stays zero, and RTL keeps chronological order.
@@ -218,3 +218,10 @@ The documentation component menu groups implemented pages under Forms,
 Navigation, Data, Display & feedback, Overlays and Charts, with compact Arabic
 and English labels. Groups stay expanded; empty Files/AI patterns sections are
 not shown. Existing page selection and documentation layout remain intact.
+
+TagInput, FilterBar and InputCopy extend the existing native Field and control
+patterns. TagInput submits committed repeated form values and respects IME/reset;
+FilterBar composes application-owned filters and powers dashboard customer
+search/status chips. InputCopy keeps text selectable and reports real clipboard
+results. See the portable [guidance](src/system/ai/README.md#tags-filter-controls-and-copying)
+and component documentation. These examples add no persistence or filtering engine.
