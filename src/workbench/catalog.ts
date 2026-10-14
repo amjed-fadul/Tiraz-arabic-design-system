@@ -307,3 +307,67 @@ export type ComponentId = (typeof catalog)[number]["id"];
 
 // Field remains a public family; its composition reference lives under Input.
 export const navigationCatalog = catalog.filter((item) => item.id !== "field");
+
+// Documentation-only groups. Keep page IDs, metadata and source APIs unchanged.
+const documentationGroups = [
+  {
+    id: "forms",
+    name: ["النماذج", "Forms"],
+    ids: [
+      "button",
+      "input",
+      "select",
+      "checkbox",
+      "radio-group",
+      "textarea",
+      "switch",
+    ],
+  },
+  {
+    id: "navigation",
+    name: ["التنقّل", "Navigation"],
+    ids: ["sidebar", "tabs", "breadcrumbs", "pagination"],
+  },
+  { id: "data", name: ["البيانات", "Data"], ids: ["table", "data-table"] },
+  {
+    id: "display",
+    name: ["العرض والتنبيهات", "Display & feedback"],
+    ids: [
+      "card",
+      "accordion",
+      "avatar",
+      "avatar-group",
+      "badge",
+      "empty-state",
+      "alert",
+      "toast",
+      "skeleton",
+      "progress",
+      "spinner",
+    ],
+  },
+  {
+    id: "overlays",
+    name: ["النوافذ", "Overlays"],
+    ids: ["dropdown", "sheet", "modal", "tooltip"],
+  },
+  {
+    id: "charts",
+    name: ["الرسوم", "Charts"],
+    ids: ["line-chart", "area-chart", "bar-chart", "donut-chart"],
+  },
+] satisfies ReadonlyArray<{
+  id: string;
+  name: Localized;
+  ids: Exclude<ComponentId, "field">[];
+}>;
+
+// Files and AI patterns have no implemented documentation pages yet.
+export const navigationGroups = documentationGroups
+  .map((group) => ({
+    ...group,
+    items: group.ids
+      .map((id) => navigationCatalog.find((item) => item.id === id))
+      .filter((item) => item !== undefined),
+  }))
+  .filter((group) => group.items.length > 0);

@@ -7,7 +7,9 @@ All implementation and checks ran locally on the user's Mac. No dependencies add
 
 Preview remains running: http://127.0.0.1:5212/
 Dashboard: http://127.0.0.1:5212/examples/dashboard
-Documentation navigation retains its existing implementation.
+Documentation navigation now uses six expanded translated groups; existing
+page IDs/URLs, selection, scrolling and layout are retained. Files and AI patterns
+remain absent because they have no implemented documentation pages.
 
 ## Commands and results
 
@@ -15,7 +17,7 @@ Use `/Users/amjedfadul/.nvm/versions/node/v24.21.0/bin/node` for the commands be
 The login shell's npm initially selected Node 20; reinstalling with the explicit
 Node 24 npm CLI resolved missing optional native bindings. Package/lock unchanged.
 
-- `node node_modules/vitest/vitest.mjs run`: **363 tests, 40 files passed**.
+- `node node_modules/vitest/vitest.mjs run --maxWorkers=4`: **365 tests, 41 files passed**.
   Baseline: 350 tests passed. Includes 17 focused Sidebar/sample/dashboard tests,
   generated snippet modes and relocated portable source/examples compilation.
 - `node node_modules/typescript/bin/tsc -b` then
@@ -63,3 +65,30 @@ provided brief and Tiraz's existing tokens. Manual VoiceOver and other browser
 engines were not verified. Automated accessibility checks establish no full
 conformance claim. Build emits a >500kB chunk warning. The sample note example is
 browser-hosted application code; Sidebar itself supplies no routing or persistence.
+
+## Documentation grouping verification
+
+The clarification explicitly authorized grouping, superseding only the former
+requirement to leave documentation navigation unchanged. Forms, Navigation,
+Data, Display & feedback, Overlays and Charts contain the existing 32 documented
+pages exactly once. Files and AI patterns have no implemented page. No new
+components or placeholder pages were added. Existing short localized item names
+are retained; headings use 11px and rows 32px, with all groups expanded.
+
+Focused grouping/workbench/input checks: 20 passed. Full suite: 365 passed across
+41 files, including generated and relocated source compilation. Final build,
+lint and formatting passed; see menu-tests.txt, menu-build.txt, menu-lint.txt and
+menu-format.txt. Browser group checks pass both languages/themes, desktop/short
+menu Tab scrolling, mobile shared groups/internal scrolling/dismissal/restoration,
+and representative page selection without URL changes. See
+[menu browser results](menu-browser/results.json) and its screenshots.
+Dashboard and Sidebar browser suites were rerun sequentially and passed again,
+including customer creation/filtering and short mobile Sheet focus/scrolling.
+Independent grouping review is clean.
+
+An initial overloaded verification run timed out in existing simulations,
+generated compilation and dashboard tests while browser sweeps and preview
+refreshes ran concurrently. No production workaround or timeout increase was
+introduced; limiting the full suite to four workers and running browser sweeps
+after source edits, sequentially, passed. The new grouping test's TypeScript
+option and the new browser script's documentation-drawer selector were corrected.

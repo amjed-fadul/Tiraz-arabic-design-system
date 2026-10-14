@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Moon, Sun, SlidersHorizontal, Menu } from "lucide-react";
 import { SystemProvider, defaultConfig } from "../system";
 import type { ButtonState, SystemConfig } from "../system";
-import { catalog, navigationCatalog } from "./catalog";
+import { catalog, navigationGroups } from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
 import type { Language } from "./i18n";
@@ -229,19 +229,31 @@ export function Workbench() {
     <>
       <div className="navigation-label">{label("components", language)}</div>
       <nav className="component-nav" aria-label={label("components", language)}>
-        {navigationCatalog.map((item) => (
-          <button
-            type="button"
-            key={item.id}
-            aria-current={active === item.id ? "page" : undefined}
-            onClick={() => {
-              cancelButtonAction();
-              setDocumentation((prev) => ({ ...prev, active: item.id }));
-              setNavigationOpen(false);
-            }}
+        {navigationGroups.map((group) => (
+          <div
+            key={group.id}
+            className="component-nav-group"
+            role="group"
+            aria-label={localize(group.name, language)}
           >
-            {localize(item.name, language)}
-          </button>
+            <h2 className="component-nav-heading">
+              {localize(group.name, language)}
+            </h2>
+            {group.items.map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                aria-current={active === item.id ? "page" : undefined}
+                onClick={() => {
+                  cancelButtonAction();
+                  setDocumentation((prev) => ({ ...prev, active: item.id }));
+                  setNavigationOpen(false);
+                }}
+              >
+                {localize(item.name, language)}
+              </button>
+            ))}
+          </div>
         ))}
       </nav>
     </>

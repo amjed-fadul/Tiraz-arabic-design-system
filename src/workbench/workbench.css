@@ -1208,3 +1208,24 @@ bdi {
     padding: 12px 4px;
   }
 }
+
+/* Expanded documentation groups share the existing desktop/mobile navigation. */
+.component-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.component-nav-group + .component-nav-group {
+  margin-block-start: 12px;
+}
+.component-nav-heading {
+  margin: 0;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.component-nav button {
+  min-block-size: 32px;
+  padding-block: 4px;
+}

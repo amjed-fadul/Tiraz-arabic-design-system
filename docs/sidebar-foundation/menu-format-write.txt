@@ -1,0 +1,5 @@
+src/workbench/catalog.ts 78ms
+src/workbench/Workbench.tsx 69ms
+src/workbench/workbench.css 90ms
+src/workbench/navigation-groups.test.tsx 10ms
+docs/sidebar-foundation/plan.md 25ms

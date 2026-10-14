@@ -1,0 +1,7 @@
+PASS ar/light: implemented expanded groups, compact translated rows, selection, unchanged URL/layout
+PASS ar/dark: implemented expanded groups, compact translated rows, selection, unchanged URL/layout
+PASS en/light: implemented expanded groups, compact translated rows, selection, unchanged URL/layout
+PASS en/dark: implemented expanded groups, compact translated rows, selection, unchanged URL/layout
+PASS representative pages in every group retain destinations and selection through language change
+PASS all expanded rows reachable by Tab; short desktop menu scrolls internally
+PASS mobile menu shares groups, scrolls, dismisses/restores trigger and selects existing Sidebar page

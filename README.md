@@ -213,3 +213,8 @@ buttons and header/footer slots. See its continuous documentation page and
 [src/system/ai/examples/SidebarExamples.tsx](src/system/ai/examples/SidebarExamples.tsx).
 The connected dashboard uses Sidebar on desktop and the same content in Sheet
 on mobile, keeping Overview, Orders and Customers as real section destinations.
+
+The documentation component menu groups implemented pages under Forms,
+Navigation, Data, Display & feedback, Overlays and Charts, with compact Arabic
+and English labels. Groups stay expanded; empty Files/AI patterns sections are
+not shown. Existing page selection and documentation layout remain intact.

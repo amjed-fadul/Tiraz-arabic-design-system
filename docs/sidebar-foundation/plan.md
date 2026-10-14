@@ -23,3 +23,15 @@ and navigation dismissal/restoration. No new dependency.
 Execution: native implementation in this session; independent reviewer at end.
 Detailed scope is already authorized by the user's request. Missing attached
 images: use Tiraz tokens and the expanded/rail appearance described by the user.
+
+## Documentation grouping clarification
+
+User explicitly authorizes grouping only: Forms, Navigation, Data, Files,
+Display & feedback, Overlays, Charts and AI patterns. Render implemented groups
+only, with small translated headings, always expanded compact rows, the existing
+page IDs/URLs/selected-state handlers and scrolling. No new component/page.
+Files and AI patterns have no implemented page and remain absent.
+
+- [x] Add documentation group metadata and render in the existing desktop/mobile menu.
+- [x] Check page coverage/selection/localization, browser scrolling/layout, full
+      verification, independent review and local commit. Keep preview on 5212.

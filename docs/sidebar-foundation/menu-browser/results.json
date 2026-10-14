@@ -1,0 +1,13 @@
+{
+  "root": "http://127.0.0.1:5212",
+  "checks": [
+    "ar/light: implemented expanded groups, compact translated rows, selection, unchanged URL/layout",
+    "ar/dark: implemented expanded groups, compact translated rows, selection, unchanged URL/layout",
+    "en/light: implemented expanded groups, compact translated rows, selection, unchanged URL/layout",
+    "en/dark: implemented expanded groups, compact translated rows, selection, unchanged URL/layout",
+    "representative pages in every group retain destinations and selection through language change",
+    "all expanded rows reachable by Tab; short desktop menu scrolls internally",
+    "mobile menu shares groups, scrolls, dismisses/restores trigger and selects existing Sidebar page"
+  ],
+  "errors": []
+}
