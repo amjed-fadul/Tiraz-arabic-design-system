@@ -1,0 +1,319 @@
+{
+  "matrix": [
+    {
+      "id": "line-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "line-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "ar",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "line-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "line-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "ar",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "line-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "line-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "en",
+      "theme": "light",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "line-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 1440,
+      "height": 240
+    },
+    {
+      "id": "line-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "area-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "bar-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    },
+    {
+      "id": "donut-chart",
+      "language": "en",
+      "theme": "dark",
+      "width": 360,
+      "height": 240
+    }
+  ],
+  "checks": [
+    "line-chart: keyboard tooltip, legend and bounds",
+    "area-chart: keyboard tooltip, legend and bounds",
+    "bar-chart: keyboard tooltip, legend and bounds",
+    "donut-chart: keyboard tooltip, legend and bounds",
+    "line-chart: single",
+    "line-chart: gaps",
+    "line-chart: point",
+    "line-chart: zero",
+    "line-chart: empty",
+    "line-chart: long",
+    "area-chart: single",
+    "area-chart: gaps",
+    "area-chart: point",
+    "area-chart: zero",
+    "area-chart: empty",
+    "area-chart: long",
+    "bar-chart: single",
+    "bar-chart: gaps",
+    "bar-chart: point",
+    "bar-chart: zero",
+    "bar-chart: empty",
+    "bar-chart: long",
+    "donut-chart: single",
+    "donut-chart: gaps",
+    "donut-chart: point",
+    "donut-chart: zero",
+    "donut-chart: empty",
+    "donut-chart: long",
+    "live settings update plots, tooltips, legends without remounting or entrance animation",
+    "OS and system reduced motion stop chart transitions",
+    "connected period selector changes real rows, totals and donut values",
+    "copied prompt includes current dataset, toggles, settings and working application code",
+    "tooltip pointer boundaries and long mixed Arabic labels",
+    "axe scans chart examples in Arabic dark and English light"
+  ],
+  "screenshots": [
+    "line-chart-ar-light-1440.png",
+    "area-chart-ar-light-1440.png",
+    "bar-chart-ar-light-1440.png",
+    "donut-chart-ar-light-1440.png",
+    "line-chart-ar-light-360.png",
+    "area-chart-ar-light-360.png",
+    "bar-chart-ar-light-360.png",
+    "donut-chart-ar-light-360.png",
+    "line-chart-ar-dark-1440.png",
+    "area-chart-ar-dark-1440.png",
+    "bar-chart-ar-dark-1440.png",
+    "donut-chart-ar-dark-1440.png",
+    "line-chart-ar-dark-360.png",
+    "area-chart-ar-dark-360.png",
+    "bar-chart-ar-dark-360.png",
+    "donut-chart-ar-dark-360.png",
+    "line-chart-en-light-1440.png",
+    "area-chart-en-light-1440.png",
+    "bar-chart-en-light-1440.png",
+    "donut-chart-en-light-1440.png",
+    "line-chart-en-light-360.png",
+    "area-chart-en-light-360.png",
+    "bar-chart-en-light-360.png",
+    "donut-chart-en-light-360.png",
+    "line-chart-en-dark-1440.png",
+    "area-chart-en-dark-1440.png",
+    "bar-chart-en-dark-1440.png",
+    "donut-chart-en-dark-1440.png",
+    "line-chart-en-dark-360.png",
+    "area-chart-en-dark-360.png",
+    "bar-chart-en-dark-360.png",
+    "donut-chart-en-dark-360.png",
+    "line-chart-keyboard-legend.png",
+    "area-chart-keyboard-legend.png",
+    "bar-chart-keyboard-legend.png",
+    "donut-chart-keyboard-legend.png",
+    "line-chart-gaps-narrow.png",
+    "line-chart-point-narrow.png",
+    "line-chart-long-narrow.png",
+    "area-chart-gaps-narrow.png",
+    "area-chart-point-narrow.png",
+    "area-chart-long-narrow.png",
+    "bar-chart-gaps-narrow.png",
+    "bar-chart-point-narrow.png",
+    "bar-chart-long-narrow.png",
+    "donut-chart-gaps-narrow.png",
+    "donut-chart-point-narrow.png",
+    "donut-chart-long-narrow.png",
+    "live-customization.png",
+    "connected-period-narrow.png",
+    "tooltip-long-arabic-boundary.png"
+  ],
+  "errors": [],
+  "failures": []
+}

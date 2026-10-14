@@ -14,6 +14,21 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const id of [
+    "line-chart",
+    "area-chart",
+    "bar-chart",
+    "donut-chart",
+  ] as const)
+    for (const sample of [
+      "single",
+      "gaps",
+      "point",
+      "zero",
+      "empty",
+      "long",
+    ] as const)
+      cases.push([id, { ...p[id], sample, legend: false, grid: false }]);
   for (const variant of [
     "primary",
     "secondary",

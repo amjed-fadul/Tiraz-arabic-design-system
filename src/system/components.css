@@ -1561,3 +1561,159 @@
   min-inline-size: 0;
   inline-size: 100%;
 }
+
+/* Charts keep the plot readable while density adjusts the surrounding chrome. */
+.tz-chart {
+  inline-size: 100%;
+  min-inline-size: 0;
+  --chart-chrome: 12px;
+}
+.tiraz-system[data-density="compact"] .tz-chart {
+  --chart-chrome: 8px;
+}
+.tz-chart-plot {
+  position: relative;
+  min-inline-size: 0;
+  font-family: var(--font);
+  font-size: var(--text-meta);
+}
+.tz-chart .recharts-cartesian-axis-tick-value {
+  direction: rtl;
+  unicode-bidi: plaintext;
+}
+.tiraz-system[dir="ltr"] .tz-chart .recharts-cartesian-axis-tick-value {
+  direction: ltr;
+}
+.tz-chart .recharts-surface:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+  border-radius: var(--radius-small);
+}
+.tz-chart-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-block-start: var(--chart-chrome);
+  font-size: var(--text-meta);
+}
+.tz-chart-legend > span,
+.tz-chart-legend > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.tz-chart-legend > button {
+  font: inherit;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  padding: 4px 8px;
+  min-block-size: var(--control-small);
+  cursor: pointer;
+  transition:
+    background var(--motion-fast),
+    border-color var(--motion-fast);
+}
+.tz-chart-legend > button[aria-pressed="true"] {
+  background: var(--surface-subtle);
+  border-color: var(--border);
+}
+.tz-chart-legend > button[aria-pressed="false"] {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+.tz-chart-legend > button:hover {
+  background: var(--surface-hover);
+}
+.tz-chart-legend > button:focus-visible,
+.tz-chart-table > summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-chart-swatch {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+.tz-chart-summary {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  margin: var(--chart-chrome) 0 0;
+  line-height: var(--line-height);
+}
+.tz-chart-tooltip {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+  box-shadow: var(--shadow-popover);
+  padding: var(--chart-chrome);
+  font-family: var(--font);
+  font-size: var(--text-meta);
+  max-inline-size: min(240px, calc(100vw - 100px));
+  overflow-wrap: anywhere;
+}
+.tz-chart-tooltip p {
+  margin: 0 0 4px;
+  color: var(--text-secondary);
+}
+.tz-chart-tooltip dl {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+}
+.tz-chart-tooltip dl > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.tz-chart-tooltip dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+}
+.tz-chart-tooltip dd {
+  margin: 0;
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+.tz-chart-empty {
+  margin: 0;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.tz-chart-segment {
+  transition: fill-opacity var(--motion-fast);
+}
+.tz-chart-table {
+  margin-block-start: var(--chart-chrome);
+  font-size: var(--text-meta);
+}
+.tz-chart-table > summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding-block: 4px;
+}
+.tz-analytics-example {
+  inline-size: 100%;
+}
+.tz-analytics-period {
+  max-inline-size: 220px;
+}
+.tz-analytics-total {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-medium);
+  margin-block: 12px;
+}

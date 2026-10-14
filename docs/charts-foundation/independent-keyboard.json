@@ -1,0 +1,38 @@
+{
+  "checkedAt": "2026-10-14T09:55:07.314Z",
+  "checks": [
+    {
+      "name": "LineChart",
+      "focused": "٢٠٢٦ — الفرع ABC-1\n\nالموقع\n٠\nالمتجر\n٢٠",
+      "right": "٢٠٢٦ — الفرع ABC-2\n\nالموقع\nغير متاح\nالمتجر\n٣٠",
+      "legendColors": ["rgb(214, 182, 229)", "rgb(165, 201, 180)"],
+      "keyboardLegend": "Enter + Space all hidden; original table retained; restored",
+      "escape": true
+    },
+    {
+      "name": "AreaChart",
+      "focused": "٢٠٢٦ — الفرع ABC-1\n\nالموقع\n٠\nالمتجر\n٢٠",
+      "right": "٢٠٢٦ — الفرع ABC-2\n\nالموقع\nغير متاح\nالمتجر\n٣٠",
+      "legendColors": ["rgb(214, 182, 229)", "rgb(165, 201, 180)"],
+      "keyboardLegend": "Enter + Space all hidden; original table retained; restored",
+      "escape": true
+    },
+    {
+      "name": "BarChart",
+      "focused": "٢٠٢٦ — الفرع ABC-1\n\nالموقع\n٠\nالمتجر\n٢٠",
+      "right": "٢٠٢٦ — الفرع ABC-2\n\nالموقع\nغير متاح\nالمتجر\n٣٠",
+      "legendColors": ["rgb(214, 182, 229)", "rgb(165, 201, 180)"],
+      "keyboardLegend": "Enter + Space all hidden; original table retained; restored",
+      "escape": true
+    },
+    {
+      "name": "DonutChart",
+      "focused": "الموقع\n\nالموقع\n١٥",
+      "right": "المتجر\n\nالمتجر\n٩٠",
+      "legendColors": ["rgb(214, 182, 229)", "rgb(165, 201, 180)"],
+      "keyboardLegend": "Enter + Space all hidden; original table retained; restored",
+      "escape": true
+    }
+  ],
+  "errors": []
+}

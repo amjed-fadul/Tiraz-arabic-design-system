@@ -1,0 +1,122 @@
+[
+  {
+    "id": "line-chart",
+    "svg": {
+      "left": 21,
+      "right": 339,
+      "width": 318
+    },
+    "ticks": [
+      {
+        "text": "١ أكتوبر",
+        "left": 67.11593627929688,
+        "right": 98.1640625,
+        "width": 31.048126220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      },
+      {
+        "text": "٣ أكتوبر",
+        "left": 160.91281127929688,
+        "right": 196.3671875,
+        "width": 35.454376220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      },
+      {
+        "text": "٦ أكتوبر",
+        "left": 304.7643737792969,
+        "right": 338.703125,
+        "width": 33.938751220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      }
+    ]
+  },
+  {
+    "id": "area-chart",
+    "svg": {
+      "left": 21,
+      "right": 339,
+      "width": 318
+    },
+    "ticks": [
+      {
+        "text": "١ أكتوبر",
+        "left": 67.11593627929688,
+        "right": 98.1640625,
+        "width": 31.048126220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      },
+      {
+        "text": "٣ أكتوبر",
+        "left": 160.91281127929688,
+        "right": 196.3671875,
+        "width": 35.454376220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      },
+      {
+        "text": "٦ أكتوبر",
+        "left": 304.7643737792969,
+        "right": 338.703125,
+        "width": 33.938751220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      }
+    ]
+  },
+  {
+    "id": "bar-chart",
+    "svg": {
+      "left": 21,
+      "right": 339,
+      "width": 318
+    },
+    "ticks": [
+      {
+        "text": "١ أكتوبر",
+        "left": 87.11593627929688,
+        "right": 118.1640625,
+        "width": 31.048126220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      },
+      {
+        "text": "٣ أكتوبر",
+        "left": 164.91281127929688,
+        "right": 200.3671875,
+        "width": 35.454376220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      },
+      {
+        "text": "٦ أكتوبر",
+        "left": 285.6706237792969,
+        "right": 319.609375,
+        "width": 33.938751220703125,
+        "anchor": "middle",
+        "direction": "rtl",
+        "overflowLeft": 0,
+        "overflowRight": 0
+      }
+    ]
+  }
+]

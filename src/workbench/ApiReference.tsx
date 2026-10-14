@@ -12,7 +12,95 @@ export function ApiReference({
 }) {
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
+  const chartRows: Array<[string, string, string]> = [
+    [
+      "label / summary",
+      "string · required",
+      t(
+        "اسم متاح وملخص نصي ظاهر يكتبه التطبيق.",
+        "Accessible name and visible application-owned text summary.",
+      ),
+    ],
+    [
+      "data",
+      "ChartDatum[] / DonutDatum[]",
+      t(
+        "ترتيب البيانات محفوظ. category للتاريخ ISO أو النص؛ مفاتيح ثابتة للحلقات.",
+        "Input order is preserved. category is ISO date or text; donut entries need stable keys.",
+      ),
+    ],
+    [
+      "series",
+      "ChartSeries[] · Cartesian only",
+      t(
+        "key وlabel ولون CSS اختياري. لا تستخدم category كمفتاح سلسلة.",
+        "key, label and optional CSS color. category is reserved; never use it as a series key.",
+      ),
+    ],
+    [
+      "legend / interactiveLegend",
+      "boolean · false / true",
+      t(
+        "مفتاح اختياري، أزرار بلوحة المفاتيح وحالة aria-pressed، أو تسميات ثابتة.",
+        "Optional legend with keyboard buttons and aria-pressed, or static labels.",
+      ),
+    ],
+    [
+      "grid / categoryFormat",
+      'boolean / "text" | "date" · Cartesian only',
+      t(
+        "الشبكة ظاهرة افتراضيًا. التاريخ UTC؛ لا ينعكس الزمن في RTL.",
+        "Grid defaults on. UTC dates; RTL never reverses time.",
+      ),
+    ],
+    [
+      "locale / numberFormat",
+      "string / Intl.NumberFormatOptions",
+      t(
+        "اللغة من الاتجاه افتراضيًا؛ يمكنك تحديدها بشكل مستقل.",
+        "Locale defaults from direction; set it independently when needed.",
+      ),
+    ],
+    [
+      "dataTable",
+      "boolean · false",
+      t(
+        "جدول HTML اختياري بكل القيم، حتى السلاسل المخفية.",
+        "Optional semantic table with all values, including hidden series.",
+      ),
+    ],
+    [
+      "height / className / style",
+      "number / string / CSSProperties",
+      t(
+        "ارتفاع 240px بحد أدنى 180px؛ الكثافة تغيّر الحواف فقط.",
+        "240px height, minimum 180px; density affects chrome.",
+      ),
+    ],
+    [
+      "Accessibility",
+      "Recharts accessibilityLayer",
+      t(
+        "Tab ثم الأسهم. VoiceOver يحتاج إيقاف QuickNav؛ لم نتحقق من قارئات الشاشة يدويًا. استخدم الملخص والجدول.",
+        "Tab then arrows. VoiceOver requires QuickNav off; manual screen-reader behavior is unverified. Use summary/table.",
+      ),
+    ],
+    [
+      "Missing / zero / motion",
+      "null gaps / finite numbers",
+      t(
+        "القيم المفقودة فجوات؛ صفر يبقى صفرًا. الحلقة ترسم قيمًا موجبة فقط. دون حركات دخول؛ انتقالات تحترم تقليل الحركة.",
+        "Missing values are gaps; zero stays zero. Donut renders positive values only. No entrance animation; transitions respect reduced motion.",
+      ),
+    ],
+  ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "line-chart": chartRows,
+    "area-chart": chartRows,
+    "bar-chart": chartRows,
+    "donut-chart": chartRows.filter(
+      (row) => !["series", "grid / categoryFormat"].includes(row[0]),
+    ),
     card: [
       [
         "Card / CardHeader / CardContent / CardFooter",

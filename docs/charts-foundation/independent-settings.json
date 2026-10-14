@@ -1,0 +1,46 @@
+{
+  "checks": [
+    {
+      "label": "Accent",
+      "value": "blue",
+      "color": "rgb(54, 91, 135)",
+      "fontSize": "12px",
+      "radius": "5px",
+      "surfacePreserved": true
+    },
+    {
+      "label": "Typography",
+      "value": "large",
+      "color": "rgb(54, 91, 135)",
+      "fontSize": "14px",
+      "radius": "5px",
+      "surfacePreserved": true
+    },
+    {
+      "label": "Density",
+      "value": "standard",
+      "color": "rgb(54, 91, 135)",
+      "fontSize": "14px",
+      "radius": "5px",
+      "surfacePreserved": true
+    },
+    {
+      "label": "Corner radius",
+      "value": "14",
+      "color": "rgb(54, 91, 135)",
+      "fontSize": "14px",
+      "radius": "11px",
+      "surfacePreserved": true
+    },
+    {
+      "label": "Accent",
+      "value": "plum",
+      "color": "rgb(107, 72, 122)",
+      "fontSize": "14px",
+      "radius": "11px",
+      "surfacePreserved": true
+    }
+  ],
+  "errors": [],
+  "plumColors": ["rgb(107, 72, 122)", "rgb(53, 94, 76)"]
+}

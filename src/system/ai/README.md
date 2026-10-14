@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **twenty-eight**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs and Pagination.
+Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-two**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart and DonutChart.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -152,3 +152,47 @@ The caller owns fetching, filtering, page size, reset and content selection. The
 example slices a bounded local list (one guide note per page, at most 20 pages).
 That limit is for the example, not the component. DataTable keeps its existing
 internal sorting, reset/clamping, busy state and connected actions unchanged.
+
+## Charts
+
+Use [ChartExamples](examples/ChartExamples.tsx) for single/multiple series, missing,
+zero, single point and long-label samples, plus a connected application-owned
+analytics Card. Its Select changes real in-memory rows and totals. All data is
+explicitly sample data; no backend or persistence is implied.
+
+Install `recharts@3.10.1` and `react-is` matching the host React version (verified
+with React/React DOM/react-is 19.3.0). Recharts supports React 19 through its peer
+contract; no Tremor or shadcn kit is imported. All rendering comes from Recharts.
+Use LineChart, AreaChart and BarChart with `data` rows (`category` plus numeric
+series keys), `series` (`key`, `label`, optional CSS `color`), required `label`
+and `summary`. DonutChart takes `data` with unique `key`, `label`, `value` and
+optional `color`. Keep keys stable and never use reserved `category` as a series
+key. Data remains in caller order, including in RTL. Use ISO date strings with
+`categoryFormat="date"`; display uses UTC, month/day. Include the year/range in
+summary when relevant. `locale` is independent of direction and defaults to ar
+after rtl, en after ltr; numberFormat accepts Intl options.
+
+`legend` defaults false; when shown, `interactiveLegend` defaults true and uses
+native buttons with aria-pressed. Set it false for static labels. Every series
+may be hidden: an explicit message is shown, while the optional `dataTable`
+disclosure retains all original values. Removing interactive legend controls restores all series; saved hidden keys apply again when controls return. Missing, undefined, nonfinite and
+nonnumeric values are never converted to zero. Line/Area preserve gaps; isolated
+points remain visible. Donut draws positive finite values only; table retains
+zero/missing/negative values. Empty data and all-zero donuts have explicit states.
+
+Default colors use the system accent followed by the other three paired accents,
+resolved before legend filtering. Reuse the same series ordering across charts,
+or set explicit colors such as `var(--action)` and `var(--chart-plum)` for stable
+comparison. Supply deliberate colors beyond four series. Tooltips, plots and
+legends consume the same resolved colors. `grid` is Cartesian only and defaults
+true. height defaults 240px and clamps to at least 180px; density changes chrome,
+not plot size. Global tokens update in place. No Recharts entrance/update or
+position animation runs; subtle CSS emphasis respects OS and system motion.
+
+The named region and Recharts plot reference a visible concise summary supplied
+by the app. Tab to the plot, then use arrows for Recharts tooltip navigation.
+Tooltip content has a polite live region, but screen-reader announcements were
+not manually verified. VoiceOver needs QuickNav off according to Recharts' own
+accessibility guidance. Never rely on hover for essential information; provide
+an adequate summary and enable the semantic data table for exact values. Do not
+claim automated scans establish screen-reader support or full conformance.

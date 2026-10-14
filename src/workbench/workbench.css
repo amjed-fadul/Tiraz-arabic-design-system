@@ -1187,3 +1187,24 @@ bdi {
 .customer-example {
   inline-size: 100%;
 }
+
+.playground-line-chart,
+.playground-area-chart,
+.playground-bar-chart,
+.playground-donut-chart {
+  padding: 20px 16px;
+}
+.tz-chart-examples {
+  display: grid;
+  gap: 24px;
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+@media (max-width: 600px) {
+  .playground-line-chart,
+  .playground-area-chart,
+  .playground-bar-chart,
+  .playground-donut-chart {
+    padding: 12px 4px;
+  }
+}

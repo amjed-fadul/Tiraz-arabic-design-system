@@ -208,7 +208,16 @@ export interface PaginationModel {
   page: number;
   totalPages: number;
 }
+export interface ChartModel {
+  sample: "single" | "multi" | "gaps" | "point" | "zero" | "empty" | "long";
+  legend: boolean;
+  grid: boolean;
+}
 export interface Playgrounds {
+  "line-chart": ChartModel;
+  "area-chart": ChartModel;
+  "bar-chart": ChartModel;
+  "donut-chart": ChartModel;
   card: CardModel;
   accordion: AccordionModel;
   breadcrumbs: BreadcrumbsModel;
@@ -253,6 +262,10 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "line-chart": { sample: "multi", legend: true, grid: true },
+    "area-chart": { sample: "multi", legend: true, grid: true },
+    "bar-chart": { sample: "multi", legend: true, grid: true },
+    "donut-chart": { sample: "multi", legend: true, grid: false },
     card: {
       title: t("دليل القراءة", "Reading guide"),
       description: t(
@@ -683,6 +696,7 @@ export function normalizePlaygrounds(
       );
     const r = defaults;
     const enums: Record<string, string[]> = {
+      sample: ["single", "multi", "gaps", "point", "zero", "empty", "long"],
       preset:
         component === "data-table"
           ? ["populated", "loading", "empty", "no-results", "error"]

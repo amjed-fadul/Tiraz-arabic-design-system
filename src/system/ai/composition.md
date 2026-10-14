@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the twenty-eight registry families. Prefer an inline task and a
+  Map each need to the thirty-two registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
@@ -206,3 +206,14 @@ Avatar photo examples import bundled ai/assets/sara.jpg and omar.jpg. Copy those
 [StructureExamples](examples/StructureExamples.tsx) demonstrates local note
 reveal, disclosure, real anchor destinations and slicing a small list. It adds no
 backend, saved state, fake service or customer workflow.
+
+## Charts
+
+Use Line/Area for trends, Bar for comparisons, Donut for positive parts of a whole.
+Supply a visible summary and nonempty accessible label, and enable dataTable for
+exact values. Keep ISO chronological rows in application order even in RTL.
+Missing values remain gaps, never manufactured zeros. A summary explains the
+meaning; tooltips add detail. Share ordered series definitions and explicit token
+colors across comparable charts. Compose Card/Field/Select around charts; period
+selection, data slicing and totals belong to the application. See ChartExamples.
+No stacked plots, generic configuration, backend, saving or DataTable changes.

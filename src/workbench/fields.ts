@@ -75,7 +75,18 @@ const trigger: WorkbenchField[] = [
     { advanced: true, options: ["sm", "md"] },
   ),
 ];
+const chartFields = [
+  field("sample", "select", "بيانات المثال", "Sample dataset", "example", {
+    options: ["single", "multi", "gaps", "point", "zero", "empty", "long"],
+  }),
+  field("legend", "boolean", "مفتاح الرسم", "Show legend"),
+  field("grid", "boolean", "خطوط الشبكة", "Show grid"),
+];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "line-chart": chartFields,
+  "area-chart": chartFields,
+  "bar-chart": chartFields,
+  "donut-chart": chartFields.filter((f) => f.key !== "grid"),
   card: [
     field("title", "text", "العنوان", "Title", "CardTitle.children"),
     field(
@@ -487,6 +498,12 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
 };
 export const optionNames: Record<string, Localized> = {
+  single: ["سلسلة واحدة", "Single series"],
+  multi: ["سلاسل متعددة", "Multiple series"],
+  gaps: ["قيم مفقودة", "Missing values"],
+  point: ["نقطة واحدة", "Single point"],
+  zero: ["قيم صفرية", "Zero values"],
+  long: ["تسميات طويلة", "Long labels"],
   initials: ["أحرف", "Initials"],
   photo: ["صورة", "Photo"],
   mixed: ["صور وأحرف", "Photos and initials"],
@@ -539,6 +556,10 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "line-chart": ["sample", "legend", "grid"],
+  "area-chart": ["sample", "legend", "grid"],
+  "bar-chart": ["sample", "legend", "grid"],
+  "donut-chart": ["sample", "legend"],
   card: ["title", "description", "actions"],
   accordion: ["collapsible", "mode"],
   breadcrumbs: ["label", "current"],

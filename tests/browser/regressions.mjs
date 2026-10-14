@@ -94,8 +94,9 @@ for (const typography of ["standard", "large"])
           for (const r of m) {
             assert.equal(r.height, m[0].height);
             assert.equal(r.width, m[0].width);
-            assert.equal(r.iconWidth, 16);
-            assert.equal(r.iconHeight, 16);
+            // Transformed SVG bounds can differ by a fraction of a CSS pixel.
+            assert.ok(Math.abs(r.iconWidth - 16) < 0.001);
+            assert.ok(Math.abs(r.iconHeight - 16) < 0.001);
             assert.ok(r.height >= 32);
           }
         },

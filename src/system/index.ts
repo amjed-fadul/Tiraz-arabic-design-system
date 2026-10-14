@@ -34,3 +34,4 @@ export * from "./Card";
 export * from "./Accordion";
 export * from "./Breadcrumbs";
 export * from "./Pagination";
+export * from "./Charts";

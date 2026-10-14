@@ -1,3 +1,5 @@
+import { lazy, Suspense } from "react";
+import type { ChartKind } from "../system/ai/examples/ChartExamples";
 import {
   AlertExamples,
   SkeletonExamples,
@@ -32,6 +34,16 @@ import type { Language } from "./i18n";
 import { words } from "./i18n";
 import { optionNames } from "./fields";
 import { localize } from "./i18n";
+const ChartExample = lazy(() =>
+  import("../system/ai/examples/ChartExamples").then((module) => ({
+    default: module.ChartExample,
+  })),
+);
+const AnalyticsExample = lazy(() =>
+  import("../system/ai/examples/ChartExamples").then((module) => ({
+    default: module.AnalyticsExample,
+  })),
+);
 function ToastExamples({ language }: { language: Language }) {
   const { toast } = useToast();
   return (
@@ -162,6 +174,24 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component.endsWith("-chart"))
+    return (
+      <Suspense
+        fallback={
+          <p role="status">{t("جارٍ عرض الأمثلة…", "Loading examples…")}</p>
+        }
+      >
+        <div className="tz-chart-examples">
+          <ChartExample
+            language={language}
+            kind={component.replace("-chart", "") as ChartKind}
+            sample="single"
+            legend={false}
+          />
+          <AnalyticsExample language={language} />
+        </div>
+      </Suspense>
+    );
   if (["card", "accordion", "breadcrumbs", "pagination"].includes(component))
     return (
       <p className="example-caption">

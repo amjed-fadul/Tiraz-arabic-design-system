@@ -371,6 +371,46 @@
     {
       "name": "PaginationLabels",
       "source": "Pagination.tsx"
+    },
+    {
+      "name": "LineChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "AreaChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "BarChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "DonutChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "ChartSeries",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "ChartDatum",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "DonutDatum",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "ChartProps",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "CartesianChartProps",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "DonutChartProps",
+      "source": "Charts.tsx"
     }
   ],
   "configuration": {
@@ -2396,6 +2436,443 @@
         "No fetching, filtering, page-size, reset or data engine. DataTable retains its separate internal data/paging lifecycle. Zero total displays one inert page."
       ],
       "examples": ["ai/examples/StructureExamples.tsx"]
+    },
+    {
+      "id": "line-chart",
+      "api": "LineChart",
+      "source": "Charts.tsx",
+      "exports": [
+        "LineChart",
+        "CartesianChartProps",
+        "ChartProps",
+        "ChartDatum",
+        "ChartSeries"
+      ],
+      "purpose": "Restrained Recharts rendering with Tiraz tokens, shared tooltip, optional legend/table.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": "direction: rtl=ar, ltr=en"
+        },
+        {
+          "name": "numberFormat",
+          "type": "Intl.NumberFormatOptions",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "legend",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "interactiveLegend",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "dataTable",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "default": 240
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "data",
+          "type": "ChartDatum[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "series",
+          "type": "ChartSeries[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "grid",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "categoryFormat",
+          "type": "text | date",
+          "required": false,
+          "default": "text",
+          "values": ["text", "date"]
+        }
+      ],
+      "inheritedProps": "No additional native or Recharts props. className/style stay on the named region.",
+      "state": "Legend visibility is internal and keyed by stable unique keys. All hidden is an explicit state; table retains all source values. When interactive legend controls are unavailable, all series are visible; hidden keys are retained for their return.",
+      "accessibility": [
+        "Named region and plot, visible summary, optional semantic table. Recharts accessibilityLayer supports Tab then arrows. VoiceOver needs QuickNav off; manual screen-reader validation remains unverified."
+      ],
+      "limitations": [
+        "No chart engine, stacking, configuration framework or fetching.",
+        "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
+        "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
+        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
+      ],
+      "dependencies": ["recharts", "react-is (matching React)"],
+      "examples": ["ai/examples/ChartExamples.tsx"]
+    },
+    {
+      "id": "area-chart",
+      "api": "AreaChart",
+      "source": "Charts.tsx",
+      "exports": [
+        "AreaChart",
+        "CartesianChartProps",
+        "ChartProps",
+        "ChartDatum",
+        "ChartSeries"
+      ],
+      "purpose": "Restrained Recharts rendering with Tiraz tokens, shared tooltip, optional legend/table.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": "direction: rtl=ar, ltr=en"
+        },
+        {
+          "name": "numberFormat",
+          "type": "Intl.NumberFormatOptions",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "legend",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "interactiveLegend",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "dataTable",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "default": 240
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "data",
+          "type": "ChartDatum[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "series",
+          "type": "ChartSeries[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "grid",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "categoryFormat",
+          "type": "text | date",
+          "required": false,
+          "default": "text",
+          "values": ["text", "date"]
+        }
+      ],
+      "inheritedProps": "No additional native or Recharts props. className/style stay on the named region.",
+      "state": "Legend visibility is internal and keyed by stable unique keys. All hidden is an explicit state; table retains all source values. When interactive legend controls are unavailable, all series are visible; hidden keys are retained for their return.",
+      "accessibility": [
+        "Named region and plot, visible summary, optional semantic table. Recharts accessibilityLayer supports Tab then arrows. VoiceOver needs QuickNav off; manual screen-reader validation remains unverified."
+      ],
+      "limitations": [
+        "No chart engine, stacking, configuration framework or fetching.",
+        "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
+        "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
+        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
+      ],
+      "dependencies": ["recharts", "react-is (matching React)"],
+      "examples": ["ai/examples/ChartExamples.tsx"]
+    },
+    {
+      "id": "bar-chart",
+      "api": "BarChart",
+      "source": "Charts.tsx",
+      "exports": [
+        "BarChart",
+        "CartesianChartProps",
+        "ChartProps",
+        "ChartDatum",
+        "ChartSeries"
+      ],
+      "purpose": "Restrained Recharts rendering with Tiraz tokens, shared tooltip, optional legend/table.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": "direction: rtl=ar, ltr=en"
+        },
+        {
+          "name": "numberFormat",
+          "type": "Intl.NumberFormatOptions",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "legend",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "interactiveLegend",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "dataTable",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "default": 240
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "data",
+          "type": "ChartDatum[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "series",
+          "type": "ChartSeries[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "grid",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "categoryFormat",
+          "type": "text | date",
+          "required": false,
+          "default": "text",
+          "values": ["text", "date"]
+        }
+      ],
+      "inheritedProps": "No additional native or Recharts props. className/style stay on the named region.",
+      "state": "Legend visibility is internal and keyed by stable unique keys. All hidden is an explicit state; table retains all source values. When interactive legend controls are unavailable, all series are visible; hidden keys are retained for their return.",
+      "accessibility": [
+        "Named region and plot, visible summary, optional semantic table. Recharts accessibilityLayer supports Tab then arrows. VoiceOver needs QuickNav off; manual screen-reader validation remains unverified."
+      ],
+      "limitations": [
+        "No chart engine, stacking, configuration framework or fetching.",
+        "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
+        "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
+        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
+      ],
+      "dependencies": ["recharts", "react-is (matching React)"],
+      "examples": ["ai/examples/ChartExamples.tsx"]
+    },
+    {
+      "id": "donut-chart",
+      "api": "DonutChart",
+      "source": "Charts.tsx",
+      "exports": [
+        "DonutChart",
+        "DonutChartProps",
+        "ChartProps",
+        "DonutDatum",
+        "ChartSeries"
+      ],
+      "purpose": "Restrained Recharts rendering with Tiraz tokens, shared tooltip, optional legend/table.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "summary",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false,
+          "default": "direction: rtl=ar, ltr=en"
+        },
+        {
+          "name": "numberFormat",
+          "type": "Intl.NumberFormatOptions",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "legend",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "interactiveLegend",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        {
+          "name": "dataTable",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "required": false,
+          "default": 240
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "data",
+          "type": "DonutDatum[]",
+          "required": true,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "No additional native or Recharts props. className/style stay on the named region.",
+      "state": "Legend visibility is internal and keyed by stable unique keys. All hidden is an explicit state; table retains all source values. When interactive legend controls are unavailable, all series are visible; hidden keys are retained for their return.",
+      "accessibility": [
+        "Named region and plot, visible summary, optional semantic table. Recharts accessibilityLayer supports Tab then arrows. VoiceOver needs QuickNav off; manual screen-reader validation remains unverified."
+      ],
+      "limitations": [
+        "No chart engine, stacking, configuration framework or fetching.",
+        "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
+        "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
+        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
+      ],
+      "dependencies": ["recharts", "react-is (matching React)"],
+      "examples": ["ai/examples/ChartExamples.tsx"]
     }
   ],
   "records": [
@@ -2791,6 +3268,58 @@
           "default": "undefined"
         }
       ]
+    },
+    {
+      "type": "ChartSeries",
+      "props": [
+        {
+          "name": "key",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "DonutDatum",
+      "props": [
+        {
+          "name": "key",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "value",
+          "type": "number | null",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
     }
   ],
   "support": [
@@ -2850,7 +3379,8 @@
   "conventions": {
     "defaults": "Default fields contain literal JSON scalars or descriptive expressions. The string undefined means omitted/no default, not a string value to pass. configuration.defaults contains the actual literal defaultConfig.",
     "authority": "Public source/types win; inherited prop details depend on the installed React/Radix versions. Workbench editing limits are not public API limits.",
-    "overlayDependencies": "Use one resolved @radix-ui/react-dismissable-layer 1.2.1 and @radix-ui/react-focus-scope 1.3.1; source-copy hosts preserve overrides from ai/README.md. @radix-ui/react-popper 1.4.0 supplies Tooltip positioning."
+    "overlayDependencies": "Use one resolved @radix-ui/react-dismissable-layer 1.2.1 and @radix-ui/react-focus-scope 1.3.1; source-copy hosts preserve overrides from ai/README.md. @radix-ui/react-popper 1.4.0 supplies Tooltip positioning.",
+    "chartDependencies": "Verified Recharts 3.10.1, React/React DOM 19.3.0 and react-is 19.3.0. Use a matching react-is version in source-copy hosts."
   },
   "assets": [
     {

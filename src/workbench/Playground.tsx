@@ -1,3 +1,6 @@
+import { lazy, Suspense } from "react";
+import type { ChartKind } from "../system/ai/examples/ChartExamples";
+import type { ChartModel } from "./model";
 import {
   CardExample,
   AccordionExample,
@@ -81,6 +84,11 @@ import type { ComponentId } from "./catalog";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import type { ButtonProps, ButtonState } from "../system";
+const ChartExample = lazy(() =>
+  import("../system/ai/examples/ChartExamples").then((module) => ({
+    default: module.ChartExample,
+  })),
+);
 interface Props {
   component: ComponentId;
   model: PlaygroundModel;
@@ -136,6 +144,18 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component.endsWith("-chart"))
+    return (
+      <Suspense
+        fallback={<p role="status">{t("جارٍ عرض الرسم…", "Loading chart…")}</p>}
+      >
+        <ChartExample
+          language={language}
+          kind={component.replace("-chart", "") as ChartKind}
+          {...(model as ChartModel)}
+        />
+      </Suspense>
+    );
   if (component === "card")
     return <CardExample language={language} {...(model as CardModel)} />;
   if (component === "accordion") {

@@ -1,3 +1,5 @@
+import { generateChartCode } from "./generate-charts";
+import type { ChartModel } from "./model";
 import { generateBatchCode } from "./generate-batch";
 import customerSource from "../system/ai/examples/CustomerDataTable.tsx?raw";
 import createSource from "../system/ai/examples/CreateCustomer.tsx?raw";
@@ -53,6 +55,8 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (component.endsWith("-chart"))
+    return generateChartCode(component, model as ChartModel, config, language);
   if (
     [
       "card",

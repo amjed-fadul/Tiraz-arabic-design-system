@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with twenty-eight source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with thirty-two source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -186,3 +186,14 @@ controlled page navigation while the caller owns data and page size; DataTable
 keeps its existing internal lifecycle. See the portable
 [composition guidance](src/system/ai/composition.md#structure-and-navigation) and
 [complete examples](src/system/ai/examples/StructureExamples.tsx).
+
+### Charts foundation
+
+LineChart, AreaChart, BarChart and DonutChart render with Recharts 3.10.1 and Tiraz
+tokens. Required label/summary accompany application data; optional keyboard
+legend toggles and a semantic data-table disclosure supply additional access.
+Missing values stay gaps, zero stays zero, and RTL keeps chronological order.
+The four documentation pages include single/multiple series and edge samples,
+live shared settings, compiling usage, and sample analytics with a working period
+selector. See the portable [chart guide](src/system/ai/README.md#charts) for
+contracts, source-copy dependencies and honest screen-reader limitations.

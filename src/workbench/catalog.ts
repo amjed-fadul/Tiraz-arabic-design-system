@@ -252,6 +252,42 @@ export const catalog = [
     ],
     file: "Pagination.tsx",
   },
+  {
+    id: "line-chart",
+    name: ["الرسم الخطي", "Line chart"],
+    description: [
+      "اتجاه القيم عبر الزمن، مع فجوات للقيم المفقودة.",
+      "Trends over time, with gaps for missing values.",
+    ],
+    file: "Charts.tsx",
+  },
+  {
+    id: "area-chart",
+    name: ["الرسم المساحي", "Area chart"],
+    description: [
+      "اتجاه القيم مع تعبئة هادئة أسفل الخط.",
+      "Trends with a restrained fill beneath each line.",
+    ],
+    file: "Charts.tsx",
+  },
+  {
+    id: "bar-chart",
+    name: ["الرسم العمودي", "Bar chart"],
+    description: [
+      "مقارنة فئات أو سلاسل بقيم واضحة.",
+      "Compare categories or series with clear values.",
+    ],
+    file: "Charts.tsx",
+  },
+  {
+    id: "donut-chart",
+    name: ["الرسم الحلقي", "Donut chart"],
+    description: [
+      "نسب الأجزاء من الكل دون تحريك الشرائح.",
+      "Parts of a whole, without moving slices.",
+    ],
+    file: "Charts.tsx",
+  },
 ] as const satisfies ReadonlyArray<{
   id: string;
   name: Localized;

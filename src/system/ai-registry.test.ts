@@ -302,6 +302,10 @@ it("documents real public exports and supported prop values and compiles the lin
     // Curated wrappers must document their complete explicit interface.
     if (
       [
+        "line-chart",
+        "area-chart",
+        "bar-chart",
+        "donut-chart",
         "alert",
         "skeleton",
         "progress",

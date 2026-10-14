@@ -133,3 +133,17 @@
   --text-heading: 20px;
   --text-title: 26px;
 }
+
+/* Restrained categorical palette, paired for each system theme. */
+.tiraz-system {
+  --chart-sage: #355e4c;
+  --chart-blue: #365b87;
+  --chart-plum: #6b487a;
+  --chart-clay: #88543f;
+}
+.tiraz-system[data-theme="dark"] {
+  --chart-sage: #a5c9b4;
+  --chart-blue: #a8c6ef;
+  --chart-plum: #d6b6e5;
+  --chart-clay: #e8baa3;
+}

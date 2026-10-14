@@ -73,6 +73,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
     for (const path of [
       "src/workbench/generate.ts",
       "src/workbench/generate-batch.ts",
+      "src/workbench/generate-charts.ts",
       "src/system/ai/examples/team.ts",
       "src/workbench/catalog.ts",
       "src/workbench/model.ts",
@@ -98,6 +99,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "CustomerDataTable",
       "OverlayExamples",
       "StructureExamples",
+      "ChartExamples",
     ]) {
       const path = `src/system/ai/examples/${name}.tsx`;
       const outputPath = join(first, path + "?raw");
