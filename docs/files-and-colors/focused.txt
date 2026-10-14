@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/files-colors.test.tsx src/system/files-colors-examples.test.tsx src/workbench/files-colors-pages.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/files-and-colors/Tiraz
+
+
+ Test Files  3 passed (3)
+      Tests  23 passed (23)
+   Start at  01:45:26
+   Duration  2.69s (environment 35%, tests 24%, import 20%, transform 14%, setup 7%)
+

@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-six**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar and InputCopy.
+Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-eight**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone and ColorPicker.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -303,3 +303,15 @@ the value remains selectable. Value replacement/unmount invalidates pending
 feedback and clears timers. Disabled disables input/copy. Clipboard capability
 and permission belong to the browser; there is no execCommand fallback or
 permission manager. No native onChange/defaultValue/readOnly/type API.
+
+## Files and opaque colors
+
+Use [FileDropzoneExamples](examples/FileDropzoneExamples.tsx) for local selection/removal and an honest report of selected names. `value: File[]` / `onValueChange` controls it, or `defaultValue` initializes once. `multiple` appends; single mode replaces with the first valid file. `accept` supports comma-separated extensions, MIME types and MIME wildcards. Browse/drop share checks; `maxFileSize` is bytes, `maxFiles` is a count. Finite counts floor/clamp to zero; finite size clamps to zero; nonfinite limits mean no cap. Partial rejection retains valid files; total rejection preserves the prior list. Same exact name/size/type/lastModified means a duplicate, ignored with feedback both within/across selections. Removing it permits reselection. The picker clears its native FileList after each browse, including rejected files, so selecting the same file again triggers a change.
+
+FileDropzone uses Input's label/helper/error or separate Field contract. Native attributes/ref/events target the hidden native file input; accessible Browse/removal use native buttons and removal focuses Browse. `labels` translates browse/drop/remove(file)/rejected(file,reason); reason is type|size|count|duplicate. No name/required API: construct application FormData by appending the selected File array, **not** the cleared native input. Native `onChange` sees the raw browsing FileList before clearing; `onValueChange` reports validated selections/removals and never reset. Uncontrolled uncanceled form reset restores initial defaultValue and clears feedback; controlled arrays need application onReset. External form association is supported. Client type/size checks are convenience checks, with unreliable MIME metadata; validate on the server. Actual upload, progress, storage and server validation belong to the application. No networking, image preview or directory upload pipeline.
+
+Use [ColorPickerExamples](examples/ColorPickerExamples.tsx) for a local colored sample, independent of the Tiraz system accent. `value` / `onValueChange` controls it, or `defaultValue` initializes once (default #316746). Supply valid opaque RGB strings: #RGB/#RRGGBB normalize to uppercase #RRGGBB on commit. Invalid value/defaultValue props fall back to #316746; invalid swatches are omitted. `swatches` entries have translated label and valid value; [] hides presets. Defaults are named Green/Blue/Plum/Clay. Selection has aria-pressed and a check mark; keyboard focus is distinct.
+
+The HEX input preserves incomplete/invalid text until Enter/blur commits; invalid commits explain the accepted formats without changing selected color. Swatches/native chooser commit immediately and synchronize HEX. `onChange` observes HEX editing; `onValueChange` reports changed committed colors only. Ref/native attributes target the LTR HEX input. Use the same Field convenience/composition contract as Input. `labels` translates chooser/swatches/invalid; defaults follow direction. Native chooser appearance varies by browser. No transparency, hue/saturation canvas or eyedropper.
+
+ColorPicker `name`/`form` submits one hidden committed #RRGGBB value, never the draft. Disabled controls omit it. Invalid-draft feedback does **not** itself block submission; caller-supplied native constraints (such as required/pattern on HEX) still apply and can block it. The application owns form validation. Native uncanceled reset restores initial uncontrolled defaultValue without callback and clears draft/feedback; controlled values require application onReset. Neither family persists data or modifies system accent configuration.

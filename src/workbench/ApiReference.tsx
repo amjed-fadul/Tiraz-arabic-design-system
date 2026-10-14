@@ -95,6 +95,106 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "file-dropzone": [
+      [
+        "value / defaultValue / onValueChange",
+        "File[] / File[] / (files: File[]) => void",
+        t(
+          "قيمة مضبوطة أو داخلية. الملفات محلية؛ لا رفع أو تخزين.",
+          "Controlled or internal selected files. Local selection only; no upload or storage.",
+        ),
+      ],
+      [
+        "multiple / accept / maxFileSize / maxFiles",
+        "boolean / string / bytes / number",
+        t(
+          "الفحص نفسه للتصفّح والسحب؛ النوع والحجم والعدد. multiple يضيف، والملف الواحد يستبدل بأول ملف صحيح. المقبول يبقى عند الرفض الجزئي.",
+          "Identical browse/drop checks for type, byte size and count. Multiple appends; single replaces with the first valid file. Partial rejection preserves accepted files.",
+        ),
+      ],
+      [
+        "Duplicates / removal",
+        "name + size + type + lastModified",
+        t(
+          "التكرار يُتجاهل مع تفسير؛ يمكنك إعادة اختيار الملف بعد حذفه. الحذف يُركّز زر التصفّح.",
+          "Same-metadata duplicates are ignored with feedback; reselect after removal. Removal focuses Browse files.",
+        ),
+      ],
+      [
+        "label / helper / error / field / invalid / labels",
+        "Field / FileDropzoneLabels",
+        t(
+          "إما تسمية أو Field منفصل. labels يترجم browse/drop/remove(file)/rejected(file,reason). ref والسمات والأحداث على input الأصلي المخفي.",
+          "Use labeled mode or separate Field composition. labels translates browse/drop/remove(file)/rejected(file,reason). Ref, native attributes and events target the hidden native file input.",
+        ),
+      ],
+      [
+        "form / reset / submission",
+        "application-owned FormData",
+        t(
+          "يُفرّغ input بعد الاختيار لتكرار التصفّح. لا name أو required؛ ابنِ FormData من File[] المختارة. reset يعيد defaultValue دون callback ويحترم الإلغاء؛ المضبوط يحتاج onReset.",
+          "The native input clears after selection for reselection. No name or required API; construct FormData from the selected File array. Uncontrolled reset restores initial defaultValue without callback and respects cancellation; controlled reset requires application onReset.",
+        ),
+      ],
+      [
+        "Validation / scope",
+        "convenience checks",
+        t(
+          "maxFiles يُقرب لأسفل ويُقيد بصفر؛ maxFileSize بايت غير سالب؛ غير المحدود يُتجاهل. يجب فحص الخادم. دون رفع أو تقدم أو معاينات أو مجلدات.",
+          "maxFiles floors/clamps to zero; maxFileSize is nonnegative bytes; nonfinite limits are ignored. Client checks are convenience checks; validate on the server. No uploads, progress, previews or directories.",
+        ),
+      ],
+    ],
+    "color-picker": [
+      [
+        "value / defaultValue / onValueChange",
+        "string / #316746 / (color: string) => void",
+        t(
+          "ألوان RGB معتمة فقط. يقبل #RGB أو #RRGGBB ويؤكد #RRGGBB بأحرف كبيرة. أعطِ props ألوانًا صحيحة؛ القيمة غير الصحيحة تعود إلى #316746.",
+          "Opaque RGB only. Accepts #RGB/#RRGGBB; committed values are uppercase #RRGGBB. Supply valid color props; invalid props fall back to #316746.",
+        ),
+      ],
+      [
+        "HEX editing",
+        "Enter / blur",
+        t(
+          "يبقى النص الناقص أثناء التعديل. Enter أو مغادرة الحقل يؤكد الصحيح؛ غير الصحيح يبقى مع رسالة دون تغيير اللون. onChange للنص، وonValueChange للون المؤكد.",
+          "Incomplete text stays editable. Enter or blur commits valid text; invalid text remains with feedback and the selected color stays unchanged. onChange observes text; onValueChange reports committed colors.",
+        ),
+      ],
+      [
+        "swatches / labels",
+        "ColorSwatch[] / ColorPickerLabels",
+        t(
+          "كل لون له label وvalue صحيح. [] يخفيها. aria-pressed وعلامة اختيار يوضحان الحالة؛ التركيز مستقل. labels يترجم chooser/swatches/invalid.",
+          "Each swatch has a label and valid value. [] hides presets. aria-pressed and a check mark show selection; focus is distinct. labels translates chooser/swatches/invalid.",
+        ),
+      ],
+      [
+        "label / helper / error / field / invalid / ref",
+        "Field / HTMLInputElement",
+        t(
+          "إما تسمية أو Field مستقل. ref والسمات على حقل HEX باتجاه LTR. اختيار أصلي متزامن؛ مظهره يختلف حسب المتصفح.",
+          "Use labeled mode or separate Field composition. Ref/native attributes target the LTR HEX input. Native chooser is synchronized; its appearance varies by browser.",
+        ),
+      ],
+      [
+        "name / form / disabled / reset",
+        "committed hidden value",
+        t(
+          "name يُرسل اللون المؤكد فقط؛ المعطّل لا يُرسل. reset غير المضبوط يعيد defaultValue دون callback بعد احترام الإلغاء. المضبوط يحتاج onReset. الخطأ المحلي وحده لا يمنع الإرسال؛ قيود required/pattern الأصلية تظل فعّالة. التطبيق يملك تحقق النموذج.",
+          "name submits only the committed color; disabled omits it. Uncontrolled reset restores initial defaultValue without callback after respecting cancellation. Controlled reset needs application onReset. Local feedback alone does not block submission; native required/pattern constraints still apply. The application owns form validation.",
+        ),
+      ],
+      [
+        "Scope",
+        "local sample only",
+        t(
+          "لا شفافية أو لوحة hue/saturation مخصصة. المثال يغيّر عيّنة مستقلة عن لون النظام.",
+          "No alpha or custom hue/saturation canvas. The example changes a sample independently of the system accent.",
+        ),
+      ],
+    ],
     "tag-input": [
       [
         "value / defaultValue / onValueChange",

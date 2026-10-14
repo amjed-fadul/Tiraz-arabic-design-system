@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the thirty-three registry families. Prefer an inline task and a
+  Map each need to the thirty-eight registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. These are not
@@ -299,3 +299,9 @@ pending results/timers. [TagInputExamples](examples/TagInputExamples.tsx),
 [InputCopyExamples](examples/InputCopyExamples.tsx)
 show local form values, filtering three actual sample documents and copying real
 source paths. Examples do not persist data or pretend to run services.
+
+## Local files and colors
+
+Use FileDropzone for local File[] selection. Wire onValueChange to application state, construct FormData from that array, and supply actual upload infrastructure separately. The native input clears for reliable reselection and has no name/required API. Type/size checks are convenience checks; server validation remains necessary. Multiple appends, single replaces, partial rejections preserve valid files, and exact name/size/type/lastModified duplicates give feedback. No previews or directories.
+
+Use ColorPicker for opaque #RGB/#RRGGBB values; commit normalizes #RRGGBB. Keep incomplete text while editing, commit on Enter/blur, and retain selected color on invalid text. Named presets and native chooser synchronize the same value. name submits the committed hidden value; local error feedback does not block submission. Controlled parents update onValueChange and restore values onReset; uncontrolled reset restores initial defaults without callbacks. Use the compiling examples linked in README, preserve Field associations and LTR HEX, and keep the local sample independent from system accent.

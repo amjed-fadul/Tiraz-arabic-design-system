@@ -150,6 +150,11 @@ export function Workbench() {
     // Keep Input's IDs and native editing state through label/help/error edits.
     // Mode/default-value changes still need a fresh uncontrolled demonstration.
     if (active === "data-table" || active === "input-copy") return;
+    if (
+      (active === "file-dropzone" || active === "color-picker") &&
+      !("mode" in patch)
+    )
+      return;
     if (active === "tag-input" && !("mode" in patch)) return;
     if (active === "input" && !("mode" in patch) && !("value" in patch)) return;
     if (

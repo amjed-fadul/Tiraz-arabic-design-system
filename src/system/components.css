@@ -2131,3 +2131,184 @@
 .tz-filter-controls .tz-select-trigger {
   max-inline-size: 100%;
 }
+
+/* Local file selection and opaque RGB entry. */
+.tz-file-selection,
+.tz-color-picker {
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+.tz-file-drop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-3);
+  background: var(--surface-subtle);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  transition:
+    background var(--motion-fast) var(--ease),
+    border-color var(--motion-fast) var(--ease);
+}
+.tz-file-drop[data-dragging] {
+  background: var(--action-soft);
+  border-color: var(--action);
+}
+.tz-file-browse {
+  border: 0;
+  background: transparent;
+  padding: var(--space-1);
+  font: inherit;
+  font-weight: var(--weight-medium);
+  color: var(--text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  border-radius: var(--radius-small);
+  cursor: pointer;
+}
+.tz-file-drop:has(.tz-file-browse:focus-visible),
+.tz-file-drop:has(input:focus-visible),
+.tz-color-entry:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-file-browse:focus-visible,
+.tz-color-entry input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.tz-file-drop[data-invalid="true"],
+.tz-color-entry[data-invalid="true"] {
+  border-color: var(--danger);
+}
+.tz-selected-files {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-2) 0 0;
+  display: grid;
+  gap: var(--space-1);
+}
+.tz-selected-files li {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-small);
+  background: var(--surface-subtle);
+  font-size: var(--text-meta);
+}
+.tz-selected-files svg {
+  flex-shrink: 0;
+}
+.tz-file-name {
+  flex: 1;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-file-size {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+.tz-entry-feedback p {
+  margin: var(--space-1) 0 0;
+  overflow-wrap: anywhere;
+}
+.tz-file-selection[data-disabled],
+.tz-color-picker[data-disabled] {
+  opacity: 0.55;
+}
+.tz-file-browse:disabled {
+  cursor: not-allowed;
+}
+.tz-color-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--control-small);
+  padding-inline: var(--space-2);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+.tz-color-native {
+  appearance: none;
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  cursor: pointer;
+}
+.tz-color-native::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.tz-color-native::-webkit-color-swatch {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+}
+.tz-color-native::-moz-color-swatch {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+}
+.tz-color-hex {
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: var(--text-body);
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--control-small);
+  padding: 0;
+}
+.tz-color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+.tz-color-swatch {
+  display: grid;
+  place-items: center;
+  inline-size: var(--control-small);
+  block-size: var(--control-small);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  cursor: pointer;
+}
+.tz-color-swatch[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 2px var(--surface);
+}
+.tz-color-swatch:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-color-check {
+  display: grid;
+  place-items: center;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--surface);
+}
+.tz-color-swatch:disabled,
+.tz-color-native:disabled {
+  cursor: not-allowed;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-file-drop {
+    transition: none;
+  }
+}
+.tiraz-system[data-reduced-motion="true"] .tz-file-drop {
+  transition: none;
+}

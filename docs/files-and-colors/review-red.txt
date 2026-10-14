@@ -1,0 +1,340 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/files-colors.test.tsx src/system/files-colors-examples.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/files-and-colors/Tiraz
+
+ ❯ src/system/files-colors.test.tsx (16 tests | 1 failed) 820ms
+   × names each keyboard Browse control with its Field context 34ms
+ ❯ src/system/files-colors-examples.test.tsx (3 tests | 1 failed) 317ms
+   × live multiple changes keep uncontrolled selection and its local report in sync 73ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/files-colors-examples.test.tsx > live multiple changes keep uncontrolled selection and its local report in sync
+TestingLibraryElementError: Unable to find an element with the text: local.txt. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"ltr"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<form[39m
+        [33mstyle[39m=[32m"display: grid; gap: var(--space-3); inline-size: 100%; min-inline-size: 0px;"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-field "[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"tz-field-label"[39m
+            [33mfor[39m=[32m"tz-field-_r_3_"[39m
+            [33mid[39m=[32m"tz-field-_r_3_-label"[39m
+          [36m>[39m
+            [36m<bdi>[39m
+              [0mReview files[0m
+            [36m</bdi>[39m
+          [36m</label>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-file-selection"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-file-drop"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-paperclip"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [36m<span>[39m
+                [0mDrop files here or[0m
+              [36m</span>[39m
+              [36m<button[39m
+                [33maria-describedby[39m=[32m"tz-field-_r_3_-help"[39m
+                [33mclass[39m=[32m"tz-file-browse"[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mBrowse files[0m
+              [36m</button>[39m
+              [36m<input[39m
+                [33maccept[39m=[32m".pdf,.txt,image/*"[39m
+                [33maria-describedby[39m=[32m"tz-field-_r_3_-help"[39m
+                [33maria-labelledby[39m=[32m"tz-field-_r_3_-label"[39m
+                [33mclass[39m=[32m"tz-visually-hidden "[39m
+                [33mid[39m=[32m"tz-field-_r_3_"[39m
+                [33mtabindex[39m=[32m"-1"[39m
+                [33mtype[39m=[32m"file"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-entry-feedback"[39m
+              [33mid[39m=[32m"tz-files-status-_r_2_"[39m
+              [33mrole[39m=[32m"status"[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<p[39m
+            [33mclass[39m=[32m"tz-field-help"[39m
+            [33mdir[39m=[32m"auto"[39m
+            [33mid[39m=[32m"tz-field-_r_3_-help"[39m
+          [36m>[39m
+            [0mPDF, text or images · up to 5 MB each · maximum 3 files.[0m
+          [36m</p>[39m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mstyle[39m=[32m"margin: 0px; color: var(--text-secondary); font-size: var(--text-meta);"[39m
+        [36m>[39m
+          [0mLocal selection only. No files have been uploaded. Type and size checks are convenience checks; validate again on the server.[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mstyle[39m=[32m"display: flex; gap: var(--space-2); flex-wrap: wrap;"[39m
+        [36m>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tz-button "[39m
+            [33mdata-size[39m=[32m"sm"[39m
+            [33mdata-state[39m=[32m"idle"[39m
+            [33mdata-variant[39m=[32m"secondary"[39m
+            [33mtype[39m=[32m"submit"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-button-label"[39m
+            [36m>[39m
+              [0mRead local selection[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<button[39m
+            [33mclass[39m=[32m"tz-button "[39m
+            [33mdata-size[39m=[32m"sm"[39m
+            [33mdata-state[39m=[32m"idle"[39m
+            [33mdata-variant[39m=[32m"ghost"[39m
+            [33mtype[39m=[32m"reset"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-button-label"[39m
+            [36m>[39m
+              [0mReset files[0m
+            [36m</span>[39m
+          [36m</button>[39m
+        [36m</div>[39m
+      [36m</form>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/files-colors-examples.test.tsx:13:16
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/system/files-colors.test.tsx > names each keyboard Browse control with its Field context
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Invoice Browse files"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Browse files":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-file-browse"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Browse files":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-file-browse"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<div[39m
+    [33mclass[39m=[32m"tz-entry-feedback"[39m
+    [33mid[39m=[32m"tz-files-status-_r_u_"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<div[39m
+    [33mclass[39m=[32m"tz-entry-feedback"[39m
+    [33mid[39m=[32m"tz-files-status-_r_10_"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"ltr"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-field "[39m
+      [36m>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+          [33mfor[39m=[32m"tz-field-_r_v_"[39m
+          [33mid[39m=[32m"tz-field-_r_v_-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mInvoice[0m
+          [36m</bdi>[39m
+        [36m</label>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-file-selection"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-file-drop"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-paperclip"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"18"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"18"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mDrop files here or[0m
+            [36m</span>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"tz-file-browse"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mBrowse files[0m
+            [36m</button>[39m
+            [36m<input[39m
+              [33maria-labelledby[39m=[32m"tz-field-_r_v_-label"[39m
+              [33mclass[39m=[32m"tz-visually-hidden "[39m
+              [33mid[39m=[32m"tz-field-_r_v_"[39m
+              [33mtabindex[39m=[32m"-1"[39m
+              [33mtype[39m=[32m"file"[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-entry-feedback"[39m
+            [33mid[39m=[32m"tz-files-status-_r_u_"[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m/>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-field "[39m
+      [36m>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+          [33mfor[39m=[32m"tz-field-_r_11_"[39m
+          [33mid[39m=[32m"tz-field-_r_11_-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mReference[0m
+          [36m</bdi>[39m
+        [36m</label>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-file-selection"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-file-drop"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-paperclip"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"18"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"18"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span>[39m
+              [0mDrop files here or[0m
+            [36m</span>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"tz-file-browse"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [0mBrowse files[0m
+            [36m</button>[39m
+            [36m<input[39m
+              [33maria-labelledby[39m=[32m"tz-field-_r_11_-label"[39m
+              [33mclass[39m=[32m"tz-visually-hidden "[39m
+              [33mid[39m=[32m"tz-field-_r_11_"[39m
+              [33mtabindex[39m=[32m"-1"[39m
+              [33mtype[39m=[32m"file"[39m
+            [36m/>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-entry-feedback"[39m
+            [33mid[39m=[32m"tz-files-status-_r_10_"[39m
+            [33mrole[39m=[32m"status"[39m
+          [36m/>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/files-colors.test.tsx:288:17
+    286| it("names each keyboard Browse control with its Field context", () => {
+    287|   mount(<><FileDropzone label="Invoice"/><FileDropzone label="Referenc…
+    288|   expect(screen.getByRole('button',{name:'Invoice Browse files'})).toB…
+       |                 ^
+    289|   expect(screen.getByRole('button',{name:'Reference Browse files'})).t…
+    290| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 17 passed (19)
+   Start at  01:34:53
+   Duration  4.08s (environment 44%, tests 16%, import 16%, transform 16%, setup 8%)
+

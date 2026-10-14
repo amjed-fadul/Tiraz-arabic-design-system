@@ -4,6 +4,25 @@ import type { ComponentId } from "./catalog";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import { nativeRules } from "./native-attributes";
+export interface FileDropzoneModel {
+  label: string;
+  helper: string;
+  error: string;
+  multiple: boolean;
+  accept: string;
+  maxFileSize: number;
+  maxFiles: number;
+  disabled: boolean;
+  mode: "controlled" | "uncontrolled";
+}
+export interface ColorPickerModel {
+  label: string;
+  helper: string;
+  error: string;
+  disabled: boolean;
+  showSwatches: boolean;
+  mode: "controlled" | "uncontrolled";
+}
 export type NativeValue = string | number | boolean | string[];
 export type NativeAttributes = Record<string, NativeValue>;
 export type DemoIcon = "none" | "plus" | "download" | "settings";
@@ -244,6 +263,8 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "file-dropzone": FileDropzoneModel;
+  "color-picker": ColorPickerModel;
   "tag-input": TagInputModel;
   "input-copy": InputCopyModel;
   "filter-bar": FilterBarModel;
@@ -296,6 +317,31 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "file-dropzone": {
+      label: t("ملفات المراجعة", "Review files"),
+      helper: t(
+        "PDF أو نص أو صور · حتى ٥ ميغابايت لكل ملف · ٣ ملفات كحد أقصى.",
+        "PDF, text or images · up to 5 MB each · maximum 3 files.",
+      ),
+      error: "",
+      multiple: true,
+      accept: ".pdf,.txt,image/*",
+      maxFileSize: 5242880,
+      maxFiles: 3,
+      disabled: false,
+      mode: "controlled",
+    },
+    "color-picker": {
+      label: t("لون العيّنة", "Sample color"),
+      helper: t(
+        "صيغة #RGB أو #RRGGBB، دون شفافية.",
+        "Use #RGB or #RRGGBB, without transparency.",
+      ),
+      error: "",
+      disabled: false,
+      showSwatches: true,
+      mode: "controlled",
+    },
     "tag-input": {
       label: t("وسوم الملاحظات", "Note tags"),
       helper: t(
@@ -749,6 +795,15 @@ export function normalizePlaygrounds(
         ["string", "boolean", "number"].includes(typeof item)
       )
         defaults[key] = item;
+    }
+    if (component === "file-dropzone") {
+      const p = result[component];
+      p.maxFiles = Number.isFinite(p.maxFiles)
+        ? Math.max(0, Math.min(20, Math.floor(p.maxFiles)))
+        : 3;
+      p.maxFileSize = Number.isFinite(p.maxFileSize)
+        ? Math.max(0, p.maxFileSize)
+        : 5242880;
     }
     if (component === "tag-input") {
       const p = result[component];

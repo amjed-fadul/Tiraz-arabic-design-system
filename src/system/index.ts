@@ -62,3 +62,12 @@ export { FilterBar } from "./FilterBar";
 export type { FilterBarProps, FilterBarFilter } from "./FilterBar";
 export { InputCopy } from "./InputCopy";
 export type { InputCopyProps, InputCopyLabels } from "./InputCopy";
+
+export { FileDropzone } from "./FileDropzone";
+export type { FileDropzoneProps, FileDropzoneLabels } from "./FileDropzone";
+export { ColorPicker } from "./ColorPicker";
+export type {
+  ColorPickerProps,
+  ColorPickerLabels,
+  ColorSwatch,
+} from "./ColorPicker";

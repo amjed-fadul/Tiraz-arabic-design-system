@@ -83,6 +83,41 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "file-dropzone": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "المساعدة", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("multiple", "boolean", "ملفات متعددة", "Multiple files"),
+    field("accept", "text", "الأنواع المقبولة", "Accepted types"),
+    field(
+      "maxFileSize",
+      "number",
+      "الحجم الأقصى بالبايت",
+      "Maximum size in bytes",
+      "maxFileSize",
+      { min: 0, max: 52428800 },
+    ),
+    field("maxFiles", "number", "العدد الأقصى", "Maximum files", "maxFiles", {
+      min: 0,
+      max: 20,
+    }),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+  "color-picker": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "المساعدة", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field(
+      "showSwatches",
+      "boolean",
+      "ألوان جاهزة",
+      "Preset swatches",
+      "example",
+    ),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
   "tag-input": [
     field("label", "text", "التسمية", "Label"),
     field("helper", "text", "المساعدة", "Helper"),
@@ -597,6 +632,8 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "file-dropzone": ["label", "multiple", "accept", "maxFiles", "disabled"],
+  "color-picker": ["label", "showSwatches", "disabled"],
   "tag-input": ["label", "helper", "error", "maxTags", "disabled", "readOnly"],
   "input-copy": ["label", "value", "helper", "error", "disabled"],
   "filter-bar": ["initialQuery", "initialKind", "clearAll"],

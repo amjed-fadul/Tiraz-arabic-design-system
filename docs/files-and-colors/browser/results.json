@@ -1,0 +1,167 @@
+{
+  "checks": [
+    "file-dropzone ar light 1440px shaping/wrapping",
+    "file-dropzone ar dark 320px shaping/wrapping",
+    "file-dropzone en light 320px shaping/wrapping",
+    "file-dropzone en dark 1440px shaping/wrapping",
+    "color-picker ar light 1440px shaping/wrapping",
+    "color-picker ar dark 320px shaping/wrapping",
+    "color-picker en light 320px shaping/wrapping",
+    "color-picker en dark 1440px shaping/wrapping",
+    "real Browse button emits native filechooser; existing local file selected via chooser.setFiles (OS panel not automated)",
+    "local report matches selected files and makes no upload claim",
+    "drop partial rejection/count caps preserve valid files",
+    "duplicates rejected with explanation",
+    "removal returns focus to Browse",
+    "keyboard order skips hidden picker and reaches removal",
+    "controlled example reset clears selection",
+    "nested synthetic dragenter/dragleave does not flicker",
+    "live file inspector label edits preserve selection",
+    "live disabled state blocks drop and native buttons",
+    "incomplete invalid HEX retains draft and selected color",
+    "HEX Enter normalizes and synchronizes native color",
+    "named swatch check/pressed state and local sample synchronize",
+    "SIMULATED native color input/change synchronizes HEX/swatches/sample; no OS chooser selection claimed",
+    "native FormData submits committed color and controlled reset restores sample",
+    "invalid draft submits previous committed value as documented",
+    "live color inspector preserves editing draft",
+    "live accent/typography/density/corners customization renders",
+    "application reduced motion reaches composite",
+    "OS reduced motion overrides application motion",
+    "axe scoped file preview: no violations",
+    "axe scoped color preview: no violations"
+  ],
+  "geometry": [
+    {
+      "name": "file-dropzone-ar-light-1440",
+      "box": {
+        "x": 390,
+        "y": 382.171875,
+        "width": 730,
+        "height": 336.75
+      },
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "file-dropzone-ar-dark-320",
+      "box": {
+        "x": 16,
+        "y": 428.5625,
+        "width": 288,
+        "height": 562.6875
+      },
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "name": "file-dropzone-en-light-320",
+      "box": {
+        "x": 16,
+        "y": 433.75,
+        "width": 288,
+        "height": 565.875
+      },
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "name": "file-dropzone-en-dark-1440",
+      "box": {
+        "x": 320,
+        "y": 382.171875,
+        "width": 730,
+        "height": 358.34375
+      },
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "color-picker-ar-light-1440",
+      "box": {
+        "x": 390,
+        "y": 382.171875,
+        "width": 730,
+        "height": 328.375
+      },
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "color-picker-ar-dark-320",
+      "box": {
+        "x": 16,
+        "y": 428.5625,
+        "width": 288,
+        "height": 308.375
+      },
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "name": "color-picker-en-light-320",
+      "box": {
+        "x": 16,
+        "y": 439.75,
+        "width": 288,
+        "height": 351.5625
+      },
+      "width": 320,
+      "scroll": 320
+    },
+    {
+      "name": "color-picker-en-dark-1440",
+      "box": {
+        "x": 320,
+        "y": 382.171875,
+        "width": 730,
+        "height": 328.375
+      },
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "color-native-keyboard-focus",
+      "box": {
+        "x": 320,
+        "y": 382.171875,
+        "width": 730,
+        "height": 328.375
+      },
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "color-customized",
+      "box": {
+        "x": 320,
+        "y": 382.171875,
+        "width": 730,
+        "height": 414.359375
+      },
+      "width": 1440,
+      "scroll": 1440
+    },
+    {
+      "name": "file-keyboard-focus",
+      "box": {
+        "x": 320,
+        "y": 382.171875,
+        "width": 730,
+        "height": 299.15625
+      },
+      "width": 1440,
+      "scroll": 1440
+    }
+  ],
+  "custom": {
+    "height": "36px",
+    "body": "16px",
+    "radius": "0px",
+    "accent": "#365B87"
+  },
+  "errors": [],
+  "nativeFile": "Browse button + Playwright filechooser.setFiles using a real local text file; OS file panel not inspected",
+  "nativeColor": "Synthetic DOM input/change in script. Actual Chrome native RGB channel UI separately verified; see ../native-checks.md",
+  "drag": "DOM DataTransfer/drag events; physical OS drag not automated"
+}

@@ -1,3 +1,5 @@
+import filesSource from "../system/ai/examples/FileDropzoneExamples.tsx?raw";
+import colorsSource from "../system/ai/examples/ColorPickerExamples.tsx?raw";
 import tagSource from "../system/ai/examples/TagInputExamples.tsx?raw";
 import filterSource from "../system/ai/examples/FilterBarExamples.tsx?raw";
 import copySource from "../system/ai/examples/InputCopyExamples.tsx?raw";
@@ -60,19 +62,35 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
-  if (["tag-input", "filter-bar", "input-copy"].includes(component)) {
+  if (
+    [
+      "file-dropzone",
+      "color-picker",
+      "tag-input",
+      "filter-bar",
+      "input-copy",
+    ].includes(component)
+  ) {
     const name =
-      component === "tag-input"
-        ? "TagInputExample"
-        : component === "filter-bar"
-          ? "FilterBarExample"
-          : "InputCopyExample";
+      component === "file-dropzone"
+        ? "FileDropzoneExample"
+        : component === "color-picker"
+          ? "ColorPickerExample"
+          : component === "tag-input"
+            ? "TagInputExample"
+            : component === "filter-bar"
+              ? "FilterBarExample"
+              : "InputCopyExample";
     const entrySource =
-      component === "tag-input"
-        ? tagSource
-        : component === "filter-bar"
-          ? filterSource
-          : copySource;
+      component === "file-dropzone"
+        ? filesSource
+        : component === "color-picker"
+          ? colorsSource
+          : component === "tag-input"
+            ? tagSource
+            : component === "filter-bar"
+              ? filterSource
+              : copySource;
     const source = entrySource.replace(
       /from "\.\.\/\.\.\/index"/g,
       'from "./system"',

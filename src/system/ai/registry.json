@@ -515,6 +515,34 @@
     {
       "name": "InputCopyLabels",
       "source": "InputCopy.tsx"
+    },
+    {
+      "name": "FileDropzone",
+      "source": "FileDropzone.tsx"
+    },
+    {
+      "name": "FileDropzoneProps",
+      "source": "FileDropzone.tsx"
+    },
+    {
+      "name": "FileDropzoneLabels",
+      "source": "FileDropzone.tsx"
+    },
+    {
+      "name": "ColorPicker",
+      "source": "ColorPicker.tsx"
+    },
+    {
+      "name": "ColorPickerProps",
+      "source": "ColorPicker.tsx"
+    },
+    {
+      "name": "ColorPickerLabels",
+      "source": "ColorPicker.tsx"
+    },
+    {
+      "name": "ColorSwatch",
+      "source": "ColorPicker.tsx"
     }
   ],
   "configuration": {
@@ -582,6 +610,241 @@
     }
   },
   "components": [
+    {
+      "id": "file-dropzone",
+      "api": "FileDropzone",
+      "source": "FileDropzone.tsx",
+      "exports": ["FileDropzone", "FileDropzoneProps", "FileDropzoneLabels"],
+      "examples": ["ai/examples/FileDropzoneExamples.tsx"],
+      "providers": ["SystemProvider for shared tokens and direction."],
+      "purpose": "Select local files without upload infrastructure.",
+      "useWhen": "Accessible browsing and drag/drop with one selection list.",
+      "alternative": "Use native input for an unenhanced picker; application supplies uploads.",
+      "props": [
+        {
+          "name": "value",
+          "type": "File[]",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "File[]",
+          "required": false,
+          "default": []
+        },
+        {
+          "name": "onValueChange",
+          "type": "(files: File[]) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "maxFileSize",
+          "type": "number",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "maxFiles",
+          "type": "number",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "FileDropzoneLabels",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native file input props/ref/events except type/value/defaultValue/children/size/name/required/readOnly. Props and ref target hidden native input. label/helper/error or field are mutually exclusive. Native input is cleared after each browse change; onChange can inspect the raw FileList before it is cleared.",
+      "state": "Controlled value is authoritative; defaultValue initializes internal selection once. Multiple appends; single replaces with first valid file. Same type/size/count/duplicate checks for browse/drop. Accepted files survive partial rejection; total rejection preserves previous selection. Duplicate identity is exact name,size,type,lastModified, including within a batch; ignore and explain. Removal allows reselection and focuses browse button. Finite maxFiles floors/clamps to zero, finite maxFileSize clamps to zero bytes; nonfinite means no cap.",
+      "events": [
+        "onValueChange reports user additions/removals, never reset. onChange observes only native browsing. labels supports browse/drop/remove(file)/rejected(file,reason), where reason is type|size|count|duplicate."
+      ],
+      "accessibility": [
+        "Use label or separate Field; standalone requires native/ARIA name. Helper/error/external descriptions merge. Native Browse button supports keyboard; removal returns focus to Browse. One outer focus ring on drop area. Nested drag depth prevents flicker. Filename wraps using bdi. Disabled prevents all user changes."
+      ],
+      "limitations": [
+        "No native name/required selected-array submission. Construct application FormData from the selected File[]; cleared native input does not represent selected files. Uncontrolled uncanceled reset restores initial defaultValue without callback; controlled reset needs application onReset. Reset follows current/external form and clears feedback.",
+        "Client accept/type/size checks are convenience checks, not security or server validation. MIME may be missing or unreliable. No networking, upload success/progress, storage, image previews or directory uploads."
+      ]
+    },
+    {
+      "id": "color-picker",
+      "api": "ColorPicker",
+      "source": "ColorPicker.tsx",
+      "exports": [
+        "ColorPicker",
+        "ColorPickerProps",
+        "ColorPickerLabels",
+        "ColorSwatch"
+      ],
+      "examples": ["ai/examples/ColorPickerExamples.tsx"],
+      "providers": ["SystemProvider for shared tokens and direction."],
+      "purpose": "Choose an opaque RGB color using presets, HEX and a native chooser.",
+      "useWhen": "A local application color value, independent of system accent configuration.",
+      "alternative": "Application-owned advanced picker for alpha or other color spaces.",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": "#316746"
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "swatches",
+          "type": "ColorSwatch[]",
+          "required": false,
+          "default": "Named Green/Blue/Plum/Clay presets"
+        },
+        {
+          "name": "labels",
+          "type": "ColorPickerLabels",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native HEX text input attributes/ref/events except value/defaultValue/type/children/size/readOnly. name submits a separate hidden committed value. label/helper/error and field are mutually exclusive. Native chooser has a translated name; no separate ref API.",
+      "state": "Opaque #RGB/#RRGGBB only, trim and normalize commits to uppercase #RRGGBB. Incomplete text remains while editing. Enter/blur commits valid input; invalid text retains draft, announces feedback and does not change selected color. Swatches and native chooser commit immediately and synchronize draft. Controlled value is authoritative and parent must update; invalid value/defaultValue props fall back to #316746. Invalid swatch values are omitted.",
+      "events": [
+        "onValueChange reports a changed committed color, not draft edits/reset. Native onChange reports HEX text editing. labels translates chooser/swatches/invalid."
+      ],
+      "accessibility": [
+        "Field associations and external descriptions merge on LTR HEX input. Named preset buttons use aria-pressed and a visible check mark; focus ring is distinct from selection. Native chooser and HEX share one focus treatment. Disabled disables every control and omits hidden value."
+      ],
+      "limitations": [
+        "name/form submit the committed color, never incomplete/invalid draft. Application owns validation; local invalid feedback is not itself a submission blocker. Caller-supplied native HEX constraints such as required/pattern still apply. Uncontrolled uncanceled reset restores initial normalized defaultValue and clears draft/feedback without callback; controlled reset requires application onReset.",
+        "Native chooser appearance/browser interaction varies. No alpha, saturation/hue canvas, eyedropper or system-accent configuration."
+      ]
+    },
     {
       "id": "tag-input",
       "api": "TagInput",

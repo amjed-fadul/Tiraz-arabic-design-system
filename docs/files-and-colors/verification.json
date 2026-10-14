@@ -1,0 +1,24 @@
+{
+  "baseline": "89f7987a22ea828007bd823f024fbd416874a725",
+  "branch": "codex/files-and-colors",
+  "checkout": "/Users/amjedfadul/.codex/worktrees/files-and-colors/Tiraz",
+  "preview": "http://127.0.0.1:5214/",
+  "originalHead": "ce78408818b6a9866ab0faa7748404cba44d8939",
+  "originalDiffPreserved": true,
+  "originalIndexPreserved": true,
+  "originalPort5213Pid": 31442,
+  "previewPort5214Pid": 90957,
+  "node": "24.21.0",
+  "tests": {
+    "baseline": 392,
+    "final": 419,
+    "focused": 23,
+    "browser": 30
+  },
+  "limitations": [
+    "Physical Finder drag was not automated; synthetic DataTransfer events were used.",
+    "Manual screen-reader behavior and other browsers are unverified.",
+    "Final post-hidden macOS Open panel recheck blocked by locked Mac; final native filechooser interception and earlier actual OS panel pass."
+  ],
+  "buildWarning": "Workbench bundle exceeds 500 kB; build passes."
+}

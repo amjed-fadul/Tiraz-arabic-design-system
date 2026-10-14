@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with thirty-six source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with thirty-eight source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -215,8 +215,8 @@ The connected dashboard uses Sidebar on desktop and the same content in Sheet
 on mobile, keeping Overview, Orders and Customers as real section destinations.
 
 The documentation component menu groups implemented pages under Forms,
-Navigation, Data, Display & feedback, Overlays and Charts, with compact Arabic
-and English labels. Groups stay expanded; empty Files/AI patterns sections are
+Files, Navigation, Data, Display & feedback, Overlays and Charts, with compact Arabic
+and English labels. Groups stay expanded; the empty AI patterns section is
 not shown. Existing page selection and documentation layout remain intact.
 
 TagInput, FilterBar and InputCopy extend the existing native Field and control
@@ -225,3 +225,7 @@ FilterBar composes application-owned filters and powers dashboard customer
 search/status chips. InputCopy keeps text selectable and reports real clipboard
 results. See the portable [guidance](src/system/ai/README.md#tags-filter-controls-and-copying)
 and component documentation. These examples add no persistence or filtering engine.
+
+### Files and colors
+
+FileDropzone (Files) selects/removes local files with shared browse/drop validation, duplicate feedback and application-owned submission. ColorPicker (Forms) synchronizes opaque RGB presets, HEX and a native chooser; its sample is independent of system accent. Read the portable contracts and working examples in `src/system/ai/README.md` for submission/reset behavior and scope. Neither component uploads or stores data.

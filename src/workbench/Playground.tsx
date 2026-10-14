@@ -1,3 +1,6 @@
+import { FileDropzoneExample } from "../system/ai/examples/FileDropzoneExamples";
+import { ColorPickerExample } from "../system/ai/examples/ColorPickerExamples";
+import type { FileDropzoneModel, ColorPickerModel } from "./model";
 import { TagInputExample } from "../system/ai/examples/TagInputExamples";
 import { FilterBarExample } from "../system/ai/examples/FilterBarExamples";
 import { InputCopyExample } from "../system/ai/examples/InputCopyExamples";
@@ -150,6 +153,20 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "file-dropzone")
+    return (
+      <FileDropzoneExample
+        language={language}
+        {...(model as FileDropzoneModel)}
+      />
+    );
+  if (component === "color-picker")
+    return (
+      <ColorPickerExample
+        language={language}
+        {...(model as ColorPickerModel)}
+      />
+    );
   if (component === "tag-input")
     return (
       <TagInputExample language={language} {...(model as TagInputModel)} />

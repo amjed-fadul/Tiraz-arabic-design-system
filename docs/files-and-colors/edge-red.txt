@@ -1,0 +1,35 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/files-colors.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/files-and-colors/Tiraz
+
+ ❯ src/system/files-colors.test.tsx (14 tests | 1 failed) 517ms
+   × clears stale invalid feedback on external ColorPicker replacement 17ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/files-colors.test.tsx > clears stale invalid feedback on external ColorPicker replacement
+Error: expect(element).not.toHaveAttribute("aria-invalid", "true") // element.getAttribute("aria-invalid") === "true"
+
+Expected the element not to have attribute:
+  aria-invalid="true"
+Received:
+  aria-invalid="true"
+ ❯ src/system/files-colors.test.tsx:277:55
+    275|   expect(hex).toHaveAttribute('aria-invalid','true');
+    276|   view.rerender(<SystemProvider config={defaultConfig}><ColorPicker la…
+    277|   expect(hex).toHaveValue('#AABBCC'); expect(hex).not.toHaveAttribute(…
+       |                                                       ^
+    278| });
+    279| it("file example reports the currently selected list after changing se…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  01:31:08
+   Duration  2.26s (environment 46%, tests 25%, transform 11%, import 9%, setup 9%)
+

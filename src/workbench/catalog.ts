@@ -1,6 +1,24 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "file-dropzone",
+    name: ["اختيار الملفات", "FileDropzone"],
+    description: [
+      "اختيار ملفات محلي مع فحص واضح وإزالة متاحة، دون رفع.",
+      "Local file selection with clear validation and accessible removal, without uploading.",
+    ],
+    file: "FileDropzone.tsx",
+  },
+  {
+    id: "color-picker",
+    name: ["اختيار اللون", "ColorPicker"],
+    description: [
+      "ألوان جاهزة وإدخال HEX واختيار لون أصلي، دون شفافية.",
+      "Named presets, HEX entry and a native chooser for opaque RGB colors.",
+    ],
+    file: "ColorPicker.tsx",
+  },
+  {
     id: "tag-input",
     name: ["إدخال الوسوم", "TagInput"],
     description: [
@@ -344,6 +362,7 @@ const documentationGroups = [
       "button",
       "input",
       "tag-input",
+      "color-picker",
       "input-copy",
       "select",
       "checkbox",
@@ -352,6 +371,7 @@ const documentationGroups = [
       "switch",
     ],
   },
+  { id: "files", name: ["الملفات", "Files"], ids: ["file-dropzone"] },
   {
     id: "navigation",
     name: ["التنقّل", "Navigation"],
@@ -395,7 +415,7 @@ const documentationGroups = [
   ids: Exclude<ComponentId, "field">[];
 }>;
 
-// Files and AI patterns have no implemented documentation pages yet.
+// AI patterns have no implemented documentation pages yet.
 export const navigationGroups = documentationGroups
   .map((group) => ({
     ...group,

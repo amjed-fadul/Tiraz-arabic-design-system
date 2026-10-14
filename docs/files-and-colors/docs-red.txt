@@ -1,0 +1,1139 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/files-colors-pages.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/files-and-colors/Tiraz
+
+ ❯ src/workbench/files-colors-pages.test.tsx (2 tests | 2 failed) 429ms
+   × documents file-dropzone continuously with working examples and portable full prompts 320ms
+   × documents color-picker continuously with working examples and portable full prompts 107ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/files-colors-pages.test.tsx > documents file-dropzone continuously with working examples and portable full prompts
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "اختيار الملفات"
+
+Here are the accessible roles:
+
+  group:
+
+  Name "النماذج":
+  [36m<div[39m
+    [33maria-label[39m=[32m"النماذج"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "النماذج":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "الأزرار":
+  [36m<button[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الإدخال":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "إدخال الوسوم":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "إدخال النسخ":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الاختيار":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مربع الاختيار":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مجموعة الخيارات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "النص المتعدد":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مفتاح التبديل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "التنقّل":
+  [36m<div[39m
+    [33maria-label[39m=[32m"التنقّل"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "التنقّل":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "شريط التنقّل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التبويبات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مسار التنقل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "تقسيم الصفحات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "البيانات":
+  [36m<div[39m
+    [33maria-label[39m=[32m"البيانات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "البيانات":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "شريط التصفية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الجدول":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "جدول البيانات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "العرض والتنبيهات":
+  [36m<div[39m
+    [33maria-label[39m=[32m"العرض والتنبيهات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "العرض والتنبيهات":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "البطاقة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الأكورديون":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الصورة الشخصية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مجموعة الصور":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الشارة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الحالة الفارغة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسالة الدلالية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التنبيهات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "هيكل التحميل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التقدم":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مؤشر التحميل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "النوافذ":
+  [36m<div[39m
+    [33maria-label[39m=[32m"النوافذ"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "النوافذ":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "القائمة المنسدلة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "اللوحة الجانبية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "النافذة الحوارية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التلميح":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "الرسوم":
+  [36m<div[39m
+    [33maria-label[39m=[32m"الرسوم"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "الرسوم":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "الرسم الخطي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسم المساحي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسم العمودي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسم الحلقي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<nav[39m
+  [33maria-label[39m=[32m"المكوّنات"[39m
+  [33mclass[39m=[32m"component-nav"[39m
+[36m>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"النماذج"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالنماذج[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33maria-current[39m=[32m"page"[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالأزرار[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالإدخال[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mإدخال الوسوم[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mإدخال النسخ[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالاختيار[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمربع الاختيار[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمجموعة الخيارات[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالنص المتعدد[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمفتاح التبديل[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"التنقّل"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالتنقّل[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mشريط التنقّل[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتبويبات[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمسار التنقل[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mتقسيم الصفحات[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"البيانات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالبيانات[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mشريط التصفية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالجدول[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mجدول البيانات[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"العرض والتنبيهات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالعرض والتنبيهات[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالبطاقة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالأكورديون[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالصورة الشخصية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمجموعة الصور[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالشارة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالحالة الفارغة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسالة الدلالية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتنبيهات[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mهيكل التحميل[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتقدم[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمؤشر التحميل[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"النوافذ"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالنوافذ[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالقائمة المنسدلة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mاللوحة الجانبية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالنافذة الحوارية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتلميح[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"الرسوم"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالرسوم[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم الخطي[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم المساحي[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم العمودي[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم الحلقي[0m
+    [36m</button>[39m
+  [36m</div>[39m
+[36m</nav>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/files-colors-pages.test.tsx:10:32
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/workbench/files-colors-pages.test.tsx > documents color-picker continuously with working examples and portable full prompts
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "اختيار اللون"
+
+Here are the accessible roles:
+
+  group:
+
+  Name "النماذج":
+  [36m<div[39m
+    [33maria-label[39m=[32m"النماذج"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "النماذج":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "الأزرار":
+  [36m<button[39m
+    [33maria-current[39m=[32m"page"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الإدخال":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "إدخال الوسوم":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "إدخال النسخ":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الاختيار":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مربع الاختيار":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مجموعة الخيارات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "النص المتعدد":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مفتاح التبديل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "التنقّل":
+  [36m<div[39m
+    [33maria-label[39m=[32m"التنقّل"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "التنقّل":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "شريط التنقّل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التبويبات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مسار التنقل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "تقسيم الصفحات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "البيانات":
+  [36m<div[39m
+    [33maria-label[39m=[32m"البيانات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "البيانات":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "شريط التصفية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الجدول":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "جدول البيانات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "العرض والتنبيهات":
+  [36m<div[39m
+    [33maria-label[39m=[32m"العرض والتنبيهات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "العرض والتنبيهات":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "البطاقة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الأكورديون":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الصورة الشخصية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مجموعة الصور":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الشارة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الحالة الفارغة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسالة الدلالية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التنبيهات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "هيكل التحميل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التقدم":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "مؤشر التحميل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "النوافذ":
+  [36m<div[39m
+    [33maria-label[39m=[32m"النوافذ"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "النوافذ":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "القائمة المنسدلة":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "اللوحة الجانبية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "النافذة الحوارية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "التلميح":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------group:
+
+  Name "الرسوم":
+  [36m<div[39m
+    [33maria-label[39m=[32m"الرسوم"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "الرسوم":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "الرسم الخطي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسم المساحي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسم العمودي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "الرسم الحلقي":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<nav[39m
+  [33maria-label[39m=[32m"المكوّنات"[39m
+  [33mclass[39m=[32m"component-nav"[39m
+[36m>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"النماذج"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالنماذج[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33maria-current[39m=[32m"page"[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالأزرار[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالإدخال[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mإدخال الوسوم[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mإدخال النسخ[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالاختيار[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمربع الاختيار[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمجموعة الخيارات[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالنص المتعدد[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمفتاح التبديل[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"التنقّل"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالتنقّل[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mشريط التنقّل[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتبويبات[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمسار التنقل[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mتقسيم الصفحات[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"البيانات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالبيانات[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mشريط التصفية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالجدول[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mجدول البيانات[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"العرض والتنبيهات"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالعرض والتنبيهات[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالبطاقة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالأكورديون[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالصورة الشخصية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمجموعة الصور[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالشارة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالحالة الفارغة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسالة الدلالية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتنبيهات[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mهيكل التحميل[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتقدم[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mمؤشر التحميل[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"النوافذ"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالنوافذ[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالقائمة المنسدلة[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mاللوحة الجانبية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالنافذة الحوارية[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالتلميح[0m
+    [36m</button>[39m
+  [36m</div>[39m
+  [36m<div[39m
+    [33maria-label[39m=[32m"الرسوم"[39m
+    [33mclass[39m=[32m"component-nav-group"[39m
+    [33mrole[39m=[32m"group"[39m
+  [36m>[39m
+    [36m<h2[39m
+      [33mclass[39m=[32m"component-nav-heading"[39m
+    [36m>[39m
+      [0mالرسوم[0m
+    [36m</h2>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم الخطي[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم المساحي[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم العمودي[0m
+    [36m</button>[39m
+    [36m<button[39m
+      [33mtype[39m=[32m"button"[39m
+    [36m>[39m
+      [0mالرسم الحلقي[0m
+    [36m</button>[39m
+  [36m</div>[39m
+[36m</nav>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/files-colors-pages.test.tsx:10:32
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  01:27:02
+   Duration  3.56s (transform 39%, environment 28%, import 18%, tests 13%, setup 3%)
+

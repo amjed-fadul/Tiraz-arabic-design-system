@@ -1,3 +1,5 @@
+import { FileDropzoneExample } from "../system/ai/examples/FileDropzoneExamples";
+import { ColorPickerExample } from "../system/ai/examples/ColorPickerExamples";
 import { TagInputExample } from "../system/ai/examples/TagInputExamples";
 import { FilterBarExample } from "../system/ai/examples/FilterBarExamples";
 import {
@@ -181,6 +183,20 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "file-dropzone")
+    return (
+      <FileDropzoneExample
+        language={language}
+        mode="uncontrolled"
+        multiple={false}
+        helper={t(
+          "ملف واحد؛ يحل الاختيار الصحيح محل السابق.",
+          "One file; a valid selection replaces the previous file.",
+        )}
+      />
+    );
+  if (component === "color-picker")
+    return <ColorPickerExample language={language} mode="uncontrolled" />;
   if (component === "tag-input")
     return (
       <TagInputExample language={language} mode="uncontrolled" maxTags={3} />

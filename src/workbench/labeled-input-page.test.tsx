@@ -1,3 +1,4 @@
+import { navigationCatalog } from "./catalog";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -38,7 +39,7 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
-  expect(nav.getAllByRole("button")).toHaveLength(35);
+  expect(nav.getAllByRole("button")).toHaveLength(navigationCatalog.length);
   const rail = within(
     screen.getByRole("complementary", { name: "Customization" }),
   );
