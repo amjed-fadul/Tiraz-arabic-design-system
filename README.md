@@ -270,7 +270,7 @@ FileTree displays application-supplied files and folders with stable unique IDs;
 
 ## AI feedback
 
-LoadingState combines a compact decorative Spinner or Skeleton with a label and
+LoadingState combines a compact decorative woven mark or Skeleton with a label and
 optional description. Use Spinner alone beside existing feedback, or Skeleton
 for the shape of future content. ThinkingIndicator is one stable inline activity
 label; ThinkingState adds disclosure for brief application-supplied progress

@@ -1,6 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { ChevronDown, Circle } from "lucide-react";
+import { ThinkingIndicator } from "./ThinkingIndicator";
 
 export type ThinkingStateProps = Omit<
   ComponentPropsWithRef<"div">,
@@ -80,15 +81,13 @@ export function ThinkingState({
         }}
       >
         {active ? (
-          <span className="tz-thinking-dots" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
+          <ThinkingIndicator id={titleId} label={label} announcement="off" />
         ) : (
-          <Circle className="tz-thinking-state-rest" aria-hidden="true" />
+          <>
+            <Circle className="tz-thinking-state-rest" aria-hidden="true" />
+            <bdi id={titleId}>{label}</bdi>
+          </>
         )}
-        <bdi id={titleId}>{label}</bdi>
         <ChevronDown className="tz-thinking-state-chevron" aria-hidden="true" />
       </button>
       <div

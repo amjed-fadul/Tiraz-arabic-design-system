@@ -1,5 +1,9 @@
 # AI feedback local verification
 
+Latest verification: [Textile motion refinement — 2026-10-16](motion/verification.md), including the recording, updated screenshots and focused checks.
+
+## Original batch at 2dd01e9
+
 Checkout: `/Users/amjedfadul/.codex/worktrees/ai-feedback/Tiraz`
 
 Branch: `codex/ai-feedback`

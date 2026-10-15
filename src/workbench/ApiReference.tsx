@@ -107,7 +107,10 @@ export function ApiReference({
       [
         "indicator",
         '"spinner" | "skeleton" · spinner',
-        t("مؤشر زخرفي مدمج.", "Compact decorative indicator."),
+        t(
+          "نسيج متحرك مدمج افتراضيًا؛ spinner محفوظ للتوافق. أو هيكل تحميل.",
+          "Compact woven mark by default; spinner is retained for compatibility. Or a skeleton placeholder.",
+        ),
       ],
       [
         "announcement",

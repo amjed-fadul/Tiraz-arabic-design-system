@@ -6,7 +6,7 @@ export type ThinkingIndicatorProps = Omit<
   label: string;
   announcement?: "polite" | "off";
 };
-/** Stable application-supplied label; only the decorative dots animate. */
+/** Stable application-supplied label; only the decorative stitches animate. */
 export function ThinkingIndicator({
   label,
   announcement = "polite",
@@ -21,11 +21,16 @@ export function ThinkingIndicator({
       aria-live={announcement === "polite" ? "polite" : "off"}
       aria-atomic="true"
     >
-      <span className="tz-thinking-dots" aria-hidden="true">
-        <span />
-        <span />
-        <span />
-      </span>
+      <svg
+        className="tz-thinking-stitches"
+        viewBox="0 0 24 16"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <rect x="2" y="7" width="4" height="2" rx="0.5" />
+        <rect x="9" y="7" width="4" height="2" rx="0.5" />
+        <rect x="16" y="7" width="4" height="2" rx="0.5" />
+      </svg>
       <bdi>{label}</bdi>
     </span>
   );

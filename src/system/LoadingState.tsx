@@ -1,6 +1,5 @@
 import type { ComponentPropsWithRef } from "react";
 import { Skeleton } from "./Skeleton";
-import { Spinner } from "./Spinner";
 
 export type LoadingStateProps = Omit<
   ComponentPropsWithRef<"div">,
@@ -25,7 +24,21 @@ export function LoadingState({
     <div {...props} className={`tz-loading-state ${className}`}>
       <span className="tz-loading-state-visual" aria-hidden="true">
         {indicator === "spinner" ? (
-          <Spinner decorative />
+          <svg
+            className="tz-loading-weave"
+            viewBox="0 0 24 16"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              className="tz-loading-warps"
+              d="M3.5 4h17M3.5 8h17M3.5 12h17"
+            />
+            <g className="tz-loading-weft">
+              {/* The gap lets the middle warp pass over the moving thread. */}
+              <path d="M0 1v5.5M0 9.5V15" />
+            </g>
+          </svg>
         ) : (
           <Skeleton shape="circle" style={{ inlineSize: 16, blockSize: 16 }} />
         )}

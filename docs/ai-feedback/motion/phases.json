@@ -1,0 +1,1009 @@
+{
+  "seams": [
+    {
+      "boundary": 1620,
+      "weftDelta": 0,
+      "stitchDeltas": [
+        {
+          "position": 1.67909e-30,
+          "opacity": 0
+        },
+        {
+          "position": 0,
+          "opacity": 0
+        },
+        {
+          "position": 0,
+          "opacity": 0
+        }
+      ]
+    },
+    {
+      "boundary": 3240,
+      "weftDelta": 0,
+      "stitchDeltas": [
+        {
+          "position": 6.71636e-30,
+          "opacity": 0
+        },
+        {
+          "position": 0,
+          "opacity": 0
+        },
+        {
+          "position": 0,
+          "opacity": 0
+        }
+      ]
+    },
+    {
+      "boundary": 4860,
+      "weftDelta": 0,
+      "stitchDeltas": [
+        {
+          "position": 6.71636e-30,
+          "opacity": 0
+        },
+        {
+          "position": 0,
+          "opacity": 0
+        },
+        {
+          "position": 0,
+          "opacity": 0
+        }
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 0,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.841571",
+          "transform": "matrix(1, 0, 0, 1, 0.883142, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 405,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.9",
+          "transform": "matrix(1, 0, 0, 1, 1, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.402188",
+          "transform": "matrix(1, 0, 0, 1, 0.00437624, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 12, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 810,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.484851",
+          "transform": "matrix(1, 0, 0, 1, 0.169702, 0)"
+        },
+        {
+          "opacity": "0.784113",
+          "transform": "matrix(1, 0, 0, 1, 0.768225, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 20, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 1215,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.670496",
+          "transform": "matrix(1, 0, 0, 1, 0.540992, 0)"
+        },
+        {
+          "opacity": "0.515887",
+          "transform": "matrix(1, 0, 0, 1, 0.231775, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 12, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 1604,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.854915",
+          "transform": "matrix(1, 0, 0, 1, 0.90983, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4.0119, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 1620,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 1.67909e-30, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.841571",
+          "transform": "matrix(1, 0, 0, 1, 0.883142, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 1636,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.401501",
+          "transform": "matrix(1, 0, 0, 1, 0.00300154, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.826494",
+          "transform": "matrix(1, 0, 0, 1, 0.852987, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4.0119, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 3224,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.854915",
+          "transform": "matrix(1, 0, 0, 1, 0.90983, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4.0119, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 3240,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 6.71636e-30, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.841571",
+          "transform": "matrix(1, 0, 0, 1, 0.883142, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 3256,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.401501",
+          "transform": "matrix(1, 0, 0, 1, 0.00300154, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.826494",
+          "transform": "matrix(1, 0, 0, 1, 0.852987, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4.0119, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 4844,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.854915",
+          "transform": "matrix(1, 0, 0, 1, 0.90983, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4.0119, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 4860,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 6.71636e-30, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.841571",
+          "transform": "matrix(1, 0, 0, 1, 0.883142, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4, 0)"
+    },
+    {
+      "marks": [
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 136.20220947265625
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 43.917869567871094,
+          "y": 236.60252380371097
+        },
+        {
+          "height": 15.999482154846191,
+          "width": 23.999223709106445,
+          "x": 47.914512634277344,
+          "y": 324.451171875
+        }
+      ],
+      "phase": 4876,
+      "statusChanges": "0",
+      "stitches": [
+        {
+          "opacity": "0.401501",
+          "transform": "matrix(1, 0, 0, 1, 0.00300154, 0)"
+        },
+        {
+          "opacity": "0.4",
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        },
+        {
+          "opacity": "0.826494",
+          "transform": "matrix(1, 0, 0, 1, 0.852987, 0)"
+        }
+      ],
+      "text": [
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Loading notes",
+          "width": 205.4558258056641,
+          "x": 75.91683197021484,
+          "y": 131.6051025390625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing reply",
+          "width": 94.9380111694336,
+          "x": 75.91683197021484,
+          "y": 232.0054168701172
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "Preparing summary",
+          "width": 122.15262603759766,
+          "x": 79.9134750366211,
+          "y": 319.85406494140625
+        },
+        {
+          "animation": "none",
+          "height": 25.193696975708008,
+          "text": "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
+          "width": 596.0032958984375,
+          "x": 79.9134750366211,
+          "y": 358.4516906738281
+        }
+      ],
+      "weft": "matrix(1, 0, 0, 1, 4.0119, 0)"
+    }
+  ]
+}

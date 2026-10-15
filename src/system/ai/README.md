@@ -519,13 +519,13 @@ FileTree displays application-supplied files and folders with stable unique IDs;
 ## AI activity feedback
 
 Choose LoadingState for compact loading with a required label and optional description.
-It composes decorative Spinner (default) or a compact Skeleton with
-`indicator="skeleton"`. Use Spinner alone beside existing status text; use Skeleton
+It shows a compact decorative woven mark (default) or a compact Skeleton with
+`indicator="skeleton"`. The existing `indicator="spinner"` value selects the default woven mark for API compatibility; the general-purpose Spinner is unchanged. Both textile marks share a 1.62-second cycle based on the existing state-motion token, use only the accent color, and become static woven/stitch marks for reduced motion. Detail text never animates. Use Spinner alone beside existing status text; use Skeleton
 for a placeholder that follows the shape of future content. The host sets aria-busy
 on the actual content region and replaces LoadingState when loading ends.
 
 ThinkingIndicator is a small inline AI-interface activity cue with a required,
-visible label. Its dots animate decoratively while the label stays stable.
+visible label. Three rectangular stitches brighten in sequence with a slight sideways movement while the label stays stable. Active ThinkingState reuses ThinkingIndicator, with its nested announcement off.
 ThinkingState adds optional disclosure to a brief application-supplied activity
 summary: required label, active boolean and children. Content represents user-facing
 progress summaries, never private model reasoning. Do not fabricate execution logs

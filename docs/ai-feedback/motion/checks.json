@@ -1,0 +1,292 @@
+[
+  {
+    "check": "shared density and typography",
+    "lang": "ar",
+    "theme": "light",
+    "density": "standard",
+    "marks": [
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      }
+    ],
+    "overflow": false,
+    "typography": "large",
+    "width": 320
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "ar",
+    "theme": "light",
+    "source": "application",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "ar",
+    "theme": "light",
+    "source": "os",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "shared density and typography",
+    "lang": "ar",
+    "theme": "dark",
+    "density": "standard",
+    "marks": [
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      }
+    ],
+    "overflow": false,
+    "typography": "large",
+    "width": 320
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "ar",
+    "theme": "dark",
+    "source": "application",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "ar",
+    "theme": "dark",
+    "source": "os",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "shared density and typography",
+    "lang": "en",
+    "theme": "light",
+    "density": "standard",
+    "marks": [
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      }
+    ],
+    "overflow": false,
+    "typography": "large",
+    "width": 320
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "en",
+    "theme": "light",
+    "source": "application",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "en",
+    "theme": "light",
+    "source": "os",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "shared density and typography",
+    "lang": "en",
+    "theme": "dark",
+    "density": "standard",
+    "marks": [
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      },
+      {
+        "height": 15.999482154846191,
+        "width": 23.999223709106445
+      }
+    ],
+    "overflow": false,
+    "typography": "large",
+    "width": 320
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "en",
+    "theme": "dark",
+    "source": "application",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "static reduced-motion marks",
+    "lang": "en",
+    "theme": "dark",
+    "source": "os",
+    "animations": ["none", "none", "none", "none", "none", "none", "none"],
+    "chevron": "0s",
+    "statusChanges": "0",
+    "stitches": [
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      },
+      {
+        "opacity": "0.65",
+        "transform": "none"
+      }
+    ],
+    "weft": "matrix(1, 0, 0, 1, 12, 0)"
+  },
+  {
+    "check": "reused ThinkingIndicator preserves disclosure tab order, controlled focus and one live status",
+    "nextFocus": "Collapse later",
+    "focused": "Preparing summary",
+    "statuses": 1
+  }
+]

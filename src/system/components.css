@@ -3266,36 +3266,58 @@
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
-.tz-thinking-dots {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
+.tz-loading-weave,
+.tz-thinking-stitches {
+  /* Nine existing state beats give the textile marks one shared 1.62s cycle. */
   inline-size: 24px;
   block-size: 16px;
   flex: none;
-  color: var(--text-secondary);
+  color: var(--action);
 }
-.tz-thinking-dots > span {
-  inline-size: 4px;
-  block-size: 4px;
-  border-radius: 50%;
-  background: currentColor;
-  animation: tz-thinking-pulse 1.4s ease-in-out infinite;
+.tz-loading-weave {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
 }
-.tz-thinking-dots > span:nth-child(2) {
-  animation-delay: 160ms;
+.tz-loading-warps {
+  opacity: 0.55;
 }
-.tz-thinking-dots > span:nth-child(3) {
-  animation-delay: 320ms;
+.tz-loading-weft {
+  opacity: 0.85;
+  transform: translateX(12px);
+  animation: tz-thread-pass calc(var(--motion-state) * 9) ease-in-out infinite;
 }
-@keyframes tz-thinking-pulse {
+.tz-thinking-stitches > rect {
+  fill: currentColor;
+  opacity: 0.65;
+  animation: tz-stitch-pass calc(var(--motion-state) * 9) ease-in-out infinite;
+}
+.tz-thinking-stitches > rect:nth-child(2) {
+  animation-delay: calc(var(--motion-state) * -6);
+}
+.tz-thinking-stitches > rect:nth-child(3) {
+  animation-delay: calc(var(--motion-state) * -3);
+}
+@keyframes tz-thread-pass {
   0%,
-  80%,
+  100% {
+    transform: translateX(4px);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+@keyframes tz-stitch-pass {
+  0%,
+  60%,
   100% {
     opacity: 0.4;
+    transform: translateX(0);
   }
-  40% {
-    opacity: 1;
+  25% {
+    opacity: 0.9;
+    transform: translateX(1px);
   }
 }
 .tz-thinking-state {
@@ -3325,6 +3347,7 @@
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
+.tz-thinking-state-trigger > .tz-thinking-indicator,
 .tz-thinking-state-trigger > bdi {
   min-inline-size: 0;
   overflow-wrap: anywhere;
@@ -3356,14 +3379,16 @@
 .tz-thinking-state-panel :where(button, a, input, select, textarea) {
   max-inline-size: 100%;
 }
-.tiraz-system[data-reduced-motion="true"] .tz-thinking-dots > span {
+.tiraz-system[data-reduced-motion="true"] .tz-loading-weft,
+.tiraz-system[data-reduced-motion="true"] .tz-thinking-stitches > rect {
   animation: none;
 }
 .tiraz-system[data-reduced-motion="true"] .tz-thinking-state-chevron {
   transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .tz-thinking-dots > span {
+  .tz-loading-weft,
+  .tz-thinking-stitches > rect {
     animation: none;
   }
   .tz-thinking-state-chevron {
