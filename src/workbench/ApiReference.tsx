@@ -95,6 +95,98 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    steps: [
+      [
+        "items / label",
+        "readonly StepItem[] / string · required",
+        t(
+          "معرّفات فريدة ثابتة، تسمية ووصف اختياري وحالة upcoming/current/completed/error. قائمة مرتبة باسم متاح.",
+          "Stable unique IDs, label, optional description and upcoming/current/completed/error status. Named native ordered list.",
+        ),
+      ],
+      [
+        "orientation",
+        '"horizontal" | "vertical" · horizontal',
+        t(
+          "الترتيب يتبع اتجاه اللغة؛ المساحات الضيقة تتحول إلى عمودي.",
+          "Order follows language direction; narrow spaces use a vertical layout.",
+        ),
+      ],
+      [
+        "currentId",
+        "string · optional",
+        t(
+          "يتجاوز status=current، بما في ذلك الخطأ الحالي. دون القيمة يُعلّم أول current فقط؛ قيمة غير مطابقة تعني عدم وجود خطوة حالية.",
+          "Overrides status=current, including a current error. Otherwise only the first current status is marked; an unmatched ID means no current step.",
+        ),
+      ],
+      [
+        "onStepActivate",
+        "(id: string) => void · optional",
+        t(
+          "يحوّل العرض الثابت إلى أزرار لكل الخطوات. التطبيق يملك القواعد والتحقق والتقدم.",
+          "Opts into real buttons for every step. The application owns rules, validation and progress.",
+        ),
+      ],
+      [
+        "locale / statusLabels",
+        '"ar" | "en" / Record<StepStatus, string>',
+        t(
+          "لغة الأرقام والحالات من الاتجاه افتراضيًا؛ تسميات الحالات قابلة للترجمة. المؤشرات زخرفية والحالة متاحة نصيًا.",
+          "Number/status locale defaults from direction; status labels can be translated. Indicators are decorative; status also has accessible text.",
+        ),
+      ],
+      [
+        "native attributes / ref",
+        "ComponentPropsWithRef<ol> (except children)",
+        t(
+          "قائمة أصلية مع ref وسمات وأحداث؛ لا تضع عناصر تفاعلية داخل التسميات.",
+          "Native list ref, attributes and events; keep labels free of interactive descendants.",
+        ),
+      ],
+    ],
+    timeline: [
+      [
+        "items / label",
+        "readonly TimelineItem[] / string · required",
+        t(
+          "id ثابت وtitle وtimestamp؛ description وdateTime وicon وcontent اختيارية. الترتيب كما هو دون فرز.",
+          "Stable id, title and timestamp; optional description, dateTime, icon and content. Supplied order is preserved without sorting.",
+        ),
+      ],
+      [
+        "timestamp / dateTime",
+        "string / string · per item",
+        t(
+          "التطبيق ينسّق التاريخ محليًا. dateTime صالح آليًا يُنتج time؛ دونه يُعرض النص فقط.",
+          "The application formats localized dates. Valid machine-readable dateTime produces time; without it, timestamp is plain text.",
+        ),
+      ],
+      [
+        "icon / content",
+        "ReactNode · optional",
+        t(
+          "الأيقونة زخرفية؛ ضع المعنى في العنوان. محتوى وإجراءات التطبيق تستخدم مكونات موجودة.",
+          "Icon is decorative; include meaning in the title. Compose application content/actions with existing components.",
+        ),
+      ],
+      [
+        "emptyState",
+        "ReactNode · optional",
+        t(
+          "محتوى الفراغ يملكه التطبيق؛ الافتراضي نص حسب الاتجاه. لا جلب أو مؤقتات أو حفظ.",
+          "Application-owned empty content; default text follows direction. No fetching, timers or persistence.",
+        ),
+      ],
+      [
+        "native attributes / ref",
+        "ComponentPropsWithRef<ol> (except children)",
+        t(
+          "قائمة مرتبة أصلية وخط منطقي دون خط بعد العنصر الأخير. RTL يغيّر موضع العرض فقط.",
+          "Native ordered list, logical rail and no trailing connector. RTL changes layout only.",
+        ),
+      ],
+    ],
     slider: [
       [
         "value / defaultValue / onValueChange",

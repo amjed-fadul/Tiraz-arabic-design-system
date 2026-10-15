@@ -83,6 +83,44 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  steps: [
+    field("orientation", "select", "الاتجاه", "Orientation", "orientation", {
+      options: ["horizontal", "vertical"],
+    }),
+    field(
+      "currentState",
+      "select",
+      "حالة الخطوة",
+      "Current state",
+      "items[].status",
+      { options: ["upcoming", "current", "completed", "error"] },
+    ),
+  ],
+  timeline: [
+    field(
+      "descriptions",
+      "boolean",
+      "الأوصاف",
+      "Descriptions",
+      "items[].description",
+    ),
+    field("icons", "boolean", "الأيقونات", "Icons", "items[].icon"),
+    field(
+      "actions",
+      "boolean",
+      "المحتوى والإجراءات",
+      "Content and actions",
+      "items[].content",
+    ),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "items / emptyState",
+    ),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
   slider: [
     field("label", "text", "التسمية", "Label"),
     field("helper", "text", "المساعدة", "Helper"),
@@ -607,6 +645,11 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
 };
 export const optionNames: Record<string, Localized> = {
+  horizontal: ["أفقي", "Horizontal"],
+  vertical: ["عمودي", "Vertical"],
+  upcoming: ["قادمة", "Upcoming"],
+  current: ["الحالية", "Current"],
+  completed: ["مكتملة", "Completed"],
   single: ["سلسلة واحدة", "Single series"],
   multi: ["سلاسل متعددة", "Multiple series"],
   gaps: ["قيم مفقودة", "Missing values"],
@@ -665,6 +708,8 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  steps: ["orientation", "currentState"],
+  timeline: ["descriptions", "icons", "actions", "empty", "longContent"],
   slider: ["label", "min", "max", "step", "showValue", "disabled"],
   "otp-input": ["label", "length", "readOnly", "disabled"],
   "date-picker": ["label", "min", "max", "disabled"],

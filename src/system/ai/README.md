@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **forty-one**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput and DatePicker.
+Tiraz is an Arabic-first, source-owned React dashboard library with **forty-three**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps and Timeline.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -409,3 +409,45 @@ the last selected slot; backward selections focus the first. A full code's end
 caret remains in the final slot. Native input selection events keep the decoration
 in sync with keyboard, pointer and programmatic selection changes. Read-only
 selection/copy stays available; disabled controls receive no active indication.
+
+## Process steps and event history
+
+Steps is a named native ordered list for an application-owned process. Supply
+stable unique nonempty item `id`, `label`, optional `description` and `status`
+(upcoming/current/completed/error). Indicators include numbers, checks and error
+symbols; accessible status text accompanies them. `orientation` defaults to
+horizontal and narrow containers/screens become vertical. Horizontal order follows
+the provider direction; no data is reversed. Long inline labels wrap below or
+beside indicators without crossing connectors.
+
+Only the first current status receives `aria-current="step"`. Optional `currentId`
+overrides that selection, including a current error; an unmatched ID (or empty
+string) marks no current step. Statuses stay application-owned. `locale=ar/en`
+defaults from direction and controls numbers/default status text; supply a complete
+`statusLabels` record for other wording. Labels/descriptions must contain no
+interactive descendants.
+
+Omit `onStepActivate` for static display. Supplying it creates real type=button
+controls for **every** step and reports the stable ID, without advancing, updating
+state or imposing eligibility rules. The application decides what activation means.
+Use [StepsExamples](examples/StepsExamples.tsx) for static/vertical display,
+optional activation and a three-step local Input/Button form. The form owns
+validation, focuses invalid fields, preserves values on Back and reports only
+local completion. It sends and saves nothing.
+
+Timeline is a named native ordered list for events with stable unique nonempty
+`id`, `title`, optional `description`, `timestamp` text, optional machine-readable
+`dateTime`, decorative `icon` and application `content`. Keep events in the exact
+order the application supplies; direction changes placement only. Format localized
+dates in the application and pass valid HTML date/time strings to `dateTime` for
+semantic time elements; timestamps without one are plain text. Isolate identifiers
+with `<bdi dir="ltr">`. Icons carry no accessible meaning; put it in the title.
+Compose content/actions with existing components. `emptyState` accepts application
+content; the fallback text follows direction. There is no trailing connector.
+
+[TimelineExamples](examples/TimelineExamples.tsx) uses clearly marked in-memory
+sample data, Dubai-localized fixed sample dates and a button that appends a real
+local event at the click time. Data lasts only while mounted. Neither component
+fetches, sorts, groups, virtualizes or runs relative-time timers. Both preserve
+native ordered-list attributes and refs. Copy these examples with the source
+bundle; they import only React, existing lucide icons and the source-root index.

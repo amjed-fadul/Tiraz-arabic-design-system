@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/steps-timeline.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  15:27:56
+   Duration  13.65s (import 61%, environment 18%, tests 9%, transform 9%, setup 3%)
+

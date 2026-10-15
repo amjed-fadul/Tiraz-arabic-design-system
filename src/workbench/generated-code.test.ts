@@ -14,6 +14,26 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const orientation of ["horizontal", "vertical"] as const)
+    for (const currentState of [
+      "upcoming",
+      "current",
+      "completed",
+      "error",
+    ] as const)
+      cases.push(["steps", { orientation, currentState }]);
+  cases.push([
+    "timeline",
+    {
+      ...p.timeline,
+      empty: true,
+      longContent: true,
+      actions: false,
+      icons: false,
+      descriptions: false,
+    },
+  ]);
+
   for (const mode of ["controlled", "uncontrolled"] as const) {
     cases.push([
       "tag-input",
@@ -334,4 +354,4 @@ it("type-checks copied code for every component, state mode and composition pres
         `${d.file?.fileName}: ${ts.flattenDiagnosticMessageText(d.messageText, " ")}`,
     );
   expect(diagnostics).toEqual([]);
-}, 15000);
+}, 45000);

@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with forty-one source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with forty-three source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -240,3 +240,12 @@ Controlled forms own their reset state. DatePicker uses @daypicker/react 10.0.2
 and @radix-ui/react-popover 1.3.1 with existing scoped portals and Radix overrides.
 See [local verification and limitations](docs/slider-otp-date/README.md) and the
 [portable contracts](src/system/ai/README.md).
+
+### Steps and Timeline
+
+Steps adds ordered process progress with upcoming/current/completed/error states,
+horizontal/vertical layouts, responsive wrapping and opt-in button activation.
+The application owns validation, eligibility and progress. Timeline preserves
+supplied event order, localized timestamps, semantic dates and application content.
+Portable examples include a validated local form and an explicitly in-memory
+activity list with real local append. See `src/system/ai/README.md` for contracts.

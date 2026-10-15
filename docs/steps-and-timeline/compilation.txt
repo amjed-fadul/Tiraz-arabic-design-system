@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/ai-registry.test.ts src/workbench/generated-code.test.ts --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  15:37:39
+   Duration  28.38s (tests 72%, import 14%, environment 5%, transform 5%, setup 3%)
+

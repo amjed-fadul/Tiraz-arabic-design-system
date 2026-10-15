@@ -1,3 +1,5 @@
+import { StepsExample } from "../system/ai/examples/StepsExamples";
+import { TimelineExample } from "../system/ai/examples/TimelineExamples";
 import type { Playgrounds } from "./model";
 import { SliderExample } from "../system/ai/examples/SliderExamples";
 import { OTPInputExample } from "../system/ai/examples/OTPInputExamples";
@@ -157,6 +159,17 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "steps")
+    return (
+      <StepsExample language={language} {...(model as Playgrounds["steps"])} />
+    );
+  if (component === "timeline")
+    return (
+      <TimelineExample
+        language={language}
+        {...(model as Playgrounds["timeline"])}
+      />
+    );
   if (component === "slider")
     return (
       <SliderExample

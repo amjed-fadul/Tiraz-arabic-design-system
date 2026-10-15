@@ -2592,3 +2592,246 @@
   padding-block-start: var(--space-2);
   border-block-start: 1px solid var(--border);
 }
+
+/* Steps and event history share a compact, content-independent rail. */
+.tz-steps,
+.tz-timeline {
+  --sequence-indicator: var(--space-6);
+  --sequence-gap: var(--space-4);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+.tz-steps {
+  display: flex;
+  flex-wrap: wrap;
+  container-type: inline-size;
+}
+.tz-step {
+  flex: 1 1 0;
+}
+.tz-step,
+.tz-timeline-item {
+  position: relative;
+  min-inline-size: 0;
+}
+.tz-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-block-start: calc(var(--sequence-indicator) / 2);
+  inset-inline-start: calc(var(--sequence-indicator) + var(--space-2));
+  inset-inline-end: var(--space-2);
+  border-block-start: 1px solid var(--border-strong);
+  pointer-events: none;
+}
+.tz-step-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding-inline: 0 var(--space-3);
+  box-sizing: border-box;
+  font: inherit;
+  color: var(--text);
+  text-align: start;
+}
+.tz-step-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-small);
+}
+.tz-step-button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: var(--space-1);
+}
+.tz-step-button:hover .tz-step-label {
+  text-decoration: underline;
+  text-underline-offset: var(--space-1);
+}
+.tz-step-indicator,
+.tz-timeline-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--sequence-indicator);
+  block-size: var(--sequence-indicator);
+  flex: 0 0 var(--sequence-indicator);
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-secondary);
+}
+.tz-step-indicator {
+  border: 1px solid var(--border-strong);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  transition:
+    background var(--motion-state) var(--ease),
+    color var(--motion-state) var(--ease),
+    border-color var(--motion-state) var(--ease);
+}
+.tz-step[data-status="completed"] .tz-step-indicator {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--surface);
+}
+.tz-step[data-current="true"] .tz-step-indicator {
+  outline: 2px solid var(--action);
+  outline-offset: 2px;
+}
+.tz-step[data-status="error"] .tz-step-indicator {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+.tz-step-copy,
+.tz-step-label,
+.tz-step-description {
+  display: block;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.tz-step-label,
+.tz-timeline-title {
+  font-weight: var(--weight-medium);
+}
+.tz-step-description,
+.tz-timeline-description,
+.tz-timeline-empty {
+  color: var(--text-secondary);
+}
+.tz-step-description,
+.tz-timeline-heading time,
+.tz-timeline-time {
+  font-size: var(--text-meta);
+}
+.tz-steps[data-orientation="vertical"] {
+  display: block;
+}
+.tz-steps[data-orientation="vertical"] .tz-step-body {
+  flex-direction: row;
+  gap: var(--space-3);
+  padding-block-end: var(--sequence-gap);
+}
+.tz-steps[data-orientation="vertical"] .tz-step:not(:last-child)::after {
+  inset-block-start: calc(var(--sequence-indicator) + var(--space-1));
+  inset-block-end: var(--space-1);
+  inset-inline-start: calc(var(--sequence-indicator) / 2);
+  inset-inline-end: auto;
+  border-block-start: 0;
+  border-inline-start: 1px solid var(--border-strong);
+}
+.tz-steps[data-orientation="vertical"] .tz-step:last-child .tz-step-body {
+  padding-block-end: 0;
+}
+.tz-timeline-item {
+  display: grid;
+  grid-template-columns: var(--sequence-indicator) minmax(0, 1fr);
+  gap: var(--space-3);
+  padding-block-end: var(--sequence-gap);
+}
+.tz-timeline-item:last-child {
+  padding-block-end: 0;
+}
+.tz-timeline-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(var(--sequence-indicator) / 2);
+  inset-block-start: calc(var(--sequence-indicator) + var(--space-1));
+  inset-block-end: var(--space-1);
+  border-inline-start: 1px solid var(--border-strong);
+}
+.tz-timeline-indicator {
+  color: var(--text-secondary);
+  background: var(--surface-subtle);
+}
+.tz-timeline-indicator svg {
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+}
+.tz-timeline-dot {
+  inline-size: var(--space-2);
+  block-size: var(--space-2);
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+.tz-timeline-copy {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-timeline-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  flex-wrap: wrap;
+}
+.tz-timeline-heading time,
+.tz-timeline-time {
+  color: var(--text-muted);
+  unicode-bidi: isolate;
+}
+.tz-timeline-content {
+  margin-block-start: var(--space-2);
+  min-inline-size: 0;
+}
+/* A narrow component must wrap even inside a desktop documentation column. */
+@container (max-width: 30rem) {
+  .tz-step {
+    flex: 1 0 100%;
+  }
+  .tz-step-body {
+    flex-direction: row;
+    gap: var(--space-3);
+    padding-block-end: var(--sequence-gap);
+  }
+  .tz-step:last-child .tz-step-body {
+    padding-block-end: 0;
+  }
+  .tz-step:not(:last-child)::after {
+    inset-block-start: calc(var(--sequence-indicator) + var(--space-1));
+    inset-block-end: var(--space-1);
+    inset-inline-start: calc(var(--sequence-indicator) / 2);
+    inset-inline-end: auto;
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--border-strong);
+  }
+}
+@media (max-width: 640px) {
+  .tz-step {
+    flex: 1 0 100%;
+  }
+  .tz-step-body {
+    flex-direction: row;
+    gap: var(--space-3);
+    padding-block-end: var(--sequence-gap);
+  }
+  .tz-step:last-child .tz-step-body {
+    padding-block-end: 0;
+  }
+  .tz-step:not(:last-child)::after {
+    inset-block-start: calc(var(--sequence-indicator) + var(--space-1));
+    inset-block-end: var(--space-1);
+    inset-inline-start: calc(var(--sequence-indicator) / 2);
+    inset-inline-end: auto;
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--border-strong);
+  }
+}
+.tiraz-system[data-reduced-motion="true"] .tz-step-indicator {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-step-indicator {
+    transition: none;
+  }
+}

@@ -77,3 +77,7 @@ export { OTPInput } from "./OTPInput";
 export type { OTPInputProps } from "./OTPInput";
 export { DatePicker } from "./DatePicker";
 export type { DatePickerProps } from "./DatePicker";
+export { Steps } from "./Steps";
+export type { StepStatus, StepItem, StepsProps } from "./Steps";
+export { Timeline } from "./Timeline";
+export type { TimelineItem, TimelineProps } from "./Timeline";

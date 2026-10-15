@@ -1,3 +1,5 @@
+import stepsSource from "../system/ai/examples/StepsExamples.tsx?raw";
+import timelineSource from "../system/ai/examples/TimelineExamples.tsx?raw";
 import sliderSource from "../system/ai/examples/SliderExamples.tsx?raw";
 import otpSource from "../system/ai/examples/OTPInputExamples.tsx?raw";
 import dateSource from "../system/ai/examples/DatePickerExamples.tsx?raw";
@@ -65,6 +67,21 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (component === "steps" || component === "timeline") {
+    const source = (
+      component === "steps" ? stepsSource : timelineSource
+    ).replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"');
+    const name = component === "steps" ? "StepsExample" : "TimelineExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() { return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><div style={{display:"grid",gap:"var(--space-8)",minInlineSize:0}}><${name} language={${json(language)}} {...${json(model)}} />${component === "steps" ? `<StepsFormExample language={${json(language)}} />` : ""}</div></SystemProvider></div>; }
+`;
+  }
   if (
     [
       "slider",

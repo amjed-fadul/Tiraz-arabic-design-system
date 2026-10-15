@@ -1,3 +1,9 @@
+import {
+  StepsExample,
+  StepsFormExample,
+  ActivatableStepsExample,
+} from "../system/ai/examples/StepsExamples";
+import { TimelineExample } from "../system/ai/examples/TimelineExamples";
 import { SliderExample } from "../system/ai/examples/SliderExamples";
 import { OTPInputExample } from "../system/ai/examples/OTPInputExamples";
 import { DatePickerExample } from "../system/ai/examples/DatePickerExamples";
@@ -186,6 +192,42 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "steps")
+    return (
+      <div
+        style={{
+          display: "grid",
+          gap: "var(--space-8)",
+          inlineSize: "100%",
+          minInlineSize: 0,
+        }}
+      >
+        <StepsFormExample language={language} />
+        <section>
+          <h3>
+            {t("عمودي مع خطأ ونص طويل", "Vertical with error and long labels")}
+          </h3>
+          <StepsExample
+            language={language}
+            orientation="vertical"
+            currentState="error"
+            longLabels
+          />
+        </section>
+        <section>
+          <h3>{t("تفعيل اختياري للمعاينة", "Optional preview activation")}</h3>
+          <p>
+            {t(
+              "أزرار حقيقية؛ التطبيق يختار الخطوة دون تقدم تلقائي.",
+              "Real buttons; the application chooses the step without automatic advancement.",
+            )}
+          </p>
+          <ActivatableStepsExample language={language} />
+        </section>
+      </div>
+    );
+  if (component === "timeline")
+    return <TimelineExample language={language} empty />;
   if (component === "slider")
     return <SliderExample language={language} mode="uncontrolled" />;
   if (component === "otp-input")

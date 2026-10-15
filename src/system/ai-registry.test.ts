@@ -14,6 +14,8 @@ import * as ts from "typescript";
 import { expect, it } from "vitest";
 import { catalog } from "../workbench/catalog";
 import { defaultConfig } from "./config";
+import { generateCode } from "../workbench/generate";
+import { defaultPlaygrounds } from "../workbench/model";
 
 const root = resolve("src/system");
 const readRegistry = () =>
@@ -171,6 +173,23 @@ it("compiles the bundled example after copying only the library to a different a
         registry.components.flatMap((c: { examples: string[] }) => c.examples),
       ),
     ].map((path) => resolve(copiedRoot, path));
+    // Compile copied snippets in the host, with only the relocated source bundle.
+    for (const language of ["ar", "en"] as const) {
+      for (const component of ["steps", "timeline"] as const) {
+        const path = resolve(temporary, `app/${component}-${language}.tsx`);
+        const code = generateCode(
+          component,
+          defaultPlaygrounds(language)[component],
+          {
+            ...defaultConfig,
+            direction: language === "ar" ? "rtl" : "ltr",
+          },
+          language,
+        ).replaceAll('"./system', '"./ui/vendor/tiraz');
+        writeFileSync(path, code);
+        examplePaths.push(path);
+      }
+    }
     const program = ts.createProgram(examplePaths, {
       target: ts.ScriptTarget.ES2023,
       module: ts.ModuleKind.ESNext,
@@ -198,7 +217,7 @@ it("compiles the bundled example after copying only the library to a different a
   } finally {
     rmSync(temporary, { recursive: true, force: true });
   }
-}, 15000);
+}, 45000);
 it("resolves every registry source and example from a movable library root", () => {
   const registry = readRegistry();
   expect(registry.components.map((c: { id: string }) => c.id)).toEqual(
@@ -375,7 +394,7 @@ it("documents real public exports and supported prop values and compiles the lin
           `${dirname(d.file?.fileName ?? "")}: ${ts.flattenDiagnosticMessageText(d.messageText, " ")}`,
       ),
   ).toEqual([]);
-}, 15000);
+}, 45000);
 
 it("bundles relocated portraits from copied source with provenance and license", async () => {
   const temporary = mkdtempSync(resolve(tmpdir(), "tiraz-photo-consumer-"));

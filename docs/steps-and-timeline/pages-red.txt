@@ -1,0 +1,183 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/steps-timeline-pages.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+ ❯ src/workbench/steps-timeline-pages.test.tsx (3 tests | 2 failed) 426ms
+   × documents steps in its group with continuous examples, synchronized code and full prompt 350ms
+   × documents timeline in its group with continuous examples, synchronized code and full prompt 74ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/steps-timeline-pages.test.tsx > documents steps in its group with continuous examples, synchronized code and full prompt
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "الخطوات"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "التنقّل":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------button:
+
+  Name "شريط التنقّل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------button:
+
+  Name "التبويبات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------button:
+
+  Name "مسار التنقل":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------button:
+
+  Name "تقسيم الصفحات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<div[39m
+  [33maria-label[39m=[32m"التنقّل"[39m
+  [33mclass[39m=[32m"component-nav-group"[39m
+  [33mrole[39m=[32m"group"[39m
+[36m>[39m
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m>[39m
+    [0mالتنقّل[0m
+  [36m</h2>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0mشريط التنقّل[0m
+  [36m</button>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0mالتبويبات[0m
+  [36m</button>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0mمسار التنقل[0m
+  [36m</button>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0mتقسيم الصفحات[0m
+  [36m</button>[39m
+[36m</div>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/steps-timeline-pages.test.tsx:15:122
+     13|   render(<Workbench />);
+     14|   const copy = vi.spyOn(navigator.clipboard, "writeText");
+     15|   await user.click(within(within(screen.getByRole("navigation", {name:…
+       |                                                                                                                          ^
+     16|   expect(screen.getByRole("heading", {name: ar, level: 1})).toBeVisibl…
+     17|   for (const name of ["أمثلة", "مثال الاستخدام"]) expect(screen.getByR…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/workbench/steps-timeline-pages.test.tsx > documents timeline in its group with continuous examples, synchronized code and full prompt
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "الخط الزمني"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "البيانات":
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------button:
+
+  Name "شريط التصفية":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------button:
+
+  Name "الجدول":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------button:
+
+  Name "جدول البيانات":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<div[39m
+  [33maria-label[39m=[32m"البيانات"[39m
+  [33mclass[39m=[32m"component-nav-group"[39m
+  [33mrole[39m=[32m"group"[39m
+[36m>[39m
+  [36m<h2[39m
+    [33mclass[39m=[32m"component-nav-heading"[39m
+  [36m>[39m
+    [0mالبيانات[0m
+  [36m</h2>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0mشريط التصفية[0m
+  [36m</button>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0mالجدول[0m
+  [36m</button>[39m
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m>[39m
+    [0mجدول البيانات[0m
+  [36m</button>[39m
+[36m</div>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/steps-timeline-pages.test.tsx:15:122
+     13|   render(<Workbench />);
+     14|   const copy = vi.spyOn(navigator.clipboard, "writeText");
+     15|   await user.click(within(within(screen.getByRole("navigation", {name:…
+       |                                                                                                                          ^
+     16|   expect(screen.getByRole("heading", {name: ar, level: 1})).toBeVisibl…
+     17|   for (const name of ["أمثلة", "مثال الاستخدام"]) expect(screen.getByR…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 1 passed (3)
+   Start at  15:28:36
+   Duration  16.09s (import 62%, environment 16%, transform 16%, tests 3%, setup 3%)
+

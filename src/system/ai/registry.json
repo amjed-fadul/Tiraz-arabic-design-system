@@ -567,6 +567,34 @@
     {
       "name": "DatePickerProps",
       "source": "DatePicker.tsx"
+    },
+    {
+      "name": "Steps",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "StepsProps",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "StepItem",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "StepStatus",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "Timeline",
+      "source": "Timeline.tsx"
+    },
+    {
+      "name": "TimelineProps",
+      "source": "Timeline.tsx"
+    },
+    {
+      "name": "TimelineItem",
+      "source": "Timeline.tsx"
     }
   ],
   "configuration": {
@@ -634,6 +662,122 @@
     }
   },
   "components": [
+    {
+      "inheritedProps": "Omit<ComponentPropsWithRef<ol>, children>. Native list attributes/events, className/style and ref are preserved; label supplies aria-label and ordered list semantics are retained with role=list.",
+      "id": "steps",
+      "api": "Steps",
+      "source": "Steps.tsx",
+      "exports": ["Steps", "StepsProps", "StepItem", "StepStatus"],
+      "purpose": "Application-owned process progress with static display by default and opt-in button activation.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly StepItem[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "orientation",
+          "type": "horizontal | vertical",
+          "required": false,
+          "default": "horizontal",
+          "values": ["horizontal", "vertical"]
+        },
+        {
+          "name": "currentId",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Overrides current statuses, including a current error. Unmatched ID means no current step; otherwise only the first current status is marked."
+        },
+        {
+          "name": "onStepActivate",
+          "type": "(id: string) => void",
+          "required": false,
+          "default": "undefined",
+          "note": "Opts into type=button for every step. No automatic state change or eligibility rule."
+        },
+        {
+          "name": "locale",
+          "type": "ar | en",
+          "required": false,
+          "default": "direction: rtl=ar, ltr=en",
+          "values": ["ar", "en"]
+        },
+        {
+          "name": "statusLabels",
+          "type": "Record<StepStatus, string>",
+          "required": false,
+          "default": "undefined",
+          "note": "Translated accessible status text; defaults to locale."
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLOListElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "state": "Controlled display only. The application owns items, currentId, validation, eligibility and progress.",
+      "accessibility": [
+        "Native ordered list with stable unique IDs. One aria-current=step on the current list item or activation button. Decorative number/check/error indicators plus accessible status text. Native Enter/Space buttons only when onStepActivate is supplied.",
+        "Logical horizontal order follows direction. Narrow containers/screens become vertical. Connectors align to indicators independently of multiline content. No trailing connector.",
+        "Labels/descriptions are noninteractive inline content. onStepActivate creates buttons for all items; callers must enforce any eligibility in their callback."
+      ],
+      "limitations": [
+        "No navigation, validation engine, automatic advancement or persistence. No built-in disabled-step API. Supply unique nonempty IDs and meaningful labels. Additional current statuses remain supplied state text; only the first is marked current."
+      ],
+      "examples": ["ai/examples/StepsExamples.tsx"]
+    },
+    {
+      "inheritedProps": "Omit<ComponentPropsWithRef<ol>, children>. Native list attributes/events, className/style and ref are preserved; label supplies aria-label and ordered list semantics are retained with role=list.",
+      "id": "timeline",
+      "api": "Timeline",
+      "source": "Timeline.tsx",
+      "exports": ["Timeline", "TimelineProps", "TimelineItem"],
+      "purpose": "Chronological application event list in exactly the supplied order.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly TimelineItem[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "default": "Arabic/English text from provider direction"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLOListElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "accessibility": [
+        "Native ordered list with stable unique IDs, logical connector and no trailing rail. RTL changes layout only; supplied order is preserved.",
+        "Timestamp uses time with dateTime when supplied. The application must provide valid machine-readable dates and formatted timestamp text in its chosen locale/time zone. Without dateTime, plain text is rendered.",
+        "Icons are decorative; essential meaning belongs in title. Isolate mixed-direction IDs with bdi. Application content/actions retain native semantics."
+      ],
+      "limitations": [
+        "No fetching, sorting, virtualization, grouping, relative-time timers or persistence. Supply stable unique nonempty IDs. Long content wraps; content components must support their available width."
+      ],
+      "examples": ["ai/examples/TimelineExamples.tsx"]
+    },
     {
       "id": "slider",
       "api": "Slider",
@@ -4433,6 +4577,87 @@
         {
           "name": "color",
           "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "StepItem",
+      "source": "Steps.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Stable unique nonempty ID."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "status",
+          "type": "StepStatus",
+          "required": true,
+          "default": "undefined",
+          "values": ["upcoming", "current", "completed", "error"]
+        }
+      ]
+    },
+    {
+      "type": "TimelineItem",
+      "source": "Timeline.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Stable unique nonempty ID."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "dateTime",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "content",
+          "type": "ReactNode",
           "required": false,
           "default": "undefined"
         }

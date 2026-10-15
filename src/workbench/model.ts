@@ -266,6 +266,17 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  steps: {
+    orientation: "horizontal" | "vertical";
+    currentState: "upcoming" | "current" | "completed" | "error";
+  };
+  timeline: {
+    descriptions: boolean;
+    icons: boolean;
+    actions: boolean;
+    empty: boolean;
+    longContent: boolean;
+  };
   slider: Required<Omit<SliderExampleProps, "language">>;
   "otp-input": Required<Omit<OTPInputExampleProps, "language">>;
   "date-picker": Required<Omit<DatePickerExampleProps, "language">>;
@@ -323,6 +334,14 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    steps: { orientation: "horizontal", currentState: "current" },
+    timeline: {
+      descriptions: true,
+      icons: true,
+      actions: true,
+      empty: false,
+      longContent: false,
+    },
     slider: {
       label: t("قيمة محلية", "Local amount"),
       helper: t(
@@ -872,6 +891,8 @@ export function normalizePlaygrounds(
       );
     const r = defaults;
     const enums: Record<string, string[]> = {
+      orientation: ["horizontal", "vertical"],
+      currentState: ["upcoming", "current", "completed", "error"],
       sample: ["single", "multi", "gaps", "point", "zero", "empty", "long"],
       preset:
         component === "data-table"

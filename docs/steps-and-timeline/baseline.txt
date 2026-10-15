@@ -1,0 +1,53 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+ ❯ src/workbench/generated-code.test.ts (1 test | 1 failed) 22801ms
+   × type-checks copied code for every component, state mode and composition preset 22799ms
+ ❯ src/system/slider-otp-date.test.tsx (22 tests | 2 failed) 30313ms
+   ❯ DatePicker (18)
+     × navigates logical months with matching ltr chevrons and selectors 6295ms
+     × navigates logical months with matching rtl chevrons and selectors 5152ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/slider-otp-date.test.tsx > DatePicker > navigates logical months with matching ltr chevrons and selectors
+ FAIL  src/system/slider-otp-date.test.tsx > DatePicker > navigates logical months with matching rtl chevrons and selectors
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/slider-otp-date.test.tsx:224:35
+    222|     expect(screen.getByText(/December 31, 2026/)).toBeInTheDocument();
+    223|   });
+    224|   it.each(["ltr", "rtl"] as const)(
+       |                                   ^
+    225|     "navigates logical months with matching %s chevrons and selectors",
+    226|     async (direction) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/workbench/generated-code.test.ts > type-checks copied code for every component, state mode and composition preset
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-code.test.ts:10:1
+      8| import type { ComponentId } from "./catalog";
+      9| import { generateCode } from "./generate";
+     10| it("type-checks copied code for every component, state mode and compos…
+       | ^
+     11|   const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = …
+     12|   for (const language of ["ar", "en"] as const) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+
+ Test Files  2 failed | 50 passed (52)
+      Tests  3 failed | 457 passed (460)
+   Start at  15:24:43
+   Duration  106.91s (import 46%, tests 37%, environment 12%, transform 3%, setup 2%)
+
+     Import  187 modules were evaluated 3249 times · 331.62s total, 46% of tracked time
+             ~34.53s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

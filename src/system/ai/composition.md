@@ -3,15 +3,14 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the thirty-eight registry families. Prefer an inline task and a
+  Map each need to the forty-three registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
-  for contextual commands, and Toast for transient outcomes. These are not
-  navigation links, chart or date picker APIs. Use Table for native tabular content.
-  For an unavailable request, name the gap and propose a concrete alternative:
-  for example, an application-owned native date input styled with shared
-  tokens. Do not import an invented `DatePicker`,
-  silently add a family, or describe ordinary HTML as a Tiraz component.
+  for contextual commands, and Toast for transient outcomes. Use Table for native
+  tabular content, Steps for process progress and Timeline for event history.
+  For an unavailable request, name the gap and propose a concrete alternative.
+  Do not invent exports, silently add a family or describe ordinary HTML as a
+  Tiraz component.
 
 ## Content and configuration
 
@@ -313,3 +312,23 @@ YYYY-MM-DD strings; never serialize date-only values through UTC. Use their Fiel
 label/helper/error associations, supply application validation and controlled
 onReset handlers, and keep DatePicker inside the existing scoped overlay provider.
 Read ai/README.md for required calendar/popover dependencies and Radix overrides.
+
+## Application processes and chronological events
+
+Use Steps for ordered progress, Timeline for ordered event history. Both require
+stable unique IDs and a translated list label. Read their registry/source and
+[StepsExamples](examples/StepsExamples.tsx) or
+[TimelineExamples](examples/TimelineExamples.tsx) before composing them.
+
+Steps is static unless onStepActivate is supplied. That callback reports every
+button's ID; the host owns eligibility, validation and navigation. Select the
+current step with status=current or explicit currentId (which also supports a
+current error). Keep labels/descriptions free of nested controls. Validate before
+advancing, focus invalid inputs and preserve values on Back. Completion copy must
+state what actually happened locally.
+
+Timeline never sorts or reverses events in RTL. The application formats timestamp
+text, supplies valid dateTime when available, and composes content/actions. Use bdi
+for Latin identifiers inside Arabic. Explain sample data scope. A local append
+must append a real event to application state, without implying server activity.
+No fetching, grouping engine, virtualization or automatic relative-time timers.

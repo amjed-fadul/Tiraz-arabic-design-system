@@ -1,6 +1,24 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "steps",
+    name: ["الخطوات", "Steps"],
+    description: [
+      "تسلسل واضح لعملية يملكها التطبيق، مع حالات تقدم متاحة.",
+      "A clear sequence for an application-owned process with accessible progress states.",
+    ],
+    file: "Steps.tsx",
+  },
+  {
+    id: "timeline",
+    name: ["الخط الزمني", "Timeline"],
+    description: [
+      "أحداث مرتبة كما يزوّدها التطبيق مع تواريخ ومحتوى اختياري.",
+      "Events in application-supplied order with timestamps and optional content.",
+    ],
+    file: "Timeline.tsx",
+  },
+  {
     id: "slider",
     name: ["شريط التمرير", "Slider"],
     description: [
@@ -405,12 +423,12 @@ const documentationGroups = [
   {
     id: "navigation",
     name: ["التنقّل", "Navigation"],
-    ids: ["sidebar", "tabs", "breadcrumbs", "pagination"],
+    ids: ["sidebar", "tabs", "breadcrumbs", "pagination", "steps"],
   },
   {
     id: "data",
     name: ["البيانات", "Data"],
-    ids: ["filter-bar", "table", "data-table"],
+    ids: ["filter-bar", "table", "data-table", "timeline"],
   },
   {
     id: "display",

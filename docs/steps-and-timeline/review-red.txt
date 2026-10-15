@@ -1,0 +1,34 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/steps-timeline.test.tsx -t updated stage text --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+ ❯ src/system/steps-timeline.test.tsx (8 tests | 1 failed | 7 skipped) 165ms
+   × focuses the updated stage text only after the application commits it 165ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/steps-timeline.test.tsx > focuses the updated stage text only after the application commits it
+AssertionError: expected 'Name' to be 'Contact' // Object.is equality
+
+Expected: "Contact"
+Received: "Name"
+
+ ❯ src/system/steps-timeline.test.tsx:213:31
+    211|   await user.type(screen.getByRole("textbox", { name: /Name/ }), "Sara…
+    212|   await user.click(screen.getByRole("button", { name: "Next" }));
+    213|   expect(namesAtFocus.at(-1)).toBe("Contact");
+       |                               ^
+    214|   await user.type(screen.getByRole("textbox", { name: /Email/ }), "sar…
+    215|   await user.click(screen.getByRole("button", { name: "Next" }));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  15:39:26
+   Duration  3.02s (import 65%, environment 16%, transform 9%, tests 6%, setup 4%)
+
