@@ -6,7 +6,7 @@ const {
   chromium,
 } = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5244";
-const evidence = "docs/taskrows-correction/browser";
+const evidence = "docs/taskrows-polish/browser";
 await mkdir(evidence, { recursive: true });
 const browser = await chromium.launch({
   headless: true,
@@ -77,6 +77,73 @@ try {
     exact: true,
   });
   assert.equal(await tasks.getByRole("checkbox").count(), 0);
+  const records = tasks.getByRole("button", { name: /Sample records ready/ });
+  const recordPanelId = await records.getAttribute("aria-controls");
+  async function sampleHeight(id) {
+    return page.evaluate(async (panelId) => {
+      const panel = document.getElementById(panelId);
+      const values = [],
+        start = performance.now();
+      return new Promise((resolve) => {
+        function frame(now) {
+          values.push(panel.getBoundingClientRect().height);
+          if (now - start < 260) requestAnimationFrame(frame);
+          else resolve(values);
+        }
+        requestAnimationFrame(frame);
+      });
+    }, id);
+  }
+  await records.click();
+  const opening = await sampleHeight(recordPanelId);
+  assert.ok(
+    Math.max(...opening) - Math.min(...opening) > 5,
+    `opening must animate: ${opening}`,
+  );
+  assert.equal(
+    await tasks.getByRole("button", { name: "Show local note" }).count(),
+    0,
+  );
+  assert.ok((await tasks.innerText()).includes("Matched contacts and tax IDs"));
+  const recordRow = records.locator("..");
+  await recordRow.locator("dt").first().hover();
+  await page.waitForFunction(
+    () =>
+      getComputedStyle(
+        document.querySelector('[aria-label="Task example"] .tz-agent-task'),
+      ).backgroundColor === "rgb(234, 236, 234)",
+  );
+  assert.equal(await records.evaluate((el) => el.matches(":hover")), false);
+  await page.screenshot({ path: `${evidence}/sample-data-en-hover.jpg` });
+  await recordRow.screenshot({ path: `${evidence}/sample-card-en-hover.jpg` });
+  await records.click();
+  assert.equal(
+    await page.locator(`[id="${recordPanelId}"]`).getAttribute("aria-hidden"),
+    "true",
+  );
+  assert.ok(
+    await page.locator(`[id="${recordPanelId}"]`).evaluate((el) => el.inert),
+  );
+  const closing = await sampleHeight(recordPanelId);
+  assert.ok(
+    Math.max(...closing) - Math.min(...closing) > 5,
+    `closing must animate: ${closing}`,
+  );
+  assert.ok(closing.at(-1) < 1);
+  await records.click();
+  await records.click();
+  await records.click();
+  await sampleHeight(recordPanelId);
+  assert.equal(await records.getAttribute("aria-expanded"), "true");
+  const recordBadge = records.locator(".tz-badge");
+  assert.equal(await recordBadge.getAttribute("data-tone"), "success");
+  await writeFile(
+    `${evidence}/disclosure-motion.json`,
+    JSON.stringify({ opening, closing }, null, 2),
+  );
+  pass(
+    "Sample data replaces note buttons; semantic Badges; opening/closing motion and whole-task body hover",
+  );
   const first = tasks.getByRole("button", { name: /Build sample outline/ });
   const ids = await tasks
     .locator(".tz-agent-task-trigger")
@@ -280,6 +347,15 @@ try {
   await page
     .getByRole("checkbox", { name: "Reduced motion", exact: true })
     .check();
+  assert.ok(
+    await page.locator(".tz-agent-task-panel").evaluateAll((els) =>
+      els.every((el) =>
+        getComputedStyle(el)
+          .transitionDuration.split(",")
+          .every((value) => parseFloat(value) === 0),
+      ),
+    ),
+  );
   const custom = await page.evaluate(() => ({
     theme: document.querySelector(".tiraz-system").dataset.theme,
     density: document.querySelector(".tiraz-system").dataset.density,
@@ -329,6 +405,15 @@ try {
       ),
     ),
   );
+  assert.ok(
+    await page.locator(".tz-agent-task-panel").evaluateAll((els) =>
+      els.every((el) =>
+        getComputedStyle(el)
+          .transitionDuration.split(",")
+          .every((value) => parseFloat(value) === 0),
+      ),
+    ),
+  );
   pass(
     "Live theme, density, typography, accent; system and OS reduced motion; large Arabic at320 without overflow",
   );
@@ -342,7 +427,7 @@ try {
   );
   await page
     .getByRole("region", { name: "المعاينة التفاعلية", exact: true })
-    .getByRole("button", { name: /ملاحظات نموذجية جاهزة/ })
+    .getByRole("button", { name: /سجلات نموذجية جاهزة/ })
     .click();
   await page.screenshot({ path: `${evidence}/after-ar-light-desktop.jpg` });
   await page.setViewportSize({ width: 320, height: 1000 });

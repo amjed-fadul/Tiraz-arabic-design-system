@@ -343,7 +343,9 @@ button. Translate stateLabels when direction differs from language. Never add
 completion checkboxes, assignees or manual checklist behavior.
 
 Control expansion with expandedIds/onExpandedChange or initialize internal
-expansion with defaultExpandedIds. Closed panels become hidden/inert immediately;
+expansion with defaultExpandedIds. Use existing Badge for state text. Height/opacity
+transition on disclosure only and respect system/OS reduced motion; hover covers
+the complete task. Closing panels become aria-hidden/inert immediately during exit;
 external collapse recovers panel focus to the trigger. State updates must preserve
 focus, IDs and supplied order. The local example alone owns Run/Replay/retry timers,
 cancels on replay/unmount and guards stale callbacks; its copy explicitly denies

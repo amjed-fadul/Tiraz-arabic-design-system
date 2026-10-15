@@ -20,7 +20,6 @@ export function TaskRowsExample({
   const [state, setState] = useState<TaskState>("pending");
   const [hasRun, setHasRun] = useState(false);
   const [expandedIds, setExpandedIds] = useState<string[]>([]);
-  const [note, setNote] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const generation = useRef(0);
   useEffect(
@@ -51,37 +50,38 @@ export function TaskRowsExample({
     ? []
     : [
         {
-          id: "notes",
-          title: t("ملاحظات نموذجية جاهزة", "Sample notes ready"),
-          summary: t("٣ ملاحظات", "3 notes"),
+          id: "records",
+          title: t("سجلات نموذجية جاهزة", "Sample records ready"),
+          summary: t("١٢ سجلًا", "12 records"),
           state: "completed",
           content: (
-            <div style={{ display: "grid", gap: "var(--space-2)" }}>
-              <p style={{ margin: 0 }}>
-                {t(
-                  "محتوى تجريبي موجود مسبقًا لشرح بنية الصف، دون معالجة ملفات.",
-                  "Prewritten sample content explains the row structure; no files were processed.",
-                )}
-              </p>
-              <div>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  aria-expanded={note}
-                  onClick={() => setNote((value) => !value)}
-                >
-                  {t("عرض ملاحظة محلية", "Show local note")}
-                </Button>
-              </div>
-              {note && (
-                <p>
-                  {t(
-                    "استخدم عنوانًا واضحًا وملخصًا قصيرًا ومحتوى مفيدًا داخل التفاصيل.",
-                    "Use a clear title, a short summary and useful content inside the details.",
-                  )}
-                </p>
+            <dl
+              className="tz-agent-task-data"
+              aria-label={t(
+                "نتائج نموذجية توضيحية",
+                "Illustrative sample results",
               )}
-            </div>
+            >
+              <div>
+                <dt>
+                  {t(
+                    "مطابقة جهات الاتصال والمعرّفات الضريبية",
+                    "Matched contacts and tax IDs",
+                  )}
+                </dt>
+                <dd>
+                  <bdi dir="ltr">{t("١٢/١٢", "12/12")}</bdi>
+                </dd>
+              </div>
+              <div>
+                <dt>
+                  {t("السجلات القديمة المعلّمة", "Flagged stale records")}
+                </dt>
+                <dd>
+                  <bdi dir="ltr">{t("٠", "0")}</bdi>
+                </dd>
+              </div>
+            </dl>
           ),
         },
         {

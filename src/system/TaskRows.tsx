@@ -1,6 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { Check, ChevronDown, CircleAlert } from "lucide-react";
+import { Badge } from "./Badge";
 import { EmptyState } from "./EmptyState";
 import { Spinner } from "./Spinner";
 import { useSystem } from "./useSystem";
@@ -91,7 +92,20 @@ function TaskRow({
         {item.summary != null && (
           <bdi className="tz-agent-task-summary">{item.summary}</bdi>
         )}
-        <span className="tz-agent-task-state">{stateLabel}</span>
+        <Badge
+          className="tz-agent-task-state"
+          tone={
+            item.state === "completed"
+              ? "success"
+              : item.state === "failed"
+                ? "error"
+                : item.state === "running"
+                  ? "info"
+                  : "neutral"
+          }
+        >
+          {stateLabel}
+        </Badge>
         <ChevronDown className="tz-agent-task-chevron" aria-hidden="true" />
       </button>
       <div
@@ -100,6 +114,7 @@ function TaskRow({
         role="region"
         aria-labelledby={titleId}
         hidden={!expanded}
+        aria-hidden={!expanded || undefined}
         inert={!expanded}
         className="tz-agent-task-panel"
         onFocusCapture={(event) => {
@@ -115,7 +130,9 @@ function TaskRow({
             lastFocus.current = null;
         }}
       >
-        {item.content}
+        <div className="tz-agent-task-panel-clip">
+          <div className="tz-agent-task-content">{item.content}</div>
+        </div>
       </div>
     </li>
   );

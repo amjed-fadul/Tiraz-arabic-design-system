@@ -174,8 +174,8 @@ export function ApiReference({
         "content / stateLabels / emptyState",
         "ReactNode / Record<TaskState, string> / ReactNode",
         t(
-          "إجراءات التطبيق داخل لوحة مرتبطة خارج زر التوسيع. اللوحات المغلقة hidden وinert؛ يعود التركيز لزرها عند الإغلاق الخارجي. النص الافتراضي حسب الاتجاه.",
-          "Application actions live in the associated panel outside the trigger. Closed panels are hidden and inert; external collapse returns panel focus to its trigger. Default labels follow direction.",
+          "إجراءات التطبيق داخل لوحة مرتبطة خارج زر التوسيع. شارات الحالة موجودة في النظام؛ الحركة والمرور يغطيان المهمة، والإغلاق يجعل اللوحة aria-hidden وinert فورًا. يعود التركيز لزرها عند الإغلاق الخارجي.",
+          "Application actions live outside the trigger. Existing state Badges, whole-task hover and reduced-motion-aware disclosure transitions. Closing is immediately aria-hidden/inert; external collapse restores panel focus. Default labels follow direction.",
         ),
       ],
       [

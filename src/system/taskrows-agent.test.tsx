@@ -281,3 +281,30 @@ it("forgets recovered panel focus before a later expansion cycle", () => {
   );
   expect(document.body).toHaveFocus();
 });
+it("uses existing semantic Badges for each task state", () => {
+  render(<System.TaskRows label="Tasks" items={items} />);
+  for (const [label, tone] of [
+    ["مكتملة", "success"],
+    ["قيد الانتظار", "neutral"],
+    ["جارٍ التنفيذ", "info"],
+    ["فشلت", "error"],
+  ]) {
+    expect(screen.getByText(label, { exact: true })).toHaveClass("tz-badge");
+    expect(screen.getByText(label, { exact: true })).toHaveAttribute(
+      "data-tone",
+      tone,
+    );
+  }
+});
+it("shows sample result rows directly without a local-note button", async () => {
+  const user = userEvent.setup();
+  render(<TaskRowsExample language="en" />);
+  await user.click(screen.getByRole("button", { name: /Sample .* ready/ }));
+  expect(screen.queryByRole("button", { name: "Show local note" })).toBeNull();
+  expect(
+    screen.getByText("Matched contacts and tax IDs").nextElementSibling,
+  ).toHaveTextContent("12/12");
+  expect(
+    screen.getByText("Flagged stale records").nextElementSibling,
+  ).toHaveTextContent("0");
+});

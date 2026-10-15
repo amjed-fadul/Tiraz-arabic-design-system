@@ -461,14 +461,17 @@ for local notifications. Both preserve supplied order and stable unique IDs.
 TaskRows takes items and label. Each item requires id, string title, state
 (pending/running/completed/failed) and content; summary is an optional short
 string. Pending uses its supplied-order number, running a restrained decorative
-Spinner, completed a check and failed an error glyph. Visible state text is always
-present. stateLabels translates all four states; defaults and number digits follow
+Spinner, completed a check and failed an error glyph. State text uses the existing
+Badge: neutral pending, info running, success completed and error failed. stateLabels translates all four states; defaults and number digits follow
 direction. appearance defaults to capsules; list connects rows with subtle separators.
 
 Disclosure buttons use native Enter/Space, aria-expanded and associated panels.
 Content/actions belong inside the panel, outside the noninteractive title/summary
-and disclosure button. Closed panels are hidden and inert immediately. Their
-content stays mounted to preserve application form values. Controlled collapse
+and disclosure button. Disclosure height/opacity animate using shared motion tokens;
+reduced motion removes that transition. Whole task surfaces share hover feedback.
+Closing panels become aria-hidden and inert immediately, including during visual
+exit. The native hidden attribute remains set with a CSS grid override for exit
+motion; it is not the sole accessibility boundary. Their content stays mounted to preserve application form values. Controlled collapse
 returns focus from that panel to its persistent trigger, without stealing focus
 from elsewhere. State updates retain IDs, order, expansion and focus.
 
@@ -484,7 +487,8 @@ The compiling example starts pending and has Run/Replay, an intentional local
 failure, then an explicit local retry to completion. Its timers cancel on replay
 and unmount; generation guards prevent earlier runs overwriting later ones. It
 never claims real files, emails or backend tasks were processed. Another completed
-sample has useful expandable details. A separate static example shows all four
+sample shows illustrative contact/tax-ID matches and stale-record counts directly,
+without a note-reveal button. A separate static example shows all four
 application-supplied states in either appearance. No agent runtime, networking or
 library timer is provided. The TaskRows documentation lives under AI patterns;
 ToolCall and ToolChips are not implemented.

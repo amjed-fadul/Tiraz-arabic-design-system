@@ -2977,12 +2977,6 @@
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--ease);
 }
-.tz-agent-task-trigger:hover {
-  background: var(--surface-hover);
-}
-.tz-agent-task-trigger:active {
-  background: var(--surface-subtle);
-}
 .tz-agent-task-indicator {
   display: grid;
   place-items: center;
@@ -3006,8 +3000,7 @@
   font-weight: var(--weight-medium);
   overflow-wrap: anywhere;
 }
-.tz-agent-task-summary,
-.tz-agent-task-state {
+.tz-agent-task-summary {
   font-size: var(--text-meta);
   color: var(--text-secondary);
   overflow-wrap: anywhere;
@@ -3034,13 +3027,33 @@
   background: var(--danger-soft);
   border-color: transparent;
 }
-.tz-agent-task[data-state="completed"] .tz-agent-task-state {
-  color: var(--success);
+.tz-agent-task-panel,
+.tz-agent-task-panel[hidden] {
+  /* Keep the track present for exit motion; ARIA and inert hide it immediately. */
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  min-inline-size: 0;
+  transition:
+    grid-template-rows var(--motion-state) var(--ease),
+    opacity var(--motion-fast) var(--ease),
+    visibility 0s var(--motion-state);
 }
-.tz-agent-task[data-state="failed"] .tz-agent-task-state {
-  color: var(--danger);
+.tz-agent-task[data-expanded="true"] > .tz-agent-task-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--motion-state) var(--ease),
+    opacity var(--motion-fast) var(--ease),
+    visibility 0s;
 }
-.tz-agent-task-panel {
+.tz-agent-task-panel-clip {
+  min-block-size: 0;
+  overflow: hidden;
+}
+.tz-agent-task-content {
   margin-inline: var(--space-3);
   padding-block: var(--space-2) var(--space-3);
   padding-inline-start: calc(24px + var(--space-2));
@@ -3048,9 +3061,6 @@
   font-size: var(--text-body);
   overflow-wrap: anywhere;
   min-inline-size: 0;
-}
-.tz-agent-task-panel[hidden] {
-  display: none;
 }
 .tz-agent-task-panel :where(button, a, input, select, textarea) {
   max-inline-size: 100%;
@@ -3088,7 +3098,7 @@
   .tz-agent-task-state {
     grid-column: 3;
     grid-row: 1 / span 2;
-    max-inline-size: 6em;
+    max-inline-size: 8em;
   }
   .tz-agent-task-chevron {
     grid-column: 4;
@@ -3097,4 +3107,30 @@
 }
 .tz-task-rows {
   container-type: inline-size;
+}
+
+.tz-task-rows > .tz-agent-task {
+  transition: background-color var(--motion-fast) var(--ease);
+}
+.tz-task-rows > .tz-agent-task:hover {
+  background: var(--surface-hover);
+}
+.tz-task-rows > .tz-agent-task:has(> .tz-agent-task-trigger:active) {
+  background: var(--surface-subtle);
+}
+.tz-agent-task-data {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+.tz-agent-task-data > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.tz-agent-task-data dd {
+  margin: 0;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }

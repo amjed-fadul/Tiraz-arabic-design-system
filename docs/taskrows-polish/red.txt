@@ -1,0 +1,68 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/taskrows-agent.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+ ❯ src/system/taskrows-agent.test.tsx (13 tests | 2 failed) 1261ms
+   × uses existing semantic Badges for each task state 8ms
+   × shows sample result rows directly without a local-note button 72ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > uses existing semantic Badges for each task state
+Error: expect(element).toHaveClass("tz-badge")
+
+Expected the element to have class:
+  tz-badge
+Received:
+  tz-agent-task-state
+ ❯ src/system/taskrows-agent.test.tsx:287:50
+    285|   render(<System.TaskRows label="Tasks" items={items}/>);
+    286|   for (const [label,tone] of [["مكتملة","success"],["قيد الانتظار","ne…
+    287|     expect(screen.getByText(label,{exact:true})).toHaveClass("tz-badge…
+       |                                                  ^
+    288|     expect(screen.getByText(label,{exact:true})).toHaveAttribute("data…
+    289|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > shows sample result rows directly without a local-note button
+AssertionError: expected <button …(6)>…(1)</button> to be null
+
+- Expected:
+null
+
++ Received:
+<button
+  aria-expanded="false"
+  class="tz-button "
+  data-size="sm"
+  data-state="idle"
+  data-variant="secondary"
+  type="button"
+>
+  <span
+    class="tz-button-label"
+  >
+    Show local note
+  </span>
+</button>
+
+ ❯ src/system/taskrows-agent.test.tsx:295:65
+    293|   render(<TaskRowsExample language="en"/>);
+    294|   await user.click(screen.getByRole("button",{name:/Sample .* ready/})…
+    295|   expect(screen.queryByRole("button",{name:"Show local note"})).toBeNu…
+       |                                                                 ^
+    296|   expect(screen.getByText("Matched contacts and tax IDs").nextElementS…
+    297|   expect(screen.getByText("Flagged stale records").nextElementSibling)…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 11 passed (13)
+   Start at  19:02:46
+   Duration  4.51s (import 46%, tests 29%, environment 16%, transform 6%, setup 3%)
+
