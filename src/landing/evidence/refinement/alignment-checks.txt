@@ -1,0 +1,78 @@
+Focused tests
+> tiraz@0.1.0 test
+> vitest run src/landing/Landing.test.tsx --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  16:58:02
+   Duration  4.27s (import 47%, tests 20%, environment 19%, transform 10%, setup 4%)
+
+Build
+> tiraz@0.1.0 build
+> tsc -b && vite build --config src/landing/vite.config.ts
+
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 3482 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/src/landing/brand-preview.html                                       0.67 kB │ gzip:   0.38 kB
+dist/landing.html                                                         0.96 kB │ gzip:   0.52 kB
+dist/index.html                                                           1.05 kB │ gzip:   0.58 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-400-normal-BeVLg08x.woff       5.10 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-500-normal-eJxPnL1P.woff       5.11 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-600-normal-DT29Q8HW.woff       5.12 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-500-normal-Ck_W4G78.woff2      6.54 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-400-normal-BpLfq-63.woff2      6.65 kB
+dist/assets/ibm-plex-sans-arabic-latin-ext-600-normal-DjDAeNQD.woff2      6.68 kB
+dist/assets/omar-C8NC5HAj.jpg                                            14.25 kB
+dist/assets/sara-DdRVVhU4.jpg                                            16.07 kB
+dist/assets/ibm-plex-sans-arabic-latin-400-normal-CFZh1unN.woff          17.51 kB
+dist/assets/ibm-plex-sans-arabic-latin-500-normal-BletK1Hp.woff          18.64 kB
+dist/assets/ibm-plex-sans-arabic-latin-600-normal-Dk5eISD_.woff          18.88 kB
+dist/assets/ibm-plex-sans-arabic-latin-400-normal-Bo5KPYvw.woff2         19.16 kB
+dist/assets/ibm-plex-sans-arabic-latin-500-normal-Cd6jVIg7.woff2         20.08 kB
+dist/assets/ibm-plex-sans-arabic-latin-600-normal-KrqB56Mw.woff2         20.50 kB
+dist/assets/ibm-plex-sans-arabic-arabic-400-normal-CyU-ddYS.woff2        42.84 kB
+dist/assets/ibm-plex-sans-arabic-arabic-400-normal-EA1o-u_Q.woff         44.13 kB
+dist/assets/ibm-plex-sans-arabic-arabic-500-normal-C4MQITzh.woff2        45.29 kB
+dist/assets/ibm-plex-sans-arabic-arabic-600-normal-0pRdybE_.woff2        45.68 kB
+dist/assets/ibm-plex-sans-arabic-arabic-600-normal-MJZ0liF5.woff         46.78 kB
+dist/assets/ibm-plex-sans-arabic-arabic-500-normal-DPXcppbm.woff         46.92 kB
+dist/assets/woven-textile-OjDd5vQk.png                                2,818.78 kB
+dist/assets/brand-BgDKyALg.css                                            3.17 kB │ gzip:   0.99 kB
+dist/assets/landing-ceLx2uWa.css                                         19.00 kB │ gzip:   4.21 kB
+dist/assets/documentation-CKNHsOAL.css                                   36.72 kB │ gzip:   7.63 kB
+dist/assets/system-tMINogwk.css                                          70.15 kB │ gzip:  18.40 kB
+dist/assets/01-warp-DiFZLery.js                                           0.34 kB │ gzip:   0.27 kB
+dist/assets/preload-helper-BAuDQtpP.js                                    2.49 kB │ gzip:   1.22 kB
+dist/assets/ChartExamples-BtQBnx13.js                                     3.87 kB │ gzip:   1.81 kB
+dist/assets/weave-shader-BEjmsBEq.js                                      4.62 kB │ gzip:   2.16 kB
+dist/assets/brand-C7sQm1Q6.js                                             4.99 kB │ gzip:   2.15 kB
+dist/assets/landing-ClrYpAYR.js                                          25.17 kB │ gzip:   8.44 kB
+dist/assets/documentation-7k41BbLI.js                                   320.02 kB │ gzip:  90.68 kB
+dist/assets/system-sAT2lBlz.js                                          910.37 kB │ gzip: 270.65 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 668ms
+
+Lint
+> tiraz@0.1.0 lint
+> oxlint
+
+Formatting
+> tiraz@0.1.0 format:check
+> prettier --check src index.html vite.config.ts *.json README.md docs/implementation-plan.md
+
+Checking formatting...
+All matched files use Prettier code style!
+Checking formatting...
+All matched files use Prettier code style!

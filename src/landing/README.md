@@ -14,7 +14,10 @@ matching image was explicitly authorized. See [asset and exact generation
 prompt](assets/README.md). Ivory fabric and a dark green woven band remain visible,
 with quiet masks behind the copy and a stronger tablet crop mask. Navigation
 overlays the same image, with a fading contrast veil and room above the hero copy
-at mobile widths. Header branding remains the existing typographic wordmark.
+at mobile widths. English mirrors the hero composition: copy and its quiet area
+move left, textile detail moves right, and image/canvas crops stay matched.
+Arabic copy aligns to the same right content edge as the header and sections.
+The selected Warp symbol accompanies the existing typographic wordmark.
 
 Four hero swatches use Tiraz's actual sage, blue, plum and clay pairs through the
 existing RadioGroup. Each has a 20px visible circle inside a 44px target, native
@@ -58,8 +61,9 @@ shader again. Text and controls never enter the canvas.
 
 [Brand preview](brand-preview.html) presents three original monochrome SVG symbols,
 paired with the typographic طِراز / Tiraz wordmark, reversed samples, 16/24/32px
-sizes and header examples. These are **concepts for selection**, not approved logos.
-The landing header keeps its existing wordmark. Original SVG downloads:
+sizes and header examples. The user selected **01 — Warp**; the landing header
+and footer pair it with the existing wordmark. The preview marks it selected and
+retains the other two concepts for comparison. Original SVG downloads:
 
 - [01 — السدى / Warp](brand/assets/01-warp.svg)
 - [02 — العبور / Crossing](brand/assets/02-crossing.svg)

@@ -70,8 +70,8 @@ export function BrandPreview() {
             </h1>
             <p className="brand-intro">
               {ar
-                ? "مقترحات أولية للاختيار، وليست شعارًا معتمدًا. تبقى العلامة الكتابية الحالية في صفحة طِراز إلى أن تختار الرمز."
-                : "Concepts for selection, not approved logos. The landing page keeps its current wordmark until you choose a symbol."}
+                ? "تم اختيار السدى، الخيار الأول، ليُرافق العلامة الكتابية في صفحة طِراز. نحتفظ بالخيارين الآخرين هنا للمقارنة."
+                : "Warp, option 1, is selected to accompany the Tiraz wordmark. The other two concepts remain here for comparison."}
             </p>
             <div className="brand-grid">
               {concepts.map((c) => (
@@ -79,6 +79,11 @@ export function BrandPreview() {
                   <div className="brand-label">
                     <span>{c.id}</span>
                     <h2>{ar ? c.ar : c.en}</h2>
+                    {c.id === "01" && (
+                      <strong className="brand-selected">
+                        {ar ? "المختار" : "Selected"}
+                      </strong>
+                    )}
                   </div>
                   <div className="brand-lockup">
                     <img src={c.src} alt="" />
@@ -143,8 +148,8 @@ export function BrandPreview() {
           </main>
           <footer>
             {ar
-              ? "رموز SVG أصلية · خط IBM Plex Sans Arabic · لا تغيير على هوية صفحة الهبوط."
-              : "Original SVG concepts · IBM Plex Sans Arabic · landing identity unchanged."}
+              ? "رموز SVG أصلية · خط IBM Plex Sans Arabic · السدى هو الرمز المختار."
+              : "Original SVG concepts · IBM Plex Sans Arabic · Warp is the selected symbol."}
           </footer>
         </div>
       </SystemProvider>

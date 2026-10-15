@@ -23,6 +23,7 @@ import type { Accent, SystemConfig } from "../system";
 import { LiveExample } from "./LiveExample";
 import { Weave } from "./Weave";
 import { AccentPicker } from "./AccentPicker";
+import warpSymbol from "./brand/assets/01-warp.svg?url";
 const textile = new URL("./assets/woven-textile.png", import.meta.url).href;
 
 const repository = "https://github.com/amjed-fadul/Tiraz-arabic-design-system";
@@ -94,6 +95,13 @@ export function Landing() {
             href="#top"
             aria-label={ar ? "طِراز — البداية" : "Tiraz — home"}
           >
+            <img
+              className="lp-brand-symbol"
+              src={warpSymbol}
+              alt=""
+              width="24"
+              height="24"
+            />
             <span lang="ar">طِراز</span>
             <span lang="en">Tiraz</span>
           </a>
@@ -517,6 +525,13 @@ export function Landing() {
         </main>
         <footer className="lp-footer lp-container">
           <a className="lp-wordmark" href="#top">
+            <img
+              className="lp-brand-symbol"
+              src={warpSymbol}
+              alt=""
+              width="24"
+              height="24"
+            />
             <span lang="ar">طِراز</span>
             <span lang="en">Tiraz</span>
           </a>

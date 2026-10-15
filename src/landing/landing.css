@@ -88,10 +88,17 @@ body {
   gap: 12px;
   white-space: nowrap;
 }
-.lp-wordmark span:first-child {
+.lp-wordmark span[lang="ar"] {
   font-size: 26px;
   font-weight: 600;
   line-height: 1.6;
+}
+.lp-brand-symbol {
+  align-self: center;
+  flex-shrink: 0;
+}
+.tiraz-system[data-theme="dark"] .lp-brand-symbol {
+  filter: invert(1);
 }
 .lp-wordmark span:last-child {
   font-size: var(--text-body);
@@ -905,12 +912,22 @@ body {
 }
 .lp-hero-copy {
   grid-column: 2;
+  justify-self: end;
   direction: rtl;
+  width: 100%;
   max-width: 480px;
   color: #11271e;
 }
 [dir="ltr"] .lp-hero-copy {
+  grid-column: 1;
+  justify-self: start;
   direction: ltr;
+  margin-inline-start: 0;
+  margin-inline-end: auto;
+}
+[dir="ltr"] .lp-weave,
+[dir="ltr"] .lp-hero::before {
+  transform: scaleX(-1);
 }
 .lp-hero .lp-eyebrow {
   color: #334a40;
@@ -947,7 +964,7 @@ body {
 }
 .lp-hero-caption {
   position: absolute;
-  left: 48px;
+  left: var(--lp-hero-inset, 48px);
   bottom: 38px;
   font-size: 12px;
   color: #23392e;
@@ -960,6 +977,8 @@ body {
 }
 [dir="ltr"] .lp-hero-caption {
   direction: ltr;
+  left: auto;
+  right: var(--lp-hero-inset, 48px);
 }
 .lp-motion-control {
   position: absolute;
@@ -1084,7 +1103,7 @@ body {
     grid-template-columns: 0.8fr 1fr;
   }
   .lp-hero-caption {
-    left: 32px;
+    --lp-hero-inset: 32px;
   }
 }
 @media (max-width: 760px) {
@@ -1100,7 +1119,7 @@ body {
   .lp-hero-copy {
     width: 100%;
     max-width: 500px;
-    margin-inline-start: auto;
+    margin-left: auto;
   }
   .lp-page .lp-hero h1 {
     font-size: 38px;
@@ -1126,7 +1145,7 @@ body {
     );
   }
   .lp-hero-caption {
-    left: 24px;
+    --lp-hero-inset: 24px;
     bottom: 20px;
     font-size: 10px;
   }
@@ -1177,7 +1196,7 @@ body {
     padding-inline: 12px;
   }
   .lp-hero-caption {
-    left: 20px;
+    --lp-hero-inset: 20px;
   }
   .lp-accent-pill {
     gap: 2px;

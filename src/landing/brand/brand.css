@@ -74,6 +74,14 @@ body {
   color: var(--text-secondary);
   font: 12px var(--font-mono);
 }
+.brand-selected {
+  margin-inline-start: auto;
+  padding: 4px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
 .brand-page h2 {
   font-size: 18px;
   font-weight: 500;
