@@ -305,3 +305,11 @@ source paths. Examples do not persist data or pretend to run services.
 Use FileDropzone for local File[] selection. Wire onValueChange to application state, construct FormData from that array, and supply actual upload infrastructure separately. The native input clears for reliable reselection and has no name/required API. Type/size checks are convenience checks; server validation remains necessary. Multiple appends, single replaces, partial rejections preserve valid files, and exact name/size/type/lastModified duplicates give feedback. No previews or directories.
 
 Use ColorPicker for opaque #RGB/#RRGGBB values; commit normalizes #RRGGBB. Keep incomplete text while editing, commit on Enter/blur, and retain selected color on invalid text. Named presets and native chooser synchronize the same value. name submits the committed hidden value; local error feedback does not block submission. Controlled parents update onValueChange and restore values onReset; uncontrolled reset restores initial defaults without callbacks. Use the compiling examples linked in README, preserve Field associations and LTR HEX, and keep the local sample independent from system accent.
+
+For one bounded numeric value use Slider; use OTPInput for a fixed-length digit
+code and DatePicker for a single Gregorian date. Their examples are local forms,
+not services. Preserve code strings (including leading zeros) and date-only
+YYYY-MM-DD strings; never serialize date-only values through UTC. Use their Field
+label/helper/error associations, supply application validation and controlled
+onReset handlers, and keep DatePicker inside the existing scoped overlay provider.
+Read ai/README.md for required calendar/popover dependencies and Radix overrides.

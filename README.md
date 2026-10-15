@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with thirty-eight source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with forty-one source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -229,3 +229,14 @@ and component documentation. These examples add no persistence or filtering engi
 ### Files and colors
 
 FileDropzone (Files) selects/removes local files with shared browse/drop validation, duplicate feedback and application-owned submission. ColorPicker (Forms) synchronizes opaque RGB presets, HEX and a native chooser; its sample is independent of system accent. Read the portable contracts and working examples in `src/system/ai/README.md` for submission/reset behavior and scope. Neither component uploads or stores data.
+
+### Slider, OTPInput and DatePicker
+
+The Forms documentation now includes native single-value Slider, one-input OTPInput
+and single Gregorian DatePicker. OTP values remain ASCII digit strings, preserving
+leading zeros and incomplete edits. Dates use YYYY-MM-DD without UTC conversion.
+All reuse Field associations, shared tokens and cancelable form reset conventions.
+Controlled forms own their reset state. DatePicker uses @daypicker/react 10.0.2
+and @radix-ui/react-popover 1.3.1 with existing scoped portals and Radix overrides.
+See [local verification and limitations](docs/slider-otp-date/README.md) and the
+[portable contracts](src/system/ai/README.md).

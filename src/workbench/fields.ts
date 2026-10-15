@@ -83,6 +83,39 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  slider: [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "المساعدة", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("min", "number", "الأدنى", "Min"),
+    field("max", "number", "الأقصى", "Max"),
+    field("step", "number", "الخطوة", "Step"),
+    field("showValue", "boolean", "عرض القيمة", "Show value"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+  "otp-input": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "المساعدة", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("length", "number", "عدد الأرقام", "Length", "length", {
+      min: 1,
+      max: 12,
+    }),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+  "date-picker": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "المساعدة", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("min", "text", "أول تاريخ", "Min date"),
+    field("max", "text", "آخر تاريخ", "Max date"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+
   "file-dropzone": [
     field("label", "text", "التسمية", "Label"),
     field("helper", "text", "المساعدة", "Helper"),
@@ -632,6 +665,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  slider: ["label", "min", "max", "step", "showValue", "disabled"],
+  "otp-input": ["label", "length", "readOnly", "disabled"],
+  "date-picker": ["label", "min", "max", "disabled"],
   "file-dropzone": ["label", "multiple", "accept", "maxFiles", "disabled"],
   "color-picker": ["label", "showSwatches", "disabled"],
   "tag-input": ["label", "helper", "error", "maxTags", "disabled", "readOnly"],

@@ -1,3 +1,7 @@
+import type { Playgrounds } from "./model";
+import { SliderExample } from "../system/ai/examples/SliderExamples";
+import { OTPInputExample } from "../system/ai/examples/OTPInputExamples";
+import { DatePickerExample } from "../system/ai/examples/DatePickerExamples";
 import { FileDropzoneExample } from "../system/ai/examples/FileDropzoneExamples";
 import { ColorPickerExample } from "../system/ai/examples/ColorPickerExamples";
 import type { FileDropzoneModel, ColorPickerModel } from "./model";
@@ -153,6 +157,27 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "slider")
+    return (
+      <SliderExample
+        language={language}
+        {...(model as Playgrounds["slider"])}
+      />
+    );
+  if (component === "otp-input")
+    return (
+      <OTPInputExample
+        language={language}
+        {...(model as Playgrounds["otp-input"])}
+      />
+    );
+  if (component === "date-picker")
+    return (
+      <DatePickerExample
+        language={language}
+        {...(model as Playgrounds["date-picker"])}
+      />
+    );
   if (component === "file-dropzone")
     return (
       <FileDropzoneExample

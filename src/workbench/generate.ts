@@ -1,3 +1,6 @@
+import sliderSource from "../system/ai/examples/SliderExamples.tsx?raw";
+import otpSource from "../system/ai/examples/OTPInputExamples.tsx?raw";
+import dateSource from "../system/ai/examples/DatePickerExamples.tsx?raw";
 import filesSource from "../system/ai/examples/FileDropzoneExamples.tsx?raw";
 import colorsSource from "../system/ai/examples/ColorPickerExamples.tsx?raw";
 import tagSource from "../system/ai/examples/TagInputExamples.tsx?raw";
@@ -64,6 +67,9 @@ export function generateCode(
 ): string {
   if (
     [
+      "slider",
+      "otp-input",
+      "date-picker",
       "file-dropzone",
       "color-picker",
       "tag-input",
@@ -72,25 +78,37 @@ export function generateCode(
     ].includes(component)
   ) {
     const name =
-      component === "file-dropzone"
-        ? "FileDropzoneExample"
-        : component === "color-picker"
-          ? "ColorPickerExample"
-          : component === "tag-input"
-            ? "TagInputExample"
-            : component === "filter-bar"
-              ? "FilterBarExample"
-              : "InputCopyExample";
+      component === "slider"
+        ? "SliderExample"
+        : component === "otp-input"
+          ? "OTPInputExample"
+          : component === "date-picker"
+            ? "DatePickerExample"
+            : component === "file-dropzone"
+              ? "FileDropzoneExample"
+              : component === "color-picker"
+                ? "ColorPickerExample"
+                : component === "tag-input"
+                  ? "TagInputExample"
+                  : component === "filter-bar"
+                    ? "FilterBarExample"
+                    : "InputCopyExample";
     const entrySource =
-      component === "file-dropzone"
-        ? filesSource
-        : component === "color-picker"
-          ? colorsSource
-          : component === "tag-input"
-            ? tagSource
-            : component === "filter-bar"
-              ? filterSource
-              : copySource;
+      component === "slider"
+        ? sliderSource
+        : component === "otp-input"
+          ? otpSource
+          : component === "date-picker"
+            ? dateSource
+            : component === "file-dropzone"
+              ? filesSource
+              : component === "color-picker"
+                ? colorsSource
+                : component === "tag-input"
+                  ? tagSource
+                  : component === "filter-bar"
+                    ? filterSource
+                    : copySource;
     const source = entrySource.replace(
       /from "\.\.\/\.\.\/index"/g,
       'from "./system"',

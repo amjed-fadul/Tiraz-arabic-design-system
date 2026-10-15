@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **thirty-eight**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone and ColorPicker.
+Tiraz is an Arabic-first, source-owned React dashboard library with **forty-one**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput and DatePicker.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -315,3 +315,61 @@ Use [ColorPickerExamples](examples/ColorPickerExamples.tsx) for a local colored 
 The HEX input preserves incomplete/invalid text until Enter/blur commits; invalid commits explain the accepted formats without changing selected color. Swatches/native chooser commit immediately and synchronize HEX. `onChange` observes HEX editing; `onValueChange` reports changed committed colors only. Ref/native attributes target the LTR HEX input. Use the same Field convenience/composition contract as Input. `labels` translates chooser/swatches/invalid; defaults follow direction. Native chooser appearance varies by browser. No transparency, hue/saturation canvas or eyedropper.
 
 ColorPicker `name`/`form` submits one hidden committed #RRGGBB value, never the draft. Disabled controls omit it. Invalid-draft feedback does **not** itself block submission; caller-supplied native constraints (such as required/pattern on HEX) still apply and can block it. The application owns form validation. Native uncanceled reset restores initial uncontrolled defaultValue without callback and clears draft/feedback; controlled values require application onReset. Neither family persists data or modifies system accent configuration.
+
+## Slider, OTPInput and DatePicker
+
+Use [SliderExample](examples/SliderExamples.tsx) for a local adjustable number,
+[OTPInputExample](examples/OTPInputExamples.tsx) for local completeness without
+verification and [DatePickerExample](examples/DatePickerExamples.tsx) for a selected
+date summary. They have no backend. Each supports controlled/uncontrolled examples
+and explicit form reset. Inspect the source and registry for the complete API.
+
+Slider is one native range with min/max/step (0/100/1). It clamps and snaps to
+min-based steps, rounds decimal noise, and never exceeds the last reachable step.
+formatValue optionally supplies a readout and aria-valuetext. Native pointer,
+arrows and Home/End remain intact; horizontal arrows mirror in RTL. Native name
+submits the numeric string, disabled omits it. No range or marks API.
+
+OTPInput is one native text input with decorative slots. length defaults to 6,
+floors/clamps to 1–12. Accept ASCII, Arabic-Indic and Eastern Arabic digits; public
+values normalize to ASCII with leading zeros and partial values preserved. Strip
+other characters and truncate extras. Native selection, paste and editing remain
+available, including readOnly selection/copy. It stays LTR inside Arabic layouts.
+autocomplete=one-time-code and inputMode=numeric are fixed; no verification,
+autosubmit or focus movement occurs. Native pattern requires full length for form
+validation (empty is allowed unless required); FormData still contains partial
+text when read directly. Device SMS suggestions/autofill are not proven by
+synthetic input events or desktop automation.
+
+DatePicker is a single Gregorian YYYY-MM-DD (years 0001–9999), or empty string.
+Never use new Date(iso) or toISOString to convert date-only values. It converts
+local year/month/day fields, keeping the date unchanged across time zones.
+locale=ar/en defaults from direction and controls Gregorian localized display.
+Inclusive min/max disable dates and Today; invalid bounds are ignored. Invalid
+value props show feedback and submit empty. A valid externally controlled date
+outside bounds stays visible/submitted with feedback: the application must block
+invalid submission. No manual text editor or partial date strings are supported.
+
+Install **@daypicker/react@10.0.2** and **@radix-ui/react-popover@1.3.1** in source-copy
+hosts. DayPicker supplies the maintained accessible calendar keyboard behavior and
+Arabic/English labels; Radix supplies positioning, layer dismissal and trigger
+focus restoration. Preserve the shared Radix overrides documented above. Tiraz's
+components.css styles the calendar; do not add upstream default calendar CSS.
+Portals use the nearest SystemProvider/Sheet/Modal container. Arrows, Home/End,
+PageUp/Down, Enter/Space and Escape follow the primitives. The popup scrolls within
+available viewport height; Escape closes it before a surrounding dialog.
+
+All three use label/helper/error or separate Field composition, merge external
+associations and forward ref/native attributes to the primary input or date
+trigger. DatePicker name/form target its hidden date submission input; disabled
+omits it. Hidden input does not provide required/pattern validation; the app owns
+validation. Native input onChange is supported for Slider/OTP; onValueChange is
+the normalized public value callback. Preventing onChange cancels the callback.
+Uncontrolled uncanceled reset restores initial defaultValue without callback;
+controlled reset requires application onReset. External/late form associations
+and canceled resets follow useEntryReset. Do not add verification or persistence
+claims to examples.
+
+DatePicker preserves standalone native htmlFor/implicit label naming and describes
+the selected date with aria-describedby. In Field/explicit ARIA modes, its name
+includes the visible date or placeholder. No caller label DOM is mutated.

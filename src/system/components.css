@@ -2312,3 +2312,188 @@
 .tiraz-system[data-reduced-motion="true"] .tz-file-drop {
   transition: none;
 }
+
+/* Single native range; direction and keyboard behavior stay with the browser. */
+.tz-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.tz-slider {
+  accent-color: var(--action);
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: var(--control-height);
+  margin: 0;
+  cursor: pointer;
+}
+.tz-slider:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.tz-slider[aria-invalid="true"] {
+  outline: 1px solid var(--danger);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+.tz-slider-value {
+  min-inline-size: 3ch;
+  font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+}
+.tz-otp {
+  container-type: inline-size;
+  position: relative;
+  inline-size: calc(var(--otp-length) * 2.6em);
+  max-inline-size: 100%;
+  block-size: var(--control-height);
+  font-size: var(--text-body);
+}
+.tz-otp-slots {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--otp-length), 1fr);
+  pointer-events: none;
+}
+.tz-otp-slots > span {
+  margin-inline: 2px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  background: var(--surface);
+}
+.tiraz-system .tz-otp-input {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+  border-radius: var(--radius-small);
+  padding: 0;
+  padding-inline-start: calc((100cqw / var(--otp-length) - 1ch) / 2);
+  font-family: var(--font-mono);
+  font-size: var(--text-body);
+  letter-spacing: calc(100cqw / var(--otp-length) - 1ch);
+  color: var(--text);
+  background: transparent;
+  box-shadow: none;
+}
+.tz-otp:focus-within .tz-otp-slots > span {
+  border-color: var(--action);
+}
+.tz-otp:has([aria-invalid="true"]) .tz-otp-slots > span {
+  border-color: var(--danger);
+}
+.tz-otp[data-disabled] {
+  opacity: 0.55;
+}
+.tz-date-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  text-align: start;
+}
+.tz-date-trigger > span {
+  white-space: normal;
+}
+.tz-datepicker-popup {
+  z-index: 70;
+  inline-size: 284px;
+  max-inline-size: min(
+    calc(100vw - 16px),
+    var(--radix-popover-content-available-width)
+  );
+  max-block-size: var(--radix-popover-content-available-height);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-3);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-popover);
+  font-size: var(--text-body);
+}
+.tz-datepicker-popup .rdp-months {
+  position: relative;
+}
+.tz-datepicker-popup .rdp-month_caption {
+  min-block-size: var(--control-height);
+  display: flex;
+  align-items: center;
+  padding-inline-end: 72px;
+  font-weight: var(--weight-semibold);
+}
+.tz-datepicker-popup .rdp-nav {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  display: flex;
+  gap: 4px;
+}
+.tz-datepicker-popup
+  :is(.rdp-button_previous, .rdp-button_next, .rdp-day_button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--control-small);
+  block-size: var(--control-small);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: inherit;
+}
+.tz-datepicker-popup .rdp-chevron {
+  fill: currentColor;
+  inline-size: 18px;
+  block-size: 18px;
+}
+.tz-datepicker-popup .rdp-month_grid {
+  border-collapse: collapse;
+  inline-size: 100%;
+  table-layout: fixed;
+}
+.tz-datepicker-popup .rdp-weekday {
+  font-weight: var(--weight-regular);
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+  padding-block: var(--space-1);
+}
+.tz-datepicker-popup .rdp-day {
+  text-align: center;
+  padding: 1px 0;
+}
+.tz-datepicker-popup .rdp-day_button {
+  max-inline-size: 100%;
+}
+.tz-datepicker-popup button:hover:enabled {
+  background: var(--surface-hover);
+}
+.tz-datepicker-popup .rdp-selected .rdp-day_button {
+  background: var(--action);
+  color: var(--action-text);
+  font-weight: var(--weight-semibold);
+}
+.tz-datepicker-popup .rdp-today:not(.rdp-selected) .rdp-day_button {
+  border-color: var(--action);
+}
+.tz-datepicker-popup button:disabled {
+  opacity: 0.4;
+}
+.tz-datepicker-popup .rdp-outside {
+  color: var(--text-muted);
+}
+.tz-datepicker-popup .rdp-hidden {
+  visibility: hidden;
+}
+.tz-date-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--border);
+}

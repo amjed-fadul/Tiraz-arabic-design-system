@@ -81,6 +81,13 @@ try {
             .click();
         await page.evaluate(() => document.fonts.ready);
         await page.locator(".recharts-area-curve").waitFor();
+        await page.waitForFunction(
+          (expected) =>
+            document.documentElement.lang === expected &&
+            document.documentElement.dir ===
+              (expected === "ar" ? "rtl" : "ltr"),
+          language,
+        );
         assert.equal(await page.locator("html").getAttribute("lang"), language);
         assert.equal(
           await page.locator("html").getAttribute("dir"),

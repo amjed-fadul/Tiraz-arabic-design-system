@@ -1,3 +1,6 @@
+import { SliderExample } from "../system/ai/examples/SliderExamples";
+import { OTPInputExample } from "../system/ai/examples/OTPInputExamples";
+import { DatePickerExample } from "../system/ai/examples/DatePickerExamples";
 import { FileDropzoneExample } from "../system/ai/examples/FileDropzoneExamples";
 import { ColorPickerExample } from "../system/ai/examples/ColorPickerExamples";
 import { TagInputExample } from "../system/ai/examples/TagInputExamples";
@@ -183,6 +186,12 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "slider")
+    return <SliderExample language={language} mode="uncontrolled" />;
+  if (component === "otp-input")
+    return <OTPInputExample language={language} mode="uncontrolled" />;
+  if (component === "date-picker")
+    return <DatePickerExample language={language} mode="uncontrolled" />;
   if (component === "file-dropzone")
     return (
       <FileDropzoneExample

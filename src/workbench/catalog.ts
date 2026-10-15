@@ -1,6 +1,33 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "slider",
+    name: ["شريط التمرير", "Slider"],
+    description: [
+      "قيمة واحدة مع تحكم أصلي باللمس ولوحة المفاتيح.",
+      "One value with native pointer and keyboard control.",
+    ],
+    file: "Slider.tsx",
+  },
+  {
+    id: "otp-input",
+    name: ["إدخال الرمز", "OTPInput"],
+    description: [
+      "إدخال واحد لأرقام الرمز مع تحرير ولصق أصلي.",
+      "One editable input for code digits with native selection and paste.",
+    ],
+    file: "OTPInput.tsx",
+  },
+  {
+    id: "date-picker",
+    name: ["اختيار التاريخ", "DatePicker"],
+    description: [
+      "تاريخ ميلادي واحد مع تقويم متاح وقيمة دون توقيت.",
+      "One Gregorian date with an accessible calendar and date-only value.",
+    ],
+    file: "DatePicker.tsx",
+  },
+  {
     id: "file-dropzone",
     name: ["اختيار الملفات", "FileDropzone"],
     description: [
@@ -361,6 +388,9 @@ const documentationGroups = [
     ids: [
       "button",
       "input",
+      "slider",
+      "otp-input",
+      "date-picker",
       "tag-input",
       "color-picker",
       "input-copy",

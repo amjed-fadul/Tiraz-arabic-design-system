@@ -95,6 +95,148 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    slider: [
+      [
+        "value / defaultValue / onValueChange",
+        "number / number / (value: number) => void",
+        t(
+          "قيمة مضبوطة أو داخلية، دون callback أثناء العرض أو إعادة الضبط.",
+          "Controlled or internal value; no callback during rendering or reset.",
+        ),
+      ],
+      [
+        "min / max / step",
+        "0 / 100 / 1",
+        t(
+          "يُقيد ويُقرب إلى خطوات تبدأ من min، مع إزالة ضوضاء الكسور. القيمة الافتراضية منتصف النطاق. max الأقل يصبح min؛ الحدود غير المحدودة والخطوة غير الموجبة تعود للافتراضي.",
+          "Clamp and snap to min-based steps with decimal noise rounded. Default value is the midpoint. A max below min becomes min; nonfinite bounds and nonpositive steps use defaults.",
+        ),
+      ],
+      [
+        "formatValue",
+        "(value: number) => string",
+        t(
+          "عرض اختياري وaria-valuetext؛ لا يغير قيمة النموذج.",
+          "Optional readout and aria-valuetext; never changes the form value.",
+        ),
+      ],
+      [
+        "label / helper / error / field / invalid",
+        "Field associations",
+        t(
+          "تسمية مباشرة أو Field منفصل. ref والسمات والأحداث تستهدف input range الأصلي.",
+          "Use labeled mode or separate Field. Ref, native attributes and events target the native range input.",
+        ),
+      ],
+      [
+        "name / form / disabled / reset",
+        "native range submission",
+        t(
+          "name يرسل الرقم الحالي؛ المعطّل لا يرسل. reset يعيد القيمة الأولية للداخلي دون callback ويحترم إلغاء الحدث. المضبوط يحتاج onReset بالتطبيق.",
+          "name submits the current numeric string; disabled omits it. Uncanceled uncontrolled reset restores the initial value without callback. Controlled reset needs application onReset.",
+        ),
+      ],
+      [
+        "Keyboard / RTL",
+        "native browser behavior",
+        t(
+          "الأسهم وHome وEnd أصلية؛ RTL يعكس اتجاه اليمين واليسار. دون محرك سحب مخصص أو نطاق قيم.",
+          "Native arrows, Home and End; RTL mirrors horizontal arrow direction. No custom gesture engine or ranges.",
+        ),
+      ],
+    ],
+    "otp-input": [
+      [
+        "value / defaultValue / onValueChange",
+        "string / empty string / (value: string) => void",
+        t(
+          "يحافظ على الأصفار الأولى والقيم الجزئية. يقبل أرقام ASCII والعربية والفارسية ويُخرج ASCII فقط؛ يهمل غير الأرقام ويقص للعدد.",
+          "Preserves leading zeros and partial values. Accepts ASCII, Arabic-Indic and Eastern Arabic digits; public values are ASCII. Other characters are removed and extra digits truncated.",
+        ),
+      ],
+      [
+        "length",
+        "6; integer 1–12",
+        t(
+          "عدد ثابت قابل للضبط؛ يُقرب لأسفل ضمن 1–12؛ غير المحدود يعود إلى 6.",
+          "Fixed configurable length, floored/clamped to 1–12; nonfinite uses 6.",
+        ),
+      ],
+      [
+        "Editing / autofill",
+        "one text input",
+        t(
+          "تحرير وتحديد ولصق أصلي؛ inputMode=numeric وautocomplete=one-time-code. اتجاه LTR والخانات زخرفية. لا نقل تركيز أو إرسال تلقائي.",
+          "Native editing, selection and paste; inputMode=numeric, autocomplete=one-time-code. LTR code order; decorative slots. No focus movement or automatic submission.",
+        ),
+      ],
+      [
+        "label / helper / error / field / invalid / readOnly",
+        "Field / native input",
+        t(
+          "تسمية أو Field منفصل؛ ref يستهدف input. القراءة فقط تسمح بالتحديد والنسخ. عدد مكتمل لا يعني التحقق.",
+          "Label or separate Field; ref targets input. Read-only preserves selection/copy. Complete length never means verified.",
+        ),
+      ],
+      [
+        "name / form / required / reset",
+        "native text submission",
+        t(
+          "name يرسل النص الجزئي أيضًا. pattern يتطلب العدد الكامل عند تحقق النموذج؛ الفارغ مسموح إلا مع required. المعطّل لا يرسل. reset الداخلي يعيد الأولي دون callback؛ المضبوط يحتاج onReset؛ الإلغاء محترم.",
+          "name includes partial text. Native pattern requires full length during form validation; empty is allowed unless required. Disabled omits it. Uncontrolled reset restores initial value without callback; controlled reset needs onReset; cancellation is respected.",
+        ),
+      ],
+    ],
+    "date-picker": [
+      [
+        "value / defaultValue / onValueChange",
+        "YYYY-MM-DD / empty string / (value: string) => void",
+        t(
+          "تاريخ ميلادي فقط أو نص فارغ للمسح. التحويل بحقول السنة والشهر واليوم المحلية دون UTC أو انزياح توقيت. النص غير الصالح يظهر خطأ ويُرسل فارغًا؛ لا callback أثناء العرض.",
+          "Gregorian date only, or empty string to clear. Local year/month/day conversion avoids UTC shifts. Invalid props show feedback and submit empty; no render-time callback.",
+        ),
+      ],
+      [
+        "min / max / disabled",
+        "YYYY-MM-DD / boolean",
+        t(
+          "الحدود شاملة؛ غير الصالح يُهمل. يمنع التقويم واليوم اختيار خارجها. القيمة الخارجية الصحيحة خارج النطاق تبقى مع خطأ؛ التطبيق يملك التحقق.",
+          "Inclusive bounds; invalid bounds ignored. Calendar and Today prevent out-of-range selection. A valid external date outside bounds remains with feedback; the application owns validation.",
+        ),
+      ],
+      [
+        "locale / placeholder",
+        "ar | en / string",
+        t(
+          "اللغة افتراضيًا حسب الاتجاه، والعرض ميلادي محلي. RTL يغير التخطيط لا قيمة YYYY-MM-DD.",
+          "Language defaults from direction; localized Gregorian display. RTL changes layout, never YYYY-MM-DD meaning.",
+        ),
+      ],
+      [
+        "label / helper / error / field / invalid / ref",
+        "Field / HTMLButtonElement",
+        t(
+          "تسمية أو Field؛ ref والأحداث والسمات على زر الفتح. اسم التسمية والتاريخ المحدد متاحان لقارئ الشاشة.",
+          "Label or separate Field; ref, events and attributes target trigger. Label names it; selected date is part of its accessible name.",
+        ),
+      ],
+      [
+        "Calendar / popup",
+        "DayPicker + Radix Popover",
+        t(
+          "الأسهم وHome/End وPageUp/Down للتنقل؛ Enter للاختيار. Escape يغلق التقويم أولًا ويعيد التركيز. البوابة في أقرب Provider أو Sheet أو Modal مع ضبط حدود الشاشة وتمرير داخلي.",
+          "Arrows, Home/End and PageUp/Down navigate; Enter selects. Escape closes the calendar first and restores trigger focus. Portals into nearest Provider/Sheet/Modal with viewport collision handling and internal scrolling.",
+        ),
+      ],
+      [
+        "name / form / reset / validation",
+        "hidden date-only submission",
+        t(
+          "name يرسل القيمة الكاملة أو الفارغ؛ المعطّل لا يرسل. لا required أو تحقق أصلي لحقل مخفي؛ التطبيق يمنع الإرسال عند الخطأ. reset الداخلي يعيد الأولي دون callback ويحترم الإلغاء؛ المضبوط يحتاج onReset.",
+          "name submits the full date or empty string; disabled omits it. Hidden submission has no native required validation; the application blocks invalid forms. Uncontrolled reset restores initial value without callback and respects cancellation; controlled reset needs onReset.",
+        ),
+      ],
+    ],
     "file-dropzone": [
       [
         "value / defaultValue / onValueChange",

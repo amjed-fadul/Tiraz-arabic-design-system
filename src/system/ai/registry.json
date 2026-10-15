@@ -543,6 +543,30 @@
     {
       "name": "ColorSwatch",
       "source": "ColorPicker.tsx"
+    },
+    {
+      "name": "Slider",
+      "source": "Slider.tsx"
+    },
+    {
+      "name": "SliderProps",
+      "source": "Slider.tsx"
+    },
+    {
+      "name": "OTPInput",
+      "source": "OTPInput.tsx"
+    },
+    {
+      "name": "OTPInputProps",
+      "source": "OTPInput.tsx"
+    },
+    {
+      "name": "DatePicker",
+      "source": "DatePicker.tsx"
+    },
+    {
+      "name": "DatePickerProps",
+      "source": "DatePicker.tsx"
     }
   ],
   "configuration": {
@@ -610,6 +634,364 @@
     }
   },
   "components": [
+    {
+      "id": "slider",
+      "api": "Slider",
+      "source": "Slider.tsx",
+      "exports": ["Slider", "SliderProps"],
+      "examples": ["ai/examples/SliderExamples.tsx"],
+      "providers": [
+        "SystemProvider for tokens, direction and scoped overlay container."
+      ],
+      "purpose": "Native single range.",
+      "useWhen": "One bounded numeric choice.",
+      "alternative": "Use Input for free text; application owns validation and persistence.",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "number",
+          "required": false,
+          "default": "midpoint"
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: number) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "required": false,
+          "default": 0
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "default": 100
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "default": 1
+        },
+        {
+          "name": "formatValue",
+          "type": "(value: number) => string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native input attributes/ref/events, excluding fixed input presentation props; inspect exported type. label/helper/error and field are mutually exclusive. onChange observes normalized text for OTPInput; Slider onChange observes native event. Preventing default cancels onValueChange.",
+      "state": "Native single range. Clamp/snap to min-based steps; round decimal noise to 15 significant digits; largest reachable step never exceeds max. Default value is range midpoint. Nonfinite bounds use defaults; max below min becomes min; nonfinite/nonpositive step uses 1. Controlled value is authoritative; defaultValue initializes once. formatValue adds readout and aria-valuetext, submission stays numeric.",
+      "events": [
+        "onValueChange reports user changes only. Uncontrolled uncanceled form reset restores initial defaultValue without callback; controlled form reset requires application onReset. Reset follows current/external form and respects preventDefault."
+      ],
+      "accessibility": [
+        "Label/helper/error reuse Field and merge external associations. Standalone controls need an accessible name. Disabled omits native form submission.",
+        "Native focus, selection and keyboard behavior; no custom gesture engine."
+      ],
+      "limitations": [
+        "No range, marks editor or custom pointer/keyboard engine. Native horizontal arrows follow direction; test target browsers."
+      ]
+    },
+    {
+      "id": "otp-input",
+      "api": "OTPInput",
+      "source": "OTPInput.tsx",
+      "exports": ["OTPInput", "OTPInputProps"],
+      "examples": ["ai/examples/OTPInputExamples.tsx"],
+      "providers": [
+        "SystemProvider for tokens, direction and scoped overlay container."
+      ],
+      "purpose": "One real text input; decorative slots hidden from accessibility tree.",
+      "useWhen": "A fixed-length digit code, without verification behavior.",
+      "alternative": "Use Input for free text; application owns validation and persistence.",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "length",
+          "type": "number",
+          "required": false,
+          "default": 6
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLInputElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native input attributes/ref/events, excluding fixed input presentation props; inspect exported type. label/helper/error and field are mutually exclusive. onChange observes normalized text for OTPInput; Slider onChange observes native event. Preventing default cancels onValueChange.",
+      "state": "One real text input; decorative slots hidden from accessibility tree. Native selection/editing/paste preserved, with one-to-one Arabic/Eastern Arabic digit normalization to ASCII. Strip nondigits and truncate to length; leading zeros and partial values preserved. length floors/clamps 1–12, nonfinite uses 6. Code order LTR. autocomplete=one-time-code and inputMode=numeric. No complete callback or side effects.",
+      "events": [
+        "onValueChange reports user changes only. Uncontrolled uncanceled form reset restores initial defaultValue without callback; controlled form reset requires application onReset. Reset follows current/external form and respects preventDefault."
+      ],
+      "accessibility": [
+        "Label/helper/error reuse Field and merge external associations. Standalone controls need an accessible name. Disabled omits native form submission.",
+        "Native focus, selection and keyboard behavior; no custom gesture engine."
+      ],
+      "limitations": [
+        "Native pattern requires complete length during form validation; empty allowed unless required. Partial values are still represented/submitted if validation is bypassed. No verification, focus handoff, autosubmit, resend or SMS. Actual device autofill needs device testing."
+      ]
+    },
+    {
+      "id": "date-picker",
+      "api": "DatePicker",
+      "source": "DatePicker.tsx",
+      "exports": ["DatePicker", "DatePickerProps"],
+      "examples": ["ai/examples/DatePickerExamples.tsx"],
+      "providers": [
+        "SystemProvider for tokens, direction and scoped overlay container."
+      ],
+      "purpose": "Single Gregorian YYYY-MM-DD or empty string.",
+      "useWhen": "A single date-only Gregorian selection.",
+      "alternative": "Use Input for free text; application owns validation and persistence.",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "default": ""
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "locale",
+          "type": "ar | en",
+          "required": false,
+          "default": "direction-based"
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "default": "localized Choose a date"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "helper",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "field",
+          "type": "FieldControlProps",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "invalid",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "form",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLButtonElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native button attributes/ref/events except value/defaultValue/type/children/onChange; name/form belong to hidden submission input.",
+      "state": "Single Gregorian YYYY-MM-DD or empty string. Parse/format local year/month/day without UTC conversions, years 0001–9999. Inclusive min/max; invalid bounds ignored. Invalid value props display feedback and submit empty. Valid out-of-bounds caller values stay visible/submitted with feedback; calendar cannot select outside. locale independent of direction; Gregorian display with localized numbers. Today and Clear, previous/next month. DayPicker owns keyboard calendar navigation; Radix Popover owns viewport positioning, dismissal and focus restoration using nearest SystemProvider/Sheet/Modal container.",
+      "events": [
+        "onValueChange reports user changes only. Uncontrolled uncanceled form reset restores initial defaultValue without callback; controlled form reset requires application onReset. Reset follows current/external form and respects preventDefault."
+      ],
+      "accessibility": [
+        "Label/helper/error reuse Field and merge external associations. Standalone controls need an accessible name. Disabled omits native form submission.",
+        "DatePicker selected display is part of the trigger name; popup uses localized names and scopes inside dialogs.",
+        "Native htmlFor/implicit labels preserve native naming; selected date is aria-describedby. Field/explicit ARIA modes include visible date/placeholder in the accessible name."
+      ],
+      "limitations": [
+        "Application owns form validation: hidden submission has no native required/pattern constraints. No ranges, time, Hijri, manual date text entry or calendar framework. Install @daypicker/react 10.0.2 and @radix-ui/react-popover 1.3.1. Preserve shared Radix overrides in ai/README.md."
+      ]
+    },
     {
       "id": "file-dropzone",
       "api": "FileDropzone",
@@ -4127,7 +4509,8 @@
     "defaults": "Default fields contain literal JSON scalars or descriptive expressions. The string undefined means omitted/no default, not a string value to pass. configuration.defaults contains the actual literal defaultConfig.",
     "authority": "Public source/types win; inherited prop details depend on the installed React/Radix versions. Workbench editing limits are not public API limits.",
     "overlayDependencies": "Use one resolved @radix-ui/react-dismissable-layer 1.2.1 and @radix-ui/react-focus-scope 1.3.1; source-copy hosts preserve overrides from ai/README.md. @radix-ui/react-popper 1.4.0 supplies Tooltip positioning.",
-    "chartDependencies": "Verified Recharts 3.10.1, React/React DOM 19.3.0 and react-is 19.3.0. Use a matching react-is version in source-copy hosts."
+    "chartDependencies": "Verified Recharts 3.10.1, React/React DOM 19.3.0 and react-is 19.3.0. Use a matching react-is version in source-copy hosts.",
+    "datePickerDependencies": "Verified @daypicker/react 10.0.2 (React >=16.8, Gregorian Arabic/English locale labels) and @radix-ui/react-popover 1.3.1 (React 19 compatible); one shared focus-scope 1.3.1 and dismissable-layer 1.2.1. No upstream CSS required; Tiraz styles scoped .rdp-* in components.css."
   },
   "assets": [
     {

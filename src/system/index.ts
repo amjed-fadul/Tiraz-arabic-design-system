@@ -71,3 +71,9 @@ export type {
   ColorPickerLabels,
   ColorSwatch,
 } from "./ColorPicker";
+export { Slider } from "./Slider";
+export type { SliderProps } from "./Slider";
+export { OTPInput } from "./OTPInput";
+export type { OTPInputProps } from "./OTPInput";
+export { DatePicker } from "./DatePicker";
+export type { DatePickerProps } from "./DatePicker";

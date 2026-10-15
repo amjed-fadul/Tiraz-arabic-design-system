@@ -1,3 +1,6 @@
+import type { SliderExampleProps } from "../system/ai/examples/SliderExamples";
+import type { OTPInputExampleProps } from "../system/ai/examples/OTPInputExamples";
+import type { DatePickerExampleProps } from "../system/ai/examples/DatePickerExamples";
 import { defaultConfig } from "../system/config";
 import type { ButtonState, ButtonVariant, SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
@@ -263,6 +266,9 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  slider: Required<Omit<SliderExampleProps, "language">>;
+  "otp-input": Required<Omit<OTPInputExampleProps, "language">>;
+  "date-picker": Required<Omit<DatePickerExampleProps, "language">>;
   "file-dropzone": FileDropzoneModel;
   "color-picker": ColorPickerModel;
   "tag-input": TagInputModel;
@@ -317,6 +323,44 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    slider: {
+      label: t("قيمة محلية", "Local amount"),
+      helper: t(
+        "اسحب أو استخدم الأسهم وHome وEnd.",
+        "Drag or use arrows, Home and End.",
+      ),
+      error: "",
+      min: 0,
+      max: 100,
+      step: 1,
+      disabled: false,
+      showValue: true,
+      mode: "controlled",
+    },
+    "otp-input": {
+      label: t("رمز تجريبي", "Sample code"),
+      helper: t(
+        "أرقام عربية أو إنجليزية؛ دون تحقق.",
+        "Arabic or ASCII digits; no verification.",
+      ),
+      error: "",
+      length: 6,
+      disabled: false,
+      readOnly: false,
+      mode: "controlled",
+    },
+    "date-picker": {
+      label: t("موعد محلي", "Local date"),
+      helper: t(
+        "تاريخ ميلادي واحد؛ Escape للإغلاق.",
+        "One Gregorian date; Escape to close.",
+      ),
+      error: "",
+      min: "",
+      max: "",
+      disabled: false,
+      mode: "controlled",
+    },
     "file-dropzone": {
       label: t("ملفات المراجعة", "Review files"),
       helper: t(
