@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  ArrowDown,
   ArrowUpLeft,
   ArrowUpRight,
   GitFork,
@@ -23,6 +22,7 @@ import type { Accent, SystemConfig } from "../system";
 import { LiveExample } from "./LiveExample";
 import { Weave } from "./Weave";
 import { AccentPicker } from "./AccentPicker";
+import { WhyTiraz } from "./WhyTiraz";
 import warpSymbol from "./brand/assets/01-warp.svg?url";
 const textile = new URL("./assets/woven-textile.png", import.meta.url).href;
 
@@ -44,38 +44,6 @@ export function Landing() {
       ? "طِراز · من أول خيط"
       : "Tiraz · Arabic interfaces, from the first thread";
   }, [ar, theme]);
-  const why = [
-    {
-      number: "01",
-      title: ar ? "العربية هي نقطة البداية" : "Arabic is the starting point",
-      text: ar
-        ? "اتجاه الواجهة، ترتيب التنقّل ومحاذاة المحتوى تبدأ من اليمين. تبقى أسماء الملفات والمعرّفات واضحة داخل النص العربي."
-        : "Layout, navigation and content alignment begin on the right. File names and identifiers stay clear within Arabic text.",
-      example: (
-        <span dir="rtl" lang="ar">
-          ملف المشروع <bdi dir="ltr">project.tsx</bdi>
-        </span>
-      ),
-    },
-    {
-      number: "02",
-      title: ar ? "نظام واحد، بطابعك" : "One system, your character",
-      text: ar
-        ? "غيّر اللون والكثافة والزوايا من إعدادات المزوّد. جرّب لونًا آخر من المقدمة وشاهد الرسم والأزرار تتغيّر معًا."
-        : "Set accent, density and corners through the provider. Choose an accent in the hero and watch the chart and controls change together.",
-      example: <bdi dir="ltr">SystemProvider → accent / density / radius</bdi>,
-    },
-    {
-      number: "03",
-      title: ar
-        ? "تعليمات تسافر مع المصدر"
-        : "Guidance travels with the source",
-      text: ar
-        ? "حزمة تعليمات ومرجع مكوّنات وأمثلة داخل المكتبة، ليقرأ مساعدك البرمجي الواجهات الفعلية قبل بناء الشاشة."
-        : "Instructions, a component registry and examples live inside the library, so your coding assistant can read the real APIs before building.",
-      example: <bdi dir="ltr">src/system/ai/README.md</bdi>,
-    },
-  ];
   return (
     <SystemProvider
       config={{
@@ -193,95 +161,16 @@ export function Landing() {
                 </div>
                 <AccentPicker ar={ar} value={accent} onChange={setAccent} />
               </div>
-              <p className="lp-hero-caption">
-                {ar ? (
-                  <>
-                    من النسيج إلى الواجهة.
-                    <br />
-                    خيوط أصيلة، لواجهات معاصرة.
-                  </>
-                ) : (
-                  <>
-                    From textile to interface.
-                    <br />
-                    Original threads, contemporary applications.
-                  </>
-                )}
-              </p>
             </div>
           </section>
-          <div className="lp-principle-strip">
-            <div className="lp-container">
-              <p>
-                {ar
-                  ? "مصمّم للغة، ولما تبنيه بها."
-                  : "Made for the language. And what you build with it."}
-              </p>
-              <a href="#in-action">
-                {ar
-                  ? "شاهد المكوّنات تعمل معًا"
-                  : "See the components work together"}
-                <ArrowDown size={14} aria-hidden="true" />
-              </a>
-            </div>
-          </div>
           <section
-            className="lp-section lp-container"
+            className="lp-live-example lp-container"
             id="in-action"
             aria-label={ar ? "مثال منتج تفاعلي" : "Live product example"}
           >
-            <div className="lp-section-heading">
-              <div>
-                <p className="lp-eyebrow">
-                  {ar ? "٠١ / طِراز في الاستخدام" : "01 / TIRAZ IN ACTION"}
-                </p>
-                <h2>
-                  {ar
-                    ? "اختر لونك، وشاهد طِراز يتغيّر"
-                    : "Choose a color. See Tiraz change."}
-                </h2>
-              </div>
-              <p>
-                {ar
-                  ? "المكوّنات نفسها، بلونك المختار. بيانات تجريبية وتفاعل حقيقي، بلا خدمة خلفية."
-                  : "The same real components, in your chosen accent. Sample data and working interactions, with no backend."}
-              </p>
-            </div>
             <LiveExample ar={ar} />
           </section>
-          <section className="lp-why" id="why" aria-labelledby="why-title">
-            <div className="lp-container">
-              <div className="lp-section-heading">
-                <div>
-                  <p className="lp-eyebrow">
-                    {ar ? "٠٢ / لماذا طِراز" : "02 / WHY TIRAZ"}
-                  </p>
-                  <h2 id="why-title">
-                    {ar
-                      ? "أساس واضح. تفاصيل مدروسة."
-                      : "A clear foundation. Considered details."}
-                  </h2>
-                </div>
-                <p>
-                  {ar
-                    ? "قرارات مشتركة تختصر العمل المتكرر، وتترك لك قرارات المنتج."
-                    : "Shared decisions reduce repeated work, leaving the product decisions to you."}
-                </p>
-              </div>
-              <div className="lp-why-grid">
-                {why.map((item) => (
-                  <article key={item.number}>
-                    <span className="lp-feature-number" aria-hidden="true">
-                      {item.number}
-                    </span>
-                    <h3>{item.title}</h3>
-                    <p>{item.text}</p>
-                    <div className="lp-feature-example">{item.example}</div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          </section>
+          <WhyTiraz ar={ar} />
           <section
             className="lp-section lp-container"
             id="explore"

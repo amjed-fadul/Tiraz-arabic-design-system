@@ -50,18 +50,6 @@ export function LiveExample({ ar }: { ar: boolean }) {
         <Badge>{ar ? "بيانات تجريبية" : "Sample data"}</Badge>
       </div>
       <div className="lp-demo-body">
-        <div className="lp-demo-heading">
-          <div>
-            <h3>
-              {ar ? "كل التفاصيل، في مكانها" : "Every detail in its place"}
-            </h3>
-            <p>
-              {ar
-                ? "ألوان المقدمة تضبط المثال. جرّب تغيير الفترة مع الاحتفاظ باختيارك."
-                : "Hero swatches customize this example. Change the period without losing your selection."}
-            </p>
-          </div>
-        </div>
         <div className="lp-demo-grid">
           <div className="lp-demo-analytics">
             <span className="lp-eyebrow">
@@ -92,11 +80,6 @@ export function LiveExample({ ar }: { ar: boolean }) {
           </div>
           <div className="lp-demo-activity">
             <h4>{ar ? "آخر الطلبات" : "Latest orders"}</h4>
-            <p>
-              {ar
-                ? "سجلات توضيحية مستقلة عن الرسم."
-                : "Illustrative records, separate from the chart."}
-            </p>
             <Table caption={ar ? "طلبات تجريبية" : "Sample orders"}>
               <TableHeader>
                 <TableRow>
@@ -138,12 +121,6 @@ export function LiveExample({ ar }: { ar: boolean }) {
             </a>
           </div>
         </div>
-      </div>
-      <div className="lp-demo-caption">
-        <span className="lp-dot" />
-        {ar
-          ? "مكوّنات طِراز الفعلية · تفاعل محلي، بلا خدمة خلفية"
-          : "Actual Tiraz components · local interaction, no backend"}
       </div>
     </div>
   );

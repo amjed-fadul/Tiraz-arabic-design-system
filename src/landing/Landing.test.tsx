@@ -51,6 +51,25 @@ describe("landing behavior", () => {
 });
 
 describe("hero accent customization", () => {
+  it("keeps the example controls while removing the redundant introduction", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<Landing />);
+    expect(container.querySelector(".lp-hero-caption")).not.toBeInTheDocument();
+    expect(
+      container.querySelector(".lp-principle-strip"),
+    ).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "English" }));
+    expect(
+      screen.queryByText(/Tint the textile and customize/),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/TIRAZ IN ACTION/)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/Hero swatches customize this example/),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "Blue" })).toBeEnabled();
+    expect(screen.getByRole("tab", { name: "Last 3 days" })).toBeEnabled();
+  });
+
   it("uses one shared accent and preserves the working example state", async () => {
     const user = userEvent.setup();
     const { container } = render(<Landing />);

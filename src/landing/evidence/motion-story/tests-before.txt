@@ -1,0 +1,64 @@
+> tiraz@0.1.0 test
+> vitest run src/landing/Landing.test.tsx src/landing/WhyTiraz.test.tsx --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+ ❯ src/landing/Landing.test.tsx (5 tests | 1 failed) 847ms
+   ❯ hero accent customization (2)
+     × keeps the example controls while removing the redundant introduction 34ms
+ ❯ src/landing/WhyTiraz.test.tsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landing/WhyTiraz.test.tsx [ src/landing/WhyTiraz.test.tsx ]
+Error: Failed to resolve import "./WhyTiraz" from "src/landing/WhyTiraz.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz/src/landing/WhyTiraz.test.tsx:3:25
+  1  |  import { act, render, screen } from "@testing-library/react";
+  2  |  import { afterEach, describe, expect, it, vi } from "vitest";
+  3  |  import { WhyTiraz } from "./WhyTiraz";
+     |                            ^
+  4  |  var _jsxFileName = "/Users/amjedfadul/.codex/worktrees/landing-page/Tiraz/src/landing/WhyTiraz.test.tsx";
+  5  |  import { jsxDEV as _jsxDEV } from "react/jsx-dev-runtime";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landing/Landing.test.tsx > hero accent customization > keeps the example controls while removing the redundant introduction
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <p
+  class="lp-hero-caption"
+>
+  من النسيج إلى الواجهة.
+  <br />
+  خيوط أصيلة، لواجهات معاصرة.
+</p> instead
+ ❯ src/landing/Landing.test.tsx:57:61
+     55|     const user = userEvent.setup();
+     56|     const { container } = render(<Landing />);
+     57|     expect(container.querySelector(".lp-hero-caption")).not.toBeInTheD…
+       |                                                             ^
+     58|     expect(container.querySelector(".lp-principle-strip")).not.toBeInT…
+     59|     await user.click(screen.getByRole("button", { name: "English" }));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  1 failed | 4 passed (5)
+   Start at  19:25:42
+   Duration  4.88s (import 45%, environment 25%, tests 18%, transform 7%, setup 4%)
+
+    Isolate  2 workers spawned · ~678ms startup each (spawn + environment, per file)
+             at least ~678ms faster with isolate: false — reuses workers across files instead of one per file

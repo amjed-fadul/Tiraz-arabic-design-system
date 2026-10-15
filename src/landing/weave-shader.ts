@@ -92,18 +92,22 @@ export function mountWeave(
         vec2 crop=viewAspect>imageAspect?vec2(1.,imageAspect/viewAspect):vec2(viewAspect/imageAspect,1.);
         // Match object-fit:cover and the responsive static image's crop exactly.
         vec2 sampleUV=(q-.5)*crop+.5;
-        float quiet=1.-smoothstep(.34,.76,q.x);
-        float thread=sin(sampleUV.y*940.+sin(sampleUV.x*780.)*.4+time*.28);
-        sampleUV+=vec2(thread*.0008,sin(sampleUV.x*800.+time*.24)*.0006)*quiet;
+        float quiet=1.-smoothstep(.30,.72,q.x);
+        // Broad, millimetric cloth drift plus a finer weave movement; fixed vertices.
+        float fold=sin(q.y*10.-time*.78+sin(q.x*6.+time*.32)*.35);
+        float thread=sin(sampleUV.y*640.+time*.82);
+        sampleUV+=vec2(fold*.0036+thread*.00035,sin(q.x*9.+time*.65)*.0028)*quiet;
         vec3 color=texture2D(cloth,clamp(sampleUV,0.,1.)).rgb;
         float ink=clamp((color.g-color.r)*5.5+(1.-dot(color,vec3(.299,.587,.114)))*.32,0.,1.);
         color=mix(color,color*(.58+tint*.75),ink*.28);
-        float shimmer=pow(max(0.,cos((q.x*.72+q.y*.28)*4.6-time*.11)),14.);
-        color+=vec3(.075,.069,.052)*shimmer*quiet;
+        // A soft directional light crosses the weave; wrap happens outside the image.
+        float lightPosition=mod(time*.045+.35,1.7)-.3;
+        float shimmer=exp(-pow((q.x*.85+q.y*.22-lightPosition)*7.,2.));
+        color+=vec3(.15,.138,.108)*shimmer*quiet;
         // Stable cells along one lower edge. Accent changes never alter their geometry.
         vec2 cell=floor(vec2(q.x*size.x,q.y*size.y)/16.);
         float edge=smoothstep(.70,.97,q.y)*(1.-smoothstep(.25,.58,q.x));
-        float removed=smoothstep(.66,.92,hash(cell))*edge*.72;
+        float removed=smoothstep(.72,.96,hash(cell))*edge*.28;
         vec3 paper=mix(vec3(.965,.953,.923),vec3(.065,.095,.078),dark);
         color=mix(color,paper,removed);
         gl_FragColor=vec4(color,1.);

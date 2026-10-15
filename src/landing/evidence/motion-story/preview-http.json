@@ -1,0 +1,43 @@
+[
+  {
+    "url": "http://127.0.0.1:5238/landing.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8"
+  },
+  {
+    "url": "http://127.0.0.1:5238/src/landing/brand-preview.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8"
+  },
+  {
+    "url": "http://127.0.0.1:5238/index.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8"
+  },
+  {
+    "url": "http://127.0.0.1:5237/src/landing/evidence/motion-story/motion-and-story.mp4",
+    "status": 200,
+    "contentType": "video/mp4"
+  },
+  {
+    "url": "http://127.0.0.1:5227/",
+    "status": null,
+    "error": "<urlopen error [Errno 61] Connection refused>",
+    "note": "Unrelated server; not stopped or restarted by this task."
+  },
+  {
+    "url": "http://127.0.0.1:5238/assets/arabic-first-Afg4EeCS.webp",
+    "status": 200,
+    "contentType": "image/webp"
+  },
+  {
+    "url": "http://127.0.0.1:5238/assets/shared-system-BCRzIIsP.webp",
+    "status": 200,
+    "contentType": "image/webp"
+  },
+  {
+    "url": "http://127.0.0.1:5238/assets/ai-guidance-DFjPdhQM.webp",
+    "status": 200,
+    "contentType": "image/webp"
+  }
+]

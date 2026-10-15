@@ -1,0 +1,28 @@
+{
+  "webglUnavailable": {
+    "canvas": 0,
+    "effect": "fallback",
+    "headline": "Arabic interfaces,from the first thread.",
+    "image": 1942,
+    "storyStatic": "false"
+  },
+  "recoveredGL": {
+    "canvas": 1,
+    "effect": "running",
+    "storyStatic": "true"
+  },
+  "lossAction": {
+    "result": {
+      "type": "object",
+      "value": {
+        "injected": true
+      }
+    }
+  },
+  "contextLost": {
+    "canvas": 0,
+    "effect": "fallback",
+    "image": 1942
+  },
+  "note": "Each media transition awaited actual canvas attach/detach; rapid emulation toggles can coalesce."
+}

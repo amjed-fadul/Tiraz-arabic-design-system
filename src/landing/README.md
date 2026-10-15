@@ -2,9 +2,10 @@
 
 ## Current approved direction
 
-Refinement baseline: `450e776e2b04e3633aec5a1752dfcce1d46f0138` on
-`codex/landing-page`. The user's woven-textile mockup supersedes the original
-split hero. The original system baseline remains
+Current motion/story refinement starts at
+`bbd738c1a1eea9fccce28e59e46e6ae3552769fd` on `codex/landing-page`.
+The user's woven-textile mockup superseded the original split hero at
+`450e776e2b04e3633aec5a1752dfcce1d46f0138`. The system baseline remains
 `e0fc39d7be1aed9c0723be415f3810e326003c5b`.
 
 A clean wide textile photograph fills the whole hero; all text, links and
@@ -28,6 +29,27 @@ and semantic success/error colors remain stable; period selection, input values
 and other demo state survive color/theme/language changes. The live example's
 separate color picker/provider have been removed.
 
+The hero caption, swatch helper, principle strip and example introduction are
+removed. The real example overlaps the hero by 20px in normal flow; its top is
+visible in the initial desktop viewport, including short-height layouts.
+
+## Three-part story
+
+`WhyTiraz.tsx` presents Arabic-first typography/RTL/mixed content, shared tokens
+and live customization, and portable AI instructions/real APIs. Three distinct
+original textile images share the hero's materials and lighting. Each optimized
+WebP is 1200x900 and approximately 235–238 KiB. See [image provenance and exact
+prompts](assets/story/README.md).
+
+Desktop uses ordinary page scrolling, three compact text chapters and an adjacent
+sticky image: right in English and left in Arabic. IntersectionObserver activates
+the chapter with the strongest intersection in a central viewport band; CSS
+performs short text fades and image crossfades. Resize recreates the observation
+band. There is no scroll hijacking, snapping, nested scroller or animation package.
+At widths up to 900px, under reduced motion or without IntersectionObserver,
+every chapter has its own inline image and the sticky visual is hidden. All copy
+remains available even when inactive. Observers and listeners are cleaned up.
+
 ## Image shader and reference research
 
 Rechecked https://shaders.com/ and https://github.com/shader-effects-inc/shaders
@@ -43,9 +65,11 @@ package source.
 
 Decision: extend the existing small original WebGL implementation; no shader
 framework, package, preset, dependency or license attribution requirement added.
-The photo itself is uploaded as a texture. One fragment pass combines tiny
-thread-scale UV displacement, a slow directional light and restrained stable
-cell dissolution at the lower-left edge. Vertex geometry never animates; there
+The photo itself is uploaded as a texture. Baseline diagnosis found active WebGL,
+an advancing clock and 780 draw calls over 6.5 seconds, but movement was too subtle.
+The refined fragment pass adds gentle low-frequency cloth drift, finer weave
+movement and a perceptible traveling light. Stable edge cells have lower opacity.
+Vertex geometry never animates; there
 are no pointer listeners or replayed entrances. Accent/theme changes update
 uniforms on the same canvas and preserve its clock, crop and geometry.
 
@@ -87,7 +111,11 @@ Use a free port when these are occupied; preserve unrelated servers, including 5
 
 ## Verification
 
-Current refinement evidence lives in [evidence/refinement](evidence/refinement/).
+Current motion/story evidence lives in [evidence/motion-story](evidence/motion-story/),
+including before/after screenshots, frame/time diagnostics, regression tests,
+independent review and a 16.5-second actual compositor recording. The recording
+preserves real capture timestamps, with static frame holds and no interpolated
+motion. Earlier refinement evidence lives in [evidence/refinement](evidence/refinement/).
 The first implementation's evidence is retained in the parent evidence directory
 as history. Tests for the actual accent state were written first and observed
 failing against the old picker; then the shared state was implemented. Focused

@@ -21,7 +21,6 @@ export function AccentPicker({
           label={label}
           value={value}
           onValueChange={(v) => onChange(v as Accent)}
-          aria-describedby="accent-description"
           options={[
             { value: "sage", label: ar ? "أخضر" : "Green" },
             { value: "blue", label: ar ? "أزرق" : "Blue" },
@@ -30,11 +29,6 @@ export function AccentPicker({
           ]}
         />
       </div>
-      <p id="accent-description">
-        {ar
-          ? "غيّر لون النسيج والمثال التفاعلي أدناه."
-          : "Tint the textile and customize the live example below."}
-      </p>
     </div>
   );
 }

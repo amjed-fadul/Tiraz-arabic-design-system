@@ -1,0 +1,90 @@
+[
+  {
+    "accent": "Green",
+    "shader": {
+      "result": {
+        "type": "object",
+        "value": {
+          "effect": "running",
+          "sameCanvas": true,
+          "tint": [0.2078431397676468, 0.3686274588108063, 0.2980392277240753]
+        }
+      }
+    },
+    "ui": {
+      "action": "rgb(53, 94, 76)",
+      "chartStroke": "rgb(53, 94, 76)",
+      "input": "Nawa",
+      "selected": "sage",
+      "success": "rgb(49, 103, 70)",
+      "surface": "rgb(247, 248, 247)",
+      "total": "672"
+    }
+  },
+  {
+    "accent": "Blue",
+    "shader": {
+      "result": {
+        "type": "object",
+        "value": {
+          "effect": "running",
+          "sameCanvas": true,
+          "tint": [0.2117647081613541, 0.35686275362968445, 0.529411792755127]
+        }
+      }
+    },
+    "ui": {
+      "action": "rgb(54, 91, 135)",
+      "chartStroke": "rgb(54, 91, 135)",
+      "input": "Nawa",
+      "selected": "blue",
+      "success": "rgb(49, 103, 70)",
+      "surface": "rgb(247, 248, 247)",
+      "total": "672"
+    }
+  },
+  {
+    "accent": "Purple",
+    "shader": {
+      "result": {
+        "type": "object",
+        "value": {
+          "effect": "running",
+          "sameCanvas": true,
+          "tint": [0.41960784792900085, 0.2823529541492462, 0.47843137383461]
+        }
+      }
+    },
+    "ui": {
+      "action": "rgb(107, 72, 122)",
+      "chartStroke": "rgb(107, 72, 122)",
+      "input": "Nawa",
+      "selected": "plum",
+      "success": "rgb(49, 103, 70)",
+      "surface": "rgb(247, 248, 247)",
+      "total": "672"
+    }
+  },
+  {
+    "accent": "Brown",
+    "shader": {
+      "result": {
+        "type": "object",
+        "value": {
+          "effect": "running",
+          "sameCanvas": true,
+          "tint": [0.5333333611488342, 0.3294117748737335, 0.24705882370471952]
+        }
+      }
+    },
+    "ui": {
+      "action": "rgb(136, 84, 63)",
+      "chartStroke": "rgb(136, 84, 63)",
+      "input": "Nawa",
+      "selected": "clay",
+      "success": "rgb(49, 103, 70)",
+      "surface": "rgb(247, 248, 247)",
+      "total": "672"
+    }
+  }
+]

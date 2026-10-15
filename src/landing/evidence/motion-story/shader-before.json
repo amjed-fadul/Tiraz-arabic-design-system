@@ -1,0 +1,89 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "done": true,
+      "frames": 780,
+      "samples": [
+        {
+          "changedPercent": null,
+          "meanRGB": 83.4846875,
+          "shaderTime": 266.1228942871094,
+          "wall": 266800
+        },
+        {
+          "changedPercent": 53.46875,
+          "meanRGB": 83.4572265625,
+          "shaderTime": 266.6294860839844,
+          "wall": 267301.6999999881
+        },
+        {
+          "changedPercent": 53.15625000000001,
+          "meanRGB": 83.4207421875,
+          "shaderTime": 267.1310119628906,
+          "wall": 267801.89999997616
+        },
+        {
+          "changedPercent": 53.125,
+          "meanRGB": 83.3795703125,
+          "shaderTime": 267.630615234375,
+          "wall": 268302
+        },
+        {
+          "changedPercent": 53.63671875,
+          "meanRGB": 83.33774739583333,
+          "shaderTime": 268.139404296875,
+          "wall": 268810.10000002384
+        },
+        {
+          "changedPercent": 53.82812500000001,
+          "meanRGB": 83.28884114583333,
+          "shaderTime": 268.647705078125,
+          "wall": 269319.1999999881
+        },
+        {
+          "changedPercent": 53.40234375,
+          "meanRGB": 83.24955729166666,
+          "shaderTime": 269.1560974121094,
+          "wall": 269826.10000002384
+        },
+        {
+          "changedPercent": 52.8671875,
+          "meanRGB": 83.21178385416667,
+          "shaderTime": 269.6560974121094,
+          "wall": 270326.89999997616
+        },
+        {
+          "changedPercent": 53.36328125000001,
+          "meanRGB": 83.1778125,
+          "shaderTime": 270.1648864746094,
+          "wall": 270837.6999999881
+        },
+        {
+          "changedPercent": 53.01171875,
+          "meanRGB": 83.1596875,
+          "shaderTime": 270.6630859375,
+          "wall": 271335.6999999881
+        },
+        {
+          "changedPercent": 53.7578125,
+          "meanRGB": 83.15390625,
+          "shaderTime": 271.173095703125,
+          "wall": 271843.60000002384
+        },
+        {
+          "changedPercent": 53.1640625,
+          "meanRGB": 83.16049479166666,
+          "shaderTime": 271.67291259765625,
+          "wall": 272346.60000002384
+        },
+        {
+          "changedPercent": 53.82421875,
+          "meanRGB": 83.17733072916667,
+          "shaderTime": 272.1813049316406,
+          "wall": 272851.89999997616
+        }
+      ]
+    }
+  }
+}

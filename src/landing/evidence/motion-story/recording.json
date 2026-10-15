@@ -1,0 +1,497 @@
+{
+  "method": "Actual CUA Chrome CDP screencast JPEG quality80, sampled at >=120ms; native document scroll",
+  "url": "http://127.0.0.1:5238/landing.html#top",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "rawFrameDirectory": "/tmp/tiraz-motion-story-recording",
+  "parts": [
+    {
+      "label": "hero",
+      "wallStart": 1792078913526,
+      "wallEnd": 1792078921546,
+      "frames": 62
+    },
+    {
+      "label": "arabic-first",
+      "wallStart": 1792078921859,
+      "wallEnd": 1792078924412,
+      "frames": 4
+    },
+    {
+      "label": "shared-system",
+      "wallStart": 1792078924781,
+      "wallEnd": 1792078927228,
+      "frames": 4
+    },
+    {
+      "label": "ai-guidance",
+      "wallStart": 1792078927544,
+      "wallEnd": 1792078930015,
+      "frames": 5
+    }
+  ],
+  "frames": [
+    {
+      "file": "take2-00000.jpg",
+      "timestamp": 1792078913.536069,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00001.jpg",
+      "timestamp": 1792078913.658723,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00002.jpg",
+      "timestamp": 1792078913.796996,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00003.jpg",
+      "timestamp": 1792078913.921913,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00004.jpg",
+      "timestamp": 1792078914.065809,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00005.jpg",
+      "timestamp": 1792078914.215451,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00006.jpg",
+      "timestamp": 1792078914.342759,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00007.jpg",
+      "timestamp": 1792078914.471643,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00008.jpg",
+      "timestamp": 1792078914.600721,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00009.jpg",
+      "timestamp": 1792078914.725199,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00010.jpg",
+      "timestamp": 1792078914.850023,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00011.jpg",
+      "timestamp": 1792078914.975661,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00012.jpg",
+      "timestamp": 1792078915.099893,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00013.jpg",
+      "timestamp": 1792078915.222606,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00014.jpg",
+      "timestamp": 1792078915.364219,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00015.jpg",
+      "timestamp": 1792078915.501617,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00016.jpg",
+      "timestamp": 1792078915.639104,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00017.jpg",
+      "timestamp": 1792078915.789166,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00018.jpg",
+      "timestamp": 1792078915.917816,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00019.jpg",
+      "timestamp": 1792078916.058864,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00020.jpg",
+      "timestamp": 1792078916.197101,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00021.jpg",
+      "timestamp": 1792078916.322085,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00022.jpg",
+      "timestamp": 1792078916.457169,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00023.jpg",
+      "timestamp": 1792078916.592455,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00024.jpg",
+      "timestamp": 1792078916.713954,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00025.jpg",
+      "timestamp": 1792078916.855079,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00026.jpg",
+      "timestamp": 1792078916.98196,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00027.jpg",
+      "timestamp": 1792078917.10836,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00028.jpg",
+      "timestamp": 1792078917.23343,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00029.jpg",
+      "timestamp": 1792078917.375256,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00030.jpg",
+      "timestamp": 1792078917.505211,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00031.jpg",
+      "timestamp": 1792078917.632155,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00032.jpg",
+      "timestamp": 1792078917.755835,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00033.jpg",
+      "timestamp": 1792078917.881718,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00034.jpg",
+      "timestamp": 1792078918.022086,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00035.jpg",
+      "timestamp": 1792078918.159129,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00036.jpg",
+      "timestamp": 1792078918.280374,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00037.jpg",
+      "timestamp": 1792078918.415378,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00038.jpg",
+      "timestamp": 1792078918.546876,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00039.jpg",
+      "timestamp": 1792078918.673143,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00040.jpg",
+      "timestamp": 1792078918.800246,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00041.jpg",
+      "timestamp": 1792078918.922757,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00042.jpg",
+      "timestamp": 1792078919.067182,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00043.jpg",
+      "timestamp": 1792078919.188887,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00044.jpg",
+      "timestamp": 1792078919.31621,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00045.jpg",
+      "timestamp": 1792078919.450784,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00046.jpg",
+      "timestamp": 1792078919.573715,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00047.jpg",
+      "timestamp": 1792078919.698464,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00048.jpg",
+      "timestamp": 1792078919.823708,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00049.jpg",
+      "timestamp": 1792078919.950781,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00050.jpg",
+      "timestamp": 1792078920.072723,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00051.jpg",
+      "timestamp": 1792078920.197124,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00052.jpg",
+      "timestamp": 1792078920.322346,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00053.jpg",
+      "timestamp": 1792078920.466241,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00054.jpg",
+      "timestamp": 1792078920.598505,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00055.jpg",
+      "timestamp": 1792078920.726307,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00056.jpg",
+      "timestamp": 1792078920.84686,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00057.jpg",
+      "timestamp": 1792078920.967655,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00058.jpg",
+      "timestamp": 1792078921.11358,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00059.jpg",
+      "timestamp": 1792078921.240241,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00060.jpg",
+      "timestamp": 1792078921.375848,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00061.jpg",
+      "timestamp": 1792078921.498474,
+      "label": "hero",
+      "scrollY": 0
+    },
+    {
+      "file": "take2-00062.jpg",
+      "timestamp": 1792078921.881281,
+      "label": "arabic-first",
+      "scrollY": 1100
+    },
+    {
+      "file": "take2-00063.jpg",
+      "timestamp": 1792078922.022964,
+      "label": "arabic-first",
+      "scrollY": 1100
+    },
+    {
+      "file": "take2-00064.jpg",
+      "timestamp": 1792078922.162218,
+      "label": "arabic-first",
+      "scrollY": 1100
+    },
+    {
+      "file": "take2-00065.jpg",
+      "timestamp": 1792078922.298869,
+      "label": "arabic-first",
+      "scrollY": 1100
+    },
+    {
+      "file": "take2-00066.jpg",
+      "timestamp": 1792078924.450412,
+      "label": "shared-system",
+      "scrollY": 1400
+    },
+    {
+      "file": "take2-00067.jpg",
+      "timestamp": 1792078924.811276,
+      "label": "shared-system",
+      "scrollY": 1400
+    },
+    {
+      "file": "take2-00068.jpg",
+      "timestamp": 1792078924.931664,
+      "label": "shared-system",
+      "scrollY": 1400
+    },
+    {
+      "file": "take2-00069.jpg",
+      "timestamp": 1792078925.055316,
+      "label": "shared-system",
+      "scrollY": 1400
+    },
+    {
+      "file": "take2-00070.jpg",
+      "timestamp": 1792078927.27514,
+      "label": "ai-guidance",
+      "scrollY": 1700
+    },
+    {
+      "file": "take2-00071.jpg",
+      "timestamp": 1792078927.562413,
+      "label": "ai-guidance",
+      "scrollY": 1700
+    },
+    {
+      "file": "take2-00072.jpg",
+      "timestamp": 1792078927.703967,
+      "label": "ai-guidance",
+      "scrollY": 1700
+    },
+    {
+      "file": "take2-00073.jpg",
+      "timestamp": 1792078927.829114,
+      "label": "ai-guidance",
+      "scrollY": 1700
+    },
+    {
+      "file": "take2-00074.jpg",
+      "timestamp": 1792078927.949897,
+      "label": "ai-guidance",
+      "scrollY": 1700
+    }
+  ],
+  "endWallTime": 1792078930037,
+  "notes": "Continuous capture. Static holds emit sparse frames; use actual timestamps and endWallTime for durations.",
+  "encoding": {
+    "file": "motion-and-story.mp4",
+    "codec": "H.264",
+    "fps": 30,
+    "timing": "Original compositor timestamp deltas; repeated frames hold static views, no motion interpolation.",
+    "capturedDurationSeconds": 16.50093102455139,
+    "rawFramesCommitted": false
+  }
+}

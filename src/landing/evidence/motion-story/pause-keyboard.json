@@ -1,0 +1,34 @@
+{
+  "before": {
+    "result": {
+      "type": "object",
+      "value": {
+        "effect": "paused",
+        "time": 393.08160400390625
+      }
+    }
+  },
+  "after": {
+    "result": {
+      "type": "object",
+      "value": {
+        "effect": "paused",
+        "time": 393.08160400390625
+      }
+    }
+  },
+  "keyboard": [
+    {
+      "checked": "plum",
+      "focus": "plum"
+    },
+    {
+      "checked": "clay",
+      "focus": "clay"
+    },
+    {
+      "checked": "sage",
+      "focus": "sage"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "done": true,
+      "frames": 776,
+      "samples": [
+        {
+          "changedPercent": null,
+          "meanChannelDelta": null,
+          "meanRGB": 75.02040364583333,
+          "shaderTime": 0.04729999974370003,
+          "wall": 556.5
+        },
+        {
+          "changedPercent": 97.1953125,
+          "meanChannelDelta": 26.005013020833335,
+          "meanRGB": 75.71122395833333,
+          "shaderTime": 0.5573999881744385,
+          "wall": 1062.300000011921
+        },
+        {
+          "changedPercent": 96.3046875,
+          "meanChannelDelta": 22.694609375,
+          "meanRGB": 76.69815104166666,
+          "shaderTime": 1.065999984741211,
+          "wall": 1569.600000023842
+        },
+        {
+          "changedPercent": 95.93359375,
+          "meanChannelDelta": 19.4019140625,
+          "meanRGB": 78.0666796875,
+          "shaderTime": 1.5658999681472778,
+          "wall": 2073.5
+        },
+        {
+          "changedPercent": 96.6171875,
+          "meanChannelDelta": 18.990338541666667,
+          "meanRGB": 80.06720052083334,
+          "shaderTime": 2.0739998817443848,
+          "wall": 2579
+        },
+        {
+          "changedPercent": 96.90234375,
+          "meanChannelDelta": 21.15859375,
+          "meanRGB": 82.84248697916667,
+          "shaderTime": 2.5741000175476074,
+          "wall": 3078.7000000476837
+        },
+        {
+          "changedPercent": 98.01171875,
+          "meanChannelDelta": 26.394010416666667,
+          "meanRGB": 86.46626302083334,
+          "shaderTime": 3.08240008354187,
+          "wall": 3587.900000035763
+        },
+        {
+          "changedPercent": 98.54296875,
+          "meanChannelDelta": 30.219596354166665,
+          "meanRGB": 90.47979166666669,
+          "shaderTime": 3.5826001167297363,
+          "wall": 4087.900000035763
+        },
+        {
+          "changedPercent": 98.640625,
+          "meanChannelDelta": 30.942955729166663,
+          "meanRGB": 95.02571614583331,
+          "shaderTime": 4.090799808502197,
+          "wall": 4598.100000023842
+        },
+        {
+          "changedPercent": 97.96484375,
+          "meanChannelDelta": 26.6801171875,
+          "meanRGB": 99.25872395833332,
+          "shaderTime": 4.5991997718811035,
+          "wall": 5102.400000035763
+        },
+        {
+          "changedPercent": 94.25390625,
+          "meanChannelDelta": 19.801861979166667,
+          "meanRGB": 102.71459635416667,
+          "shaderTime": 5.099100112915039,
+          "wall": 5602.900000035763
+        },
+        {
+          "changedPercent": 94.00390625,
+          "meanChannelDelta": 17.995104166666668,
+          "meanRGB": 105.1437109375,
+          "shaderTime": 5.599400043487549,
+          "wall": 6104
+        },
+        {
+          "changedPercent": 95.84765625,
+          "meanChannelDelta": 21.444088541666662,
+          "meanRGB": 106.2508203125,
+          "shaderTime": 6.0991997718811035,
+          "wall": 6603.200000047684
+        }
+      ]
+    }
+  }
+}
