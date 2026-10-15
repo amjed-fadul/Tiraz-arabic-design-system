@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/tasks-notifications-pages.test.tsx src/workbench/generated-lists.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  4 passed (4)
+   Start at  16:54:54
+   Duration  5.04s (import 48%, tests 25%, environment 14%, transform 10%, setup 3%)
+

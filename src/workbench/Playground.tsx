@@ -1,3 +1,5 @@
+import { TaskRowsExample } from "../system/ai/examples/TaskRowsExamples";
+import { NotificationListExample } from "../system/ai/examples/NotificationListExamples";
 import { StepsExample } from "../system/ai/examples/StepsExamples";
 import { TimelineExample } from "../system/ai/examples/TimelineExamples";
 import type { Playgrounds } from "./model";
@@ -159,6 +161,20 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "task-rows")
+    return (
+      <TaskRowsExample
+        language={language}
+        {...(model as Playgrounds["task-rows"])}
+      />
+    );
+  if (component === "notification-list")
+    return (
+      <NotificationListExample
+        language={language}
+        {...(model as Playgrounds["notification-list"])}
+      />
+    );
   if (component === "steps")
     return (
       <StepsExample language={language} {...(model as Playgrounds["steps"])} />

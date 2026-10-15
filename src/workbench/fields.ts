@@ -83,6 +83,41 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "task-rows": [
+    field(
+      "interactive",
+      "boolean",
+      "تغيير الاكتمال",
+      "Interactive completion",
+      "onCompletedChange",
+    ),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "items / emptyState",
+    ),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
+  "notification-list": [
+    field(
+      "readControls",
+      "boolean",
+      "تحكم القراءة",
+      "Read controls",
+      "onMarkRead / onMarkAllRead",
+    ),
+    field("avatars", "boolean", "الصور الشخصية", "Avatars", "items[].avatar"),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "items / emptyState",
+    ),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
   steps: [
     field("orientation", "select", "الاتجاه", "Orientation", "orientation", {
       options: ["horizontal", "vertical"],
@@ -708,6 +743,8 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "task-rows": ["interactive", "empty", "longContent"],
+  "notification-list": ["readControls", "avatars", "empty", "longContent"],
   steps: ["orientation", "currentState"],
   timeline: ["descriptions", "icons", "actions", "empty", "longContent"],
   slider: ["label", "min", "max", "step", "showValue", "disabled"],

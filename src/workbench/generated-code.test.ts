@@ -14,6 +14,22 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  cases.push(
+    [
+      "task-rows",
+      { ...p["task-rows"], interactive: false, empty: true, longContent: true },
+    ],
+    [
+      "notification-list",
+      {
+        ...p["notification-list"],
+        avatars: false,
+        readControls: false,
+        empty: true,
+        longContent: true,
+      },
+    ],
+  );
   for (const orientation of ["horizontal", "vertical"] as const)
     for (const currentState of [
       "upcoming",

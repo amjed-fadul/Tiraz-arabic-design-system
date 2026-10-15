@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/steps-timeline.test.tsx src/workbench/steps-timeline-pages.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  11 passed (11)
+   Start at  16:48:51
+   Duration  3.84s (import 54%, tests 19%, environment 13%, transform 12%, setup 2%)
+

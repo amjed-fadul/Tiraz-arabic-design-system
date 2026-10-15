@@ -1,0 +1,7 @@
+PASS 12 exact CSS viewport language/theme cases: long mixed text, no overflow or row entry motion
+PASS Task completion/reopening, derived count, stable identities/order, focus and disabled Tab skipping
+PASS Details do not mark read; Unread last-row fallback, final removal, empty message and Show all focus
+PASS Arabic mark all read, derived zero count, focus fallback and supplied order on All
+PASS Live theme, density, typography, accent; system and OS reduced motion; large Arabic at320 without overflow
+PASS Continuous docs, minimal live inspector, code/full copied prompt synchronization and narrow docs
+PASS No uncaught browser errors

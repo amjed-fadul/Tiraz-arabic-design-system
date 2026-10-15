@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with forty-three source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with forty-five source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -249,3 +249,13 @@ The application owns validation, eligibility and progress. Timeline preserves
 supplied event order, localized timestamps, semantic dates and application content.
 Portable examples include a validated local form and an explicitly in-memory
 activity list with real local append. See `src/system/ai/README.md` for contracts.
+
+### TaskRows and NotificationList
+
+TaskRows is a controlled semantic task list with optional completion, static
+indicators, assignee/meta and separate application actions. NotificationList shows
+application-owned notifications with timestamps, explicit read controls and a
+derived unread count. Both preserve item order and identity. The documentation
+includes local-only examples, All/Unread filtering and focus recovery after a
+focused notification leaves Unread. Source contracts and portable examples live
+in `src/system/ai/`; neither family adds a dependency or persistence.

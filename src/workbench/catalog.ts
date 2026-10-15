@@ -1,6 +1,24 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "task-rows",
+    name: ["صفوف المهام", "TaskRows"],
+    description: [
+      "مهام يملكها التطبيق مع اكتمال واضح وإجراءات مستقلة.",
+      "Application-owned tasks with clear completion and separate actions.",
+    ],
+    file: "TaskRows.tsx",
+  },
+  {
+    id: "notification-list",
+    name: ["قائمة الإشعارات", "NotificationList"],
+    description: [
+      "إشعارات بترتيب التطبيق مع حالة قراءة واضحة وإجراءات مستقلة.",
+      "Notifications in supplied order with explicit read state and separate actions.",
+    ],
+    file: "NotificationList.tsx",
+  },
+  {
     id: "steps",
     name: ["الخطوات", "Steps"],
     description: [
@@ -428,12 +446,13 @@ const documentationGroups = [
   {
     id: "data",
     name: ["البيانات", "Data"],
-    ids: ["filter-bar", "table", "data-table", "timeline"],
+    ids: ["task-rows", "filter-bar", "table", "data-table", "timeline"],
   },
   {
     id: "display",
     name: ["العرض والتنبيهات", "Display & feedback"],
     ids: [
+      "notification-list",
       "card",
       "accordion",
       "avatar",

@@ -1,0 +1,494 @@
+[
+  {
+    "language": "ar",
+    "theme": "light",
+    "width": 1440,
+    "documentWidth": 1440,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "ar",
+    "theme": "light",
+    "width": 390,
+    "documentWidth": 390,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "ar",
+    "theme": "light",
+    "width": 320,
+    "documentWidth": 320,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "ar",
+    "theme": "dark",
+    "width": 1440,
+    "documentWidth": 1440,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "ar",
+    "theme": "dark",
+    "width": 390,
+    "documentWidth": 390,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "ar",
+    "theme": "dark",
+    "width": 320,
+    "documentWidth": 320,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "en",
+    "theme": "light",
+    "width": 1440,
+    "documentWidth": 1440,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "en",
+    "theme": "light",
+    "width": 390,
+    "documentWidth": 390,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "en",
+    "theme": "light",
+    "width": 320,
+    "documentWidth": 320,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "en",
+    "theme": "dark",
+    "width": 1440,
+    "documentWidth": 1440,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      },
+      {
+        "width": 888,
+        "scroll": 888
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "en",
+    "theme": "dark",
+    "width": 390,
+    "documentWidth": 390,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      },
+      {
+        "width": 358,
+        "scroll": 358
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  },
+  {
+    "language": "en",
+    "theme": "dark",
+    "width": 320,
+    "documentWidth": 320,
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "rows": [
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      },
+      {
+        "width": 288,
+        "scroll": 288
+      }
+    ],
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "times": 2
+  }
+]

@@ -1,0 +1,50 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+ ❯ src/system/slider-otp-date.test.tsx (22 tests | 2 failed) 24729ms
+   ❯ DatePicker (18)
+     × navigates logical months with matching ltr chevrons and selectors 5253ms
+     × keeps year dropdowns practical without restricting date validity or month navigation 5621ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/slider-otp-date.test.tsx > DatePicker > navigates logical months with matching ltr chevrons and selectors
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/slider-otp-date.test.tsx:224:35
+    222|     expect(screen.getByText(/December 31, 2026/)).toBeInTheDocument();
+    223|   });
+    224|   it.each(["ltr", "rtl"] as const)(
+       |                                   ^
+    225|     "navigates logical months with matching %s chevrons and selectors",
+    226|     async (direction) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/system/slider-otp-date.test.tsx > DatePicker > keeps year dropdowns practical without restricting date validity or month navigation
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/slider-otp-date.test.tsx:328:3
+    326|     );
+    327|   });
+    328|   it("keeps year dropdowns practical without restricting date validity…
+       |   ^
+    329|     const user = userEvent.setup();
+    330|     render(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 57 passed (58)
+      Tests  2 failed | 490 passed (492)
+   Start at  16:56:40
+   Duration  76.50s (import 44%, tests 40%, environment 11%, transform 3%, setup 2%)
+
+     Import  205 modules were evaluated 4100 times · 222.36s total, 44% of tracked time
+             ~24.23s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

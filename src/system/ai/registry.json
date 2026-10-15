@@ -595,6 +595,30 @@
     {
       "name": "TimelineItem",
       "source": "Timeline.tsx"
+    },
+    {
+      "name": "TaskRows",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowsProps",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowItem",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "NotificationList",
+      "source": "NotificationList.tsx"
+    },
+    {
+      "name": "NotificationListProps",
+      "source": "NotificationList.tsx"
+    },
+    {
+      "name": "NotificationItem",
+      "source": "NotificationList.tsx"
     }
   ],
   "configuration": {
@@ -662,6 +686,129 @@
     }
   },
   "components": [
+    {
+      "id": "task-rows",
+      "api": "TaskRows",
+      "source": "TaskRows.tsx",
+      "exports": ["TaskRows", "TaskRowsProps", "TaskRowItem"],
+      "purpose": "Compact controlled application task list with independent completion and actions.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly TaskRowItem[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "onCompletedChange",
+          "type": "(id: string, completed: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "{ completed: string; incomplete: string }",
+          "required": false,
+          "default": "undefined",
+          "note": "Defaults follow direction; supply for other language/direction combinations."
+        },
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLUListElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Omit<ComponentPropsWithRef<ul>, children>. Native attributes/ref/events are forwarded to the ul; label supplies aria-label.",
+      "state": "Application owns all data. Checkbox reports the ID and requested completion. No callback means static display. disabled prevents completion changes, not caller-composed actions.",
+      "accessibility": [
+        "Named native ul with keyed li. Existing Checkbox has the visible task label. Text completion badge is always present, including static mode. Actions are separate siblings; no whole-row click.",
+        "Retains supplied order and native control identity when completion changes. Long text wraps; isolate mixed identifiers with bdi in descriptions/meta."
+      ],
+      "limitations": [
+        "Supply stable unique nonempty IDs. No task engine, sorting, reordering, scheduling or persistence. Caller owns action behavior and disabled state."
+      ],
+      "examples": ["ai/examples/TaskRowsExamples.tsx"]
+    },
+    {
+      "id": "notification-list",
+      "api": "NotificationList",
+      "source": "NotificationList.tsx",
+      "exports": [
+        "NotificationList",
+        "NotificationListProps",
+        "NotificationItem"
+      ],
+      "purpose": "Compact application-owned notifications with explicit read controls and a derived unread count.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly NotificationItem[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "onMarkRead",
+          "type": "(id: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "onMarkAllRead",
+          "type": "() => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "{ unread: string; read: string; markRead: string; markAllRead: string }",
+          "required": false,
+          "default": "undefined",
+          "note": "Defaults follow direction; count digits follow direction."
+        },
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Omit<ComponentPropsWithRef<div>, children>. Native attributes/ref/events target the root div; contains a named native ul.",
+      "state": "Application owns supplied read state, order and filtering. Count derives only from supplied items. Opening actions never marks read. Optional callbacks report requests only.",
+      "accessibility": [
+        "Visible unread text and decorative dot; read text remains understandable without color. Valid supplied dateTime renders time; otherwise plain timestamp.",
+        "Per-item controls stay mounted and become aria-disabled after read, preserving focus in All. Mark all disables at zero. The application recovers focus when filtering removes a row; bundled example uses the next remaining mark-read control (previous when last), then selected filter."
+      ],
+      "limitations": [
+        "Supply unique stable nonempty IDs. No dismiss, polling, push permissions, backend or persistence. Filtering and removal focus belong to the host.",
+        "Distinguish no notifications from no unread notifications with application emptyState. icon is decorative; caller owns avatar semantics."
+      ],
+      "examples": ["ai/examples/NotificationListExamples.tsx"]
+    },
     {
       "inheritedProps": "Omit<ComponentPropsWithRef<ol>, children>. Native list attributes/events, className/style and ref are preserved; label supplies aria-label and ordered list semantics are retained with role=list.",
       "id": "steps",
@@ -4657,6 +4804,125 @@
         },
         {
           "name": "content",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "TaskRowItem",
+      "source": "TaskRows.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Unique stable nonempty application ID."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "completed",
+          "type": "boolean",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "assignee",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Application-owned controls separate from completion. Caller owns their disabled state."
+        }
+      ]
+    },
+    {
+      "type": "NotificationItem",
+      "source": "NotificationList.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined",
+          "note": "Unique stable nonempty application ID."
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "dateTime",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Valid machine-readable HTML date/time when available. Application formats visible timestamp."
+        },
+        {
+          "name": "read",
+          "type": "boolean",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "avatar",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Decorative, no focusable descendants. Avatar takes precedence."
+        },
+        {
+          "name": "action",
           "type": "ReactNode",
           "required": false,
           "default": "undefined"

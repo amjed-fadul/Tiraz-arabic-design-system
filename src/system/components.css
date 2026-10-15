@@ -2835,3 +2835,155 @@
     transition: none;
   }
 }
+
+/* Application-owned tasks and notifications: stable quiet rows, no entry motion. */
+.tz-task-rows,
+.tz-notification-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+.tz-task-row,
+.tz-notification-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-task-row + .tz-task-row,
+.tz-notification-row + .tz-notification-row {
+  border-block-start: 1px solid var(--border);
+}
+.tz-task-main,
+.tz-notification-copy {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-task-row .tz-field-label,
+.tz-row-title,
+.tz-task-static {
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--line-height);
+}
+.tz-task-row .tz-checkbox-field {
+  margin: 0;
+}
+.tz-task-row .tz-checkbox {
+  position: relative;
+}
+/* Increase the input's pointer target without changing the compact row height. */
+.tz-task-row .tz-checkbox::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+}
+.tz-task-static {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--control-gap);
+  min-block-size: var(--control-small);
+}
+.tz-task-static > span {
+  display: grid;
+  place-items: center;
+  min-block-size: var(--control-small);
+}
+.tz-task-static svg,
+.tz-notification-leading svg {
+  inline-size: 18px;
+  block-size: 18px;
+}
+.tz-task-description,
+.tz-notification-description {
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  margin-block: var(--space-1);
+}
+.tz-row-meta,
+.tz-row-actions,
+.tz-notification-header,
+.tz-notification-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  min-inline-size: 0;
+}
+.tz-row-meta {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  margin-block-start: var(--space-1);
+}
+.tz-row-actions {
+  margin-block-start: var(--space-2);
+  max-inline-size: 100%;
+}
+.tz-row-actions > * {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+.tz-task-row > .tz-row-actions {
+  flex-shrink: 0;
+  margin-block-start: 0;
+}
+.tz-task-row[data-disabled] .tz-task-main {
+  opacity: 0.65;
+}
+.tz-notification-list {
+  min-inline-size: 0;
+  inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.tz-notification-header {
+  padding-block-end: var(--space-2);
+  border-block-end: 1px solid var(--border);
+}
+.tz-notification-header > .tz-button {
+  margin-inline-start: auto;
+}
+.tz-notification-heading {
+  justify-content: space-between;
+  align-items: baseline;
+}
+.tz-notification-heading time,
+.tz-notification-time {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+}
+.tz-notification-state {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tz-unread-dot {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: var(--action);
+  flex-shrink: 0;
+}
+.tz-notification-row[data-unread="false"] .tz-row-title {
+  font-weight: var(--weight-regular);
+}
+.tz-notification-leading {
+  flex-shrink: 0;
+  padding-block-start: var(--space-1);
+}
+@media (max-width: 480px) {
+  .tz-task-row {
+    flex-wrap: wrap;
+  }
+  .tz-task-main {
+    flex-basis: 100%;
+  }
+}
+.tz-notification-list .tz-row-actions button[aria-disabled="true"] {
+  color: var(--text-muted);
+  cursor: default;
+}

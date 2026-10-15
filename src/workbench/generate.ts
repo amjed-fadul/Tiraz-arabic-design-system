@@ -1,3 +1,5 @@
+import taskRowsSource from "../system/ai/examples/TaskRowsExamples.tsx?raw";
+import notificationListSource from "../system/ai/examples/NotificationListExamples.tsx?raw";
 import stepsSource from "../system/ai/examples/StepsExamples.tsx?raw";
 import timelineSource from "../system/ai/examples/TimelineExamples.tsx?raw";
 import sliderSource from "../system/ai/examples/SliderExamples.tsx?raw";
@@ -67,11 +69,29 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
-  if (component === "steps" || component === "timeline") {
+  if (
+    component === "steps" ||
+    component === "timeline" ||
+    component === "task-rows" ||
+    component === "notification-list"
+  ) {
     const source = (
-      component === "steps" ? stepsSource : timelineSource
+      component === "task-rows"
+        ? taskRowsSource
+        : component === "notification-list"
+          ? notificationListSource
+          : component === "steps"
+            ? stepsSource
+            : timelineSource
     ).replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"');
-    const name = component === "steps" ? "StepsExample" : "TimelineExample";
+    const name =
+      component === "task-rows"
+        ? "TaskRowsExample"
+        : component === "notification-list"
+          ? "NotificationListExample"
+          : component === "steps"
+            ? "StepsExample"
+            : "TimelineExample";
     return `${source}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";

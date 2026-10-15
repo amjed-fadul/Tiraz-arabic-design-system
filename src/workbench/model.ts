@@ -1,3 +1,5 @@
+import type { TaskRowsExampleProps } from "../system/ai/examples/TaskRowsExamples";
+import type { NotificationListExampleProps } from "../system/ai/examples/NotificationListExamples";
 import type { SliderExampleProps } from "../system/ai/examples/SliderExamples";
 import type { OTPInputExampleProps } from "../system/ai/examples/OTPInputExamples";
 import type { DatePickerExampleProps } from "../system/ai/examples/DatePickerExamples";
@@ -266,6 +268,8 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "task-rows": Required<Omit<TaskRowsExampleProps, "language">>;
+  "notification-list": Required<Omit<NotificationListExampleProps, "language">>;
   steps: {
     orientation: "horizontal" | "vertical";
     currentState: "upcoming" | "current" | "completed" | "error";
@@ -334,6 +338,13 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "task-rows": { interactive: true, empty: false, longContent: false },
+    "notification-list": {
+      empty: false,
+      longContent: false,
+      avatars: true,
+      readControls: true,
+    },
     steps: { orientation: "horizontal", currentState: "current" },
     timeline: {
       descriptions: true,

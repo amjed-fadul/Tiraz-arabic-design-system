@@ -1,0 +1,18 @@
+src/system/TaskRows.tsx 78ms
+src/system/NotificationList.tsx 20ms
+src/system/tasks-notifications.test.tsx 34ms
+src/system/ai/examples/TaskRowsExamples.tsx 10ms
+src/system/ai/examples/NotificationListExamples.tsx 17ms
+src/system/ai/registry.json 72ms
+src/system/index.ts 4ms
+src/system/components.css 198ms (unchanged)
+src/workbench/catalog.ts 13ms
+src/workbench/model.ts 47ms
+src/workbench/Playground.tsx 27ms
+src/workbench/Examples.tsx 27ms
+src/workbench/generate.ts 39ms
+src/workbench/fields.ts 32ms
+src/workbench/ApiReference.tsx 21ms
+src/workbench/generate-prompts.test.ts 8ms (unchanged)
+src/system/ai-registry.test.ts 24ms
+README.md 84ms (unchanged)

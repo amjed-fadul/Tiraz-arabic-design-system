@@ -175,7 +175,12 @@ it("compiles the bundled example after copying only the library to a different a
     ].map((path) => resolve(copiedRoot, path));
     // Compile copied snippets in the host, with only the relocated source bundle.
     for (const language of ["ar", "en"] as const) {
-      for (const component of ["steps", "timeline"] as const) {
+      for (const component of [
+        "task-rows",
+        "notification-list",
+        "steps",
+        "timeline",
+      ] as const) {
         const path = resolve(temporary, `app/${component}-${language}.tsx`);
         const code = generateCode(
           component,

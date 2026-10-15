@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **forty-three**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps and Timeline.
+Tiraz is an Arabic-first, source-owned React dashboard library with **forty-five**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows and NotificationList.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -451,3 +451,37 @@ local event at the click time. Data lasts only while mounted. Neither component
 fetches, sorts, groups, virtualizes or runs relative-time timers. Both preserve
 native ordered-list attributes and refs. Copy these examples with the source
 bundle; they import only React, existing lucide icons and the source-root index.
+
+## Tasks and notifications
+
+Use [TaskRowsExamples](examples/TaskRowsExamples.tsx) for application-owned tasks,
+and [NotificationListExamples](examples/NotificationListExamples.tsx) for local
+notifications. Both keep supplied order and stable unique IDs; neither saves data.
+
+TaskRows takes items, label and optional onCompletedChange(id, completed).
+Items require id, string label and completed; description, disabled, assignee,
+meta and actions are optional. Callback omission renders a static state indicator.
+With a callback it composes the existing Checkbox; disabled prevents completion
+changes. Text badges always explain completion. Keep actions separate from labels;
+the caller owns action behavior and any action disabled state. The native ul
+forwards attributes, events and HTMLUListElement ref. labels translates completed
+and incomplete; defaults follow direction. emptyState replaces the default.
+
+NotificationList takes items and label, optional onMarkRead(id), onMarkAllRead(),
+labels and emptyState. Items require id, string title, timestamp and read;
+description, dateTime, avatar, icon and action are optional. Avatar takes precedence
+over a decorative icon. Supply a valid HTML date/time to render time; the host
+formats timestamp in its locale/time zone. Count derives from supplied items,
+including after application filtering. labels translates unread/read/markRead/
+markAllRead; defaults and count digits follow direction. Opening an action never
+marks read. Read controls remain mounted and aria-disabled after reading, keeping
+focus in All; Mark all disables at zero. Native root attributes/ref target div,
+which contains a named ul. Do not add row click handlers.
+
+The notification example owns All/Unread filtering and meaningful local details.
+When reading removes the focused control, it focuses the next remaining mark-read
+control (previous when the removed row was last), then the selected filter if no
+rows remain. Mark all hands focus to that filter. It distinguishes an empty source
+from no unread results. Preserve this behavior when adapting filtering to a host.
+No task engine, drag/reorder, scheduling, automatic sorting/dismissal, polling,
+push permissions, backend or persistence is supplied. No new dependency is needed.

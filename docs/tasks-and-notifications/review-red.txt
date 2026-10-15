@@ -1,0 +1,359 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/tasks-notifications.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+ ❯ src/system/tasks-notifications.test.tsx (9 tests | 1 failed) 711ms
+   × returns focus to All when its empty-state action disappears 86ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/tasks-notifications.test.tsx > returns focus to All when its empty-state action disappears
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <button
+  aria-pressed="true"
+  class="tz-button "
+  data-size="sm"
+  data-state="idle"
+  data-variant="ghost"
+  type="button"
+>
+  <span
+    class="tz-button-label"
+  >
+    All
+  </span>
+</button>
+Received element with focus:
+  <body>
+  <div>
+    <div
+      class="tiraz-system"
+      data-density="compact"
+      data-reduced-motion="false"
+      data-theme="light"
+      data-typography="standard"
+      dir="ltr"
+      style="--action: #355E4C; --radius: 8px; color-scheme: light;"
+    >
+      <div
+        style="display: grid; gap: var(--space-4); inline-size: 100%; min-inline-size: 0px;"
+      >
+        <p
+          style="margin: 0px; color: var(--text-secondary);"
+        >
+          Sample notifications in memory only; no syncing, saving or server activity.
+        </p>
+        <div
+          aria-label="Notification filter"
+          role="group"
+          style="display: flex; gap: var(--space-2); flex-wrap: wrap;"
+        >
+          <button
+            aria-pressed="true"
+            class="tz-button "
+            data-size="sm"
+            data-state="idle"
+            data-variant="ghost"
+            type="button"
+          >
+            <span
+              class="tz-button-label"
+            >
+              All
+            </span>
+          </button>
+          <button
+            aria-pressed="false"
+            class="tz-button "
+            data-size="sm"
+            data-state="idle"
+            data-variant="ghost"
+            type="button"
+          >
+            <span
+              class="tz-button-label"
+            >
+              Unread
+            </span>
+          </button>
+        </div>
+        <div
+          class="tz-notification-list "
+        >
+          <div
+            class="tz-notification-header"
+          >
+            <span
+              class="tz-row-title"
+            >
+              Project notifications
+            </span>
+            <span
+              class="tz-badge "
+              data-tone="neutral"
+            >
+              0················
+              unread
+            </span>
+            <button
+              class="tz-button "
+              data-size="sm"
+              data-state="idle"
+              data-variant="ghost"
+              disabled=""
+              type="button"
+            >
+              <span
+                class="tz-button-label"
+              >
+                Mark all as read
+              </span>
+            </button>
+          </div>
+          <ul
+            aria-label="Project notifications"
+            class="tz-notification-items"
+            role="list"
+          >
+            <li
+              class="tz-notification-row"
+              data-unread="false"
+            >
+              <div
+                class="tz-notification-leading"
+              >
+                <span
+                  aria-label="Sara Ali"
+                  class="tz-avatar "
+                  data-size="sm"
+                  role="img"
+                >
+                  <bdi
+                    aria-hidden="true"
+                  >
+                    SA
+                  </bdi>
+                </span>
+              </div>
+              <div
+                class="tz-notification-copy"
+              >
+                <div
+                  class="tz-notification-heading"
+                >
+                  <bdi
+                    class="tz-row-title"
+                  >
+                    Review requested
+                  </bdi>
+                  <time
+                    datetime="2026-10-15T09:12:00+04:00"
+                  >
+                    15 Oct, 09:12
+                  </time>
+                </div>
+                <div
+                  class="tz-notification-description"
+                >
+                  Notes on·
+                  <bdi
+                    dir="ltr"
+                  >
+                    DOC-42/2026
+                  </bdi>
+                </div>
+                <div
+                  class="tz-row-meta"
+                >
+                  <span
+                    class="tz-notification-state"
+                  >
+                    Read
+                  </span>
+                </div>
+                <div
+                  class="tz-row-actions"
+                >
+                  <button
+                    aria-expanded="false"
+                    aria-label="Show details: Review requested"
+                    class="tz-button "
+                    data-size="sm"
+                    data-state="idle"
+                    data-variant="secondary"
+                    type="button"
+                  >
+                    <span … />
+                  </button>
+                  <button
+                    aria-disabled="true"
+                    aria-label="Read: Review requested"
+                    class="tz-button "
+                    data-size="sm"
+                    data-state="idle"
+                    data-variant="ghost"
+                    type="button"
+                  >
+                    <span … />
+                  </button>
+                </div>
+              </div>
+            </li>
+            <li
+              class="tz-notification-row"
+              data-unread="false"
+            >
+              <div
+                class="tz-notification-leading"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="lucide lucide-file-text"
+                    fill="none"
+                    height="24"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path … />
+                    <path … />
+                    <path … />
+                    <path … />
+                    <path … />
+                  </svg>
+                </span>
+              </div>
+              <div
+                class="tz-notification-copy"
+              >
+                <div
+                  class="tz-notification-heading"
+                >
+                  <bdi
+                    class="tz-row-title"
+                  >
+                    New package note
+                  </bdi>
+                  <time
+                    datetime="2026-10-14"
+                  >
+                    14 Oct
+                  </time>
+                </div>
+                <div
+                  class="tz-notification-description"
+                >
+                  An Arabic example explains how labels are used.
+                </div>
+                <div
+                  class="tz-row-meta"
+                >
+                  <span
+                    class="tz-notification-state"
+                  >
+                    Read
+                  </span>
+                </div>
+                <div
+                  class="tz-row-actions"
+                >
+                  <button
+                    aria-disabled="true"
+                    aria-label="Read: New package note"
+                    class="tz-button "
+                    data-size="sm"
+                    data-state="idle"
+                    data-variant="ghost"
+                    type="button"
+                  >
+                    <span … />
+                  </button>
+                </div>
+              </div>
+            </li>
+            <li
+              class="tz-notification-row"
+              data-unread="false"
+            >
+              <div
+                class="tz-notification-copy"
+              >
+                <div
+                  class="tz-notification-heading"
+                >
+                  <bdi
+                    class="tz-row-title"
+                  >
+                    Preview ready
+                  </bdi>
+                  <span
+                    class="tz-notification-time"
+                  >
+                    Yesterday
+                  </span>
+                </div>
+                <div
+                  class="tz-notification-description"
+                >
+                  Local sample data; no connected service.
+                </div>
+                <div
+                  class="tz-row-meta"
+                >
+                  <span
+                    class="tz-notification-state"
+                  >
+                    Read
+                  </span>
+                </div>
+                <div
+                  class="tz-row-actions"
+                >
+                  <button
+                    aria-disabled="true"
+                    aria-label="Read: Preview ready"
+                    class="tz-button "
+                    data-size="sm"
+                    data-state="idle"
+                    data-variant="ghost"
+                    type="button"
+                  >
+                    <span … />
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ src/system/tasks-notifications.test.tsx:236:63
+    234|   await user.click(screen.getByRole("button", {name:"Mark all as read"…
+    235|   await user.click(screen.getByRole("button", {name:"Show all",exact:t…
+    236|   expect(screen.getByRole("button", {name:"All",exact:true})).toHaveFo…
+       |                                                               ^
+    237|   expect(screen.getAllByRole("listitem")).toHaveLength(3);
+    238| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 passed (9)
+   Start at  17:04:16
+   Duration  4.75s (import 54%, environment 18%, tests 15%, transform 9%, setup 3%)
+

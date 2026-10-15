@@ -1,3 +1,5 @@
+import { TaskRowsExample } from "../system/ai/examples/TaskRowsExamples";
+import { NotificationListExample } from "../system/ai/examples/NotificationListExamples";
 import {
   StepsExample,
   StepsFormExample,
@@ -192,6 +194,46 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "task-rows")
+    return (
+      <div style={{ display: "grid", gap: "var(--space-8)" }}>
+        <section>
+          <h3>{t("مؤشرات ثابتة دون تفاعل", "Static state indicators")}</h3>
+          <TaskRowsExample
+            language={language}
+            interactive={false}
+            longContent
+          />
+        </section>
+        <section>
+          <h3>{t("حالة فارغة", "Empty state")}</h3>
+          <TaskRowsExample language={language} empty />
+        </section>
+      </div>
+    );
+  if (component === "notification-list")
+    return (
+      <div style={{ display: "grid", gap: "var(--space-8)" }}>
+        <section>
+          <h3>
+            {t(
+              "محتوى طويل دون تحكم بالقراءة",
+              "Long content without read controls",
+            )}
+          </h3>
+          <NotificationListExample
+            language={language}
+            longContent
+            readControls={false}
+            avatars={false}
+          />
+        </section>
+        <section>
+          <h3>{t("لا توجد إشعارات", "No notifications")}</h3>
+          <NotificationListExample language={language} empty />
+        </section>
+      </div>
+    );
   if (component === "steps")
     return (
       <div

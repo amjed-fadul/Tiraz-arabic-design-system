@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/tasks-notifications.test.tsx src/system/ai-registry.test.ts src/workbench/generated-code.test.ts src/workbench/generate-prompts.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+
+ Test Files  4 passed (4)
+      Tests  109 passed (109)
+   Start at  16:53:18
+   Duration  12.23s (tests 59%, import 23%, environment 10%, transform 6%, setup 2%)
+

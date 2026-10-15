@@ -1,0 +1,240 @@
+import { useLayoutEffect, useRef, useState } from "react";
+import { FileText } from "lucide-react";
+import { Avatar, Button, EmptyState, NotificationList } from "../../index";
+import type { NotificationItem } from "../../index";
+
+export interface NotificationListExampleProps {
+  language?: "ar" | "en";
+  empty?: boolean;
+  longContent?: boolean;
+  avatars?: boolean;
+  readControls?: boolean;
+}
+export function NotificationListExample({
+  language = "ar",
+  empty = false,
+  longContent = false,
+  avatars = true,
+  readControls = true,
+}: NotificationListExampleProps) {
+  const t = (ar: string, en: string) => (language === "ar" ? ar : en);
+  const [readIds, setReadIds] = useState(["ready"]);
+  const [filter, setFilter] = useState<"all" | "unread">("all");
+  const [details, setDetails] = useState<string[]>([]);
+  const listRef = useRef<HTMLDivElement>(null);
+  const filtersRef = useRef<HTMLDivElement>(null);
+  const pendingFocus = useRef<number | null>(null);
+  const markRead = t("تحديد كمقروءة", "Mark as read");
+  // Focus recovery is application behavior: only run when a focused row is removed.
+  useLayoutEffect(() => {
+    if (pendingFocus.current === null) return;
+    const index = pendingFocus.current;
+    pendingFocus.current = null;
+    const controls = Array.from(
+      listRef.current?.querySelectorAll<HTMLButtonElement>("button") ?? [],
+    ).filter((button) =>
+      button.getAttribute("aria-label")?.startsWith(`${markRead}: `),
+    );
+    const fallback = filtersRef.current?.querySelector<HTMLButtonElement>(
+      '[aria-pressed="true"]',
+    );
+    (controls[Math.min(index, controls.length - 1)] ?? fallback)?.focus();
+  }, [readIds, filter, markRead]);
+  const labels = {
+    unread: t("غير مقروءة", "unread"),
+    read: t("مقروءة", "Read"),
+    markRead,
+    markAllRead: t("تحديد الكل كمقروء", "Mark all as read"),
+  };
+  const title = t("طلب مراجعة", "Review requested");
+  const sample: NotificationItem[] = empty
+    ? []
+    : [
+        {
+          id: "review",
+          title,
+          read: readIds.includes("review"),
+          timestamp: t("١٥ أكتوبر، ٠٩:١٢", "15 Oct, 09:12"),
+          dateTime: "2026-10-15T09:12:00+04:00",
+          avatar: avatars ? (
+            <Avatar
+              name={t("سارة علي", "Sara Ali")}
+              fallback={t("س ع", "SA")}
+            />
+          ) : undefined,
+          description: (
+            <>
+              {t("ملاحظات على ", "Notes on ")}
+              <bdi dir="ltr">DOC-42/2026</bdi>
+              {longContent &&
+                t(
+                  " — مراجعة تفصيلية لجميع المسافات والتسميات والمحتوى المختلط قبل اعتماد الحزمة للاستخدام في التطبيق.",
+                  " — A detailed review of spacing, names and mixed content before approving the package for use in the application.",
+                )}
+            </>
+          ),
+          action: (
+            <>
+              <Button
+                size="sm"
+                variant="secondary"
+                aria-label={`${t("عرض التفاصيل", "Show details")}: ${title}`}
+                aria-expanded={details.includes("review")}
+                onClick={() =>
+                  setDetails((ids) =>
+                    ids.includes("review")
+                      ? ids.filter((id) => id !== "review")
+                      : [...ids, "review"],
+                  )
+                }
+              >
+                {t("التفاصيل", "Details")}
+              </Button>
+              {details.includes("review") && (
+                <p style={{ flexBasis: "100%", margin: 0 }}>
+                  {t(
+                    "المسافات والتسميات بحاجة إلى مراجعة ضمن النسخة المحلية. لا يتغير وضع القراءة عند فتح هذه التفاصيل.",
+                    "Spacing and naming need review in the local draft. Opening these details does not change read state.",
+                  )}
+                </p>
+              )}
+            </>
+          ),
+        },
+        {
+          id: "note",
+          title: t("ملاحظة جديدة في الحزمة", "New package note"),
+          read: readIds.includes("note"),
+          timestamp: t("١٤ أكتوبر", "14 Oct"),
+          dateTime: "2026-10-14",
+          icon: <FileText />,
+          description: longContent ? (
+            <bdi dir="ltr">
+              TIRAZ-PACKAGE-NOTE-WITH-A-LONG-IDENTIFIER-012345678901234567890123456789
+            </bdi>
+          ) : (
+            t(
+              "أضيف مثال عربي لشرح استخدام التسميات.",
+              "An Arabic example explains how labels are used.",
+            )
+          ),
+        },
+        {
+          id: "ready",
+          title: t("المعاينة جاهزة", "Preview ready"),
+          read: readIds.includes("ready"),
+          timestamp: t("أمس", "Yesterday"),
+          description: t(
+            "بيانات توضيحية محلية؛ لا توجد خدمة متصلة.",
+            "Local sample data; no connected service.",
+          ),
+        },
+      ];
+  const visible =
+    filter === "unread" ? sample.filter((item) => !item.read) : sample;
+  return (
+    <div
+      style={{
+        display: "grid",
+        gap: "var(--space-4)",
+        inlineSize: "100%",
+        minInlineSize: 0,
+      }}
+    >
+      <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+        {t(
+          "إشعارات نموذجية في الذاكرة فقط؛ لا مزامنة أو حفظ أو نشاط خادم.",
+          "Sample notifications in memory only; no syncing, saving or server activity.",
+        )}
+      </p>
+      <div
+        ref={filtersRef}
+        role="group"
+        aria-label={t("تصفية الإشعارات", "Notification filter")}
+        style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap" }}
+      >
+        <Button
+          size="sm"
+          variant="ghost"
+          aria-pressed={filter === "all"}
+          onClick={() => setFilter("all")}
+        >
+          {t("الكل", "All")}
+        </Button>
+        <Button
+          size="sm"
+          variant="ghost"
+          aria-pressed={filter === "unread"}
+          onClick={() => setFilter("unread")}
+        >
+          {t("غير المقروءة", "Unread")}
+        </Button>
+      </div>
+      <NotificationList
+        ref={listRef}
+        label={t("إشعارات المشروع", "Project notifications")}
+        items={visible}
+        labels={labels}
+        onMarkRead={
+          readControls
+            ? (id) => {
+                if (
+                  filter === "unread" &&
+                  listRef.current?.contains(document.activeElement)
+                )
+                  pendingFocus.current = visible.findIndex(
+                    (item) => item.id === id,
+                  );
+                setReadIds((ids) => (ids.includes(id) ? ids : [...ids, id]));
+              }
+            : undefined
+        }
+        onMarkAllRead={
+          readControls
+            ? () => {
+                if (listRef.current?.contains(document.activeElement))
+                  pendingFocus.current = filter === "unread" ? 0 : -1;
+                setReadIds(sample.map((item) => item.id));
+              }
+            : undefined
+        }
+        emptyState={
+          <EmptyState
+            title={
+              sample.length === 0
+                ? t("لا توجد إشعارات", "No notifications")
+                : t("لا توجد إشعارات غير مقروءة", "No unread notifications")
+            }
+            description={
+              sample.length === 0
+                ? t(
+                    "لم تُضف إشعارات لهذا المثال.",
+                    "No notifications were supplied to this example.",
+                  )
+                : t(
+                    "يمكنك العودة إلى الكل لقراءة الإشعارات السابقة.",
+                    "Return to All to read earlier notifications.",
+                  )
+            }
+            action={
+              sample.length > 0 ? (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => {
+                    setFilter("all");
+                    filtersRef.current
+                      ?.querySelector<HTMLButtonElement>("button")
+                      ?.focus();
+                  }}
+                >
+                  {t("عرض الكل", "Show all")}
+                </Button>
+              ) : undefined
+            }
+          />
+        }
+      />
+    </div>
+  );
+}

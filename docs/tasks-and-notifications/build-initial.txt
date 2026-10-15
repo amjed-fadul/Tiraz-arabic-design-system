@@ -1,0 +1,8 @@
+
+> tiraz@0.1.0 build
+> tsc -b && vite build
+
+src/system/ai/examples/NotificationListExamples.tsx(45,15): error TS2322: Type '{ children: string; ref: RefObject<HTMLButtonElement | null>; size: "sm"; variant: "ghost"; "aria-pressed": boolean; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'ref' does not exist on type 'IntrinsicAttributes & ButtonProps'.
+src/system/ai/examples/NotificationListExamples.tsx(46,15): error TS2322: Type '{ children: string; ref: RefObject<HTMLButtonElement | null>; size: "sm"; variant: "ghost"; "aria-pressed": boolean; onClick: () => void; }' is not assignable to type 'IntrinsicAttributes & ButtonProps'.
+  Property 'ref' does not exist on type 'IntrinsicAttributes & ButtonProps'.

@@ -145,6 +145,82 @@ export function ApiReference({
         ),
       ],
     ],
+    "task-rows": [
+      [
+        "items / label",
+        "readonly TaskRowItem[] / string · required",
+        t(
+          "id ثابت وفريد وlabel نصي وcompleted؛ description وdisabled وassignee وmeta وactions اختيارية.",
+          "Unique stable id, string label and completed; optional description, disabled, assignee, meta and actions.",
+        ),
+      ],
+      [
+        "onCompletedChange",
+        "(id: string, completed: boolean) => void · optional",
+        t(
+          "التطبيق يحدّث البيانات. بدونه مؤشر ثابت؛ disabled يمنع تغيير الاكتمال. إجراءات التطبيق مستقلة.",
+          "The application updates data. Omission shows static indicators; disabled prevents completion changes. Application actions are separate.",
+        ),
+      ],
+      [
+        "labels / emptyState",
+        "{ completed: string; incomplete: string } / ReactNode · optional",
+        t(
+          "ترجمة حالتي الاكتمال ومحتوى الفراغ؛ الافتراضي حسب الاتجاه.",
+          "Translate completion text and supply empty content; defaults follow direction.",
+        ),
+      ],
+      [
+        "native attributes / ref",
+        "ComponentPropsWithRef<ul> (except children)",
+        t(
+          "قائمة أصلية بترتيب ثابت دون فرز أو حفظ. لا تضع إجراءات في التسميات.",
+          "Native list with stable supplied order, no sorting or saving. Keep actions outside labels.",
+        ),
+      ],
+    ],
+    "notification-list": [
+      [
+        "items / label",
+        "readonly NotificationItem[] / string · required",
+        t(
+          "id ثابت وفريد وtitle نصي وtimestamp وread؛ description وdateTime وavatar وicon وaction اختيارية.",
+          "Unique stable id, string title, timestamp and read; optional description, dateTime, avatar, icon and action.",
+        ),
+      ],
+      [
+        "onMarkRead / onMarkAllRead",
+        "(id: string) => void / () => void · optional",
+        t(
+          "التطبيق يحدّث حالة القراءة. العدد مشتق من العناصر. فتح الإجراء لا يغيّر القراءة.",
+          "Application updates read state. Count derives from items. Opening an action never marks read.",
+        ),
+      ],
+      [
+        "labels",
+        "{ unread; read; markRead; markAllRead } · optional strings",
+        t(
+          "ترجمة النصوص الداخلية؛ الافتراضي حسب الاتجاه. الأيقونة زخرفية والصورة يملكها التطبيق.",
+          "Translate internal text; defaults follow direction. Icon is decorative; avatar content is application-owned.",
+        ),
+      ],
+      [
+        "timestamp / dateTime / emptyState",
+        "string / string / ReactNode",
+        t(
+          "التطبيق ينسّق الوقت ويزوّد dateTime صالحًا عند توفره. فرّق بين الفراغ وعدم وجود غير مقروء. التصفية واستعادة التركيز في التطبيق.",
+          "Application formats time and supplies valid dateTime when available. Distinguish empty from no unread. Filtering and focus recovery belong to the application.",
+        ),
+      ],
+      [
+        "native attributes / ref",
+        "ComponentPropsWithRef<div> (except children)",
+        t(
+          "سمات الجذر وref على div؛ قائمة ul داخلية أصلية. لا حذف تلقائي أو جلب أو حفظ.",
+          "Root attributes/ref target div; internal native ul. No automatic dismissal, fetching or persistence.",
+        ),
+      ],
+    ],
     timeline: [
       [
         "items / label",

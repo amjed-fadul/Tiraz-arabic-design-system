@@ -332,3 +332,26 @@ text, supplies valid dateTime when available, and composes content/actions. Use 
 for Latin identifiers inside Arabic. Explain sample data scope. A local append
 must append a real event to application state, without implying server activity.
 No fetching, grouping engine, virtualization or automatic relative-time timers.
+
+## Task and notification lists
+
+Compose TaskRows with stable IDs and application-owned completed state. Keep
+onCompletedChange updates in the host and map the existing array without sorting.
+Omit it for static indicators; disabled tasks cannot change completion. Use the
+separate actions slot for Buttons and assignee/meta for Avatar/Badge compositions.
+labels controls completion text; keep descriptive content readable without color.
+The in-memory example derives completed count from its actual items.
+
+NotificationList displays supplied order and derives unread count from those
+items. Optional onMarkRead/onMarkAllRead request application updates. Actions
+must not silently mark items read. Format timestamps in the application and
+provide valid dateTime when available. Prefer avatar or a decorative icon; put
+essential meaning in title/description. Translate labels when language differs
+from direction. Preserve native root refs/attributes and list semantics.
+
+Filtering belongs to the application. Distinguish no supplied notifications from
+no unread results. When a focused mark-read control leaves Unread, recover focus
+to the next remaining control, previous if last, or the selected filter when none
+remain; Mark all uses that filter. Do not steal focus for updates originating
+elsewhere. Read controls remain stable in All. See the compiling local examples
+linked in README; no fake links, services, persistence or automatic read behavior.
