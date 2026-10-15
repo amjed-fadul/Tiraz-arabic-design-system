@@ -2436,7 +2436,7 @@
   max-block-size: var(--radix-popover-content-available-height);
   overflow: auto;
   overscroll-behavior: contain;
-  padding: var(--space-3);
+  padding: var(--space-2);
   background: var(--surface);
   color: var(--text);
   border: 1px solid var(--border-strong);
@@ -2447,19 +2447,52 @@
 .tz-datepicker-popup .rdp-months {
   position: relative;
 }
+.tz-datepicker-popup .rdp-month {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 24px;
+  align-items: center;
+  column-gap: 4px;
+}
 .tz-datepicker-popup .rdp-month_caption {
+  min-inline-size: 0;
   min-block-size: var(--control-height);
   display: flex;
   align-items: center;
-  padding-inline-end: 72px;
-  font-weight: var(--weight-semibold);
+  justify-content: center;
 }
-.tz-datepicker-popup .rdp-nav {
-  position: absolute;
-  inset-block-start: 0;
-  inset-inline-end: 0;
+.tz-datepicker-popup .rdp-dropdowns {
+  inline-size: 100%;
   display: flex;
   gap: 4px;
+  min-inline-size: 0;
+}
+.tz-datepicker-popup .rdp-dropdown_root {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-datepicker-popup .rdp-dropdown_root:has(.rdp-years_dropdown) {
+  flex: 0 0 auto;
+}
+.tz-datepicker-popup .rdp-months_dropdown {
+  inline-size: 100%;
+}
+.tz-datepicker-popup .rdp-dropdown_root .rdp-caption_label {
+  display: none;
+}
+.tz-datepicker-popup .rdp-dropdown {
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  block-size: var(--control-small);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  padding-inline: 3px;
+  font: inherit;
+  font-size: var(--text-meta);
+  background: var(--surface);
+  color: var(--text);
+}
+.tz-datepicker-popup .rdp-years_dropdown {
+  min-inline-size: calc(4ch + 2em);
 }
 .tz-datepicker-popup
   :is(.rdp-button_previous, .rdp-button_next, .rdp-day_button) {
@@ -2474,12 +2507,16 @@
   background: transparent;
   color: inherit;
 }
+.tz-datepicker-popup :is(.rdp-button_previous, .rdp-button_next) {
+  inline-size: 24px;
+}
 .tz-datepicker-popup .rdp-chevron {
   fill: currentColor;
   inline-size: 18px;
   block-size: 18px;
 }
 .tz-datepicker-popup .rdp-month_grid {
+  grid-column: 1 / -1;
   border-collapse: collapse;
   inline-size: 100%;
   table-layout: fixed;
@@ -2508,7 +2545,8 @@
 .tz-datepicker-popup .rdp-today:not(.rdp-selected) .rdp-day_button {
   border-color: var(--action);
 }
-.tz-datepicker-popup button:disabled {
+.tz-datepicker-popup button:disabled,
+.tz-datepicker-popup button[aria-disabled="true"] {
   opacity: 0.4;
 }
 .tz-datepicker-popup .rdp-outside {

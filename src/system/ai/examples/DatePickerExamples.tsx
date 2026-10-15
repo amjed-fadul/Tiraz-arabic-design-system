@@ -47,8 +47,8 @@ export function DatePickerExample({
         helper={
           helper ??
           t(
-            "تاريخ ميلادي واحد. الأسهم للتنقّل، وEscape للإغلاق.",
-            "One Gregorian date. Use arrows to navigate and Escape to close.",
+            "الشهر والسنة للتنقّل فقط؛ اختر يومًا لتأكيد التاريخ. Escape للإغلاق.",
+            "Month and year navigate only; choose a day to set the date. Escape closes.",
           )
         }
         error={
@@ -57,6 +57,7 @@ export function DatePickerExample({
             ? t("اختر تاريخًا أولًا.", "Choose a date first.")
             : undefined)
         }
+        yearRange={[1900, 2100]}
         min={min}
         max={max}
         disabled={disabled}

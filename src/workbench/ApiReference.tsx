@@ -205,6 +205,14 @@ export function ApiReference({
         ),
       ],
       [
+        "yearRange",
+        "readonly [number, number]",
+        t(
+          "سنوات القائمة فقط؛ افتراضيًا السنة المعروضة ±١٠٠. السنة المعروضة متاحة دائمًا. لا يقيّد صلاحية التاريخ؛ min/max هما حدود التنقّل والاختيار. الشهر والسنة للتنقّل دون تغيير التاريخ المحدد.",
+          "Direct year choices only; defaults to viewed year ±100 and always includes the viewed year. Does not restrict valid dates; min/max bound navigation and selection. Month/year changes navigate without selecting a date.",
+        ),
+      ],
+      [
         "locale / placeholder",
         "ar | en / string",
         t(

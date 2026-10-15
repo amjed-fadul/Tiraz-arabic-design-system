@@ -1,8 +1,16 @@
 import * as Popover from "@radix-ui/react-popover";
-import { DayPicker } from "@daypicker/react";
+import { DayPicker, YearsDropdown } from "@daypicker/react";
+import type { DropdownProps } from "@daypicker/react";
 import { ar, enUS } from "@daypicker/react/locale";
 import { CalendarDays } from "lucide-react";
-import { useId, useLayoutEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { ComponentPropsWithRef } from "react";
 import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
@@ -20,6 +28,8 @@ export type DatePickerProps = Omit<
   min?: string;
   max?: string;
   locale?: "ar" | "en";
+  /** Direct year choices only; min/max alone constrain selectable dates. */
+  yearRange?: readonly [number, number];
   placeholder?: string;
   invalid?: boolean;
 } & (
@@ -31,6 +41,48 @@ export type DatePickerProps = Omit<
         field?: FieldControlProps;
       }
   );
+const YearChoices = createContext<readonly [number, number] | undefined>(
+  undefined,
+);
+function NavigationYears(props: DropdownProps) {
+  const range = useContext(YearChoices);
+  const year = Number(props.value);
+  const valid =
+    range &&
+    Number.isFinite(range[0]) &&
+    Number.isFinite(range[1]) &&
+    range[0] <= range[1] &&
+    range[0] <= 9999 &&
+    range[1] >= 1;
+  const first = valid ? Math.max(1, Math.trunc(range[0])) : year - 100;
+  const last = valid ? Math.min(9999, Math.trunc(range[1])) : year + 100;
+  return (
+    <YearsDropdown
+      {...props}
+      options={props.options?.filter(
+        (option) =>
+          (option.value >= first && option.value <= last) ||
+          option.value === year,
+      )}
+    />
+  );
+}
+const calendarComponents = { YearsDropdown: NavigationYears };
+// DayPicker builds year choices across navigation bounds before the dropdown
+// filters its window. Reuse number formatters instead of formatting 9999 dates.
+const calendarFormatters = Object.fromEntries(
+  (["ar", "en"] as const).map((language) => {
+    const format = new Intl.NumberFormat(
+      language === "ar" ? "ar-u-nu-arab" : "en",
+      { useGrouping: false, minimumIntegerDigits: 4 },
+    );
+    return [
+      language,
+      { formatYearDropdown: (date: Date) => format.format(date.getFullYear()) },
+    ];
+  }),
+);
+
 /** Single Gregorian date; empty string clears. The app owns form validation. */
 export function DatePicker({
   value,
@@ -39,6 +91,7 @@ export function DatePicker({
   min,
   max,
   locale,
+  yearRange,
   placeholder,
   label,
   helper,
@@ -189,41 +242,47 @@ export function DatePicker({
             hideWhenDetached
             aria-label={label ?? (arabic ? "اختيار التاريخ" : "Choose date")}
           >
-            <DayPicker
-              mode="single"
-              autoFocus
-              selected={selected}
-              month={month}
-              onMonthChange={setMonth}
-              onSelect={(date) => commit(date ? formatDateOnly(date) : "")}
-              locale={arabic ? ar : enUS}
-              dir={config.direction}
-              numerals={arabic ? "arab" : "latn"}
-              labels={{
-                labelDayButton: (date, modifiers) => {
-                  // Numeric days keep visible cell text in the accessible name;
-                  // the default English ordinal labels (1st/2nd) obscure it.
-                  const text = date.toLocaleDateString(
-                    arabic
-                      ? "ar-u-ca-gregory-nu-arab"
-                      : "en-US-u-ca-gregory-nu-latn",
-                    {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    },
-                  );
-                  return `${modifiers.today ? (arabic ? "اليوم، " : "Today, ") : ""}${text}${modifiers.selected ? (arabic ? "، محدد" : ", selected") : ""}`;
-                },
-              }}
-              disabled={[
-                ...(minimum ? [{ before: minimum }] : []),
-                ...(maximum ? [{ after: maximum }] : []),
-              ]}
-              startMonth={minimum ?? parseDateOnly("0001-01-01")}
-              endMonth={maximum ?? parseDateOnly("9999-12-31")}
-            />
+            <YearChoices.Provider value={yearRange}>
+              <DayPicker
+                captionLayout="dropdown"
+                navLayout="around"
+                components={calendarComponents}
+                formatters={calendarFormatters[language]}
+                mode="single"
+                autoFocus
+                selected={selected}
+                month={month}
+                onMonthChange={setMonth}
+                onSelect={(date) => commit(date ? formatDateOnly(date) : "")}
+                locale={arabic ? ar : enUS}
+                dir={config.direction}
+                numerals={arabic ? "arab" : "latn"}
+                labels={{
+                  labelDayButton: (date, modifiers) => {
+                    // Numeric days keep visible cell text in the accessible name;
+                    // the default English ordinal labels (1st/2nd) obscure it.
+                    const text = date.toLocaleDateString(
+                      arabic
+                        ? "ar-u-ca-gregory-nu-arab"
+                        : "en-US-u-ca-gregory-nu-latn",
+                      {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      },
+                    );
+                    return `${modifiers.today ? (arabic ? "اليوم، " : "Today, ") : ""}${text}${modifiers.selected ? (arabic ? "، محدد" : ", selected") : ""}`;
+                  },
+                }}
+                disabled={[
+                  ...(minimum ? [{ before: minimum }] : []),
+                  ...(maximum ? [{ after: maximum }] : []),
+                ]}
+                startMonth={minimum ?? parseDateOnly("0001-01-01")}
+                endMonth={maximum ?? parseDateOnly("9999-12-31")}
+              />
+            </YearChoices.Provider>
             <div className="tz-date-actions">
               <button
                 type="button"

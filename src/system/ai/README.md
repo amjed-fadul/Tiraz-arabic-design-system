@@ -350,6 +350,23 @@ value props show feedback and submit empty. A valid externally controlled date
 outside bounds stays visible/submitted with feedback: the application must block
 invalid submission. No manual text editor or partial date strings are supported.
 
+The caption uses native, localized month/year selects through DayPicker's
+`captionLayout="dropdown"` and supported dropdown components. They navigate only:
+selection, hidden submission value and onValueChange stay unchanged until a day
+(or Today/Clear) is chosen. Month navigation crosses December/January logically;
+DayPicker's `navLayout="around"` handles RTL icons without a second CSS flip.
+
+`yearRange?: readonly [number, number]` configures the inclusive **direct year
+choices**, not date validity. By default the dropdown shows the viewed year ±100
+(clipped to 1–9999); it moves with navigation. The viewed year is always included,
+even outside an explicit range. Example: `yearRange={[1900, 2100]}` gives a practical
+application window while month arrows and calendar keyboard navigation can still
+reach earlier/later years. Only min/max constrain navigation and selectable dates;
+they also filter year options and disable unavailable month options. Use min/max
+when the application needs real date bounds. Nonfinite, reversed or wholly
+out-of-domain yearRange values use the default; fractional endpoints are truncated.
+No valid dates are silently restricted by the dropdown window.
+
 Install **@daypicker/react@10.0.2** and **@radix-ui/react-popover@1.3.1** in source-copy
 hosts. DayPicker supplies the maintained accessible calendar keyboard behavior and
 Arabic/English labels; Radix supplies positioning, layer dismissal and trigger

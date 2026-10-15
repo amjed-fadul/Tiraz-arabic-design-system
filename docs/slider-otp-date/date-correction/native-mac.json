@@ -1,0 +1,100 @@
+{
+  "nativeChecks": [
+    {
+      "lang": "ar",
+      "overlay": "Sheet",
+      "yearExpanded": true,
+      "yearValue": "2025",
+      "summary": "2024-12-31",
+      "monthExpanded": true,
+      "afterList": {
+        "calendar": 1,
+        "dialog": 1
+      },
+      "afterCalendar": {
+        "calendar": 0,
+        "dialog": 1,
+        "focus": "31 ديسمبر 2024"
+      },
+      "afterDialog": {
+        "dialog": 0,
+        "focus": "Open Sheet"
+      }
+    },
+    {
+      "lang": "ar",
+      "overlay": "Modal",
+      "yearExpanded": true,
+      "yearValue": "2025",
+      "summary": "2024-12-31",
+      "monthExpanded": true,
+      "afterList": {
+        "calendar": 1,
+        "dialog": 1
+      },
+      "afterCalendar": {
+        "calendar": 0,
+        "dialog": 1,
+        "focus": "31 ديسمبر 2024"
+      },
+      "afterDialog": {
+        "dialog": 0,
+        "focus": "Open Modal"
+      }
+    },
+    {
+      "lang": "en",
+      "overlay": "Sheet",
+      "yearExpanded": true,
+      "yearValue": "2025",
+      "summary": "2024-12-31",
+      "monthExpanded": true,
+      "afterList": {
+        "calendar": 1,
+        "dialog": 1
+      },
+      "afterCalendar": {
+        "calendar": 0,
+        "dialog": 1,
+        "focus": "December 31, 2024"
+      },
+      "afterDialog": {
+        "dialog": 0,
+        "focus": "Open Sheet"
+      }
+    },
+    {
+      "lang": "en",
+      "overlay": "Modal",
+      "yearExpanded": true,
+      "yearValue": "2025",
+      "summary": "2024-12-31",
+      "monthExpanded": true,
+      "afterList": {
+        "calendar": 1,
+        "dialog": 1
+      },
+      "afterCalendar": {
+        "calendar": 0,
+        "dialog": 1,
+        "focus": "December 31, 2024"
+      },
+      "afterDialog": {
+        "dialog": 0,
+        "focus": "Open Modal"
+      }
+    }
+  ],
+  "nativeMonths": [
+    {
+      "lang": "ar",
+      "month": "10",
+      "summary": "2024-12-31"
+    },
+    {
+      "lang": "en",
+      "month": "10",
+      "summary": "2024-12-31"
+    }
+  ]
+}

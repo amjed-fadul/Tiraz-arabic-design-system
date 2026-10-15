@@ -221,4 +221,125 @@ describe("DatePicker", () => {
     expect(change).toHaveBeenCalledWith("");
     expect(screen.getByText(/December 31, 2026/)).toBeInTheDocument();
   });
+  it.each(["ltr", "rtl"] as const)(
+    "navigates logical months with matching %s chevrons and selectors",
+    async (direction) => {
+      const change = vi.fn(),
+        user = userEvent.setup();
+      render(
+        <SystemProvider config={{ ...defaultConfig, direction }}>
+          <DatePicker label="Date" value="2024-12-31" onValueChange={change} />
+        </SystemProvider>,
+      );
+      await user.click(screen.getByRole("button", { name: /^Date/ }));
+      const previous = document.querySelector<HTMLButtonElement>(
+        ".rdp-button_previous",
+      )!;
+      const next =
+        document.querySelector<HTMLButtonElement>(".rdp-button_next")!;
+      const left =
+        "16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20";
+      const right =
+        "8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20";
+      expect(previous.querySelector("polygon")).toHaveAttribute(
+        "points",
+        direction === "rtl" ? right : left,
+      );
+      expect(next.querySelector("polygon")).toHaveAttribute(
+        "points",
+        direction === "rtl" ? left : right,
+      );
+      expect(previous).toHaveAccessibleName(
+        direction === "rtl"
+          ? "اذهب إلى الشهر السابق"
+          : "Go to the Previous Month",
+      );
+      const month = screen.getByRole("combobox", {
+        name: direction === "rtl" ? "اختر الشهر" : "Choose the Month",
+      });
+      const year = screen.getByRole("combobox", {
+        name: direction === "rtl" ? "اختر السنة" : "Choose the Year",
+      });
+      await user.click(next);
+      expect(month).toHaveValue("0");
+      expect(year).toHaveValue("2025");
+      await user.click(previous);
+      expect(month).toHaveValue("11");
+      expect(year).toHaveValue("2024");
+      await user.selectOptions(month, "1");
+      await user.selectOptions(year, "2028");
+      expect(change).not.toHaveBeenCalled();
+      expect(document.querySelector("input[type=hidden]")).toHaveValue(
+        "2024-12-31",
+      );
+      await user.click(
+        screen.getByRole("button", {
+          name: direction === "rtl" ? /٢٩ فبراير ٢٠٢٨/ : /February 29, 2028/,
+        }),
+      );
+      expect(change).toHaveBeenCalledWith("2028-02-29");
+    },
+  );
+  it("limits direct navigation with min/max while preserving the selected date", async () => {
+    const change = vi.fn(),
+      user = userEvent.setup();
+    render(
+      <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+        <DatePicker
+          label="Date"
+          value="2024-12-31"
+          min="2024-12-20"
+          max="2025-02-10"
+          onValueChange={change}
+        />
+      </SystemProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: /^Date/ }));
+    const month = screen.getByRole("combobox", { name: "Choose the Month" });
+    const year = screen.getByRole("combobox", { name: "Choose the Year" });
+    expect([...year.querySelectorAll("option")].map((e) => e.value)).toEqual([
+      "2024",
+      "2025",
+    ]);
+    expect(month.querySelector('option[value="10"]')).toBeDisabled();
+    expect(document.querySelector(".rdp-button_previous")).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    await user.selectOptions(year, "2025");
+    expect(month).toHaveValue("1");
+    expect(month.querySelector('option[value="2"]')).toBeDisabled();
+    expect(document.querySelector(".rdp-button_next")).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    expect(change).not.toHaveBeenCalled();
+    expect(document.querySelector("input[type=hidden]")).toHaveValue(
+      "2024-12-31",
+    );
+  });
+  it("keeps year dropdowns practical without restricting date validity or month navigation", async () => {
+    const user = userEvent.setup();
+    render(
+      <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+        <DatePicker
+          label="Date"
+          defaultValue="1800-12-31"
+          yearRange={[1900, 2100]}
+        />
+      </SystemProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: /^Date/ }));
+    const year = screen.getByRole("combobox", { name: "Choose the Year" });
+    expect(year).toHaveValue("1800");
+    expect(year.querySelectorAll("option")).toHaveLength(202);
+    await user.click(
+      document.querySelector<HTMLButtonElement>(".rdp-button_previous")!,
+    );
+    expect(year).toHaveValue("1800");
+    await user.selectOptions(year, "1900");
+    expect(document.querySelector("input[type=hidden]")).toHaveValue(
+      "1800-12-31",
+    );
+  });
 });

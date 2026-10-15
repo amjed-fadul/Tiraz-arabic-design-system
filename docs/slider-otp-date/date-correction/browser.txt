@@ -1,0 +1,5 @@
+PASS ar: actual arrow actions/icons/names/year boundaries, localized direct month/year, leap day, preservation, simulated selects and keyboard tab/Escape, min/max, full date domain, clear/reset
+PASS ar: 16 light/dark/type/viewport layouts; Sheet/Modal native dropdown use, calendar → dialog Escape ordering, focus restoration, reduced motion
+PASS en: actual arrow actions/icons/names/year boundaries, localized direct month/year, leap day, preservation, simulated selects and keyboard tab/Escape, min/max, full date domain, clear/reset
+PASS en: 16 light/dark/type/viewport layouts; Sheet/Modal native dropdown use, calendar → dialog Escape ordering, focus restoration, reduced motion
+PASS No browser runtime errors
