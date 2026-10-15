@@ -4,8 +4,8 @@ export const catalog = [
     id: "task-rows",
     name: ["صفوف المهام", "TaskRows"],
     description: [
-      "مهام يملكها التطبيق مع اكتمال واضح وإجراءات مستقلة.",
-      "Application-owned tasks with clear completion and separate actions.",
+      "صفوف مهام وكيل قابلة للتوسيع مع حالات تنفيذ يزوّدها التطبيق.",
+      "Expandable agent-task rows with application-supplied execution states.",
     ],
     file: "TaskRows.tsx",
   },
@@ -419,6 +419,11 @@ export const navigationCatalog = catalog.filter((item) => item.id !== "field");
 // Documentation-only groups. Keep page IDs, metadata and source APIs unchanged.
 const documentationGroups = [
   {
+    id: "ai",
+    name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
+    ids: ["task-rows"],
+  },
+  {
     id: "forms",
     name: ["النماذج", "Forms"],
     ids: [
@@ -446,7 +451,7 @@ const documentationGroups = [
   {
     id: "data",
     name: ["البيانات", "Data"],
-    ids: ["task-rows", "filter-bar", "table", "data-table", "timeline"],
+    ids: ["filter-bar", "table", "data-table", "timeline"],
   },
   {
     id: "display",
@@ -482,7 +487,7 @@ const documentationGroups = [
   ids: Exclude<ComponentId, "field">[];
 }>;
 
-// AI patterns have no implemented documentation pages yet.
+// Only implemented pages appear in documentation groups.
 export const navigationGroups = documentationGroups
   .map((group) => ({
     ...group,

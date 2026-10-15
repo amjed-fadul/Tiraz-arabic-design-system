@@ -454,18 +454,40 @@ bundle; they import only React, existing lucide icons and the source-root index.
 
 ## Tasks and notifications
 
-Use [TaskRowsExamples](examples/TaskRowsExamples.tsx) for application-owned tasks,
-and [NotificationListExamples](examples/NotificationListExamples.tsx) for local
-notifications. Both keep supplied order and stable unique IDs; neither saves data.
+Use [TaskRowsExamples](examples/TaskRowsExamples.tsx) for expandable **agent-task
+execution** rows, and [NotificationListExamples](examples/NotificationListExamples.tsx)
+for local notifications. Both preserve supplied order and stable unique IDs.
 
-TaskRows takes items, label and optional onCompletedChange(id, completed).
-Items require id, string label and completed; description, disabled, assignee,
-meta and actions are optional. Callback omission renders a static state indicator.
-With a callback it composes the existing Checkbox; disabled prevents completion
-changes. Text badges always explain completion. Keep actions separate from labels;
-the caller owns action behavior and any action disabled state. The native ul
-forwards attributes, events and HTMLUListElement ref. labels translates completed
-and incomplete; defaults follow direction. emptyState replaces the default.
+TaskRows takes items and label. Each item requires id, string title, state
+(pending/running/completed/failed) and content; summary is an optional short
+string. Pending uses its supplied-order number, running a restrained decorative
+Spinner, completed a check and failed an error glyph. Visible state text is always
+present. stateLabels translates all four states; defaults and number digits follow
+direction. appearance defaults to capsules; list connects rows with subtle separators.
+
+Disclosure buttons use native Enter/Space, aria-expanded and associated panels.
+Content/actions belong inside the panel, outside the noninteractive title/summary
+and disclosure button. Closed panels are hidden and inert immediately. Their
+content stays mounted to preserve application form values. Controlled collapse
+returns focus from that panel to its persistent trigger, without stealing focus
+from elsewhere. State updates retain IDs, order, expansion and focus.
+
+Omit expandedIds for internal expansion, optionally initialized by
+defaultExpandedIds (default []). Use expandedIds with onExpandedChange(ids) for
+controlled expansion; the caller updates that array. Multiple rows may expand.
+EmptyState can be supplied through emptyState. Native ul attributes/events/ref
+are forwarded. Supply stable unique nonempty IDs; no automatic sorting or state
+progression. This corrects the earlier checklist interpretation: there are no
+completion callbacks/checkboxes, assignees or manual task controls.
+
+The compiling example starts pending and has Run/Replay, an intentional local
+failure, then an explicit local retry to completion. Its timers cancel on replay
+and unmount; generation guards prevent earlier runs overwriting later ones. It
+never claims real files, emails or backend tasks were processed. Another completed
+sample has useful expandable details. A separate static example shows all four
+application-supplied states in either appearance. No agent runtime, networking or
+library timer is provided. The TaskRows documentation lives under AI patterns;
+ToolCall and ToolChips are not implemented.
 
 NotificationList takes items and label, optional onMarkRead(id), onMarkAllRead(),
 labels and emptyState. Items require id, string title, timestamp and read;

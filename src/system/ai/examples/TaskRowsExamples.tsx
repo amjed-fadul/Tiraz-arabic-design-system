@@ -1,84 +1,159 @@
-import { useState } from "react";
-import { Avatar, Badge, Button, EmptyState, TaskRows } from "../../index";
-import type { TaskRowItem } from "../../index";
+import { useEffect, useRef, useState } from "react";
+import { Button, EmptyState, TaskRows } from "../../index";
+import type { TaskRowItem, TaskState } from "../../index";
 
 export interface TaskRowsExampleProps {
   language?: "ar" | "en";
-  interactive?: boolean;
+  appearance?: "capsules" | "list";
+  mode?: "controlled" | "uncontrolled";
   empty?: boolean;
   longContent?: boolean;
 }
 export function TaskRowsExample({
   language = "ar",
-  interactive = true,
+  appearance = "capsules",
+  mode = "uncontrolled",
   empty = false,
   longContent = false,
 }: TaskRowsExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [completed, setCompleted] = useState(["publish"]);
-  const [details, setDetails] = useState(false);
+  const [state, setState] = useState<TaskState>("pending");
+  const [hasRun, setHasRun] = useState(false);
+  const [expandedIds, setExpandedIds] = useState<string[]>([]);
+  const [note, setNote] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const generation = useRef(0);
+  useEffect(
+    () => () => {
+      generation.current += 1;
+      if (timer.current !== null) clearTimeout(timer.current);
+    },
+    [],
+  );
+  function run(retry = false) {
+    if (timer.current !== null) clearTimeout(timer.current);
+    const current = ++generation.current;
+    setHasRun(true);
+    setState("running");
+    timer.current = setTimeout(() => {
+      if (generation.current !== current) return;
+      timer.current = null;
+      setState(retry ? "completed" : "failed");
+    }, 900);
+  }
+  const labels = {
+    pending: t("قيد الانتظار", "Pending"),
+    running: t("جارٍ التنفيذ", "Running"),
+    completed: t("مكتملة", "Completed"),
+    failed: t("فشلت", "Failed"),
+  };
   const items: TaskRowItem[] = empty
     ? []
     : [
         {
-          id: "review",
-          label: longContent
-            ? t(
-                "مراجعة جميع تسميات المكوّنات والأمثلة العربية مع فريق التصميم قبل تسليم الحزمة",
-                "Review all component names and Arabic examples with the design team before handing over the package",
-              )
-            : t("مراجعة التسميات", "Review labels"),
-          completed: completed.includes("review"),
-          description: (
-            <>
-              {t("المرجع المحلي: ", "Local reference: ")}
-              <bdi dir="ltr">DOC-42/2026</bdi>
-              {longContent && (
-                <>
-                  {" "}
-                  —{" "}
-                  <bdi dir="ltr">
-                    TIRAZ-IDENTIFIER-WITHOUT-BREAKS-012345678901234567890123456789
-                  </bdi>
-                </>
+          id: "notes",
+          title: t("ملاحظات نموذجية جاهزة", "Sample notes ready"),
+          summary: t("٣ ملاحظات", "3 notes"),
+          state: "completed",
+          content: (
+            <div style={{ display: "grid", gap: "var(--space-2)" }}>
+              <p style={{ margin: 0 }}>
+                {t(
+                  "محتوى تجريبي موجود مسبقًا لشرح بنية الصف، دون معالجة ملفات.",
+                  "Prewritten sample content explains the row structure; no files were processed.",
+                )}
+              </p>
+              <div>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  aria-expanded={note}
+                  onClick={() => setNote((value) => !value)}
+                >
+                  {t("عرض ملاحظة محلية", "Show local note")}
+                </Button>
+              </div>
+              {note && (
+                <p>
+                  {t(
+                    "استخدم عنوانًا واضحًا وملخصًا قصيرًا ومحتوى مفيدًا داخل التفاصيل.",
+                    "Use a clear title, a short summary and useful content inside the details.",
+                  )}
+                </p>
               )}
-            </>
-          ),
-          assignee: (
-            <Avatar
-              name={t("سارة علي", "Sara Ali")}
-              fallback={t("س ع", "SA")}
-            />
-          ),
-          meta: <Badge>{t("للمراجعة", "For review")}</Badge>,
-          actions: (
-            <Button
-              size="sm"
-              variant="ghost"
-              aria-expanded={details}
-              onClick={() => setDetails((value) => !value)}
-            >
-              {t("تفاصيل المهمة", "Task details")}
-            </Button>
+            </div>
           ),
         },
         {
-          id: "approve",
-          label: t("اعتماد المحتوى — مقفلة", "Approve copy — locked"),
-          description: t(
-            "بانتظار قرار الفريق في هذا المثال.",
-            "Waiting for a team decision in this example.",
+          id: "outline",
+          title: longContent
+            ? t(
+                "بناء مخطط نموذجي لمراجعة التسميات العربية والمحتوى المختلط مع جميع أعضاء فريق التصميم",
+                "Build sample outline for reviewing Arabic labels and mixed content with every member of the design team",
+              )
+            : t("بناء مخطط نموذجي", "Build sample outline"),
+          summary: t("قسمان", "2 sections"),
+          state,
+          content: (
+            <div style={{ display: "grid", gap: "var(--space-3)" }}>
+              <p style={{ margin: 0 }}>
+                {t("المرجع التوضيحي: ", "Sample reference: ")}
+                <bdi dir="ltr">DEMO-42/2026</bdi>
+                {longContent && (
+                  <>
+                    <br />
+                    <bdi dir="ltr">
+                      TIRAZ-SAMPLE-IDENTIFIER-WITHOUT-BREAKS-012345678901234567890123456789
+                    </bdi>
+                  </>
+                )}
+              </p>
+              <p style={{ margin: 0 }}>
+                {state === "failed"
+                  ? t(
+                      "توقفت المحاكاة عمدًا عند خطأ توضيحي. أعد المحاولة محليًا لإكمال العرض.",
+                      "The simulation intentionally stopped at a sample error. Retry locally to complete the demonstration.",
+                    )
+                  : state === "completed"
+                    ? t(
+                        "اكتملت المحاكاة المحلية فقط؛ لم يُنفّذ عمل حقيقي.",
+                        "Only the local simulation completed; no real work was performed.",
+                      )
+                    : t(
+                        "تشغيل العرض يغيّر حالة المثال فقط؛ يمكنك فتح التفاصيل أثناء التشغيل.",
+                        "Running the demonstration changes only example state; details remain available during the run.",
+                      )}
+              </p>
+              <div>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  aria-disabled={state !== "failed" || undefined}
+                  onClick={() => {
+                    if (state === "failed") run(true);
+                  }}
+                >
+                  {t("إعادة المحاولة محليًا", "Retry local simulation")}
+                </Button>
+              </div>
+            </div>
           ),
-          completed: completed.includes("approve"),
-          disabled: true,
         },
         {
-          id: "publish",
-          label: t("تجهيز المعاينة المحلية", "Prepare local preview"),
-          completed: completed.includes("publish"),
+          id: "handoff",
+          title: t("تسليم المثال", "Hand over sample"),
+          summary: t("بانتظار التطبيق", "Application decides"),
+          state: "pending",
+          content: (
+            <p style={{ margin: 0 }}>
+              {t(
+                "يبقى هذا الصف في الانتظار. التطبيق وحده يحدد الحالة؛ المكتبة لا تتقدم تلقائيًا.",
+                "This row stays pending. The application alone supplies state; the library never advances automatically.",
+              )}
+            </p>
+          ),
         },
       ];
-  const count = items.filter((item) => item.completed).length;
   return (
     <div
       style={{
@@ -90,54 +165,76 @@ export function TaskRowsExample({
     >
       <p style={{ margin: 0, color: "var(--text-secondary)" }}>
         {t(
-          "مهام نموذجية في الذاكرة فقط؛ لا تُحفظ التغييرات وتبقى المهام بترتيبها الأصلي.",
-          "Sample tasks in memory only; changes are not saved and tasks keep their original order.",
+          "محاكاة محلية فقط في الذاكرة. لا تُعالج ملفات أو رسائل بريد أو مهام خادم.",
+          "Local simulation in memory only. No files, emails or backend tasks are processed.",
         )}
       </p>
-      <p role="status" style={{ margin: 0 }}>
-        {t(
-          `${count} من ${items.length} مكتملة`,
-          `${count} of ${items.length} completed`,
-        )}
-      </p>
+      {!empty && (
+        <div>
+          <Button size="sm" variant="secondary" onClick={() => run()}>
+            {hasRun
+              ? t("إعادة تشغيل المحاكاة المحلية", "Replay local simulation")
+              : t("تشغيل المحاكاة المحلية", "Run local simulation")}
+          </Button>
+        </div>
+      )}
       <TaskRows
-        label={t("مهام المشروع", "Project tasks")}
+        label={t("مهام الوكيل التجريبية", "Sample agent tasks")}
         items={items}
-        labels={{
-          completed: t("مكتملة", "Completed"),
-          incomplete: t("غير مكتملة", "Incomplete"),
-        }}
-        onCompletedChange={
-          interactive
-            ? (id, checked) =>
-                setCompleted((ids) =>
-                  checked
-                    ? [...ids.filter((value) => value !== id), id]
-                    : ids.filter((value) => value !== id),
-                )
-            : undefined
-        }
+        appearance={appearance}
+        stateLabels={labels}
+        {...(mode === "controlled"
+          ? { expandedIds, onExpandedChange: setExpandedIds }
+          : {})}
         emptyState={
           <EmptyState
-            title={t("لا توجد مهام", "No tasks")}
+            title={t("لا توجد مهام وكيل", "No agent tasks")}
             description={t(
-              "لم تُضف مهام لهذا المثال.",
-              "No tasks were supplied to this example.",
+              "لم يزوّد التطبيق أي مهام في هذا المثال.",
+              "The application supplied no tasks in this example.",
             )}
           />
         }
       />
-      {details && !empty && (
-        <div>
-          <strong>{t("ملاحظات المراجعة المحلية", "Local review notes")}</strong>
-          <p>
+      <p role="status" style={{ margin: 0, color: "var(--text-secondary)" }}>
+        {t(
+          `حالة المحاكاة: ${labels[state]}. لم تُعالج ملفات أو رسائل بريد أو مهام خادم.`,
+          `Simulation: ${labels[state]}. No files, emails or backend tasks were processed.`,
+        )}
+      </p>
+    </div>
+  );
+}
+export function TaskRowsStatesExample({
+  language = "ar",
+  appearance = "list",
+}: Pick<TaskRowsExampleProps, "language" | "appearance">) {
+  const t = (ar: string, en: string) => (language === "ar" ? ar : en);
+  const states: TaskState[] = ["pending", "running", "completed", "failed"];
+  return (
+    <TaskRows
+      label={t("حالات مهام الوكيل", "Agent task states")}
+      appearance={appearance}
+      stateLabels={{
+        pending: t("قيد الانتظار", "Pending"),
+        running: t("جارٍ التنفيذ", "Running"),
+        completed: t("مكتملة", "Completed"),
+        failed: t("فشلت", "Failed"),
+      }}
+      items={states.map((state, index) => ({
+        id: state,
+        title: t(`مهمة نموذجية ${index + 1}`, `Sample task ${index + 1}`),
+        summary: t("تفاصيل محلية", "Local details"),
+        state,
+        content: (
+          <p style={{ margin: 0 }}>
             {t(
-              "تحقّق من وضوح التسميات العربية قبل اعتماد النسخة. هذا العرض لا يغيّر اكتمال المهمة.",
-              "Check Arabic labels for clarity before approving the copy. Opening these notes does not complete the task.",
+              "حالة يزوّدها التطبيق لتوضيح العرض؛ لا تنفيذ فعلي.",
+              "Application-supplied state illustrates the display; no actual execution.",
             )}
           </p>
-        </div>
-      )}
-    </div>
+        ),
+      }))}
+    />
   );
 }

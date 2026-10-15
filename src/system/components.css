@@ -2836,8 +2836,7 @@
   }
 }
 
-/* Application-owned tasks and notifications: stable quiet rows, no entry motion. */
-.tz-task-rows,
+/* Application-owned notification rows. */
 .tz-notification-items {
   list-style: none;
   padding: 0;
@@ -2845,7 +2844,6 @@
   min-inline-size: 0;
   inline-size: 100%;
 }
-.tz-task-row,
 .tz-notification-row {
   display: flex;
   align-items: flex-start;
@@ -2854,51 +2852,22 @@
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
-.tz-task-row + .tz-task-row,
 .tz-notification-row + .tz-notification-row {
   border-block-start: 1px solid var(--border);
 }
-.tz-task-main,
 .tz-notification-copy {
   flex: 1;
   min-inline-size: 0;
 }
-.tz-task-row .tz-field-label,
-.tz-row-title,
-.tz-task-static {
+.tz-row-title {
   font-size: var(--text-body);
   font-weight: var(--weight-medium);
   line-height: var(--line-height);
 }
-.tz-task-row .tz-checkbox-field {
-  margin: 0;
-}
-.tz-task-row .tz-checkbox {
-  position: relative;
-}
-/* Increase the input's pointer target without changing the compact row height. */
-.tz-task-row .tz-checkbox::after {
-  content: "";
-  position: absolute;
-  inset: -5px;
-}
-.tz-task-static {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--control-gap);
-  min-block-size: var(--control-small);
-}
-.tz-task-static > span {
-  display: grid;
-  place-items: center;
-  min-block-size: var(--control-small);
-}
-.tz-task-static svg,
 .tz-notification-leading svg {
   inline-size: 18px;
   block-size: 18px;
 }
-.tz-task-description,
 .tz-notification-description {
   color: var(--text-secondary);
   font-size: var(--text-body);
@@ -2927,13 +2896,6 @@
   max-inline-size: 100%;
   overflow-wrap: anywhere;
   white-space: normal;
-}
-.tz-task-row > .tz-row-actions {
-  flex-shrink: 0;
-  margin-block-start: 0;
-}
-.tz-task-row[data-disabled] .tz-task-main {
-  opacity: 0.65;
 }
 .tz-notification-list {
   min-inline-size: 0;
@@ -2975,15 +2937,164 @@
   flex-shrink: 0;
   padding-block-start: var(--space-1);
 }
-@media (max-width: 480px) {
-  .tz-task-row {
-    flex-wrap: wrap;
-  }
-  .tz-task-main {
-    flex-basis: 100%;
-  }
-}
 .tz-notification-list .tz-row-actions button[aria-disabled="true"] {
   color: var(--text-muted);
   cursor: default;
+}
+
+/* Agent-task disclosures. Execution state never drives entry animations. */
+.tz-task-rows {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+.tz-agent-task {
+  min-inline-size: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+.tz-agent-task-trigger {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto auto 16px;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  min-block-size: var(--control-small);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: inherit;
+  color: var(--text);
+  background: transparent;
+  font-family: inherit;
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+  text-align: start;
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease);
+}
+.tz-agent-task-trigger:hover {
+  background: var(--surface-hover);
+}
+.tz-agent-task-trigger:active {
+  background: var(--surface-subtle);
+}
+.tz-agent-task-indicator {
+  display: grid;
+  place-items: center;
+  inline-size: 24px;
+  block-size: 24px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+}
+.tz-agent-task-indicator > svg {
+  inline-size: 14px;
+  block-size: 14px;
+}
+.tz-agent-task-indicator .tz-loading-spinner {
+  inline-size: 16px;
+  block-size: 16px;
+}
+.tz-agent-task-title {
+  min-inline-size: 0;
+  font-weight: var(--weight-medium);
+  overflow-wrap: anywhere;
+}
+.tz-agent-task-summary,
+.tz-agent-task-state {
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.tz-agent-task-trigger:not(:has(.tz-agent-task-summary)) {
+  grid-template-columns: 24px minmax(0, 1fr) auto 16px;
+}
+.tz-agent-task-chevron {
+  inline-size: 16px;
+  block-size: 16px;
+  color: var(--text-muted);
+  transition: transform var(--motion-fast) var(--ease);
+}
+.tz-agent-task[data-expanded="true"] .tz-agent-task-chevron {
+  transform: rotate(180deg);
+}
+.tz-agent-task[data-state="completed"] .tz-agent-task-indicator {
+  color: var(--success);
+  background: var(--success-soft);
+  border-color: transparent;
+}
+.tz-agent-task[data-state="failed"] .tz-agent-task-indicator {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-color: transparent;
+}
+.tz-agent-task[data-state="completed"] .tz-agent-task-state {
+  color: var(--success);
+}
+.tz-agent-task[data-state="failed"] .tz-agent-task-state {
+  color: var(--danger);
+}
+.tz-agent-task-panel {
+  margin-inline: var(--space-3);
+  padding-block: var(--space-2) var(--space-3);
+  padding-inline-start: calc(24px + var(--space-2));
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+  min-inline-size: 0;
+}
+.tz-agent-task-panel[hidden] {
+  display: none;
+}
+.tz-agent-task-panel :where(button, a, input, select, textarea) {
+  max-inline-size: 100%;
+}
+.tz-task-rows[data-appearance="list"] {
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+.tz-task-rows[data-appearance="list"] > .tz-agent-task {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.tz-task-rows[data-appearance="list"] > .tz-agent-task:first-child {
+  border-start-start-radius: inherit;
+  border-start-end-radius: inherit;
+}
+.tz-task-rows[data-appearance="list"] > .tz-agent-task:last-child {
+  border-end-start-radius: inherit;
+  border-end-end-radius: inherit;
+}
+.tz-task-rows[data-appearance="list"] > .tz-agent-task + .tz-agent-task {
+  border-block-start: 1px solid var(--border);
+}
+@container (max-width: 460px) {
+  .tz-agent-task-trigger {
+    grid-template-columns: 24px minmax(0, 1fr) auto 16px;
+  }
+  .tz-agent-task-summary {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .tz-agent-task-state {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    max-inline-size: 6em;
+  }
+  .tz-agent-task-chevron {
+    grid-column: 4;
+    grid-row: 1 / span 2;
+  }
+}
+.tz-task-rows {
+  container-type: inline-size;
 }

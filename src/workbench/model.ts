@@ -338,7 +338,12 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
-    "task-rows": { interactive: true, empty: false, longContent: false },
+    "task-rows": {
+      appearance: "capsules",
+      mode: "uncontrolled",
+      empty: false,
+      longContent: false,
+    },
     "notification-list": {
       empty: false,
       longContent: false,
@@ -910,7 +915,11 @@ export function normalizePlaygrounds(
           ? ["populated", "loading", "empty", "no-results", "error"]
           : ["populated", "empty"],
       appearance:
-        component === "avatar" ? ["initials", "photo"] : ["initials", "mixed"],
+        component === "task-rows"
+          ? ["capsules", "list"]
+          : component === "avatar"
+            ? ["initials", "photo"]
+            : ["initials", "mixed"],
       shape: ["text", "rectangle", "circle"],
       illustration: ["no-records", "no-results", "getting-started", "none"],
       mode: ["controlled", "uncontrolled"],

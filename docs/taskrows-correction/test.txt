@@ -1,0 +1,73 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+ ❯ src/workbench/navigation-groups.test.tsx (2 tests | 2 failed) 322ms
+   × keeps every implemented documentation page reachable once in expanded Arabic groups 152ms
+   × translates groups and preserves the selected documentation page and URL 169ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/navigation-groups.test.tsx > keeps every implemented documentation page reachable once in expanded Arabic groups
+AssertionError: expected [ 'أنماط الذكاء الاصطناعي', …(7) ] to deeply equal [ 'النماذج', 'الملفات', …(5) ]
+
+- Expected
++ Received
+
+@@ -1,6 +1,7 @@
+  [
++   "أنماط الذكاء الاصطناعي",
+    "النماذج",
+    "الملفات",
+    "التنقّل",
+    "البيانات",
+    "العرض والتنبيهات",
+
+ ❯ src/workbench/navigation-groups.test.tsx:11:67
+      9|   const nav = screen.getByRole("navigation", { name: "المكوّنات" });
+     10|   const groups = within(nav).getAllByRole("group");
+     11|   expect(groups.map((group) => group.getAttribute("aria-label"))).toEq…
+       |                                                                   ^
+     12|     "النماذج",
+     13|     "الملفات",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/workbench/navigation-groups.test.tsx > translates groups and preserves the selected documentation page and URL
+AssertionError: expected [ 'AI patterns', 'Forms', …(6) ] to deeply equal [ Array(7) ]
+
+- Expected
++ Received
+
+@@ -1,6 +1,7 @@
+  [
++   "AI patterns",
+    "Forms",
+    "Files",
+    "Navigation",
+    "Data",
+    "Display & feedback",
+
+ ❯ src/workbench/navigation-groups.test.tsx:64:5
+     62|       .getAllByRole("group")
+     63|       .map((group) => group.getAttribute("aria-label")),
+     64|   ).toEqual([
+       |     ^
+     65|     "Forms",
+     66|     "Files",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 58 passed (59)
+      Tests  2 failed | 498 passed (500)
+   Start at  18:46:07
+   Duration  134.28s (import 46%, tests 38%, environment 12%, setup 2%, transform 2%)
+
+     Import  206 modules were evaluated 4094 times · 118.40s total, 46% of tracked time
+             ~54.47s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

@@ -84,12 +84,16 @@ const chartFields = [
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
   "task-rows": [
+    field("appearance", "select", "المظهر", "Appearance", "appearance", {
+      options: ["capsules", "list"],
+    }),
     field(
-      "interactive",
-      "boolean",
-      "تغيير الاكتمال",
-      "Interactive completion",
-      "onCompletedChange",
+      "mode",
+      "select",
+      "حالة التوسيع",
+      "Expansion state",
+      "expandedIds / defaultExpandedIds",
+      { options: ["controlled", "uncontrolled"] },
     ),
     field(
       "empty",
@@ -729,6 +733,8 @@ export const optionNames: Record<string, Localized> = {
   "no-results": ["لا توجد نتائج مطابقة", "No matching results"],
   populated: ["صفوف نموذجية", "Populated"],
   empty: ["فارغ", "Empty"],
+  capsules: ["كبسولات", "Capsules"],
+  list: ["قائمة متصلة", "Connected list"],
   inherit: ["إعداد النظام", "System setting"],
   light: ["فاتح", "Light"],
   dark: ["داكن", "Dark"],
@@ -743,7 +749,7 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
-  "task-rows": ["interactive", "empty", "longContent"],
+  "task-rows": ["appearance", "mode", "empty", "longContent"],
   "notification-list": ["readControls", "avatars", "empty", "longContent"],
   steps: ["orientation", "currentState"],
   timeline: ["descriptions", "icons", "actions", "empty", "longContent"],

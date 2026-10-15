@@ -45,14 +45,17 @@ it.each(["ar", "en"] as const)(
       user = userEvent.setup();
     const Tasks = copiedExample("task-rows", language);
     const view = render(<Tasks />);
-    const controls = screen.getAllByRole("checkbox");
-    await user.click(controls[0]);
-    expect(controls[0]).toBeChecked();
-    expect(controls[0]).toHaveFocus();
-    expect(screen.getAllByRole("checkbox")).toEqual(controls);
-    expect(screen.getByRole("status")).toHaveTextContent(
-      ar ? "2 من 3 مكتملة" : "2 of 3 completed",
-    );
+    expect(screen.queryByRole("checkbox")).toBeNull();
+    const disclosure = screen.getByRole("button", {
+      name: ar ? /بناء مخطط نموذجي/ : /Build sample outline/,
+    });
+    await user.click(disclosure);
+    expect(disclosure).toHaveAttribute("aria-expanded", "true");
+    expect(
+      screen.getByRole("button", {
+        name: ar ? "إعادة المحاولة محليًا" : "Retry local simulation",
+      }),
+    ).toHaveAttribute("aria-disabled", "true");
     view.unmount();
     const Notices = copiedExample("notification-list", language);
     render(<Notices />);

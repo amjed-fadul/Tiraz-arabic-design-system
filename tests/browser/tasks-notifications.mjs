@@ -6,7 +6,7 @@ const {
   chromium,
 } = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5244";
-const evidence = "docs/tasks-and-notifications/browser";
+const evidence = "docs/taskrows-correction/browser";
 await mkdir(evidence, { recursive: true });
 const browser = await chromium.launch({
   headless: true,
@@ -26,43 +26,48 @@ const pass = (name) => {
   checks.push(name);
   console.log("PASS " + name);
 };
-const fixture = (language, theme) =>
-  `${base}/tests/browser/tasks-notifications-fixture.html?lang=${language}&theme=${theme}`;
+const fixture = (language, theme, appearance = "capsules") =>
+  `${base}/tests/browser/tasks-notifications-fixture.html?lang=${language}&theme=${theme}&appearance=${appearance}`;
 try {
   for (const language of ["ar", "en"])
     for (const theme of ["light", "dark"])
-      for (const width of [1440, 390, 320]) {
-        await page.setViewportSize({ width, height: 1000 });
-        await page.goto(fixture(language, theme));
-        await page
-          .getByRole("heading", { name: "TaskRows", exact: true })
-          .waitFor();
-        await page.evaluate(() => document.fonts.ready);
-        const geometry = await page.evaluate(() => ({
-          width: innerWidth,
-          documentWidth: document.documentElement.scrollWidth,
-          font: getComputedStyle(document.querySelector("main")).fontFamily,
-          rows: [
-            ...document.querySelectorAll(".tz-task-rows,.tz-notification-list"),
-          ].map((el) => ({ width: el.clientWidth, scroll: el.scrollWidth })),
-          animations: [
-            ...document.querySelectorAll(".tz-task-row,.tz-notification-row"),
-          ].map((el) => getComputedStyle(el).animationName),
-          times: document.querySelectorAll("time[datetime]").length,
-        }));
-        assert.equal(geometry.width, width);
-        assert.ok(geometry.documentWidth <= width);
-        assert.ok(geometry.rows.every((row) => row.scroll <= row.width));
-        assert.ok(geometry.animations.every((name) => name === "none"));
-        assert.equal(geometry.times, 2);
-        matrix.push({ language, theme, ...geometry });
-        await page.screenshot({
-          path: `${evidence}/${language}-${theme}-${width}.jpg`,
-          fullPage: true,
-        });
-      }
+      for (const width of [1440, 320])
+        for (const appearance of ["capsules", "list"]) {
+          await page.setViewportSize({ width, height: 1000 });
+          await page.goto(fixture(language, theme, appearance));
+          await page
+            .getByRole("heading", { name: "TaskRows", exact: true })
+            .waitFor();
+          await page.evaluate(() => document.fonts.ready);
+          const geometry = await page.evaluate(() => ({
+            width: innerWidth,
+            documentWidth: document.documentElement.scrollWidth,
+            font: getComputedStyle(document.querySelector("main")).fontFamily,
+            rows: [
+              ...document.querySelectorAll(
+                ".tz-task-rows,.tz-notification-list",
+              ),
+            ].map((el) => ({ width: el.clientWidth, scroll: el.scrollWidth })),
+            animations: [
+              ...document.querySelectorAll(
+                ".tz-agent-task,.tz-notification-row",
+              ),
+            ].map((el) => getComputedStyle(el).animationName),
+            times: document.querySelectorAll("time[datetime]").length,
+          }));
+          assert.equal(geometry.width, width);
+          assert.ok(geometry.documentWidth <= width);
+          assert.ok(geometry.rows.every((row) => row.scroll <= row.width));
+          assert.ok(geometry.animations.every((name) => name === "none"));
+          assert.equal(geometry.times, 2);
+          matrix.push({ language, theme, appearance, ...geometry });
+          await page.screenshot({
+            path: `${evidence}/${language}-${theme}-${width}-${appearance}.jpg`,
+            fullPage: true,
+          });
+        }
   pass(
-    "12 exact CSS viewport language/theme cases: long mixed text, no overflow or row entry motion",
+    "16 language/theme/width/appearance cases: long mixed text, four states, no overflow or row entry motion",
   );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(fixture("en", "light"));
@@ -71,40 +76,105 @@ try {
     name: "Notification example",
     exact: true,
   });
-  const first = tasks.getByRole("checkbox", { name: /^Review all/ });
-  const originalIds = await tasks
-    .getByRole("checkbox")
-    .evaluateAll((els) => els.map((el) => el.id));
+  assert.equal(await tasks.getByRole("checkbox").count(), 0);
+  const first = tasks.getByRole("button", { name: /Build sample outline/ });
+  const ids = await tasks
+    .locator(".tz-agent-task-trigger")
+    .evaluateAll((els) => els.map((el) => el.getAttribute("aria-controls")));
+  await first.press("Enter");
+  assert.equal(await first.getAttribute("aria-expanded"), "true");
+  assert.equal(
+    await tasks
+      .getByRole("button", { name: "Retry local simulation" })
+      .getAttribute("aria-disabled"),
+    "true",
+  );
   await first.press("Space");
-  assert.equal(await tasks.getByRole("status").innerText(), "2 of 3 completed");
-  assert.ok(await first.evaluate((el) => el === document.activeElement));
+  assert.equal(await first.getAttribute("aria-expanded"), "false");
+  assert.equal(
+    await tasks.getByRole("button", { name: "Retry local simulation" }).count(),
+    0,
+  );
+  await first.press("Enter");
+  await tasks
+    .getByRole("button", { name: "Run local simulation", exact: true })
+    .click();
+  assert.ok((await first.innerText()).includes("Running"));
+  await page.screenshot({ path: `${evidence}/running-en-light.jpg` });
+  await tasks
+    .getByRole("status")
+    .filter({ hasText: "Simulation: Failed" })
+    .waitFor();
+  assert.ok((await first.innerText()).includes("Failed"));
+  await tasks
+    .getByRole("button", { name: "Retry local simulation", exact: true })
+    .press("Enter");
+  assert.ok(
+    await tasks
+      .getByRole("button", { name: "Retry local simulation", exact: true })
+      .evaluate((el) => el === document.activeElement),
+  );
+  await tasks
+    .getByRole("status")
+    .filter({ hasText: "Simulation: Completed" })
+    .waitFor();
+  assert.ok(
+    await tasks
+      .getByRole("button", { name: "Retry local simulation", exact: true })
+      .evaluate((el) => el === document.activeElement),
+  );
   assert.deepEqual(
     await tasks
-      .getByRole("checkbox")
-      .evaluateAll((els) => els.map((el) => el.id)),
-    originalIds,
+      .locator(".tz-agent-task-trigger")
+      .evaluateAll((els) => els.map((el) => el.getAttribute("aria-controls"))),
+    ids,
   );
-  await first.press("Space");
-  assert.equal(await tasks.getByRole("status").innerText(), "1 of 3 completed");
-  await first.press("Tab");
   assert.ok(
-    await tasks
-      .getByRole("button", { name: "Task details" })
+    (await tasks.getByRole("status").innerText()).includes(
+      "No files, emails or backend tasks were processed",
+    ),
+  );
+  await first.click();
+  assert.ok(await first.evaluate((el) => el === document.activeElement));
+  const controlled = page.getByRole("region", {
+    name: "Controlled focus",
+    exact: true,
+  });
+  await controlled
+    .getByRole("button", { name: "Schedule external collapse" })
+    .click();
+  await controlled.getByRole("textbox", { name: "Detail draft" }).focus();
+  await page.waitForFunction(
+    () =>
+      document
+        .querySelector('[aria-label="Controlled task"] button')
+        ?.getAttribute("aria-expanded") === "false",
+  );
+  assert.ok(
+    await controlled
+      .getByRole("button", { name: /Editable sample/ })
       .evaluate((el) => el === document.activeElement),
   );
-  await page.keyboard.press("Tab");
-  assert.ok(
-    await tasks
-      .getByRole("checkbox", { name: "Prepare local preview" })
-      .evaluate((el) => el === document.activeElement),
+  assert.equal(await controlled.getByRole("textbox").count(), 0);
+  await controlled.getByRole("button", { name: /Editable sample/ }).click();
+  await controlled
+    .getByRole("button", { name: "Schedule external collapse" })
+    .click();
+  await controlled.getByRole("textbox", { name: "Detail draft" }).focus();
+  await controlled
+    .getByRole("heading", { name: "Controlled panel focus" })
+    .click();
+  await page.waitForFunction(
+    () =>
+      document
+        .querySelector('[aria-label="Controlled task"] button')
+        ?.getAttribute("aria-expanded") === "false",
   );
   assert.ok(
-    await tasks
-      .getByRole("checkbox", { name: "Approve copy — locked" })
-      .isDisabled(),
+    await page.evaluate(() => document.activeElement === document.body),
   );
   pass(
-    "Task completion/reopening, derived count, stable identities/order, focus and disabled Tab skipping",
+    "Native disclosure keyboard, hidden panels, controlled collapse focus, state/retry focus, identity and honest simulation",
   );
   await notices
     .getByRole("button", { name: "Show details: Review requested" })
@@ -187,12 +257,23 @@ try {
   await page
     .getByRole("combobox", { name: "Theme", exact: true })
     .selectOption("dark");
+  await page.waitForFunction(
+    () => document.querySelector(".tiraz-system").dataset.theme === "dark",
+  );
   await page
     .getByRole("combobox", { name: "Density", exact: true })
     .selectOption("standard");
+  await page.waitForFunction(
+    () =>
+      document.querySelector(".tiraz-system").dataset.density === "standard",
+  );
   await page
     .getByRole("combobox", { name: "Typography", exact: true })
     .selectOption("large");
+  await page.waitForFunction(
+    () =>
+      document.querySelector(".tiraz-system").dataset.typography === "large",
+  );
   await page
     .getByRole("combobox", { name: "Accent", exact: true })
     .selectOption("blue");
@@ -204,7 +285,8 @@ try {
     density: document.querySelector(".tiraz-system").dataset.density,
     typography: document.querySelector(".tiraz-system").dataset.typography,
     motion: document.querySelector(".tiraz-system").dataset.reducedMotion,
-    size: getComputedStyle(document.querySelector(".tz-task-static")).fontSize,
+    size: getComputedStyle(document.querySelector(".tz-agent-task-title"))
+      .fontSize,
     accent: getComputedStyle(
       document.querySelector(".tiraz-system"),
     ).getPropertyValue("--action"),
@@ -242,7 +324,7 @@ try {
   );
   assert.ok(
     await page.evaluate(() =>
-      [...document.querySelectorAll(".tz-choice-input")].every(
+      [...document.querySelectorAll(".tz-agent-task-chevron")].every(
         (el) => parseFloat(getComputedStyle(el).transitionDuration) < 0.01,
       ),
     ),
@@ -253,7 +335,39 @@ try {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(base);
   await page.getByRole("button", { name: "صفوف المهام", exact: true }).click();
-  await page.screenshot({ path: `${evidence}/docs-tasks-ar-light.jpg` });
+  assert.ok(
+    await page
+      .getByRole("group", { name: "أنماط الذكاء الاصطناعي", exact: true })
+      .isVisible(),
+  );
+  await page
+    .getByRole("region", { name: "المعاينة التفاعلية", exact: true })
+    .getByRole("button", { name: /ملاحظات نموذجية جاهزة/ })
+    .click();
+  await page.screenshot({ path: `${evidence}/after-ar-light-desktop.jpg` });
+  await page.setViewportSize({ width: 320, height: 1000 });
+  await page.screenshot({ path: `${evidence}/after-ar-light-320.jpg` });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page
+    .getByRole("combobox", { name: "المظهر", exact: true })
+    .selectOption("list");
+  await page.screenshot({
+    path: `${evidence}/after-ar-light-desktop-list.jpg`,
+  });
+  await page.getByRole("button", { name: "نسخ الكود", exact: true }).click();
+  await page
+    .locator('[aria-label="نسخ الكود"][data-copy-state="copied"]')
+    .waitFor();
+  const taskCode = await page.evaluate(() => navigator.clipboard.readText());
+  await page.getByRole("button", { name: "نسخ الطلب", exact: true }).click();
+  await page
+    .locator('[aria-label="نسخ الطلب"][data-copy-state="copied"]')
+    .waitFor();
+  const taskPrompt = await page.evaluate(() => navigator.clipboard.readText());
+  assert.ok(taskCode.length > 5000 && taskPrompt.includes(taskCode));
+  assert.ok(taskCode.includes('"appearance":"list"'));
+  await writeFile(`${evidence}/copied-task-prompt.txt`, taskPrompt);
+
   await page
     .getByRole("button", { name: "قائمة الإشعارات", exact: true })
     .click();

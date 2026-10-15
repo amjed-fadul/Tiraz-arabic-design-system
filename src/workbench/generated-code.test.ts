@@ -14,10 +14,23 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const appearance of ["capsules", "list"] as const)
+    for (const mode of ["controlled", "uncontrolled"] as const)
+      cases.push([
+        "task-rows",
+        { ...p["task-rows"], appearance, mode, longContent: true },
+      ]);
+
   cases.push(
     [
       "task-rows",
-      { ...p["task-rows"], interactive: false, empty: true, longContent: true },
+      {
+        ...p["task-rows"],
+        appearance: "list",
+        mode: "controlled",
+        empty: true,
+        longContent: true,
+      },
     ],
     [
       "notification-list",
@@ -338,6 +351,22 @@ it("type-checks copied code for every component, state mode and composition pres
     <Spinner/>;
     // @ts-expect-error decorative mode uses the adjacent host announcement
     <Spinner decorative label="Duplicate"/>;
+  `,
+  );
+  sources.set(
+    `${root}/src/__generated_taskrows_contract.tsx`,
+    `
+    import { TaskRows } from "./system";
+    import type { TaskRowItem, TaskState } from "./system";
+    const state: TaskState = "failed";
+    const item: TaskRowItem = {id:"sample",title:"Sample",state,content:<button>Retry locally</button>};
+    <TaskRows label="Tasks" items={[item]} appearance="list" expandedIds={["sample"]} onExpandedChange={ids => console.log(ids)} />;
+    // @ts-expect-error old checklist item fields are not supported
+    <TaskRows label="Tasks" items={[{id:"sample",label:"Old",completed:true}]} />;
+    // @ts-expect-error no manual completion callback
+    <TaskRows label="Tasks" items={[item]} onCompletedChange={() => {}} />;
+    // @ts-expect-error no automatic execution state
+    <TaskRows label="Tasks" items={[{...item,state:"idle"}]} />;
   `,
   );
   const options: ts.CompilerOptions = {

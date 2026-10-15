@@ -1,0 +1,1700 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/taskrows-agent.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+stderr | src/system/taskrows-agent.test.tsx > keeps state and item identity in supplied order; detail actions cannot toggle disclosure
+React does not recognize the `defaultExpandedIds` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `defaultexpandedids` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+
+stderr | src/system/taskrows-agent.test.tsx > supports controlled expansion and returns panel focus on external collapse without stealing outside focus
+React does not recognize the `expandedIds` prop on a DOM element. If you intentionally want it to appear in the DOM as a custom attribute, spell it as lowercase `expandedids` instead. If you accidentally passed it from a parent component, remove it from the DOM element.
+Unknown event handler property `onExpandedChange`. It will be ignored.
+
+ ❯ src/system/taskrows-agent.test.tsx (9 tests | 8 failed) 297ms
+   × renders capsules task disclosures with four readable states and native attributes/ref 93ms
+   × renders list task disclosures with four readable states and native attributes/ref 8ms
+   × keeps state and item identity in supplied order; detail actions cannot toggle disclosure 42ms
+   × supports controlled expansion and returns panel focus on external collapse without stealing outside focus 25ms
+   × uses native Enter/Space for disclosure and preserves detail form values 20ms
+   × runs only after Run, waits for explicit retry and cancels replay/retry timers 49ms
+   × cancels scheduled simulation work on unmount 34ms
+   × supports a controlled example without changing execution state from disclosure 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > renders capsules task disclosures with four readable states and native attributes/ref
+Error: expect(element).toHaveAttribute("data-appearance", "capsules") // element.getAttribute("data-appearance") === "capsules"
+
+Expected the element to have attribute:
+  data-appearance="capsules"
+Received:
+  null
+ ❯ src/system/taskrows-agent.test.tsx:22:16
+     20|   expect(list).toHaveAttribute("id","tasks");
+     21|   expect(list).toHaveAttribute("data-test","native");
+     22|   expect(list).toHaveAttribute("data-appearance",appearance);
+       |                ^
+     23|   expect(screen.queryByRole("checkbox")).toBeNull();
+     24|   for (const name of ["قيد الانتظار","جارٍ التنفيذ","مكتملة","فشلت"]) …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > renders list task disclosures with four readable states and native attributes/ref
+Error: expect(element).toHaveAttribute("data-appearance", "list") // element.getAttribute("data-appearance") === "list"
+
+Expected the element to have attribute:
+  data-appearance="list"
+Received:
+  null
+ ❯ src/system/taskrows-agent.test.tsx:22:16
+     20|   expect(list).toHaveAttribute("id","tasks");
+     21|   expect(list).toHaveAttribute("data-test","native");
+     22|   expect(list).toHaveAttribute("data-appearance",appearance);
+       |                ^
+     23|   expect(screen.queryByRole("checkbox")).toBeNull();
+     24|   for (const name of ["قيد الانتظار","جارٍ التنفيذ","مكتملة","فشلت"]) …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > keeps state and item identity in supplied order; detail actions cannot toggle disclosure
+TestingLibraryElementError: Unable to find an accessible element with the role "button"
+
+Here are the accessible roles:
+
+  list:
+
+  Name "Tasks":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Tasks"[39m
+    [33mclass[39m=[32m"tz-task-rows "[39m
+    [33mdefaultexpandedids[39m=[32m"review"[39m
+    [33mrole[39m=[32m"list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<ul[39m
+      [33maria-label[39m=[32m"Tasks"[39m
+      [33mclass[39m=[32m"tz-task-rows "[39m
+      [33mdefaultexpandedids[39m=[32m"review"[39m
+      [33mrole[39m=[32m"list"[39m
+    [36m>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:109:15
+ ❯ src/system/taskrows-agent.test.tsx:45:27
+     43|   const user = userEvent.setup();
+     44|   const view = render(<System.TaskRows label="Tasks" items={items} def…
+     45|   const triggers = screen.getAllByRole("button").filter(button=>button…
+       |                           ^
+     46|   await user.click(screen.getByRole("button",{name:"Open local note"})…
+     47|   expect(triggers[0]).toHaveAttribute("aria-expanded","true");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > supports controlled expansion and returns panel focus on external collapse without stealing outside focus
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name `/Build sample/`
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Outside":
+  [36m<button />[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "Tasks":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Tasks"[39m
+    [33mclass[39m=[32m"tz-task-rows "[39m
+    [33mexpandedids[39m=[32m"draft"[39m
+    [33mrole[39m=[32m"list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<button>[39m
+      [0mOutside[0m
+    [36m</button>[39m
+    [36m<ul[39m
+      [33maria-label[39m=[32m"Tasks"[39m
+      [33mclass[39m=[32m"tz-task-rows "[39m
+      [33mexpandedids[39m=[32m"draft"[39m
+      [33mrole[39m=[32m"list"[39m
+    [36m>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/taskrows-agent.test.tsx:58:26
+     56|   const user = userEvent.setup(), change = vi.fn();
+     57|   const view = render(<><button>Outside</button><System.TaskRows label…
+     58|   const trigger = screen.getByRole("button",{name:/Build sample/});
+       |                          ^
+     59|   await user.click(trigger);
+     60|   expect(change).toHaveBeenLastCalledWith([]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > uses native Enter/Space for disclosure and preserves detail form values
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name `/Build sample/`
+
+Here are the accessible roles:
+
+  list:
+
+  Name "Tasks":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Tasks"[39m
+    [33mclass[39m=[32m"tz-task-rows "[39m
+    [33mrole[39m=[32m"list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<ul[39m
+      [33maria-label[39m=[32m"Tasks"[39m
+      [33mclass[39m=[32m"tz-task-rows "[39m
+      [33mrole[39m=[32m"list"[39m
+    [36m>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/taskrows-agent.test.tsx:73:26
+     71|   const user = userEvent.setup();
+     72|   render(<System.TaskRows label="Tasks" items={items}/>);
+     73|   const trigger = screen.getByRole("button",{name:/Build sample/});
+       |                          ^
+     74|   trigger.focus();
+     75|   await user.keyboard("{Enter}");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > runs only after Run, waits for explicit retry and cancels replay/retry timers
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name `/Build sample outline/`
+
+Here are the accessible roles:
+
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mstyle[39m=[32m"margin: 0px; color: var(--text-secondary);"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+    [33mstyle[39m=[32m"margin: 0px;"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "Project tasks":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Project tasks"[39m
+    [33mclass[39m=[32m"tz-task-rows "[39m
+    [33mrole[39m=[32m"list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+    [33mdata-completed[39m=[32m"false"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+    [33mdata-completed[39m=[32m"false"[39m
+    [33mdata-disabled[39m=[32m"true"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+    [33mdata-completed[39m=[32m"true"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Review labels":
+  [36m<input[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_0_-label"[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mid[39m=[32m"tz-field-_r_0_"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Approve copy — locked":
+  [36m<input[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_1_-label"[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mid[39m=[32m"tz-field-_r_1_"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Prepare local preview":
+  [36m<input[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_2_-label"[39m
+    [33mchecked[39m=[32m""[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mid[39m=[32m"tz-field-_r_2_"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "Sara Ali":
+  [36m<span[39m
+    [33maria-label[39m=[32m"Sara Ali"[39m
+    [33mclass[39m=[32m"tz-avatar "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mrole[39m=[32m"img"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Task details":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"ghost"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mstyle[39m=[32m"display: grid; gap: var(--space-4); inline-size: 100%; min-inline-size: 0px;"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mstyle[39m=[32m"margin: 0px; color: var(--text-secondary);"[39m
+      [36m>[39m
+        [0mSample tasks in memory only; changes are not saved and tasks keep their original order.[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+        [33mstyle[39m=[32m"margin: 0px;"[39m
+      [36m>[39m
+        [0m1 of 3 completed[0m
+      [36m</p>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"Project tasks"[39m
+        [33mclass[39m=[32m"tz-task-rows "[39m
+        [33mrole[39m=[32m"list"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"tz-task-row"[39m
+          [33mdata-completed[39m=[32m"false"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-main"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"tz-field-label"[39m
+                [33mfor[39m=[32m"tz-field-_r_0_"[39m
+                [33mid[39m=[32m"tz-field-_r_0_-label"[39m
+              [36m>[39m
+                [36m<bdi>[39m
+                  [0mReview labels[0m
+                [36m</bdi>[39m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-labelledby[39m=[32m"tz-field-_r_0_-label"[39m
+                [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+                [33mid[39m=[32m"tz-field-_r_0_"[39m
+                [33mtype[39m=[32m"checkbox"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-task-description"[39m
+            [36m>[39m
+              [0mLocal reference: [0m
+              [36m<bdi[39m
+                [33mdir[39m=[32m"ltr"[39m
+              [36m>[39m
+                [0mDOC-42/2026[0m
+              [36m</bdi>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-row-meta"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mIncomplete[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33maria-label[39m=[32m"Sara Ali"[39m
+                [33mclass[39m=[32m"tz-avatar "[39m
+                [33mdata-size[39m=[32m"sm"[39m
+                [33mrole[39m=[32m"img"[39m
+              [36m>[39m
+                [36m<bdi[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                [36m>[39m
+                  [0mSA[0m
+                [36m</bdi>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mFor review[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33mclass[39m=[32m"tz-button "[39m
+              [33mdata-size[39m=[32m"sm"[39m
+              [33mdata-state[39m=[32m"idle"[39m
+              [33mdata-variant[39m=[32m"ghost"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-button-label"[39m
+              [36m>[39m
+                [0mTask details[0m
+              [36m</span>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"tz-task-row"[39m
+          [33mdata-completed[39m=[32m"false"[39m
+          [33mdata-disabled[39m=[32m"true"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-main"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"tz-field-label"[39m
+                [33mfor[39m=[32m"tz-field-_r_1_"[39m
+                [33mid[39m=[32m"tz-field-_r_1_-label"[39m
+              [36m>[39m
+                [36m<bdi>[39m
+                  [0mApprove copy — locked[0m
+                [36m</bdi>[39m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-labelledby[39m=[32m"tz-field-_r_1_-label"[39m
+                [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mid[39m=[32m"tz-field-_r_1_"[39m
+                [33mtype[39m=[32m"checkbox"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-task-description"[39m
+            [36m>[39m
+              [0mWaiting for a team decision in this example.[0m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-row-meta"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mIncomplete[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"tz-task-row"[39m
+          [33mdata-completed[39m=[32m"true"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-main"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"tz-field-label"[39m
+                [33mfor[39m=[32m"tz-field-_r_2_"[39m
+                [33mid[39m=[32m"tz-field-_r_2_-label"[39m
+              [36m>[39m
+                [36m<bdi>[39m
+                  [0mPrepare local preview[0m
+                [36m</bdi>[39m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-labelledby[39m=[32m"tz-field-_r_2_-label"[39m
+                [33mchecked[39m=[32m""[39m
+                [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+                [33mid[39m=[32m"tz-field-_r_2_"[39m
+                [33mtype[39m=[32m"checkbox"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-row-meta"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mCompleted[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ build src/system/taskrows-agent.test.tsx:92:30
+     90|   const user = userEvent.setup({advanceTimers:vi.advanceTimersByTime});
+     91|   render(<TaskRowsExample language="en"/>);
+     92|   const build = () => screen.getByRole("button",{name:/Build sample ou…
+       |                              ^
+     93|   expect(build()).toHaveTextContent("Pending");
+     94|   await user.click(screen.getByRole("button",{name:"Run local simulati…
+ ❯ src/system/taskrows-agent.test.tsx:93:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > cancels scheduled simulation work on unmount
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Run local simulation"
+
+Here are the accessible roles:
+
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mstyle[39m=[32m"margin: 0px; color: var(--text-secondary);"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+    [33mstyle[39m=[32m"margin: 0px;"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "Project tasks":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Project tasks"[39m
+    [33mclass[39m=[32m"tz-task-rows "[39m
+    [33mrole[39m=[32m"list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+    [33mdata-completed[39m=[32m"false"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+    [33mdata-completed[39m=[32m"false"[39m
+    [33mdata-disabled[39m=[32m"true"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+    [33mdata-completed[39m=[32m"true"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Review labels":
+  [36m<input[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_3_-label"[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mid[39m=[32m"tz-field-_r_3_"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Approve copy — locked":
+  [36m<input[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_4_-label"[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mid[39m=[32m"tz-field-_r_4_"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Prepare local preview":
+  [36m<input[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_5_-label"[39m
+    [33mchecked[39m=[32m""[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mid[39m=[32m"tz-field-_r_5_"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "Sara Ali":
+  [36m<span[39m
+    [33maria-label[39m=[32m"Sara Ali"[39m
+    [33mclass[39m=[32m"tz-avatar "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mrole[39m=[32m"img"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Task details":
+  [36m<button[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"ghost"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mstyle[39m=[32m"display: grid; gap: var(--space-4); inline-size: 100%; min-inline-size: 0px;"[39m
+    [36m>[39m
+      [36m<p[39m
+        [33mstyle[39m=[32m"margin: 0px; color: var(--text-secondary);"[39m
+      [36m>[39m
+        [0mSample tasks in memory only; changes are not saved and tasks keep their original order.[0m
+      [36m</p>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+        [33mstyle[39m=[32m"margin: 0px;"[39m
+      [36m>[39m
+        [0m1 of 3 completed[0m
+      [36m</p>[39m
+      [36m<ul[39m
+        [33maria-label[39m=[32m"Project tasks"[39m
+        [33mclass[39m=[32m"tz-task-rows "[39m
+        [33mrole[39m=[32m"list"[39m
+      [36m>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"tz-task-row"[39m
+          [33mdata-completed[39m=[32m"false"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-main"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"tz-field-label"[39m
+                [33mfor[39m=[32m"tz-field-_r_3_"[39m
+                [33mid[39m=[32m"tz-field-_r_3_-label"[39m
+              [36m>[39m
+                [36m<bdi>[39m
+                  [0mReview labels[0m
+                [36m</bdi>[39m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-labelledby[39m=[32m"tz-field-_r_3_-label"[39m
+                [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+                [33mid[39m=[32m"tz-field-_r_3_"[39m
+                [33mtype[39m=[32m"checkbox"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-task-description"[39m
+            [36m>[39m
+              [0mLocal reference: [0m
+              [36m<bdi[39m
+                [33mdir[39m=[32m"ltr"[39m
+              [36m>[39m
+                [0mDOC-42/2026[0m
+              [36m</bdi>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-row-meta"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mIncomplete[0m
+              [36m</span>[39m
+              [36m<span[39m
+                [33maria-label[39m=[32m"Sara Ali"[39m
+                [33mclass[39m=[32m"tz-avatar "[39m
+                [33mdata-size[39m=[32m"sm"[39m
+                [33mrole[39m=[32m"img"[39m
+              [36m>[39m
+                [36m<bdi[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                [36m>[39m
+                  [0mSA[0m
+                [36m</bdi>[39m
+              [36m</span>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mFor review[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-actions"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33maria-expanded[39m=[32m"false"[39m
+              [33mclass[39m=[32m"tz-button "[39m
+              [33mdata-size[39m=[32m"sm"[39m
+              [33mdata-state[39m=[32m"idle"[39m
+              [33mdata-variant[39m=[32m"ghost"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-button-label"[39m
+              [36m>[39m
+                [0mTask details[0m
+              [36m</span>[39m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"tz-task-row"[39m
+          [33mdata-completed[39m=[32m"false"[39m
+          [33mdata-disabled[39m=[32m"true"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-main"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"tz-field-label"[39m
+                [33mfor[39m=[32m"tz-field-_r_4_"[39m
+                [33mid[39m=[32m"tz-field-_r_4_-label"[39m
+              [36m>[39m
+                [36m<bdi>[39m
+                  [0mApprove copy — locked[0m
+                [36m</bdi>[39m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-labelledby[39m=[32m"tz-field-_r_4_-label"[39m
+                [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+                [33mdisabled[39m=[32m""[39m
+                [33mid[39m=[32m"tz-field-_r_4_"[39m
+                [33mtype[39m=[32m"checkbox"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-task-description"[39m
+            [36m>[39m
+              [0mWaiting for a team decision in this example.[0m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-row-meta"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mIncomplete[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+        [36m<li[39m
+          [33mclass[39m=[32m"tz-task-row"[39m
+          [33mdata-completed[39m=[32m"true"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-main"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+            [36m>[39m
+              [36m<label[39m
+                [33mclass[39m=[32m"tz-field-label"[39m
+                [33mfor[39m=[32m"tz-field-_r_5_"[39m
+                [33mid[39m=[32m"tz-field-_r_5_-label"[39m
+              [36m>[39m
+                [36m<bdi>[39m
+                  [0mPrepare local preview[0m
+                [36m</bdi>[39m
+              [36m</label>[39m
+              [36m<input[39m
+                [33maria-labelledby[39m=[32m"tz-field-_r_5_-label"[39m
+                [33mchecked[39m=[32m""[39m
+                [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+                [33mid[39m=[32m"tz-field-_r_5_"[39m
+                [33mtype[39m=[32m"checkbox"[39m
+              [36m/>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"tz-row-meta"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-badge "[39m
+                [33mdata-tone[39m=[32m"neutral"[39m
+              [36m>[39m
+                [0mCompleted[0m
+              [36m</span>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</li>[39m
+      [36m</ul>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/taskrows-agent.test.tsx:118:27
+    116|   const user = userEvent.setup({advanceTimers:vi.advanceTimersByTime});
+    117|   const view = render(<TaskRowsExample language="en"/>);
+    118|   await user.click(screen.getByRole("button",{name:"Run local simulati…
+       |                           ^
+    119|   expect(vi.getTimerCount()).toBeGreaterThan(0);
+    120|   view.unmount();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > supports a controlled example without changing execution state from disclosure
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name `/Build sample/`
+
+Here are the accessible roles:
+
+  list:
+
+  Name "Tasks":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Tasks"[39m
+    [33mclass[39m=[32m"tz-task-rows "[39m
+    [33mexpandedids[39m=[32m""[39m
+    [33mrole[39m=[32m"list"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"tz-task-row"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<ul[39m
+      [33maria-label[39m=[32m"Tasks"[39m
+      [33mclass[39m=[32m"tz-task-rows "[39m
+      [33mexpandedids[39m=[32m""[39m
+      [33mrole[39m=[32m"list"[39m
+    [36m>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+      [36m<li[39m
+        [33mclass[39m=[32m"tz-task-row"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-task-main"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-task-static"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-circle"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"10"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</span>[39m
+            [36m<bdi />[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-row-meta"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"tz-badge "[39m
+              [33mdata-tone[39m=[32m"neutral"[39m
+            [36m>[39m
+              [0mغير مكتملة[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</li>[39m
+    [36m</ul>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/taskrows-agent.test.tsx:126:27
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 1 passed (9)
+   Start at  18:38:04
+   Duration  3.91s (import 58%, environment 21%, transform 9%, tests 8%, setup 4%)
+

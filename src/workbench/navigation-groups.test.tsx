@@ -9,6 +9,7 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
   const nav = screen.getByRole("navigation", { name: "المكوّنات" });
   const groups = within(nav).getAllByRole("group");
   expect(groups.map((group) => group.getAttribute("aria-label"))).toEqual([
+    "أنماط الذكاء الاصطناعي",
     "النماذج",
     "الملفات",
     "التنقّل",
@@ -30,8 +31,13 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
     within(nav).queryByRole("group", { name: "الملفات" }),
   ).toBeInTheDocument();
   expect(
-    within(nav).queryByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-  ).toBeNull();
+    within(nav).getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
+  ).toBeInTheDocument();
+  expect(
+    within(within(nav).getByRole("group", { name: "أنماط الذكاء الاصطناعي" }))
+      .getAllByRole("button")
+      .map((button) => button.textContent),
+  ).toEqual(["صفوف المهام"]);
   const user = userEvent.setup();
   await user.click(within(nav).getByRole("button", { name: "شريط التنقّل" }));
   expect(
@@ -62,6 +68,7 @@ it("translates groups and preserves the selected documentation page and URL", as
       .getAllByRole("group")
       .map((group) => group.getAttribute("aria-label")),
   ).toEqual([
+    "AI patterns",
     "Forms",
     "Files",
     "Navigation",
@@ -78,5 +85,7 @@ it("translates groups and preserves the selected documentation page and URL", as
   expect(
     within(nav).queryByRole("group", { name: "Files" }),
   ).toBeInTheDocument();
-  expect(within(nav).queryByRole("group", { name: "AI patterns" })).toBeNull();
+  expect(
+    within(nav).getByRole("group", { name: "AI patterns" }),
+  ).toBeInTheDocument();
 });

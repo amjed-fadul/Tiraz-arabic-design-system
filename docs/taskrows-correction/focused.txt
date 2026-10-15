@@ -1,0 +1,45 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/taskrows-agent.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+ ❯ src/system/taskrows-agent.test.tsx (9 tests | 2 failed) 10872ms
+   × runs only after Run, waits for explicit retry and cancels replay/retry timers 5019ms
+   × cancels scheduled simulation work on unmount 5003ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > runs only after Run, waits for explicit retry and cancels replay/retry timers
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/taskrows-agent.test.tsx:88:1
+     86| });
+     87| // Fake time tests the application simulation only; the library has no…
+     88| it("runs only after Run, waits for explicit retry and cancels replay/r…
+       | ^
+     89|   vi.useFakeTimers();
+     90|   const user = userEvent.setup({advanceTimers:vi.advanceTimersByTime});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/system/taskrows-agent.test.tsx > cancels scheduled simulation work on unmount
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/taskrows-agent.test.tsx:114:1
+    112|   expect(screen.getByRole("status")).toHaveTextContent(/No files, emai…
+    113| });
+    114| it("cancels scheduled simulation work on unmount", async () => {
+       | ^
+    115|   vi.useFakeTimers();
+    116|   const user = userEvent.setup({advanceTimers:vi.advanceTimersByTime});
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 7 passed (9)
+   Start at  18:39:22
+   Duration  14.84s (tests 74%, import 18%, environment 6%, transform 2%, setup 1%)
+

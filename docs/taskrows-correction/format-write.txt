@@ -1,0 +1,13 @@
+src/system/TaskRows.tsx 71ms
+src/system/ai/examples/TaskRowsExamples.tsx 28ms
+src/system/taskrows-agent.test.tsx 37ms
+src/system/tasks-notifications.test.tsx 17ms (unchanged)
+src/system/components.css 435ms
+src/system/index.ts 4ms (unchanged)
+src/workbench/catalog.ts 16ms
+src/workbench/model.ts 75ms
+src/workbench/fields.ts 51ms
+src/workbench/Examples.tsx 104ms
+src/workbench/generated-code.test.ts 21ms
+src/workbench/tasks-notifications-pages.test.tsx 20ms
+src/workbench/generated-lists.test.tsx 9ms

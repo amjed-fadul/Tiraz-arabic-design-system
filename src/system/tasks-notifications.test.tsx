@@ -1,85 +1,10 @@
 import { createRef } from "react";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import * as System from "./index";
-import { TaskRowsExample } from "./ai/examples/TaskRowsExamples";
 import { NotificationListExample } from "./ai/examples/NotificationListExamples";
 
-it("keeps task completion separate from actions, respects disabled and preserves identity", async () => {
-  const user = userEvent.setup(),
-    change = vi.fn(),
-    action = vi.fn();
-  const ref = createRef<HTMLUListElement>();
-  const items = [
-    {
-      id: "one",
-      label: "Review DOC-42",
-      completed: false,
-      actions: <button onClick={action}>Details</button>,
-    },
-    { id: "two", label: "Locked", completed: false, disabled: true },
-  ];
-  const view = render(
-    <System.TaskRows
-      ref={ref}
-      id="tasks"
-      label="Tasks"
-      items={items}
-      onCompletedChange={change}
-    />,
-  );
-  const list = screen.getByRole("list", { name: "Tasks" });
-  expect(ref.current).toBe(list);
-  expect(list.tagName).toBe("UL");
-  expect(list).toHaveAttribute("id", "tasks");
-  const first = screen.getByRole("checkbox", { name: "Review DOC-42" });
-  await user.click(screen.getByRole("button", { name: "Details" }));
-  expect(action).toHaveBeenCalledOnce();
-  expect(change).not.toHaveBeenCalled();
-  await user.click(screen.getByRole("checkbox", { name: "Locked" }));
-  expect(change).not.toHaveBeenCalled();
-  await user.click(first);
-  expect(change).toHaveBeenLastCalledWith("one", true);
-  view.rerender(
-    <System.TaskRows
-      ref={ref}
-      label="Tasks"
-      items={[{ ...items[0], completed: true }, items[1]]}
-      onCompletedChange={change}
-    />,
-  );
-  expect(screen.getByRole("checkbox", { name: "Review DOC-42" })).toBe(first);
-  expect(first).toHaveFocus();
-  expect(first).toBeChecked();
-  expect(within(list).getAllByRole("listitem")[0]).toHaveTextContent(
-    "Review DOC-42",
-  );
-  await user.keyboard(" ");
-  expect(change).toHaveBeenLastCalledWith("one", false);
-});
-it("renders static completion text and explicit empty content without checkboxes", () => {
-  const view = render(
-    <System.TaskRows
-      label="Tasks"
-      items={[
-        { id: "x", label: "Done", completed: true },
-        { id: "y", label: "Later", completed: false },
-      ]}
-    />,
-  );
-  expect(screen.queryByRole("checkbox")).toBeNull();
-  expect(screen.getByText("مكتملة")).toBeVisible();
-  expect(screen.getByText("غير مكتملة")).toBeVisible();
-  view.rerender(
-    <System.TaskRows
-      label="Tasks"
-      items={[]}
-      emptyState={<System.EmptyState title="No tasks" />}
-    />,
-  );
-  expect(screen.getByRole("heading", { name: "No tasks" })).toBeVisible();
-});
 it("derives notification counts, renders time and never marks read from an action", async () => {
   const user = userEvent.setup(),
     read = vi.fn(),
@@ -164,24 +89,6 @@ it("supports noninteractive notifications and a distinct supplied empty state", 
     screen.getByRole("heading", { name: "No notifications" }),
   ).toBeVisible();
 });
-it("task example derives completion count and retains original order on reopen", async () => {
-  const user = userEvent.setup();
-  render(
-    <System.SystemProvider
-      config={{ ...System.defaultConfig, direction: "ltr" }}
-    >
-      <TaskRowsExample language="en" />
-    </System.SystemProvider>,
-  );
-  const checks = screen.getAllByRole("checkbox");
-  expect(screen.getByRole("status")).toHaveTextContent("1 of 3 completed");
-  await user.click(checks[0]);
-  expect(screen.getByRole("status")).toHaveTextContent("2 of 3 completed");
-  expect(screen.getAllByRole("checkbox")).toEqual(checks);
-  expect(checks[0]).toHaveFocus();
-  await user.keyboard(" ");
-  expect(screen.getByRole("status")).toHaveTextContent("1 of 3 completed");
-});
 it("filters actual notifications, preserves action/read separation and moves focus after removal", async () => {
   const user = userEvent.setup();
   render(
@@ -236,16 +143,10 @@ it("returns focus to All when its empty-state action disappears", async () => {
       <NotificationListExample language="en" />
     </System.SystemProvider>,
   );
-  await user.click(screen.getByRole("button", { name: "Unread", exact: true }));
-  await user.click(
-    screen.getByRole("button", { name: "Mark all as read", exact: true }),
-  );
-  await user.click(
-    screen.getByRole("button", { name: "Show all", exact: true }),
-  );
-  expect(
-    screen.getByRole("button", { name: "All", exact: true }),
-  ).toHaveFocus();
+  await user.click(screen.getByRole("button", { name: "Unread" }));
+  await user.click(screen.getByRole("button", { name: "Mark all as read" }));
+  await user.click(screen.getByRole("button", { name: "Show all" }));
+  expect(screen.getByRole("button", { name: "All" })).toHaveFocus();
   expect(screen.getAllByRole("listitem")).toHaveLength(3);
 });
 it("returns focus to the previous unread item when the last row is read", async () => {
@@ -257,7 +158,7 @@ it("returns focus to the previous unread item when the last row is read", async 
       <NotificationListExample language="en" />
     </System.SystemProvider>,
   );
-  await user.click(screen.getByRole("button", { name: "Unread", exact: true }));
+  await user.click(screen.getByRole("button", { name: "Unread" }));
   const controls = screen.getAllByRole("button", { name: /^Mark as read:/ });
   await user.click(controls[1]);
   expect(controls[0]).toHaveFocus();

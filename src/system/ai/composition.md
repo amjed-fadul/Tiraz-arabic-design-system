@@ -335,12 +335,20 @@ No fetching, grouping engine, virtualization or automatic relative-time timers.
 
 ## Task and notification lists
 
-Compose TaskRows with stable IDs and application-owned completed state. Keep
-onCompletedChange updates in the host and map the existing array without sorting.
-Omit it for static indicators; disabled tasks cannot change completion. Use the
-separate actions slot for Buttons and assignee/meta for Avatar/Badge compositions.
-labels controls completion text; keep descriptive content readable without color.
-The in-memory example derives completed count from its actual items.
+Use TaskRows for agent-task execution, with stable IDs, title, optional short
+summary, pending/running/completed/failed state and detail content. The application
+owns every execution state; opening a disclosure never changes it. Choose capsules
+or list. Keep content and actions inside the associated panel, outside the header
+button. Translate stateLabels when direction differs from language. Never add
+completion checkboxes, assignees or manual checklist behavior.
+
+Control expansion with expandedIds/onExpandedChange or initialize internal
+expansion with defaultExpandedIds. Closed panels become hidden/inert immediately;
+external collapse recovers panel focus to the trigger. State updates must preserve
+focus, IDs and supplied order. The local example alone owns Run/Replay/retry timers,
+cancels on replay/unmount and guards stale callbacks; its copy explicitly denies
+processing real files, emails or backend tasks. Do not transplant example timers
+into the library or invent an execution engine. See TaskRowsExamples.
 
 NotificationList displays supplied order and derives unread count from those
 items. Optional onMarkRead/onMarkAllRead request application updates. Actions

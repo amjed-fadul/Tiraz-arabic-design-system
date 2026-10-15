@@ -252,10 +252,14 @@ activity list with real local append. See `src/system/ai/README.md` for contract
 
 ### TaskRows and NotificationList
 
-TaskRows is a controlled semantic task list with optional completion, static
-indicators, assignee/meta and separate application actions. NotificationList shows
-application-owned notifications with timestamps, explicit read controls and a
-derived unread count. Both preserve item order and identity. The documentation
-includes local-only examples, All/Unread filtering and focus recovery after a
-focused notification leaves Unread. Source contracts and portable examples live
-in `src/system/ai/`; neither family adds a dependency or persistence.
+TaskRows renders compact, expandable agent-task rows with application-supplied
+pending/running/completed/failed states. Choose individual capsules or a connected
+list; details/actions remain outside disclosure buttons. Its AI patterns page has
+a clearly labeled local simulation with Run/Replay, intentional failure and explicit
+retry, with canceled/stale-run-safe timers only in example code. It replaces the
+earlier checklist interpretation without adding a component family.
+
+NotificationList retains application-owned notifications, explicit read controls,
+derived unread count, All/Unread filtering and focus recovery. Source contracts
+and portable examples live in `src/system/ai/`; neither family adds a dependency,
+backend or persistence.

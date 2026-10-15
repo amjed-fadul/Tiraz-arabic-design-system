@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 it.each([
-  ["صفوف المهام", "TaskRows", "البيانات", "Interactive completion"],
+  ["صفوف المهام", "TaskRows", "أنماط الذكاء الاصطناعي", "Appearance"],
   ["قائمة الإشعارات", "NotificationList", "العرض والتنبيهات", "Read controls"],
 ])(
   "documents %s with continuous examples, inspector and complete copied source",
@@ -27,13 +27,18 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    await user.click(screen.getByRole("switch", { name: inspector }));
+    if (en === "TaskRows")
+      await user.selectOptions(
+        screen.getByRole("combobox", { name: inspector }),
+        "list",
+      );
+    else await user.click(screen.getByRole("switch", { name: inspector }));
     await user.click(screen.getByRole("button", { name: "Copy code" }));
     const code = String(copy.mock.calls.at(-1)?.[0]);
     expect(code).toContain(en + "Example");
     expect(code).not.toContain("workbench/");
     expect(code).toContain(
-      en === "TaskRows" ? '"interactive":false' : '"readControls":false',
+      en === "TaskRows" ? '"appearance":"list"' : '"readControls":false',
     );
     await user.click(screen.getByRole("button", { name: "Copy agent prompt" }));
     expect(String(copy.mock.calls.at(-1)?.[0])).toContain(code);

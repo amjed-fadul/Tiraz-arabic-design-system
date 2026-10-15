@@ -1,4 +1,7 @@
-import { TaskRowsExample } from "../system/ai/examples/TaskRowsExamples";
+import {
+  TaskRowsExample,
+  TaskRowsStatesExample,
+} from "../system/ai/examples/TaskRowsExamples";
 import { NotificationListExample } from "../system/ai/examples/NotificationListExamples";
 import {
   StepsExample,
@@ -198,12 +201,14 @@ export function Examples({
     return (
       <div style={{ display: "grid", gap: "var(--space-8)" }}>
         <section>
-          <h3>{t("مؤشرات ثابتة دون تفاعل", "Static state indicators")}</h3>
-          <TaskRowsExample
-            language={language}
-            interactive={false}
-            longContent
-          />
+          <h3>{t("الحالات الأربع — كبسولات", "Four states — capsules")}</h3>
+          <TaskRowsStatesExample language={language} appearance="capsules" />
+        </section>
+        <section>
+          <h3>
+            {t("الحالات الأربع — قائمة متصلة", "Four states — connected list")}
+          </h3>
+          <TaskRowsStatesExample language={language} appearance="list" />
         </section>
         <section>
           <h3>{t("حالة فارغة", "Empty state")}</h3>

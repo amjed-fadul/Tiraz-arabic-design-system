@@ -150,32 +150,40 @@ export function ApiReference({
         "items / label",
         "readonly TaskRowItem[] / string · required",
         t(
-          "id ثابت وفريد وlabel نصي وcompleted؛ description وdisabled وassignee وmeta وactions اختيارية.",
-          "Unique stable id, string label and completed; optional description, disabled, assignee, meta and actions.",
+          "id ثابت وفريد وtitle نصي وstate وcontent؛ summary نص قصير اختياري. لا عناصر تفاعلية في العنوان أو الملخص.",
+          "Unique stable id, string title, state and content; optional short string summary. Title and summary are noninteractive.",
         ),
       ],
       [
-        "onCompletedChange",
-        "(id: string, completed: boolean) => void · optional",
+        "state / appearance",
+        "pending | running | completed | failed / capsules | list",
         t(
-          "التطبيق يحدّث البيانات. بدونه مؤشر ثابت؛ disabled يمنع تغيير الاكتمال. إجراءات التطبيق مستقلة.",
-          "The application updates data. Omission shows static indicators; disabled prevents completion changes. Application actions are separate.",
+          "التطبيق يزوّد حالات التنفيذ. كبسولات منفصلة افتراضيًا أو قائمة متصلة. المؤشر والنص يشرحان الحالة دون الاعتماد على اللون.",
+          "Execution state comes from the application. Separate capsules by default or connected list. Indicators and text explain state independently of color.",
         ),
       ],
       [
-        "labels / emptyState",
-        "{ completed: string; incomplete: string } / ReactNode · optional",
+        "expandedIds / defaultExpandedIds / onExpandedChange",
+        "readonly string[] / readonly string[] / (ids: string[]) => void",
         t(
-          "ترجمة حالتي الاكتمال ومحتوى الفراغ؛ الافتراضي حسب الاتجاه.",
-          "Translate completion text and supply empty content; defaults follow direction.",
+          "توسيع متعدد اختياري مضبوط أو داخلي؛ الافتراضي مغلق. غيّر expandedIds في رد النداء للوضع المضبوط. التوسيع لا يغيّر التنفيذ.",
+          "Optional controlled or internal multiple expansion; starts closed. Update expandedIds in the callback for controlled mode. Disclosure never changes execution.",
+        ),
+      ],
+      [
+        "content / stateLabels / emptyState",
+        "ReactNode / Record<TaskState, string> / ReactNode",
+        t(
+          "إجراءات التطبيق داخل لوحة مرتبطة خارج زر التوسيع. اللوحات المغلقة hidden وinert؛ يعود التركيز لزرها عند الإغلاق الخارجي. النص الافتراضي حسب الاتجاه.",
+          "Application actions live in the associated panel outside the trigger. Closed panels are hidden and inert; external collapse returns panel focus to its trigger. Default labels follow direction.",
         ),
       ],
       [
         "native attributes / ref",
         "ComponentPropsWithRef<ul> (except children)",
         t(
-          "قائمة أصلية بترتيب ثابت دون فرز أو حفظ. لا تضع إجراءات في التسميات.",
-          "Native list with stable supplied order, no sorting or saving. Keep actions outside labels.",
+          "قائمة أصلية بترتيب ومعرّفات ثابتة. المحاكاة المحلية فقط تملك المؤقتات مع إلغاء التشغيل السابق وإعادة المحاولة الصريحة. لا وكيل أو شبكة في المكتبة.",
+          "Native list with supplied order and stable IDs. Only the local example owns timers, cancellation and explicit retry. No agent runtime or network in the library.",
         ),
       ],
     ],

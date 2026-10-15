@@ -5,13 +5,18 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "../../src/system/tokens.css";
 import "../../src/system/components.css";
-import { SystemProvider, defaultConfig } from "../../src/system";
+import { SystemProvider, defaultConfig, TaskRows } from "../../src/system";
 import type { SystemConfig } from "../../src/system";
-import { TaskRowsExample } from "../../src/system/ai/examples/TaskRowsExamples";
+import {
+  TaskRowsExample,
+  TaskRowsStatesExample,
+} from "../../src/system/ai/examples/TaskRowsExamples";
 import { NotificationListExample } from "../../src/system/ai/examples/NotificationListExamples";
 export function Fixture() {
   const query = new URLSearchParams(location.search);
   const language = query.get("lang") === "en" ? "en" : "ar";
+  const appearance = query.get("appearance") === "list" ? "list" : "capsules";
+  const [externalOpen, setExternalOpen] = useState(true);
   const [theme, setTheme] = useState<SystemConfig["theme"]>(
     query.get("theme") === "dark" ? "dark" : "light",
   );
@@ -114,15 +119,52 @@ export function Fixture() {
           </div>
           <section aria-label="Task example">
             <h2>TaskRows</h2>
-            <TaskRowsExample language={language} longContent />
+            <TaskRowsExample
+              language={language}
+              appearance={appearance}
+              longContent
+            />
           </section>
           <section aria-label="Notification example">
             <h2>NotificationList</h2>
             <NotificationListExample language={language} longContent />
           </section>
           <section aria-label="Static tasks">
-            <h2>{language === "ar" ? "مؤشرات ثابتة" : "Static indicators"}</h2>
-            <TaskRowsExample language={language} interactive={false} />
+            <h2>{language === "ar" ? "الحالات الأربع" : "Four states"}</h2>
+            <TaskRowsStatesExample
+              language={language}
+              appearance={appearance}
+            />
+          </section>
+          <section aria-label="Controlled focus">
+            <h2>Controlled panel focus</h2>
+            <button
+              type="button"
+              onClick={() => {
+                window.setTimeout(() => setExternalOpen(false), 500);
+              }}
+            >
+              Schedule external collapse
+            </button>
+            <TaskRows
+              label="Controlled task"
+              appearance={appearance}
+              expandedIds={externalOpen ? ["focus"] : []}
+              onExpandedChange={(ids) => setExternalOpen(ids.includes("focus"))}
+              items={[
+                {
+                  id: "focus",
+                  title: "Editable sample",
+                  state: "pending",
+                  content: (
+                    <input
+                      aria-label="Detail draft"
+                      defaultValue="Local draft"
+                    />
+                  ),
+                },
+              ]}
+            />
           </section>
           <section aria-label="Empty examples">
             <h2>{language === "ar" ? "الحالات الفارغة" : "Empty states"}</h2>
