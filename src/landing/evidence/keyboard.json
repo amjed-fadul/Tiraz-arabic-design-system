@@ -1,0 +1,12 @@
+{
+  "focus1": {
+    "id": "",
+    "outline": "solid",
+    "rect": 7.999741077423096,
+    "text": "انتقل إلى المحتوى"
+  },
+  "focus2": {
+    "id": "content",
+    "tag": "MAIN"
+  }
+}

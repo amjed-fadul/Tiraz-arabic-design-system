@@ -1,0 +1,124 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+ ❯ src/system/ai-registry.test.ts (10 tests | 2 failed) 37463ms
+   × rejects incorrect required=false for tabs.label 6735ms
+   × compiles the bundled example after copying only the library to a different application path 15168ms
+ ❯ src/system/slider-otp-date.test.tsx (22 tests | 2 failed) 34048ms
+   ❯ DatePicker (18)
+     × navigates logical months with matching ltr chevrons and selectors 6066ms
+     × navigates logical months with matching rtl chevrons and selectors 5100ms
+ ❯ src/workbench/generated-code.test.ts (1 test | 1 failed) 24320ms
+   × type-checks copied code for every component, state mode and composition preset 24319ms
+ ❯ src/examples/dashboard/Dashboard.test.tsx (9 tests | 3 failed) 23908ms
+   × resets pagination for combined filters and distinguishes no results from an empty dataset 5109ms
+   × validates, saves once, updates only customers, and reveals a customer hidden by filters 5284ms
+   × discards drafts and restores trigger focus after cancel, close and Escape 5030ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/generated-code.test.ts > type-checks copied code for every component, state mode and composition preset
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-code.test.ts:10:1
+      8| import type { ComponentId } from "./catalog";
+      9| import { generateCode } from "./generate";
+     10| it("type-checks copied code for every component, state mode and compos…
+       | ^
+     11|   const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = …
+     12|   for (const language of ["ar", "en"] as const) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/system/ai-registry.test.ts > rejects incorrect required=false for tabs.label
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/ai-registry.test.ts:127:3
+    125|   ["configuration", "typography", true],
+    126| ] as const) {
+    127|   it(`rejects incorrect required=${incorrect} for ${group}.${field}`, …
+       |   ^
+    128|     const registry = readRegistry();
+    129|     const props =
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/system/ai-registry.test.ts > compiles the bundled example after copying only the library to a different application path
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/ai-registry.test.ts:150:1
+    148|   }
+    149| });
+    150| it("compiles the bundled example after copying only the library to a d…
+       | ^
+    151|   const temporary = mkdtempSync(resolve(tmpdir(), "tiraz-source-consum…
+    152|   try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/system/slider-otp-date.test.tsx > DatePicker > navigates logical months with matching ltr chevrons and selectors
+ FAIL  src/system/slider-otp-date.test.tsx > DatePicker > navigates logical months with matching rtl chevrons and selectors
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/slider-otp-date.test.tsx:224:35
+    222|     expect(screen.getByText(/December 31, 2026/)).toBeInTheDocument();
+    223|   });
+    224|   it.each(["ltr", "rtl"] as const)(
+       |                                   ^
+    225|     "navigates logical months with matching %s chevrons and selectors",
+    226|     async (direction) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/examples/dashboard/Dashboard.test.tsx > resets pagination for combined filters and distinguishes no results from an empty dataset
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/examples/dashboard/Dashboard.test.tsx:29:1
+     27| }
+     28|
+     29| it("resets pagination for combined filters and distinguishes no result…
+       | ^
+     30|   const user = await setup();
+     31|   await user.click(screen.getByRole("button", { name: "Next" }));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/examples/dashboard/Dashboard.test.tsx > validates, saves once, updates only customers, and reveals a customer hidden by filters
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/examples/dashboard/Dashboard.test.tsx:44:1
+     42| });
+     43|
+     44| it("validates, saves once, updates only customers, and reveals a custo…
+       | ^
+     45|   const user = await setup();
+     46|   const orderCount = screen.getByTestId("order-count").textContent;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/examples/dashboard/Dashboard.test.tsx > discards drafts and restores trigger focus after cancel, close and Escape
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/examples/dashboard/Dashboard.test.tsx:78:1
+     76| });
+     77|
+     78| it("discards drafts and restores trigger focus after cancel, close and…
+       | ^
+     79|   const user = await setup();
+     80|   const trigger = screen.getByRole("button", { name: "Create customer"…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+
+ Test Files  4 failed | 49 passed (53)
+      Tests  8 failed | 455 passed (463)
+   Start at  15:12:43
+   Duration  125.65s (import 44%, tests 37%, environment 13%, transform 4%, setup 3%)
+
+     Import  191 modules were evaluated 3302 times · 380.73s total, 44% of tracked time
+             ~39.85s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

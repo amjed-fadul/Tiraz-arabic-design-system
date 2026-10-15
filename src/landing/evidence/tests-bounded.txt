@@ -1,0 +1,34 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+ ❯ src/workbench/navigation-groups.test.tsx (2 tests | 1 failed) 6196ms
+   × keeps every implemented documentation page reachable once in expanded Arabic groups 5608ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/navigation-groups.test.tsx > keeps every implemented documentation page reachable once in expanded Arabic groups
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/navigation-groups.test.tsx:7:1
+      5| import { catalog } from "./catalog";
+      6|
+      7| it("keeps every implemented documentation page reachable once in expan…
+       | ^
+      8|   render(<Workbench />);
+      9|   const nav = screen.getByRole("navigation", { name: "المكوّنات" });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 52 passed (53)
+      Tests  1 failed | 462 passed (463)
+   Start at  15:26:20
+   Duration  149.61s (import 50%, tests 31%, environment 15%, setup 3%, transform 2%)
+
+     Import  191 modules were evaluated 3243 times · 144.02s total, 50% of tracked time
+             ~65.37s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/generated-code.test.ts src/workbench/data-table-page.test.tsx --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  2 passed (2)
+   Start at  15:34:23
+   Duration  24.88s (tests 47%, import 37%, environment 9%, transform 7%, setup 1%)
+
+     Import  128 modules were evaluated 201 times · 8.96s total, 37% of tracked time
+             ~3.25s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

@@ -1,0 +1,10 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "incomplete": ["color-contrast"],
+      "passes": 32,
+      "violations": []
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "reduced": {
+    "canvas": 0,
+    "heading": "تطبيقات عربية،من الأساس.",
+    "reduced": true,
+    "scroll": "auto",
+    "static": true
+  },
+  "unavailable": {
+    "canvas": 0,
+    "content": true,
+    "static": true
+  },
+  "loss": {
+    "canvas": 0,
+    "content": true,
+    "static": true
+  }
+}

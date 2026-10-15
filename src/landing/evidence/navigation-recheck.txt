@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/navigation-groups.test.tsx --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  15:29:01
+   Duration  14.60s (import 56%, transform 21%, environment 13%, tests 6%, setup 4%)
