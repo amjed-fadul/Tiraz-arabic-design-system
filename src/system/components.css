@@ -3226,3 +3226,147 @@
   outline: 2px solid var(--focus);
   outline-offset: -2px;
 }
+
+/* Compact application-owned AI feedback. */
+.tz-loading-state {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+}
+.tz-loading-state-visual {
+  display: inline-flex;
+  align-items: center;
+  block-size: calc(var(--text-body) * var(--line-height));
+  flex: none;
+}
+.tz-loading-state-copy {
+  display: grid;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-loading-state-label {
+  font-weight: var(--weight-medium);
+  color: var(--text);
+}
+.tz-loading-state-description {
+  font-size: var(--text-meta);
+}
+.tz-thinking-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-inline-size: 100%;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+}
+.tz-thinking-indicator > bdi {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-thinking-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  inline-size: 24px;
+  block-size: 16px;
+  flex: none;
+  color: var(--text-secondary);
+}
+.tz-thinking-dots > span {
+  inline-size: 4px;
+  block-size: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: tz-thinking-pulse 1.4s ease-in-out infinite;
+}
+.tz-thinking-dots > span:nth-child(2) {
+  animation-delay: 160ms;
+}
+.tz-thinking-dots > span:nth-child(3) {
+  animation-delay: 320ms;
+}
+@keyframes tz-thinking-pulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.4;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+.tz-thinking-state {
+  min-inline-size: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+}
+.tz-thinking-state-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-inline-size: 100%;
+  min-block-size: var(--control-height);
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.tz-thinking-state-trigger:hover {
+  background: var(--surface-hover);
+}
+.tz-thinking-state-trigger:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-thinking-state-trigger > bdi {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-thinking-state-rest {
+  inline-size: 24px;
+  block-size: 12px;
+  flex: none;
+}
+.tz-thinking-state-chevron {
+  inline-size: 14px;
+  block-size: 14px;
+  flex: none;
+  transition: transform var(--motion-fast) var(--ease);
+}
+.tz-thinking-state[data-expanded="true"] .tz-thinking-state-chevron {
+  transform: rotate(180deg);
+}
+.tz-thinking-state-panel {
+  margin-inline-start: var(--space-1);
+  padding-block: var(--space-2);
+  padding-inline-start: calc(24px + var(--space-2));
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-thinking-state-panel[hidden] {
+  display: none;
+}
+.tz-thinking-state-panel :where(button, a, input, select, textarea) {
+  max-inline-size: 100%;
+}
+.tiraz-system[data-reduced-motion="true"] .tz-thinking-dots > span {
+  animation: none;
+}
+.tiraz-system[data-reduced-motion="true"] .tz-thinking-state-chevron {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-thinking-dots > span {
+    animation: none;
+  }
+  .tz-thinking-state-chevron {
+    transition: none;
+  }
+}

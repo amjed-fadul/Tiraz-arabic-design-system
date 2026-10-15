@@ -95,6 +95,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
     }
     // Mirror Vite's ?raw loader using the real example source in both relocated trees.
     for (const name of [
+      "AIFeedbackExamples",
       "FileTreeExamples",
       "TaskRowsExamples",
       "NotificationListExamples",

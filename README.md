@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with forty-six source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with forty-nine source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -267,3 +267,19 @@ backend or persistence.
 ## FileTree
 
 FileTree displays application-supplied files and folders with stable unique IDs; it never reads the filesystem. Use `ai/examples/FileTreeExamples.tsx` (relative to the source root) for a nested project and application-owned sample-string preview. Controlled or internal expansion and single selection are separate from roving keyboard focus. File click/Enter calls `onActivate(file)`; the host decides what opening means. The example preview follows file selection, including Space; arrow focus does not change it. Empty folders are end nodes. Horizontal arrows mirror in RTL; arrows, Home/End, typeahead and * navigate visible nodes. On removal, focus recovers to the nearest visible ancestor or same visible position, then the empty root, without reclaiming outside focus. Supply nonempty names, globally unique stable IDs, and noninteractive metadata/empty content. No upload, editing, search, drag/drop, virtualization, multi-selection or context menu is supplied.
+
+## AI feedback
+
+LoadingState combines a compact decorative Spinner or Skeleton with a label and
+optional description. Use Spinner alone beside existing feedback, or Skeleton
+for the shape of future content. ThinkingIndicator is one stable inline activity
+label; ThinkingState adds disclosure for brief application-supplied progress
+summaries and details. Use TaskRows for multiple tasks with separate states.
+
+Execution and content stay in the host application. ThinkingState is for
+user-facing summaries, never private model reasoning or fabricated logs. All three
+honor shared tokens, RTL/LTR and reduced motion, with one polite status owner
+(`announcement="off"` opts out). Closed details remain hidden and inert; collapse
+recovers panel focus without stealing outside focus. See the portable
+[AI guidance](src/system/ai/README.md) and
+[compiling examples and local demo](src/system/ai/examples/AIFeedbackExamples.tsx).

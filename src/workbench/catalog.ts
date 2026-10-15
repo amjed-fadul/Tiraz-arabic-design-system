@@ -1,6 +1,33 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "loading-state",
+    name: ["حالة التحميل", "LoadingState"],
+    description: [
+      "تحميل مدمج مع تسمية ووصف اختياري.",
+      "Compact loading feedback with a label and optional description.",
+    ],
+    file: "LoadingState.tsx",
+  },
+  {
+    id: "thinking-indicator",
+    name: ["مؤشر النشاط", "ThinkingIndicator"],
+    description: [
+      "مؤشر نشاط صغير بتسمية يزوّدها التطبيق.",
+      "Small inline activity feedback with an application-supplied label.",
+    ],
+    file: "ThinkingIndicator.tsx",
+  },
+  {
+    id: "thinking-state",
+    name: ["حالة النشاط", "ThinkingState"],
+    description: [
+      "ملخص نشاط موجز وتفاصيل قابلة للتوسيع يزوّدها التطبيق.",
+      "A brief application-supplied activity summary with expandable details.",
+    ],
+    file: "ThinkingState.tsx",
+  },
+  {
     id: "file-tree",
     name: ["شجرة الملفات", "FileTree"],
     description: [
@@ -430,7 +457,7 @@ const documentationGroups = [
   {
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
-    ids: ["task-rows"],
+    ids: ["loading-state", "thinking-indicator", "thinking-state", "task-rows"],
   },
   {
     id: "forms",

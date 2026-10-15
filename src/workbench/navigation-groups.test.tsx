@@ -37,7 +37,7 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
     within(within(nav).getByRole("group", { name: "أنماط الذكاء الاصطناعي" }))
       .getAllByRole("button")
       .map((button) => button.textContent),
-  ).toEqual(["صفوف المهام"]);
+  ).toEqual(["حالة التحميل", "مؤشر النشاط", "حالة النشاط", "صفوف المهام"]);
   const user = userEvent.setup();
   await user.click(within(nav).getByRole("button", { name: "شريط التنقّل" }));
   expect(

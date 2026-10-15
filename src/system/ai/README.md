@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **forty-six**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList and FileTree.
+Tiraz is an Arabic-first, source-owned React dashboard library with **forty-nine**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator and ThinkingState.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -515,3 +515,46 @@ push permissions, backend or persistence is supplied. No new dependency is neede
 ## FileTree
 
 FileTree displays application-supplied files and folders with stable unique IDs; it never reads the filesystem. Use `ai/examples/FileTreeExamples.tsx` (relative to the source root) for a nested project and application-owned sample-string preview. Controlled or internal expansion and single selection are separate from roving keyboard focus. File click/Enter calls `onActivate(file)`; the host decides what opening means. The example preview follows file selection, including Space; arrow focus does not change it. Empty folders are end nodes. Horizontal arrows mirror in RTL; arrows, Home/End, typeahead and * navigate visible nodes. On removal, focus recovers to the nearest visible ancestor or same visible position, then the empty root, without reclaiming outside focus. Supply nonempty names, globally unique stable IDs, and noninteractive metadata/empty content. No upload, editing, search, drag/drop, virtualization, multi-selection or context menu is supplied.
+
+## AI activity feedback
+
+Choose LoadingState for compact loading with a required label and optional description.
+It composes decorative Spinner (default) or a compact Skeleton with
+`indicator="skeleton"`. Use Spinner alone beside existing status text; use Skeleton
+for a placeholder that follows the shape of future content. The host sets aria-busy
+on the actual content region and replaces LoadingState when loading ends.
+
+ThinkingIndicator is a small inline AI-interface activity cue with a required,
+visible label. Its dots animate decoratively while the label stays stable.
+ThinkingState adds optional disclosure to a brief application-supplied activity
+summary: required label, active boolean and children. Content represents user-facing
+progress summaries, never private model reasoning. Do not fabricate execution logs
+or imply that the component is doing AI work, file access or network requests.
+For multiple tasks with separate states and details, choose TaskRows.
+
+All three support `announcement="polite" | "off"` (polite by default). Mount them
+when needed, then update meaningful text; use off when an enclosing region owns
+the announcement. ThinkingState announces only label, outside the disclosure
+button; detail changes and animation frames are not live announcements. Update
+label as well as active when a status change needs an announcement. Real screen-reader
+speech must be verified in the host application.
+
+ThinkingState uses expanded/onExpandedChange for controlled disclosure, or
+optional defaultExpanded (false) for internal state. Keep the trigger available
+during activity; active never disables it. Closed details remain mounted to retain
+form values but are hidden and inert. On controlled collapse, focus inside the
+panel returns to the trigger; intentional outside focus stays outside. Keep
+interactive detail actions inside children, outside the trigger.
+
+Native attributes, ref, className and style target the outer div (LoadingState,
+ThinkingState) or span (ThinkingIndicator). Shared tokens, density, typography,
+RTL/LTR and both provider/OS reduced motion apply. Supply translated labels and
+mark the host language independently of direction. No new dependencies, animation
+framework, orchestration, progress simulation or automatic execution transitions
+belong to these components.
+
+See [standalone examples and connected demo](examples/AIFeedbackExamples.tsx).
+The demo is explicitly labeled Local simulation, starts only with Run demo,
+cancels stale timers on replay/cancel/unmount, and keeps disclosure usable while
+running. All execution/content state and timers in that file belong to the sample
+host application. Copy this behavior only when a simulation is requested.

@@ -95,6 +95,126 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "loading-state": [
+      [
+        "label / description",
+        "string / string?",
+        t(
+          "تسمية مطلوبة ووصف اختياري.",
+          "Required label and optional description.",
+        ),
+      ],
+      [
+        "indicator",
+        '"spinner" | "skeleton" · spinner',
+        t("مؤشر زخرفي مدمج.", "Compact decorative indicator."),
+      ],
+      [
+        "announcement",
+        '"polite" | "off" · polite',
+        t(
+          "أوقف الإعلان إذا كان الأب يملكه.",
+          "Turn off if a surrounding region owns announcements.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "div",
+        t(
+          "className وstyle وسمات العنصر الأصلي.",
+          "className, style and native attributes on the wrapper.",
+        ),
+      ],
+      [
+        "Choose",
+        "Spinner / Skeleton",
+        t(
+          "Spinner لمؤشر بسيط وSkeleton لشكل المحتوى؛ LoadingState لتسمية ووصف.",
+          "Spinner for a bare indicator; Skeleton for content shape; LoadingState for a label and description.",
+        ),
+      ],
+    ],
+    "thinking-indicator": [
+      [
+        "label",
+        "string · required",
+        t(
+          "تسمية ظاهرة ومتاحة يزوّدها التطبيق.",
+          "Visible accessible application-supplied label.",
+        ),
+      ],
+      [
+        "announcement",
+        '"polite" | "off" · polite',
+        t(
+          "تسمية ثابتة؛ الحركة زخرفية.",
+          "Stable label; animation is decorative.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "span",
+        t("يدعم className وstyle.", "Supports className and style."),
+      ],
+      [
+        "Choose",
+        "Spinner / ThinkingState",
+        t(
+          "مؤشر ضمن السطر لواجهة المساعد؛ ThinkingState للتفاصيل.",
+          "Inline assistant feedback; ThinkingState adds optional details. Use Spinner for general loading.",
+        ),
+      ],
+    ],
+    "thinking-state": [
+      [
+        "label / active / children",
+        "string / boolean / ReactNode · required",
+        t(
+          "ملخص موجز وحالة ومحتوى يزوّدها التطبيق، دون استدلال خاص.",
+          "Brief user-facing summary, activity flag and details supplied by the host; never private reasoning.",
+        ),
+      ],
+      [
+        "expanded / defaultExpanded",
+        "boolean / boolean · false",
+        t(
+          "توسيع متحكم به أو داخلي؛ الافتراضي يهيّئ مرة واحدة.",
+          "Controlled or internal expansion; default initializes once.",
+        ),
+      ],
+      [
+        "onExpandedChange",
+        "(expanded: boolean) => void",
+        t(
+          "حدّث expanded عند التحكم الخارجي.",
+          "Update expanded when controlled.",
+        ),
+      ],
+      [
+        "announcement",
+        '"polite" | "off" · polite',
+        t(
+          "الملخص فقط ضمن إعلان مهذب؛ التفاصيل خارج المنطقة الحية.",
+          "Only the summary is announced politely; details stay outside the live region.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "div",
+        t(
+          "التفاصيل المطوية مخفية وخاملة مع استعادة التركيز.",
+          "Collapsed details are hidden and inert with focus recovery.",
+        ),
+      ],
+      [
+        "Choose",
+        "ThinkingIndicator / TaskRows",
+        t(
+          "مؤشر موجز لحالة واحدة؛ TaskRows لمهام متعددة بحالات مستقلة.",
+          "ThinkingIndicator for one short inline status; TaskRows for multiple tasks with independent states.",
+        ),
+      ],
+    ],
     "file-tree": [
       [
         "nodes / label",

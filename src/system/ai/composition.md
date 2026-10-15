@@ -367,3 +367,21 @@ elsewhere. Read controls remain stable in All. See the compiling local examples
 linked in README; no fake links, services, persistence or automatic read behavior.
 
 Use FileTree for a compact read-only hierarchy of supplied data. Keep IDs stable across rename/reorder/move and update controlled values in their callbacks. Focus does not select. Use onActivate(file) to render host-owned strings or perform the host action; do not imply filesystem access. See [FileTreeExamples](examples/FileTreeExamples.tsx).
+
+## Compact AI feedback
+
+Use LoadingState for a labeled loading region; optional description adds context.
+Spinner alone fits adjacent existing text; Skeleton fits known future content shape.
+ThinkingIndicator supplies one stable inline activity label. ThinkingState pairs a
+brief user-facing activity summary with optional details. TaskRows fits several
+independently tracked tasks. Never put private model reasoning in ThinkingState.
+
+The application owns active state, labels, details and aria-busy on real content.
+Use one polite announcement owner per update; set announcement="off" on nested or
+redundant feedback. Update the supplied label for meaningful changes, without
+animated words or frame announcements. Keep disclosure usable during activity.
+Collapsed details stay mounted, hidden and inert; controlled collapse restores
+panel focus without reclaiming outside focus. All shared appearance, direction
+and reduced-motion settings apply. [AIFeedbackExamples](examples/AIFeedbackExamples.tsx)
+contains standalone compositions and one explicitly started local simulation
+with replay/cancel/unmount cleanup. No real execution or network activity is implied.

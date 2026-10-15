@@ -14,6 +14,22 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  cases.push(
+    [
+      "loading-state",
+      {
+        ...p["loading-state"],
+        indicator: "skeleton",
+        description: false,
+        label: 'ملاحظات / Notes "DEMO-42"',
+      },
+    ],
+    [
+      "thinking-indicator",
+      { ...p["thinking-indicator"], label: 'إعداد / Preparing "DEMO-42"' },
+    ],
+    ["thinking-state", { active: false, defaultExpanded: true }],
+  );
   for (const mode of ["controlled", "uncontrolled"] as const)
     cases.push([
       "file-tree",

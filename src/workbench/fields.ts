@@ -83,6 +83,18 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "loading-state": [
+    field("label", "text", "التسمية", "Label"),
+    field("indicator", "select", "المؤشر", "Indicator", "indicator", {
+      options: ["spinner", "skeleton"],
+    }),
+    field("description", "boolean", "الوصف", "Description", "description"),
+  ],
+  "thinking-indicator": [field("label", "text", "التسمية", "Label")],
+  "thinking-state": [
+    field("active", "boolean", "نشط", "Active"),
+    field("defaultExpanded", "boolean", "موسّع مبدئيًا", "Initially expanded"),
+  ],
   "file-tree": [
     field(
       "mode",
@@ -773,6 +785,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "loading-state": ["label", "indicator", "description"],
+  "thinking-indicator": ["label"],
+  "thinking-state": ["active", "defaultExpanded"],
   "file-tree": ["mode", "metadata", "empty"],
   "task-rows": ["appearance", "mode", "empty", "longContent"],
   "notification-list": ["readControls", "avatars", "empty", "longContent"],

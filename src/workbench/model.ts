@@ -268,6 +268,13 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "loading-state": {
+    label: string;
+    indicator: "spinner" | "skeleton";
+    description: boolean;
+  };
+  "thinking-indicator": { label: string };
+  "thinking-state": { active: boolean; defaultExpanded: boolean };
   "file-tree": {
     mode: "controlled" | "uncontrolled";
     metadata: boolean;
@@ -343,6 +350,13 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "loading-state": {
+      label: t("جارٍ تحميل الملاحظات", "Loading notes"),
+      indicator: "spinner",
+      description: true,
+    },
+    "thinking-indicator": { label: t("جارٍ إعداد الرد", "Preparing reply") },
+    "thinking-state": { active: true, defaultExpanded: false },
     "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
     "task-rows": {
       appearance: "capsules",

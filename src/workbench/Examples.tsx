@@ -1,3 +1,9 @@
+import {
+  LoadingStateExample,
+  ThinkingIndicatorExample,
+  ThinkingStateExample,
+  AIFeedbackDemo,
+} from "../system/ai/examples/AIFeedbackExamples";
 import { FileTreeExample } from "../system/ai/examples/FileTreeExamples";
 import {
   TaskRowsExample,
@@ -198,6 +204,50 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "loading-state")
+    return (
+      <div style={{ display: "grid", gap: "var(--space-8)" }}>
+        <section>
+          <h3>{t("تسمية فقط", "Label only")}</h3>
+          <LoadingStateExample language={language} description={false} />
+        </section>
+        <section>
+          <h3>{t("عنصر نائب مدمج", "Compact placeholder")}</h3>
+          <LoadingStateExample language={language} indicator="skeleton" />
+        </section>
+      </div>
+    );
+  if (component === "thinking-indicator")
+    return (
+      <p
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "var(--space-2)",
+        }}
+      >
+        <span>{t("المساعد", "Assistant")}</span>
+        <ThinkingIndicatorExample language={language} />
+      </p>
+    );
+  if (component === "thinking-state")
+    return (
+      <div style={{ display: "grid", gap: "var(--space-8)" }}>
+        <section>
+          <h3>{t("ملخص جاهز", "Ready summary")}</h3>
+          <ThinkingStateExample
+            language={language}
+            active={false}
+            defaultExpanded
+          />
+        </section>
+        <section>
+          <h3>{t("عرض محلي متصل", "Connected local demo")}</h3>
+          <AIFeedbackDemo language={language} />
+        </section>
+      </div>
+    );
   if (component === "file-tree")
     return (
       <div style={{ display: "grid", gap: "var(--space-8)" }}>

@@ -643,6 +643,30 @@
     {
       "name": "FileTreeFolder",
       "source": "FileTree.tsx"
+    },
+    {
+      "name": "LoadingState",
+      "source": "LoadingState.tsx"
+    },
+    {
+      "name": "LoadingStateProps",
+      "source": "LoadingState.tsx"
+    },
+    {
+      "name": "ThinkingIndicator",
+      "source": "ThinkingIndicator.tsx"
+    },
+    {
+      "name": "ThinkingIndicatorProps",
+      "source": "ThinkingIndicator.tsx"
+    },
+    {
+      "name": "ThinkingState",
+      "source": "ThinkingState.tsx"
+    },
+    {
+      "name": "ThinkingStateProps",
+      "source": "ThinkingState.tsx"
     }
   ],
   "configuration": {
@@ -710,6 +734,151 @@
     }
   },
   "components": [
+    {
+      "id": "loading-state",
+      "api": "LoadingState",
+      "source": "LoadingState.tsx",
+      "exports": ["LoadingState", "LoadingStateProps"],
+      "purpose": "Compact labeled loading presentation with an optional description.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "announcement",
+          "type": "polite | off",
+          "required": false,
+          "default": "polite",
+          "values": ["polite", "off"]
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "indicator",
+          "type": "spinner | skeleton",
+          "required": false,
+          "default": "spinner",
+          "values": ["spinner", "skeleton"]
+        }
+      ],
+      "inheritedProps": "Native attributes, style, className and ref target div; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
+      "state": "Host owns execution, labels and content. No library timers or automatic transitions. ThinkingState alone allows internal or controlled disclosure; defaults initialize once.",
+      "accessibility": [
+        "One polite atomic status; announcement=off when a parent owns announcements. Animated visuals are decorative; meaningful changes come from supplied text.",
+        "ThinkingState panels stay mounted, hidden and inert when collapsed. Controlled collapse restores panel focus to its trigger without stealing outside focus. Application/OS reduced motion stops decorative motion."
+      ],
+      "limitations": [
+        "Brief user-facing summaries only; never private model reasoning, fabricated logs or implied network/AI activity.",
+        "No orchestration, service, elapsed timer, progress generator or animation dependency."
+      ],
+      "alternative": "Use Spinner alone for an unlabeled visual beside existing status text; use Skeleton for a content-shaped placeholder.",
+      "examples": ["ai/examples/AIFeedbackExamples.tsx"]
+    },
+    {
+      "id": "thinking-indicator",
+      "api": "ThinkingIndicator",
+      "source": "ThinkingIndicator.tsx",
+      "exports": ["ThinkingIndicator", "ThinkingIndicatorProps"],
+      "purpose": "Small inline activity indicator with one stable application-supplied label.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "announcement",
+          "type": "polite | off",
+          "required": false,
+          "default": "polite",
+          "values": ["polite", "off"]
+        }
+      ],
+      "inheritedProps": "Native attributes, style, className and ref target span; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
+      "state": "Host owns execution, labels and content. No library timers or automatic transitions. ThinkingState alone allows internal or controlled disclosure; defaults initialize once.",
+      "accessibility": [
+        "One polite atomic status; announcement=off when a parent owns announcements. Animated visuals are decorative; meaningful changes come from supplied text.",
+        "ThinkingState panels stay mounted, hidden and inert when collapsed. Controlled collapse restores panel focus to its trigger without stealing outside focus. Application/OS reduced motion stops decorative motion."
+      ],
+      "limitations": [
+        "Brief user-facing summaries only; never private model reasoning, fabricated logs or implied network/AI activity.",
+        "No orchestration, service, elapsed timer, progress generator or animation dependency."
+      ],
+      "alternative": "Use Spinner for general loading; use ThinkingState when optional activity details are useful.",
+      "examples": ["ai/examples/AIFeedbackExamples.tsx"]
+    },
+    {
+      "id": "thinking-state",
+      "api": "ThinkingState",
+      "source": "ThinkingState.tsx",
+      "exports": ["ThinkingState", "ThinkingStateProps"],
+      "purpose": "Expandable application-supplied progress summaries and user-facing details, never private model reasoning.",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "announcement",
+          "type": "polite | off",
+          "required": false,
+          "default": "polite",
+          "values": ["polite", "off"]
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(expanded: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Native attributes, style, className and ref target div; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
+      "state": "Host owns execution, labels and content. No library timers or automatic transitions. ThinkingState alone allows internal or controlled disclosure; defaults initialize once.",
+      "accessibility": [
+        "One polite atomic status; announcement=off when a parent owns announcements. Animated visuals are decorative; meaningful changes come from supplied text.",
+        "ThinkingState panels stay mounted, hidden and inert when collapsed. Controlled collapse restores panel focus to its trigger without stealing outside focus. Application/OS reduced motion stops decorative motion."
+      ],
+      "limitations": [
+        "Brief user-facing summaries only; never private model reasoning, fabricated logs or implied network/AI activity.",
+        "No orchestration, service, elapsed timer, progress generator or animation dependency."
+      ],
+      "alternative": "Use ThinkingIndicator for one short inline status; use TaskRows for multiple independently tracked tasks.",
+      "examples": ["ai/examples/AIFeedbackExamples.tsx"]
+    },
     {
       "id": "file-tree",
       "api": "FileTree",

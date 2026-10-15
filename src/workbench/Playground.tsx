@@ -1,3 +1,8 @@
+import {
+  LoadingStateExample,
+  ThinkingIndicatorExample,
+  ThinkingStateExample,
+} from "../system/ai/examples/AIFeedbackExamples";
 import { FileTreeExample } from "../system/ai/examples/FileTreeExamples";
 import { TaskRowsExample } from "../system/ai/examples/TaskRowsExamples";
 import { NotificationListExample } from "../system/ai/examples/NotificationListExamples";
@@ -162,6 +167,27 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "loading-state")
+    return (
+      <LoadingStateExample
+        language={language}
+        {...(model as Playgrounds["loading-state"])}
+      />
+    );
+  if (component === "thinking-indicator")
+    return (
+      <ThinkingIndicatorExample
+        language={language}
+        {...(model as Playgrounds["thinking-indicator"])}
+      />
+    );
+  if (component === "thinking-state")
+    return (
+      <ThinkingStateExample
+        language={language}
+        {...(model as Playgrounds["thinking-state"])}
+      />
+    );
   if (component === "file-tree")
     return (
       <FileTreeExample
