@@ -14,6 +14,11 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const mode of ["controlled", "uncontrolled"] as const)
+    cases.push([
+      "file-tree",
+      { ...p["file-tree"], mode, empty: true, metadata: false },
+    ]);
   for (const appearance of ["capsules", "list"] as const)
     for (const mode of ["controlled", "uncontrolled"] as const)
       cases.push([

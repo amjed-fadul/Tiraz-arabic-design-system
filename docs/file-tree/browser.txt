@@ -1,0 +1,39 @@
+CAPTURE ar light 1440 compact standard
+CAPTURE ar light 1440 compact large
+CAPTURE ar light 1440 standard standard
+CAPTURE ar light 1440 standard large
+CAPTURE ar light 320 compact standard
+CAPTURE ar light 320 compact large
+CAPTURE ar light 320 standard standard
+CAPTURE ar light 320 standard large
+CAPTURE ar dark 1440 compact standard
+CAPTURE ar dark 1440 compact large
+CAPTURE ar dark 1440 standard standard
+CAPTURE ar dark 1440 standard large
+CAPTURE ar dark 320 compact standard
+CAPTURE ar dark 320 compact large
+CAPTURE ar dark 320 standard standard
+CAPTURE ar dark 320 standard large
+CAPTURE en light 1440 compact standard
+CAPTURE en light 1440 compact large
+CAPTURE en light 1440 standard standard
+CAPTURE en light 1440 standard large
+CAPTURE en light 320 compact standard
+CAPTURE en light 320 compact large
+CAPTURE en light 320 standard standard
+CAPTURE en light 320 standard large
+CAPTURE en dark 1440 compact standard
+CAPTURE en dark 1440 compact large
+CAPTURE en dark 1440 standard standard
+CAPTURE en dark 1440 standard large
+CAPTURE en dark 320 compact standard
+CAPTURE en dark 320 compact large
+CAPTURE en dark 320 standard standard
+CAPTURE en dark 320 standard large
+PASS 32 rendered language/theme/width/density/typography cases; mixed long names and preview fit, all rows stay within width
+PASS LTR visible-node arrows/Home/End, repeated-letter typeahead, one tab stop, selection separate from focus, Space selects and Enter activates
+PASS Axe DOM scan of populated and empty trees: no violations; distinct row focus/selection screenshot and accessible tree snapshot saved
+PASS Timed controlled nested collapse, branch deletion, empty update, reorder and outside focus/button or nonfocusable heading preserve predictable focus
+PASS RTL horizontal arrows expand into child and return to parent
+PASS Provider and OS reduced motion disable chevron transitions
+PASS Continuous Files docs, application preview, clipboard code/prompt synchronization and 320px documentation

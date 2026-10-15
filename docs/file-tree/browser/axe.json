@@ -1,0 +1,10 @@
+{
+  "violations": [],
+  "incomplete": [
+    {
+      "id": "aria-required-children",
+      "impact": "critical"
+    }
+  ],
+  "passes": 20
+}

@@ -1,0 +1,11 @@
+- tree "Probe files":
+  - treeitem "src" [expanded]:
+    - text: src
+    - group:
+      - treeitem "components" [expanded]:
+        - text: components
+        - group:
+          - treeitem "App.tsx" [selected]
+          - treeitem "Button.tsx"
+      - treeitem "base.css"
+  - treeitem "README.md"

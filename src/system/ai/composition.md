@@ -365,3 +365,5 @@ to the next remaining control, previous if last, or the selected filter when non
 remain; Mark all uses that filter. Do not steal focus for updates originating
 elsewhere. Read controls remain stable in All. See the compiling local examples
 linked in README; no fake links, services, persistence or automatic read behavior.
+
+Use FileTree for a compact read-only hierarchy of supplied data. Keep IDs stable across rename/reorder/move and update controlled values in their callbacks. Focus does not select. Use onActivate(file) to render host-owned strings or perform the host action; do not imply filesystem access. See [FileTreeExamples](examples/FileTreeExamples.tsx).

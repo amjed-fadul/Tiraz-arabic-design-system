@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **forty-five**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows and NotificationList.
+Tiraz is an Arabic-first, source-owned React dashboard library with **forty-six**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList and FileTree.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -511,3 +511,7 @@ rows remain. Mark all hands focus to that filter. It distinguishes an empty sour
 from no unread results. Preserve this behavior when adapting filtering to a host.
 No task engine, drag/reorder, scheduling, automatic sorting/dismissal, polling,
 push permissions, backend or persistence is supplied. No new dependency is needed.
+
+## FileTree
+
+FileTree displays application-supplied files and folders with stable unique IDs; it never reads the filesystem. Use `ai/examples/FileTreeExamples.tsx` (relative to the source root) for a nested project and application-owned sample-string preview. Controlled or internal expansion and single selection are separate from roving keyboard focus. File click/Enter calls `onActivate(file)`; the host decides what opening means. The example preview follows file selection, including Space; arrow focus does not change it. Empty folders are end nodes. Horizontal arrows mirror in RTL; arrows, Home/End, typeahead and * navigate visible nodes. On removal, focus recovers to the nearest visible ancestor or same visible position, then the empty root, without reclaiming outside focus. Supply nonempty names, globally unique stable IDs, and noninteractive metadata/empty content. No upload, editing, search, drag/drop, virtualization, multi-selection or context menu is supplied.

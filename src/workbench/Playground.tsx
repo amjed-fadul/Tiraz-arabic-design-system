@@ -1,3 +1,4 @@
+import { FileTreeExample } from "../system/ai/examples/FileTreeExamples";
 import { TaskRowsExample } from "../system/ai/examples/TaskRowsExamples";
 import { NotificationListExample } from "../system/ai/examples/NotificationListExamples";
 import { StepsExample } from "../system/ai/examples/StepsExamples";
@@ -161,6 +162,14 @@ export function Playground({
   buttonState,
 }: Props) {
   const t = words(language);
+  if (component === "file-tree")
+    return (
+      <FileTreeExample
+        key={(model as Playgrounds["file-tree"]).mode}
+        language={language}
+        {...(model as Playgrounds["file-tree"])}
+      />
+    );
   if (component === "task-rows")
     return (
       <TaskRowsExample

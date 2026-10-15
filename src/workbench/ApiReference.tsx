@@ -95,6 +95,64 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "file-tree": [
+      [
+        "nodes / label",
+        "readonly FileTreeNode[] / string · required",
+        t(
+          "معرّفات فريدة ثابتة وname نصي وkind=file أو folder مع children. metadata نص اختياري.",
+          "Unique stable IDs, string name and kind=file or folder with children. Optional string metadata.",
+        ),
+      ],
+      [
+        "expandedIds / defaultExpandedIds / onExpandedChange",
+        "readonly string[] / (ids: string[]) => void",
+        t(
+          "حالة مضبوطة أو داخلية. حدّث القيمة المضبوطة في الدالة.",
+          "Controlled or internal expansion. Update the controlled value in its callback.",
+        ),
+      ],
+      [
+        "selectedId / defaultSelectedId / onSelectedChange",
+        "string | null / (id: string) => void",
+        t(
+          "اختيار واحد مستقل عن التركيز. null يعني عدم الاختيار.",
+          "Single selection independent of focus. null means no selection.",
+        ),
+      ],
+      [
+        "onActivate",
+        "(file: FileTreeFile) => void",
+        t(
+          "النقر أو Enter على ملف يفوّض الإجراء للتطبيق. لا وصول إلى نظام الملفات.",
+          "File click or Enter delegates activation to the host. No filesystem access.",
+        ),
+      ],
+      [
+        "size / emptyState",
+        "sm (default) | md / ReactNode",
+        t(
+          "محتوى فارغ غير تفاعلي. عناوين طويلة مع عزل اتجاه النص.",
+          "Noninteractive empty content. Long names truncate with bidirectional isolation.",
+        ),
+      ],
+      [
+        "Keyboard / focus",
+        "Tree pattern · one tab stop",
+        t(
+          "الأسهم وHome/End والبحث بالكتابة. الأسهم الأفقية معكوسة في RTL. المسافة تحدد؛ Enter ينشط. يعود التركيز لأقرب أصل ظاهر أو الموضع نفسه بعد الحذف دون سحب التركيز من الخارج.",
+          "Arrows, Home/End and typeahead. Horizontal arrows mirror in RTL. Space selects; Enter activates. Removed focus recovers to the closest visible ancestor or same position without reclaiming outside focus.",
+        ),
+      ],
+      [
+        "native attributes / ref",
+        "ComponentPropsWithRef<div> except children / onSelect",
+        t(
+          "السمات وref على جذر tree؛ className على الحاوية. الحالات والأدوار تديرها الشجرة.",
+          "Attributes and ref target the tree root; className targets its wrapper. Tree roles and states are managed internally.",
+        ),
+      ],
+    ],
     steps: [
       [
         "items / label",

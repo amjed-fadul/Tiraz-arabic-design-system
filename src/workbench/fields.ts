@@ -83,6 +83,30 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "file-tree": [
+    field(
+      "mode",
+      "select",
+      "إدارة الحالة",
+      "State mode",
+      "expandedIds / selectedId",
+      { options: ["controlled", "uncontrolled"] },
+    ),
+    field(
+      "metadata",
+      "boolean",
+      "بيانات الملف",
+      "File metadata",
+      "nodes[].metadata",
+    ),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "nodes / emptyState",
+    ),
+  ],
   "task-rows": [
     field("appearance", "select", "المظهر", "Appearance", "appearance", {
       options: ["capsules", "list"],
@@ -749,6 +773,7 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "file-tree": ["mode", "metadata", "empty"],
   "task-rows": ["appearance", "mode", "empty", "longContent"],
   "notification-list": ["readControls", "avatars", "empty", "longContent"],
   steps: ["orientation", "currentState"],

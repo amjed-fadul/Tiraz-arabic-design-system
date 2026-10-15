@@ -1,3 +1,4 @@
+import { FileTreeExample } from "../system/ai/examples/FileTreeExamples";
 import {
   TaskRowsExample,
   TaskRowsStatesExample,
@@ -197,6 +198,21 @@ export function Examples({
   const t = words(language);
   const [event, setEvent] = useState("");
   const [checked, setChecked] = useState(false);
+  if (component === "file-tree")
+    return (
+      <div style={{ display: "grid", gap: "var(--space-8)" }}>
+        <section>
+          <h3>
+            {t("مشروع متداخل ومعاينة نصية", "Nested project and text preview")}
+          </h3>
+          <FileTreeExample language={language} mode="controlled" />
+        </section>
+        <section>
+          <h3>{t("حالة فارغة", "Empty state")}</h3>
+          <FileTreeExample language={language} empty />
+        </section>
+      </div>
+    );
   if (component === "task-rows")
     return (
       <div style={{ display: "grid", gap: "var(--space-8)" }}>

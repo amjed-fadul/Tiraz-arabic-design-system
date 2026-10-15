@@ -623,6 +623,26 @@
     {
       "name": "TaskState",
       "source": "TaskRows.tsx"
+    },
+    {
+      "name": "FileTree",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeProps",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeNode",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeFile",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeFolder",
+      "source": "FileTree.tsx"
     }
   ],
   "configuration": {
@@ -690,6 +710,105 @@
     }
   },
   "components": [
+    {
+      "id": "file-tree",
+      "api": "FileTree",
+      "source": "FileTree.tsx",
+      "exports": [
+        "FileTree",
+        "FileTreeProps",
+        "FileTreeNode",
+        "FileTreeFile",
+        "FileTreeFolder"
+      ],
+      "purpose": "Compact read-only navigator for application-supplied files and folders. Host owns activation.",
+      "props": [
+        {
+          "name": "nodes",
+          "type": "readonly FileTreeNode[]",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "expandedIds",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultExpandedIds",
+          "type": "readonly string[]",
+          "required": false,
+          "default": []
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(ids: string[]) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "selectedId",
+          "type": "string | null",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "defaultSelectedId",
+          "type": "string | null",
+          "required": false,
+          "default": null
+        },
+        {
+          "name": "onSelectedChange",
+          "type": "(id: string) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "onActivate",
+          "type": "(file: FileTreeFile) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "emptyState",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLDivElement>",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "inheritedProps": "Omit<ComponentPropsWithRef<div>, children | onSelect>. Attributes/ref target tree root; className targets wrapper. Roles, label and tabIndex are managed internally.",
+      "state": "Controlled or internal expansion and single selection. Defaults initialize once. Focus is separate; arrows do not select. File click/Enter selects and delegates onActivate; Space selects only. Folder click/Enter selects and toggles if it has children. Empty folders are end nodes with no aria-expanded or chevron.",
+      "accessibility": [
+        "Named tree with nested groups, named treeitems and truthful expanded/selected states; metadata is a description. One roving tab stop. Arrows/Home/End/typeahead and sibling * expansion. RTL mirrors horizontal arrows.",
+        "When focused data disappears, recover nearest visible ancestor, then same visible position, then empty tree root. Never reclaim intentional outside focus. Motion honors provider and OS preferences. Manual screen-reader verification remains required."
+      ],
+      "limitations": [
+        "Supply unique nonempty IDs across the whole tree and nonempty names. Stable IDs survive renames and moves. Metadata and empty content are noninteractive.",
+        "No filesystem access, uploading, editing, drag/drop, search UI, virtualization, multi-selection or context menus. Host owns data, permissions, previews and activation."
+      ],
+      "examples": ["ai/examples/FileTreeExamples.tsx"]
+    },
     {
       "id": "task-rows",
       "api": "TaskRows",
@@ -4929,6 +5048,72 @@
           "name": "action",
           "type": "ReactNode",
           "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "FileTreeFile",
+      "source": "FileTree.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "kind",
+          "type": "\"file\"",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "metadata",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "FileTreeFolder",
+      "source": "FileTree.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "kind",
+          "type": "\"folder\"",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "metadata",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "children",
+          "type": "readonly FileTreeNode[]",
+          "required": true,
           "default": "undefined"
         }
       ]

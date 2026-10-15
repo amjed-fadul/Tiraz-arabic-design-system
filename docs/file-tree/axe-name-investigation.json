@@ -1,0 +1,33 @@
+{
+  "before": {
+    "violations": [
+      {
+        "id": "label-content-name-mismatch",
+        "nodes": [
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_0_-project-name\" aria-selected=\"false\" aria-expanded=\"true\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_0_-src-name\" aria-selected=\"false\" aria-expanded=\"true\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_0_-components-name\" aria-selected=\"false\" aria-expanded=\"true\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_0_-welcome-name\" aria-describedby=\"_r_0_-welcome-name-meta\" aria-selected=\"false\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"0\" aria-labelledby=\"_r_0_-app-name\" aria-describedby=\"_r_0_-app-name-meta\" aria-selected=\"true\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_0_-tokens-name\" aria-describedby=\"_r_0_-tokens-name-meta\" aria-selected=\"false\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_0_-package-name\" aria-describedby=\"_r_0_-package-name-meta\" aria-selected=\"false\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"0\" aria-labelledby=\"_r_1_-src-name\" aria-selected=\"false\" aria-expanded=\"true\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_1_-ui-name\" aria-selected=\"false\" aria-expanded=\"true\" class=\"tz-file-tree-item\">",
+          "<li role=\"treeitem\" tabindex=\"-1\" aria-labelledby=\"_r_1_-app-name\" aria-describedby=\"_r_1_-app-name-meta\" aria-selected=\"false\" class=\"tz-file-tree-item\">"
+        ]
+      }
+    ],
+    "incomplete": [
+      "aria-required-children"
+    ],
+    "passes": 21
+  },
+  "after": {
+    "violations": [],
+    "incomplete": [
+      "aria-required-children"
+    ],
+    "passes": 20
+  },
+  "snapshot": "- tree \"Probe files\":\n  - treeitem \"src\" [expanded]:\n    - text: src\n    - group:\n      - treeitem \"components\" [expanded]:\n        - text: components\n        - group:\n          - treeitem \"App.tsx\"\n          - treeitem \"Button.tsx\"\n      - treeitem \"base.css\"\n  - treeitem \"README.md\""
+}

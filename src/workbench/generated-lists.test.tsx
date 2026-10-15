@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
 import * as React from "react";
@@ -9,7 +9,7 @@ import * as system from "../system";
 import { generateCode } from "./generate";
 import { defaultPlaygrounds } from "./model";
 function copiedExample(
-  component: "task-rows" | "notification-list",
+  component: "task-rows" | "notification-list" | "file-tree",
   language: "ar" | "en",
 ) {
   const model = defaultPlaygrounds(language)[component];
@@ -76,5 +76,32 @@ it.each(["ar", "en"] as const)(
     expect(
       screen.getByRole("button", { name: ar ? "غير المقروءة" : "Unread" }),
     ).toHaveFocus();
+  },
+);
+
+it.each(["ar", "en"] as const)(
+  "runs copied %s FileTree source with host-owned sample text",
+  async (language) => {
+    const user = userEvent.setup(),
+      Example = copiedExample("file-tree", language);
+    render(<Example />);
+    const tree = screen.getByRole("tree");
+    const file = tree.querySelector('[aria-selected="true"]') as HTMLElement;
+    act(() => file.focus());
+    await user.keyboard("{ArrowDown} ");
+    expect(
+      screen.getByRole("treeitem", { name: "tokens.css" }),
+    ).toHaveAttribute("aria-selected", "true");
+    expect(
+      screen.getByRole("region", {
+        name: language === "ar" ? "معاينة الملف" : "File preview",
+      }),
+    ).toHaveTextContent("--space: 8px");
+    await user.keyboard("{Enter}");
+    expect(
+      screen.getByRole("region", {
+        name: language === "ar" ? "معاينة الملف" : "File preview",
+      }),
+    ).toHaveTextContent("--space: 8px");
   },
 );

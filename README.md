@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with forty-five source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with forty-six source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -263,3 +263,7 @@ NotificationList retains application-owned notifications, explicit read controls
 derived unread count, All/Unread filtering and focus recovery. Source contracts
 and portable examples live in `src/system/ai/`; neither family adds a dependency,
 backend or persistence.
+
+## FileTree
+
+FileTree displays application-supplied files and folders with stable unique IDs; it never reads the filesystem. Use `ai/examples/FileTreeExamples.tsx` (relative to the source root) for a nested project and application-owned sample-string preview. Controlled or internal expansion and single selection are separate from roving keyboard focus. File click/Enter calls `onActivate(file)`; the host decides what opening means. The example preview follows file selection, including Space; arrow focus does not change it. Empty folders are end nodes. Horizontal arrows mirror in RTL; arrows, Home/End, typeahead and * navigate visible nodes. On removal, focus recovers to the nearest visible ancestor or same visible position, then the empty root, without reclaiming outside focus. Supply nonempty names, globally unique stable IDs, and noninteractive metadata/empty content. No upload, editing, search, drag/drop, virtualization, multi-selection or context menu is supplied.

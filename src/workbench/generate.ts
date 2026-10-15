@@ -1,3 +1,4 @@
+import fileTreeSource from "../system/ai/examples/FileTreeExamples.tsx?raw";
 import taskRowsSource from "../system/ai/examples/TaskRowsExamples.tsx?raw";
 import notificationListSource from "../system/ai/examples/NotificationListExamples.tsx?raw";
 import stepsSource from "../system/ai/examples/StepsExamples.tsx?raw";
@@ -70,28 +71,33 @@ export function generateCode(
   language: Language,
 ): string {
   if (
+    component === "file-tree" ||
     component === "steps" ||
     component === "timeline" ||
     component === "task-rows" ||
     component === "notification-list"
   ) {
     const source = (
-      component === "task-rows"
-        ? taskRowsSource
-        : component === "notification-list"
-          ? notificationListSource
-          : component === "steps"
-            ? stepsSource
-            : timelineSource
+      component === "file-tree"
+        ? fileTreeSource
+        : component === "task-rows"
+          ? taskRowsSource
+          : component === "notification-list"
+            ? notificationListSource
+            : component === "steps"
+              ? stepsSource
+              : timelineSource
     ).replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"');
     const name =
-      component === "task-rows"
-        ? "TaskRowsExample"
-        : component === "notification-list"
-          ? "NotificationListExample"
-          : component === "steps"
-            ? "StepsExample"
-            : "TimelineExample";
+      component === "file-tree"
+        ? "FileTreeExample"
+        : component === "task-rows"
+          ? "TaskRowsExample"
+          : component === "notification-list"
+            ? "NotificationListExample"
+            : component === "steps"
+              ? "StepsExample"
+              : "TimelineExample";
     return `${source}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
@@ -455,6 +461,12 @@ export function generatePrompt(
       `اعثر أولًا على طِراز داخل المشروع الحالي، سواء كان مشروعًا كاملًا أو نسخة المصدر في تطبيق آخر. إذا لم تتمكن من العثور على النظام، أبلغ بذلك بوضوح وتوقف. حدّد جذر المصدر: المجلد الذي يحوي index.ts وconfig.ts وtokens.css وcomponents.css وai/. في المشروع الكامل يكون عادة src/system؛ مثل src/system/${entry.file}. اقرأ ai/README.md وai/registry.json لقسم ${entry.id} وواجهات الدعم وai/composition.md، ثم افحص ${entry.file} وindex.ts وconfig.ts وProvider.tsx والأنماط وإعداد الخط المحلي في التطبيق. لصور Avatar احتفظ بـ ai/assets/sara.jpg وai/assets/omar.jpg وai/assets/README.md وai/assets/LICENSE.txt عند نسخ المصدر، وعدّل الاستيرادات المحلية. مسارات السجل نسبية إلى جذر المصدر، ولا تتطلب نسخة المصدر README للمشروع أو src/main.tsx. استخدم ${localize(entry.name, language)} بالخصائص والإعدادات الحالية كما في المثال. عدّل استيرادات ./system ومسارات CSS إلى موقع المكتبة، واربط الأحداث بسلوك التطبيق المطلوب، وتحقق من العرض الفعلي والاتجاه والتخصيص ولوحة المفاتيح والتركيز والأسماء الميسرة. لا تخترع تصديرات أو خصائص ولا تضف مثبتًا أو CLI.`,
       `First locate Tiraz within the current project, either a full checkout or a source copy in another application. If you cannot locate the system, clearly report that and stop. Identify the source root: the directory containing index.ts, config.ts, tokens.css, components.css and ai/. In a full checkout this is usually src/system; for example src/system/${entry.file}. Read ai/README.md, ai/registry.json for the ${entry.id} family and support APIs, and ai/composition.md; then inspect ${entry.file}, index.ts, config.ts, Provider.tsx, styles and the host application's local font setup. For Avatar photos, preserve ai/assets/sara.jpg, ai/assets/omar.jpg, ai/assets/README.md and ai/assets/LICENSE.txt with the copied source; adjust emitted local imports, do not replace bundled portraits with remote services. Registry paths are relative to the source root; a source copy needs no checkout README or src/main.tsx. Use ${localize(entry.name, language)} with the exact current properties and system settings in the example. Adjust ./system imports and CSS paths to the located library, connect events to the requested application behavior, and validate the rendered result, direction, customization, keyboard, focus and accessible names. Do not invent exports/props or add an installer or CLI.`,
     ) +
+    (component === "file-tree"
+      ? t(
+          "\nFileTree يعرض بيانات يزوّدها التطبيق فقط. onActivate يفوّض فتح الملف للتطبيق، والمعاينة تقرأ نصوص المثال المحلية دون نظام ملفات.",
+          "\nFileTree displays supplied data only. onActivate delegates opening to the host; the preview reads application-owned sample strings without filesystem access.",
+        )
+      : "") +
     `\n\nSystemProvider: ${JSON.stringify(c)}\n\n${t("ضع المثال في ملف مناسب داخل تطبيقك بعد تعديل مسارات الاستيراد. احتفظ بحزمة ai/ عند نسخ المكتبة.", "Place the example in an appropriate application component file after adjusting imports. Retain the ai/ bundle when copying the library.")}\n\n\`\`\`tsx\n${generateCode(component, model, config, language)}\`\`\``
   );
 }

@@ -88,3 +88,11 @@ export type {
   NotificationListProps,
   NotificationItem,
 } from "./NotificationList";
+
+export { FileTree } from "./FileTree";
+export type {
+  FileTreeProps,
+  FileTreeNode,
+  FileTreeFile,
+  FileTreeFolder,
+} from "./FileTree";

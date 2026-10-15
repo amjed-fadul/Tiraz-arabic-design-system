@@ -176,6 +176,7 @@ it("compiles the bundled example after copying only the library to a different a
     // Compile copied snippets in the host, with only the relocated source bundle.
     for (const language of ["ar", "en"] as const) {
       for (const component of [
+        "file-tree",
         "task-rows",
         "notification-list",
         "steps",

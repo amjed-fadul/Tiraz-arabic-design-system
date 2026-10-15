@@ -1,0 +1,175 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/file-tree/Tiraz
+
+ ❯ src/system/ai-registry.test.ts (10 tests | 1 failed) 28552ms
+   × rejects incorrect required=false for tabs.label 5952ms
+ ❯ src/system/overlay-regressions.test.tsx (13 tests | 1 failed) 3176ms
+   × expires a new toast after pointer-only dismissal of the last message 298ms
+ ❯ src/workbench/generated-lists.test.tsx (4 tests | 2 failed) 2139ms
+   × runs copied ar FileTree source with host-owned sample text 297ms
+   × runs copied en FileTree source with host-owned sample text 151ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/ai-registry.test.ts > rejects incorrect required=false for tabs.label
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/ai-registry.test.ts:129:3
+    127|   ["configuration", "typography", true],
+    128| ] as const) {
+    129|   it(`rejects incorrect required=${incorrect} for ${group}.${field}`, …
+       |   ^
+    130|     const registry = readRegistry();
+    131|     const props =
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/system/overlay-regressions.test.tsx > expires a new toast after pointer-only dismissal of the last message
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Dismiss"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Notify":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Notifications":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Notifications"[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mstyle[39m=[32m""[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol[39m
+    [33mclass[39m=[32m"tz-toast-viewport"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m""[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"rtl"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<button[39m
+        [33mclass[39m=[32m"tz-button "[39m
+        [33mdata-size[39m=[32m"sm"[39m
+        [33mdata-state[39m=[32m"idle"[39m
+        [33mdata-variant[39m=[32m"primary"[39m
+        [33mtype[39m=[32m"button"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"tz-button-label"[39m
+        [36m>[39m
+          [0mNotify[0m
+        [36m</span>[39m
+      [36m</button>[39m
+      [36m<div[39m
+        [33maria-label[39m=[32m"Notifications"[39m
+        [33mrole[39m=[32m"region"[39m
+        [33mstyle[39m=[32m""[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+        [36m<ol[39m
+          [33mclass[39m=[32m"tz-toast-viewport"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+        [36m/>[39m
+        [36m<span[39m
+          [33mstyle[39m=[32m"position: fixed; border: 0px; width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; word-wrap: normal;"[39m
+          [33mtabindex[39m=[32m"0"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/overlay-regressions.test.tsx:192:32
+    190|   const trigger = screen.getByRole("button", { name: "Notify" });
+    191|   await userEvent.click(trigger);
+    192|   fireEvent.pointerMove(screen.getByRole("button", { name: "Dismiss" }…
+       |                                ^
+    193|   fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
+    194|   expect(trigger).toHaveFocus();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/workbench/generated-lists.test.tsx > runs copied ar FileTree source with host-owned sample text
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  --space: 8px
+Received:
+  App.tsx · نص نموذجيimport { Welcome } from "./components/Welcome"; export function App() { return <Welcome />; }
+ ❯ src/workbench/generated-lists.test.tsx:95:93
+     93|       screen.getByRole("treeitem", { name: "tokens.css" }),
+     94|     ).toHaveAttribute("aria-selected", "true");
+     95|     expect(screen.getByRole("region",{name:language==="ar"?"معاينة الم…
+       |                                                                                             ^
+     96|     await user.keyboard("{Enter}");
+     97|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/workbench/generated-lists.test.tsx > runs copied en FileTree source with host-owned sample text
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  --space: 8px
+Received:
+  App.tsx · Sample textimport { Welcome } from "./components/Welcome"; export function App() { return <Welcome />; }
+ ❯ src/workbench/generated-lists.test.tsx:95:93
+     93|       screen.getByRole("treeitem", { name: "tokens.css" }),
+     94|     ).toHaveAttribute("aria-selected", "true");
+     95|     expect(screen.getByRole("region",{name:language==="ar"?"معاينة الم…
+       |                                                                                             ^
+     96|     await user.keyboard("{Enter}");
+     97|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  3 failed | 58 passed (61)
+      Tests  4 failed | 515 passed (519)
+   Start at  22:15:56
+   Duration  80.62s (import 46%, tests 39%, environment 10%, transform 3%, setup 2%)
+
+     Import  211 modules were evaluated 4398 times · 250.87s total, 46% of tracked time
+             ~27.52s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

@@ -268,6 +268,11 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "file-tree": {
+    mode: "controlled" | "uncontrolled";
+    metadata: boolean;
+    empty: boolean;
+  };
   "task-rows": Required<Omit<TaskRowsExampleProps, "language">>;
   "notification-list": Required<Omit<NotificationListExampleProps, "language">>;
   steps: {
@@ -338,6 +343,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
     "task-rows": {
       appearance: "capsules",
       mode: "uncontrolled",

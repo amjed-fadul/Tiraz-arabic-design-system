@@ -3134,3 +3134,95 @@
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
+
+/* Supplied-data file navigator: only visible items participate in roving focus. */
+.tz-file-tree {
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-meta);
+}
+.tz-file-tree[data-size="md"] {
+  font-size: var(--text-body);
+}
+.tz-file-tree ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.tz-file-tree-item {
+  outline: none;
+}
+.tz-file-tree-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  min-block-size: var(--control-small);
+  padding-block: var(--space-1);
+  padding-inline-end: var(--space-2);
+  padding-inline-start: calc(
+    var(--space-1) + min(var(--tree-depth), 6) * var(--space-4)
+  );
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease);
+}
+.tz-file-tree[data-size="md"] .tz-file-tree-row {
+  min-block-size: var(--control-height);
+}
+.tz-file-tree-row:hover {
+  background: var(--surface-hover);
+}
+.tz-file-tree-item[aria-selected="true"] > .tz-file-tree-row {
+  background: var(--action-soft);
+  color: var(--action);
+}
+.tz-file-tree-item:focus-visible > .tz-file-tree-row {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.tz-file-tree-chevron,
+.tz-file-tree-icon {
+  inline-size: 14px;
+  block-size: 14px;
+  flex: none;
+}
+.tz-file-tree-chevron {
+  transition: transform var(--motion-fast) var(--ease);
+}
+.tz-file-tree-chevron[data-folder="false"] {
+  visibility: hidden;
+}
+.tz-file-tree-chevron:dir(rtl) {
+  transform: rotate(180deg);
+}
+.tz-file-tree-chevron[data-open="true"] {
+  transform: rotate(90deg);
+}
+.tz-file-tree-icon {
+  color: var(--text-secondary);
+}
+.tz-file-tree-name {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+.tz-file-tree-meta {
+  color: var(--text-secondary);
+  max-inline-size: 25%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+.tz-file-tree-empty {
+  color: var(--text-secondary);
+  margin: 0;
+  padding: var(--space-3);
+}
+.tz-file-tree [role="tree"]:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}

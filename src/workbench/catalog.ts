@@ -1,6 +1,15 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "file-tree",
+    name: ["شجرة الملفات", "FileTree"],
+    description: [
+      "متصفح مدمج لبيانات الملفات والمجلدات التي يزوّدها التطبيق.",
+      "A compact navigator for application-supplied files and folders.",
+    ],
+    file: "FileTree.tsx",
+  },
+  {
     id: "task-rows",
     name: ["صفوف المهام", "TaskRows"],
     description: [
@@ -442,7 +451,11 @@ const documentationGroups = [
       "switch",
     ],
   },
-  { id: "files", name: ["الملفات", "Files"], ids: ["file-dropzone"] },
+  {
+    id: "files",
+    name: ["الملفات", "Files"],
+    ids: ["file-tree", "file-dropzone"],
+  },
   {
     id: "navigation",
     name: ["التنقّل", "Navigation"],
