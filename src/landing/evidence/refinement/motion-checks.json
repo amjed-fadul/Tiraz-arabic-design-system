@@ -1,0 +1,30 @@
+{
+  "reducedState": {
+    "canvas": 0,
+    "image": 1942,
+    "matches": true,
+    "src": "http://127.0.0.1:5238/assets/woven-textile-OjDd5vQk.png"
+  },
+  "resumedState": {
+    "canvas": 1,
+    "effect": "running"
+  },
+  "pausedState": {
+    "result": {
+      "type": "object",
+      "value": {
+        "effect": "paused",
+        "time": 0.13410000503063202
+      }
+    }
+  },
+  "pausedAfterAccent": {
+    "result": {
+      "type": "object",
+      "value": {
+        "effect": "paused",
+        "time": 0.13410000503063202
+      }
+    }
+  }
+}

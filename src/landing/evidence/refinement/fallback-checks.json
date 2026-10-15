@@ -1,0 +1,13 @@
+{
+  "gpuFailure": {
+    "canvas": 0,
+    "effect": "fallback",
+    "h1": "واجهات عربية،من أول خيط.",
+    "image": 1942
+  },
+  "loss": {
+    "canvas": 0,
+    "effect": "fallback",
+    "image": 1942
+  }
+}

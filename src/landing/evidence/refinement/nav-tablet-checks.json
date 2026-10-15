@@ -1,0 +1,38 @@
+[
+  {
+    "copyTop": 210.16915893554688,
+    "headerBackground": "rgba(0, 0, 0, 0)",
+    "headerBottom": 87.99715423583984,
+    "lang": "ar",
+    "overflow": false,
+    "theme": "light",
+    "width": 768
+  },
+  {
+    "copyTop": 210.16915893554688,
+    "headerBackground": "rgba(0, 0, 0, 0)",
+    "headerBottom": 87.99715423583984,
+    "lang": "ar",
+    "overflow": false,
+    "theme": "dark",
+    "width": 768
+  },
+  {
+    "copyTop": 210.16915893554688,
+    "headerBackground": "rgba(0, 0, 0, 0)",
+    "headerBottom": 87.99715423583984,
+    "lang": "en",
+    "overflow": false,
+    "theme": "dark",
+    "width": 768
+  },
+  {
+    "copyTop": 210.16915893554688,
+    "headerBackground": "rgba(0, 0, 0, 0)",
+    "headerBottom": 87.99715423583984,
+    "lang": "en",
+    "overflow": false,
+    "theme": "light",
+    "width": 768
+  }
+]

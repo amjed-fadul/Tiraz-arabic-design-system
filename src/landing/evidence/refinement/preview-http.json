@@ -1,0 +1,27 @@
+[
+  {
+    "url": "http://127.0.0.1:5238/landing.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8"
+  },
+  {
+    "url": "http://127.0.0.1:5238/src/landing/brand-preview.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8"
+  },
+  {
+    "url": "http://127.0.0.1:5238/index.html",
+    "status": 200,
+    "contentType": "text/html;charset=utf-8"
+  },
+  {
+    "url": "http://127.0.0.1:5238/examples/dashboard",
+    "status": 200,
+    "contentType": "text/html"
+  },
+  {
+    "url": "http://127.0.0.1:5227/",
+    "status": 200,
+    "contentType": "text/html"
+  }
+]

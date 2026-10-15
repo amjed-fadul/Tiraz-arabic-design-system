@@ -1,0 +1,11 @@
+> tiraz@0.1.0 test
+> vitest run src/landing/Landing.test.tsx --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  16:22:51
+   Duration  5.38s (import 50%, environment 17%, tests 17%, transform 11%, setup 5%)

@@ -1,0 +1,23 @@
+{
+  "method": "Scoped document.hidden fault injection and visibilitychange event; property restored immediately.",
+  "hiddenState": {
+    "result": {
+      "type": "object",
+      "value": {
+        "effect": "paused",
+        "hidden": true,
+        "time": 106.80709838867188
+      }
+    }
+  },
+  "hiddenAfter": {
+    "result": {
+      "type": "object",
+      "value": {
+        "effect": "paused",
+        "hidden": true,
+        "time": 106.80709838867188
+      }
+    }
+  }
+}

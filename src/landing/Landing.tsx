@@ -3,7 +3,6 @@ import {
   ArrowDown,
   ArrowUpLeft,
   ArrowUpRight,
-  BookOpen,
   GitFork,
   Languages,
   Moon,
@@ -20,9 +19,11 @@ import {
   SystemProvider,
   defaultConfig,
 } from "../system";
-import type { SystemConfig } from "../system";
+import type { Accent, SystemConfig } from "../system";
 import { LiveExample } from "./LiveExample";
 import { Weave } from "./Weave";
+import { AccentPicker } from "./AccentPicker";
+const textile = new URL("./assets/woven-textile.png", import.meta.url).href;
 
 const repository = "https://github.com/amjed-fadul/Tiraz-arabic-design-system";
 const docs = "./index.html#main-content";
@@ -30,6 +31,7 @@ const source = `${repository}/tree/main/src/system`;
 
 export function Landing() {
   const [ar, setAr] = useState(true);
+  const [accent, setAccent] = useState<Accent>("sage");
   const [theme, setTheme] = useState<SystemConfig["theme"]>("light");
   const Arrow = ar ? ArrowUpLeft : ArrowUpRight;
   const Forward = ar ? MoveLeft : MoveRight;
@@ -38,8 +40,8 @@ export function Landing() {
     document.documentElement.dir = ar ? "rtl" : "ltr";
     document.documentElement.style.colorScheme = theme;
     document.title = ar
-      ? "طِراز · تطبيقات عربية، من الأساس"
-      : "Tiraz · Arabic applications, from the foundation";
+      ? "طِراز · من أول خيط"
+      : "Tiraz · Arabic interfaces, from the first thread";
   }, [ar, theme]);
   const why = [
     {
@@ -58,16 +60,9 @@ export function Landing() {
       number: "02",
       title: ar ? "نظام واحد، بطابعك" : "One system, your character",
       text: ar
-        ? "غيّر اللون والكثافة والزوايا من إعدادات المزوّد. جرّب لونًا آخر في المثال أعلاه وشاهد الرسم والأزرار تتغيّر معًا."
-        : "Set accent, density and corners through the provider. Try an accent in the example above and watch the chart and controls change together.",
-      example: (
-        <div className="lp-swatches" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <i />
-        </div>
-      ),
+        ? "غيّر اللون والكثافة والزوايا من إعدادات المزوّد. جرّب لونًا آخر من المقدمة وشاهد الرسم والأزرار تتغيّر معًا."
+        : "Set accent, density and corners through the provider. Choose an accent in the hero and watch the chart and controls change together.",
+      example: <bdi dir="ltr">SystemProvider → accent / density / radius</bdi>,
     },
     {
       number: "03",
@@ -82,7 +77,12 @@ export function Landing() {
   ];
   return (
     <SystemProvider
-      config={{ ...defaultConfig, theme, direction: ar ? "rtl" : "ltr" }}
+      config={{
+        ...defaultConfig,
+        theme,
+        accent,
+        direction: ar ? "rtl" : "ltr",
+      }}
     >
       <div className="lp-page">
         <a className="lp-skip" href="#content">
@@ -145,69 +145,61 @@ export function Landing() {
           </div>
         </header>
         <main id="content" tabIndex={-1}>
-          <section
-            className="lp-hero lp-container"
-            id="top"
-            aria-labelledby="hero-title"
-          >
-            <div className="lp-hero-copy">
-              <p className="lp-eyebrow">
-                <span className="lp-dot" />
-                {ar
-                  ? "نظام تصميم عربي · مفتوح المصدر"
-                  : "ARABIC-FIRST DESIGN SYSTEM · OPEN SOURCE"}
-              </p>
-              <h1 id="hero-title">
+          <section className="lp-hero" id="top" aria-labelledby="hero-title">
+            <Weave src={textile} />
+            <div className="lp-container lp-hero-layout">
+              <div className="lp-hero-copy">
+                <p className="lp-eyebrow">
+                  {ar
+                    ? "نظام تصميم عربي · مفتوح المصدر"
+                    : "ARABIC-FIRST · OPEN SOURCE"}
+                </p>
+                <h1 id="hero-title">
+                  {ar ? (
+                    <>
+                      واجهات عربية،
+                      <br />
+                      من أول خيط.
+                    </>
+                  ) : (
+                    <>
+                      Arabic interfaces,
+                      <br />
+                      from the first thread.
+                    </>
+                  )}
+                </h1>
+                <p className="lp-intro">
+                  {ar
+                    ? "طِراز نظام تصميم مفتوح المصدر يستلهم أصالته من النسيج، لبناء لوحات التحكم والتطبيقات العربية."
+                    : "An open-source design system rooted in Arabic craft, for building thoughtful dashboards and applications."}
+                </p>
+                <div className="lp-actions">
+                  <a className="lp-primary-link" href={docs}>
+                    {ar ? "ابدأ البناء" : "Start building"}
+                    <Forward size={16} aria-hidden="true" />
+                  </a>
+                  <a className="lp-secondary-link" href="#explore">
+                    {ar ? "استكشف المكوّنات" : "Explore components"}
+                  </a>
+                </div>
+                <AccentPicker ar={ar} value={accent} onChange={setAccent} />
+              </div>
+              <p className="lp-hero-caption">
                 {ar ? (
                   <>
-                    تطبيقات عربية،
+                    من النسيج إلى الواجهة.
                     <br />
-                    <span>من الأساس.</span>
+                    خيوط أصيلة، لواجهات معاصرة.
                   </>
                 ) : (
                   <>
-                    Arabic applications,
+                    From textile to interface.
                     <br />
-                    <span>from the foundation.</span>
+                    Original threads, contemporary applications.
                   </>
                 )}
-              </h1>
-              <p className="lp-intro">
-                {ar
-                  ? "ابنِ لوحات التحكم والتطبيقات بمكوّنات تبدأ من العربية. تفاصيل متّسقة، مصدر تملكه، ومساحة لتصنع طابعك."
-                  : "Build dashboards and applications with components that begin with Arabic. Consistent details, source you own, and room to make it yours."}
               </p>
-              <div className="lp-actions">
-                <a className="lp-primary-link" href={docs}>
-                  <BookOpen size={16} aria-hidden="true" />
-                  {ar ? "افتح التوثيق" : "Open documentation"}
-                  <Forward size={16} aria-hidden="true" />
-                </a>
-                <a className="lp-text-link" href={repository}>
-                  {ar ? "استعرض المصدر" : "View repository"}
-                  <Arrow size={15} aria-hidden="true" />
-                </a>
-              </div>
-              <div className="lp-hero-notes">
-                <span>React + TypeScript</span>
-                <span>{ar ? "العربية والإنجليزية" : "Arabic & English"}</span>
-                <span>MIT</span>
-              </div>
-            </div>
-            <div className="lp-hero-art">
-              <div className="lp-art-index" aria-hidden="true">
-                <span>01 / 07</span>
-                <span>طِراز — TIRAZ</span>
-              </div>
-              <Weave dark={theme === "dark"} />
-              <div className="lp-art-caption">
-                <span>
-                  {ar
-                    ? "من إيقاع الحرفة، إلى دقّة الواجهة."
-                    : "The rhythm of craft. The precision of an interface."}
-                </span>
-                <span aria-hidden="true">+ + +</span>
-              </div>
             </div>
           </section>
           <div className="lp-principle-strip">
@@ -237,17 +229,17 @@ export function Landing() {
                 </p>
                 <h2>
                   {ar
-                    ? "من المكوّن، إلى تجربة متكاملة"
-                    : "From components to a connected experience"}
+                    ? "اختر لونك، وشاهد طِراز يتغيّر"
+                    : "Choose a color. See Tiraz change."}
                 </h2>
               </div>
               <p>
                 {ar
-                  ? "رسم بياني، جدول وعناصر تحكّم. تكوين صغير يمكنك تجربته الآن."
-                  : "A chart, a table and useful controls. A small composition you can try right here."}
+                  ? "المكوّنات نفسها، بلونك المختار. بيانات تجريبية وتفاعل حقيقي، بلا خدمة خلفية."
+                  : "The same real components, in your chosen accent. Sample data and working interactions, with no backend."}
               </p>
             </div>
-            <LiveExample ar={ar} theme={theme} />
+            <LiveExample ar={ar} />
           </section>
           <section className="lp-why" id="why" aria-labelledby="why-title">
             <div className="lp-container">

@@ -1,0 +1,46 @@
+[
+  {
+    "result": {
+      "type": "object",
+      "value": {
+        "incomplete": ["color-contrast"],
+        "lang": "ar",
+        "theme": "light",
+        "violations": []
+      }
+    }
+  },
+  {
+    "result": {
+      "type": "object",
+      "value": {
+        "incomplete": ["color-contrast"],
+        "lang": "ar",
+        "theme": "dark",
+        "violations": []
+      }
+    }
+  },
+  {
+    "result": {
+      "type": "object",
+      "value": {
+        "incomplete": ["color-contrast"],
+        "lang": "en",
+        "theme": "light",
+        "violations": []
+      }
+    }
+  },
+  {
+    "result": {
+      "type": "object",
+      "value": {
+        "incomplete": ["color-contrast"],
+        "lang": "en",
+        "theme": "dark",
+        "violations": []
+      }
+    }
+  }
+]

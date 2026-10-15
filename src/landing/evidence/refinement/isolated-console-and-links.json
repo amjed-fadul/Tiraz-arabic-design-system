@@ -1,0 +1,13 @@
+{
+  "url": "http://127.0.0.1:5238/landing.html#top",
+  "logs": [],
+  "overlay": {
+    "effect": "running",
+    "headerBackground": "rgba(0, 0, 0, 0)",
+    "headerPosition": "absolute",
+    "headerTop": 0,
+    "heroTop": 0,
+    "imageLoaded": 1942
+  },
+  "linksExercised": ["#explore", "#top", "./index.html#main-content"]
+}

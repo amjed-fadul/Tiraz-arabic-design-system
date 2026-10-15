@@ -1,0 +1,26 @@
+[
+  {
+    "color": "sage",
+    "page": "rgb(247, 248, 247)",
+    "primary": "rgb(53, 94, 76)",
+    "success": "rgb(49, 103, 70)"
+  },
+  {
+    "color": "blue",
+    "page": "rgb(247, 248, 247)",
+    "primary": "rgb(54, 91, 135)",
+    "success": "rgb(49, 103, 70)"
+  },
+  {
+    "color": "plum",
+    "page": "rgb(247, 248, 247)",
+    "primary": "rgb(107, 72, 122)",
+    "success": "rgb(49, 103, 70)"
+  },
+  {
+    "color": "clay",
+    "page": "rgb(247, 248, 247)",
+    "primary": "rgb(136, 84, 63)",
+    "success": "rgb(49, 103, 70)"
+  }
+]

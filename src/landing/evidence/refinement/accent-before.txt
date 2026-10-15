@@ -1,0 +1,1067 @@
+> tiraz@0.1.0 test
+> vitest run src/landing/Landing.test.tsx --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+ ❯ src/landing/Landing.test.tsx (4 tests | 1 failed) 1516ms
+   ❯ hero accent customization (1)
+     × uses one shared accent and preserves the working example state 607ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landing/Landing.test.tsx > hero accent customization > uses one shared accent and preserves the working example state
+TestingLibraryElementError: Unable to find an accessible element with the role "radio" and name "Blue"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "Skip to content":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-skip"[39m
+    [33mhref[39m=[32m"#content"[39m
+  [36m/>[39m
+
+  Name "Tiraz — home":
+  [36m<a[39m
+    [33maria-label[39m=[32m"Tiraz — home"[39m
+    [33mclass[39m=[32m"lp-wordmark"[39m
+    [33mhref[39m=[32m"#top"[39m
+  [36m/>[39m
+
+  Name "In action":
+  [36m<a[39m
+    [33mhref[39m=[32m"#in-action"[39m
+  [36m/>[39m
+
+  Name "Components":
+  [36m<a[39m
+    [33mhref[39m=[32m"#explore"[39m
+  [36m/>[39m
+
+  Name "Get started":
+  [36m<a[39m
+    [33mhref[39m=[32m"#start"[39m
+  [36m/>[39m
+
+  Name "Documentation":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-header-docs"[39m
+    [33mhref[39m=[32m"./index.html#main-content"[39m
+  [36m/>[39m
+
+  Name "GitHub":
+  [36m<a[39m
+    [33maria-label[39m=[32m"GitHub"[39m
+    [33mclass[39m=[32m"lp-icon-link"[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system"[39m
+  [36m/>[39m
+
+  Name "Open documentation":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-primary-link"[39m
+    [33mhref[39m=[32m"./index.html#main-content"[39m
+  [36m/>[39m
+
+  Name "View repository":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-text-link"[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system"[39m
+  [36m/>[39m
+
+  Name "See the components work together":
+  [36m<a[39m
+    [33mhref[39m=[32m"#in-action"[39m
+  [36m/>[39m
+
+  Name "Open the customer dashboard":
+  [36m<a[39m
+    [33mhref[39m=[32m"./examples/dashboard"[39m
+  [36m/>[39m
+
+  Name "Explore documentation examples":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-text-link"[39m
+    [33mhref[39m=[32m"./index.html#examples-heading"[39m
+  [36m/>[39m
+
+  Name "Input / Button":
+  [36m<a[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system/tree/main/src/system/Input.tsx"[39m
+  [36m/>[39m
+
+  Name "Badge / Progress":
+  [36m<a[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system/tree/main/src/system/Progress.tsx"[39m
+  [36m/>[39m
+
+  Name "Chart source":
+  [36m<a[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system/tree/main/src/system/Charts.tsx"[39m
+  [36m/>[39m
+
+  Name "Read the adoption guide":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-text-link"[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system/blob/main/README.md#use-the-system"[39m
+  [36m/>[39m
+
+  Name "Library and coding assistant guide":
+  [36m<a[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system/tree/main/src/system/ai/README.md"[39m
+  [36m/>[39m
+
+  Name "Open documentation":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-primary-link"[39m
+    [33mhref[39m=[32m"./index.html#main-content"[39m
+  [36m/>[39m
+
+  Name "Tiraz on GitHub":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-text-link"[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system"[39m
+  [36m/>[39m
+
+  Name "طِرازTiraz":
+  [36m<a[39m
+    [33mclass[39m=[32m"lp-wordmark"[39m
+    [33mhref[39m=[32m"#top"[39m
+  [36m/>[39m
+
+  Name "Documentation":
+  [36m<a[39m
+    [33mhref[39m=[32m"./index.html#main-content"[39m
+  [36m/>[39m
+
+  Name "GitHub":
+  [36m<a[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system"[39m
+  [36m/>[39m
+
+  Name "MIT license":
+  [36m<a[39m
+    [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system/blob/main/LICENSE"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"lp-header lp-container"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  navigation:
+
+  Name "Main navigation":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Main navigation"[39m
+    [33mclass[39m=[32m"lp-main-nav"[39m
+  [36m/>[39m
+
+  Name "Footer links":
+  [36m<nav[39m
+    [33maria-label[39m=[32m"Footer links"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "العربية":
+  [36m<button[39m
+    [33maria-label[39m=[32m"العربية"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"ghost"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Use dark theme":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Use dark theme"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-icon-only[39m=[32m"true"[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"ghost"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Try an accent":
+  [36m<button[39m
+    [33maria-pressed[39m=[32m"false"[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"secondary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Start building":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mid[39m=[32m"content"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Arabic applications,from the foundation.":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"hero-title"[39m
+    [33mclass[39m=[32m"lp-hero lp-container"[39m
+    [33mid[39m=[32m"top"[39m
+  [36m/>[39m
+
+  Name "Live product example":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Live product example"[39m
+    [33mclass[39m=[32m"lp-section lp-container"[39m
+    [33mid[39m=[32m"in-action"[39m
+  [36m/>[39m
+
+  Name "Daily orders":
+  [36m<section[39m
+    [33maria-describedby[39m=[32m"_r_1a_"[39m
+    [33maria-label[39m=[32m"Daily orders"[39m
+    [33mclass[39m=[32m"tz-chart "[39m
+    [33mrole[39m=[32m"region"[39m
+  [36m/>[39m
+
+  Name "Daily orders — Show data table":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"_r_1b_"[39m
+    [33mclass[39m=[32m"tz-table-container "[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "Sample orders":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"_r_16_"[39m
+    [33mclass[39m=[32m"tz-table-container "[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "A clear foundation. Considered details.":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"why-title"[39m
+    [33mclass[39m=[32m"lp-why"[39m
+    [33mid[39m=[32m"why"[39m
+  [36m/>[39m
+
+  Name "Small building blocks. Room to build.":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"explore-title"[39m
+    [33mclass[39m=[32m"lp-section lp-container"[39m
+    [33mid[39m=[32m"explore"[39m
+  [36m/>[39m
+
+  Name "Sample orders by channel":
+  [36m<section[39m
+    [33maria-describedby[39m=[32m"_r_18_"[39m
+    [33maria-label[39m=[32m"Sample orders by channel"[39m
+    [33mclass[39m=[32m"tz-chart "[39m
+    [33mrole[39m=[32m"region"[39m
+  [36m/>[39m
+
+  Name "Sample orders by channel — Show data table":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"_r_19_"[39m
+    [33mclass[39m=[32m"tz-table-container "[39m
+    [33mrole[39m=[32m"region"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  Name "Your source. Your decisions.":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"start-title"[39m
+    [33mclass[39m=[32m"lp-start"[39m
+    [33mid[39m=[32m"start"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  Name "Start with a screen. Build what comes next.":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"closing-title"[39m
+    [33mclass[39m=[32m"lp-closing lp-container"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-intro"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"tz-chart-summary"[39m
+    [33mdir[39m=[32m"auto"[39m
+    [33mid[39m=[32m"_r_1a_"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"tz-chart-summary"[39m
+    [33mdir[39m=[32m"auto"[39m
+    [33mid[39m=[32m"_r_18_"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-source-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"lp-eyebrow"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Arabic applications,from the foundation.":
+  [36m<h1[39m
+    [33mid[39m=[32m"hero-title"[39m
+  [36m/>[39m
+
+  Name "From components to a connected experience":
+  [36m<h2 />[39m
+
+  Name "Every detail in its place":
+  [36m<h3 />[39m
+
+  Name "Latest orders":
+  [36m<h4 />[39m
+
+  Name "A clear foundation. Considered details.":
+  [36m<h2[39m
+    [33mid[39m=[32m"why-title"[39m
+  [36m/>[39m
+
+  Name "Arabic is the starting point":
+  [36m<h3 />[39m
+
+  Name "One system, your character":
+  [36m<h3 />[39m
+
+  Name "Guidance travels with the source":
+  [36m<h3 />[39m
+
+  Name "Small building blocks. Room to build.":
+  [36m<h2[39m
+    [33mid[39m=[32m"explore-title"[39m
+  [36m/>[39m
+
+  Name "Clear forms":
+  [36m<h3 />[39m
+
+  Name "Status with meaning":
+  [36m<h3 />[39m
+
+  Name "Data, easier to read":
+  [36m<h3 />[39m
+
+  Name "Your source. Your decisions.":
+  [36m<h2[39m
+    [33mid[39m=[32m"start-title"[39m
+  [36m/>[39m
+
+  Name "Copy the complete library":
+  [36m<h3 />[39m
+
+  Name "Set up dependencies and the provider":
+  [36m<h3 />[39m
+
+  Name "Build your first screen":
+  [36m<h3 />[39m
+
+  Name "Start with a screen. Build what comes next.":
+  [36m<h2[39m
+    [33mid[39m=[32m"closing-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong[39m
+    [33mdata-testid[39m=[32m"order-total"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  tablist:
+
+  Name "Order period":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Order period"[39m
+    [33maria-orientation[39m=[32m"horizontal"[39m
+    [33mclass[39m=[32m"tz-tab-list"[39m
+    [33mdata-orientation[39m=[32m"horizontal"[39m
+    [33mrole[39m=[32m"tablist"[39m
+    [33mstyle[39m=[32m"outline: none;"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  tab:
+
+  Name "All days":
+  [36m<button[39m
+    [33maria-controls[39m=[32m"radix-_r_11_-content-week"[39m
+    [33maria-selected[39m=[32m"false"[39m
+    [33mclass[39m=[32m"tz-tab"[39m
+    [33mdata-orientation[39m=[32m"horizontal"[39m
+    [33mdata-radix-collection-item[39m=[32m""[39m
+    [33mdata-state[39m=[32m"inactive"[39m
+    [33mid[39m=[32m"radix-_r_11_-trigger-week"[39m
+    [33mrole[39m=[32m"tab"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Last 3 days":
+  [36m<button[39m
+    [33maria-controls[39m=[32m"radix-_r_11_-content-recent"[39m
+    [33maria-selected[39m=[32m"true"[39m
+    [33mclass[39m=[32m"tz-tab"[39m
+    [33mdata-orientation[39m=[32m"horizontal"[39m
+    [33mdata-radix-collection-item[39m=[32m""[39m
+    [33mdata-state[39m=[32m"active"[39m
+    [33mid[39m=[32m"radix-_r_11_-trigger-recent"[39m
+    [33mrole[39m=[32m"tab"[39m
+    [33mtabindex[39m=[32m"0"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  tabpanel:
+
+  Name "Last 3 days":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"radix-_r_11_-trigger-recent"[39m
+    [33mclass[39m=[32m"tz-tab-panel"[39m
+    [33mdata-orientation[39m=[32m"horizontal"[39m
+    [33mdata-state[39m=[32m"active"[39m
+    [33mid[39m=[32m"radix-_r_11_-content-recent"[39m
+    [33mrole[39m=[32m"tabpanel"[39m
+    [33mtabindex[39m=[32m"0"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"tz-chart-table"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"tz-chart-table"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  table:
+
+  Name "Daily orders — Show data table":
+  [36m<table[39m
+    [33mclass[39m=[32m"tz-table "[39m
+  [36m/>[39m
+
+  Name "Sample orders":
+  [36m<table[39m
+    [33mclass[39m=[32m"tz-table "[39m
+  [36m/>[39m
+
+  Name "Sample orders by channel — Show data table":
+  [36m<table[39m
+    [33mclass[39m=[32m"tz-table "[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  caption:
+
+  Name "Daily orders — Show data table":
+  [36m<caption[39m
+    [33mid[39m=[32m"_r_1b_"[39m
+  [36m/>[39m
+
+  Name "Sample orders":
+  [36m<caption[39m
+    [33mid[39m=[32m"_r_16_"[39m
+  [36m/>[39m
+
+  Name "Sample orders by channel — Show data table":
+  [36m<caption[39m
+    [33mid[39m=[32m"_r_19_"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  rowgroup:
+
+  Name "":
+  [36m<thead />[39m
+
+  Name "":
+  [36m<tbody />[39m
+
+  Name "":
+  [36m<thead />[39m
+
+  Name "":
+  [36m<tbody />[39m
+
+  Name "":
+  [36m<thead />[39m
+
+  Name "":
+  [36m<tbody />[39m
+
+  --------------------------------------------------
+  row:
+
+  Name "Category / date Daily orders":
+  [36m<tr />[39m
+
+  Name "Oct 4 220":
+  [36m<tr />[39m
+
+  Name "Oct 5 192":
+  [36m<tr />[39m
+
+  Name "Oct 6 260":
+  [36m<tr />[39m
+
+  Name "Customer Status":
+  [36m<tr />[39m
+
+  Name "Nawa StudioNW-024 Completed":
+  [36m<tr />[39m
+
+  Name "Athar StoreAT-018 In progress":
+  [36m<tr />[39m
+
+  Name "Madar Co.MD-031 Completed":
+  [36m<tr />[39m
+
+  Name "Category / date Website Store":
+  [36m<tr />[39m
+
+  Name "Day 1 12 8":
+  [36m<tr />[39m
+
+  Name "Day 2 18 10":
+  [36m<tr />[39m
+
+  Name "Day 3 15 12":
+  [36m<tr />[39m
+
+  --------------------------------------------------
+  columnheader:
+
+  Name "Category / date":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "Daily orders":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "Customer":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "Status":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "Category / date":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "Website":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  Name "Store":
+  [36m<th[39m
+    [33mscope[39m=[32m"col"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  rowheader:
+
+  Name "Oct 4":
+  [36m<th[39m
+    [33mscope[39m=[32m"row"[39m
+  [36m/>[39m
+
+  Name "Oct 5":
+  [36m<th[39m
+    [33mscope[39m=[32m"row"[39m
+  [36m/>[39m
+
+  Name "Oct 6":
+  [36m<th[39m
+    [33mscope[39m=[32m"row"[39m
+  [36m/>[39m
+
+  Name "Day 1":
+  [36m<th[39m
+    [33mscope[39m=[32m"row"[39m
+  [36m/>[39m
+
+  Name "Day 2":
+  [36m<th[39m
+    [33mscope[39m=[32m"row"[39m
+  [36m/>[39m
+
+  Name "Day 3":
+  [36m<th[39m
+    [33mscope[39m=[32m"row"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  cell:
+
+  Name "220":
+  [36m<td />[39m
+
+  Name "192":
+  [36m<td />[39m
+
+  Name "260":
+  [36m<td />[39m
+
+  Name "Nawa StudioNW-024":
+  [36m<td />[39m
+
+  Name "Completed":
+  [36m<td />[39m
+
+  Name "Athar StoreAT-018":
+  [36m<td />[39m
+
+  Name "In progress":
+  [36m<td />[39m
+
+  Name "Madar Co.MD-031":
+  [36m<td />[39m
+
+  Name "Completed":
+  [36m<td />[39m
+
+  Name "12":
+  [36m<td />[39m
+
+  Name "8":
+  [36m<td />[39m
+
+  Name "18":
+  [36m<td />[39m
+
+  Name "10":
+  [36m<td />[39m
+
+  Name "15":
+  [36m<td />[39m
+
+  Name "12":
+  [36m<td />[39m
+
+  --------------------------------------------------
+  article:
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article />[39m
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"lp-component"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"lp-component"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<article[39m
+    [33mclass[39m=[32m"lp-component lp-chart-feature"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Project name":
+  [36m<input[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_17_-label"[39m
+    [33mclass[39m=[32m"tz-input "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mid[39m=[32m"tz-field-_r_17_"[39m
+    [33mplaceholder[39m=[32m"Your next project"[39m
+    [33mtype[39m=[32m"text"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  progressbar:
+
+  Name "Sample project progress":
+  [36m<div[39m
+    [33maria-label[39m=[32m"Sample project progress"[39m
+    [33maria-valuemax[39m=[32m"100"[39m
+    [33maria-valuemin[39m=[32m"0"[39m
+    [33maria-valuenow[39m=[32m"72"[39m
+    [33maria-valuetext[39m=[32m"72%"[39m
+    [33mclass[39m=[32m"tz-progress-track"[39m
+    [33mrole[39m=[32m"progressbar"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  [36m<ol[39m
+    [33mclass[39m=[32m"lp-steps"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li />[39m
+
+  Name "":
+  [36m<li />[39m
+
+  --------------------------------------------------
+  code:
+
+  Name "":
+  [36m<code[39m
+    [33mdir[39m=[32m"ltr"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  contentinfo:
+
+  Name "":
+  [36m<footer[39m
+    [33mclass[39m=[32m"lp-footer lp-container"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"ltr"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"lp-page"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"lp-skip"[39m
+          [33mhref[39m=[32m"#content"[39m
+        [36m>[39m
+          [0mSkip to content[0m
+        [36m</a>[39m
+        [36m<header[39m
+          [33mclass[39m=[32m"lp-header lp-container"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"Tiraz — home"[39m
+            [33mclass[39m=[32m"lp-wordmark"[39m
+            [33mhref[39m=[32m"#top"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mlang[39m=[32m"ar"[39m
+            [36m>[39m
+              [0mطِراز[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mlang[39m=[32m"en"[39m
+            [36m>[39m
+              [0mTiraz[0m
+            [36m</span>[39m
+          [36m</a>[39m
+          [36m<nav[39m
+            [33maria-label[39m=[32m"Main navigation"[39m
+            [33mclass[39m=[32m"lp-main-nav"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mhref[39m=[32m"#in-action"[39m
+            [36m>[39m
+              [0mIn action[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mhref[39m=[32m"#explore"[39m
+            [36m>[39m
+              [0mComponents[0m
+            [36m</a>[39m
+            [36m<a[39m
+              [33mhref[39m=[32m"#start"[39m
+            [36m>[39m
+              [0mGet started[0m
+            [36m</a>[39m
+          [36m</nav>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"lp-header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"lp-header-docs"[39m
+              [33mhref[39m=[32m"./index.html#main-content"[39m
+            [36m>[39m
+              [0mDocumentation[0m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-arrow-up-right"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"14"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"14"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M7 7h10v10"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M7 17 17 7"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</a>[39m
+            [36m<a[39m
+              [33maria-label[39m=[32m"GitHub"[39m
+              [33mclass[39m=[32m"lp-icon-link"[39m
+              [33mhref[39m=[32m"https://github.com/amjed-fadul/Tiraz-arabic-design-system"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-git-fork"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"17"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"17"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"18"[39m
+                  [33mr[39m=[32m"3"[39m
+                [36m/>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"6"[39m
+                  [33mcy[39m=[32m"6"[39m
+                  [33mr[39m=[32m"3"[39m
+                [36m/>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"18"[39m
+                  [33mcy[39m=[32m"6"[39m
+                  [33mr[39m=[32m"3"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 12v3"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</a>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"lp-divider"[39m
+            [36m/>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"العربية"[39m
+              [33mclass[39m=[32m"tz-button "[39m
+              [33mdata-size[39m=[32m"sm"[39m
+              [33mdata-state[39m=[32m"idle"[39m
+              [33mdata-variant[39m=[32m"ghost"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<span[39m
+                [33mclass[39m=[32m"tz-button-label"[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"lucide lucide-languages"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-linecap[39m=[32m"round"[39m
+                  [33mstroke-linejoin[39m=[32m"round"[39m
+                  [33mstroke-width[39m=[32m"2"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                  [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m5 8 6 6"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m4 14 6-6 2-3"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M2 5h12"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M7 2h1"[39m
+                  [36m/>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m22 22-5-10-5 10"...
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/landing/Landing.test.tsx:60:29
+     58|     await user.click(screen.getByRole("tab", { name: "Last 3 days" }));
+     59|     await user.type(screen.getByRole("textbox", { name: "Project name"…
+     60|     await user.click(screen.getByRole("radio", { name: "Blue" }));
+       |                             ^
+     61|     expect(container.querySelectorAll(".tiraz-system")).toHaveLength(1…
+     62|     expect(container.querySelector(".tiraz-system")).toHaveStyle({ "--…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  16:14:29
+   Duration  8.99s (import 58%, tests 17%, environment 11%, transform 11%, setup 2%)

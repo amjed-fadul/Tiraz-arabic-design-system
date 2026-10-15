@@ -6,6 +6,7 @@ export default mergeConfig(base, {
   build: {
     rollupOptions: {
       input: {
+        brand: fileURLToPath(new URL("./brand-preview.html", import.meta.url)),
         documentation: fileURLToPath(
           new URL("../../index.html", import.meta.url),
         ),

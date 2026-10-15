@@ -13,7 +13,7 @@ describe("landing behavior", () => {
     expect(document.documentElement.lang).toBe("en");
     expect(document.documentElement.dir).toBe("ltr");
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Arabic applications",
+      "Arabic interfaces",
     );
     expect(
       screen.getByRole("region", { name: "Live product example" }),
@@ -47,5 +47,45 @@ describe("landing behavior", () => {
     expect(
       screen.getByText("src/system/ai/README.md").closest("bdi"),
     ).toHaveAttribute("dir", "ltr");
+  });
+});
+
+describe("hero accent customization", () => {
+  it("uses one shared accent and preserves the working example state", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<Landing />);
+    await user.click(screen.getByRole("button", { name: "English" }));
+    await user.click(screen.getByRole("tab", { name: "Last 3 days" }));
+    await user.type(
+      screen.getByRole("textbox", { name: "Project name" }),
+      "Nawa",
+    );
+    await user.click(screen.getByRole("radio", { name: "Blue" }));
+    expect(container.querySelectorAll(".tiraz-system")).toHaveLength(1);
+    expect(container.querySelector(".tiraz-system")).toHaveStyle({
+      "--action": "#365B87",
+    });
+    expect(screen.getByRole("radio", { name: "Blue" })).toBeChecked();
+    expect(screen.getByTestId("order-total")).toHaveTextContent("672");
+    expect(screen.getByRole("textbox", { name: "Project name" })).toHaveValue(
+      "Nawa",
+    );
+    expect(
+      screen.queryByRole("button", { name: "Try an accent" }),
+    ).not.toBeInTheDocument();
+    await user.keyboard("{ArrowDown}");
+    expect(screen.getByRole("radio", { name: "Purple" })).toBeChecked();
+    expect(container.querySelector(".tiraz-system")).toHaveStyle({
+      "--action": "#6B487A",
+    });
+    expect(screen.getByTestId("order-total")).toHaveTextContent("672");
+    await user.click(screen.getByRole("button", { name: "Use dark theme" }));
+    expect(container.querySelector(".tiraz-system")).toHaveStyle({
+      "--action": "#D6B6E5",
+    });
+    expect(screen.getByRole("tab", { name: "Last 3 days" })).toHaveAttribute(
+      "data-state",
+      "active",
+    );
   });
 });
