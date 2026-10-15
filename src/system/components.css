@@ -2470,9 +2470,6 @@
   flex: 1;
   min-inline-size: 0;
 }
-.tz-datepicker-popup .rdp-dropdown_root:has(.rdp-years_dropdown) {
-  flex: 0 0 auto;
-}
 .tz-datepicker-popup .rdp-months_dropdown {
   inline-size: 100%;
 }
@@ -2493,6 +2490,38 @@
 }
 .tz-datepicker-popup .rdp-years_dropdown {
   min-inline-size: calc(4ch + 2em);
+}
+.tz-datepicker-popup .tz-date-year-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  white-space: nowrap;
+}
+.tz-date-years-popup {
+  z-index: 80;
+  max-block-size: min(
+    calc(5 * var(--control-small) + 2px),
+    var(--radix-select-content-available-height)
+  );
+}
+.tz-date-years-popup .tz-date-years-viewport {
+  padding: 0;
+  max-block-size: min(
+    calc(5 * var(--control-small)),
+    calc(var(--radix-select-content-available-height) - 2px)
+  );
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.tz-date-years-popup .tz-date-years-viewport::-webkit-scrollbar {
+  display: block;
+  width: 6px;
+}
+.tz-date-years-popup .tz-select-option {
+  block-size: var(--control-small);
+  padding-block: 0;
+  font-size: var(--text-meta);
 }
 .tz-datepicker-popup
   :is(.rdp-button_previous, .rdp-button_next, .rdp-day_button) {

@@ -46,6 +46,8 @@ export function Fixture() {
           ...defaultConfig,
           direction: ar ? "rtl" : "ltr",
           theme: params.get("theme") === "dark" ? "dark" : "light",
+          density:
+            params.get("density") === "standard" ? "standard" : "compact",
           typography: params.get("type") === "large" ? "large" : "standard",
           reducedMotion: params.has("reduced"),
         }}

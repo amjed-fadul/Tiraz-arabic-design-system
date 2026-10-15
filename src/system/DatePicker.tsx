@@ -1,8 +1,9 @@
 import * as Popover from "@radix-ui/react-popover";
-import { DayPicker, YearsDropdown } from "@daypicker/react";
+import { DayPicker } from "@daypicker/react";
+import * as YearSelect from "@radix-ui/react-select";
 import type { DropdownProps } from "@daypicker/react";
 import { ar, enUS } from "@daypicker/react/locale";
-import { CalendarDays } from "lucide-react";
+import { CalendarDays, Check, ChevronDown } from "lucide-react";
 import {
   createContext,
   useContext,
@@ -11,7 +12,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { ComponentPropsWithRef } from "react";
+import type { ChangeEvent, ComponentPropsWithRef } from "react";
 import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
@@ -41,11 +42,13 @@ export type DatePickerProps = Omit<
         field?: FieldControlProps;
       }
   );
-const YearChoices = createContext<readonly [number, number] | undefined>(
-  undefined,
-);
+const YearChoices = createContext<{
+  range?: readonly [number, number];
+  container: HTMLElement | null;
+}>({ container: null });
 function NavigationYears(props: DropdownProps) {
-  const range = useContext(YearChoices);
+  const { range, container } = useContext(YearChoices);
+  const { config } = useSystem();
   const year = Number(props.value);
   const valid =
     range &&
@@ -56,15 +59,62 @@ function NavigationYears(props: DropdownProps) {
     range[1] >= 1;
   const first = valid ? Math.max(1, Math.trunc(range[0])) : year - 100;
   const last = valid ? Math.min(9999, Math.trunc(range[1])) : year + 100;
+  const options = props.options?.filter(
+    (option) =>
+      (option.value >= first && option.value <= last) || option.value === year,
+  );
   return (
-    <YearsDropdown
-      {...props}
-      options={props.options?.filter(
-        (option) =>
-          (option.value >= first && option.value <= last) ||
-          option.value === year,
-      )}
-    />
+    <YearSelect.Root
+      value={String(props.value)}
+      disabled={props.disabled}
+      dir={config.direction}
+      onValueChange={(value) => {
+        // DayPicker's documented adapter consumes target.value to navigate.
+        props.onChange?.({
+          target: { value },
+        } as ChangeEvent<HTMLSelectElement>);
+      }}
+    >
+      <YearSelect.Trigger
+        aria-label={props["aria-label"]}
+        aria-describedby={props["aria-describedby"]}
+        tabIndex={props.tabIndex}
+        style={props.style}
+        value={String(props.value)}
+        className={`rdp-dropdown ${props.className ?? ""} tz-date-year-trigger`}
+      >
+        <YearSelect.Value />
+        <YearSelect.Icon asChild>
+          <ChevronDown size={12} aria-hidden="true" />
+        </YearSelect.Icon>
+      </YearSelect.Trigger>
+      <YearSelect.Portal container={container}>
+        <YearSelect.Content
+          className="tz-select-popup tz-date-years-popup"
+          position="popper"
+          sideOffset={4}
+          collisionPadding={8}
+          dir={config.direction}
+        >
+          <YearSelect.Viewport className="tz-select-viewport tz-date-years-viewport">
+            {options?.map((option) => (
+              <YearSelect.Item
+                key={option.value}
+                value={String(option.value)}
+                disabled={option.disabled}
+                textValue={option.label}
+                className="tz-select-option"
+              >
+                <YearSelect.ItemText>{option.label}</YearSelect.ItemText>
+                <YearSelect.ItemIndicator>
+                  <Check size={12} aria-hidden="true" />
+                </YearSelect.ItemIndicator>
+              </YearSelect.Item>
+            ))}
+          </YearSelect.Viewport>
+        </YearSelect.Content>
+      </YearSelect.Portal>
+    </YearSelect.Root>
   );
 }
 const calendarComponents = { YearsDropdown: NavigationYears };
@@ -119,6 +169,9 @@ export function DatePicker({
     const keepFocusVisible = () => {
       const active = popup.ownerDocument.activeElement;
       if (!(active instanceof HTMLElement) || !popup.contains(active)) return;
+      // Nested year options have their own viewport and positioning. Scrolling
+      // the calendar for them would move their anchor out of view.
+      if (active.closest(".tz-date-years-popup")) return;
       const viewport = popup.getBoundingClientRect();
       const focused = active.getBoundingClientRect();
       const scale = viewport.height ? popup.offsetHeight / viewport.height : 1;
@@ -242,7 +295,9 @@ export function DatePicker({
             hideWhenDetached
             aria-label={label ?? (arabic ? "اختيار التاريخ" : "Choose date")}
           >
-            <YearChoices.Provider value={yearRange}>
+            <YearChoices.Provider
+              value={{ range: yearRange, container: popup }}
+            >
               <DayPicker
                 captionLayout="dropdown"
                 navLayout="around"

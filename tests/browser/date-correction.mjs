@@ -31,6 +31,32 @@ const left =
   "16 18.112 9.81111111 12 16 5.87733333 14.0888889 4 6 12 14.0888889 20";
 const right =
   "8 18.112 14.18888889 12 8 5.87733333 9.91111111 4 18 12 9.91111111 20";
+const yearLabel = (value) =>
+  new Intl.NumberFormat(
+    new URL(page.url()).searchParams.get("lang") === "ar"
+      ? "ar-u-nu-arab"
+      : "en",
+    { useGrouping: false, minimumIntegerDigits: 4 },
+  ).format(Number(value));
+async function chooseYear(value) {
+  await year().focus();
+  await year().click();
+  await page
+    .getByRole("option", { name: yearLabel(value), exact: true })
+    .click();
+  await page.locator(".tz-date-years-popup").waitFor({ state: "hidden" });
+  await focused(year());
+}
+async function yearOptions() {
+  await year().click();
+  const values = await page
+    .getByRole("listbox")
+    .getByRole("option")
+    .allTextContents();
+  await page.keyboard.press("Escape");
+  await page.getByRole("listbox").waitFor({ state: "hidden" });
+  return values;
+}
 async function focused(locator) {
   await page.waitForFunction(
     (html) => document.activeElement?.outerHTML === html,
@@ -63,12 +89,14 @@ async function bounds(label) {
     JSON.stringify({ label, b, v }),
   );
   const head = await popup().evaluate((e) =>
-    [...e.querySelectorAll("select,.rdp-button_previous,.rdp-button_next")].map(
-      (el) => {
-        const b = el.getBoundingClientRect();
-        return { x: b.x, y: b.y, w: b.width, h: b.height };
-      },
-    ),
+    [
+      ...e.querySelectorAll(
+        "select,.rdp-years_dropdown,.rdp-button_previous,.rdp-button_next",
+      ),
+    ].map((el) => {
+      const b = el.getBoundingClientRect();
+      return { x: b.x, y: b.y, w: b.width, h: b.height };
+    }),
   );
   assert(head.every((e) => e.x >= b.x && e.x + e.w <= b.x + b.width + 1));
   const labels = await popup().evaluate((e) =>
@@ -120,18 +148,16 @@ try {
       );
     await next().click();
     assert.equal(await month().inputValue(), "0");
-    assert.equal(await year().inputValue(), "2025");
+    assert.equal(await year().getAttribute("value"), "2025");
     await previous().click();
     assert.equal(await month().inputValue(), "11");
-    assert.equal(await year().inputValue(), "2024");
+    assert.equal(await year().getAttribute("value"), "2024");
     await preserved();
+    await month().focus();
     await month().selectOption("1");
-    await year().selectOption("2028");
+    await chooseYear("2028");
     await preserved();
-    assert.equal(
-      await year().locator("option:checked").textContent(),
-      lang === "ar" ? "٢٠٢٨" : "2028",
-    );
+    assert.equal(await year().textContent(), lang === "ar" ? "٢٠٢٨" : "2028");
     assert.equal(
       await month().locator("option:checked").textContent(),
       lang === "ar" ? "فبراير" : "February",
@@ -164,6 +190,7 @@ try {
       .getByRole("button", { name: lang === "ar" ? /^موعد/ : /^Local date/ })
       .click();
     await month().focus();
+    await month().focus();
     await month().selectOption("10");
     assert.equal(await month().inputValue(), "10");
     await preserved();
@@ -172,8 +199,8 @@ try {
       await year().evaluate((e) => e === document.activeElement),
       true,
     );
-    await year().selectOption("2025");
-    assert.equal(await year().inputValue(), "2025");
+    await chooseYear("2025");
+    assert.equal(await year().getAttribute("value"), "2025");
     await preserved();
     await page.keyboard.press("Escape");
     assert.equal(await popup().count(), 0);
@@ -191,13 +218,11 @@ try {
       await month().locator('option[value="10"]').isDisabled(),
       true,
     );
-    assert.deepEqual(
-      await year()
-        .locator("option")
-        .evaluateAll((es) => es.map((e) => e.value)),
-      ["2024", "2025"],
-    );
-    await year().selectOption("2025");
+    assert.deepEqual(await yearOptions(), [
+      yearLabel("2024"),
+      yearLabel("2025"),
+    ]);
+    await chooseYear("2025");
     assert.equal(await month().inputValue(), "1");
     assert.equal(await next().getAttribute("aria-disabled"), "true");
     assert.equal(await month().locator('option[value="2"]').isDisabled(), true);
@@ -229,16 +254,19 @@ try {
       "9999-12-31",
     ]) {
       await open(lang, `&fixed&date=${date}`);
-      assert.equal(await year().inputValue(), String(Number(date.slice(0, 4))));
+      assert.equal(
+        await year().getAttribute("value"),
+        String(Number(date.slice(0, 4))),
+      );
       await preserved(date);
-      assert((await year().locator("option").count()) <= 202);
+      assert((await yearOptions()).length <= 202);
       if (date === "0001-01-01")
         assert.equal(await previous().getAttribute("aria-disabled"), "true");
       if (date === "9999-12-31")
         assert.equal(await next().getAttribute("aria-disabled"), "true");
       if (date === "2200-01-01") {
         await previous().click();
-        assert.equal(await year().inputValue(), "2199");
+        assert.equal(await year().getAttribute("value"), "2199");
       }
     }
     pass(
@@ -271,6 +299,9 @@ try {
         await page
           .getByRole("button", { name: `Open ${overlay}`, exact: true })
           .click();
+        await page
+          .getByRole("dialog", { name: overlay, exact: true })
+          .waitFor();
         const trigger = page.getByRole("button", {
           name: lang === "ar" ? /^تاريخ داخل النافذة/ : /^Overlay date/,
         });
@@ -280,8 +311,9 @@ try {
           await popup().evaluate((e) => !!e.closest("[role=dialog]")),
           true,
         );
+        await month().focus();
         await month().selectOption("1");
-        await year().selectOption("2028");
+        await chooseYear("2028");
         await preserved();
         await month().focus();
         await month().selectOption("0");

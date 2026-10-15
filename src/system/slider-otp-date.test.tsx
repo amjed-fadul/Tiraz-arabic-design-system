@@ -267,7 +267,12 @@ describe("DatePicker", () => {
       expect(month).toHaveValue("11");
       expect(year).toHaveValue("2024");
       await user.selectOptions(month, "1");
-      await user.selectOptions(year, "2028");
+      await user.click(year);
+      await user.click(
+        await screen.findByRole("option", {
+          name: direction === "rtl" ? "٢٠٢٨" : "2028",
+        }),
+      );
       expect(change).not.toHaveBeenCalled();
       expect(document.querySelector("input[type=hidden]")).toHaveValue(
         "2024-12-31",
@@ -297,16 +302,18 @@ describe("DatePicker", () => {
     await user.click(screen.getByRole("button", { name: /^Date/ }));
     const month = screen.getByRole("combobox", { name: "Choose the Month" });
     const year = screen.getByRole("combobox", { name: "Choose the Year" });
-    expect([...year.querySelectorAll("option")].map((e) => e.value)).toEqual([
-      "2024",
-      "2025",
-    ]);
+    await user.click(year);
+    expect(
+      screen.getAllByRole("option").map((option) => option.textContent),
+    ).toEqual(["2024", "2025"]);
+    await user.keyboard("{Escape}");
     expect(month.querySelector('option[value="10"]')).toBeDisabled();
     expect(document.querySelector(".rdp-button_previous")).toHaveAttribute(
       "aria-disabled",
       "true",
     );
-    await user.selectOptions(year, "2025");
+    await user.click(year);
+    await user.click(await screen.findByRole("option", { name: "2025" }));
     expect(month).toHaveValue("1");
     expect(month.querySelector('option[value="2"]')).toBeDisabled();
     expect(document.querySelector(".rdp-button_next")).toHaveAttribute(
@@ -332,14 +339,48 @@ describe("DatePicker", () => {
     await user.click(screen.getByRole("button", { name: /^Date/ }));
     const year = screen.getByRole("combobox", { name: "Choose the Year" });
     expect(year).toHaveValue("1800");
-    expect(year.querySelectorAll("option")).toHaveLength(202);
+    await user.click(year);
+    expect(screen.getAllByRole("option")).toHaveLength(202);
+    await user.keyboard("{Escape}");
     await user.click(
       document.querySelector<HTMLButtonElement>(".rdp-button_previous")!,
     );
     expect(year).toHaveValue("1800");
-    await user.selectOptions(year, "1900");
+    await user.click(year);
+    await user.click(await screen.findByRole("option", { name: "1900" }));
     expect(document.querySelector("input[type=hidden]")).toHaveValue(
       "1800-12-31",
     );
+  });
+  it("keeps the full year range in a scrollable popup and restores year focus on Escape", async () => {
+    const user = userEvent.setup(),
+      change = vi.fn();
+    render(
+      <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+        <DatePicker label="Date" value="2024-12-31" onValueChange={change} />
+      </SystemProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: /^Date/ }));
+    const year = screen.getByRole("combobox", { name: "Choose the Year" });
+    await user.click(year);
+    expect(await screen.findByRole("listbox")).toHaveClass(
+      "tz-date-years-popup",
+    );
+    expect(screen.getAllByRole("option")).toHaveLength(201);
+    expect(screen.getByRole("option", { name: "2024" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await user.keyboard("{ArrowDown}{Enter}");
+    await waitFor(() => expect(year).toHaveTextContent("2025"));
+    expect(change).not.toHaveBeenCalled();
+    expect(document.querySelector('input[type="hidden"]')).toHaveValue(
+      "2024-12-31",
+    );
+    await user.click(year);
+    await screen.findByRole("listbox");
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(year).toHaveFocus());
+    expect(document.querySelector(".tz-datepicker-popup")).toBeInTheDocument();
   });
 });
