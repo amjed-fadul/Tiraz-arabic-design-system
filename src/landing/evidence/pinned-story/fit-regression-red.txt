@@ -1,0 +1,35 @@
+
+> tiraz@0.1.0 test
+> vitest run src/landing/WhyTiraz.test.tsx --maxWorkers=1 --no-file-parallelism
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+ ❯ src/landing/WhyTiraz.test.tsx (4 tests | 1 failed) 180ms
+   ❯ Tiraz pinned story (4)
+     × does not oscillate between pinned and stacked widths when copy cannot fit 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landing/WhyTiraz.test.tsx > Tiraz pinned story > does not oscillate between pinned and stacked widths when copy cannot fit
+Error: expect(element).toHaveAttribute("data-static", "true") // element.getAttribute("data-static") === "true"
+
+Expected the element to have attribute:
+  data-static="true"
+Received:
+  data-static="false"
+ ❯ src/landing/WhyTiraz.test.tsx:99:21
+     97|     height.mockReturnValue(100);
+     98|     act(notify);
+     99|     expect(section).toHaveAttribute("data-static", "true");
+       |                     ^
+    100|     act(() => window.dispatchEvent(new Event("resize")));
+    101|     expect(section).toHaveAttribute("data-static", "false");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 3 passed (4)
+   Start at  21:46:25
+   Duration  1.21s (environment 63%, tests 16%, setup 12%, transform 7%, import 1%)

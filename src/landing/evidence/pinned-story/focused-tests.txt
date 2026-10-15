@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run src/landing/WhyTiraz.test.tsx src/landing/Landing.test.tsx --maxWorkers=1 --no-file-parallelism
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  21:47:50
+   Duration  5.01s (import 42%, tests 24%, environment 23%, transform 6%, setup 4%)
+
+    Isolate  2 workers spawned · ~645ms startup each (spawn + environment, per file)
+             at least ~645ms faster with isolate: false — reuses workers across files instead of one per file

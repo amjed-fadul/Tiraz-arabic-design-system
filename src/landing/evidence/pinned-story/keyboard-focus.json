@@ -1,0 +1,19 @@
+{
+  "active": "2",
+  "copyOpacity": "1",
+  "focusVisible": true,
+  "focused": true,
+  "linkRect": {
+    "bottom": 468.9453125,
+    "height": 21.59375,
+    "left": 1192.765625,
+    "right": 1338.6015625,
+    "top": 447.3515625,
+    "width": 145.8359375,
+    "x": 1192.765625,
+    "y": 447.3515625
+  },
+  "linkTabIndex": 0,
+  "outline": "rgb(165, 201, 180) solid 2px",
+  "scrollY": 4405.5
+}

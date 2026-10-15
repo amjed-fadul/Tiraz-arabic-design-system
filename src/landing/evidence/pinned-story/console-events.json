@@ -1,0 +1,423 @@
+{
+  "cursor": 2195,
+  "events": [
+    {
+      "sequence": 1763,
+      "source": {
+        "tabId": 1309616658
+      },
+      "method": "Log.entryAdded",
+      "params": {
+        "entry": {
+          "level": "error",
+          "lineNumber": 405,
+          "source": "violation",
+          "stackTrace": {
+            "callFrames": [
+              {
+                "columnNumber": 2562,
+                "functionName": "",
+                "lineNumber": 405,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 2659,
+                "functionName": "dpZGx",
+                "lineNumber": 405,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 220116,
+                "functionName": "2rpcr.jszip",
+                "lineNumber": 376,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 218046,
+                "functionName": "jwKz6.react/jsx-runtime",
+                "lineNumber": 376,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 213117,
+                "functionName": "3xlbO.react/jsx-runtime",
+                "lineNumber": 376,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 134414,
+                "functionName": "6UyUI.react/jsx-runtime",
+                "lineNumber": 31,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 80539,
+                "functionName": "zsEkO.react/jsx-runtime",
+                "lineNumber": 31,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 4383,
+                "functionName": "edMky.react/jsx-runtime",
+                "lineNumber": 20,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 188031,
+                "functionName": "6Zw46.react/jsx-runtime",
+                "lineNumber": 16,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 808,
+                "functionName": "d",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 2391,
+                "functionName": "9glGq.react/jsx-runtime",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 704,
+                "functionName": "u",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 1089,
+                "functionName": "jOJFg.e9913cf0208c0a2e",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              },
+              {
+                "columnNumber": 1252,
+                "functionName": "",
+                "lineNumber": 0,
+                "scriptId": "114",
+                "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+              }
+            ]
+          },
+          "text": "Permissions policy violation: unload is not allowed in this document.",
+          "timestamp": 1792085584383.77,
+          "url": "chrome-extension://mbnbehikldjhnfehhnaidhjhoofhpehk/inspector.b9415ea5.js"
+        }
+      }
+    },
+    {
+      "sequence": 1848,
+      "source": {
+        "tabId": 1309616658
+      },
+      "method": "Log.entryAdded",
+      "params": {
+        "entry": {
+          "level": "info",
+          "lineNumber": 17,
+          "source": "intervention",
+          "stackTrace": {
+            "callFrames": [
+              {
+                "columnNumber": 527,
+                "functionName": "addFontToDocument",
+                "lineNumber": 17,
+                "scriptId": "85",
+                "url": "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/content_scripts/express/express-utils.js"
+              },
+              {
+                "columnNumber": 1629,
+                "functionName": "ExpressFte",
+                "lineNumber": 17,
+                "scriptId": "74",
+                "url": "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/content_scripts/express/express-fte.js"
+              },
+              {
+                "columnNumber": 6744,
+                "functionName": "",
+                "lineNumber": 17,
+                "scriptId": "74",
+                "url": "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/content_scripts/express/express-fte.js"
+              }
+            ]
+          },
+          "text": "Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/css/fonts/AdobeClean-Regular.otf",
+          "timestamp": 1792085584578.669,
+          "url": "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/content_scripts/express/express-utils.js"
+        }
+      }
+    },
+    {
+      "sequence": 1872,
+      "source": {
+        "tabId": 1309616658
+      },
+      "method": "Runtime.consoleAPICalled",
+      "params": {
+        "args": [
+          {
+            "type": "string",
+            "value": "🌐 i18next is made possible by our own product, Locize — consider powering your project with managed localization (AI, CDN, integrations): https://locize.com 💙"
+          }
+        ],
+        "executionContextId": 85,
+        "stackTrace": {
+          "callFrames": [
+            {
+              "columnNumber": 104375,
+              "functionName": "init",
+              "lineNumber": 368,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 3980,
+              "functionName": "K7e",
+              "lineNumber": 8528,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 4201,
+              "functionName": "w7e",
+              "lineNumber": 8528,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 48789,
+              "functionName": "Pb",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 71667,
+              "functionName": "yb",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 82063,
+              "functionName": "Rq",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 117939,
+              "functionName": "zq",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 116976,
+              "functionName": "gve",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 116804,
+              "functionName": "r0",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 113224,
+              "functionName": "Yq",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 125484,
+              "functionName": "Tz",
+              "lineNumber": 8770,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            },
+            {
+              "columnNumber": 2854,
+              "functionName": "w",
+              "lineNumber": 8763,
+              "scriptId": "99",
+              "url": "chrome-extension://lknmjhcajhfbbglglccadlfdjbaiifig/content-scripts/multi-tabs.js"
+            }
+          ]
+        },
+        "timestamp": 1792085584603.115,
+        "type": "info"
+      }
+    },
+    {
+      "sequence": 1911,
+      "source": {
+        "tabId": 1309616658
+      },
+      "method": "Log.entryAdded",
+      "params": {
+        "entry": {
+          "level": "info",
+          "lineNumber": 17,
+          "source": "intervention",
+          "stackTrace": {
+            "callFrames": [
+              {
+                "columnNumber": 542,
+                "functionName": "addFontToDocument",
+                "lineNumber": 17,
+                "scriptId": "85",
+                "url": "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/content_scripts/express/express-utils.js"
+              }
+            ]
+          },
+          "text": "Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/browser/css/fonts/AdobeClean-Bold.otf",
+          "timestamp": 1792085584628.224,
+          "url": "chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/content_scripts/express/express-utils.js"
+        }
+      }
+    },
+    {
+      "sequence": 2183,
+      "source": {
+        "tabId": 1309616658
+      },
+      "method": "Log.entryAdded",
+      "params": {
+        "entry": {
+          "level": "info",
+          "source": "intervention",
+          "text": "Slow network is detected. See https://www.chromestatus.com/feature/5636954674692096 for more details. Fallback font will be used while loading: chrome-extension://okfkdaglfjjjfefdcppliegebpoegaii/assets/PublicSans-VariableFont_wght.ttf",
+          "timestamp": 1792085584809.927,
+          "url": "http://127.0.0.1:5238/landing.html"
+        }
+      }
+    }
+  ],
+  "hasMore": false,
+  "truncated": false
+}

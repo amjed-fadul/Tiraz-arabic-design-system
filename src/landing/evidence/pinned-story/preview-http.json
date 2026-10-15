@@ -1,0 +1,14 @@
+[
+  {
+    "url": "http://127.0.0.1:5238/landing.html",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:5238/src/landing/brand-preview.html",
+    "status": 200
+  },
+  {
+    "url": "http://127.0.0.1:5238/index.html",
+    "status": 200
+  }
+]

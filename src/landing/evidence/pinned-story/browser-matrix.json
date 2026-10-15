@@ -1,0 +1,2427 @@
+[
+  {
+    "label": "ar-0.27",
+    "active": "0",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0.316818",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 398.01275634765625
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -8.19818)"
+      },
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      },
+      {
+        "height": 237,
+        "opacity": "0",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0.2317447903815192",
+        "scale": "1.0230476562885544"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2042.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -809.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-0.3",
+    "active": "0",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "2.57442e-07",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      },
+      {
+        "height": 237,
+        "opacity": "0",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0.4997802734437863",
+        "scale": "1.0150065917966864"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2132.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -899.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-0.34",
+    "active": "1",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "0.499561",
+        "rect": {
+          "height": 194.07028198242188,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 412.2162170410156
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 6.00527)"
+      },
+      {
+        "height": 237,
+        "opacity": "0",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0.8435851728979034",
+        "scale": "1.004692444813063"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2252.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -1019.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-0.5",
+    "active": "1",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "1",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 406.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 237,
+        "opacity": "0",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2733,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -1500.4296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-0.68",
+    "active": "1",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "0.15658",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 396.08990478515625
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -10.121)"
+      },
+      {
+        "height": 237,
+        "opacity": "0",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0.31620027244719706",
+        "scale": "1.0205139918265842"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 3272.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -2039.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-0.74",
+    "active": "2",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 237,
+        "opacity": "0.499561",
+        "rect": {
+          "height": 236.76559448242188,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 412.2162170410156
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 6.00527)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0.843585172897903",
+        "scale": "1.004692444813063"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 3452.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -2219.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-0.9",
+    "active": "2",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 237,
+        "opacity": "1",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 406.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 3932.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -2699.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-1.1",
+    "active": "2",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 94.28125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 94.28125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 237,
+        "opacity": "1",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 106.28125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": -299.9296875
+    },
+    "scrollY": 4532.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -3299.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": -299.9296875
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": -299.9296875
+    }
+  },
+  {
+    "label": "ar-0.5",
+    "active": "1",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "0",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 394.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 194,
+        "opacity": "1",
+        "rect": {
+          "height": 194.0703125,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 406.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 237,
+        "opacity": "0",
+        "rect": {
+          "height": 236.765625,
+          "width": 539.703125,
+          "x": 798.8984375,
+          "y": 418.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2732.5,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -1499.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "desktop-en-second",
+    "active": "1",
+    "copies": [
+      {
+        "height": 230,
+        "opacity": "0",
+        "rect": {
+          "height": 230.0703125,
+          "width": 539.703125,
+          "x": 86.3984375,
+          "y": 376.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 230,
+        "opacity": "1",
+        "rect": {
+          "height": 230.0703125,
+          "width": 539.703125,
+          "x": 86.3984375,
+          "y": 388.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 273,
+        "opacity": "0",
+        "rect": {
+          "height": 272.765625,
+          "width": 539.703125,
+          "x": 86.3984375,
+          "y": 400.2109375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1000,
+      "width": 1425,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2771,
+    "section": {
+      "height": 4000,
+      "width": 1425,
+      "x": 0,
+      "y": -1500.0546875
+    },
+    "static": "false",
+    "text": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 0,
+      "y": 0
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 1000,
+      "width": 712.5,
+      "x": 712.5,
+      "y": 0
+    }
+  },
+  {
+    "label": "mobile-en-third",
+    "active": "2",
+    "copies": [
+      {
+        "height": 181,
+        "opacity": "0",
+        "rect": {
+          "height": 180.59375,
+          "width": 327,
+          "x": 24,
+          "y": 483.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 181,
+        "opacity": "0",
+        "rect": {
+          "height": 180.59375,
+          "width": 327,
+          "x": 24,
+          "y": 483.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 223,
+        "opacity": "1",
+        "rect": {
+          "height": 223.2890625,
+          "width": 327,
+          "x": 24,
+          "y": 495.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 844,
+      "width": 375,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 3987,
+    "section": {
+      "height": 3376,
+      "width": 375,
+      "x": 0,
+      "y": -2278.8828125
+    },
+    "static": "false",
+    "text": {
+      "height": 523.2734375,
+      "width": 375,
+      "x": 0,
+      "y": 320.71875
+    },
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "visual": {
+      "height": 320.71875,
+      "width": 375,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "mobile-ar-third",
+    "active": "2",
+    "copies": [
+      {
+        "height": 149,
+        "opacity": "0",
+        "rect": {
+          "height": 148.59375,
+          "width": 327,
+          "x": 24,
+          "y": 499.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 149,
+        "opacity": "0",
+        "rect": {
+          "height": 148.59375,
+          "width": 327,
+          "x": 24,
+          "y": 499.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 191,
+        "opacity": "1",
+        "rect": {
+          "height": 191.2890625,
+          "width": 327,
+          "x": 24,
+          "y": 511.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 844,
+      "width": 375,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 3987,
+    "section": {
+      "height": 3376,
+      "width": 375,
+      "x": 0,
+      "y": -2278.8828125
+    },
+    "static": "false",
+    "text": {
+      "height": 523.2734375,
+      "width": 375,
+      "x": 0,
+      "y": 320.71875
+    },
+    "viewport": {
+      "height": 844,
+      "width": 390
+    },
+    "visual": {
+      "height": 320.71875,
+      "width": 375,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-320x600",
+    "active": "0",
+    "copies": [
+      {
+        "height": 181,
+        "opacity": "1",
+        "rect": {
+          "height": 180.59375,
+          "width": 257,
+          "x": 24,
+          "y": 307.5703125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 220,
+        "opacity": "0",
+        "rect": {
+          "height": 219.59375,
+          "width": 257,
+          "x": 24,
+          "y": 319.5703125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      },
+      {
+        "height": 262,
+        "opacity": "0",
+        "rect": {
+          "height": 262.2890625,
+          "width": 257,
+          "x": 24,
+          "y": 319.5703125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 600,
+      "width": 305,
+      "x": 0,
+      "y": 0.1171875
+    },
+    "scrollY": 1708,
+    "section": {
+      "height": 2400,
+      "width": 305,
+      "x": 0,
+      "y": 0.1171875
+    },
+    "static": "false",
+    "text": {
+      "height": 372,
+      "width": 305,
+      "x": 0,
+      "y": 228.1171875
+    },
+    "viewport": {
+      "height": 600,
+      "width": 320
+    },
+    "visual": {
+      "height": 228,
+      "width": 305,
+      "x": 0,
+      "y": 0.1171875
+    }
+  },
+  {
+    "label": "ar-1440x500",
+    "active": "0",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "1",
+        "rect": {
+          "height": 194.0703125,
+          "width": 1252.203125,
+          "x": 86.3984375,
+          "y": 81.265625
+        },
+        "transform": "none"
+      },
+      {
+        "height": 194,
+        "opacity": "1",
+        "rect": {
+          "height": 194.0703125,
+          "width": 1252.203125,
+          "x": 86.3984375,
+          "y": 1306.484375
+        },
+        "transform": "none"
+      },
+      {
+        "height": 237,
+        "opacity": "1",
+        "rect": {
+          "height": 236.765625,
+          "width": 1252.203125,
+          "x": 86.3984375,
+          "y": 2531.703125
+        },
+        "transform": "none"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 3767.546875,
+      "width": 1425,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "scrollY": 1232.5,
+    "section": {
+      "height": 3767.546875,
+      "width": 1425,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "static": "true",
+    "text": {
+      "height": 3767.546875,
+      "width": 1425,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "viewport": {
+      "height": 500,
+      "width": 1440
+    },
+    "visual": {
+      "height": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-768x700",
+    "active": "0",
+    "copies": [
+      {
+        "height": 197,
+        "opacity": "1",
+        "rect": {
+          "height": 196.59375,
+          "width": 284.34375,
+          "x": 422.578125,
+          "y": 235.5234375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 197,
+        "opacity": "0",
+        "rect": {
+          "height": 196.59375,
+          "width": 284.34375,
+          "x": 422.578125,
+          "y": 247.5234375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      },
+      {
+        "height": 278,
+        "opacity": "0",
+        "rect": {
+          "height": 278.2890625,
+          "width": 284.34375,
+          "x": 422.578125,
+          "y": 247.5234375
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 700,
+      "width": 753,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "scrollY": 1232.5,
+    "section": {
+      "height": 2800,
+      "width": 753,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "static": "false",
+    "text": {
+      "height": 700,
+      "width": 376.5,
+      "x": 376.5,
+      "y": 0.0703125
+    },
+    "viewport": {
+      "height": 700,
+      "width": 768
+    },
+    "visual": {
+      "height": 700,
+      "width": 376.5,
+      "x": 0,
+      "y": 0.0703125
+    }
+  },
+  {
+    "label": "ar-measured-fallback-320x568",
+    "active": "0",
+    "copies": [
+      {
+        "height": 181,
+        "opacity": "1",
+        "rect": {
+          "height": 180.59375,
+          "width": 257,
+          "x": 24,
+          "y": 76.8125
+        },
+        "transform": "none"
+      },
+      {
+        "height": 220,
+        "opacity": "1",
+        "rect": {
+          "height": 219.59375,
+          "width": 257,
+          "x": 24,
+          "y": 542.15625
+        },
+        "transform": "none"
+      },
+      {
+        "height": 262,
+        "opacity": "1",
+        "rect": {
+          "height": 262.2890625,
+          "width": 257,
+          "x": 24,
+          "y": 1046.5
+        },
+        "transform": "none"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1557.921875,
+      "width": 305,
+      "x": 0,
+      "y": -0.3828125
+    },
+    "scrollY": 1708.5,
+    "section": {
+      "height": 1557.921875,
+      "width": 305,
+      "x": 0,
+      "y": -0.3828125
+    },
+    "static": "true",
+    "text": {
+      "height": 1557.921875,
+      "width": 305,
+      "x": 0,
+      "y": -0.3828125
+    },
+    "viewport": {
+      "height": 568,
+      "width": 320
+    },
+    "visual": {
+      "height": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "ar-reduced-motion",
+    "active": "0",
+    "copies": [
+      {
+        "height": 194,
+        "opacity": "1",
+        "rect": {
+          "height": 194.0703125,
+          "width": 1252.203125,
+          "x": 86.3984375,
+          "y": 109.265625
+        },
+        "transform": "none"
+      },
+      {
+        "height": 194,
+        "opacity": "1",
+        "rect": {
+          "height": 194.0703125,
+          "width": 1252.203125,
+          "x": 86.3984375,
+          "y": 1334.484375
+        },
+        "transform": "none"
+      },
+      {
+        "height": 237,
+        "opacity": "1",
+        "rect": {
+          "height": 236.765625,
+          "width": 1252.203125,
+          "x": 86.3984375,
+          "y": 2559.703125
+        },
+        "transform": "none"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 3823.546875,
+      "width": 1425,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "scrollY": 1232.5,
+    "section": {
+      "height": 3823.546875,
+      "width": 1425,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "static": "true",
+    "text": {
+      "height": 3823.546875,
+      "width": 1425,
+      "x": 0,
+      "y": 0.0703125
+    },
+    "viewport": {
+      "height": 1000,
+      "width": 1440
+    },
+    "visual": {
+      "height": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "en-320x844",
+    "active": "1",
+    "copies": [
+      {
+        "height": 213,
+        "opacity": "0",
+        "rect": {
+          "height": 212.59375,
+          "width": 257,
+          "x": 24,
+          "y": 467.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 245,
+        "opacity": "1",
+        "rect": {
+          "height": 244.59375,
+          "width": 257,
+          "x": 24,
+          "y": 479.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 255,
+        "opacity": "0",
+        "rect": {
+          "height": 255.2890625,
+          "width": 257,
+          "x": 24,
+          "y": 491.3046875
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 844,
+      "width": 305,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 3155.5,
+    "section": {
+      "height": 3376,
+      "width": 305,
+      "x": 0,
+      "y": -1265.8203125
+    },
+    "static": "false",
+    "text": {
+      "height": 523.2734375,
+      "width": 305,
+      "x": 0,
+      "y": 320.71875
+    },
+    "viewport": {
+      "height": 844,
+      "width": 320
+    },
+    "visual": {
+      "height": 320.71875,
+      "width": 305,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "en-320x600",
+    "active": "1",
+    "copies": [
+      {
+        "height": 213,
+        "opacity": "0",
+        "rect": {
+          "height": 212.59375,
+          "width": 257,
+          "x": 24,
+          "y": 298.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 245,
+        "opacity": "1",
+        "rect": {
+          "height": 244.59375,
+          "width": 257,
+          "x": 24,
+          "y": 310.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 255,
+        "opacity": "0",
+        "rect": {
+          "height": 255.2890625,
+          "width": 257,
+          "x": 24,
+          "y": 322.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 600,
+      "width": 305,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2790,
+    "section": {
+      "height": 2400,
+      "width": 305,
+      "x": 0,
+      "y": -900.3203125
+    },
+    "static": "false",
+    "text": {
+      "height": 372,
+      "width": 305,
+      "x": 0,
+      "y": 228
+    },
+    "viewport": {
+      "height": 600,
+      "width": 320
+    },
+    "visual": {
+      "height": 228,
+      "width": 305,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "en-320x568",
+    "active": "1",
+    "copies": [
+      {
+        "height": 213,
+        "opacity": "1",
+        "rect": {
+          "height": 212.59375,
+          "width": 257,
+          "x": 24,
+          "y": 77.375
+        },
+        "transform": "none"
+      },
+      {
+        "height": 245,
+        "opacity": "1",
+        "rect": {
+          "height": 244.59375,
+          "width": 257,
+          "x": 24,
+          "y": 574.71875
+        },
+        "transform": "none"
+      },
+      {
+        "height": 255,
+        "opacity": "1",
+        "rect": {
+          "height": 255.2890625,
+          "width": 257,
+          "x": 24,
+          "y": 1104.0625
+        },
+        "transform": "none"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 1607.921875,
+      "width": 305,
+      "x": 0,
+      "y": 0.1796875
+    },
+    "scrollY": 1889.5,
+    "section": {
+      "height": 1607.921875,
+      "width": 305,
+      "x": 0,
+      "y": 0.1796875
+    },
+    "static": "true",
+    "text": {
+      "height": 1607.921875,
+      "width": 305,
+      "x": 0,
+      "y": 0.1796875
+    },
+    "viewport": {
+      "height": 568,
+      "width": 320
+    },
+    "visual": {
+      "height": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "en-760x600",
+    "active": "1",
+    "copies": [
+      {
+        "height": 181,
+        "opacity": "0",
+        "rect": {
+          "height": 180.59375,
+          "width": 697,
+          "x": 24,
+          "y": 330.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 181,
+        "opacity": "1",
+        "rect": {
+          "height": 180.59375,
+          "width": 697,
+          "x": 24,
+          "y": 342.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 191,
+        "opacity": "0",
+        "rect": {
+          "height": 191.2890625,
+          "width": 697,
+          "x": 24,
+          "y": 354.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 600,
+      "width": 745,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2616,
+    "section": {
+      "height": 2400,
+      "width": 745,
+      "x": 0,
+      "y": -899.8828125
+    },
+    "static": "false",
+    "text": {
+      "height": 372,
+      "width": 745,
+      "x": 0,
+      "y": 228
+    },
+    "viewport": {
+      "height": 600,
+      "width": 760
+    },
+    "visual": {
+      "height": 228,
+      "width": 745,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "en-768x600",
+    "active": "1",
+    "copies": [
+      {
+        "height": 229,
+        "opacity": "0",
+        "rect": {
+          "height": 228.59375,
+          "width": 284.34375,
+          "x": 46.078125,
+          "y": 176.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 229,
+        "opacity": "1",
+        "rect": {
+          "height": 228.59375,
+          "width": 284.34375,
+          "x": 46.078125,
+          "y": 188.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 271,
+        "opacity": "0",
+        "rect": {
+          "height": 271.2890625,
+          "width": 284.34375,
+          "x": 46.078125,
+          "y": 200.953125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 600,
+      "width": 753,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2253.5,
+    "section": {
+      "height": 2400,
+      "width": 753,
+      "x": 0,
+      "y": -900.1640625
+    },
+    "static": "false",
+    "text": {
+      "height": 600,
+      "width": 376.5,
+      "x": 0,
+      "y": 0
+    },
+    "viewport": {
+      "height": 600,
+      "width": 768
+    },
+    "visual": {
+      "height": 600,
+      "width": 376.5,
+      "x": 376.5,
+      "y": 0
+    }
+  },
+  {
+    "label": "en-1024x768",
+    "active": "1",
+    "copies": [
+      {
+        "height": 201,
+        "opacity": "0",
+        "rect": {
+          "height": 200.6015625,
+          "width": 381.625,
+          "x": 61.4375,
+          "y": 274.9453125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, -12)"
+      },
+      {
+        "height": 201,
+        "opacity": "1",
+        "rect": {
+          "height": 200.6015625,
+          "width": 381.625,
+          "x": 61.4375,
+          "y": 286.9453125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 243,
+        "opacity": "0",
+        "rect": {
+          "height": 243.296875,
+          "width": 381.625,
+          "x": 61.4375,
+          "y": 298.9453125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "Arabic first",
+      "One coherent system",
+      "Built to work with AI"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "en",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 768,
+      "width": 1009,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 2384.5,
+    "section": {
+      "height": 3072,
+      "width": 1009,
+      "x": 0,
+      "y": -1151.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 768,
+      "width": 504.5,
+      "x": 0,
+      "y": 0
+    },
+    "viewport": {
+      "height": 768,
+      "width": 1024
+    },
+    "visual": {
+      "height": 768,
+      "width": 504.5,
+      "x": 504.5,
+      "y": 0
+    }
+  },
+  {
+    "label": "forced-missing-image",
+    "active": "0",
+    "copies": [
+      {
+        "height": 169,
+        "opacity": "1",
+        "rect": {
+          "height": 168.6015625,
+          "width": 886.125,
+          "x": 61.4375,
+          "y": -1054.15625
+        },
+        "transform": "none"
+      },
+      {
+        "height": 169,
+        "opacity": "1",
+        "rect": {
+          "height": 168.6015625,
+          "width": 886.125,
+          "x": 61.4375,
+          "y": -128.9609375
+        },
+        "transform": "none"
+      },
+      {
+        "height": 211,
+        "opacity": "1",
+        "rect": {
+          "height": 211.296875,
+          "width": 886.125,
+          "x": 61.4375,
+          "y": 796.234375
+        },
+        "transform": "none"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "",
+        "scale": ""
+      },
+      {
+        "complete": true,
+        "naturalWidth": 0,
+        "reveal": "",
+        "scale": ""
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "",
+        "scale": ""
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 2895.6328125,
+      "width": 1009,
+      "x": 0,
+      "y": -1149.4296875
+    },
+    "scrollY": 2382,
+    "section": {
+      "height": 2895.6328125,
+      "width": 1009,
+      "x": 0,
+      "y": -1149.4296875
+    },
+    "static": "true",
+    "text": {
+      "height": 2895.6328125,
+      "width": 1009,
+      "x": 0,
+      "y": -1149.4296875
+    },
+    "viewport": {
+      "height": 768,
+      "width": 1024
+    },
+    "visual": {
+      "height": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "label": "restored-image-readiness",
+    "active": "0",
+    "copies": [
+      {
+        "height": 169,
+        "opacity": "1",
+        "rect": {
+          "height": 168.6015625,
+          "width": 381.625,
+          "x": 565.9375,
+          "y": 302.9453125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 0)"
+      },
+      {
+        "height": 169,
+        "opacity": "0",
+        "rect": {
+          "height": 168.6015625,
+          "width": 381.625,
+          "x": 565.9375,
+          "y": 314.9453125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      },
+      {
+        "height": 211,
+        "opacity": "0",
+        "rect": {
+          "height": 211.296875,
+          "width": 381.625,
+          "x": 565.9375,
+          "y": 314.9453125
+        },
+        "transform": "matrix(1, 0, 0, 1, 0, 12)"
+      }
+    ],
+    "headings": [
+      "العربية أولًا",
+      "نظام واحد، بتفاصيل مترابطة",
+      "جاهز للعمل مع الذكاء الاصطناعي"
+    ],
+    "images": [
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "1",
+        "scale": "1"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      },
+      {
+        "complete": true,
+        "naturalWidth": 1200,
+        "reveal": "0",
+        "scale": "1.03"
+      }
+    ],
+    "lang": "ar",
+    "live": 0,
+    "overflow": false,
+    "scene": {
+      "height": 768,
+      "width": 1009,
+      "x": 0,
+      "y": 0
+    },
+    "scrollY": 1254.5,
+    "section": {
+      "height": 3072,
+      "width": 1009,
+      "x": 0,
+      "y": -21.9296875
+    },
+    "static": "false",
+    "text": {
+      "height": 768,
+      "width": 504.5,
+      "x": 504.5,
+      "y": 0
+    },
+    "viewport": {
+      "height": 768,
+      "width": 1024
+    },
+    "visual": {
+      "height": 768,
+      "width": 504.5,
+      "x": 0,
+      "y": 0
+    }
+  }
+]

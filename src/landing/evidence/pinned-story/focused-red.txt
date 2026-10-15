@@ -1,0 +1,71 @@
+
+> tiraz@0.1.0 test
+> vitest run src/landing/WhyTiraz.test.tsx --maxWorkers=1 --no-file-parallelism
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/landing-page/Tiraz
+
+ ❯ src/landing/WhyTiraz.test.tsx (3 tests | 3 failed) 144ms
+   ❯ Tiraz pinned story (3)
+     × derives matching image and text progress from document scroll in both directions 29ms
+     × keeps all three chapters available to assistive technology and eagerly loads their images 88ms
+     × switches to all three stacked pairs when motion preference or available height changes 25ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/landing/WhyTiraz.test.tsx > Tiraz pinned story > derives matching image and text progress from document scroll in both directions
+Error: expect(received).toBeInTheDocument()
+
+received value must be an HTMLElement or an SVGElement.
+Received has type:  Null
+Received has value: null
+ ❯ src/landing/WhyTiraz.test.tsx:27:56
+     25|   it("derives matching image and text progress from document scroll in…
+     26|     const { container, section, scroll, unmount } = setup();
+     27|     expect(container.querySelector(".lp-story-scene")).toBeInTheDocume…
+       |                                                        ^
+     28|     expect(section).toHaveAttribute("data-static", "false");
+     29|     scroll(0.5);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/landing/WhyTiraz.test.tsx > Tiraz pinned story > keeps all three chapters available to assistive technology and eagerly loads their images
+Error: expect(element).toHaveAttribute("loading", "eager") // element.getAttribute("loading") === "eager"
+
+Expected the element to have attribute:
+  loading="eager"
+Received:
+  loading="lazy"
+ ❯ src/landing/WhyTiraz.test.tsx:57:65
+     55|     expect(screen.getAllByRole("img")).toHaveLength(3);
+     56|     expect(container.querySelector("[aria-live]")).not.toBeInTheDocume…
+     57|     screen.getAllByRole("img").forEach((image) => expect(image).toHave…
+       |                                                                 ^
+     58|   });
+     59|
+ ❯ src/landing/WhyTiraz.test.tsx:57:32
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/landing/WhyTiraz.test.tsx > Tiraz pinned story > switches to all three stacked pairs when motion preference or available height changes
+Error: expect(element).toHaveAttribute("tabindex", "0") // element.getAttribute("tabindex") === "0"
+
+Expected the element to have attribute:
+  tabindex="0"
+Received:
+  null
+ ❯ src/landing/WhyTiraz.test.tsx:65:38
+     63|     expect(section).toHaveAttribute("data-static", "true");
+     64|     expect(screen.getAllByRole("img")).toHaveLength(3);
+     65|     expect(screen.getByRole("link")).toHaveAttribute("tabindex", "0");
+       |                                      ^
+     66|     media.matches = false; change();
+     67|     expect(section).toHaveAttribute("data-static", "false");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  21:23:00
+   Duration  1.22s (environment 69%, tests 13%, setup 11%, transform 6%, import 1%)

@@ -1,0 +1,90 @@
+[
+  {
+    "size": {
+      "width": 768,
+      "height": 600
+    },
+    "observation": {
+      "result": {
+        "type": "object",
+        "value": {
+          "changes": [],
+          "end": "false",
+          "start": "false"
+        }
+      }
+    },
+    "state": {
+      "height": 600,
+      "overflow": false,
+      "static": "false",
+      "width": 768
+    }
+  },
+  {
+    "size": {
+      "width": 1024,
+      "height": 600
+    },
+    "observation": {
+      "result": {
+        "type": "object",
+        "value": {
+          "changes": [],
+          "end": "false",
+          "start": "false"
+        }
+      }
+    },
+    "state": {
+      "height": 600,
+      "overflow": false,
+      "static": "false",
+      "width": 1024
+    }
+  },
+  {
+    "size": {
+      "width": 320,
+      "height": 568
+    },
+    "observation": {
+      "result": {
+        "type": "object",
+        "value": {
+          "changes": [],
+          "end": "true",
+          "start": "true"
+        }
+      }
+    },
+    "state": {
+      "height": 568,
+      "overflow": false,
+      "static": "true",
+      "width": 320
+    }
+  },
+  {
+    "size": {
+      "width": 390,
+      "height": 844
+    },
+    "observation": {
+      "result": {
+        "type": "object",
+        "value": {
+          "changes": [],
+          "end": "false",
+          "start": "false"
+        }
+      }
+    },
+    "state": {
+      "height": 844,
+      "overflow": false,
+      "static": "false",
+      "width": 390
+    }
+  }
+]

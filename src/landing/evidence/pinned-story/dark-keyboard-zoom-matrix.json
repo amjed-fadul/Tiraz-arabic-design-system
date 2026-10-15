@@ -1,0 +1,535 @@
+{
+  "actualBrowserZoom200Verified": false,
+  "reason": "Native Chrome menu observed at100%; zoom activation interrupted and subsequent native state read reported locked Mac. DOM1512x772/devicePixelRatio2 unchanged. Tab-local756x386 CSS viewport tested only as a reflow fallback; this is not actual browser zoom.",
+  "keyboard": {
+    "active": "2",
+    "copyOpacity": "1",
+    "focusVisible": true,
+    "focused": true,
+    "linkRect": {
+      "bottom": 468.9453125,
+      "height": 21.59375,
+      "left": 1192.765625,
+      "right": 1338.6015625,
+      "top": 447.3515625,
+      "width": 145.8359375,
+      "x": 1192.765625,
+      "y": 447.3515625
+    },
+    "linkTabIndex": 0,
+    "outline": "rgb(165, 201, 180) solid 2px",
+    "scrollY": 4405.5
+  },
+  "states": [
+    {
+      "label": "dark-ar-desktop-third",
+      "active": "2",
+      "copies": [
+        {
+          "height": 194,
+          "opacity": "0",
+          "rect": {
+            "height": 194.0703125,
+            "width": 539.703125,
+            "x": 798.8984375,
+            "y": 394.2109375
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 194,
+          "opacity": "0",
+          "rect": {
+            "height": 194.0703125,
+            "width": 539.703125,
+            "x": 798.8984375,
+            "y": 394.2109375
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 237,
+          "opacity": "1",
+          "rect": {
+            "height": 236.765625,
+            "width": 539.703125,
+            "x": 798.8984375,
+            "y": 406.2109375
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        }
+      ],
+      "headings": [
+        "العربية أولًا",
+        "نظام واحد، بتفاصيل مترابطة",
+        "جاهز للعمل مع الذكاء الاصطناعي"
+      ],
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        }
+      ],
+      "lang": "ar",
+      "live": 0,
+      "overflow": false,
+      "scene": {
+        "height": 1000,
+        "width": 1425,
+        "x": 0,
+        "y": 0
+      },
+      "scrollY": 3932.5,
+      "section": {
+        "height": 4000,
+        "width": 1425,
+        "x": 0,
+        "y": -2699.9296875
+      },
+      "static": "false",
+      "text": {
+        "height": 1000,
+        "width": 712.5,
+        "x": 712.5,
+        "y": 0
+      },
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      },
+      "visual": {
+        "height": 1000,
+        "width": 712.5,
+        "x": 0,
+        "y": 0
+      },
+      "activeTextWithinPanel": true,
+      "activeTextWithinViewport": true,
+      "documentClientWidth": 1425,
+      "documentScrollWidth": 1425,
+      "theme": "dark"
+    },
+    {
+      "label": "dark-ar-narrow-third",
+      "active": "2",
+      "copies": [
+        {
+          "height": 149,
+          "opacity": "0",
+          "rect": {
+            "height": 148.59375,
+            "width": 327,
+            "x": 24,
+            "y": 499.3046875
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 149,
+          "opacity": "0",
+          "rect": {
+            "height": 148.59375,
+            "width": 327,
+            "x": 24,
+            "y": 499.3046875
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 191,
+          "opacity": "1",
+          "rect": {
+            "height": 191.2890625,
+            "width": 327,
+            "x": 24,
+            "y": 511.3046875
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        }
+      ],
+      "headings": [
+        "العربية أولًا",
+        "نظام واحد، بتفاصيل مترابطة",
+        "جاهز للعمل مع الذكاء الاصطناعي"
+      ],
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        }
+      ],
+      "lang": "ar",
+      "live": 0,
+      "overflow": false,
+      "scene": {
+        "height": 844,
+        "width": 375,
+        "x": 0,
+        "y": 0
+      },
+      "scrollY": 3987,
+      "section": {
+        "height": 3376,
+        "width": 375,
+        "x": 0,
+        "y": -2278.8828125
+      },
+      "static": "false",
+      "text": {
+        "height": 523.2734375,
+        "width": 375,
+        "x": 0,
+        "y": 320.71875
+      },
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "visual": {
+        "height": 320.71875,
+        "width": 375,
+        "x": 0,
+        "y": 0
+      },
+      "activeTextWithinPanel": true,
+      "activeTextWithinViewport": true,
+      "documentClientWidth": 375,
+      "documentScrollWidth": 375,
+      "theme": "dark"
+    },
+    {
+      "label": "dark-en-narrow-third",
+      "active": "2",
+      "copies": [
+        {
+          "height": 181,
+          "opacity": "0",
+          "rect": {
+            "height": 180.59375,
+            "width": 327,
+            "x": 24,
+            "y": 483.3046875
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 181,
+          "opacity": "0",
+          "rect": {
+            "height": 180.59375,
+            "width": 327,
+            "x": 24,
+            "y": 483.3046875
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 223,
+          "opacity": "1",
+          "rect": {
+            "height": 223.2890625,
+            "width": 327,
+            "x": 24,
+            "y": 495.3046875
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        }
+      ],
+      "headings": [
+        "Arabic first",
+        "One coherent system",
+        "Built to work with AI"
+      ],
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        }
+      ],
+      "lang": "en",
+      "live": 0,
+      "overflow": false,
+      "scene": {
+        "height": 844,
+        "width": 375,
+        "x": 0,
+        "y": 0
+      },
+      "scrollY": 3987,
+      "section": {
+        "height": 3376,
+        "width": 375,
+        "x": 0,
+        "y": -2278.8828125
+      },
+      "static": "false",
+      "text": {
+        "height": 523.2734375,
+        "width": 375,
+        "x": 0,
+        "y": 320.71875
+      },
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "visual": {
+        "height": 320.71875,
+        "width": 375,
+        "x": 0,
+        "y": 0
+      },
+      "activeTextWithinPanel": true,
+      "activeTextWithinViewport": true,
+      "documentClientWidth": 375,
+      "documentScrollWidth": 375,
+      "theme": "dark"
+    },
+    {
+      "label": "dark-en-desktop-third",
+      "active": "2",
+      "copies": [
+        {
+          "height": 230,
+          "opacity": "0",
+          "rect": {
+            "height": 230.0703125,
+            "width": 539.703125,
+            "x": 86.3984375,
+            "y": 376.2109375
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 230,
+          "opacity": "0",
+          "rect": {
+            "height": 230.0703125,
+            "width": 539.703125,
+            "x": 86.3984375,
+            "y": 376.2109375
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, -12)"
+        },
+        {
+          "height": 273,
+          "opacity": "1",
+          "rect": {
+            "height": 272.765625,
+            "width": 539.703125,
+            "x": 86.3984375,
+            "y": 388.2109375
+          },
+          "transform": "matrix(1, 0, 0, 1, 0, 0)"
+        }
+      ],
+      "headings": [
+        "Arabic first",
+        "One coherent system",
+        "Built to work with AI"
+      ],
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        }
+      ],
+      "lang": "en",
+      "live": 0,
+      "overflow": false,
+      "scene": {
+        "height": 1000,
+        "width": 1425,
+        "x": 0,
+        "y": 0
+      },
+      "scrollY": 3971,
+      "section": {
+        "height": 4000,
+        "width": 1425,
+        "x": 0,
+        "y": -2700.0546875
+      },
+      "static": "false",
+      "text": {
+        "height": 1000,
+        "width": 712.5,
+        "x": 0,
+        "y": 0
+      },
+      "viewport": {
+        "height": 1000,
+        "width": 1440
+      },
+      "visual": {
+        "height": 1000,
+        "width": 712.5,
+        "x": 712.5,
+        "y": 0
+      },
+      "activeTextWithinPanel": true,
+      "activeTextWithinViewport": true,
+      "documentClientWidth": 1425,
+      "documentScrollWidth": 1425,
+      "theme": "dark"
+    },
+    {
+      "label": "zoom-fallback-en-css-756x386-NOT-actual-browser-zoom",
+      "active": "2",
+      "copies": [
+        {
+          "height": 181,
+          "opacity": "1",
+          "rect": {
+            "height": 180.59375,
+            "width": 693,
+            "x": 24,
+            "y": 77.3125
+          },
+          "transform": "none"
+        },
+        {
+          "height": 181,
+          "opacity": "1",
+          "rect": {
+            "height": 180.59375,
+            "width": 693,
+            "x": 24,
+            "y": 869.65625
+          },
+          "transform": "none"
+        },
+        {
+          "height": 191,
+          "opacity": "1",
+          "rect": {
+            "height": 191.2890625,
+            "width": 693,
+            "x": 24,
+            "y": 1662
+          },
+          "transform": "none"
+        }
+      ],
+      "headings": [
+        "Arabic first",
+        "One coherent system",
+        "Built to work with AI"
+      ],
+      "images": [
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        },
+        {
+          "complete": true,
+          "naturalWidth": 1200,
+          "reveal": "1",
+          "scale": "1"
+        }
+      ],
+      "lang": "en",
+      "live": 0,
+      "overflow": false,
+      "scene": {
+        "height": 2428.921875,
+        "width": 741,
+        "x": 0,
+        "y": 0.1171875
+      },
+      "scrollY": 1716,
+      "section": {
+        "height": 2428.921875,
+        "width": 741,
+        "x": 0,
+        "y": 0.1171875
+      },
+      "static": "true",
+      "text": {
+        "height": 2428.921875,
+        "width": 741,
+        "x": 0,
+        "y": 0.1171875
+      },
+      "viewport": {
+        "height": 386,
+        "width": 756
+      },
+      "visual": {
+        "height": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "activeTextWithinPanel": true,
+      "activeTextWithinViewport": true,
+      "documentClientWidth": 741,
+      "documentScrollWidth": 741,
+      "theme": "dark"
+    }
+  ]
+}

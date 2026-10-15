@@ -1,0 +1,12 @@
+{
+  "diff_unchanged": true,
+  "index_unchanged": true,
+  "status_unchanged": true,
+  "original_branch": "main",
+  "landing_branch": "codex/landing-page",
+  "source_sha256": {
+    "src/landing/WhyTiraz.tsx": "b063a85d832ab83c83790f90598766275a975e7149a99f881698a965641166e5",
+    "src/landing/story.css": "5015af93754074177582a4a5d7181b125f078bdd917bcc5c7a27a3378044181d",
+    "src/landing/WhyTiraz.test.tsx": "06581813a64a6803055e0434233ac581f090304b49e1ca9a78077ecc3bf9b1e1"
+  }
+}
