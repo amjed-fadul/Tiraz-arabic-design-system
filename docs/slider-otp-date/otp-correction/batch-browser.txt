@@ -1,0 +1,24 @@
+PASS en: native pointer/arrows/Home/End/RTL range with decimal boundaries
+PASS en: real clipboard paste, normalized Arabic digits, leading zeros, selection deletion, readonly and autofill attributes (desktop simulation)
+Calendar focus: rdp-day_button
+PASS en: leap-day selection crosses month; calendar arrows/PageUp/Home/End/Escape and focus restore
+PASS en: clear, reset and canceled native reset preserve expected values
+PASS en: Sheet/Modal portal scope, short/narrow viewport containment, ordered Escape and two-level focus restore
+PASS en: live theme/density/type/accent/corners/reduced-motion tokens reach popup
+PASS ar: native pointer/arrows/Home/End/RTL range with decimal boundaries
+PASS ar: real clipboard paste, normalized Arabic digits, leading zeros, selection deletion, readonly and autofill attributes (desktop simulation)
+Calendar focus: rdp-day_button
+PASS ar: leap-day selection crosses month; calendar arrows/PageUp/Home/End/Escape and focus restore
+PASS ar: clear, reset and canceled native reset preserve expected values
+PASS ar: Sheet/Modal portal scope, short/narrow viewport containment, ordered Escape and two-level focus restore
+PASS ar: live theme/density/type/accent/corners/reduced-motion tokens reach popup
+PASS slider: minimal live inspector updates actual control and local example feedback
+PASS slider: Arabic/English light/dark desktop/narrow documentation, clipboard code + full portable prompt
+PASS otp-input: minimal live inspector updates actual control and local example feedback
+PASS otp-input: Arabic/English light/dark desktop/narrow documentation, clipboard code + full portable prompt
+PASS date-picker: minimal live inspector updates actual control and local example feedback
+PASS date-picker: Arabic/English light/dark desktop/narrow documentation, clipboard code + full portable prompt
+PASS OS reduced motion wins
+PASS Axe scan of controls and open calendar: no violations; no manual screen-reader claim
+PASS Today selects the local Gregorian date without a UTC shift
+PASS No browser runtime errors

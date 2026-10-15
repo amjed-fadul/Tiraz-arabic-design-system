@@ -2343,7 +2343,6 @@
   font-variant-numeric: tabular-nums;
 }
 .tz-otp {
-  container-type: inline-size;
   position: relative;
   inline-size: calc(var(--otp-length) * 2.6em);
   max-inline-size: 100%;
@@ -2354,35 +2353,64 @@
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: repeat(var(--otp-length), 1fr);
+  grid-template-columns: repeat(var(--otp-length), minmax(0, 1fr));
   pointer-events: none;
 }
-.tz-otp-slots > span {
+.tz-otp-slot {
+  position: relative;
+  display: grid;
+  place-items: center;
   margin-inline: 2px;
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-small);
   background: var(--surface);
 }
-.tiraz-system .tz-otp-input {
-  position: relative;
-  display: block;
-  inline-size: 100%;
-  block-size: 100%;
-  border: 0;
-  border-radius: var(--radius-small);
-  padding: 0;
-  padding-inline-start: calc((100cqw / var(--otp-length) - 1ch) / 2);
+.tz-otp-digit {
   font-family: var(--font-mono);
   font-size: var(--text-body);
-  letter-spacing: calc(100cqw / var(--otp-length) - 1ch);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
   color: var(--text);
-  background: transparent;
-  box-shadow: none;
 }
-.tz-otp:focus-within .tz-otp-slots > span {
-  border-color: var(--action);
+/* Only this input owns editing/selection/autofill. Its text and caret are
+   painted once by the decorative grid, independently of native text metrics. */
+.tiraz-system .tz-otp-input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  opacity: 0;
+  cursor: text;
 }
-.tz-otp:has([aria-invalid="true"]) .tz-otp-slots > span {
+.tiraz-system .tz-otp-input:focus,
+.tiraz-system .tz-otp-input:focus-visible {
+  outline: none;
+}
+.tz-otp-slot[data-active] {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.tz-otp-slot[data-selected] {
+  background: var(--action-soft);
+}
+.tz-otp-slot[data-caret]::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: 50%;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  block-size: 1em;
+  border-inline-start: 1px solid var(--text);
+}
+.tz-otp-slot[data-caret][data-filled]::after {
+  inset-inline-start: 25%;
+}
+.tz-otp-slot[data-caret][data-after]::after {
+  inset-inline-start: 75%;
+}
+.tz-otp:has([aria-invalid="true"]) .tz-otp-slot {
   border-color: var(--danger);
 }
 .tz-otp[data-disabled] {

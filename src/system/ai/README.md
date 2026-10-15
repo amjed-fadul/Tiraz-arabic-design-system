@@ -373,3 +373,19 @@ claims to examples.
 DatePicker preserves standalone native htmlFor/implicit label naming and describes
 the selected date with aria-describedby. In Field/explicit ARIA modes, its name
 includes the visible date or placeholder. No caller label DOM is mutated.
+
+### OTP slot presentation and selection
+
+OTPInput paints digits and a static caret once in an aria-hidden grid; one
+transparent native text input remains the sole editor and accessible control.
+Grid centering does not depend on font-width estimates or letter spacing.
+Only the active slot has a focus outline. Other borders stay neutral, or retain
+error styling independently. Native ranges have decorative selection shading.
+
+Clicking a slot positions the real caret before that digit; clicks beyond a
+partial code clamp to its end. Shift-click and pointer drag set the same native
+selection range used by keyboard selection/copy/paste. Forward selections focus
+the last selected slot; backward selections focus the first. A full code's end
+caret remains in the final slot. Native input selection events keep the decoration
+in sync with keyboard, pointer and programmatic selection changes. Read-only
+selection/copy stays available; disabled controls receive no active indication.
