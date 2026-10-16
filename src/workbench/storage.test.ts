@@ -1,5 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { defaultConfig } from "../system";
+import { readPreferences } from "./preferences";
 import { defaultPlaygrounds } from "./model";
 import {
   defaultDocumentation,
@@ -126,3 +127,15 @@ it("applies the documented shared theme precedence and fallback", () => {
   persist(storageKeys.theme, "invalid");
   expect(readTheme()).toBe("dark");
 });
+
+it.each(["lime", "amber", "teal", "cyan", "indigo", "rose", "slate"])(
+  "retains the %s accent across current and legacy settings reloads",
+  (accent) => {
+    persist(storageKeys.system, { ...defaultConfig, accent });
+    expect(readSystem().accent).toBe(accent);
+    localStorage.removeItem(storageKeys.system);
+    persist("tiraz.preferences.v1", { ...defaultConfig, accent });
+    expect(readSystem().accent).toBe(accent);
+    expect(readPreferences().accent).toBe(accent);
+  },
+);

@@ -49,6 +49,10 @@ For TypeScript CSS imports, use the host bundler’s declarations (for example,
 `vite/client` in Vite), rather than inventing a library API to solve a host
 configuration error.
 
+Paired light/dark accent presets are `sage`, `blue`, `plum`, `clay`, `lime`,
+`amber`, `teal`, `cyan`, `indigo`, `rose` and `slate`. Set `config.accent` to
+one of these keys; controls and focus tokens follow the active theme.
+
 Wrap the interface in `SystemProvider`; configure with
 `{ ...defaultConfig, ...overrides }`, not an incomplete config object. Put
 `ToastProvider` inside it, and call `useToast` in a descendant. Keep the
@@ -180,8 +184,9 @@ nonnumeric values are never converted to zero. Line/Area preserve gaps; isolated
 points remain visible. Donut draws positive finite values only; table retains
 zero/missing/negative values. Empty data and all-zero donuts have explicit states.
 
-Default colors use the system accent followed by the other three paired accents,
-resolved before legend filtering. Reuse the same series ordering across charts,
+Default colors use the system accent followed by the sage, blue, plum and clay
+categorical colors, omitting the selected accent from those fallbacks when present.
+Colors resolve before legend filtering. Reuse the same series ordering across charts,
 or set explicit colors such as `var(--action)` and `var(--chart-plum)` for stable
 comparison. Supply deliberate colors beyond four series. Tooltips, plots and
 legends consume the same resolved colors. `grid` is Cartesian only and defaults

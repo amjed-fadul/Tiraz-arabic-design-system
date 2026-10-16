@@ -722,7 +722,19 @@
         "type": "Accent",
         "required": true,
         "default": "undefined",
-        "values": ["sage", "blue", "plum", "clay"]
+        "values": [
+          "sage",
+          "blue",
+          "plum",
+          "clay",
+          "lime",
+          "amber",
+          "teal",
+          "cyan",
+          "indigo",
+          "rose",
+          "slate"
+        ]
       },
       {
         "name": "radius",

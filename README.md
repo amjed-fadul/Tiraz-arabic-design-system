@@ -122,7 +122,7 @@ Use `useToast()` inside `ToastProvider` for success/error/info feedback. At most
 
 ## Configuration
 
-`SystemConfig` contains `theme`, `direction`, `density`, `accent`, `radius`, `reducedMotion`, and optional `typography` (`standard` or `large`). Paired accent presets are sage, blue, plum and clay. The corner control ranges from 0–16px. Standard typography is 24px titles, 18px section headings, 14px body/control labels and 12px metadata; large previews use 26/20/16/14px. Documentation has its own fixed typography and control styling.
+`SystemConfig` contains `theme`, `direction`, `density`, `accent`, `radius`, `reducedMotion`, and optional `typography` (`standard` or `large`). Paired accent presets are sage, blue, plum, clay, lime, amber, teal, cyan, indigo, rose and slate. The corner control ranges from 0–16px. Standard typography is 24px titles, 18px section headings, 14px body/control labels and 12px metadata; large previews use 26/20/16/14px. Documentation has its own fixed typography and control styling.
 
 Hover/press feedback uses 120ms, state changes 180ms, overlay entrance 240ms and exit 160ms. OS reduced-motion preferences always win; component settings can additionally disable preview motion.
 

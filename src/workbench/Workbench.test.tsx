@@ -1,10 +1,10 @@
 import { navigationCatalog } from "./catalog";
 import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import { generatePrompt } from "./generate";
-import { storageKeys, persist } from "./storage";
+import { storageKeys, persist, readSystem } from "./storage";
 import { defaultPlaygrounds } from "./model";
 import { accentColors, defaultConfig } from "../system";
 function controls() {
@@ -342,5 +342,67 @@ it.each(["select", "radio-group"] as const)(
     expect(rail.getByRole("textbox", { name: "Options" })).toHaveValue(
       original,
     );
+  },
+);
+
+it.each([
+  ["ar", "light"],
+  ["ar", "dark"],
+  ["en", "light"],
+  ["en", "dark"],
+] as const)(
+  "applies and copies the expanded accents in %s/%s",
+  async (language, theme) => {
+    persist(storageKeys.documentation, { language, active: "button" });
+    persist(storageKeys.theme, theme);
+    const user = userEvent.setup();
+    const copy = vi.spyOn(navigator.clipboard, "writeText");
+    const { container } = render(<Workbench />);
+    const ar = language === "ar";
+    const rail = within(
+      screen.getByRole("complementary", {
+        name: ar ? "التخصيص" : "Customization",
+      }),
+    );
+    const accentControl = rail.getByRole("combobox", {
+      name: ar ? "اللون الأساسي" : "Accent",
+    });
+    for (const [accent, arabic, english] of [
+      ["lime", "ليموني", "Lime"],
+      ["amber", "كهرماني", "Amber"],
+      ["teal", "فيروزي", "Teal"],
+      ["cyan", "سماوي", "Cyan"],
+      ["indigo", "نيلي", "Indigo"],
+      ["rose", "وردي", "Rose"],
+      ["slate", "رمادي", "Slate"],
+    ] as const) {
+      await user.selectOptions(accentControl, accent);
+      expect(
+        within(accentControl).getByRole("option", {
+          name: ar ? arabic : english,
+        }),
+      ).toHaveProperty("selected", true);
+      for (const provider of container.querySelectorAll<HTMLElement>(
+        ".playground-region .tiraz-system,.examples-section .tiraz-system",
+      ))
+        expect(provider.style.getPropertyValue("--action")).toBe(
+          accentColors[accent][theme],
+        );
+      await user.click(
+        screen.getByRole("button", {
+          name: ar ? "نسخ الطلب" : "Copy agent prompt",
+        }),
+      );
+      expect(String(copy.mock.calls.at(-1)?.[0])).toContain(
+        `"accent":"${accent}"`,
+      );
+      expect(readSystem().accent).toBe(accent);
+    }
+    await user.click(
+      rail.getByRole("button", {
+        name: ar ? "إعادة ضبط النظام" : "Reset system",
+      }),
+    );
+    expect(accentControl).toHaveValue("sage");
   },
 );

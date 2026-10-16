@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { RotateCcw, ChevronDown } from "lucide-react";
-import { Switch } from "../system";
+import { accentColors, Switch } from "../system";
 import type { SystemConfig } from "../system";
 import type { AppearanceSettings } from "./storage";
 import type { Language } from "./i18n";
@@ -72,7 +72,7 @@ export function Appearance({
             set("accent", e.target.value as AppearanceSettings["accent"])
           }
         >
-          {["sage", "blue", "plum", "clay"].map((value) => (
+          {Object.keys(accentColors).map((value) => (
             <option key={value} value={value}>
               {localize(optionNames[value], language)}
             </option>

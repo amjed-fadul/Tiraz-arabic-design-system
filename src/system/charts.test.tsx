@@ -361,3 +361,41 @@ it("renders positive donut segments without React key-spread warnings", () => {
     error.mockRestore();
   }
 });
+
+it("reuses the selected action color when an expanded accent palette wraps", () => {
+  const entries = Array.from({ length: 6 }, (_, i) => ({
+    key: `value${i}`,
+    label: `Series ${i}`,
+  }));
+  const { container } = render(
+    <SystemProvider config={{ ...defaultConfig, accent: "lime" }}>
+      <LineChart
+        label="Sample"
+        summary="Local values"
+        data={[
+          {
+            category: "A",
+            ...Object.fromEntries(entries.map((e) => [e.key, 1])),
+          },
+          {
+            category: "B",
+            ...Object.fromEntries(entries.map((e) => [e.key, 2])),
+          },
+        ]}
+        series={entries}
+      />
+    </SystemProvider>,
+  );
+  expect(
+    [...container.querySelectorAll(".recharts-line-curve")].map((el) =>
+      el.getAttribute("stroke"),
+    ),
+  ).toEqual([
+    "var(--action)",
+    "var(--chart-sage)",
+    "var(--chart-blue)",
+    "var(--chart-plum)",
+    "var(--chart-clay)",
+    "var(--action)",
+  ]);
+});

@@ -102,7 +102,7 @@ function useChart(props: ChartProps, entries: ChartSeries[]) {
     ...entry,
     color:
       entry.color ??
-      (index === 0
+      (index % palette.length === 0
         ? "var(--action)"
         : `var(--chart-${palette[index % palette.length]})`),
   }));

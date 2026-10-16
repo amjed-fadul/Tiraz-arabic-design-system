@@ -1,4 +1,4 @@
-import { defaultConfig } from "../system/config";
+import { accentColors, defaultConfig } from "../system/config";
 import type { SystemConfig } from "../system/config";
 import type { ComponentId } from "./catalog";
 import { navigationCatalog } from "./catalog";
@@ -92,7 +92,7 @@ export function readSystem(): AppearanceSettings {
   if (!p) return { ...defaultSettings };
   return {
     density: p.density === "standard" ? "standard" : "compact",
-    accent: ["sage", "blue", "plum", "clay"].includes(p.accent as string)
+    accent: Object.keys(accentColors).includes(p.accent as string)
       ? (p.accent as SystemConfig["accent"])
       : "sage",
     radius:
