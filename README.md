@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with forty-nine source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with fifty-one source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -282,3 +282,27 @@ reduced motion leave static glyphs and readable labels. Disclosure/focus and loc
 demo cancellation are preserved. The general-purpose Spinner is unchanged.
 See [portable guidance](src/system/ai/README.md) and
 [compiling examples](src/system/ai/examples/AIFeedbackExamples.tsx).
+
+## Tool activity
+
+ToolCall records one host-supplied operation: pending, running, completed or failed,
+with a readable label, monospace tool name and optional formatted duration. Pass
+strings for preformatted input/output/error or React nodes for application-rendered
+results. JSON.stringify belongs to the host; never pass a plain object as a node.
+ToolCall owns only optional disclosure state (expanded/defaultExpanded and
+onExpandedChange). onRetry is a host callback, outside the disclosure button,
+shown on failure; focus moves to disclosure before retry.
+
+ToolChips takes a named list of items (stable id, label, state, optional count).
+Informational items are spans. onActivate creates a button; connect it to real
+behavior before supplying controls/expanded. No built-in details are implied.
+Use ToolCall for operation details, ToolChips for compact summaries, TaskRows for
+broader tasks, and ThinkingState for a brief application-owned activity summary.
+No tool execution, network, permissions, orchestration, execution timers or
+private model reasoning is supplied. Only meaningful ToolCall label/state changes
+are announced; use announcement="off" when another host region owns announcements.
+
+The portable ai/examples/ToolActivityExamples.tsx includes static states, rendered
+output and an explicitly started local simulation: running → success, failure →
+host retry, and a chip that opens and focuses its call. Replay/reset/unmount cancel
+stale timers. Sample data contains no secrets and performs no tool operation.

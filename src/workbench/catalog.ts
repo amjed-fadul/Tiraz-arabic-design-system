@@ -1,6 +1,24 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "tool-call",
+    name: ["استدعاء الأداة", "ToolCall"],
+    description: [
+      "عملية أداة واحدة بحالة وتفاصيل يزوّدها التطبيق.",
+      "One application-supplied tool operation with status and expandable details.",
+    ],
+    file: "ToolCall.tsx",
+  },
+  {
+    id: "tool-chips",
+    name: ["ملخص الأدوات", "ToolChips"],
+    description: [
+      "ملخص نشاط مدمج مع إجراءات اختيارية يربطها التطبيق.",
+      "Compact activity summaries with optional host-connected actions.",
+    ],
+    file: "ToolChips.tsx",
+  },
+  {
     id: "loading-state",
     name: ["حالة التحميل", "LoadingState"],
     description: [
@@ -457,7 +475,14 @@ const documentationGroups = [
   {
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
-    ids: ["loading-state", "thinking-indicator", "thinking-state", "task-rows"],
+    ids: [
+      "loading-state",
+      "thinking-indicator",
+      "thinking-state",
+      "task-rows",
+      "tool-call",
+      "tool-chips",
+    ],
   },
   {
     id: "forms",

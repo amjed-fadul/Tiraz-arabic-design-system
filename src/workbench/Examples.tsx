@@ -1,4 +1,8 @@
 import {
+  ToolRenderedOutputExample,
+  ToolActivityDemo,
+} from "../system/ai/examples/ToolActivityExamples";
+import {
   LoadingStateExample,
   ThinkingIndicatorExample,
   ThinkingStateExample,
@@ -243,6 +247,24 @@ export function Examples({
             <span>{t("المساعد", "Assistant")}</span>
             <ThinkingIndicatorExample language={language} textOnly />
           </p>
+        </section>
+      </div>
+    );
+  if (component === "tool-call" || component === "tool-chips")
+    return (
+      <div style={{ display: "grid", gap: "var(--space-8)", minInlineSize: 0 }}>
+        <section>
+          <h3>{t("مخرجات يَرسمها التطبيق", "Application-rendered output")}</h3>
+          <ToolRenderedOutputExample language={language} />
+        </section>
+        <section>
+          <h3>
+            {t(
+              "شريحة متصلة بالتفاصيل ومحاولة مجددًا",
+              "Connected chip, details and retry",
+            )}
+          </h3>
+          <ToolActivityDemo language={language} />
         </section>
       </div>
     );

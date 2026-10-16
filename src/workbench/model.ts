@@ -277,6 +277,8 @@ export interface Playgrounds {
   };
   "thinking-indicator": { label: string; words: boolean; textOnly: boolean };
   "thinking-state": { active: boolean; defaultExpanded: boolean };
+  "tool-call": { defaultExpanded: boolean; longContent: boolean };
+  "tool-chips": { counts: boolean };
   "file-tree": {
     mode: "controlled" | "uncontrolled";
     metadata: boolean;
@@ -365,6 +367,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       textOnly: false,
     },
     "thinking-state": { active: true, defaultExpanded: false },
+    "tool-call": { defaultExpanded: false, longContent: false },
+    "tool-chips": { counts: true },
     "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
     "task-rows": {
       appearance: "capsules",

@@ -184,6 +184,98 @@ export function ApiReference({
         ),
       ],
     ],
+    "tool-call": [
+      [
+        "label / tool / state",
+        "string / string / ToolCallState · required",
+        t(
+          "عنوان مفهوم واسم الأداة وحالة يزوّدها التطبيق.",
+          "User-facing action, tool name and host-supplied pending/running/completed/failed state.",
+        ),
+      ],
+      [
+        "input / output / error",
+        "ReactNode · optional",
+        t(
+          "نص منسق أو مخرجات يرسمها التطبيق؛ تظهر الأخطاء عند الفشل.",
+          "Strings render as preformatted text; nodes render supplied UI. Error replaces output on failure.",
+        ),
+      ],
+      [
+        "duration",
+        "string · optional",
+        t(
+          "مدة منسقة يزوّدها التطبيق دون مؤقت داخلي.",
+          "Formatted host duration. No library timer.",
+        ),
+      ],
+      [
+        "expanded / defaultExpanded / onExpandedChange",
+        "boolean / boolean · false / (boolean) => void",
+        t(
+          "توسيع متحكم به أو داخلي، وتركيز متوقع عند الطي.",
+          "Controlled or internal disclosure; hidden details leave the tab order and focus returns on collapse.",
+        ),
+      ],
+      [
+        "onRetry / retryLabel",
+        "(() => void)? / string?",
+        t(
+          "إجراء يملكه التطبيق خارج زر التوسيع، يظهر عند الفشل.",
+          "Host retry outside disclosure, shown only on failure. Focus returns to disclosure before retry.",
+        ),
+      ],
+      [
+        "announcement",
+        "polite | off · polite",
+        t(
+          "إعلان الحالة فقط، دون المدة أو المخرجات.",
+          "Announces label and state only, excluding duration and output.",
+        ),
+      ],
+      [
+        "Choose",
+        "ToolChips / TaskRows / ThinkingState",
+        t(
+          "ToolChips للملخص؛ TaskRows للمهام؛ ThinkingState لملخص النشاط.",
+          "ToolChips summarizes activity; TaskRows tracks tasks; ThinkingState describes brief user-facing activity.",
+        ),
+      ],
+    ],
+    "tool-chips": [
+      [
+        "label / items",
+        "string / readonly ToolChipItem[] · required",
+        t(
+          "اسم القائمة وعناصر بمعرّف ثابت وتسمية وحالة وعدد اختياري.",
+          "Named list; stable id, concise label, state and optional nonnegative count per item.",
+        ),
+      ],
+      [
+        "items[].onActivate",
+        "() => void · optional",
+        t(
+          "زر فقط عند ربط إجراء حقيقي؛ وإلا تبقى الشريحة نصًا.",
+          "Creates a native button only when a real host action is connected; otherwise static text.",
+        ),
+      ],
+      [
+        "items[].controls / expanded",
+        "string? / boolean?",
+        t(
+          "معرّف التفاصيل وحالتها عند ربطها بالفعل.",
+          "Supply the real details ID and expansion state only when connected.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "ul",
+        t(
+          "لا تفتح تفاصيل أو تنفّذ أدوات تلقائيًا.",
+          "No automatic details, execution, timers or orchestration. Pair with ToolCall for details.",
+        ),
+      ],
+    ],
     "thinking-state": [
       [
         "label / active / children",

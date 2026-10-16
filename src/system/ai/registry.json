@@ -667,6 +667,30 @@
     {
       "name": "ThinkingStateProps",
       "source": "ThinkingState.tsx"
+    },
+    {
+      "name": "ToolCall",
+      "source": "ToolCall.tsx"
+    },
+    {
+      "name": "ToolCallProps",
+      "source": "ToolCall.tsx"
+    },
+    {
+      "name": "ToolCallState",
+      "source": "ToolCall.tsx"
+    },
+    {
+      "name": "ToolChips",
+      "source": "ToolChips.tsx"
+    },
+    {
+      "name": "ToolChipsProps",
+      "source": "ToolChips.tsx"
+    },
+    {
+      "name": "ToolChipItem",
+      "source": "ToolChips.tsx"
     }
   ],
   "configuration": {
@@ -734,6 +758,127 @@
     }
   },
   "components": [
+    {
+      "id": "tool-call",
+      "api": "ToolCall",
+      "source": "ToolCall.tsx",
+      "exports": ["ToolCall", "ToolCallProps", "ToolCallState"],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tool",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "ToolCallState",
+          "required": true,
+          "values": ["pending", "running", "completed", "failed"]
+        },
+        {
+          "name": "input",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "output",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "duration",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(expanded: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "onRetry",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "retryLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "announcement",
+          "type": "polite | off",
+          "required": false,
+          "default": "polite",
+          "values": ["polite", "off"]
+        }
+      ],
+      "inheritedProps": "Native attributes, style, className and ref on div; children and semantics are managed internally.",
+      "state": "Host supplies execution state, data, durations and retry/activation callbacks. Only ToolCall disclosure may be internal.",
+      "accessibility": [
+        "Native buttons; collapsed details are inert and aria-hidden immediately. Controlled collapse restores panel focus without stealing deliberate moves.",
+        "ToolCall announces only label/state; no duration or animation chatter. Use announcement=off when the host owns announcements.",
+        "ToolChips is a named list. Only items with onActivate become buttons; controls/expanded describe real host details.",
+        "Code and output scroll internally. System and OS reduced motion suppress animation."
+      ],
+      "limitations": [
+        "No tool execution, network, permission system, orchestration engine, execution timers or private model reasoning."
+      ],
+      "alternative": "ToolCall details one operation. ToolChips summarizes activity. TaskRows tracks broader tasks. ThinkingState summarizes user-facing activity.",
+      "examples": ["ai/examples/ToolActivityExamples.tsx"]
+    },
+    {
+      "id": "tool-chips",
+      "api": "ToolChips",
+      "source": "ToolChips.tsx",
+      "exports": ["ToolChips", "ToolChipsProps", "ToolChipItem"],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "items",
+          "type": "readonly ToolChipItem[]",
+          "required": true
+        }
+      ],
+      "inheritedProps": "Native attributes, style, className and ref on ul; children and semantics are managed internally.",
+      "state": "Host supplies execution state, data, durations and retry/activation callbacks. Only ToolCall disclosure may be internal.",
+      "accessibility": [
+        "Native buttons; collapsed details are inert and aria-hidden immediately. Controlled collapse restores panel focus without stealing deliberate moves.",
+        "ToolCall announces only label/state; no duration or animation chatter. Use announcement=off when the host owns announcements.",
+        "ToolChips is a named list. Only items with onActivate become buttons; controls/expanded describe real host details.",
+        "Code and output scroll internally. System and OS reduced motion suppress animation."
+      ],
+      "limitations": [
+        "No tool execution, network, permission system, orchestration engine, execution timers or private model reasoning."
+      ],
+      "alternative": "ToolCall details one operation. ToolChips summarizes activity. TaskRows tracks broader tasks. ThinkingState summarizes user-facing activity.",
+      "examples": ["ai/examples/ToolActivityExamples.tsx"]
+    },
     {
       "id": "loading-state",
       "api": "LoadingState",
@@ -5306,6 +5451,47 @@
           "type": "readonly FileTreeNode[]",
           "required": true,
           "default": "undefined"
+        }
+      ]
+    },
+    {
+      "type": "ToolChipItem",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "ToolCallState",
+          "required": true,
+          "values": ["pending", "running", "completed", "failed"]
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "onActivate",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "controls",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "expanded",
+          "type": "boolean",
+          "required": false
         }
       ]
     }

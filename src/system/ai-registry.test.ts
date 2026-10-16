@@ -179,6 +179,8 @@ it("compiles the bundled example after copying only the library to a different a
         "loading-state",
         "thinking-indicator",
         "thinking-state",
+        "tool-call",
+        "tool-chips",
         "file-tree",
         "task-rows",
         "notification-list",

@@ -390,3 +390,14 @@ trigger on controlled collapse. Outside focus is preserved. Shared settings and
 both reduced-motion preferences apply. [Examples](examples/AIFeedbackExamples.tsx)
 include all grid variants, whole-word and text-only indicators, and an explicitly
 started local demo with replay/cancel/unmount cleanup.
+
+## Tool activity
+
+Use ToolCall for one operation's supplied input/output/error. A plain div/list may
+stack calls; no additional family is needed. Use ToolChips for concise activity
+labels, states and counts. onActivate is host-owned; informational items stay
+noninteractive. controls/expanded must reference the actual connected detail.
+See [ToolActivityExamples](examples/ToolActivityExamples.tsx) for disclosure, retry,
+rendered output and explicit local replay with timer cleanup. TaskRows describes
+broader tasks; ThinkingState describes brief public activity, never private
+reasoning. Keep one announcement owner and exclude duration/output from it.

@@ -102,3 +102,7 @@ export { ThinkingIndicator } from "./ThinkingIndicator";
 export type { ThinkingIndicatorProps } from "./ThinkingIndicator";
 export { ThinkingState } from "./ThinkingState";
 export type { ThinkingStateProps } from "./ThinkingState";
+export { ToolCall } from "./ToolCall";
+export type { ToolCallProps, ToolCallState } from "./ToolCall";
+export { ToolChips } from "./ToolChips";
+export type { ToolChipsProps, ToolChipItem } from "./ToolChips";

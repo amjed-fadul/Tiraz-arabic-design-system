@@ -1,0 +1,98 @@
+[
+  {
+    "lang": "ar",
+    "theme": "light",
+    "narrow": false,
+    "dir": "rtl",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 1280,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 1280
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "narrow": true,
+    "dir": "rtl",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 320,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 320
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "narrow": false,
+    "dir": "rtl",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 1280,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 1280
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "narrow": true,
+    "dir": "rtl",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 320,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "narrow": false,
+    "dir": "ltr",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 1280,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 1280
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "narrow": true,
+    "dir": "ltr",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 320,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "narrow": false,
+    "dir": "ltr",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 1280,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 1280
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "narrow": true,
+    "dir": "ltr",
+    "font": "\"IBM Plex Sans Arabic\", sans-serif",
+    "height": 900,
+    "pageWidth": 320,
+    "states": ["completed", "running", "failed", "pending"],
+    "staticButtons": 0,
+    "width": 320
+  }
+]

@@ -83,6 +83,13 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "tool-call": [
+    field("defaultExpanded", "boolean", "موسّع مبدئيًا", "Initially expanded"),
+    field("longContent", "boolean", "مخرجات طويلة", "Long output", "output"),
+  ],
+  "tool-chips": [
+    field("counts", "boolean", "الأعداد", "Counts", "items[].count"),
+  ],
   "loading-state": [
     field("label", "text", "التسمية", "Label"),
     field("variant", "select", "الحركة", "Variant", "variant", {
@@ -793,6 +800,8 @@ const commonKeys: Record<ComponentId, string[]> = {
   "loading-state": ["label", "variant", "elapsed"],
   "thinking-indicator": ["label", "words", "textOnly"],
   "thinking-state": ["active", "defaultExpanded"],
+  "tool-call": ["defaultExpanded", "longContent"],
+  "tool-chips": ["counts"],
   "file-tree": ["mode", "metadata", "empty"],
   "task-rows": ["appearance", "mode", "empty", "longContent"],
   "notification-list": ["readControls", "avatars", "empty", "longContent"],

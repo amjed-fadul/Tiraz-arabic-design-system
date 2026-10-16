@@ -1,4 +1,8 @@
 import {
+  ToolCallExample,
+  ToolChipsExample,
+} from "../system/ai/examples/ToolActivityExamples";
+import {
   LoadingStateExample,
   ThinkingIndicatorExample,
   ThinkingStateExample,
@@ -179,6 +183,21 @@ export function Playground({
       <ThinkingIndicatorExample
         language={language}
         {...(model as Playgrounds["thinking-indicator"])}
+      />
+    );
+  if (component === "tool-call")
+    return (
+      <ToolCallExample
+        key={JSON.stringify(model)}
+        language={language}
+        {...(model as Playgrounds["tool-call"])}
+      />
+    );
+  if (component === "tool-chips")
+    return (
+      <ToolChipsExample
+        language={language}
+        {...(model as Playgrounds["tool-chips"])}
       />
     );
   if (component === "thinking-state")
