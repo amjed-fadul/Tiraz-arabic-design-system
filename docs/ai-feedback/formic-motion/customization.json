@@ -1,0 +1,34 @@
+[
+  {
+    "lang": "ar",
+    "theme": "light",
+    "dir": "rtl",
+    "font": "16px",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "dir": "rtl",
+    "font": "16px",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "dir": "ltr",
+    "font": "16px",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "dir": "ltr",
+    "font": "16px",
+    "scroll": 320,
+    "width": 320
+  }
+]

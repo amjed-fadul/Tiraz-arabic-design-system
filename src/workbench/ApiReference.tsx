@@ -105,11 +105,19 @@ export function ApiReference({
         ),
       ],
       [
+        "variant / elapsedMs",
+        '"drive" | "dots" | "orbit" · drive / number?',
+        t(
+          "شبكة بكسلات صغيرة ووقت بالمللي ثانية يزوّده التطبيق دون ساعة داخلية.",
+          "Compact pixel grid and host-supplied elapsed milliseconds; no internal clock.",
+        ),
+      ],
+      [
         "indicator",
         '"spinner" | "skeleton" · spinner',
         t(
-          "نسيج متحرك مدمج افتراضيًا؛ spinner محفوظ للتوافق. أو هيكل تحميل.",
-          "Compact woven mark by default; spinner is retained for compatibility. Or a skeleton placeholder.",
+          "للتوافق: spinner يختار شبكة البكسلات؛ skeleton يعرض عنصرًا نائبًا.",
+          "Compatibility: spinner selects the pixel grid; skeleton shows a placeholder.",
         ),
       ],
       [
@@ -139,11 +147,19 @@ export function ApiReference({
     ],
     "thinking-indicator": [
       [
+        "words / textOnly",
+        "readonly string[]? / boolean · false",
+        t(
+          "كلمات كاملة متغيرة للعرض فقط؛ التسمية المتاحة ثابتة. نص فقط يحذف الرمز.",
+          "Whole display words rotate cosmetically; accessible label stays stable. Text only omits the glyph.",
+        ),
+      ],
+      [
         "label",
         "string · required",
         t(
-          "تسمية ظاهرة ومتاحة يزوّدها التطبيق.",
-          "Visible accessible application-supplied label.",
+          "تسمية متاحة ثابتة يزوّدها التطبيق؛ تظهر عند عدم توفير كلمات.",
+          "Stable accessible application-supplied label; displayed when words are omitted.",
         ),
       ],
       [

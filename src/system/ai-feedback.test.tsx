@@ -30,7 +30,9 @@ it("gives loading one polite atomic status and decorative visuals in both presen
     />,
   );
   expect(screen.queryByRole("status")).toBeNull();
-  expect(screen.getByText("Loading notes")).toBeVisible();
+  expect(
+    screen.getByText("Loading notes", { selector: ".tz-loading-state-label" }),
+  ).toBeVisible();
 });
 it("keeps the inline label stable without library timers and updates only supplied text", () => {
   vi.useFakeTimers();
@@ -152,4 +154,176 @@ it("recovers panel focus when the host replaces focused details during controlle
     </System.ThinkingState>,
   );
   expect(screen.getByRole("button", { name: "Ready" })).toHaveFocus();
+});
+
+it("keeps host elapsed ticks out of the stable loading announcement for each grid variant", () => {
+  const view = render(
+    <System.LoadingState
+      label="Loading notes"
+      variant="drive"
+      elapsedMs={9900}
+    />,
+  );
+  const status = screen.getByRole("status");
+  const initial = status.innerHTML;
+  for (const variant of ["drive", "dots", "orbit"] as const) {
+    view.rerender(
+      <System.LoadingState
+        label="Loading notes"
+        variant={variant}
+        elapsedMs={10000}
+      />,
+    );
+    expect(screen.getByRole("status")).toBe(status);
+    expect(status.innerHTML).toBe(initial);
+    expect(status).not.toHaveTextContent(/10/);
+    expect(view.container.querySelector(".tz-loading-elapsed")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
+  }
+});
+it("rotates whole words without changing the status, restarts changed sequences and clears its timer", () => {
+  vi.useFakeTimers();
+  const view = render(
+    <System.ThinkingIndicator
+      label="Preparing reply"
+      words={["Reading", "Checking"]}
+    />,
+  );
+  const status = screen.getByRole("status"),
+    initial = status.innerHTML;
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "Reading",
+  );
+  act(() => vi.advanceTimersByTime(3200));
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "Checking",
+  );
+  expect(status.innerHTML).toBe(initial);
+  view.rerender(
+    <System.ThinkingIndicator
+      label="Preparing reply"
+      words={["قراءة الملاحظات", "إعداد الرد"]}
+      textOnly
+    />,
+  );
+  expect(view.container.querySelector("svg")).toBeNull();
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "قراءة الملاحظات",
+  );
+  expect(
+    view.container.querySelector(".tz-thinking-word")?.children,
+  ).toHaveLength(0);
+  act(() => vi.advanceTimersByTime(3200));
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "إعداد الرد",
+  );
+  view.unmount();
+  expect(vi.getTimerCount()).toBe(0);
+});
+it("does not restart cosmetic words for equal arrays on elapsed parent renders, and stabilizes reduced motion", () => {
+  vi.useFakeTimers();
+  const tree = (reducedMotion: boolean) => (
+    <System.SystemProvider config={{ ...System.defaultConfig, reducedMotion }}>
+      <System.ThinkingIndicator
+        label="Activity"
+        words={["Reading", "Checking"]}
+      />
+    </System.SystemProvider>
+  );
+  const view = render(tree(false));
+  act(() => vi.advanceTimersByTime(2000));
+  view.rerender(tree(false));
+  act(() => vi.advanceTimersByTime(1200));
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "Checking",
+  );
+  view.rerender(tree(true));
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "Reading",
+  );
+  expect(view.container.querySelector("animate")).toBeNull();
+  expect(vi.getTimerCount()).toBe(0);
+  act(() => vi.advanceTimersByTime(10000));
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "Reading",
+  );
+});
+
+it("reacts to OS reduced motion, removes SVG motion, stops words, and unsubscribes on unmount", () => {
+  vi.useFakeTimers();
+  let matches = false;
+  const listeners = new Set<() => void>();
+  const original = window.matchMedia;
+  window.matchMedia = () => ({
+    matches,
+    media: "(prefers-reduced-motion: reduce)",
+    onchange: null,
+    addListener() {},
+    removeListener() {},
+    addEventListener(
+      _type: string,
+      listener: EventListenerOrEventListenerObject,
+    ) {
+      listeners.add(listener as () => void);
+    },
+    removeEventListener(
+      _type: string,
+      listener: EventListenerOrEventListenerObject,
+    ) {
+      listeners.delete(listener as () => void);
+    },
+    dispatchEvent() {
+      return true;
+    },
+  });
+  try {
+    const view = render(
+      <System.ThinkingIndicator
+        label="Activity"
+        words={["Reading", "Checking"]}
+      />,
+    );
+    expect(view.container.querySelector("animate")).not.toBeNull();
+    act(() => vi.advanceTimersByTime(3200));
+    expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+      "Checking",
+    );
+    act(() => {
+      matches = true;
+      listeners.forEach((listener) => listener());
+    });
+    expect(view.container.querySelector("animate")).toBeNull();
+    expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+      "Reading",
+    );
+    expect(vi.getTimerCount()).toBe(0);
+    view.unmount();
+    expect(listeners.size).toBe(0);
+  } finally {
+    window.matchMedia = original;
+  }
+});
+it("handles blank/single word lists without clocks and hides invalid elapsed values", () => {
+  vi.useFakeTimers();
+  const view = render(
+    <System.ThinkingIndicator label="Activity" words={["", "  "]} />,
+  );
+  expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
+    "Activity",
+  );
+  expect(vi.getTimerCount()).toBe(0);
+  view.rerender(<System.LoadingState label="Loading" elapsedMs={Infinity} />);
+  expect(view.container.querySelector(".tz-loading-elapsed")).toBeNull();
+  view.rerender(
+    <System.SystemProvider
+      config={{ ...System.defaultConfig, direction: "ltr" }}
+    >
+      <System.LoadingState label="Loading" elapsedMs={-100} />
+    </System.SystemProvider>,
+  );
+  expect(view.container.querySelector(".tz-loading-elapsed")).toHaveTextContent(
+    "0.0s",
+  );
 });

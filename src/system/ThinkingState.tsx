@@ -1,7 +1,6 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
-import { ChevronDown, Circle } from "lucide-react";
-import { ThinkingIndicator } from "./ThinkingIndicator";
+import { ChevronDown } from "lucide-react";
 
 export type ThinkingStateProps = Omit<
   ComponentPropsWithRef<"div">,
@@ -80,14 +79,21 @@ export function ThinkingState({
           onExpandedChange?.(!open);
         }}
       >
-        {active ? (
-          <ThinkingIndicator id={titleId} label={label} announcement="off" />
-        ) : (
-          <>
-            <Circle className="tz-thinking-state-rest" aria-hidden="true" />
-            <bdi id={titleId}>{label}</bdi>
-          </>
-        )}
+        <svg
+          className="tz-thinking-state-glyph"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8Z" />
+        </svg>
+        <bdi
+          id={titleId}
+          key={String(active)}
+          className={active ? "tz-ai-shimmer" : "tz-thinking-completed"}
+        >
+          {label}
+        </bdi>
         <ChevronDown className="tz-thinking-state-chevron" aria-hidden="true" />
       </button>
       <div
@@ -110,7 +116,9 @@ export function ThinkingState({
             lastFocus.current = null;
         }}
       >
-        {children}
+        <div className="tz-thinking-state-clip">
+          <div className="tz-thinking-state-content">{children}</div>
+        </div>
       </div>
     </div>
   );

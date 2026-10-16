@@ -3227,11 +3227,11 @@
   outline-offset: -2px;
 }
 
-/* Compact application-owned AI feedback. */
+/* Compact AI feedback, measured against the Formic motion references. */
 .tz-loading-state {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-2);
+  gap: 10px;
   min-inline-size: 0;
   color: var(--text-secondary);
   font-size: var(--text-body);
@@ -3247,77 +3247,136 @@
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
+.tz-loading-state-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
 .tz-loading-state-label {
+  min-inline-size: 0;
   font-weight: var(--weight-medium);
-  color: var(--text);
+  overflow-wrap: anywhere;
 }
 .tz-loading-state-description {
   font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+.tz-loading-elapsed {
+  inline-size: 8ch;
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+.tz-pixel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 4px);
+  gap: 1.5px;
+  inline-size: 15px;
+  block-size: 15px;
+  flex: none;
+  direction: ltr;
+  color: var(--text-secondary);
+}
+.tz-pixel-grid > span {
+  inline-size: 4px;
+  block-size: 4px;
+  border-radius: 1px;
+  background: currentColor;
+  opacity: 0.15;
+  animation: tz-pixel-on 650ms ease-in-out var(--pixel-delay) infinite;
+}
+.tz-pixel-grid[data-variant="dots"] > span {
+  border-radius: 50%;
+}
+.tz-pixel-grid[data-variant="orbit"] > span {
+  animation-duration: 950ms;
+}
+.tz-pixel-grid[data-variant="orbit"] > span:nth-child(5) {
+  animation: none;
+  opacity: 0.07;
+}
+@keyframes tz-pixel-on {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.tz-ai-shimmer {
+  color: var(--text-muted);
+  font-weight: var(--weight-medium);
+}
+@supports (background-clip: text) {
+  .tz-ai-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      var(--text-muted) 35%,
+      var(--text) 50%,
+      var(--text-muted) 65%
+    );
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: tz-ai-shimmer 1.4s linear infinite;
+  }
+}
+@keyframes tz-ai-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
 }
 .tz-thinking-indicator {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   max-inline-size: 100%;
+  min-inline-size: 0;
   color: var(--text-secondary);
-  font-size: var(--text-body);
+  font-size: calc((var(--text-body) + var(--text-meta)) / 2);
 }
-.tz-thinking-indicator > bdi {
+.tz-thinking-glyph {
+  inline-size: 18px;
+  block-size: 18px;
+  flex: none;
+  color: var(--text-muted);
+}
+.tz-thinking-words {
+  display: inline-grid;
+  overflow: hidden;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.tz-thinking-word-measure,
+.tz-thinking-word {
+  grid-area: 1/1;
   min-inline-size: 0;
   overflow-wrap: anywhere;
+  font-weight: var(--weight-medium);
 }
-.tz-loading-weave,
-.tz-thinking-stitches {
-  /* Nine existing state beats give the textile marks one shared 1.62s cycle. */
-  inline-size: 24px;
-  block-size: 16px;
-  flex: none;
-  color: var(--action);
+.tz-thinking-word-measure {
+  visibility: hidden;
 }
-.tz-loading-weave {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
+.tz-thinking-word {
+  animation:
+    tz-ai-shimmer 1.4s linear infinite,
+    tz-ai-word-in var(--motion-enter) cubic-bezier(0.23, 1, 0.32, 1) both;
 }
-.tz-loading-warps {
-  opacity: 0.55;
-}
-.tz-loading-weft {
-  opacity: 0.85;
-  transform: translateX(12px);
-  animation: tz-thread-pass calc(var(--motion-state) * 9) ease-in-out infinite;
-}
-.tz-thinking-stitches > rect {
-  fill: currentColor;
-  opacity: 0.65;
-  animation: tz-stitch-pass calc(var(--motion-state) * 9) ease-in-out infinite;
-}
-.tz-thinking-stitches > rect:nth-child(2) {
-  animation-delay: calc(var(--motion-state) * -6);
-}
-.tz-thinking-stitches > rect:nth-child(3) {
-  animation-delay: calc(var(--motion-state) * -3);
-}
-@keyframes tz-thread-pass {
-  0%,
-  100% {
-    transform: translateX(4px);
+@keyframes tz-ai-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
   }
-  50% {
-    transform: translateX(20px);
-  }
-}
-@keyframes tz-stitch-pass {
-  0%,
-  60%,
-  100% {
-    opacity: 0.4;
-    transform: translateX(0);
-  }
-  25% {
-    opacity: 0.9;
-    transform: translateX(1px);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 .tz-thinking-state {
@@ -3330,7 +3389,6 @@
   align-items: center;
   gap: var(--space-2);
   max-inline-size: 100%;
-  min-block-size: var(--control-height);
   padding: var(--space-1);
   border: 0;
   border-radius: var(--radius-small);
@@ -3347,51 +3405,161 @@
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
-.tz-thinking-state-trigger > .tz-thinking-indicator,
 .tz-thinking-state-trigger > bdi {
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
-.tz-thinking-state-rest {
-  inline-size: 24px;
-  block-size: 12px;
+.tz-thinking-state-glyph {
+  inline-size: 16px;
+  block-size: 16px;
+  fill: currentColor;
+  color: var(--text-muted);
   flex: none;
 }
 .tz-thinking-state-chevron {
   inline-size: 14px;
   block-size: 14px;
   flex: none;
-  transition: transform var(--motion-fast) var(--ease);
+  color: var(--text-muted);
+  transition: transform calc(var(--motion-state) + var(--motion-fast))
+    cubic-bezier(0.23, 1, 0.32, 1);
 }
 .tz-thinking-state[data-expanded="true"] .tz-thinking-state-chevron {
   transform: rotate(180deg);
 }
-.tz-thinking-state-panel {
-  margin-inline-start: var(--space-1);
-  padding-block: var(--space-2);
-  padding-inline-start: calc(24px + var(--space-2));
+.tz-thinking-completed {
+  animation: tz-ai-complete 350ms ease-out both;
+}
+@keyframes tz-ai-complete {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.tz-thinking-state-panel,
+.tz-thinking-state-panel[hidden] {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  min-inline-size: 0;
+  transition:
+    grid-template-rows calc(var(--motion-enter) + var(--motion-exit))
+      cubic-bezier(0.23, 1, 0.32, 1),
+    opacity calc(var(--motion-enter) + var(--motion-exit))
+      cubic-bezier(0.23, 1, 0.32, 1),
+    visibility 0s calc(var(--motion-enter) + var(--motion-exit));
+}
+.tz-thinking-state[data-expanded="true"] > .tz-thinking-state-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows calc(var(--motion-enter) + var(--motion-exit))
+      cubic-bezier(0.23, 1, 0.32, 1),
+    opacity calc(var(--motion-enter) + var(--motion-exit))
+      cubic-bezier(0.23, 1, 0.32, 1),
+    visibility 0s;
+}
+.tz-thinking-state-clip {
+  min-block-size: 0;
+  overflow: hidden;
+}
+.tz-thinking-state-content {
+  margin-block: var(--space-1);
+  margin-inline-start: var(--space-2);
+  padding-inline-start: var(--space-4);
+  border-inline-start: 1px solid var(--border);
   min-inline-size: 0;
   overflow-wrap: anywhere;
-}
-.tz-thinking-state-panel[hidden] {
-  display: none;
 }
 .tz-thinking-state-panel :where(button, a, input, select, textarea) {
   max-inline-size: 100%;
 }
-.tiraz-system[data-reduced-motion="true"] .tz-loading-weft,
-.tiraz-system[data-reduced-motion="true"] .tz-thinking-stitches > rect {
+.tz-thinking-steps {
+  display: grid;
+  gap: var(--space-1);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  font-size: calc((var(--text-body) + var(--text-meta)) / 2);
+}
+.tz-thinking-steps > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 28px;
+  min-inline-size: 0;
+  animation: tz-ai-word-in 320ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+.tz-thinking-steps > li > svg {
+  inline-size: 14px;
+  block-size: 14px;
+  flex: none;
+  color: var(--text-muted);
+}
+.tz-thinking-steps > li > span {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tiraz-system[data-reduced-motion="true"]
+  :is(
+    .tz-pixel-grid > span,
+    .tz-ai-shimmer,
+    .tz-thinking-word,
+    .tz-thinking-completed,
+    .tz-thinking-steps > li
+  ) {
   animation: none;
 }
-.tiraz-system[data-reduced-motion="true"] .tz-thinking-state-chevron {
+.tiraz-system[data-reduced-motion="true"] .tz-pixel-grid > span {
+  opacity: 0.55;
+}
+.tiraz-system[data-reduced-motion="true"]
+  .tz-pixel-grid[data-variant="orbit"]
+  > span:nth-child(5) {
+  opacity: 0.07;
+}
+.tiraz-system[data-reduced-motion="true"] .tz-ai-shimmer {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: var(--text-secondary);
+}
+.tiraz-system[data-reduced-motion="true"]
+  :is(.tz-thinking-state-panel, .tz-thinking-state-chevron) {
   transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .tz-loading-weft,
-  .tz-thinking-stitches > rect {
+  :is(
+    .tz-pixel-grid > span,
+    .tz-ai-shimmer,
+    .tz-thinking-word,
+    .tz-thinking-completed,
+    .tz-thinking-steps > li
+  ) {
     animation: none;
   }
-  .tz-thinking-state-chevron {
+  .tz-pixel-grid > span {
+    opacity: 0.55;
+  }
+  .tz-pixel-grid[data-variant="orbit"] > span:nth-child(5) {
+    opacity: 0.07;
+  }
+  .tz-ai-shimmer {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: var(--text-secondary);
+  }
+  :is(.tz-thinking-state-panel, .tz-thinking-state-chevron) {
     transition: none;
+  }
+}
+@media (forced-colors: active) {
+  .tz-ai-shimmer {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: CanvasText;
   }
 }

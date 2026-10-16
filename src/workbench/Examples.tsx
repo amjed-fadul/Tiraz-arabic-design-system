@@ -206,30 +206,45 @@ export function Examples({
   const [checked, setChecked] = useState(false);
   if (component === "loading-state")
     return (
-      <div style={{ display: "grid", gap: "var(--space-8)" }}>
-        <section>
-          <h3>{t("تسمية فقط", "Label only")}</h3>
-          <LoadingStateExample language={language} description={false} />
-        </section>
-        <section>
-          <h3>{t("عنصر نائب مدمج", "Compact placeholder")}</h3>
-          <LoadingStateExample language={language} indicator="skeleton" />
-        </section>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-8)" }}>
+        {(["drive", "dots", "orbit"] as const).map((variant) => (
+          <section key={variant}>
+            <h3>
+              {variant === "drive"
+                ? "Drive"
+                : variant === "dots"
+                  ? "Dots"
+                  : "Orbit"}
+            </h3>
+            <LoadingStateExample language={language} variant={variant} />
+          </section>
+        ))}
       </div>
     );
   if (component === "thinking-indicator")
     return (
-      <p
-        style={{
-          display: "flex",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "var(--space-2)",
-        }}
-      >
-        <span>{t("المساعد", "Assistant")}</span>
-        <ThinkingIndicatorExample language={language} />
-      </p>
+      <div style={{ display: "grid", gap: "var(--space-8)" }}>
+        <section>
+          <h3>{t("كلمات يزوّدها التطبيق", "Application-supplied words")}</h3>
+          <ThinkingIndicatorExample language={language} />
+        </section>
+        <section>
+          <h3>
+            {t("نص فقط ضمن المحادثة", "Text only, inline in a conversation")}
+          </h3>
+          <p
+            style={{
+              display: "flex",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "var(--space-2)",
+            }}
+          >
+            <span>{t("المساعد", "Assistant")}</span>
+            <ThinkingIndicatorExample language={language} textOnly />
+          </p>
+        </section>
+      </div>
     );
   if (component === "thinking-state")
     return (

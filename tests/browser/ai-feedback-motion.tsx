@@ -1,11 +1,13 @@
 import { createRoot } from "react-dom/client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Check } from "lucide-react";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "../../src/system/tokens.css";
 import "../../src/system/components.css";
 import {
+  Button,
   LoadingState,
   ThinkingIndicator,
   ThinkingState,
@@ -13,6 +15,7 @@ import {
   defaultConfig,
 } from "../../src/system";
 import type { Accent } from "../../src/system";
+import { AIFeedbackDemo } from "../../src/system/ai/examples/AIFeedbackExamples";
 export function MotionStudy() {
   const q = new URLSearchParams(location.search),
     ar = q.get("lang") === "ar",
@@ -22,36 +25,41 @@ export function MotionStudy() {
   )
     ? (q.get("accent") as Accent)
     : "sage";
+  const [active, setActive] = useState(true),
+    [expanded, setExpanded] = useState(true);
+  const root = useRef<HTMLElement>(null);
   const t = (a: string, e: string) => (ar ? a : e);
-  const main = useRef<HTMLElement>(null);
-  // Verification-only clock: freeze real CSS animations at an exact phase.
-  // Omission leaves the rendered components running normally for recordings.
   useEffect(() => {
     if (phase === null) return;
     const frame = requestAnimationFrame(() => {
-      for (const animation of document.getAnimations()) {
+      document.getAnimations().forEach((animation) => {
         animation.pause();
         animation.currentTime = Number(phase);
-      }
-      main.current!.dataset.phase = phase;
+      });
+      document.querySelectorAll("svg").forEach((svg) => {
+        svg.pauseAnimations?.();
+        svg.setCurrentTime?.(Number(phase) / 1000);
+      });
+      root.current!.dataset.phase = phase;
     });
     return () => cancelAnimationFrame(frame);
   }, [phase]);
   useEffect(() => {
-    const root = main.current!;
+    const main = root.current!;
     const observer = new MutationObserver((records) => {
-      const changed = records.some((r) =>
-        (r.target.nodeType === Node.ELEMENT_NODE
-          ? (r.target as Element)
-          : r.target.parentElement
-        )?.closest('[role="status"]'),
-      );
-      if (changed)
-        root.dataset.statusChanges = String(
-          Number(root.dataset.statusChanges) + 1,
+      if (
+        records.some((r) =>
+          (r.target.nodeType === Node.ELEMENT_NODE
+            ? (r.target as Element)
+            : r.target.parentElement
+          )?.closest('[role="status"]'),
+        )
+      )
+        main.dataset.statusChanges = String(
+          Number(main.dataset.statusChanges) + 1,
         );
     });
-    root.querySelectorAll('[role="status"]').forEach((el) =>
+    main.querySelectorAll('[role="status"]').forEach((el) =>
       observer.observe(el, {
         subtree: true,
         childList: true,
@@ -74,11 +82,11 @@ export function MotionStudy() {
         }}
       >
         <main
-          ref={main}
+          ref={root}
           data-status-changes="0"
           style={{
             boxSizing: "border-box",
-            maxInlineSize: 680,
+            maxInlineSize: 760,
             minBlockSize: "100vh",
             marginInline: "auto",
             padding: "var(--space-6)",
@@ -90,7 +98,10 @@ export function MotionStudy() {
         >
           <header>
             <h1 style={{ fontSize: "var(--text-heading)", margin: 0 }}>
-              {t("طِراز · خيوط النسيج", "Tiraz · weaving threads")}
+              {t(
+                "طِراز · حركة حالات النشاط",
+                "Tiraz · activity feedback motion",
+              )}
             </h1>
             <p
               style={{
@@ -100,8 +111,8 @@ export function MotionStudy() {
               }}
             >
               {t(
-                "دراسة الحركة · محتوى توضيحي ثابت",
-                "Motion study · static sample content",
+                "أمثلة محلية · محتوى يزوّده التطبيق",
+                "Local samples · application-supplied content",
               )}
             </p>
           </header>
@@ -109,59 +120,150 @@ export function MotionStudy() {
             <h2
               style={{
                 fontSize: "var(--text-meta)",
-                fontWeight: 500,
                 color: "var(--text-secondary)",
-                margin: "0 0 var(--space-2)",
+                margin: "0 0 var(--space-3)",
               }}
             >
               LoadingState
             </h2>
-            <LoadingState
-              label={t("جارٍ تحميل الملاحظات", "Loading notes")}
-              description={t(
-                "تظهر الملاحظات هنا عند توفّرها.",
-                "Notes will appear here when available.",
-              )}
-            />
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "var(--space-4)",
+              }}
+            >
+              {(["drive", "dots", "orbit"] as const).map((variant) => (
+                <div
+                  key={variant}
+                  style={{ display: "grid", gap: "var(--space-1)" }}
+                >
+                  <span
+                    style={{
+                      fontSize: "var(--text-meta)",
+                      color: "var(--text-muted)",
+                    }}
+                  >
+                    {variant[0].toUpperCase() + variant.slice(1)}
+                  </span>
+                  <LoadingState
+                    label={t("جارٍ التحميل", "Working")}
+                    variant={variant}
+                    elapsedMs={12400}
+                  />
+                </div>
+              ))}
+            </div>
           </section>
           <section aria-label="ThinkingIndicator">
             <h2
               style={{
                 fontSize: "var(--text-meta)",
-                fontWeight: 500,
                 color: "var(--text-secondary)",
-                margin: "0 0 var(--space-2)",
+                margin: "0 0 var(--space-3)",
               }}
             >
               ThinkingIndicator
             </h2>
-            <ThinkingIndicator
-              label={t("جارٍ إعداد الرد", "Preparing reply")}
-            />
+            <div style={{ display: "grid", gap: "var(--space-3)" }}>
+              <ThinkingIndicator
+                label={t("جارٍ إعداد الرد", "Preparing reply")}
+                words={
+                  ar
+                    ? [
+                        "جارٍ الإعداد",
+                        "جارٍ التخطيط",
+                        "جارٍ المراجعة",
+                        "جارٍ التحقق",
+                      ]
+                    : ["Thinking", "Planning", "Refining", "Checking"]
+                }
+              />
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "var(--space-2)",
+                  minInlineSize: 0,
+                }}
+              >
+                <span>{t("المساعد", "Assistant")}</span>
+                <ThinkingIndicator
+                  label={t("جارٍ إعداد الرد النصي", "Preparing text reply")}
+                  words={
+                    ar
+                      ? ["جارٍ الإعداد", "جارٍ التحقق"]
+                      : ["Thinking", "Checking"]
+                  }
+                  textOnly
+                />
+              </span>
+            </div>
           </section>
           <section aria-label="ThinkingState">
             <h2
               style={{
                 fontSize: "var(--text-meta)",
-                fontWeight: 500,
                 color: "var(--text-secondary)",
-                margin: "0 0 var(--space-2)",
+                margin: "0 0 var(--space-3)",
               }}
             >
               ThinkingState
             </h2>
             <ThinkingState
-              label={t("جارٍ إعداد الملخص", "Preparing summary")}
-              active
-              defaultExpanded
+              label={
+                active
+                  ? t("جارٍ إعداد الملخص", "Preparing summary")
+                  : t("ملخص العينة جاهز", "Sample summary ready")
+              }
+              active={active}
+              expanded={expanded}
+              onExpandedChange={setExpanded}
             >
-              <p style={{ margin: 0 }}>
-                {t(
-                  "ملخص نشاط موجز يزوّده التطبيق للمستخدم. تبقى التفاصيل ثابتة ومقروءة.",
-                  "A brief user-facing activity summary supplied by the application. Details stay still and readable.",
-                )}
-              </p>
+              <ol
+                className="tz-thinking-steps"
+                aria-label={t("خطوات نموذجية", "Sample steps")}
+              >
+                {(ar
+                  ? [
+                      "مراجعة تسميات العينة",
+                      "تجميع مواضيع العينة",
+                      "إعداد مخطط العينة",
+                    ]
+                  : [
+                      "Review sample labels",
+                      "Group sample topics",
+                      "Prepare sample outline",
+                    ]
+                ).map((text) => (
+                  <li key={text}>
+                    <Check aria-hidden="true" />
+                    <span>{text}</span>
+                  </li>
+                ))}
+              </ol>
             </ThinkingState>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setActive(!active)}
+            >
+              {active
+                ? t("إكمال العينة", "Complete sample")
+                : t("إعادة العينة", "Replay sample")}
+            </Button>
+          </section>
+          <section aria-label="Connected demo">
+            <h2
+              style={{
+                fontSize: "var(--text-meta)",
+                color: "var(--text-secondary)",
+                margin: "0 0 var(--space-2)",
+              }}
+            >
+              {t("عرض محلي متصل", "Connected local demo")}
+            </h2>
+            <AIFeedbackDemo language={ar ? "ar" : "en"} />
           </section>
         </main>
       </SystemProvider>

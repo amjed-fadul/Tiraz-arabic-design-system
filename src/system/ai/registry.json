@@ -766,17 +766,29 @@
           "required": false,
           "default": "spinner",
           "values": ["spinner", "skeleton"]
+        },
+        {
+          "name": "variant",
+          "type": "drive | dots | orbit",
+          "required": false,
+          "default": "drive",
+          "values": ["drive", "dots", "orbit"]
+        },
+        {
+          "name": "elapsedMs",
+          "type": "number",
+          "required": false,
+          "default": "undefined"
         }
       ],
       "inheritedProps": "Native attributes, style, className and ref target div; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
-      "state": "Host owns execution, labels and content. No library timers or automatic transitions. ThinkingState alone allows internal or controlled disclosure; defaults initialize once.",
+      "state": "Host owns execution and elapsedMs. No library elapsed clock. indicator=spinner selects the pixel grid for compatibility; skeleton retains its existing placeholder. variant selects Drive/Dots/Orbit.",
       "accessibility": [
-        "One polite atomic status; announcement=off when a parent owns announcements. Animated visuals are decorative; meaningful changes come from supplied text.",
-        "ThinkingState panels stay mounted, hidden and inert when collapsed. Controlled collapse restores panel focus to its trigger without stealing outside focus. Application/OS reduced motion stops decorative motion."
+        "A stable polite atomic label/description lives outside decorative grid, shimmer and elapsed time. Ticks never change the live announcement. announcement=off opts out.",
+        "Application and OS reduced motion use a still grid and plain readable label. Finite elapsedMs clamps below zero; nonfinite values hide elapsed time. Display digits follow provider direction."
       ],
       "limitations": [
-        "Brief user-facing summaries only; never private model reasoning, fabricated logs or implied network/AI activity.",
-        "No orchestration, service, elapsed timer, progress generator or animation dependency."
+        "No execution, network or elapsed-time simulation; the host must provide real elapsedMs and activity state."
       ],
       "alternative": "Use Spinner alone for an unlabeled visual beside existing status text; use Skeleton for a content-shaped placeholder.",
       "examples": ["ai/examples/AIFeedbackExamples.tsx"]
@@ -786,7 +798,7 @@
       "api": "ThinkingIndicator",
       "source": "ThinkingIndicator.tsx",
       "exports": ["ThinkingIndicator", "ThinkingIndicatorProps"],
-      "purpose": "Small inline activity indicator with one stable application-supplied label.",
+      "purpose": "Circle/infinity morph with a shimmering whole-word display and optional cosmetic word rotation or text-only presentation.",
       "props": [
         {
           "name": "label",
@@ -800,17 +812,28 @@
           "required": false,
           "default": "polite",
           "values": ["polite", "off"]
+        },
+        {
+          "name": "words",
+          "type": "readonly string[]",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "textOnly",
+          "type": "boolean",
+          "required": false,
+          "default": false
         }
       ],
       "inheritedProps": "Native attributes, style, className and ref target span; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
-      "state": "Host owns execution, labels and content. No library timers or automatic transitions. ThinkingState alone allows internal or controlled disclosure; defaults initialize once.",
+      "state": "Host owns the stable accessible label. Optional nonempty words rotate cosmetically approximately every 3.2s; equal arrays do not reset the clock. A changed sequence starts at its first word. Blank/empty words fall back to label. Timer cleans up on change, reduced motion and unmount.",
       "accessibility": [
-        "One polite atomic status; announcement=off when a parent owns announcements. Animated visuals are decorative; meaningful changes come from supplied text.",
-        "ThinkingState panels stay mounted, hidden and inert when collapsed. Controlled collapse restores panel focus to its trigger without stealing outside focus. Application/OS reduced motion stops decorative motion."
+        "Only label is in the polite live region; decorative glyph and changing words are aria-hidden. Whole strings preserve connected Arabic shaping. textOnly removes the glyph.",
+        "Application/OS reduced motion removes SVG animate, stops the word timer and shows a still circle with the first readable word."
       ],
       "limitations": [
-        "Brief user-facing summaries only; never private model reasoning, fabricated logs or implied network/AI activity.",
-        "No orchestration, service, elapsed timer, progress generator or animation dependency."
+        "Word changes are cosmetic, not execution progress. No private model reasoning or invented logs."
       ],
       "alternative": "Use Spinner for general loading; use ThinkingState when optional activity details are useful.",
       "examples": ["ai/examples/AIFeedbackExamples.tsx"]
@@ -867,14 +890,13 @@
         }
       ],
       "inheritedProps": "Native attributes, style, className and ref target div; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
-      "state": "Host owns execution, labels and content. No library timers or automatic transitions. ThinkingState alone allows internal or controlled disclosure; defaults initialize once.",
+      "state": "Host owns label, active and child steps. Active label shimmers; false shows the supplied completed summary. No automatic execution transition. Internal/controlled disclosure preserves mounted detail state and recovers focus.",
       "accessibility": [
-        "One polite atomic status; announcement=off when a parent owns announcements. Animated visuals are decorative; meaningful changes come from supplied text.",
-        "ThinkingState panels stay mounted, hidden and inert when collapsed. Controlled collapse restores panel focus to its trigger without stealing outside focus. Application/OS reduced motion stops decorative motion."
+        "Only supplied label changes announce politely. Decorative star, shimmer, chevron and disclosure motion do not announce.",
+        "Collapsed content is immediately hidden/aria-hidden/inert while CSS exit motion finishes. Focus inside a collapsed panel returns to its trigger, including replaced children; outside focus is preserved. Application/OS reduced motion makes disclosure immediate."
       ],
       "limitations": [
-        "Brief user-facing summaries only; never private model reasoning, fabricated logs or implied network/AI activity.",
-        "No orchestration, service, elapsed timer, progress generator or animation dependency."
+        "Use brief user-facing activity steps, not private reasoning or fabricated execution logs. No library execution timers or automatic state progression."
       ],
       "alternative": "Use ThinkingIndicator for one short inline status; use TaskRows for multiple independently tracked tasks.",
       "examples": ["ai/examples/AIFeedbackExamples.tsx"]

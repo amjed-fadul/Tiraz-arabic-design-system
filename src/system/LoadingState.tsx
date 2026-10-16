@@ -1,57 +1,80 @@
-import type { ComponentPropsWithRef } from "react";
+import type { ComponentPropsWithRef, CSSProperties } from "react";
 import { Skeleton } from "./Skeleton";
-
+import { useSystem } from "./useSystem";
 export type LoadingStateProps = Omit<
   ComponentPropsWithRef<"div">,
   "children"
 > & {
   label: string;
   description?: string;
+  variant?: "drive" | "dots" | "orbit";
+  /** Host-supplied elapsed milliseconds. Rendering never starts a clock. */
+  elapsedMs?: number;
+  /** Compatibility: spinner selects the pixel grid; skeleton keeps its placeholder. */
   indicator?: "spinner" | "skeleton";
-  /** Turn off when a surrounding region already announces this status. */
   announcement?: "polite" | "off";
 };
-/** Compact feedback. The host owns loading state and the busy content region. */
+const driveDelays = [90, 180, 270, 0, 90, 180, 90, 180, 270];
+const orbitDelays = [0, 110, 220, 770, 0, 330, 660, 550, 440];
+/** Compact loading feedback; execution and elapsed time belong to the host. */
 export function LoadingState({
   label,
   description,
+  variant = "drive",
+  elapsedMs,
   indicator = "spinner",
   announcement = "polite",
   className = "",
   ...props
 }: LoadingStateProps) {
+  const { config } = useSystem();
+  const ar = config.direction === "rtl";
+  const elapsed =
+    elapsedMs !== undefined && Number.isFinite(elapsedMs)
+      ? new Intl.NumberFormat(ar ? "ar" : "en", {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+          useGrouping: false,
+        }).format(Math.max(0, elapsedMs) / 1000) + (ar ? "ث" : "s")
+      : undefined;
   return (
     <div {...props} className={`tz-loading-state ${className}`}>
-      <span className="tz-loading-state-visual" aria-hidden="true">
-        {indicator === "spinner" ? (
-          <svg
-            className="tz-loading-weave"
-            viewBox="0 0 24 16"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path
-              className="tz-loading-warps"
-              d="M3.5 4h17M3.5 8h17M3.5 12h17"
-            />
-            <g className="tz-loading-weft">
-              {/* The gap lets the middle warp pass over the moving thread. */}
-              <path d="M0 1v5.5M0 9.5V15" />
-            </g>
-          </svg>
-        ) : (
-          <Skeleton shape="circle" style={{ inlineSize: 16, blockSize: 16 }} />
-        )}
-      </span>
-      <div
+      <span
+        className="tz-visually-hidden"
         role={announcement === "polite" ? "status" : undefined}
         aria-live={announcement === "polite" ? "polite" : "off"}
         aria-atomic="true"
-        className="tz-loading-state-copy"
       >
-        <bdi className="tz-loading-state-label">{label}</bdi>
+        {label}
+        {description ? ` ${description}` : ""}
+      </span>
+      <span className="tz-loading-state-visual" aria-hidden="true">
+        {indicator === "skeleton" ? (
+          <Skeleton shape="circle" style={{ inlineSize: 15, blockSize: 15 }} />
+        ) : (
+          <span className="tz-pixel-grid" data-variant={variant}>
+            {(variant === "orbit" ? orbitDelays : driveDelays).map(
+              (delay, index) => (
+                <span
+                  key={index}
+                  style={{ "--pixel-delay": `${delay}ms` } as CSSProperties}
+                />
+              ),
+            )}
+          </span>
+        )}
+      </span>
+      <div className="tz-loading-state-copy" aria-hidden="true">
+        <div className="tz-loading-state-row">
+          <bdi className="tz-loading-state-label tz-ai-shimmer">{label}</bdi>
+          {elapsed !== undefined && (
+            <bdi className="tz-loading-elapsed" aria-hidden="true">
+              {elapsed}
+            </bdi>
+          )}
+        </div>
         {description && (
-          <bdi className="tz-loading-state-description"> {description}</bdi>
+          <bdi className="tz-loading-state-description">{description}</bdi>
         )}
       </div>
     </div>

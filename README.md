@@ -270,16 +270,15 @@ FileTree displays application-supplied files and folders with stable unique IDs;
 
 ## AI feedback
 
-LoadingState combines a compact decorative woven mark or Skeleton with a label and
-optional description. Use Spinner alone beside existing feedback, or Skeleton
-for the shape of future content. ThinkingIndicator is one stable inline activity
-label; ThinkingState adds disclosure for brief application-supplied progress
-summaries and details. Use TaskRows for multiple tasks with separate states.
+LoadingState uses a compact pixel grid with Drive/Dots/Orbit variants, a shimmering
+label and optional host-supplied elapsedMs. ThinkingIndicator morphs a circle into
+an infinity loop beside optional cosmetic whole-word rotation, including textOnly.
+ThinkingState uses a small activity glyph, shimmering current summary and smooth
+disclosure of application-supplied activity steps; the host supplies completion.
 
-Execution and content stay in the host application. ThinkingState is for
-user-facing summaries, never private model reasoning or fabricated logs. All three
-honor shared tokens, RTL/LTR and reduced motion, with one polite status owner
-(`announcement="off"` opts out). Closed details remain hidden and inert; collapse
-recovers panel focus without stealing outside focus. See the portable
-[AI guidance](src/system/ai/README.md) and
-[compiling examples and local demo](src/system/ai/examples/AIFeedbackExamples.tsx).
+Only meaningful label changes announce. Decorative frames, elapsed ticks and word
+changes stay out of live regions; Arabic words remain connected. Provider and OS
+reduced motion leave static glyphs and readable labels. Disclosure/focus and local
+demo cancellation are preserved. The general-purpose Spinner is unchanged.
+See [portable guidance](src/system/ai/README.md) and
+[compiling examples](src/system/ai/examples/AIFeedbackExamples.tsx).

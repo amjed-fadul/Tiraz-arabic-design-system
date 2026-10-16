@@ -518,43 +518,52 @@ FileTree displays application-supplied files and folders with stable unique IDs;
 
 ## AI activity feedback
 
-Choose LoadingState for compact loading with a required label and optional description.
-It shows a compact decorative woven mark (default) or a compact Skeleton with
-`indicator="skeleton"`. The existing `indicator="spinner"` value selects the default woven mark for API compatibility; the general-purpose Spinner is unchanged. Both textile marks share a 1.62-second cycle based on the existing state-motion token, use only the accent color, and become static woven/stitch marks for reduced motion. Detail text never animates. Use Spinner alone beside existing status text; use Skeleton
-for a placeholder that follows the shape of future content. The host sets aria-busy
-on the actual content region and replaces LoadingState when loading ends.
+LoadingState uses a compact 3×3 pixel grid with `variant="drive" | "dots" | "orbit"`
+(default drive), a shimmering label and optional description. Drive/Dots use a
+brightness wave; Orbit travels around the perimeter with a dim center. Optional
+`elapsedMs` is a finite host-supplied duration, not a library clock. Negative values
+clamp to zero; nonfinite values hide the timer. Digits follow provider direction.
+Elapsed text and all decorative animation are excluded from announcements.
+`indicator="spinner"` remains the compatibility value for the pixel grid;
+`indicator="skeleton"` retains the placeholder.
+Use Spinner alone for general loading beside existing text, or Skeleton for the
+shape of future content. The host owns aria-busy on its actual loading region.
 
-ThinkingIndicator is a small inline AI-interface activity cue with a required,
-visible label. Three rectangular stitches brighten in sequence with a slight sideways movement while the label stays stable. Active ThinkingState reuses ThinkingIndicator, with its nested announcement off.
-ThinkingState adds optional disclosure to a brief application-supplied activity
-summary: required label, active boolean and children. Content represents user-facing
-progress summaries, never private model reasoning. Do not fabricate execution logs
-or imply that the component is doing AI work, file access or network requests.
-For multiple tasks with separate states and details, choose TaskRows.
+ThinkingIndicator pairs an 18px circle/infinity morph with a shimmering whole word.
+`label` is the stable accessible activity summary. Supply optional `words` for
+cosmetic whole-word rotation, or omit it for a single label. Blank/empty arrays
+fall back to label. `textOnly` removes the glyph. All words share one measured
+layout width; Arabic strings remain connected and are never split into letters.
+Equivalent arrays on parent updates do not restart rotation. Changed words start
+at the first word; the interval clears on change, reduced motion and unmount.
+Word transitions do not announce or represent execution progress.
 
-All three support `announcement="polite" | "off"` (polite by default). Mount them
-when needed, then update meaningful text; use off when an enclosing region owns
-the announcement. ThinkingState announces only label, outside the disclosure
-button; detail changes and animation frames are not live announcements. Update
-label as well as active when a status change needs an announcement. Real screen-reader
-speech must be verified in the host application.
+ThinkingState uses a compact four-point activity glyph, the supplied current
+summary and a chevron. While `active`, the summary shimmers; when the host sets
+active=false, the supplied `label` becomes the plain completed summary. Children
+hold brief user-facing activity steps, never private model reasoning. Use native
+`ol`/`li` with the example's `tz-thinking-steps` composition if useful; no step engine
+or execution log is generated. Use TaskRows for multiple independently tracked tasks.
 
-ThinkingState uses expanded/onExpandedChange for controlled disclosure, or
-optional defaultExpanded (false) for internal state. Keep the trigger available
-during activity; active never disables it. Closed details remain mounted to retain
-form values but are hidden and inert. On controlled collapse, focus inside the
-panel returns to the trigger; intentional outside focus stays outside. Keep
-interactive detail actions inside children, outside the trigger.
+All three default to `announcement="polite"`; use off when another region owns the
+announcement. Only meaningful host label/description changes update live text.
+Rotating words, glyph frames and elapsed ticks never change the live region.
+Test actual screen-reader speech in the host application.
 
-Native attributes, ref, className and style target the outer div (LoadingState,
-ThinkingState) or span (ThinkingIndicator). Shared tokens, density, typography,
-RTL/LTR and both provider/OS reduced motion apply. Supply translated labels and
-mark the host language independently of direction. No new dependencies, animation
-framework, orchestration, progress simulation or automatic execution transitions
-belong to these components.
+ThinkingState uses expanded/onExpandedChange for controlled disclosure, or optional
+defaultExpanded (false) for internal state. The trigger stays available during
+activity. Closed details stay mounted, hidden/aria-hidden and inert immediately,
+while visual exit motion finishes. Controlled collapse returns panel focus to its
+persistent trigger, even if the host replaces the focused child; deliberate
+outside focus stays outside. Detail actions belong inside children.
+
+Native attributes/ref/className/style target div (LoadingState/ThinkingState) or
+span (ThinkingIndicator). Shared tokens, direction, typography and themes apply.
+Provider AND OS reduced motion stop CSS shimmer, word transitions/rotation and
+SVG morphing, leaving a still glyph and stable first word. Disclosure is immediate.
+The general-purpose Spinner is unchanged. No animation dependency is added.
 
 See [standalone examples and connected demo](examples/AIFeedbackExamples.tsx).
-The demo is explicitly labeled Local simulation, starts only with Run demo,
-cancels stale timers on replay/cancel/unmount, and keeps disclosure usable while
-running. All execution/content state and timers in that file belong to the sample
-host application. Copy this behavior only when a simulation is requested.
+The explicitly started Local simulation owns its elapsed clock, progress summaries
+and example steps, and cancels stale timers on replay/cancel/unmount. Library
+cosmetic rotation never drives execution. No real AI/network activity is implied.

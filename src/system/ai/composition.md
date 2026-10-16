@@ -370,18 +370,23 @@ Use FileTree for a compact read-only hierarchy of supplied data. Keep IDs stable
 
 ## Compact AI feedback
 
-Use LoadingState for a labeled loading region; optional description adds context.
-Spinner alone fits adjacent existing text; Skeleton fits known future content shape.
-ThinkingIndicator supplies one stable inline activity label. ThinkingState pairs a
-brief user-facing activity summary with optional details. TaskRows fits several
-independently tracked tasks. Never put private model reasoning in ThinkingState.
+LoadingState offers Drive/Dots/Orbit pixel-grid motion, a shimmer label and optional
+host-supplied elapsedMs. The host owns elapsed time and aria-busy on real content.
+Spinner remains the general-purpose loader; Skeleton represents future content shape.
+ThinkingIndicator provides a circle/infinity morph and optional whole-word rotation
+or textOnly. Its label stays accessible and stable while words change decoratively.
+Never split Arabic words into letters. Reduced motion shows a still glyph/first word.
 
-The application owns active state, labels, details and aria-busy on real content.
-Use one polite announcement owner per update; set announcement="off" on nested or
-redundant feedback. Update the supplied label for meaningful changes, without
-animated words or frame announcements. Keep disclosure usable during activity.
-Collapsed details stay mounted, hidden and inert; controlled collapse restores
-panel focus without reclaiming outside focus. All shared appearance, direction
-and reduced-motion settings apply. [AIFeedbackExamples](examples/AIFeedbackExamples.tsx)
-contains standalone compositions and one explicitly started local simulation
-with replay/cancel/unmount cleanup. No real execution or network activity is implied.
+ThinkingState pairs a four-point activity glyph, current summary and chevron with
+smooth disclosure of host-supplied user-facing steps. Set active=false and update
+label for a completed summary. Keep private model reasoning out of details. TaskRows
+fits several independently tracked tasks. Execution, elapsed clocks and steps
+belong to the host; cosmetic word rotation never drives them.
+
+Use one polite announcement owner; announcement="off" opts out. Elapsed ticks,
+rotating words and animated frames are excluded from live regions. Closed details
+remain mounted but immediately hidden/aria-hidden/inert, with focus recovery to the
+trigger on controlled collapse. Outside focus is preserved. Shared settings and
+both reduced-motion preferences apply. [Examples](examples/AIFeedbackExamples.tsx)
+include all grid variants, whole-word and text-only indicators, and an explicitly
+started local demo with replay/cancel/unmount cleanup.

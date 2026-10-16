@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 it.each([
-  ["حالة التحميل", "LoadingState", "Indicator", "skeleton"],
+  ["حالة التحميل", "LoadingState", "Variant", "orbit"],
   ["مؤشر النشاط", "ThinkingIndicator", "Label", "Preparing sample"],
   ["حالة النشاط", "ThinkingState", "Active", null],
 ])(
@@ -42,7 +42,7 @@ it.each([
     expect(code).not.toContain("workbench/");
     expect(code).toContain(
       en === "LoadingState"
-        ? '"indicator":"skeleton"'
+        ? '"variant":"orbit"'
         : en === "ThinkingIndicator"
           ? '"label":"Preparing sample"'
           : '"active":false',

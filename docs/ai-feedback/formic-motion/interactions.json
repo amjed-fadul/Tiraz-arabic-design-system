@@ -1,0 +1,60 @@
+[
+  {
+    "lang": "en",
+    "action": "Enter collapse",
+    "expanded": "false",
+    "focus": "Preparing summary",
+    "hidden": true
+  },
+  {
+    "lang": "en",
+    "action": "focused input external collapse",
+    "focus": "Preparing summary",
+    "hidden": true
+  },
+  {
+    "lang": "en",
+    "action": "replaced focused child collapse",
+    "focus": "Preparing summary",
+    "hidden": true
+  },
+  {
+    "lang": "en",
+    "action": "Tab skips hidden details",
+    "focus": "Collapse later"
+  },
+  {
+    "lang": "en",
+    "action": "meaningful state change",
+    "statusEvents": ["Summary ready"]
+  },
+  {
+    "lang": "ar",
+    "action": "Enter collapse",
+    "expanded": "false",
+    "focus": "جارٍ إعداد الملخص",
+    "hidden": true
+  },
+  {
+    "lang": "ar",
+    "action": "focused input external collapse",
+    "focus": "جارٍ إعداد الملخص",
+    "hidden": true
+  },
+  {
+    "lang": "ar",
+    "action": "replaced focused child collapse",
+    "focus": "جارٍ إعداد الملخص",
+    "hidden": true
+  },
+  {
+    "lang": "ar",
+    "action": "Tab skips hidden details",
+    "focus": "Collapse later"
+  },
+  {
+    "lang": "ar",
+    "action": "meaningful state change",
+    "statusEvents": ["الملخص جاهز"]
+  }
+]

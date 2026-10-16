@@ -1,6 +1,6 @@
 # AI feedback local verification
 
-Latest verification: [Textile motion refinement — 2026-10-16](motion/verification.md), including the recording, updated screenshots and focused checks.
+Latest verification: [Formic motion replacement — 2026-10-16](formic-motion/verification.md), including the current recording, screenshots, 542-test full run and independent review. This supersedes the historical textile motion direction.
 
 ## Original batch at 2dd01e9
 

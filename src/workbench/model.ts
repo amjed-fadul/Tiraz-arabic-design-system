@@ -272,8 +272,10 @@ export interface Playgrounds {
     label: string;
     indicator: "spinner" | "skeleton";
     description: boolean;
+    variant: "drive" | "dots" | "orbit";
+    elapsed: boolean;
   };
-  "thinking-indicator": { label: string };
+  "thinking-indicator": { label: string; words: boolean; textOnly: boolean };
   "thinking-state": { active: boolean; defaultExpanded: boolean };
   "file-tree": {
     mode: "controlled" | "uncontrolled";
@@ -353,9 +355,15 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "loading-state": {
       label: t("جارٍ تحميل الملاحظات", "Loading notes"),
       indicator: "spinner",
-      description: true,
+      variant: "drive",
+      elapsed: true,
+      description: false,
     },
-    "thinking-indicator": { label: t("جارٍ إعداد الرد", "Preparing reply") },
+    "thinking-indicator": {
+      label: t("جارٍ إعداد الرد", "Preparing reply"),
+      words: true,
+      textOnly: false,
+    },
     "thinking-state": { active: true, defaultExpanded: false },
     "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
     "task-rows": {
@@ -944,9 +952,11 @@ export function normalizePlaygrounds(
       illustration: ["no-records", "no-results", "getting-started", "none"],
       mode: ["controlled", "uncontrolled"],
       variant:
-        component === "tabs"
-          ? ["underline", "segment"]
-          : ["primary", "secondary", "ghost", "destructive"],
+        component === "loading-state"
+          ? ["drive", "dots", "orbit"]
+          : component === "tabs"
+            ? ["underline", "segment"]
+            : ["primary", "secondary", "ghost", "destructive"],
       size: ["sm", "md"],
       state: ["idle", "loading", "success", "error"],
       icon: ["none", "plus", "download", "settings"],
