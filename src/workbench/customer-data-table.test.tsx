@@ -86,3 +86,28 @@ it("demonstrates explicit loading/error and Retry without a service", async () =
   await user.click(screen.getByRole("button", { name: "Retry" }));
   expect(screen.getByRole("status")).toHaveTextContent("of 26");
 });
+
+it.each(["loading", "error"] as const)(
+  "withholds unavailable totals in the %s preview",
+  async (preset) => {
+    const user = setup(preset);
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "Customer pages" }),
+      ).getByRole("status"),
+    ).toHaveTextContent(
+      preset === "loading" ? "Loading customers" : "Customer count unavailable",
+    );
+    expect(
+      within(
+        screen.getByRole("navigation", { name: "Customer pages" }),
+      ).getByRole("status"),
+    ).not.toHaveTextContent("of 0 customers");
+    if (preset === "error") {
+      await user.click(screen.getByRole("button", { name: "Retry" }));
+      expect(screen.getByRole("status")).toHaveTextContent(
+        "1–10 of 26 customers",
+      );
+    }
+  },
+);

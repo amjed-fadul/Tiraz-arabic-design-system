@@ -50,8 +50,8 @@ export function FileDropzoneExample({
         helper={
           helper ??
           t(
-            "PDF أو نص أو صور · حتى ٥ ميغابايت لكل ملف · ٣ ملفات كحد أقصى.",
-            "PDF, text or images · up to 5 MB each · maximum 3 files.",
+            "اختر ملفات ضمن قيود النوع والحجم والعدد المحددة لهذا المثال.",
+            "Choose files within this example's configured type, size and count limits.",
           )
         }
         error={error}

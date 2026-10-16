@@ -59,3 +59,62 @@ it.each(["controlled", "uncontrolled"] as const)(
     expect(document.querySelector("figcaption")).toHaveTextContent("#805475");
   },
 );
+
+it.each(["ar", "en"] as const)(
+  "keeps %s file guidance truthful when selection rules change and preserves custom help",
+  async (language) => {
+    const view = render(
+      wrap(
+        <FileDropzoneExample
+          language={language}
+          multiple={false}
+          accept=".csv"
+          maxFiles={1}
+        />,
+      ),
+    );
+    const input = document.querySelector<HTMLInputElement>("input[type=file]")!;
+    const helper = document.getElementById(
+      input.getAttribute("aria-describedby")!,
+    )!;
+    expect(helper).not.toHaveTextContent(/PDF|3 files|٣ ملفات/);
+    fireEvent.change(input, {
+      target: {
+        files: [new File(["sample"], "notes.txt", { type: "text/plain" })],
+      },
+    });
+    expect(document.querySelector(".tz-selected-files")).toBeNull();
+    fireEvent.change(input, {
+      target: {
+        files: [new File(["sample"], "notes.csv", { type: "text/csv" })],
+      },
+    });
+    expect(screen.getByText("notes.csv")).toBeVisible();
+    view.rerender(
+      wrap(
+        <FileDropzoneExample
+          language={language}
+          multiple
+          accept=".csv"
+          maxFiles={1}
+        />,
+      ),
+    );
+    fireEvent.change(input, {
+      target: {
+        files: [new File(["sample"], "extra.csv", { type: "text/csv" })],
+      },
+    });
+    // The LTR provider supplies English rejection labels in both language cases.
+    expect(screen.getByText("extra.csv: Maximum of 1 file.")).toBeVisible();
+    view.rerender(
+      wrap(
+        <FileDropzoneExample
+          language={language}
+          helper="Custom application guidance"
+        />,
+      ),
+    );
+    expect(screen.getByText("Custom application guidance")).toBeVisible();
+  },
+);

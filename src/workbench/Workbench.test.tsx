@@ -313,3 +313,34 @@ it("copies the full current prompt despite its single-line presentation", async 
   expect(copied).toContain('accent: "plum"');
   expect(copied).toContain("src/system/Button.tsx");
 });
+
+it.each(["select", "radio-group"] as const)(
+  "clears unapplied %s collection drafts and errors on reset without losing reset focus",
+  async (active) => {
+    persist(storageKeys.documentation, { language: "en", active });
+    render(<Workbench />);
+    const user = userEvent.setup();
+    const rail = within(
+      screen.getByRole("complementary", { name: "Customization" }),
+    );
+    const original = (
+      rail.getByRole("textbox", { name: "Options" }) as HTMLTextAreaElement
+    ).value;
+    await user.clear(rail.getByRole("textbox", { name: "Options" }));
+    await user.type(rail.getByRole("textbox", { name: "Options" }), "invalid");
+    await user.click(rail.getByRole("button", { name: "Apply collection" }));
+    expect(rail.getByRole("alert")).toBeVisible();
+    const reset = rail.getByRole("button", { name: "Reset playground" });
+    await user.click(reset);
+    expect(rail.getByRole("textbox", { name: "Options" })).toHaveValue(
+      original,
+    );
+    expect(rail.queryByRole("alert")).toBeNull();
+    expect(reset).toHaveFocus();
+    await user.clear(rail.getByRole("textbox", { name: "Options" }));
+    await user.click(reset);
+    expect(rail.getByRole("textbox", { name: "Options" })).toHaveValue(
+      original,
+    );
+  },
+);

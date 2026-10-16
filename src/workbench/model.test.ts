@@ -141,3 +141,25 @@ it("normalizes forms, rejects invalid options and retains valid text while trans
   expect(translated.input.value).toBe("مدار");
   expect(translated.select.options[0].label).toBe("Active");
 });
+
+it.each([
+  "PDF, text or images · up to 5 MB each · maximum 3 files.",
+  "PDF أو نص أو صور · حتى ٥ ميغابايت لكل ملف · ٣ ملفات كحد أقصى.",
+])(
+  "migrates the old file helper without replacing custom application guidance: %s",
+  (helper) => {
+    const state = defaultPlaygrounds("en");
+    state["file-dropzone"] = {
+      ...state["file-dropzone"],
+      helper,
+      maxFiles: 1,
+      accept: ".csv",
+    };
+    const result = normalizePlaygrounds(state, "en");
+    expect(result["file-dropzone"].helper).not.toMatch(/PDF|3 files|٣ ملفات/);
+    state["file-dropzone"].helper = "Custom application guidance";
+    expect(normalizePlaygrounds(state, "en")["file-dropzone"].helper).toBe(
+      "Custom application guidance",
+    );
+  },
+);

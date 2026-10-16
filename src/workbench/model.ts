@@ -431,8 +431,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "file-dropzone": {
       label: t("ملفات المراجعة", "Review files"),
       helper: t(
-        "PDF أو نص أو صور · حتى ٥ ميغابايت لكل ملف · ٣ ملفات كحد أقصى.",
-        "PDF, text or images · up to 5 MB each · maximum 3 files.",
+        "اختر ملفات ضمن قيود النوع والحجم والعدد المحددة لهذا المثال.",
+        "Choose files within this example's configured type, size and count limits.",
       ),
       error: "",
       multiple: true,
@@ -909,6 +909,14 @@ export function normalizePlaygrounds(
     }
     if (component === "file-dropzone") {
       const p = result[component];
+      // Old default copy promised fixed constraints even after settings changed.
+      if (
+        [
+          "PDF أو نص أو صور · حتى ٥ ميغابايت لكل ملف · ٣ ملفات كحد أقصى.",
+          "PDF, text or images · up to 5 MB each · maximum 3 files.",
+        ].includes(p.helper)
+      )
+        p.helper = defaultPlaygrounds(language)[component].helper;
       p.maxFiles = Number.isFinite(p.maxFiles)
         ? Math.max(0, Math.min(20, Math.floor(p.maxFiles)))
         : 3;

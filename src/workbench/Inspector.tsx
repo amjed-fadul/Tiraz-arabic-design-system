@@ -180,6 +180,7 @@ export function Inspector({
   onPatch,
   onReset,
 }: Props) {
+  const [resetRevision, setResetRevision] = useState(0);
   return (
     <details
       className="playground-inspector"
@@ -195,7 +196,10 @@ export function Inspector({
             className="doc-icon-button"
             title={label("resetPlayground", language)}
             aria-label={label("resetPlayground", language)}
-            onClick={onReset}
+            onClick={() => {
+              setResetRevision((revision) => revision + 1);
+              onReset();
+            }}
           >
             <RotateCcw size={13} />
           </button>
@@ -217,7 +221,7 @@ export function Inspector({
           )
           .map((field) => (
             <Control
-              key={field.key}
+              key={`${field.key}-${resetRevision}`}
               field={field}
               model={model}
               component={component}

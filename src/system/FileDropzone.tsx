@@ -146,7 +146,7 @@ export function FileDropzone({
                   : "File is already selected."
                 : ar
                   ? `الحد الأقصى ${limit} من الملفات.`
-                  : `Maximum of ${limit} files.`;
+                  : `Maximum of ${limit} ${limit === 1 ? "file" : "files"}.`;
         messages.push(
           labels?.rejected?.(file, reason) ?? `${file.name}: ${why}`,
         );

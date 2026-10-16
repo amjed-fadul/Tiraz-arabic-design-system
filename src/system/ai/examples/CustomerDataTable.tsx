@@ -256,10 +256,14 @@ export function CustomerDataTable({
                 sortDescending: (header) =>
                   t(`ترتيب ${header} تنازليًا`, `Sort ${header} descending`),
                 resultCount: (from, to, total) =>
-                  t(
-                    `${from}–${to} من ${total} عميل`,
-                    `${from}–${to} of ${total} customers`,
-                  ),
+                  loading
+                    ? t("جارٍ تحميل العملاء…", "Loading customers…")
+                    : failed
+                      ? t("عدد العملاء غير متاح", "Customer count unavailable")
+                      : t(
+                          `${from}–${to} من ${total} عميل`,
+                          `${from}–${to} of ${total} customers`,
+                        ),
               }}
             />
             <p className="customer-memory-note">
