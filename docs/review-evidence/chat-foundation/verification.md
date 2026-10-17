@@ -113,3 +113,16 @@ outline-style none. See thread-focus-removed.jpg.
 Focused chat, generated-code and relocated-source checks: 4 files, 22 tests passed.
 Build, lint, formatting and diff checks passed. The full suite was not rerun for
 this CSS-only follow-up; the preceding implementation run passed all 635 tests.
+
+## Screenshot clarification: composer focus styling
+
+The supplied screenshot identified ChatComposer's nested textarea outline and
+outer focus highlight, rather than the ChatThread scroll region. Both composer
+focus decorations are now removed; its ordinary surface border remains. Browser
+inspection of the keyboard-focused textarea confirmed :focus-visible, outline
+none and the outer border matching --border-strong. Evidence:
+composer-focus-removed.jpg. PromptBar keeps its existing focus treatment.
+
+Fresh focused checks: 4 files, 22 tests passed. Build, lint, formatting and diff
+checks passed. No new behavior or API changes; full-suite baseline remains the
+preceding 635-test run.

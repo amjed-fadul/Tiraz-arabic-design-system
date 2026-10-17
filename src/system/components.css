@@ -4058,7 +4058,7 @@ button.tz-tool-chip {
   background: var(--surface);
   padding: var(--space-2);
 }
-.tz-chat-entry-surface:focus-within {
+.tz-prompt-bar .tz-chat-entry-surface:focus-within {
   border-color: var(--focus);
 }
 .tz-chat-entry textarea {
@@ -4087,9 +4087,12 @@ button.tz-tool-chip {
   color: var(--text-muted);
   opacity: 1;
 }
-.tz-chat-entry textarea:focus-visible {
+.tz-prompt-bar textarea:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 0;
+}
+.tz-chat-composer textarea:focus-visible {
+  outline: none;
 }
 .tz-chat-entry .tz-button {
   flex-shrink: 0;
