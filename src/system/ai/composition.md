@@ -3,7 +3,7 @@
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the forty-three registry families. Prefer an inline task and a
+  Map each need to the available registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. Use Table for native
@@ -411,3 +411,21 @@ and [the compiling examples](examples/AIContentExamples.tsx). Install
 `react-markdown@10.1.0 remark-gfm@4.0.1` when copying the source bundle. Keep raw
 HTML disabled and parser URL filtering enabled. Host text/state/transport remain
 outside the components; cancellation preserves received text and removes activity.
+
+## Controlled chat composition
+
+Use ChatThread for host-supplied stable IDs and message slots; compose Markdown,
+StreamingText and ThinkingIndicator rather than a ChatApp shell. Use ChatComposer
+for multiline conversation replies and PromptBar for compact task entry. Both
+share controlled entry/submission behavior. Follow [the chat guidance](README.md#chat-foundations)
+and [portable host example](examples/ChatExamples.tsx).
+
+Keep messages, draft, acceptance/clearing, execution, cancellation and errors in
+the app. Enter sends exact valid text; Shift+Enter edits; IME never submits.
+Rejected submissions retain draft/focus. Busy/pending guards block duplicate sends;
+Stop exists only with a host callback. Suggestions require a host callback too.
+Bound thread height in the layout; scrolling defaults to the host. Opt-in
+followOutput follows near-bottom readers only, never older reading or selection.
+Use one concise state announcement; never announce the full response each chunk.
+Invalidate every local callback on stop/reset/replay/configuration change/unmount.
+Do not infer uploads, models, transport, storage, virtualization or orchestration.

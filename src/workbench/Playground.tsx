@@ -1,4 +1,9 @@
 import {
+  ChatThreadExample,
+  ChatComposerExample,
+  PromptBarExample,
+} from "../system/ai/examples/ChatExamples";
+import {
   CodeBlockExample,
   MarkdownExample,
   StreamingTextExample,
@@ -192,6 +197,27 @@ export function Playground({
       <ThinkingIndicatorExample
         language={language}
         {...(model as Playgrounds["thinking-indicator"])}
+      />
+    );
+  if (component === "chat-thread")
+    return (
+      <ChatThreadExample
+        language={language}
+        {...(model as Playgrounds["chat-thread"])}
+      />
+    );
+  if (component === "chat-composer")
+    return (
+      <ChatComposerExample
+        language={language}
+        {...(model as Playgrounds["chat-composer"])}
+      />
+    );
+  if (component === "prompt-bar")
+    return (
+      <PromptBarExample
+        language={language}
+        {...(model as Playgrounds["prompt-bar"])}
       />
     );
   if (component === "code-block")

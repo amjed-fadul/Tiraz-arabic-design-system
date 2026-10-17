@@ -1271,6 +1271,9 @@ bdi {
 }
 
 /* Every demo shares its frame; canvases only arrange the component body. */
+.playground-chat-thread,
+.playground-chat-composer,
+.playground-prompt-bar,
 .playground-streaming-text {
   display: block;
 }

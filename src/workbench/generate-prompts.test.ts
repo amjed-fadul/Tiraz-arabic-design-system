@@ -97,6 +97,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
     for (const name of [
       "AIFeedbackExamples",
       "AIContentExamples",
+      "ChatExamples",
       "ToolActivityExamples",
       "FileTreeExamples",
       "TaskRowsExamples",

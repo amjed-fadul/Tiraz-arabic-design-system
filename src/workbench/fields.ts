@@ -83,6 +83,31 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "chat-thread": [
+    field(
+      "identities",
+      "boolean",
+      "هوية المساعد",
+      "Assistant identity",
+      "messages[].identity / avatar",
+    ),
+    field(
+      "longContent",
+      "boolean",
+      "محتوى طويل",
+      "Long content",
+      "messages[].content",
+    ),
+    field(
+      "followOutput",
+      "boolean",
+      "متابعة قرب النهاية",
+      "Follow near bottom",
+      "followOutput",
+    ),
+  ],
+  "chat-composer": [field("disabled", "boolean", "معطّل", "Disabled")],
+  "prompt-bar": [field("disabled", "boolean", "معطّل", "Disabled")],
   "code-block": [
     field(
       "codeLanguage",
@@ -821,6 +846,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "chat-thread": ["identities", "longContent", "followOutput"],
+  "chat-composer": ["disabled"],
+  "prompt-bar": ["disabled"],
   "code-block": ["codeLanguage", "longContent"],
   markdown: ["longContent"],
   "streaming-text": ["markdown"],

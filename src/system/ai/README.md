@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **fifty-four**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown and StreamingText.
+Tiraz is an Arabic-first, source-owned React dashboard library with **fifty-seven**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer and PromptBar.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -670,3 +670,56 @@ and should keep received text if a real stream is cancelled. The local demo has
 no stop control and makes no AI/network request. Plain demo chunks
 arrive every 160ms, overlapping a gentle 360ms reveal with less blur; no movement
 is applied to Arabic glyphs or existing content. The component still owns no timer.
+
+## Chat foundations
+
+[ChatExamples](examples/ChatExamples.tsx) contains a static thread and one portable
+application-owned conversation, using fixed local chunks only after explicit
+submission. No model, service, upload, permission system, history or persistence.
+ChatThread renders messages with unique stable `id`, `role` (user/assistant),
+`content` (ReactNode), optional `identity`, `avatar` and `actions`. Compose Markdown
+for static rich content, StreamingText for host-updated text and ThinkingIndicator
+for activity. Supply decorative Avatar when identity is already adjacent. Keep
+received text and keyed action controls mounted. Partial Markdown reinterpretation
+can replace affected nodes; selection within changing syntax is not guaranteed.
+
+ChatThread is a named, keyboard-scrollable region. Set its bounded height in the
+host layout. `followOutput` defaults false (host owns scrolling); when enabled,
+it follows only within 48px of the bottom, pauses while selecting thread text,
+and never scrolls the window. Reading older content disables following until the
+reader returns near the bottom. Do not put the response in a live region. Use one
+concise status announcement for start, stop, failure or completion.
+
+ChatComposer and PromptBar require controlled `value`, `onValueChange` and
+`onSubmit(text)` (void or Promise<void>). Enter submits; Shift+Enter inserts a
+newline. Composition start/end, native isComposing and keyCode 229 guard IME
+submission, including clicking Send during composition. Whitespace-only drafts
+are blocked, but valid text is passed **unchanged**, including whitespace. The
+host accepts and clears by updating value; neither component clears internally.
+Throw/reject on failure: the draft and focus stay, localized failure feedback is
+shown, and retry is available. A pending promise prevents duplicate sends; also
+set `state` to submitting/streaming for host execution. Keep these callbacks stable
+in purpose and let the application own cancellation and transport.
+
+Drafts remain editable while busy, but sending is blocked. `state="streaming"`
+shows a Stop action only with `onStop`. `disabled` disables editing/actions;
+`readOnly` prevents editing/sending. Provide translated `label`, `placeholder`,
+`labels.send`, `labels.stop` and `labels.failure` when language differs from
+provider direction. `ref` targets the textarea; className/style target the entry
+wrapper. Other supported native textarea attributes are forwarded. Send stays
+upward in RTL; bubbles align to inline-end. Arabic stays shaped and content uses
+auto direction. No per-letter animation is introduced by entry components.
+
+ChatComposer is multiline conversation entry, bounded to 160px before internal
+scrolling. PromptBar is compact task/start entry, bounded to 80px, reusing the same
+engine. PromptBar optionally takes `suggestions` with required
+`onSuggestionSelect(text)`; the host must explicitly populate or submit. No implicit
+suggestion send, queue, ArrowUp history or Tab completion is implemented. Do not
+invent decorative model, tool, attachment or microphone controls.
+
+The example app appends one user and one stable assistant message, updates that
+assistant in place, guards duplicate sends, keeps composer focus, and invalidates
+its timer generation on stop/reset/locale change/unmount. Stop retains received
+text. Documentation Replay remounts and invalidates the old example. StreamingText
+announcements are off; one visible status supplies concise feedback. These are
+local simulation checks, not physical mobile/OS IME or screen-reader validation.

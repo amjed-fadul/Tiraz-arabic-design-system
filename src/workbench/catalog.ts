@@ -1,6 +1,34 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "chat-thread",
+    name: ["المحادثة", "ChatThread"],
+    description: [
+      "رسائل التطبيق بمعرّفات ثابتة وفقاعات مستخدم وردود مسطّحة.",
+      "Application-owned messages with stable IDs, user bubbles and flat assistant replies.",
+    ],
+    file: "ChatThread.tsx",
+  },
+  {
+    id: "chat-composer",
+    name: ["محرر الرسائل", "ChatComposer"],
+    description: [
+      "إدخال متعدد الأسطر بمسودة يتحكم بها التطبيق وإرسال آمن.",
+      "Controlled multiline entry with bounded growth and deliberate submission.",
+    ],
+    file: "ChatComposer.tsx",
+  },
+  {
+    id: "prompt-bar",
+    name: ["شريط الموجّه", "PromptBar"],
+    description: [
+      "مدخل مدمج لبدء مهمة مع اقتراحات اختيارية مرتبطة بالتطبيق.",
+      "Compact task entry with optional host-connected suggestions.",
+    ],
+    file: "PromptBar.tsx",
+  },
+
+  {
     id: "code-block",
     name: ["كتلة الشيفرة", "CodeBlock"],
     description: [
@@ -504,6 +532,9 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "chat-thread",
+      "chat-composer",
+      "prompt-bar",
       "loading-state",
       "thinking-indicator",
       "thinking-state",

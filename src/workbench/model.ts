@@ -268,6 +268,13 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "chat-thread": {
+    identities: boolean;
+    longContent: boolean;
+    followOutput: boolean;
+  };
+  "chat-composer": { disabled: boolean };
+  "prompt-bar": { disabled: boolean };
   "code-block": { codeLanguage: string; longContent: boolean };
   markdown: { longContent: boolean };
   "streaming-text": { markdown: boolean };
@@ -375,6 +382,13 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
+    "chat-thread": {
+      identities: true,
+      longContent: false,
+      followOutput: false,
+    },
+    "chat-composer": { disabled: false },
+    "prompt-bar": { disabled: false },
     "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
     "task-rows": {
       appearance: "capsules",

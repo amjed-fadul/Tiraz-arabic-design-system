@@ -715,6 +715,42 @@
     {
       "name": "StreamingTextProps",
       "source": "StreamingText.tsx"
+    },
+    {
+      "name": "ChatThread",
+      "source": "ChatThread.tsx"
+    },
+    {
+      "name": "ChatThreadProps",
+      "source": "ChatThread.tsx"
+    },
+    {
+      "name": "ChatMessage",
+      "source": "ChatThread.tsx"
+    },
+    {
+      "name": "ChatComposer",
+      "source": "ChatComposer.tsx"
+    },
+    {
+      "name": "ChatComposerProps",
+      "source": "PromptEntry.tsx"
+    },
+    {
+      "name": "ChatEntryState",
+      "source": "PromptEntry.tsx"
+    },
+    {
+      "name": "ChatEntryLabels",
+      "source": "PromptEntry.tsx"
+    },
+    {
+      "name": "PromptBar",
+      "source": "PromptBar.tsx"
+    },
+    {
+      "name": "PromptBarProps",
+      "source": "PromptBar.tsx"
     }
   ],
   "configuration": {
@@ -794,6 +830,174 @@
     }
   },
   "components": [
+    {
+      "id": "chat-thread",
+      "api": "ChatThread",
+      "source": "ChatThread.tsx",
+      "exports": ["ChatThread", "ChatThreadProps", "ChatMessage"],
+      "props": [
+        {
+          "name": "messages",
+          "type": "ChatMessage[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "followOutput",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        }
+      ],
+      "state": "Host owns message array and immutable updates with stable unique IDs. No internal messages.",
+      "accessibility": [
+        "Named keyboard-scrollable region without response-wide live announcements. Preserve keyed message content and actions; settled StreamingText/Markdown nodes remain stable.",
+        "User bubbles align to inline-end in both directions. Identity/avatar/actions are caller slots; avoid duplicate avatar naming."
+      ],
+      "limitations": [
+        "No persistence, backend, virtualization or orchestration. Host sets bounded height. followOutput defaults false; when true follows only within 48px of bottom and pauses for an active text selection in the thread. No window scrolling.",
+        "Partial Markdown syntax may replace affected nodes; stable IDs do not guarantee selection inside reinterpreted syntax."
+      ],
+      "inheritedProps": "Native div attributes/ref. label supplies accessible region name.",
+      "alternative": "ChatThread for messages, ChatComposer for multiline replies, PromptBar for compact task entry.",
+      "examples": ["ai/examples/ChatExamples.tsx"]
+    },
+    {
+      "id": "chat-composer",
+      "api": "ChatComposer",
+      "source": "ChatComposer.tsx",
+      "exports": [
+        "ChatComposer",
+        "ChatComposerProps",
+        "ChatEntryState",
+        "ChatEntryLabels"
+      ],
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string) => void | Promise<void>",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "ChatEntryState",
+          "required": false,
+          "default": "idle",
+          "values": ["idle", "submitting", "streaming"]
+        },
+        {
+          "name": "onStop",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "ChatEntryLabels",
+          "required": false
+        }
+      ],
+      "state": "Fully controlled value/onValueChange. Host owns acceptance, clearing, cancellation and execution state. Internal pending lock only.",
+      "accessibility": [
+        "Enter sends; Shift+Enter inserts newline. Composition start/end, native isComposing and keyCode 229 guard IME, including button submission during active composition.",
+        "Localized input/send/stop/failure names; label and labels overrides. Failure status keeps draft and focus. Do not steal deliberately moved focus.",
+        "ArrowUp send icon stays upward in both directions. Bounded textarea grows to 160px then scrolls; system and OS reduced motion respected."
+      ],
+      "limitations": [
+        "Whitespace-only submission blocked without trimming valid text. onSubmit may throw or reject; generic localized failure is shown, host may retry. Never clears draft automatically. Prevent duplicate sends while pending or host is busy.",
+        "Streaming Stop is shown only when onStop exists; busy state allows editing the next draft. No uploads, model menus, dictation, history or queue."
+      ],
+      "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission.",
+      "alternative": "ChatComposer for multiline conversation replies; PromptBar for compact task prompts; Textarea for ordinary forms.",
+      "examples": ["ai/examples/ChatExamples.tsx"]
+    },
+    {
+      "id": "prompt-bar",
+      "api": "PromptBar",
+      "source": "PromptBar.tsx",
+      "exports": ["PromptBar", "PromptBarProps"],
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string) => void | Promise<void>",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "ChatEntryState",
+          "required": false,
+          "default": "idle",
+          "values": ["idle", "submitting", "streaming"]
+        },
+        {
+          "name": "onStop",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "ChatEntryLabels",
+          "required": false
+        },
+        {
+          "name": "suggestions",
+          "type": "string[]",
+          "required": false
+        },
+        {
+          "name": "onSuggestionSelect",
+          "type": "(suggestion: string) => void",
+          "required": false
+        }
+      ],
+      "state": "Fully controlled value/onValueChange. Host owns acceptance, clearing, cancellation and execution state. Internal pending lock only.",
+      "accessibility": [
+        "Enter sends; Shift+Enter inserts newline. Composition start/end, native isComposing and keyCode 229 guard IME, including button submission during active composition.",
+        "Localized input/send/stop/failure names; label and labels overrides. Failure status keeps draft and focus. Do not steal deliberately moved focus.",
+        "ArrowUp send icon stays upward in both directions. Bounded textarea grows to 80px then scrolls; system and OS reduced motion respected."
+      ],
+      "limitations": [
+        "Whitespace-only submission blocked without trimming valid text. onSubmit may throw or reject; generic localized failure is shown, host may retry. Never clears draft automatically. Prevent duplicate sends while pending or host is busy.",
+        "Streaming Stop is shown only when onStop exists; busy state allows editing the next draft. No uploads, model menus, dictation, history or queue.",
+        "suggestions requires onSuggestionSelect; host populates or submits explicitly. Suggestions appear only for empty draft and are disabled while busy."
+      ],
+      "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission.",
+      "alternative": "ChatComposer for multiline conversation replies; PromptBar for compact task prompts; Textarea for ordinary forms.",
+      "examples": ["ai/examples/ChatExamples.tsx"]
+    },
     {
       "id": "code-block",
       "api": "CodeBlock",
@@ -5650,6 +5854,62 @@
         {
           "name": "expanded",
           "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "ChatMessage",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "role",
+          "type": "user | assistant",
+          "required": true,
+          "values": ["user", "assistant"]
+        },
+        {
+          "name": "identity",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "avatar",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "content",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "ChatEntryLabels",
+      "props": [
+        {
+          "name": "send",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "stop",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "failure",
+          "type": "string",
           "required": false
         }
       ]

@@ -179,6 +179,100 @@ export function ApiReference({
         ),
       ],
     ],
+    "chat-thread": [
+      [
+        "messages",
+        "ChatMessage[] · required",
+        t(
+          "معرّف فريد ثابت ودور user أو assistant ومحتوى ReactNode؛ identity وavatar وactions اختيارية يزوّدها التطبيق.",
+          "Unique stable id, user/assistant role and ReactNode content; optional host-supplied identity, avatar and actions.",
+        ),
+      ],
+      [
+        "followOutput / label",
+        "boolean · false / string?",
+        t(
+          "منطقة تمرير مسمّاة؛ متابعة قرب النهاية (48px) فقط. الافتراضي تمرير التطبيق. لا إعلان للرد كله.",
+          "Named scroll region; opt-in following only within 48px of the bottom. Host scrolling by default. No response-wide live announcements.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "div",
+        t(
+          "ارتفاع وحدود التمرير يحددها التطبيق؛ لا تخزين أو إدارة محادثات.",
+          "Host sets height/scroll bounds; no persistence or conversation orchestration.",
+        ),
+      ],
+    ],
+    "chat-composer": [
+      [
+        "value / onValueChange / onSubmit",
+        "string / (string) => void / (string) => void | Promise<void> · required",
+        t(
+          "متحكم بالكامل. التطبيق يقبل الإرسال ويمسح القيمة. يُرفض الفراغ فقط دون تغيير النص الصحيح؛ الفشل يحتفظ بالمسودة والتركيز.",
+          "Fully controlled. Host accepts submission and clears value. Whitespace-only input is blocked; valid text is unchanged. Failure keeps draft and focus.",
+        ),
+      ],
+      [
+        "Keyboard / IME",
+        "Enter / Shift+Enter",
+        t(
+          "Enter يرسل وShift+Enter يضيف سطرًا. composition وisComposing و229 تمنع إرسال IME.",
+          "Enter sends; Shift+Enter adds a newline. Composition events, isComposing and keyCode 229 guard IME submission.",
+        ),
+      ],
+      [
+        "state / onStop",
+        '"idle" | "submitting" | "streaming" · idle / (() => void)?',
+        t(
+          "الحالة بيد التطبيق؛ يُمنع تكرار الإرسال أثناء الوعد. streaming يُظهر إيقافًا فقط مع callback. المسودة قابلة للتحرير أثناء النشاط.",
+          "Host state; pending promises block duplicate sends. Streaming shows Stop only with a callback. Draft remains editable during activity.",
+        ),
+      ],
+      [
+        "label / labels / disabled",
+        "string? / ChatEntryLabels? / boolean",
+        t(
+          "أسماء محلية قابلة للتخصيص؛ labels.send وstop وfailure. الحقل ينمو حتى 160px ثم يتمرر داخليًا.",
+          "Localized overridable names; labels.send, stop, failure. Entry grows to 160px then scrolls internally.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "textarea",
+        t(
+          "ref يستهدف textarea؛ className وstyle للجذر. لا قيمة غير متحكم بها.",
+          "Ref targets textarea; className/style target wrapper. No uncontrolled value.",
+        ),
+      ],
+    ],
+    "prompt-bar": [
+      [
+        "Entry / submission",
+        "ChatComposerProps",
+        t(
+          "نفس السلوك المتحكم به وحماية IME؛ عرض مدمج لبدء مهمة بحد 80px. لا محرك إرسال ثانٍ.",
+          "Same controlled submission and IME guards; compact task entry bounded to 80px. Shares the entry engine.",
+        ),
+      ],
+      [
+        "suggestions / onSuggestionSelect",
+        "string[]? / (string) => void",
+        t(
+          "عند توفير اقتراحات يلزم callback؛ التطبيق يملأ أو يرسل صراحةً. تظهر للقيمة الفارغة فقط.",
+          "Supplying suggestions requires the callback; host explicitly populates or submits. Shown only with an empty value.",
+        ),
+      ],
+      [
+        "Host boundaries",
+        "No model/upload/history/queue",
+        t(
+          "لا أدوات زخرفية أو تنفيذ داخلي؛ إرسال وإيقاف الحالة يملكهما التطبيق.",
+          "No decorative tools or internal execution; host owns submission and cancellation.",
+        ),
+      ],
+    ],
     "streaming-text": [
       [
         "text / state",

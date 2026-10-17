@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with fifty-four source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with fifty-seven source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -321,3 +321,14 @@ and responsive padding. Each header copies the current component prompt, includi
 source-copy dependency instructions. Interactive examples also have replay/reset;
 static displays keep only Copy prompt. Streaming demos autoplay and provide Replay
 without a stop control. Shared appearance settings persist when replaying.
+
+## Chat foundations
+
+ChatThread, ChatComposer and PromptBar live under AI patterns. Messages, draft,
+submission, acceptance, cancellation and execution state stay in the application.
+The two entries share IME-safe Enter/Shift+Enter handling and bounded growth;
+valid text is passed unchanged and the host clears the controlled draft only on
+acceptance. Thread following is opt-in and stops when the reader leaves the bottom.
+See [portable chat guidance](src/system/ai/README.md#chat-foundations) and the
+[connected local example](src/system/ai/examples/ChatExamples.tsx). No backend,
+model connection, uploads, persistence or ChatApp shell is included.

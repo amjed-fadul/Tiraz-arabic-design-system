@@ -3991,3 +3991,157 @@ button.tz-tool-chip {
     padding: var(--space-4);
   }
 }
+
+/* Host-owned chat foundations. No global scroll or focus management. */
+.tz-chat-thread {
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+  padding: var(--space-2);
+}
+.tz-chat-thread:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+.tz-chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+.tz-chat-message {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.tz-chat-message[data-role="user"] {
+  align-self: flex-end;
+  max-inline-size: 88%;
+}
+.tz-chat-message[data-role="user"] .tz-chat-content {
+  border: 1px solid var(--border);
+  background: var(--surface-subtle);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-panel);
+}
+.tz-chat-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.tz-chat-content {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  min-inline-size: 0;
+}
+.tz-chat-content .tz-markdown {
+  white-space: normal;
+}
+.tz-chat-message-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-block-start: var(--space-2);
+}
+.tz-chat-entry,
+.tz-prompt-entry {
+  min-inline-size: 0;
+}
+.tz-chat-entry-surface {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  padding: var(--space-2);
+}
+.tz-chat-entry-surface:focus-within {
+  border-color: var(--focus);
+}
+.tz-chat-entry textarea {
+  display: block;
+  flex: 1;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--control-small);
+  max-block-size: 160px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  resize: none;
+  border: 0;
+  border-radius: var(--radius-small);
+  padding: var(--space-1);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  line-height: var(--line-height);
+  box-sizing: border-box;
+}
+.tz-chat-composer textarea {
+  min-block-size: 64px;
+}
+.tz-chat-entry textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+.tz-chat-entry textarea:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 0;
+}
+.tz-chat-entry .tz-button {
+  flex-shrink: 0;
+}
+.tz-chat-entry[data-disabled] {
+  opacity: 0.55;
+}
+.tz-chat-entry-error {
+  display: block;
+  color: var(--danger);
+  font-size: var(--text-meta);
+  margin-block-start: var(--space-1);
+}
+.tz-prompt-bar .tz-chat-entry-surface {
+  border-radius: calc(var(--radius-panel) + 12px);
+}
+.tz-prompt-bar textarea {
+  max-block-size: 80px;
+}
+.tz-prompt-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: 0;
+  margin: var(--space-2) 0 0;
+  list-style: none;
+}
+.tz-prompt-suggestions li {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.tz-prompt-suggestions button {
+  white-space: normal;
+  block-size: auto;
+  text-align: start;
+}
+.tz-chat-demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.tz-chat-demo .tz-chat-thread {
+  block-size: min(300px, 45dvh);
+}
+.tz-chat-demo-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 28px;
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}

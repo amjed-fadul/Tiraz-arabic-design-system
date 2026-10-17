@@ -3,6 +3,7 @@ import type { PlaygroundModel, ProgressModel } from "./model";
 
 // Replay describes the actual rendered section, not just the component family.
 const staticPlaygrounds: ComponentId[] = [
+  "chat-thread",
   "code-block",
   "markdown",
   "badge",
@@ -20,6 +21,8 @@ const staticPlaygrounds: ComponentId[] = [
   "donut-chart",
 ];
 const staticExamples: ComponentId[] = [
+  "chat-composer",
+  "prompt-bar",
   "code-block",
   "markdown",
   "badge",

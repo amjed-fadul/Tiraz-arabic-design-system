@@ -1,4 +1,8 @@
 import {
+  ChatConversation,
+  ChatEntryStates,
+} from "../system/ai/examples/ChatExamples";
+import {
   CodeBlockExample,
   MarkdownExample,
   StreamingDemo,
@@ -258,6 +262,15 @@ export function Examples({
           </p>
         </section>
       </div>
+    );
+  if (component === "chat-thread")
+    return <ChatConversation language={language} />;
+  if (component === "chat-composer" || component === "prompt-bar")
+    return (
+      <ChatEntryStates
+        language={language}
+        compact={component === "prompt-bar"}
+      />
     );
   if (component === "code-block")
     return (
