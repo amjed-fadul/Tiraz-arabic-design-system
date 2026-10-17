@@ -1,6 +1,6 @@
 # AI content verification — 17 October 2026
 
-For the subsequent automatic playground and animation refinement, see [the follow-up verification](autoplay/verification.md). The [compact header refinement](compact-header/verification.md) replaces the large playback buttons. The results below record the original implementation.
+For the subsequent automatic playground and animation refinement, see [the follow-up verification](autoplay/verification.md). The [compact header refinement](compact-header/verification.md) replaces the large playback buttons. The [matched-frame refinement](matched-frame/verification.md) makes both demos autoplay, unifies their framing and removes repeated footer/empty-event text. The results below record the original implementation.
 
 Implemented CodeBlock, Markdown and StreamingText in the existing AI patterns category.
 No new category, component family beyond these three, landing work, push, merge or deployment.

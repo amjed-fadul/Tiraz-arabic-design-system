@@ -92,7 +92,7 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "./system/tokens.css";
 import "./system/components.css";
-export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><div style={{display:"grid",gap:"var(--space-5)",minInlineSize:0}}><${name} language={${json(language)}} {...${json(model)}}/>${component === "streaming-text" ? `<StreamingDemo language={${json(language)}} markdown/>` : ""}</div></SystemProvider></div>;}`;
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><div style={{display:"grid",gap:"var(--space-5)",minInlineSize:0}}><${name} language={${json(language)}} {...${json(model)}}/>${component === "streaming-text" ? `<StreamingDemo language={${json(language)}} markdown autoStart/>` : ""}</div></SystemProvider></div>;}`;
   }
   if (
     component === "tool-call" ||
@@ -508,8 +508,8 @@ export function generatePrompt(
     ) +
     (["code-block", "markdown", "streaming-text"].includes(component)
       ? t(
-          "\nلنسخة المصدر ثبّت react-markdown@10.1.0 وremark-gfm@4.0.1. CommonMark وGFM فقط؛ HTML معطّل والروابط غير الآمنة مرفوضة. اللغات غير المدعومة نص عادي والشيفرة LTR. التطبيق يملك النص وحالة streaming/completed والإلغاء؛ لا تضف طابور كتابة أو شبكة. معاينة StreamingText تشغّل عينة محلية واحدة تلقائيًا؛ العرض المستقل يبدأ صراحة افتراضيًا. ألغِ المؤقتات عند الإعادة والإزالة واحفظ النص عند الإلغاء.",
-          "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The StreamingText playground runs one local sample automatically; standalone demos start explicitly by default. Invalidate timers on replay/unmount and retain received text on cancellation.",
+          "\nلنسخة المصدر ثبّت react-markdown@10.1.0 وremark-gfm@4.0.1. CommonMark وGFM فقط؛ HTML معطّل والروابط غير الآمنة مرفوضة. اللغات غير المدعومة نص عادي والشيفرة LTR. التطبيق يملك النص وحالة streaming/completed والإلغاء؛ لا تضف طابور كتابة أو شبكة. معاينة StreamingText والمثال يشغّلان عينة محلية واحدة تلقائيًا. ألغِ المؤقتات عند الإعادة والإزالة واحفظ النص عند الإلغاء.",
+          "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The StreamingText playground and documentation example each run one local sample automatically. Invalidate timers on replay/unmount and retain received text on cancellation.",
         )
       : "") +
     ([

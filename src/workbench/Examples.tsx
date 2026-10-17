@@ -265,7 +265,7 @@ export function Examples({
   if (component === "markdown")
     return <MarkdownExample language={language} longContent />;
   if (component === "streaming-text")
-    return <StreamingDemo language={language} markdown />;
+    return <StreamingDemo language={language} markdown autoStart />;
   if (component === "tool-call" || component === "tool-chips")
     return (
       <div style={{ display: "grid", gap: "var(--space-8)", minInlineSize: 0 }}>

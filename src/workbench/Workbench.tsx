@@ -409,7 +409,7 @@ export function Workbench() {
                   </span>
                 </div>
                 <div
-                  className="playground-region"
+                  className={`playground-region${active === "streaming-text" ? " streaming-demo-region" : ""}`}
                   role="region"
                   aria-label={label("playground", language)}
                 >
@@ -441,21 +441,28 @@ export function Workbench() {
                   "modal",
                 ].includes(active) && (
                   <div
-                    className="event-feedback"
+                    className={
+                      (events[active]?.length ?? 0) > 0
+                        ? "event-feedback"
+                        : "tz-visually-hidden"
+                    }
                     role="status"
-                    aria-label={label("lastEvent", language)}
+                    aria-label={
+                      (events[active]?.length ?? 0) > 0
+                        ? label("lastEvent", language)
+                        : undefined
+                    }
                   >
-                    <span>{label("lastEvent", language)}</span>
-                    <code dir="ltr">
-                      {events[active]?.length
-                        ? events[active]!.map(
+                    {(events[active]?.length ?? 0) > 0 && (
+                      <>
+                        <span>{label("lastEvent", language)}</span>
+                        <code dir="ltr">
+                          {events[active]!.map(
                             (event) =>
                               `${event.name}${event.value !== undefined ? `(${JSON.stringify(event.value)})` : ""}`,
-                          ).join(" → ")
-                        : ""}
-                    </code>
-                    {!events[active]?.length && (
-                      <p>{label("waiting", language)}</p>
+                          ).join(" → ")}
+                        </code>
+                      </>
                     )}
                   </div>
                 )}
@@ -469,7 +476,9 @@ export function Workbench() {
               <section className="examples-section">
                 <h2 id="examples-heading">{label("examples", language)}</h2>
                 <SystemProvider config={systemConfig}>
-                  <div className="examples-canvas">
+                  <div
+                    className={`examples-canvas${active === "streaming-text" ? " streaming-demo-examples" : ""}`}
+                  >
                     <Examples
                       key={`${active}-${language}`}
                       component={active}

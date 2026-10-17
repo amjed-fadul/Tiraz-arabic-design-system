@@ -187,7 +187,11 @@ export function StreamingDemo({
         : "Replay local demo";
   const cancelLabel = ar ? "إلغاء العرض" : "Cancel demo";
   return (
-    <div className="tz-stream-demo">
+    <div
+      className="tz-stream-demo"
+      role="group"
+      aria-label={ar ? "عرض نص محلي" : "Local text demo"}
+    >
       <header className="tz-stream-demo-header">
         <span className="tz-stream-demo-title">
           {markdown
@@ -232,11 +236,6 @@ export function StreamingDemo({
           statusLabel={status}
         />
       </div>
-      <p className="tz-stream-demo-note">
-        {ar
-          ? "عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."
-          : "Local demo with fixed chunks; no AI or network request."}
-      </p>
     </div>
   );
 }

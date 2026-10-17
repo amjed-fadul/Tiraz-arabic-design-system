@@ -164,7 +164,7 @@ it("uses compact titled headers and named icon-only playback controls in both de
     }
   }
   const play = within(example).getByRole("button", {
-    name: "Start local demo",
+    name: "Replay local demo",
   });
   play.focus();
   await user.keyboard("{Enter}");
@@ -177,4 +177,45 @@ it("uses compact titled headers and named icon-only playback controls in both de
     within(example).getByRole("button", { name: "Cancel demo" }),
   ).toHaveFocus();
   expect(example.querySelector(".tz-stream-cursor")).toBeNull();
+});
+
+it("automatically runs both documentation demos without local footer or empty event scaffolding", async () => {
+  vi.useFakeTimers();
+  render(<Workbench />);
+  fireEvent.click(screen.getByRole("button", { name: "النص المتدفق" }));
+  await act(async () => vi.advanceTimersByTime(0));
+  const demos = document.querySelectorAll(".tz-stream-demo");
+  expect(demos).toHaveLength(2);
+  for (const demo of demos)
+    expect(demo.querySelector(".tz-streaming-text")).toHaveAttribute(
+      "data-state",
+      "streaming",
+    );
+  expect(document.querySelector(".tz-stream-demo-note")).toBeNull();
+  expect(
+    screen.queryByText("عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."),
+  ).toBeNull();
+  expect(screen.queryByRole("status", { name: "آخر حدث" })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "الأزرار" }));
+  expect(screen.queryByRole("status", { name: "آخر حدث" })).toBeNull();
+});
+it("keeps an empty announcement owner mounted before the first real action, without placeholder text", () => {
+  render(<Workbench />);
+  const region = document.querySelector(
+    '.playground-section > [role="status"]',
+  );
+  expect(region).not.toBeNull();
+  expect(region).toBeEmptyDOMElement();
+  expect(region).toHaveClass("tz-visually-hidden");
+  fireEvent.click(
+    within(
+      screen.getByRole("region", { name: "المعاينة التفاعلية" }),
+    ).getByRole("button"),
+  );
+  expect(document.querySelector('.playground-section > [role="status"]')).toBe(
+    region,
+  );
+  expect(region).toHaveAccessibleName("آخر حدث");
+  expect(region).not.toHaveClass("tz-visually-hidden");
+  expect(region).not.toBeEmptyDOMElement();
 });

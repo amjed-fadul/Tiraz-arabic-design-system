@@ -1,0 +1,73 @@
+[
+  {
+    "check": "both-auto-and-matching-frame",
+    "frames": [
+      {
+        "background": "rgb(255, 255, 255)",
+        "border": "0.826446px solid rgb(197, 206, 199)",
+        "borderRadius": "16px",
+        "headerInset": 24.825668334960938,
+        "padding": "24px",
+        "state": "streaming",
+        "width": 675.75537109375
+      },
+      {
+        "background": "rgb(255, 255, 255)",
+        "border": "0.826446px solid rgb(197, 206, 199)",
+        "borderRadius": "16px",
+        "headerInset": 24.825668334960938,
+        "padding": "24px",
+        "state": "streaming",
+        "width": 675.75537109375
+      }
+    ],
+    "wrappers": [
+      {
+        "border": "0px none rgb(35, 42, 38)",
+        "className": "playground-region streaming-demo-region",
+        "padding": "0px"
+      },
+      {
+        "border": "0px solid rgb(35, 42, 38)",
+        "className": "playground-canvas playground-streaming-text",
+        "padding": "0px"
+      },
+      {
+        "border": "0px solid rgb(35, 42, 38)",
+        "className": "examples-canvas streaming-demo-examples",
+        "padding": "0px"
+      }
+    ],
+    "footerCount": 0,
+    "eventRows": 0
+  },
+  {
+    "check": "empty-placeholder-removed-globally",
+    "text": {
+      "liveOwner": true,
+      "visibleEventRows": 0,
+      "waitingText": false
+    }
+  },
+  {
+    "check": "rtl-dark-mobile",
+    "metrics": {
+      "document": 320,
+      "frames": [
+        {
+          "bg": "rgb(28, 34, 30)",
+          "border": "1px solid rgb(84, 98, 89)",
+          "padding": "16px",
+          "width": 288
+        },
+        {
+          "bg": "rgb(28, 34, 30)",
+          "border": "1px solid rgb(84, 98, 89)",
+          "padding": "16px",
+          "width": 288
+        }
+      ],
+      "viewport": 320
+    }
+  }
+]

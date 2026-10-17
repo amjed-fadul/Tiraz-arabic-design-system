@@ -1278,3 +1278,17 @@ bdi {
   justify-content: center;
   block-size: 16px;
 }
+
+/* StreamingDemo owns one portable frame in both documentation sections. */
+.playground-region.streaming-demo-region {
+  border: 0;
+  border-radius: 0;
+}
+.streaming-demo-region .playground-canvas {
+  display: block;
+  min-block-size: 0;
+  padding: 0;
+}
+.examples-canvas.streaming-demo-examples {
+  padding: 0;
+}

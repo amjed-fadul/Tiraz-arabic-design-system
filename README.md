@@ -313,5 +313,5 @@ host-driven streaming, with compact token-based styles. Source-copy consumers
 must install `react-markdown@10.1.0 remark-gfm@4.0.1`; see
 [src/system/ai/README.md](src/system/ai/README.md#ai-response-content) for parsing,
 URL/HTML restrictions, language fallback and host responsibilities. The local
-streaming playground runs one fixed-chunk sample automatically, with Replay and
-Cancel controls. The standalone example starts explicitly by default.
+streaming playground and documentation example each run one fixed-chunk sample
+automatically, with compact playback icons and a shared frame.
