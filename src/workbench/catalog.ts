@@ -1,6 +1,25 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "terminal",
+    name: ["الطرفية", "Terminal"],
+    description: [
+      "عرض للقراءة فقط لأوامر ومخرجات يزوّدها التطبيق.",
+      "Read-only presentation of application-supplied commands and output.",
+    ],
+    file: "Terminal.tsx",
+  },
+  {
+    id: "chat-app",
+    name: ["تطبيق المحادثة", "ChatApp"],
+    description: [
+      "تخطيط محادثة قابل لإعادة الاستخدام؛ التطبيق يملك الحالة والمحتوى.",
+      "Reusable chat composition with application-owned state and content.",
+    ],
+    file: "ChatApp.tsx",
+  },
+
+  {
     id: "ask-user-questions",
     name: ["أسئلة المستخدم", "AskUserQuestions"],
     description: [
@@ -615,6 +634,8 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "terminal",
+      "chat-app",
       "ask-user-questions",
       "approval-card",
       "approval-flow",

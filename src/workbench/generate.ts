@@ -1,3 +1,6 @@
+import localResponseSource from "../system/ai/examples/useLocalResponse.ts?raw";
+import terminalSource from "../system/ai/examples/TerminalExamples.tsx?raw";
+import chatAppSource from "../system/ai/examples/ChatAppExample.tsx?raw";
 import aiDecisionsSource from "../system/ai/examples/AIDecisionsExamples.tsx?raw";
 import aiContextSource from "../system/ai/examples/AIContextExamples.tsx?raw";
 import aiResultsSource from "../system/ai/examples/AIResultsExamples.tsx?raw";
@@ -77,6 +80,24 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (component === "terminal" || component === "chat-app") {
+    const source = (component === "terminal" ? terminalSource : chatAppSource)
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
+      .replace(
+        'import { useLocalResponse } from "./useLocalResponse";',
+        localResponseSource,
+      );
+    const name =
+      component === "terminal" ? "TerminalExample" : "ChatAppExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
   if (
     ["ask-user-questions", "approval-card", "approval-flow"].includes(component)
   ) {
@@ -149,10 +170,12 @@ import "./system/components.css";
 export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
   if (["chat-thread", "chat-composer", "prompt-bar"].includes(component)) {
-    const source = chatSource.replace(
-      /from "\.\.\/\.\.\/index"/g,
-      'from "./system"',
-    );
+    const source = chatSource
+      .replace(
+        'import { useLocalResponse } from "./useLocalResponse";',
+        localResponseSource,
+      )
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"');
     const name =
       component === "chat-thread"
         ? "ChatThreadExample"
@@ -600,6 +623,12 @@ export function generatePrompt(
       `اعثر أولًا على طِراز داخل المشروع الحالي، سواء كان مشروعًا كاملًا أو نسخة المصدر في تطبيق آخر. إذا لم تتمكن من العثور على النظام، أبلغ بذلك بوضوح وتوقف. حدّد جذر المصدر: المجلد الذي يحوي index.ts وconfig.ts وtokens.css وcomponents.css وai/. في المشروع الكامل يكون عادة src/system؛ مثل src/system/${entry.file}. اقرأ ai/README.md وai/registry.json لقسم ${entry.id} وواجهات الدعم وai/composition.md، ثم افحص ${entry.file} وindex.ts وconfig.ts وProvider.tsx والأنماط وإعداد الخط المحلي في التطبيق. لصور Avatar احتفظ بـ ai/assets/sara.jpg وai/assets/omar.jpg وai/assets/README.md وai/assets/LICENSE.txt عند نسخ المصدر، وعدّل الاستيرادات المحلية. مسارات السجل نسبية إلى جذر المصدر، ولا تتطلب نسخة المصدر README للمشروع أو src/main.tsx. استخدم ${localize(entry.name, language)} بالخصائص والإعدادات الحالية كما في المثال. عدّل استيرادات ./system ومسارات CSS إلى موقع المكتبة، واربط الأحداث بسلوك التطبيق المطلوب، وتحقق من العرض الفعلي والاتجاه والتخصيص ولوحة المفاتيح والتركيز والأسماء الميسرة. لا تخترع تصديرات أو خصائص ولا تضف مثبتًا أو CLI.`,
       `First locate Tiraz within the current project, either a full checkout or a source copy in another application. If you cannot locate the system, clearly report that and stop. Identify the source root: the directory containing index.ts, config.ts, tokens.css, components.css and ai/. In a full checkout this is usually src/system; for example src/system/${entry.file}. Read ai/README.md, ai/registry.json for the ${entry.id} family and support APIs, and ai/composition.md; then inspect ${entry.file}, index.ts, config.ts, Provider.tsx, styles and the host application's local font setup. For Avatar photos, preserve ai/assets/sara.jpg, ai/assets/omar.jpg, ai/assets/README.md and ai/assets/LICENSE.txt with the copied source; adjust emitted local imports, do not replace bundled portraits with remote services. Registry paths are relative to the source root; a source copy needs no checkout README or src/main.tsx. Use ${localize(entry.name, language)} with the exact current properties and system settings in the example. Adjust ./system imports and CSS paths to the located library, connect events to the requested application behavior, and validate the rendered result, direction, customization, keyboard, focus and accessible names. Do not invent exports/props or add an installer or CLI.`,
     ) +
+    (["terminal", "chat-app"].includes(component)
+      ? t(
+          "\nTerminal للقراءة فقط: النص وحالة التنفيذ ورمز الخروج والمدة يزوّدها التطبيق. النسخ هو command ثم سطر جديد ثم output، أو output وحده. لا HTML أو تفسير ANSI أو تنفيذ أو اتصال. التمرير داخلي وقابل للوحة المفاتيح؛ المتابعة قرب النهاية فقط وتحترم التحديد. ChatApp يؤلف Sidebar وSheet مع children وcomposer وtoolbar. التطبيق يملك المحادثات بمعرّفات فريدة ثابتة والرسائل والمسودات والنموذج والإلغاء. استخدم ChatThread وChatComposer وPromptBar وModelSelector. العينة في الذاكرة تلغي الرد عند التبديل أو الإنشاء مع الاحتفاظ بالنص والمسودات؛ إعادة الضبط تستعيد العينات، والإزالة تلغي المؤقتات. لا تسمح باستدعاءات قديمة بتحديث محادثة أخرى.",
+          "\nTerminal is read-only: the host supplies text, execution state, exit code and duration. Copy is command + newline + output, or output alone. No HTML/ANSI interpretation, execution, shell or connection. Output scrolls internally by keyboard; opt-in following respects selection and older reading. ChatApp composes Sidebar and Sheet with children, composer and toolbar slots. Host owns conversations with unique stable IDs, messages, drafts, model and cancellation. Reuse ChatThread, ChatComposer, PromptBar and ModelSelector. The in-memory example cancels on switch/new and keeps received text and per-conversation drafts/models; reset restores samples; unmount cancels timers. Bind callbacks to conversation and run identity; stale work must never update another conversation. No backend, auth, persistence, real AI or tool execution.",
+        )
+      : "") +
     (["image-result", "sources", "insight-cards"].includes(component)
       ? t(
           "\nاحتفظ بمجلد ai/assets/results كاملًا: صور SVG ومستندات العينة مع استيرادات ?url&no-inline. ثبّت @radix-ui/react-popover@1.3.1 مع قرارات Radix الموثقة في ai/README.md. التطبيق يملك الصور والنص البديل والمصادر وأرقامها الثابتة والنتائج والإجراءات. تقدّم ImageResult نسبة فعلية يوفّرها التطبيق من 0 إلى 100؛ احذفها إذا كانت مجهولة ولا تختلق نسبة بمؤقّت. الروابط HTTP(S) أو نسبية/محلية فقط؛ الوجهات المفقودة أو المرفوضة نص صريح. استخدم رابطًا للتنقل وزرًا للتفاصيل؛ لا تخترع توليدًا أو استرجاعًا.",
@@ -608,8 +637,8 @@ export function generatePrompt(
       : "") +
     (["chat-thread", "chat-composer", "prompt-bar"].includes(component)
       ? t(
-          "\nالتطبيق يملك الرسائل بمعرّفات ثابتة والمسودة والإرسال والإيقاف. اتجاه الإدخال يتبع SystemProvider افتراضيًا: يبدأ من اليمين في RTL ومن اليسار في LTR مهما كانت لغة المسودة؛ استخدم dir للتجاوز المقصود فقط. Enter يرسل وShift+Enter يضيف سطرًا؛ لا ترسل أثناء IME. لا تقص النص الصحيح ولا تمسح المسودة إلا عند قبول التطبيق. المتابعة اختيارية قرب النهاية فقط؛ حافظ على القراءة والتحديد والتركيز. استخدم ai/examples/ChatExamples.tsx لعينة محلية ثابتة تبدأ بالإرسال الصريح وتلغي المؤقتات عند الإيقاف وإعادة الضبط والإزالة. بلا ChatApp أو شبكة أو تخزين أو رفع.",
-          "\nHost owns stable message IDs, draft, submission, cancellation and execution state. Entry direction follows SystemProvider by default: right-start in RTL, left-start in LTR, regardless of draft script; use native dir only for an intentional override. Enter sends; Shift+Enter inserts a newline; never submit during IME composition. Preserve valid text exactly and clear only on host acceptance. Follow output is opt-in and near-bottom only; preserve older reading, settled selection and focus. Reuse ai/examples/ChatExamples.tsx for fixed local chunks starting only on explicit submission; invalidate callbacks on stop/reset/unmount. No ChatApp, network, storage or uploads.",
+          "\nالتطبيق يملك الرسائل بمعرّفات ثابتة والمسودة والإرسال والإيقاف. اتجاه الإدخال يتبع SystemProvider افتراضيًا: يبدأ من اليمين في RTL ومن اليسار في LTR مهما كانت لغة المسودة؛ استخدم dir للتجاوز المقصود فقط. Enter يرسل وShift+Enter يضيف سطرًا؛ لا ترسل أثناء IME. لا تقص النص الصحيح ولا تمسح المسودة إلا عند قبول التطبيق. المتابعة اختيارية قرب النهاية فقط؛ حافظ على القراءة والتحديد والتركيز. استخدم ai/examples/ChatExamples.tsx لعينة محلية ثابتة تبدأ بالإرسال الصريح وتلغي المؤقتات عند الإيقاف وإعادة الضبط والإزالة. بلا شبكة أو تخزين أو رفع.",
+          "\nHost owns stable message IDs, draft, submission, cancellation and execution state. Entry direction follows SystemProvider by default: right-start in RTL, left-start in LTR, regardless of draft script; use native dir only for an intentional override. Enter sends; Shift+Enter inserts a newline; never submit during IME composition. Preserve valid text exactly and clear only on host acceptance. Follow output is opt-in and near-bottom only; preserve older reading, settled selection and focus. Reuse ai/examples/ChatExamples.tsx for fixed local chunks starting only on explicit submission; invalidate callbacks on stop/reset/unmount. No network, storage or uploads.",
         )
       : "") +
     (["code-block", "markdown", "streaming-text"].includes(component)

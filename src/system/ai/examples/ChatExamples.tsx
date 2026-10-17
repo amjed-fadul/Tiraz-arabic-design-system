@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useLocalResponse } from "./useLocalResponse";
 import {
   Avatar,
   Button,
@@ -121,29 +122,11 @@ function ConversationHost({
   const [phase, setPhase] = useState<
     "idle" | "streaming" | "completed" | "stopped"
   >("idle");
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined),
-    generation = useRef(0),
-    active = useRef(false),
+  const response = useLocalResponse(language),
     sequence = useRef(0);
-  const invalidate = () => {
-    generation.current++;
-    active.current = false;
-    clearTimeout(timer.current);
-    timer.current = undefined;
-  };
-  useEffect(
-    () => () => {
-      generation.current++;
-      active.current = false;
-      clearTimeout(timer.current);
-    },
-    [],
-  );
+  const invalidate = response.cancel;
   function submit(text: string) {
-    if (active.current || disabled || !text.trim()) return;
-    invalidate();
-    active.current = true;
-    const run = generation.current;
+    if (response.active.current || disabled || !text.trim()) return;
     const id = ++sequence.current;
     setMessages((previous) => [
       ...previous,
@@ -152,60 +135,18 @@ function ConversationHost({
     ]);
     setDraft("");
     setPhase("streaming");
-    const chunks = ar
-      ? [
-          "ابدأ ",
-          "بتسميات ",
-          "واضحة ",
-          "ومسافات ",
-          "مدمجة. ",
-          "Tiraz ",
-          "يحافظ ",
-          "على ",
-          "العربية ",
-          "والنص ",
-          "المختلط. ",
-          "راجع ",
-          "الواجهة ",
-          "بلوحة ",
-          "المفاتيح.",
-        ]
-      : [
-          "Start ",
-          "with ",
-          "clear ",
-          "labels ",
-          "and ",
-          "compact ",
-          "spacing. ",
-          "Tiraz ",
-          "preserves ",
-          "Arabic ",
-          "and ",
-          "mixed ",
-          "text: ",
-          "مرحبًا ",
-          "بالعالم.",
-        ];
-    let index = 0;
-    function tick() {
-      if (generation.current !== run) return;
-      index++;
-      setMessages((previous) =>
-        previous.map((message) =>
-          message.id === `assistant-${id}`
-            ? { ...message, text: chunks.slice(0, index).join("") }
-            : message,
-        ),
-      );
-      if (index === chunks.length) {
-        active.current = false;
-        timer.current = undefined;
-        setPhase("completed");
-      } else timer.current = setTimeout(tick, 280);
-    }
-    timer.current = setTimeout(tick, 280);
+    response.start(
+      (text) => {
+        setMessages((previous) =>
+          previous.map((message) =>
+            message.id === `assistant-${id}` ? { ...message, text } : message,
+          ),
+        );
+      },
+      () => setPhase("completed"),
+    );
   }
+
   const status = {
     idle: ar
       ? "عينة محلية ثابتة · أرسل للبدء"

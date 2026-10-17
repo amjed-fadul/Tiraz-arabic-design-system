@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with sixty-six source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with sixty-eight source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -357,3 +357,11 @@ request replacement and decision versus execution. The connected Studio Assistan
 example uses harmless in-memory data with rejection, acknowledgement failure/retry
 and a second independent request. No action executes and no standing access is
 introduced. Local verification evidence is in `docs/ai-decisions/`.
+
+Terminal and ChatApp complete the requested AI patterns. Terminal presents supplied
+command/output text without execution; ChatApp composes existing navigation, chat
+and entry components with host-owned state. The in-memory example runs at
+`/examples/chat-app`; it uses fixed local responses and supplied Terminal output.
+Switch/new cancels and retains received content and per-conversation drafts/models;
+reset restores samples. Portable contracts and examples live in `src/system/ai/`.
+Verification and screenshots: `docs/terminal-and-chat-app/README.md`.

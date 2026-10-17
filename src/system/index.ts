@@ -163,3 +163,11 @@ export type {
 } from "./ApprovalCard";
 export { ApprovalFlow } from "./ApprovalFlow";
 export type { ApprovalFlowProps, ApprovalRecord } from "./ApprovalFlow";
+export { Terminal } from "./Terminal";
+export type { TerminalProps } from "./Terminal";
+export { ChatApp } from "./ChatApp";
+export type {
+  ChatAppProps,
+  ChatAppLabels,
+  ChatConversationItem,
+} from "./ChatApp";

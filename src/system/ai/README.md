@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **sixty-six**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard and ApprovalFlow.
+Tiraz is an Arabic-first, source-owned React dashboard library with **sixty-eight**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, Terminal and ChatApp.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -935,3 +935,62 @@ Use `SystemProvider` for Arabic/English direction, theme, accent, typography,
 density and reduced motion. These patterns do not animate. Screen-reader speech
 and physical-device behavior require host testing; automated checks alone do not
 establish them.
+
+## Terminal and ChatApp
+
+`Terminal` is a read-only presentation of application-supplied `output` and an
+optional `command`. `state` is `running`, `completed` (default), or `failed`;
+`exitCode` and `duration` are optional supplied display values. Neither starts or
+measures anything. Command/output always stay LTR and preserve whitespace. HTML
+and escape sequences are rendered as literal text, with no HTML or ANSI parser.
+It has no shell execution, emulator, process management, filesystem, WebSocket or
+network connection. See `ai/examples/TerminalExamples.tsx`.
+
+Copy writes exactly `command + "\n" + output`, or `output` alone if command is
+undefined. No prompt prefix, trim, status or duration is included. Check-only
+success is announced politely; failure stays visible and tells readers how to
+copy manually. CodeBlock and Terminal share the same clipboard lifecycle guard.
+Long output has a named focusable internal scroll region (20rem maximum); Tab
+then arrows/PageUp/PageDown operate native scrolling. `followOutput` defaults off;
+when enabled it follows only within 48px of the bottom, and pauses while a
+noncollapsed selection intersects the output. Do not auto-focus or remount output
+on every update. Selection preservation applies to append-only updates: replacing
+selected text cannot preserve removed characters. Application chooses retention
+limits; this is not a virtualized log viewer.
+
+`ChatApp` is a composition shell. Required props: `conversations` (unique stable
+`{id, title}` records), `activeConversationId` (`string | null`),
+`onConversationSelect(id)`, `onNewConversation()`, `children`, and `composer`.
+Optional `toolbar`, `brand`, `title`, `labels: ChatAppLabels`, and `className`
+provide small explicit slots and labels. Pass ChatThread as children, ChatComposer
+or PromptBar as composer and ModelSelector where appropriate. The host owns
+messages, drafts, active conversation, model and execution state. ChatApp only
+owns mobile navigation disclosure. It uses existing Sidebar and Sheet: at a
+container width up to 640px, the rail becomes a menu trigger and Sheet. Selection
+and new-conversation dismiss it; Escape/outside click/close restore trigger focus.
+The shell has a bounded height; navigation and thread scroll independently. Set
+its block-size in host CSS if embedding in a different viewport. Keep the existing
+composer styling and provider-driven RTL caret direction.
+
+`ai/examples/ChatAppExample.tsx` is a clearly labeled in-memory app with no real AI
+or tools. It reuses existing renderers/entries and the fixed local response
+scheduler shared with `ChatExamples.tsx`. Sending clears only the accepted draft,
+adds a user message and one stable assistant message, then updates that assistant
+with fixed chunks. Each conversation keeps its own draft and model. Stop cancels
+future chunks and keeps received text. Switching to a different conversation or
+creating a new one cancels the previous response, retains its content and drafts,
+and shows the selected/new conversation; selecting the current one keeps its run.
+Reset cancels and restores the two samples (clearing drafts/models to defaults).
+Locale change remounts the example and restores that locale's samples. Theme
+changes preserve state. Unmount cancels timers. Generation guards and captured
+conversation/message IDs prevent stale callbacks from crossing conversations.
+Key entries and threads by conversation ID to isolate submission feedback and
+scroll position. New conversation copies the selected model; model choice is
+real local state, but every response remains a fixed sample.
+
+The supplied build log in one assistant message demonstrates Terminal as tool
+output without implying execution. No authentication, backend, persistent history,
+model connection, application framework, uploads or additional families are added.
+Copy all source and `ai/` together; `useLocalResponse.ts` is example-only support,
+not a public execution API. Generated examples inline the same scheduler source; adjust CSS and `./system`
+imports to the relocated library root.

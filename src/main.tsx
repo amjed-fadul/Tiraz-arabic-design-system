@@ -7,11 +7,14 @@ import "./system/tokens.css";
 import "./system/components.css";
 import "./workbench/workbench.css";
 import { Dashboard } from "./examples/dashboard/Dashboard";
+import { ChatAppDemo } from "./examples/chat-app/ChatApp";
 import { Workbench } from "./workbench/Workbench";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     {window.location.pathname.replace(/\/$/, "") === "/examples/dashboard" ? (
       <Dashboard />
+    ) : window.location.pathname.replace(/\/$/, "") === "/examples/chat-app" ? (
+      <ChatAppDemo />
     ) : (
       <Workbench />
     )}

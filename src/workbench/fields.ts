@@ -83,6 +83,16 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  terminal: [
+    field("state", "select", "الحالة", "State", "state", {
+      options: ["running", "completed", "failed"],
+    }),
+    field("longContent", "boolean", "مخرجات طويلة", "Long output", "output"),
+    field("followOutput", "boolean", "متابعة المخرجات", "Follow output"),
+  ],
+  "chat-app": [
+    field("longContent", "boolean", "مخرجات طويلة", "Long output", "example"),
+  ],
   "ask-user-questions": [
     field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
   ],
@@ -915,6 +925,8 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  terminal: ["state", "longContent", "followOutput"],
+  "chat-app": ["longContent"],
   "ask-user-questions": ["longContent"],
   "approval-card": ["longContent"],
   "approval-flow": ["longContent"],

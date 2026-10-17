@@ -1,3 +1,5 @@
+import { TerminalExample } from "../system/ai/examples/TerminalExamples";
+import { ChatAppExample } from "../system/ai/examples/ChatAppExample";
 import {
   AskUserQuestionsExample,
   ApprovalCardExample,
@@ -200,6 +202,20 @@ export function Playground({
   copyLabel,
 }: Props) {
   const t = words(language);
+  if (component === "terminal")
+    return (
+      <TerminalExample
+        language={language}
+        {...(model as Playgrounds["terminal"])}
+      />
+    );
+  if (component === "chat-app")
+    return (
+      <ChatAppExample
+        language={language}
+        {...(model as Playgrounds["chat-app"])}
+      />
+    );
   if (component === "ask-user-questions")
     return (
       <AskUserQuestionsExample

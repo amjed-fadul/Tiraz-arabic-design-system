@@ -38,6 +38,8 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
       .getAllByRole("button")
       .map((button) => button.textContent),
   ).toEqual([
+    "الطرفية",
+    "تطبيق المحادثة",
     "أسئلة المستخدم",
     "بطاقة القرار",
     "تسلسل القرارات",

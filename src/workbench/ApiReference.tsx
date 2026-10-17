@@ -95,6 +95,74 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    terminal: [
+      [
+        "command / output",
+        "string? / string",
+        t(
+          "نص آمن محفوظ المسافات وLTR. النسخ يجمع الأمر وسطرًا جديدًا والمخرجات.",
+          "Safe whitespace-preserving LTR text. Copy joins command, newline and output; output alone if no command.",
+        ),
+      ],
+      [
+        "state / exitCode / duration",
+        '"running" | "completed" | "failed" / number? / string?',
+        t(
+          "قيم يزوّدها التطبيق؛ لا تنفيذ أو قياس للوقت.",
+          "Application-supplied presentation; no execution or timing.",
+        ),
+      ],
+      [
+        "label / labels",
+        "string / InputCopyLabels",
+        t(
+          "اسم ظاهر ومنطقة تمرير وتسميات نسخ وفشل ميسرة.",
+          "Visible title, named scroll region and accessible copy feedback.",
+        ),
+      ],
+      [
+        "followOutput / className",
+        "boolean / string",
+        t(
+          "المتابعة اختيارية قرب النهاية وتحترم التحديد.",
+          "Opt-in near-bottom following respects selection; internal keyboard scrolling.",
+        ),
+      ],
+    ],
+    "chat-app": [
+      [
+        "conversations / activeConversationId",
+        "ChatConversationItem[] / string | null",
+        t(
+          "معرّفات فريدة ثابتة وعناوين يملكها التطبيق.",
+          "Host-owned unique stable IDs and titles.",
+        ),
+      ],
+      [
+        "onConversationSelect / onNewConversation",
+        "(id: string) => void / () => void",
+        t(
+          "ردود نداء مطلوبة؛ تغلق التنقل المحمول وتعيد التركيز.",
+          "Required host callbacks; mobile navigation dismisses and restores trigger focus.",
+        ),
+      ],
+      [
+        "children / composer / toolbar",
+        "ReactNode / ReactNode / ReactNode?",
+        t(
+          "ركّب ChatThread وChatComposer أو PromptBar وModelSelector. الحالة والإلغاء مسؤولية التطبيق.",
+          "Compose ChatThread, ChatComposer or PromptBar and ModelSelector. Host owns state and cancellation; key entries/threads by conversation ID.",
+        ),
+      ],
+      [
+        "brand / title / labels / className",
+        "ReactNode? / string? / ChatAppLabels? / string?",
+        t(
+          "هوية وعنوان وتسميات اختيارية. Sheet عند عرض الحاوية حتى 640px.",
+          "Optional identity, title and labels. Existing Sheet at container widths up to 640px. Bound shell height; thread and navigation scroll independently.",
+        ),
+      ],
+    ],
     "ask-user-questions": [
       [
         "questions",

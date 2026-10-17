@@ -95,6 +95,9 @@ it("generates identical prompts when the same checkout is relocated", () => {
     }
     // Mirror Vite's ?raw loader using the real example source in both relocated trees.
     for (const name of [
+      "TerminalExamples",
+      "ChatAppExample",
+      "useLocalResponse",
       "AIDecisionsExamples",
       "AIContextExamples",
       "AIResultsExamples",
@@ -122,7 +125,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "FilterBarExamples",
       "InputCopyExamples",
     ]) {
-      const path = `src/system/ai/examples/${name}.tsx`;
+      const path = `src/system/ai/examples/${name}.${name === "useLocalResponse" ? "ts" : "tsx"}`;
       const outputPath = join(first, path + "?raw");
       mkdirSync(dirname(outputPath), { recursive: true });
       writeFileSync(

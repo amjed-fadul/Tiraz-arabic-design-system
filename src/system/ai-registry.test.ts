@@ -176,6 +176,8 @@ it("compiles the bundled example after copying only the library to a different a
     // Compile copied snippets in the host, with only the relocated source bundle.
     for (const language of ["ar", "en"] as const) {
       for (const component of [
+        "terminal",
+        "chat-app",
         "ask-user-questions",
         "approval-card",
         "approval-flow",
@@ -419,7 +421,7 @@ it("documents real public exports and supported prop values and compiles the lin
   ).toEqual([]);
 }, 45000);
 
-it("bundles relocated portraits from copied source with provenance and license", async () => {
+it("bundles relocated chat examples and portraits from copied source with provenance and license", async () => {
   const temporary = mkdtempSync(resolve(tmpdir(), "tiraz-photo-consumer-"));
   try {
     const copied = resolve(temporary, "app/ui/vendor/tiraz");
@@ -439,7 +441,7 @@ it("bundles relocated portraits from copied source with provenance and license",
     );
     writeFileSync(
       resolve(temporary, "entry.tsx"),
-      `import {createRoot} from "react-dom/client";import {SystemProvider} from "./app/ui/vendor/tiraz";import {AvatarExamples} from "./app/ui/vendor/tiraz/ai/examples/AvatarExamples";import {ImageResultStates,SourcesExample,InsightCardsExample} from "./app/ui/vendor/tiraz/ai/examples/AIResultsExamples";import "./app/ui/vendor/tiraz/tokens.css";import "./app/ui/vendor/tiraz/components.css";createRoot(document.getElementById("root")!).render(<SystemProvider><AvatarExamples/><ImageResultStates/><SourcesExample/><InsightCardsExample/></SystemProvider>);`,
+      `import {createRoot} from "react-dom/client";import {SystemProvider} from "./app/ui/vendor/tiraz";import {AvatarExamples} from "./app/ui/vendor/tiraz/ai/examples/AvatarExamples";import {ImageResultStates,SourcesExample,InsightCardsExample} from "./app/ui/vendor/tiraz/ai/examples/AIResultsExamples";import {ChatAppExample} from "./app/ui/vendor/tiraz/ai/examples/ChatAppExample";import {TerminalExample} from "./app/ui/vendor/tiraz/ai/examples/TerminalExamples";import "./app/ui/vendor/tiraz/tokens.css";import "./app/ui/vendor/tiraz/components.css";createRoot(document.getElementById("root")!).render(<SystemProvider><AvatarExamples/><ImageResultStates/><SourcesExample/><InsightCardsExample/><ChatAppExample/><TerminalExample/></SystemProvider>);`,
     );
     const { build } = await import("vite");
     const { default: react } = await import("@vitejs/plugin-react");

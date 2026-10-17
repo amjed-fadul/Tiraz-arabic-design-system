@@ -895,6 +895,30 @@
     {
       "name": "ApprovalRecord",
       "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "Terminal",
+      "source": "Terminal.tsx"
+    },
+    {
+      "name": "TerminalProps",
+      "source": "Terminal.tsx"
+    },
+    {
+      "name": "ChatApp",
+      "source": "ChatApp.tsx"
+    },
+    {
+      "name": "ChatAppProps",
+      "source": "ChatApp.tsx"
+    },
+    {
+      "name": "ChatAppLabels",
+      "source": "ChatApp.tsx"
+    },
+    {
+      "name": "ChatConversationItem",
+      "source": "ChatApp.tsx"
     }
   ],
   "configuration": {
@@ -974,6 +998,154 @@
     }
   },
   "components": [
+    {
+      "id": "terminal",
+      "api": "Terminal",
+      "source": "Terminal.tsx",
+      "exports": ["Terminal", "TerminalProps"],
+      "props": [
+        {
+          "name": "command",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "output",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "\"running\" | \"completed\" | \"failed\"",
+          "required": false,
+          "values": ["running", "completed", "failed"]
+        },
+        {
+          "name": "exitCode",
+          "type": "number",
+          "required": false
+        },
+        {
+          "name": "duration",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "InputCopyLabels",
+          "required": false
+        },
+        {
+          "name": "followOutput",
+          "type": "boolean",
+          "required": false,
+          "values": [true, false]
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Host supplies command/output, execution state, exit code and display duration. Clipboard feedback is internal and ignores stale completions.",
+      "accessibility": [
+        "LTR whitespace-preserving plain text within RTL. Focusable named internally scrolling region. Check-only copy success with polite announcement; visible accessible copy failure.",
+        "Optional following only near bottom; pauses for a selection intersecting output. No typing or blinking animation."
+      ],
+      "limitations": [
+        "Read-only text only; no arbitrary HTML or ANSI interpretation. Escape sequences remain literal supplied text. No shell, emulator, process management, filesystem, WebSocket or network.",
+        "Exact copy is command + one newline + output, or output alone when command is undefined. No trimming, prompt prefix or status text. Status and duration must be supplied; the component never executes or measures a process."
+      ],
+      "alternative": "Use CodeBlock for source code; ToolCall for an operation disclosure.",
+      "dependencies": [],
+      "examples": ["ai/examples/TerminalExamples.tsx"]
+    },
+    {
+      "id": "chat-app",
+      "api": "ChatApp",
+      "source": "ChatApp.tsx",
+      "exports": [
+        "ChatApp",
+        "ChatAppProps",
+        "ChatAppLabels",
+        "ChatConversationItem"
+      ],
+      "props": [
+        {
+          "name": "conversations",
+          "type": "readonly ChatConversationItem[]",
+          "required": true
+        },
+        {
+          "name": "activeConversationId",
+          "type": "string | null",
+          "required": true
+        },
+        {
+          "name": "onConversationSelect",
+          "type": "(id: string) => void",
+          "required": true
+        },
+        {
+          "name": "onNewConversation",
+          "type": "() => void",
+          "required": true
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "composer",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "toolbar",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "brand",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "ChatAppLabels",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Composition only. Host owns unique stable conversation IDs, active conversation, messages, draft, model and execution. Only mobile navigation open state is internal.",
+      "accessibility": [
+        "Sidebar on desktop; existing Sheet for container widths <=640px, with dismissal, focus trap, Escape, outside click and trigger focus restoration. Selection/new closes the sheet.",
+        "Compose existing ChatThread, ChatComposer or PromptBar and ModelSelector. Bound shell height; thread and navigation scroll independently. Preserve approved entry RTL caret and keyboard/IME behavior."
+      ],
+      "limitations": [
+        "No authentication, backend, persistence, model/tool connection or application framework. children/composer/toolbar are explicit composition slots, not a configuration engine.",
+        "Key thread and entry by conversation ID. Host must cancel and invalidate delayed work on switch/new/reset/unmount. Bind callbacks to both run and conversation identity.",
+        "Connected in-memory example uses fixed local chunks updating one stable assistant. Switch/new retains received text and per-conversation drafts/models while canceling the run. Reset restores samples; unmount cancels timers. No real commands or AI execution."
+      ],
+      "alternative": "Use ChatThread with ChatComposer for a single conversation without navigation.",
+      "dependencies": ["@radix-ui/react-dialog"],
+      "examples": ["ai/examples/ChatAppExample.tsx"]
+    },
     {
       "id": "ask-user-questions",
       "api": "AskUserQuestions",

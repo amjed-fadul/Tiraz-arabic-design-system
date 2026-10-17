@@ -269,6 +269,12 @@ export interface FilterBarModel {
 }
 export interface Playgrounds {
   "ask-user-questions": { longContent: boolean };
+  terminal: {
+    state: "running" | "completed" | "failed";
+    longContent: boolean;
+    followOutput: boolean;
+  };
+  "chat-app": { longContent: boolean };
   "approval-card": { longContent: boolean };
   "approval-flow": { longContent: boolean };
   "selection-actions": { longContent: boolean };
@@ -399,6 +405,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
     "ask-user-questions": { longContent: false },
+    terminal: { state: "completed", longContent: false, followOutput: false },
+    "chat-app": { longContent: false },
     "approval-card": { longContent: false },
     "approval-flow": { longContent: false },
     "selection-actions": { longContent: false },

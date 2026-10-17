@@ -1,3 +1,5 @@
+import { TerminalStates } from "../system/ai/examples/TerminalExamples";
+import { ChatAppExample } from "../system/ai/examples/ChatAppExample";
 import { AIDecisionsExample } from "../system/ai/examples/AIDecisionsExamples";
 import {
   AIContextExample,
@@ -286,6 +288,9 @@ export function Examples({
   if (component === "sources") return <SourcesStates language={language} />;
   if (component === "insight-cards")
     return <InsightCardsExample language={language} />;
+  if (component === "terminal") return <TerminalStates language={language} />;
+  if (component === "chat-app")
+    return <ChatAppExample language={language} longContent />;
   if (component === "chat-thread")
     return <ChatConversation language={language} />;
   if (component === "chat-composer" || component === "prompt-bar")

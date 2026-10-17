@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2 --testTimeout=15000
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/terminal-and-chat-app/Tiraz
+
+
+ Test Files  81 passed (81)
+      Tests  748 passed (748)
+   Start at  03:03:11
+   Duration  221.82s (import 49%, tests 34%, environment 11%, setup 3%, transform 2%)
+
+     Import  293 modules were evaluated 8586 times · 213.13s total, 49% of tracked time
+             ~100.53s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

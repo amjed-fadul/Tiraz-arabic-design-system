@@ -488,3 +488,29 @@ recorded, and the second request has a separate decision. There is no execution.
 Inline groups never steal initial focus; Escape rejects from within the card.
 Keep modal focus policy in the host Modal. Keep a single status announcement per
 transition and do not move focus if the user has left the surface.
+
+### Read-only terminal and chat application composition
+
+Prefer Terminal for supplied command logs and CodeBlock for source. Supply output
+as text, plus optional command/state/exitCode/duration. Never execute commands or
+interpret HTML/ANSI. Exact copy excludes decorative status. Keep its LTR named
+keyboard scroll region and opt-in near-bottom following; preserve selections and
+older reading. Append text immutably without changing component identity.
+
+ChatApp owns layout and mobile disclosure only. Compose Sidebar/Sheet navigation,
+ChatThread children and ChatComposer or PromptBar in the composer slot, with a
+controlled ModelSelector. Use unique stable conversation/message IDs; the host owns
+active conversation, drafts, model, execution and cancellation. Key thread and entry
+by conversation identity. Bound the shell and let native internal regions scroll.
+Do not fork message rendering, IME submission, streaming presentation or approved
+composer/caret styling. The reference hierarchy is a quiet rail, small title bar,
+flat assistant replies/user bubbles and a composer below.
+
+Use `ai/examples/ChatAppExample.tsx` as an in-memory example only. A fixed scheduler
+shared with ChatExamples updates one assistant message. Stop/switch/new cancel and
+retain received text. Switching preserves per-conversation drafts/models; reset
+restores samples and locale change resets the example. Unmount clears timers.
+Capture conversation and message IDs, invalidate run generations, and never let an
+old callback update the active conversation by accident. Models are controlled
+local choices, not connected services. Supplied Terminal tool output is explicitly
+labeled; do not invent real execution, auth, backend, persistence or navigation.

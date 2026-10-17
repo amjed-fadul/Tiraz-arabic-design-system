@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useExactCopy } from "./useExactCopy";
 import type { ComponentPropsWithRef } from "react";
 import { Check, Copy } from "lucide-react";
 import { Button } from "./Button";
@@ -22,46 +22,7 @@ export function CodeBlock({
   ...props
 }: CodeBlockProps) {
   const ar = useSystem().config.direction === "rtl";
-  const [feedback, setFeedback] = useState({
-    code,
-    result: "idle",
-    busy: false,
-  });
-  if (feedback.code !== code)
-    setFeedback({ code, result: "idle", busy: false });
-  const lifecycle = useRef({
-    generation: 0,
-    timer: undefined as ReturnType<typeof setTimeout> | undefined,
-  });
-  useLayoutEffect(() => {
-    const session = lifecycle.current;
-    session.generation++;
-    return () => {
-      session.generation++;
-      clearTimeout(session.timer);
-    };
-  }, [code]);
-  async function copy() {
-    if (feedback.busy) return;
-    const session = lifecycle.current;
-    const current = ++session.generation;
-    clearTimeout(session.timer);
-    setFeedback({ code, result: "idle", busy: true });
-    try {
-      if (!navigator.clipboard?.writeText)
-        throw new Error("Clipboard unavailable");
-      await navigator.clipboard.writeText(code);
-      if (current !== session.generation) return;
-      setFeedback({ code, result: "success", busy: false });
-      session.timer = setTimeout(() => {
-        if (current === session.generation)
-          setFeedback({ code, result: "idle", busy: false });
-      }, 2000);
-    } catch {
-      if (current === session.generation)
-        setFeedback({ code, result: "failure", busy: false });
-    }
-  }
+  const feedback = useExactCopy(code);
   const title =
     label ?? (language === "text" ? (ar ? "نص" : "Text") : language);
   return (
@@ -73,7 +34,7 @@ export function CodeBlock({
           iconOnly
           aria-label={labels?.copy ?? (ar ? "نسخ الشيفرة" : "Copy code")}
           aria-disabled={feedback.busy || undefined}
-          onClick={copy}
+          onClick={feedback.copy}
         >
           {feedback.result === "success" ? (
             <Check size={14} aria-hidden="true" />

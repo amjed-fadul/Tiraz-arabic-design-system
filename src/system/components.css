@@ -4904,3 +4904,191 @@ a.tz-inline-citation {
   white-space: nowrap;
   border: 0;
 }
+
+/* Read-only application output. Never an interactive shell. */
+.tz-terminal {
+  container: terminal / inline-size;
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-subtle);
+}
+.tz-terminal-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-block-end: 1px solid var(--border);
+  color: var(--text-secondary);
+  font: var(--text-meta)/1.6 var(--font-mono);
+}
+.tz-terminal-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.tz-terminal-title svg,
+.tz-terminal-header > .tz-button {
+  flex-shrink: 0;
+}
+.tz-terminal-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tz-terminal[data-state="failed"] .tz-terminal-state {
+  color: var(--danger);
+}
+.tz-terminal pre {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: left;
+  margin: 0;
+  padding: var(--space-3);
+  max-block-size: 20rem;
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+  tab-size: 2;
+  font: var(--text-meta)/1.8 var(--font-mono);
+  white-space: pre;
+}
+.tz-terminal code {
+  font: inherit;
+}
+.tz-terminal-command {
+  font-weight: 600;
+}
+.tz-terminal pre:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -3px;
+}
+
+/* Container-aware composition: the same shell works inside docs and a host page. */
+.tz-chat-app {
+  container: chat-app / inline-size;
+  min-inline-size: 0;
+  inline-size: 100%;
+  block-size: min(42rem, 85dvh);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  background: var(--surface);
+}
+.tz-chat-app-layout {
+  display: flex;
+  block-size: 100%;
+  min-block-size: 0;
+}
+.tz-chat-app-navigation {
+  display: flex;
+  border-inline-end: 1px solid var(--border);
+}
+.tz-chat-app-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+  min-block-size: 0;
+}
+.tz-chat-app-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-block-end: 1px solid var(--border);
+}
+.tz-chat-app-title {
+  flex: 1;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  font-weight: 500;
+  font-size: var(--text-meta);
+}
+.tz-chat-app-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.tz-chat-app-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-block-size: 0;
+  min-inline-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-3);
+}
+.tz-chat-app-content > .tz-chat-thread {
+  flex: 1;
+}
+.tz-chat-app-content > .tz-chat-thread:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+.tz-chat-app-composer {
+  flex: none;
+  padding: var(--space-3);
+  border-block-start: 1px solid var(--border);
+}
+.tz-chat-app-mobile {
+  display: none;
+}
+.tz-chat-app-note {
+  margin: 0;
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+.tz-chat-app-example {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+@container chat-app (max-width: 640px) {
+  .tz-chat-app-navigation {
+    display: none;
+  }
+  .tz-chat-app-mobile {
+    display: inline-flex;
+  }
+  .tz-chat-app-content,
+  .tz-chat-app-composer {
+    padding: var(--space-2);
+  }
+}
+.tz-chat-app-composer {
+  max-block-size: 60%;
+  box-sizing: border-box;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+@container terminal (max-width: 360px) {
+  .tz-terminal-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 0;
+  }
+  .tz-terminal-title {
+    grid-column: 1;
+  }
+  .tz-terminal-meta {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .tz-terminal-header > .tz-button {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
