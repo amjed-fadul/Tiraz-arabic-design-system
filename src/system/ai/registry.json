@@ -4443,7 +4443,7 @@
         "No chart engine, stacking, configuration framework or fetching.",
         "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
         "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
-        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Default colors use the selected accent followed by sage, blue, plum and clay, omitting the selected accent from those fallbacks when present. The palette cycles after four or five entries; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
         "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
       ],
       "dependencies": ["recharts", "react-is (matching React)"],
@@ -4557,7 +4557,7 @@
         "No chart engine, stacking, configuration framework or fetching.",
         "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
         "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
-        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Default colors use the selected accent followed by sage, blue, plum and clay, omitting the selected accent from those fallbacks when present. The palette cycles after four or five entries; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
         "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
       ],
       "dependencies": ["recharts", "react-is (matching React)"],
@@ -4671,7 +4671,7 @@
         "No chart engine, stacking, configuration framework or fetching.",
         "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
         "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
-        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Default colors use the selected accent followed by sage, blue, plum and clay, omitting the selected accent from those fallbacks when present. The palette cycles after four or five entries; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
         "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
       ],
       "dependencies": ["recharts", "react-is (matching React)"],
@@ -4766,7 +4766,7 @@
         "No chart engine, stacking, configuration framework or fetching.",
         "Cartesian data is kept in input order even in RTL. category is reserved and ISO dates use UTC. Missing/nonfinite values remain gaps.",
         "Donut plots positive finite values; zero/missing/negative entries remain in the optional table.",
-        "Palette has four distinguishable defaults; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
+        "Default colors use the selected accent followed by sage, blue, plum and clay, omitting the selected accent from those fallbacks when present. The palette cycles after four or five entries; supply deliberate CSS colors beyond four series. Comparable charts must reuse series order and explicit colors.",
         "Drawing and tooltip-position animations are disabled. CSS interactions use motion tokens and honor OS/system reduction."
       ],
       "dependencies": ["recharts", "react-is (matching React)"],
