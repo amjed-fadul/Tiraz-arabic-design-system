@@ -1,5 +1,7 @@
 # AI content verification — 17 October 2026
 
+For the subsequent automatic playground and animation refinement, see [the follow-up verification](autoplay/verification.md). The results below record the original implementation.
+
 Implemented CodeBlock, Markdown and StreamingText in the existing AI patterns category.
 No new category, component family beyond these three, landing work, push, merge or deployment.
 

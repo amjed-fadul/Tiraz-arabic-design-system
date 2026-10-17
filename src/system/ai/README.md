@@ -653,6 +653,10 @@ host. Never announce every character. The host owns transport, buffering, errors
 limits and cancellation. On cancellation keep received text, set completed and
 supply a cancelled statusLabel. No model connection, execution timer, token count
 or transport belongs in the component. The bundled demo alone uses fixed chunks
-and timers; it starts explicitly, invalidates callbacks on replay/cancel/unmount
-or language/mode change, retains received text on cancel and identifies itself as
-local with no AI/network request.
+and timers. The StreamingText playground starts one local sample automatically
+on entry and after language/mode changes, with Replay and Cancel controls. The
+standalone StreamingDemo starts explicitly by default. Both invalidate callbacks
+on replay/cancel/unmount or configuration changes, retain received text on cancel
+and identify themselves as local with no AI/network request. Plain demo chunks
+arrive every 160ms, overlapping a gentle 360ms reveal with less blur; no movement
+is applied to Arabic glyphs or existing content. The component still owns no timer.

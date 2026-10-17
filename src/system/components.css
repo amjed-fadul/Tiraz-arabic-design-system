@@ -3906,7 +3906,7 @@ button.tz-tool-chip {
 }
 .tz-streaming-text[data-state="streaming"]
   :is(.tz-stream-word, .tz-markdown-word) {
-  animation: tz-stream-reveal 420ms var(--ease) both;
+  animation: tz-stream-reveal 360ms var(--ease) both;
 }
 .tz-stream-cursor {
   display: inline-block;
@@ -3916,12 +3916,12 @@ button.tz-tool-chip {
   background: currentColor;
   vertical-align: baseline;
   border-radius: 2px;
-  animation: tz-stream-caret 900ms ease-in-out infinite;
+  animation: tz-stream-caret 1100ms ease-in-out infinite;
 }
 @keyframes tz-stream-reveal {
   from {
-    opacity: 0.35;
-    filter: blur(2px);
+    opacity: 0.2;
+    filter: blur(0.9px);
   }
   to {
     opacity: 1;
@@ -3930,7 +3930,7 @@ button.tz-tool-chip {
 }
 @keyframes tz-stream-caret {
   50% {
-    opacity: 0.3;
+    opacity: 0.2;
   }
 }
 .tiraz-system[data-reduced-motion="true"]

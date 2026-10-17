@@ -206,7 +206,7 @@ export function ApiReference({
       ],
       [
         "Reveal / motion",
-        "420ms / reduced motion",
+        "360ms / reduced motion",
         t(
           "ظهور خفيف وكَرِت أثناء التدفق فقط؛ تقليل الحركة يُظهر التحديث فورًا. لا مؤقت داخلي أو اتصال نموذج.",
           "Brief word blur and a trailing cursor only while streaming; reduced motion shows updates immediately. No internal timer or model connection.",

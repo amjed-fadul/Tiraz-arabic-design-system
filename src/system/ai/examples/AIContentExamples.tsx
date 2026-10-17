@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, CodeBlock, Markdown, StreamingText } from "../../index";
 type Language = "ar" | "en";
 export function CodeBlockExample({
@@ -59,52 +59,41 @@ export function StreamingTextExample({
   language?: Language;
   markdown?: boolean;
 }) {
-  return (
-    <StreamingText
-      text={
-        markdown
-          ? sampleMarkdown(language === "ar")
-          : language === "ar"
-            ? "هذا رد مكتمل من التطبيق. Tiraz يحافظ على النص العربي والإنجليزي."
-            : "This response is complete. Tiraz keeps Arabic readable: مرحبًا بالعالم."
-      }
-      state="completed"
-      markdown={markdown}
-      announcement="off"
-    />
-  );
+  return <StreamingDemo language={language} markdown={markdown} autoStart />;
 }
-/** Host example only: fixed chunks, no network, explicit start and invalidated timers. */
+/** Host example only: fixed chunks, no network; optional one-shot autoplay. */
 export function StreamingDemo({
   language = "ar",
   markdown = false,
+  autoStart = false,
 }: {
   language?: Language;
   markdown?: boolean;
+  autoStart?: boolean;
 }) {
   const ar = language === "ar";
-  const [identity, setIdentity] = useState({ language, markdown });
+  const [identity, setIdentity] = useState({ language, markdown, autoStart });
   const [text, setText] = useState("");
   const [phase, setPhase] = useState<
     "idle" | "streaming" | "completed" | "cancelled"
   >("idle");
   const generation = useRef(0),
     timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-  function invalidate() {
+  const invalidate = useCallback(() => {
     generation.current++;
     timers.current.forEach(clearTimeout);
     timers.current = [];
-  }
-  useEffect(() => {
-    invalidate();
-    return invalidate;
-  }, [language, markdown]);
-  if (identity.language !== language || identity.markdown !== markdown) {
-    setIdentity({ language, markdown });
+  }, []);
+  if (
+    identity.language !== language ||
+    identity.markdown !== markdown ||
+    identity.autoStart !== autoStart
+  ) {
+    setIdentity({ language, markdown, autoStart });
     setText("");
     setPhase("idle");
   }
-  function start() {
+  const start = useCallback(() => {
     invalidate();
     const run = generation.current;
     const chunks = markdown
@@ -167,11 +156,18 @@ export function StreamingDemo({
               setPhase("completed");
             }
           },
-          (i + 1) * 320,
+          (i + 1) * (markdown ? 320 : 160),
         ),
       ),
     );
-  }
+  }, [ar, markdown, invalidate]);
+  useEffect(() => {
+    invalidate();
+    // Defer autoplay to a cancellable host callback: StrictMode cleanup, prop
+    // changes and unmount all invalidate it before a run can start.
+    if (autoStart) timers.current.push(setTimeout(start, 0));
+    return invalidate;
+  }, [autoStart, start, invalidate]);
   const status = {
     idle: ar ? "العرض جاهز" : "Demo ready",
     streaming: ar ? "جارٍ استلام العينة المحلية" : "Receiving local sample",
@@ -181,7 +177,14 @@ export function StreamingDemo({
       : "Sample cancelled; received text kept",
   }[phase];
   return (
-    <div style={{ display: "grid", gap: "var(--space-3)", minInlineSize: 0 }}>
+    <div
+      style={{
+        display: "grid",
+        gap: "var(--space-3)",
+        minInlineSize: 0,
+        inlineSize: "100%",
+      }}
+    >
       <p
         style={{
           margin: 0,

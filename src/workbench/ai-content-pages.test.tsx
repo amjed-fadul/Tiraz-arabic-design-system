@@ -1,8 +1,12 @@
+import { StrictMode } from "react";
 import { render, screen, within, act, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
-import { StreamingDemo } from "../system/ai/examples/AIContentExamples";
+import {
+  StreamingDemo,
+  StreamingTextExample,
+} from "../system/ai/examples/AIContentExamples";
 import { SystemProvider, defaultConfig } from "../system";
 afterEach(() => vi.useRealTimers());
 it.each([
@@ -80,6 +84,55 @@ it("explicitly starts fixed chunks, preserves cancellation content and invalidat
   expect(screen.getByRole("table")).toBeVisible();
   expect(vi.getTimerCount()).toBe(0);
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
+  view.unmount();
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it("automatically streams the playground once, preserving cancel/replay and invalidating configuration changes", async () => {
+  vi.useFakeTimers();
+  const wrap = (language: "ar" | "en", markdown = false) => (
+    <StrictMode>
+      <SystemProvider
+        config={{
+          ...defaultConfig,
+          direction: language === "ar" ? "rtl" : "ltr",
+        }}
+      >
+        <StreamingTextExample language={language} markdown={markdown} />
+      </SystemProvider>
+    </StrictMode>
+  );
+  const view = render(wrap("en"));
+  await act(async () => vi.advanceTimersByTime(0));
+  expect(document.querySelector(".tz-streaming-text")).toHaveAttribute(
+    "data-state",
+    "streaming",
+  );
+  expect(
+    screen.getByRole("button", { name: "Replay local demo" }),
+  ).toBeVisible();
+  await act(async () => vi.advanceTimersByTime(160));
+  expect(document.querySelector(".tz-stream-content")).toHaveTextContent(
+    "This",
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Cancel demo" }));
+  const text = document.querySelector(".tz-stream-content")?.textContent;
+  await act(async () => vi.advanceTimersByTime(10000));
+  expect(document.querySelector(".tz-stream-content")?.textContent).toBe(text);
+  expect(document.querySelector(".tz-stream-cursor")).toBeNull();
+  expect(vi.getTimerCount()).toBe(0);
+  fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
+  await act(async () => vi.advanceTimersByTime(4000));
+  expect(screen.getByRole("status")).toHaveTextContent("Local sample complete");
+  expect(vi.getTimerCount()).toBe(0);
+  view.rerender(wrap("ar", true));
+  await act(async () => vi.advanceTimersByTime(320));
+  expect(document.querySelector(".tz-stream-content")).toHaveTextContent(
+    "ملخص محلي",
+  );
+  expect(document.querySelector(".tz-stream-content")).not.toHaveTextContent(
+    "This",
+  );
   view.unmount();
   expect(vi.getTimerCount()).toBe(0);
 });

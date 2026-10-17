@@ -1,0 +1,43 @@
+[
+  {
+    "check": "automatic-entry",
+    "result": {
+      "state": "streaming",
+      "text": "This ",
+      "x": 256.81817626953125
+    }
+  },
+  {
+    "check": "completion-no-cursor",
+    "result": {
+      "cursors": 0,
+      "state": "completed",
+      "text": "This is a fixed local sample. Tiraz renders text as the host supplies it. مرحبًا بالعالم.",
+      "x": 256.81817626953125
+    }
+  },
+  {
+    "check": "markdown-mode-restarts-automatically",
+    "state": "streaming"
+  },
+  {
+    "check": "arabic-auto-restart-and-cancel",
+    "text": "ملخص محلي",
+    "cursors": 0
+  },
+  {
+    "check": "os-reduced-motion",
+    "names": ["none"]
+  },
+  {
+    "check": "system-reduced-motion",
+    "names": ["none"]
+  },
+  {
+    "check": "arabic-dark-320",
+    "metrics": {
+      "document": 320,
+      "viewport": 320
+    }
+  }
+]

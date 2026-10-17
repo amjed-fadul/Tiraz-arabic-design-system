@@ -508,8 +508,8 @@ export function generatePrompt(
     ) +
     (["code-block", "markdown", "streaming-text"].includes(component)
       ? t(
-          "\nلنسخة المصدر ثبّت react-markdown@10.1.0 وremark-gfm@4.0.1. CommonMark وGFM فقط؛ HTML معطّل والروابط غير الآمنة مرفوضة. اللغات غير المدعومة نص عادي والشيفرة LTR. التطبيق يملك النص وحالة streaming/completed والإلغاء؛ لا تضف طابور كتابة أو شبكة. العرض المحلي يبدأ صراحة ويلغي المؤقتات عند الإعادة والإزالة ويحفظ النص عند الإلغاء.",
-          "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. Start local demos explicitly, invalidate timers on replay/unmount, and retain received text on cancellation.",
+          "\nلنسخة المصدر ثبّت react-markdown@10.1.0 وremark-gfm@4.0.1. CommonMark وGFM فقط؛ HTML معطّل والروابط غير الآمنة مرفوضة. اللغات غير المدعومة نص عادي والشيفرة LTR. التطبيق يملك النص وحالة streaming/completed والإلغاء؛ لا تضف طابور كتابة أو شبكة. معاينة StreamingText تشغّل عينة محلية واحدة تلقائيًا؛ العرض المستقل يبدأ صراحة افتراضيًا. ألغِ المؤقتات عند الإعادة والإزالة واحفظ النص عند الإلغاء.",
+          "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The StreamingText playground runs one local sample automatically; standalone demos start explicitly by default. Invalidate timers on replay/unmount and retain received text on cancellation.",
         )
       : "") +
     ([
