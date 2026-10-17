@@ -83,6 +83,16 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "ask-user-questions": [
+    field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
+  ],
+  "approval-card": [
+    field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
+  ],
+  "approval-flow": [
+    field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
+  ],
+
   "selection-actions": [
     field("longContent", "boolean", "محتوى طويل", "Long content", "children"),
   ],
@@ -905,6 +915,10 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "ask-user-questions": ["longContent"],
+  "approval-card": ["longContent"],
+  "approval-flow": ["longContent"],
+
   "selection-actions": ["longContent"],
   "context-meter": ["preset", "estimated"],
   "model-selector": ["disabled", "longContent"],

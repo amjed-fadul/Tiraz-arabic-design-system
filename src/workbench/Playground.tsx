@@ -1,4 +1,9 @@
 import {
+  AskUserQuestionsExample,
+  ApprovalCardExample,
+  ApprovalFlowExample,
+} from "../system/ai/examples/AIDecisionsExamples";
+import {
   SelectionActionsExample,
   ContextMeterExample,
   ModelSelectorExample,
@@ -195,6 +200,27 @@ export function Playground({
   copyLabel,
 }: Props) {
   const t = words(language);
+  if (component === "ask-user-questions")
+    return (
+      <AskUserQuestionsExample
+        language={language}
+        {...(model as Playgrounds["ask-user-questions"])}
+      />
+    );
+  if (component === "approval-card")
+    return (
+      <ApprovalCardExample
+        language={language}
+        {...(model as Playgrounds["approval-card"])}
+      />
+    );
+  if (component === "approval-flow")
+    return (
+      <ApprovalFlowExample
+        language={language}
+        {...(model as Playgrounds["approval-flow"])}
+      />
+    );
   if (component === "loading-state")
     return (
       <LoadingStateExample

@@ -147,3 +147,19 @@ export { ContextMeter } from "./ContextMeter";
 export type { ContextMeterProps, ContextMeterPart } from "./ContextMeter";
 export { ModelSelector } from "./ModelSelector";
 export type { ModelOption, ModelSelectorProps } from "./ModelSelector";
+export { AskUserQuestions } from "./AskUserQuestions";
+export type {
+  AskUserQuestionsProps,
+  UserQuestion,
+  QuestionAnswer,
+  QuestionAnswers,
+} from "./AskUserQuestions";
+export { ApprovalCard } from "./ApprovalCard";
+export { approvalRequestKey } from "./approval-request";
+export type {
+  ApprovalCardProps,
+  ApprovalRequest,
+  ApprovalDecision,
+} from "./ApprovalCard";
+export { ApprovalFlow } from "./ApprovalFlow";
+export type { ApprovalFlowProps, ApprovalRecord } from "./ApprovalFlow";

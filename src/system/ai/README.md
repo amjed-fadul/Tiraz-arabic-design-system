@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **sixty-three**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation InsightCards, SelectionActions, ContextMeter and ModelSelector.
+Tiraz is an Arabic-first, source-owned React dashboard library with **sixty-six**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard and ApprovalFlow.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -864,3 +864,74 @@ selected state, viewport collision handling and Escape restoration. No connectio
 API keys or current provider claims are embedded in this family. Reuse the Radix
 layer overrides above and preserve @radix-ui/react-select, react-popover and
 react-popper dependencies when relocating the whole source bundle.
+
+## Questions and one-time decisions
+
+Use [AskUserQuestions](../AskUserQuestions.tsx) for application-supplied questions
+with stable unique IDs. Supported types are single choice (`type: "choice"`, the
+default), optional `allowOther` text, and `type: "text"` textarea questions. Choices
+need unique stable `value`s; `other` is reserved. There is no multi-select,
+branching, generated questionnaire or form engine. `required` defaults to true;
+set false explicitly for optional questions. Keep `value: QuestionAnswers` in the
+host and update it with `onValueChange`. Choices stay editable until accepted.
+Next/Previous review drafts; Submit validates every required answer and focuses
+the first incomplete question. Native radio arrows and scoped 1–9 select; Enter
+submits, Ctrl/Command+Enter submits from a textarea. It never auto-advances.
+`onSubmit(answers, {signal})` receives actual choice IDs and text, excludes stale
+question IDs, and guards duplicate submissions. Failure preserves the draft.
+
+Use [ApprovalCard](../ApprovalCard.tsx) for a concrete proposed action. Supply
+`request: {id, action, target, consequences, details?, approveLabel, rejectLabel}`.
+Write specific labels, such as “Approve sample rename” and “Keep sample title”.
+Show critical parameters verbatim. Use a deliberate consequence-appropriate
+confirmation in the host for irreversible actions; these compact inline cards
+are suitable for reversible proposals. Rejection is safe and equally available;
+there is no preselected decision, countdown, automatic approval or standing access.
+Inline cards never steal initial focus; Escape inside an undecided card reports
+rejection. They are named groups, not modal dialogs. Use the existing Modal if a
+host requires a trapped dialog and place initial focus on its safe action.
+
+`onDecision(request, "approved" | "rejected", {signal})` acknowledges the
+**decision only**. Resolving it records approved/rejected; it does not mean that
+an action executed or completed. Rejection/failure keeps the concrete proposal
+visible. A failed acknowledgement restores the initiating button when focus has
+not intentionally moved elsewhere. Buttons are guarded while submitting and
+after acceptance. A controlled `value` is an `ApprovalRecord` (or null), bound to
+both `requestId` and `approvalRequestKey(request)`; stale records are ignored.
+For controlled cards publish an accepted record explicitly; null continues to
+show the pending proposal and cannot trigger a duplicate callback.
+
+[ApprovalFlow](../ApprovalFlow.tsx) composes a short application-owned sequence.
+It shows position and accepted prior decisions, advances only after the host
+accepts, and requires a fresh decision for every request. IDs must be unique and
+stable across updates. Unchanged decisions survive append/reorder; changes to
+ID, action, target, details, consequences or action labels invalidate the previous
+record. Use optional `value` and `onValueChange` for controlled records; publish
+the returned array in `onValueChange`. This is a UI composition, not a workflow
+or authorization engine. Keep requests immutable.
+
+All three cancel pending UI callbacks with AbortSignal on reset, replacement and
+unmount, and ignore stale completions. `resetKey` starts a fresh local UI instance;
+the host must also clear controlled drafts/records when resetting, or explicitly
+reconcile them against a changed question schema. Changing request content
+always creates a fresh card and aborts the old callback. Abort is cooperative:
+it cannot retract effects that a host already performed.
+
+The **host must validate request identity, authorization and execution
+independently**, including at the time of execution. Check the exact approved
+parameters/version, current user authority and current resource state. Do not
+execute consequential actions in an acknowledgement callback. Respect the signal
+before changing host state; cancel underlying work and reject aborted promises.
+Never treat a UI record as proof of authorization. One-time approval grants no
+ongoing permissions. This batch has no approve-all or permission management.
+
+[Compiling examples](examples/AIDecisionsExamples.tsx) include independent basic
+examples and `AIDecisionsExample`, a local Studio Assistant that asks a question,
+previews a sample rename, then requests an independent note decision. A visible
+simulation switch fails the next acknowledgement; retry or reject. Reset cancels
+sample timers, and unmount/replacement cancels their signal listeners. No data
+leaves memory, no action executes, and approved is never labeled completed.
+Use `SystemProvider` for Arabic/English direction, theme, accent, typography,
+density and reduced motion. These patterns do not animate. Screen-reader speech
+and physical-device behavior require host testing; automated checks alone do not
+establish them.

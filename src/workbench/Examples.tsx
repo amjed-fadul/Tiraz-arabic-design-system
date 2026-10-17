@@ -1,3 +1,4 @@
+import { AIDecisionsExample } from "../system/ai/examples/AIDecisionsExamples";
 import {
   AIContextExample,
   ContextMeterStates,
@@ -272,6 +273,10 @@ export function Examples({
         </section>
       </div>
     );
+  if (
+    ["ask-user-questions", "approval-card", "approval-flow"].includes(component)
+  )
+    return <AIDecisionsExample language={language} />;
   if (component === "selection-actions" || component === "model-selector")
     return <AIContextExample language={language} />;
   if (component === "context-meter")

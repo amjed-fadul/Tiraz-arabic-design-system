@@ -1,0 +1,23 @@
+{
+  "browser": "Google Chrome on macOS (automated)",
+  "checks": [
+    "required error and first-invalid focus",
+    "native keyboard radio choice",
+    "connected question-to-approval focus recovery",
+    "rejected acknowledgement, retry rejection, independent approval, accurate decision-only receipt",
+    "reset during pending decision discards stale completion",
+    "English light 1280x800: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "English dark 1280x800: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "Arabic light 1280x800: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "Arabic dark 1280x800: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "English light 320x480: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "English dark 320x480: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "Arabic light 320x480: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "Arabic dark 320x480: no overflow, actions reachable, typography/accent/radius customization, axe and explicit reduced motion",
+    "OS reduced motion",
+    "AskUserQuestions continuous docs in AI patterns",
+    "ApprovalCard continuous docs in AI patterns",
+    "ApprovalFlow continuous docs in AI patterns"
+  ],
+  "errors": []
+}

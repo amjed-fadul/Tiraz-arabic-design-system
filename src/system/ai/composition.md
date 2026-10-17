@@ -462,3 +462,29 @@ label sample data. ContextMeter shows supplied usage/capacity and flags estimate
 missing/invalid values and excess honestly. Do not add token estimation, model
 lookup, provider authentication or implied execution. See AIContextExamples.tsx
 for the compiling local composition; it remains portable with the source root.
+
+## Local assistant: ask, preview, decide
+
+Use AskUserQuestions for single-choice/Other and optional text questions. Keep
+application-supplied IDs stable and drafts controlled. Submit actual answers to
+the host; required errors focus the first incomplete question and rejected
+promises retain drafts. Do not generate questions or add branching behavior.
+
+Then use ApprovalCard, or ApprovalFlow for a short sequence of independent
+requests. Present exact action, target, consequences and specific approve/reject
+labels. One-time approval reports a decision, never execution success or ongoing
+permission. Do not add standing access, automatic approval or approve-all.
+ApprovalFlow advances only after host acceptance and exposes prior decisions.
+Changed request content invalidates old records and pending callbacks; unchanged
+requests retain their identity across reorder/append. Controlled records bind
+requestId and approvalRequestKey. Reset clears host-controlled records/drafts as
+well as resetKey. Honor AbortSignal on reset, replacement and unmount, and check
+it immediately before committing host state. UI cancellation cannot undo effects.
+The host must validate request identity, authorization and execution independently.
+
+Adapt AIDecisionsExamples.tsx from this directory's examples/ bundle: all sample
+data is harmless and in memory, the first decision can fail/retry, rejection is
+recorded, and the second request has a separate decision. There is no execution.
+Inline groups never steal initial focus; Escape rejects from within the card.
+Keep modal focus policy in the host Modal. Keep a single status announcement per
+transition and do not move focus if the user has left the surface.

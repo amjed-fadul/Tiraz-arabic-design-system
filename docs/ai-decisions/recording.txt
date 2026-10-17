@@ -1,0 +1,1 @@
+Recorded questions → concrete preview → host failure → rejection retry → separate approval; no execution.

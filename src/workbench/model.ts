@@ -268,6 +268,9 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "ask-user-questions": { longContent: boolean };
+  "approval-card": { longContent: boolean };
+  "approval-flow": { longContent: boolean };
   "selection-actions": { longContent: boolean };
   "context-meter": {
     preset: "normal" | "near" | "over" | "zero" | "missing" | "invalid";
@@ -395,6 +398,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
+    "ask-user-questions": { longContent: false },
+    "approval-card": { longContent: false },
+    "approval-flow": { longContent: false },
     "selection-actions": { longContent: false },
     "context-meter": { preset: "normal", estimated: false },
     "model-selector": { disabled: false, longContent: false },

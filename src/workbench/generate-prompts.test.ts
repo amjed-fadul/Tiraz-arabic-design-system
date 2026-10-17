@@ -95,6 +95,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
     }
     // Mirror Vite's ?raw loader using the real example source in both relocated trees.
     for (const name of [
+      "AIDecisionsExamples",
       "AIContextExamples",
       "AIResultsExamples",
       "AIFeedbackExamples",
@@ -134,10 +135,12 @@ it("generates identical prompts when the same checkout is relocated", () => {
     const original = execFileSync(process.execPath, ["-e", run], {
       cwd: first,
       encoding: "utf8",
+      maxBuffer: 8 * 1024 * 1024,
     });
     const relocated = execFileSync(process.execPath, ["-e", run], {
       cwd: second,
       encoding: "utf8",
+      maxBuffer: 8 * 1024 * 1024,
     });
     expect(JSON.parse(original)).toHaveLength(catalog.length * 2);
     expect(relocated).toBe(original);

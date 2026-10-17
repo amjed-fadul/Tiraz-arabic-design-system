@@ -1,6 +1,34 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "ask-user-questions",
+    name: ["أسئلة المستخدم", "AskUserQuestions"],
+    description: [
+      "أسئلة يزوّدها التطبيق بإجابات قابلة للتعديل وإرسال صريح.",
+      "Application-supplied questions with editable answers and deliberate submission.",
+    ],
+    file: "AskUserQuestions.tsx",
+  },
+  {
+    id: "approval-card",
+    name: ["بطاقة القرار", "ApprovalCard"],
+    description: [
+      "معاينة إجراء وهدف وعواقب مع موافقة أو رفض لمرة واحدة.",
+      "A concrete one-time action preview with independent approve and reject decisions.",
+    ],
+    file: "ApprovalCard.tsx",
+  },
+  {
+    id: "approval-flow",
+    name: ["تسلسل القرارات", "ApprovalFlow"],
+    description: [
+      "سلسلة طلبات مستقلة تتقدّم بعد قبول التطبيق لكل قرار.",
+      "A short sequence of independent requests, advanced after host acceptance.",
+    ],
+    file: "ApprovalFlow.tsx",
+  },
+
+  {
     id: "selection-actions",
     name: ["إجراءات التحديد", "SelectionActions"],
     description: [
@@ -587,6 +615,9 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "ask-user-questions",
+      "approval-card",
+      "approval-flow",
       "selection-actions",
       "context-meter",
       "model-selector",

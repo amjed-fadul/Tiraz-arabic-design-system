@@ -4781,3 +4781,126 @@ a.tz-inline-citation {
   max-block-size: 220px;
   margin-block: 8px;
 }
+
+/* Inline AI questions and one-time decisions. Shared density/typography tokens. */
+.tz-ask-questions,
+.tz-approval-card,
+.tz-approval-flow,
+.tz-decisions-example {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  inline-size: 100%;
+  max-inline-size: 38rem;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-ask-questions,
+.tz-approval-card {
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.tz-ask-questions h3,
+.tz-approval-card h3 {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: 500;
+  line-height: 1.5;
+}
+.tz-ask-questions :is(h3, .tz-radio-group):focus-visible,
+.tz-approval-card:focus-visible,
+.tz-approval-flow:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-decision-heading,
+.tz-decision-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+.tz-decision-heading {
+  justify-content: space-between;
+}
+.tz-decision-actions > .tz-button {
+  white-space: normal;
+  height: auto;
+  min-block-size: var(--control-small);
+}
+.tz-decision-actions .tz-button-label {
+  white-space: normal;
+}
+.tz-decision-position,
+.tz-decision-note,
+.tz-decision-details,
+.tz-decision-status {
+  margin: 0;
+  line-height: 1.6;
+}
+.tz-decision-position,
+.tz-decision-note {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+}
+.tz-decision-facts {
+  margin: 0;
+}
+.tz-decision-facts > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+}
+.tz-decision-facts dt {
+  color: var(--text-muted);
+}
+.tz-decision-facts dd {
+  margin: 0;
+  white-space: pre-wrap;
+}
+.tz-decision-details {
+  white-space: pre-wrap;
+}
+.tz-decision-consequences {
+  margin: 0;
+  padding-inline-start: var(--space-5);
+}
+.tz-decision-history {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding-inline-start: var(--space-5);
+  font-size: var(--text-meta);
+}
+.tz-decision-history li > span {
+  display: block;
+  color: var(--text-muted);
+}
+.tz-ask-questions .tz-radio-options {
+  display: grid;
+  gap: var(--space-2);
+}
+.tz-ask-questions .tz-radio-option {
+  padding: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  align-items: start;
+}
+.tz-ask-questions .tz-radio-option:has(:checked) {
+  background: var(--surface-hover);
+  border-color: var(--focus);
+}
+.tz-question-control > .tz-field-label {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

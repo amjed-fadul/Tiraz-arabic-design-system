@@ -843,6 +843,58 @@
     {
       "name": "ModelOption",
       "source": "ModelSelector.tsx"
+    },
+    {
+      "name": "AskUserQuestions",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "AskUserQuestionsProps",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "UserQuestion",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "QuestionAnswer",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "QuestionAnswers",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "ApprovalCard",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalCardProps",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalRequest",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalDecision",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "approvalRequestKey",
+      "source": "approval-request.ts"
+    },
+    {
+      "name": "ApprovalFlow",
+      "source": "ApprovalFlow.tsx"
+    },
+    {
+      "name": "ApprovalFlowProps",
+      "source": "ApprovalFlow.tsx"
+    },
+    {
+      "name": "ApprovalRecord",
+      "source": "ApprovalCard.tsx"
     }
   ],
   "configuration": {
@@ -922,6 +974,181 @@
     }
   },
   "components": [
+    {
+      "id": "ask-user-questions",
+      "api": "AskUserQuestions",
+      "source": "AskUserQuestions.tsx",
+      "exports": [
+        "AskUserQuestions",
+        "AskUserQuestionsProps",
+        "UserQuestion",
+        "QuestionAnswer",
+        "QuestionAnswers"
+      ],
+      "props": [
+        {
+          "name": "questions",
+          "type": "readonly UserQuestion[]",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "QuestionAnswers",
+          "required": true
+        },
+        {
+          "name": "onValueChange",
+          "type": "(answers: QuestionAnswers) => void",
+          "required": true
+        },
+        {
+          "name": "onSubmit",
+          "type": "(answers, {signal}) => void | Promise<void>",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "submitLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "resetKey",
+          "type": "string | number",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
+      "accessibility": [
+        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
+        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. No animation."
+      ],
+      "limitations": [
+        "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
+        "The host must validate request identity, authorization and execution independently and honor AbortSignal. Approval is one-time and does not imply execution, ongoing access or permission management.",
+        "Controlled records must use approvalRequestKey for the exact current request. Clear controlled values on reset; clear or deliberately reconcile drafts after question schema changes. Keep callbacks limited to acknowledgement, never execution."
+      ],
+      "alternative": "Use RadioGroup and Field/Input/Textarea for a standalone question; use Modal only when a modal decision is required.",
+      "dependencies": [],
+      "examples": ["ai/examples/AIDecisionsExamples.tsx"]
+    },
+    {
+      "id": "approval-card",
+      "api": "ApprovalCard",
+      "source": "ApprovalCard.tsx",
+      "exports": [
+        "ApprovalCard",
+        "ApprovalCardProps",
+        "ApprovalRequest",
+        "ApprovalDecision",
+        "approvalRequestKey"
+      ],
+      "props": [
+        {
+          "name": "request",
+          "type": "ApprovalRequest",
+          "required": true
+        },
+        {
+          "name": "onDecision",
+          "type": "(request, decision, {signal}) => void | Promise<void>",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "ApprovalRecord | null",
+          "required": false
+        },
+        {
+          "name": "resetKey",
+          "type": "string | number",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
+      "accessibility": [
+        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
+        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. No animation."
+      ],
+      "limitations": [
+        "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
+        "The host must validate request identity, authorization and execution independently and honor AbortSignal. Approval is one-time and does not imply execution, ongoing access or permission management.",
+        "Controlled records must use approvalRequestKey for the exact current request. Clear controlled values on reset; clear or deliberately reconcile drafts after question schema changes. Keep callbacks limited to acknowledgement, never execution."
+      ],
+      "alternative": "Use RadioGroup and Field/Input/Textarea for a standalone question; use Modal only when a modal decision is required.",
+      "dependencies": [],
+      "examples": ["ai/examples/AIDecisionsExamples.tsx"]
+    },
+    {
+      "id": "approval-flow",
+      "api": "ApprovalFlow",
+      "source": "ApprovalFlow.tsx",
+      "exports": ["ApprovalFlow", "ApprovalFlowProps", "ApprovalRecord"],
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "requests",
+          "type": "readonly ApprovalRequest[]",
+          "required": true
+        },
+        {
+          "name": "onDecision",
+          "type": "ApprovalCardProps[onDecision]",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "readonly ApprovalRecord[]",
+          "required": false
+        },
+        {
+          "name": "onValueChange",
+          "type": "(records: readonly ApprovalRecord[]) => void",
+          "required": false
+        },
+        {
+          "name": "resetKey",
+          "type": "string | number",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
+      "accessibility": [
+        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
+        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. No animation."
+      ],
+      "limitations": [
+        "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
+        "The host must validate request identity, authorization and execution independently and honor AbortSignal. Approval is one-time and does not imply execution, ongoing access or permission management.",
+        "Controlled records must use approvalRequestKey for the exact current request. Clear controlled values on reset; clear or deliberately reconcile drafts after question schema changes. Keep callbacks limited to acknowledgement, never execution."
+      ],
+      "alternative": "Use RadioGroup and Field/Input/Textarea for a standalone question; use Modal only when a modal decision is required.",
+      "dependencies": [],
+      "examples": ["ai/examples/AIDecisionsExamples.tsx"]
+    },
     {
       "id": "selection-actions",
       "api": "SelectionActions",

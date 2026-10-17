@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with sixty-three source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with sixty-six source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -347,3 +347,13 @@ Their connected chat example uses scoped selection, controlled model IDs and
 explicit sample context values. See `src/system/ai/README.md` for ownership,
 keyboard focus, selection exclusions and source-copy requirements. Local browser
 verification and captures are in `docs/ai-context-controls/`.
+
+### AI questions and decisions
+
+AskUserQuestions, ApprovalCard and ApprovalFlow live under AI patterns. The
+[portable guidance](src/system/ai/README.md#questions-and-one-time-decisions)
+explains supported question types, controlled drafts/records, host responsibilities,
+request replacement and decision versus execution. The connected Studio Assistant
+example uses harmless in-memory data with rejection, acknowledgement failure/retry
+and a second independent request. No action executes and no standing access is
+introduced. Local verification evidence is in `docs/ai-decisions/`.

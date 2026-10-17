@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/ai-decisions.test.tsx src/workbench/ai-decisions-pages.test.tsx src/workbench/generate-prompts.test.ts src/workbench/navigation-groups.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/ai-decisions/Tiraz
+
+
+ Test Files  4 passed (4)
+      Tests  154 passed (154)
+   Start at  02:23:12
+   Duration  9.42s (import 31%, environment 26%, tests 25%, transform 13%, setup 5%)

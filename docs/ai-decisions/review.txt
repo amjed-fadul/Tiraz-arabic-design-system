@@ -1,0 +1,21 @@
+Independent code and consent UX review
+
+Reviewer inspected source and agent-consent-patterns guidance; did not edit files.
+Initial actionable findings, reproduced in regression tests and fixed:
+1. P1: Invalidated local approvals could return if old request content was restored.
+   Fix: discard invalidated history as the schema changes, before rendering it.
+2. P2: A pending acceptance could overwrite newer controlled records.
+   Fix: merge against latest committed controlled records/callback after await.
+3. P2: Controlled cards could show enabled no-op actions after acknowledgement.
+   Fix: expose Recording decision and guard actions until the controlled record arrives.
+
+Two independent re-review passes reported no further actionable findings.
+Final reviewer focused run: 14 passed.
+Reviewed additional cancellation, exact-content identity, focus recovery,
+persistent acceptance announcements, actual submitted target in connected sample,
+one-time consent versus ongoing permission, and decision versus execution.
+
+Consent UX: concrete action/target/details/consequences; specific balanced actions;
+no initial approval, automatic approval, countdown, standing access or approve-all.
+Inline labeled groups never steal focus on mount; Escape reports rejection.
+Hosts must independently validate identity, authorization and execution.

@@ -1,3 +1,4 @@
+import aiDecisionsSource from "../system/ai/examples/AIDecisionsExamples.tsx?raw";
 import aiContextSource from "../system/ai/examples/AIContextExamples.tsx?raw";
 import aiResultsSource from "../system/ai/examples/AIResultsExamples.tsx?raw";
 import chatSource from "../system/ai/examples/ChatExamples.tsx?raw";
@@ -76,6 +77,28 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (
+    ["ask-user-questions", "approval-card", "approval-flow"].includes(component)
+  ) {
+    const source = aiDecisionsSource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    const name =
+      component === "ask-user-questions"
+        ? "AskUserQuestionsExample"
+        : component === "approval-card"
+          ? "ApprovalCardExample"
+          : "ApprovalFlowExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
   if (
     ["selection-actions", "context-meter", "model-selector"].includes(component)
   ) {
@@ -617,6 +640,14 @@ export function generatePrompt(
       ? t(
           "\nFileTree يعرض بيانات يزوّدها التطبيق فقط. onActivate يفوّض فتح الملف للتطبيق، والمعاينة تقرأ نصوص المثال المحلية دون نظام ملفات.",
           "\nFileTree displays supplied data only. onActivate delegates opening to the host; the preview reads application-owned sample strings without filesystem access.",
+        )
+      : "") +
+    (["ask-user-questions", "approval-card", "approval-flow"].includes(
+      component,
+    )
+      ? t(
+          "\nأسئلة اختيار واحد مع إجابة أخرى أو نص فقط. التطبيق يتحقق من هوية الطلب والتفويض والتنفيذ بشكل مستقل. الموافقة قرار لمرة واحدة وليست تنفيذًا أو إذنًا مستمرًا. تغيير المحتوى يلغي القرار القديم؛ احترم AbortSignal عند الإعادة أو الاستبدال أو الإزالة. احتفظ بالمسودات عند الفشل.",
+          "\nSupported questions: single choice with optional Other, or text only. The host must validate request identity, authorization and execution independently. Approval is a one-time decision, not execution or ongoing permission. Changed content invalidates old decisions; honor AbortSignal on reset, replacement and unmount. Preserve drafts on failure. Controlled ApprovalRecord values must bind requestId and approvalRequestKey to the exact current request. No standing access or approve all.",
         )
       : "") +
     (["selection-actions", "context-meter", "model-selector"].includes(

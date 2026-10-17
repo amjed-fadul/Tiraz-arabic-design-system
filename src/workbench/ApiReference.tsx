@@ -95,6 +95,125 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "ask-user-questions": [
+      [
+        "questions",
+        "readonly UserQuestion[] · required",
+        t(
+          "اختيار واحد مع إجابة أخرى اختيارية، أو نص فقط. معرّفات فريدة وثابتة.",
+          "Single choice with optional Other, or text only. Unique stable IDs; choice values are unique and reserve other.",
+        ),
+      ],
+      [
+        "value / onValueChange",
+        "QuestionAnswers / (answers) => void · required",
+        t(
+          "مسودات متحكّم بها تبقى قابلة للتعديل قبل الإرسال.",
+          "Controlled drafts keyed by question ID; answers remain editable before submission.",
+        ),
+      ],
+      [
+        "onSubmit",
+        "(answers, {signal}) => void | Promise<void> · required",
+        t(
+          "إجابات فعلية؛ الفشل يحفظ المسودة. التطبيق مسؤول عن التحقق.",
+          "Receives actual answers. Failure preserves drafts; required validation focuses the first incomplete question. Host validates independently.",
+        ),
+      ],
+      [
+        "label / submitLabel / resetKey / className",
+        "string? / string? / string | number? / string?",
+        t(
+          "اسم النموذج وتسميات محلية؛ الإعادة أو تغيير الأسئلة يلغي المعلّق.",
+          "Form name and submit label; reset or schema replacement aborts pending work. Host resets controlled drafts explicitly.",
+        ),
+      ],
+      [
+        "keyboard",
+        "native radios / Tab / Enter / Ctrl+Enter",
+        t(
+          "أسهم الاختيار الأصلية، وأرقام ١–٩ ضمن البطاقة. Ctrl أو ⌘ مع Enter يرسل النص.",
+          "Native radio arrows; 1–9 within the card. Enter submits; Ctrl/Command+Enter submits from the textarea. No automatic advance.",
+        ),
+      ],
+    ],
+    "approval-card": [
+      [
+        "request",
+        "ApprovalRequest · required",
+        t(
+          "معرّف ثابت وإجراء وهدف وعواقب وتسميات صريحة.",
+          "Stable ID, concrete action, target, verbatim consequences, approveLabel and rejectLabel.",
+        ),
+      ],
+      [
+        "onDecision",
+        "(request, decision, { signal }) => void | Promise<void>",
+        t(
+          "قرار فقط. الانتظار لا يعني التنفيذ؛ الفشل يحفظ التفاصيل والتركيز.",
+          "Reports a decision only. Promise acceptance does not imply execution. Failure preserves details and focus.",
+        ),
+      ],
+      [
+        "value / resetKey",
+        "ApprovalRecord | null / string | number",
+        t(
+          "قيمة متحكّم بها مرتبطة ببصمة المحتوى؛ الإعادة تلغي المعلّق.",
+          "Optional controlled record binds requestId and approvalRequestKey; reset aborts pending callbacks.",
+        ),
+      ],
+      [
+        "host responsibilities",
+        "identity / authorization / execution",
+        t(
+          "يتحقق التطبيق منها بشكل مستقل، ويحترم AbortSignal عند التغيير والإزالة.",
+          "Host validates each independently and honors AbortSignal on replacement/unmount. No ongoing permissions.",
+        ),
+      ],
+      [
+        "className",
+        "string?",
+        t(
+          "فئة إضافية ضمن إعدادات Tiraz المشتركة.",
+          "Additional class; shared Tiraz configuration applies.",
+        ),
+      ],
+    ],
+    "approval-flow": [
+      [
+        "label / requests",
+        "string / readonly ApprovalRequest[] · required",
+        t(
+          "سلسلة قصيرة بمعرّفات فريدة يملكها التطبيق.",
+          "A short application-owned sequence with unique stable request IDs.",
+        ),
+      ],
+      [
+        "onDecision",
+        "ApprovalCardProps[onDecision] · required",
+        t(
+          "لا انتقال قبل قبول التطبيق للقرار.",
+          "Advances only after host acceptance. Each request requires a fresh decision.",
+        ),
+      ],
+      [
+        "value / onValueChange",
+        "readonly ApprovalRecord[] / (records) => void",
+        t(
+          "حالة اختيارية متحكّم بها؛ السجل مرتبط بالمعرّف وبصمة المحتوى.",
+          "Optional controlled records bind requestId and approvalRequestKey. Changed requests reopen; unchanged records survive append/reorder. Publish records in onValueChange.",
+        ),
+      ],
+      [
+        "resetKey / className",
+        "string | number? / string?",
+        t(
+          "الإعادة تلغي القرار المعلّق؛ امسح السجلات المتحكّم بها أيضًا.",
+          "Reset cancels pending work; hosts also clear controlled records. The host independently validates identity, authorization and execution.",
+        ),
+      ],
+    ],
+
     "selection-actions": [
       [
         "children / label",
