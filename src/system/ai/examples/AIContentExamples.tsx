@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Button, CodeBlock, Markdown, StreamingText } from "../../index";
-import { Play, Square } from "lucide-react";
+import { CodeBlock, Markdown, StreamingText } from "../../index";
+import { DemoFrame } from "./DemoFrame";
 type Language = "ar" | "en";
 export function CodeBlockExample({
   language = "ar",
@@ -56,28 +56,44 @@ export function MarkdownExample({
 export function StreamingTextExample({
   language = "ar",
   markdown = false,
+  prompt,
+  copyLabel,
 }: {
   language?: Language;
   markdown?: boolean;
+  prompt?: string;
+  copyLabel?: string;
 }) {
-  return <StreamingDemo language={language} markdown={markdown} autoStart />;
+  return (
+    <StreamingDemo
+      language={language}
+      markdown={markdown}
+      autoStart
+      prompt={prompt}
+      copyLabel={copyLabel}
+    />
+  );
 }
 /** Host example only: fixed chunks, no network; optional one-shot autoplay. */
 export function StreamingDemo({
   language = "ar",
   markdown = false,
   autoStart = false,
+  prompt,
+  copyLabel,
 }: {
   language?: Language;
   markdown?: boolean;
   autoStart?: boolean;
+  prompt?: string;
+  copyLabel?: string;
 }) {
   const ar = language === "ar";
   const [identity, setIdentity] = useState({ language, markdown, autoStart });
   const [text, setText] = useState("");
-  const [phase, setPhase] = useState<
-    "idle" | "streaming" | "completed" | "cancelled"
-  >("idle");
+  const [phase, setPhase] = useState<"idle" | "streaming" | "completed">(
+    "idle",
+  );
   const generation = useRef(0),
     timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const invalidate = useCallback(() => {
@@ -173,9 +189,6 @@ export function StreamingDemo({
     idle: ar ? "العرض جاهز" : "Demo ready",
     streaming: ar ? "جارٍ استلام العينة المحلية" : "Receiving local sample",
     completed: ar ? "اكتملت العينة المحلية" : "Local sample complete",
-    cancelled: ar
-      ? "أُلغيت العينة؛ احتُفظ بالنص"
-      : "Sample cancelled; received text kept",
   }[phase];
   const playLabel =
     phase === "idle"
@@ -185,49 +198,22 @@ export function StreamingDemo({
       : ar
         ? "إعادة العرض المحلي"
         : "Replay local demo";
-  const cancelLabel = ar ? "إلغاء العرض" : "Cancel demo";
   return (
-    <div
+    <DemoFrame
       className="tz-stream-demo"
-      role="group"
-      aria-label={ar ? "عرض نص محلي" : "Local text demo"}
+      language={language}
+      label={ar ? "عرض نص محلي" : "Local text demo"}
+      title={
+        markdown ? (ar ? "ماركداون" : "Markdown") : ar ? "الافتراضي" : "Default"
+      }
+      prompt={
+        prompt ??
+        `Use Tiraz StreamingText with host-supplied ${markdown ? "Markdown" : "plain text"}, explicit streaming/completed state and a local fixed-chunk demo. Read ai/README.md and ai/registry.json from the copied system source root. Reuse ai/examples/AIContentExamples.tsx. Install react-markdown@10.1.0 and remark-gfm@4.0.1 for Markdown support. Keep code LTR and reject raw HTML/unsafe URLs. The host owns transport and cancellation; this demo makes no AI/network request.`
+      }
+      copyLabel={copyLabel}
+      replayLabel={playLabel}
+      onReplay={start}
     >
-      <header className="tz-stream-demo-header">
-        <span className="tz-stream-demo-title">
-          {markdown
-            ? ar
-              ? "ماركداون"
-              : "Markdown"
-            : ar
-              ? "الافتراضي"
-              : "Default"}
-        </span>
-        <div className="tz-stream-demo-actions">
-          <Button
-            variant="ghost"
-            iconOnly
-            aria-label={cancelLabel}
-            title={cancelLabel}
-            aria-disabled={phase !== "streaming"}
-            onClick={() => {
-              if (phase !== "streaming") return;
-              invalidate();
-              setPhase("cancelled");
-            }}
-          >
-            <Square size={14} aria-hidden="true" />
-          </Button>
-          <Button
-            variant="ghost"
-            iconOnly
-            aria-label={playLabel}
-            title={playLabel}
-            onClick={start}
-          >
-            <Play size={16} aria-hidden="true" />
-          </Button>
-        </div>
-      </header>
       <div style={{ minBlockSize: 100 }}>
         <StreamingText
           text={text}
@@ -236,6 +222,6 @@ export function StreamingDemo({
           statusLabel={status}
         />
       </div>
-    </div>
+    </DemoFrame>
   );
 }

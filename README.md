@@ -315,3 +315,9 @@ must install `react-markdown@10.1.0 remark-gfm@4.0.1`; see
 URL/HTML restrictions, language fallback and host responsibilities. The local
 streaming playground and documentation example each run one fixed-chunk sample
 automatically, with compact playback icons and a shared frame.
+
+Documentation previews share a compact titled frame with matching borders, surface
+and responsive padding. Each header copies the current component prompt, including
+source-copy dependency instructions. Interactive examples also have replay/reset;
+static displays keep only Copy prompt. Streaming demos autoplay and provide Replay
+without a stop control. Shared appearance settings persist when replaying.

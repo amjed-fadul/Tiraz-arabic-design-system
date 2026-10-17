@@ -1,0 +1,1168 @@
+[
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "LoadingState",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "ThinkingIndicator",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "ThinkingState",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "TaskRows",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "ToolCall",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "ToolChips",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "CodeBlock",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Markdown",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "StreamingText",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Button",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Input",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Slider",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "OTPInput",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "DatePicker",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "TagInput",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "ColorPicker",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "InputCopy",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Select",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Checkbox",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "RadioGroup",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Textarea",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Switch",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "FileTree",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "FileDropzone",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Sidebar",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Tabs",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Breadcrumbs",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Pagination",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Steps",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "FilterBar",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Table",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "DataTable",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Timeline",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "NotificationList",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Card",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Accordion",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Avatar",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "AvatarGroup",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Badge",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "EmptyState",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Alert",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Toast",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Skeleton",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Progress",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Spinner",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Dropdown menu",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Sheet",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Modal",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Tooltip",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Line chart",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Area chart",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Bar chart",
+    "overflow": false
+  },
+  {
+    "frames": [
+      {
+        "actions": 1,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      },
+      {
+        "actions": 2,
+        "bg": "rgb(255, 255, 255)",
+        "border": "1px solid rgb(197, 206, 199)",
+        "padding": "24px",
+        "radius": "8px",
+        "width": 730
+      }
+    ],
+    "name": "Donut chart",
+    "overflow": false
+  }
+]

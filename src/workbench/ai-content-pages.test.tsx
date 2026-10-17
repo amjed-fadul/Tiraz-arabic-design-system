@@ -47,30 +47,21 @@ it.each([
     expect(prompt).toContain("remark-gfm@4.0.1");
   },
 );
-it("explicitly starts fixed chunks, preserves cancellation content and invalidates replay/unmount callbacks", async () => {
+it("explicitly starts fixed chunks and invalidates replay/unmount callbacks", async () => {
   vi.useFakeTimers();
-  const wrap = (node: React.ReactNode) => (
+  const view = render(
     <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
-      {node}
-    </SystemProvider>
+      <StreamingDemo language="en" markdown />
+    </SystemProvider>,
   );
-  const view = render(wrap(<StreamingDemo language="en" markdown />));
   const content = () =>
     document.querySelector(".tz-stream-content")?.textContent;
   expect(vi.getTimerCount()).toBe(0);
   expect(content()).toBe("");
   fireEvent.click(screen.getByRole("button", { name: "Start local demo" }));
   await act(async () => vi.advanceTimersByTime(960));
-  const received = content();
-  expect(received).toContain("Tiraz");
-  fireEvent.click(screen.getByRole("button", { name: "Cancel demo" }));
-  expect(document.querySelector(".tz-stream-cursor")).toBeNull();
-  expect(vi.getTimerCount()).toBe(0);
-  await act(async () => vi.advanceTimersByTime(10000));
-  expect(content()).toBe(received);
-  expect(
-    document.querySelector(".tz-streaming-text > [role=status]"),
-  ).toHaveTextContent("cancelled");
+  expect(content()).toContain("Tiraz");
+  expect(screen.queryByRole("button", { name: "Cancel demo" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
   await act(async () => vi.advanceTimersByTime(320));
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
@@ -88,7 +79,7 @@ it("explicitly starts fixed chunks, preserves cancellation content and invalidat
   expect(vi.getTimerCount()).toBe(0);
 });
 
-it("automatically streams the playground once, preserving cancel/replay and invalidating configuration changes", async () => {
+it("automatically streams the playground once, preserving replay and invalidating configuration changes", async () => {
   vi.useFakeTimers();
   const wrap = (language: "ar" | "en", markdown = false) => (
     <StrictMode>
@@ -115,15 +106,11 @@ it("automatically streams the playground once, preserving cancel/replay and inva
   expect(document.querySelector(".tz-stream-content")).toHaveTextContent(
     "This",
   );
-  fireEvent.click(screen.getByRole("button", { name: "Cancel demo" }));
-  const text = document.querySelector(".tz-stream-content")?.textContent;
-  await act(async () => vi.advanceTimersByTime(10000));
-  expect(document.querySelector(".tz-stream-content")?.textContent).toBe(text);
-  expect(document.querySelector(".tz-stream-cursor")).toBeNull();
-  expect(vi.getTimerCount()).toBe(0);
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
   await act(async () => vi.advanceTimersByTime(4000));
-  expect(screen.getByRole("status")).toHaveTextContent("Local sample complete");
+  expect(
+    document.querySelector(".tz-streaming-text > [role=status]"),
+  ).toHaveTextContent("Local sample complete");
   expect(vi.getTimerCount()).toBe(0);
   view.rerender(wrap("ar", true));
   await act(async () => vi.advanceTimersByTime(320));
@@ -146,7 +133,7 @@ it("uses compact titled headers and named icon-only playback controls in both de
     "en",
   );
   const playground = document.querySelector(
-    ".playground-canvas",
+    ".playground-region",
   ) as HTMLElement;
   const example = document.querySelector(".examples-canvas") as HTMLElement;
   for (const [block, title] of [
@@ -170,13 +157,12 @@ it("uses compact titled headers and named icon-only playback controls in both de
   await user.keyboard("{Enter}");
   expect(play).toHaveAccessibleName("Replay local demo");
   expect(play).toHaveFocus();
-  await user.click(
-    within(example).getByRole("button", { name: "Cancel demo" }),
-  );
   expect(
-    within(example).getByRole("button", { name: "Cancel demo" }),
-  ).toHaveFocus();
-  expect(example.querySelector(".tz-stream-cursor")).toBeNull();
+    within(example).getByRole("button", { name: "Copy example prompt" }),
+  ).toBeVisible();
+  expect(
+    within(example).queryByRole("button", { name: "Cancel demo" }),
+  ).toBeNull();
 });
 
 it("automatically runs both documentation demos without local footer or empty event scaffolding", async () => {

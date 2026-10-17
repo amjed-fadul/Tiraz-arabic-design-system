@@ -262,19 +262,15 @@ bdi {
   font-size: 11px;
 }
 .playground-region {
-  border: 1px solid var(--border-strong);
-  border-radius: 8px;
   overflow: visible;
-}
-.playground-region > .tiraz-system {
-  border-radius: 7px;
 }
 .playground-canvas {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-block-size: 176px;
-  padding: 34px;
+  min-block-size: 100px;
+  min-inline-size: 0;
+  padding: 0;
 }
 .playground-tabs {
   inline-size: 100%;
@@ -334,7 +330,7 @@ bdi {
   border-radius: 7px;
 }
 .examples-canvas {
-  padding: 20px 22px;
+  padding: 0;
 }
 .example-row {
   margin-block-end: 20px;
@@ -867,10 +863,7 @@ bdi {
     font-size: 11px !important;
     padding-inline: 3px;
   }
-  .playground-canvas {
-    padding: 24px 18px;
-    min-block-size: 154px;
-  }
+
   .playground-tabs .tz-tab {
     padding-inline: 8px;
     font-size: 12px;
@@ -878,9 +871,7 @@ bdi {
   .playground-tabs .tz-tab-list {
     flex-wrap: nowrap;
   }
-  .examples-canvas {
-    padding: 18px;
-  }
+
   .example-inline {
     gap: 10px;
   }
@@ -1279,16 +1270,7 @@ bdi {
   block-size: 16px;
 }
 
-/* StreamingDemo owns one portable frame in both documentation sections. */
-.playground-region.streaming-demo-region {
-  border: 0;
-  border-radius: 0;
-}
-.streaming-demo-region .playground-canvas {
+/* Every demo shares its frame; canvases only arrange the component body. */
+.playground-streaming-text {
   display: block;
-  min-block-size: 0;
-  padding: 0;
-}
-.examples-canvas.streaming-demo-examples {
-  padding: 0;
 }

@@ -206,9 +206,13 @@ function EditableSheet({ language }: { language: Language }) {
 export function Examples({
   component,
   language,
+  prompt,
+  copyLabel,
 }: {
   component: ComponentId;
   language: Language;
+  prompt?: string;
+  copyLabel?: string;
 }) {
   const t = words(language);
   const [event, setEvent] = useState("");
@@ -265,7 +269,15 @@ export function Examples({
   if (component === "markdown")
     return <MarkdownExample language={language} longContent />;
   if (component === "streaming-text")
-    return <StreamingDemo language={language} markdown autoStart />;
+    return (
+      <StreamingDemo
+        language={language}
+        markdown
+        autoStart
+        prompt={prompt}
+        copyLabel={copyLabel}
+      />
+    );
   if (component === "tool-call" || component === "tool-chips")
     return (
       <div style={{ display: "grid", gap: "var(--space-8)", minInlineSize: 0 }}>

@@ -26,6 +26,8 @@ import { Appearance } from "./Appearance";
 import { Inspector } from "./Inspector";
 import { Playground } from "./Playground";
 import { Examples } from "./Examples";
+import { PreviewFrame } from "./PreviewFrame";
+import { canReplayExamples, canReplayPlayground } from "./demo-capabilities";
 import { CodeExample } from "./CodeExample";
 import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
@@ -61,6 +63,9 @@ export function Workbench() {
   const [playgrounds, setPlaygrounds] = useState(() =>
     readPlaygrounds(language),
   );
+  const [exampleRevisions, setExampleRevisions] = useState<
+    Record<string, number>
+  >({});
   const [revisions, setRevisions] = useState<Record<string, number>>({});
   const [events, setEvents] = useState<
     Partial<Record<ComponentId, EventRecord[]>>
@@ -177,6 +182,22 @@ export function Workbench() {
     }));
     setEvents((prev) => ({ ...prev, [active]: [] }));
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
+  }
+  function replayPlayground() {
+    if (
+      [
+        "loading-state",
+        "thinking-indicator",
+        "thinking-state",
+        "tool-call",
+        "tool-chips",
+        "skeleton",
+        "spinner",
+        "progress",
+      ].includes(active)
+    ) {
+      setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
+    } else resetPlayground();
   }
   function changeLanguage(next: Language) {
     if (next === language) return;
@@ -408,24 +429,42 @@ export function Workbench() {
                     </bdi>
                   </span>
                 </div>
-                <div
-                  className={`playground-region${active === "streaming-text" ? " streaming-demo-region" : ""}`}
-                  role="region"
-                  aria-label={label("playground", language)}
-                >
+                <div className="playground-region">
                   <SystemProvider config={effectiveConfig}>
-                    <div className={`playground-canvas playground-${active}`}>
-                      <Playground
-                        key={`${active}-${revisions[active] ?? 0}`}
-                        component={active}
-                        model={model}
-                        language={language}
-                        onPatch={(patch) => patchPage(active, patch)}
-                        onEvent={(name, value) => record(active, name, value)}
-                        onButtonAction={buttonAction}
-                        buttonState={buttonFeedback ?? undefined}
-                      />
-                    </div>
+                    <PreviewFrame
+                      component={active}
+                      language={language}
+                      title={t("الافتراضي", "Default")}
+                      prompt={prompt}
+                      copyLabel={t(
+                        "نسخ الموجّه للمعاينة",
+                        "Copy playground prompt",
+                      )}
+                      replayable={canReplayPlayground(active, model)}
+                      onReplay={replayPlayground}
+                    >
+                      <div
+                        className={`playground-canvas playground-${active}`}
+                        role="region"
+                        aria-label={label("playground", language)}
+                      >
+                        <Playground
+                          key={`${active}-${revisions[active] ?? 0}`}
+                          component={active}
+                          model={model}
+                          language={language}
+                          prompt={prompt}
+                          copyLabel={t(
+                            "نسخ الموجّه للمعاينة",
+                            "Copy playground prompt",
+                          )}
+                          onPatch={(patch) => patchPage(active, patch)}
+                          onEvent={(name, value) => record(active, name, value)}
+                          onButtonAction={buttonAction}
+                          buttonState={buttonFeedback ?? undefined}
+                        />
+                      </div>
+                    </PreviewFrame>
                   </SystemProvider>
                 </div>
                 {![
@@ -476,14 +515,36 @@ export function Workbench() {
               <section className="examples-section">
                 <h2 id="examples-heading">{label("examples", language)}</h2>
                 <SystemProvider config={systemConfig}>
-                  <div
-                    className={`examples-canvas${active === "streaming-text" ? " streaming-demo-examples" : ""}`}
-                  >
-                    <Examples
-                      key={`${active}-${language}`}
+                  <div className="examples-canvas">
+                    <PreviewFrame
                       component={active}
                       language={language}
-                    />
+                      title={
+                        active === "streaming-text"
+                          ? t("ماركداون", "Markdown")
+                          : t("أمثلة", "Examples")
+                      }
+                      prompt={prompt}
+                      copyLabel={t("نسخ الموجّه للمثال", "Copy example prompt")}
+                      replayable={canReplayExamples(active)}
+                      onReplay={() =>
+                        setExampleRevisions((prev) => ({
+                          ...prev,
+                          [active]: (prev[active] ?? 0) + 1,
+                        }))
+                      }
+                    >
+                      <Examples
+                        key={`${active}-${language}-${exampleRevisions[active] ?? 0}`}
+                        component={active}
+                        language={language}
+                        prompt={prompt}
+                        copyLabel={t(
+                          "نسخ الموجّه للمثال",
+                          "Copy example prompt",
+                        )}
+                      />
+                    </PreviewFrame>
                   </div>
                 </SystemProvider>
               </section>

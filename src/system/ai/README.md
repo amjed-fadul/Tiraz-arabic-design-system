@@ -658,10 +658,15 @@ one local sample automatically on entry and after language/mode changes. Their s
 frame owns the same border, surface and padding; the workbench adds no second
 frame. Local provenance is retained in accessible group naming and this guidance,
 without a repeated visible footer. Both demos use a compact Default/Markdown
-header with named, icon-only Play/Replay and Stop controls. Stop stays mounted to
-preserve keyboard focus after cancellation. The standalone StreamingDemo starts
-explicitly by default. Both invalidate callbacks on replay/cancel/unmount or
-configuration changes, retain received text on cancel
-and identify themselves as local with no AI/network request. Plain demo chunks
+header with named, icon-only Copy prompt and Play/Replay controls. All documentation
+playgrounds and example sections share this frame, with 24px padding on desktop
+and 16px on narrow screens. Static displays have only Copy prompt; interactive
+examples also offer replay/reset. Workbench copies include current settings,
+source examples and dependency instructions. Replaying a non-streaming playground
+restores its initial component props; shared appearance settings are retained.
+The standalone StreamingDemo starts explicitly by default. Runs invalidate timers
+on replay, configuration changes and unmount. The host still owns cancellation
+and should keep received text if a real stream is cancelled. The local demo has
+no stop control and makes no AI/network request. Plain demo chunks
 arrive every 160ms, overlapping a gentle 360ms reveal with less blur; no movement
 is applied to Arabic glyphs or existing content. The component still owns no timer.

@@ -3946,8 +3946,8 @@ button.tz-tool-chip {
   }
 }
 
-/* Shared by the portable streaming example and its automatic playground. */
-.tz-stream-demo {
+/* Shared documentation and portable example frame. */
+.tz-demo-frame {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--surface);
@@ -3957,38 +3957,34 @@ button.tz-tool-chip {
   inline-size: 100%;
   min-inline-size: 0;
 }
-.tz-stream-demo-header {
+.tz-demo-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
 }
-.tz-stream-demo-title {
+.tz-demo-title {
   color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: var(--text-meta);
   font-weight: var(--weight-medium);
   text-transform: uppercase;
 }
-.tz-stream-demo-title:lang(ar) {
+.tz-demo-title:lang(ar) {
   font-family: var(--font);
 }
-.tz-stream-demo-actions {
+.tz-demo-actions {
   display: flex;
   align-items: center;
   gap: var(--space-1);
   flex-shrink: 0;
 }
-.tz-stream-demo-actions .tz-button {
+.tz-demo-actions .tz-button {
   color: var(--text-muted);
   padding: 0;
 }
-.tz-stream-demo-actions .tz-button[aria-disabled="true"] {
-  opacity: 0.35;
-  cursor: default;
-}
 @media (max-width: 600px) {
-  .tz-stream-demo {
+  .tz-demo-frame {
     padding: var(--space-4);
   }
 }

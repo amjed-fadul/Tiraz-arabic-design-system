@@ -129,6 +129,8 @@ interface Props {
   onEvent: (name: string, value?: unknown) => void;
   onButtonAction: () => void;
   buttonState?: ButtonState;
+  prompt?: string;
+  copyLabel?: string;
 }
 export function ContentIcon({ icon }: { icon: string }) {
   const Icon =
@@ -174,6 +176,8 @@ export function Playground({
   onEvent,
   onButtonAction,
   buttonState,
+  prompt,
+  copyLabel,
 }: Props) {
   const t = words(language);
   if (component === "loading-state")
@@ -208,6 +212,8 @@ export function Playground({
     return (
       <StreamingTextExample
         language={language}
+        prompt={prompt}
+        copyLabel={copyLabel}
         {...(model as Playgrounds["streaming-text"])}
       />
     );

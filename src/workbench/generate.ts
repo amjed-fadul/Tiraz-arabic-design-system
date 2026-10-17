@@ -74,10 +74,9 @@ export function generateCode(
   language: Language,
 ): string {
   if (["code-block", "markdown", "streaming-text"].includes(component)) {
-    const source = aiContentSource.replace(
-      /from "\.\.\/\.\.\/index"/g,
-      'from "./system"',
-    );
+    const source = aiContentSource
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
+      .replace('from "./DemoFrame"', 'from "./system/ai/examples/DemoFrame"');
     const name =
       component === "code-block"
         ? "CodeBlockExample"
