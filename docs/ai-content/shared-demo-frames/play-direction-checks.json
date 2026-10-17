@@ -1,0 +1,30 @@
+{
+  "english": [
+    {
+      "copy": "none",
+      "direction": "ltr",
+      "play": "none"
+    },
+    {
+      "copy": "none",
+      "direction": "ltr",
+      "play": "none"
+    }
+  ],
+  "arabic": [
+    {
+      "copy": "none",
+      "direction": "rtl",
+      "play": "matrix(-1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "copy": "none",
+      "direction": "rtl",
+      "play": "matrix(-1, 0, 0, 1, 0, 0)"
+    }
+  ],
+  "keyboard": {
+    "focus": "إعادة العرض المحلي",
+    "state": "streaming"
+  }
+}

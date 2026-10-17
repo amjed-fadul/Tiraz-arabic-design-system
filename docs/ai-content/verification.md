@@ -1,3 +1,5 @@
+Latest correction: [RTL play icon direction](shared-demo-frames/rtl-play-verification.md).
+
 Latest follow-up: [shared frames, prompt copying and replay controls](shared-demo-frames/verification.md).
 
 # AI content verification — 17 October 2026

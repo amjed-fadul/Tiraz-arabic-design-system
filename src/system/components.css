@@ -3983,6 +3983,9 @@ button.tz-tool-chip {
   color: var(--text-muted);
   padding: 0;
 }
+.tz-demo-play-icon:dir(rtl) {
+  transform: scaleX(-1);
+}
 @media (max-width: 600px) {
   .tz-demo-frame {
     padding: var(--space-4);

@@ -96,7 +96,11 @@ export function DemoFrame({
               title={playName}
               onClick={onReplay}
             >
-              <Play size={16} aria-hidden="true" />
+              <Play
+                className="tz-demo-play-icon"
+                size={16}
+                aria-hidden="true"
+              />
             </Button>
           )}
           <span role="status" className="tz-visually-hidden">
