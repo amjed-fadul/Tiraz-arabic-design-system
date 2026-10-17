@@ -79,7 +79,7 @@ export function LiveExample({ ar }: { ar: boolean }) {
             />
           </div>
           <div className="lp-demo-activity">
-            <h4>{ar ? "آخر الطلبات" : "Latest orders"}</h4>
+            <h3>{ar ? "آخر الطلبات" : "Latest orders"}</h3>
             <Table caption={ar ? "طلبات تجريبية" : "Sample orders"}>
               <TableHeader>
                 <TableRow>

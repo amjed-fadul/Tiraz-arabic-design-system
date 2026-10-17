@@ -5,6 +5,8 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "../system/tokens.css";
 import "../system/components.css";
+import "lenis/dist/lenis.css";
+import "./fonts.css";
 import "./landing.css";
 import { Landing } from "./Landing";
 

@@ -1,6 +1,7 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { WhyTiraz } from "./WhyTiraz";
+import { weftClip } from "./weft-clip";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -127,5 +128,33 @@ describe("Tiraz pinned story", () => {
     change();
     expect(section).toHaveAttribute("data-static", "false");
     expect(screen.getAllByRole("img")).toHaveLength(3);
+  });
+});
+
+describe("woven image transition", () => {
+  it("hides the next image, weaves it in from the right edge and then removes the clip", () => {
+    const hidden = weftClip(0)
+      .match(/([0-9.]+)% [0-9.]+%/g)!
+      .slice(2);
+    hidden.forEach((point) => expect(point.startsWith("100.00%")).toBe(true));
+    const half = weftClip(0.5)
+      .match(/([0-9.]+)% [0-9.]+%/g)!
+      .slice(2);
+    const xs = half.map((point) => parseFloat(point));
+    // Bottom rows have travelled further left than the top rows.
+    expect(xs[0]).toBeLessThan(xs[xs.length - 1]);
+    expect(weftClip(1)).toBe("none");
+  });
+
+  it("applies the woven clip to the following images as the story scrolls", () => {
+    const { container, scroll } = setup();
+    const images = container.querySelectorAll<HTMLElement>(
+      ".lp-story-visual img",
+    );
+    scroll(0.27);
+    expect(images[1].style.clipPath).toMatch(/^polygon\(/);
+    scroll(0.5);
+    expect(images[1].style.clipPath).toBe("none");
+    expect(images[0].style.clipPath).toBe("");
   });
 });

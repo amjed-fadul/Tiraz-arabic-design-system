@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { preload } from "react-dom";
-import arabicFirst from "./assets/story/arabic-first.webp?url";
-import sharedSystem from "./assets/story/shared-system.webp?url";
-import aiGuidance from "./assets/story/ai-guidance.webp?url";
+import firstThread from "./assets/loom/first-thread.webp?url";
+import weavingDraft from "./assets/loom/draft.webp?url";
+import patternCards from "./assets/loom/pattern-cards.webp?url";
+import { weftClip } from "./weft-clip";
 import "./story.css";
+
+const ACCENTS = ["#a5c9b4", "#a8c6ef", "#d6b6e5", "#e8baa3"];
 
 export function WhyTiraz({ ar }: { ar: boolean }) {
   const root = useRef<HTMLElement>(null);
@@ -11,34 +14,62 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
   const [staticLayout, setStaticLayout] = useState(true);
   const stories = [
     {
-      title: ar ? "العربية أولًا" : "Arabic first",
+      title: ar ? "العربية تبدأ من أول خيط" : "Arabic from the first thread",
       text: ar
         ? "حروف عربية بإيقاعها الطبيعي، واتجاه من اليمين. يبقى النص المختلط واضحًا، حتى في أدق التفاصيل."
         : "Arabic typography with its natural rhythm. Right-to-left layouts and mixed-language content, considered down to the details.",
-      image: arabicFirst,
+      image: firstThread,
       alt: ar
-        ? "خيوط وأشرطة منسوجة تتدفق من اليمين إلى اليسار"
-        : "Woven ribbons and threads flowing from right to left",
+        ? "خيط أخضر يعبر خيوط السدى العاجية من اليمين إلى اليسار"
+        : "A green thread passing through ivory warp threads from right to left",
+      caption: ar
+        ? [
+            "الخيط الأول.",
+            "يعبر السدى من اليمين إلى اليسار، باتجاه قراءة العربية.",
+          ]
+        : [
+            "The first thread.",
+            "It crosses the warp from right to left, the direction Arabic is read.",
+          ],
     },
     {
-      title: ar ? "نظام واحد، بتفاصيل مترابطة" : "One coherent system",
+      title: ar
+        ? "قواعد واحدة، ونسيج متّسق"
+        : "One set of rules, one coherent cloth",
       text: ar
         ? "رموز تصميم مشتركة ومكوّنات مدمجة تعمل معًا. غيّر اللون وشاهد الأزرار والرسوم تتغيّر من إعداد واحد."
         : "Shared tokens and compact components that work together. One accent setting connects your controls, charts and live customization.",
-      image: sharedSystem,
+      image: weavingDraft,
       alt: ar
-        ? "وحدات نسيج هندسية مترابطة في بناء واحد"
-        : "Interlocking woven modules joined into one precise structure",
+        ? "مخطط نسج على ورق شبكي بجانب القطعة المنسوجة منه"
+        : "A weaving draft on grid paper beside the swatch woven from it",
+      caption: ar
+        ? [
+            "مخطّط النسج.",
+            "قواعد على شبكة واحدة، تُنتج نسيجًا متّسقًا في كل مرة.",
+          ]
+        : [
+            "The weaving draft.",
+            "Rules on one grid that produce the same coherent cloth every time.",
+          ],
     },
     {
-      title: ar ? "جاهز للعمل مع الذكاء الاصطناعي" : "Built to work with AI",
+      title: ar
+        ? "تعليمات تقرؤها الآلة بدقّة"
+        : "Instructions a machine can follow",
       text: ar
         ? "تعليمات تنتقل مع المصدر، وأمثلة وواجهات مكوّنات فعلية. ليبدأ مساعدك من النظام الذي تستخدمه."
         : "Portable instructions, working examples and real component APIs. Give your coding assistant the system you actually use.",
-      image: aiGuidance,
+      image: patternCards,
       alt: ar
-        ? "مسار أخضر واضح يوجّه الخيوط عبر تقاطعات النسيج"
-        : "A clear green thread guiding fibers through structured textile junctions",
+        ? "بطاقات نول مثقّبة متصلة توجّه نسج شريط هندسي"
+        : "Laced punched loom cards guiding the weaving of a geometric band",
+      caption: ar
+        ? ["بطاقات النول.", "أول تعليمات قرأتها آلة لتنسج نقشًا دقيقًا."]
+        : [
+            "The pattern cards.",
+            "The first instructions a machine read to weave a precise pattern.",
+          ],
     },
   ];
 
@@ -95,8 +126,9 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
         );
         images[index].style.setProperty(
           "--story-scale",
-          String(1 + 0.03 * (1 - reveal[index])),
+          String(1 + 0.04 * (1 - reveal[index])),
         );
+        if (index > 0) images[index].style.clipPath = weftClip(reveal[index]);
       });
       setActive(progress < 0.3 ? 0 : progress < 0.7 ? 1 : 2);
     };
@@ -175,10 +207,30 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
               <article key={story.image} data-story-step={index}>
                 <div className="lp-story-copy">
                   <span className="lp-story-number" aria-hidden="true">
-                    0{index + 1}
+                    {ar ? `٠${"١٢٣"[index]}` : `0${index + 1}`}
                   </span>
                   <h3>{story.title}</h3>
                   <p>{story.text}</p>
+                  {index === 0 && (
+                    <p className="lp-story-proof">
+                      {ar ? "الطلب" : "Order"} <bdi dir="ltr">#A-1024</bdi> ·{" "}
+                      {ar ? "١٢٠ ر.س" : "SAR 120"} ·{" "}
+                      <bdi dir="ltr">Visa •• 4242</bdi>
+                    </p>
+                  )}
+                  {index === 1 && (
+                    <p className="lp-story-proof">
+                      {ACCENTS.map((color) => (
+                        <i
+                          key={color}
+                          className="lp-story-swatch"
+                          style={{ background: color }}
+                          aria-hidden="true"
+                        />
+                      ))}
+                      <bdi dir="ltr">accent: "sage"</bdi>
+                    </p>
+                  )}
                   {index === 2 && (
                     <a
                       className="lp-story-reference"
@@ -189,15 +241,18 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
                     </a>
                   )}
                 </div>
-                <img
-                  className="lp-story-inline"
-                  src={story.image}
-                  alt={story.alt}
-                  width="1200"
-                  height="900"
-                  loading="eager"
-                  aria-hidden={!staticLayout}
-                />
+                <figure className="lp-story-inline" aria-hidden={!staticLayout}>
+                  <img
+                    src={story.image}
+                    alt={story.alt}
+                    width="960"
+                    height="1280"
+                    loading="eager"
+                  />
+                  <figcaption>
+                    <b>{story.caption[0]}</b> {story.caption[1]}
+                  </figcaption>
+                </figure>
               </article>
             ))}
           </div>
@@ -208,12 +263,15 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
               key={story.image}
               src={story.image}
               alt={story.alt}
-              width="1200"
-              height="900"
+              width="960"
+              height="1280"
               loading="eager"
               decoding="async"
             />
           ))}
+          <p className="lp-story-caption" key={active}>
+            <b>{stories[active].caption[0]}</b> {stories[active].caption[1]}
+          </p>
         </div>
       </div>
     </section>

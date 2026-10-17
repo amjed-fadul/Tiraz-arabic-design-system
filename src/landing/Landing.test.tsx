@@ -30,14 +30,21 @@ describe("landing behavior", () => {
     expect(within(demo).getByTestId("order-total")).toHaveTextContent("1,124");
     await user.click(within(demo).getByRole("tab", { name: "Last 3 days" }));
     expect(within(demo).getByTestId("order-total")).toHaveTextContent("672");
-    await user.click(screen.getByRole("button", { name: "Use dark theme" }));
+    // The night loom is the default; one control switches the whole page.
     expect(container.querySelector(".tiraz-system")).toHaveAttribute(
       "data-theme",
       "dark",
     );
+    await user.click(screen.getByRole("button", { name: "Use light theme" }));
+    expect(container.querySelector(".tiraz-system")).toHaveAttribute(
+      "data-theme",
+      "light",
+    );
+    expect(document.documentElement.dataset.landingTheme).toBe("light");
     expect(
-      screen.getAllByRole("button", { name: "Use light theme" }),
+      screen.getAllByRole("button", { name: "Use dark theme" }),
     ).toHaveLength(1);
+    expect(within(demo).getByTestId("order-total")).toHaveTextContent("672");
   });
 
   it("uses the real documentation entry and keeps mixed source paths isolated", () => {
@@ -82,7 +89,7 @@ describe("hero accent customization", () => {
     await user.click(screen.getByRole("radio", { name: "Blue" }));
     expect(container.querySelectorAll(".tiraz-system")).toHaveLength(1);
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
-      "--action": "#365B87",
+      "--action": "#A8C6EF",
     });
     expect(screen.getByRole("radio", { name: "Blue" })).toBeChecked();
     expect(screen.getByTestId("order-total")).toHaveTextContent("672");
@@ -95,16 +102,73 @@ describe("hero accent customization", () => {
     await user.keyboard("{ArrowDown}");
     expect(screen.getByRole("radio", { name: "Purple" })).toBeChecked();
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
-      "--action": "#6B487A",
+      "--action": "#D6B6E5",
     });
     expect(screen.getByTestId("order-total")).toHaveTextContent("672");
-    await user.click(screen.getByRole("button", { name: "Use dark theme" }));
+    await user.click(screen.getByRole("button", { name: "Use light theme" }));
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
-      "--action": "#D6B6E5",
+      "--action": "#6B487A",
     });
     expect(screen.getByRole("tab", { name: "Last 3 days" })).toHaveAttribute(
       "data-state",
       "active",
     );
+  });
+});
+
+describe("night loom page", () => {
+  it("shows the woven hero band as decoration, without WebGL in this environment", () => {
+    const { container } = render(<Landing />);
+    const loom = container.querySelector(".lp-hero .lp-loom")!;
+    expect(loom).toHaveAttribute("aria-hidden", "true");
+    expect(loom).toHaveAttribute("data-effect", "static");
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "واجهات عربية، من أول خيط.",
+    );
+  });
+
+  it("showcases real Tiraz components that respond to input", async () => {
+    const user = userEvent.setup();
+    render(<Landing />);
+    await user.click(screen.getByRole("button", { name: "English" }));
+    const gallery = screen.getByRole("region", {
+      name: /Small building blocks/,
+    });
+    expect(
+      within(gallery).getByRole("switch", { name: "Instant notifications" }),
+    ).toBeChecked();
+    expect(
+      within(gallery).getByRole("slider", { name: "Display density" }),
+    ).toHaveValue("60");
+    expect(
+      within(gallery).getByRole("progressbar", {
+        name: "Sample project progress",
+      }),
+    ).toHaveAttribute("aria-valuenow", "72");
+    const code = within(gallery).getByRole("textbox", {
+      name: "Verification code",
+    });
+    expect(code).toHaveValue("4271");
+    await user.click(
+      within(gallery).getByRole("switch", { name: "Instant notifications" }),
+    );
+    expect(
+      within(gallery).getByRole("switch", { name: "Instant notifications" }),
+    ).not.toBeChecked();
+    expect(
+      within(gallery).getByRole("button", { name: /Delivery date/ }),
+    ).toBeInTheDocument();
+  });
+
+  it("lists every component family once for assistive technology", async () => {
+    const user = userEvent.setup();
+    render(<Landing />);
+    const names = screen.getByRole("region", { name: "مكوّنات طِراز" });
+    expect(within(names).getAllByRole("listitem")).toHaveLength(41);
+    await user.click(screen.getByRole("button", { name: "English" }));
+    const list = screen.getByRole("region", { name: "Tiraz components" });
+    expect(
+      within(list).getByText("DatePicker", { selector: "li" }),
+    ).toBeVisible();
   });
 });
