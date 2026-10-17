@@ -102,3 +102,14 @@ its README.md/workbench.css edits and .claude/ untracked directory; its index
 remains empty. No original files, landing work or unrelated servers were changed.
 Only this worktree's preview was started. No push, merge, deployment or new
 component family beyond the three requested foundations.
+
+## Follow-up: remove ChatThread focus border
+
+Removed the thread's focus outline at the user's request. The region remains
+keyboard-focusable and scrollable; message-action and composer styles are unchanged.
+Browser inspection confirmed the focused thread matched :focus-visible with
+outline-style none. See thread-focus-removed.jpg.
+
+Focused chat, generated-code and relocated-source checks: 4 files, 22 tests passed.
+Build, lint, formatting and diff checks passed. The full suite was not rerun for
+this CSS-only follow-up; the preceding implementation run passed all 635 tests.

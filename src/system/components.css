@@ -4002,9 +4002,7 @@ button.tz-tool-chip {
   padding: var(--space-2);
 }
 .tz-chat-thread:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-  border-radius: var(--radius-small);
+  outline: none;
 }
 .tz-chat-messages {
   display: flex;
