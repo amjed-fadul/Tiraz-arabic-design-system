@@ -1,0 +1,18 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/chat-foundation/Tiraz
+
+·············································································································································································································································································································································································································································································································································stderr | src/system/ai-feedback.test.tsx > recovers focus on controlled collapse, preserves detail values and never reclaims outside focus
+A component suspended inside an `act` scope, but the `act` call was not awaited. When testing React components that depend on asynchronous data, you must await the result:
+
+await act(() => ...)
+
+··················································································································
+
+ Test Files  72 passed (72)
+      Tests  639 passed (639)
+   Start at  15:07:23
+   Duration  118.81s (import 47%, tests 37%, environment 12%, setup 2%, transform 1%)
+
+     Import  251 modules were evaluated 6246 times · 107.95s total, 47% of tracked time
+             ~50.50s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

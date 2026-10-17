@@ -242,8 +242,8 @@ export function ApiReference({
         "Native attributes / ref",
         "textarea",
         t(
-          "ref يستهدف textarea؛ className وstyle للجذر. لا قيمة غير متحكم بها.",
-          "Ref targets textarea; className/style target wrapper. No uncontrolled value.",
+          "ref يستهدف textarea؛ className وstyle للجذر. اتجاه الإدخال يتبع النظام افتراضيًا؛ dir يتيح تجاوزه. يبدأ المؤشر من اليمين في RTL حتى مع نص إنجليزي.",
+          "Ref targets textarea; className/style target wrapper. Entry direction defaults to the system; native dir overrides it. RTL starts on the right, including English drafts.",
         ),
       ],
     ],
@@ -252,8 +252,8 @@ export function ApiReference({
         "Entry / submission",
         "ChatComposerProps",
         t(
-          "نفس السلوك المتحكم به وحماية IME؛ عرض مدمج لبدء مهمة بحد 80px. لا محرك إرسال ثانٍ.",
-          "Same controlled submission and IME guards; compact task entry bounded to 80px. Shares the entry engine.",
+          "نفس السلوك المتحكم به وحماية IME واتجاه النظام؛ يبدأ المؤشر من اليمين في RTL. عرض مدمج لبدء مهمة بحد 80px.",
+          "Same controlled submission, IME guards and system direction; RTL starts on the right. Compact task entry bounded to 80px. Shares the entry engine.",
         ),
       ],
       [

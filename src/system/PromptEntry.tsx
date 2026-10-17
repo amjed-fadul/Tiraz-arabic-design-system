@@ -133,7 +133,7 @@ export function PromptEntry({
           rows={1}
           disabled={disabled}
           readOnly={readOnly}
-          dir={props.dir ?? "auto"}
+          dir={props.dir ?? (ar ? "rtl" : "ltr")}
           aria-label={
             label ?? props["aria-label"] ?? (ar ? "رسالتك" : "Your message")
           }

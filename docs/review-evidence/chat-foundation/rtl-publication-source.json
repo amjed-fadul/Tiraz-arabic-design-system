@@ -1,0 +1,104 @@
+{
+  "base": "e28f30bedd418741c2b107d89eb2319025583033",
+  "branch": "codex/chat-foundation",
+  "original_results": "rtl-tested-source.json",
+  "difference_from_original_tested_snapshot": [
+    "src/system/chat-foundation.test.tsx"
+  ],
+  "explanation": "Four later mixed editing/selection/Enter/Shift+Enter/IME verification tests were added. All pinned implementation and guidance files are unchanged from the original639-test snapshot.",
+  "results": {
+    "full_tests": {
+      "files": 72,
+      "tests": 643,
+      "passed": true,
+      "command": "npx vitest run --maxWorkers=2 --reporter=dot",
+      "log": "rtl-publication-full-test.txt"
+    },
+    "focused": {
+      "files": 5,
+      "tests": 145,
+      "passed": true,
+      "log": "rtl-publication-focused.txt"
+    },
+    "build": {
+      "passed": true,
+      "log": "rtl-publication-build.txt"
+    },
+    "lint": {
+      "passed": true,
+      "log": "rtl-publication-lint.txt"
+    },
+    "format": {
+      "passed": true,
+      "log": "rtl-publication-format.txt"
+    },
+    "independent_review": {
+      "files": 2,
+      "tests": 19,
+      "passed": true,
+      "actionable_findings": 0
+    },
+    "evidence_re_review": {
+      "passed": true,
+      "actionable_findings": 0,
+      "source_hashes_verified": true,
+      "logs_verified": true
+    }
+  },
+  "files": {
+    "src/system/PromptEntry.tsx": {
+      "sha256": "e0992340c9b108938666e5c72f4de48a5d21ae396805973dc60afc561b61fe18",
+      "git_blob": "00e6dcd54d713604157f685216282fdd416d1c2f"
+    },
+    "src/system/components.css": {
+      "sha256": "f98fa965884953c01d54c1ab32034c014e4ad5adbd0c4b15c18ad8c3c9d3a174",
+      "git_blob": "8b03dca5d723fabdba946b5494c9df00847f02e6"
+    },
+    "src/system/ChatComposer.tsx": {
+      "sha256": "f7a80fb0fab397fce3eb1e9457117f27341d26dc384276fdc1ff8732e5451647",
+      "git_blob": "22a9e16b62adc6e80a27b148179cd15d6913fb27"
+    },
+    "src/system/PromptBar.tsx": {
+      "sha256": "806fc4713c03199479df96c688bbdcc55227b13cea3e2a10be5f373a7969ee03",
+      "git_blob": "61554f47e2c698f4dab1874c1833a0b312f97cee"
+    },
+    "src/system/chat-foundation.test.tsx": {
+      "sha256": "1514663ced1fe73d1a165e1d31bdbfb7cfdc8ae26bd9583a788e38a119307671",
+      "git_blob": "f8f9fe3511ce6c5a7954c0ff4247f90ed8d30656"
+    },
+    "src/system/chat-examples.test.tsx": {
+      "sha256": "fa7b5917b1ed52c73efb34e59bf80c4cb16745cccb9951085216cd7ca1157018",
+      "git_blob": "cd9ec4306bc8fdb8212f113869b6e8f487ae23cc"
+    },
+    "src/system/ai/README.md": {
+      "sha256": "0348f63a166df38a1e1bde0e4891af736ce35bc1202c76abec09103f66034778",
+      "git_blob": "c575d12530d26dc063c43fd7a9d96b77dad7ab9c"
+    },
+    "src/system/ai/registry.json": {
+      "sha256": "1a8d9dc695c06d58d003e2d7ab1b3ad356168d3b6ce9623b538dfcd2a848cdfe",
+      "git_blob": "37bb65db591f852fefa055a9f6fde551e7d57043"
+    },
+    "src/workbench/ApiReference.tsx": {
+      "sha256": "45d540c4b0076278e3279b9d314c68d6942483abcbabe8ba1bf8a0cc0059f272",
+      "git_blob": "4ac9b255142dbe3d468fbb36a1f19f6018fb46b4"
+    },
+    "src/workbench/generate.ts": {
+      "sha256": "62e0a5ce059fb54ee9924a8e30dca0a598d9cf34ac71bf7687e483001f7cf347",
+      "git_blob": "f8e39818a81681244621c1001176536d251113cb"
+    },
+    "package.json": {
+      "sha256": "b9d767bdf60ba71e860dd8d44933e15f32e7ad31d0dca2e39a8c666c5fc4334c",
+      "git_blob": "37b16f7c2dfce55591d52fd04f48bd6191084502"
+    },
+    "package-lock.json": {
+      "sha256": "467910ad919bd5b846d64b412179630dce1a6e8c425f509b86c36edfbf92ada3",
+      "git_blob": "1c3467205368aa96eddf17513d555c99af782431"
+    }
+  },
+  "browser_evidence": "rtl-editing-verification.json",
+  "limitations": [
+    "IME events are synthetic; no physical OS IME test.",
+    "Desktop browser testing, not physical mobile or manual screen-reader validation.",
+    "Pre-existing React act/suspension warning and production chunk-size warning remain."
+  ]
+}

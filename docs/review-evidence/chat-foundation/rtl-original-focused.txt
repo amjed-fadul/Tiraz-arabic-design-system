@@ -1,0 +1,8 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/chat-foundation/Tiraz
+
+
+ Test Files  5 passed (5)
+      Tests  141 passed (141)
+   Start at  15:06:51
+   Duration  10.55s (tests 52%, import 21%, environment 15%, transform 7%, setup 3%)

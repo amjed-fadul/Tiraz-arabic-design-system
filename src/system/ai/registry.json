@@ -919,13 +919,14 @@
       "accessibility": [
         "Enter sends; Shift+Enter inserts newline. Composition start/end, native isComposing and keyCode 229 guard IME, including button submission during active composition.",
         "Localized input/send/stop/failure names; label and labels overrides. Failure status keeps draft and focus. Do not steal deliberately moved focus.",
-        "ArrowUp send icon stays upward in both directions. Bounded textarea grows to 160px then scrolls; system and OS reduced motion respected."
+        "ArrowUp send icon stays upward in both directions. Bounded textarea grows to 160px then scrolls; system and OS reduced motion respected.",
+        "Entry direction defaults to SystemProvider direction: empty, Arabic, English and mixed drafts start on the right in RTL and left in LTR. Explicit native dir overrides the default, including auto. Native text shaping and bidi behavior remain intact."
       ],
       "limitations": [
         "Whitespace-only submission blocked without trimming valid text. onSubmit may throw or reject; generic localized failure is shown, host may retry. Never clears draft automatically. Prevent duplicate sends while pending or host is busy.",
         "Streaming Stop is shown only when onStop exists; busy state allows editing the next draft. No uploads, model menus, dictation, history or queue."
       ],
-      "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission.",
+      "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission. dir defaults to the provider direction rather than auto; the host can override it explicitly.",
       "alternative": "ChatComposer for multiline conversation replies; PromptBar for compact task prompts; Textarea for ordinary forms.",
       "examples": ["ai/examples/ChatExamples.tsx"]
     },
@@ -987,14 +988,15 @@
       "accessibility": [
         "Enter sends; Shift+Enter inserts newline. Composition start/end, native isComposing and keyCode 229 guard IME, including button submission during active composition.",
         "Localized input/send/stop/failure names; label and labels overrides. Failure status keeps draft and focus. Do not steal deliberately moved focus.",
-        "ArrowUp send icon stays upward in both directions. Bounded textarea grows to 80px then scrolls; system and OS reduced motion respected."
+        "ArrowUp send icon stays upward in both directions. Bounded textarea grows to 80px then scrolls; system and OS reduced motion respected.",
+        "Entry direction defaults to SystemProvider direction: empty, Arabic, English and mixed drafts start on the right in RTL and left in LTR. Explicit native dir overrides the default, including auto. Native text shaping and bidi behavior remain intact."
       ],
       "limitations": [
         "Whitespace-only submission blocked without trimming valid text. onSubmit may throw or reject; generic localized failure is shown, host may retry. Never clears draft automatically. Prevent duplicate sends while pending or host is busy.",
         "Streaming Stop is shown only when onStop exists; busy state allows editing the next draft. No uploads, model menus, dictation, history or queue.",
         "suggestions requires onSuggestionSelect; host populates or submits explicitly. Suggestions appear only for empty draft and are disabled while busy."
       ],
-      "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission.",
+      "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission. dir defaults to the provider direction rather than auto; the host can override it explicitly.",
       "alternative": "ChatComposer for multiline conversation replies; PromptBar for compact task prompts; Textarea for ordinary forms.",
       "examples": ["ai/examples/ChatExamples.tsx"]
     },

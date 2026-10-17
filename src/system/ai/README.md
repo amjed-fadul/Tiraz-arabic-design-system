@@ -707,8 +707,11 @@ shows a Stop action only with `onStop`. `disabled` disables editing/actions;
 `labels.send`, `labels.stop` and `labels.failure` when language differs from
 provider direction. `ref` targets the textarea; className/style target the entry
 wrapper. Other supported native textarea attributes are forwarded. Send stays
-upward in RTL; bubbles align to inline-end. Arabic stays shaped and content uses
-auto direction. No per-letter animation is introduced by entry components.
+upward in RTL; bubbles align to inline-end. Entry direction defaults to the
+SystemProvider direction: an empty, Arabic, English or mixed-script draft starts
+on the right in RTL and on the left in LTR. Native `dir` can explicitly override
+this, including opting into `auto`. Message content retains auto direction and
+Arabic shaping. No per-letter animation is introduced by entry components.
 
 ChatComposer is multiline conversation entry, bounded to 160px before internal
 scrolling. PromptBar is compact task/start entry, bounded to 80px, reusing the same

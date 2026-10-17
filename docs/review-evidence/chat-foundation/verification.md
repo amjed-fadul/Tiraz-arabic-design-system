@@ -138,3 +138,76 @@ prompt-focus-removed.jpg.
 Fresh focused chat/generated/source-only checks: 4 files, 22 tests passed. Build,
 lint, formatting and diff checks passed. No API or interaction changes; the full
 635-test suite was not repeated for this CSS-only follow-up.
+
+## Follow-up: RTL entry caret starts on the right
+
+The only runtime correction against e28f30bedd418741c2b107d89eb2319025583033 is
+PromptEntry's default dir: it now follows SystemProvider direction rather than
+auto. An explicit native dir still overrides that default. Both ChatComposer and
+PromptBar reuse it. Empty and English-first drafts start on the right in RTL;
+LTR remains left-start. Message content keeps separate auto direction.
+components.css is byte-identical to that baseline: approved removal of focus
+outlines and outer border highlights is preserved.
+
+### Recorded original results and tested source
+
+[rtl-tested-source.json](rtl-tested-source.json) pins SHA-256 and Git blob hashes
+for the implementation, tests, guidance, styles and dependency files that matched
+the existing successful run: 72 files / 639 tests, five focused files / 141 tests,
+build, lint and formatting. The original full/focused/build logs are preserved in
+rtl-full-test.txt, rtl-original-focused.txt and rtl-build.txt. Captured log files
+have trailing whitespace and excess blank lines at EOF normalized; result counts
+and diagnostic messages are unchanged. The two new direction regressions had
+failed before the default was corrected.
+
+Four additional mixed editing/selection and keyboard/IME verification tests were
+then added. [rtl-publication-source.json](rtl-publication-source.json) records the
+final tested snapshot and comparison with the original: only the test file differs
+among the pinned files; implementation/guidance/styles/dependencies are unchanged.
+Fresh verification of this expanded suite passed:
+
+- Full suite: **72 files / 643 tests**, npx vitest run --maxWorkers=2 --reporter=dot.
+- Focused chat, generation, source-only compilation and prompt portability:
+  **5 files / 145 tests**.
+- npm run build, npm run lint, npm run format:check and git diff --check passed.
+- Logs: rtl-publication-full-test.txt, rtl-publication-focused.txt,
+  rtl-publication-build.txt, rtl-publication-lint.txt and rtl-publication-format.txt.
+
+### Browser and independent verification
+
+[entry-direction-matrix.json](entry-direction-matrix.json) records 24 entry,
+language and script cases, including empty fields after clearing drafts. Both
+entries were also exercised in RTL and LTR using native keyboard selection
+(Meta+A), mixed Arabic/English replacement and Shift+Enter. Each retained the exact
+multiline draft; Enter submitted that exact value, the host cleared it, and focus
+and provider direction remained on the textarea. Composition start plus Enter or
+Send, native isComposing, and keyCode 229 were separately simulated in the browser:
+all blocked submission. [rtl-editing-verification.json](rtl-editing-verification.json)
+contains the four component/direction records. Computed outline was none and the
+outer border matched the ordinary --border-strong token in every case. The native
+insertion caret is the remaining visual cue.
+
+Screenshots: composer-rtl-caret-right.jpg, prompt-rtl-caret-right.jpg,
+rtl-editing-composer.jpg and rtl-editing-prompt.jpg.
+
+A fresh independent reviewer found no implementation issues and independently ran
+**2 files / 19 tests**, including the four later mixed editing/IME tests. The
+reviewer requested that evidence distinguish the original 639-test result from
+the expanded suite; this report and the paired source manifests do so. Completed
+evidence re-review found no actionable issues, verified all pinned hashes and saved
+logs, and confirmed the CSS still matches the base. No additional runtime changes
+were made during review.
+
+### Limitations and publication scope
+
+IME events are synthetic; physical OS input methods were not exercised. These
+are desktop browser checks, not physical mobile or manual screen-reader testing.
+The pre-existing React act/suspension warning and production large-bundle warning
+remain. Neither warning failed validation.
+
+The user authorized committing and pushing this correction and its evidence on
+codex/chat-foundation, without force. The focused comparison base is exactly
+e28f30bedd418741c2b107d89eb2319025583033. No merge, deployment or additional component
+work. Preview 5317 remains running and returns HTTP 200. Original checkout/index,
+edits, landing work and unrelated servers remain untouched. Publication SHA and
+remote equality are verified and returned after the commit is created.

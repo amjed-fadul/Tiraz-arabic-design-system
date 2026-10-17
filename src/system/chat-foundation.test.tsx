@@ -222,3 +222,107 @@ it("PromptBar preserves native accessible name and disables suggestions during a
   await act(async () => finish());
   expect(screen.getByRole("button", { name: "Search again" })).toBeEnabled();
 });
+it.each([ChatComposer, PromptBar])(
+  "keeps the entry base direction at the interface start for empty and mixed-script drafts",
+  (Entry) => {
+    const entry = (direction: "rtl" | "ltr", value: string) => (
+      <SystemProvider config={{ ...defaultConfig, direction }}>
+        <Entry value={value} onValueChange={() => {}} onSubmit={() => {}} />
+      </SystemProvider>
+    );
+    const view = render(entry("rtl", ""));
+    const input = screen.getByRole("textbox");
+    for (const direction of ["rtl", "ltr"] as const) {
+      for (const value of [
+        "",
+        "مرحبا",
+        "Hello",
+        "Tiraz / العربية",
+        "العربية / Tiraz",
+      ]) {
+        view.rerender(entry(direction, value));
+        expect(input).toHaveAttribute("dir", direction);
+        expect(input).toHaveValue(value);
+      }
+    }
+  },
+);
+it.each([ChatComposer, PromptBar])(
+  "preserves an explicit host direction override",
+  (Entry) => {
+    const view = render(
+      <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+        <Entry
+          dir="ltr"
+          value="Hello"
+          onValueChange={() => {}}
+          onSubmit={() => {}}
+        />
+      </SystemProvider>,
+    );
+    expect(screen.getByRole("textbox")).toHaveAttribute("dir", "ltr");
+    view.rerender(
+      <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+        <Entry
+          dir="auto"
+          value="Hello"
+          onValueChange={() => {}}
+          onSubmit={() => {}}
+        />
+      </SystemProvider>,
+    );
+    expect(screen.getByRole("textbox")).toHaveAttribute("dir", "auto");
+  },
+);
+it.each(
+  [
+    { name: "ChatComposer", Entry: ChatComposer },
+    { name: "PromptBar", Entry: PromptBar },
+  ].flatMap((item) =>
+    (["rtl", "ltr"] as const).map((direction) => ({ ...item, direction })),
+  ),
+)(
+  "edits and selects mixed scripts with keyboard and IME guards in $name/$direction",
+  async ({ Entry, direction }) => {
+    const submit = vi.fn();
+    function Host() {
+      const [value, setValue] = useState("Hello العربية");
+      return (
+        <SystemProvider config={{ ...defaultConfig, direction }}>
+          <Entry value={value} onValueChange={setValue} onSubmit={submit} />
+        </SystemProvider>
+      );
+    }
+    const user = userEvent.setup();
+    render(<Host />);
+    const input = screen.getByRole("textbox") as HTMLTextAreaElement;
+    await user.click(input);
+    input.setSelectionRange(6, 13);
+    expect(input.value.slice(input.selectionStart, input.selectionEnd)).toBe(
+      "العربية",
+    );
+    await user.keyboard("مرحبًا");
+    expect(input).toHaveValue("Hello مرحبًا");
+    input.setSelectionRange(0, 5);
+    await user.keyboard("Tiraz");
+    expect(input).toHaveValue("Tiraz مرحبًا");
+    input.setSelectionRange(input.value.length, input.value.length);
+    await user.keyboard("{Shift>}{Enter}{/Shift}سطر / line");
+    const expected = "Tiraz مرحبًا\nسطر / line";
+    expect(input).toHaveValue(expected);
+    expect(input).toHaveAttribute("dir", direction);
+    expect(submit).not.toHaveBeenCalled();
+    fireEvent.compositionStart(input);
+    fireEvent.keyDown(input, { key: "Enter" });
+    fireEvent.click(screen.getByRole("button", { name: /^(Send|إرسال)$/ }));
+    expect(submit).not.toHaveBeenCalled();
+    fireEvent.compositionEnd(input);
+    fireEvent.keyDown(input, { key: "Enter", isComposing: true });
+    fireEvent.keyDown(input, { key: "Enter", keyCode: 229 });
+    expect(submit).not.toHaveBeenCalled();
+    await act(async () => fireEvent.keyDown(input, { key: "Enter" }));
+    expect(submit).toHaveBeenCalledExactlyOnceWith(expected);
+    expect(input).toHaveValue(expected);
+    expect(input).toHaveFocus();
+  },
+);

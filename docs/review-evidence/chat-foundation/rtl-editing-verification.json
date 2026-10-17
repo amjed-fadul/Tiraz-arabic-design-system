@@ -1,0 +1,142 @@
+[
+  {
+    "component": "composer",
+    "language": "ar",
+    "empty": {
+      "align": "start",
+      "dir": "rtl",
+      "direction": "rtl"
+    },
+    "englishFirst": {
+      "direction": "rtl",
+      "value": "English first / العربية"
+    },
+    "selection": {
+      "end": 23,
+      "length": 23,
+      "start": 0
+    },
+    "mixedEdit": {
+      "direction": "rtl",
+      "value": "Tiraz / مرحبًا\nسطر / line"
+    },
+    "syntheticIME": {
+      "compositionAndButtonBlocked": true,
+      "guardedEntersBlocked": true
+    },
+    "enter": {
+      "border": "rgb(84, 98, 89)",
+      "cleared": true,
+      "direction": "rtl",
+      "focused": true,
+      "normalBorderToken": "#546259",
+      "outline": "none",
+      "submitted": "Tiraz / مرحبًا\nسطر / line"
+    }
+  },
+  {
+    "component": "prompt",
+    "language": "ar",
+    "empty": {
+      "align": "start",
+      "dir": "rtl",
+      "direction": "rtl"
+    },
+    "englishFirst": {
+      "direction": "rtl",
+      "value": "English first / العربية"
+    },
+    "selection": {
+      "end": 23,
+      "length": 23,
+      "start": 0
+    },
+    "mixedEdit": {
+      "direction": "rtl",
+      "value": "Tiraz / مرحبًا\nسطر / line"
+    },
+    "syntheticIME": {
+      "compositionAndButtonBlocked": true,
+      "guardedEntersBlocked": true
+    },
+    "enter": {
+      "border": "rgb(84, 98, 89)",
+      "cleared": true,
+      "direction": "rtl",
+      "focused": true,
+      "normalBorderToken": "#546259",
+      "outline": "none",
+      "submitted": true
+    }
+  },
+  {
+    "component": "composer",
+    "language": "en",
+    "empty": {
+      "align": "start",
+      "dir": "ltr",
+      "direction": "ltr"
+    },
+    "englishFirst": {
+      "direction": "ltr",
+      "value": "English first / العربية"
+    },
+    "selection": {
+      "end": 23,
+      "length": 23,
+      "start": 0
+    },
+    "mixedEdit": {
+      "direction": "ltr",
+      "value": "Tiraz / مرحبًا\nسطر / line"
+    },
+    "syntheticIME": {
+      "compositionAndButtonBlocked": true,
+      "guardedEntersBlocked": true
+    },
+    "enter": {
+      "border": "rgb(84, 98, 89)",
+      "cleared": true,
+      "direction": "ltr",
+      "focused": true,
+      "normalBorderToken": "#546259",
+      "outline": "none",
+      "submitted": "Tiraz / مرحبًا\nسطر / line"
+    }
+  },
+  {
+    "component": "prompt",
+    "language": "en",
+    "empty": {
+      "align": "start",
+      "dir": "ltr",
+      "direction": "ltr"
+    },
+    "englishFirst": {
+      "direction": "ltr",
+      "value": "English first / العربية"
+    },
+    "selection": {
+      "end": 23,
+      "length": 23,
+      "start": 0
+    },
+    "mixedEdit": {
+      "direction": "ltr",
+      "value": "Tiraz / مرحبًا\nسطر / line"
+    },
+    "syntheticIME": {
+      "compositionAndButtonBlocked": true,
+      "guardedEntersBlocked": true
+    },
+    "enter": {
+      "border": "rgb(84, 98, 89)",
+      "cleared": true,
+      "direction": "ltr",
+      "focused": true,
+      "normalBorderToken": "#546259",
+      "outline": "none",
+      "submitted": true
+    }
+  }
+]
