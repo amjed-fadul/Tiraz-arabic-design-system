@@ -654,8 +654,10 @@ limits and cancellation. On cancellation keep received text, set completed and
 supply a cancelled statusLabel. No model connection, execution timer, token count
 or transport belongs in the component. The bundled demo alone uses fixed chunks
 and timers. The StreamingText playground starts one local sample automatically
-on entry and after language/mode changes, with Replay and Cancel controls. The
-standalone StreamingDemo starts explicitly by default. Both invalidate callbacks
+on entry and after language/mode changes. Both demos use a compact Default/Markdown
+header with named, icon-only Play/Replay and Stop controls. Stop stays mounted to
+preserve keyboard focus after cancellation. The standalone StreamingDemo starts
+explicitly by default. Both invalidate callbacks
 on replay/cancel/unmount or configuration changes, retain received text on cancel
 and identify themselves as local with no AI/network request. Plain demo chunks
 arrive every 160ms, overlapping a gentle 360ms reveal with less blur; no movement

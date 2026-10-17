@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, CodeBlock, Markdown, StreamingText } from "../../index";
+import { Play, Square } from "lucide-react";
 type Language = "ar" | "en";
 export function CodeBlockExample({
   language = "ar",
@@ -176,48 +177,53 @@ export function StreamingDemo({
       ? "أُلغيت العينة؛ احتُفظ بالنص"
       : "Sample cancelled; received text kept",
   }[phase];
+  const playLabel =
+    phase === "idle"
+      ? ar
+        ? "بدء العرض المحلي"
+        : "Start local demo"
+      : ar
+        ? "إعادة العرض المحلي"
+        : "Replay local demo";
+  const cancelLabel = ar ? "إلغاء العرض" : "Cancel demo";
   return (
-    <div
-      style={{
-        display: "grid",
-        gap: "var(--space-3)",
-        minInlineSize: 0,
-        inlineSize: "100%",
-      }}
-    >
-      <p
-        style={{
-          margin: 0,
-          color: "var(--text-secondary)",
-          fontSize: "var(--text-meta)",
-        }}
-      >
-        {ar
-          ? "عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."
-          : "Local demo with fixed chunks; no AI or network request."}
-      </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-        <Button variant="secondary" onClick={start}>
-          {phase === "idle"
+    <div className="tz-stream-demo">
+      <header className="tz-stream-demo-header">
+        <span className="tz-stream-demo-title">
+          {markdown
             ? ar
-              ? "بدء العرض المحلي"
-              : "Start local demo"
+              ? "ماركداون"
+              : "Markdown"
             : ar
-              ? "إعادة العرض المحلي"
-              : "Replay local demo"}
-        </Button>
-        <Button
-          variant="ghost"
-          aria-disabled={phase !== "streaming"}
-          onClick={() => {
-            if (phase !== "streaming") return;
-            invalidate();
-            setPhase("cancelled");
-          }}
-        >
-          {ar ? "إلغاء العرض" : "Cancel demo"}
-        </Button>
-      </div>
+              ? "الافتراضي"
+              : "Default"}
+        </span>
+        <div className="tz-stream-demo-actions">
+          <Button
+            variant="ghost"
+            iconOnly
+            aria-label={cancelLabel}
+            title={cancelLabel}
+            aria-disabled={phase !== "streaming"}
+            onClick={() => {
+              if (phase !== "streaming") return;
+              invalidate();
+              setPhase("cancelled");
+            }}
+          >
+            <Square size={14} aria-hidden="true" />
+          </Button>
+          <Button
+            variant="ghost"
+            iconOnly
+            aria-label={playLabel}
+            title={playLabel}
+            onClick={start}
+          >
+            <Play size={16} aria-hidden="true" />
+          </Button>
+        </div>
+      </header>
       <div style={{ minBlockSize: 100 }}>
         <StreamingText
           text={text}
@@ -226,6 +232,11 @@ export function StreamingDemo({
           statusLabel={status}
         />
       </div>
+      <p className="tz-stream-demo-note">
+        {ar
+          ? "عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."
+          : "Local demo with fixed chunks; no AI or network request."}
+      </p>
     </div>
   );
 }

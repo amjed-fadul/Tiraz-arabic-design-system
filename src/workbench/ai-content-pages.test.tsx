@@ -136,3 +136,45 @@ it("automatically streams the playground once, preserving cancel/replay and inva
   view.unmount();
   expect(vi.getTimerCount()).toBe(0);
 });
+
+it("uses compact titled headers and named icon-only playback controls in both demos", async () => {
+  const user = userEvent.setup();
+  render(<Workbench />);
+  await user.click(screen.getByRole("button", { name: "النص المتدفق" }));
+  await user.selectOptions(
+    screen.getByRole("combobox", { name: "لغة التوثيق" }),
+    "en",
+  );
+  const playground = document.querySelector(
+    ".playground-canvas",
+  ) as HTMLElement;
+  const example = document.querySelector(".examples-canvas") as HTMLElement;
+  for (const [block, title] of [
+    [playground, "Default"],
+    [example, "Markdown"],
+  ] as const) {
+    const header = within(block).getByText(title).closest("header")!;
+    expect(header).not.toBeNull();
+    const controls = within(header).getAllByRole("button");
+    expect(controls).toHaveLength(2);
+    for (const control of controls) {
+      expect(control).toHaveAccessibleName();
+      expect(control.textContent).toBe("");
+      expect(control.querySelector("svg")).not.toBeNull();
+    }
+  }
+  const play = within(example).getByRole("button", {
+    name: "Start local demo",
+  });
+  play.focus();
+  await user.keyboard("{Enter}");
+  expect(play).toHaveAccessibleName("Replay local demo");
+  expect(play).toHaveFocus();
+  await user.click(
+    within(example).getByRole("button", { name: "Cancel demo" }),
+  );
+  expect(
+    within(example).getByRole("button", { name: "Cancel demo" }),
+  ).toHaveFocus();
+  expect(example.querySelector(".tz-stream-cursor")).toBeNull();
+});

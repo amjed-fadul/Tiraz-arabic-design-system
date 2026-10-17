@@ -1,0 +1,62 @@
+[
+  {
+    "check": "header-keyboard-stop-focus",
+    "controls": [
+      {
+        "disabled": "true",
+        "focused": true,
+        "label": "Cancel demo",
+        "visibleText": "",
+        "width": 31.998964309692383
+      },
+      {
+        "disabled": null,
+        "focused": false,
+        "label": "Replay local demo",
+        "visibleText": "",
+        "width": 31.998964309692383
+      }
+    ]
+  },
+  {
+    "check": "rtl-dark-320",
+    "metrics": {
+      "document": 320,
+      "headers": [
+        {
+          "buttons": [
+            {
+              "label": "إلغاء العرض",
+              "text": "",
+              "width": 32
+            },
+            {
+              "label": "إعادة العرض المحلي",
+              "text": "",
+              "width": 32
+            }
+          ],
+          "direction": "rtl",
+          "font": "\"IBM Plex Sans Arabic\", sans-serif"
+        },
+        {
+          "buttons": [
+            {
+              "label": "إلغاء العرض",
+              "text": "",
+              "width": 32
+            },
+            {
+              "label": "بدء العرض المحلي",
+              "text": "",
+              "width": 32
+            }
+          ],
+          "direction": "rtl",
+          "font": "\"IBM Plex Sans Arabic\", sans-serif"
+        }
+      ],
+      "viewport": 320
+    }
+  }
+]
