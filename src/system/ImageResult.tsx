@@ -1,8 +1,9 @@
 import { useState } from "react";
 import type { ComponentPropsWithRef } from "react";
-import { ImageOff } from "lucide-react";
+import { ImageOff, Image as ImageIcon } from "lucide-react";
 import { Button } from "./Button";
 import { Skeleton } from "./Skeleton";
+import { Progress } from "./Progress";
 import { useSystem } from "./useSystem";
 
 export interface ImageResultLabels {
@@ -18,6 +19,8 @@ export type ImageResultProps = Omit<
   src?: string;
   alt: string;
   state?: "loading" | "loaded" | "error";
+  /** Actual host progress from 0 to 100; omit/null for indeterminate loading. */
+  progress?: number | null;
   aspectRatio?: "landscape" | "square" | "portrait";
   caption?: string;
   metadata?: string;
@@ -30,6 +33,7 @@ function ImageFrame({
   src,
   alt,
   state,
+  progress,
   onRetry,
   labels,
   caption,
@@ -37,7 +41,14 @@ function ImageFrame({
   action,
 }: Pick<
   ImageResultProps,
-  "src" | "alt" | "state" | "onRetry" | "caption" | "metadata" | "action"
+  | "src"
+  | "alt"
+  | "state"
+  | "progress"
+  | "onRetry"
+  | "caption"
+  | "metadata"
+  | "action"
 > & { labels: Required<ImageResultLabels> }) {
   const [loaded, setLoaded] = useState(false),
     [failed, setFailed] = useState(false);
@@ -57,9 +68,17 @@ function ImageFrame({
         {status === "loading" && (
           <>
             <Skeleton shape="rectangle" />
-            <span className="tz-image-result-status" role="status">
-              {labels.loading}
-            </span>
+            <div className="tz-image-result-loading">
+              <div className="tz-image-result-loading-content">
+                <span
+                  className="tz-image-result-loading-icon"
+                  aria-hidden="true"
+                >
+                  <ImageIcon size={28} strokeWidth={1.4} />
+                </span>
+                <Progress label={labels.loading} value={progress} showValue />
+              </div>
+            </div>
           </>
         )}
         {status === "error" && (
@@ -113,6 +132,7 @@ export function ImageResult({
   src,
   alt,
   state = "loaded",
+  progress,
   aspectRatio = "landscape",
   caption,
   metadata,
@@ -141,6 +161,7 @@ export function ImageResult({
         src={src}
         alt={alt}
         state={state}
+        progress={progress}
         onRetry={onRetry}
         labels={text}
         caption={caption}

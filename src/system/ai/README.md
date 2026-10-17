@@ -804,3 +804,12 @@ documents. Keep the no-inline directive: default production asset inlining would
 turn a small source document into a rejected `data:` destination. Other bundlers
 must emit real file URLs (or use copied public files), retaining UTF-8 encoding
 for the bilingual documents.
+
+ImageResult loading uses a quiet image placeholder, soft shimmer and the existing
+Progress primitive. Set `progress={42}` for an actual application-supplied
+percentage; omit it or use null when progress is unknown. Finite values clamp
+to 0–100; nonfinite values remain indeterminate. A percentage of 100 does not
+automatically finish loading: the host state and actual image load still govern
+readiness. Updating progress does not reload the image. The local sample's
+progress slider demonstrates supplied values; it measures no network request
+or image generation. Percentages use the provider's Arabic/English locale.

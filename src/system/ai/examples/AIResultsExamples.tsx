@@ -6,6 +6,7 @@ import {
   InlineCitation,
   InsightCards,
   Modal,
+  Slider,
 } from "../../index";
 import type { ImageResultProps } from "../../index";
 import sageImage from "../assets/results/coffee-sage.svg?url&no-inline";
@@ -22,17 +23,25 @@ const images = [
 export function ImageResultExample({
   language = "ar",
   state = "loaded",
+  progress = 42,
   aspectRatio = "landscape",
 }: {
   language?: Language;
   state?: ImageResultProps["state"];
+  progress?: number;
   aspectRatio?: ImageResultProps["aspectRatio"];
 }) {
   const ar = language === "ar",
     [recovered, setRecovered] = useState(false),
     [used, setUsed] = useState(false);
   return (
-    <div className="tz-ai-results-example">
+    <div
+      className="tz-ai-results-example"
+      style={{
+        inlineSize: "100%",
+        maxInlineSize: aspectRatio === "portrait" ? 320 : 640,
+      }}
+    >
       <p className="tz-ai-results-note">
         {ar
           ? "رسم محلي للمثال؛ لا توليد صور."
@@ -46,6 +55,7 @@ export function ImageResultExample({
             : "Illustration of a coffee cup beside a menu board on a sage background"
         }
         state={recovered ? "loaded" : state}
+        progress={progress}
         aspectRatio={aspectRatio}
         caption={
           ar
@@ -82,6 +92,7 @@ export function ImageResultStates({
     [used, setUsed] = useState("");
   const [phase, setPhase] = useState<"loading" | "error" | "loaded">("loading");
   const [revision, setRevision] = useState(0);
+  const [progress, setProgress] = useState(36);
   return (
     <div className="tz-ai-results-example">
       <p className="tz-ai-results-note">
@@ -98,12 +109,29 @@ export function ImageResultStates({
             : "Coffee cup and menu board in clay tones"
         }
         state={phase === "loading" ? "loading" : "loaded"}
+        progress={progress}
         caption={
           ar
             ? "إطار ثابت أثناء التحميل والخطأ والتعافي"
             : "The same frame during loading, failure and recovery"
         }
         onRetry={() => setPhase("loaded")}
+      />
+      <Slider
+        label={ar ? "تقدّم العينة المحلية" : "Local sample progress"}
+        min={0}
+        max={100}
+        value={progress}
+        formatValue={(value) =>
+          new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en", {
+            style: "percent",
+            maximumFractionDigits: 0,
+          }).format(value / 100)
+        }
+        onChange={(event) => {
+          setProgress(Number(event.currentTarget.value));
+          setPhase("loading");
+        }}
       />
       <div className="tz-ai-results-controls">
         <Button

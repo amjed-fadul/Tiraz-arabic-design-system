@@ -207,7 +207,7 @@ export function Playground({
   if (component === "image-result")
     return (
       <ImageResultExample
-        key={JSON.stringify(model)}
+        key={(model as Playgrounds["image-result"]).state}
         language={language}
         {...(model as Playgrounds["image-result"])}
       />

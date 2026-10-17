@@ -97,6 +97,14 @@ export function ApiReference({
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
     "image-result": [
       [
+        "progress",
+        "number | null? · 0–100",
+        t(
+          "نسبة فعلية يزوّدها التطبيق؛ دون قيمة يبقى التحميل غير محدّد. لا تُنهي النسبة التحميل تلقائيًا.",
+          "Real application-supplied percentage; omit/null for indeterminate loading. Progress never completes loading automatically.",
+        ),
+      ],
+      [
         "src / alt",
         "string? / string · required",
         t(

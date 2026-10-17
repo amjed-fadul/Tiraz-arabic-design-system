@@ -940,13 +940,20 @@
           "name": "labels",
           "type": "ImageResultLabels",
           "required": false
+        },
+        {
+          "name": "progress",
+          "type": "number | null",
+          "required": false,
+          "note": "Actual host percentage; finite values clamp to 0–100, absent/null/nonfinite is indeterminate. Does not complete state or restart the resource."
         }
       ],
       "state": "Host supplies readiness; internal image load/error guards. URL or state replacement remounts the resource; stale events cannot update a replacement.",
       "inheritedProps": "Native figure attributes, className/style and React 19 ref; children managed internally.",
       "accessibility": [
         "Required meaningful alt text. Visible loading/failure status; alt remains visible on error. Fixed landscape/square/portrait frame; contain sizing preserves the whole image.",
-        "Only supplied retry and loaded-image actions become buttons."
+        "Only supplied retry and loaded-image actions become buttons.",
+        "Loading reuses Progress with a localized visible percentage and accessible progressbar. Percentage updates are not live announcements. Shared Skeleton/progress animations honor application and OS reduced motion."
       ],
       "limitations": [
         "Host owns image permission, URL trust/access/lifetime, sizing choice and optional metadata. No generation service, upload, viewer, downloads or asset manager.",

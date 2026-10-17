@@ -342,3 +342,54 @@ it("retains focus on insight paging controls at both boundaries and ignores unav
   await user.keyboard("{Enter}");
   expect(previous).toHaveFocus();
 });
+it("shows real host-supplied image progress, clamps values and stays indeterminate when unknown", () => {
+  const view = render(
+    wrap(<ImageResult state="loading" alt="Menu" progress={42} />),
+  );
+  const bar = screen.getByRole("progressbar", { name: "Loading image" });
+  expect(bar).toHaveAttribute("aria-valuenow", "42");
+  expect(screen.getByText("42%")).toBeVisible();
+  view.rerender(
+    wrap(<ImageResult state="loading" alt="Menu" progress={140} />),
+  );
+  expect(screen.getByRole("progressbar")).toHaveAttribute(
+    "aria-valuenow",
+    "100",
+  );
+  view.rerender(
+    wrap(<ImageResult state="loading" alt="Menu" progress={Number.NaN} />),
+  );
+  expect(screen.getByRole("progressbar")).not.toHaveAttribute("aria-valuenow");
+  expect(screen.queryByText(/NaN/)).toBeNull();
+  view.rerender(wrap(<ImageResult state="error" alt="Menu" progress={42} />));
+  expect(screen.queryByRole("progressbar")).toBeNull();
+});
+it("updates loading progress without restarting the image resource", () => {
+  const view = render(
+    wrap(
+      <ImageResult state="loading" src="/menu.svg" alt="Menu" progress={0} />,
+    ),
+  );
+  const image = view.container.querySelector("img");
+  view.rerender(
+    wrap(
+      <ImageResult state="loading" src="/menu.svg" alt="Menu" progress={78} />,
+    ),
+  );
+  expect(view.container.querySelector("img")).toBe(image);
+  expect(screen.getByRole("progressbar")).toHaveAttribute(
+    "aria-valuenow",
+    "78",
+  );
+});
+it("formats the supplied percentage for Arabic and keeps 100 percent loading until the host completes", () => {
+  render(
+    <SystemProvider>
+      <ImageResult state="loading" alt="قائمة" progress={100} />
+    </SystemProvider>,
+  );
+  expect(
+    screen.getByRole("progressbar", { name: "جارٍ تحميل الصورة" }),
+  ).toHaveAttribute("aria-valuenow", "100");
+  expect(screen.getByText("١٠٠٪؜")).toBeVisible();
+});

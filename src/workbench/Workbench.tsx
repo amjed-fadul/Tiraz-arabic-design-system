@@ -154,7 +154,8 @@ export function Workbench() {
     patchPage(active, patch);
     // Keep Input's IDs and native editing state through label/help/error edits.
     // Mode/default-value changes still need a fresh uncontrolled demonstration.
-    if (active === "data-table" || active === "input-copy") return;
+    // Image percentages and sizing update the existing request rather than replaying it.
+    if (["data-table", "input-copy", "image-result"].includes(active)) return;
     if (
       (active === "file-dropzone" || active === "color-picker") &&
       !("mode" in patch)

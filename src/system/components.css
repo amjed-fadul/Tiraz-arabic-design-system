@@ -4152,6 +4152,7 @@ button.tz-tool-chip {
 }
 .tz-image-result-frame {
   position: relative;
+  container-type: inline-size;
   aspect-ratio: 3 / 2;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -4470,4 +4471,51 @@ a.tz-inline-citation {
 .tz-insights-nav .tz-button[aria-disabled="true"] {
   opacity: 0.45;
   cursor: default;
+}
+
+.tz-image-result-frame[data-state="loading"] > .tz-skeleton {
+  opacity: 0.45;
+}
+.tz-image-result-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: safe center;
+  padding: var(--space-3);
+  overflow: auto;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--action) 7%, transparent),
+    transparent 70%
+  );
+}
+.tz-image-result-loading-content {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  inline-size: min(100%, 260px);
+}
+.tz-image-result-loading-icon {
+  display: grid;
+  place-items: safe center;
+  inline-size: clamp(36px, 18cqi, 64px);
+  block-size: clamp(36px, 18cqi, 64px);
+  border: 1px solid color-mix(in srgb, var(--action) 18%, var(--border));
+  border-radius: calc(var(--radius) + var(--space-2));
+  color: var(--action);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  box-shadow: var(--shadow-control);
+}
+.tz-image-result-loading .tz-progress-heading {
+  margin-block-end: var(--space-2);
+  color: var(--text-secondary);
+}
+.tz-image-result-loading .tz-progress-heading > bdi {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.tz-image-result-loading .tz-progress-track {
+  block-size: 4px;
+  border-radius: 999px;
 }

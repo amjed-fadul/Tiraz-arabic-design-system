@@ -271,6 +271,7 @@ export interface Playgrounds {
   "image-result": {
     state: "loading" | "loaded" | "error";
     aspectRatio: "landscape" | "square" | "portrait";
+    progress: number;
   };
   sources: { defaultExpanded: boolean; longContent: boolean };
   "insight-cards": { longContent: boolean };
@@ -388,7 +389,11 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
-    "image-result": { state: "loaded", aspectRatio: "landscape" },
+    "image-result": {
+      state: "loading",
+      aspectRatio: "landscape",
+      progress: 42,
+    },
     sources: { defaultExpanded: false, longContent: false },
     "insight-cards": { longContent: false },
     "chat-thread": {

@@ -84,6 +84,10 @@ const chartFields = [
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
   "image-result": [
+    field("progress", "number", "نسبة التقدّم", "Progress (%)", "progress", {
+      min: 0,
+      max: 100,
+    }),
     field("state", "select", "الحالة", "State", "state", {
       options: ["loaded", "loading", "error"],
     }),
@@ -872,7 +876,7 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
-  "image-result": ["state", "aspectRatio"],
+  "image-result": ["state", "progress", "aspectRatio"],
   sources: ["defaultExpanded", "longContent"],
   "insight-cards": ["longContent"],
   "chat-thread": ["identities", "longContent", "followOutput"],
