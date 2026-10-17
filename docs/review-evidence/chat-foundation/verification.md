@@ -126,3 +126,15 @@ composer-focus-removed.jpg. PromptBar keeps its existing focus treatment.
 Fresh focused checks: 4 files, 22 tests passed. Build, lint, formatting and diff
 checks passed. No new behavior or API changes; full-suite baseline remains the
 preceding 635-test run.
+
+## Follow-up: match PromptBar focus styling
+
+At the user's request, PromptBar now shares the composer's outline-free input
+focus styling. Removed its outer focus border highlight while preserving the
+normal border. Browser inspection confirmed a keyboard-focused PromptBar textarea
+had outline none and the outer border still matched --border-strong. Evidence:
+prompt-focus-removed.jpg.
+
+Fresh focused chat/generated/source-only checks: 4 files, 22 tests passed. Build,
+lint, formatting and diff checks passed. No API or interaction changes; the full
+635-test suite was not repeated for this CSS-only follow-up.
