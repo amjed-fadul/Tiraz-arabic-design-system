@@ -89,9 +89,10 @@ it("propagates global settings during feedback and cancels timers on both resets
   vi.useFakeTimers();
   const { container } = render(<Workbench />);
   fireEvent.click(preview());
-  fireEvent.change(controls().getByLabelText("اللون الأساسي"), {
-    target: { value: "blue" },
+  fireEvent.keyDown(controls().getByLabelText("اللون الأساسي"), {
+    key: "Enter",
   });
+  fireEvent.click(screen.getByRole("option", { name: "أزرق" }));
   expect(preview()).toHaveAttribute("data-state", "loading");
   expect(
     (

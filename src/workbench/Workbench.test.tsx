@@ -13,6 +13,14 @@ function controls() {
 function navigation() {
   return within(screen.getByRole("navigation", { name: "المكوّنات" }));
 }
+async function chooseAccent(accent: "blue" | "plum" | "clay") {
+  await userEvent.click(controls().getByLabelText("اللون الأساسي"));
+  await userEvent.click(
+    screen.getByRole("option", {
+      name: { blue: "أزرق", plum: "بنفسجي", clay: "بني" }[accent],
+    }),
+  );
+}
 function preview() {
   return within(screen.getByRole("region", { name: "المعاينة التفاعلية" }));
 }
@@ -80,10 +88,7 @@ it("updates accent through successive selections, navigation and reset despite l
   });
   const { container } = render(<Workbench />);
   for (const accent of ["blue", "plum", "clay"] as const) {
-    await userEvent.selectOptions(
-      controls().getByLabelText("اللون الأساسي"),
-      accent,
-    );
+    await chooseAccent(accent);
     for (const el of container.querySelectorAll(
       ".playground-region .tiraz-system,.examples-section .tiraz-system",
     ))
@@ -225,10 +230,7 @@ it("demonstrates both simulated outcomes", async () => {
 it("retains shared tokens in Sheet portals and restores trigger focus", async () => {
   render(<Workbench />);
   await userEvent.click(screen.getByRole("button", { name: "تبديل المظهر" }));
-  await userEvent.selectOptions(
-    controls().getByLabelText("اللون الأساسي"),
-    "blue",
-  );
+  await chooseAccent("blue");
   await userEvent.click(
     navigation().getByRole("button", { name: "اللوحة الجانبية" }),
   );
@@ -262,10 +264,7 @@ it("changes language and direction together without losing custom labels", async
 it("system reset restores the shared theme and documented configuration defaults", async () => {
   const { container } = render(<Workbench />);
   await userEvent.click(screen.getByRole("button", { name: "تبديل المظهر" }));
-  await userEvent.selectOptions(
-    controls().getByLabelText("اللون الأساسي"),
-    "plum",
-  );
+  await chooseAccent("plum");
   await userEvent.click(
     controls().getByRole("button", { name: "إعادة ضبط النظام" }),
   );
@@ -288,7 +287,7 @@ it("copies the full current prompt despite its single-line presentation", async 
   render(<Workbench />);
   await user.clear(controls().getByLabelText("التسمية"));
   await user.type(controls().getByLabelText("التسمية"), "اعتماد الفاتورة");
-  await user.selectOptions(controls().getByLabelText("اللون الأساسي"), "plum");
+  await chooseAccent("plum");
   await user.click(screen.getByRole("button", { name: "نسخ الطلب" }));
   const copied = await navigator.clipboard.readText();
   const savedProps = JSON.parse(
@@ -376,12 +375,23 @@ it.each([
       ["rose", "وردي", "Rose"],
       ["slate", "رمادي", "Slate"],
     ] as const) {
-      await user.selectOptions(accentControl, accent);
-      expect(
-        within(accentControl).getByRole("option", {
-          name: ar ? arabic : english,
-        }),
-      ).toHaveProperty("selected", true);
+      await user.click(accentControl);
+      const option = screen.getByRole("option", {
+        name: ar ? arabic : english,
+      });
+      expect(option).toHaveAccessibleName(ar ? arabic : english);
+      expect(option.querySelector(".accent-swatch")).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+      expect(option.querySelector(".accent-swatch")).toHaveStyle({
+        backgroundColor: accentColors[accent][theme],
+      });
+      await user.click(option);
+      expect(accentControl).toHaveTextContent(ar ? arabic : english);
+      expect(accentControl.querySelector(".accent-swatch")).toHaveStyle({
+        backgroundColor: accentColors[accent][theme],
+      });
       for (const provider of container.querySelectorAll<HTMLElement>(
         ".playground-region .tiraz-system,.examples-section .tiraz-system",
       ))
@@ -403,6 +413,38 @@ it.each([
         name: ar ? "إعادة ضبط النظام" : "Reset system",
       }),
     );
-    expect(accentControl).toHaveValue("sage");
+    expect(accentControl).toHaveTextContent(ar ? "أخضر" : "Green");
   },
 );
+
+it("selects an accent by keyboard, restores focus and preserves the choice on Escape", async () => {
+  persist(storageKeys.documentation, { language: "en", active: "button" });
+  const user = userEvent.setup();
+  render(<Workbench />);
+  const control = within(
+    screen.getByRole("complementary", { name: "Customization" }),
+  ).getByRole("combobox", { name: "Accent" });
+  control.focus();
+  await user.keyboard("{ArrowDown}{End}{Enter}");
+  expect(control).toHaveTextContent("Slate");
+  await waitFor(() => expect(control).toHaveFocus());
+  expect(readSystem().accent).toBe("slate");
+  await user.keyboard("{ArrowDown}{Home}{Escape}");
+  expect(control).toHaveTextContent("Slate");
+  expect(control).toHaveFocus();
+});
+it("keeps the accent popup inside the mobile settings dialog", async () => {
+  persist(storageKeys.documentation, { language: "en", active: "button" });
+  const user = userEvent.setup();
+  render(<Workbench />);
+  await user.click(screen.getByRole("button", { name: "System settings" }));
+  const dialog = screen.getByRole("dialog", { name: "Customization" });
+  const control = within(dialog).getByRole("combobox", { name: "Accent" });
+  await user.click(control);
+  expect(dialog).toContainElement(screen.getByRole("listbox"));
+  await user.click(screen.getByRole("option", { name: "Lime" }));
+  expect(control).toHaveTextContent("Lime");
+  expect(dialog).toBeVisible();
+  await user.keyboard("{Escape}");
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+});

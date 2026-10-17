@@ -1,6 +1,7 @@
-import { useId } from "react";
-import { RotateCcw, ChevronDown } from "lucide-react";
-import { accentColors, Switch } from "../system";
+import { useId, useRef, useState } from "react";
+import * as Select from "@radix-ui/react-select";
+import { RotateCcw, ChevronDown, ChevronUp, Check } from "lucide-react";
+import { accentColors, Switch, useSystem } from "../system";
 import type { SystemConfig } from "../system";
 import type { AppearanceSettings } from "./storage";
 import type { Language } from "./i18n";
@@ -23,6 +24,11 @@ export function Appearance({
 }: Props) {
   const uid = useId(),
     t = words(language);
+  const { container } = useSystem();
+  const accentTrigger = useRef<HTMLButtonElement>(null);
+  const [accentContainer, setAccentContainer] = useState<HTMLElement | null>(
+    null,
+  );
   function set<K extends keyof AppearanceSettings>(
     key: K,
     value: AppearanceSettings[K],
@@ -65,19 +71,75 @@ export function Appearance({
       </div>
       <div className="setting-field">
         <label htmlFor={`${uid}-accent`}>{label("accent", language)}</label>
-        <select
-          id={`${uid}-accent`}
+        <Select.Root
+          dir={config.direction}
           value={config.accent}
-          onChange={(e) =>
-            set("accent", e.target.value as AppearanceSettings["accent"])
+          onValueChange={(value) =>
+            set("accent", value as AppearanceSettings["accent"])
           }
+          onOpenChange={(open) => {
+            if (open)
+              setAccentContainer(
+                accentTrigger.current?.closest<HTMLElement>(".docs-drawer") ??
+                  container,
+              );
+          }}
         >
-          {Object.keys(accentColors).map((value) => (
-            <option key={value} value={value}>
-              {localize(optionNames[value], language)}
-            </option>
-          ))}
-        </select>
+          <Select.Trigger
+            id={`${uid}-accent`}
+            ref={accentTrigger}
+            className="accent-trigger"
+          >
+            <Select.Value />
+            <Select.Icon asChild>
+              <ChevronDown size={12} />
+            </Select.Icon>
+          </Select.Trigger>
+          <Select.Portal container={accentContainer ?? container}>
+            <Select.Content
+              className="tz-select-popup accent-popup"
+              position="popper"
+              sideOffset={4}
+              collisionPadding={12}
+              dir={config.direction}
+            >
+              <Select.ScrollUpButton className="accent-scroll">
+                <ChevronUp size={12} />
+              </Select.ScrollUpButton>
+              <Select.Viewport className="accent-options">
+                {(
+                  Object.keys(accentColors) as AppearanceSettings["accent"][]
+                ).map((value) => (
+                  <Select.Item
+                    key={value}
+                    value={value}
+                    textValue={localize(optionNames[value], language)}
+                    className="tz-select-option accent-option"
+                  >
+                    <Select.ItemText>
+                      <span className="accent-value">
+                        <span
+                          className="accent-swatch"
+                          aria-hidden="true"
+                          style={{
+                            backgroundColor: accentColors[value][config.theme],
+                          }}
+                        />
+                        <span>{localize(optionNames[value], language)}</span>
+                      </span>
+                    </Select.ItemText>
+                    <Select.ItemIndicator>
+                      <Check size={12} aria-hidden="true" />
+                    </Select.ItemIndicator>
+                  </Select.Item>
+                ))}
+              </Select.Viewport>
+              <Select.ScrollDownButton className="accent-scroll">
+                <ChevronDown size={12} />
+              </Select.ScrollDownButton>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
       </div>
       <div className="setting-field">
         <label htmlFor={`${uid}-typography`}>

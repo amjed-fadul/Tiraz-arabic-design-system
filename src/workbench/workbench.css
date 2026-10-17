@@ -565,6 +565,7 @@ bdi {
   margin-block-end: 6px;
 }
 .setting-field select,
+.accent-trigger,
 .inspector-field > select,
 .inspector-field > input,
 .inspector-field > textarea {
@@ -578,6 +579,7 @@ bdi {
   padding: 4px 7px;
 }
 .setting-field select,
+.accent-trigger,
 .inspector-field select {
   cursor: pointer;
 }
@@ -1007,6 +1009,7 @@ bdi {
   color: var(--text-secondary);
 }
 .setting-field select,
+.accent-trigger,
 .inspector-field select,
 .inspector-field input {
   min-block-size: 30px;
@@ -1228,4 +1231,50 @@ bdi {
 .component-nav button {
   min-block-size: 32px;
   padding-block: 4px;
+}
+
+/* Documentation-only accent choice: keep swatches out of accessible names. */
+.accent-trigger,
+.accent-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-inline-size: 0;
+}
+.accent-trigger {
+  justify-content: space-between;
+  text-align: start;
+}
+.accent-trigger > svg,
+.accent-swatch {
+  flex-shrink: 0;
+}
+.accent-swatch {
+  display: inline-block;
+  inline-size: 11px;
+  block-size: 11px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+}
+.accent-popup {
+  z-index: 90;
+  border-radius: 5px;
+}
+.accent-options {
+  padding: 4px;
+  max-block-size: min(
+    330px,
+    calc(var(--radix-select-content-available-height) - 36px)
+  );
+}
+.accent-option {
+  min-block-size: 30px;
+  padding: 3px 6px;
+  font-size: 12px;
+  border-radius: 3px;
+}
+.accent-scroll {
+  display: flex;
+  justify-content: center;
+  block-size: 16px;
 }
