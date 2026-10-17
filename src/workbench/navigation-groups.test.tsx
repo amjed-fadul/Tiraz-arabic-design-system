@@ -38,6 +38,9 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
       .getAllByRole("button")
       .map((button) => button.textContent),
   ).toEqual([
+    "إجراءات التحديد",
+    "مقياس السياق",
+    "اختيار النموذج",
     "نتيجة الصورة",
     "المصادر والاستشهادات",
     "بطاقات النتائج",

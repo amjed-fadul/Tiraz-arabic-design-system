@@ -807,6 +807,42 @@
     {
       "name": "InsightItem",
       "source": "InsightCards.tsx"
+    },
+    {
+      "name": "SelectionActions",
+      "source": "SelectionActions.tsx"
+    },
+    {
+      "name": "SelectionAction",
+      "source": "SelectionActions.tsx"
+    },
+    {
+      "name": "SelectionActionsProps",
+      "source": "SelectionActions.tsx"
+    },
+    {
+      "name": "ContextMeter",
+      "source": "ContextMeter.tsx"
+    },
+    {
+      "name": "ContextMeterProps",
+      "source": "ContextMeter.tsx"
+    },
+    {
+      "name": "ContextMeterPart",
+      "source": "ContextMeter.tsx"
+    },
+    {
+      "name": "ModelSelector",
+      "source": "ModelSelector.tsx"
+    },
+    {
+      "name": "ModelSelectorProps",
+      "source": "ModelSelector.tsx"
+    },
+    {
+      "name": "ModelOption",
+      "source": "ModelSelector.tsx"
     }
   ],
   "configuration": {
@@ -886,6 +922,184 @@
     }
   },
   "components": [
+    {
+      "id": "selection-actions",
+      "api": "SelectionActions",
+      "source": "SelectionActions.tsx",
+      "exports": [
+        "SelectionActions",
+        "SelectionAction",
+        "SelectionActionsProps"
+      ],
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "actions",
+          "type": "readonly SelectionAction[]",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "labels",
+          "type": "{ actions?: string; more?: string; less?: string; hint?: string }",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Instance-scoped native selection. First two actions plus an optional inline More disclosure. Application callbacks receive the preserved selected text.",
+      "accessibility": [
+        "Focusable named region. Select with the browser, then Alt+Enter focuses actions; Tab and arrow keys navigate. Escape closes and returns focus to the scope when invoked from the row. No automatic focus stealing.",
+        "Pointer activation preserves the range; callback receives the immutable text payload. Native selection direction and copying are retained. Popper virtual anchor handles viewport edges and flips. Scroll/resize dismiss; unmount removes listeners."
+      ],
+      "limitations": [
+        "Selection must be entirely inside this instance. Excludes input, textarea, select, contenteditable, buttons, links, summary, ARIA interactive controls, pre, code, nested scopes and data-selection-actions-exclude, including ranges crossing them.",
+        "One browser Range only. No editable-field selection, shadow DOM, iframe selection, global selection manager, AI execution or automatic replacement. Custom canvas editors are unsupported.",
+        "Application actions must handle their own failures. Host focus changes may intentionally end the selection."
+      ],
+      "alternative": "Use native selection/copy without this component when no application action is needed.",
+      "dependencies": ["@radix-ui/react-popper@1.4.0"],
+      "examples": ["ai/examples/AIContextExamples.tsx"]
+    },
+    {
+      "id": "context-meter",
+      "api": "ContextMeter",
+      "source": "ContextMeter.tsx",
+      "exports": ["ContextMeter", "ContextMeterProps", "ContextMeterPart"],
+      "props": [
+        {
+          "name": "used",
+          "type": "number | null",
+          "required": false
+        },
+        {
+          "name": "capacity",
+          "type": "number | null",
+          "required": false
+        },
+        {
+          "name": "estimated",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "details",
+          "type": "readonly ContextMeterPart[]",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "unit",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "locale",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Compact ring and counts with a keyboard-operated details popover. Values are host supplied; estimates are explicitly labeled.",
+      "accessibility": [
+        "Accessible trigger describes full values, unit, percentage and capacity status without relying on color. Missing/invalid values are unavailable, zero is retained, and over-capacity percentages are not clamped in the text.",
+        "Enter/Space/click opens details; Escape restores trigger focus through the existing Popover primitive. Portal inherits nearest provider/dialog configuration."
+      ],
+      "limitations": [
+        "Only finite nonnegative numeric values are accepted. A zero capacity has no calculable percentage. The decorative ring clamps at capacity; text reports actual excess.",
+        "No token estimation, model-limit lookup, truncation, assumed future action or inferred cost. Parts and metadata are supplied independently and are not reconciled with totals."
+      ],
+      "alternative": "Use Progress for a generic percentage unrelated to context capacity.",
+      "dependencies": ["@radix-ui/react-popover@1.3.1"],
+      "examples": ["ai/examples/AIContextExamples.tsx"]
+    },
+    {
+      "id": "model-selector",
+      "api": "ModelSelector",
+      "source": "ModelSelector.tsx",
+      "exports": ["ModelSelector", "ModelSelectorProps", "ModelOption"],
+      "props": [
+        {
+          "name": "models",
+          "type": "readonly ModelOption[]",
+          "required": true
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "onValueChange",
+          "type": "(id: string) => void",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "size",
+          "type": "\"sm\" | \"md\"",
+          "required": false,
+          "default": "sm"
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Controlled model ID. Caller updates value in onValueChange; current choice is never implicitly replaced when the supplied list changes.",
+      "accessibility": [
+        "Uses the installed Radix Select. Grouped provider labels, model name, tags, description, supplied context/price and selected check form the menu hierarchy.",
+        "Arrow keys, Home/End, typeahead, Enter/Space selection and Escape focus restoration. Disabled rows remain visible and skipped. Empty list disables the trigger; absent IDs show the placeholder without emitting a callback."
+      ],
+      "limitations": [
+        "Require unique nonempty stable IDs. Provider grouping uses supplied strings; labels must be plain text.",
+        "No provider connection, API keys, network, hardcoded pricing/capabilities/availability, model-limit lookup or uncontrolled/defaultValue mode."
+      ],
+      "alternative": "Use Select for a simple choice without model descriptions and metadata.",
+      "dependencies": ["@radix-ui/react-select@2.4.1"],
+      "examples": ["ai/examples/AIContextExamples.tsx"]
+    },
     {
       "id": "image-result",
       "api": "ImageResult",

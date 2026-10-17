@@ -1,6 +1,33 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "selection-actions",
+    name: ["إجراءات التحديد", "SelectionActions"],
+    description: [
+      "إجراءات موجزة لنص محدّد داخل نطاق صريح؛ التطبيق يملك النتيجة.",
+      "Compact actions for text selected inside an explicit scope; the host owns the result.",
+    ],
+    file: "SelectionActions.tsx",
+  },
+  {
+    id: "context-meter",
+    name: ["مقياس السياق", "ContextMeter"],
+    description: [
+      "ملخص موجز وتفاصيل للاستخدام والسعة اللذين يزوّدهما التطبيق.",
+      "Compact usage summary and details from application-supplied values.",
+    ],
+    file: "ContextMeter.tsx",
+  },
+  {
+    id: "model-selector",
+    name: ["اختيار النموذج", "ModelSelector"],
+    description: [
+      "اختيار متحكّم به من نماذج يزوّدها التطبيق بمعرّفات ثابتة.",
+      "Controlled selection from application-supplied models with stable IDs.",
+    ],
+    file: "ModelSelector.tsx",
+  },
+  {
     id: "image-result",
     name: ["نتيجة الصورة", "ImageResult"],
     description: [
@@ -560,6 +587,9 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "selection-actions",
+      "context-meter",
+      "model-selector",
       "image-result",
       "sources",
       "insight-cards",

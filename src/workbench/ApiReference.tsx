@@ -95,6 +95,92 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "selection-actions": [
+      [
+        "children / label",
+        "ReactNode / string · required",
+        t(
+          "نطاق محتوى صريح قابل للتركيز؛ يستثني المحررات والشيفرة والروابط والأزرار والتحديد العابر للنطاق.",
+          "Explicit focusable content scope; excludes editors, code, links, buttons and cross-scope selection.",
+        ),
+      ],
+      [
+        "actions",
+        "readonly SelectionAction[] · required",
+        t(
+          "id وlabel وonSelect(text)؛ icon وdisabled اختياريان. أول إجراءين ثم زر المزيد.",
+          "id, label and onSelect(text); optional icon/disabled. First two actions then More.",
+        ),
+      ],
+      [
+        "focus / dismissal",
+        "Alt+Enter / arrows / Escape",
+        t(
+          "لا سرقة للتركيز؛ Alt+Enter للإجراءات وEscape يعيد التركيز للنطاق. التمرير وتغيير الحجم يغلقان الشريط. النص محفوظ عند التنشيط.",
+          "No focus stealing; Alt+Enter moves to actions, Escape returns to scope. Scroll/resize dismiss. Selected text survives activation.",
+        ),
+      ],
+      [
+        "labels / className",
+        "localized strings / string",
+        t(
+          "تسميات الإجراءات والمزيد والتلميح. data-selection-actions-exclude يستثني منطقة إضافية.",
+          "Action, more/less and hint labels. data-selection-actions-exclude excludes another region.",
+        ),
+      ],
+    ],
+    "context-meter": [
+      [
+        "used / capacity",
+        "number | null?",
+        t(
+          "قيم غير سالبة ومحدودة؛ المفقود وغير الصالح غير متاح، وصفر ليس قيمة مفقودة. تجاوز السعة يبقى واضحًا.",
+          "Finite nonnegative host values; missing/invalid is unavailable, zero remains zero. Over-capacity stays explicit.",
+        ),
+      ],
+      [
+        "estimated / details / metadata",
+        "boolean / ContextMeterPart[] / string",
+        t(
+          "التقدير معلّم نصيًا. تفاصيل اختيارية بمعرّفات ثابتة؛ لا تقدير أو بحث حدود أو اقتطاع.",
+          "Estimates are labeled. Optional details with stable IDs; no estimation, limit lookup or truncation.",
+        ),
+      ],
+      [
+        "label / unit / locale / className",
+        "string?",
+        t(
+          "تسمية واضحة وأرقام دقيقة في التفاصيل، وملخص موجز بزر يدعم لوحة المفاتيح.",
+          "Clear name and full values in details; compact summary uses a keyboard-accessible disclosure button.",
+        ),
+      ],
+    ],
+    "model-selector": [
+      [
+        "models / value / onValueChange",
+        "ModelOption[] / string / (id) => void · required",
+        t(
+          "اختيار متحكّم به؛ معرّفات فريدة غير فارغة وثابتة؛ التطبيق يحدّث value.",
+          "Controlled choice; unique nonempty stable IDs; host updates value.",
+        ),
+      ],
+      [
+        "ModelOption",
+        "id, name, provider?, description?, tags?, context?, price?, disabled?",
+        t(
+          "كل البيانات من التطبيق؛ الخيارات غير المتاحة ظاهرة ومعطّلة. لا مفاتيح أو اتصال بمزوّد.",
+          "All data comes from the host; unavailable options remain visible and disabled. No keys or provider connection.",
+        ),
+      ],
+      [
+        "label / placeholder / disabled / size / className",
+        "string? / string? / boolean / sm | md / string",
+        t(
+          "زر موجز؛ تنقّل بالأسهم وHome/End والبحث بالكتابة وEscape لاستعادة التركيز.",
+          "Compact trigger; arrows, Home/End, typeahead and Escape with focus restoration.",
+        ),
+      ],
+    ],
     "image-result": [
       [
         "progress",

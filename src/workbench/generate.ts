@@ -1,3 +1,4 @@
+import aiContextSource from "../system/ai/examples/AIContextExamples.tsx?raw";
 import aiResultsSource from "../system/ai/examples/AIResultsExamples.tsx?raw";
 import chatSource from "../system/ai/examples/ChatExamples.tsx?raw";
 import aiContentSource from "../system/ai/examples/AIContentExamples.tsx?raw";
@@ -75,6 +76,28 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (
+    ["selection-actions", "context-meter", "model-selector"].includes(component)
+  ) {
+    const source = aiContextSource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    const name =
+      component === "selection-actions"
+        ? "SelectionActionsExample"
+        : component === "context-meter"
+          ? "ContextMeterExample"
+          : "ModelSelectorExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
   if (["image-result", "sources", "insight-cards"].includes(component)) {
     const source = aiResultsSource
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
@@ -594,6 +617,14 @@ export function generatePrompt(
       ? t(
           "\nFileTree يعرض بيانات يزوّدها التطبيق فقط. onActivate يفوّض فتح الملف للتطبيق، والمعاينة تقرأ نصوص المثال المحلية دون نظام ملفات.",
           "\nFileTree displays supplied data only. onActivate delegates opening to the host; the preview reads application-owned sample strings without filesystem access.",
+        )
+      : "") +
+    (["selection-actions", "context-meter", "model-selector"].includes(
+      component,
+    )
+      ? t(
+          "\nSelectionActions محدود بنطاق children؛ يستثني المحررات والشيفرة والروابط والأزرار. Alt+Enter ينقل التركيز للإجراءات؛ Escape يعيده للنطاق. السحب والنسخ الأصليان محفوظان، والتمرير يغلق الشريط. النموذج متحكّم به عبر id ثابت وonValueChange. الاستخدام والسعة والتقديرات والأسعار يزوّدها التطبيق. لا تنفيذ ذكاء اصطناعي أو استبدال تلقائي أو شبكة. انسخ حزمة المصدر كاملة مع Popper وPopover وSelect وإصلاحات طبقات Radix المذكورة في ai/README.md.",
+          "\nSelectionActions is scoped to children; excludes editors, code, links and buttons. Alt+Enter focuses actions; Escape returns to the scope. Preserve native selection/copy; scroll dismisses. Models use controlled stable IDs and onValueChange. Usage, capacity, estimates, prices and availability belong to the host. No AI execution, automatic replacement or network. Copy the complete source bundle with Popper, Popover, Select and the Radix layer overrides in ai/README.md.",
         )
       : "") +
     `\n\nSystemProvider: ${JSON.stringify(c)}\n\n${t("ضع المثال في ملف مناسب داخل تطبيقك بعد تعديل مسارات الاستيراد. احتفظ بحزمة ai/ عند نسخ المكتبة.", "Place the example in an appropriate application component file after adjusting imports. Retain the ai/ bundle when copying the library.")}\n\n\`\`\`tsx\n${generateCode(component, model, config, language)}\`\`\``

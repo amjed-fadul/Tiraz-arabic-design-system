@@ -1,4 +1,9 @@
 import {
+  SelectionActionsExample,
+  ContextMeterExample,
+  ModelSelectorExample,
+} from "../system/ai/examples/AIContextExamples";
+import {
   ImageResultExample,
   SourcesExample,
   InsightCardsExample,
@@ -202,6 +207,27 @@ export function Playground({
       <ThinkingIndicatorExample
         language={language}
         {...(model as Playgrounds["thinking-indicator"])}
+      />
+    );
+  if (component === "selection-actions")
+    return (
+      <SelectionActionsExample
+        language={language}
+        {...(model as Playgrounds["selection-actions"])}
+      />
+    );
+  if (component === "context-meter")
+    return (
+      <ContextMeterExample
+        language={language}
+        {...(model as Playgrounds["context-meter"])}
+      />
+    );
+  if (component === "model-selector")
+    return (
+      <ModelSelectorExample
+        language={language}
+        {...(model as Playgrounds["model-selector"])}
       />
     );
   if (component === "image-result")

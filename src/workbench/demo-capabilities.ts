@@ -3,6 +3,9 @@ import type { PlaygroundModel, ProgressModel } from "./model";
 
 // Replay describes the actual rendered section, not just the component family.
 const staticPlaygrounds: ComponentId[] = [
+  "selection-actions",
+  "context-meter",
+  "model-selector",
   "image-result",
   "sources",
   "insight-cards",
@@ -24,6 +27,9 @@ const staticPlaygrounds: ComponentId[] = [
   "donut-chart",
 ];
 const staticExamples: ComponentId[] = [
+  "selection-actions",
+  "context-meter",
+  "model-selector",
   "image-result",
   "sources",
   "insight-cards",

@@ -1,4 +1,8 @@
 import {
+  AIContextExample,
+  ContextMeterStates,
+} from "../system/ai/examples/AIContextExamples";
+import {
   ImageResultStates,
   SourcesStates,
   InsightCardsExample,
@@ -268,6 +272,10 @@ export function Examples({
         </section>
       </div>
     );
+  if (component === "selection-actions" || component === "model-selector")
+    return <AIContextExample language={language} />;
+  if (component === "context-meter")
+    return <ContextMeterStates language={language} />;
   if (component === "image-result")
     return <ImageResultStates language={language} />;
   if (component === "sources") return <SourcesStates language={language} />;

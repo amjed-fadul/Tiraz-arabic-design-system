@@ -1,0 +1,149 @@
+{
+  "checks": [
+    {
+      "name": "documentation ar light 1440x900"
+    },
+    {
+      "name": "documentation ar light 320x520"
+    },
+    {
+      "name": "documentation ar light 320x320"
+    },
+    {
+      "name": "documentation ar dark 1440x900"
+    },
+    {
+      "name": "documentation ar dark 320x520"
+    },
+    {
+      "name": "documentation ar dark 320x320"
+    },
+    {
+      "name": "documentation en light 1440x900"
+    },
+    {
+      "name": "documentation en light 320x520"
+    },
+    {
+      "name": "documentation en light 320x320"
+    },
+    {
+      "name": "documentation en dark 1440x900"
+    },
+    {
+      "name": "documentation en dark 320x520"
+    },
+    {
+      "name": "documentation en dark 320x320"
+    },
+    {
+      "name": "live shared customization updates controls and overlay tokens",
+      "h": 36,
+      "font": "14px",
+      "radius": "16px"
+    },
+    {
+      "name": "OS and application reduced motion each independently stop transitions",
+      "rows": [
+        {
+          "system": false,
+          "os": "reduce",
+          "durations": [
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            },
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            },
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            }
+          ]
+        },
+        {
+          "system": true,
+          "os": "no-preference",
+          "durations": [
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            },
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            },
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            }
+          ]
+        },
+        {
+          "system": true,
+          "os": "reduce",
+          "durations": [
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            },
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            },
+            {
+              "animation": "1e-05s",
+              "transition": "0s"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "axe scans connected controls and open model/context details",
+      "scans": [
+        {
+          "state": "closed",
+          "violations": []
+        },
+        {
+          "state": "model",
+          "violations": []
+        },
+        {
+          "state": "context",
+          "violations": []
+        }
+      ]
+    },
+    {
+      "name": "simulated touch activation preserves a DOM-constructed selection",
+      "physicalDevice": false,
+      "selection": "DOM Range simulation",
+      "activation": "emulated touchscreen tap"
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "diagnostics": [
+    {
+      "state": "model",
+      "scope": "whole provider including hidden background",
+      "violations": [
+        {
+          "id": "aria-hidden-focus",
+          "impact": "serious",
+          "nodes": [
+            [
+              "main"
+            ]
+          ]
+        }
+      ],
+      "focusContainment": "Tab, Shift+Tab and attempted background focus all remain on an option",
+      "review": "Inherited installed Radix Select/axe diagnostic; no full-tree conformance claim."
+    }
+  ]
+}

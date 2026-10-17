@@ -83,6 +83,30 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "selection-actions": [
+    field("longContent", "boolean", "محتوى طويل", "Long content", "children"),
+  ],
+  "context-meter": [
+    field(
+      "preset",
+      "select",
+      "قيم العينة",
+      "Sample values",
+      "used / capacity",
+      { options: ["normal", "near", "over", "zero", "missing", "invalid"] },
+    ),
+    field("estimated", "boolean", "قيم تقديرية", "Estimated values"),
+  ],
+  "model-selector": [
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field(
+      "longContent",
+      "boolean",
+      "وصف طويل",
+      "Long description",
+      "models[].description",
+    ),
+  ],
   "image-result": [
     field("progress", "number", "نسبة التقدّم", "Progress (%)", "progress", {
       min: 0,
@@ -813,6 +837,11 @@ export const optionNames: Record<string, Localized> = {
   multi: ["سلاسل متعددة", "Multiple series"],
   gaps: ["قيم مفقودة", "Missing values"],
   point: ["نقطة واحدة", "Single point"],
+  normal: ["اعتيادي", "Normal"],
+  near: ["قرب السعة", "Near capacity"],
+  over: ["تجاوز السعة", "Over capacity"],
+  missing: ["قيم مفقودة", "Missing values"],
+  invalid: ["قيم غير صالحة", "Invalid values"],
   zero: ["قيم صفرية", "Zero values"],
   long: ["تسميات طويلة", "Long labels"],
   initials: ["أحرف", "Initials"],
@@ -876,6 +905,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "selection-actions": ["longContent"],
+  "context-meter": ["preset", "estimated"],
+  "model-selector": ["disabled", "longContent"],
   "image-result": ["state", "progress", "aspectRatio"],
   sources: ["defaultExpanded", "longContent"],
   "insight-cards": ["longContent"],

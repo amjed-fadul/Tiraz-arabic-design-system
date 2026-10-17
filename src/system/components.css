@@ -4519,3 +4519,265 @@ a.tz-inline-citation {
   block-size: 4px;
   border-radius: 999px;
 }
+
+/* Application-owned AI context controls. Geometry/motion belongs to Radix. */
+.tz-selection-scope {
+  min-inline-size: 0;
+}
+.tz-selection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow-popover);
+  z-index: 65;
+  max-inline-size: min(560px, calc(100vw - 16px));
+  max-block-size: var(--radix-popper-available-height);
+  overflow: auto;
+}
+.tz-selection-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-small);
+  min-block-size: var(--control-small);
+  padding: 3px 8px;
+  font-size: var(--text-meta);
+  overflow-wrap: anywhere;
+  min-inline-size: 0;
+}
+.tz-selection-actions button:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.tz-selection-actions button:disabled {
+  opacity: 0.5;
+}
+.tz-selection-actions[data-reference-hidden] {
+  visibility: hidden;
+  pointer-events: none;
+}
+.tz-context-trigger,
+.tz-model-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 3px 8px;
+  min-block-size: var(--control-small);
+  max-inline-size: 100%;
+  border: 1px solid transparent;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: 1.6;
+}
+.tz-context-trigger {
+  flex-wrap: wrap;
+}
+.tz-context-trigger:hover,
+.tz-model-trigger:hover {
+  background: var(--surface-hover);
+}
+.tz-context-ring {
+  inline-size: 16px;
+  block-size: 16px;
+  transform: rotate(-90deg);
+}
+.tz-context-ring circle {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 2.5;
+}
+.tz-context-ring circle + circle {
+  stroke: currentColor;
+}
+.tz-context-trigger[data-tone="high"] .tz-context-ring {
+  color: var(--info);
+}
+.tz-context-trigger[data-tone="over"] .tz-context-ring,
+.tz-context-trigger[data-tone="near"] .tz-context-ring {
+  color: var(--danger);
+}
+.tz-context-status {
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+}
+.tz-context-details {
+  inline-size: 280px;
+  max-inline-size: calc(100vw - 16px);
+  max-block-size: var(--radix-popover-content-available-height);
+  overflow: auto;
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-popover);
+  z-index: 65;
+  font-size: var(--text-meta);
+  overflow-wrap: anywhere;
+}
+.tz-context-details p {
+  margin: 4px 0;
+}
+.tz-context-details dl {
+  margin: 10px 0;
+  padding-block: 8px;
+  border-block: 1px solid var(--border);
+}
+.tz-context-details dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.tz-context-details dd {
+  margin: 0;
+}
+.tz-context-details small {
+  color: var(--text-secondary);
+}
+.tz-model-trigger {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.tz-model-trigger[data-size="md"] {
+  min-block-size: var(--control-height);
+}
+.tz-model-trigger > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-inline-size: 0;
+}
+.tz-model-trigger bdi {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tz-model-trigger:disabled {
+  opacity: 0.5;
+}
+.tz-model-popup {
+  inline-size: 360px;
+  max-inline-size: calc(100vw - 16px);
+  max-block-size: min(420px, var(--radix-select-content-available-height));
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-popover);
+  z-index: 65;
+}
+.tz-model-viewport {
+  padding: 4px;
+}
+.tz-model-group {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  padding: 8px 8px 4px;
+}
+.tz-model-option {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 8px 24px 8px 8px;
+  padding-inline-end: 24px;
+  padding-inline-start: 8px;
+  border-radius: var(--radius-small);
+  outline: none;
+  font-size: var(--text-meta);
+  line-height: 1.6;
+  cursor: pointer;
+  user-select: none;
+}
+.tz-model-option[data-highlighted] {
+  background: var(--surface-hover);
+}
+.tz-model-option[data-state="checked"] {
+  background: var(--action-soft);
+}
+.tz-model-option[data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.tz-model-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 18px;
+  min-inline-size: 18px;
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+.tz-model-copy {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-model-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-weight: var(--weight-medium);
+  overflow-wrap: anywhere;
+}
+.tz-model-tag {
+  padding-inline: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+  color: var(--text-secondary);
+  font-size: 10px;
+  font-weight: var(--weight-regular);
+}
+.tz-model-copy small {
+  display: block;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.tz-model-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  max-inline-size: 28%;
+  color: var(--text-secondary);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+.tz-model-check {
+  position: absolute;
+  inset-inline-end: 6px;
+  inset-block-start: 10px;
+}
+.tz-context-example,
+.tz-context-connected {
+  inline-size: 100%;
+  max-inline-size: 640px;
+  min-inline-size: 0;
+}
+.tz-context-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-block-end: 12px;
+}
+.tz-context-note {
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+  margin-block: 8px;
+}
+.tz-context-connected .tz-chat-thread {
+  max-block-size: 220px;
+  margin-block: 8px;
+}

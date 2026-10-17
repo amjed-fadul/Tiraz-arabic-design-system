@@ -446,3 +446,19 @@ never synthesize credibility, evidence, retrieval results or generation. Host ow
 image rights/URL trust, meaningful alt, source records and action execution. Reuse
 [AIResultsExamples](examples/AIResultsExamples.tsx) and copy all
 `ai/assets/results/` (SVG and sample text documents) with their local URL imports.
+
+### Context controls in a chat
+
+Use SelectionActions only around the intended read-only reply scope; place the
+ChatComposer outside that scope. The host appends callback text into its own
+controlled draft, or copies it with explicit success/failure feedback. Preserve
+native text selection and copying. Alt+Enter enters actions; Escape leaves them.
+Exclude code/editor/control descendants and never silently replace selected text.
+
+Compose ModelSelector and ContextMeter in a wrapping header/toolbar above the
+existing ChatThread. Keep model IDs stable and update the controlled value in
+onValueChange. Supply all descriptions, availability, context limits and prices;
+label sample data. ContextMeter shows supplied usage/capacity and flags estimates,
+missing/invalid values and excess honestly. Do not add token estimation, model
+lookup, provider authentication or implied execution. See AIContextExamples.tsx
+for the compiling local composition; it remains portable with the source root.

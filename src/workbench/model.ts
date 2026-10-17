@@ -268,6 +268,12 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "selection-actions": { longContent: boolean };
+  "context-meter": {
+    preset: "normal" | "near" | "over" | "zero" | "missing" | "invalid";
+    estimated: boolean;
+  };
+  "model-selector": { disabled: boolean; longContent: boolean };
   "image-result": {
     state: "loading" | "loaded" | "error";
     aspectRatio: "landscape" | "square" | "portrait";
@@ -389,6 +395,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
+    "selection-actions": { longContent: false },
+    "context-meter": { preset: "normal", estimated: false },
+    "model-selector": { disabled: false, longContent: false },
     "image-result": {
       state: "loading",
       aspectRatio: "landscape",

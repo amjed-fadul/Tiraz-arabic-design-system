@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with fifty-seven source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with sixty-three source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -341,3 +341,9 @@ whole `src/system/ai/assets/results/` directory with source-only examples; prese
 local SVG/text `?url&no-inline` imports and the bundled license. Source copies also need the
 already installed `@radix-ui/react-popover@1.3.1` and documented Radix overrides.
 See `src/system/ai/README.md` for URL restrictions and host responsibilities.
+
+SelectionActions, ContextMeter and ModelSelector are documented under AI patterns.
+Their connected chat example uses scoped selection, controlled model IDs and
+explicit sample context values. See `src/system/ai/README.md` for ownership,
+keyboard focus, selection exclusions and source-copy requirements. Local browser
+verification and captures are in `docs/ai-context-controls/`.

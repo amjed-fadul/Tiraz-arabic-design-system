@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **sixty**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation and InsightCards.
+Tiraz is an Arabic-first, source-owned React dashboard library with **sixty-three**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation InsightCards, SelectionActions, ContextMeter and ModelSelector.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -813,3 +813,54 @@ automatically finish loading: the host state and actual image load still govern
 readiness. Updating progress does not reload the image. The local sample's
 progress slider demonstrates supplied values; it measures no network request
 or image generation. Percentages use the provider's Arabic/English locale.
+
+## Selection, context and model controls
+
+Use [AIContextExamples](examples/AIContextExamples.tsx) for a connected local
+ChatThread/ChatComposer example. Its models, capacities, usage and prices are
+explicit samples. Changing the model updates a real stable local ID; sending
+adds only a local user message. No provider is contacted. Draft editing remains
+ordinary textarea editing; Use in draft appends selected reply text to the
+existing draft. Copy reports success or failure; Quote appends a local quotation.
+
+SelectionActions wraps one explicitly named content region with `children`,
+`label` and `actions` ({id, label, onSelect(text), optional icon/disabled}). Only
+text wholly inside that region qualifies, including mixed Arabic/English text.
+The region is keyboard focusable; select with the browser and press Alt+Enter to
+focus the action row. Arrow keys and Tab navigate; Escape dismisses and returns
+focus to the region when invoked from the row. No selection or focus is captured
+on mount. Native copying remains available. Buttons preserve the selected text
+before invoking callbacks; the host can deliberately move focus afterward.
+First two actions are shown; More reveals remaining actions in the same row.
+Scroll or viewport resize dismisses; clearing/changing selection updates the row.
+Unmount removes all instance listeners. Radix Popper anchors to the Range and
+bounds/flips the row at viewport edges, within the nearest provider/dialog.
+
+Input, textarea, select, contenteditable, links, buttons, summary and ARIA interactive controls, pre/code, nested scopes
+and `data-selection-actions-exclude` descendants are excluded, including ranges
+crossing them. One DOM Range only. Shadow DOM, iframes and custom canvas editors
+are unsupported. It never executes AI, replaces text, estimates tokens or creates
+a global selection manager. Host action callbacks own asynchronous errors.
+
+ContextMeter accepts optional used/capacity numbers, estimated, details
+({id,label,value}), metadata, label, unit, locale and className. Values must be
+finite and nonnegative: missing/invalid values stay unavailable; zero remains
+zero. Zero capacity has no percentage. Over-capacity text retains the real value
+and excess percentage while the decorative ring clamps at full. The trigger's
+accessible name reports full values and statuses; visible status text supplements
+color. Estimated values are explicitly labeled. Details use the existing Popover
+(click/Enter/Space; Escape restores focus). Details are supplied independently;
+the component does not infer parts, cost, limits, truncation or host behavior.
+
+ModelSelector requires models, controlled value and onValueChange(id). Every
+model needs a unique nonempty stable id and name; provider, description, tags,
+context, price and disabled are optional supplied display data. Update value in
+the callback. Removing a selected ID shows the placeholder without selecting a
+replacement or calling the host. A supplied selected disabled model remains the
+current choice; disabled options remain visible and cannot be chosen. An empty
+list disables the trigger. size defaults sm; md follows shared control tokens.
+Radix Select provides grouping, typeahead, arrows, Home/End, disabled skipping,
+selected state, viewport collision handling and Escape restoration. No connection,
+API keys or current provider claims are embedded in this family. Reuse the Radix
+layer overrides above and preserve @radix-ui/react-select, react-popover and
+react-popper dependencies when relocating the whole source bundle.

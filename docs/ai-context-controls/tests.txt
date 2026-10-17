@@ -1,0 +1,22 @@
+
+> tiraz@0.1.0 test
+> vitest run --reporter=dot --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/ai-context-controls/Tiraz
+
+·······················································································································································································································································································································································································································stderr | src/system/ai-feedback.test.tsx > recovers focus on controlled collapse, preserves detail values and never reclaims outside focus
+A component suspended inside an `act` scope, but the `act` call was not awaited. When testing React components that depend on asynchronous data, you must await the result:
+
+await act(() => ...)
+
+··········································································································································································································································································································
+
+ Test Files  76 passed (76)
+      Tests  705 passed (705)
+   Start at  01:35:08
+   Duration  149.45s (import 45%, tests 39%, environment 11%, transform 2%, setup 2%)
+
+     Import  272 modules were evaluated 7398 times · 131.54s total, 45% of tracked time
+             ~61.70s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
