@@ -691,6 +691,30 @@
     {
       "name": "ToolChipItem",
       "source": "ToolChips.tsx"
+    },
+    {
+      "name": "CodeBlock",
+      "source": "CodeBlock.tsx"
+    },
+    {
+      "name": "CodeBlockProps",
+      "source": "CodeBlock.tsx"
+    },
+    {
+      "name": "Markdown",
+      "source": "Markdown.tsx"
+    },
+    {
+      "name": "MarkdownProps",
+      "source": "Markdown.tsx"
+    },
+    {
+      "name": "StreamingText",
+      "source": "StreamingText.tsx"
+    },
+    {
+      "name": "StreamingTextProps",
+      "source": "StreamingText.tsx"
     }
   ],
   "configuration": {
@@ -770,6 +794,129 @@
     }
   },
   "components": [
+    {
+      "id": "code-block",
+      "api": "CodeBlock",
+      "source": "CodeBlock.tsx",
+      "exports": ["CodeBlock", "CodeBlockProps"],
+      "props": [
+        {
+          "name": "code",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "required": false,
+          "default": "text"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "InputCopyLabels",
+          "required": false
+        }
+      ],
+      "state": "Internal copy feedback only; host supplies exact source.",
+      "accessibility": [
+        "Copy button keeps focus and uses a check icon on success; polite localized success/failure status. Failure stays visible. Override copy/copied/failure through labels.",
+        "Code always LTR; controls inherit interface direction. Pre is a named keyboard-focusable region with internal scrolling."
+      ],
+      "limitations": [
+        "Light lexical highlighting only: js/javascript/jsx, ts/typescript/tsx, json, py/python, sh/shell/bash. Unknown languages render plain source. No execution, editing, terminal or downloads.",
+        "Clipboard requires a supported secure context; rejection/unavailable API is reported without fake success."
+      ],
+      "inheritedProps": "Native div attributes, style, className and React 19 ref; children managed internally.",
+      "alternative": "CodeBlock for source, Markdown for static formatted responses, StreamingText for host-driven updates.",
+      "examples": ["ai/examples/AIContentExamples.tsx"]
+    },
+    {
+      "id": "markdown",
+      "api": "Markdown",
+      "source": "Markdown.tsx",
+      "exports": ["Markdown", "MarkdownProps"],
+      "props": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "dependencies": ["react-markdown@10.1.0", "remark-gfm@4.0.1"],
+      "state": "Application supplies the full current Markdown string. Reparse each update; stable renderer component identities.",
+      "accessibility": [
+        "Native paragraphs, headings, nested lists, links, quotes, emphasis, inline code, fenced code and semantic tables. Table scroll regions are keyboard accessible.",
+        "Arabic text inherits direction; inline and fenced code remain LTR. Fenced code reuses CodeBlock."
+      ],
+      "limitations": [
+        "CommonMark plus GFM tables, strikethrough, task lists and autolinks through one maintained parser and its GFM plugin. Raw HTML discarded (skipHtml), no rehype-raw.",
+        "Default react-markdown URL transform rejects unsafe protocols for links/images. Rejected links become text and images become alt text. Allowed protocols: http, https, irc, ircs, mailto, xmpp, plus relative references. Host owns URL/content trust, resource loading and application limits.",
+        "No embeds, execution or custom rendering framework. Unfinished fences/syntax are provisional and reparse on the next host update."
+      ],
+      "inheritedProps": "Native div attributes, style, className and React 19 ref; children managed internally.",
+      "alternative": "CodeBlock for source, Markdown for static formatted responses, StreamingText for host-driven updates.",
+      "examples": ["ai/examples/AIContentExamples.tsx"]
+    },
+    {
+      "id": "streaming-text",
+      "api": "StreamingText",
+      "source": "StreamingText.tsx",
+      "exports": ["StreamingText", "StreamingTextProps"],
+      "props": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "streaming | completed",
+          "required": true,
+          "values": ["streaming", "completed"]
+        },
+        {
+          "name": "markdown",
+          "type": "boolean",
+          "required": false,
+          "default": "false"
+        },
+        {
+          "name": "statusLabel",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "announcement",
+          "type": "polite | off",
+          "required": false,
+          "default": "polite",
+          "values": ["polite", "off"]
+        }
+      ],
+      "dependencies": [
+        "react-markdown@10.1.0",
+        "remark-gfm@4.0.1 (via Markdown)"
+      ],
+      "state": "Fully host driven text and streaming/completed state. No internal queue, transport, timer or token accounting.",
+      "accessibility": [
+        "Content is readable without a live region. One concise state status, with optional translated statusLabel or announcement=off for host ownership.",
+        "Plain text uses stable word spans with a brief 420ms blur reveal and trailing cursor while streaming. Completion removes cursor and stops reveal. System and OS reduced motion suppress decoration and show all supplied content immediately.",
+        "Markdown mode composes the same renderer, reparsing partial syntax/fences; existing settled nodes stay mounted where parser structure is unchanged."
+      ],
+      "limitations": [
+        "Host owns buffering, cancellation, errors, size limits, URL trust and final text/state. Cancelling should retain received text, set completed and supply a cancelled statusLabel.",
+        "Markdown structural changes may replace affected nodes; selection inside syntax being reinterpreted cannot be guaranteed. No response-wide live region.",
+        "Local example starts explicitly and invalidates timers on replay, cancellation, language/mode change and unmount. No AI/network request."
+      ],
+      "inheritedProps": "Native div attributes, style, className and React 19 ref; children managed internally.",
+      "alternative": "CodeBlock for source, Markdown for static formatted responses, StreamingText for host-driven updates.",
+      "examples": ["ai/examples/AIContentExamples.tsx"]
+    },
     {
       "id": "tool-call",
       "api": "ToolCall",

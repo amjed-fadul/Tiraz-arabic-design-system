@@ -83,6 +83,23 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "code-block": [
+    field(
+      "codeLanguage",
+      "select",
+      "لغة الشيفرة",
+      "Code language",
+      "language",
+      { options: ["ts", "python", "json", "text", "unsupported"] },
+    ),
+    field("longContent", "boolean", "شيفرة طويلة", "Long code", "code"),
+  ],
+  markdown: [
+    field("longContent", "boolean", "جدول طويل", "Long table", "text"),
+  ],
+  "streaming-text": [
+    field("markdown", "boolean", "تنسيق ماركداون", "Markdown"),
+  ],
   "tool-call": [
     field("defaultExpanded", "boolean", "موسّع مبدئيًا", "Initially expanded"),
     field("longContent", "boolean", "مخرجات طويلة", "Long output", "output"),
@@ -804,6 +821,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "code-block": ["codeLanguage", "longContent"],
+  markdown: ["longContent"],
+  "streaming-text": ["markdown"],
   "loading-state": ["label", "variant", "elapsed"],
   "thinking-indicator": ["label", "words", "textOnly"],
   "thinking-state": ["active", "defaultExpanded"],

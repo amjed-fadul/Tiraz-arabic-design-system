@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **fifty-one**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall and ToolChips.
+Tiraz is an Arabic-first, source-owned React dashboard library with **fifty-four**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown and StreamingText.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -596,3 +596,63 @@ The portable ai/examples/ToolActivityExamples.tsx includes static states, render
 output and an explicitly started local simulation: running → success, failure →
 host retry, and a chip that opens and focuses its call. Replay/reset/unmount cancel
 stale timers. Sample data contains no secrets and performs no tool operation.
+
+## AI response content
+
+CodeBlock, Markdown and StreamingText live under **AI patterns**. Use the
+[portable content examples](examples/AIContentExamples.tsx), and install the two
+runtime dependencies in the consuming application (a source-only copy has no
+repository package.json):
+
+```sh
+npm install react-markdown@10.1.0 remark-gfm@4.0.1
+```
+
+`react-markdown` supplies the maintained CommonMark parser and React rendering;
+`remark-gfm` adds tables, strikethrough, task lists and autolinks. This keeps one
+parser and one necessary dialect plugin, with no custom Markdown parser,
+highlighting framework or animation dependency. No user-supplied plugins/renderers
+are exposed. Preserve their transitive dependencies through your package manager.
+
+CodeBlock takes `code`, optional `language`, `label` and `labels` (copy/copied/failure,
+the shared InputCopyLabels type). It copies the original string including leading,
+trailing, tab and newline whitespace. Success uses a check icon and a polite hidden
+status; failure stays visible with manual selection guidance. Clipboard access
+requires a secure context and browser permission; errors never imply success.
+Its pre is a named, focusable internal scroll region, bounded to 20rem in height.
+Controls follow interface direction while code remains LTR. Small lexical
+highlighting supports js/javascript/jsx, ts/typescript/tsx, json, py/python and
+sh/shell/bash. Unknown languages remain plain text. It is read-only and never
+executes, edits or downloads source.
+
+Markdown takes the complete current `text` string. Native headings, paragraphs,
+nested ordered/unordered lists, links, quotes, emphasis, inline code, fenced code
+through CodeBlock and keyboard-scrollable Table all use shared tokens. Arabic
+shaping follows the provider; code is isolated LTR. Raw HTML is discarded with
+`skipHtml`. Do not add `rehype-raw` or bypass `defaultUrlTransform`: unsafe
+javascript/data/vbscript/file protocols are rejected for links and images;
+rejected links become text and images retain alt text. The parser allows http,
+https, irc, ircs, mailto, xmpp and relative URLs. Safe-protocol destinations can
+still be untrusted: the host owns origin policy, content/size limits, image
+resource loading and destination trust. This is presentation, with no embeds,
+execution or application-specific rendering framework.
+
+StreamingText takes `text` and explicit `state="streaming" | "completed"`.
+It renders the host's current text immediately. Plain words briefly resolve from
+blur with stable word spans and a trailing cursor; completion stops decoration
+and removes the cursor. Optional `markdown` composes the same Markdown renderer.
+Unfinished fences and partial syntax are provisional and reparse each host update;
+there is no cached final parse or second typing queue. Stable renderer identities
+retain settled nodes and code copy focus. Selection inside syntax that changes
+structure can move; do not remount the whole response by keying it on text.
+System and OS reduced motion disable decoration and show all updates immediately.
+
+The response body is not a live region. `statusLabel` overrides one concise
+localized state announcement; `announcement="off"` delegates announcements to the
+host. Never announce every character. The host owns transport, buffering, errors,
+limits and cancellation. On cancellation keep received text, set completed and
+supply a cancelled statusLabel. No model connection, execution timer, token count
+or transport belongs in the component. The bundled demo alone uses fixed chunks
+and timers; it starts explicitly, invalidates callbacks on replay/cancel/unmount
+or language/mode change, retains received text on cancel and identifies itself as
+local with no AI/network request.

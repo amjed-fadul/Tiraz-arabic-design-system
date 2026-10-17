@@ -401,3 +401,13 @@ See [ToolActivityExamples](examples/ToolActivityExamples.tsx) for disclosure, re
 rendered output and explicit local replay with timer cleanup. TaskRows describes
 broader tasks; ThinkingState describes brief public activity, never private
 reasoning. Keep one announcement owner and exclude duration/output from it.
+
+## AI content
+
+Compose CodeBlock for source, Markdown for static response prose and StreamingText
+for updates arriving from the host. All three documentation pages belong to AI
+patterns. See [the portable contract and dependency setup](README.md#ai-response-content)
+and [the compiling examples](examples/AIContentExamples.tsx). Install
+`react-markdown@10.1.0 remark-gfm@4.0.1` when copying the source bundle. Keep raw
+HTML disabled and parser URL filtering enabled. Host text/state/transport remain
+outside the components; cancellation preserves received text and removes activity.

@@ -3766,3 +3766,182 @@ button.tz-tool-chip {
     transition: none;
   }
 }
+
+/* AI response content: bounded source, flowing prose and host-driven updates. */
+.tz-code-block {
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-subtle);
+  overflow: hidden;
+}
+.tz-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-block-end: 1px solid var(--border);
+  color: var(--text-secondary);
+  font: var(--text-meta)/1.6 var(--font-mono);
+}
+.tz-code-header bdi {
+  overflow-wrap: anywhere;
+  min-inline-size: 0;
+}
+.tz-code-block pre {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: left;
+  margin: 0;
+  padding: var(--space-3);
+  max-block-size: 20rem;
+  overflow: auto;
+  tab-size: 2;
+  font: var(--text-meta)/1.8 var(--font-mono);
+  white-space: pre;
+}
+.tz-code-block code {
+  font: inherit;
+}
+.tz-code-block pre:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -3px;
+}
+.tz-code-token[data-kind="comment"] {
+  color: var(--text-muted);
+}
+.tz-code-token[data-kind="keyword"] {
+  color: var(--info);
+}
+.tz-code-token[data-kind="string"] {
+  color: var(--success);
+}
+.tz-code-token[data-kind="number"] {
+  color: var(--danger);
+}
+.tz-markdown {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  line-height: var(--line-height);
+}
+.tz-markdown > :first-child {
+  margin-block-start: 0;
+}
+.tz-markdown > :last-child {
+  margin-block-end: 0;
+}
+.tz-markdown :is(p, ul, ol, blockquote, .tz-code-block, .tz-table-container) {
+  margin-block: var(--space-3);
+}
+.tz-markdown :is(h1, h2, h3, h4, h5, h6) {
+  font-weight: var(--weight-semibold);
+  line-height: 1.8;
+  margin-block: var(--space-5) var(--space-2);
+}
+.tz-markdown h1 {
+  font-size: var(--text-heading);
+}
+.tz-markdown h2 {
+  font-size: calc(var(--text-body) + 2px);
+}
+.tz-markdown :is(h3, h4, h5, h6) {
+  font-size: var(--text-body);
+}
+.tz-markdown ul {
+  list-style-type: disc;
+}
+.tz-markdown ul ul {
+  list-style-type: circle;
+}
+.tz-markdown ol {
+  list-style-type: decimal;
+}
+.tz-markdown :is(ul, ol) {
+  padding-inline-start: var(--space-6);
+}
+.tz-markdown li > :is(ul, ol) {
+  margin-block: var(--space-1);
+}
+.tz-markdown a {
+  color: var(--action);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.tz-markdown a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-markdown blockquote {
+  margin-inline: 0;
+  border-inline-start: 2px solid var(--border-strong);
+  padding-inline: var(--space-3);
+  color: var(--text-secondary);
+}
+.tz-markdown code:not(pre code) {
+  display: inline;
+  direction: ltr;
+  unicode-bidi: isolate;
+  border-radius: var(--radius-small);
+  background: var(--surface-subtle);
+  padding: 1px 4px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+.tz-markdown .tz-table {
+  font-size: var(--text-meta);
+}
+.tz-markdown img {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+.tz-streaming-text {
+  min-inline-size: 0;
+}
+.tz-stream-prose {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.tz-streaming-text[data-state="streaming"]
+  :is(.tz-stream-word, .tz-markdown-word) {
+  animation: tz-stream-reveal 420ms var(--ease) both;
+}
+.tz-stream-cursor {
+  display: inline-block;
+  inline-size: 2px;
+  block-size: 0.9em;
+  margin-inline-start: var(--space-1);
+  background: currentColor;
+  vertical-align: baseline;
+  border-radius: 2px;
+  animation: tz-stream-caret 900ms ease-in-out infinite;
+}
+@keyframes tz-stream-reveal {
+  from {
+    opacity: 0.35;
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+@keyframes tz-stream-caret {
+  50% {
+    opacity: 0.3;
+  }
+}
+.tiraz-system[data-reduced-motion="true"]
+  :is(.tz-stream-word, .tz-markdown-word, .tz-stream-cursor) {
+  animation: none;
+  filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-streaming-text[data-state]
+    :is(.tz-stream-word, .tz-markdown-word, .tz-stream-cursor) {
+    animation: none;
+    filter: none;
+  }
+}

@@ -1,4 +1,9 @@
 import {
+  CodeBlockExample,
+  MarkdownExample,
+  StreamingDemo,
+} from "../system/ai/examples/AIContentExamples";
+import {
   ToolRenderedOutputExample,
   ToolActivityDemo,
 } from "../system/ai/examples/ToolActivityExamples";
@@ -250,6 +255,17 @@ export function Examples({
         </section>
       </div>
     );
+  if (component === "code-block")
+    return (
+      <div style={{ display: "grid", gap: "var(--space-5)", minInlineSize: 0 }}>
+        <CodeBlockExample language={language} codeLanguage="python" />
+        <CodeBlockExample language={language} codeLanguage="unsupported" />
+      </div>
+    );
+  if (component === "markdown")
+    return <MarkdownExample language={language} longContent />;
+  if (component === "streaming-text")
+    return <StreamingDemo language={language} markdown />;
   if (component === "tool-call" || component === "tool-chips")
     return (
       <div style={{ display: "grid", gap: "var(--space-8)", minInlineSize: 0 }}>

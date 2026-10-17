@@ -95,6 +95,141 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "code-block": [
+      [
+        "code",
+        "string · required",
+        t(
+          "المصدر الكامل؛ يُنسخ كما هو مع المسافات.",
+          "Exact supplied source, including whitespace; copied verbatim.",
+        ),
+      ],
+      [
+        "language / label",
+        "string? / string?",
+        t(
+          "لغة التلوين وعنوان ظاهر اختياري. الافتراضي نص.",
+          "Highlight language and optional visible header/region name; defaults to Text.",
+        ),
+      ],
+      [
+        "labels",
+        "InputCopyLabels?",
+        t(
+          "copy وcopied وfailure؛ نجاح بعلامة صح وإعلان فقط.",
+          "copy, copied and failure overrides; check-only success with a polite announcement.",
+        ),
+      ],
+      [
+        "Languages",
+        "JS / TS / JSON / Python / Bash",
+        t(
+          "الاختصارات موثقة في حزمة ai؛ غير المدعوم نص عادي. الشيفرة LTR والتمرير داخلي بلوحة المفاتيح.",
+          "Aliases documented in ai/; unsupported languages stay plain. Code is LTR with internal keyboard scrolling.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "div",
+        t(
+          "className وstyle؛ لا محرر أو تنفيذ.",
+          "className/style and React 19 ref; no editor or execution.",
+        ),
+      ],
+    ],
+    markdown: [
+      [
+        "text",
+        "string · required",
+        t(
+          "نص CommonMark مع GFM: فقرات وعناوين وقوائم وروابط واقتباس وتأكيد وشيفرة وجداول.",
+          "CommonMark plus GFM: paragraphs, headings, lists, links, quotes, emphasis, inline/fenced code and tables.",
+        ),
+      ],
+      [
+        "Parser / dependencies",
+        "react-markdown 10.1.0 + remark-gfm 4.0.1",
+        t(
+          "محلل معتنى به مع إضافة GFM للجداول والشطب؛ ثبتهما عند نسخ المصدر.",
+          "Maintained React parser plus the GFM plugin for tables/strikethrough; install both when copying source.",
+        ),
+      ],
+      [
+        "HTML / URLs",
+        "skipHtml + defaultUrlTransform",
+        t(
+          "HTML معطّل؛ تُرفض javascript وdata وvbscript وfile. الروابط المرفوضة نص والصور وصف بديل. التطبيق يملك الثقة بالوجهات.",
+          "Raw HTML discarded; javascript, data, vbscript and file protocols rejected. Unsafe links become text; images become alt text. Host owns destination trust.",
+        ),
+      ],
+      [
+        "Code / tables",
+        "CodeBlock / Table",
+        t(
+          "الشيفرة LTR؛ جداول دلالية بتمرير داخلي. بلا تضمينات أو تنفيذ.",
+          "Code stays LTR; semantic tables scroll internally. No embeds or execution.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "div",
+        t(
+          "يدعم className وstyle وref.",
+          "Supports className, style and React 19 ref.",
+        ),
+      ],
+    ],
+    "streaming-text": [
+      [
+        "text / state",
+        'string / "streaming" | "completed" · required',
+        t(
+          "النص الحالي وحالة يزوّدها التطبيق. التحديث فوري بلا طابور كتابة.",
+          "Current host-supplied text and state. Updates render immediately without a typing queue.",
+        ),
+      ],
+      [
+        "markdown",
+        "boolean · false",
+        t(
+          "يعيد استخدام Markdown؛ الأسوار والصياغة الجزئية مؤقتة وتُحدّث مع كل قطعة.",
+          "Reuses Markdown; unfinished fences and syntax remain provisional and reparse on every update.",
+        ),
+      ],
+      [
+        "statusLabel / announcement",
+        'string? / "polite" | "off" · polite',
+        t(
+          "حالة موجزة دون إعلان كل حرف. عند الإلغاء احتفظ بالنص واضبط completed مع تسمية إلغاء.",
+          "Concise status without character announcements. On cancel retain text, set completed and supply a cancellation statusLabel.",
+        ),
+      ],
+      [
+        "Reveal / motion",
+        "420ms / reduced motion",
+        t(
+          "ظهور خفيف وكَرِت أثناء التدفق فقط؛ تقليل الحركة يُظهر التحديث فورًا. لا مؤقت داخلي أو اتصال نموذج.",
+          "Brief word blur and a trailing cursor only while streaming; reduced motion shows updates immediately. No internal timer or model connection.",
+        ),
+      ],
+      [
+        "Host responsibilities",
+        "text / transport / cancellation",
+        t(
+          "التطبيق يملك النقل والأخطاء والحدود والإلغاء. قد تغيّر الصياغة الجزئية بنية العقد المتأثرة فقط.",
+          "Host owns transport, errors, limits and cancellation. Reinterpreting partial Markdown may replace affected nodes; settled nodes stay stable.",
+        ),
+      ],
+      [
+        "Native attributes / ref",
+        "div",
+        t(
+          "يدعم className وstyle وref.",
+          "Supports className, style and React 19 ref.",
+        ),
+      ],
+    ],
+
     "loading-state": [
       [
         "label / description",

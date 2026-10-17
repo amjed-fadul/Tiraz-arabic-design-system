@@ -1,0 +1,25 @@
+{
+  "states": [
+    {
+      "at": 1181,
+      "state": "cancelled",
+      "text": "Local summary"
+    },
+    {
+      "at": 2185,
+      "state": "cancelled-content-retained",
+      "text": "Local summary"
+    },
+    {
+      "at": 6017,
+      "state": "completed-and-copied",
+      "status": "Local demo with fixed chunks; no AI or network request.\n\nReplay local demo\nCancel demo\nLocal summary\n\nTiraz · مرحبًا / Hello\n\nts\nconst ready = true;\n\nCopied.\nName\tState\nTiraz\tReady\nLocal sample complete",
+      "cursors": 0
+    }
+  ],
+  "frameTimesMs": [
+    1081, 1472, 1652, 1837, 2084, 2375, 3293, 4236, 4418, 4676, 4884, 5065,
+    5239, 5658, 5917, 6214, 6392, 6601, 6779, 6980, 7384, 7698, 7900, 8102,
+    8274, 8507
+  ]
+}

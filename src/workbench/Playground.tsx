@@ -1,4 +1,9 @@
 import {
+  CodeBlockExample,
+  MarkdownExample,
+  StreamingTextExample,
+} from "../system/ai/examples/AIContentExamples";
+import {
   ToolCallExample,
   ToolChipsExample,
 } from "../system/ai/examples/ToolActivityExamples";
@@ -183,6 +188,27 @@ export function Playground({
       <ThinkingIndicatorExample
         language={language}
         {...(model as Playgrounds["thinking-indicator"])}
+      />
+    );
+  if (component === "code-block")
+    return (
+      <CodeBlockExample
+        language={language}
+        {...(model as Playgrounds["code-block"])}
+      />
+    );
+  if (component === "markdown")
+    return (
+      <MarkdownExample
+        language={language}
+        {...(model as Playgrounds["markdown"])}
+      />
+    );
+  if (component === "streaming-text")
+    return (
+      <StreamingTextExample
+        language={language}
+        {...(model as Playgrounds["streaming-text"])}
       />
     );
   if (component === "tool-call")

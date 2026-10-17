@@ -1,3 +1,4 @@
+import aiContentSource from "../system/ai/examples/AIContentExamples.tsx?raw";
 import toolActivitySource from "../system/ai/examples/ToolActivityExamples.tsx?raw";
 import aiFeedbackSource from "../system/ai/examples/AIFeedbackExamples.tsx?raw";
 import fileTreeSource from "../system/ai/examples/FileTreeExamples.tsx?raw";
@@ -72,6 +73,27 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (["code-block", "markdown", "streaming-text"].includes(component)) {
+    const source = aiContentSource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    const name =
+      component === "code-block"
+        ? "CodeBlockExample"
+        : component === "markdown"
+          ? "MarkdownExample"
+          : "StreamingTextExample";
+    return `// Dependencies: npm install react-markdown@10.1.0 remark-gfm@4.0.1
+${source}
+import {SystemProvider,defaultConfig} from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><div style={{display:"grid",gap:"var(--space-5)",minInlineSize:0}}><${name} language={${json(language)}} {...${json(model)}}/>${component === "streaming-text" ? `<StreamingDemo language={${json(language)}} markdown/>` : ""}</div></SystemProvider></div>;}`;
+  }
   if (
     component === "tool-call" ||
     component === "tool-chips" ||
@@ -484,6 +506,12 @@ export function generatePrompt(
       `اعثر أولًا على طِراز داخل المشروع الحالي، سواء كان مشروعًا كاملًا أو نسخة المصدر في تطبيق آخر. إذا لم تتمكن من العثور على النظام، أبلغ بذلك بوضوح وتوقف. حدّد جذر المصدر: المجلد الذي يحوي index.ts وconfig.ts وtokens.css وcomponents.css وai/. في المشروع الكامل يكون عادة src/system؛ مثل src/system/${entry.file}. اقرأ ai/README.md وai/registry.json لقسم ${entry.id} وواجهات الدعم وai/composition.md، ثم افحص ${entry.file} وindex.ts وconfig.ts وProvider.tsx والأنماط وإعداد الخط المحلي في التطبيق. لصور Avatar احتفظ بـ ai/assets/sara.jpg وai/assets/omar.jpg وai/assets/README.md وai/assets/LICENSE.txt عند نسخ المصدر، وعدّل الاستيرادات المحلية. مسارات السجل نسبية إلى جذر المصدر، ولا تتطلب نسخة المصدر README للمشروع أو src/main.tsx. استخدم ${localize(entry.name, language)} بالخصائص والإعدادات الحالية كما في المثال. عدّل استيرادات ./system ومسارات CSS إلى موقع المكتبة، واربط الأحداث بسلوك التطبيق المطلوب، وتحقق من العرض الفعلي والاتجاه والتخصيص ولوحة المفاتيح والتركيز والأسماء الميسرة. لا تخترع تصديرات أو خصائص ولا تضف مثبتًا أو CLI.`,
       `First locate Tiraz within the current project, either a full checkout or a source copy in another application. If you cannot locate the system, clearly report that and stop. Identify the source root: the directory containing index.ts, config.ts, tokens.css, components.css and ai/. In a full checkout this is usually src/system; for example src/system/${entry.file}. Read ai/README.md, ai/registry.json for the ${entry.id} family and support APIs, and ai/composition.md; then inspect ${entry.file}, index.ts, config.ts, Provider.tsx, styles and the host application's local font setup. For Avatar photos, preserve ai/assets/sara.jpg, ai/assets/omar.jpg, ai/assets/README.md and ai/assets/LICENSE.txt with the copied source; adjust emitted local imports, do not replace bundled portraits with remote services. Registry paths are relative to the source root; a source copy needs no checkout README or src/main.tsx. Use ${localize(entry.name, language)} with the exact current properties and system settings in the example. Adjust ./system imports and CSS paths to the located library, connect events to the requested application behavior, and validate the rendered result, direction, customization, keyboard, focus and accessible names. Do not invent exports/props or add an installer or CLI.`,
     ) +
+    (["code-block", "markdown", "streaming-text"].includes(component)
+      ? t(
+          "\nلنسخة المصدر ثبّت react-markdown@10.1.0 وremark-gfm@4.0.1. CommonMark وGFM فقط؛ HTML معطّل والروابط غير الآمنة مرفوضة. اللغات غير المدعومة نص عادي والشيفرة LTR. التطبيق يملك النص وحالة streaming/completed والإلغاء؛ لا تضف طابور كتابة أو شبكة. العرض المحلي يبدأ صراحة ويلغي المؤقتات عند الإعادة والإزالة ويحفظ النص عند الإلغاء.",
+          "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. Start local demos explicitly, invalidate timers on replay/unmount, and retain received text on cancellation.",
+        )
+      : "") +
     ([
       "tool-call",
       "tool-chips",

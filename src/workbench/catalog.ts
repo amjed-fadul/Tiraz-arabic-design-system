@@ -1,6 +1,34 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "code-block",
+    name: ["كتلة الشيفرة", "CodeBlock"],
+    description: [
+      "شيفرة مقروءة مع تلوين خفيف ونسخ كامل.",
+      "Readable source with lightweight highlighting and exact copying.",
+    ],
+    file: "CodeBlock.tsx",
+  },
+  {
+    id: "markdown",
+    name: ["ماركداون", "Markdown"],
+    description: [
+      "ردود منسّقة مع روابط آمنة وجداول وشيفرة.",
+      "Formatted responses with safe links, tables and code.",
+    ],
+    file: "Markdown.tsx",
+  },
+  {
+    id: "streaming-text",
+    name: ["النص المتدفق", "StreamingText"],
+    description: [
+      "نص يصل من التطبيق مع حالة تدفق صريحة.",
+      "Host-supplied text with an explicit streaming state.",
+    ],
+    file: "StreamingText.tsx",
+  },
+
+  {
     id: "tool-call",
     name: ["استدعاء الأداة", "ToolCall"],
     description: [
@@ -482,6 +510,9 @@ const documentationGroups = [
       "task-rows",
       "tool-call",
       "tool-chips",
+      "code-block",
+      "markdown",
+      "streaming-text",
     ],
   },
   {

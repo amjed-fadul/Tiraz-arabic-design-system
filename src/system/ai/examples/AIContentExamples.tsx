@@ -1,0 +1,228 @@
+import { useEffect, useRef, useState } from "react";
+import { Button, CodeBlock, Markdown, StreamingText } from "../../index";
+type Language = "ar" | "en";
+export function CodeBlockExample({
+  language = "ar",
+  codeLanguage = "ts",
+  longContent = false,
+}: {
+  language?: Language;
+  codeLanguage?: string;
+  longContent?: boolean;
+}) {
+  const sample =
+    codeLanguage === "python"
+      ? 'def greet(name):\n    # Local sample / عينة محلية\n    return f"Hello {name}"\n'
+      : codeLanguage === "json"
+        ? '{\n  "name": "مدار / Madar",\n  "ready": true\n}\n'
+        : "// Local sample / عينة محلية\nexport function greet(name: string) {\n\treturn `Hello ${name}`;  \n}\n";
+  return (
+    <CodeBlock
+      code={
+        longContent
+          ? sample +
+            Array.from(
+              { length: 45 },
+              (_, i) => `// ${i + 1}: ${"long-line ".repeat(25)}`,
+            ).join("\n")
+          : sample
+      }
+      language={codeLanguage}
+      label={codeLanguage === "python" ? "greet.py" : undefined}
+      labels={{ copy: language === "ar" ? "نسخ الشيفرة" : "Copy code" }}
+    />
+  );
+}
+function sampleMarkdown(ar: boolean, longContent = false) {
+  return (
+    (ar
+      ? "# ملاحظات الواجهة\n\nنستخدم **طِراز** لعرض ردود واضحة، مع *مسافات مدمجة* ونص مختلط: Tiraz يدعم RTL.\n\n"
+      : "# Interface notes\n\nUse **Tiraz** for readable responses, with *compact spacing* and mixed text: مرحبًا بالعالم.\n\n") +
+    "- Review labels / راجع التسميات\n  - Arabic and English\n- Keep `response.text` readable\n\n1. Prepare\n2. Review\n\n> Local sample / عينة محلية\n\n[Source / المصدر](https://example.com) · ~~old draft~~\n\n| الاسم / Name | State | Notes |\n| --- | --- | --- |\n| مدار / Madar | Ready | " +
+    (longContent ? "Long cell content ".repeat(30) : "Arabic + English") +
+    ' |\n| طِراز / Tiraz | Reviewed | Compact |\n\n```ts\nconst response = { text: "مرحبًا / Hello", ready: true };\n```'
+  );
+}
+export function MarkdownExample({
+  language = "ar",
+  longContent = false,
+}: {
+  language?: Language;
+  longContent?: boolean;
+}) {
+  return <Markdown text={sampleMarkdown(language === "ar", longContent)} />;
+}
+export function StreamingTextExample({
+  language = "ar",
+  markdown = false,
+}: {
+  language?: Language;
+  markdown?: boolean;
+}) {
+  return (
+    <StreamingText
+      text={
+        markdown
+          ? sampleMarkdown(language === "ar")
+          : language === "ar"
+            ? "هذا رد مكتمل من التطبيق. Tiraz يحافظ على النص العربي والإنجليزي."
+            : "This response is complete. Tiraz keeps Arabic readable: مرحبًا بالعالم."
+      }
+      state="completed"
+      markdown={markdown}
+      announcement="off"
+    />
+  );
+}
+/** Host example only: fixed chunks, no network, explicit start and invalidated timers. */
+export function StreamingDemo({
+  language = "ar",
+  markdown = false,
+}: {
+  language?: Language;
+  markdown?: boolean;
+}) {
+  const ar = language === "ar";
+  const [identity, setIdentity] = useState({ language, markdown });
+  const [text, setText] = useState("");
+  const [phase, setPhase] = useState<
+    "idle" | "streaming" | "completed" | "cancelled"
+  >("idle");
+  const generation = useRef(0),
+    timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  function invalidate() {
+    generation.current++;
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }
+  useEffect(() => {
+    invalidate();
+    return invalidate;
+  }, [language, markdown]);
+  if (identity.language !== language || identity.markdown !== markdown) {
+    setIdentity({ language, markdown });
+    setText("");
+    setPhase("idle");
+  }
+  function start() {
+    invalidate();
+    const run = generation.current;
+    const chunks = markdown
+      ? [
+          ar ? "## ملخص محلي\n\n" : "## Local summary\n\n",
+          "**Tiraz",
+          "** · مرحبًا / Hello\n\n",
+          "```ts\n",
+          "const ready",
+          " = true;\n",
+          "```\n\n",
+          "| Name | State |\n",
+          "| --- | --- |\n",
+          "| Tiraz | Ready |",
+        ]
+      : ar
+        ? [
+            "هذه ",
+            "عينة ",
+            "محلية ",
+            "ثابتة. ",
+            "Tiraz ",
+            "يعرض ",
+            "النص ",
+            "عند ",
+            "وصوله ",
+            "من ",
+            "التطبيق. ",
+            "اكتمل ",
+            "الرد.",
+          ]
+        : [
+            "This ",
+            "is ",
+            "a ",
+            "fixed ",
+            "local ",
+            "sample. ",
+            "Tiraz ",
+            "renders ",
+            "text ",
+            "as ",
+            "the ",
+            "host ",
+            "supplies ",
+            "it. ",
+            "مرحبًا ",
+            "بالعالم.",
+          ];
+    setText("");
+    setPhase("streaming");
+    chunks.forEach((_, i) =>
+      timers.current.push(
+        setTimeout(
+          () => {
+            if (generation.current !== run) return;
+            setText(chunks.slice(0, i + 1).join(""));
+            if (i === chunks.length - 1) {
+              timers.current = [];
+              setPhase("completed");
+            }
+          },
+          (i + 1) * 320,
+        ),
+      ),
+    );
+  }
+  const status = {
+    idle: ar ? "العرض جاهز" : "Demo ready",
+    streaming: ar ? "جارٍ استلام العينة المحلية" : "Receiving local sample",
+    completed: ar ? "اكتملت العينة المحلية" : "Local sample complete",
+    cancelled: ar
+      ? "أُلغيت العينة؛ احتُفظ بالنص"
+      : "Sample cancelled; received text kept",
+  }[phase];
+  return (
+    <div style={{ display: "grid", gap: "var(--space-3)", minInlineSize: 0 }}>
+      <p
+        style={{
+          margin: 0,
+          color: "var(--text-secondary)",
+          fontSize: "var(--text-meta)",
+        }}
+      >
+        {ar
+          ? "عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."
+          : "Local demo with fixed chunks; no AI or network request."}
+      </p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
+        <Button variant="secondary" onClick={start}>
+          {phase === "idle"
+            ? ar
+              ? "بدء العرض المحلي"
+              : "Start local demo"
+            : ar
+              ? "إعادة العرض المحلي"
+              : "Replay local demo"}
+        </Button>
+        <Button
+          variant="ghost"
+          aria-disabled={phase !== "streaming"}
+          onClick={() => {
+            if (phase !== "streaming") return;
+            invalidate();
+            setPhase("cancelled");
+          }}
+        >
+          {ar ? "إلغاء العرض" : "Cancel demo"}
+        </Button>
+      </div>
+      <div style={{ minBlockSize: 100 }}>
+        <StreamingText
+          text={text}
+          state={phase === "streaming" ? "streaming" : "completed"}
+          markdown={markdown}
+          statusLabel={status}
+        />
+      </div>
+    </div>
+  );
+}

@@ -44,6 +44,9 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
     "صفوف المهام",
     "استدعاء الأداة",
     "ملخص الأدوات",
+    "كتلة الشيفرة",
+    "ماركداون",
+    "النص المتدفق",
   ]);
   const user = userEvent.setup();
   await user.click(within(nav).getByRole("button", { name: "شريط التنقّل" }));

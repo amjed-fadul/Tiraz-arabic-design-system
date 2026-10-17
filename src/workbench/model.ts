@@ -268,6 +268,9 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "code-block": { codeLanguage: string; longContent: boolean };
+  markdown: { longContent: boolean };
+  "streaming-text": { markdown: boolean };
   "loading-state": {
     label: string;
     indicator: "spinner" | "skeleton";
@@ -369,6 +372,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "thinking-state": { active: true, defaultExpanded: false },
     "tool-call": { defaultExpanded: false, longContent: false },
     "tool-chips": { counts: true },
+    "code-block": { codeLanguage: "ts", longContent: false },
+    markdown: { longContent: false },
+    "streaming-text": { markdown: false },
     "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
     "task-rows": {
       appearance: "capsules",

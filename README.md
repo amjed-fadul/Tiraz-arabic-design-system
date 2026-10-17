@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with fifty-one source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with fifty-four source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -306,3 +306,11 @@ The portable ai/examples/ToolActivityExamples.tsx includes static states, render
 output and an explicitly started local simulation: running → success, failure →
 host retry, and a chip that opens and focuses its call. Replay/reset/unmount cancel
 stale timers. Sample data contains no secrets and performs no tool operation.
+
+CodeBlock, Markdown and StreamingText extend the existing AI patterns category.
+They cover exact source copying, safe CommonMark/GFM presentation and immediate
+host-driven streaming, with compact token-based styles. Source-copy consumers
+must install `react-markdown@10.1.0 remark-gfm@4.0.1`; see
+[src/system/ai/README.md](src/system/ai/README.md#ai-response-content) for parsing,
+URL/HTML restrictions, language fallback and host responsibilities. The local
+streaming example uses fixed chunks and starts only on explicit activation.
