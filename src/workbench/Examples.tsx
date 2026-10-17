@@ -1,4 +1,9 @@
 import {
+  ImageResultStates,
+  SourcesStates,
+  InsightCardsExample,
+} from "../system/ai/examples/AIResultsExamples";
+import {
   ChatConversation,
   ChatEntryStates,
 } from "../system/ai/examples/ChatExamples";
@@ -263,6 +268,11 @@ export function Examples({
         </section>
       </div>
     );
+  if (component === "image-result")
+    return <ImageResultStates language={language} />;
+  if (component === "sources") return <SourcesStates language={language} />;
+  if (component === "insight-cards")
+    return <InsightCardsExample language={language} />;
   if (component === "chat-thread")
     return <ChatConversation language={language} />;
   if (component === "chat-composer" || component === "prompt-bar")

@@ -268,6 +268,12 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "image-result": {
+    state: "loading" | "loaded" | "error";
+    aspectRatio: "landscape" | "square" | "portrait";
+  };
+  sources: { defaultExpanded: boolean; longContent: boolean };
+  "insight-cards": { longContent: boolean };
   "chat-thread": {
     identities: boolean;
     longContent: boolean;
@@ -382,6 +388,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
+    "image-result": { state: "loaded", aspectRatio: "landscape" },
+    sources: { defaultExpanded: false, longContent: false },
+    "insight-cards": { longContent: false },
     "chat-thread": {
       identities: true,
       longContent: false,

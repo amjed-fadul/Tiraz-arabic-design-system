@@ -1,4 +1,9 @@
 import {
+  ImageResultExample,
+  SourcesExample,
+  InsightCardsExample,
+} from "../system/ai/examples/AIResultsExamples";
+import {
   ChatThreadExample,
   ChatComposerExample,
   PromptBarExample,
@@ -197,6 +202,28 @@ export function Playground({
       <ThinkingIndicatorExample
         language={language}
         {...(model as Playgrounds["thinking-indicator"])}
+      />
+    );
+  if (component === "image-result")
+    return (
+      <ImageResultExample
+        key={JSON.stringify(model)}
+        language={language}
+        {...(model as Playgrounds["image-result"])}
+      />
+    );
+  if (component === "sources")
+    return (
+      <SourcesExample
+        language={language}
+        {...(model as Playgrounds["sources"])}
+      />
+    );
+  if (component === "insight-cards")
+    return (
+      <InsightCardsExample
+        language={language}
+        {...(model as Playgrounds["insight-cards"])}
       />
     );
   if (component === "chat-thread")

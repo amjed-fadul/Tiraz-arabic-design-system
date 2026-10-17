@@ -14,6 +14,13 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const state of ["loading", "loaded", "error"] as const)
+    for (const aspectRatio of ["landscape", "square", "portrait"] as const)
+      cases.push(["image-result", { state, aspectRatio }]);
+  cases.push(
+    ["sources", { defaultExpanded: true, longContent: true }],
+    ["insight-cards", { longContent: true }],
+  );
   cases.push(
     ["tool-call", { defaultExpanded: true, longContent: true }],
     ["tool-chips", { counts: false }],

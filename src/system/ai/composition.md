@@ -429,3 +429,20 @@ followOutput follows near-bottom readers only, never older reading or selection.
 Use one concise state announcement; never announce the full response each chunk.
 Invalidate every local callback on stop/reset/replay/configuration change/unmount.
 Do not infer uploads, models, transport, storage, virtualization or orchestration.
+
+## Results in AI replies
+
+Compose ImageResult for application-supplied media, InlineCitation beside a
+supported claim and Sources under that same response using the same stable source
+records. Keep source IDs and explicit citation numbers stable across updates.
+Use disclosure buttons for source details and link mode for direct navigation.
+HTTP(S), relative paths and fragments are accepted; missing/rejected destinations
+remain text. Popover portals use nearest provider/dialog scope and the installed
+Radix primitive; verify Escape and focus when nesting in Sheet/Modal.
+
+Use InsightCards for concise host-supplied findings, one at a time, with evidence
+in the supporting Card and a connected follow-up action. Prefer neutral meaning;
+never synthesize credibility, evidence, retrieval results or generation. Host owns
+image rights/URL trust, meaningful alt, source records and action execution. Reuse
+[AIResultsExamples](examples/AIResultsExamples.tsx) and copy all
+`ai/assets/results/` (SVG and sample text documents) with their local URL imports.

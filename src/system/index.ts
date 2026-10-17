@@ -122,3 +122,19 @@ export type {
 } from "./ChatComposer";
 export { PromptBar } from "./PromptBar";
 export type { PromptBarProps } from "./PromptBar";
+export { ImageResult } from "./ImageResult";
+export type { ImageResultProps, ImageResultLabels } from "./ImageResult";
+export { Sources, InlineCitation } from "./Sources";
+export type {
+  SourceReference,
+  SourcesProps,
+  SourcesLabels,
+  InlineCitationProps,
+  InlineCitationLabels,
+} from "./Sources";
+export { InsightCards } from "./InsightCards";
+export type {
+  InsightItem,
+  InsightCardsProps,
+  InsightCardsLabels,
+} from "./InsightCards";

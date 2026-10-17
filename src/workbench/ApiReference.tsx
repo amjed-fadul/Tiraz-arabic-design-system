@@ -95,6 +95,133 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "image-result": [
+      [
+        "src / alt",
+        "string? / string · required",
+        t(
+          "صورة يملكها التطبيق ووصف بديل مفيد.",
+          "Application-owned image and meaningful alt text.",
+        ),
+      ],
+      [
+        "state / aspectRatio",
+        "loading | loaded | error / landscape | square | portrait",
+        t(
+          "إطار ثابت؛ خطأ المتصفح يتعافى عند تغيير المصدر.",
+          "Stable frame; browser failures recover on source replacement.",
+        ),
+      ],
+      [
+        "caption / metadata",
+        "string?",
+        t(
+          "تعليق وبيانات يزوّدهما التطبيق.",
+          "Application-supplied caption and metadata.",
+        ),
+      ],
+      [
+        "onRetry / action",
+        "() => void / {label, onClick}",
+        t(
+          "لا إجراءات دون سلوك متصل؛ action يظهر بعد تحميل الصورة فقط.",
+          "Only connected behavior; action appears after the image loads.",
+        ),
+      ],
+      [
+        "labels / native figure",
+        "ImageResultLabels / HTML attributes",
+        t(
+          "تخصيص التسميات وإطار figure؛ لا رفع أو توليد.",
+          "Localized labels and native figure attributes; no upload or generation.",
+        ),
+      ],
+    ],
+    sources: [
+      [
+        "items",
+        "SourceReference[]",
+        t(
+          "id وnumber ثابتان؛ title وhref ووصف وبيانات اختيارية.",
+          "Stable id and number; title, optional href, description and metadata.",
+        ),
+      ],
+      [
+        "defaultExpanded / labels",
+        "boolean / SourcesLabels",
+        t(
+          "صف موجز يفتح قائمة؛ false افتراضيًا.",
+          "Compact summary expands to rows; defaults false.",
+        ),
+      ],
+      [
+        "InlineCitation.source / mode",
+        "SourceReference / disclosure | link",
+        t(
+          "كائن المصدر نفسه؛ تفاصيل بزر أو تنقل برابط أصلي.",
+          "Same source record; button disclosure or native link navigation.",
+        ),
+      ],
+      [
+        "URL restrictions",
+        "HTTP(S) / local relative / fragment",
+        t(
+          "تُرفض البروتوكولات الأخرى والروابط الشبكية والشرطات العكسية؛ الوجهة غير المتاحة نص.",
+          "Other protocols, network paths and backslashes rejected; unavailable destinations remain text.",
+        ),
+      ],
+      [
+        "Popup / focus",
+        "@radix-ui/react-popover 1.3.1",
+        t(
+          "يفتح بالتفعيل؛ داخل أقرب نافذة؛ Escape يعيد التركيز.",
+          "Opens on activation; scoped to nearest dialog; Escape restores focus.",
+        ),
+      ],
+    ],
+    "insight-cards": [
+      [
+        "items",
+        "InsightItem[]",
+        t(
+          "id وtitle؛ details وlabel وtone وaction اختيارية.",
+          "id and title; optional details, label, tone and action.",
+        ),
+      ],
+      [
+        "Selection",
+        "stable item ID",
+        t(
+          "نتيجة واحدة مع السابق والتالي؛ تبقى النتيجة المختارة عند تغيير الترتيب.",
+          "One finding with previous/next; selection survives reordering.",
+        ),
+      ],
+      [
+        "details / action",
+        "ReactNode / {label, onClick}",
+        t(
+          "محتوى موجز وسلوك يملكهما التطبيق؛ دون توليد.",
+          "Concise host-owned content and behavior; no generation.",
+        ),
+      ],
+      [
+        "tone",
+        "BadgeTone · neutral",
+        t(
+          "لون دلالي فقط إذا برّرته البيانات وظهر label.",
+          "Semantic Badge tone only when supplied evidence justifies a label.",
+        ),
+      ],
+      [
+        "labels / className",
+        "InsightCardsLabels / string",
+        t(
+          "تسميات العنوان والتنقل والموضع والفراغ.",
+          "Title, navigation, position and empty-state labels.",
+        ),
+      ],
+    ],
+
     "code-block": [
       [
         "code",

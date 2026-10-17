@@ -332,3 +332,12 @@ acceptance. Thread following is opt-in and stops when the reader leaves the bott
 See [portable chat guidance](src/system/ai/README.md#chat-foundations) and the
 [connected local example](src/system/ai/examples/ChatExamples.tsx). No backend,
 model connection, uploads, persistence or ChatApp shell is included.
+
+ImageResult, Sources / InlineCitation and InsightCards extend **AI patterns** with
+application-supplied images, real reference links and concise supported findings.
+Their bilingual local examples include fixed-frame loading/failure recovery,
+connected citations, stable numbering on reorder and finding details. Copy the
+whole `src/system/ai/assets/results/` directory with source-only examples; preserve
+local SVG/text `?url&no-inline` imports and the bundled license. Source copies also need the
+already installed `@radix-ui/react-popover@1.3.1` and documented Radix overrides.
+See `src/system/ai/README.md` for URL restrictions and host responsibilities.

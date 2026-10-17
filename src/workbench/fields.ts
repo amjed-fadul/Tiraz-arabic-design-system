@@ -83,6 +83,32 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "image-result": [
+    field("state", "select", "الحالة", "State", "state", {
+      options: ["loaded", "loading", "error"],
+    }),
+    field(
+      "aspectRatio",
+      "select",
+      "نسبة الإطار",
+      "Frame ratio",
+      "aspectRatio",
+      { options: ["landscape", "square", "portrait"] },
+    ),
+  ],
+  sources: [
+    field("defaultExpanded", "boolean", "موسّع مبدئيًا", "Initially expanded"),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
+  "insight-cards": [
+    field(
+      "longContent",
+      "boolean",
+      "محتوى طويل",
+      "Long content",
+      "items[].details",
+    ),
+  ],
   "chat-thread": [
     field(
       "identities",
@@ -846,6 +872,9 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "image-result": ["state", "aspectRatio"],
+  sources: ["defaultExpanded", "longContent"],
+  "insight-cards": ["longContent"],
   "chat-thread": ["identities", "longContent", "followOutput"],
   "chat-composer": ["disabled"],
   "prompt-bar": ["disabled"],

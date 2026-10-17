@@ -1,0 +1,10 @@
+﻿Tiraz sample reference — Menu review / مراجعة القائمة
+Fictional local content for component demonstration. No live retrieval.
+
+Eight fictional usability sessions were scripted for this example.
+Five of eight participants in the scripted scenario requested Arabic item names beside English names. The sample
+menu brief requires bilingual names and clearly associated prices.
+
+عينة محلية خيالية لشرح المكوّنات.
+طلب خمسة من ثمانية مشاركين في السيناريو أسماء الأصناف بالعربية بجانب الإنجليزية. يطلب موجز المثال أسماء
+ثنائية اللغة وأسعارًا واضحة مرتبطة بكل صنف.

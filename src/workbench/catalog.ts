@@ -1,6 +1,34 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "image-result",
+    name: ["نتيجة الصورة", "ImageResult"],
+    description: [
+      "صور يزوّدها التطبيق ضمن إطار ثابت مع حالات تحميل وخطأ.",
+      "Application-supplied images in a stable frame with loading and failure states.",
+    ],
+    file: "ImageResult.tsx",
+  },
+  {
+    id: "sources",
+    name: ["المصادر والاستشهادات", "Sources / InlineCitation"],
+    description: [
+      "مصادر ثابتة واستشهادات متصلة بها مع روابط آمنة وتفاصيل موجزة.",
+      "Stable references and connected citations with safe links and compact details.",
+    ],
+    file: "Sources.tsx",
+  },
+  {
+    id: "insight-cards",
+    name: ["بطاقات النتائج", "InsightCards"],
+    description: [
+      "نتائج موجزة يزوّدها التطبيق مع تفاصيل وإجراءات متصلة.",
+      "Concise application-supplied findings with details and connected actions.",
+    ],
+    file: "InsightCards.tsx",
+  },
+
+  {
     id: "chat-thread",
     name: ["المحادثة", "ChatThread"],
     description: [
@@ -532,6 +560,9 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "image-result",
+      "sources",
+      "insight-cards",
       "chat-thread",
       "chat-composer",
       "prompt-bar",

@@ -751,6 +751,62 @@
     {
       "name": "PromptBarProps",
       "source": "PromptBar.tsx"
+    },
+    {
+      "name": "ImageResult",
+      "source": "ImageResult.tsx"
+    },
+    {
+      "name": "ImageResultProps",
+      "source": "ImageResult.tsx"
+    },
+    {
+      "name": "ImageResultLabels",
+      "source": "ImageResult.tsx"
+    },
+    {
+      "name": "Sources",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "InlineCitation",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "SourceReference",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "SourcesProps",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "SourcesLabels",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "InlineCitationProps",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "InlineCitationLabels",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "InsightCards",
+      "source": "InsightCards.tsx"
+    },
+    {
+      "name": "InsightCardsProps",
+      "source": "InsightCards.tsx"
+    },
+    {
+      "name": "InsightCardsLabels",
+      "source": "InsightCards.tsx"
+    },
+    {
+      "name": "InsightItem",
+      "source": "InsightCards.tsx"
     }
   ],
   "configuration": {
@@ -830,6 +886,164 @@
     }
   },
   "components": [
+    {
+      "id": "image-result",
+      "api": "ImageResult",
+      "source": "ImageResult.tsx",
+      "exports": ["ImageResult", "ImageResultProps", "ImageResultLabels"],
+      "props": [
+        {
+          "name": "src",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "alt",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "state",
+          "type": "\"loading\" | \"loaded\" | \"error\"",
+          "required": false,
+          "values": ["loading", "loaded", "error"],
+          "default": "loaded"
+        },
+        {
+          "name": "aspectRatio",
+          "type": "\"landscape\" | \"square\" | \"portrait\"",
+          "required": false,
+          "values": ["landscape", "square", "portrait"],
+          "default": "landscape"
+        },
+        {
+          "name": "caption",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "onRetry",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "action",
+          "type": "{label: string; onClick: () => void}",
+          "required": false
+        },
+        {
+          "name": "labels",
+          "type": "ImageResultLabels",
+          "required": false
+        }
+      ],
+      "state": "Host supplies readiness; internal image load/error guards. URL or state replacement remounts the resource; stale events cannot update a replacement.",
+      "inheritedProps": "Native figure attributes, className/style and React 19 ref; children managed internally.",
+      "accessibility": [
+        "Required meaningful alt text. Visible loading/failure status; alt remains visible on error. Fixed landscape/square/portrait frame; contain sizing preserves the whole image.",
+        "Only supplied retry and loaded-image actions become buttons."
+      ],
+      "limitations": [
+        "Host owns image permission, URL trust/access/lifetime, sizing choice and optional metadata. No generation service, upload, viewer, downloads or asset manager.",
+        "Copy ai/assets/results including local SVG and sample documents for working examples."
+      ],
+      "alternative": "Use an ordinary img for unframed static content.",
+      "examples": ["ai/examples/AIResultsExamples.tsx"]
+    },
+    {
+      "id": "sources",
+      "api": "Sources",
+      "source": "Sources.tsx",
+      "exports": [
+        "Sources",
+        "InlineCitation",
+        "SourceReference",
+        "SourcesProps",
+        "SourcesLabels",
+        "InlineCitationProps",
+        "InlineCitationLabels"
+      ],
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly SourceReference[]",
+          "required": true
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "labels",
+          "type": "SourcesLabels",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "Uncontrolled source-list disclosure. InlineCitation mode defaults to disclosure; link mode uses a native anchor.",
+      "accessibility": [
+        "Stable application IDs and explicit citation numbers; never renumber on reorder/filter. Pass the same source records to Sources and InlineCitation.",
+        "List is numbered through supplied number fields. Summary is a real button; rows with accepted destinations are native links. Missing/rejected destinations remain static text.",
+        "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog."
+      ],
+      "limitations": [
+        "Allowed destinations: HTTP(S), relative paths and fragments. Reject controls/embedded whitespace, backslashes, protocol-relative URLs, credentials, malformed URLs and other schemes including javascript/data/file/mailto.",
+        "Host owns references, evidence, title, ID, number and destination trust. No credibility scores, fabricated citations or retrieval."
+      ],
+      "alternative": "Use InlineCitation mode=\"link\" for direct navigation; default disclosure presents source details and an optional native Open link.",
+      "dependencies": ["@radix-ui/react-popover@1.3.1"],
+      "examples": ["ai/examples/AIResultsExamples.tsx"]
+    },
+    {
+      "id": "insight-cards",
+      "api": "InsightCards",
+      "source": "InsightCards.tsx",
+      "exports": [
+        "InsightCards",
+        "InsightCardsProps",
+        "InsightCardsLabels",
+        "InsightItem"
+      ],
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly InsightItem[]",
+          "required": true
+        },
+        {
+          "name": "labels",
+          "type": "InsightCardsLabels",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ],
+      "state": "One selected application ID; preserves selection on reorder, falls back to the first item if removed. No active animation.",
+      "accessibility": [
+        "Named group, concise h3 finding, previous/next buttons and polite position. Single/empty sets have no navigation.",
+        "Actions render only when supplied. Optional Badge label/tone is neutral by default; semantic tones must be justified by supplied data."
+      ],
+      "limitations": [
+        "Host owns findings, supporting content, evidence and actions. No generation, generic card builder or specialized chart card APIs.",
+        "Supporting details may compose existing Tiraz primitives/charts, kept concise by the host."
+      ],
+      "alternative": "Use Card for ordinary content grouping.",
+      "examples": ["ai/examples/AIResultsExamples.tsx"]
+    },
     {
       "id": "chat-thread",
       "api": "ChatThread",
@@ -5915,6 +6129,193 @@
           "required": false
         }
       ]
+    },
+    {
+      "type": "ImageResultLabels",
+      "props": [
+        {
+          "name": "loading",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "SourceReference",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "number",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "metadata",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "SourcesLabels",
+      "props": [
+        {
+          "name": "summary",
+          "type": "(count: number) => string",
+          "required": false
+        },
+        {
+          "name": "empty",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "unavailable",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "InlineCitationProps",
+      "props": [
+        {
+          "name": "source",
+          "type": "SourceReference",
+          "required": true
+        },
+        {
+          "name": "mode",
+          "type": "\"disclosure\" | \"link\"",
+          "required": false,
+          "values": ["disclosure", "link"]
+        },
+        {
+          "name": "labels",
+          "type": "InlineCitationLabels",
+          "required": false
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "InlineCitationLabels",
+      "props": [
+        {
+          "name": "source",
+          "type": "(number: number, title: string) => string",
+          "required": false
+        },
+        {
+          "name": "open",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "unavailable",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "InsightItem",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "details",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "tone",
+          "type": "BadgeTone",
+          "required": false,
+          "values": ["neutral", "success", "error", "info"]
+        },
+        {
+          "name": "action",
+          "type": "{label: string; onClick: () => void}",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "InsightCardsLabels",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "previous",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "next",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "position",
+          "type": "(current: number, total: number) => string",
+          "required": false
+        },
+        {
+          "name": "empty",
+          "type": "string",
+          "required": false
+        }
+      ]
     }
   ],
   "support": [
@@ -6008,6 +6409,36 @@
       "provenance": "ai/assets/README.md",
       "license": "ai/assets/LICENSE.txt",
       "purpose": "Bundled fictional AI-generated sample portrait; copy binary assets with ai/."
+    },
+    {
+      "path": "ai/assets/results/coffee-sage.svg",
+      "provenance": "ai/assets/results/README.md",
+      "license": "ai/assets/LICENSE.txt",
+      "purpose": "Original local illustration or fictional source document; preserve asset URL imports in copied examples."
+    },
+    {
+      "path": "ai/assets/results/coffee-clay.svg",
+      "provenance": "ai/assets/results/README.md",
+      "license": "ai/assets/LICENSE.txt",
+      "purpose": "Original local illustration or fictional source document; preserve asset URL imports in copied examples."
+    },
+    {
+      "path": "ai/assets/results/coffee-night.svg",
+      "provenance": "ai/assets/results/README.md",
+      "license": "ai/assets/LICENSE.txt",
+      "purpose": "Original local illustration or fictional source document; preserve asset URL imports in copied examples."
+    },
+    {
+      "path": "ai/assets/results/menu-audit.txt",
+      "provenance": "ai/assets/results/README.md",
+      "license": "ai/assets/LICENSE.txt",
+      "purpose": "Original local illustration or fictional source document; preserve asset URL imports in copied examples."
+    },
+    {
+      "path": "ai/assets/results/menu-brief.txt",
+      "provenance": "ai/assets/results/README.md",
+      "license": "ai/assets/LICENSE.txt",
+      "purpose": "Original local illustration or fictional source document; preserve asset URL imports in copied examples."
     }
   ]
 }

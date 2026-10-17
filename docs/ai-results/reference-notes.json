@@ -1,0 +1,10 @@
+{
+  "referencesAvailable": true,
+  "imageActions": "igure \"A poster for Addis Yoga''s sunrise class: one figure, the light behind, room for the times below. 1024 × 1536 · 8.1s\"':\n    - button \"Download\":\n    - button \"Regenerate\":\n    - generic: \"A poster for Addis Yoga's sunrise class: one figure, the light behind, room for the times below.\"\n    - generic: 1024 × 1536 · 8.1s\n  - paragraph: ImageResults · three candidates, pick one, use it\n  - button \"Copy prompt for this variant\":\n  - radiogroup \"Candidates\":\n    - radio \"Candidate 1, candidate 1\" [checked]:\n    - radio \"Candidate 2, candidate 2\"\n    - radio \"Candidate 3, candidate 3\"\n  - generic: \"A window poster for Creamery: pistachio season, one cone, warm afternoon light.\"\n  - button \"Use this one\":\n    - generic: Use this one\n- generic \"Notifications\":\n  - status: Added to the menu board\n  - alert\n  - paragraph: Downloading\n  - button \"Dismiss notification\":\n  - paragraph: Added to the menu board\n  - button \"Dismiss notification\":",
+  "observations": [
+    "Generating progress, loaded landscape, portrait, failure and candidate selection available.",
+    "Regenerate/Open/Download/Use controls report demo notifications; no viewer required by observed action.",
+    "Sources compact expanding rows and focus-triggered source detail with native Open links.",
+    "Insight paging, Spend/Usage toggle, allocation inspection and follow-up prompt action exercised."
+  ]
+}

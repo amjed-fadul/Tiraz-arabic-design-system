@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **fifty-seven**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer and PromptBar.
+Tiraz is an Arabic-first, source-owned React dashboard library with **sixty**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation and InsightCards.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -726,3 +726,81 @@ its timer generation on stop/reset/locale change/unmount. Stop retains received
 text. Documentation Replay remounts and invalidates the old example. StreamingText
 announcements are off; one visible status supplies concise feedback. These are
 local simulation checks, not physical mobile/OS IME or screen-reader validation.
+
+## Images, sources and findings
+
+ImageResult, Sources / InlineCitation and InsightCards live under **AI patterns**.
+Use [the connected bilingual examples](examples/AIResultsExamples.tsx). All content
+is explicitly fictional/local; no retrieval or image generation occurs.
+
+`ImageResult` requires meaningful `alt`; `src`, `caption` and `metadata` are supplied
+by the host. `state` defaults to `loaded`, but the image is shown only after the
+browser loads it. `loading` retains a Skeleton frame; browser failure, explicit
+`error` or a missing URL shows readable fallback including alt. Replace `src` or
+change host state to reset the resource; retrying the same failed URL may remount
+with a host key. Loading, failure and recovery retain `aspectRatio` (`landscape`
+3:2 default, `square` 1:1, `portrait` 2:3), use contain sizing, and never distort or
+crop the supplied image. Landscape max width is 640px; portrait 320px; native
+figure style/className can adapt the outer width. `onRetry` adds a retry button;
+`action={label,onClick}` appears only after load. `labels` translates loading,
+error and retry. The host owns image rights, trusted URL/access/lifetime, caching,
+resource limits and any real use action. There is no upload, generation, asset
+manager, viewer or download subsystem. Compose a native group for candidates;
+keep selection in the application.
+
+`SourceReference` has required stable `id`, explicit stable `number`, `title`, and
+optional `href`, `description`, `metadata`. IDs must be unique and numbers must be
+positive unique integers within an answer. Assign them once in the host; never
+use current array positions to renumber after reorder/filter. Pass the same
+source records into `Sources items` and `InlineCitation source`, so every citation
+has actual supplied evidence. Sources starts collapsed (`defaultExpanded=false`),
+with one compact summary and expandable rows. Empty input is honest text. Summary,
+empty and unavailable wording can be translated with `SourcesLabels`.
+
+`InlineCitation` defaults to `mode="disclosure"`: a superscript button activated
+by click/Enter/Space opens source details and an optional native Open link.
+Deliberate activation keeps interactive-popup focus predictable; it does not open
+on hover/focus. Escape closes the popup and restores the trigger; Tab follows
+normal popup focus order. `mode="link"` uses a native link, preserving middle click,
+modifier click, context menu and keyboard navigation. Without an accepted
+`href`, link mode is static text with an unavailable accessible description;
+disclosure still shows the supplied reference honestly. Labels support source
+number/title, open and unavailable wording. Popovers use the **installed**
+`@radix-ui/react-popover@1.3.1`; source consumers must install it and preserve the
+Radix overrides above. Portals stay within the nearest provider, Sheet or Modal.
+
+Source destinations allow **HTTP, HTTPS, relative paths and fragments only**.
+Other schemes (including javascript, data, file and mailto), protocol-relative
+network URLs, controls/embedded whitespace, backslashes, malformed URLs and URLs
+with credentials are rejected. No href is emitted for rejected/missing destinations.
+External hostnames remain application-trusted input; protocol filtering is not a
+credibility or destination safety rating. The host owns reference trust, evidence,
+authorization and navigation. There is no retrieval engine or invented citation.
+
+`InsightCards items` contains stable `id`, concise `title`, optional `details`
+(ReactNode), optional Badge `label`/`tone`, and optional connected
+`action={label,onClick}`. It shows one finding at a time; previous/next and a
+position preserve selection by ID through reorder, and select the first remaining
+item if the selected finding is removed. Empty/single sets have no paging buttons.
+Boundary controls use aria-disabled and ignore unavailable activation, retaining
+keyboard focus when the first/last finding is reached.
+`labels` translates title, previous, next, position and empty text. A Card groups
+supporting detail, which may compose an existing chart. Keep supporting content
+brief. Tones default neutral; use semantic colors only when actual supplied data
+justifies the label. Host owns findings, evidence and action execution; no insight
+generation or generic card-builder API.
+
+**Asset copying:** preserve the whole `ai/assets/results/` directory: three original
+SVG illustrations, `menu-audit.txt`, `menu-brief.txt` and provenance README. Keep
+`ai/assets/LICENSE.txt`. Examples import SVGs and text `?url&no-inline` references locally.
+Vite consumers need `vite/client`; other bundlers must support those URL imports
+or copy the assets to their public directory and adjust imports/URLs to real files.
+No network image service or asset pipeline is required. Source-only examples
+compile after relocating the whole system folder; generated examples rewrite
+asset imports to `./system/ai/assets/results/`. See the [asset instructions](assets/results/README.md).
+
+The examples deliberately use `?url&no-inline` for sample SVGs and source
+documents. Keep the no-inline directive: default production asset inlining would
+turn a small source document into a rejected `data:` destination. Other bundlers
+must emit real file URLs (or use copied public files), retaining UTF-8 encoding
+for the bilingual documents.

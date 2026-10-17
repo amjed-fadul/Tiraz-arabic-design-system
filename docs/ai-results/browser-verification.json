@@ -1,0 +1,346 @@
+{
+  "browser": "Local Google Chrome via CUA",
+  "checks": [
+    {
+      "check": "layout-matrix",
+      "cases": [
+        {
+          "lang": "en",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "en",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "en",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "ar",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "ar",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "ar",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "ar",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "ar",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "ar",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [1280, 900]
+        },
+        {
+          "lang": "en",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "en",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "en",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "en",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "ar",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "ar",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "ar",
+          "theme": "light",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "ar",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "images",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "ar",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "sources",
+          "overflow": false,
+          "viewport": [320, 568]
+        },
+        {
+          "lang": "ar",
+          "theme": "dark",
+          "brokenImages": 0,
+          "family": "insights",
+          "overflow": false,
+          "viewport": [320, 568]
+        }
+      ]
+    },
+    {
+      "check": "long-mixed-popup-short-customized",
+      "color": "rgb(236, 240, 236)",
+      "dir": "rtl",
+      "font": "16px",
+      "overflow": false,
+      "radius": "16px",
+      "rect": {
+        "height": 154.375,
+        "width": 296,
+        "x": 12,
+        "y": 12
+      },
+      "scroll": true,
+      "theme": "dark",
+      "viewport": [320, 360]
+    },
+    {
+      "check": "long-image-fallback",
+      "frameHeight": 182,
+      "overflow": false,
+      "scrollTop": 0,
+      "scrollable": true,
+      "startsVisible": true
+    },
+    {
+      "check": "reduced-motion",
+      "application": {
+        "duration": "1e-05s",
+        "name": "none"
+      },
+      "os": {
+        "name": "none",
+        "os": true
+      }
+    },
+    {
+      "check": "source-utf8-navigation",
+      "arabicReadable": true,
+      "englishSupported": true
+    },
+    {
+      "check": "actual-demo-retry-focus",
+      "focus": "FIGURE",
+      "loaded": "loaded"
+    },
+    {
+      "check": "insight-action",
+      "detailsVisible": true
+    },
+    {
+      "check": "stable-source-connectivity",
+      "before": [
+        {
+          "href": "/src/system/ai/assets/results/menu-audit.txt",
+          "id": "menu-audit",
+          "number": "1"
+        },
+        {
+          "href": "/src/system/ai/assets/results/menu-brief.txt",
+          "id": "menu-brief",
+          "number": "2"
+        }
+      ],
+      "after": [
+        {
+          "href": "/src/system/ai/assets/results/menu-brief.txt",
+          "id": "menu-brief",
+          "number": "2"
+        },
+        {
+          "href": "/src/system/ai/assets/results/menu-audit.txt",
+          "id": "menu-audit",
+          "number": "1"
+        }
+      ],
+      "popupHref": "/src/system/ai/assets/results/menu-audit.txt"
+    },
+    {
+      "check": "nested-modal",
+      "nesting": true,
+      "tabToLink": "Open source",
+      "focusReturn": "Source 2: Menu brief — local sample",
+      "outerReturn": "Review source in modal"
+    },
+    {
+      "check": "insight-end-focus",
+      "focus": "Next insight",
+      "selected": "image",
+      "unavailable": "true"
+    },
+    {
+      "check": "unavailable-insight-navigation-ignored",
+      "selected": "image"
+    },
+    {
+      "check": "documented-popup-customization",
+      "font": "16px",
+      "provider": "large",
+      "radius": "16px"
+    },
+    {
+      "check": "mobile-documentation-popup",
+      "direction": "rtl",
+      "left": 12,
+      "right": 308,
+      "theme": "dark",
+      "viewport": 320,
+      "width": 296
+    },
+    {
+      "check": "shared-documentation-customization",
+      "frames": [
+        {
+          "density": "standard",
+          "font": "16px",
+          "typography": "large"
+        },
+        {
+          "density": "standard",
+          "font": "16px",
+          "typography": "large"
+        }
+      ]
+    },
+    {
+      "check": "nested-sheet-final",
+      "scope": true,
+      "innerFocusReturn": "Source 1: Menu review — local sample",
+      "outerFocusReturn": "Sheet citation"
+    },
+    {
+      "check": "default-production-build-assets",
+      "images": [
+        {
+          "loaded": true,
+          "url": "/assets/coffee-sage-B0pRKXW_.svg"
+        }
+      ],
+      "href": "/assets/menu-audit-BSWNS4Tx.txt",
+      "nativeUrl": "http://127.0.0.1:5331/assets/menu-audit-BSWNS4Tx.txt",
+      "arabicReadable": true,
+      "englishReadable": true
+    }
+  ]
+}

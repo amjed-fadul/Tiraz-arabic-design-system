@@ -176,6 +176,9 @@ it("compiles the bundled example after copying only the library to a different a
     // Compile copied snippets in the host, with only the relocated source bundle.
     for (const language of ["ar", "en"] as const) {
       for (const component of [
+        "image-result",
+        "sources",
+        "insight-cards",
         "chat-thread",
         "chat-composer",
         "prompt-bar",
@@ -430,7 +433,7 @@ it("bundles relocated portraits from copied source with provenance and license",
     );
     writeFileSync(
       resolve(temporary, "entry.tsx"),
-      `import {createRoot} from "react-dom/client";import {SystemProvider} from "./app/ui/vendor/tiraz";import {AvatarExamples} from "./app/ui/vendor/tiraz/ai/examples/AvatarExamples";import "./app/ui/vendor/tiraz/tokens.css";import "./app/ui/vendor/tiraz/components.css";createRoot(document.getElementById("root")!).render(<SystemProvider><AvatarExamples/></SystemProvider>);`,
+      `import {createRoot} from "react-dom/client";import {SystemProvider} from "./app/ui/vendor/tiraz";import {AvatarExamples} from "./app/ui/vendor/tiraz/ai/examples/AvatarExamples";import {ImageResultStates,SourcesExample,InsightCardsExample} from "./app/ui/vendor/tiraz/ai/examples/AIResultsExamples";import "./app/ui/vendor/tiraz/tokens.css";import "./app/ui/vendor/tiraz/components.css";createRoot(document.getElementById("root")!).render(<SystemProvider><AvatarExamples/><ImageResultStates/><SourcesExample/><InsightCardsExample/></SystemProvider>);`,
     );
     const { build } = await import("vite");
     const { default: react } = await import("@vitejs/plugin-react");
@@ -458,6 +461,22 @@ it("bundles relocated portraits from copied source with provenance and license",
       expect(asset, name).toBeDefined();
       expect(Buffer.from(asset!.source!)).toEqual(
         readFileSync(resolve(root, `ai/assets/${name}.jpg`)),
+      );
+    }
+    for (const name of [
+      "coffee-sage",
+      "coffee-clay",
+      "coffee-night",
+      "menu-audit",
+      "menu-brief",
+    ]) {
+      const asset = output.output.find(
+        (file) => file.type === "asset" && file.fileName.includes(name),
+      );
+      expect(asset, name).toBeDefined();
+      const extension = name.startsWith("coffee") ? "svg" : "txt";
+      expect(Buffer.from(asset!.source!)).toEqual(
+        readFileSync(resolve(root, `ai/assets/results/${name}.${extension}`)),
       );
     }
     for (const file of ["README.md", "LICENSE.txt"])

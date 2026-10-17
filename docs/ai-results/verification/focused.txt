@@ -1,0 +1,8 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/ai-results/Tiraz
+
+
+ Test Files  4 passed (4)
+      Tests  161 passed (161)
+   Start at  23:54:48
+   Duration  53.81s (tests 66%, import 14%, transform 10%, environment 9%, setup 1%)
