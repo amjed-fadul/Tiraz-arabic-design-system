@@ -22,9 +22,7 @@ export function PromptBar({
       <PromptEntry
         {...props}
         compact
-        label={
-          props.label ?? props["aria-label"] ?? (ar ? "الموجّه" : "Prompt")
-        }
+        label={props.label ?? props["aria-label"] ?? (ar ? "طلبك" : "Prompt")}
         placeholder={
           props.placeholder ??
           (ar ? "بمَ يمكنني مساعدتك؟" : "What can I help with?")
@@ -34,7 +32,7 @@ export function PromptBar({
           !props.value && (
             <ul
               className="tz-prompt-suggestions"
-              aria-label={ar ? "موجّهات مقترحة" : "Suggested prompts"}
+              aria-label={ar ? "طلبات مقترحة" : "Suggested prompts"}
             >
               {suggestions.map((suggestion) => (
                 <li key={suggestion}>

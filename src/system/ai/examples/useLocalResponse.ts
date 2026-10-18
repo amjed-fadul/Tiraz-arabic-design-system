@@ -4,7 +4,7 @@ import {
   useRef as useResponseRef,
 } from "react";
 const localReplies = {
-  ar: "ابدأ بتسميات قصيرة وواضحة، وامنح النص العربي ارتفاع سطر مريحًا. اضبط اتجاه الحقول على auto ليظهر النص المختلط مثل Tiraz بترتيب صحيح، ثم جرّب المسار كاملًا بلوحة المفاتيح قبل الإطلاق.",
+  ar: "ابدأ بتسميات قصيرة وواضحة، وامنح النص العربي ارتفاع سطر مريحًا. اضبط اتجاه الحقول على auto ليظهر النص المختلط مثل Tiraz بالترتيب الصحيح، ثم جرّب المسار كله بلوحة المفاتيح قبل الإطلاق.",
   en: 'Start with short, clear labels and give Arabic text a comfortable line height. Set inputs to dir="auto" so mixed text like طِراز reads in the right order, then walk the whole flow with the keyboard before launch.',
 };
 /** Example-only fixed reply streamed word by word, shared by the chat examples. No network or model. */

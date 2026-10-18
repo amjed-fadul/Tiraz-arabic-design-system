@@ -113,12 +113,12 @@ function toastMessages(language: Language) {
     error: {
       title: t("تعذّر الإرسال", "Couldn’t send"),
       description: t(
-        "تحقق من الاتصال ثم أعد المحاولة.",
+        "تحقّق من الاتصال ثم حاول مرة أخرى.",
         "Check your connection and try again.",
       ),
     },
     info: {
-      title: t("تحديث متاح", "Update available"),
+      title: t("يتوفّر تحديث", "Update available"),
       description: t(
         "أُضيفت ثلاث فواتير جديدة إلى القائمة.",
         "Three new invoices were added to the list.",
@@ -397,7 +397,7 @@ export function Examples({
         <section>
           <h3>
             {t(
-              "محتوى طويل دون تحكم بالقراءة",
+              "محتوى طويل دون تعليم كمقروءة",
               "Long content without read controls",
             )}
           </h3>
@@ -437,7 +437,7 @@ export function Examples({
           />
         </section>
         <section>
-          <h3>{t("خطوات قابلة للتنقل", "Navigable steps")}</h3>
+          <h3>{t("خطوات يمكن التنقّل بينها", "Navigable steps")}</h3>
           <ActivatableStepsExample language={language} />
         </section>
       </div>
@@ -489,7 +489,7 @@ export function Examples({
     return (
       <Suspense
         fallback={
-          <p role="status">{t("جارٍ عرض الأمثلة…", "Loading examples…")}</p>
+          <p role="status">{t("جارٍ تحميل الأمثلة…", "Loading examples…")}</p>
         }
       >
         <div className="tz-chart-examples">
@@ -528,7 +528,7 @@ export function Examples({
       <div className="quiet-examples">
         <Checkbox
           label={t("موافقة مطلوبة", "Required consent")}
-          error={t("أكد الموافقة للمتابعة.", "Confirm consent to continue.")}
+          error={t("أكّد موافقتك للمتابعة.", "Confirm consent to continue.")}
           required
         />
         <Checkbox
@@ -544,7 +544,7 @@ export function Examples({
         label={t("طريقة التواصل", "Contact method")}
         name="example-contact"
         helper={t("اختر طريقة واحدة.", "Choose one method.")}
-        error={t("حدد اختيارًا للمتابعة.", "Choose an option to continue.")}
+        error={t("اختر طريقة للمتابعة.", "Choose an option to continue.")}
         required
         options={[
           { value: "email", label: t("البريد", "Email") },
@@ -602,7 +602,7 @@ export function Examples({
           <p>{t("الحالات والأحجام", "States and sizes")}</p>
           <div className="example-inline">
             <Button disabled>{t("معطّل", "Disabled")}</Button>
-            <Button state="loading">{t("جارٍ الحفظ", "Saving")}</Button>
+            <Button state="loading">{t("جارٍ الحفظ…", "Saving")}</Button>
             <Button state="success">{t("تم الحفظ", "Saved")}</Button>
             <Button state="error">{t("تعذّر الحفظ", "Save failed")}</Button>
             <Button size="md" variant="secondary">

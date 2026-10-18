@@ -85,7 +85,7 @@ export function TaskRowsExample({
               <div>
                 <dt>
                   {t(
-                    "مطابقة جهات الاتصال والمعرّفات الضريبية",
+                    "جهات الاتصال والأرقام الضريبية المطابقة",
                     "Matched contacts and tax IDs",
                   )}
                 </dt>
@@ -95,7 +95,7 @@ export function TaskRowsExample({
               </div>
               <div>
                 <dt>
-                  {t("السجلات القديمة المعلّمة", "Flagged stale records")}
+                  {t("سجلات قديمة تحتاج مراجعة", "Flagged stale records")}
                 </dt>
                 <dd>
                   <bdi dir="ltr">{t("٠", "0")}</bdi>
@@ -108,7 +108,7 @@ export function TaskRowsExample({
           id: "outline",
           title: longContent
             ? t(
-                "صياغة رسائل المتابعة لعملاء الربع الرابع مع مراجعة الأسماء العربية والمبالغ وتواريخ التسليم قبل الإرسال",
+                "صياغة رسائل متابعة لعملاء الربع الرابع، ومراجعة الأسماء العربية والمبالغ ومواعيد التسليم قبل الإرسال",
                 "Draft follow-up emails for fourth-quarter customers and check Arabic names, amounts and delivery dates before sending",
               )
             : t("صياغة رسائل العملاء", "Draft customer emails"),
@@ -138,11 +138,11 @@ export function TaskRowsExample({
                 <p style={{ margin: 0, color: "var(--text-secondary)" }}>
                   {state === "failed"
                     ? t(
-                        "انتهت مهلة الاتصال بـ CRM بعد ٣٠ ثانية. إعادة المحاولة…",
+                        "لم يستجب CRM خلال ٣٠ ثانية. جارٍ إعادة المحاولة…",
                         "The CRM timed out after 30 seconds. Retrying…",
                       )
                     : t(
-                        "جارٍ صياغة الرسائل من آخر ملاحظات الاجتماعات.",
+                        "جارٍ صياغة الرسائل من آخر ملاحظات الاجتماعات…",
                         "Writing drafts from the latest meeting notes.",
                       )}
                 </p>
@@ -158,7 +158,7 @@ export function TaskRowsExample({
           content: (
             <p style={{ margin: 0 }}>
               {t(
-                "يُرسل الملخص إلى الفريق المالي بعد مراجعتك للمسودات.",
+                "يصل الملخص إلى الفريق المالي بعد أن تراجع المسودات.",
                 "The summary goes to the finance team once you review the drafts.",
               )}
             </p>
@@ -177,9 +177,9 @@ export function TaskRowsExample({
           : {})}
         emptyState={
           <EmptyState
-            title={t("لا توجد مهام وكيل", "No agent tasks")}
+            title={t("لا توجد مهام بعد", "No agent tasks")}
             description={t(
-              "ستظهر المهام هنا عندما يبدأ الوكيل العمل.",
+              "ستظهر هنا حين يبدأ الوكيل العمل.",
               "Tasks appear here once the agent starts working.",
             )}
           />
@@ -225,7 +225,7 @@ export function TaskRowsStatesExample({
       title: t("مزامنة جهات الاتصال", "Sync contacts"),
       summary: t("خطأ ٤٠٣", "Error 403"),
       detail: t(
-        "رفض CRM الطلب: صلاحية contacts.write غير ممنوحة.",
+        "رفض CRM الطلب لأن صلاحية contacts.write غير مفعّلة.",
         "The CRM rejected the request: contacts.write is not granted.",
       ),
     },

@@ -113,7 +113,7 @@ export function generateBatchCode(
       p.appearance === "mixed"
         ? `${json(teamMembers(language))}.map(member => ({ ...member, src: member.id === "sara" ? saraPortrait : member.id === "omar" ? omarPortrait : undefined }))`
         : json(teamMembers(language));
-    jsx = `<AvatarGroup members={${members}} label={${json(ar ? "فريق المشروع" : "Project team")}} maxVisible={${p.maxVisible}} size="${p.size}" overflowLabel={count => ${ar ? "`${count} أعضاء إضافيون`" : "`${count} more members`"}} />`;
+    jsx = `<AvatarGroup members={${members}} label={${json(ar ? "فريق المشروع" : "Project team")}} maxVisible={${p.maxVisible}} size="${p.size}" overflowLabel={count => ${ar ? "`${count} أعضاء آخرون`" : "`${count} more members`"}} />`;
   } else if (component === "tooltip") {
     const p = model as TooltipModel;
     imports = "Tooltip, Button";

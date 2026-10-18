@@ -94,7 +94,7 @@ function ApprovalCardInstance({
         : "Recording decision"
       : task.state === "failed"
         ? ar
-          ? "لم يُقبل القرار. راجع وحاول مجددًا."
+          ? "تعذّر تسجيل القرار. راجع الطلب وحاول مرة أخرى."
           : "Decision was not accepted. Review and try again."
         : "";
   return (
@@ -183,7 +183,7 @@ function ApprovalCardInstance({
         {/* Announced with the card; the decision buttons say the rest. */}
         <p id={`${id}-scope`} className="tz-visually-hidden">
           {ar
-            ? "الموافقة تسجّل قرارًا لهذا الطلب فقط. التنفيذ مسؤولية التطبيق."
+            ? "الموافقة تخصّ هذا الطلب وحده، ويتولّى التطبيق تنفيذه."
             : "Approval records a decision for this request only. Execution belongs to the host."}
         </p>
         {!decision && (

@@ -105,7 +105,7 @@ export function FileTreeExample({
         onActivate={(node) => setSelected(node.id)}
         emptyState={
           <EmptyState
-            title={ar ? "لا توجد ملفات" : "No files"}
+            title={ar ? "لا توجد ملفات بعد" : "No files"}
             description={
               ar
                 ? "ارفع ملفات المشروع لتظهر هنا."

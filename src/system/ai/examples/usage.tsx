@@ -31,7 +31,7 @@ function DashboardTask() {
       onSelect: () =>
         toast({
           title: "التفضيلات الحالية",
-          description: notifications ? "الإشعارات مفعلة" : "الإشعارات متوقفة",
+          description: notifications ? "الإشعارات مفعّلة" : "الإشعارات متوقفة",
         }),
     },
   ];
@@ -89,7 +89,9 @@ function DashboardTask() {
         onClick={() =>
           toast({
             title: "الإعدادات الحالية",
-            description: notifications ? "الإشعارات مفعلة" : "الإشعارات متوقفة",
+            description: notifications
+              ? "الإشعارات مفعّلة"
+              : "الإشعارات متوقفة",
           })
         }
       >

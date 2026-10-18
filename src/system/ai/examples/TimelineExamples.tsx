@@ -38,7 +38,7 @@ export function TimelineExample({
           id: "brief",
           title: longContent
             ? t(
-                "إنشاء عرض سعر تفصيلي لشركة الندى للتجارة يشمل التوريد والتركيب والصيانة السنوية",
+                "أُنشئ عرض سعر تفصيلي لشركة الندى للتجارة يشمل التوريد والتركيب والصيانة السنوية",
                 "Detailed quote created for Al Nada Trading covering supply, installation and annual maintenance",
               )
             : t("أُنشئ عرض السعر", "Quote created"),
@@ -50,7 +50,7 @@ export function TimelineExample({
               <bdi dir="ltr">PRO-2026-118</bdi>
               {longContent &&
                 t(
-                  " — يشمل ثلاثة بنود بأسعار مختلفة وشروط دفع على دفعتين، مع ملاحظات العميل حول موعد التسليم في نهاية الشهر.",
+                  " — يضم ثلاثة بنود بأسعار مختلفة ويُدفع على دفعتين، ومعه ملاحظات العميل عن التسليم آخر الشهر.",
                   " — Three line items with different prices and two-part payment terms, plus the client's notes on an end-of-month delivery.",
                 )}
             </>

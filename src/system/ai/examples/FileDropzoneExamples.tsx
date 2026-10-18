@@ -40,11 +40,11 @@ export function FileDropzoneExample({
         helper ??
         (defaultRules
           ? t(
-              "PDF أو نص أو صور، حتى ٣ ملفات بحجم ٥ م.ب.",
+              "PDF أو نص أو صور، حتى ٣ ملفات، ٥ م.ب لكل ملف.",
               "PDF, text or images — up to 3 files, 5 MB each.",
             )
           : t(
-              "اختر ملفات بالأنواع والحجم المسموح بها.",
+              "اختر ملفات من الأنواع المسموح بها وضمن الحجم المحدد.",
               "Choose files of an allowed type and size.",
             ))
       }

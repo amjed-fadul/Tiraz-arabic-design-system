@@ -237,7 +237,7 @@ export function SelectionActions({
         <span id={hint} className="tz-visually-hidden">
           {labels?.hint ??
             (ar
-              ? "حدّد نصًا ثم اضغط Alt+Enter للانتقال إلى الإجراءات. Escape للإغلاق."
+              ? "حدّد نصًا ثم اضغط Alt+Enter للانتقال إلى الإجراءات، أو Escape للإغلاق."
               : "Select text, then press Alt+Enter for actions. Escape dismisses.")}
         </span>
       </div>

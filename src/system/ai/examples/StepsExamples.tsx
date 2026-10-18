@@ -124,10 +124,10 @@ export function StepsFormExample({
       }}
     >
       <h3 id={titleId} ref={headingRef} tabIndex={-1} style={{ margin: 0 }}>
-        {complete ? t("تم إرسال الطلب", "Application submitted") : labels[step]}
+        {complete ? t("أُرسل الطلب", "Application submitted") : labels[step]}
       </h3>
       <Steps
-        label={t("تقدم الطلب", "Application progress")}
+        label={t("تقدّم الطلب", "Application progress")}
         locale={language}
         items={ids.map((id, index) => ({
           id,

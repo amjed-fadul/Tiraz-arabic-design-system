@@ -29,7 +29,7 @@ export function TeamExample({
       size={size}
       label={language === "ar" ? "فريق المشروع" : "Project team"}
       overflowLabel={(count) =>
-        language === "ar" ? `${count} أعضاء إضافيون` : `${count} more members`
+        language === "ar" ? `${count} أعضاء آخرون` : `${count} more members`
       }
     />
   );
@@ -122,7 +122,7 @@ export function ModalExample({
       <div className="tz-preferences-form">
         <Select
           ref={focusRef}
-          aria-label={ar ? "التخطيط" : "Layout"}
+          aria-label={ar ? "طريقة العرض" : "Layout"}
           value={layout}
           onValueChange={setLayout}
           options={[
@@ -147,12 +147,12 @@ export function ModalExample({
         <Tooltip
           content={
             ar
-              ? "يُحفظ التخطيط لحسابك على كل الأجهزة."
+              ? "تُحفظ طريقة العرض في حسابك على كل أجهزتك."
               : "Your layout is saved to your account on every device."
           }
           trigger={
             <span tabIndex={0}>
-              {ar ? "يُطبَّق على حسابك" : "Applies to your account"}
+              {ar ? "يسري على حسابك" : "Applies to your account"}
             </span>
           }
         />

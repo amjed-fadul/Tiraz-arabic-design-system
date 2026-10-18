@@ -29,7 +29,7 @@ export function Terminal({
   className = "",
 }: TerminalProps) {
   const ar = useSystem().config.direction === "rtl";
-  const title = label ?? (ar ? "المخرجات الطرفية" : "Terminal output");
+  const title = label ?? (ar ? "مخرجات الطرفية" : "Terminal output");
   const text = command === undefined ? output : `${command}\n${output}`;
   const feedback = useExactCopy(text);
   const root = useRef<HTMLPreElement>(null),

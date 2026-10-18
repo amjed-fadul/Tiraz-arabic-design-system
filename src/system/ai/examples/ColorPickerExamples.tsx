@@ -23,11 +23,11 @@ export function ColorPickerExample({
   return (
     <ColorPicker
       key={mode}
-      label={label ?? t("لون العلامة", "Brand color")}
+      label={label ?? t("لون العلامة التجارية", "Brand color")}
       helper={
         helper ??
         t(
-          "صيغة #RGB أو #RRGGBB، دون شفافية. Enter أو مغادرة الحقل لتأكيد اللون.",
+          "اكتب اللون بصيغة #RGB أو #RRGGBB دون شفافية، ثم اضغط Enter أو غادر الحقل لتأكيده.",
           "Use #RGB or #RRGGBB, without transparency. Enter or leave the field to commit.",
         )
       }

@@ -39,16 +39,17 @@ export function DemoFrame({
     };
   }, [prompt]);
   const result = feedback?.prompt === prompt ? feedback.result : "idle";
-  const copyName = copyLabel ?? (ar ? "نسخ موجّه العرض" : "Copy demo prompt");
-  const playName = replayLabel ?? (ar ? "إعادة المثال" : "Replay example");
+  const copyName = copyLabel ?? (ar ? "نسخ طلب المثال" : "Copy demo prompt");
+  const playName =
+    replayLabel ?? (ar ? "إعادة تشغيل المثال" : "Replay example");
   const message =
     result === "copied"
       ? ar
-        ? "نُسخ الموجّه"
+        ? "نُسخ الطلب"
         : "Prompt copied"
       : result === "failed"
         ? ar
-          ? "تعذّر نسخ الموجّه. حاول مرة أخرى."
+          ? "تعذّر نسخ الطلب. حاول مرة أخرى."
           : "Could not copy prompt. Try again."
         : "";
   async function copy() {

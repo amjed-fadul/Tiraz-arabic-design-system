@@ -12,9 +12,9 @@ import {
 import { SystemProvider, defaultConfig } from "../system";
 afterEach(() => vi.useRealTimers());
 it.each([
-  ["كتلة الشيفرة", "CodeBlock"],
+  ["كتلة الكود", "CodeBlock"],
   ["ماركداون", "Markdown"],
-  ["النص المتدفق", "StreamingText"],
+  ["النص المتتابع", "StreamingText"],
 ] as const)(
   "keeps %s within AI patterns and copies portable examples and dependency guidance",
   async (ar, en) => {
@@ -180,7 +180,7 @@ it.each(["ar", "en"] as const)(
 it("uses compact titled headers and named icon-only playback controls in both demos", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("button", { name: "النص المتدفق" }));
+  await user.click(screen.getByRole("button", { name: "النص المتتابع" }));
   await user.selectOptions(
     screen.getByRole("combobox", { name: "لغة التوثيق" }),
     "en",
@@ -221,7 +221,7 @@ it("uses compact titled headers and named icon-only playback controls in both de
 it("automatically runs both documentation demos without local footer or empty event scaffolding", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  fireEvent.click(screen.getByRole("button", { name: "النص المتدفق" }));
+  fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(0));
   const demos = document.querySelectorAll(".tz-stream-demo");
   expect(demos).toHaveLength(2);

@@ -30,7 +30,7 @@ const mode = field(
 const native: WorkbenchField[] = [
   field("id", "text", "معرّف العنصر", "Element ID"),
   field("className", "text", "فئة CSS", "CSS class"),
-  field("stylePreset", "select", "نمط عنصر جاهز", "Style preset", "style", {
+  field("stylePreset", "select", "نمط جاهز", "Style preset", "style", {
     options: ["none", "wide"],
   }),
   field(
@@ -41,7 +41,7 @@ const native: WorkbenchField[] = [
     "HTML / ARIA / data-*",
     {
       help: [
-        "سمات أصلية فقط. معالجات الأحداث موثّقة، ولا تُكتب كسلاسل.",
+        "أضف السمات الأصلية فقط. معالجات الأحداث موثّقة في دليل الخصائص، ولا تُكتب هنا نصًّا.",
         "Native attributes only. Event functions are documented, not edited as strings.",
       ],
     },
@@ -110,7 +110,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "preset",
       "select",
-      "قيم العينة",
+      "قيم المثال",
       "Sample values",
       "used / capacity",
       { options: ["normal", "near", "over", "zero", "missing", "invalid"] },
@@ -145,7 +145,12 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     ),
   ],
   sources: [
-    field("defaultExpanded", "boolean", "موسّع مبدئيًا", "Initially expanded"),
+    field(
+      "defaultExpanded",
+      "boolean",
+      "مفتوح في البداية",
+      "Initially expanded",
+    ),
     field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
   ],
   "insight-cards": [
@@ -168,7 +173,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "followOutput",
       "boolean",
-      "متابعة قرب النهاية",
+      "متابعة آخر الرسائل",
       "Follow near bottom",
       "followOutput",
     ),
@@ -176,24 +181,24 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   "chat-composer": [field("disabled", "boolean", "معطّل", "Disabled")],
   "prompt-bar": [field("disabled", "boolean", "معطّل", "Disabled")],
   "code-block": [
-    field(
-      "codeLanguage",
-      "select",
-      "لغة الشيفرة",
-      "Code language",
-      "language",
-      { options: ["ts", "python", "json", "text", "unsupported"] },
-    ),
-    field("longContent", "boolean", "شيفرة طويلة", "Long code", "code"),
+    field("codeLanguage", "select", "لغة الكود", "Code language", "language", {
+      options: ["ts", "python", "json", "text", "unsupported"],
+    }),
+    field("longContent", "boolean", "كود طويل", "Long code", "code"),
   ],
   markdown: [
     field("longContent", "boolean", "جدول طويل", "Long table", "text"),
   ],
   "streaming-text": [
-    field("markdown", "boolean", "تنسيق ماركداون", "Markdown"),
+    field("markdown", "boolean", "تنسيق Markdown", "Markdown"),
   ],
   "tool-call": [
-    field("defaultExpanded", "boolean", "موسّع مبدئيًا", "Initially expanded"),
+    field(
+      "defaultExpanded",
+      "boolean",
+      "مفتوح في البداية",
+      "Initially expanded",
+    ),
     field("longContent", "boolean", "مخرجات طويلة", "Long output", "output"),
   ],
   "tool-chips": [
@@ -214,7 +219,12 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   "thinking-state": [
     field("active", "boolean", "نشط", "Active"),
-    field("defaultExpanded", "boolean", "موسّع مبدئيًا", "Initially expanded"),
+    field(
+      "defaultExpanded",
+      "boolean",
+      "مفتوح في البداية",
+      "Initially expanded",
+    ),
   ],
   "file-tree": [
     field(
@@ -265,7 +275,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "readControls",
       "boolean",
-      "تحكم القراءة",
+      "تعليم كمقروءة",
       "Read controls",
       "onMarkRead / onMarkAllRead",
     ),
@@ -319,10 +329,10 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   slider: [
     field("label", "text", "التسمية", "Label"),
-    field("helper", "text", "المساعدة", "Helper"),
+    field("helper", "text", "النص المساعد", "Helper"),
     field("error", "text", "الخطأ", "Error"),
-    field("min", "number", "الأدنى", "Min"),
-    field("max", "number", "الأقصى", "Max"),
+    field("min", "number", "الحد الأدنى", "Min"),
+    field("max", "number", "الحد الأقصى", "Max"),
     field("step", "number", "الخطوة", "Step"),
     field("showValue", "boolean", "عرض القيمة", "Show value"),
     field("disabled", "boolean", "معطّل", "Disabled"),
@@ -330,7 +340,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   "otp-input": [
     field("label", "text", "التسمية", "Label"),
-    field("helper", "text", "المساعدة", "Helper"),
+    field("helper", "text", "النص المساعد", "Helper"),
     field("error", "text", "الخطأ", "Error"),
     field("length", "number", "عدد الأرقام", "Length", "length", {
       min: 1,
@@ -342,38 +352,45 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   "date-picker": [
     field("label", "text", "التسمية", "Label"),
-    field("helper", "text", "المساعدة", "Helper"),
+    field("helper", "text", "النص المساعد", "Helper"),
     field("error", "text", "الخطأ", "Error"),
-    field("min", "text", "أول تاريخ", "Min date"),
-    field("max", "text", "آخر تاريخ", "Max date"),
+    field("min", "text", "أول تاريخ متاح", "Min date"),
+    field("max", "text", "آخر تاريخ متاح", "Max date"),
     field("disabled", "boolean", "معطّل", "Disabled"),
     mode,
   ],
 
   "file-dropzone": [
     field("label", "text", "التسمية", "Label"),
-    field("helper", "text", "المساعدة", "Helper"),
+    field("helper", "text", "النص المساعد", "Helper"),
     field("error", "text", "الخطأ", "Error"),
     field("multiple", "boolean", "ملفات متعددة", "Multiple files"),
     field("accept", "text", "الأنواع المقبولة", "Accepted types"),
     field(
       "maxFileSize",
       "number",
-      "الحجم الأقصى بالبايت",
+      "أقصى حجم بالبايت",
       "Maximum size in bytes",
       "maxFileSize",
       { min: 0, max: 52428800 },
     ),
-    field("maxFiles", "number", "العدد الأقصى", "Maximum files", "maxFiles", {
-      min: 0,
-      max: 20,
-    }),
+    field(
+      "maxFiles",
+      "number",
+      "أقصى عدد للملفات",
+      "Maximum files",
+      "maxFiles",
+      {
+        min: 0,
+        max: 20,
+      },
+    ),
     field("disabled", "boolean", "معطّل", "Disabled"),
     mode,
   ],
   "color-picker": [
     field("label", "text", "التسمية", "Label"),
-    field("helper", "text", "المساعدة", "Helper"),
+    field("helper", "text", "النص المساعد", "Helper"),
     field("error", "text", "الخطأ", "Error"),
     field(
       "showSwatches",
@@ -387,10 +404,10 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   "tag-input": [
     field("label", "text", "التسمية", "Label"),
-    field("helper", "text", "المساعدة", "Helper"),
+    field("helper", "text", "النص المساعد", "Helper"),
     field("error", "text", "الخطأ", "Error"),
     field("placeholder", "text", "النص الإرشادي", "Placeholder"),
-    field("maxTags", "number", "الحد الأقصى", "Maximum tags", "maxTags", {
+    field("maxTags", "number", "أقصى عدد للوسوم", "Maximum tags", "maxTags", {
       min: 0,
       max: 20,
     }),
@@ -401,7 +418,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   "input-copy": [
     field("label", "text", "التسمية", "Label"),
     field("value", "text", "القيمة", "Value"),
-    field("helper", "text", "المساعدة", "Helper"),
+    field("helper", "text", "النص المساعد", "Helper"),
     field("error", "text", "الخطأ", "Error"),
     field("disabled", "boolean", "معطّل", "Disabled"),
   ],
@@ -421,7 +438,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
       "Group headings",
       "example",
     ),
-    field("nested", "boolean", "تنقّل متداخل", "Nested navigation", "example"),
+    field("nested", "boolean", "قوائم فرعية", "Nested navigation", "example"),
     field("footer", "boolean", "تذييل الحساب", "Account footer", "example"),
     field("longLabels", "boolean", "تسميات طويلة", "Long labels", "example"),
     { ...mode, api: "collapsed / defaultCollapsed" },
@@ -442,7 +459,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "actions",
       "boolean",
-      "إجراء الملاحظات",
+      "زر الملاحظات",
       "Notes action",
       "CardFooter.children · example",
     ),
@@ -488,7 +505,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "indeterminate",
       "boolean",
-      "غير محدد",
+      "نسبة غير معروفة",
       "Indeterminate",
       "value=null",
     ),
@@ -500,7 +517,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "decorative",
       "boolean",
-      "بجوار نص معلن",
+      "زخرفي بجانب نص",
       "Beside announced text",
       "decorative",
     ),
@@ -517,13 +534,13 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
       "src",
       {
         help: [
-          "فارغ يستخدم صورة سارة المحلية.",
+          "اتركه فارغًا لتظهر صورة سارة المرفقة.",
           "Leave blank for the bundled Sara portrait.",
         ],
       },
     ),
     field("name", "text", "الاسم", "Name"),
-    field("fallback", "text", "الأحرف البديلة", "Initials"),
+    field("fallback", "text", "الأحرف الأولى", "Initials"),
     field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
   ],
   "avatar-group": [
@@ -583,8 +600,8 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   textarea: [
     field("label", "text", "التسمية", "Label"),
-    field("placeholder", "text", "النص المؤقت", "Placeholder"),
-    field("rows", "number", "الأسطر", "Rows", "rows", { min: 1, max: 12 }),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
+    field("rows", "number", "عدد الأسطر", "Rows", "rows", { min: 1, max: 12 }),
     field("helper", "text", "النص المساعد", "Helper text"),
     field("error", "text", "رسالة الخطأ", "Error message"),
     field("required", "boolean", "مطلوب", "Required"),
@@ -616,7 +633,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   input: [
     field("label", "text", "التسمية", "Label"),
-    field("placeholder", "text", "النص المؤقت", "Placeholder"),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
     field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
     field("type", "select", "نوع الإدخال", "Input type", "type", {
       options: ["text", "email", "password", "search", "tel", "url"],
@@ -630,7 +647,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   select: [
     field("label", "text", "التسمية", "Label"),
-    field("placeholder", "text", "النص المؤقت", "Placeholder"),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
     field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
     field("disabled", "boolean", "معطّل", "Disabled"),
     field("options", "collection", "الخيارات", "Options"),
@@ -651,7 +668,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "icon",
       "select",
-      "أيقونة المحتوى",
+      "أيقونة الزر",
       "Content icon",
       "children · preset",
       { advanced: true, options: ["none", "plus", "download", "settings"] },
@@ -659,12 +676,12 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "ariaLabel",
       "text",
-      "الاسم المعلن",
+      "الاسم لقارئ الشاشة",
       "Accessible name",
       "aria-label",
       { advanced: true },
     ),
-    field("type", "select", "نوع عنصر HTML", "HTML button type", "type", {
+    field("type", "select", "نوع الزر في HTML", "HTML button type", "type", {
       advanced: true,
       options: ["button", "submit", "reset"],
     }),
@@ -700,7 +717,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("items", "collection", "محتوى التبويبات", "Tab collection", "items", {
       advanced: true,
       help: [
-        "value، label، content، disabled. يدعم العرض نصوصًا ممثلة لـ ReactNode.",
+        "يقبل كل تبويب: value، label، content، disabled. يمثّل النص هنا أي محتوى ReactNode.",
         "value, label, content, disabled. Text represents ReactNode content.",
       ],
     }),
@@ -723,7 +740,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("checked", "boolean", "مفعّل", "Checked", "checked / defaultChecked"),
     field("disabled", "boolean", "معطّل", "Disabled"),
     { ...mode, api: "checked / defaultChecked" },
-    field("type", "select", "نوع عنصر HTML", "HTML button type", "type", {
+    field("type", "select", "نوع الزر في HTML", "HTML button type", "type", {
       advanced: true,
       options: ["button", "submit", "reset"],
     }),
@@ -753,7 +770,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("items", "collection", "عناصر القائمة", "Menu items", "items", {
       advanced: true,
       help: [
-        "id، label، icon، shortcut، disabled، destructive، separatorBefore. كل عنصر يعلن onSelect.",
+        "يقبل كل عنصر: id، label، icon، shortcut، disabled، destructive، separatorBefore. عند اختيار أي عنصر يُستدعى onSelect.",
         "id, label, icon, shortcut, disabled, destructive, separatorBefore. Every item reports onSelect.",
       ],
     }),
@@ -777,7 +794,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "closeLabel",
       "text",
-      "تسمية الإغلاق",
+      "اسم زر الإغلاق",
       "Close accessible name",
       "closeLabel",
       { advanced: true },
@@ -833,7 +850,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field(
       "closeLabel",
       "text",
-      "تسمية الإغلاق",
+      "اسم زر الإغلاق",
       "Dismiss accessible name",
       "ToastProvider.closeLabel",
       { advanced: true },
@@ -851,13 +868,13 @@ export const optionNames: Record<string, Localized> = {
   gaps: ["قيم مفقودة", "Missing values"],
   point: ["نقطة واحدة", "Single point"],
   normal: ["اعتيادي", "Normal"],
-  near: ["قرب السعة", "Near capacity"],
+  near: ["قريب من السعة", "Near capacity"],
   over: ["تجاوز السعة", "Over capacity"],
   missing: ["قيم مفقودة", "Missing values"],
   invalid: ["قيم غير صالحة", "Invalid values"],
   zero: ["قيم صفرية", "Zero values"],
   long: ["تسميات طويلة", "Long labels"],
-  initials: ["أحرف", "Initials"],
+  initials: ["الأحرف الأولى", "Initials"],
   photo: ["صورة", "Photo"],
   mixed: ["صور وأحرف", "Photos and initials"],
   text: ["نص", "Text"],
@@ -881,8 +898,8 @@ export const optionNames: Record<string, Localized> = {
   settings: ["إعدادات", "Settings"],
   simulate: ["محاكاة 1.2s", "Simulate 1.2s"],
   log: ["تسجيل الحدث", "Log event"],
-  controlled: ["متحكّم بها", "Controlled"],
-  uncontrolled: ["داخلية", "Uncontrolled"],
+  controlled: ["يديرها تطبيقك", "Controlled"],
+  uncontrolled: ["يديرها المكوّن", "Uncontrolled"],
   underline: ["خط سفلي", "Underline"],
   segment: ["مقسّم", "Segmented"],
   start: ["البداية", "Start"],
@@ -893,7 +910,7 @@ export const optionNames: Record<string, Localized> = {
   neutral: ["محايد", "Neutral"],
   info: ["معلومة", "Information"],
   "no-results": ["لا توجد نتائج مطابقة", "No matching results"],
-  populated: ["صفوف نموذجية", "Populated"],
+  populated: ["مع بيانات", "Populated"],
   empty: ["فارغ", "Empty"],
   capsules: ["كبسولات", "Capsules"],
   list: ["قائمة متصلة", "Connected list"],
@@ -913,8 +930,8 @@ export const optionNames: Record<string, Localized> = {
   slate: ["رمادي", "Slate"],
   ink: ["حبر", "Ink"],
   button: ["زر", "Button"],
-  submit: ["إرسال نموذج", "Submit"],
-  reset: ["إعادة ضبط نموذج", "Reset"],
+  submit: ["إرسال النموذج", "Submit"],
+  reset: ["إعادة ضبط النموذج", "Reset"],
 };
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.

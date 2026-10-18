@@ -62,7 +62,7 @@ export function ImageResultExample({
         aspectRatio={aspectRatio}
         caption={
           ar
-            ? "قائمة نخلة الشتوية — الاتجاه الأخضر"
+            ? "قائمة نخلة الشتوية — الطابع الأخضر"
             : "Nakhla winter menu — sage direction"
         }
         metadata="960 × 640 · SVG"
@@ -73,7 +73,7 @@ export function ImageResultExample({
               ? "أُضيفت إلى القائمة"
               : "Added to menu"
             : ar
-              ? "استخدام في القائمة"
+              ? "إضافة إلى القائمة"
               : "Use in menu",
           onClick: () => setUsed(true),
         }}
@@ -119,7 +119,7 @@ export function ImageResultStates({
           }
           state={generated ? "loaded" : "loading"}
           progress={generated ? 100 : progress}
-          caption={ar ? "الاتجاه الطيني" : "Clay direction"}
+          caption={ar ? "الطابع الطيني" : "Clay direction"}
           metadata="960 × 640 · SVG"
           labels={{ loading: ar ? "جارٍ إنشاء الصورة" : "Generating image" }}
         />
@@ -131,7 +131,7 @@ export function ImageResultStates({
               : "Coffee cup and menu board on a dark background"
           }
           state={retried ? "loaded" : "error"}
-          caption={ar ? "الاتجاه الليلي" : "Night direction"}
+          caption={ar ? "الطابع الليلي" : "Night direction"}
           metadata="960 × 640 · SVG"
           onRetry={() => setRetried(true)}
           labels={{
@@ -144,7 +144,7 @@ export function ImageResultStates({
         style={{ border: 0, padding: 0, margin: 0, minInlineSize: 0 }}
       >
         <legend className="tz-field-label">
-          {ar ? "اختر اتجاه القائمة" : "Choose a menu direction"}
+          {ar ? "اختر طابع القائمة" : "Choose a menu direction"}
         </legend>
         <div className="tz-ai-image-grid">
           {images.map((image) => (
@@ -153,7 +153,7 @@ export function ImageResultStates({
                 src={image.src}
                 alt={
                   ar
-                    ? `لوحة قائمة وفنجان قهوة، الاتجاه ${image.ar}`
+                    ? `لوحة قائمة وفنجان قهوة بالطابع ${image.ar}`
                     : `Menu board and coffee cup, ${image.en.toLowerCase()} direction`
                 }
               />
@@ -166,7 +166,7 @@ export function ImageResultStates({
                   checked={selected === image.id}
                   onChange={() => setSelected(image.id)}
                 />
-                {ar ? `الاتجاه ${image.ar}` : image.en}
+                {ar ? `الطابع ${image.ar}` : image.en}
               </span>
             </label>
           ))}
@@ -179,7 +179,7 @@ function citedAnswer(ar: boolean, sources: SourceReference[]) {
   return (
     <p>
       {ar
-        ? "ابدأ بأسماء الأصناف ثنائية اللغة"
+        ? "اكتب أسماء الأصناف بالعربية والإنجليزية"
         : "Start with bilingual item names"}
       <InlineCitation source={sources[0]} />
       {ar
@@ -204,7 +204,7 @@ export function SourcesExample({
     sources[0] = {
       ...sources[0],
       title: ar
-        ? "مراجعة قابلية استخدام قائمة نخلة الشتوية — Winter menu usability review: ثماني جلسات مع زوار الفروع في الرياض وجدة والخبر حول الأسعار والأسماء ثنائية اللغة وترتيب المشروبات الموسمية"
+        ? "مراجعة سهولة استخدام قائمة نخلة الشتوية — Winter menu usability review: ثماني جلسات مع زوار فروع الرياض وجدة والخبر عن الأسعار والأسماء باللغتين وترتيب المشروبات الموسمية"
         : "Nakhla winter menu usability review — مراجعة قائمة الشتاء: eight sessions with guests in Riyadh, Jeddah and Khobar on prices, bilingual names and the order of seasonal drinks",
       metadata:
         "https://docs.nakhla.sa/research/2026/winter-menu/usability-review/sessions/riyadh-jeddah-khobar/final-report-v3-bilingual-names-and-prices",
@@ -233,7 +233,7 @@ export function SourcesStates({ language = "ar" }: { language?: Language }) {
     <div className="tz-ai-results-example">
       <p>
         {ar
-          ? "ابدأ بأسماء الأصناف ثنائية اللغة"
+          ? "اكتب أسماء الأصناف بالعربية والإنجليزية"
           : "Start with bilingual item names"}
         <InlineCitation source={audit} />
         {ar
@@ -256,14 +256,14 @@ export function SourcesStates({ language = "ar" }: { language?: Language }) {
           title={ar ? "المراجع" : "References"}
           description={
             ar
-              ? "المصادر المستخدمة في توصيات القائمة."
+              ? "المصادر التي بُنيت عليها توصيات القائمة."
               : "Sources behind the menu recommendations."
           }
           closeLabel={ar ? "إغلاق المراجع" : "Close references"}
         >
           <p>
             {ar
-              ? "الأسعار الواضحة مطلب أساسي في موجز التصميم"
+              ? "يشترط موجز التصميم أسعارًا واضحة"
               : "Clear prices are a core requirement of the design brief"}
             <InlineCitation source={brief} />
           </p>
@@ -286,20 +286,20 @@ export function InsightCardsExample({
     {
       id: "names",
       title: ar
-        ? "اجعل أسماء الأصناف ثنائية اللغة."
+        ? "اكتب أسماء الأصناف بالعربية والإنجليزية."
         : "Make item names bilingual.",
       evidence: ar
-        ? "طلب خمسة من ثمانية زوار رؤية الاسم العربي بجانب الإنجليزي، خاصة للمشروبات الموسمية."
+        ? "أراد خمسة زوار من ثمانية أن يروا الاسم العربي بجانب الإنجليزي، خاصة في المشروبات الموسمية."
         : "Five of eight guests wanted the Arabic name beside the English one, especially for seasonal drinks.",
       source: audit,
       details: (
         <p>
           {ar
-            ? "طلب ذلك خمسة من ثمانية زوار في جلسات الاختبار."
+            ? "طلب ذلك خمسة زوار من ثمانية في جلسات الاختبار."
             : "Five of eight guests asked for this in testing sessions."}
           {longContent &&
             (ar
-              ? " قال أحد الزوار: “I couldn’t tell which price belonged to which drink”، وأشار آخرون إلى صعوبة قراءة الأسماء الإنجليزية الطويلة على لوحة الطلب من مسافة مترين، خاصة في الفروع ذات الإضاءة الخافتة. وطلب ثلاثة زوار إضافة السعرات الحرارية بجانب كل صنف، واقترح اثنان ترتيب المشروبات الموسمية في عمود مستقل."
+              ? " قال أحد الزوار: «I couldn’t tell which price belonged to which drink»، ووجد آخرون الأسماء الإنجليزية الطويلة صعبة القراءة على لوحة الطلب من مترين، خاصة في الفروع خافتة الإضاءة. وطلب ثلاثة زوار ذكر السعرات الحرارية بجانب كل صنف، واقترح اثنان وضع المشروبات الموسمية في عمود خاص بها."
               : " One guest said «ما عرفت أي سعر لأي مشروب», and others found long English names hard to read on the order board from two meters away, especially in dimly lit branches. Three guests asked for calories beside each item, and two suggested giving seasonal drinks their own column.")}
           <InlineCitation source={audit} />
         </p>
@@ -312,7 +312,7 @@ export function InsightCardsExample({
     {
       id: "layout",
       title: ar
-        ? "امنح الأسعار مكانًا واضحًا بجانب الأصناف."
+        ? "ضع كل سعر في مكان واضح بجانب صنفه."
         : "Give prices a clear place beside each item.",
       evidence: brief.description ?? "",
       source: brief,
@@ -332,7 +332,7 @@ export function InsightCardsExample({
     {
       id: "image",
       title: ar
-        ? "استخدم رسمًا أفقيًا واترك النص للمحتوى."
+        ? "استخدم رسمًا أفقيًا، وأبقِ النص خارج الصورة."
         : "Use a landscape illustration and keep text in the content.",
       evidence: ar
         ? "يطلب الموجز رسمًا أفقيًا وتعليقًا موجزًا وعناوين بالعربية والإنجليزية."
@@ -347,7 +347,7 @@ export function InsightCardsExample({
               : "Coffee cup and menu board on a dark background"
           }
           metadata={
-            ar ? "الاتجاه الليلي · 960 × 640" : "Night direction · 960 × 640"
+            ar ? "الطابع الليلي · 960 × 640" : "Night direction · 960 × 640"
           }
         />
       ),

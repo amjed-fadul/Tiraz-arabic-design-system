@@ -32,7 +32,10 @@ export function SliderExample({
       label={label ?? t("الحد الشهري", "Monthly limit")}
       helper={
         helper ??
-        t("عدد الفواتير المسموح بها شهريًا.", "Invoices allowed per month.")
+        t(
+          "عدد الفواتير التي يمكنك إصدارها كل شهر.",
+          "Invoices allowed per month.",
+        )
       }
       error={error}
       min={min}

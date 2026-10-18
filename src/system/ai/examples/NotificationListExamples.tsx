@@ -24,7 +24,7 @@ export function NotificationListExample({
   const listRef = useRef<HTMLDivElement>(null);
   const filtersRef = useRef<HTMLDivElement>(null);
   const pendingFocus = useRef<number | null>(null);
-  const markRead = t("تحديد كمقروءة", "Mark as read");
+  const markRead = t("تعليم كمقروءة", "Mark as read");
   // Focus recovery is application behavior: only run when a focused row is removed.
   useLayoutEffect(() => {
     if (pendingFocus.current === null) return;
@@ -44,7 +44,7 @@ export function NotificationListExample({
     unread: t("غير مقروءة", "unread"),
     read: t("مقروءة", "Read"),
     markRead,
-    markAllRead: t("تحديد الكل كمقروء", "Mark all as read"),
+    markAllRead: t("تعليم الكل كمقروء", "Mark all as read"),
   };
   const title = t("طلب مراجعة", "Review requested");
   const notifications: NotificationItem[] = empty
@@ -68,7 +68,7 @@ export function NotificationListExample({
               <bdi dir="ltr">PRO-2026-118</bdi>
               {longContent &&
                 t(
-                  " — مراجعة تفصيلية لجدول الأسعار وشروط الدفع وأسماء المنتجات قبل إرسال العرض إلى العميل يوم الخميس.",
+                  " — راجِع جدول الأسعار وشروط الدفع وأسماء المنتجات بالتفصيل قبل أن يُرسل العرض إلى العميل يوم الخميس.",
                   " — A detailed review of the price table, payment terms and product names before the quote goes to the client on Thursday.",
                 )}
             </>
@@ -93,7 +93,7 @@ export function NotificationListExample({
               {details.includes("review") && (
                 <p style={{ flexBasis: "100%", margin: 0 }}>
                   {t(
-                    "تطلب سارة مراجعة جدول الأسعار في الصفحة ٤ وتأكيد مدة الضمان قبل الإرسال.",
+                    "تطلب منك سارة مراجعة جدول الأسعار في الصفحة ٤ وتأكيد مدة الضمان قبل الإرسال.",
                     "Sara asks you to check the price table on page 4 and confirm the warranty period before it goes out.",
                   )}
                 </p>
@@ -208,7 +208,7 @@ export function NotificationListExample({
                     "Updates and requests for you will appear here.",
                   )
                 : t(
-                    "لقد اطّلعت على كل شيء. اعرض الكل لقراءة الإشعارات السابقة.",
+                    "قرأت كل إشعاراتك. اختر «الكل» لعرض الإشعارات السابقة.",
                     "You're all caught up. Show all to read earlier notifications.",
                   )
             }

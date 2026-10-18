@@ -16,7 +16,7 @@ import * as jsx from "react/jsx-runtime";
 import * as system from "../system";
 import * as ts from "typescript";
 it.each([
-  ["أسئلة المستخدم", "AskUserQuestions"],
+  ["أسئلة للمستخدم", "AskUserQuestions"],
   ["بطاقة القرار", "ApprovalCard"],
   ["تسلسل القرارات", "ApprovalFlow"],
 ])(

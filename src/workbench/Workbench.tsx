@@ -437,7 +437,7 @@ export function Workbench() {
                       title={t("الافتراضي", "Default")}
                       prompt={prompt}
                       copyLabel={t(
-                        "نسخ الموجّه للمعاينة",
+                        "نسخ طلب المعاينة",
                         "Copy playground prompt",
                       )}
                       replayable={canReplayPlayground(active, model)}
@@ -455,7 +455,7 @@ export function Workbench() {
                           language={language}
                           prompt={prompt}
                           copyLabel={t(
-                            "نسخ الموجّه للمعاينة",
+                            "نسخ طلب المعاينة",
                             "Copy playground prompt",
                           )}
                           onPatch={(patch) => patchPage(active, patch)}
@@ -517,10 +517,7 @@ export function Workbench() {
                             : t("أمثلة", "Examples")
                         }
                         prompt={prompt}
-                        copyLabel={t(
-                          "نسخ الموجّه للمثال",
-                          "Copy example prompt",
-                        )}
+                        copyLabel={t("نسخ طلب المثال", "Copy example prompt")}
                         replayable={canReplayExamples(active)}
                         onReplay={() =>
                           setExampleRevisions((prev) => ({
@@ -534,10 +531,7 @@ export function Workbench() {
                           component={active}
                           language={language}
                           prompt={prompt}
-                          copyLabel={t(
-                            "نسخ الموجّه للمثال",
-                            "Copy example prompt",
-                          )}
+                          copyLabel={t("نسخ طلب المثال", "Copy example prompt")}
                         />
                       </PreviewFrame>
                     </div>
@@ -548,7 +542,7 @@ export function Workbench() {
                 <h2 id="usage-heading">{label("usage", language)}</h2>
                 <p className="usage-guidance">
                   {t(
-                    "الكود يطابق خصائص المعاينة. الخط المحلي محمّل في",
+                    "يطابق الكود خصائص المعاينة. تجد استيراد الخط المحلي في",
                     "Code follows the playground properties. Local font imports are in",
                   )}{" "}
                   <bdi dir="ltr">src/main.tsx</bdi>.

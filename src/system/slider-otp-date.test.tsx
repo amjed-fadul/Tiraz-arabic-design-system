@@ -250,9 +250,7 @@ describe("DatePicker", () => {
         direction === "rtl" ? left : right,
       );
       expect(previous).toHaveAccessibleName(
-        direction === "rtl"
-          ? "اذهب إلى الشهر السابق"
-          : "Go to the Previous Month",
+        direction === "rtl" ? "الشهر السابق" : "Go to the Previous Month",
       );
       const month = screen.getByRole("combobox", {
         name: direction === "rtl" ? "اختر الشهر" : "Choose the Month",

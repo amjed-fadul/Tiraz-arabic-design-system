@@ -64,10 +64,10 @@ export function CreateCustomer({
     <Sheet
       open={open}
       onOpenChange={changeOpen}
-      trigger={<Button>{t("إنشاء عميل", "Create customer")}</Button>}
-      title={t("إنشاء عميل", "Create customer")}
+      trigger={<Button>{t("إضافة عميل", "Create customer")}</Button>}
+      title={t("إضافة عميل", "Create customer")}
       description={t(
-        "أضف الاسم والبريد والحالة.",
+        "أدخل اسم العميل وبريده وحالته.",
         "Add a name, email and status.",
       )}
       closeLabel={t("إغلاق نموذج العميل", "Close customer form")}
@@ -107,7 +107,7 @@ export function CreateCustomer({
           setCustomers((previous) => [...previous, customer]);
           changeOpen(false);
           toast({
-            title: t("تم إنشاء العميل", "Customer created"),
+            title: t("أُضيف العميل", "Customer created"),
             description: customer.name,
             tone: "success",
           });

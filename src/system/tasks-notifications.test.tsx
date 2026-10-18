@@ -38,7 +38,7 @@ it("derives notification counts, renders time and never marks read from an actio
   expect(screen.getByText("١ غير مقروءة")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "Open note" }));
   expect(read).not.toHaveBeenCalled();
-  const control = screen.getByRole("button", { name: "تحديد كمقروءة: Review" });
+  const control = screen.getByRole("button", { name: "تعليم كمقروءة: Review" });
   await user.click(control);
   expect(read).toHaveBeenCalledWith("a");
   view.rerender(
@@ -56,7 +56,7 @@ it("derives notification counts, renders time and never marks read from an actio
   await user.click(control);
   expect(read).toHaveBeenCalledOnce();
   expect(
-    screen.getByRole("button", { name: "تحديد الكل كمقروء" }),
+    screen.getByRole("button", { name: "تعليم الكل كمقروء" }),
   ).toBeDisabled();
   view.rerender(
     <System.NotificationList
@@ -66,7 +66,7 @@ it("derives notification counts, renders time and never marks read from an actio
       onMarkAllRead={all}
     />,
   );
-  await user.click(screen.getByRole("button", { name: "تحديد الكل كمقروء" }));
+  await user.click(screen.getByRole("button", { name: "تعليم الكل كمقروء" }));
   expect(all).toHaveBeenCalledOnce();
 });
 it("supports noninteractive notifications and a distinct supplied empty state", () => {

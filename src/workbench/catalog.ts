@@ -4,7 +4,7 @@ export const catalog = [
     id: "terminal",
     name: ["الطرفية", "Terminal"],
     description: [
-      "عرض للقراءة فقط لأوامر ومخرجات يزوّدها التطبيق.",
+      "يعرض الأوامر ومخرجاتها كما في الطرفية، للقراءة فقط.",
       "Read-only presentation of application-supplied commands and output.",
     ],
     file: "Terminal.tsx",
@@ -13,7 +13,7 @@ export const catalog = [
     id: "chat-app",
     name: ["تطبيق المحادثة", "ChatApp"],
     description: [
-      "تخطيط محادثة قابل لإعادة الاستخدام؛ التطبيق يملك الحالة والمحتوى.",
+      "يجمع أجزاء المحادثة في واجهة واحدة، ويترك الحالة والمحتوى لتطبيقك.",
       "Reusable chat composition with application-owned state and content.",
     ],
     file: "ChatApp.tsx",
@@ -21,9 +21,9 @@ export const catalog = [
 
   {
     id: "ask-user-questions",
-    name: ["أسئلة المستخدم", "AskUserQuestions"],
+    name: ["أسئلة للمستخدم", "AskUserQuestions"],
     description: [
-      "أسئلة يزوّدها التطبيق بإجابات قابلة للتعديل وإرسال صريح.",
+      "يطرح أسئلتك على المستخدم، ويتيح له تعديل إجاباته قبل إرسالها.",
       "Application-supplied questions with editable answers and deliberate submission.",
     ],
     file: "AskUserQuestions.tsx",
@@ -32,7 +32,7 @@ export const catalog = [
     id: "approval-card",
     name: ["بطاقة القرار", "ApprovalCard"],
     description: [
-      "معاينة إجراء وهدف وعواقب مع موافقة أو رفض لمرة واحدة.",
+      "يعرض الإجراء وهدفه وعواقبه ليوافق المستخدم عليه أو يرفضه مرة واحدة.",
       "A concrete one-time action preview with independent approve and reject decisions.",
     ],
     file: "ApprovalCard.tsx",
@@ -41,7 +41,7 @@ export const catalog = [
     id: "approval-flow",
     name: ["تسلسل القرارات", "ApprovalFlow"],
     description: [
-      "سلسلة طلبات مستقلة تتقدّم بعد قبول التطبيق لكل قرار.",
+      "يعرض طلبات مستقلة بالتتابع، وينتقل إلى التالي حين يقبل تطبيقك القرار.",
       "A short sequence of independent requests, advanced after host acceptance.",
     ],
     file: "ApprovalFlow.tsx",
@@ -51,7 +51,7 @@ export const catalog = [
     id: "selection-actions",
     name: ["إجراءات التحديد", "SelectionActions"],
     description: [
-      "إجراءات موجزة لنص محدّد داخل نطاق صريح؛ التطبيق يملك النتيجة.",
+      "يقترح إجراءات سريعة للنص المحدّد داخل منطقة تعيّنها، ويترك النتيجة لتطبيقك.",
       "Compact actions for text selected inside an explicit scope; the host owns the result.",
     ],
     file: "SelectionActions.tsx",
@@ -60,7 +60,7 @@ export const catalog = [
     id: "context-meter",
     name: ["مقياس السياق", "ContextMeter"],
     description: [
-      "ملخص موجز وتفاصيل للاستخدام والسعة اللذين يزوّدهما التطبيق.",
+      "يلخّص استهلاك السياق وسعته، ويعرض التفاصيل من القيم التي تمرّرها.",
       "Compact usage summary and details from application-supplied values.",
     ],
     file: "ContextMeter.tsx",
@@ -69,7 +69,7 @@ export const catalog = [
     id: "model-selector",
     name: ["اختيار النموذج", "ModelSelector"],
     description: [
-      "اختيار متحكّم به من نماذج يزوّدها التطبيق بمعرّفات ثابتة.",
+      "يتيح اختيار نموذج من القائمة التي تمرّرها، ويدير تطبيقك القيمة بمعرّف ثابت.",
       "Controlled selection from application-supplied models with stable IDs.",
     ],
     file: "ModelSelector.tsx",
@@ -78,7 +78,7 @@ export const catalog = [
     id: "image-result",
     name: ["نتيجة الصورة", "ImageResult"],
     description: [
-      "صور يزوّدها التطبيق ضمن إطار ثابت مع حالات تحميل وخطأ.",
+      "يعرض صورك في إطار ثابت، مع حالتي التحميل والخطأ.",
       "Application-supplied images in a stable frame with loading and failure states.",
     ],
     file: "ImageResult.tsx",
@@ -87,7 +87,7 @@ export const catalog = [
     id: "sources",
     name: ["المصادر والاستشهادات", "Sources / InlineCitation"],
     description: [
-      "مصادر ثابتة واستشهادات متصلة بها مع روابط آمنة وتفاصيل موجزة.",
+      "يربط كل إشارة في النص بمصدرها، مع روابط آمنة وتفاصيل موجزة.",
       "Stable references and connected citations with safe links and compact details.",
     ],
     file: "Sources.tsx",
@@ -96,7 +96,7 @@ export const catalog = [
     id: "insight-cards",
     name: ["بطاقات النتائج", "InsightCards"],
     description: [
-      "نتائج موجزة يزوّدها التطبيق مع تفاصيل وإجراءات متصلة.",
+      "يعرض النتائج باختصار، مع تفاصيلها والإجراءات المرتبطة بها.",
       "Concise application-supplied findings with details and connected actions.",
     ],
     file: "InsightCards.tsx",
@@ -106,7 +106,7 @@ export const catalog = [
     id: "chat-thread",
     name: ["المحادثة", "ChatThread"],
     description: [
-      "رسائل التطبيق بمعرّفات ثابتة وفقاعات مستخدم وردود مسطّحة.",
+      "يعرض رسائل المحادثة، فيضع رسائل المستخدم في فقاعات ويترك ردود المساعد بلا إطار.",
       "Application-owned messages with stable IDs, user bubbles and flat assistant replies.",
     ],
     file: "ChatThread.tsx",
@@ -115,16 +115,16 @@ export const catalog = [
     id: "chat-composer",
     name: ["محرر الرسائل", "ChatComposer"],
     description: [
-      "إدخال متعدد الأسطر بمسودة يتحكم بها التطبيق وإرسال آمن.",
+      "يتيح كتابة رسالة من عدة أسطر، ويدير تطبيقك المسودة حتى يرسلها المستخدم.",
       "Controlled multiline entry with bounded growth and deliberate submission.",
     ],
     file: "ChatComposer.tsx",
   },
   {
     id: "prompt-bar",
-    name: ["شريط الموجّه", "PromptBar"],
+    name: ["شريط الطلب", "PromptBar"],
     description: [
-      "مدخل مدمج لبدء مهمة مع اقتراحات اختيارية مرتبطة بالتطبيق.",
+      "يتيح للمستخدم بدء مهمة من حقل مدمج، مع اقتراحات اختيارية من تطبيقك.",
       "Compact task entry with optional host-connected suggestions.",
     ],
     file: "PromptBar.tsx",
@@ -132,9 +132,9 @@ export const catalog = [
 
   {
     id: "code-block",
-    name: ["كتلة الشيفرة", "CodeBlock"],
+    name: ["كتلة الكود", "CodeBlock"],
     description: [
-      "شيفرة مقروءة مع تلوين خفيف ونسخ كامل.",
+      "يعرض الكود بتلوين خفيف يسهّل قراءته، وينسخه كاملًا.",
       "Readable source with lightweight highlighting and exact copying.",
     ],
     file: "CodeBlock.tsx",
@@ -143,16 +143,16 @@ export const catalog = [
     id: "markdown",
     name: ["ماركداون", "Markdown"],
     description: [
-      "ردود منسّقة مع روابط آمنة وجداول وشيفرة.",
+      "يعرض الردود المنسّقة بما فيها من روابط آمنة وجداول وكود.",
       "Formatted responses with safe links, tables and code.",
     ],
     file: "Markdown.tsx",
   },
   {
     id: "streaming-text",
-    name: ["النص المتدفق", "StreamingText"],
+    name: ["النص المتتابع", "StreamingText"],
     description: [
-      "نص يصل من التطبيق مع حالة تدفق صريحة.",
+      "يعرض النص الذي يصل تباعًا من تطبيقك، ويوضّح متى يكتمل.",
       "Host-supplied text with an explicit streaming state.",
     ],
     file: "StreamingText.tsx",
@@ -162,7 +162,7 @@ export const catalog = [
     id: "tool-call",
     name: ["استدعاء الأداة", "ToolCall"],
     description: [
-      "عملية أداة واحدة بحالة وتفاصيل يزوّدها التطبيق.",
+      "يعرض استدعاء أداة واحدًا بحالته، مع تفاصيل تنفتح عند الحاجة.",
       "One application-supplied tool operation with status and expandable details.",
     ],
     file: "ToolCall.tsx",
@@ -171,7 +171,7 @@ export const catalog = [
     id: "tool-chips",
     name: ["ملخص الأدوات", "ToolChips"],
     description: [
-      "ملخص نشاط مدمج مع إجراءات اختيارية يربطها التطبيق.",
+      "يلخّص نشاط الأدوات في سطر مدمج، مع إجراءات اختيارية يربطها تطبيقك.",
       "Compact activity summaries with optional host-connected actions.",
     ],
     file: "ToolChips.tsx",
@@ -180,7 +180,7 @@ export const catalog = [
     id: "loading-state",
     name: ["حالة التحميل", "LoadingState"],
     description: [
-      "تحميل مدمج مع تسمية ووصف اختياري.",
+      "يُظهر حالة التحميل بتسمية قصيرة ووصف اختياري.",
       "Compact loading feedback with a label and optional description.",
     ],
     file: "LoadingState.tsx",
@@ -189,7 +189,7 @@ export const catalog = [
     id: "thinking-indicator",
     name: ["مؤشر النشاط", "ThinkingIndicator"],
     description: [
-      "مؤشر نشاط صغير بتسمية يزوّدها التطبيق.",
+      "يُظهر أن المساعد يعمل، بمؤشر صغير وتسمية تختارها.",
       "Small inline activity feedback with an application-supplied label.",
     ],
     file: "ThinkingIndicator.tsx",
@@ -198,7 +198,7 @@ export const catalog = [
     id: "thinking-state",
     name: ["حالة النشاط", "ThinkingState"],
     description: [
-      "ملخص نشاط موجز وتفاصيل قابلة للتوسيع يزوّدها التطبيق.",
+      "يلخّص ما يفعله المساعد في سطر، مع تفاصيل تنفتح عند الحاجة.",
       "A brief application-supplied activity summary with expandable details.",
     ],
     file: "ThinkingState.tsx",
@@ -207,7 +207,7 @@ export const catalog = [
     id: "file-tree",
     name: ["شجرة الملفات", "FileTree"],
     description: [
-      "متصفح مدمج لبيانات الملفات والمجلدات التي يزوّدها التطبيق.",
+      "يتيح التنقّل بين ملفاتك ومجلداتك في شجرة مدمجة.",
       "A compact navigator for application-supplied files and folders.",
     ],
     file: "FileTree.tsx",
@@ -216,7 +216,7 @@ export const catalog = [
     id: "task-rows",
     name: ["صفوف المهام", "TaskRows"],
     description: [
-      "صفوف مهام وكيل قابلة للتوسيع مع حالات تنفيذ يزوّدها التطبيق.",
+      "يعرض مهام الوكيل وحالة تنفيذ كل منها، مع تفاصيل تنفتح عند الحاجة.",
       "Expandable agent-task rows with application-supplied execution states.",
     ],
     file: "TaskRows.tsx",
@@ -225,7 +225,7 @@ export const catalog = [
     id: "notification-list",
     name: ["قائمة الإشعارات", "NotificationList"],
     description: [
-      "إشعارات بترتيب التطبيق مع حالة قراءة واضحة وإجراءات مستقلة.",
+      "يعرض الإشعارات بالترتيب الذي تمرّره، ويميّز المقروء منها، ولكل إشعار إجراءاته.",
       "Notifications in supplied order with explicit read state and separate actions.",
     ],
     file: "NotificationList.tsx",
@@ -234,7 +234,7 @@ export const catalog = [
     id: "steps",
     name: ["الخطوات", "Steps"],
     description: [
-      "تسلسل واضح لعملية يملكها التطبيق، مع حالات تقدم متاحة.",
+      "يوضّح مراحل العملية التي يديرها تطبيقك، وأين وصل المستخدم منها.",
       "A clear sequence for an application-owned process with accessible progress states.",
     ],
     file: "Steps.tsx",
@@ -243,7 +243,7 @@ export const catalog = [
     id: "timeline",
     name: ["الخط الزمني", "Timeline"],
     description: [
-      "أحداث مرتبة كما يزوّدها التطبيق مع تواريخ ومحتوى اختياري.",
+      "يعرض الأحداث بالترتيب الذي تمرّره، مع تواريخها ومحتوى اختياري.",
       "Events in application-supplied order with timestamps and optional content.",
     ],
     file: "Timeline.tsx",
@@ -252,7 +252,7 @@ export const catalog = [
     id: "slider",
     name: ["شريط التمرير", "Slider"],
     description: [
-      "قيمة واحدة مع تحكم أصلي باللمس ولوحة المفاتيح.",
+      "يتيح اختيار قيمة واحدة بالسحب أو بلوحة المفاتيح.",
       "One value with native pointer and keyboard control.",
     ],
     file: "Slider.tsx",
@@ -261,7 +261,7 @@ export const catalog = [
     id: "otp-input",
     name: ["إدخال الرمز", "OTPInput"],
     description: [
-      "إدخال واحد لأرقام الرمز مع تحرير ولصق أصلي.",
+      "يجمع أرقام الرمز في حقل واحد يقبل التعديل واللصق كالمعتاد.",
       "One editable input for code digits with native selection and paste.",
     ],
     file: "OTPInput.tsx",
@@ -270,7 +270,7 @@ export const catalog = [
     id: "date-picker",
     name: ["اختيار التاريخ", "DatePicker"],
     description: [
-      "تاريخ ميلادي واحد مع تقويم متاح وقيمة دون توقيت.",
+      "يتيح اختيار تاريخ ميلادي واحد من التقويم، ويعيده دون وقت.",
       "One Gregorian date with an accessible calendar and date-only value.",
     ],
     file: "DatePicker.tsx",
@@ -279,7 +279,7 @@ export const catalog = [
     id: "file-dropzone",
     name: ["اختيار الملفات", "FileDropzone"],
     description: [
-      "اختيار ملفات محلي مع فحص واضح وإزالة متاحة، دون رفع.",
+      "يتيح اختيار ملفات من الجهاز وفحصها وإزالتها، دون رفعها.",
       "Local file selection with clear validation and accessible removal, without uploading.",
     ],
     file: "FileDropzone.tsx",
@@ -288,7 +288,7 @@ export const catalog = [
     id: "color-picker",
     name: ["اختيار اللون", "ColorPicker"],
     description: [
-      "ألوان جاهزة وإدخال HEX واختيار لون أصلي، دون شفافية.",
+      "يقدّم ألوانًا جاهزة وحقلًا لرمز HEX ومنتقي المتصفح، دون شفافية.",
       "Named presets, HEX entry and a native chooser for opaque RGB colors.",
     ],
     file: "ColorPicker.tsx",
@@ -297,7 +297,7 @@ export const catalog = [
     id: "tag-input",
     name: ["إدخال الوسوم", "TagInput"],
     description: [
-      "قيم نصية متعددة مع إزالة واضحة وسلوك لوحة مفاتيح أصلي.",
+      "يجمع عدة قيم نصية في وسوم يسهل حذفها، مع تحرير النص كالمعتاد.",
       "Multiple text values with explicit removal and native text editing.",
     ],
     file: "TagInput.tsx",
@@ -306,16 +306,16 @@ export const catalog = [
     id: "filter-bar",
     name: ["شريط التصفية", "FilterBar"],
     description: [
-      "تركيب خفيف للبحث وعوامل التصفية التي يملكها التطبيق.",
+      "يجمع البحث وعوامل التصفية في شريط خفيف، ويترك قيمها لتطبيقك.",
       "A lightweight composition of application-owned search and filters.",
     ],
     file: "FilterBar.tsx",
   },
   {
     id: "input-copy",
-    name: ["إدخال النسخ", "InputCopy"],
+    name: ["حقل النسخ", "InputCopy"],
     description: [
-      "قيمة قابلة للتحديد مع نسخ كامل ونتيجة صادقة.",
+      "يعرض قيمة يمكن تحديدها ونسخها كاملة، ويخبر المستخدم إن نجح النسخ أو تعذّر.",
       "Selectable text with full-value copying and honest feedback.",
     ],
     file: "InputCopy.tsx",
@@ -324,7 +324,7 @@ export const catalog = [
     id: "sidebar",
     name: ["شريط التنقّل", "Sidebar"],
     description: [
-      "تنقّل جانبي مدمج، مع شريط أيقونات ولوحة Sheet على الهاتف.",
+      "يعرض التنقّل في شريط جانبي مدمج يُطوى إلى أيقونات، وفي لوحة Sheet على الهاتف.",
       "Compact side navigation, an icon rail and mobile Sheet composition.",
     ],
     file: "Sidebar.tsx",
@@ -333,7 +333,7 @@ export const catalog = [
     id: "button",
     name: ["الأزرار", "Button"],
     description: [
-      "إجراءات واضحة، مع حالات للتحميل والنجاح والخطأ.",
+      "يتيح للمستخدم تنفيذ إجراء واضح، ويُظهر حالات التحميل والنجاح والخطأ.",
       "Clear actions, with loading, success and error states.",
     ],
     file: "Button.tsx",
@@ -342,7 +342,7 @@ export const catalog = [
     id: "tabs",
     name: ["التبويبات", "Tabs"],
     description: [
-      "تنقّل بين المحتوى باستخدام مؤشر سلس ولوحة المفاتيح.",
+      "يتيح التنقّل بين أقسام المحتوى بمؤشر سلس ولوحة المفاتيح.",
       "Navigate related content with a smooth indicator and keyboard support.",
     ],
     file: "Tabs.tsx",
@@ -351,7 +351,7 @@ export const catalog = [
     id: "switch",
     name: ["مفتاح التبديل", "Switch"],
     description: [
-      "تحكّم واضح في إعداد بحالتين، مع تسمية مرتبطة.",
+      "يشغّل إعدادًا أو يوقفه، مع تسمية مرتبطة به.",
       "A labeled two-state control for settings and preferences.",
     ],
     file: "Switch.tsx",
@@ -360,7 +360,7 @@ export const catalog = [
     id: "dropdown",
     name: ["القائمة المنسدلة", "Dropdown menu"],
     description: [
-      "إجراءات سياقية مع تنقّل بلوحة المفاتيح واستعادة التركيز.",
+      "يعرض إجراءات العنصر الحالي، ويدعم لوحة المفاتيح ويعيد التركيز عند الإغلاق.",
       "Contextual actions with keyboard navigation and focus restoration.",
     ],
     file: "DropdownMenu.tsx",
@@ -369,7 +369,7 @@ export const catalog = [
     id: "sheet",
     name: ["اللوحة الجانبية", "Sheet"],
     description: [
-      "عرض التفاصيل دون مغادرة الصفحة، مع إدارة كاملة للتركيز.",
+      "يعرض التفاصيل دون مغادرة الصفحة، ويُبقي التركيز داخل اللوحة حتى تُغلق.",
       "Show details without leaving the page, with managed modal focus.",
     ],
     file: "Sheet.tsx",
@@ -378,7 +378,7 @@ export const catalog = [
     id: "toast",
     name: ["التنبيهات", "Toast"],
     description: [
-      "رسائل نجاح وخطأ ومعلومات، معلنة لقارئات الشاشة.",
+      "يعرض رسائل قصيرة للنجاح والخطأ والمعلومات، وتعلنها قارئات الشاشة.",
       "Success, error and informational feedback with accessible announcements.",
     ],
     file: "Toast.tsx",
@@ -387,7 +387,7 @@ export const catalog = [
     id: "field",
     name: ["الحقل", "Field"],
     description: [
-      "تسمية ومساعدة وأخطاء مرتبطة بعنصر واحد. التطبيق يملك التحقق.",
+      "يربط التسمية والمساعدة والخطأ بعنصر إدخال واحد، ويتولّى تطبيقك التحقق.",
       "Label, help and errors associated with one control. The application owns validation.",
     ],
     file: "Field.tsx",
@@ -396,7 +396,7 @@ export const catalog = [
     id: "input",
     name: ["الإدخال", "Input"],
     description: [
-      "إدخال نص أصلي مع تسمية ومساعدة ورسالة خطأ اختيارية.",
+      "يتيح إدخال نص، مع تسمية ومساعدة ورسالة خطأ اختيارية.",
       "Native text entry with optional label, helper and error text.",
     ],
     file: "Input.tsx",
@@ -405,7 +405,7 @@ export const catalog = [
     id: "select",
     name: ["الاختيار", "Select"],
     description: [
-      "اختيار قيمة واحدة بلوحة المفاتيح ودعم النماذج.",
+      "يتيح اختيار قيمة واحدة من قائمة، ويعمل مع لوحة المفاتيح والنماذج.",
       "Choose one value with keyboard and form support.",
     ],
     file: "Select.tsx",
@@ -414,7 +414,7 @@ export const catalog = [
     id: "table",
     name: ["الجدول", "Table"],
     description: [
-      "جدول HTML للعناوين والصفوف، مع تمرير أفقي داخل الحاوية.",
+      "يعرض البيانات في جدول HTML بعناوين وصفوف، ويمرّر أفقيًا داخل حاويته.",
       "A native HTML table with headers, rows and internal horizontal scrolling.",
     ],
     file: "Table.tsx",
@@ -423,7 +423,7 @@ export const catalog = [
     id: "data-table",
     name: ["جدول البيانات", "DataTable"],
     description: [
-      "إدارة العملاء مع البحث والتصفية والفرز وتقسيم الصفحات. استخدم Table للجداول البسيطة.",
+      "يتيح إدارة العملاء بالبحث والتصفية والفرز وتقسيم الصفحات. استخدم Table للجداول البسيطة.",
       "Manage customers with search, filtering, sorting and pagination. Use Table for simple tables.",
     ],
     file: "DataTable.tsx",
@@ -432,7 +432,7 @@ export const catalog = [
     id: "badge",
     name: ["الشارة", "Badge"],
     description: [
-      "حالة واضحة بالنص وألوان دلالية هادئة.",
+      "يُظهر الحالة نصًا قصيرًا بألوان دلالية هادئة.",
       "Static status text with subtle semantic tones.",
     ],
     file: "Badge.tsx",
@@ -441,7 +441,7 @@ export const catalog = [
     id: "checkbox",
     name: ["مربع الاختيار", "Checkbox"],
     description: [
-      "اختيار أصلي مستقل مع تسمية ومساعدة وأخطاء.",
+      "يتيح تفعيل خيار مستقل أو إلغاءه، مع تسمية ومساعدة ورسالة خطأ.",
       "An independent native checkbox with label, help and errors.",
     ],
     file: "Checkbox.tsx",
@@ -450,16 +450,16 @@ export const catalog = [
     id: "radio-group",
     name: ["مجموعة الخيارات", "RadioGroup"],
     description: [
-      "اختيار واحد ضمن مجموعة أصلية مسماة.",
+      "يطلب من المستخدم اختيارًا واحدًا من مجموعة مسمّاة.",
       "One native choice within a named group.",
     ],
     file: "RadioGroup.tsx",
   },
   {
     id: "textarea",
-    name: ["النص المتعدد", "Textarea"],
+    name: ["مربع النص", "Textarea"],
     description: [
-      "نص متعدد الأسطر مع تغيير الحجم عموديًا.",
+      "يتيح كتابة نص من عدة أسطر، مع تغيير الحجم عموديًا.",
       "Native multiline text with vertical resizing.",
     ],
     file: "Textarea.tsx",
@@ -468,7 +468,7 @@ export const catalog = [
     id: "avatar",
     name: ["الصورة الشخصية", "Avatar"],
     description: [
-      "صورة أو أحرف بديلة ثابتة باسم واضح.",
+      "يعرض صورة الشخص أو الأحرف الأولى من اسمه، مع اسم واضح.",
       "An image or stable initials with a meaningful name.",
     ],
     file: "Avatar.tsx",
@@ -477,7 +477,7 @@ export const catalog = [
     id: "avatar-group",
     name: ["مجموعة الصور", "AvatarGroup"],
     description: [
-      "أعضاء بترتيب واضح مع عدد إضافي غير تفاعلي.",
+      "يعرض صور الأعضاء بترتيب ثابت، ثم عدد من لم يظهر منهم.",
       "Ordered members with a static overflow count.",
     ],
     file: "AvatarGroup.tsx",
@@ -486,7 +486,7 @@ export const catalog = [
     id: "tooltip",
     name: ["التلميح", "Tooltip"],
     description: [
-      "توضيح قصير عند المرور أو التركيز بلوحة المفاتيح.",
+      "يُظهر توضيحًا قصيرًا عند المرور بالمؤشر أو التركيز بلوحة المفاتيح.",
       "A short explanation on hover or keyboard focus.",
     ],
     file: "Tooltip.tsx",
@@ -495,7 +495,7 @@ export const catalog = [
     id: "modal",
     name: ["النافذة الحوارية", "Modal"],
     description: [
-      "حوار مركزي لمهمة محددة مع إدارة التركيز.",
+      "يفتح نافذة في وسط الشاشة لمهمة واحدة، ويُبقي التركيز داخلها.",
       "A centered dialog for one focused task with managed focus.",
     ],
     file: "Modal.tsx",
@@ -504,7 +504,7 @@ export const catalog = [
     id: "empty-state",
     name: ["الحالة الفارغة", "EmptyState"],
     description: [
-      "عنوان ووصف ورسوم زخرفية اختيارية وإجراء من التطبيق.",
+      "يوضّح سبب غياب المحتوى وكيف يبدأ المستخدم، برسم اختياري وإجراء من تطبيقك.",
       "Clear text, optional decorative artwork and an application action.",
     ],
     file: "EmptyState.tsx",
@@ -513,7 +513,7 @@ export const catalog = [
     id: "alert",
     name: ["الرسالة الدلالية", "Alert"],
     description: [
-      "رسالة ثابتة داخل المحتوى، مع إعلان اختياري.",
+      "يعرض رسالة تبقى داخل المحتوى، ويمكن أن تعلنها قارئات الشاشة.",
       "Persistent inline feedback with optional announcements.",
     ],
     file: "Alert.tsx",
@@ -522,7 +522,7 @@ export const catalog = [
     id: "skeleton",
     name: ["هيكل التحميل", "Skeleton"],
     description: [
-      "عناصر مؤقتة زخرفية أثناء تحميل المحتوى.",
+      "يحجز مكان المحتوى بأشكال مؤقتة حتى يكتمل تحميله.",
       "Decorative placeholders while content is loading.",
     ],
     file: "Skeleton.tsx",
@@ -531,7 +531,7 @@ export const catalog = [
     id: "progress",
     name: ["التقدم", "Progress"],
     description: [
-      "تقدم محدد أو انتظار دون قيمة رقمية.",
+      "يُظهر نسبة التقدّم، أو يوضّح أن العمل جارٍ حين لا تُعرف النسبة.",
       "Determinate progress or waiting without a numeric value.",
     ],
     file: "Progress.tsx",
@@ -540,7 +540,7 @@ export const catalog = [
     id: "spinner",
     name: ["مؤشر التحميل", "Spinner"],
     description: [
-      "مؤشر صغير مع تسمية أو بجوار نص مكافئ.",
+      "يُظهر مؤشر انتظار صغيرًا بتسمية خاصة به أو بجوار نص يشرحه.",
       "A small named indicator or decoration beside equivalent text.",
     ],
     file: "Spinner.tsx",
@@ -549,7 +549,7 @@ export const catalog = [
     id: "card",
     name: ["البطاقة", "Card"],
     description: [
-      "سطح هادئ مع عنوان ومحتوى وإجراءات من التطبيق.",
+      "يجمع العنوان والمحتوى والإجراءات على سطح هادئ.",
       "A quiet surface with composable heading, content and application actions.",
     ],
     file: "Card.tsx",
@@ -558,7 +558,7 @@ export const catalog = [
     id: "accordion",
     name: ["الأكورديون", "Accordion"],
     description: [
-      "إظهار قسم واحد مع بقاء العناوين متاحة.",
+      "يفتح قسمًا واحدًا ويُبقي العناوين كلها ظاهرة.",
       "Reveal one section while keeping headings available.",
     ],
     file: "Accordion.tsx",
@@ -567,7 +567,7 @@ export const catalog = [
     id: "breadcrumbs",
     name: ["مسار التنقل", "Breadcrumbs"],
     description: [
-      "روابط أصلية للمسار مع نص للصفحة الحالية.",
+      "يبيّن موقع الصفحة بروابط للمستويات الأعلى، ثم اسم الصفحة الحالية.",
       "Native path links with current-page text.",
     ],
     file: "Breadcrumbs.tsx",
@@ -576,7 +576,7 @@ export const catalog = [
     id: "pagination",
     name: ["تقسيم الصفحات", "Pagination"],
     description: [
-      "تنقل مضبوط بين الصفحات؛ التطبيق يملك البيانات.",
+      "يتيح التنقّل بين الصفحات، ويتولّى تطبيقك البيانات.",
       "Controlled page navigation; the application owns data.",
     ],
     file: "Pagination.tsx",
@@ -585,7 +585,7 @@ export const catalog = [
     id: "line-chart",
     name: ["الرسم الخطي", "Line chart"],
     description: [
-      "اتجاه القيم عبر الزمن، مع فجوات للقيم المفقودة.",
+      "يُظهر اتجاه القيم عبر الزمن، ويترك فجوة حيث تغيب قيمة.",
       "Trends over time, with gaps for missing values.",
     ],
     file: "Charts.tsx",
@@ -594,7 +594,7 @@ export const catalog = [
     id: "area-chart",
     name: ["الرسم المساحي", "Area chart"],
     description: [
-      "اتجاه القيم مع تعبئة هادئة أسفل الخط.",
+      "يُظهر اتجاه القيم بتعبئة هادئة أسفل كل خط.",
       "Trends with a restrained fill beneath each line.",
     ],
     file: "Charts.tsx",
@@ -603,7 +603,7 @@ export const catalog = [
     id: "bar-chart",
     name: ["الرسم العمودي", "Bar chart"],
     description: [
-      "مقارنة فئات أو سلاسل بقيم واضحة.",
+      "يقارن الفئات أو السلاسل بقيم واضحة.",
       "Compare categories or series with clear values.",
     ],
     file: "Charts.tsx",
@@ -612,7 +612,7 @@ export const catalog = [
     id: "donut-chart",
     name: ["الرسم الحلقي", "Donut chart"],
     description: [
-      "نسب الأجزاء من الكل دون تحريك الشرائح.",
+      "يُظهر نصيب كل جزء من الكل، دون تحريك الشرائح.",
       "Parts of a whole, without moving slices.",
     ],
     file: "Charts.tsx",

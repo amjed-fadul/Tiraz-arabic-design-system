@@ -45,7 +45,7 @@ export function InsightCards({
   if (!item)
     return (
       <p className={`tz-insights-empty ${className}`}>
-        {labels?.empty ?? (ar ? "لم تُقدَّم نتائج" : "No findings supplied")}
+        {labels?.empty ?? (ar ? "لا توجد نتائج" : "No findings supplied")}
       </p>
     );
   const Previous = ar ? ChevronRight : ChevronLeft,

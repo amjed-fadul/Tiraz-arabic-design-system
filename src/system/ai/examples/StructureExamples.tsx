@@ -48,7 +48,7 @@ export function CardExample({
         {actions && expanded && (
           <p id={notesId}>
             {ar
-              ? "استخدم الرموز المشتركة للمسافات والزوايا."
+              ? "استخدم القيم المشتركة للمسافات والزوايا."
               : "Use shared tokens for spacing and corners."}
           </p>
         )}
@@ -66,7 +66,7 @@ export function CardExample({
                 ? "إخفاء الملاحظات"
                 : "Hide notes"
               : ar
-                ? "قراءة الملاحظات"
+                ? "عرض الملاحظات"
                 : "Read notes"}
           </Button>
         </CardFooter>
@@ -190,7 +190,7 @@ export function PaginationExample({
             <h3>{note.title}</h3>
             <p>
               <bdi dir="ltr">DOC-{note.id}</bdi> ·{" "}
-              {ar ? "٤ دقائق قراءة" : "4 min read"}
+              {ar ? "٤ دقائق للقراءة" : "4 min read"}
             </p>
           </article>
         ))}

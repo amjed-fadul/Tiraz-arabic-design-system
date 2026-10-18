@@ -60,7 +60,7 @@ export function Appearance({
             <button
               type="button"
               className="doc-icon-button"
-              aria-label={t("طي تخصيص المكونات", "Collapse system settings")}
+              aria-label={t("طيّ تخصيص المكوّنات", "Collapse system settings")}
               aria-expanded={true}
               onClick={onCollapse}
             >

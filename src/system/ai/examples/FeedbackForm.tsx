@@ -30,7 +30,7 @@ export function FeedbackForm({ language = "ar" }: { language?: "ar" | "en" }) {
       }}
     >
       <Checkbox
-        label={t("تلقي التحديثات", "Receive updates")}
+        label={t("تلقّي التحديثات", "Receive updates")}
         helper={t("اختياري", "Optional")}
         name="updates"
         value="yes"

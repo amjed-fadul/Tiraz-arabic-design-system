@@ -68,20 +68,20 @@ export function CodeBlockExample({
             ? "invoices-october.csv"
             : undefined
       }
-      labels={{ copy: language === "ar" ? "نسخ الشيفرة" : "Copy code" }}
+      labels={{ copy: language === "ar" ? "نسخ الكود" : "Copy code" }}
     />
   );
 }
 function sampleMarkdown(ar: boolean, longContent = false) {
   const note = longContent
     ? ar
-      ? "شحنة جزئية؛ الشحنة الثانية بانتظار تأكيد المستودع الرئيسي في الرياض، ويُعلَّق الدفع المتبقي حتى استلام إشعار التسليم من المورّد وإرفاقه بأمر الشراء PO-7781 — partial delivery, balance on hold"
+      ? "شحنة جزئية: ننتظر تأكيد المستودع الرئيسي في الرياض للشحنة الثانية، ونعلّق باقي المبلغ حتى يصل إشعار التسليم من المورّد ونرفقه بأمر الشراء PO-7781 — partial delivery, balance on hold"
       : "Partial delivery; the second shipment awaits confirmation from the Riyadh warehouse, and the balance stays on hold until the supplier’s delivery note is attached to PO-7781 — شحنة جزئية"
     : ar
       ? "شحنة جزئية"
       : "Partial delivery";
   return ar
-    ? `# ملخص مطابقة أكتوبر\n\nراجعتُ **٢١٧ فاتورة** من شركة مدار، وتطابقت معظمها مع أوامر الشراء. الفروقات *صغيرة* لكنها تحتاج قرارًا قبل إقفال الشهر وفق شروط Net 30.\n\n- فواتير تحتاج مراجعة\n  - INV-1043: فرق ١٬٢٥٠ ر.س\n  - INV-1047: أمر الشراء غير مرفق\n- فواتير جاهزة للدفع: \`status = "matched"\`\n\n1. تأكيد الشحنة الثانية مع المورّد\n2. اعتماد الدفع من المالية\n\n> ملاحظة المورّد: “Partial delivery — second shipment on Nov 20”.\n\n[سياسة المطابقة](https://madar.sa/finance/matching-policy) · ~~الإقفال في ٣١ أكتوبر~~ الإقفال في ٥ نوفمبر\n\n| الفاتورة / Invoice | الحالة | ملاحظات |\n| --- | --- | --- |\n| INV-1043 | مراجعة | ${note} |\n| INV-1047 | مراجعة | أمر الشراء غير مرفق |\n\n\`\`\`ts\nconst pending = invoices.filter((invoice) => invoice.status === "review");\n\`\`\``
+    ? `# ملخص مطابقة أكتوبر\n\nراجعتُ **٢١٧ فاتورة** من شركة مدار، ويطابق معظمها أوامر الشراء. الفروقات *صغيرة*، لكنها تحتاج قرارًا قبل إقفال الشهر حسب شروط Net 30.\n\n- فواتير تحتاج مراجعة\n  - INV-1043: فرق ١٬٢٥٠ ر.س\n  - INV-1047: أمر الشراء غير مرفق\n- فواتير جاهزة للدفع: \`status = "matched"\`\n\n1. تأكيد الشحنة الثانية مع المورّد\n2. اعتماد الدفع من المالية\n\n> ملاحظة المورّد: «Partial delivery — second shipment on Nov 20».\n\n[سياسة المطابقة](https://madar.sa/finance/matching-policy) · ~~الإقفال في ٣١ أكتوبر~~ الإقفال في ٥ نوفمبر\n\n| الفاتورة / Invoice | الحالة | ملاحظات |\n| --- | --- | --- |\n| INV-1043 | مراجعة | ${note} |\n| INV-1047 | مراجعة | أمر الشراء غير مرفق |\n\n\`\`\`ts\nconst pending = invoices.filter((invoice) => invoice.status === "review");\n\`\`\``
     : `# October reconciliation\n\nI reviewed **217 invoices** from Madar, and most match their purchase orders. The differences are *small* but need a decision before month-end close under Net 30 terms — شروط الدفع ٣٠ يومًا.\n\n- Invoices to review\n  - INV-1043: 1,250 SAR gap\n  - INV-1047: purchase order missing\n- Ready to pay: \`status = "matched"\`\n\n1. Confirm the second shipment with the supplier\n2. Get payment approval from finance\n\n> Supplier note: «تم التسليم جزئيًا، والشحنة الثانية تصل في ٢٠ نوفمبر».\n\n[Matching policy](https://madar.sa/finance/matching-policy) · ~~Close on Oct 31~~ Close on Nov 5\n\n| Invoice / الفاتورة | Status | Notes |\n| --- | --- | --- |\n| INV-1043 | Review | ${note} |\n| INV-1047 | Review | Purchase order missing |\n\n\`\`\`ts\nconst pending = invoices.filter((invoice) => invoice.status === "review");\n\`\`\``;
 }
 export function MarkdownExample({
@@ -222,16 +222,16 @@ export function StreamingDemo({
   const playLabel =
     phase === "idle"
       ? ar
-        ? "بدء العرض المحلي"
+        ? "تشغيل المثال"
         : "Start local demo"
       : ar
-        ? "إعادة العرض المحلي"
+        ? "إعادة تشغيل المثال"
         : "Replay local demo";
   return (
     <DemoFrame
       className="tz-stream-demo"
       language={language}
-      label={ar ? "عرض نص محلي" : "Local text demo"}
+      label={ar ? "مثال نص يظهر تباعًا" : "Local text demo"}
       title={
         markdown ? (ar ? "ماركداون" : "Markdown") : ar ? "الافتراضي" : "Default"
       }

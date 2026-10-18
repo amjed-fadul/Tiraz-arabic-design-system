@@ -29,7 +29,7 @@ export function AvatarExamples({
         label={ar ? "فريق المشروع" : "Project team"}
         maxVisible={3}
         overflowLabel={(count) =>
-          ar ? `${count} أعضاء إضافيون` : `${count} more members`
+          ar ? `${count} أعضاء آخرون` : `${count} more members`
         }
       />
     </div>

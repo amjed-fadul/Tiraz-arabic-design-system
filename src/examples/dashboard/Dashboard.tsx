@@ -191,13 +191,13 @@ function DashboardContent({
           </SidebarIdentity>
           {!mobile && (
             <SidebarToggle
-              collapseLabel={t("طي التنقّل", "Collapse navigation")}
-              expandLabel={t("توسيع التنقّل", "Expand navigation")}
+              collapseLabel={t("طيّ القائمة الجانبية", "Collapse navigation")}
+              expandLabel={t("توسيع القائمة الجانبية", "Expand navigation")}
             />
           )}
         </SidebarHeader>
         <SidebarContent
-          aria-label={t("تنقّل لوحة العملاء", "Dashboard navigation")}
+          aria-label={t("أقسام لوحة العملاء", "Dashboard navigation")}
         >
           <SidebarGroup>
             {navItems.map((item) => (
@@ -290,7 +290,7 @@ function DashboardContent({
       <EmptyState
         title={t("لا يوجد عملاء بعد", "No customers yet")}
         description={t(
-          "الدليل فارغ. أضف أول عميل باستخدام «إنشاء عميل».",
+          "سيظهر عملاؤك هنا. اختر «إضافة عميل» لتبدأ.",
           "The directory is empty. Add your first customer using Create customer.",
         )}
         illustration={<NoRecordsIllustration />}
@@ -299,7 +299,7 @@ function DashboardContent({
       <EmptyState
         title={t("لا توجد نتائج مطابقة", "No matching customers")}
         description={t(
-          "جرّب اسمًا آخر أو امسح عوامل التصفية.",
+          "جرّب اسمًا آخر أو امسح التصفية.",
           "Try another name or clear your filters.",
         )}
         illustration={<NoSearchResultsIllustration />}
@@ -331,17 +331,17 @@ function DashboardContent({
             <Sheet
               open={navOpen}
               onOpenChange={setNavOpen}
-              title={t("التنقّل", "Navigation")}
+              title={t("الأقسام", "Navigation")}
               description={t(
                 "انتقل إلى قسم في لوحة العملاء.",
                 "Go to a section in the customer dashboard.",
               )}
-              closeLabel={t("إغلاق التنقّل", "Close navigation")}
+              closeLabel={t("إغلاق القائمة", "Close navigation")}
               trigger={
                 <Button
                   variant="ghost"
                   iconOnly
-                  aria-label={t("فتح التنقّل", "Open navigation")}
+                  aria-label={t("فتح القائمة", "Open navigation")}
                   onFocus={() => {
                     const destination = pendingDestination.current;
                     if (!destination) return;
@@ -387,7 +387,10 @@ function DashboardContent({
                 {t("لوحة العملاء", "CUSTOMER DASHBOARD")}
               </p>
               <h1 id="overview-title">
-                {t("كل التفاصيل، في مكان واحد.", "Everything, in one place.")}
+                {t(
+                  "كل ما يخص عملاءك في مكان واحد.",
+                  "Everything, in one place.",
+                )}
               </h1>
               <p className="dashboard-muted">
                 {t(
@@ -410,7 +413,7 @@ function DashboardContent({
             <Badge>{t("بيانات تجريبية", "Sample data")}</Badge>
             <span>
               {t(
-                "في الذاكرة فقط · إعادة التحميل تستعيد العينة",
+                "في الذاكرة فقط · تعود البيانات الأصلية عند إعادة التحميل",
                 "In memory only · reload restores the sample",
               )}
             </span>
@@ -484,7 +487,7 @@ function DashboardContent({
               <Spinner decorative />
               <span>
                 {t(
-                  "معاينة التحميل — لا يوجد طلب شبكة جارٍ.",
+                  "معاينة لحالة التحميل، ولا يجري أي طلب فعلي.",
                   "Loading preview — no request is running.",
                 )}
               </span>
@@ -497,7 +500,7 @@ function DashboardContent({
                 "Unable to display the example data",
               )}
               description={t(
-                "هذه معاينة للخطأ. إعادة المحاولة تستعيد البيانات التجريبية.",
+                "هذه معاينة لحالة الخطأ. اختر «إعادة المحاولة» لاستعادة البيانات التجريبية.",
                 "This is an error preview. Retry restores the sample data.",
               )}
               action={
@@ -524,7 +527,7 @@ function DashboardContent({
           ) : (
             <div className="dashboard-charts">
               <article>
-                <h3>{t("اتجاه الطلبات", "Orders trend")}</h3>
+                <h3>{t("حركة الطلبات", "Orders trend")}</h3>
                 <AreaChart
                   data={orders.trend}
                   series={[
@@ -536,7 +539,7 @@ function DashboardContent({
                   ]}
                   label={t("الطلبات اليومية", "Daily orders")}
                   summary={t(
-                    `${number(orders.count)} طلبًا خلال ${range}. كل نقطة تمثل إجمالي طلبات يوم واحد.`,
+                    `${number(orders.count)} طلبًا خلال ${range}. تمثّل كل نقطة إجمالي طلبات يوم واحد.`,
                     `${number(orders.count)} orders during ${range}. Each point is one day's total orders.`,
                   )}
                   locale={language}
@@ -601,7 +604,7 @@ function DashboardContent({
                 ref={searchRef}
                 type="search"
                 aria-label={t(
-                  "البحث عن العملاء بالاسم أو البريد",
+                  "ابحث عن عميل بالاسم أو البريد",
                   "Search customers by name or email",
                 )}
                 placeholder={t(
@@ -681,7 +684,7 @@ function DashboardContent({
           {hiddenNew && !blocked && (
             <Alert
               title={t(
-                "عوامل التصفية تخفي العميل الجديد.",
+                "التصفية الحالية تُخفي العميل الجديد.",
                 "Your filters hide the new customer.",
               )}
               description={newCustomer.name}
@@ -704,7 +707,7 @@ function DashboardContent({
           {spotlightId !== null && (
             <p className="dashboard-muted">
               {t(
-                "يُعرض العميل الجديد فقط. امسح التصفية لعرض الجميع.",
+                "تعرض الآن العميل الجديد فقط. امسح التصفية لعرض الجميع.",
                 "Showing only the new customer. Clear filters to show everyone.",
               )}
             </p>
@@ -754,9 +757,9 @@ function DashboardContent({
               value={preview}
               onValueChange={(value) => changePreview(value as Preview)}
               options={[
-                { value: "sample", label: t("العينة", "Sample") },
-                { value: "loading", label: t("تحميل", "Loading") },
-                { value: "empty", label: t("بيانات فارغة", "Empty dataset") },
+                { value: "sample", label: t("بيانات تجريبية", "Sample") },
+                { value: "loading", label: t("جارٍ التحميل", "Loading") },
+                { value: "empty", label: t("بلا بيانات", "Empty dataset") },
                 { value: "error", label: t("خطأ", "Error") },
               ]}
             />

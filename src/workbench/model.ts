@@ -386,14 +386,14 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
   };
   return {
     "loading-state": {
-      label: t("جارٍ تحميل الملاحظات", "Loading notes"),
+      label: t("جارٍ تحميل الملاحظات…", "Loading notes"),
       indicator: "spinner",
       variant: "drive",
       elapsed: true,
       description: false,
     },
     "thinking-indicator": {
-      label: t("جارٍ إعداد الرد", "Preparing reply"),
+      label: t("جارٍ إعداد الرد…", "Preparing reply"),
       words: true,
       textOnly: false,
     },
@@ -448,7 +448,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     slider: {
       label: t("الحد الشهري", "Monthly limit"),
       helper: t(
-        "عدد الفواتير المسموح بها شهريًا.",
+        "عدد الفواتير التي يمكنك إصدارها كل شهر.",
         "Invoices allowed per month.",
       ),
       error: "",
@@ -481,7 +481,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       label: t("ملفات المراجعة", "Review files"),
       // Stays true whatever type, size and count the inspector sets.
       helper: t(
-        "اختر ملفات بالأنواع والحجم المسموح بها.",
+        "اختر ملفات من الأنواع المسموح بها وضمن الحجم المحدد.",
         "Choose files of an allowed type and size.",
       ),
       error: "",
@@ -493,9 +493,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       mode: "controlled",
     },
     "color-picker": {
-      label: t("لون العلامة", "Brand color"),
+      label: t("لون العلامة التجارية", "Brand color"),
       helper: t(
-        "صيغة #RGB أو #RRGGBB، دون شفافية.",
+        "اكتب اللون بصيغة #RGB أو #RRGGBB دون شفافية.",
         "Use #RGB or #RRGGBB, without transparency.",
       ),
       error: "",
@@ -536,7 +536,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     card: {
       title: t("دليل القراءة", "Reading guide"),
       description: t(
-        "ملاحظات قصيرة لتنسيق المحتوى.",
+        "ملاحظات قصيرة تساعدك على ترتيب المحتوى.",
         "Short notes for arranging content.",
       ),
       actions: true,
@@ -548,7 +548,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     pagination: { page: 1, totalPages: 12 },
     alert: {
-      title: t("تم تحديث خطة الفوترة", "Billing plan updated"),
+      title: t("تغيّرت خطة الفوترة", "Billing plan updated"),
       description: t(
         "يبدأ السعر الجديد في ١ نوفمبر.",
         "The new price starts on November 1.",
@@ -557,13 +557,13 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     skeleton: { shape: "text" },
     progress: {
-      label: t("تجهيز التقرير", "Preparing report"),
+      label: t("جارٍ تجهيز التقرير…", "Preparing report"),
       value: 64,
       indeterminate: false,
       showValue: true,
     },
     spinner: {
-      label: t("جارٍ التحميل", "Loading"),
+      label: t("جارٍ التحميل…", "Loading"),
       size: "sm",
       decorative: false,
     },
@@ -590,15 +590,15 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "empty-state": {
       title: t("لا توجد سجلات بعد", "No records yet"),
       description: t(
-        "ستظهر سجلاتك هنا عند إضافتها.",
+        "ستظهر سجلاتك هنا حين تضيفها.",
         "Your records will appear here when added.",
       ),
       illustration: "no-records",
     },
     badge: { children: t("نشط", "Active"), tone: "neutral" },
     checkbox: {
-      label: t("تلقي التحديثات", "Receive updates"),
-      helper: t("تحديثات الحساب الاختيارية", "Optional account updates"),
+      label: t("تلقّي التحديثات", "Receive updates"),
+      helper: t("تحديثات اختيارية عن حسابك", "Optional account updates"),
       error: "",
       required: false,
       checked: false,
@@ -653,7 +653,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       error: "",
       required: false,
       value: "",
-      placeholder: t("مثل: شركة مدار", "e.g. Madar Technology"),
+      placeholder: t("مثلًا: شركة مدار للتقنية", "e.g. Madar Technology"),
       mode: "controlled",
       size: "sm",
       type: "text",
@@ -719,7 +719,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
         {
           value: "activity",
           label: t("سجل النشاط", "Activity"),
-          content: t("تم تحديث معلومات العميل", "Customer information updated"),
+          content: t("حُدّثت معلومات العميل", "Customer information updated"),
         },
         {
           value: "archive",
@@ -791,9 +791,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     toast: {
       triggerLabel: t("عرض التنبيه", "Show toast"),
-      title: t("تم حفظ الفاتورة", "Invoice saved"),
+      title: t("حُفظت الفاتورة", "Invoice saved"),
       description: t(
-        "الفاتورة جاهزة للمشاركة مع العميل.",
+        "يمكنك الآن مشاركتها مع العميل.",
         "The invoice is ready to share with your customer.",
       ),
       tone: "success",
@@ -920,6 +920,7 @@ const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
       helper: [
         "اسحب أو استخدم الأسهم وHome وEnd.",
         "Drag or use arrows, Home and End.",
+        "عدد الفواتير المسموح بها شهريًا.",
       ],
     },
     "otp-input": {
@@ -940,9 +941,13 @@ const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
       helper: [
         "اختر ملفات ضمن قيود النوع والحجم والعدد المحددة لهذا المثال.",
         "Choose files within this example's configured type, size and count limits.",
+        "اختر ملفات بالأنواع والحجم المسموح بها.",
       ],
     },
-    "color-picker": { label: ["لون العيّنة", "Sample color"] },
+    "color-picker": {
+      label: ["لون العيّنة", "Sample color", "لون العلامة"],
+      helper: ["صيغة #RGB أو #RRGGBB، دون شفافية."],
+    },
     "tag-input": {
       helper: [
         "Enter يضيف وسمًا. النص غير المؤكد لا يُرسل.",
@@ -958,7 +963,7 @@ const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
       ],
     },
     alert: {
-      title: ["المعاينة جاهزة", "Preview ready"],
+      title: ["المعاينة جاهزة", "Preview ready", "تم تحديث خطة الفوترة"],
       description: [
         "هذه رسالة ثابتة داخل الصفحة.",
         "This is persistent feedback within the page.",
@@ -981,6 +986,21 @@ const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
         "شركة مدار للتقنية · هذه بيانات تجريبية.",
         "Madar Technology · Example customer data.",
       ],
+    },
+    "loading-state": { label: ["جارٍ تحميل الملاحظات"] },
+    "thinking-indicator": { label: ["جارٍ إعداد الرد"] },
+    card: { description: ["ملاحظات قصيرة لتنسيق المحتوى."] },
+    progress: { label: ["تجهيز التقرير"] },
+    spinner: { label: ["جارٍ التحميل"] },
+    "empty-state": { description: ["ستظهر سجلاتك هنا عند إضافتها."] },
+    checkbox: {
+      label: ["تلقي التحديثات"],
+      helper: ["تحديثات الحساب الاختيارية"],
+    },
+    input: { placeholder: ["مثل: شركة مدار"] },
+    toast: {
+      title: ["تم حفظ الفاتورة"],
+      description: ["الفاتورة جاهزة للمشاركة مع العميل."],
     },
   };
 export function normalizePlaygrounds(

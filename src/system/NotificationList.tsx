@@ -50,8 +50,8 @@ export function NotificationList({
   const text = labels ?? {
     unread: ar ? "غير مقروءة" : "unread",
     read: ar ? "مقروءة" : "Read",
-    markRead: ar ? "تحديد كمقروءة" : "Mark as read",
-    markAllRead: ar ? "تحديد الكل كمقروء" : "Mark all as read",
+    markRead: ar ? "تعليم كمقروءة" : "Mark as read",
+    markAllRead: ar ? "تعليم الكل كمقروء" : "Mark all as read",
   };
   const unread = items.filter((item) => !item.read).length;
   return (

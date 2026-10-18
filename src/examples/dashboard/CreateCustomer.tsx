@@ -39,12 +39,12 @@ export function CreateCustomer({
       trigger={
         <Button disabled={disabled}>
           <Plus size={15} aria-hidden="true" />
-          {t("إنشاء عميل", "Create customer")}
+          {t("إضافة عميل", "Create customer")}
         </Button>
       }
-      title={t("إنشاء عميل", "Create customer")}
+      title={t("إضافة عميل", "Create customer")}
       description={t(
-        "أضف عميلًا إلى دليل المثال. يُحفظ في الذاكرة حتى إعادة التحميل فقط.",
+        "أضف عميلًا إلى دليل المثال. يبقى في الذاكرة حتى تعيد تحميل الصفحة.",
         "Add a customer to the sample directory. Kept in memory only until reload.",
       )}
       closeLabel={t("إغلاق نموذج العميل", "Close customer form")}
@@ -83,7 +83,7 @@ export function CreateCustomer({
           });
           changeOpen(false);
           toast({
-            title: t("تم إنشاء العميل", "Customer created"),
+            title: t("أُضيف العميل", "Customer created"),
             description: draft.name.trim(),
             tone: "success",
           });

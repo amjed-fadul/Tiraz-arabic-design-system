@@ -16,12 +16,12 @@ export type Period = 7 | 14;
 // Fixed sample clock: reloads and time zones never move this example's period.
 export const sampleEnd = "2026-10-14";
 export const sampleCustomers: Customer[] = [
-  ["شركة مدار", "hello@madar.example"],
+  ["شركة مدار للتقنية", "hello@madar.example"],
   ["ليلى أحمد", "layla@bayt.example"],
   ["Nadia Hassan", "nadia@atlas.example"],
   ["استوديو سارة", "sara@studio.example"],
   ["Omar Khalid", "omar@cedar.example"],
-  ["مؤسسة نور", "team@nour.example"],
+  ["مؤسسة نور للاستشارات", "team@nour.example"],
   ["خالد المنصوري", "khalid@wadi.example"],
   ["Maya Patel", "maya@loom.example"],
   ["أفق للخدمات", "hello@ofuq.example"],

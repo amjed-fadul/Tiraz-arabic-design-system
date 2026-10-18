@@ -5,7 +5,7 @@ type Language = "ar" | "en";
 function markPaidRequest(ar: boolean, target?: string): ApprovalRequest {
   return {
     id: "mark-paid-oct",
-    action: ar ? "تحديث حالة ٣ فواتير إلى «مدفوعة»" : "Mark 3 invoices as paid",
+    action: ar ? "تعليم ٣ فواتير كمدفوعة" : "Mark 3 invoices as paid",
     target:
       target ??
       (ar
@@ -17,13 +17,13 @@ function markPaidRequest(ar: boolean, target?: string): ApprovalRequest {
     consequences: ar
       ? [
           "تُقفل الفواتير الثلاث في دفتر الحسابات لشهر أكتوبر.",
-          "لا يُرسل أي إشعار إلى شركة مدار.",
+          "لن يصل أي إشعار إلى شركة مدار.",
         ]
       : [
           "The three invoices are closed in the October ledger.",
           "Madar is not notified.",
         ],
-    approveLabel: ar ? "تحديث الحالة" : "Mark as paid",
+    approveLabel: ar ? "تعليم كمدفوعة" : "Mark as paid",
     rejectLabel: ar ? "إبقاء الحالة" : "Keep status",
   };
 }
@@ -41,14 +41,14 @@ function sendSummaryRequest(ar: boolean, target?: string): ApprovalRequest {
       ? ["يصل الملخص إلى ٤ أعضاء في فريق المالية."]
       : ["The summary reaches 4 members of the finance team."],
     approveLabel: ar ? "إرسال الملخص" : "Send summary",
-    rejectLabel: ar ? "عدم الإرسال" : "Don’t send",
+    rejectLabel: ar ? "لا ترسل" : "Don’t send",
   };
 }
 function scopeQuestion(ar: boolean, description?: string) {
   return {
     id: "scope",
     label: ar
-      ? "أي الفواتير أطابق أولًا؟"
+      ? "بأي الفواتير أبدأ المطابقة؟"
       : "Which invoices should I reconcile first?",
     description,
     choices: [
@@ -80,7 +80,7 @@ export function AskUserQuestionsExample({
           ar,
           longContent
             ? ar
-              ? "سأطابق كل فاتورة مع أمر الشراء وإيصال الاستلام، ثم أعرض الفروقات قبل أي تعديل على دفتر الحسابات."
+              ? "سأطابق كل فاتورة مع أمر الشراء وإيصال الاستلام، ثم أعرض الفروقات قبل أن أعدّل دفتر الحسابات."
               : "I’ll match each invoice against its purchase order and goods receipt, then show any differences before changing the ledger."
             : undefined,
         ),

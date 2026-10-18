@@ -15,12 +15,12 @@ export function AlertExamples({ language = "ar" }: { language?: Language }) {
   const [sent, setSent] = useState(false);
   return (
     <div className="tz-feedback-examples">
-      <Alert title={ar ? "تم حفظ التغييرات" : "Changes saved"} tone="success" />
+      <Alert title={ar ? "حُفظت التغييرات" : "Changes saved"} tone="success" />
       <Alert
         title={ar ? "تعذّر حفظ التغييرات" : "Changes could not be saved"}
         description={
           ar
-            ? "تحقق من اتصالك ثم أعد المحاولة."
+            ? "تحقّق من اتصالك بالإنترنت، ثم حاول مرة أخرى."
             : "Check your connection and try again."
         }
         tone="error"

@@ -111,7 +111,7 @@ export function FilterBarExample({
       ) : (
         <p style={{ margin: 0 }}>
           {t(
-            "لا توجد مستندات مطابقة. أزل عامل تصفية لعرض المزيد.",
+            "لا توجد مستندات مطابقة. أزل أحد عوامل التصفية لترى المزيد.",
             "No matching documents. Remove a filter to see more.",
           )}
         </p>

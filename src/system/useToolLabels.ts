@@ -10,6 +10,6 @@ export function useToolLabels() {
     input: ar ? "المدخلات" : "Input",
     output: ar ? "المخرجات" : "Output",
     error: ar ? "الخطأ" : "Error",
-    retry: ar ? "المحاولة مجددًا" : "Try again",
+    retry: ar ? "إعادة المحاولة" : "Try again",
   };
 }

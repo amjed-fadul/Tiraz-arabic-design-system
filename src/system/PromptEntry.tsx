@@ -176,7 +176,7 @@ export function PromptEntry({
           data-morph={morphed || undefined}
           aria-label={
             stop
-              ? (labels?.stop ?? (ar ? "إيقاف التوليد" : "Stop generating"))
+              ? (labels?.stop ?? (ar ? "إيقاف الرد" : "Stop generating"))
               : (labels?.send ?? (ar ? "إرسال" : "Send"))
           }
           disabled={disabled || (!stop && (readOnly || busy || !value.trim()))}
@@ -204,7 +204,7 @@ export function PromptEntry({
         {failed
           ? (labels?.failure ??
             (ar
-              ? "تعذّر الإرسال. المسودة محفوظة؛ حاول مرة أخرى."
+              ? "تعذّر الإرسال. مسودتك محفوظة، حاول مرة أخرى."
               : "Could not send. Your draft is kept; try again."))
           : ""}
       </span>

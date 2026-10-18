@@ -86,11 +86,11 @@ export function ContextMeter({
           : "Capacity is zero"
         : ratio !== null && ratio >= 0.95
           ? ar
-            ? "قرب السعة"
+            ? "شبه ممتلئ"
             : "Near capacity"
           : ratio !== null && ratio >= 0.8
             ? ar
-              ? "السياق ممتلئ جزئيًا"
+              ? "يقترب من الامتلاء"
               : "Filling up"
             : "";
   const tone =

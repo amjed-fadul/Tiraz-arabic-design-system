@@ -116,7 +116,7 @@ export function ChartExample({
   const gaps =
     sample === "gaps"
       ? ar
-        ? " الأيام دون بيانات غير محسوبة."
+        ? " لم نحسب الأيام التي بلا بيانات."
         : " Days without data are excluded."
       : "";
   const summary = ar
@@ -149,7 +149,7 @@ export function AnalyticsExample({ language = "ar" }: { language?: Language }) {
     0,
   );
   const summary = ar
-    ? `${new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(total)} طلبًا خلال الفترة المحددة.`
+    ? `${new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(total)} طلبًا في الفترة التي اخترتها.`
     : `${new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(total)} orders in the selected period.`;
   const donut = all.series.map((entry) => ({
     ...entry,
@@ -196,7 +196,7 @@ export function AnalyticsExample({ language = "ar" }: { language?: Language }) {
           label={ar ? "توزيع القنوات" : "Channel distribution"}
           summary={
             ar
-              ? "مجموع الطلبات لكل قناة في الفترة المحددة."
+              ? "مجموع الطلبات لكل قناة في الفترة التي اخترتها."
               : "Orders per channel for the selected period."
           }
           locale={language}

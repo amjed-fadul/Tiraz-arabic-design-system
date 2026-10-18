@@ -313,6 +313,13 @@ export function DatePicker({
                 dir={config.direction}
                 numerals={arabic ? "arab" : "latn"}
                 labels={{
+                  // The bundled Arabic locale reads «اذهب إلى الشهر السابق».
+                  ...(arabic
+                    ? {
+                        labelPrevious: () => "الشهر السابق",
+                        labelNext: () => "الشهر التالي",
+                      }
+                    : {}),
                   labelDayButton: (date, modifiers) => {
                     // Numeric days keep visible cell text in the accessible name;
                     // the default English ordinal labels (1st/2nd) obscure it.

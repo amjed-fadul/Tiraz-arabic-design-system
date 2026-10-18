@@ -74,7 +74,7 @@ export function LoadingStateExample({
       description={
         description
           ? ar
-            ? "تظهر الملاحظات هنا عند توفّرها."
+            ? "ستظهر الملاحظات هنا حين تجهز."
             : "Notes will appear here when available."
           : undefined
       }
@@ -99,7 +99,7 @@ export function ThinkingIndicatorExample({
       words={
         words
           ? ar
-            ? ["جارٍ الإعداد", "جارٍ التخطيط", "جارٍ المراجعة", "جارٍ التحقق"]
+            ? ["جارٍ التفكير", "جارٍ التخطيط", "جارٍ المراجعة", "جارٍ التحقق"]
             : ["Thinking", "Planning", "Refining", "Checking"]
           : undefined
       }

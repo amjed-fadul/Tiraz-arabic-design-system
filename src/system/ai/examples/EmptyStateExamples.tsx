@@ -19,7 +19,7 @@ export function EmptyStateExamples({
         title={ar ? "لا توجد فواتير بعد" : "No invoices yet"}
         description={
           ar
-            ? "ستظهر فواتيرك هنا بعد إنشائها."
+            ? "ستظهر فواتيرك هنا حين تنشئ أول فاتورة."
             : "Your invoices will appear here once created."
         }
         illustration={<NoRecordsIllustration />}

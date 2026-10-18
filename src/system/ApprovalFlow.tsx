@@ -210,7 +210,7 @@ function ApprovalFlowInstance({
         <p className="tz-decision-status">
           {requests.length
             ? ar
-              ? "اكتملت جميع القرارات."
+              ? "اكتملت مراجعة الطلبات."
               : "All decisions made."
             : ar
               ? "لا طلبات للمراجعة."

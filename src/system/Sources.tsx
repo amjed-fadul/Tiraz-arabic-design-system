@@ -76,7 +76,7 @@ export function Sources({
   if (!items.length)
     return (
       <p className={`tz-sources-empty ${className}`}>
-        {labels?.empty ?? (ar ? "لم تُقدَّم مصادر" : "No sources supplied")}
+        {labels?.empty ?? (ar ? "لا توجد مصادر" : "No sources supplied")}
       </p>
     );
   const summary =

@@ -68,7 +68,7 @@ function conversationsFor(ar: boolean): Conversation[] {
           id: "arabic-assistant",
           role: "assistant",
           text: ar
-            ? "ثلاثة أمور: اتجاه حقول الإدخال، والتنقل الكامل بلوحة المفاتيح، وعرض النص المختلط مثل أسماء المنتجات اللاتينية داخل الجمل العربية."
+            ? "ثلاثة أمور: اتجاه حقول الإدخال، والتنقل الكامل بلوحة المفاتيح، وظهور النص المختلط كما ينبغي، كأسماء المنتجات اللاتينية داخل الجملة العربية."
             : "Three things: input direction, full keyboard navigation, and how mixed text such as Latin product names reads inside Arabic sentences.",
         },
       ],
@@ -170,7 +170,7 @@ function ChatAppHost({
   const last = current.messages.at(-1)?.id;
   const replyStatus = {
     idle: ar ? "اكتمل الرد" : "Response complete",
-    streaming: ar ? "جارٍ استلام الرد" : "Receiving response",
+    streaming: ar ? "يصل الرد تباعًا" : "Receiving response",
     completed: ar ? "اكتمل الرد" : "Response complete",
     stopped: ar ? "توقف الرد" : "Response stopped",
   };

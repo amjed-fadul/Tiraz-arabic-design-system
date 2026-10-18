@@ -64,7 +64,7 @@ export function ToolCallExample({
         defaultExpanded
         error={
           ar
-            ? "رفض Drive الطلب: المساحة المتاحة غير كافية."
+            ? "رفض Drive الطلب لأن المساحة المتاحة لا تكفي."
             : "Drive rejected the request: storage quota exceeded."
         }
         input={'{ "folder": "Finance/2026", "name": "october-summary.md" }'}
@@ -128,17 +128,17 @@ export function ToolRenderedOutputExample({
         <ul style={{ margin: 0, paddingInlineStart: "var(--space-5)" }}>
           <li>
             {ar
-              ? "شركة الندى للتجارة · ٤٨٬٠٠٠ د.إ · تفاوض"
+              ? "شركة الندى للتجارة · ٤٨٬٠٠٠ د.إ · قيد التفاوض"
               : "Al Nada Trading · AED 48,000 · Negotiation"}
           </li>
           <li>
             {ar
-              ? "مؤسسة رواسي · ٢٢٬٥٠٠ د.إ · عرض سعر"
+              ? "مؤسسة رواسي · ٢٢٬٥٠٠ د.إ · أُرسل عرض السعر"
               : "Rawasi Est. · AED 22,500 · Quote sent"}
           </li>
           <li>
             {ar
-              ? "مجموعة سَنا · ١٢٠٬٠٠٠ د.إ · إغلاق متوقع"
+              ? "مجموعة سَنا · ١٢٠٬٠٠٠ د.إ · قريبة من الإغلاق"
               : "Sana Group · AED 120,000 · Closing"}
           </li>
         </ul>
@@ -246,7 +246,7 @@ export function ToolActivityDemo({ language = "ar" }: { language?: Language }) {
           input={'{ "folder": "Legal/2026", "name": "renewals-summary.md" }'}
           error={
             ar
-              ? "انتهت مهلة الاتصال بـ Drive بعد ٣٠ ثانية."
+              ? "لم يستجب Drive خلال ٣٠ ثانية."
               : "Drive timed out after 30 seconds."
           }
           output={

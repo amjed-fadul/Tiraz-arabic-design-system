@@ -40,7 +40,7 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
   ).toEqual([
     "الطرفية",
     "تطبيق المحادثة",
-    "أسئلة المستخدم",
+    "أسئلة للمستخدم",
     "بطاقة القرار",
     "تسلسل القرارات",
     "إجراءات التحديد",
@@ -51,16 +51,16 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
     "بطاقات النتائج",
     "المحادثة",
     "محرر الرسائل",
-    "شريط الموجّه",
+    "شريط الطلب",
     "حالة التحميل",
     "مؤشر النشاط",
     "حالة النشاط",
     "صفوف المهام",
     "استدعاء الأداة",
     "ملخص الأدوات",
-    "كتلة الشيفرة",
+    "كتلة الكود",
     "ماركداون",
-    "النص المتدفق",
+    "النص المتتابع",
   ]);
   const user = userEvent.setup();
   await user.click(within(nav).getByRole("button", { name: "شريط التنقّل" }));

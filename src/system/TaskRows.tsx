@@ -177,7 +177,7 @@ export function TaskRows({
       {items.length === 0 ? (
         <li>
           {emptyState ?? (
-            <EmptyState title={ar ? "لا توجد مهام وكيل" : "No agent tasks"} />
+            <EmptyState title={ar ? "لا توجد مهام بعد" : "No agent tasks"} />
           )}
         </li>
       ) : (

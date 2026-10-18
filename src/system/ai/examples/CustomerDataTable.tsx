@@ -99,7 +99,7 @@ function CustomerActions({
         }
         title={t("تفاصيل العميل", "Customer details")}
         description={t(
-          "معلومات العميل المحدد.",
+          "بيانات العميل الذي اخترته.",
           "Information for the selected customer.",
         )}
         closeLabel={t("إغلاق تفاصيل العميل", "Close customer details")}
@@ -200,7 +200,7 @@ export function CustomerDataTable({
           </span>
         ) : failed ? (
           <div role="alert">
-            {t("تعذر عرض العملاء.", "Unable to show customers.")}{" "}
+            {t("تعذّر عرض العملاء.", "Unable to show customers.")}{" "}
             <Button variant="secondary" onClick={() => setFailed(false)}>
               {t("إعادة المحاولة", "Retry")}
             </Button>
@@ -216,7 +216,7 @@ export function CustomerDataTable({
               <Input
                 type="search"
                 aria-label={t(
-                  "البحث عن العملاء بالاسم أو البريد الإلكتروني",
+                  "ابحث عن عميل بالاسم أو البريد الإلكتروني",
                   "Search customers by name or email",
                 )}
                 placeholder={t(

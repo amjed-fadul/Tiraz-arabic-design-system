@@ -59,7 +59,7 @@ it.each(["ar", "en"] as const)(
       screen.getByRole("button", { name: ar ? "غير المقروءة" : "Unread" }),
     );
     const read = screen.getAllByRole("button", {
-      name: ar ? /^تحديد كمقروءة:/ : /^Mark as read:/,
+      name: ar ? /^تعليم كمقروءة:/ : /^Mark as read:/,
     });
     await user.click(read[0]);
     expect(read[1]).toHaveFocus();

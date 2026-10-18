@@ -460,7 +460,9 @@ export function Playground({
   if (component.endsWith("-chart"))
     return (
       <Suspense
-        fallback={<p role="status">{t("جارٍ عرض الرسم…", "Loading chart…")}</p>}
+        fallback={
+          <p role="status">{t("جارٍ تحميل الرسم…", "Loading chart…")}</p>
+        }
       >
         <ChartExample
           language={language}

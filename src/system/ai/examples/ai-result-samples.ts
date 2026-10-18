@@ -9,11 +9,11 @@ export function sampleSources(language: Language): SourceReference[] {
       id: "menu-audit",
       number: 1,
       title: ar
-        ? "مراجعة قابلية استخدام قائمة نخلة"
+        ? "مراجعة سهولة استخدام قائمة نخلة"
         : "Nakhla menu usability review",
       href: auditUrl,
       description: ar
-        ? "طلب خمسة من ثمانية ضيوف أسماء الأصناف بالعربية بجانب الإنجليزية."
+        ? "طلب خمسة ضيوف من ثمانية أن تُكتب أسماء الأصناف بالعربية بجانب الإنجليزية."
         : "Five of eight guests asked for Arabic item names beside the English names.",
       metadata: ar ? "٨ جلسات · ١٢ أكتوبر ٢٠٢٦" : "8 sessions · Oct 12, 2026",
     },
@@ -23,9 +23,9 @@ export function sampleSources(language: Language): SourceReference[] {
       title: ar ? "موجز تصميم قائمة الشتاء" : "Winter menu design brief",
       href: briefUrl,
       description: ar
-        ? "يطلب الموجز أسماء ثنائية اللغة وأسعارًا واضحة."
+        ? "يطلب الموجز أسماء بالعربية والإنجليزية وأسعارًا واضحة."
         : "The brief calls for bilingual names and clear prices.",
-      metadata: ar ? "فريق العلامة التجارية · الإصدار ٣" : "Brand team · v3",
+      metadata: ar ? "فريق الهوية البصرية · الإصدار ٣" : "Brand team · v3",
     },
   ];
 }

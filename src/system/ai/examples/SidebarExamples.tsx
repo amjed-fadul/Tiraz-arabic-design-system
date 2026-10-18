@@ -76,7 +76,7 @@ export function SidebarExample({
       key: "reading",
       label: t("المكوّنات", "Components"),
       summary: t(
-        "ركّب الرأس والمحتوى والتذييل. الروابط للوجهات والأزرار للإجراءات.",
+        "ركّب الرأس والمحتوى والتذييل، واستخدم الروابط للتنقل والأزرار للإجراءات.",
         "Compose header, content and footer. Use links for destinations and buttons for actions.",
       ),
     },
@@ -107,10 +107,7 @@ export function SidebarExample({
     {
       key: "activity",
       label: t("النشاط", "Activity"),
-      summary: t(
-        "آخر التحديثات على المكتبة.",
-        "Latest updates to the library.",
-      ),
+      summary: t("آخر ما تغيّر في المكتبة.", "Latest updates to the library."),
     },
     {
       key: "notifications",
@@ -124,7 +121,7 @@ export function SidebarExample({
       key: "settings",
       label: t("الإعدادات", "Settings"),
       summary: t(
-        "تفضيلات العرض لمساحة العمل.",
+        "تفضيلات العرض في مساحة العمل.",
         "Display preferences for this workspace.",
       ),
     },
@@ -185,7 +182,7 @@ export function SidebarExample({
       ),
     ],
     [
-      t("قائمة لوحة المفاتيح", "Keyboard checklist"),
+      t("فحص لوحة المفاتيح", "Keyboard checklist"),
       t(
         "تحقق من أسماء العناصر والتركيز والإغلاق.",
         "Check control names, focus and dismissal.",
@@ -265,12 +262,12 @@ export function SidebarExample({
           </SidebarIdentity>
           {!isMobile && (
             <SidebarToggle
-              collapseLabel={t("طي التنقّل", "Collapse navigation")}
-              expandLabel={t("توسيع التنقّل", "Expand navigation")}
+              collapseLabel={t("طيّ القائمة الجانبية", "Collapse navigation")}
+              expandLabel={t("توسيع القائمة الجانبية", "Expand navigation")}
             />
           )}
         </SidebarHeader>
-        <SidebarContent aria-label={t("تنقّل المكتبة", "Library navigation")}>
+        <SidebarContent aria-label={t("أقسام المكتبة", "Library navigation")}>
           <SidebarGroup heading={grouped ? t("المكتبة", "Library") : undefined}>
             {item("overview", <Home size={18} />)}
             {nested ? (
@@ -290,7 +287,7 @@ export function SidebarExample({
             {item("people", <Users size={18} />, people.length)}
           </SidebarGroup>
           <SidebarGroup
-            heading={grouped ? t("المساحة", "Workspace") : undefined}
+            heading={grouped ? t("مساحة العمل", "Workspace") : undefined}
           >
             {item("activity", <Activity size={18} />)}
             {item("notifications", <Bell size={18} />, reminders.length)}
@@ -326,12 +323,12 @@ export function SidebarExample({
           <Sheet
             open={mobile}
             onOpenChange={setMobile}
-            title={t("تنقّل المكتبة", "Library navigation")}
+            title={t("أقسام المكتبة", "Library navigation")}
             description={t(
               "انتقل بين أقسام المكتبة.",
               "Move between library sections.",
             )}
-            closeLabel={t("إغلاق التنقّل", "Close navigation")}
+            closeLabel={t("إغلاق القائمة", "Close navigation")}
             trigger={
               <Button
                 variant="secondary"
@@ -345,7 +342,7 @@ export function SidebarExample({
                 }}
               >
                 <Menu size={16} aria-hidden="true" />
-                {t("فتح التنقّل", "Open navigation")}
+                {t("فتح القائمة", "Open navigation")}
               </Button>
             }
           >
@@ -366,7 +363,10 @@ export function SidebarExample({
                     {t("راعِ اتجاه القراءة.", "Follow reading direction.")}
                   </li>
                   <li>
-                    {t("اختبر بلوحة المفاتيح.", "Test with the keyboard.")}
+                    {t(
+                      "جرّب التنقل بلوحة المفاتيح.",
+                      "Test with the keyboard.",
+                    )}
                   </li>
                 </ul>
               )}
@@ -412,13 +412,13 @@ export function SidebarExample({
                 <ol>
                   <li>
                     {t(
-                      "سارة علي حدّثت «دليل التركيب» · قبل ساعتين",
+                      "حدّثت سارة علي «دليل التركيب» · قبل ساعتين",
                       "Sara Ali updated “Composition guide” · 2 hours ago",
                     )}
                   </li>
                   <li>
                     {t(
-                      "عمر خالد أضاف «ملاحظات الرموز» · أمس",
+                      "أضاف عمر خالد «ملاحظات الرموز» · أمس",
                       "Omar Khalid added “Token notes” · yesterday",
                     )}
                   </li>

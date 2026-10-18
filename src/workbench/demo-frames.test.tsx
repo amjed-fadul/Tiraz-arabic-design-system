@@ -17,7 +17,7 @@ it("gives static previews matching frames with only a copy-prompt header action"
   for (const frame of frames) {
     const header = frame.querySelector(".tz-demo-header") as HTMLElement;
     expect(within(header).getAllByRole("button")).toHaveLength(1);
-    const copy = within(header).getByRole("button", { name: /نسخ.*الموجّه/ });
+    const copy = within(header).getByRole("button", { name: /نسخ طلب/ });
     await user.click(copy);
     expect(copy).toHaveAttribute("data-copy-state", "copied");
     expect(write.mock.calls.at(-1)?.[0]).toContain("MarkdownExample");
@@ -27,7 +27,7 @@ it("gives static previews matching frames with only a copy-prompt header action"
 it("keeps streaming autoplay, replaces stop with copy, and replays without losing header focus", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  fireEvent.click(screen.getByRole("button", { name: "النص المتدفق" }));
+  fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(640));
   const frames = document.querySelectorAll(".tz-demo-frame");
   expect(frames).toHaveLength(2);
@@ -36,10 +36,10 @@ it("keeps streaming autoplay, replaces stop with copy, and replays without losin
     expect(within(header).getAllByRole("button")).toHaveLength(2);
     expect(within(header).queryByRole("button", { name: /إلغاء/ })).toBeNull();
     expect(
-      within(header).getByRole("button", { name: /نسخ.*الموجّه/ }),
+      within(header).getByRole("button", { name: /نسخ طلب/ }),
     ).toBeVisible();
     const replay = within(header).getByRole("button", {
-      name: "إعادة العرض المحلي",
+      name: "إعادة تشغيل المثال",
     });
     replay.focus();
     fireEvent.click(replay);
@@ -66,7 +66,7 @@ it("provides replay for an interactive example and clears its local state withou
   await user.click(first);
   expect(first.getAttribute("aria-checked")).not.toBe(original);
   const replay = within(frame.querySelector("header")!).getByRole("button", {
-    name: "إعادة المثال",
+    name: "إعادة تشغيل المثال",
   });
   await user.click(replay);
   expect(replay).toHaveFocus();
@@ -142,7 +142,7 @@ it("replays the interactive empty Timeline example after an event is logged", as
   await user.click(within(frame).getByRole("button", { name: "تسجيل مكالمة" }));
   expect(within(frame).queryByText("لا يوجد نشاط بعد.")).toBeNull();
   const replay = within(frame.querySelector("header")!).getByRole("button", {
-    name: "إعادة المثال",
+    name: "إعادة تشغيل المثال",
   });
   await user.click(replay);
   expect(replay).toHaveFocus();

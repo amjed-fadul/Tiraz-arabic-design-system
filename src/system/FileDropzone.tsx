@@ -280,7 +280,7 @@ export function FileDropzone({
                   disabled={disabled}
                   aria-label={
                     labels?.remove?.(file) ??
-                    (ar ? `حذف ${file.name}` : `Remove ${file.name}`)
+                    (ar ? `إزالة ${file.name}` : `Remove ${file.name}`)
                   }
                   onClick={() => {
                     if (blocked()) return;

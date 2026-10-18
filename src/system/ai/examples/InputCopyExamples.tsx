@@ -23,7 +23,7 @@ export function InputCopyExample({
       helper={
         helper ??
         t(
-          "شارك الرابط مع زملائك للانضمام إلى المساحة.",
+          "شارك الرابط مع زملائك لينضموا إلى مساحة العمل.",
           "Share this link so teammates can join the workspace.",
         )
       }
@@ -42,7 +42,7 @@ export function EntryCompositionExample({
   const value: InputCopyProps["value"] = "ws_madar_7KQ2RX9";
   return (
     <Field
-      label={ar ? "معرّف المساحة" : "Workspace ID"}
+      label={ar ? "معرّف مساحة العمل" : "Workspace ID"}
       helper={
         ar
           ? "اذكره عند التواصل مع الدعم."
@@ -53,7 +53,7 @@ export function EntryCompositionExample({
         <InputCopy
           field={field}
           value={value}
-          labels={{ copy: ar ? "نسخ معرّف المساحة" : "Copy workspace ID" }}
+          labels={{ copy: ar ? "نسخ معرّف مساحة العمل" : "Copy workspace ID" }}
         />
       )}
     </Field>

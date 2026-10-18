@@ -51,14 +51,14 @@ it("places only navigation in its sidebar and both customization sections in the
   );
   expect(within(nav).queryByText("خصائص المكوّن")).not.toBeInTheDocument();
   expect(
-    controls().getByRole("heading", { name: "تخصيص المكونات" }),
+    controls().getByRole("heading", { name: "تخصيص المكوّنات" }),
   ).toBeInTheDocument();
   expect(controls().getByText("خصائص المكوّن")).toBeInTheDocument();
   expect(
     container.querySelector(".customization-rail")?.parentElement,
   ).toHaveClass("docs-layout");
   expect(controls().queryByText("خصائص متقدمة")).not.toBeInTheDocument();
-  expect(controls().queryByLabelText("مظهر المكونات")).not.toBeInTheDocument();
+  expect(controls().queryByLabelText("مظهر المكوّنات")).not.toBeInTheDocument();
 });
 it("uses one shared theme everywhere and migrates conflicting legacy preferences", async () => {
   persist("tiraz.documentation.v1", { theme: "dark" });
@@ -191,7 +191,7 @@ it("retains continuous documentation, synchronized prompt content and API inform
       expect(
         screen.getByRole("heading", { name: title, level: 2 }),
       ).toBeInTheDocument();
-    expect(screen.queryByText("عرض الطلب كاملاً")).not.toBeInTheDocument();
+    expect(screen.queryByText("عرض الطلب كاملًا")).not.toBeInTheDocument();
     expect(screen.getByText("دليل الخصائص")).toBeInTheDocument();
   }
 });

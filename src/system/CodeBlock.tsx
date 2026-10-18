@@ -32,7 +32,7 @@ export function CodeBlock({
         <Button
           variant="ghost"
           iconOnly
-          aria-label={labels?.copy ?? (ar ? "نسخ الشيفرة" : "Copy code")}
+          aria-label={labels?.copy ?? (ar ? "نسخ الكود" : "Copy code")}
           aria-disabled={feedback.busy || undefined}
           onClick={feedback.copy}
         >
@@ -46,7 +46,7 @@ export function CodeBlock({
       <pre
         dir="ltr"
         role="region"
-        aria-label={`${ar ? "الشيفرة" : "Code"}: ${title}`}
+        aria-label={`${ar ? "الكود" : "Code"}: ${title}`}
         tabIndex={0}
       >
         <code>{highlightCode(code, language)}</code>
@@ -65,7 +65,7 @@ export function CodeBlock({
           : feedback.result === "failure"
             ? (labels?.failure ??
               (ar
-                ? "تعذّر النسخ. حدّد الشيفرة وانسخها يدويًا."
+                ? "تعذّر النسخ. حدّد الكود وانسخه يدويًا."
                 : "Could not copy. Select the code and copy it manually."))
             : ""}
       </span>

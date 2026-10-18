@@ -32,7 +32,7 @@ function sampleModels(ar: boolean, longContent = false): ModelOption[] {
           ? "يحلّل العقود والتقارير المالية الطويلة بالعربية والإنجليزية ويحافظ على الجداول والأرقام كما هي — suited to quarterly reports and bilingual contracts."
           : "Analyzes long contracts and financial reports in Arabic and English while keeping tables and figures intact — مناسب للتقارير الربعية والعقود ثنائية اللغة."
         : ar
-          ? "المستندات الطويلة وتحليل الجداول"
+          ? "للمستندات الطويلة وتحليل الجداول"
           : "Long documents and spreadsheet analysis",
       tags: [ar ? "الأدق" : "Most capable"],
       context: "200k",
@@ -51,7 +51,7 @@ function sampleModels(ar: boolean, longContent = false): ModelOption[] {
 }
 const reply = (ar: boolean, long = false) =>
   ar
-    ? `راجعتُ فواتير أكتوبر لشركة مدار: تطابقت ٢١٤ فاتورة مع أوامر الشراء، وتحتاج ٣ فواتير إلى مراجعة لأن مبالغها تختلف عن الإيصالات. أكبر فرق في الفاتورة INV-1043 بقيمة ١٬٢٥٠ ر.س.${long ? " ملاحظة المورّد على الفاتورة: “Partial delivery — second shipment on Nov 20”. أقترح تعليق الدفع حتى تأكيد الشحنة الثانية، ثم صرف المبلغ المتبقي وإرفاق إشعار التسليم بأمر الشراء PO-7781." : ""}`
+    ? `راجعتُ فواتير أكتوبر لشركة مدار: تطابقت ٢١٤ فاتورة مع أوامر الشراء، وتحتاج ٣ فواتير إلى مراجعة لأن مبالغها تختلف عن الإيصالات. أكبر فرق في الفاتورة INV-1043 بقيمة ١٬٢٥٠ ر.س.${long ? " كتب المورّد على الفاتورة: «Partial delivery — second shipment on Nov 20». أقترح تعليق الدفع حتى تتأكد الشحنة الثانية، ثم صرف المبلغ المتبقي وإرفاق إشعار التسليم بأمر الشراء PO-7781." : ""}`
     : `I reviewed Madar’s October invoices: 214 match their purchase orders, and 3 need review because their totals differ from the receipts. The largest gap is 1,250 SAR on invoice INV-1043.${long ? " The supplier’s note on that invoice reads «تم التسليم جزئيًا، والشحنة الثانية تصل في ٢٠ نوفمبر». I suggest holding payment until the second shipment is confirmed, then releasing the balance and attaching the delivery note to PO-7781." : ""}`;
 export function AIContextExample({
   language = "ar",
@@ -98,7 +98,7 @@ export function AIContextExample({
         actions={[
           {
             id: "draft",
-            label: ar ? "إلى المسودة" : "Use in draft",
+            label: ar ? "إضافة إلى المسودة" : "Use in draft",
             icon: <CornerDownLeft size={14} aria-hidden="true" />,
             onSelect: append,
           },
@@ -136,7 +136,9 @@ export function AIContextExample({
         onValueChange={setDraft}
         label={ar ? "مسودة الرسالة" : "Message draft"}
         placeholder={
-          ar ? "اكتب ردك أو أضف نصًا محدّدًا…" : "Reply or add selected text…"
+          ar
+            ? "اكتب ردك أو أضف ما حدّدته من الرد…"
+            : "Reply or add selected text…"
         }
         onSubmit={(text) => {
           setSent((items) => [

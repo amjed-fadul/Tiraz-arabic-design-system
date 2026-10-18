@@ -39,13 +39,13 @@ export function ChatThreadExample({
     [helpful, setHelpful] = useState(false);
   const tips = ar
     ? [
-        "استخدم الأرقام العربية أو اللاتينية بشكل متسق في الجداول.",
-        "ضع الإجراء الأساسي في نهاية الصف وفق اتجاه القراءة.",
-        "اختبر الأسماء الطويلة مثل «مؤسسة رواسي للتجارة العامة» داخل البطاقات.",
-        "اعكس الأيقونات الاتجاهية مع اتجاه الواجهة، واترك أيقونات التشغيل كما هي.",
-        "اعرض التواريخ بصيغة المستخدم: ١٥ أكتوبر ٢٠٢٦ بدلًا من 2026-10-15.",
-        "اجعل رسائل الخطأ قريبة من الحقل وواضحة بلا مصطلحات تقنية.",
-        "تحقق من أن رموز المنتجات مثل SKU-4821 تبقى من اليسار إلى اليمين.",
+        "التزم بنوع واحد من الأرقام في الجداول، عربية أو لاتينية.",
+        "ضع الإجراء الأساسي في آخر الصف حسب اتجاه القراءة.",
+        "جرّب أسماء طويلة مثل «مؤسسة رواسي للتجارة العامة» داخل البطاقات.",
+        "اعكس أيقونات الأسهم مع اتجاه الواجهة، واترك أيقونات التشغيل كما هي.",
+        "اكتب التواريخ كما يقرؤها الناس: ١٥ أكتوبر ٢٠٢٦ لا 2026-10-15.",
+        "ضع رسالة الخطأ بجوار الحقل، واكتبها بلا مصطلحات تقنية.",
+        "تأكّد أن رموز المنتجات مثل SKU-4821 تُقرأ من اليسار إلى اليمين.",
         "راجع المسافات بعد علامات الترقيم العربية مثل الفاصلة «،».",
       ]
     : [
@@ -73,7 +73,7 @@ export function ChatThreadExample({
         <Markdown
           text={
             (ar
-              ? "ابدأ بتسميات **واضحة** ومسافات مدمجة. حافظ على اتجاه الشيفرة `LTR` داخل النص العربي."
+              ? "ابدأ بتسميات **واضحة** ومسافات مدمجة، واترك الكود `LTR` داخل النص العربي."
               : "Start with **clear labels** and compact spacing. Preserve Arabic shaping and keep `LTR` code readable.") +
             (longContent
               ? "\n\n" + tips.map((tip, i) => `${i + 1}. ${tip}`).join("\n")
@@ -197,7 +197,7 @@ function ConversationHost({
   const last = messages.at(-1)?.id;
   const replyStatus = {
     idle: ar ? "اكتمل الرد" : "Response complete",
-    streaming: ar ? "جارٍ استلام الرد" : "Receiving response",
+    streaming: ar ? "يصل الرد تباعًا" : "Receiving response",
     completed: ar ? "اكتمل الرد" : "Response complete",
     stopped: ar ? "توقف الرد" : "Response stopped",
   };
@@ -249,7 +249,7 @@ function ConversationHost({
         <PromptBar
           {...entry}
           suggestions={[
-            ar ? "كيف أبدأ مع طِراز؟" : "How do I start with Tiraz?",
+            ar ? "كيف أبدأ باستخدام طِراز؟" : "How do I start with Tiraz?",
           ]}
           onSuggestionSelect={setDraft}
         />
@@ -315,7 +315,7 @@ export function ChatEntryStates({
   return (
     <div style={{ display: "grid", gap: "var(--space-5)" }}>
       <section>
-        <h3>{ar ? "فشل الإرسال" : "Submission failure"}</h3>
+        <h3>{ar ? "تعذّر الإرسال" : "Submission failure"}</h3>
         <Entry
           value={draft}
           onValueChange={setDraft}

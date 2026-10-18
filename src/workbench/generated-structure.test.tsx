@@ -48,13 +48,13 @@ it.each(["ar", "en"] as const)(
     const card = render(<Card />);
     await user.click(
       screen.getByRole("button", {
-        name: ar ? "قراءة الملاحظات" : "Read notes",
+        name: ar ? "عرض الملاحظات" : "Read notes",
       }),
     );
     expect(
       screen.getByText(
         ar
-          ? "استخدم الرموز المشتركة للمسافات والزوايا."
+          ? "استخدم القيم المشتركة للمسافات والزوايا."
           : "Use shared tokens for spacing and corners.",
       ),
     ).toBeVisible();

@@ -15,7 +15,7 @@ it("adds four continuous documentation pages with complete prompt/code and prese
     ["badge", "الشارة"],
     ["checkbox", "مربع الاختيار"],
     ["radio-group", "مجموعة الخيارات"],
-    ["textarea", "النص المتعدد"],
+    ["textarea", "مربع النص"],
   ] as const) {
     await user.click(nav.getByRole("button", { name: label }));
     expect(
@@ -51,7 +51,7 @@ for (const copy of [
     helper: "أخبرنا بما يمكننا تحسينه.",
     error: "اكتب ملاحظتك قبل الإرسال.",
     success: "شكرًا لك، وصلتنا ملاحظتك.",
-    updates: "تلقي التحديثات",
+    updates: "تلقّي التحديثات",
     weekly: "أسبوعيًا",
     monthly: "شهريًا",
   },

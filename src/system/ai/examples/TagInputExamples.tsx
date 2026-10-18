@@ -28,7 +28,7 @@ export function TagInputExample({
   const [tags, setTags] = useState(initial);
   return (
     <TagInput
-      label={label ?? t("وسوم الملاحظة", "Note tags")}
+      label={label ?? t("وسوم الملاحظات", "Note tags")}
       helper={
         helper ?? t("اضغط Enter لإضافة وسم.", "Press Enter to add a tag.")
       }

@@ -280,7 +280,7 @@ function QuestionsInstance({
                 : "Submitting answers"
               : task.state === "accepted"
                 ? ar
-                  ? "قُبلت الإجابات."
+                  ? "أُرسلت الإجابات."
                   : "Answers accepted."
                 : (error ?? "")}
           </p>
@@ -289,7 +289,7 @@ function QuestionsInstance({
               tone="error"
               title={
                 ar
-                  ? "لم تُقبل الإجابات. مسودتك محفوظة."
+                  ? "تعذّر إرسال الإجابات. مسودتك محفوظة، حاول مرة أخرى."
                   : "Answers were not accepted. Your draft is preserved."
               }
               announcement="polite"
