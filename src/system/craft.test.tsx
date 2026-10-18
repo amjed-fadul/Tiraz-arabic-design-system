@@ -6,8 +6,11 @@ import { describe, expect, it, vi } from "vitest";
 import {
   Avatar,
   Button,
+  ChatComposer,
   ContextMeter,
   SystemProvider,
+  TagInput,
+  TaskRows,
   Tabs,
   ToastProvider,
   Tooltip,
@@ -15,6 +18,9 @@ import {
   useToast,
 } from "./index";
 import type { SystemConfig } from "./config";
+import type { TaskState } from "./TaskRows";
+import { Tick } from "./Tick";
+import { useGlide } from "./useGlide";
 
 function wrap(children: ReactNode, config: Partial<SystemConfig> = {}) {
   return render(
@@ -147,5 +153,102 @@ describe("Arabic numerals", () => {
   it("formats ContextMeter usage with the system's Arabic digits", () => {
     wrap(<ContextMeter used={64} capacity={100} />, { direction: "rtl" });
     expect(screen.getByRole("button")).toHaveAccessibleName(/٦٤٪/);
+  });
+});
+
+describe("gliding highlight", () => {
+  function List() {
+    const glide = useGlide();
+    return (
+      <div ref={glide} data-testid="list">
+        <div data-testid="copy">نسخ</div>
+        <div data-testid="delete" data-destructive="">
+          حذف
+        </div>
+      </div>
+    );
+  }
+  it("follows the highlighted row and takes a destructive row's tone", async () => {
+    render(<List />);
+    const list = screen.getByTestId("list");
+    expect(list).toHaveAttribute("data-glide");
+    expect(list.style.getPropertyValue("--glide-opacity")).toBe("0");
+    await act(async () => {
+      screen.getByTestId("copy").setAttribute("data-highlighted", "");
+    });
+    expect(list.style.getPropertyValue("--glide-opacity")).toBe("1");
+    expect(list).not.toHaveAttribute("data-glide-tone");
+    await act(async () => {
+      screen.getByTestId("copy").removeAttribute("data-highlighted");
+      screen.getByTestId("delete").setAttribute("data-highlighted", "");
+    });
+    expect(list).toHaveAttribute("data-glide-tone", "danger");
+    await act(async () => {
+      screen.getByTestId("delete").removeAttribute("data-highlighted");
+    });
+    expect(list.style.getPropertyValue("--glide-opacity")).toBe("0");
+  });
+});
+
+describe("live values", () => {
+  it("rolls a count in from the direction it moved, never on first render", () => {
+    const { container, rerender } = render(<Tick value={3} />);
+    const tick = () => container.querySelector(".tz-tick")!;
+    expect(tick()).not.toHaveAttribute("data-changed");
+    rerender(<Tick value={5} />);
+    expect(tick()).toHaveAttribute("data-changed");
+    expect(tick()).toHaveAttribute("data-dir", "up");
+    rerender(<Tick value={2} />);
+    expect(tick()).toHaveAttribute("data-dir", "down");
+    expect(tick()).toHaveTextContent("2");
+  });
+
+  it("swaps a task's state badge with motion only after the state changes", () => {
+    const task = (state: TaskState) => (
+      <SystemProvider config={defaultConfig}>
+        <TaskRows
+          label="المهام"
+          items={[{ id: "a", title: "قراءة العقود", state, content: null }]}
+        />
+      </SystemProvider>
+    );
+    const { container, rerender } = render(task("running"));
+    const badge = () => container.querySelector(".tz-agent-task-state")!;
+    expect(badge()).not.toHaveAttribute("data-changed");
+    rerender(task("completed"));
+    expect(badge()).toHaveAttribute("data-changed");
+  });
+});
+
+describe("arrivals", () => {
+  it("pops in only tags added after mount", async () => {
+    const user = userEvent.setup();
+    const { container } = wrap(
+      <TagInput label="الوسوم" defaultValue={["تصميم"]} />,
+    );
+    await user.type(screen.getByRole("textbox"), "عاجل{Enter}");
+    const tags = Array.from(container.querySelectorAll(".tz-tag"));
+    expect(tags.map((tag) => tag.hasAttribute("data-fresh"))).toEqual([
+      false,
+      true,
+    ]);
+  });
+
+  it("morphs send into stop only once streaming starts", () => {
+    const entry = (state: "idle" | "streaming") => (
+      <SystemProvider config={defaultConfig}>
+        <ChatComposer
+          value="مرحبا"
+          onValueChange={() => {}}
+          onSubmit={() => {}}
+          onStop={() => {}}
+          state={state}
+        />
+      </SystemProvider>
+    );
+    const { rerender } = render(entry("idle"));
+    expect(screen.getByRole("button")).not.toHaveAttribute("data-morph");
+    rerender(entry("streaming"));
+    expect(screen.getByRole("button")).toHaveAttribute("data-morph");
   });
 });

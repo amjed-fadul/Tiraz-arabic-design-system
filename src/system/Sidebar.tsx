@@ -10,6 +10,7 @@ import type { ComponentPropsWithRef, ReactNode } from "react";
 import { ChevronDown, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { Tooltip } from "./Tooltip";
 import { useSystem } from "./useSystem";
+import { Tick } from "./Tick";
 
 const SidebarContext = createContext({
   collapsed: false,
@@ -185,7 +186,7 @@ function contents({ label, icon, count }: ItemContent) {
           aria-hidden="true"
           title={String(count)}
         >
-          {count}
+          <Tick value={count} />
         </span>
       )}
     </>

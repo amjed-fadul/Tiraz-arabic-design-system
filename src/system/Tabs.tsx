@@ -2,6 +2,7 @@ import * as Primitive from "@radix-ui/react-tabs";
 import { useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 export interface TabItem {
   value: string;
   label: ReactNode;
@@ -30,9 +31,7 @@ export function Tabs({
   const [local, setLocal] = useState(defaultValue);
   const active = value ?? local;
   // Panels animate only after the first switch, never on first render.
-  const [initial] = useState(active);
-  const [changed, setChanged] = useState(false);
-  if (!changed && active !== initial) setChanged(true);
+  const changed = useChanged(active);
   const list = useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = useState({ width: 0, x: 0 });
   useLayoutEffect(() => {

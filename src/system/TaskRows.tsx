@@ -4,6 +4,7 @@ import { Check, ChevronDown, CircleAlert } from "lucide-react";
 import { Badge } from "./Badge";
 import { EmptyState } from "./EmptyState";
 import { Spinner } from "./Spinner";
+import { useChanged } from "./useChanged";
 import { useSystem } from "./useSystem";
 
 export type TaskState = "pending" | "running" | "completed" | "failed";
@@ -47,6 +48,7 @@ function TaskRow({
   const panel = useRef<HTMLDivElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
   const previous = useRef(expanded);
+  const stateChanged = useChanged(item.state);
   useLayoutEffect(() => {
     const focused = lastFocus.current,
       doc = panel.current?.ownerDocument;
@@ -93,7 +95,9 @@ function TaskRow({
           <bdi className="tz-agent-task-summary">{item.summary}</bdi>
         )}
         <Badge
+          key={item.state}
           className="tz-agent-task-state"
+          data-changed={stateChanged || undefined}
           tone={
             item.state === "completed"
               ? "success"

@@ -1,6 +1,6 @@
 import { Check, LoaderCircle, AlertCircle } from "lucide-react";
-import { useState } from "react";
 import type { ButtonHTMLAttributes } from "react";
+import { useChanged } from "./useChanged";
 export type ButtonState = "idle" | "loading" | "success" | "error";
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "destructive";
 type Base = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "aria-label"> & {
@@ -25,9 +25,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   // Labels animate only after the first state change, never on first render.
-  const [initialState] = useState(state);
-  const [changed, setChanged] = useState(false);
-  if (!changed && state !== initialState) setChanged(true);
+  const changed = useChanged(state);
   const StateIcon =
     state === "loading"
       ? LoaderCircle

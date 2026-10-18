@@ -1,6 +1,7 @@
 import * as Popover from "@radix-ui/react-popover";
 import { useId } from "react";
 import { useSystem } from "./useSystem";
+import { Tick } from "./Tick";
 
 export interface ContextMeterPart {
   id: string;
@@ -117,14 +118,16 @@ export function ContextMeter({
             cy="10"
             r="7.5"
             pathLength="100"
-            strokeDasharray={`${ratio === null ? 0 : Math.min(100, Math.max(0, ratio * 100))} 100`}
+            style={{
+              strokeDasharray: `${ratio === null ? 0 : Math.min(100, Math.max(0, ratio * 100))} 100`,
+            }}
           />
         </svg>
         <span>
           {estimated && "≈ "}
           <bdi>
-            {u ? compact.format(used) : "—"} /{" "}
-            {c ? compact.format(capacity) : "—"}
+            <Tick value={u ? used : "—"}>{u ? compact.format(used) : "—"}</Tick>{" "}
+            / {c ? compact.format(capacity) : "—"}
           </bdi>
         </span>
         {status && <span className="tz-context-status">{status}</span>}

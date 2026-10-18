@@ -3,6 +3,7 @@ import type { ToolCallState } from "./ToolCall";
 import { ToolStatus } from "./ToolStatus";
 import { useToolLabels } from "./useToolLabels";
 import { useSystem } from "./useSystem";
+import { Tick } from "./Tick";
 export interface ToolChipItem {
   id: string;
   label: string;
@@ -47,7 +48,9 @@ export function ToolChips({
               Number.isFinite(item.count) &&
               item.count >= 0 && (
                 <span className="tz-tool-count">
-                  {format.format(Math.floor(item.count))}
+                  <Tick value={Math.floor(item.count)}>
+                    {format.format(Math.floor(item.count))}
+                  </Tick>
                 </span>
               )}
           </>

@@ -1,6 +1,7 @@
 import * as Select from "@radix-ui/react-select";
 import { useId } from "react";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { useGlide } from "./useGlide";
 import { useSystem } from "./useSystem";
 export interface ModelOption {
   id: string;
@@ -36,6 +37,7 @@ export function ModelSelector({
   const { config, container } = useSystem(),
     ar = config.direction === "rtl";
   const descriptionId = useId();
+  const glide = useGlide();
   const selected = models.find((model) => model.id === value);
   const groups = Array.from(
     new Set(models.map((model) => model.provider ?? "")),
@@ -87,7 +89,7 @@ export function ModelSelector({
           <Select.ScrollUpButton className="tz-select-scroll">
             <ChevronUp size={14} aria-hidden="true" />
           </Select.ScrollUpButton>
-          <Select.Viewport className="tz-model-viewport">
+          <Select.Viewport ref={glide} className="tz-model-viewport">
             {groups.map((group) => (
               <Select.Group key={group}>
                 {group && (

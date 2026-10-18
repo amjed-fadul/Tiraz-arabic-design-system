@@ -3187,10 +3187,15 @@
   border: 1px solid var(--border-strong);
   font-size: var(--text-meta);
   font-weight: var(--weight-medium);
+  /* The current ring closes in on the step that becomes current. */
+  outline: 0 solid var(--action);
+  outline-offset: 6px;
   transition:
     background var(--motion-state) var(--ease),
     color var(--motion-state) var(--ease),
-    border-color var(--motion-state) var(--ease);
+    border-color var(--motion-state) var(--ease),
+    outline-width var(--motion-state) var(--ease-out),
+    outline-offset var(--motion-state) var(--ease-out);
 }
 .tz-step[data-status="completed"] .tz-step-indicator {
   background: var(--text);
@@ -3198,7 +3203,7 @@
   color: var(--surface);
 }
 .tz-step[data-current="true"] .tz-step-indicator {
-  outline: 2px solid var(--action);
+  outline-width: 2px;
   outline-offset: 2px;
 }
 .tz-step[data-status="error"] .tz-step-indicator {
@@ -3540,6 +3545,9 @@
 .tz-agent-task-state.tz-badge {
   border-radius: 100px;
   padding-inline: var(--space-2);
+}
+.tz-agent-task-state.tz-badge[data-changed] {
+  animation: tz-label-in var(--motion-state) var(--ease-out);
 }
 .tz-agent-task[data-state="pending"] .tz-agent-task-state.tz-badge {
   border-color: transparent;
@@ -4232,6 +4240,9 @@
   block-size: var(--tool-lead, 18px);
   border-radius: 50%;
   color: var(--text-muted);
+  transition:
+    background-color var(--motion-state) var(--ease-out),
+    color var(--motion-state) var(--ease-out);
 }
 .tz-tool-status > svg {
   inline-size: 14px;
@@ -5043,6 +5054,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   display: grid;
   place-items: center;
   margin-inline-start: -5px;
+  transition: margin-inline-start var(--motion-state) var(--ease-spring);
   inline-size: 20px;
   block-size: 20px;
   border: 2px solid var(--surface);
@@ -5082,8 +5094,17 @@ button.tz-tool-chip[aria-expanded="true"] {
   border-radius: var(--radius);
   overflow-wrap: anywhere;
 }
+.tz-source-row[href] {
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
 .tz-source-row[href]:hover {
   background: var(--wash);
+}
+.tz-source-row > .lucide-external-link {
+  transition: color var(--motion-fast) var(--ease-out);
+}
+.tz-source-row[href]:hover > .lucide-external-link {
+  color: var(--text);
 }
 .tz-source-number {
   display: grid;
@@ -5453,6 +5474,9 @@ a.tz-inline-citation {
 }
 .tz-context-ring circle + circle {
   stroke: currentColor;
+  transition:
+    stroke-dasharray calc(var(--motion-state) * 2) var(--ease-out),
+    color var(--motion-state) var(--ease-out);
 }
 .tz-context-trigger[data-tone="high"] .tz-context-ring {
   color: var(--info);
@@ -6566,4 +6590,272 @@ a.tz-inline-citation {
 .tz-select-option[data-highlighted] {
   background: var(--wash-strong);
   color: var(--text);
+}
+
+/* Gliding highlight: one soft wash travels to the active row (useGlide).
+   Rows stop painting their own highlight once the glide is attached. */
+[data-glide] {
+  position: relative;
+  isolation: isolate;
+}
+[data-glide]::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset-inline: 4px;
+  inset-block-start: 0;
+  block-size: var(--glide-h, 0px);
+  transform: translateY(var(--glide-y, 0px));
+  opacity: var(--glide-opacity, 0);
+  border-radius: var(--radius-small);
+  background: var(--wash-strong);
+  pointer-events: none;
+  transition:
+    transform calc(var(--motion-state) - 20ms) var(--ease-out),
+    block-size calc(var(--motion-state) - 20ms) var(--ease-out),
+    opacity var(--motion-fast) var(--ease-out),
+    background-color var(--motion-state) var(--ease-out);
+}
+[data-glide][data-glide-jump]::before {
+  transition:
+    opacity var(--motion-fast) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out);
+}
+/* Landing on a destructive row tints the same wash instead of swapping it. */
+[data-glide][data-glide-tone="danger"]::before {
+  background: var(--danger-soft);
+}
+[data-glide]
+  :is(.tz-menu-item, .tz-select-option, .tz-model-option)[data-highlighted] {
+  background: transparent;
+}
+@media (forced-colors: active) {
+  [data-glide]::before {
+    display: none;
+  }
+  [data-glide]
+    :is(.tz-menu-item, .tz-select-option, .tz-model-option)[data-highlighted] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+}
+
+/* Checks and crosses draw themselves as a state lands on them. A check is
+   drawn in handwriting order (short stroke first); a cross stroke by stroke. */
+@keyframes tz-draw {
+  from {
+    stroke-dashoffset: var(--draw-from);
+  }
+}
+:is(
+    .tz-tool-status,
+    .tz-agent-task-indicator,
+    .tz-decision-icon,
+    .tz-decision-mark,
+    .tz-step-indicator,
+    .tz-color-check,
+    .tz-button:is([data-state="success"], [data-icon-only]) .tz-button-label,
+    .tz-button[data-state="success"],
+    .tz-toast
+  )
+  > :is(.lucide-check, .lucide-x, .lucide-circle-check) {
+  --draw: 23;
+  --draw-from: -23;
+}
+:is(
+    .tz-tool-status,
+    .tz-agent-task-indicator,
+    .tz-decision-icon,
+    .tz-decision-mark,
+    .tz-step-indicator,
+    .tz-color-check,
+    .tz-button:is([data-state="success"], [data-icon-only]) .tz-button-label,
+    .tz-button[data-state="success"],
+    .tz-toast
+  )
+  > :is(.lucide-check, .lucide-x, .lucide-circle-check)
+  path {
+  stroke-dasharray: var(--draw) var(--draw);
+  animation: tz-draw calc(var(--motion-enter) + 120ms) var(--ease-out) 60ms both;
+}
+:is(.tz-tool-status, .tz-decision-icon, .tz-decision-mark) > .lucide-x {
+  --draw: 17;
+  --draw-from: 17;
+}
+:is(.tz-tool-status, .tz-decision-icon, .tz-decision-mark)
+  > .lucide-x
+  path:nth-child(2) {
+  animation-delay: 150ms;
+}
+.tz-toast > .lucide-circle-check {
+  --draw: 12;
+  --draw-from: -12;
+}
+/* The approval receipt's disc pops first; its check draws once it lands. */
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
+  .tz-decision-icon
+  > svg
+  path {
+  animation-delay: 240ms;
+}
+
+/* Counts roll in from the direction they moved (Tick). */
+.tz-tick {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+.tz-tick[data-changed] {
+  animation: tz-tick-in var(--motion-state) var(--ease-out);
+}
+.tz-tick[data-dir="down"] {
+  --tick-from: -0.45em;
+}
+@keyframes tz-tick-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+    transform: translateY(var(--tick-from, 0.45em));
+  }
+}
+
+/* Icon swaps inside a button pop in: copy → check, send ⇄ stop. */
+.tz-button[data-morph] .tz-button-label > svg,
+.tz-button[data-icon-only] .tz-button-label > .lucide-check {
+  animation: tz-glyph-in calc(var(--motion-state) + var(--motion-fast))
+    var(--ease-spring);
+}
+/* The send arrow leans toward where the message goes. */
+.tz-chat-entry .tz-button .lucide-arrow-up {
+  transition: transform var(--motion-state) var(--ease-spring);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-chat-entry .tz-button:not(:disabled):hover .lucide-arrow-up {
+    transform: translateY(-1.5px);
+  }
+}
+
+/* A tag or file that arrives after mount pops into place once. */
+.tz-tag[data-fresh] {
+  animation: tz-tag-in var(--motion-state) var(--ease-spring);
+}
+@keyframes tz-tag-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+    transform: scale(0.85);
+  }
+}
+.tz-selected-files li[data-fresh] {
+  animation: tz-option-in var(--motion-enter) var(--ease-out) both;
+}
+.tz-selected-files li[data-fresh]:nth-child(2) {
+  animation-delay: 40ms;
+}
+.tz-selected-files li[data-fresh]:nth-child(3) {
+  animation-delay: 80ms;
+}
+.tz-selected-files li[data-fresh]:nth-child(n + 4) {
+  animation-delay: 120ms;
+}
+/* Dragging files over the zone lifts the paperclip to meet them. */
+.tz-file-drop > svg {
+  transition:
+    transform var(--motion-state) var(--ease-spring),
+    color var(--motion-fast) var(--ease-out);
+}
+.tz-file-drop[data-dragging] > svg {
+  color: var(--action);
+  transform: translateY(-2px) rotate(-12deg) scale(1.1);
+}
+/* Calendar days give under the finger and settle when chosen. */
+.tz-datepicker-popup .rdp-day_button {
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-press) var(--ease-out);
+}
+.tz-datepicker-popup .rdp-day_button:active:enabled {
+  transform: scale(0.92);
+}
+/* A completed code ripples once across its slots. */
+.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot {
+  animation: tz-otp-wave calc(var(--motion-state) * 2) var(--ease-out);
+}
+.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(2) {
+  animation-delay: 35ms;
+}
+.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(3) {
+  animation-delay: 70ms;
+}
+.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(4) {
+  animation-delay: 105ms;
+}
+.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(5) {
+  animation-delay: 140ms;
+}
+.tz-otp:not(:has(.tz-otp-slot:not([data-filled])))
+  .tz-otp-slot:nth-child(n + 6) {
+  animation-delay: 175ms;
+}
+.tz-otp:has([aria-invalid="true"]) .tz-otp-slot {
+  animation: none;
+}
+.tz-otp:has(.tz-otp-input[aria-invalid="true"]) .tz-otp-slots {
+  animation: tz-shake 320ms var(--ease-out);
+}
+@keyframes tz-otp-wave {
+  40% {
+    transform: translateY(-3px);
+    border-color: var(--action);
+  }
+}
+
+/* Opened sources arrive row by row; the folded marks fan out on hover. */
+.tz-sources-list > li {
+  animation: tz-option-in var(--motion-enter) var(--ease-out) both;
+}
+.tz-sources-list > li:nth-child(2) {
+  animation-delay: 30ms;
+}
+.tz-sources-list > li:nth-child(3) {
+  animation-delay: 60ms;
+}
+.tz-sources-list > li:nth-child(4) {
+  animation-delay: 90ms;
+}
+.tz-sources-list > li:nth-child(n + 5) {
+  animation-delay: 120ms;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-sources-trigger:hover .tz-sources-marks > bdi + bdi {
+    margin-inline-start: -2px;
+  }
+}
+/* A portrait fades over its initials once it has loaded. */
+.tz-avatar img:not([hidden]) {
+  animation: tz-fade-in var(--motion-state) var(--ease-out);
+}
+/* Stacked avatars lift out of the pile under the pointer. */
+.tz-avatar-group > * {
+  position: relative;
+  transition: transform var(--motion-state) var(--ease-spring);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-avatar-group > *:hover {
+    z-index: 1;
+    transform: translateY(-2px);
+  }
+}
+/* Selection actions unfold from the first action outward. */
+.tz-selection-actions > button {
+  animation: tz-option-in var(--motion-enter) var(--ease-out) both;
+}
+.tz-selection-actions > button:nth-child(2) {
+  animation-delay: 25ms;
+}
+.tz-selection-actions > button:nth-child(3) {
+  animation-delay: 50ms;
+}
+.tz-selection-actions > button:nth-child(n + 4) {
+  animation-delay: 75ms;
 }

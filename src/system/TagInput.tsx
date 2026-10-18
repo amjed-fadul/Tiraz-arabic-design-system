@@ -5,6 +5,7 @@ import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
 import { useSystem } from "./useSystem";
+import { useArrivals } from "./useArrivals";
 
 export interface TagInputLabels {
   remove?: (tag: string) => string;
@@ -61,6 +62,7 @@ export function TagInput({
   const [local, setLocal] = useState(defaultValue);
   const initial = useRef(defaultValue);
   const tags = value ?? local;
+  const arrivals = useArrivals(tags);
   const [draft, setDraft] = useState("");
   const [feedback, setFeedback] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -143,7 +145,14 @@ export function TagInput({
           data-invalid={associations["aria-invalid"] || undefined}
         >
           {tags.map((tag, index) => (
-            <span className="tz-tag" key={`${index}-${tag}`}>
+            <span
+              className="tz-tag"
+              key={`${index}-${tag}`}
+              data-fresh={arrivals.fresh(tag) || undefined}
+              onAnimationEnd={(event) => {
+                if (event.target === event.currentTarget) arrivals.settle(tag);
+              }}
+            >
               <bdi>{tag}</bdi>
               <button
                 type="button"

@@ -3,6 +3,7 @@ import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { EmptyState } from "./EmptyState";
 import { useSystem } from "./useSystem";
+import { Tick } from "./Tick";
 
 export interface NotificationItem {
   id: string;
@@ -58,8 +59,9 @@ export function NotificationList({
       <div className="tz-notification-header">
         <span className="tz-row-title">{label}</span>
         <Badge>
-          {new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(unread)}{" "}
-          {text.unread}
+          <Tick value={unread}>
+            {`${new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(unread)} ${text.unread}`}
+          </Tick>
         </Badge>
         {onMarkAllRead && (
           <Button

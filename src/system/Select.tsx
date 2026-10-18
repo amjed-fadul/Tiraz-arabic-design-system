@@ -4,6 +4,7 @@ import { useSelectValue } from "./useSelectValue";
 import type { ComponentPropsWithRef } from "react";
 import { associateControl } from "./control-associations";
 import type { FieldControlProps } from "./Field";
+import { useGlide } from "./useGlide";
 import { useSystem } from "./useSystem";
 export interface SelectOption {
   value: string;
@@ -43,6 +44,7 @@ export function Select({
   ...props
 }: SelectProps) {
   const { container, config } = useSystem();
+  const glide = useGlide();
   const {
     value: selectedValue,
     onValueChange: changeValue,
@@ -102,7 +104,7 @@ export function Select({
             <Primitive.ScrollUpButton className="tz-select-scroll">
               <ChevronUp size={14} aria-hidden="true" />
             </Primitive.ScrollUpButton>
-            <Primitive.Viewport className="tz-select-viewport">
+            <Primitive.Viewport ref={glide} className="tz-select-viewport">
               {options.map((option) => (
                 <Primitive.Item
                   key={option.value}

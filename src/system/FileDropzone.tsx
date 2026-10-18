@@ -6,6 +6,7 @@ import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
 import { useSystem } from "./useSystem";
 import { useEntryReset } from "./useEntryReset";
+import { useArrivals } from "./useArrivals";
 export interface FileDropzoneLabels {
   browse?: string;
   drop?: string;
@@ -64,6 +65,8 @@ function accepts(file: File, accept?: string) {
   );
 }
 /** Local selection only. The application submits the File array; native picker is cleared for reselection. */
+const fileKey = (file: File) =>
+  `${file.name}:${file.size}:${file.lastModified}`;
 export function FileDropzone({
   value,
   defaultValue = [],
@@ -88,6 +91,7 @@ export function FileDropzone({
   const initial = useRef(defaultValue);
   const [local, setLocal] = useState(defaultValue);
   const files = value ?? local;
+  const arrivals = useArrivals(files.map(fileKey));
   const [feedback, setFeedback] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const depth = useRef(0);
@@ -250,7 +254,14 @@ export function FileDropzone({
         {files.length > 0 && (
           <ul className="tz-selected-files">
             {files.map((file, index) => (
-              <li key={`${index}-${file.name}`}>
+              <li
+                key={`${index}-${file.name}`}
+                data-fresh={arrivals.fresh(fileKey(file)) || undefined}
+                onAnimationEnd={(event) => {
+                  if (event.target === event.currentTarget)
+                    arrivals.settle(fileKey(file));
+                }}
+              >
                 <File size={16} aria-hidden="true" />
                 <bdi className="tz-file-name" title={file.name}>
                   {file.name}

@@ -9,6 +9,7 @@ import type { ComponentPropsWithRef, ReactNode } from "react";
 import { ArrowUp, Square } from "lucide-react";
 import { Button } from "./Button";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 
 export type ChatEntryState = "idle" | "submitting" | "streaming";
 export type ChatEntryLabels = {
@@ -117,6 +118,8 @@ export function PromptEntry({
     }
   }
   const stop = state === "streaming" && onStop;
+  // Send and stop trade places with a glyph pop, never on first render.
+  const morphed = useChanged(Boolean(stop));
   return (
     <div
       className={`tz-chat-entry ${compact ? "tz-prompt-bar" : "tz-chat-composer"} ${className}`}
@@ -170,6 +173,7 @@ export function PromptEntry({
         <Button
           size="sm"
           iconOnly
+          data-morph={morphed || undefined}
           aria-label={
             stop
               ? (labels?.stop ?? (ar ? "إيقاف التوليد" : "Stop generating"))
