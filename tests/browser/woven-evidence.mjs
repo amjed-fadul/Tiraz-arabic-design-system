@@ -167,11 +167,27 @@ try {
 
     await mkdir(path.join(evidence, variant.name), { recursive: true });
     await page.goto(base);
+    await page
+      .locator(".playground-section")
+      .first()
+      .waitFor({ state: "visible" });
+    // The first mount writes all four keys. Wait for them, so the seed below
+    // cannot be overwritten by that write.
+    await page.waitForFunction(() =>
+      [
+        "tiraz.theme.v1",
+        "tiraz.documentation.v2",
+        "tiraz.system.v3",
+        "tiraz.playgrounds.v2",
+      ].every((key) => localStorage.getItem(key) !== null),
+    );
     let saved = 0;
     for (const id of pageIds) {
       current = id;
       await page.evaluate(
         (entries) => {
+          // Clear first, so no playground state from an earlier page or boot survives.
+          localStorage.clear();
           for (const [key, value] of Object.entries(entries)) {
             localStorage.setItem(key, value);
           }
