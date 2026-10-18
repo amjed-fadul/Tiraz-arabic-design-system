@@ -2,9 +2,7 @@ import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
-const {
-  chromium,
-} = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
+const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const root = process.env.TIRAZ_URL || "http://127.0.0.1:5227";
 const evidence = "docs/slider-otp-date/browser";
 await mkdir(evidence, { recursive: true });
@@ -323,17 +321,26 @@ try {
         .fill("0.1");
       await region.getByRole("slider").press("End");
       assert.equal(await region.getByRole("slider").inputValue(), "0.9");
-      await region
-        .getByRole("button", { name: "Read value", exact: true })
-        .click();
-      assert.ok((await region.innerText()).includes("0.9"));
+      // Read the slider's own state: named form value, announced and shown value.
+      assert.equal(
+        await region.locator('input[name="monthlyLimit"]').inputValue(),
+        "0.9",
+      );
+      assert.equal(
+        await region.getByRole("slider").getAttribute("aria-valuetext"),
+        "0.9",
+      );
+      assert.equal(await region.locator(".tz-slider-value").innerText(), "0.9");
     } else if (id === "otp-input") {
       await page
         .getByRole("spinbutton", { name: "Length", exact: true })
         .fill("4");
       await region.getByRole("textbox").fill("0012");
-      assert.ok(
-        (await region.innerText()).includes("locally complete; unverified"),
+      // The component's own value and painted slots show the code.
+      assert.equal(await region.getByRole("textbox").inputValue(), "0012");
+      assert.deepEqual(
+        await region.locator(".tz-otp-digit").allTextContents(),
+        ["0", "0", "1", "2"],
       );
       await page
         .getByRole("switch", { name: "Read only", exact: true })
@@ -345,12 +352,8 @@ try {
       await page
         .getByRole("switch", { name: "Read only", exact: true })
         .click();
-      await region.getByRole("textbox").fill("00");
-      await region
-        .getByRole("button", { name: "Check completeness", exact: true })
-        .click();
-      assert.ok((await region.innerText()).includes("Enter 4 digits"));
-      await region.getByRole("button", { name: "Reset", exact: true }).click();
+      // Clear through the control; the error state is covered by OTPInput.test.tsx.
+      await region.getByRole("textbox").fill("");
       await page.waitForFunction(
         () => document.querySelector(".playground-region input").value === "",
       );
@@ -372,7 +375,11 @@ try {
       await popup()
         .getByRole("button", { name: /February 29/ })
         .click();
-      assert.ok((await region.innerText()).includes("2024-02-29"));
+      // Read the component's named form value.
+      assert.equal(
+        await region.locator('input[name="dueDate"]').inputValue(),
+        "2024-02-29",
+      );
       await region.locator(".tz-date-trigger").click();
       await popup().waitFor();
       await page.screenshot({
@@ -381,7 +388,7 @@ try {
       await page.keyboard.press("Escape");
     }
     pass(
-      `${id}: minimal live inspector updates actual control and local example feedback`,
+      `${id}: minimal live inspector updates actual control and its own value`,
     );
     pass(
       `${id}: Arabic/English light/dark desktop/narrow documentation, clipboard code + full portable prompt`,

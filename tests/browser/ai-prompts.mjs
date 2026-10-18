@@ -30,7 +30,12 @@ try {
       const row = page.locator(".prompt-row");
       await row.getByRole("button").click();
       const copied = await page.evaluate(() => navigator.clipboard.readText());
-      const code = await page.locator(".usage-section pre code").textContent();
+      const codeName = language === "ar" ? "الكود" : "Code";
+      await page.getByRole("tab", { name: codeName, exact: true }).click();
+      const code = await page
+        .getByRole("region", { name: `${codeName}: src/Example.tsx` })
+        .locator("pre code")
+        .textContent();
       for (const path of [
         "ai/README.md",
         "ai/registry.json",

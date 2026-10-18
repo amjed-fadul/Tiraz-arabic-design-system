@@ -2,9 +2,7 @@ import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
-const {
-  chromium,
-} = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
+const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5241";
 const evidence = "docs/steps-and-timeline/browser";
 await mkdir(evidence, { recursive: true });
@@ -182,14 +180,20 @@ try {
     "sara@example.com",
   );
   await form.getByRole("button", { name: "Next", exact: true }).click();
-  await form.getByRole("button", { name: "Complete local example" }).click();
-  assert.match(
+  await form.getByRole("button", { name: "Submit application" }).click();
+  assert.equal(
     await form.getByRole("status").innerText(),
-    /Nothing was saved or sent/,
+    "Thanks, Sara. We'll contact you at sara@example.com within two business days.",
+  );
+  assert.equal(
+    await form
+      .getByRole("heading", { name: "Application submitted" })
+      .evaluate((el) => el === document.activeElement),
+    true,
   );
   assert.equal(await form.locator('[aria-current="step"]').count(), 0);
   pass("Browser form validation/focus, Back values and accurate completion");
-  const activation = page.getByRole("list", { name: "Choose a preview step" });
+  const activation = page.getByRole("list", { name: "Application sections" });
   const review = activation.getByRole("button", { name: /Review/ });
   await activation.getByRole("button", { name: /Information/ }).focus();
   await page.keyboard.press("Tab");
@@ -214,7 +218,7 @@ try {
   const list = activity.getByRole("list");
   const before = await list.getByRole("listitem").allTextContents();
   const clickTime = Date.now();
-  await activity.getByRole("button", { name: "Append local event" }).click();
+  await activity.getByRole("button", { name: "Log a call" }).click();
   const after = await list.getByRole("listitem").allTextContents();
   assert.deepEqual(after.slice(0, 2), before);
   assert.equal(after.length, 3);
@@ -223,13 +227,17 @@ try {
     Date.parse(date) >= clickTime - 1000 && Date.parse(date) <= Date.now(),
   );
   const empty = page.getByRole("region", { name: "Empty activity" });
-  assert.ok(await empty.getByText("No local events yet.").isVisible());
-  await empty.getByRole("button", { name: "Append local event" }).click();
+  assert.ok(await empty.getByText("No activity yet.").isVisible());
+  await empty.getByRole("button", { name: "Log a call" }).click();
   assert.equal(await empty.getByRole("listitem").count(), 1);
-  await activity.getByRole("button", { name: "Show local details" }).click();
+  assert.equal(
+    await empty.getByRole("listitem").locator(".tz-timeline-title").innerText(),
+    "Follow-up call with the client",
+  );
+  await activity.getByRole("button", { name: "Show details" }).click();
   assert.ok(
     await activity
-      .getByText("These are sample details held only in memory.")
+      .getByText("3 line items · Total AED 48,000 · Valid until 31 Oct")
       .isVisible(),
   );
   pass(
@@ -282,8 +290,64 @@ try {
     .selectOption("error");
   await page.getByRole("button", { name: "Copy code", exact: true }).click();
   const code = await page.evaluate(() => navigator.clipboard.readText());
-  assert.match(code, /StepsFormExample/);
-  assert.match(code, /"orientation":"vertical"/);
+  // Generated code renders only the playground's StepsExample; the module
+  // source it embeds still defines StepsFormExample, which the Local form
+  // fixture section above drives directly.
+  assert.match(
+    code,
+    /<StepsExample language=\{"en"\} \{\.\.\.\{"orientation":"vertical","currentState":"error"\}\} \/>/,
+  );
+  assert.doesNotMatch(code, /<StepsFormExample/);
+  const view = page.getByRole("tablist", { name: "View", exact: true });
+  await view.getByRole("tab", { name: "Code", exact: true }).click();
+  assert.equal(
+    await page
+      .getByRole("region", { name: "Code: src/Example.tsx", exact: true })
+      .locator("pre > code")
+      .innerText(),
+    code,
+  );
+  await view.getByRole("tab", { name: "Preview", exact: true }).click();
+  // The old form example's Back/Next flow lives in the playground now:
+  // Back/Next/Finish and directly activatable stages.
+  const stages = page
+    .getByRole("region", { name: "Interactive playground", exact: true })
+    .getByRole("list", { name: "Application stages", exact: true });
+  const playgroundCanvas = page.getByRole("region", {
+    name: "Interactive playground",
+    exact: true,
+  });
+  assert.equal(await stages.getAttribute("data-orientation"), "vertical");
+  const currentStage = stages.locator('[aria-current="step"]');
+  assert.match(await currentStage.innerText(), /Details/);
+  assert.equal(
+    await currentStage.locator("xpath=..").getAttribute("data-status"),
+    "error",
+  );
+  await playgroundCanvas
+    .getByRole("button", { name: "Next", exact: true })
+    .click();
+  assert.match(await currentStage.innerText(), /Review/);
+  await playgroundCanvas
+    .getByRole("button", { name: "Finish", exact: true })
+    .click();
+  assert.equal(
+    await playgroundCanvas.getByRole("status").innerText(),
+    "All stages are complete.",
+  );
+  assert.equal(await currentStage.count(), 0);
+  await playgroundCanvas
+    .getByRole("button", { name: "Back", exact: true })
+    .click();
+  assert.match(await currentStage.innerText(), /Review/);
+  await stages.getByRole("button", { name: /Information/ }).click();
+  assert.match(await currentStage.innerText(), /Information/);
+  assert.equal(
+    await playgroundCanvas
+      .getByRole("button", { name: "Back", exact: true })
+      .isDisabled(),
+    true,
+  );
   await page
     .getByRole("button", { name: "Copy agent prompt", exact: true })
     .click();
@@ -303,13 +367,36 @@ try {
     path: `${evidence}/docs-timeline-en-dark.png`,
     fullPage: false,
   });
-  assert.ok(
-    await page.getByRole("heading", { name: "Usage example" }).isVisible(),
+  // Every page is agent prompt -> playground -> API reference.
+  assert.deepEqual(
+    await page
+      .locator(".component-page > section")
+      .evaluateAll((sections) => sections.map((el) => el.className)),
+    ["agent-section", "playground-section", "reference-section"],
+  );
+  assert.equal(
+    await page.getByRole("heading", { name: "Usage example" }).count(),
+    0,
+  );
+  // The old timeline example's call log is a playground action now.
+  const timelineCanvas = page.getByRole("region", {
+    name: "Interactive playground",
+    exact: true,
+  });
+  const timelineRows = timelineCanvas.getByRole("listitem");
+  const rowsBefore = await timelineRows.count();
+  await timelineCanvas
+    .getByRole("button", { name: "Log a call", exact: true })
+    .click();
+  assert.equal(await timelineRows.count(), rowsBefore + 1);
+  assert.equal(
+    await timelineRows.last().locator(".tz-timeline-title").innerText(),
+    "Follow-up call with the client",
   );
   pass(
     "Continuous documentation, category navigation, live inspector and full copied prompt/code",
   );
-  const axe = require(`${process.cwd()}/node_modules/axe-core`);
+  const axe = require("axe-core");
   await page.addScriptTag({ content: axe.source });
   const a11y = await page.evaluate(() =>
     axe.run(document.querySelector("main")),

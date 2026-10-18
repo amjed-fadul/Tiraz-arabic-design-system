@@ -2,10 +2,7 @@ import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
-const { chromium } = require(
-  process.env.TIRAZ_PLAYWRIGHT ||
-    "/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright",
-);
+const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const root = process.env.TIRAZ_URL || "http://127.0.0.1:5214";
 const evidence = "docs/files-and-colors/browser";
 await mkdir(evidence, { recursive: true });
@@ -146,13 +143,7 @@ assert.equal(await preview().locator("input[type=file]").inputValue(), "");
 pass(
   "real Browse button emits native filechooser; existing local file selected via chooser.setFiles (OS panel not automated)",
 );
-await preview().getByRole("button", { name: "Read local selection" }).click();
-assert.match(
-  await preview().locator("output").innerText(),
-  /tiraz-local-browse/,
-);
-assert.match(await preview().innerText(), /No files have been uploaded/);
-pass("local report matches selected files and makes no upload claim");
+// The component's own file list shows the selection.
 await sendDrop([
   { name: "second.txt" },
   { name: "bad.exe", type: "application/octet-stream" },
@@ -189,9 +180,20 @@ assert.equal(
   true,
 );
 pass("keyboard order skips hidden picker and reaches removal");
-await preview().getByRole("button", { name: "Reset files" }).click();
+// Clear through the component; form reset is covered by
+// src/system/files-colors.test.tsx.
+for (const name of ["tiraz-local-browse.txt", "third.txt"])
+  await preview()
+    .getByRole("button", { name: `Remove ${name}`, exact: true })
+    .click();
 assert.equal(await preview().locator(".tz-selected-files li").count(), 0);
-pass("controlled example reset clears selection");
+assert.equal(
+  await preview()
+    .getByRole("button", { name: /Browse files/ })
+    .evaluate((e) => e === document.activeElement),
+  true,
+);
+pass("removing every file through the component clears selection");
 await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 0)));
 const dt = await page.evaluateHandle(() => {
   const d = new DataTransfer();
@@ -259,8 +261,9 @@ assert.equal(
     .count(),
   1,
 );
-assert.match(await preview().locator("figcaption").innerText(), /#355C87/);
-pass("named swatch check/pressed state and local sample synchronize");
+// The native color input mirrors the picker.
+assert.equal(await native.inputValue(), "#355c87");
+pass("named swatch check/pressed state and native color synchronize");
 await hex.press("Shift+Tab");
 await capture("color-native-keyboard-focus");
 assert.equal(
@@ -283,18 +286,15 @@ assert.equal(await hex.inputValue(), "#AE6747");
 pass(
   "SIMULATED native color input/change synchronizes HEX/swatches/sample; no OS chooser selection claimed",
 );
-await preview().getByRole("button", { name: "Read form value" }).click();
-assert.match(await preview().locator("output").innerText(), /#AE6747/);
-await preview().getByRole("button", { name: "Reset color" }).click();
-assert.equal(await hex.inputValue(), "#805475");
-pass(
-  "native FormData submits committed color and controlled reset restores sample",
-);
+// Read the named hidden input FormData submits; form reset is covered by
+// src/system/files-colors.test.tsx.
+const submitted = preview().locator('input[type=hidden][name="brandColor"]');
+assert.equal(await submitted.inputValue(), "#AE6747");
+pass("named form value carries the committed color");
 await page.evaluate(() => new Promise((resolve) => setTimeout(resolve, 0)));
 await hex.fill("#12345678");
 await hex.press("Tab");
-await preview().getByRole("button", { name: "Read form value" }).click();
-assert.match(await preview().locator("output").innerText(), /#805475/);
+assert.equal(await submitted.inputValue(), "#AE6747");
 pass("invalid draft submits previous committed value as documented");
 await page
   .getByRole("complementary", { name: "Customization" })
@@ -302,7 +302,9 @@ await page
   .fill("Illustration color");
 assert.equal(await hex.inputValue(), "#12345678");
 pass("live color inspector preserves editing draft");
-await page.getByLabel("Accent", { exact: true }).selectOption("blue");
+// Accent is a Radix Select: open it and pick the option by name.
+await page.getByRole("combobox", { name: "Accent", exact: true }).click();
+await page.getByRole("option", { name: "Blue", exact: true }).click();
 await page.getByLabel("Typography", { exact: true }).selectOption("large");
 await page.getByLabel("Density", { exact: true }).selectOption("standard");
 await page.getByLabel("Corner radius", { exact: true }).fill("0");

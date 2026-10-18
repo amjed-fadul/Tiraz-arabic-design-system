@@ -2,9 +2,8 @@ import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
-const {
-  chromium,
-} = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
+const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
+const base = process.env.TIRAZ_URL || "http://127.0.0.1:5227";
 const evidence = "docs/slider-otp-date/date-correction";
 await mkdir(evidence, { recursive: true });
 const browser = await chromium.launch({
@@ -65,7 +64,7 @@ async function focused(locator) {
 }
 async function open(lang, query = "") {
   await page.goto(
-    `http://127.0.0.1:5227/tests/browser/date-correction.html?lang=${lang}${query}`,
+    `${base}/tests/browser/date-correction.html?lang=${lang}${query}`,
   );
   await page
     .getByRole("button", { name: lang === "ar" ? /^موعد/ : /^Local date/ })
@@ -78,6 +77,10 @@ async function preserved(value = "2024-12-31") {
   assert.equal(await page.locator('input[name="date"]').inputValue(), value);
 }
 async function bounds(label) {
+  // Measure after the popup's entrance settles.
+  await popup().evaluate((e) =>
+    Promise.all(e.getAnimations().map((a) => a.finished)),
+  );
   const b = await popup().boundingBox(),
     v = page.viewportSize();
   assert(
@@ -98,7 +101,10 @@ async function bounds(label) {
       return { x: b.x, y: b.y, w: b.width, h: b.height };
     }),
   );
-  assert(head.every((e) => e.x >= b.x && e.x + e.w <= b.x + b.width + 1));
+  assert(
+    head.every((e) => e.x >= b.x && e.x + e.w <= b.x + b.width + 1),
+    JSON.stringify({ label, b, head }),
+  );
   const labels = await popup().evaluate((e) =>
     [...e.querySelectorAll("select")].map((select) => {
       const style = getComputedStyle(select),
@@ -125,11 +131,11 @@ try {
     await open(lang);
     assert.equal(
       await previous().getAttribute("aria-label"),
-      lang === "ar" ? "اذهب إلى الشهر السابق" : "Go to the Previous Month",
+      lang === "ar" ? "الشهر السابق" : "Go to the Previous Month",
     );
     assert.equal(
       await next().getAttribute("aria-label"),
-      lang === "ar" ? "اذهب إلى الشهر التالي" : "Go to the Next Month",
+      lang === "ar" ? "الشهر التالي" : "Go to the Next Month",
     );
     assert.equal(
       await previous().locator("polygon").getAttribute("points"),
@@ -203,6 +209,8 @@ try {
     assert.equal(await year().getAttribute("value"), "2025");
     await preserved();
     await page.keyboard.press("Escape");
+    // The popup detaches after its exit animation.
+    await popup().waitFor({ state: "detached" });
     assert.equal(await popup().count(), 0);
     assert.equal(
       await page
@@ -294,7 +302,7 @@ try {
       ]) {
         await page.setViewportSize(size);
         await page.goto(
-          `http://127.0.0.1:5227/tests/browser/date-correction.html?lang=${lang}&theme=dark&type=large&reduced`,
+          `${base}/tests/browser/date-correction.html?lang=${lang}&theme=dark&type=large&reduced`,
         );
         await page
           .getByRole("button", { name: `Open ${overlay}`, exact: true })

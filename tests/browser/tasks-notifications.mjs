@@ -2,9 +2,7 @@ import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
-const {
-  chromium,
-} = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
+const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5244";
 const evidence = "docs/taskrows-polish/browser";
 await mkdir(evidence, { recursive: true });
@@ -77,7 +75,9 @@ try {
     exact: true,
   });
   assert.equal(await tasks.getByRole("checkbox").count(), 0);
-  const records = tasks.getByRole("button", { name: /Sample records ready/ });
+  const records = tasks.getByRole("button", {
+    name: /Reconcile October invoices/,
+  });
   const recordPanelId = await records.getAttribute("aria-controls");
   async function sampleHeight(id) {
     return page.evaluate(async (panelId) => {
@@ -100,19 +100,23 @@ try {
     Math.max(...opening) - Math.min(...opening) > 5,
     `opening must animate: ${opening}`,
   );
-  assert.equal(
-    await tasks.getByRole("button", { name: "Show local note" }).count(),
-    0,
-  );
   assert.ok((await tasks.innerText()).includes("Matched contacts and tax IDs"));
   const recordRow = records.locator("..");
   await recordRow.locator("dt").first().hover();
-  await page.waitForFunction(
-    () =>
-      getComputedStyle(
-        document.querySelector('[aria-label="Task example"] .tz-agent-task'),
-      ).backgroundColor === "rgb(234, 236, 234)",
-  );
+  // Hover is a text tint over the surface; derive the expected colour from
+  // the live tokens.
+  await page.waitForFunction(() => {
+    const task = document.querySelector(
+      '[aria-label="Task example"] .tz-agent-task',
+    );
+    const probe = document.createElement("span");
+    probe.style.background =
+      "color-mix(in srgb, var(--surface), var(--text) 2%)";
+    task.parentElement.append(probe);
+    const expected = getComputedStyle(probe).backgroundColor;
+    probe.remove();
+    return getComputedStyle(task).backgroundColor === expected;
+  });
   assert.equal(await records.evaluate((el) => el.matches(":hover")), false);
   await page.screenshot({ path: `${evidence}/sample-data-en-hover.jpg` });
   await recordRow.screenshot({ path: `${evidence}/sample-card-en-hover.jpg` });
@@ -142,53 +146,49 @@ try {
     JSON.stringify({ opening, closing }, null, 2),
   );
   pass(
-    "Sample data replaces note buttons; semantic Badges; opening/closing motion and whole-task body hover",
+    "Sample data rows show results; semantic Badges; opening/closing motion and whole-task body hover",
   );
-  const first = tasks.getByRole("button", { name: /Build sample outline/ });
+  // The drafting task autoplays once (running -> failed -> running ->
+  // completed) and starts completed under reduced motion.
+  await page.goto(fixture("en", "light"));
+  const first = tasks.getByRole("button", { name: /Draft follow-up emails/ });
   const ids = await tasks
     .locator(".tz-agent-task-trigger")
     .evaluateAll((els) => els.map((el) => el.getAttribute("aria-controls")));
+  const firstPanel = page.locator(
+    `[id="${await first.getAttribute("aria-controls")}"]`,
+  );
   await first.press("Enter");
   assert.equal(await first.getAttribute("aria-expanded"), "true");
-  assert.equal(
-    await tasks
-      .getByRole("button", { name: "Retry local simulation" })
-      .getAttribute("aria-disabled"),
-    "true",
-  );
-  await first.press("Space");
-  assert.equal(await first.getAttribute("aria-expanded"), "false");
-  assert.equal(
-    await tasks.getByRole("button", { name: "Retry local simulation" }).count(),
-    0,
-  );
-  await first.press("Enter");
-  await tasks
-    .getByRole("button", { name: "Run local simulation", exact: true })
-    .click();
   assert.ok((await first.innerText()).includes("Running"));
   await page.screenshot({ path: `${evidence}/running-en-light.jpg` });
-  await tasks
-    .getByRole("status")
-    .filter({ hasText: "Simulation: Failed" })
-    .waitFor();
-  assert.ok((await first.innerText()).includes("Failed"));
-  await tasks
-    .getByRole("button", { name: "Retry local simulation", exact: true })
-    .press("Enter");
-  assert.ok(
-    await tasks
-      .getByRole("button", { name: "Retry local simulation", exact: true })
-      .evaluate((el) => el === document.activeElement),
+  await first.press("Space");
+  assert.equal(await first.getAttribute("aria-expanded"), "false");
+  assert.equal(await firstPanel.getAttribute("aria-hidden"), "true");
+  assert.ok(await firstPanel.evaluate((el) => el.inert));
+  await first.press("Enter");
+  await page.waitForFunction(
+    (el) => el.innerText.includes("Failed"),
+    await first.elementHandle(),
+    { polling: "raf" },
   );
-  await tasks
-    .getByRole("status")
-    .filter({ hasText: "Simulation: Completed" })
-    .waitFor();
   assert.ok(
-    await tasks
-      .getByRole("button", { name: "Retry local simulation", exact: true })
-      .evaluate((el) => el === document.activeElement),
+    (await firstPanel.innerText()).includes(
+      "The CRM timed out after 30 seconds",
+    ),
+  );
+  assert.ok(await first.evaluate((el) => el === document.activeElement));
+  await page.waitForFunction(
+    (el) => el.innerText.includes("Completed"),
+    await first.elementHandle(),
+    { polling: "raf" },
+  );
+  assert.ok(await first.evaluate((el) => el === document.activeElement));
+  assert.equal(await first.getAttribute("aria-expanded"), "true");
+  assert.ok(
+    (await firstPanel.innerText()).includes(
+      "Al Nada Trading — quote follow-up",
+    ),
   );
   assert.deepEqual(
     await tasks
@@ -196,11 +196,18 @@ try {
       .evaluateAll((els) => els.map((el) => el.getAttribute("aria-controls"))),
     ids,
   );
+  const reducedPage = await context.newPage();
+  reducedPage.on("pageerror", (error) => errors.push(error.message));
+  await reducedPage.goto(fixture("en", "light") + "&motion=true");
   assert.ok(
-    (await tasks.getByRole("status").innerText()).includes(
-      "No files, emails or backend tasks were processed",
-    ),
+    (
+      await reducedPage
+        .getByRole("region", { name: "Task example", exact: true })
+        .getByRole("button", { name: /Draft follow-up emails/ })
+        .innerText()
+    ).includes("Completed"),
   );
+  await reducedPage.close();
   await first.click();
   assert.ok(await first.evaluate((el) => el === document.activeElement));
   const controlled = page.getByRole("region", {
@@ -241,17 +248,17 @@ try {
     await page.evaluate(() => document.activeElement === document.body),
   );
   pass(
-    "Native disclosure keyboard, hidden panels, controlled collapse focus, state/retry focus, identity and honest simulation",
+    "Native disclosure keyboard, hidden panels, controlled collapse focus, focus kept through autoplayed state changes, identity and reduced-motion final state",
   );
   await notices
     .getByRole("button", { name: "Show details: Review requested" })
     .click();
-  assert.ok((await notices.innerText()).includes("Spacing and naming"));
+  assert.ok((await notices.innerText()).includes("check the price table"));
   assert.ok((await notices.innerText()).includes("2 unread"));
   await notices.getByRole("button", { name: "Unread", exact: true }).click();
   await notices
     .getByRole("button", {
-      name: "Mark as read: New package note",
+      name: "Mark as read: New comment on the contract",
       exact: true,
     })
     .press("Enter");
@@ -308,7 +315,7 @@ try {
     .getByRole("button", { name: "غير المقروءة", exact: true })
     .click();
   await arNotices
-    .getByRole("button", { name: "تحديد الكل كمقروء", exact: true })
+    .getByRole("button", { name: "تعليم الكل كمقروء", exact: true })
     .press("Enter");
   assert.ok(
     await arNotices
@@ -425,10 +432,11 @@ try {
       .getByRole("group", { name: "أنماط الذكاء الاصطناعي", exact: true })
       .isVisible(),
   );
-  await page
+  const arRecords = page
     .getByRole("region", { name: "المعاينة التفاعلية", exact: true })
-    .getByRole("button", { name: /سجلات نموذجية جاهزة/ })
-    .click();
+    .getByRole("button", { name: /مطابقة فواتير أكتوبر/ });
+  await arRecords.click();
+  assert.equal(await arRecords.getAttribute("aria-expanded"), "true");
   await page.screenshot({ path: `${evidence}/after-ar-light-desktop.jpg` });
   await page.setViewportSize({ width: 320, height: 1000 });
   await page.screenshot({ path: `${evidence}/after-ar-light-320.jpg` });
@@ -459,6 +467,14 @@ try {
   await page.getByRole("combobox", { name: "لغة التوثيق" }).selectOption("en");
   await page.getByRole("button", { name: "Toggle theme", exact: true }).click();
   await page.screenshot({ path: `${evidence}/docs-notifications-en-dark.jpg` });
+  // Guard against a vacuous pass: the playground must show the per-row
+  // controls before Read controls hides them.
+  assert.ok(
+    (await page
+      .getByRole("region", { name: "Interactive playground", exact: true })
+      .getByRole("button", { name: /^Mark as read:/ })
+      .count()) > 0,
+  );
   await page
     .getByRole("switch", { name: "Read controls", exact: true })
     .click();

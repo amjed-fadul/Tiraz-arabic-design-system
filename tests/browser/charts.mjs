@@ -71,6 +71,18 @@ async function snap(name, element) {
   });
   report.screenshots.push(`${name}.png`);
 }
+// Accent is a Radix Select: open it and pick the option by name.
+const accentNames = { blue: ["أزرق", "Blue"], plum: ["بنفسجي", "Purple"] };
+async function selectAccent(scope, accessibleName, value) {
+  await scope.getByLabel(accessibleName, { exact: true }).click();
+  const popup = page.locator(".accent-popup");
+  await popup
+    .getByRole("option", {
+      name: new RegExp(`^(${accentNames[value].join("|")})$`),
+    })
+    .click();
+  await popup.waitFor({ state: "detached" });
+}
 async function check(name, fn) {
   try {
     await fn();
@@ -198,7 +210,7 @@ try {
           .first()
           .evaluate((el) => getComputedStyle(el).backgroundColor);
       const first = await color();
-      await rail.getByLabel("Accent", { exact: true }).selectOption("blue");
+      await selectAccent(rail, "Accent", "blue");
       await activateTooltip();
       assert.notEqual(await color(), first);
       assert.equal(
@@ -242,7 +254,7 @@ try {
             document.querySelector(".playground-canvas .recharts-surface"),
         ),
       );
-      await rail.getByLabel("Accent", { exact: true }).selectOption("plum");
+      await selectAccent(rail, "Accent", "plum");
       await activateTooltip();
       const palette = await canvas()
         .locator(".tz-chart-legend .tz-chart-swatch")
@@ -282,8 +294,15 @@ try {
   await check(
     "connected period selector changes real rows, totals and donut values",
     async () => {
-      await seed("area-chart", "en", "dark", "multi", 360);
+      // AnalyticsExample is not on a docs page; drive it in its own fixture.
+      await page.setViewportSize({ width: 360, height: 1000 });
+      await page.goto(
+        `${base}/tests/browser/charts-fixture.html?dir=ltr&theme=dark`,
+        { waitUntil: "networkidle" },
+      );
+      await page.evaluate(() => document.fonts.ready);
       const example = page.locator(".tz-analytics-example");
+      await example.locator(".tz-chart").first().waitFor();
       const before = await example.locator(".tz-analytics-total").innerText();
       await example.getByRole("combobox", { name: "Period" }).click();
       await page.getByRole("option", { name: "October 4–6" }).click();
@@ -346,7 +365,7 @@ try {
         assert(
           tip.x >= box.x - 1 && tip.x + tip.width <= box.x + rect.width + 1,
         );
-        assert((await tooltip.innerText()).includes("ABC-"));
+        assert((await tooltip.innerText()).includes("RUH-"));
       }
       await snap(
         "tooltip-long-arabic-boundary",

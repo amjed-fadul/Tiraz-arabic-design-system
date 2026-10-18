@@ -6,15 +6,21 @@ import {
   symlinkSync,
 } from "node:fs";
 import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+// Resolve the checkout from this script, not the working directory. The copied
+// example is the clipboard code data-table.mjs saved in the same evidence folder.
+const root = fileURLToPath(new URL("../../", import.meta.url));
+const evidence =
+  process.env.TIRAZ_EVIDENCE || resolve(root, "docs/data-table-v1/browser");
 const destination =
   process.env.TIRAZ_COPY_ROOT || "/tmp/tiraz-data-table-source-copy";
 mkdirSync(destination, { recursive: true });
-cpSync("src/system", resolve(destination, "system"), {
+cpSync(resolve(root, "src/system"), resolve(destination, "system"), {
   recursive: true,
   filter: (path) => !path.includes(".test."),
 });
 cpSync(
-  "docs/data-table-v1/browser/copied-example.tsx",
+  resolve(evidence, "copied-example.tsx"),
   resolve(destination, "App.tsx"),
 );
 writeFileSync(
@@ -28,7 +34,7 @@ writeFileSync(
 writeFileSync(
   resolve(destination, "package.json"),
   JSON.stringify({
-    ...JSON.parse(readFileSync("package.json", "utf8")),
+    ...JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")),
     scripts: { dev: "vite", build: "tsc --noEmit && vite build" },
   }),
 );
@@ -55,7 +61,7 @@ writeFileSync(
 );
 try {
   symlinkSync(
-    resolve("node_modules"),
+    resolve(root, "node_modules"),
     resolve(destination, "node_modules"),
     "dir",
   );

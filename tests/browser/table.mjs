@@ -17,16 +17,42 @@ const context = await browser.newContext({
 });
 const page = await context.newPage();
 page.setDefaultTimeout(10000);
-const report = { measurements: [], checks: [], captures: [], errors: [] };
+const report = {
+  measurements: [],
+  checks: [],
+  captures: [],
+  failures: [],
+  errors: [],
+};
 page.on("pageerror", (e) => report.errors.push(e.message));
 page.on("console", (m) => {
-  if (m.type() === "error") report.errors.push(m.text());
+  // The shared forms fixture page declares no icon, so Chrome's automatic
+  // /favicon.ico request 404s there; that is not a page or component error.
+  if (m.type() === "error" && !m.location().url.endsWith("/favicon.ico"))
+    report.errors.push(m.text());
 });
 async function load(c, active) {
   await page.setViewportSize({
     width: c.width,
     height: c.width < 500 ? 844 : 1000,
   });
+  if (active === "sheet") {
+    // The docs Sheet page no longer shows the Create customer example; the
+    // shared forms fixture renders the same CreateCustomer example (Sheet form
+    // plus Table) under a provider configured from the URL.
+    await page.goto(
+      `${base}/tests/browser/forms-fixture.html?${new URLSearchParams({
+        dir: c.language === "ar" ? "rtl" : "ltr",
+        theme: c.theme,
+        density: c.density,
+        typography: c.typography,
+        radius: "12",
+      })}`,
+    );
+    await page.locator(".customer-example table").waitFor();
+    await page.evaluate(() => document.fonts.ready);
+    return;
+  }
   await page.goto(base);
   await page.evaluate(
     ({ c, active }) => {
@@ -57,14 +83,7 @@ async function load(c, active) {
   await page
     .getByRole("heading", {
       level: 1,
-      name:
-        active === "table"
-          ? c.language === "ar"
-            ? "الجدول"
-            : "Table"
-          : c.language === "ar"
-            ? "اللوحة الجانبية"
-            : "Sheet",
+      name: c.language === "ar" ? "الجدول" : "Table",
       exact: true,
     })
     .waitFor();
@@ -99,18 +118,25 @@ async function geometry(container, c, active) {
       ),
     };
   });
-  assert.equal(g.documentWidth, g.viewportWidth, JSON.stringify(g));
+  // Record overflow failures and keep measuring so every affected
+  // combination is reported; the run still fails on report.failures.
+  const overflow = [];
+  if (g.documentWidth !== g.viewportWidth) overflow.push("document overflow");
+  if (!(g.right <= c.width + 1 && g.left >= -1))
+    overflow.push("table container outside viewport");
+  if (c.width === 390 && !(g.scrollWidth > g.containerWidth))
+    overflow.push("no internal table scroll");
+  if (overflow.length)
+    report.failures.push({ ...c, active, checks: overflow, geometry: g });
   assert.equal(g.fontSize, c.typography === "large" ? "16px" : "14px");
   assert.equal(g.paddingBlock, c.density === "compact" ? "4px" : "8px");
   assert.equal(g.direction, c.language === "ar" ? "rtl" : "ltr");
   assert.equal(g.alignment, "start");
   assert.equal(g.wrap, "anywhere");
   assert.deepEqual(g.headers, ["col", "col", "col"]);
-  assert.ok(g.right <= c.width + 1 && g.left >= -1, JSON.stringify(g));
   assert.equal(g.radius, "12px");
   assert.equal(await container.getAttribute("tabindex"), "0");
-  if (c.width === 390) {
-    assert.ok(g.scrollWidth > g.containerWidth, JSON.stringify(g));
+  if (c.width === 390 && g.scrollWidth > g.containerWidth) {
     await container.focus();
     const before = await container.evaluate((el) => el.scrollLeft);
     await page.keyboard.press(c.language === "ar" ? "ArrowLeft" : "ArrowRight");
@@ -172,7 +198,7 @@ try {
             if (width === 390)
               await page
                 .getByRole("button", {
-                  name: ar ? "تخصيص المكونات" : "System settings",
+                  name: ar ? "تخصيص المكوّنات" : "System settings",
                   exact: true,
                 })
                 .click();
@@ -206,7 +232,7 @@ try {
               ar ? /لا يوجد عملاء بعد/ : /No customers yet/,
             );
             const create = page.getByRole("button", {
-              name: ar ? "إنشاء عميل" : "Create customer",
+              name: ar ? "إضافة عميل" : "Create customer",
               exact: true,
             });
             await create.click();
@@ -266,7 +292,7 @@ try {
             );
             assert.equal(
               await page
-                .getByText(ar ? "تم إنشاء العميل" : "Customer created", {
+                .getByText(ar ? "أُضيف العميل" : "Customer created", {
                   exact: true,
                 })
                 .count(),
@@ -278,9 +304,10 @@ try {
               "sheet",
             );
             if (capture(c)) await shot(c, "sheet");
+            // The fixture's ToastProvider uses this close label in both languages.
             await page
               .getByRole("button", {
-                name: ar ? "إغلاق التنبيه" : "Dismiss notification",
+                name: "Dismiss notification",
                 exact: true,
               })
               .click();
@@ -322,6 +349,18 @@ try {
   const code = await page.evaluate(() => navigator.clipboard.readText());
   assert.match(code, /<Table caption=\{"Team records"\}/);
   assert.match(code, /colSpan=\{3\}/);
+  // The playground frame's Code view shows the same generated source.
+  await page.getByRole("tab", { name: "Code", exact: true }).click();
+  assert.equal(
+    (
+      await page
+        .getByRole("region", { name: "Code: src/Example.tsx", exact: true })
+        .locator("pre code")
+        .textContent()
+    ).trim(),
+    code.trim(),
+  );
+  await page.getByRole("tab", { name: "Preview", exact: true }).click();
   await page
     .getByRole("button", { name: "Copy agent prompt", exact: true })
     .click();
@@ -357,6 +396,11 @@ try {
             JSON.stringify({ compact, standard }),
           );
         }
+  assert.deepEqual(
+    report.failures,
+    [],
+    `${report.failures.length} measurements with page overflow (see results.json failures)`,
+  );
   assert.deepEqual(report.errors, []);
 } catch (error) {
   report.errors.push(error.stack || String(error));
@@ -373,6 +417,7 @@ try {
         measurements: report.measurements.length,
         checks: report.checks.length,
         screenshots: report.captures.length,
+        failures: report.failures.length,
         errors: report.errors,
       },
       null,

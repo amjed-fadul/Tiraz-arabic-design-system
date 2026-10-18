@@ -19,15 +19,15 @@ const fixture = (query = "") =>
   `${base}/tests/browser/ai-decisions-fixture.html${query}`;
 async function start(ar = false) {
   await page
-    .getByRole("radio", { name: ar ? /النسخة الموجزة/ : /Concise draft/ })
+    .getByRole("radio", {
+      name: ar ? /فواتير الموردين/ : /Supplier invoices/,
+    })
     .check();
   await page
     .getByRole("button", { name: ar ? "إرسال الإجابات" : "Submit answers" })
     .click();
   await page
-    .getByRole("button", {
-      name: ar ? "الإبقاء على العنوان" : "Keep sample title",
-    })
+    .getByRole("button", { name: ar ? "إبقاء الحالة" : "Keep status" })
     .waitFor();
 }
 try {
@@ -36,72 +36,84 @@ try {
   await page.getByRole("button", { name: "Submit answers" }).click();
   assert.equal(
     await page
-      .getByRole("radio", { name: /Concise draft/ })
+      .getByRole("radio", { name: /Supplier invoices/ })
       .evaluate((el) => el === document.activeElement),
     true,
   );
   checks.push("required error and first-invalid focus");
   await page.keyboard.press("ArrowRight");
   assert.equal(
-    await page.getByRole("radio", { name: /Full draft/ }).isChecked(),
+    await page.getByRole("radio", { name: /Customer invoices/ }).isChecked(),
     true,
   );
   checks.push("native keyboard radio choice");
   await page.getByRole("radio", { name: "Other", exact: true }).check();
   await page
     .getByRole("textbox", { name: "Other answer" })
-    .fill("A harmless sample draft");
+    .fill("Vendor credit notes");
   await page.screenshot({ path: `${out}/question-en-light-desktop.png` });
   await page.getByRole("button", { name: "Submit answers" }).click();
-  await page.getByRole("button", { name: "Approve sample rename" }).waitFor();
+  await page.getByRole("button", { name: "Mark as paid" }).waitFor();
   assert.equal(
     await page
       .locator(".tz-approval-card")
       .evaluate((el) => el === document.activeElement),
     true,
   );
-  checks.push("connected question-to-approval focus recovery");
-  await page.getByRole("button", { name: "Approve sample rename" }).click();
-  await page
-    .getByText("Decision was not accepted. Review and try again.")
-    .waitFor();
-  await page.screenshot({ path: `${out}/host-failure.png` });
-  assert.equal(
-    await page
-      .getByRole("button", { name: "Approve sample rename" })
-      .evaluate((el) => el === document.activeElement),
-    true,
+  assert.match(
+    await page.locator(".tz-approval-card").innerText(),
+    /Vendor credit notes · October 2026/,
   );
-  await page.getByRole("button", { name: "Keep sample title" }).click();
+  checks.push(
+    "connected question-to-approval focus recovery with answered target",
+  );
+  await page.getByRole("button", { name: "Keep status" }).click();
   await page.getByText("Request 2 of 2", { exact: true }).waitFor();
   assert.match(
     await page.getByRole("list", { name: "Prior decisions" }).innerText(),
     /Rejected/,
   );
   assert.equal(
-    await page.getByRole("button", { name: "Approve sample note" }).isEnabled(),
+    await page.getByRole("button", { name: "Send summary" }).isEnabled(),
     true,
   );
   await page.screenshot({ path: `${out}/second-independent-request.png` });
-  await page.getByRole("button", { name: "Approve sample note" }).click();
-  await page
-    .getByText("All decisions recorded. No actions executed.", { exact: true })
-    .waitFor();
+  await page.getByRole("button", { name: "Send summary" }).click();
+  await page.getByText("All decisions made.", { exact: true }).waitFor();
+  assert.match(
+    await page
+      .getByRole("group", { name: "October reconciliation decisions" })
+      .getByRole("status")
+      .first()
+      .textContent(),
+    /All decisions recorded\. No actions executed\./,
+  );
   await page.screenshot({ path: `${out}/decisions-recorded.png` });
   checks.push(
-    "rejected acknowledgement, retry rejection, independent approval, accurate decision-only receipt",
+    "rejection, independent approval and accurate decision-only receipt",
   );
-  await page.getByRole("button", { name: "Reset example" }).click();
-  await start();
-  await page.getByRole("button", { name: "Approve sample rename" }).click();
-  await page.getByRole("button", { name: "Reset example" }).click();
-  await page.waitForTimeout(800);
+  await page.goto(fixture("?failing-host"));
+  await page.evaluate(() => document.fonts.ready);
+  await page.getByRole("button", { name: "Archive drafts" }).click();
+  await page
+    .getByText("Decision was not accepted. Review and try again.")
+    .waitFor();
+  await page.screenshot({ path: `${out}/host-failure.png` });
   assert.equal(
-    await page.getByRole("radio", { name: /Concise draft/ }).isChecked(),
-    false,
+    await page
+      .getByRole("button", { name: "Archive drafts" })
+      .evaluate((el) => el === document.activeElement),
+    true,
   );
-  assert.equal(await page.locator(".tz-approval-card").count(), 0);
-  checks.push("reset during pending decision discards stale completion");
+  await page.getByRole("button", { name: "Archive drafts" }).click();
+  await page.getByText("Request 2 of 2", { exact: true }).waitFor();
+  assert.match(
+    await page.getByRole("list", { name: "Prior decisions" }).innerText(),
+    /Approved/,
+  );
+  checks.push(
+    "host failure keeps the decision open, restores focus and accepts a retry",
+  );
   for (const width of [1280, 320])
     for (const ar of [false, true])
       for (const theme of ["light", "dark"]) {
@@ -116,7 +128,6 @@ try {
         );
         await page.evaluate(() => document.fonts.ready);
         await start(ar);
-        await page.getByRole("checkbox").uncheck();
         assert.equal(
           await page.evaluate(
             () => document.documentElement.scrollWidth > innerWidth,
@@ -143,13 +154,14 @@ try {
             .filter((a) => a.playState === "running").length,
         }));
         assert.match(css.font, /IBM Plex Sans Arabic/);
-        assert.equal(css.radius, "2px");
+        // calc(var(--radius-panel) + 4px) with radius 2.
+        assert.equal(css.radius, "10px");
         assert.equal(css.direction, ar ? "rtl" : "ltr");
         assert.equal(css.animations, 0);
+        // Scan the resting card, not the button left under the pointer.
+        await page.mouse.move(0, 0);
         await page.addScriptTag({
-          path: require.resolve("axe-core/axe.min.js", {
-            paths: [process.cwd()],
-          }),
+          path: require.resolve("axe-core/axe.min.js"),
         });
         const axe = await page.evaluate(async () => {
           const r = await axe.run(document.querySelector("main"));
@@ -176,7 +188,7 @@ try {
   );
   checks.push("OS reduced motion");
   for (const [ar, en] of [
-    ["أسئلة المستخدم", "AskUserQuestions"],
+    ["أسئلة للمستخدم", "AskUserQuestions"],
     ["بطاقة القرار", "ApprovalCard"],
     ["تسلسل القرارات", "ApprovalFlow"],
   ]) {
@@ -190,7 +202,16 @@ try {
       .getByLabel(/لغة التوثيق|Documentation language/)
       .selectOption("en");
     await page.getByRole("heading", { name: en, level: 1 }).waitFor();
-    assert.equal((await page.locator(".tz-demo-frame").count()) >= 2, true);
+    // One playground frame with Preview/Code views, then the API reference.
+    assert.equal(await page.locator(".tz-demo-frame").count(), 1);
+    assert.equal(
+      await page
+        .getByRole("tablist", { name: "View" })
+        .getByRole("tab")
+        .count(),
+      2,
+    );
+    assert.equal(await page.locator(".reference-section").count(), 1);
     await page.screenshot({ path: `${out}/docs-${en}.png` });
     checks.push(`${en} continuous docs in AI patterns`);
   }

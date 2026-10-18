@@ -108,13 +108,19 @@ export function Fixture() {
           </section>
           <section aria-label="Alerts">
             <h2>Alert</h2>
-            <Alert
-              title={ar ? "المعاينة جاهزة" : "Preview ready"}
-              description={
-                ar ? "رسالة ثابتة داخل المحتوى." : "Persistent inline feedback."
-              }
-              announcement={announcement}
-            />
+            {/* Scopes the announcement checks: the composed AlertExamples
+                include a polite Alert of their own. */}
+            <div role="group" aria-label="Static alert">
+              <Alert
+                title={ar ? "المعاينة جاهزة" : "Preview ready"}
+                description={
+                  ar
+                    ? "رسالة ثابتة داخل المحتوى."
+                    : "Persistent inline feedback."
+                }
+                announcement={announcement}
+              />
+            </div>
             <AlertExamples language={language} />
           </section>
           <section aria-label="Skeletons">

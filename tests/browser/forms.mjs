@@ -202,7 +202,7 @@ try {
             console.log("Nested case", dir, theme, density, motion, viewport);
             const ar = dir === "rtl",
               create = page.getByRole("button", {
-                name: ar ? "إنشاء عميل" : "Create customer",
+                name: ar ? "إضافة عميل" : "Create customer",
                 exact: true,
               });
             await create.click();

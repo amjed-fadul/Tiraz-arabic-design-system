@@ -2,9 +2,7 @@ import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
-const {
-  chromium,
-} = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
+const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5247",
   evidence = "docs/file-tree/browser";
 await mkdir(evidence, { recursive: true });

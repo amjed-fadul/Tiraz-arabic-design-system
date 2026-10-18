@@ -41,6 +41,11 @@ page.on("console", (message) => {
   if (message.type() === "warning") warnings.push(message.text());
 });
 const preview = () => page.locator(".playground-region");
+// The stage frame has its own copy button and status; scope to InputCopy.
+const copyField = () =>
+  preview()
+    .locator(".tz-field")
+    .filter({ has: page.locator(".tz-input-copy") });
 const pass = (name) => {
   checks.push(name);
   console.log("PASS " + name);
@@ -129,6 +134,8 @@ try {
           await input.evaluate((el) => el === document.activeElement),
           true,
         );
+        // Measure the settled focus halo, not its transition's first frame.
+        await settled();
         const styles = await input.evaluate((el) => {
           const parent = el.closest(".tz-tag-input"),
             style = getComputedStyle(el),
@@ -244,12 +251,8 @@ try {
         await input.fill("Wrapped " + "LongTag".repeat(25));
         await input.press("Enter");
         if (width < 1100) {
-          await page
-            .getByRole("button", {
-              name: t("تخصيص المكونات", "System settings"),
-              exact: true,
-            })
-            .click();
+          // Structural, so it does not depend on the label.
+          await page.locator(".mobile-settings .doc-button").click();
           await page
             .getByRole("dialog")
             .getByLabel(t("الخطأ", "Error"), { exact: true })
@@ -267,12 +270,14 @@ try {
           .locator(".tz-tag-input")
           .evaluate((el) => ({
             border: getComputedStyle(el).borderColor,
-            outline: getComputedStyle(el).outlineColor,
-            width: getComputedStyle(el).outlineWidth,
+            outlineStyle: getComputedStyle(el).outlineStyle,
+            shadow: getComputedStyle(el).boxShadow,
             danger: getComputedStyle(el).getPropertyValue("--danger"),
           }));
-        assert.equal(invalid.width, "2px");
-        assert.notEqual(invalid.outline, invalid.border);
+        // Invalid focus keeps the danger edge and adds the 3px focus halo.
+        assert.equal(invalid.outlineStyle, "none");
+        const halo = invalid.shadow.match(/^(.*?) 0px 0px 0px 3px/)?.[1];
+        assert.ok(halo && halo !== invalid.border, JSON.stringify(invalid));
         assert.equal(await input.getAttribute("aria-invalid"), "true");
         assert.ok(
           (await input.getAttribute("aria-describedby")).includes("-error"),
@@ -300,8 +305,8 @@ try {
           "نسخ-ExactValue".repeat(10) +
           "  ";
         await start("input-copy", language, theme, width, { value: long });
-        const input = preview().getByRole("textbox"),
-          copy = preview().getByRole("button");
+        const input = copyField().getByRole("textbox"),
+          copy = copyField().getByRole("button");
         await input.focus();
         await page.keyboard.press("Tab");
         assert.equal(
@@ -351,7 +356,7 @@ try {
           await page.evaluate(() => navigator.clipboard.readText()),
           long,
         );
-        const status = preview().getByRole("status");
+        const status = copyField().getByRole("status");
         await status
           .getByText(language === "ar" ? "تم النسخ." : "Copied.", {
             exact: true,
@@ -408,9 +413,9 @@ try {
       "InputCopy: logical-end internal button, reserved text space, keyboard ring, exact real clipboard, check-only success with no geometry change and polite hidden status",
     );
     await start("input-copy", "en", "light");
-    const copy = preview().getByRole("button"),
-      input = preview().getByRole("textbox"),
-      status = preview().getByRole("status");
+    const copy = copyField().getByRole("button"),
+      input = copyField().getByRole("textbox"),
+      status = copyField().getByRole("status");
     for (const outcome of ["reject", "unavailable"]) {
       await page.evaluate(
         (outcome) =>
@@ -457,6 +462,7 @@ try {
     await start("input", "en", "light");
     const native = preview().getByRole("textbox");
     await native.focus();
+    await settled();
     assert.equal(
       await native.evaluate((el) => getComputedStyle(el).outlineStyle),
       "none",

@@ -22,6 +22,18 @@ async function check(name, fn) {
     results.failures.push({ name, error: e.message });
   }
 }
+// Scan settled frames: a half-faded message or popover gives transient
+// contrast failures.
+async function settle() {
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a.effect?.getComputedTiming().iterations !== Infinity)
+        .map((a) => a.finished.catch(() => {})),
+    ),
+  );
+}
 async function nav(name) {
   if (await page.locator(".docs-sidebar").isVisible())
     await page
@@ -67,12 +79,32 @@ try {
               : ["إجراءات التحديد", "مقياس السياق", "اختيار النموذج"]) {
               await nav(name);
               await page.evaluate(() => document.fonts.ready);
-              assert.equal(
-                await page.locator(".playground-section").count(),
-                1,
+              const ar = lang === "ar",
+                slug =
+                  name === "SelectionActions" || name === "إجراءات التحديد"
+                    ? "selection"
+                    : name === "ContextMeter" || name === "مقياس السياق"
+                      ? "context"
+                      : "model";
+              // Every page is agent prompt → playground → API reference.
+              assert.deepEqual(
+                await page
+                  .locator(".component-page > section")
+                  .evaluateAll((els) => els.map((el) => el.className)),
+                ["agent-section", "playground-section", "reference-section"],
               );
-              assert.equal(await page.locator(".examples-section").count(), 1);
-              assert.equal(await page.locator(".usage-section").count(), 1);
+              assert.equal(await page.locator(".examples-section").count(), 0);
+              assert.equal(await page.locator(".usage-section").count(), 0);
+              const frame = page.locator(".playground-region .tz-demo-frame");
+              assert.equal(await frame.count(), 1);
+              const views = frame
+                .locator(".tz-demo-header")
+                .getByRole("tablist", { name: ar ? "طريقة العرض" : "View" });
+              const preview = views.getByRole("tab", {
+                  name: ar ? "معاينة" : "Preview",
+                }),
+                code = views.getByRole("tab", { name: ar ? "الكود" : "Code" });
+              assert.equal(await preview.getAttribute("aria-selected"), "true");
               assert.equal(
                 await page.evaluate(
                   () => document.documentElement.scrollWidth > innerWidth,
@@ -82,9 +114,30 @@ try {
               await page
                 .locator(".playground-section")
                 .scrollIntoViewIfNeeded();
+              await page.mouse.move(0, 0);
               await page.screenshot({
-                path: `${out}/docs-${lang}-${theme}-${size.width}x${size.height}-${name === "SelectionActions" || name === "إجراءات التحديد" ? "selection" : name === "ContextMeter" || name === "مقياس السياق" ? "context" : "model"}.png`,
+                path: `${out}/docs-${lang}-${theme}-${size.width}x${size.height}-${slug}.png`,
               });
+              await code.click();
+              await frame
+                .getByRole("region", {
+                  name: `${ar ? "الكود" : "Code"}: src/Example.tsx`,
+                })
+                .waitFor();
+              assert.equal(
+                await page.evaluate(
+                  () => document.documentElement.scrollWidth > innerWidth,
+                ),
+                false,
+              );
+              // The three pages copy the same examples module; one Code
+              // screenshot per configuration is enough.
+              if (slug === "selection")
+                await page.screenshot({
+                  path: `${out}/docs-${lang}-${theme}-${size.width}x${size.height}-code.png`,
+                });
+              await preview.click();
+              await frame.locator(".playground-canvas").waitFor();
             }
           },
         );
@@ -208,6 +261,7 @@ try {
             ),
             "option",
           );
+          await settle();
           const background = await page.evaluate(async () => {
             const r = await axe.run(document.querySelector(".tiraz-system"), {
               runOnly: {
@@ -245,6 +299,7 @@ try {
             .locator(".tz-context-connected .tz-context-trigger")
             .click();
         }
+        await settle();
         const selector =
           state === "model"
             ? ".tz-model-popup"

@@ -58,7 +58,10 @@ try {
         if (state === "collapsed")
           await sidebar
             .getByRole("button", {
-              name: language === "ar" ? "طي التنقّل" : "Collapse navigation",
+              name:
+                language === "ar"
+                  ? "طيّ القائمة الجانبية"
+                  : "Collapse navigation",
               exact: true,
             })
             .click();
@@ -256,7 +259,9 @@ try {
   }
   await page.goto(`${root}/examples/dashboard`);
   await page.screenshot({ path: `${evidence}/dashboard-expanded.png` });
-  await page.getByRole("button", { name: "طي التنقّل", exact: true }).click();
+  await page
+    .getByRole("button", { name: "طيّ القائمة الجانبية", exact: true })
+    .click();
   await page.waitForTimeout(200);
   await page.screenshot({ path: `${evidence}/dashboard-collapsed.png` });
   const dashboardGeometry = await page

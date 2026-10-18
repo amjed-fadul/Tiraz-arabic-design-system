@@ -72,6 +72,18 @@ async function load(language, theme, width, active = "input") {
     .waitFor();
   await page.evaluate(() => document.fonts.ready);
 }
+// Accent is a Radix Select: open it and pick the option by name.
+const accentNames = { blue: ["أزرق", "Blue"] };
+async function selectAccent(scope, accessibleName, value) {
+  await scope.getByLabel(accessibleName, { exact: true }).click();
+  const popup = page.locator(".accent-popup");
+  await popup
+    .getByRole("option", {
+      name: new RegExp(`^(${accentNames[value].join("|")})$`),
+    })
+    .click();
+  await popup.waitFor({ state: "detached" });
+}
 try {
   for (const language of ["ar", "en"])
     for (const theme of ["light", "dark"])
@@ -88,17 +100,19 @@ try {
         for (const id of ids)
           assert.equal(await page.locator(`[id="${id}"]`).count(), 1);
         if (stage === "after") {
-          assert.equal(
-            await page.locator(".examples-section .customer-example").count(),
-            0,
+          // Every page is agent prompt → playground → reference.
+          assert.deepEqual(
+            await page
+              .locator("main section")
+              .evaluateAll((nodes) =>
+                nodes
+                  .map((node) => node.className)
+                  .filter((name) => /-section$/.test(name)),
+              ),
+            ["agent-section", "playground-section", "reference-section"],
           );
-          assert.equal(
-            await page.locator(".examples-section .tz-input").count(),
-            5,
-          );
-          // All example controls inherit the same shared appearance as the preview.
           const styles = await page
-            .locator(".playground-canvas .tz-input,.examples-section .tz-input")
+            .locator(".playground-canvas .tz-input")
             .evaluateAll((nodes) =>
               nodes.map((node) => ({
                 direction: getComputedStyle(node).direction,
@@ -115,13 +129,18 @@ try {
             ),
           );
           report.checks.push(
-            `${language} ${theme} ${width}: direct Input examples, associations and shared appearance`,
+            `${language} ${theme} ${width}: playground-only Input page, associations and shared appearance`,
           );
         }
-        await load(language, theme, width, "sheet");
+        // Create customer is not on a docs page; drive the example (empty
+        // table) in the forms fixture.
+        await page.goto(
+          `${base}/tests/browser/forms-fixture.html?dir=${language === "ar" ? "rtl" : "ltr"}&theme=${theme}`,
+        );
+        await page.evaluate(() => document.fonts.ready);
         await page
           .getByRole("button", {
-            name: language === "ar" ? "إنشاء عميل" : "Create customer",
+            name: language === "ar" ? "إضافة عميل" : "Create customer",
             exact: true,
           })
           .click();
@@ -232,7 +251,7 @@ try {
       0,
     );
     await rail.getByLabel("Density", { exact: true }).selectOption("standard");
-    await rail.getByLabel("Accent", { exact: true }).selectOption("blue");
+    await selectAccent(rail, "Accent", "blue");
     await rail.getByLabel("Typography", { exact: true }).selectOption("large");
     await rail.getByLabel("Corner radius", { exact: true }).focus();
     await page.keyboard.press("End");

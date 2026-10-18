@@ -133,6 +133,18 @@ for (const scenario of cases) {
         await dialog
           .getByLabel("Fixture reducedMotion", { exact: true })
           .selectOption("true");
+      // Open the menu from a settled Sheet: its slide-in moves the trigger, and
+      // the scenario is the menu's own opening motion.
+      await dialog.evaluate((el) =>
+        Promise.all(
+          el
+            .getAnimations({ subtree: true })
+            .filter(
+              (a) => a.effect?.getComputedTiming().iterations !== Infinity,
+            )
+            .map((a) => a.finished.catch(() => {})),
+        ),
+      );
       const trigger = page.getByRole("button", {
         name: "Nested menu trigger",
         exact: true,

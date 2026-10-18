@@ -76,11 +76,26 @@ async function shot(name) {
   await page.screenshot({ path: `${out}/${name}.png` });
   report.captures.push(`${name}.png`);
 }
+// The open overlay blocks the rail, so pick the Accent option with the
+// Radix Select trigger's closed-state typeahead.
+async function chooseAccent(name) {
+  const trigger = page.getByLabel("Accent", { exact: true });
+  await trigger.evaluate((el, name) => {
+    for (const key of name)
+      el.dispatchEvent(
+        new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }),
+      );
+  }, name);
+  await page.waitForFunction(
+    ([el, name]) => el.textContent.trim() === name,
+    [await trigger.elementHandle(), name],
+  );
+}
 async function preset(value, ar = false) {
   if ((await page.viewportSize()).width < 800) {
     await page
       .getByRole("button", {
-        name: ar ? "تخصيص المكونات" : "System settings",
+        name: ar ? "تخصيص المكوّنات" : "System settings",
         exact: true,
       })
       .click();
@@ -328,20 +343,14 @@ try {
     exact: true,
   });
   await rowAction.click();
-  await page.getByLabel("Accent", { exact: true }).evaluate((el) => {
-    const setter = Object.getOwnPropertyDescriptor(
-      HTMLSelectElement.prototype,
-      "value",
-    ).set;
-    setter.call(el, "plum");
-    el.dispatchEvent(new Event("change", { bubbles: true }));
-  });
+  await chooseAccent("Purple");
+  const menuAction = await page
+    .locator(".tz-menu")
+    .evaluate((el) => getComputedStyle(el).getPropertyValue("--action").trim());
+  // accentColors.plum.light in src/system/config.ts.
+  assert.equal(menuAction.toUpperCase(), "#6B487A");
   assert.equal(
-    await page
-      .locator(".tz-menu")
-      .evaluate((el) =>
-        getComputedStyle(el).getPropertyValue("--action").trim(),
-      ),
+    menuAction,
     await canvas().evaluate((el) =>
       getComputedStyle(el).getPropertyValue("--action").trim(),
     ),

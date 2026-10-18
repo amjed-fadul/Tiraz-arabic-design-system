@@ -1,15 +1,18 @@
 import { createRequire } from "node:module";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const browser = await chromium.launch({
   headless: true,
   executablePath:
+    process.env.TIRAZ_BROWSER ||
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
 });
 const page = await browser.newPage();
-const base = process.env.TIRAZ_URL || "http://127.0.0.1:5208";
+const base = process.env.TIRAZ_URL || "http://127.0.0.1:5208",
+  out = process.env.TIRAZ_EVIDENCE || "docs/structure-and-navigation/browser";
+await mkdir(out, { recursive: true });
 const checks = [];
 try {
   for (const language of ["ar", "en"])
@@ -74,10 +77,7 @@ try {
       checks.push({ language, theme, focus, passed: true });
     }
 } finally {
-  await writeFile(
-    "docs/structure-and-navigation/browser/focus-hover.json",
-    JSON.stringify(checks, null, 2),
-  );
+  await writeFile(`${out}/focus-hover.json`, JSON.stringify(checks, null, 2));
   await browser.close();
   console.log(JSON.stringify(checks));
 }

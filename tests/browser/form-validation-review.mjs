@@ -17,32 +17,29 @@ const out =
 await mkdir(out, { recursive: true });
 const report = { cases: [], errors: [] };
 page.on("pageerror", (error) => report.errors.push(error.message));
+// Sending validates, then resets the form natively.
 const copies = [
   {
     language: "en",
-    action: "Check form",
+    action: "Send feedback",
     notes: "Notes",
-    helper: "Add a short note.",
-    error: "Enter a note to complete the form check.",
-    success: "Form check passed.",
-    description: "Small form · application-owned validation",
+    helper: "Tell us what we could improve.",
+    error: "Write your note before sending.",
+    success: "Thanks — we received your note.",
     updates: "Receive updates",
     weekly: "Weekly",
     monthly: "Monthly",
-    reset: "Reset",
   },
   {
     language: "ar",
-    action: "تحقق من النموذج",
+    action: "إرسال الملاحظات",
     notes: "ملاحظات",
-    helper: "أضف ملاحظة قصيرة.",
-    error: "أدخل ملاحظة لإكمال التحقق من النموذج.",
-    success: "تم التحقق من النموذج بنجاح.",
-    description: "نموذج صغير · التطبيق يملك التحقق",
-    updates: "تلقي التحديثات",
+    helper: "أخبرنا بما يمكننا تحسينه.",
+    error: "اكتب ملاحظتك قبل الإرسال.",
+    success: "شكرًا لك، وصلتنا ملاحظتك.",
+    updates: "تلقّي التحديثات",
     weekly: "أسبوعيًا",
     monthly: "شهريًا",
-    reset: "إعادة الضبط",
   },
 ];
 try {
@@ -50,35 +47,18 @@ try {
     for (const width of [1440, 320]) {
       const theme = width === 1440 ? "light" : "dark";
       await page.setViewportSize({ width, height: 1000 });
-      await page.goto(base);
-      await page.evaluate(
-        ({ language, theme, width }) => {
-          localStorage.clear();
-          localStorage.setItem(
-            "tiraz.documentation.v2",
-            JSON.stringify({
-              language,
-              active: "textarea",
-              systemPanelOpen: true,
-              inspectorOpen: true,
-            }),
-          );
-          localStorage.setItem("tiraz.theme.v1", JSON.stringify(theme));
-          localStorage.setItem(
-            "tiraz.system.v3",
-            JSON.stringify({
-              density: width === 1440 ? "compact" : "standard",
-              typography: width === 1440 ? "standard" : "large",
-              accent: "sage",
-              radius: 8,
-              reducedMotion: false,
-            }),
-          );
-        },
-        { language: copy.language, theme, width },
+      // FeedbackForm is not on a docs page; drive the exported example in its
+      // own fixture with the same language/theme/density/typography coverage.
+      const query = new URLSearchParams({
+        lang: copy.language,
+        theme,
+        density: width === 1440 ? "compact" : "standard",
+        typography: width === 1440 ? "standard" : "large",
+      });
+      await page.goto(
+        `${base}/tests/browser/feedback-form-fixture.html?${query}`,
       );
-      await page.reload();
-      const section = page.locator(".examples-section"),
+      const section = page.locator("main section"),
         form = section.locator("form"),
         notes = form.getByRole("textbox", { name: copy.notes, exact: true });
       const action = form.getByRole("button", {
@@ -88,10 +68,6 @@ try {
         status = form.getByRole("status");
       await action.waitFor();
       await page.evaluate(() => document.fonts.ready);
-      assert.equal(
-        await section.locator(".example-caption").innerText(),
-        copy.description,
-      );
       await action.click();
       assert.equal(await notes.getAttribute("aria-invalid"), "true");
       assert.equal(
@@ -135,10 +111,15 @@ try {
           .map((id) => document.getElementById(id)?.textContent),
       );
       assert.deepEqual(successDescriptions, [copy.helper]);
-      await section.screenshot({
-        path: `${out}/${copy.language}-${width}-valid.png`,
+      // Sending resets the native form values itself.
+      await page.waitForFunction(() => {
+        const form = document.querySelector("main section form");
+        return (
+          form.elements.notes.value === "" &&
+          !form.elements.updates.checked &&
+          form.elements.frequency.value === "weekly"
+        );
       });
-      await form.getByRole("button", { name: copy.reset, exact: true }).click();
       assert.equal(await notes.inputValue(), "");
       assert.equal(
         await form
@@ -152,10 +133,14 @@ try {
           .isChecked(),
         true,
       );
-      assert.equal(await status.innerText(), "");
+      await section.screenshot({
+        path: `${out}/${copy.language}-${width}-valid.png`,
+      });
+      // Sending the now-empty form again replaces the confirmation with the
+      // associated error.
       await action.click();
-      await form.getByRole("button", { name: copy.reset, exact: true }).click();
-      assert.notEqual(await notes.getAttribute("aria-invalid"), "true");
+      assert.equal(await notes.getAttribute("aria-invalid"), "true");
+      assert.equal(await status.innerText(), "");
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth,
       );
@@ -165,12 +150,12 @@ try {
         width,
         theme,
         action: copy.action,
-        description: copy.description,
         associatedError: descriptions,
         firstInvalidFocused: true,
         whitespaceRejected: true,
         success: copy.success,
-        resetClearsFeedbackAndErrors: true,
+        sendResetsNatively: true,
+        resendClearsFeedbackAndShowsError: true,
         nativeValuesRestored: true,
         overflow,
       });

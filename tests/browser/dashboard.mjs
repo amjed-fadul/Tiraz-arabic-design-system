@@ -142,7 +142,8 @@ try {
       assert.equal(originalPosition.x, language === "ar" ? 1216 : 0);
       await sidebar
         .getByRole("button", {
-          name: language === "ar" ? "طي التنقّل" : "Collapse navigation",
+          name:
+            language === "ar" ? "طيّ القائمة الجانبية" : "Collapse navigation",
           exact: true,
         })
         .click();

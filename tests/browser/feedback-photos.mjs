@@ -106,42 +106,69 @@ try {
     "Local portrait loading, failure, replacement, removal and restored cached source; decorative internals and one name.",
   );
   const alerts = page.getByRole("region", { name: "Alerts" });
-  assert.equal(await alerts.getByRole("alert").count(), 0);
-  assert.equal(await alerts.getByRole("status").count(), 0);
+  const staticAlert = alerts.getByRole("group", { name: "Static alert" });
+  assert.equal(await staticAlert.getByRole("alert").count(), 0);
+  assert.equal(await staticAlert.getByRole("status").count(), 0);
   await update(() => window.setAnnouncement("polite"));
-  assert.equal(await alerts.getByRole("status").count(), 1);
+  assert.equal(await staticAlert.getByRole("status").count(), 1);
   await update(() => window.setAnnouncement("assertive"));
-  assert.equal(await alerts.getByRole("alert").count(), 1);
+  assert.equal(await staticAlert.getByRole("alert").count(), 1);
   await update(() => window.setAnnouncement("off"));
-  await page.getByRole("button", { name: "Dismiss note" }).click();
+  assert.equal(await staticAlert.getByRole("status").count(), 0);
+  // The alert's own action updates it in place.
+  await alerts
+    .getByRole("button", { name: "Send reminder", exact: true })
+    .click();
+  const reminderSent = alerts.getByRole("button", {
+    name: "Reminder sent",
+    exact: true,
+  });
+  await reminderSent.waitFor();
+  assert(await reminderSent.evaluate((el) => el === document.activeElement));
   assert.match(
     await alerts.getByRole("status").textContent(),
-    /Note dismissed/,
+    /We sent a reminder to hello@madar\.sa\./,
   );
-  assert(
-    await page
-      .getByRole("button", { name: "Show note" })
-      .evaluate((el) => el === document.activeElement),
-  );
-  await page.getByRole("button", { name: "Show note" }).click();
-  assert(
-    await page
-      .getByRole("button", { name: "Dismiss note" })
-      .evaluate((el) => el === document.activeElement),
-  );
-  await page.getByRole("button", { name: "Show content" }).click();
+  // Skeletons play loading -> ready once (2.4s); reduced motion stays loading.
+  const skeletons = page.getByRole("region", { name: "Skeletons" });
+  await skeletons
+    .locator('.tz-feedback-placeholder[aria-busy="false"]')
+    .waitFor();
   assert.equal(await page.locator('[aria-busy="false"]').count(), 1);
   assert.equal(
-    await page
-      .getByRole("region", { name: "Skeletons" })
-      .locator(".tz-feedback-placeholder .tz-skeleton")
-      .count(),
+    await skeletons.locator(".tz-feedback-placeholder .tz-skeleton").count(),
     0,
   );
-  await page.getByRole("button", { name: "Show loading state" }).click();
-  assert.equal(await page.locator('[aria-busy="true"]').count(), 1);
+  assert.equal(
+    await skeletons.getByRole("status").textContent(),
+    "Profile loaded",
+  );
+  const reducedPage = await context.newPage();
+  reducedPage.on("pageerror", (error) => report.errors.push(error.message));
+  await reducedPage.goto(fixture + "?language=en&motion=reduce");
+  const reducedSkeletons = reducedPage.getByRole("region", {
+    name: "Skeletons",
+  });
+  await reducedSkeletons.getByRole("status").waitFor({ state: "attached" });
+  await reducedPage.waitForTimeout(2800);
+  assert.equal(
+    await reducedSkeletons
+      .locator(".tz-feedback-placeholder")
+      .getAttribute("aria-busy"),
+    "true",
+  );
+  assert(
+    (await reducedSkeletons
+      .locator(".tz-feedback-placeholder .tz-skeleton")
+      .count()) > 0,
+  );
+  assert.equal(
+    await reducedSkeletons.getByRole("status").textContent(),
+    "Loading profile",
+  );
+  await reducedPage.close();
   report.checks.push(
-    "Static Alert silence, explicit status/alert urgency, application-owned dismissal/restoration, explicit Skeleton ready/loading action with one host announcement.",
+    "Static Alert silence, explicit status/alert urgency, polite Alert action updates in place with focus kept, Skeleton loading-to-ready autoplay (held under reduced motion) with one host announcement.",
   );
   const progress = page.getByRole("progressbar", { name: "Preparing report" });
   for (const [input, want] of [
@@ -171,7 +198,10 @@ try {
     await page.locator('.tz-loading-spinner[aria-hidden="true"]').count(),
     1,
   );
-  assert((await animations()).every((name) => name !== "none"));
+  const animated = await animations();
+  // Fixture skeleton circle, both spinners and the indeterminate bar.
+  assert(animated.length >= 4, JSON.stringify(animated));
+  assert(animated.every((name) => name !== "none"));
   await update(() => window.updateTiraz({ reducedMotion: true }));
   assert((await animations()).every((name) => name === "none"));
   await update(() => window.updateTiraz({ reducedMotion: false }));
@@ -252,8 +282,12 @@ try {
                   : fill.x - bounds.x,
               ) < 1,
             );
+            // The ready skeleton profile adds a portrait; count the Photos region only.
             assert.equal(
-              await page.locator(".tz-avatar img:not([hidden])").count(),
+              await page
+                .getByRole("region", { name: "Photos" })
+                .locator(".tz-avatar img:not([hidden])")
+                .count(),
               3,
             );
             report.matrix.push({ language, theme, density, typography, width });
@@ -266,7 +300,7 @@ try {
                 `feedback-photos-${language}-${width === 320 ? "narrow" : "desktop"}.png`,
               );
           }
-  // Inspect focused documentation in both locales; every page keeps the approved continuous sections.
+  // Inspect focused documentation in both locales; every page keeps its continuous sections.
   for (const language of ["ar", "en"])
     for (const width of [1280, 320])
       for (const active of [
@@ -297,10 +331,83 @@ try {
         );
         await page.goto(base, { waitUntil: "networkidle" });
         await noOverflow();
-        assert.equal(
-          await page.locator(".component-page > section").count(),
-          4,
+        // Every page is agent prompt -> playground -> API reference.
+        assert.deepEqual(
+          await page
+            .locator(".component-page > section")
+            .evaluateAll((sections) => sections.map((el) => el.className)),
+          ["agent-section", "playground-section", "reference-section"],
         );
+        const playground = page.getByRole("region", {
+          name:
+            language === "ar" ? "المعاينة التفاعلية" : "Interactive playground",
+        });
+        if (language === "en" && width === 1280 && active === "alert") {
+          // The action example moved into the playground (actionLabel field).
+          assert.equal(
+            await page
+              .getByLabel("Action button", { exact: true })
+              .inputValue(),
+            "View plan",
+          );
+          assert.equal(
+            await playground
+              .locator(".tz-alert")
+              .getByRole("button", { name: "View plan", exact: true })
+              .count(),
+            1,
+          );
+          await page
+            .getByLabel("Action button", { exact: true })
+            .fill("Send reminder");
+          await playground
+            .locator(".tz-alert")
+            .getByRole("button", { name: "Send reminder", exact: true })
+            .waitFor();
+          await page
+            .getByRole("button", { name: "Copy code", exact: true })
+            .click();
+          assert.match(
+            await page.evaluate(() => navigator.clipboard.readText()),
+            /action=\{<Button variant="secondary".*>\{"Send reminder"\}<\/Button>\}/,
+          );
+          await page.getByLabel("Action button", { exact: true }).fill("");
+          assert.equal(await playground.locator(".tz-alert button").count(), 0);
+          report.checks.push(
+            "Documentation Alert playground action label defaults, live edits, removal and matching copied code.",
+          );
+        }
+        if (language === "en" && width === 1280 && active === "skeleton") {
+          // The loading profile moved into the playground: placeholders, then
+          // content after 2.4s; Replay and shape changes restart it.
+          const profile = playground.locator(".tz-feedback-placeholder");
+          assert.equal(
+            await page.getByLabel("Shape", { exact: true }).inputValue(),
+            "circle",
+          );
+          await playground
+            .locator('.tz-feedback-placeholder[aria-busy="false"]')
+            .waitFor();
+          await loaded(profile.locator(".tz-avatar"));
+          assert.equal(await profile.locator(".tz-skeleton").count(), 0);
+          // Replay lives in the frame header, outside the canvas region.
+          await page
+            .locator(".playground-region")
+            .getByRole("button", { name: "Replay example", exact: true })
+            .click();
+          assert.equal(await profile.getAttribute("aria-busy"), "true");
+          assert((await profile.locator(".tz-skeleton").count()) > 0);
+          await page
+            .getByLabel("Shape", { exact: true })
+            .selectOption("rectangle");
+          await playground
+            .locator('.tz-feedback-placeholder[aria-busy="false"]')
+            .waitFor();
+          assert.ok((await profile.innerText()).includes("Balance due"));
+          report.checks.push(
+            "Documentation Skeleton playground plays placeholders to profile, replays and restarts on shape change.",
+          );
+        }
         if (language === "en" && width === 1280 && active === "avatar") {
           await page
             .getByLabel("Appearance", { exact: true })
@@ -325,6 +432,21 @@ try {
           );
           assert(prompt.includes(code));
           assert.match(prompt, /ai\/assets\/LICENSE.txt/);
+          // The Code tab shows exactly the copied code; the preview stays
+          // mounted (hidden) until Preview is chosen again.
+          const view = page.getByRole("tablist", { name: "View", exact: true });
+          await view.getByRole("tab", { name: "Code", exact: true }).click();
+          const source = page.getByRole("region", {
+            name: "Code: src/Example.tsx",
+            exact: true,
+          });
+          assert.equal(await source.locator("pre > code").innerText(), code);
+          assert.equal(
+            await source.locator(".tz-demo-source-lines").count(),
+            1,
+          );
+          await view.getByRole("tab", { name: "Preview", exact: true }).click();
+          await loaded(playground.getByRole("img", { name: "Sara Ali" }));
           await page
             .getByLabel("Image URL · optional")
             .fill("/missing-documentation-photo.jpg");
@@ -375,7 +497,13 @@ try {
             .getByRole("switch", { name: "Indeterminate", exact: true })
             .click();
           await page.getByLabel("Value · %").fill("64");
-          await page.getByLabel("Accent", { exact: true }).selectOption("plum");
+          // Accent is a Radix Select: open it and pick the option by name.
+          await page
+            .getByRole("combobox", { name: "Accent", exact: true })
+            .click();
+          await page
+            .getByRole("option", { name: "Purple", exact: true })
+            .click();
           await page
             .getByLabel("Density", { exact: true })
             .selectOption("standard");

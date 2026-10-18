@@ -6,10 +6,11 @@ const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const browser = await chromium.launch({
   headless: true,
   executablePath:
+    process.env.TIRAZ_BROWSER ||
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
 });
 const page = await browser.newPage();
-const base = "http://127.0.0.1:5206",
+const base = process.env.TIRAZ_URL || "http://127.0.0.1:5206",
   out =
     process.env.TIRAZ_EVIDENCE || "docs/avatar-overlays-empty-state/browser";
 await mkdir(out, { recursive: true });
@@ -92,8 +93,8 @@ try {
           await canvas
             .getByText(
               language === "ar"
-                ? "هذه معاينة محلية للمكوّن."
-                : "This is a local component preview.",
+                ? "١٠٬٠٠٠ ر.س + ضريبة ١٬٥٠٠ ر.س = ١١٬٥٠٠ ر.س"
+                : "SAR 10,000 + VAT SAR 1,500 = SAR 11,500",
             )
             .count(),
           1,
@@ -182,8 +183,20 @@ try {
   const dialog = page.getByRole("dialog");
   await dialog.waitFor();
   // Set shared application controls as a host config update while the dialog stays mounted.
+  // The open overlay blocks the rail, so pick the Accent option with the
+  // Radix Select trigger's closed-state typeahead.
+  const accent = page.getByLabel("Accent", { exact: true });
+  await accent.evaluate((el) => {
+    for (const key of "Brown")
+      el.dispatchEvent(
+        new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }),
+      );
+  });
+  await page.waitForFunction(
+    (el) => el.textContent.trim() === "Brown",
+    await accent.elementHandle(),
+  );
   for (const [label, value] of [
-    ["Accent", "clay"],
     ["Typography", "large"],
     ["Density", "standard"],
     ["Corner radius", "16"],
@@ -233,9 +246,31 @@ try {
     );
   });
   await page.reload({ waitUntil: "networkidle" });
-  await page
-    .locator(".examples-canvas")
-    .screenshot({ path: out + "/three-illustrations-arabic-light.png" });
+  // The Examples section is gone: the playground's single EmptyState covers the
+  // three illustrations through its Illustration control, plus an action button.
+  const stage = page.locator(".playground-canvas");
+  const drawings = new Set();
+  for (const illustration of ["no-records", "no-results", "getting-started"]) {
+    await page.getByLabel("الرسم", { exact: true }).selectOption(illustration);
+    drawings.add(await stage.locator(".tz-empty-illustration svg").innerHTML());
+    await stage.screenshot({
+      path: out + `/empty-state-${illustration}-arabic-light.png`,
+    });
+  }
+  assert.equal(drawings.size, 3);
+  const action = stage.locator(".tz-empty-action").getByRole("button");
+  assert.equal((await action.textContent()).trim(), "إضافة سجل");
+  await action.click();
+  assert.equal(
+    await action.evaluate((el) => el === document.activeElement),
+    true,
+  );
+  await page.getByLabel("زر الإجراء", { exact: true }).fill("");
+  assert.equal(await stage.locator(".tz-empty-action").count(), 0);
+  report.checks.push({
+    emptyState:
+      "playground shows three distinct illustrations and an optional action button",
+  });
   assert.deepEqual(report.errors, []);
 } finally {
   await writeFile(

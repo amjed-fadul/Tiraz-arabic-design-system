@@ -158,7 +158,7 @@ await check(
     await nav().getByRole("button", { name: "Build notes" }).click();
     assert.equal(await input().inputValue(), "  Exact draft / مرحبا  ");
     await page.getByRole("combobox", { name: "Model" }).click();
-    await page.getByRole("option", { name: /Detailed sample/ }).click();
+    await page.getByRole("option", { name: /Detailed/ }).click();
     assert.match(
       await page.getByRole("combobox", { name: "Model" }).innerText(),
       /Detailed/,
@@ -171,12 +171,15 @@ await check(
     const handle = await assistant.elementHandle();
     await page.waitForTimeout(350);
     assert.ok(await assistant.evaluate((el, old) => el === old, handle));
-    const content = await assistant.textContent();
+    const received = () =>
+        assistant.locator(".tz-stream-content").textContent(),
+      content = await received();
     await nav().getByRole("button", { name: "Arabic interface" }).click();
     assert.equal(await input().inputValue(), "other draft");
     await page.waitForTimeout(600);
     await nav().getByRole("button", { name: "Build notes" }).click();
-    assert.equal(await assistant.textContent(), content);
+    assert.equal(await received(), content);
+    assert.match(await assistant.textContent(), /Response stopped$/);
     assert.match(
       await page.getByRole("combobox", { name: "Model" }).innerText(),
       /Detailed/,
@@ -184,7 +187,7 @@ await check(
   },
 );
 await check(
-  "stop preserves content; new cancels; reset restores samples",
+  "stop preserves content; new and switch cancel pending replies",
   async () => {
     await input().fill("Stop sample");
     await input().press("Enter");
@@ -203,10 +206,16 @@ await check(
     assert.equal(await input().inputValue(), "");
     await page.waitForTimeout(600);
     assert.equal(await page.locator("[data-message-id]").count(), 0);
-    await input().fill("Reset pending");
+    await input().fill("Switch pending");
     await input().press("Enter");
-    await page.getByRole("button", { name: "Reset example" }).click();
+    const pending = page.locator('[data-message-id="assistant-5"]');
+    await pending.getByText(/Start/).waitFor();
+    await nav().getByRole("button", { name: "Build notes" }).click();
     await page.waitForTimeout(600);
+    await nav().getByRole("button", { name: "Chat 3" }).click();
+    const kept = await pending.textContent();
+    await page.waitForTimeout(600);
+    assert.equal(await pending.textContent(), kept);
     assert.equal(await page.locator("[data-message-id]").count(), 2);
   },
 );

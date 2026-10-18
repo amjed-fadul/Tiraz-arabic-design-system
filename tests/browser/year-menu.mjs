@@ -2,9 +2,8 @@ import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
-const {
-  chromium,
-} = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
+const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
+const base = process.env.TIRAZ_URL || "http://127.0.0.1:5227";
 const evidence = "docs/slider-otp-date/year-menu";
 await mkdir(evidence, { recursive: true });
 const browser = await chromium.launch({
@@ -92,7 +91,7 @@ try {
           ]) {
             await page.setViewportSize(size);
             await page.goto(
-              `http://127.0.0.1:5227/tests/browser/date-correction.html?lang=${lang}&theme=${theme}&type=${type}&density=${density}`,
+              `${base}/tests/browser/date-correction.html?lang=${lang}&theme=${theme}&type=${type}&density=${density}`,
             );
             await page
               .getByRole("button", {
@@ -153,7 +152,7 @@ try {
     for (const overlay of ["Sheet", "Modal"]) {
       await page.setViewportSize({ width: 320, height: 320 });
       await page.goto(
-        `http://127.0.0.1:5227/tests/browser/date-correction.html?lang=${lang}&theme=dark&type=large&reduced`,
+        `${base}/tests/browser/date-correction.html?lang=${lang}&theme=dark&type=large&reduced`,
       );
       await page
         .getByRole("button", { name: `Open ${overlay}`, exact: true })
@@ -212,9 +211,7 @@ try {
     "Sheet/Modal in both languages: short viewport, Home/End/arrow/Enter, no date commit, year→calendar→dialog Escape ordering and focus restoration",
   );
   await page.setViewportSize({ width: 1100, height: 850 });
-  await page.goto(
-    "http://127.0.0.1:5227/tests/browser/date-correction.html?lang=en&bounded",
-  );
+  await page.goto(`${base}/tests/browser/date-correction.html?lang=en&bounded`);
   await page.getByRole("button", { name: /^Local date/ }).click();
   await openYear();
   assert.deepEqual(await list().getByRole("option").allTextContents(), [

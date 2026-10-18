@@ -20,7 +20,7 @@ await page.evaluate(() => document.fonts.ready);
 await page.screenshot({ path: `${out}/connected-desktop.png`, fullPage: true });
 const input = () => page.locator(".tz-chat-app textarea"),
   nav = page.locator(".tz-chat-app-navigation");
-await input().fill("Review the supplied build output.");
+await input().fill("Summarize the build output.");
 await input().press("Enter");
 await page
   .locator('[data-message-id="assistant-1"]')
@@ -34,13 +34,12 @@ await nav
 await input().fill("Separate conversation draft");
 await nav.getByRole("button", { name: "Build notes", exact: true }).click();
 await page.getByRole("combobox", { name: "Model" }).click();
-await page.getByRole("option", { name: /Detailed sample/ }).click();
+await page.getByRole("option", { name: /Detailed/ }).click();
 await nav.getByRole("button", { name: "New conversation" }).click();
-await input().fill("This local response will be cancelled on switch.");
+await input().fill("Draft the release notes for this build.");
 await input().press("Enter");
 await page.waitForTimeout(700);
 await nav.getByRole("button", { name: "Build notes", exact: true }).click();
-await page.getByRole("button", { name: "Reset example" }).click();
 await page.waitForTimeout(500);
 const video = page.video();
 await context.close();
@@ -57,5 +56,5 @@ await mobile.getByRole("button", { name: "فتح المحادثات" }).click();
 await mobile.screenshot({ path: `${out}/connected-mobile-sheet.png` });
 await browser.close();
 console.log(
-  "Recorded supplied Terminal output → send/stop → drafts/switch → model → new/send/switch cancellation → reset. No network execution.",
+  "Recorded supplied Terminal output → send/stop → drafts/switch → model → new/send/switch cancellation. No network execution.",
 );

@@ -71,7 +71,7 @@ async function start(
           ? "شريط التصفية"
           : "FilterBar"
         : language === "ar"
-          ? "إدخال النسخ"
+          ? "حقل النسخ"
           : "InputCopy";
   await page.getByRole("heading", { level: 1, name, exact: true }).waitFor();
   assert.equal(
@@ -115,6 +115,8 @@ async function bounds() {
     data.document <= data.width && data.body <= data.width,
     JSON.stringify(data),
   );
+  // Guard against a vacuous pass if the stage stops rendering the control.
+  assert.equal(data.controls.length, 1, JSON.stringify(data));
   for (const c of data.controls)
     assert.ok(c.scroll <= c.client + 1, JSON.stringify(c));
   for (const c of data.chips) assert.ok(c.separated, JSON.stringify(c));
@@ -203,13 +205,13 @@ try {
             if (component === "input-copy" && width === 1440) {
               await preview()
                 .getByRole("button", {
-                  name: t("نسخ مسار المصدر", "Copy Source path"),
+                  name: t("نسخ رابط الدعوة", "Copy Invite link"),
                   exact: true,
                 })
                 .click();
               assert.equal(
                 await page.evaluate(() => navigator.clipboard.readText()),
-                "src/system/TagInput.tsx",
+                "https://madar.sa/invite/7KQ2-RX9",
               );
               assert.ok(
                 (await preview().innerText()).includes(
@@ -251,14 +253,15 @@ try {
     true,
   );
   await input.fill("draft");
-  await preview().getByRole("button", { name: "Read form values" }).click();
-  assert.ok((await preview().innerText()).includes('["Design","Reading"]'));
-  assert.ok(!(await preview().locator("output").innerText()).includes("draft"));
-  await preview().getByRole("button", { name: "Reset tags" }).click();
-  await page.waitForFunction(
-    () =>
-      document.querySelector(".playground-region .tz-tag-draft").value === "",
+  // Read the named hidden inputs FormData submits; reset is covered by
+  // src/system/TagInput.test.tsx.
+  assert.deepEqual(
+    await preview()
+      .locator('input[type=hidden][name="tags"]')
+      .evaluateAll((els) => els.map((el) => el.value)),
+    ["Design", "Urgent"],
   );
+  await input.fill("");
   assert.equal(await input.inputValue(), "");
   // Native paste inserts literal delimiters; no tag creation until Enter.
   await page.evaluate(() => navigator.clipboard.writeText("alpha, beta"));
@@ -275,7 +278,7 @@ try {
     1,
   );
   pass(
-    "tag trimming, duplicate announcement, IME, keyboard removal/focus, committed form data/reset and native literal paste",
+    "tag trimming, duplicate announcement, IME, keyboard removal/focus, committed form data without draft and native literal paste",
   );
   await page.getByLabel("Maximum tags", { exact: true }).fill("3");
   await input.fill("Too many");
@@ -308,7 +311,10 @@ try {
   assert.equal(await search.inputValue(), "");
   pass("combined local filters, individual removal, Clear all and focus");
   await start("input-copy");
-  const copy = preview().getByRole("button");
+  // The stage also holds the frame's buttons and a hidden status; scope to
+  // the InputCopy itself.
+  const copy = preview().locator(".tz-input-copy").getByRole("button");
+  const copyStatus = preview().locator(".tz-input-copy + [role=status]");
   const value = preview().getByRole("textbox");
   const long =
     "  src/system/ai/examples/InputCopyExamples.tsx?value=" +
@@ -319,7 +325,7 @@ try {
   await page.keyboard.press("Enter");
   assert.equal(await page.evaluate(() => navigator.clipboard.readText()), long);
   await page.getByLabel("Value", { exact: true }).fill("replacement");
-  assert.equal(await preview().getByRole("status").innerText(), "");
+  assert.equal(await copyStatus.innerText(), "");
   await value.focus();
   await page.keyboard.press("Meta+A");
   assert.equal(
@@ -346,7 +352,7 @@ try {
     if (mode === "pending") {
       await page.getByLabel("Value", { exact: true }).fill("newer");
       await page.evaluate(() => window.finishCopy());
-      assert.equal(await preview().getByRole("status").innerText(), "");
+      assert.equal(await copyStatus.innerText(), "");
     } else {
       assert.ok((await preview().innerText()).includes("Could not copy"));
       await value.focus();
@@ -377,7 +383,9 @@ try {
       .first()
       .evaluate((el) => getComputedStyle(el).transitionDuration);
     assert.ok(transition.split(",").every((t) => parseFloat(t) === 0));
-    await page.getByLabel("Accent", { exact: true }).selectOption("blue");
+    // Accent is a Radix Select: open it and pick the option by name.
+    await page.getByRole("combobox", { name: "Accent", exact: true }).click();
+    await page.getByRole("option", { name: "Blue", exact: true }).click();
     await page
       .getByLabel("Typography", { exact: true })
       .selectOption("standard");
@@ -422,12 +430,13 @@ try {
   await preview().scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${evidence}/filter-bar-en-applied.png` });
   await start("input-copy", "ar", "dark");
-  await page
-    .getByLabel("القيمة", { exact: true })
-    .fill("src/system/ai/examples/InputCopyExamples.tsx");
   await preview()
-    .getByRole("button", { name: "نسخ مسار المصدر", exact: true })
+    .getByRole("button", { name: "نسخ رابط الدعوة", exact: true })
     .click();
+  assert.equal(
+    await page.evaluate(() => navigator.clipboard.readText()),
+    "https://madar.sa/invite/7KQ2-RX9",
+  );
   await preview().scrollIntoViewIfNeeded();
   await page.screenshot({ path: `${evidence}/input-copy-ar-success.png` });
   assert.deepEqual(errors, []);

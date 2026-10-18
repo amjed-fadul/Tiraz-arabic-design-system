@@ -91,24 +91,24 @@ try {
       );
       await page.keyboard.press("End");
       await page.waitForFunction(() =>
-        document.activeElement?.textContent?.includes("Review"),
+        document.activeElement?.textContent?.includes("Falak Precise"),
       );
       await page.keyboard.press("Home");
       await page.waitForFunction(() =>
-        document.activeElement?.textContent?.includes("Draft"),
+        document.activeElement?.textContent?.includes("Falak Swift"),
       );
       await page.keyboard.press("ArrowDown");
       await page.waitForFunction(() =>
-        document.activeElement?.textContent?.includes("Review"),
+        document.activeElement?.textContent?.includes("Falak Precise"),
       );
       await page.keyboard.press("Enter");
       await page.getByRole("listbox").waitFor({ state: "hidden" });
-      assert.match(await model.textContent(), /Review/);
+      assert.match(await model.textContent(), /Falak Precise/);
       const draft = page.getByRole("textbox", { name: "Message draft" });
       await draft.fill("Existing draft");
       await draft.press("Shift+Enter");
       await draft.press("End");
-      assert.match(await model.textContent(), /Review/);
+      assert.match(await model.textContent(), /Falak Precise/);
       return { selected: "studio-review" };
     },
   );
@@ -320,9 +320,16 @@ try {
         await model.elementHandle(),
       );
       assert.equal(await dialog.isVisible(), true);
-      await page.getByRole("button", { name: /Nested context:/ }).click();
+      const context = page.getByRole("button", { name: /Nested context:/ });
+      await context.click();
       await page.keyboard.press("Escape");
       assert.equal(await dialog.isVisible(), true);
+      // The details popover keeps the top layer during its exit animation;
+      // wait for focus to return to the trigger before the next Escape.
+      await page.waitForFunction(
+        (el) => el === document.activeElement,
+        await context.elementHandle(),
+      );
       await select("#nested-text");
       await page.keyboard.press("Alt+Enter");
       await page.keyboard.press("Escape");
@@ -424,6 +431,7 @@ try {
       await page
         .getByLabel(/لغة التوثيق|Documentation language/)
         .selectOption("en");
+      const lines = {};
       for (const name of [
         "SelectionActions",
         "ContextMeter",
@@ -434,21 +442,92 @@ try {
           .getByRole("button", { name, exact: true })
           .click();
         await page.getByRole("heading", { name, level: 1 }).waitFor();
-        for (const heading of [
-          "Interactive playground",
-          "Examples",
-          "Usage example",
-        ])
+        // Every page is agent prompt → playground → API reference; the
+        // frame's Code view and Copy code button carry the source.
+        assert.deepEqual(
+          await page
+            .locator(".component-page > section")
+            .evaluateAll((els) => els.map((el) => el.className)),
+          ["agent-section", "playground-section", "reference-section"],
+        );
+        for (const heading of ["Use it in your app", "Interactive playground"])
           assert.equal(
             await page
               .getByRole("heading", { name: heading, exact: true })
               .isVisible(),
             true,
           );
+        for (const heading of ["Examples", "Usage example"])
+          assert.equal(
+            await page
+              .getByRole("heading", { name: heading, exact: true })
+              .count(),
+            0,
+          );
+        assert.equal(
+          await page
+            .locator(".agent-section")
+            .getByRole("button", { name: "Copy agent prompt" })
+            .isVisible(),
+          true,
+        );
+        assert.equal(
+          await page
+            .locator(".reference-section summary")
+            .filter({ hasText: "API reference" })
+            .isVisible(),
+          true,
+        );
+        const frame = page.locator(".playground-region .tz-demo-frame");
+        assert.equal(await frame.count(), 1);
+        const views = frame
+          .locator(".tz-demo-header")
+          .getByRole("tablist", { name: "View" });
+        const preview = views.getByRole("tab", { name: "Preview" }),
+          codeTab = views.getByRole("tab", { name: "Code" });
+        assert.equal(await preview.getAttribute("aria-selected"), "true");
+        await page.mouse.move(0, 0);
         await page
           .locator(".playground-section")
           .screenshot({ path: `${out}/docs-${name}.png` });
+        await codeTab.click();
+        const source = frame.getByRole("region", {
+          name: "Code: src/Example.tsx",
+        });
+        await source.waitFor();
+        const shown = await source.locator("pre > code").textContent();
+        await frame.getByRole("button", { name: "Copy code" }).click();
+        await frame
+          .locator('.tz-demo-header [data-copy-state="copied"]')
+          .waitFor();
+        const copied = await page.evaluate(() =>
+          navigator.clipboard.readText(),
+        );
+        assert.equal(copied, shown);
+        // The copied file is the whole examples module; its default export
+        // renders this page's example.
+        assert.match(
+          copied,
+          new RegExp(`export default function Example[^\\n]*<${name}Example `),
+        );
+        assert.equal(
+          await page.evaluate(
+            () => document.documentElement.scrollWidth > innerWidth,
+          ),
+          false,
+        );
+        await page
+          .locator(".playground-section")
+          .screenshot({ path: `${out}/docs-${name}-code.png` });
+        await preview.click();
+        await source.waitFor({ state: "detached" });
+        assert.equal(
+          await frame.locator(".playground-canvas").isVisible(),
+          true,
+        );
+        lines[name] = copied.split("\n").length;
       }
+      return { codeLines: lines };
     },
   );
 } finally {

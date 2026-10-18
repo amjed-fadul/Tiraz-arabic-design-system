@@ -103,18 +103,6 @@ export function MotionStudy() {
                 "Tiraz · activity feedback motion",
               )}
             </h1>
-            <p
-              style={{
-                fontSize: "var(--text-meta)",
-                color: "var(--text-secondary)",
-                margin: 0,
-              }}
-            >
-              {t(
-                "أمثلة محلية · محتوى يزوّده التطبيق",
-                "Local samples · application-supplied content",
-              )}
-            </p>
           </header>
           <section aria-label="LoadingState">
             <h2

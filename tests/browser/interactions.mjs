@@ -14,6 +14,18 @@ const browser = await chromium.launch({
 const page = await browser.newPage({ viewport: { width: 800, height: 400 } });
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5176";
 const result = { overlays: [], actions: [], toast: [], failures: [] };
+// Accent is a Radix Select: open it and pick the option by name.
+const accentNames = { blue: ["أزرق", "Blue"], plum: ["بنفسجي", "Purple"] };
+async function selectAccent(scope, accessibleName, value) {
+  await scope.getByLabel(accessibleName, { exact: true }).click();
+  const popup = page.locator(".accent-popup");
+  await popup
+    .getByRole("option", {
+      name: new RegExp(`^(${accentNames[value].join("|")})$`),
+    })
+    .click();
+  await popup.waitFor({ state: "detached" });
+}
 async function check(name, fn) {
   try {
     await fn();
@@ -116,7 +128,7 @@ await check(
   "live action settings, edits, reset, repeated actions and navigation",
   async () => {
     await button.click();
-    await rail.getByLabel("Accent", { exact: true }).selectOption("blue");
+    await selectAccent(rail, "Accent", "blue");
     await rail.getByLabel("Typography", { exact: true }).selectOption("large");
     await rail.getByLabel("Density", { exact: true }).selectOption("standard");
     await rail.getByLabel("Corner radius", { exact: true }).focus();
@@ -236,41 +248,37 @@ await check("simulated error feedback returns to idle", async () => {
     .click();
 });
 await check(
-  "Sheet example saves changes and discards cancelled drafts",
+  "Sheet example saves a customer and discards cancelled drafts",
   async () => {
-    await page
-      .locator(".docs-sidebar nav")
-      .getByRole("button", { name: "Sheet", exact: true })
-      .click();
-    const trigger = page
-      .locator(".examples-canvas")
-      .getByRole("button", { name: "Edit customer information", exact: true });
+    // Create customer is not on a docs page; drive the example (empty table)
+    // in the forms fixture.
+    await page.goto(`${base}/tests/browser/forms-fixture.html?dir=ltr`);
+    const trigger = page.getByRole("button", {
+        name: "Create customer",
+        exact: true,
+      }),
+      name = page.getByRole("textbox", { name: "Customer name", exact: true }),
+      names = () =>
+        page
+          .getByRole("table", { name: "Customers", exact: true })
+          .locator("tbody th[scope=row]")
+          .allInnerTexts();
+    assert.deepEqual(await names(), []);
     await trigger.click();
-    await page.getByLabel("Company name", { exact: true }).fill("QA Company");
+    await name.fill("QA Company");
     await page
-      .getByRole("button", { name: "Save changes", exact: true })
+      .getByRole("button", { name: "Save customer", exact: true })
       .click();
     await page.waitForFunction(() => !document.querySelector(".tz-sheet"));
-    assert.ok(
-      (
-        await page.locator(".examples-canvas .example-feedback").textContent()
-      ).includes("Saved for this session"),
-    );
+    assert.deepEqual(await names(), ["QA Company"]);
     await trigger.click();
-    assert.equal(
-      await page.getByLabel("Company name", { exact: true }).inputValue(),
-      "QA Company",
-    );
-    await page
-      .getByLabel("Company name", { exact: true })
-      .fill("Discard this draft");
+    assert.equal(await name.inputValue(), "");
+    await name.fill("Discard this draft");
     await page.getByRole("button", { name: "Cancel", exact: true }).click();
     await page.waitForFunction(() => !document.querySelector(".tz-sheet"));
+    assert.deepEqual(await names(), ["QA Company"]);
     await trigger.click();
-    assert.equal(
-      await page.getByLabel("Company name", { exact: true }).inputValue(),
-      "QA Company",
-    );
+    assert.equal(await name.inputValue(), "");
     await page.keyboard.press("Escape");
     await page.waitForFunction(() => !document.querySelector(".tz-sheet"));
     assert.ok(await trigger.evaluate((el) => el === document.activeElement));
@@ -282,6 +290,7 @@ await check(
     });
   },
 );
+await page.goto(base);
 await page
   .locator(".docs-sidebar nav")
   .getByRole("button", { name: "Toast", exact: true })
@@ -327,7 +336,7 @@ await check(
     await rail.getByLabel("Duration · ms", { exact: true }).fill("5000");
     await trigger.click();
     const styleStarted = Date.now();
-    await rail.getByLabel("Accent", { exact: true }).selectOption("plum");
+    await selectAccent(rail, "Accent", "plum");
     await rail.getByLabel("Typography", { exact: true }).selectOption("large");
     await page
       .getByRole("button", { name: "Toggle theme", exact: true })

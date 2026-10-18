@@ -21,9 +21,13 @@ const check = (name) => {
   checks.push(name);
   console.log(`PASS ${name}`);
 };
+// Groups and row count follow navigationGroups in src/workbench/catalog.ts.
+const rowCount = 67;
 const names = {
   ar: [
+    "أنماط الذكاء الاصطناعي",
     "النماذج",
+    "الملفات",
     "التنقّل",
     "البيانات",
     "العرض والتنبيهات",
@@ -31,7 +35,9 @@ const names = {
     "الرسوم",
   ],
   en: [
+    "AI patterns",
     "Forms",
+    "Files",
     "Navigation",
     "Data",
     "Display & feedback",
@@ -72,21 +78,11 @@ try {
           ),
         names[language],
       );
-      assert.equal(await menu.getByRole("button").count(), 32);
+      assert.equal(await menu.getByRole("button").count(), rowCount);
       for (const group of await menu.getByRole("group").all())
         assert.ok((await group.getByRole("button").count()) > 0);
       const labels = await menu.getByRole("button").allTextContents();
-      assert.equal(new Set(labels).size, 32);
-      assert.ok(
-        !(await menu.innerText()).includes(
-          language === "ar" ? "الملفات" : "Files",
-        ),
-      );
-      assert.ok(
-        !(await menu.innerText()).includes(
-          language === "ar" ? "أنماط الذكاء الاصطناعي" : "AI patterns",
-        ),
-      );
+      assert.equal(new Set(labels).size, rowCount);
       assert.equal(
         await menu
           .locator(".component-nav-heading")
@@ -123,7 +119,9 @@ try {
     }
   const enMenu = nav("en");
   for (const name of [
+    "Terminal",
     "Input",
+    "FileTree",
     "Sidebar",
     "DataTable",
     "Alert",
@@ -158,8 +156,9 @@ try {
   );
   await page.setViewportSize({ width: 1440, height: 380 });
   const arMenu = nav("ar");
-  await arMenu.getByRole("button", { name: "الأزرار", exact: true }).focus();
-  for (let index = 0; index < 31; index++) await page.keyboard.press("Tab");
+  await arMenu.getByRole("button", { name: "الطرفية", exact: true }).focus();
+  for (let index = 0; index < rowCount - 1; index++)
+    await page.keyboard.press("Tab");
   assert.equal(
     await arMenu
       .getByRole("button", { name: "الرسم الحلقي", exact: true })
@@ -187,7 +186,7 @@ try {
       ),
     names.ar,
   );
-  assert.equal(await dialog.getByRole("button").count(), 33);
+  assert.equal(await dialog.getByRole("button").count(), rowCount + 1);
   await dialog
     .getByRole("button", { name: "الرسم الحلقي", exact: true })
     .focus();

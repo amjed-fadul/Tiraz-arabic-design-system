@@ -2,9 +2,8 @@ import { createRequire } from "node:module";
 import { writeFile, mkdir } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url),
-  {
-    chromium,
-  } = require("/Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright");
+  { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
+const base = process.env.TIRAZ_URL || "http://127.0.0.1:5227";
 const out = "docs/slider-otp-date/otp-correction";
 await mkdir(out, { recursive: true });
 const browser = await chromium.launch({
@@ -77,10 +76,25 @@ async function clickSlot(index, control = input(), modifiers = []) {
   });
 }
 async function centers(label) {
+  // Measure settled slots (the caret blink is the only infinite animation).
+  await group().evaluate((el) =>
+    Promise.all(
+      el
+        .getAnimations({ subtree: true })
+        .filter((a) => a.effect.getComputedTiming().iterations !== Infinity)
+        .map((a) => a.finished),
+    ),
+  );
   const result = await group().evaluate((el) => {
     const slots = [...el.querySelectorAll(".tz-otp-slot")];
+    const probe = document.createElement("span");
+    probe.style.borderColor = "var(--focus)";
+    el.append(probe);
+    const focus = getComputedStyle(probe).borderColor;
+    probe.remove();
     return {
       value: el.querySelector("input").value,
+      focus,
       slots: slots.map((slot) => {
         const digit = slot.querySelector(".tz-otp-digit"),
           s = slot.getBoundingClientRect(),
@@ -93,6 +107,7 @@ async function centers(label) {
           border: style.borderColor,
           outline: style.outlineWidth,
           outlineStyle: style.outlineStyle,
+          shadow: style.boxShadow,
           active: slot.hasAttribute("data-active"),
         };
       }),
@@ -110,8 +125,19 @@ async function centers(label) {
   assert.equal(result.inputOpacity, "0");
   assert.equal(result.inputOutline, "none");
   assert.ok(result.slots.filter((s) => s.active).length === 1);
-  assert.ok(result.slots.filter((s) => s.outlineStyle !== "none").length === 1);
-  assert.equal(new Set(result.slots.map((s) => s.border)).size, 1);
+  // Only the active slot takes the accent edge plus the 3px focus halo
+  // (.tz-otp-slot[data-active]); no slot draws an outline.
+  assert.ok(result.slots.every((s) => s.outlineStyle === "none"));
+  const rings = result.slots.filter((s) => /0px 0px 0px 3px/.test(s.shadow));
+  assert.ok(
+    rings.length === 1 && rings[0].active,
+    JSON.stringify({ label, slots: result.slots }),
+  );
+  assert.equal(rings[0].border, result.focus);
+  assert.equal(
+    new Set(result.slots.filter((s) => !s.active).map((s) => s.border)).size,
+    1,
+  );
   geometry.push({ label, ...result });
 }
 try {
@@ -128,7 +154,7 @@ try {
               density,
             });
             await page.goto(
-              `http://127.0.0.1:5227/tests/browser/otp-correction.html?${query}`,
+              `${base}/tests/browser/otp-correction.html?${query}`,
             );
             await page.evaluate(() => document.fonts.ready);
             assert.equal(await input().getAttribute("dir"), "ltr");
@@ -211,7 +237,7 @@ try {
   for (const language of ["ar", "en"]) {
     await page.setViewportSize({ width: 1100, height: 850 });
     await page.goto(
-      `http://127.0.0.1:5227/tests/browser/otp-correction.html?language=${language}`,
+      `${base}/tests/browser/otp-correction.html?language=${language}`,
     );
     for (const value of ["", "001", "001234", "000000"]) {
       await input().fill(value);
@@ -354,7 +380,7 @@ try {
       `${language}: disabled/readonly selection, separate error borders and active focus, controlled rejection/external value, reset`,
     );
   }
-  await page.goto("http://127.0.0.1:5227/tests/browser/otp-correction.html");
+  await page.goto(`${base}/tests/browser/otp-correction.html`);
   await input().fill("000000");
   await input().press("End");
   await expectSelection(6, 6, 5);

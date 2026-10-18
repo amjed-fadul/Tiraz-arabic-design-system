@@ -297,16 +297,32 @@ try {
   );
   assert.ok(
     await restoredPreview
-      .getByRole("heading", { level: 4, name: "Components", exact: true })
+      .getByRole("heading", { level: 3, name: "Components", exact: true })
       .isVisible(),
   );
   check(
     "sample native hash reload and browser Back keep note destination visible/current",
   );
+  // The footer action opens the Settings destination.
   await preview
-    .getByRole("button", { name: "Example details", exact: true })
+    .getByRole("button", { name: "Account settings", exact: true })
     .click();
-  assert.ok((await preview.innerText()).includes("no service or saved data"));
+  const settingsHeading = preview.getByRole("heading", {
+    level: 3,
+    name: "Settings",
+    exact: true,
+  });
+  await settingsHeading.waitFor();
+  await page.waitForFunction(
+    () => document.activeElement?.textContent === "Settings",
+  );
+  assert.equal(
+    await preview
+      .getByRole("link", { name: "Settings", exact: true })
+      .getAttribute("aria-current"),
+    "page",
+  );
+  assert.ok((await preview.innerText()).includes("Riyadh (GMT+3)"));
   await page
     .getByRole("button", { name: "Copy agent prompt", exact: true })
     .click();

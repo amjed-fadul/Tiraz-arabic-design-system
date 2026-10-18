@@ -147,14 +147,14 @@ try {
               await page
                 .getByRole("region", { name: "Card", exact: true })
                 .getByRole("button", {
-                  name: ar ? "قراءة الملاحظات" : "Read notes",
+                  name: ar ? "عرض الملاحظات" : "Read notes",
                 })
                 .click();
               assert(
                 await page
                   .getByText(
                     ar
-                      ? "استخدم الرموز المشتركة للمسافات والزوايا."
+                      ? "استخدم القيم المشتركة للمسافات والزوايا."
                       : "Use shared tokens for spacing and corners.",
                     { exact: true },
                   )
@@ -318,7 +318,8 @@ try {
     padding: getComputedStyle(el.querySelector(".tz-card-header")).padding,
     action: getComputedStyle(el).getPropertyValue("--action"),
   }));
-  assert.equal(settings.radius, "16px");
+  // .tz-card uses calc(var(--radius) + 4px): radius 16 renders 20px.
+  assert.equal(settings.radius, "20px");
   assert.equal(settings.size, "16px");
   assert.equal(settings.padding, "16px");
   assert.match(settings.action, /D6B6E5/i);
@@ -368,14 +369,14 @@ try {
         if (component === "card") {
           await preview
             .getByRole("button", {
-              name: ar ? "قراءة الملاحظات" : "Read notes",
+              name: ar ? "عرض الملاحظات" : "Read notes",
             })
             .click();
           assert(
             await preview
               .getByText(
                 ar
-                  ? "استخدم الرموز المشتركة للمسافات والزوايا."
+                  ? "استخدم القيم المشتركة للمسافات والزوايا."
                   : "Use shared tokens for spacing and corners.",
               )
               .isVisible(),
@@ -384,7 +385,7 @@ try {
         if (component === "accordion") {
           await preview
             .getByRole("button", {
-              name: ar ? "التنسيق" : "Layout",
+              name: ar ? "هل يمكنني تغيير خطتي؟" : "Can I change my plan?",
               exact: true,
             })
             .click();
@@ -464,26 +465,29 @@ try {
     );
   });
   await page.reload();
-  await page.getByLabel("Accent").selectOption("blue");
+  // Accent is a Radix Select: open it and pick the option by name.
+  await page.getByRole("combobox", { name: "Accent", exact: true }).click();
+  await page.getByRole("option", { name: "Blue", exact: true }).click();
+  await page.getByRole("listbox").waitFor({ state: "detached" });
   await page.getByLabel("Density", { exact: true }).selectOption("standard");
   await page.getByLabel("Typography", { exact: true }).selectOption("large");
   await page.getByLabel("Corner radius").fill("16");
   await page.getByRole("switch", { name: "Reduce motion" }).click();
   await page.getByRole("button", { name: "Toggle theme" }).click();
   const preview = page.getByRole("region", { name: "Interactive playground" });
+  // The playground region sits inside its provider.
+  const provider = page.locator(".playground-region > .tiraz-system");
   await preview.getByRole("button", { name: "Next", exact: true }).click();
   assert.equal(await preview.locator("[aria-current=page]").textContent(), "2");
-  assert.equal(
-    await preview.locator(".tiraz-system").getAttribute("data-theme"),
-    "dark",
-  );
-  assert.equal(
-    await preview.locator(".tiraz-system").getAttribute("data-density"),
-    "standard",
-  );
-  assert.equal(
-    await preview.locator(".tiraz-system").getAttribute("data-typography"),
-    "large",
+  assert.equal(await provider.getAttribute("data-theme"), "dark");
+  assert.equal(await provider.getAttribute("data-density"), "standard");
+  assert.equal(await provider.getAttribute("data-typography"), "large");
+  // accentColors.blue.dark in src/system/config.ts.
+  assert.match(
+    await provider.evaluate((el) =>
+      getComputedStyle(el).getPropertyValue("--action"),
+    ),
+    /A8C6EF/i,
   );
   await snap("docs-pagination-live-customization.png");
   report.checks.push(

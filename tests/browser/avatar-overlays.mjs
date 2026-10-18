@@ -196,8 +196,8 @@ try {
   await assertFocused(layout);
   await layout.click();
   await page.getByRole("option", { name: "Cards", exact: true }).click();
-  await page.getByRole("button", { name: "Preview actions" }).click();
-  await page.getByRole("menuitem", { name: "Reset to list" }).click();
+  await page.getByRole("button", { name: "More options" }).click();
+  await page.getByRole("menuitem", { name: "Restore default" }).click();
   assert.match(await layout.textContent(), /List/);
   await page.getByRole("button", { name: "Done", exact: true }).click();
   await dialog.waitFor({ state: "detached" });

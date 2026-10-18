@@ -15,6 +15,8 @@ const context = await browser.newContext({
   permissions: ["clipboard-read", "clipboard-write"],
 });
 const page = await context.newPage();
+// Fail fast on a stale locator instead of waiting Playwright's 30 s default.
+page.setDefaultTimeout(10000);
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5176";
 const report = {
   system: [],
@@ -28,12 +30,55 @@ const report = {
   failures: [],
 };
 page.on("pageerror", (e) => report.errors.push(e.message));
-import { ids, names } from "./inventory.mjs";
+import { ids as catalogIds, names as catalogNames } from "./inventory.mjs";
+// Only the eight foundation components; the branches below index into
+// this order.
+const ids = [
+  "button",
+  "tabs",
+  "switch",
+  "dropdown",
+  "sheet",
+  "toast",
+  "input",
+  "select",
+];
+const names = Object.fromEntries(
+  Object.entries(catalogNames).map(([language, list]) => [
+    language,
+    ids.map((id) => {
+      assert.ok(catalogIds.includes(id), `${id} is in the catalog`);
+      return list[catalogIds.indexOf(id)];
+    }),
+  ]),
+);
 let lang = "en";
 const label = (en, ar) => (lang === "en" ? en : ar);
 const rail = () => page.locator(".customization-rail");
 const canvas = () => page.locator(".playground-canvas");
-const code = () => page.locator(".usage-section pre code");
+// Generated code is shown in the playground frame's Code view; read it there
+// and return to the preview.
+async function readCode() {
+  const section = page.locator(".playground-section"),
+    views = section.getByRole("tablist", {
+      name: label("View", "طريقة العرض"),
+      exact: true,
+    });
+  await views
+    .getByRole("tab", { name: label("Code", "الكود"), exact: true })
+    .click();
+  const text = await section
+    .getByRole("region", {
+      name: label("Code: src/Example.tsx", "الكود: src/Example.tsx"),
+      exact: true,
+    })
+    .locator("pre > code")
+    .textContent();
+  await views
+    .getByRole("tab", { name: label("Preview", "معاينة"), exact: true })
+    .click();
+  return text;
+}
 async function check(name, fn) {
   try {
     await fn();
@@ -61,6 +106,25 @@ async function nav(i) {
 }
 async function select(en, ar, value) {
   await rail().getByLabel(label(en, ar), { exact: true }).selectOption(value);
+}
+// Accent is a Radix Select: open it and pick the option by name.
+const accentNames = {
+  sage: ["أخضر", "Green"],
+  blue: ["أزرق", "Blue"],
+  plum: ["بنفسجي", "Purple"],
+  clay: ["بني", "Brown"],
+};
+async function selectAccent(scope, value) {
+  await scope
+    .getByLabel(label("Accent", "اللون الأساسي"), { exact: true })
+    .click();
+  const popup = page.locator(".accent-popup");
+  await popup
+    .getByRole("option", {
+      name: new RegExp(`^(${accentNames[value].join("|")})$`),
+    })
+    .click();
+  await popup.waitFor({ state: "detached" });
 }
 async function fill(en, ar, value) {
   const el = rail().getByLabel(label(en, ar), { exact: true });
@@ -153,8 +217,10 @@ for (let i = 0; i < ids.length; i++) {
     });
     await select("Typography", "حجم النص", "large");
     const large = await metrics();
-    assert.equal(large.providers[0].font, "16px");
-    assert.equal(large.providers[1].font, "16px");
+    // Every provider on the page follows the shared settings (only the
+    // playground's).
+    assert.ok(large.providers.length >= 1);
+    for (const provider of large.providers) assert.equal(provider.font, "16px");
     report.system.push({
       component: ids[i],
       control: "typography",
@@ -162,9 +228,10 @@ for (let i = 0; i < ids.length; i++) {
     });
     await select("Typography", "حجم النص", "standard");
     for (const accent of ["sage", "blue", "plum", "clay"]) {
-      await select("Accent", "اللون الأساسي", accent);
+      await selectAccent(rail(), accent);
       const m = await metrics();
-      assert.equal(m.providers[0].action, m.providers[1].action);
+      for (const provider of m.providers)
+        assert.equal(provider.action, m.providers[0].action);
       report.system.push({
         component: ids[i],
         control: "accent",
@@ -174,8 +241,7 @@ for (let i = 0; i < ids.length; i++) {
     }
     await fill("Corner radius", "استدارة الزوايا", "16");
     let m = await metrics();
-    assert.equal(m.providers[0].radius, "16px");
-    assert.equal(m.providers[1].radius, "16px");
+    for (const provider of m.providers) assert.equal(provider.radius, "16px");
     report.system.push({ component: ids[i], control: "corners", metrics: m });
     await setMotion(true);
     m = await metrics();
@@ -375,8 +441,13 @@ for (const language of ["en", "ar"]) {
         );
         await page.keyboard.press("Enter");
         await page.waitForFunction(() => !document.querySelector(".tz-menu"));
+        // The playground's event log is visually hidden but still announced.
         assert.ok(
-          (await page.locator(".event-feedback").textContent()).includes('"b"'),
+          (
+            await page
+              .locator(".playground-section > [role=status]")
+              .textContent()
+          ).includes('"b"'),
         );
         await rail()
           .getByLabel(label("Items", "العناصر"), { exact: true })
@@ -426,7 +497,7 @@ for (const language of ["en", "ar"]) {
         await fill("Label", "التسمية", "QA input");
         await fill("Helper text", "النص المساعد", "QA helper");
         await fill("Error message", "رسالة الخطأ", "QA error");
-        await fill("Placeholder", "النص المؤقت", "QA placeholder");
+        await fill("Placeholder", "النص الإرشادي", "QA placeholder");
         await select("Size", "الحجم", "md");
         const input = canvas().getByRole("textbox");
         await input.fill("QA input · مدار");
@@ -440,7 +511,7 @@ for (const language of ["en", "ar"]) {
         assert.equal(await input.getAttribute("readonly"), "");
         assert.equal(await input.getAttribute("aria-invalid"), "true");
       } else if (i === 7) {
-        await fill("Placeholder", "النص المؤقت", "QA choose");
+        await fill("Placeholder", "النص الإرشادي", "QA choose");
         await select("Size", "الحجم", "md");
         const options = [
           { value: "one", label: "QA One" },
@@ -517,7 +588,7 @@ for (const language of ["en", "ar"]) {
         navigation: true,
         reload: true,
       });
-      await select("Accent", "اللون الأساسي", "plum");
+      await selectAccent(rail(), "plum");
       await select("Typography", "حجم النص", "large");
       await select("Density", "الكثافة", "standard");
       await fill("Corner radius", "استدارة الزوايا", "16");
@@ -529,7 +600,7 @@ for (const language of ["en", "ar"]) {
         .waitFor();
       assert.deepEqual((await saved()).system, configBeforeReload.system);
       assert.equal((await saved()).theme, configBeforeReload.theme);
-      const generated = await code().textContent();
+      const generated = await readCode();
       for (const token of [
         'accent: "plum"',
         'typography: "large"',
@@ -637,7 +708,10 @@ for (const language of ["ar", "en"])
           }));
           assert.equal(doc.lang, lang);
           assert.equal(doc.dir, lang === "ar" ? "rtl" : "ltr");
-          assert.ok(doc.width <= doc.inner);
+          assert.ok(
+            doc.width <= doc.inner,
+            `page scrolls horizontally: scrollWidth ${doc.width} > ${doc.inner}`,
+          );
           assert.ok(doc.themes.every((t) => t === theme));
           if (i === 3) {
             await canvas().getByRole("button").click();
@@ -704,9 +778,7 @@ for (const language of ["ar", "en"]) {
       const trigger = page.locator(".mobile-settings button");
       await trigger.click();
       const drawer = page.locator(".docs-drawer");
-      await drawer
-        .getByLabel(label("Accent", "اللون الأساسي"), { exact: true })
-        .selectOption("blue");
+      await selectAccent(drawer, "blue");
       await drawer
         .getByLabel(label("Typography", "حجم النص"), { exact: true })
         .selectOption("large");

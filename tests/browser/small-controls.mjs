@@ -9,14 +9,21 @@ const browser = await chromium.launch({
     ? { executablePath: process.env.TIRAZ_BROWSER }
     : {}),
 });
-const page = await browser.newPage();
-page.setDefaultTimeout(10000);
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5205";
 const out =
   process.env.TIRAZ_EVIDENCE || "docs/form-controls-and-badge/browser";
 await mkdir(out, { recursive: true });
 const report = { matrix: [], checks: [], errors: [] };
-page.on("pageerror", (e) => report.errors.push(e.message));
+let page;
+// After ~115 documents in one tab Vite's HMR socket drops and force-reloads
+// the page; the 256-document matrix starts a fresh tab per block.
+async function openPage() {
+  await page?.close();
+  page = await browser.newPage();
+  page.setDefaultTimeout(10000);
+  page.on("pageerror", (e) => report.errors.push(e.message));
+}
+await openPage();
 async function formData(id) {
   return page.evaluate(
     (id) => Object.fromEntries(new FormData(document.getElementById(id))),
@@ -151,7 +158,7 @@ try {
       badge: "الشارة",
       checkbox: "مربع الاختيار",
       "radio-group": "مجموعة الخيارات",
-      textarea: "النص المتعدد",
+      textarea: "مربع النص",
     },
     en: {
       badge: "Badge",
@@ -162,7 +169,8 @@ try {
   };
   for (const language of ["ar", "en"])
     for (const theme of ["light", "dark"])
-      for (const density of ["compact", "standard"])
+      for (const density of ["compact", "standard"]) {
+        await openPage();
         for (const typography of ["standard", "large"])
           for (const width of [320, 1440]) {
             await page.setViewportSize({ width, height: 900 });
@@ -245,37 +253,57 @@ try {
                 assert.equal(await c.isChecked(), true);
               }
               if (id === "badge") {
-                const contrasts = await page
-                  .locator(".examples-section .tz-badge")
-                  .evaluateAll((els) => {
-                    const luminance = (color) => {
-                      const values = color
-                        .match(/[\d.]+/g)
-                        .slice(0, 3)
-                        .map(Number)
-                        .map((v) => {
-                          v /= 255;
-                          return v <= 0.04045
-                            ? v / 12.92
-                            : ((v + 0.055) / 1.055) ** 2.4;
+                // The page shows one badge; cycle its tone in the inspector.
+                const tone = page
+                  .locator(".inspector-field", {
+                    has: page.getByText(language === "ar" ? "النوع" : "Tone", {
+                      exact: true,
+                    }),
+                  })
+                  .locator("select");
+                const contrasts = [];
+                for (const value of ["neutral", "success", "error", "info"]) {
+                  await tone.selectOption(value, { force: true });
+                  await page
+                    .locator(
+                      `.playground-region .tz-badge[data-tone="${value}"]`,
+                    )
+                    .waitFor({ state: "attached" });
+                  contrasts.push(
+                    ...(await page
+                      .locator(".playground-region .tz-badge")
+                      .evaluateAll((els) => {
+                        const luminance = (color) => {
+                          const values = color
+                            .match(/[\d.]+/g)
+                            .slice(0, 3)
+                            .map(Number)
+                            .map((v) => {
+                              v /= 255;
+                              return v <= 0.04045
+                                ? v / 12.92
+                                : ((v + 0.055) / 1.055) ** 2.4;
+                            });
+                          return (
+                            values[0] * 0.2126 +
+                            values[1] * 0.7152 +
+                            values[2] * 0.0722
+                          );
+                        };
+                        return els.map((el) => {
+                          const css = getComputedStyle(el),
+                            a = luminance(css.color),
+                            b = luminance(css.backgroundColor);
+                          return {
+                            tone: el.dataset.tone,
+                            ratio:
+                              (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+                          };
                         });
-                      return (
-                        values[0] * 0.2126 +
-                        values[1] * 0.7152 +
-                        values[2] * 0.0722
-                      );
-                    };
-                    return els.map((el) => {
-                      const css = getComputedStyle(el),
-                        a = luminance(css.color),
-                        b = luminance(css.backgroundColor);
-                      return {
-                        tone: el.dataset.tone,
-                        ratio:
-                          (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
-                      };
-                    });
-                  });
+                      })),
+                  );
+                }
+                assert.equal(contrasts.length, 4);
                 assert.ok(
                   contrasts.every((c) => c.ratio >= 4.5),
                   "Badge text contrast",
@@ -294,24 +322,6 @@ try {
                   true,
                 );
                 assert.equal(m.resize, "vertical");
-              }
-              if (id === "textarea") {
-                const geometry = await page
-                  .locator(".examples-section input[type=radio]")
-                  .first()
-                  .evaluate((el) => ({
-                    input: el.getBoundingClientRect().width,
-                    label: el.nextElementSibling.getBoundingClientRect().width,
-                    option: el.parentElement.getBoundingClientRect().width,
-                  }));
-                assert.ok(
-                  geometry.input <= 24,
-                  "Form radio must retain compact native control geometry",
-                );
-                assert.ok(
-                  geometry.label > geometry.input,
-                  "Form option label must remain readable",
-                );
               }
               report.matrix.push({
                 id,
@@ -336,6 +346,7 @@ try {
                 });
             }
           }
+      }
   // Same mounted preview responds to every shared customization setting.
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(base);
@@ -356,7 +367,13 @@ try {
   const textarea = page.locator(".playground-region textarea");
   await textarea.fill("Keep this draft");
   const original = await textarea.elementHandle();
-  await rail.getByLabel("Accent", { exact: true }).selectOption("plum");
+  // Accent is a Radix Select: open it and pick the option by name.
+  await rail.getByLabel("Accent", { exact: true }).click();
+  await page
+    .locator(".accent-popup")
+    .getByRole("option", { name: "Purple", exact: true })
+    .click();
+  await page.locator(".accent-popup").waitFor({ state: "detached" });
   await rail.getByLabel("Density", { exact: true }).selectOption("standard");
   await rail.getByLabel("Typography", { exact: true }).selectOption("large");
   await rail.getByLabel("Corner radius", { exact: true }).focus();
@@ -371,32 +388,6 @@ try {
   );
   report.checks.push(
     "Mounted textarea retains draft and node through live accent/density/text scale/corners/reduced-motion changes",
-  );
-  const form = page.locator(".examples-section form");
-  await form.getByRole("button", { name: "Check form", exact: true }).click();
-  assert.equal(
-    await form
-      .getByRole("textbox", { name: "Notes", exact: true })
-      .getAttribute("aria-invalid"),
-    "true",
-  );
-  await form
-    .getByRole("textbox", { name: "Notes", exact: true })
-    .fill("Useful note");
-  await form.getByRole("button", { name: "Check form", exact: true }).click();
-  assert.equal(
-    await form.getByRole("status").innerText(),
-    "Form check passed.",
-  );
-  await form.getByRole("button", { name: "Reset", exact: true }).click();
-  assert.equal(
-    await form
-      .getByRole("textbox", { name: "Notes", exact: true })
-      .inputValue(),
-    "",
-  );
-  report.checks.push(
-    "Connected form checks required notes, focuses error, reports validation and resets",
   );
   const axeSource = require.resolve("axe-core/axe.min.js");
   await page.addScriptTag({ path: axeSource });
@@ -422,6 +413,95 @@ try {
         .filter((r) => r.name.includes(".woff")).length,
     })),
   });
+  // FeedbackForm is not on a docs page; drive the exported example in its own
+  // fixture across the same language/theme/density/typography/width matrix.
+  await openPage();
+  const fixture = (query) =>
+    page.goto(
+      `${base}/tests/browser/feedback-form-fixture.html?${new URLSearchParams(query)}`,
+    );
+  report.formGeometry = [];
+  for (const language of ["ar", "en"])
+    for (const theme of ["light", "dark"])
+      for (const density of ["compact", "standard"])
+        for (const typography of ["standard", "large"])
+          for (const width of [320, 1440]) {
+            await page.setViewportSize({ width, height: 900 });
+            await fixture({ lang: language, theme, density, typography });
+            await page.evaluate(() => document.fonts.ready);
+            const geometry = await page
+              .locator("form input[type=radio]")
+              .first()
+              .evaluate((el) => ({
+                input: el.getBoundingClientRect().width,
+                label: el.nextElementSibling.getBoundingClientRect().width,
+                option: el.parentElement.getBoundingClientRect().width,
+                overflow: document.documentElement.scrollWidth > innerWidth,
+              }));
+            assert.ok(
+              geometry.input <= 24,
+              "Form radio must retain compact native control geometry",
+            );
+            assert.ok(
+              geometry.label > geometry.input,
+              "Form option label must remain readable",
+            );
+            assert.equal(geometry.overflow, false);
+            report.formGeometry.push({
+              language,
+              theme,
+              density,
+              typography,
+              width,
+              ...geometry,
+            });
+          }
+  // Sending validates, then resets the form natively.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await fixture({ lang: "en" });
+  const form = page.locator("form");
+  await form
+    .getByRole("button", { name: "Send feedback", exact: true })
+    .click();
+  assert.equal(
+    await form
+      .getByRole("textbox", { name: "Notes", exact: true })
+      .getAttribute("aria-invalid"),
+    "true",
+  );
+  assert.equal(
+    await form
+      .getByRole("textbox", { name: "Notes", exact: true })
+      .evaluate((el) => el === document.activeElement),
+    true,
+  );
+  await form
+    .getByRole("textbox", { name: "Notes", exact: true })
+    .fill("Useful note");
+  await form
+    .getByRole("button", { name: "Send feedback", exact: true })
+    .click();
+  assert.equal(
+    await form.getByRole("status").innerText(),
+    "Thanks — we received your note.",
+  );
+  await page.waitForFunction(
+    () => document.querySelector("form textarea").value === "",
+  );
+  await page.addScriptTag({ path: axeSource });
+  const formAxe = await page.evaluate(
+    async () =>
+      await window.axe.run(document.querySelector("main"), {
+        rules: { "color-contrast": { enabled: false } },
+      }),
+  );
+  assert.deepEqual(
+    formAxe.violations.map((v) => ({ id: v.id, impact: v.impact })),
+    [],
+  );
+  report.checks.push(
+    "Connected form checks required notes, focuses error, confirms sending and resets natively (FeedbackForm fixture; no axe violations)",
+  );
   assert.deepEqual(report.errors, []);
 } finally {
   await writeFile(out + "/results.json", JSON.stringify(report, null, 2));

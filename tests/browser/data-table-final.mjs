@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
@@ -11,7 +11,8 @@ const browser = await chromium.launch({
 });
 const page = await browser.newPage();
 page.setDefaultTimeout(10000);
-const out = "docs/data-table-v1/browser";
+const out = process.env.TIRAZ_EVIDENCE || "docs/data-table-v1/browser";
+await mkdir(out, { recursive: true });
 const report = { checks: [], errors: [] };
 page.on("pageerror", (e) => report.errors.push(e.message));
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5204";
@@ -27,6 +28,21 @@ async function setValue(label, value) {
     el.dispatchEvent(new Event("input", { bubbles: true }));
     el.dispatchEvent(new Event("change", { bubbles: true }));
   }, value);
+}
+// The open overlay blocks the rail, so pick the Accent option with the
+// Radix Select trigger's closed-state typeahead.
+async function chooseAccent(name) {
+  const trigger = page.getByLabel("Accent", { exact: true });
+  await trigger.evaluate((el, name) => {
+    for (const key of name)
+      el.dispatchEvent(
+        new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }),
+      );
+  }, name);
+  await page.waitForFunction(
+    ([el, name]) => el.textContent.trim() === name,
+    [await trigger.elementHandle(), name],
+  );
 }
 async function capture(path) {
   const dialog = page.getByRole("dialog");
@@ -64,12 +80,14 @@ try {
   await canvas()
     .getByRole("button", { name: "Actions for Nadia Hassan", exact: true })
     .click();
-  await setValue("Accent", "blue");
+  await chooseAccent("Blue");
   const menu = page.getByRole("menu");
   assert.equal(await menu.count(), 1);
   const actionToken = await menu.evaluate((el) =>
     getComputedStyle(el).getPropertyValue("--action").trim(),
   );
+  // accentColors.blue.light in src/system/config.ts.
+  assert.equal(actionToken.toUpperCase(), "#365B87");
   assert.equal(
     actionToken,
     await canvas().evaluate((el) =>
@@ -122,7 +140,7 @@ try {
   await page.setViewportSize({ width: 320, height: 900 });
   await page.emulateMedia({ reducedMotion: "reduce" });
   const create = canvas().getByRole("button", {
-    name: "إنشاء عميل",
+    name: "إضافة عميل",
     exact: true,
   });
   await create.click();
@@ -144,58 +162,68 @@ try {
     duration,
   });
   // Build/serve the exact clipboard code against only a relocated system directory.
-  await page.setViewportSize({ width: 1280, height: 1000 });
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("http://127.0.0.1:5205", { waitUntil: "networkidle" });
-  const table = page.getByRole("table");
-  assert.equal(await table.locator("tbody tr").count(), 10);
-  await page.getByRole("button", { name: "Next", exact: true }).click();
-  assert.match(await page.getByRole("status").textContent(), /11.*20/);
-  await page.getByRole("searchbox").fill("Portable");
-  assert.match(await table.textContent(), /No matching results/);
-  await page
-    .getByRole("button", { name: "Create customer", exact: true })
-    .click();
-  const form = page.getByRole("dialog");
-  await form
-    .getByRole("textbox", { name: "Customer name", exact: true })
-    .fill("Portable عميل");
-  await form
-    .getByRole("textbox", { name: "Email", exact: true })
-    .fill("portable@example.com");
-  await form
-    .getByRole("button", { name: "Save customer", exact: true })
-    .dblclick();
-  await form.waitFor({ state: "detached" });
-  assert.equal(await table.locator("tbody tr").count(), 1);
-  assert.match(await table.textContent(), /Portable عميل/);
-  await page
-    .getByRole("button", { name: "Dismiss notification", exact: true })
-    .click();
-  const trigger = page.getByRole("button", {
-    name: "Actions for Portable عميل",
-    exact: true,
-  });
-  await trigger.focus();
-  await page.keyboard.press("ArrowDown");
-  await page
-    .getByRole("menuitem", { name: "View details", exact: true })
-    .waitFor();
-  await page.keyboard.press("Enter");
-  await form.waitFor();
-  assert.match(await form.textContent(), /portable@example.com/);
-  await capture(`${out}/source-copy-details.png`);
-  await page.keyboard.press("Escape");
-  await form.waitFor({ state: "detached" });
-  await page.waitForFunction(
-    () =>
-      document.activeElement?.getAttribute("aria-label") ===
-      "Actions for Portable عميل",
-  );
-  report.checks.push({
-    check:
-      "actual clipboard source in standalone copied library app: pagination/search/create-once/Toast/details/keyboard focus restoration",
-  });
+  // Needs data-table-copy-prepare.mjs and a server for the copy
+  // (TIRAZ_COPY_URL); TIRAZ_SKIP_COPY_APP=1 records the check as skipped.
+  if (process.env.TIRAZ_SKIP_COPY_APP)
+    report.skipped = [
+      "actual clipboard source in standalone copied library app (TIRAZ_SKIP_COPY_APP: no copied-app server)",
+    ];
+  else {
+    await page.setViewportSize({ width: 1280, height: 1000 });
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto(process.env.TIRAZ_COPY_URL || "http://127.0.0.1:5205", {
+      waitUntil: "networkidle",
+    });
+    const table = page.getByRole("table");
+    assert.equal(await table.locator("tbody tr").count(), 10);
+    await page.getByRole("button", { name: "Next", exact: true }).click();
+    assert.match(await page.getByRole("status").textContent(), /11.*20/);
+    await page.getByRole("searchbox").fill("Portable");
+    assert.match(await table.textContent(), /No matching results/);
+    await page
+      .getByRole("button", { name: "Create customer", exact: true })
+      .click();
+    const form = page.getByRole("dialog");
+    await form
+      .getByRole("textbox", { name: "Customer name", exact: true })
+      .fill("Portable عميل");
+    await form
+      .getByRole("textbox", { name: "Email", exact: true })
+      .fill("portable@example.com");
+    await form
+      .getByRole("button", { name: "Save customer", exact: true })
+      .dblclick();
+    await form.waitFor({ state: "detached" });
+    assert.equal(await table.locator("tbody tr").count(), 1);
+    assert.match(await table.textContent(), /Portable عميل/);
+    await page
+      .getByRole("button", { name: "Dismiss notification", exact: true })
+      .click();
+    const trigger = page.getByRole("button", {
+      name: "Actions for Portable عميل",
+      exact: true,
+    });
+    await trigger.focus();
+    await page.keyboard.press("ArrowDown");
+    await page
+      .getByRole("menuitem", { name: "View details", exact: true })
+      .waitFor();
+    await page.keyboard.press("Enter");
+    await form.waitFor();
+    assert.match(await form.textContent(), /portable@example.com/);
+    await capture(`${out}/source-copy-details.png`);
+    await page.keyboard.press("Escape");
+    await form.waitFor({ state: "detached" });
+    await page.waitForFunction(
+      () =>
+        document.activeElement?.getAttribute("aria-label") ===
+        "Actions for Portable عميل",
+    );
+    report.checks.push({
+      check:
+        "actual clipboard source in standalone copied library app: pagination/search/create-once/Toast/details/keyboard focus restoration",
+    });
+  }
   assert.deepEqual(report.errors, []);
 } catch (error) {
   report.errors.push(error.stack || String(error));

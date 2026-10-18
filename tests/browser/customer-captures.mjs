@@ -14,6 +14,18 @@ const base = process.env.TIRAZ_URL || "http://127.0.0.1:5198",
   out = process.env.TIRAZ_EVIDENCE || "docs/form-foundation/customer-captures";
 await mkdir(out, { recursive: true });
 const checks = [];
+// Accent is a Radix Select: open it and pick the option by name.
+const accentNames = { blue: ["أزرق", "Blue"] };
+async function selectAccent(scope, accessibleName, value) {
+  await scope.getByLabel(accessibleName, { exact: true }).click();
+  const popup = page.locator(".accent-popup");
+  await popup
+    .getByRole("option", {
+      name: new RegExp(`^(${accentNames[value].join("|")})$`),
+    })
+    .click();
+  await popup.waitFor({ state: "detached" });
+}
 try {
   for (const language of ["ar", "en"])
     for (const theme of ["light", "dark"])
@@ -31,9 +43,14 @@ try {
               exact: true,
             })
             .click();
+        // The customer flow lives in the DataTable playground, which follows
+        // the rail's system settings.
         await page
           .locator(".docs-sidebar nav")
-          .getByRole("button", { name: ar ? "الإدخال" : "Input", exact: true })
+          .getByRole("button", {
+            name: ar ? "جدول البيانات" : "DataTable",
+            exact: true,
+          })
           .click();
         const rail = page.locator(".customization-rail");
         await rail
@@ -42,12 +59,11 @@ try {
         await rail
           .getByLabel(ar ? "حجم النص" : "Typography", { exact: true })
           .selectOption("large");
-        await rail
-          .getByLabel(ar ? "اللون الأساسي" : "Accent", { exact: true })
-          .selectOption("blue");
+        await selectAccent(rail, ar ? "اللون الأساسي" : "Accent", "blue");
         await page
+          .locator(".playground-canvas")
           .getByRole("button", {
-            name: ar ? "إنشاء عميل" : "Create customer",
+            name: ar ? "إضافة عميل" : "Create customer",
             exact: true,
           })
           .click();
