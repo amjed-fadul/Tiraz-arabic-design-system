@@ -3,6 +3,7 @@ import { ChevronDown, ExternalLink } from "lucide-react";
 import { useId, useState } from "react";
 import { sourceHref } from "./source-url";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 
 export interface SourceReference {
   /** Unique, stable application ID; not derived from array position. */
@@ -39,18 +40,18 @@ export interface InlineCitationProps {
 }
 const arabicPlural = new Intl.PluralRules("ar");
 /** Arabic counts agree with the noun: one, the dual, 3–10, then 11 and up. */
-function arabicSourceCount(count: number) {
+function arabicSourceCount(count: number, digits: Intl.NumberFormat) {
   switch (arabicPlural.select(count)) {
     case "one":
       return "مصدر واحد";
     case "two":
       return "مصدران";
     case "few":
-      return `${count} مصادر`;
+      return `${digits.format(count)} مصادر`;
     case "many":
-      return `${count} مصدرًا`;
+      return `${digits.format(count)} مصدرًا`;
     default:
-      return `${count} مصدر`;
+      return `${digits.format(count)} مصدر`;
   }
 }
 function destination(href: string) {
@@ -69,6 +70,9 @@ export function Sources({
 }: SourcesProps) {
   const { config } = useSystem(),
     ar = config.direction === "rtl",
+    digits = new Intl.NumberFormat(numberLocale(config), {
+      useGrouping: false,
+    }),
     id = useId();
   const [expanded, setExpanded] = useState(defaultExpanded);
   const unavailable =
@@ -82,8 +86,8 @@ export function Sources({
   const summary =
     labels?.summary?.(items.length) ??
     (ar
-      ? arabicSourceCount(items.length)
-      : `${items.length} ${items.length === 1 ? "source" : "sources"}`);
+      ? arabicSourceCount(items.length, digits)
+      : `${digits.format(items.length)} ${items.length === 1 ? "source" : "sources"}`);
   return (
     <div className={`tz-sources ${className}`}>
       <button
@@ -107,7 +111,9 @@ export function Sources({
             const href = sourceHref(source.href);
             const content = (
               <>
-                <bdi className="tz-source-number">{source.number}</bdi>{" "}
+                <bdi className="tz-source-number">
+                  {digits.format(source.number)}
+                </bdi>{" "}
                 <span className="tz-source-copy">
                   <strong dir="auto">{source.title}</strong>{" "}
                   {href && (
@@ -148,6 +154,9 @@ export function InlineCitation({
 }: InlineCitationProps) {
   const { config, container } = useSystem(),
     ar = config.direction === "rtl",
+    digits = new Intl.NumberFormat(numberLocale(config), {
+      useGrouping: false,
+    }),
     titleId = useId();
   const href = sourceHref(source.href),
     unavailable =
@@ -156,9 +165,9 @@ export function InlineCitation({
   const name =
     labels?.source?.(source.number, source.title) ??
     (ar
-      ? `المصدر ${source.number}: ${source.title}`
-      : `Source ${source.number}: ${source.title}`);
-  const number = <bdi>{source.number}</bdi>;
+      ? `المصدر ${digits.format(source.number)}: ${source.title}`
+      : `Source ${digits.format(source.number)}: ${source.title}`);
+  const number = <bdi>{digits.format(source.number)}</bdi>;
   const cls = `tz-inline-citation ${className}`;
   if (mode === "link")
     return href ? (

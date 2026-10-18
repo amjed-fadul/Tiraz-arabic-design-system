@@ -108,6 +108,7 @@ function useChart(props: ChartProps, entries: ChartSeries[]) {
   }));
   return {
     locale,
+    numerals: config.numerals,
     direction: config.direction,
     words: chartWords(locale),
     colored,
@@ -122,7 +123,12 @@ function useChart(props: ChartProps, entries: ChartSeries[]) {
     number: (value: unknown) =>
       chartValue(value) === null
         ? chartWords(locale).missing
-        : chartNumber(value as number, locale, props.numberFormat),
+        : chartNumber(
+            value as number,
+            locale,
+            props.numberFormat,
+            config.numerals,
+          ),
   };
 }
 type ChartState = ReturnType<typeof useChart>;
@@ -258,7 +264,7 @@ function CartesianPlot({
   const state = useChart(props, series),
     summaryId = useId();
   const category = (value: string) =>
-    chartCategory(String(value), state.locale, categoryFormat);
+    chartCategory(String(value), state.locale, categoryFormat, state.numerals);
   const values = data.map((row) => ({
     ...row,
     ...Object.fromEntries(
@@ -361,10 +367,12 @@ function CartesianPlot({
                 width={62}
                 tickCount={4}
                 tickFormatter={(value) =>
-                  chartNumber(value, state.locale, {
-                    ...props.numberFormat,
-                    notation: "compact",
-                  })
+                  chartNumber(
+                    value,
+                    state.locale,
+                    { ...props.numberFormat, notation: "compact" },
+                    state.numerals,
+                  )
                 }
                 tick={{
                   fill: "var(--text-secondary)",

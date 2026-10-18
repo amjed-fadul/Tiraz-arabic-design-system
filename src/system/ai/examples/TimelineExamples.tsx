@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { FileText, Phone } from "lucide-react";
-import { Button, Timeline } from "../../index";
+import { Button, Timeline, numberLocale, useSystem } from "../../index";
 import type { TimelineItem } from "../../index";
 
 export interface TimelineExampleProps {
@@ -25,8 +25,9 @@ export function TimelineExample({
   );
   const [details, setDetails] = useState(false);
   const nextId = useRef(1);
+  const locale = numberLocale(useSystem().config, language);
   const format = (dateTime: string) =>
-    new Intl.DateTimeFormat(language === "ar" ? "ar-u-nu-arab" : "en", {
+    new Intl.DateTimeFormat(locale, {
       dateStyle: "medium",
       timeStyle: "short",
       timeZone: "Asia/Dubai",
@@ -89,9 +90,7 @@ export function TimelineExample({
             : undefined,
         },
       ];
-  const count = new Intl.NumberFormat(
-    language === "ar" ? "ar-u-nu-arab" : "en",
-  ).format(calls.length);
+  const count = new Intl.NumberFormat(locale).format(calls.length);
   const items: TimelineItem[] = [
     ...history,
     ...calls.map((call) => ({

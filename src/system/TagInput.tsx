@@ -6,6 +6,7 @@ import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
 import { useSystem } from "./useSystem";
 import { useArrivals } from "./useArrivals";
+import { numberLocale } from "./config";
 
 export interface TagInputLabels {
   remove?: (tag: string) => string;
@@ -72,6 +73,9 @@ export function TagInput({
     maxTags !== undefined && Number.isFinite(maxTags)
       ? Math.max(0, Math.floor(maxTags))
       : undefined;
+  const digits = new Intl.NumberFormat(numberLocale(config), {
+    useGrouping: false,
+  });
   const latest = useRef({ controlled: value !== undefined });
   useLayoutEffect(() => {
     latest.current = { controlled: value !== undefined };
@@ -126,7 +130,7 @@ export function TagInput({
       setFeedback(
         labels?.maximum?.(limit) ??
           (ar
-            ? `الحد الأقصى ${limit} من الوسوم. احذف وسمًا لإضافة آخر.`
+            ? `الحد الأقصى ${digits.format(limit)} من الوسوم. احذف وسمًا لإضافة آخر.`
             : `Maximum of ${limit} tags. Remove a tag to add another.`),
       );
       return;

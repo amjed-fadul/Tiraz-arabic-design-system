@@ -6,6 +6,7 @@ import type { BadgeTone } from "./Badge";
 import { Button } from "./Button";
 import { Card, CardTitle } from "./Card";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 export interface InsightItem {
   id: string;
   title: string;
@@ -34,7 +35,10 @@ export function InsightCards({
   className = "",
 }: InsightCardsProps) {
   const { config } = useSystem(),
-    ar = config.direction === "rtl";
+    ar = config.direction === "rtl",
+    digits = new Intl.NumberFormat(numberLocale(config), {
+      useGrouping: false,
+    });
   const [selected, setSelected] = useState(items[0]?.id);
   const index = Math.max(
       0,
@@ -60,7 +64,7 @@ export function InsightCards({
         <span>{labels?.title ?? (ar ? "النتائج" : "Insights")}</span>
         <span className="tz-insights-position" role="status">
           {labels?.position?.(index + 1, items.length) ??
-            `${index + 1} / ${items.length}`}
+            `${digits.format(index + 1)} / ${digits.format(items.length)}`}
         </span>
         {items.length > 1 && (
           <div className="tz-insights-nav">

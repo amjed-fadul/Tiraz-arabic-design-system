@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Slider } from "../../index";
+import { Slider, numberLocale, useSystem } from "../../index";
 export interface SliderExampleProps {
   language?: "ar" | "en";
   label?: string;
@@ -26,6 +26,7 @@ export function SliderExample({
 }: SliderExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
   const [value, setValue] = useState(40);
+  const locale = numberLocale(useSystem().config, language);
   return (
     <Slider
       key={mode}
@@ -48,7 +49,7 @@ export function SliderExample({
       onValueChange={setValue}
       formatValue={
         showValue
-          ? (next) => new Intl.NumberFormat(language).format(next)
+          ? (next) => new Intl.NumberFormat(locale).format(next)
           : undefined
       }
     />

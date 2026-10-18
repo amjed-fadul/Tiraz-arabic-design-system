@@ -1,4 +1,5 @@
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 export interface ProgressProps {
   label: string;
   value?: number | null;
@@ -19,12 +20,10 @@ export function Progress({
   const formatted =
     normalized === null
       ? undefined
-      : new Intl.NumberFormat(
-          (locale ?? (config.direction === "rtl" ? "ar" : "en")) === "ar"
-            ? "ar-u-nu-arab"
-            : "en",
-          { style: "percent", maximumFractionDigits: 0 },
-        ).format(normalized / 100);
+      : new Intl.NumberFormat(numberLocale(config, locale), {
+          style: "percent",
+          maximumFractionDigits: 0,
+        }).format(normalized / 100);
   return (
     <div className="tz-progress">
       <div className="tz-progress-heading" aria-hidden="true">

@@ -35,6 +35,7 @@ for (const component of ["tag-input", "filter-bar", "input-copy"] as const) {
       accent: defaultConfig.accent,
       density: defaultConfig.density,
       typography: defaultConfig.typography,
+      numerals: defaultConfig.numerals,
       radius: defaultConfig.radius,
       reducedMotion: defaultConfig.reducedMotion,
       direction: "ltr" as const,

@@ -465,3 +465,22 @@ it("keeps the accent popup inside the mobile settings dialog", async () => {
   await user.keyboard("{Escape}");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 });
+it("switches playground digits with the numerals setting and emits it in copied code", async () => {
+  persist(storageKeys.documentation, { language: "ar", active: "progress" });
+  render(<Workbench />);
+  const value = () =>
+    preview().getByRole("progressbar").getAttribute("aria-valuetext");
+  expect(controls().getByLabelText("الأرقام")).toHaveValue("arab");
+  expect(value()).toContain("٦٤");
+  await userEvent.selectOptions(controls().getByLabelText("الأرقام"), "latn");
+  expect(value()).toContain("64");
+  expect(value()).not.toMatch(/[٠-٩]/);
+  expect(readSystem().numerals).toBe("latn");
+  expect(await shownCode()).toContain('"numerals":"latn"');
+  await userEvent.click(screen.getByRole("tab", { name: "معاينة" }));
+  await userEvent.click(
+    controls().getByRole("button", { name: "إعادة ضبط النظام" }),
+  );
+  expect(controls().getByLabelText("الأرقام")).toHaveValue("arab");
+  expect(value()).toContain("٦٤");
+});

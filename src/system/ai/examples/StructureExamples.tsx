@@ -10,6 +10,8 @@ import {
   CardContent,
   CardFooter,
   Pagination,
+  numberLocale,
+  useSystem,
 } from "../../index";
 type Language = "ar" | "en";
 
@@ -166,6 +168,9 @@ export function PaginationExample({
   onPageChange?: (page: number) => void;
 }) {
   const ar = language === "ar";
+  const number = new Intl.NumberFormat(
+    numberLocale(useSystem().config, language),
+  );
   const [localPage, setLocalPage] = useState(initialPage);
   // One guide note per page, at most 20.
   const total = Number.isFinite(totalPages)
@@ -178,7 +183,7 @@ export function PaginationExample({
   const notes = Array.from({ length: total }, (_, index) => ({
     id: index + 1,
     title: ar
-      ? `ملاحظة الدليل ${new Intl.NumberFormat("ar-u-nu-arab").format(index + 1)}`
+      ? `ملاحظة الدليل ${number.format(index + 1)}`
       : `Guide note ${index + 1}`,
   }));
   const visible = notes.slice(page - 1, page);
@@ -207,10 +212,8 @@ export function PaginationExample({
           navigation: ar ? "صفحات الدليل" : "Guide pages",
           previous: ar ? "السابق" : "Previous",
           next: ar ? "التالي" : "Next",
-          page: (number) =>
-            ar
-              ? `الصفحة ${new Intl.NumberFormat("ar-u-nu-arab").format(number)}`
-              : `Page ${number}`,
+          page: (page) =>
+            ar ? `الصفحة ${number.format(page)}` : `Page ${page}`,
         }}
       />
     </div>

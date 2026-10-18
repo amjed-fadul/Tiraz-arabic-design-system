@@ -1,6 +1,7 @@
 import type { ComponentPropsWithRef, CSSProperties } from "react";
 import { Skeleton } from "./Skeleton";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 export type LoadingStateProps = Omit<
   ComponentPropsWithRef<"div">,
   "children"
@@ -31,7 +32,7 @@ export function LoadingState({
   const ar = config.direction === "rtl";
   const elapsed =
     elapsedMs !== undefined && Number.isFinite(elapsedMs)
-      ? new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en", {
+      ? new Intl.NumberFormat(numberLocale(config), {
           minimumFractionDigits: 1,
           maximumFractionDigits: 1,
           useGrouping: false,

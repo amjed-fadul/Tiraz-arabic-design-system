@@ -24,6 +24,11 @@
   not set direction. A `lang` only on `<main>` misses sibling portal/Toast
   content; SystemProvider has no `lang` prop. Use `<bdi dir="ltr">INV-42</bdi>` (or equivalent isolation)
   for Latin identifiers within Arabic, keeping punctuation correctly ordered.
+- Choose digits once with `SystemConfig.numerals`: `"arab"` (Arabic-Indic,
+  default) or `"latn"` (Western). Component numbers and dates follow it; format
+  application figures with `numberLocale(useSystem().config, language)` instead
+  of hard-coding `ar-u-nu-arab`. Arabic-Indic digits in IBM Plex Sans Arabic are
+  proportional, so prefer `"latn"` where figures must align in columns.
 - Use logical CSS (`padding-inline`, `margin-block`, `inset-inline-end`, etc.)
   and shared spacing, radius, typography, surface/text/border/action tokens.
   Inspect `tokens.css`; do not introduce arbitrary colors or dimensions for
@@ -66,7 +71,7 @@
 2. Exercise the primary action with success/error paths and rapid repetition.
    Verify transient feedback does not overwrite shared configuration.
 3. Inspect Arabic/RTL and English/LTR, light/dark, compact/standard density,
-   typography/radius/accent changes, narrow/short viewports and reduced motion.
+   typography/radius/accent/numerals changes, narrow/short viewports and reduced motion.
    Check readable shaping, isolated identifiers, wrapping and internal scroll.
 4. Use keyboard only: names, visible focus, Tabs arrows, Switch Space, menu
    ArrowDown/Home/End/Enter/typeahead, nested overlays, Escape/Tab dismissal and
@@ -169,7 +174,7 @@ Use Alert for inline persistent feedback; Toast for transient event feedback. To
 
 Use Skeleton to reserve simple text/rectangle/circle space, always hidden from assistive technology. The host sets aria-busy and provides a single loading status. Use Spinner with label for a standalone status; use decorative beside equivalent announced text. Reduced motion stops shimmer/pulse/rotation; text and static shapes keep loading understandable.
 
-Progress is a named 0–100 bar: value=0 is real zero, value=100 is completion, finite out-of-range values clamp. Omit value or pass null for unknown progress; nonfinite values also omit numeric claims. Explicit locale handles language independently of direction. Updates and completion behavior belong to the host. Use explicit example states without timers or fake requests.
+Progress is a named 0–100 bar: value=0 is real zero, value=100 is completion, finite out-of-range values clamp. Omit value or pass null for unknown progress; nonfinite values also omit numeric claims. Explicit locale handles language independently of direction; Arabic digits follow config.numerals. Updates and completion behavior belong to the host. Use explicit example states without timers or fake requests.
 
 Avatar photo examples import bundled ai/assets/sara.jpg and omar.jpg. Copy those assets and their provenance/license alongside the source. Initials-only, custom URL and mixed groups are compositions of the existing src prop; they add no public appearance or upload API.
 
@@ -197,7 +202,7 @@ Avatar photo examples import bundled ai/assets/sara.jpg and omar.jpg. Copy those
   Normalize inputs in application state when the data requires it; the component
   only normalizes display and requested target pages, with no render callback.
   Finite values floor/clamp, nonfinite become 1; zero total displays one inert page.
-  Locale controls digits separately from names. Boundaries and disabled prevent
+  Locale controls digits separately from names; Arabic digits follow config.numerals. Boundaries and disabled prevent
   navigation; current number has aria-current and emits no change. Ellipses have
   no action. Keep content slicing, page size, filter/reset, loading/fetching and
   announcements in the application. DataTable has its own internal data lifecycle;

@@ -13,11 +13,19 @@
       "source": "config.ts"
     },
     {
+      "name": "Numerals",
+      "source": "config.ts"
+    },
+    {
       "name": "SystemConfig",
       "source": "config.ts"
     },
     {
       "name": "defaultConfig",
+      "source": "config.ts"
+    },
+    {
+      "name": "numberLocale",
       "source": "config.ts"
     },
     {
@@ -986,6 +994,14 @@
         "required": false,
         "default": "standard",
         "values": ["standard", "large"]
+      },
+      {
+        "name": "numerals",
+        "type": "Numerals",
+        "required": false,
+        "default": "arab",
+        "values": ["arab", "latn"],
+        "note": "Digits for Arabic text: arab = Arabic-Indic (٠١٢), latn = Western (012). Every component number/date formatter follows it through numberLocale(config, language); English always formats as en. Caller-supplied copy and explicit Intl locale props are unchanged."
       }
     ],
     "defaults": {
@@ -995,7 +1011,8 @@
       "accent": "sage",
       "radius": 8,
       "reducedMotion": false,
-      "typography": "standard"
+      "typography": "standard",
+      "numerals": "arab"
     }
   },
   "components": [
@@ -1202,7 +1219,7 @@
       ],
       "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
       "accessibility": [
-        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
+        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Keys 1–9 (ASCII, Arabic-Indic or Eastern Arabic) choose the matching choice; choice numbers and the question position follow config.numerals. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
         "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. No animation."
       ],
       "limitations": [
@@ -1311,7 +1328,7 @@
       "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
       "accessibility": [
         "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
-        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. No animation."
+        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. Request position digits follow config.numerals. No animation."
       ],
       "limitations": [
         "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
@@ -1417,7 +1434,8 @@
         {
           "name": "locale",
           "type": "string",
-          "required": false
+          "required": false,
+          "note": "Pins the Intl locale for all figures. Omitted: direction with config.numerals."
         },
         {
           "name": "className",
@@ -1615,7 +1633,7 @@
       "state": "Uncontrolled source-list disclosure. InlineCitation mode defaults to disclosure; link mode uses a native anchor.",
       "accessibility": [
         "Stable application IDs and explicit citation numbers; never renumber on reorder/filter. Pass the same source records to Sources and InlineCitation.",
-        "List is numbered through supplied number fields. Summary is a real button; rows with accepted destinations are native links. Missing/rejected destinations remain static text.",
+        "List is numbered through supplied number fields; visible numbers and the default summary count follow config.numerals, while labels callbacks receive raw numbers. Summary is a real button; rows with accepted destinations are native links. Missing/rejected destinations remain static text.",
         "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog."
       ],
       "limitations": [
@@ -1655,7 +1673,7 @@
       ],
       "state": "One selected application ID; preserves selection on reorder, falls back to the first item if removed. No active animation.",
       "accessibility": [
-        "Named group, concise h3 finding, previous/next buttons and polite position. Single/empty sets have no navigation.",
+        "Named group, concise h3 finding, previous/next buttons and polite position. Default position digits follow config.numerals; labels.position receives raw numbers. Single/empty sets have no navigation.",
         "Actions render only when supplied. Optional Badge label/tone is neutral by default; semantic tones must be justified by supplied data."
       ],
       "limitations": [
@@ -2135,7 +2153,7 @@
       "state": "Host owns execution and elapsedMs. No library elapsed clock. indicator=spinner selects the pixel grid for compatibility; skeleton retains its existing placeholder. variant selects Drive/Dots/Orbit.",
       "accessibility": [
         "A stable polite atomic label/description lives outside decorative grid, shimmer and elapsed time. Ticks never change the live announcement. announcement=off opts out.",
-        "Application and OS reduced motion use a still grid and plain readable label. Finite elapsedMs clamps below zero; nonfinite values hide elapsed time. Display digits follow provider direction."
+        "Application and OS reduced motion use a still grid and plain readable label. Finite elapsedMs clamps below zero; nonfinite values hide elapsed time. Display digits follow provider direction and config.numerals."
       ],
       "limitations": [
         "No execution, network or elapsed-time simulation; the host must provide real elapsedMs and activity state."
@@ -2465,7 +2483,7 @@
           "type": "{ unread: string; read: string; markRead: string; markAllRead: string }",
           "required": false,
           "default": "undefined",
-          "note": "Defaults follow direction; count digits follow direction."
+          "note": "Defaults follow direction; count digits follow direction and config.numerals."
         },
         {
           "name": "emptyState",
@@ -2538,7 +2556,8 @@
           "type": "ar | en",
           "required": false,
           "default": "direction: rtl=ar, ltr=en",
-          "values": ["ar", "en"]
+          "values": ["ar", "en"],
+          "note": "Selects language; ar digits follow config.numerals."
         },
         {
           "name": "statusLabels",
@@ -2889,7 +2908,8 @@
           "name": "locale",
           "type": "ar | en",
           "required": false,
-          "default": "direction-based"
+          "default": "direction-based",
+          "note": "Selects language; ar digits follow config.numerals."
         },
         {
           "name": "yearRange",
@@ -3083,7 +3103,7 @@
       "inheritedProps": "Native file input props/ref/events except type/value/defaultValue/children/size/name/required/readOnly. Props and ref target hidden native input. label/helper/error or field are mutually exclusive. Native input is cleared after each browse change; onChange can inspect the raw FileList before it is cleared.",
       "state": "Controlled value is authoritative; defaultValue initializes internal selection once. Multiple appends; single replaces with first valid file. Same type/size/count/duplicate checks for browse/drop. Accepted files survive partial rejection; total rejection preserves previous selection. Duplicate identity is exact name,size,type,lastModified, including within a batch; ignore and explain. Removal allows reselection and focuses browse button. Finite maxFiles floors/clamps to zero, finite maxFileSize clamps to zero bytes; nonfinite means no cap.",
       "events": [
-        "onValueChange reports user additions/removals, never reset. onChange observes only native browsing. labels supports browse/drop/remove(file)/rejected(file,reason), where reason is type|size|count|duplicate."
+        "onValueChange reports user additions/removals, never reset. onChange observes only native browsing. labels supports browse/drop/remove(file)/rejected(file,reason), where reason is type|size|count|duplicate. Default count text formats the limit with config.numerals."
       ],
       "accessibility": [
         "Use label or separate Field; standalone requires native/ARIA name. Helper/error/external descriptions merge. Native Browse button supports keyboard; removal returns focus to Browse. One outer focus ring on drop area. Nested drag depth prevents flicker. Filename wraps using bdi. Disabled prevents all user changes."
@@ -3325,7 +3345,7 @@
       ],
       "accessibility": [
         "Field helper/error and external description IDs are merged; supply standalone native/ARIA label when omitting label.",
-        "IME composition Enter is ignored. Empty Backspace removes the last tag; remove buttons focus the text input. Disabled/readOnly prevent changes. labels can translate remove(tag), duplicate and maximum(count); defaults follow direction.",
+        "IME composition Enter is ignored. Empty Backspace removes the last tag; remove buttons focus the text input. Disabled/readOnly prevent changes. labels can translate remove(tag), duplicate and maximum(count); defaults follow direction, and the default maximum digits follow config.numerals.",
         "Draft focus is shown once on the rounded container, matching Input outline width/offset. Only while the outer ring is present is the inner draft outline/shadow suppressed. Remove actions retain separate native keyboard rings; invalid border and focus ring coexist."
       ],
       "limitations": [
@@ -3556,7 +3576,7 @@
       "inheritedProps": "Sidebar accepts native aside props/ref. SidebarHeader/Footer native div, SidebarContent native nav (supply aria-label), SidebarLabel native span. SidebarGroup native div plus optional heading:string. SidebarItem native anchor excluding children plus required label:string, icon:ReactNode, optional count:string|number, active:boolean=false; real href supplied by caller. SidebarAction native button excluding children plus label, icon, count. SidebarToggle native button plus required collapseLabel/expandLabel strings. SidebarDisclosure native button excluding children plus required label/icon/children, optional count, activeChild=false, open/defaultOpen=false/onOpenChange. All native attributes/events/ref/className/style remain on the underlying element. Buttons default type=button. Preventing default in click cancels built-in toggle/disclosure behavior. SidebarIdentity is a native div/ref for icon/avatar + SidebarLabel composition; header aligns identity/toggle in a row, then stacks them in the rail. Footer identity centers the actual avatar box in the rail.",
       "state": "collapsed/onCollapsedChange controls root; omission initializes internal state from defaultCollapsed once. Disclosure open/onOpenChange or internal defaultOpen. Rail disclosure requests root expansion and opens children. Both controlled callbacks must update caller state. Previously open children reappear when root expands. activeChild is explicit caller state, not inferred from routing or DOM.",
       "accessibility": [
-        "Native links preserve browser destination/modifier behavior; required label supplies accessible name independent of hidden text. Counts and icons are decorative; include essential count meaning in an explicit aria-label if needed. Existing Tooltip supplies rail labels.",
+        "Native links preserve browser destination/modifier behavior; required label supplies accessible name independent of hidden text. Counts and icons are decorative (numeric counts follow config.numerals; string counts render as supplied); include essential count meaning in an explicit aria-label if needed. Existing Tooltip supplies rail labels.",
         "Collapse/disclosure hides children with hidden/inert. Focus moves from hidden descendants to their disclosure parent, otherwise a visible toggle/item. Wrap slot text in SidebarLabel; hidden labels are inert. Keep essential actions as SidebarAction.",
         "Logical indentation and chevrons mirror direction. Header/footer persist while SidebarContent scrolls; host supplies bounded height and inline-start placement. Both OS and application reduced motion suppress transitions.",
         "Reuse the same content in Sheet on mobile. Keep trigger mounted; hand destination focus after trigger restoration. Escape/outside dismissal restores trigger.",
@@ -4978,7 +4998,7 @@
           "type": "(count: number) => string",
           "required": true,
           "default": "undefined",
-          "note": "Translated overflow text; hidden names are appended."
+          "note": "Translated overflow text; hidden names are appended. Receives the raw count; the visible +N follows config.numerals."
         },
         {
           "name": "maxVisible",
@@ -5288,7 +5308,7 @@
           "required": false,
           "default": "direction: rtl=ar, ltr=en",
           "values": ["ar", "en"],
-          "note": "ar explicitly uses Arabic digits; display rounds to a whole percent, aria-valuenow retains the clamped value."
+          "note": "ar digits follow config.numerals (Arabic-Indic by default); display rounds to a whole percent, aria-valuenow retains the clamped value."
         }
       ],
       "examples": ["ai/examples/FeedbackExamples.tsx"],
@@ -5503,7 +5523,8 @@
           "type": "ar | en",
           "required": false,
           "default": "direction: rtl=ar, ltr=en",
-          "values": ["ar", "en"]
+          "values": ["ar", "en"],
+          "note": "Selects language; ar digits follow config.numerals."
         },
         {
           "name": "disabled",
@@ -5521,7 +5542,7 @@
       "inheritedProps": "Omit<ComponentPropsWithRef<nav>, children | onChange>. Native nav attributes/events, className/style and ref preserved. labels.navigation supplies aria-label.",
       "state": "Controlled only. Finite total floors/clamps to 1–MAX_SAFE_INTEGER; nonfinite total is 1. Finite page floors/clamps to 1–normalized total; nonfinite page is 1. Normalization affects display/callback targets, never emits during rendering. Clicking current page emits no callback.",
       "accessibility": [
-        "Translated labels.navigation, previous, next, page(number). One aria-current=page Button. At most seven page slots; ellipses are aria-hidden spans without focus or action. Previous/Next disable at boundaries; disabled disables all buttons. Arabic digits explicit in ar."
+        "Translated labels.navigation, previous, next, page(number). One aria-current=page Button. At most seven page slots; ellipses are aria-hidden spans without focus or action. Previous/Next disable at boundaries; disabled disables all buttons. Page digits in ar follow config.numerals."
       ],
       "limitations": [
         "No fetching, filtering, page-size, reset or data engine. DataTable retains its separate internal data/paging lifecycle. Zero total displays one inert page."
@@ -5557,7 +5578,8 @@
           "name": "locale",
           "type": "string",
           "required": false,
-          "default": "direction: rtl=ar, ltr=en"
+          "default": "direction: rtl=ar, ltr=en",
+          "note": "ar digits follow config.numerals; any other locale formats as supplied."
         },
         {
           "name": "numberFormat",
@@ -5671,7 +5693,8 @@
           "name": "locale",
           "type": "string",
           "required": false,
-          "default": "direction: rtl=ar, ltr=en"
+          "default": "direction: rtl=ar, ltr=en",
+          "note": "ar digits follow config.numerals; any other locale formats as supplied."
         },
         {
           "name": "numberFormat",
@@ -5785,7 +5808,8 @@
           "name": "locale",
           "type": "string",
           "required": false,
-          "default": "direction: rtl=ar, ltr=en"
+          "default": "direction: rtl=ar, ltr=en",
+          "note": "ar digits follow config.numerals; any other locale formats as supplied."
         },
         {
           "name": "numberFormat",
@@ -5899,7 +5923,8 @@
           "name": "locale",
           "type": "string",
           "required": false,
-          "default": "direction: rtl=ar, ltr=en"
+          "default": "direction: rtl=ar, ltr=en",
+          "note": "ar digits follow config.numerals; any other locale formats as supplied."
         },
         {
           "name": "numberFormat",
@@ -6978,11 +7003,13 @@
         "SystemConfig",
         "Direction",
         "Accent",
+        "Numerals",
         "defaultConfig",
+        "numberLocale",
         "accentColors"
       ],
       "source": "config.ts",
-      "purpose": "Typed shared settings, Arabic/compact defaults and paired light/dark accent values; configuration.fields is authoritative metadata."
+      "purpose": "Typed shared settings, Arabic/compact defaults and paired light/dark accent values; configuration.fields is authoritative metadata. numberLocale(config, language?) returns the Intl locale for digits: ar-u-nu-arab or ar-u-nu-latn for Arabic (per config.numerals), any other language as supplied; language defaults from direction. Use it with useSystem().config for application-formatted numbers and dates."
     },
     {
       "id": "system-context",

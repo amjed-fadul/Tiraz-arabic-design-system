@@ -8,6 +8,7 @@ import { RadioGroup } from "./RadioGroup";
 import { Textarea } from "./Textarea";
 import { useDecisionTask } from "./decision-task";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 export interface UserQuestion {
   id: string;
   label: string;
@@ -36,10 +37,6 @@ export interface AskUserQuestionsProps {
   resetKey?: string | number;
   className?: string;
 }
-const arabicDigits = new Intl.NumberFormat("ar-u-nu-arab");
-function digits(value: number) {
-  return arabicDigits.format(value);
-}
 /** Application-supplied single-choice/Other and text questions, with controlled drafts. */
 export function AskUserQuestions(props: AskUserQuestionsProps) {
   return (
@@ -60,6 +57,9 @@ function QuestionsInstance({
 }: AskUserQuestionsProps) {
   const { config } = useSystem(),
     ar = config.direction === "rtl",
+    digits = new Intl.NumberFormat(numberLocale(config), {
+      useGrouping: false,
+    }),
     id = useId();
   const [index, setIndex] = useState(0),
     [attempted, setAttempted] = useState(false),
@@ -180,8 +180,8 @@ function QuestionsInstance({
             <div className="tz-question-progress">
               <p className="tz-decision-position">
                 {ar
-                  ? `السؤال ${digits(index + 1)} من ${digits(questions.length)}`
-                  : `Question ${index + 1} of ${questions.length}`}
+                  ? `السؤال ${digits.format(index + 1)} من ${digits.format(questions.length)}`
+                  : `Question ${digits.format(index + 1)} of ${digits.format(questions.length)}`}
               </p>
               <span className="tz-question-steps" aria-hidden="true">
                 {questions.map((q, i) => (
@@ -311,7 +311,7 @@ function QuestionsInstance({
             {question.type !== "text" && !!question.choices?.length && (
               <span className="tz-question-hint" aria-hidden="true">
                 {ar
-                  ? `اضغط ${digits(1)}–${digits(Math.min(9, question.choices.length))} للاختيار`
+                  ? `اضغط ${digits.format(1)}–${digits.format(Math.min(9, question.choices.length))} للاختيار`
                   : `Press 1–${Math.min(9, question.choices.length)} to choose`}
               </span>
             )}

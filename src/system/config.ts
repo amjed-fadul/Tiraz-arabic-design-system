@@ -12,6 +12,8 @@ export type Accent =
   | "rose"
   | "slate"
   | "ink";
+/** Arabic-Indic (٠١٢) or Western (012) digits for Arabic text. */
+export type Numerals = "arab" | "latn";
 export interface SystemConfig {
   theme: "light" | "dark";
   direction: Direction;
@@ -20,6 +22,7 @@ export interface SystemConfig {
   radius: number;
   reducedMotion: boolean;
   typography?: "standard" | "large";
+  numerals?: Numerals;
 }
 export const defaultConfig: SystemConfig = {
   theme: "light",
@@ -29,7 +32,18 @@ export const defaultConfig: SystemConfig = {
   radius: 8,
   reducedMotion: false,
   typography: "standard",
+  numerals: "arab",
 };
+/**
+ * The Intl locale for digits. Arabic follows `numerals`; any other language is
+ * returned as supplied. `language` defaults from direction (rtl=ar, ltr=en).
+ */
+export function numberLocale(
+  config: { direction?: Direction; numerals?: Numerals },
+  language = config.direction === "rtl" ? "ar" : "en",
+) {
+  return language === "ar" ? `ar-u-nu-${config.numerals ?? "arab"}` : language;
+}
 export const accentColors: Record<Accent, { light: string; dark: string }> = {
   sage: { light: "#355E4C", dark: "#A5C9B4" },
   blue: { light: "#365B87", dark: "#A8C6EF" },

@@ -6,6 +6,7 @@ import { EmptyState } from "./EmptyState";
 import { Spinner } from "./Spinner";
 import { useChanged } from "./useChanged";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 
 export type TaskState = "pending" | "running" | "completed" | "failed";
 export interface TaskRowItem {
@@ -165,7 +166,7 @@ export function TaskRows({
     completed: ar ? "مكتملة" : "Completed",
     failed: ar ? "فشلت" : "Failed",
   };
-  const format = new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en");
+  const format = new Intl.NumberFormat(numberLocale(config));
   return (
     <ul
       {...props}

@@ -38,6 +38,7 @@ export function SystemProvider({
           data-theme={config.theme}
           data-density={config.density}
           data-typography={config.typography ?? "standard"}
+          data-numerals={config.numerals ?? "arab"}
           data-reduced-motion={config.reducedMotion}
           style={
             {

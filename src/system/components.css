@@ -6164,9 +6164,17 @@ a.tz-inline-citation {
 .tz-ask-questions .tz-radio-option > :is(bdi, .tz-radio-copy) {
   flex: 1;
 }
+/* Key digits follow each provider's direction and numerals, like the position
+   and hint. Set per provider root so a nested provider overrides its parent. */
+.tiraz-system {
+  --key-digits: decimal;
+}
+.tiraz-system[dir="rtl"][data-numerals="arab"] {
+  --key-digits: arabic-indic;
+}
 /* The key hint the 1–9 shortcut listens for; «Other» has none. */
 .tz-ask-questions .tz-radio-option:not([data-value="other"])::after {
-  content: counter(tz-option);
+  content: counter(tz-option, var(--key-digits, decimal));
   display: grid;
   place-items: center;
   flex: none;
@@ -6184,11 +6192,6 @@ a.tz-inline-citation {
   transition:
     color var(--motion-fast) var(--ease-out),
     background-color var(--motion-fast) var(--ease-out);
-}
-.tiraz-system[dir="rtl"]
-  .tz-ask-questions
-  .tz-radio-option:not([data-value="other"])::after {
-  content: counter(tz-option, arabic-indic);
 }
 .tz-ask-questions .tz-radio-option:has(:checked)::after {
   background: var(--action);

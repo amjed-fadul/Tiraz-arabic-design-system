@@ -27,6 +27,7 @@ export function readPreferences(): SystemConfig {
       radius: p.radius,
       reducedMotion: p.reducedMotion,
       typography: p.typography === "large" ? "large" : "standard",
+      numerals: p.numerals === "latn" ? "latn" : "arab",
     };
   } catch {
     return { ...defaultConfig };

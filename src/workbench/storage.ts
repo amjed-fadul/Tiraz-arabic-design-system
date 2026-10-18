@@ -16,6 +16,7 @@ export const defaultSettings: AppearanceSettings = {
   accent: defaultConfig.accent,
   density: defaultConfig.density,
   typography: defaultConfig.typography,
+  numerals: defaultConfig.numerals,
   radius: defaultConfig.radius,
   reducedMotion: defaultConfig.reducedMotion,
 };
@@ -104,6 +105,7 @@ export function readSystem(): AppearanceSettings {
         : defaultSettings.radius,
     reducedMotion: p.reducedMotion === true,
     typography: p.typography === "large" ? "large" : "standard",
+    numerals: p.numerals === "latn" ? "latn" : "arab",
   };
 }
 export function readPlaygrounds(language: Language): Playgrounds {

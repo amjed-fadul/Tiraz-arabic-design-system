@@ -18,6 +18,7 @@ import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
 import { useEntryReset } from "./useEntryReset";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 import { parseDateOnly, formatDateOnly } from "./date-only";
 export type DatePickerProps = Omit<
   ComponentPropsWithRef<"button">,
@@ -120,18 +121,24 @@ function NavigationYears(props: DropdownProps) {
 const calendarComponents = { YearsDropdown: NavigationYears };
 // DayPicker builds year choices across navigation bounds before the dropdown
 // filters its window. Reuse number formatters instead of formatting 9999 dates.
-const calendarFormatters = Object.fromEntries(
-  (["ar", "en"] as const).map((language) => {
-    const format = new Intl.NumberFormat(
-      language === "ar" ? "ar-u-nu-arab" : "en",
-      { useGrouping: false, minimumIntegerDigits: 4 },
-    );
-    return [
-      language,
-      { formatYearDropdown: (date: Date) => format.format(date.getFullYear()) },
-    ];
-  }),
-);
+const calendarFormatters = new Map<
+  string,
+  { formatYearDropdown: (date: Date) => string }
+>();
+function yearFormatters(locale: string) {
+  let formatters = calendarFormatters.get(locale);
+  if (!formatters) {
+    const format = new Intl.NumberFormat(locale, {
+      useGrouping: false,
+      minimumIntegerDigits: 4,
+    });
+    formatters = {
+      formatYearDropdown: (date: Date) => format.format(date.getFullYear()),
+    };
+    calendarFormatters.set(locale, formatters);
+  }
+  return formatters;
+}
 
 /** Single Gregorian date; empty string clears. The app owns form validation. */
 export function DatePicker({
@@ -157,6 +164,8 @@ export function DatePicker({
   const { config, container } = useSystem();
   const language = locale ?? (config.direction === "rtl" ? "ar" : "en");
   const arabic = language === "ar";
+  const numbers = numberLocale(config, language);
+  const dates = arabic ? numbers : "en-US";
   const initial = useRef(defaultValue);
   const [local, setLocal] = useState(defaultValue);
   const [open, setOpen] = useState(false);
@@ -229,10 +238,12 @@ export function DatePicker({
   const todayValue = formatDateOnly(today);
   const todayDisabled =
     (!!minimum && todayValue < min!) || (!!maximum && todayValue > max!);
-  const display = selected?.toLocaleDateString(
-    language === "ar" ? "ar-u-ca-gregory" : "en-US-u-ca-gregory",
-    { year: "numeric", month: "long", day: "numeric" },
-  );
+  const display = selected?.toLocaleDateString(dates, {
+    calendar: "gregory",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
   const control = (association = field) => (
     <>
       <Popover.Root
@@ -302,7 +313,7 @@ export function DatePicker({
                 captionLayout="dropdown"
                 navLayout="around"
                 components={calendarComponents}
-                formatters={calendarFormatters[language]}
+                formatters={yearFormatters(numbers)}
                 mode="single"
                 autoFocus
                 selected={selected}
@@ -311,7 +322,7 @@ export function DatePicker({
                 onSelect={(date) => commit(date ? formatDateOnly(date) : "")}
                 locale={arabic ? ar : enUS}
                 dir={config.direction}
-                numerals={arabic ? "arab" : "latn"}
+                numerals={arabic ? (config.numerals ?? "arab") : "latn"}
                 labels={{
                   // The bundled Arabic locale reads «اذهب إلى الشهر السابق».
                   ...(arabic
@@ -323,17 +334,13 @@ export function DatePicker({
                   labelDayButton: (date, modifiers) => {
                     // Numeric days keep visible cell text in the accessible name;
                     // the default English ordinal labels (1st/2nd) obscure it.
-                    const text = date.toLocaleDateString(
-                      arabic
-                        ? "ar-u-ca-gregory-nu-arab"
-                        : "en-US-u-ca-gregory-nu-latn",
-                      {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      },
-                    );
+                    const text = date.toLocaleDateString(dates, {
+                      calendar: "gregory",
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    });
                     return `${modifiers.today ? (arabic ? "اليوم، " : "Today, ") : ""}${text}${modifiers.selected ? (arabic ? "، محدد" : ", selected") : ""}`;
                   },
                 }}

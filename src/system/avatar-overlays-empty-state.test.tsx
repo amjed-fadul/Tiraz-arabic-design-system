@@ -87,7 +87,9 @@ it.each(["rtl", "ltr"] as const)(
     expect(within(group).getAllByRole("img")).toHaveLength(1);
     expect(within(group).getByRole("img")).toHaveAccessibleName("Sara Ali");
     expect(
-      within(group).getByText("+2").closest("[aria-hidden]"),
+      within(group)
+        .getByText(direction === "rtl" ? "+٢" : "+2")
+        .closest("[aria-hidden]"),
     ).toHaveAttribute("aria-hidden", "true");
     expect(group).toHaveTextContent("2 more members: Omar Noor، Lina Saleh");
     expect(within(group).queryByRole("button")).toBeNull();

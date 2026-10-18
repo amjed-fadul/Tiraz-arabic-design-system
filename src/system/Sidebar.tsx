@@ -11,6 +11,7 @@ import { ChevronDown, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { Tooltip } from "./Tooltip";
 import { useSystem } from "./useSystem";
 import { Tick } from "./Tick";
+import { numberLocale } from "./config";
 
 const SidebarContext = createContext({
   collapsed: false,
@@ -173,6 +174,21 @@ interface ItemContent {
   icon: ReactNode;
   count?: string | number;
 }
+/** Numeric counts follow the system numerals; string counts are shown as supplied. */
+function SidebarCount({ count }: { count: string | number }) {
+  const { config } = useSystem();
+  const text =
+    typeof count === "number"
+      ? new Intl.NumberFormat(numberLocale(config), {
+          useGrouping: false,
+        }).format(count)
+      : count;
+  return (
+    <span className="tz-sidebar-count" aria-hidden="true" title={text}>
+      <Tick value={count}>{text}</Tick>
+    </span>
+  );
+}
 function contents({ label, icon, count }: ItemContent) {
   return (
     <>
@@ -180,15 +196,7 @@ function contents({ label, icon, count }: ItemContent) {
         {icon}
       </span>
       <SidebarLabel>{label}</SidebarLabel>
-      {count !== undefined && (
-        <span
-          className="tz-sidebar-count"
-          aria-hidden="true"
-          title={String(count)}
-        >
-          <Tick value={count} />
-        </span>
-      )}
+      {count !== undefined && <SidebarCount count={count} />}
     </>
   );
 }

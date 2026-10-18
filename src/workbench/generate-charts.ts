@@ -10,7 +10,7 @@ export function generateChartCode(
 ) {
   const source = chartSource.replace(/^import[\s\S]*?;\n/gm, "");
   return `import { useState } from "react";
-import { LineChart, AreaChart, BarChart, DonutChart, Card, CardHeader, CardTitle, CardDescription, CardContent, Field, Select, SystemProvider, defaultConfig } from "./system";
+import { LineChart, AreaChart, BarChart, DonutChart, Card, CardHeader, CardTitle, CardDescription, CardContent, Field, Select, SystemProvider, defaultConfig, numberLocale, useSystem } from "./system";
 import type { ChartDatum, ChartSeries, DonutDatum } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";

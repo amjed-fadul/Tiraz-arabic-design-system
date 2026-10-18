@@ -1,6 +1,7 @@
 import { Check, CircleAlert } from "lucide-react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 
 export type StepStatus = "upcoming" | "current" | "completed" | "error";
 export interface StepItem {
@@ -51,7 +52,7 @@ export function Steps({
         });
   const activeId =
     currentId ?? items.find((item) => item.status === "current")?.id;
-  const number = new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en");
+  const number = new Intl.NumberFormat(numberLocale(config, ar ? "ar" : "en"));
   return (
     <ol
       {...props}

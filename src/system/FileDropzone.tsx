@@ -5,6 +5,7 @@ import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 import { useEntryReset } from "./useEntryReset";
 import { useArrivals } from "./useArrivals";
 export interface FileDropzoneLabels {
@@ -87,7 +88,8 @@ export function FileDropzone({
   onChange,
   ...props
 }: FileDropzoneProps) {
-  const ar = useSystem().config.direction === "rtl";
+  const { config } = useSystem();
+  const ar = config.direction === "rtl";
   const initial = useRef(defaultValue);
   const [local, setLocal] = useState(defaultValue);
   const files = value ?? local;
@@ -104,6 +106,9 @@ export function FileDropzone({
       ? Math.max(0, Math.floor(maxFiles))
       : Infinity;
   const limit = multiple ? countLimit : Math.min(1, countLimit);
+  const digits = new Intl.NumberFormat(numberLocale(config), {
+    useGrouping: false,
+  });
   const sizeLimit =
     maxFileSize !== undefined && Number.isFinite(maxFileSize)
       ? Math.max(0, maxFileSize)
@@ -149,7 +154,7 @@ export function FileDropzone({
                   ? "الملف محدد بالفعل."
                   : "File is already selected."
                 : ar
-                  ? `الحد الأقصى ${limit} من الملفات.`
+                  ? `الحد الأقصى ${digits.format(limit)} من الملفات.`
                   : `Maximum of ${limit} ${limit === 1 ? "file" : "files"}.`;
         messages.push(
           labels?.rejected?.(file, reason) ?? `${file.name}: ${why}`,
@@ -267,7 +272,7 @@ export function FileDropzone({
                   {file.name}
                 </bdi>
                 <span className="tz-file-size" dir="ltr">
-                  {new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en", {
+                  {new Intl.NumberFormat(numberLocale(config), {
                     maximumFractionDigits: 1,
                   }).format(
                     file.size < 1024 ? file.size : file.size / 1024,

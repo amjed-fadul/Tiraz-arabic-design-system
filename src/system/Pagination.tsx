@@ -2,6 +2,7 @@ import type { ComponentPropsWithRef } from "react";
 import { Button } from "./Button";
 import { normalizePagination, paginationRange } from "./pagination-range";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 
 export interface PaginationLabels {
   navigation: string;
@@ -34,10 +35,9 @@ export function Pagination({
   const { config } = useSystem();
   const { page, totalPages } = normalizePagination(suppliedPage, suppliedTotal);
   const language = locale ?? (config.direction === "rtl" ? "ar" : "en");
-  const number = new Intl.NumberFormat(
-    language === "ar" ? "ar-u-nu-arab" : "en",
-    { useGrouping: false },
-  );
+  const number = new Intl.NumberFormat(numberLocale(config, language), {
+    useGrouping: false,
+  });
   return (
     <nav
       {...props}

@@ -53,6 +53,18 @@ Paired light/dark accent presets are `sage`, `blue`, `plum`, `clay`, `lime`,
 `amber`, `teal`, `cyan`, `indigo`, `rose`, `slate` and the monochrome `ink`. Set `config.accent` to
 one of these keys; controls and focus tokens follow the active theme.
 
+`config.numerals` chooses the digits for Arabic text: `"arab"` (Arabic-Indic
+٠١٢, the default) or `"latn"` (Western 012). Every component that formats a
+number or date follows it, including under an explicit `locale="ar"`; English
+always uses Western digits. IBM Plex Sans Arabic's Arabic-Indic digits are
+proportional and the font has no tabular figures, so they do not align in
+tables or counters; choose `"latn"` when alignment matters or the product
+uses Western digits. Format application figures with
+`new Intl.NumberFormat(numberLocale(useSystem().config, language))` so they
+match. Digits typed into supplied copy are not converted. Label callbacks such
+as `labels.position(current, total)`, `labels.maximum(count)` or
+`overflowLabel(count)` receive raw numbers; format visible text the same way.
+
 Wrap the interface in `SystemProvider`; configure with
 `{ ...defaultConfig, ...overrides }`, not an incomplete config object. Put
 `ToastProvider` inside it, and call `useToast` in a descendant. Keep the
@@ -80,7 +92,7 @@ Use Checkbox for an independent form value, RadioGroup for one choice with nativ
 
 Use Avatar with name and an explicit fallback for deliberate Arabic initials. Its internal image/fallback is decorative; the outer span announces name once. Set decorative when equivalent adjacent text supplies that name. No remote image is required: [AvatarExamples](examples/AvatarExamples.tsx) uses bundled local JPEG portraits with provenance and licensing in ai/assets.
 
-AvatarGroup composes members with stable unique id, name and optional src/fallback. Supply a group label and translated overflowLabel(count). The +N indicator is static; hidden member names remain available. [OverlayExamples](examples/OverlayExamples.tsx) contains a team, a Tooltip details toggle and one Modal display preview. Select and menu actions change/reset that preview; no values are persisted.
+AvatarGroup composes members with stable unique id, name and optional src/fallback. Supply a group label and translated overflowLabel(count). The +N indicator is static and follows config.numerals; hidden member names remain available. [OverlayExamples](examples/OverlayExamples.tsx) contains a team, a Tooltip details toggle and one Modal display preview. Select and menu actions change/reset that preview; no values are persisted.
 
 Tooltip accepts a focusable trigger and short string content. It preserves refs, handlers, names and external description IDs; hover waits 500ms, keyboard focus opens immediately, Escape dismisses it before a surrounding dialog. Use the already installed @radix-ui/react-popper positioning primitive (verified 1.4.0); source consumers need it explicitly along with the dependencies above. It portals into the nearest SystemProvider/Sheet/Modal.
 
@@ -109,7 +121,7 @@ Use [FeedbackExamples](examples/FeedbackExamples.tsx) for explicit local states 
 
 Skeleton is always decorative/aria-hidden. Its shape is text (default), rectangle or circle; style/className provide native sizing. The host supplies aria-busy and one loading announcement. Spinner requires label unless decorative=true; adjacent text owns the announcement in decorative mode. It has sm/md sizes and no Button integration API. Both loading animations stop for application or OS reduced motion, with a static indicator retained.
 
-Progress requires a visible accessible label. Finite value clamps to 0–100; missing, null, NaN and infinity select indeterminate mode with no aria-valuenow or value text. showValue defaults false. locale defaults from provider direction (rtl=ar/ltr=en); explicitly set locale if language differs from direction. Arabic uses Arabic digits. Visible/accessible percentage rounds to an integer while aria-valuenow retains the clamped numeric value. Do not invent totals, steps or completion callbacks.
+Progress requires a visible accessible label. Finite value clamps to 0–100; missing, null, NaN and infinity select indeterminate mode with no aria-valuenow or value text. showValue defaults false. locale defaults from provider direction (rtl=ar/ltr=en); explicitly set locale if language differs from direction. Arabic digits follow config.numerals. Visible/accessible percentage rounds to an integer while aria-valuenow retains the clamped numeric value. Do not invent totals, steps or completion callbacks.
 
 ## Bundled Avatar photos
 
@@ -150,7 +162,8 @@ clamps to 1–normalized total; nonfinite inputs become 1. Zero total displays o
 inert page. Normalization never emits a callback during rendering. Clicking the
 current number emits none. At most seven number/ellipsis slots; ellipses are
 noninteractive. disabled disables all Buttons. locale=ar/en defaults from direction
-and controls displayed digits independently of translated labels.
+and controls displayed digits independently of translated labels; Arabic digits
+follow config.numerals.
 
 The caller owns fetching, filtering, page size, reset and content selection. The
 example slices a bounded local list (one guide note per page, at most 20 pages).
@@ -174,7 +187,8 @@ optional `color`. Keep keys stable and never use reserved `category` as a series
 key. Data remains in caller order, including in RTL. Use ISO date strings with
 `categoryFormat="date"`; display uses UTC, month/day. Include the year/range in
 summary when relevant. `locale` is independent of direction and defaults to ar
-after rtl, en after ltr; numberFormat accepts Intl options.
+after rtl, en after ltr; ar digits follow config.numerals and other locales
+format as supplied. numberFormat accepts Intl options.
 
 `legend` defaults false; when shown, `interactiveLegend` defaults true and uses
 native buttons with aria-pressed. Set it false for static labels. Every series
@@ -213,7 +227,8 @@ consume existing tokens and IBM Plex Sans Arabic; no additional dependency.
 
 Use SidebarGroup(heading?) and SidebarItem(label, icon, href, active?, count?) for
 native destinations. SidebarAction is a native button for commands. Count is
-static/decorative; put essential count meaning in aria-label. All native attributes
+static/decorative; numeric counts follow config.numerals and strings render as
+supplied. Put essential count meaning in aria-label. All native attributes
 and React 19 refs survive. SidebarLabel hides branding/account text in the rail
 and makes it inert; keep essential actions outside it. SidebarToggle requires
 translated collapseLabel and expandLabel. collapsed/onCollapsedChange controls
@@ -349,7 +364,8 @@ synthetic input events or desktop automation.
 DatePicker is a single Gregorian YYYY-MM-DD (years 0001–9999), or empty string.
 Never use new Date(iso) or toISOString to convert date-only values. It converts
 local year/month/day fields, keeping the date unchanged across time zones.
-locale=ar/en defaults from direction and controls Gregorian localized display.
+locale=ar/en defaults from direction and controls Gregorian localized display;
+Arabic digits in the trigger, calendar and year menu follow config.numerals.
 Inclusive min/max disable dates and Today; invalid bounds are ignored. Invalid
 value props show feedback and submit empty. A valid externally controlled date
 outside bounds stays visible/submitted with feedback: the application must block
@@ -428,7 +444,8 @@ beside indicators without crossing connectors.
 Only the first current status receives `aria-current="step"`. Optional `currentId`
 overrides that selection, including a current error; an unmatched ID (or empty
 string) marks no current step. Statuses stay application-owned. `locale=ar/en`
-defaults from direction and controls numbers/default status text; supply a complete
+defaults from direction and controls numbers/default status text (Arabic digits
+follow config.numerals); supply a complete
 `statusLabels` record for other wording. Labels/descriptions must contain no
 interactive descendants.
 
@@ -468,7 +485,7 @@ TaskRows takes items and label. Each item requires id, string title, state
 string. Pending uses its supplied-order number, running a restrained decorative
 Spinner, completed a check and failed an error glyph. State text uses the existing
 Badge: neutral pending, info running, success completed and error failed. stateLabels translates all four states; defaults and number digits follow
-direction. appearance defaults to capsules; list connects rows with subtle separators.
+direction and config.numerals. appearance defaults to capsules; list connects rows with subtle separators.
 
 Disclosure buttons use native Enter/Space, aria-expanded and associated panels.
 Content/actions belong inside the panel, outside the noninteractive title/summary
@@ -504,7 +521,7 @@ description, dateTime, avatar, icon and action are optional. Avatar takes preced
 over a decorative icon. Supply a valid HTML date/time to render time; the host
 formats timestamp in its locale/time zone. Count derives from supplied items,
 including after application filtering. labels translates unread/read/markRead/
-markAllRead; defaults and count digits follow direction. Opening an action never
+markAllRead; defaults and count digits follow direction and config.numerals. Opening an action never
 marks read. Read controls remain mounted and aria-disabled after reading, keeping
 focus in All; Mark all disables at zero. Native root attributes/ref target div,
 which contains a named ul. Do not add row click handlers.
@@ -816,7 +833,8 @@ to 0–100; nonfinite values remain indeterminate. A percentage of 100 does not
 automatically finish loading: the host state and actual image load still govern
 readiness. Updating progress does not reload the image. The example plays a
 supplied progress sequence once on mount; it measures no network request or
-image generation. Percentages use the provider's Arabic/English locale.
+image generation. Percentages use the provider's Arabic/English locale and
+numerals.
 
 ## Selection, context and model controls
 
@@ -855,6 +873,8 @@ accessible name reports full values and statuses; visible status text supplement
 color. Estimated values are explicitly labeled. Details use the existing Popover
 (click/Enter/Space; Escape restores focus). Details are supplied independently;
 the component does not infer parts, cost, limits, truncation or host behavior.
+A supplied locale pins the Intl locale for every figure; otherwise digits follow
+direction and config.numerals.
 
 ModelSelector requires models, controlled value and onValueChange(id). Every
 model needs a unique nonempty stable id and name; provider, description, tags,
@@ -879,7 +899,8 @@ branching, generated questionnaire or form engine. `required` defaults to true;
 set false explicitly for optional questions. Keep `value: QuestionAnswers` in the
 host and update it with `onValueChange`. Choices stay editable until accepted.
 Next/Previous review drafts; Submit validates every required answer and focuses
-the first incomplete question. Native radio arrows and scoped 1–9 select; Enter
+the first incomplete question. Native radio arrows and scoped 1–9 select (ASCII,
+Arabic-Indic or Eastern Arabic keys; choice numbers follow config.numerals); Enter
 submits, Ctrl/Command+Enter submits from a textarea. It never auto-advances.
 `onSubmit(answers, {signal})` receives actual choice IDs and text, excludes stale
 question IDs, and guards duplicate submissions. Failure preserves the draft.

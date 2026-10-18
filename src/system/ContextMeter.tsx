@@ -2,6 +2,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { useId } from "react";
 import { useSystem } from "./useSystem";
 import { Tick } from "./Tick";
+import { numberLocale } from "./config";
 
 export interface ContextMeterPart {
   id: string;
@@ -36,8 +37,8 @@ export function ContextMeter({
   const { config, container } = useSystem(),
     ar = config.direction === "rtl",
     title = useId();
-  // Arabic digits follow the rest of the system unless the host pins a locale.
-  const numbers = locale ?? (ar ? "ar-u-nu-arab" : "en");
+  // Digits follow the system numerals unless the host pins a locale.
+  const numbers = locale ?? numberLocale(config);
   const format = new Intl.NumberFormat(numbers, {
     maximumFractionDigits: 2,
   });

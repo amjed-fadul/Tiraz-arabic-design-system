@@ -53,7 +53,7 @@ export function generateBatchCode(
           ? "Accordion"
           : component === "breadcrumbs"
             ? "Breadcrumbs"
-            : "Pagination";
+            : "Pagination, numberLocale, useSystem";
     extra =
       component === "card"
         ? 'import { useId, useState } from "react";'

@@ -86,9 +86,10 @@ it("demonstrates seven top-level library destinations in two groups, active chil
   await user.click(within(nav).getByRole("link", { name: "Notifications" }));
   await user.click(screen.getByRole("button", { name: "Clear reminders" }));
   expect(screen.getByText("You’re all caught up.")).toBeVisible();
+  // The default provider is RTL, so numeric counts use Arabic-Indic digits.
   expect(
     within(nav).getByRole("link", { name: "Notifications" }),
-  ).toHaveTextContent("0");
+  ).toHaveTextContent("٠");
 });
 
 it("routes the footer action to the settings page and focuses its heading", async () => {

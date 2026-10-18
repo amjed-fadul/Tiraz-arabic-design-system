@@ -8,6 +8,7 @@ import type {
   ApprovalRequest,
 } from "./ApprovalCard";
 import { useSystem } from "./useSystem";
+import { numberLocale } from "./config";
 export type { ApprovalRecord } from "./ApprovalCard";
 export interface ApprovalFlowProps {
   label: string;
@@ -18,7 +19,6 @@ export interface ApprovalFlowProps {
   resetKey?: string | number;
   className?: string;
 }
-const arabicDigits = new Intl.NumberFormat("ar-u-nu-arab");
 /** Short inline composition. Hosts independently authorize and execute actions. */
 export function ApprovalFlow(props: ApprovalFlowProps) {
   return <ApprovalFlowInstance key={props.resetKey} {...props} />;
@@ -64,6 +64,12 @@ function ApprovalFlowInstance({
       ),
   );
   const position = current ? requests.indexOf(current) + 1 : requests.length;
+  const digits = new Intl.NumberFormat(numberLocale(config), {
+      useGrouping: false,
+    }),
+    place = ar
+      ? `الطلب ${digits.format(position)} من ${digits.format(requests.length)}`
+      : `Request ${digits.format(position)} of ${digits.format(requests.length)}`;
   const last = records.at(-1);
   const lastRequest = last
     ? requests.find(
@@ -72,7 +78,7 @@ function ApprovalFlowInstance({
     : undefined;
   const acceptedAnnouncement =
     last && lastRequest
-      ? `${last.decision === "approved" ? (ar ? "تمت الموافقة" : "Approved") : ar ? "تم الرفض" : "Rejected"}: ${lastRequest.action} · ${lastRequest.target}. ${current ? (ar ? `الطلب ${position} من ${requests.length}` : `Request ${position} of ${requests.length}`) : ar ? "سُجّلت جميع القرارات. لم يُنفّذ أي إجراء." : "All decisions recorded. No actions executed."}`
+      ? `${last.decision === "approved" ? (ar ? "تمت الموافقة" : "Approved") : ar ? "تم الرفض" : "Rejected"}: ${lastRequest.action} · ${lastRequest.target}. ${current ? place : ar ? "سُجّلت جميع القرارات. لم يُنفّذ أي إجراء." : "All decisions recorded. No actions executed."}`
       : "";
   const root = useRef<HTMLDivElement>(null),
     focused = useRef(false),
@@ -119,11 +125,7 @@ function ApprovalFlowInstance({
         {acceptedAnnouncement}
       </span>
       <div className="tz-question-progress">
-        <p className="tz-decision-position">
-          {ar
-            ? `الطلب ${arabicDigits.format(position)} من ${arabicDigits.format(requests.length)}`
-            : `Request ${position} of ${requests.length}`}
-        </p>
+        <p className="tz-decision-position">{place}</p>
         <span className="tz-question-steps" aria-hidden="true">
           {requests.map((request) => {
             const record = records.find(

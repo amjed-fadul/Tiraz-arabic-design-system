@@ -9,6 +9,8 @@ import {
 } from "../../Card";
 import { Field } from "../../Field";
 import { Select } from "../../Select";
+import { numberLocale } from "../../config";
+import { useSystem } from "../../useSystem";
 import type { ChartDatum, ChartSeries, DonutDatum } from "../../Charts";
 type Language = "ar" | "en";
 export type ChartKind = "line" | "area" | "bar" | "donut";
@@ -92,11 +94,11 @@ export function ChartExample({
 }) {
   const ar = language === "ar",
     values = chartSample(language, sample);
+  const locale = numberLocale(useSystem().config, language),
+    number = new Intl.NumberFormat(locale);
   const label = ar ? "الطلبات حسب القناة" : "Orders by channel";
-  const count = new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(
-    values.data.length,
-  );
-  const total = new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(
+  const count = number.format(values.data.length);
+  const total = number.format(
     kind === "donut"
       ? values.donut.reduce((sum, entry) => sum + (entry.value ?? 0), 0)
       : values.data.reduce(
@@ -120,7 +122,7 @@ export function ChartExample({
         : " Days without data are excluded."
       : "";
   const summary = ar
-    ? `أكتوبر ٢٠٢٦: ${total} طلبًا خلال ${values.data.length === 1 ? "يوم واحد" : `${count} أيام`}.${gaps}`
+    ? `أكتوبر ${new Intl.NumberFormat(locale, { useGrouping: false }).format(2026)}: ${total} طلبًا خلال ${values.data.length === 1 ? "يوم واحد" : `${count} أيام`}.${gaps}`
     : `October 2026: ${total} orders across ${count} ${values.data.length === 1 ? "day" : "days"}.${gaps}`;
   const props = { label, summary, locale: language, legend, dataTable: true };
   const Renderer =
@@ -142,6 +144,9 @@ export function ChartExample({
 export function AnalyticsExample({ language = "ar" }: { language?: Language }) {
   const ar = language === "ar",
     [period, setPeriod] = useState("week");
+  const number = new Intl.NumberFormat(
+    numberLocale(useSystem().config, language),
+  );
   const all = chartSample(language, "multi");
   const data = period === "week" ? all.data : all.data.slice(-3);
   const total = data.reduce(
@@ -149,8 +154,8 @@ export function AnalyticsExample({ language = "ar" }: { language?: Language }) {
     0,
   );
   const summary = ar
-    ? `${new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(total)} طلبًا في الفترة التي اخترتها.`
-    : `${new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(total)} orders in the selected period.`;
+    ? `${number.format(total)} طلبًا في الفترة التي اخترتها.`
+    : `${number.format(total)} orders in the selected period.`;
   const donut = all.series.map((entry) => ({
     ...entry,
     value: data.reduce((sum, row) => sum + (row[entry.key] as number), 0),

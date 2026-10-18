@@ -160,6 +160,19 @@ export function Appearance({
         </select>
       </div>
       <div className="setting-field">
+        <label htmlFor={`${uid}-numerals`}>{label("numerals", language)}</label>
+        <select
+          id={`${uid}-numerals`}
+          value={config.numerals ?? "arab"}
+          onChange={(e) =>
+            set("numerals", e.target.value as AppearanceSettings["numerals"])
+          }
+        >
+          <option value="arab">{label("arabicNumerals", language)}</option>
+          <option value="latn">{label("westernNumerals", language)}</option>
+        </select>
+      </div>
+      <div className="setting-field">
         <label htmlFor={`${uid}-density`}>{label("density", language)}</label>
         <select
           id={`${uid}-density`}

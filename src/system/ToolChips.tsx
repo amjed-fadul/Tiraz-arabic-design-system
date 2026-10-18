@@ -4,6 +4,7 @@ import { ToolStatus } from "./ToolStatus";
 import { useToolLabels } from "./useToolLabels";
 import { useSystem } from "./useSystem";
 import { Tick } from "./Tick";
+import { numberLocale } from "./config";
 export interface ToolChipItem {
   id: string;
   label: string;
@@ -28,9 +29,7 @@ export function ToolChips({
 }: ToolChipsProps) {
   const labels = useToolLabels(),
     { config } = useSystem();
-  const format = new Intl.NumberFormat(
-    config.direction === "rtl" ? "ar-u-nu-arab" : "en",
-  );
+  const format = new Intl.NumberFormat(numberLocale(config));
   return (
     <ul
       {...props}

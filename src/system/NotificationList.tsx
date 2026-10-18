@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { EmptyState } from "./EmptyState";
 import { useSystem } from "./useSystem";
 import { Tick } from "./Tick";
+import { numberLocale } from "./config";
 
 export interface NotificationItem {
   id: string;
@@ -60,7 +61,7 @@ export function NotificationList({
         <span className="tz-row-title">{label}</span>
         <Badge>
           <Tick value={unread}>
-            {`${new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en").format(unread)} ${text.unread}`}
+            {`${new Intl.NumberFormat(numberLocale(config)).format(unread)} ${text.unread}`}
           </Tick>
         </Badge>
         {onMarkAllRead && (

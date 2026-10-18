@@ -316,6 +316,15 @@ it("type-checks copied code for every component, state mode and composition pres
         { ...p.progress, value, indeterminate, showValue: false },
       ]);
   cases.push(["spinner", { ...p.spinner, decorative: true, size: "md" }]);
+  for (const id of [
+    "button",
+    "progress",
+    "pagination",
+    "date-picker",
+    "steps",
+    "bar-chart",
+  ] as const)
+    cases.push([id, p[id], { ...defaultConfig, numerals: "latn" }]);
   const root = ts.sys.getCurrentDirectory();
   const sources = new Map(
     cases.map(([id, model, config], index) => [
@@ -443,3 +452,18 @@ it("type-checks copied code for every component, state mode and composition pres
     );
   expect(diagnostics).toEqual([]);
 }, 45000);
+it("emits the numerals setting in generated examples", () => {
+  const config = { ...defaultConfig, numerals: "latn" as const };
+  const p = defaultPlaygrounds("ar");
+  // Explicit config literal (button) and spread config (other components).
+  expect(generateCode("button", p.button, config, "ar")).toContain(
+    'numerals: "latn"',
+  );
+  for (const id of ["pagination", "progress", "date-picker"] as const)
+    expect(generateCode(id, p[id], config, "ar")).toContain(
+      '"numerals":"latn"',
+    );
+  expect(generateCode("button", p.button, defaultConfig, "ar")).toContain(
+    'numerals: "arab"',
+  );
+});

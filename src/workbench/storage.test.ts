@@ -139,3 +139,17 @@ it.each(["lime", "amber", "teal", "cyan", "indigo", "rose", "slate"])(
     expect(readPreferences().accent).toBe(accent);
   },
 );
+it("keeps a valid numerals choice and falls back to Arabic-Indic digits", () => {
+  expect(defaultSettings.numerals).toBe("arab");
+  persist(storageKeys.system, { ...defaultSettings, numerals: "latn" });
+  expect(readSystem().numerals).toBe("latn");
+  for (const numerals of ["hindi", 1, null, undefined]) {
+    persist(storageKeys.system, { ...defaultSettings, numerals });
+    expect(readSystem().numerals).toBe("arab");
+  }
+  localStorage.setItem(
+    "tiraz.preferences.v1",
+    JSON.stringify({ ...defaultConfig, numerals: "latn" }),
+  );
+  expect(readPreferences().numerals).toBe("latn");
+});
