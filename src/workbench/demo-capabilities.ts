@@ -26,29 +26,13 @@ const staticPlaygrounds: ComponentId[] = [
   "bar-chart",
   "donut-chart",
 ];
+// Examples that only show a composition and have nothing to replay.
 const staticExamples: ComponentId[] = [
-  "selection-actions",
   "context-meter",
   "model-selector",
-  "sources",
-  "insight-cards",
   "chat-composer",
   "prompt-bar",
-  "code-block",
-  "markdown",
-  "badge",
-  "avatar",
-  "avatar-group",
-  "empty-state",
-  "card",
-  "table",
   "input-copy",
-  "breadcrumbs",
-  "accordion",
-  "pagination",
-  "tooltip",
-  "modal",
-  "data-table",
 ];
 export function canReplayPlayground(
   component: ComponentId,
@@ -60,16 +44,32 @@ export function canReplayPlayground(
 export function canReplayExamples(component: ComponentId) {
   return !staticExamples.includes(component);
 }
-// The playground already stages these live; a second stage would only repeat it.
-const playgroundOnly: ComponentId[] = [
-  "card",
-  "accordion",
-  "breadcrumbs",
-  "pagination",
-  "tooltip",
-  "modal",
-  "data-table",
+// Examples appear only where they show what the playground cannot: a flow
+// over time, a composition with other components, or an Arabic edge case.
+// Every other page is the playground alone.
+const withExamples: ComponentId[] = [
+  "ask-user-questions",
+  "approval-card",
+  "approval-flow",
+  "model-selector",
+  "context-meter",
+  "image-result",
+  "chat-thread",
+  "chat-composer",
+  "prompt-bar",
+  "tool-call",
+  "tool-chips",
+  "thinking-state",
+  "steps",
+  "input-copy",
+  "line-chart",
+  "donut-chart",
+  "alert",
+  "skeleton",
+  "empty-state",
+  "textarea",
+  "sheet",
 ];
 export function hasExamples(component: ComponentId) {
-  return !playgroundOnly.includes(component);
+  return withExamples.includes(component);
 }

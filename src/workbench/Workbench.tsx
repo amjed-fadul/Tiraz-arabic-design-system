@@ -530,8 +530,6 @@ export function Workbench() {
                           key={`${active}-${language}-${exampleRevisions[active] ?? 0}`}
                           component={active}
                           language={language}
-                          prompt={prompt}
-                          copyLabel={t("نسخ طلب المثال", "Copy example prompt")}
                         />
                       </PreviewFrame>
                     </div>

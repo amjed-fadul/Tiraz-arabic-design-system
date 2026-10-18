@@ -27,11 +27,14 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    for (const name of ["Interactive playground", "Examples", "Usage example"])
+    for (const name of ["Interactive playground", "Usage example"])
       expect(screen.getByRole("heading", { name })).toBeVisible();
     expect(
+      screen.queryByRole("heading", { name: "Examples", level: 2 }),
+    ).toBeNull();
+    expect(
       document.querySelectorAll(".tz-demo-frame").length,
-    ).toBeGreaterThanOrEqual(2);
+    ).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole("switch", { name: "Long output" })).toBeVisible();
   },
 );

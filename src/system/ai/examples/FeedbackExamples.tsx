@@ -10,9 +10,51 @@ import {
 import { useReducedMotion } from "../../useReducedMotion";
 import { saraPortrait } from "./portraits";
 type Language = "ar" | "en";
-export function AlertExamples({ language = "ar" }: { language?: Language }) {
+/** An alert with an action: sending the reminder updates it in place. */
+export function AlertActionExample({
+  language = "ar",
+}: {
+  language?: Language;
+}) {
   const ar = language === "ar";
   const [sent, setSent] = useState(false);
+  return (
+    <Alert
+      title={
+        ar
+          ? "الفاتورة INV-2048 مستحقة غدًا"
+          : "Invoice INV-2048 is due tomorrow"
+      }
+      description={
+        sent
+          ? ar
+            ? "أرسلنا تذكيرًا إلى hello@madar.sa."
+            : "We sent a reminder to hello@madar.sa."
+          : ar
+            ? "شركة مدار للتقنية · ١٢٬٤٠٠ ر.س"
+            : "Madar Technology · SAR 12,400"
+      }
+      announcement="polite"
+      action={
+        <Button
+          variant="secondary"
+          state={sent ? "success" : "idle"}
+          onClick={() => setSent(true)}
+        >
+          {sent
+            ? ar
+              ? "أُرسل التذكير"
+              : "Reminder sent"
+            : ar
+              ? "إرسال تذكير"
+              : "Send reminder"}
+        </Button>
+      }
+    />
+  );
+}
+export function AlertExamples({ language = "ar" }: { language?: Language }) {
+  const ar = language === "ar";
   return (
     <div className="tz-feedback-examples">
       <Alert title={ar ? "حُفظت التغييرات" : "Changes saved"} tone="success" />
@@ -25,38 +67,7 @@ export function AlertExamples({ language = "ar" }: { language?: Language }) {
         }
         tone="error"
       />
-      <Alert
-        title={
-          ar
-            ? "الفاتورة INV-2048 مستحقة غدًا"
-            : "Invoice INV-2048 is due tomorrow"
-        }
-        description={
-          sent
-            ? ar
-              ? "أرسلنا تذكيرًا إلى hello@madar.sa."
-              : "We sent a reminder to hello@madar.sa."
-            : ar
-              ? "شركة مدار للتقنية · ١٢٬٤٠٠ ر.س"
-              : "Madar Technology · SAR 12,400"
-        }
-        announcement="polite"
-        action={
-          <Button
-            variant="secondary"
-            state={sent ? "success" : "idle"}
-            onClick={() => setSent(true)}
-          >
-            {sent
-              ? ar
-                ? "أُرسل التذكير"
-                : "Reminder sent"
-              : ar
-                ? "إرسال تذكير"
-                : "Send reminder"}
-          </Button>
-        }
-      />
+      <AlertActionExample language={language} />
     </div>
   );
 }

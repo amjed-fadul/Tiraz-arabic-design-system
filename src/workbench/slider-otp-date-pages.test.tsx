@@ -25,8 +25,12 @@ it.each([
     expect(
       screen.getByRole("heading", { name: ar, level: 1 }),
     ).toBeInTheDocument();
-    for (const name of ["أمثلة", "مثال الاستخدام"])
-      expect(screen.getByRole("heading", { name })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "مثال الاستخدام" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "أمثلة", level: 2 }),
+    ).toBeNull();
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),
       "en",

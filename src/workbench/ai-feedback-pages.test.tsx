@@ -18,7 +18,12 @@ it.each([
       ).getByRole("button", { name: ar }),
     );
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "أمثلة" })).toBeVisible();
+    if (en === "ThinkingState")
+      expect(screen.getByRole("heading", { name: "أمثلة" })).toBeVisible();
+    else
+      expect(
+        screen.queryByRole("heading", { name: "أمثلة", level: 2 }),
+      ).toBeNull();
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),
       "en",

@@ -81,17 +81,15 @@ export function ImageResultExample({
     </div>
   );
 }
-export function ImageResultStates({
+/** One image generating from 8% to done, then shown in place. */
+export function ImageResultGenerating({
   language = "ar",
 }: {
   language?: Language;
 }) {
   const ar = language === "ar",
-    name = useId(),
     reduced = usePrefersReducedMotion(),
-    [selected, setSelected] = useState("sage"),
-    [progress, setProgress] = useState(8),
-    [retried, setRetried] = useState(false);
+    [progress, setProgress] = useState(8);
   const generated = reduced || progress >= 100;
   useEffect(() => {
     if (generated) return;
@@ -102,6 +100,31 @@ export function ImageResultStates({
     return () => clearTimeout(timer);
   }, [generated, progress]);
   return (
+    <ImageResult
+      src={clayImage}
+      alt={
+        ar
+          ? "فنجان قهوة ولوحة قائمة بلون طيني"
+          : "Coffee cup and menu board in clay tones"
+      }
+      state={generated ? "loaded" : "loading"}
+      progress={generated ? 100 : progress}
+      caption={ar ? "الطابع الطيني" : "Clay direction"}
+      metadata="960 × 640 · SVG"
+      labels={{ loading: ar ? "جارٍ إنشاء الصورة" : "Generating image" }}
+    />
+  );
+}
+export function ImageResultStates({
+  language = "ar",
+}: {
+  language?: Language;
+}) {
+  const ar = language === "ar",
+    name = useId(),
+    [selected, setSelected] = useState("sage"),
+    [retried, setRetried] = useState(false);
+  return (
     <div className="tz-ai-results-example">
       <div
         className="tz-ai-image-grid"
@@ -110,19 +133,7 @@ export function ImageResultStates({
             "repeat(auto-fit, minmax(min(100%, 240px), 1fr))",
         }}
       >
-        <ImageResult
-          src={clayImage}
-          alt={
-            ar
-              ? "فنجان قهوة ولوحة قائمة بلون طيني"
-              : "Coffee cup and menu board in clay tones"
-          }
-          state={generated ? "loaded" : "loading"}
-          progress={generated ? 100 : progress}
-          caption={ar ? "الطابع الطيني" : "Clay direction"}
-          metadata="960 × 640 · SVG"
-          labels={{ loading: ar ? "جارٍ إنشاء الصورة" : "Generating image" }}
-        />
+        <ImageResultGenerating language={language} />
         <ImageResult
           src={nightImage}
           alt={

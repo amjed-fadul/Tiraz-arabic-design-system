@@ -298,7 +298,8 @@ export function PromptBarExample({
   );
 }
 
-export function ChatEntryStates({
+/** Sending fails: the message explains why and the draft stays put. */
+export function ChatEntryFailure({
   language = "ar",
   compact = false,
 }: {
@@ -313,14 +314,27 @@ export function ChatEntryStates({
     );
   const Entry = compact ? PromptBar : ChatComposer;
   return (
+    <Entry
+      value={draft}
+      onValueChange={setDraft}
+      onSubmit={() => Promise.reject(new Error("Network unavailable"))}
+    />
+  );
+}
+export function ChatEntryStates({
+  language = "ar",
+  compact = false,
+}: {
+  language?: Language;
+  compact?: boolean;
+}) {
+  const ar = language === "ar";
+  const Entry = compact ? PromptBar : ChatComposer;
+  return (
     <div style={{ display: "grid", gap: "var(--space-5)" }}>
       <section>
         <h3>{ar ? "تعذّر الإرسال" : "Submission failure"}</h3>
-        <Entry
-          value={draft}
-          onValueChange={setDraft}
-          onSubmit={() => Promise.reject(new Error("Network unavailable"))}
-        />
+        <ChatEntryFailure language={language} compact={compact} />
       </section>
       <section>
         <h3>{ar ? "معطّل" : "Disabled"}</h3>

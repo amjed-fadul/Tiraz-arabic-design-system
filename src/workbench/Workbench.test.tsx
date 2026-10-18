@@ -172,25 +172,28 @@ it("uses one state selector for Button disabled/loading demonstrations", async (
 });
 it("retains continuous documentation, synchronized prompt content and API information on every page", async () => {
   render(<Workbench />);
-  for (const name of [
-    "الأزرار",
-    "التبويبات",
-    "مفتاح التبديل",
-    "القائمة المنسدلة",
-    "اللوحة الجانبية",
-    "التنبيهات",
-  ]) {
+  // Only pages with a sequence or composition to show keep an Examples stage.
+  for (const [name, examples] of [
+    ["الأزرار", false],
+    ["التبويبات", false],
+    ["مفتاح التبديل", false],
+    ["القائمة المنسدلة", false],
+    ["اللوحة الجانبية", true],
+    ["التنبيهات", false],
+  ] as const) {
     await userEvent.click(navigation().getByRole("button", { name }));
     expect(screen.getByRole("heading", { name, level: 1 })).toBeInTheDocument();
     for (const title of [
       "استخدمه في تطبيقك",
       "المعاينة التفاعلية",
-      "أمثلة",
       "مثال الاستخدام",
     ])
       expect(
         screen.getByRole("heading", { name: title, level: 2 }),
       ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "أمثلة", level: 2 }) !== null,
+    ).toBe(examples);
     expect(screen.queryByText("عرض الطلب كاملًا")).not.toBeInTheDocument();
     expect(screen.getByText("دليل الخصائص")).toBeInTheDocument();
   }

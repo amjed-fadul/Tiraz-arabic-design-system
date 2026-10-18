@@ -23,8 +23,17 @@ it.each([
       ).getByRole("button", { name: ar }),
     );
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
-    for (const name of ["أمثلة", "مثال الاستخدام"])
-      expect(screen.getByRole("heading", { name })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "مثال الاستخدام" }),
+    ).toBeInTheDocument();
+    if (id === "steps")
+      expect(
+        screen.getByRole("heading", { name: "أمثلة" }),
+      ).toBeInTheDocument();
+    else
+      expect(
+        screen.queryByRole("heading", { name: "أمثلة", level: 2 }),
+      ).toBeNull();
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),
       "en",

@@ -31,7 +31,9 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    expect(screen.getByRole("heading", { name: "Examples" })).toBeVisible();
+    expect(
+      screen.queryByRole("heading", { name: "Examples", level: 2 }),
+    ).toBeNull();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     await user.click(
       within(document.querySelector(".code-example") as HTMLElement).getByRole(
@@ -177,7 +179,7 @@ it.each(["ar", "en"] as const)(
   },
 );
 
-it("uses compact titled headers and named icon-only playback controls in both demos", async () => {
+it("uses a compact titled header and named icon-only playback controls in the playground demo", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "النص المتتابع" }));
@@ -188,22 +190,17 @@ it("uses compact titled headers and named icon-only playback controls in both de
   const playground = document.querySelector(
     ".playground-region",
   ) as HTMLElement;
-  const example = document.querySelector(".examples-canvas") as HTMLElement;
-  for (const [block, title] of [
-    [playground, "Default"],
-    [example, "Markdown"],
-  ] as const) {
-    const header = within(block).getByText(title).closest("header")!;
-    expect(header).not.toBeNull();
-    const controls = within(header).getAllByRole("button");
-    expect(controls).toHaveLength(2);
-    for (const control of controls) {
-      expect(control).toHaveAccessibleName();
-      expect(control.textContent).toBe("");
-      expect(control.querySelector("svg")).not.toBeNull();
-    }
+  expect(document.querySelector(".examples-canvas")).toBeNull();
+  const header = within(playground).getByText("Default").closest("header")!;
+  expect(header).not.toBeNull();
+  const controls = within(header).getAllByRole("button");
+  expect(controls).toHaveLength(2);
+  for (const control of controls) {
+    expect(control).toHaveAccessibleName();
+    expect(control.textContent).toBe("");
+    expect(control.querySelector("svg")).not.toBeNull();
   }
-  const play = within(example).getByRole("button", {
+  const play = within(playground).getByRole("button", {
     name: "Replay local demo",
   });
   play.focus();
@@ -211,20 +208,21 @@ it("uses compact titled headers and named icon-only playback controls in both de
   expect(play).toHaveAccessibleName("Replay local demo");
   expect(play).toHaveFocus();
   expect(
-    within(example).getByRole("button", { name: "Copy example prompt" }),
+    within(playground).getByRole("button", { name: "Copy playground prompt" }),
   ).toBeVisible();
   expect(
-    within(example).queryByRole("button", { name: "Cancel demo" }),
+    within(playground).queryByRole("button", { name: "Cancel demo" }),
   ).toBeNull();
 });
 
-it("automatically runs both documentation demos without local footer or empty event scaffolding", async () => {
+it("automatically runs the documentation demo without local footer or empty event scaffolding", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
   fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(0));
+  expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
   const demos = document.querySelectorAll(".tz-stream-demo");
-  expect(demos).toHaveLength(2);
+  expect(demos).toHaveLength(1);
   for (const demo of demos)
     expect(demo.querySelector(".tz-streaming-text")).toHaveAttribute(
       "data-state",

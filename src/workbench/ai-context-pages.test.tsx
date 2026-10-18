@@ -17,12 +17,12 @@ import * as system from "../system";
 import * as ts from "typescript";
 
 it.each([
-  ["إجراءات التحديد", "SelectionActions"],
-  ["مقياس السياق", "ContextMeter"],
-  ["اختيار النموذج", "ModelSelector"],
+  ["إجراءات التحديد", "SelectionActions", false],
+  ["مقياس السياق", "ContextMeter", true],
+  ["اختيار النموذج", "ModelSelector", true],
 ])(
   "places %s under AI patterns with continuous frames and copyable source",
-  async (ar, en) => {
+  async (ar, en, examples) => {
     const user = userEvent.setup();
     render(<Workbench />);
     await user.click(
@@ -35,8 +35,14 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    for (const name of ["Interactive playground", "Examples", "Usage example"])
+    for (const name of ["Interactive playground", "Usage example"])
       expect(screen.getByRole("heading", { name })).toBeVisible();
+    if (examples)
+      expect(screen.getByRole("heading", { name: "Examples" })).toBeVisible();
+    else
+      expect(
+        screen.queryByRole("heading", { name: "Examples", level: 2 }),
+      ).toBeNull();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     await user.click(
       within(document.querySelector(".code-example") as HTMLElement).getByRole(
@@ -49,7 +55,7 @@ it.each([
     expect(code).not.toContain("workbench/");
     expect(
       document.querySelectorAll(".tz-demo-frame").length,
-    ).toBeGreaterThanOrEqual(2);
+    ).toBeGreaterThanOrEqual(examples ? 2 : 1);
   },
 );
 it("runs the copied connected example with real model state and editable local submission", async () => {
