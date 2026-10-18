@@ -16,13 +16,16 @@
 .tiraz-system
   :where(button, a, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--focus);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 .tiraz-system :where(svg) {
   flex-shrink: 0;
 }
+/* Pressable surfaces sink on press and spring back on release. The press is
+   near-instant; only the release carries the overshoot. */
 .tz-button {
   --button-height: var(--control-height);
+  --press-scale: 0.97;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -36,19 +39,24 @@
   font-weight: var(--weight-medium);
   line-height: 1.6;
   transition:
-    background var(--motion-fast),
-    border-color var(--motion-fast),
-    transform var(--motion-fast),
-    box-shadow var(--motion-fast);
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    opacity var(--motion-state) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
   background: var(--action);
   color: var(--action-text);
-  box-shadow: var(--shadow-control);
+  box-shadow: var(--shadow-raised);
   white-space: nowrap;
+  user-select: none;
+  touch-action: manipulation;
 }
 .tz-button[data-variant="secondary"] {
   background: var(--surface);
   color: var(--text);
   border-color: var(--border-strong);
+  box-shadow: var(--shadow-control);
 }
 .tz-button[data-variant="ghost"] {
   background: transparent;
@@ -59,14 +67,22 @@
   background: var(--danger-soft);
   border-color: color-mix(in srgb, var(--danger) 25%, var(--surface));
   color: var(--danger);
+  box-shadow: var(--shadow-control);
 }
-@media (hover: hover) {
+.tz-button[data-icon-only] {
+  --press-scale: 0.94;
+}
+@media (hover: hover) and (pointer: fine) {
   .tz-button[data-state="idle"]:not(:disabled):hover {
     background: var(--action-hover);
   }
-  .tz-button[data-state="idle"][data-variant="secondary"]:not(:disabled):hover,
+  .tz-button[data-state="idle"][data-variant="secondary"]:not(:disabled):hover {
+    background: var(--surface-subtle);
+    border-color: color-mix(in srgb, var(--border-strong), var(--text) 18%);
+  }
   .tz-button[data-state="idle"][data-variant="ghost"]:not(:disabled):hover {
     background: var(--surface-hover);
+    color: var(--text);
   }
   .tz-button[data-state="idle"][data-variant="destructive"]:not(
       :disabled
@@ -75,14 +91,21 @@
   }
 }
 .tz-button:not(:disabled):active {
-  transform: translateY(1px);
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-state), var(--motion-press), var(--motion-press);
+  transition-timing-function: var(--ease-out);
+}
+.tz-button:not([data-variant="ghost"]):not(:disabled):active {
+  box-shadow: var(--shadow-pressed);
+}
+.tz-button:disabled:not([data-state="loading"]) {
+  opacity: 0.48;
   box-shadow: none;
 }
-.tz-button:disabled {
-  opacity: 0.48;
-}
 .tz-button[data-state="loading"] {
-  opacity: 0.75;
+  opacity: 0.8;
   cursor: wait;
 }
 .tz-button[data-state="success"] {
@@ -108,10 +131,18 @@
   display: inline-flex;
   align-items: center;
   gap: var(--control-gap);
-  animation: tz-label-in var(--motion-state) var(--ease);
+}
+/* Only a state change animates; first render is static. State glyphs pop out
+   of a blur so success/error read as a change rather than a swap. */
+.tz-button-label[data-changed] {
+  animation: tz-label-in var(--motion-state) var(--ease-out);
+}
+.tz-button:is([data-state="success"], [data-state="error"]) > svg {
+  animation: tz-glyph-in calc(var(--motion-state) + var(--motion-fast))
+    var(--ease-spring);
 }
 .tz-spinner {
-  animation: tz-spin 900ms linear infinite;
+  animation: tz-spin 800ms linear infinite;
 }
 .tz-icon-button {
   display: inline-flex;
@@ -123,9 +154,23 @@
   color: var(--text-secondary);
   border: 0;
   border-radius: var(--radius-small);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
+  touch-action: manipulation;
 }
-.tz-icon-button:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-icon-button:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+}
+.tz-icon-button:active {
+  transform: scale(0.92);
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+  transition-timing-function: var(--ease-out);
 }
 .tz-tab-list {
   display: flex;
@@ -144,6 +189,13 @@
   padding-inline: var(--space-5);
   padding-block: var(--tab-padding);
   font-weight: var(--weight-medium);
+  transition: color var(--motion-fast) var(--ease-out);
+  touch-action: manipulation;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-tab:not(:disabled):not([data-state="active"]):hover {
+    color: var(--text);
+  }
 }
 .tz-tab[data-state="active"] {
   color: var(--action);
@@ -158,8 +210,8 @@
   height: 2px;
   background: var(--action);
   transition:
-    width var(--motion-state) var(--ease),
-    transform var(--motion-state) var(--ease);
+    width calc(var(--motion-state) + 60ms) var(--ease-out),
+    transform calc(var(--motion-state) + 60ms) var(--ease-out);
   pointer-events: none;
   z-index: -1;
   border-start-start-radius: 2px;
@@ -167,6 +219,16 @@
 }
 .tz-tab-panel {
   outline-offset: -2px !important;
+}
+/* After the first switch, the incoming panel settles in; first paint is static. */
+.tz-tabs[data-changed] > .tz-tab-panel[data-state="active"] {
+  animation: tz-panel-in var(--motion-state) var(--ease-out);
+}
+@keyframes tz-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
 }
 .tz-tabs[data-variant="segment"] > .tz-tab-list {
   display: inline-flex;
@@ -178,6 +240,17 @@
 .tz-tabs[data-variant="segment"] > .tz-tab-list > .tz-tab {
   min-block-size: var(--control-small);
   padding-block: 3px;
+  border-radius: var(--radius-small);
+  transition:
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
+}
+.tz-tabs[data-variant="segment"]
+  > .tz-tab-list
+  > .tz-tab:not(:disabled):active {
+  transform: scale(0.96);
+  transition-duration: var(--motion-fast), var(--motion-press);
+  transition-timing-function: var(--ease-out);
 }
 .tz-tabs[data-variant="segment"] > .tz-tab-list > .tz-tab-indicator {
   bottom: 3px;
@@ -209,7 +282,11 @@
   color: var(--text-secondary);
   cursor: not-allowed;
 }
+/* The thumb travels on a small overshoot and stretches toward its travel
+   while held, like a physical toggle; the hit area extends past the track. */
 .tz-switch {
+  --switch-travel: 16px;
+  --switch-stretch: 0px;
   position: relative;
   border: 1px solid var(--switch-track);
   border-radius: 100px;
@@ -219,9 +296,23 @@
   flex-shrink: 0;
   padding: 2px;
   transition:
-    background var(--motion-state),
-    border-color var(--motion-state);
+    background-color var(--motion-state) var(--ease-out),
+    border-color var(--motion-state) var(--ease-out);
   touch-action: manipulation;
+}
+.tz-switch::before {
+  content: "";
+  position: absolute;
+  inset: -9px -6px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-switch[data-state="unchecked"]:not(:disabled):hover {
+    background: color-mix(in srgb, var(--switch-track), var(--text) 14%);
+    border-color: color-mix(in srgb, var(--switch-track), var(--text) 14%);
+  }
+}
+.tz-switch:not(:disabled):active {
+  --switch-stretch: 4px;
 }
 .tz-switch[data-state="checked"] {
   background: var(--action);
@@ -229,20 +320,25 @@
 }
 .tz-switch-thumb {
   display: block;
-  inline-size: 16px;
+  inline-size: calc(16px + var(--switch-stretch));
   block-size: 16px;
-  border-radius: 50%;
+  border-radius: 100px;
   background: var(--surface);
-  box-shadow: 0 1px 3px #00000026;
+  box-shadow: var(--shadow-thumb);
   transform: translateX(0);
-  transition: transform var(--motion-state) var(--ease);
+  transition:
+    transform calc(var(--motion-state) + 40ms) var(--ease-spring),
+    inline-size var(--motion-state) var(--ease-out),
+    background-color var(--motion-state) var(--ease-out);
 }
 .tz-switch[data-state="checked"] .tz-switch-thumb {
-  transform: translateX(16px);
+  transform: translateX(calc(var(--switch-travel) - var(--switch-stretch)));
   background: var(--action-text);
 }
 .tz-switch:dir(rtl)[data-state="checked"] .tz-switch-thumb {
-  transform: translateX(-16px);
+  transform: translateX(
+    calc(-1 * (var(--switch-travel) - var(--switch-stretch)))
+  );
 }
 .tz-menu {
   z-index: 60;
@@ -260,10 +356,42 @@
   border: 1px solid var(--border);
   box-shadow: var(--shadow-popover);
   transform-origin: var(--radix-dropdown-menu-content-transform-origin);
-  animation: tz-menu-in var(--motion-enter) var(--ease);
+  animation: tz-menu-in var(--motion-enter) var(--ease-out);
 }
 .tz-menu[data-state="closed"] {
-  animation: tz-menu-out var(--motion-exit) var(--ease);
+  animation: tz-menu-out var(--motion-exit) var(--ease-exit);
+}
+/* Floating layers grow out of their trigger: the origin follows Radix's
+   placement and the short offset points back toward the anchor. */
+:is(.tz-menu, .tz-tooltip, .tz-datepicker-popup, .tz-popover-surface) {
+  --enter-x: 0px;
+  --enter-y: -4px;
+}
+:is(
+  .tz-menu,
+  .tz-tooltip,
+  .tz-datepicker-popup,
+  .tz-popover-surface
+)[data-side="top"] {
+  --enter-y: 4px;
+}
+:is(
+  .tz-menu,
+  .tz-tooltip,
+  .tz-datepicker-popup,
+  .tz-popover-surface
+)[data-side="left"] {
+  --enter-x: 4px;
+  --enter-y: 0px;
+}
+:is(
+  .tz-menu,
+  .tz-tooltip,
+  .tz-datepicker-popup,
+  .tz-popover-surface
+)[data-side="right"] {
+  --enter-x: -4px;
+  --enter-y: 0px;
 }
 .tz-menu-item {
   display: flex;
@@ -275,10 +403,23 @@
   outline: none;
   cursor: pointer;
   min-block-size: var(--control-height);
+  user-select: none;
 }
+.tz-menu-item > span[aria-hidden="true"] {
+  display: inline-flex;
+  color: var(--text-secondary);
+}
+/* Highlight follows the pointer instantly: menus never lag behind the hand. */
 .tz-menu-item[data-highlighted] {
   background: var(--surface-subtle);
   color: var(--action);
+}
+.tz-menu-item[data-highlighted] > span[aria-hidden="true"] {
+  color: inherit;
+}
+.tz-menu-item[data-destructive][data-highlighted] {
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 .tz-menu-item[data-disabled] {
   opacity: 0.4;
@@ -300,13 +441,15 @@
 .tz-sheet-backdrop {
   position: fixed;
   inset: 0;
-  background: #0c18114d;
+  background: var(--backdrop);
   z-index: 90;
-  animation: tz-fade-in var(--motion-enter);
+  animation: tz-fade-in var(--motion-enter) var(--ease-out);
 }
 .tz-sheet-backdrop[data-state="closed"] {
-  animation: tz-fade-out var(--motion-exit);
+  animation: tz-fade-out var(--motion-exit) var(--ease-exit);
 }
+/* Panels travel on the drawer curve: fast out of the edge, long soft landing.
+   They stay opaque the whole way, so the surface never looks ghosted. */
 .tz-sheet {
   position: fixed;
   z-index: 91;
@@ -316,20 +459,21 @@
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-overlay);
-  animation: tz-sheet-in var(--motion-enter) var(--ease);
+  overscroll-behavior: contain;
+  animation: tz-sheet-in var(--motion-panel) var(--ease-drawer);
 }
 .tz-sheet[data-side="right"] {
   right: 0;
   --sheet-offset: 100%;
-  border-inline-end: 1px solid var(--border);
+  border-left: 1px solid var(--border);
 }
 .tz-sheet[data-side="left"] {
   left: 0;
   --sheet-offset: -100%;
-  border-inline-start: 1px solid var(--border);
+  border-right: 1px solid var(--border);
 }
 .tz-sheet[data-state="closed"] {
-  animation: tz-sheet-out var(--motion-exit) var(--ease);
+  animation: tz-sheet-out var(--motion-panel-exit) var(--ease-drawer);
 }
 .tz-sheet-header {
   display: flex;
@@ -361,7 +505,12 @@
   gap: var(--space-2);
   justify-content: flex-end;
 }
+/* Toasts pile up instead of pushing each other: the newest sits in front and
+   older ones peek behind it, scaled back. Hovering or focusing the pile fans
+   it out (Radix pauses the timers meanwhile). */
 .tz-toast-viewport {
+  --toast-peek: 10px;
+  --toast-gap: 8px;
   position: fixed;
   z-index: 100;
   inset-block-end: 20px;
@@ -370,27 +519,70 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+  display: grid;
+  align-items: end;
   outline: none;
 }
 .tz-toast {
+  --toast-y: calc(var(--toast-depth, 0) * var(--toast-peek) * -1);
+  --toast-scale: calc(1 - var(--toast-depth, 0) * 0.05);
+  grid-area: 1 / 1;
+  position: relative;
+  z-index: calc(10 - var(--toast-depth, 0));
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border);
   border-radius: var(--radius-panel);
   background: var(--surface);
   padding: var(--space-4);
   box-shadow: var(--shadow-popover);
-  animation: tz-toast-in var(--motion-enter) var(--ease);
+  transform-origin: 50% 0;
+  transform: translate3d(
+      var(--swipe-x, 0px),
+      calc(var(--toast-y) + var(--swipe-y, 0px)),
+      0
+    )
+    scale(var(--toast-scale));
+  transition:
+    transform var(--motion-panel) var(--ease-out),
+    block-size var(--motion-panel) var(--ease-out),
+    opacity var(--motion-state) var(--ease-out);
+  animation: tz-toast-in var(--motion-panel) var(--ease-drawer);
 }
-.tz-toast > div {
+/* Bridges the gaps of an open pile so the pointer never falls through. It
+   sits above the toast, outside the measured scroll height. */
+.tz-toast::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 100%;
+  block-size: calc(var(--toast-gap) + 1px);
+}
+.tz-toast-viewport:not(:hover):not(:focus-within)
+  > .tz-toast:not([data-depth="0"]) {
+  block-size: var(--toast-front-height, auto);
+  overflow: hidden;
+}
+.tz-toast-viewport:not(:hover):not(:focus-within)
+  > .tz-toast:not([data-depth="0"])
+  > * {
+  opacity: 0;
+}
+.tz-toast-viewport:is(:hover, :focus-within) > .tz-toast {
+  --toast-y: calc(var(--toast-lift, 0px) * -1);
+  --toast-scale: 1;
+  block-size: var(--toast-height, auto);
+}
+.tz-toast > * {
+  transition: opacity var(--motion-state) var(--ease-out);
+}
+.tz-toast > .tz-toast-copy {
   flex: 1;
+  min-inline-size: 0;
 }
 .tz-toast-icon {
-  margin-block-start: 4px;
+  margin-block-start: 3px;
   color: var(--info);
 }
 .tz-toast[data-tone="success"] .tz-toast-icon {
@@ -411,18 +603,18 @@
   unicode-bidi: plaintext;
 }
 .tz-toast[data-state="closed"] {
-  animation: tz-toast-out var(--motion-exit) var(--ease);
+  animation: tz-toast-out var(--motion-exit) var(--ease-exit) forwards;
 }
 .tz-toast[data-swipe="move"] {
-  transform: translateX(var(--radix-toast-swipe-move-x))
-    translateY(var(--radix-toast-swipe-move-y));
+  --swipe-x: var(--radix-toast-swipe-move-x, 0px);
+  --swipe-y: var(--radix-toast-swipe-move-y, 0px);
+  transition: none;
 }
 .tz-toast[data-swipe="cancel"] {
-  transform: none;
-  transition: transform var(--motion-state);
+  transition: transform var(--motion-state) var(--ease-spring);
 }
 .tz-toast[data-swipe="end"] {
-  animation: tz-toast-out var(--motion-exit) var(--ease);
+  animation: tz-toast-swipe-out var(--motion-exit) var(--ease-out) forwards;
 }
 @keyframes tz-spin {
   to {
@@ -431,18 +623,32 @@
 }
 @keyframes tz-label-in {
   from {
-    opacity: 0.5;
+    opacity: 0;
+    filter: blur(2px);
     transform: translateY(2px);
   }
   to {
     opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+@keyframes tz-glyph-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+    transform: scale(0.6);
+  }
+  to {
+    opacity: 1;
+    filter: none;
     transform: none;
   }
 }
 @keyframes tz-menu-in {
   from {
     opacity: 0;
-    transform: translateY(-4px) scale(0.97);
+    transform: translate(var(--enter-x, 0px), var(--enter-y, -4px)) scale(0.96);
   }
   to {
     opacity: 1;
@@ -452,7 +658,7 @@
 @keyframes tz-menu-out {
   to {
     opacity: 0;
-    transform: translateY(-3px) scale(0.98);
+    transform: scale(0.98);
   }
 }
 @keyframes tz-fade-in {
@@ -471,33 +677,52 @@
 @keyframes tz-sheet-in {
   from {
     transform: translateX(var(--sheet-offset));
-    opacity: 0.8;
   }
   to {
     transform: none;
-    opacity: 1;
   }
 }
 @keyframes tz-sheet-out {
   to {
     transform: translateX(var(--sheet-offset));
-    opacity: 0.8;
+  }
+}
+@keyframes tz-modal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px)) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+@keyframes tz-modal-out {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.98);
   }
 }
 @keyframes tz-toast-in {
   from {
     opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
+    transform: translate3d(0, calc(100% + 20px), 0) scale(0.96);
   }
 }
 @keyframes tz-toast-out {
   to {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translate3d(0, calc(var(--toast-y) + 6px), 0)
+      scale(calc(var(--toast-scale) - 0.04));
+  }
+}
+@keyframes tz-toast-swipe-out {
+  from {
+    transform: translate3d(0, var(--radix-toast-swipe-end-y, 0px), 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, calc(100% + 20px), 0);
   }
 }
 @media (forced-colors: active) {
@@ -552,9 +777,11 @@
   color: var(--text);
   font-size: var(--text-body);
   line-height: 1.6;
+  box-shadow: var(--shadow-control);
   transition:
-    border-color var(--motion-fast),
-    box-shadow var(--motion-fast);
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out);
 }
 .tz-input[data-size="sm"],
 .tz-select-trigger[data-size="sm"] {
@@ -565,9 +792,67 @@
 .tz-select-trigger[data-placeholder] {
   color: var(--text-muted);
 }
+/* Fields: the edge darkens under the pointer; focus tightens the edge to the
+   accent and adds a soft halo instead of a detached ring. */
+@media (hover: hover) and (pointer: fine) {
+  :is(.tz-input, .tz-select-trigger, .tz-textarea):not(:disabled):not(
+      :focus-visible
+    ):not([aria-invalid="true"]):hover {
+    border-color: color-mix(in srgb, var(--border-strong), var(--text) 22%);
+  }
+}
+.tiraz-system :is(.tz-input, .tz-textarea, .tz-select-trigger):focus-visible {
+  outline: none;
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 3px var(--focus-halo),
+    var(--shadow-control);
+}
 .tz-input[aria-invalid="true"],
 .tz-select-trigger[aria-invalid="true"] {
   border-color: var(--danger);
+}
+.tiraz-system
+  :is(
+    .tz-input,
+    .tz-textarea,
+    .tz-select-trigger
+  )[aria-invalid="true"]:focus-visible {
+  border-color: var(--danger);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
+    var(--shadow-control);
+}
+/* Turning invalid nudges the field once along the reading axis. */
+:is(.tz-input, .tz-textarea, .tz-select-trigger)[aria-invalid="true"] {
+  animation: tz-shake 320ms var(--ease-out);
+}
+@keyframes tz-shake {
+  0%,
+  100% {
+    transform: none;
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(4px);
+  }
+  75% {
+    transform: translateX(-2px);
+  }
+}
+/* Touch keyboards zoom the page into fields under 16px. */
+@media (pointer: coarse) {
+  :is(.tz-input, .tz-textarea, .tz-tag-draft, .tz-chat-entry textarea) {
+    font-size: max(16px, var(--text-body));
+  }
+}
+@media (forced-colors: active) {
+  .tiraz-system :is(.tz-input, .tz-textarea, .tz-select-trigger):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
 }
 .tz-input:disabled,
 .tz-select-trigger:disabled {
@@ -874,16 +1159,30 @@
   background: var(--surface);
   color: var(--action-text);
   cursor: pointer;
+  box-shadow: var(--shadow-control);
   transition:
-    background-color var(--motion-fast),
-    border-color var(--motion-fast);
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
+  touch-action: manipulation;
 }
-.tz-choice-input:hover:not(:disabled) {
-  border-color: var(--action);
+@media (hover: hover) and (pointer: fine) {
+  .tz-choice-input:hover:not(:disabled) {
+    border-color: var(--action);
+  }
+}
+.tz-choice-input:not(:disabled):active {
+  transform: scale(0.9);
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-press);
+  transition-timing-function: var(--ease-out);
 }
 .tz-choice-input:checked {
   background: var(--action);
   border-color: var(--action);
+  box-shadow: var(--shadow-raised);
 }
 .tz-choice-input::before {
   content: "";
@@ -892,8 +1191,30 @@
   background: currentColor;
   transform: scale(0);
 }
+/* The check is drawn, not swapped: a stroke-shaped mask is revealed in the
+   direction the mark is written. Checkmarks never mirror in RTL. Unchecking
+   fades out quickly instead of un-drawing. */
 .tz-checkbox::before {
-  clip-path: polygon(14% 44%, 0 59%, 40% 100%, 100% 20%, 85% 8%, 38% 73%);
+  transform: none;
+  opacity: 0;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.4 4.9 8.8 9.5 3.4'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 6.4 4.9 8.8 9.5 3.4'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  clip-path: inset(0 100% 0 0);
+  transition:
+    opacity var(--motion-fast) var(--ease-out),
+    clip-path 0s linear var(--motion-fast);
+}
+.tz-checkbox:checked::before {
+  opacity: 1;
+  clip-path: inset(0);
+  transition:
+    opacity 0s,
+    clip-path calc(var(--motion-state) + 60ms) var(--ease-out) 40ms;
+}
+.tz-radio::before {
+  transition: transform var(--motion-state) var(--ease-spring);
 }
 .tz-choice-input:checked::before {
   transform: scale(1);
@@ -962,9 +1283,10 @@
   font-size: var(--text-body);
   line-height: var(--line-height);
   resize: vertical;
+  box-shadow: var(--shadow-control);
   transition:
-    border-color var(--motion-fast),
-    box-shadow var(--motion-fast);
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out);
 }
 .tz-textarea::placeholder {
   color: var(--text-muted);
@@ -1075,8 +1397,14 @@
   color: var(--text);
   box-shadow: var(--shadow-popover);
   font-size: var(--text-meta);
+  line-height: 1.6;
   overflow-wrap: anywhere;
-  animation: tz-fade-in var(--motion-fast) var(--ease);
+  text-wrap: pretty;
+  transform-origin: var(--radix-popper-transform-origin);
+  animation: tz-menu-in calc(var(--motion-fast) + 40ms) var(--ease-out);
+}
+.tz-tooltip[data-instant] {
+  animation: none;
 }
 .tz-modal {
   position: fixed;
@@ -1093,10 +1421,10 @@
   border-radius: var(--radius-panel);
   box-shadow: var(--shadow-overlay);
   overflow-wrap: anywhere;
-  animation: tz-fade-in var(--motion-enter) var(--ease);
+  animation: tz-modal-in calc(var(--motion-enter) + 60ms) var(--ease-out);
 }
 .tz-modal[data-state="closed"] {
-  animation: tz-fade-out var(--motion-exit) var(--ease);
+  animation: tz-modal-out var(--motion-exit) var(--ease-exit);
 }
 .tz-modal-header {
   display: flex;
@@ -1262,8 +1590,21 @@
   block-size: var(--text-body);
   border-radius: var(--radius-small);
   background: var(--surface-hover);
-  animation: tz-placeholder-pulse calc(var(--motion-state) * 8) var(--ease)
-    infinite;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* A soft highlight sweeps in the reading direction, on the compositor. */
+.tz-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--shimmer), transparent);
+  transform: translateX(-100%);
+  animation: tz-shimmer 1.6s var(--ease-in-out) infinite;
+}
+.tz-skeleton:dir(rtl)::after {
+  animation-direction: reverse;
 }
 .tz-skeleton[data-shape="rectangle"] {
   block-size: calc(var(--control-height) * 2);
@@ -1290,10 +1631,14 @@
   overflow-wrap: anywhere;
 }
 .tz-progress-track {
+  --progress-dir: 1;
   block-size: calc(var(--control-small) / 4);
   border-radius: var(--radius-small);
   background: var(--surface-hover);
   overflow: hidden;
+}
+.tz-progress-track:dir(rtl) {
+  --progress-dir: -1;
 }
 .tz-progress-indicator {
   display: block;
@@ -1301,12 +1646,28 @@
   margin-inline-end: auto;
   background: var(--action);
   border-radius: inherit;
-  transition: inline-size var(--motion-state) var(--ease);
+  transition: inline-size calc(var(--motion-state) * 2) var(--ease-out);
 }
+/* Indeterminate work travels along the reading direction, never in place. */
 .tz-progress-track[data-indeterminate="true"] .tz-progress-indicator {
-  inline-size: 35%;
-  animation: tz-placeholder-pulse calc(var(--motion-state) * 8) var(--ease)
-    infinite;
+  inline-size: 40%;
+  animation: tz-progress-slide 1.5s var(--ease-in-out) infinite;
+}
+@keyframes tz-progress-slide {
+  from {
+    transform: translateX(calc(var(--progress-dir) * -110%));
+  }
+  to {
+    transform: translateX(calc(var(--progress-dir) * 260%));
+  }
+}
+@keyframes tz-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
 .tz-loading-spinner {
   display: inline-flex;
@@ -1326,27 +1687,24 @@
   inline-size: 100%;
   block-size: 100%;
 }
-@keyframes tz-placeholder-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.55;
-  }
-}
-.tiraz-system[data-reduced-motion="true"] .tz-skeleton,
+.tiraz-system[data-reduced-motion="true"] .tz-skeleton::after,
 .tiraz-system[data-reduced-motion="true"]
   .tz-progress-track[data-indeterminate="true"]
   .tz-progress-indicator,
 .tiraz-system[data-reduced-motion="true"] .tz-loading-spinner .tz-spinner {
   animation: none;
 }
+.tiraz-system[data-reduced-motion="true"] .tz-skeleton::after {
+  display: none;
+}
 @media (prefers-reduced-motion: reduce) {
-  .tz-skeleton,
+  .tz-skeleton::after,
   .tz-progress-track[data-indeterminate="true"] .tz-progress-indicator,
   .tz-loading-spinner .tz-spinner {
     animation: none;
+  }
+  .tz-skeleton::after {
+    display: none;
   }
 }
 
@@ -1441,7 +1799,9 @@
   text-align: start;
   font-weight: var(--weight-medium);
   overflow-wrap: anywhere;
-  transition: background var(--motion-fast);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out);
 }
 .tz-accordion-trigger > span {
   min-inline-size: 0;
@@ -1449,7 +1809,7 @@
 .tz-accordion-trigger[data-state="open"] {
   color: var(--action);
 }
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
   .tz-accordion-trigger:not(:disabled):hover {
     background: var(--surface-subtle);
   }
@@ -1458,17 +1818,19 @@
   opacity: 0.48;
 }
 .tz-accordion-chevron {
-  transition: transform var(--motion-state) var(--ease);
+  color: var(--text-secondary);
+  transition: transform calc(var(--motion-state) + 60ms) var(--ease-out);
 }
 .tz-accordion-trigger[data-state="open"] .tz-accordion-chevron {
+  color: inherit;
   transform: rotate(180deg);
 }
 .tz-accordion-panel {
   overflow: hidden;
-  animation: tz-accordion-open var(--motion-state) var(--ease);
+  animation: tz-accordion-open calc(var(--motion-state) + 60ms) var(--ease-out);
 }
 .tz-accordion-panel[data-state="closed"] {
-  animation: tz-accordion-close var(--motion-exit) var(--ease);
+  animation: tz-accordion-close var(--motion-state) var(--ease-out);
 }
 .tz-accordion-content {
   padding: var(--space-2) var(--row-gap) var(--row-gap);
@@ -1525,11 +1887,13 @@
 .tz-breadcrumbs a {
   color: var(--text-secondary);
   text-decoration: underline;
-  text-underline-offset: var(--space-1);
+  text-underline-offset: var(--underline-offset);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
   transition: color var(--motion-fast);
 }
 .tz-breadcrumbs a:hover {
   color: var(--action);
+  text-decoration-color: currentColor;
 }
 .tz-breadcrumbs [aria-current] {
   font-weight: var(--weight-medium);
@@ -1616,8 +1980,10 @@
   min-block-size: var(--control-small);
   cursor: pointer;
   transition:
-    background var(--motion-fast),
-    border-color var(--motion-fast);
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
 }
 .tz-chart-legend > button[aria-pressed="true"] {
   background: var(--surface-subtle);
@@ -1809,14 +2175,19 @@
   text-align: start;
   font: inherit;
   cursor: pointer;
-  transition: background var(--motion-fast);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
 }
 .tz-sidebar-item > .tz-sidebar-label {
   flex: 1;
 }
-.tz-sidebar-item:hover,
-.tz-sidebar-toggle:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-sidebar-item:not([data-active="true"]):hover,
+  .tz-sidebar-toggle:hover {
+    background: var(--surface-hover);
+  }
 }
 .tz-sidebar-item[data-active="true"] {
   background: var(--action-soft);
@@ -1988,9 +2359,10 @@
   color: var(--text);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-control);
   transition:
-    border-color var(--motion-fast),
-    box-shadow var(--motion-fast);
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out);
 }
 .tz-tag-input[data-size="sm"] {
   min-block-size: var(--control-small);
@@ -1999,10 +2371,18 @@
 .tz-tag-input:focus-within {
   border-color: var(--focus);
 }
-/* The composite owns draft focus; remove actions keep their native focus ring. */
+/* The composite owns draft focus with the same edge and halo as every field;
+   remove actions keep their native focus ring. */
 .tz-tag-input:has(> .tz-tag-draft:focus) {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
+  box-shadow:
+    0 0 0 3px var(--focus-halo),
+    var(--shadow-control);
+}
+@media (forced-colors: active) {
+  .tz-tag-input:has(> .tz-tag-draft:focus) {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
 }
 .tz-tag-input:has(> .tz-tag-draft:focus) > .tz-tag-draft:focus {
   outline: 0;
@@ -2166,7 +2546,8 @@
   font-weight: var(--weight-medium);
   color: var(--text);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: var(--underline-offset);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
   border-radius: var(--radius-small);
   cursor: pointer;
 }
@@ -2332,6 +2713,108 @@
   cursor: not-allowed;
   opacity: 0.55;
 }
+/* Custom track and thumb; forced-colors keeps the native control. The fill
+   grows from the inline start, so it mirrors with the range itself. */
+@media not (forced-colors: active) {
+  .tz-slider {
+    --slider-track: 6px;
+    --slider-thumb: 18px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    touch-action: manipulation;
+  }
+  .tz-slider::-webkit-slider-runnable-track {
+    block-size: var(--slider-track);
+    border-radius: 100px;
+    background: linear-gradient(
+      to right,
+      var(--action) var(--slider-fill, 50%),
+      var(--surface-hover) var(--slider-fill, 50%)
+    );
+  }
+  .tz-slider:dir(rtl)::-webkit-slider-runnable-track {
+    background: linear-gradient(
+      to left,
+      var(--action) var(--slider-fill, 50%),
+      var(--surface-hover) var(--slider-fill, 50%)
+    );
+  }
+  .tz-slider::-moz-range-track {
+    block-size: var(--slider-track);
+    border-radius: 100px;
+    background: var(--surface-hover);
+  }
+  .tz-slider::-moz-range-progress {
+    block-size: var(--slider-track);
+    border-radius: 100px;
+    background: var(--action);
+  }
+  .tz-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    inline-size: var(--slider-thumb);
+    block-size: var(--slider-thumb);
+    margin-block-start: calc((var(--slider-track) - var(--slider-thumb)) / 2);
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow:
+      var(--shadow-thumb),
+      0 0 0 0 var(--focus-halo);
+    transition:
+      transform var(--motion-state) var(--ease-spring),
+      box-shadow var(--motion-state) var(--ease-out);
+  }
+  .tz-slider::-moz-range-thumb {
+    inline-size: var(--slider-thumb);
+    block-size: var(--slider-thumb);
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow:
+      var(--shadow-thumb),
+      0 0 0 0 var(--focus-halo);
+    transition:
+      transform var(--motion-state) var(--ease-spring),
+      box-shadow var(--motion-state) var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .tz-slider:not(:disabled):hover::-webkit-slider-thumb {
+      box-shadow:
+        var(--shadow-thumb),
+        0 0 0 6px var(--focus-halo);
+    }
+    .tz-slider:not(:disabled):hover::-moz-range-thumb {
+      box-shadow:
+        var(--shadow-thumb),
+        0 0 0 6px var(--focus-halo);
+    }
+  }
+  .tz-slider:not(:disabled):active::-webkit-slider-thumb {
+    transform: scale(1.12);
+    transition-duration: var(--motion-press), var(--motion-state);
+    transition-timing-function: var(--ease-out);
+  }
+  .tz-slider:not(:disabled):active::-moz-range-thumb {
+    transform: scale(1.12);
+  }
+  .tiraz-system .tz-slider:focus-visible {
+    outline: none;
+  }
+  .tz-slider:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+      var(--shadow-thumb),
+      0 0 0 2px var(--surface),
+      0 0 0 4px var(--focus);
+  }
+  .tz-slider:focus-visible::-moz-range-thumb {
+    box-shadow:
+      var(--shadow-thumb),
+      0 0 0 2px var(--surface),
+      0 0 0 4px var(--focus);
+  }
+}
 .tz-slider[aria-invalid="true"] {
   outline: 1px solid var(--danger);
   outline-offset: 2px;
@@ -2364,6 +2847,22 @@
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-small);
   background: var(--surface);
+  box-shadow: var(--shadow-control);
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out);
+}
+/* Each digit lands with a small settle as its slot fills. */
+.tz-otp-slot[data-filled] > .tz-otp-digit {
+  animation: tz-digit-in var(--motion-state) var(--ease-spring);
+}
+@keyframes tz-digit-in {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+    transform: translateY(4px) scale(0.9);
+  }
 }
 .tz-otp-digit {
   font-family: var(--font-mono);
@@ -2389,8 +2888,16 @@
   outline: none;
 }
 .tz-otp-slot[data-active] {
-  outline: 2px solid var(--focus);
-  outline-offset: 1px;
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 3px var(--focus-halo),
+    var(--shadow-control);
+}
+@media (forced-colors: active) {
+  .tz-otp-slot[data-active] {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
 }
 .tz-otp-slot[data-selected] {
   background: var(--action-soft);
@@ -2402,7 +2909,18 @@
   inset-block-start: 50%;
   transform: translateY(-50%);
   block-size: 1em;
-  border-inline-start: 1px solid var(--text);
+  border-inline-start: 1.5px solid var(--focus);
+  animation: tz-caret-blink 1.1s var(--ease-in-out) infinite;
+}
+@keyframes tz-caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  95% {
+    opacity: 0;
+  }
 }
 .tz-otp-slot[data-caret][data-filled]::after {
   inset-inline-start: 25%;
@@ -2654,7 +3172,7 @@
 }
 .tz-step-button:hover .tz-step-label {
   text-decoration: underline;
-  text-underline-offset: var(--space-1);
+  text-underline-offset: var(--underline-offset);
 }
 .tz-step-indicator,
 .tz-timeline-indicator {
@@ -3868,7 +4386,9 @@ button.tz-tool-chip {
 .tz-markdown a {
   color: var(--action);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: var(--underline-offset);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color var(--motion-fast) var(--ease-out);
 }
 .tz-markdown a:focus-visible {
   outline: 2px solid var(--focus);
@@ -5091,4 +5611,195 @@ a.tz-inline-citation {
     grid-column: 2;
     grid-row: 1 / span 2;
   }
+}
+
+/* Floating surfaces share one entrance: they grow out of their anchor along
+   Radix's computed origin and leave faster than they arrive. Select-based
+   lists only fade, so an option never moves under a resting pointer. */
+.tz-datepicker-popup,
+.tz-context-details,
+.tz-citation-popup {
+  transform-origin: var(--radix-popover-content-transform-origin);
+  animation: tz-menu-in var(--motion-enter) var(--ease-out);
+}
+.tz-selection-actions {
+  transform-origin: var(--radix-popper-transform-origin);
+  animation: tz-menu-in var(--motion-enter) var(--ease-out);
+}
+:is(
+  .tz-datepicker-popup,
+  .tz-context-details,
+  .tz-citation-popup
+)[data-state="closed"] {
+  animation: tz-menu-out var(--motion-exit) var(--ease-exit) forwards;
+}
+.tz-model-popup,
+.tz-date-years-popup {
+  animation: tz-select-in var(--motion-fast) var(--ease-out);
+}
+:is(.tz-citation-popup, .tz-context-details, .tz-selection-actions) {
+  --enter-x: 0px;
+  --enter-y: -4px;
+}
+:is(
+  .tz-citation-popup,
+  .tz-context-details,
+  .tz-selection-actions
+)[data-side="top"] {
+  --enter-y: 4px;
+}
+
+/* One interaction feel for composite controls. Colors settle quickly; small
+   pressables sink and spring back; rows and cards only shade, because
+   scaling a wide surface reads as a wobble rather than a press. */
+:where(
+  .tz-sources-trigger,
+  .tz-source-row,
+  .tz-inline-citation,
+  .tz-context-trigger,
+  .tz-model-trigger,
+  .tz-model-option,
+  .tz-selection-actions button,
+  .tz-step-button,
+  .tz-chart-legend > button,
+  .tz-sidebar-item,
+  .tz-sidebar-toggle,
+  .tz-color-swatch,
+  .tz-file-browse,
+  .tz-ask-questions .tz-radio-option,
+  .tz-ai-image-choice img,
+  .tz-datepicker-popup button
+) {
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out),
+    outline-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
+  touch-action: manipulation;
+}
+:where(
+    .tz-sources-trigger,
+    .tz-inline-citation,
+    .tz-context-trigger,
+    .tz-model-trigger,
+    .tz-selection-actions button,
+    .tz-chart-legend > button,
+    .tz-sidebar-toggle,
+    .tz-color-swatch,
+    .tz-datepicker-popup button
+  ):not(:disabled):active {
+  transform: scale(0.95);
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-state), var(--motion-fast), var(--motion-press);
+  transition-timing-function: var(--ease-out);
+}
+:where(.tz-source-row[href], .tz-model-option, .tz-sidebar-item):active {
+  background: var(--surface-hover);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-ask-questions .tz-radio-option:not(:has(:disabled)):hover {
+    border-color: var(--border-strong);
+    background: var(--surface-subtle);
+  }
+  .tz-ai-image-choice:hover img {
+    border-color: var(--border-strong);
+  }
+  .tz-color-swatch:not(:disabled):hover {
+    transform: scale(1.06);
+  }
+}
+.tz-ask-questions .tz-radio-option:has(:checked) {
+  background: var(--action-soft);
+  border-color: var(--focus);
+  box-shadow: 0 0 0 1px var(--focus) inset;
+}
+.tz-ai-image-choice:has(:checked) img {
+  outline-color: var(--action);
+}
+.tz-color-swatch[aria-pressed="true"] {
+  transform: scale(1.06);
+}
+
+.tz-markdown a:hover,
+.tz-file-browse:hover {
+  text-decoration-color: currentColor;
+}
+/* No synthesized italics: Arabic has no oblique tradition that leans right,
+   so emphasis in Arabic text is carried by weight instead. */
+.tiraz-system[dir="rtl"] :where(em, i, cite):not(:lang(en)) {
+  font-style: normal;
+  font-weight: var(--weight-medium);
+  color: var(--text);
+}
+/* Headings and short messages wrap into balanced lines; prose avoids
+   one-word last lines. Arabic only breaks between words, so this matters. */
+:where(
+  .tz-card-title,
+  .tz-empty-state h3,
+  .tz-modal-header h2,
+  .tz-sheet-header h2,
+  .tz-toast-title,
+  .tz-alert strong,
+  .tz-ask-questions h3,
+  .tz-approval-card h3
+) {
+  text-wrap: balance;
+}
+:where(
+  .tz-card-description,
+  .tz-empty-state > p,
+  .tz-modal-header p,
+  .tz-sheet-header p,
+  .tz-toast-description,
+  .tz-alert p,
+  .tz-field-help,
+  .tz-field-error
+) {
+  text-wrap: pretty;
+}
+
+/* Optical centering. IBM Plex Sans Arabic centers its line box ~0.33em above
+   the baseline, but Arabic letter bodies (and Latin lowercase) center near
+   0.24em, so text in fixed-height controls reads ~1.5px low. Text is lifted
+   1px by shifting padding; icons sharing the line are set back on center. */
+.tiraz-system {
+  --optical-lift: 1px;
+}
+.tz-button:not([data-icon-only]) {
+  padding-block: calc(3px - var(--optical-lift)) calc(3px + var(--optical-lift));
+}
+.tz-button[data-size="sm"]:not([data-icon-only]) {
+  padding-block: calc(2px - var(--optical-lift)) calc(2px + var(--optical-lift));
+}
+.tz-button:not([data-icon-only]) :is(> svg, > .tz-button-label > svg) {
+  translate: 0 var(--optical-lift);
+}
+.tz-badge {
+  padding-block: calc(var(--space-1) / 2 - var(--optical-lift))
+    calc(var(--space-1) / 2 + var(--optical-lift));
+}
+.tz-badge > svg {
+  translate: 0 var(--optical-lift);
+}
+.tz-tab {
+  padding-block: calc(var(--tab-padding) - var(--optical-lift))
+    calc(var(--tab-padding) + var(--optical-lift));
+}
+.tz-tabs[data-variant="segment"] > .tz-tab-list > .tz-tab {
+  padding-block: calc(3px - var(--optical-lift)) calc(3px + var(--optical-lift));
+}
+.tz-menu-item > span:not([aria-hidden="true"]),
+.tz-sidebar-label,
+.tz-tag > bdi {
+  translate: 0 calc(-1 * var(--optical-lift));
+}
+.tz-input,
+.tz-select-trigger {
+  padding-block: calc(2px - var(--optical-lift)) calc(2px + var(--optical-lift));
+}
+.tz-select-trigger > :not(:first-child) {
+  translate: 0 var(--optical-lift);
 }

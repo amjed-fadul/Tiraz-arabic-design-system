@@ -35,10 +35,16 @@ export function ContextMeter({
   const { config, container } = useSystem(),
     ar = config.direction === "rtl",
     title = useId();
-  const format = new Intl.NumberFormat(locale ?? (ar ? "ar" : "en"), {
+  // Arabic digits follow the rest of the system unless the host pins a locale.
+  const numbers = locale ?? (ar ? "ar-u-nu-arab" : "en");
+  const format = new Intl.NumberFormat(numbers, {
     maximumFractionDigits: 2,
   });
-  const compact = new Intl.NumberFormat(locale ?? (ar ? "ar" : "en"), {
+  const percent = new Intl.NumberFormat(numbers, {
+    style: "percent",
+    maximumFractionDigits: 2,
+  });
+  const compact = new Intl.NumberFormat(numbers, {
     notation: "compact",
     maximumFractionDigits: 1,
   });
@@ -47,7 +53,7 @@ export function ContextMeter({
   const ratio = u && c && capacity > 0 ? used / capacity : null;
   const percentage =
     ratio !== null && Number.isFinite(ratio * 100)
-      ? format.format(ratio * 100) + "%"
+      ? percent.format(ratio)
       : null;
   const name = label ?? (ar ? "السياق" : "Context"),
     units = unit ?? (ar ? "رمز" : "tokens");

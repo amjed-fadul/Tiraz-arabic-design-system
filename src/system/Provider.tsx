@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { DirectionProvider } from "@radix-ui/react-direction";
 import { accentColors, defaultConfig } from "./config";
@@ -12,6 +12,22 @@ export function SystemProvider({
   children: ReactNode;
 }) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
+  // A theme switch repaints every surface at once; per-control color
+  // transitions would make it ripple, so they sit out that single frame.
+  const theme = useRef(config.theme);
+  useLayoutEffect(() => {
+    if (!container || theme.current === config.theme) return;
+    theme.current = config.theme;
+    container.setAttribute("data-theme-switching", "");
+    void container.offsetHeight;
+    const frame = requestAnimationFrame(() =>
+      container.removeAttribute("data-theme-switching"),
+    );
+    return () => {
+      cancelAnimationFrame(frame);
+      container.removeAttribute("data-theme-switching");
+    };
+  }, [config.theme, container]);
   return (
     <DirectionProvider dir={config.direction}>
       <SystemContext.Provider value={{ config, container }}>

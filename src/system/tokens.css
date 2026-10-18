@@ -22,7 +22,11 @@
   --focus: var(--action);
   --switch-track: #77857b;
   --font: "IBM Plex Sans Arabic", sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  /* Mono fonts carry no Arabic; without the UI face ahead of the generic
+     fallback, Arabic in code and output falls to a font that breaks joining. */
+  --font-mono:
+    ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas,
+    "Liberation Mono", "DejaVu Sans Mono", "IBM Plex Sans Arabic", monospace;
   --text-title: 24px;
   --text-heading: 18px;
   --text-body: 14px;
@@ -49,19 +53,50 @@
   --tab-padding: 8px;
   --menu-item-padding: 5px;
   --row-gap: 16px;
-  --shadow-control: 0 1px 2px #152c1d0d, inset 0 1px 0 #ffffff12;
-  --shadow-popover: 0 4px 8px #12231a08, 0 12px 32px #12231a14;
-  --shadow-overlay: 0 12px 60px #00000026;
+  /* Materials: a hairline edge, a lit top lip and short layered contact
+     shadows read as one surface instead of a blurred box. */
+  --shadow-control: 0 1px 2px #152c1d0f, 0 1px 1px #152c1d08;
+  --shadow-raised:
+    inset 0 1px 0 #ffffff29, inset 0 -1px 0 #00000014, 0 1px 2px #12231a24,
+    0 2px 6px -2px #12231a1f;
+  --shadow-pressed: inset 0 1px 2px #12231a1f;
+  --shadow-popover:
+    0 0 0 0.5px #12231a0a, 0 1px 2px #12231a0a, 0 4px 8px -2px #12231a0f,
+    0 12px 28px -6px #12231a1f;
+  --shadow-overlay:
+    0 2px 6px -2px #0c18111a, 0 12px 24px -8px #0c181124,
+    0 32px 64px -16px #0c181133;
+  --shadow-thumb:
+    0 0 0 0.5px #12231a1f, 0 1px 2px #12231a2e, 0 2px 6px #12231a14;
+  --focus-halo: color-mix(in srgb, var(--focus) 22%, transparent);
+  --backdrop: #0c18114d;
+  --shimmer: #ffffffa6;
+  /* Arabic dots and descenders reach ~0.44em below the baseline in Plex Sans
+     Arabic; underlines clear them instead of slicing through. */
+  --underline-offset: 0.24em;
+  /* Motion: one strong ease-out drives entrances and state changes; exits are
+     shorter; presses are near-instant and release on a small overshoot. */
+  --motion-press: 90ms;
   --motion-fast: 120ms;
-  --motion-state: 180ms;
-  --motion-enter: 240ms;
-  --motion-exit: 160ms;
-  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-state: 200ms;
+  --motion-enter: 220ms;
+  --motion-exit: 150ms;
+  --motion-panel: 420ms;
+  --motion-panel-exit: 260ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.22, 1.32, 0.36, 1);
+  --ease: var(--ease-out);
   font-family: var(--font);
   font-size: var(--text-body);
   line-height: var(--line-height);
   color: var(--text);
   background: var(--surface-page);
+  font-synthesis: none;
+  font-kerning: normal;
+  -webkit-tap-highlight-color: transparent;
 }
 .tiraz-system[data-theme="dark"] {
   --surface-page: #161b18;
@@ -83,8 +118,25 @@
   --danger-soft: #3e2729;
   --info: #adcaf0;
   --info-soft: #253347;
-  --shadow-control: 0 1px 2px #00000022, inset 0 1px 0 #ffffff08;
-  --shadow-popover: 0 4px 8px #00000022, 0 12px 32px #00000033;
+  --shadow-control: 0 1px 2px #00000033, inset 0 1px 0 #ffffff0a;
+  --shadow-raised:
+    inset 0 1px 0 #ffffff47, inset 0 -1px 0 #0000001f, 0 1px 2px #00000052,
+    0 2px 6px -2px #00000047;
+  --shadow-pressed: inset 0 1px 2px #00000040;
+  --shadow-popover:
+    inset 0 1px 0 #ffffff0a, 0 1px 2px #00000033, 0 4px 8px -2px #00000038,
+    0 12px 28px -6px #00000059;
+  --shadow-overlay:
+    inset 0 1px 0 #ffffff0a, 0 2px 6px -2px #00000040,
+    0 12px 24px -8px #0000004d, 0 32px 64px -16px #00000073;
+  --shadow-thumb:
+    0 0 0 0.5px #00000040, 0 1px 2px #00000059, 0 2px 6px #00000033;
+  --focus-halo: color-mix(in srgb, var(--focus) 30%, transparent);
+  --backdrop: #050a0799;
+  --shimmer: #ffffff12;
+}
+.tiraz-system[dir="rtl"] {
+  --underline-offset: 0.45em;
 }
 .tiraz-system[data-density="compact"] {
   --control-height: 36px;
@@ -97,17 +149,23 @@
   --row-gap: 12px;
 }
 .tiraz-system[data-reduced-motion="true"] {
+  --motion-press: 0ms;
   --motion-fast: 0ms;
   --motion-state: 0ms;
   --motion-enter: 0ms;
   --motion-exit: 0ms;
+  --motion-panel: 0ms;
+  --motion-panel-exit: 0ms;
 }
 @media (prefers-reduced-motion: reduce) {
   .tiraz-system {
+    --motion-press: 0ms;
     --motion-fast: 0ms;
     --motion-state: 0ms;
     --motion-enter: 0ms;
     --motion-exit: 0ms;
+    --motion-panel: 0ms;
+    --motion-panel-exit: 0ms;
   }
   .tiraz-system *,
   .tiraz-system *::before,
@@ -125,6 +183,13 @@
   animation-iteration-count: 1 !important;
   transition-duration: 0ms !important;
   scroll-behavior: auto !important;
+}
+
+.tiraz-system[data-theme-switching],
+.tiraz-system[data-theme-switching] *,
+.tiraz-system[data-theme-switching] *::before,
+.tiraz-system[data-theme-switching] *::after {
+  transition: none !important;
 }
 
 .tiraz-system[data-typography="large"] {

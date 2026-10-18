@@ -10,6 +10,28 @@ export interface AvatarProps extends Omit<
   size?: "sm" | "md";
   decorative?: boolean;
 }
+const ARABIC_LETTER = /\p{Script=Arabic}/u;
+/** Two initials. An Arabic family name skips its article («العتيبي» → «ع»),
+ * and Arabic letters are kept apart with a zero-width non-joiner so the pair
+ * never fuses into one connected word. */
+function initialsOf(name: string) {
+  const letters = name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part, index) => {
+      const word =
+        index > 0 && part.startsWith("ال") && Array.from(part).length > 3
+          ? part.slice(2)
+          : part;
+      return Array.from(word)[0];
+    });
+  const joiner = letters.every((letter) => ARABIC_LETTER.test(letter))
+    ? "\u200c"
+    : "";
+  return letters.join(joiner).toLocaleUpperCase();
+}
 function Portrait({ src, fallback }: { src: string; fallback: string }) {
   const [status, setStatus] = useState<"loading" | "loaded" | "failed">(
     "loading",
@@ -39,16 +61,7 @@ export function Avatar({
   className = "",
   ...props
 }: AvatarProps) {
-  const initials =
-    fallback ??
-    name
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean)
-      .slice(0, 2)
-      .map((part) => Array.from(part)[0])
-      .join("")
-      .toLocaleUpperCase();
+  const initials = fallback ?? initialsOf(name);
   return (
     <span
       {...props}

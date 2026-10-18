@@ -8,6 +8,14 @@ export interface TooltipProps {
   content: string;
   delayDuration?: number;
 }
+// Tooltips warm up as a group: while one is open, or shortly after one closes
+// on its own, the next trigger opens at once and without an entrance. A
+// deliberate dismissal (Escape or press) cools the group again.
+const group = { open: 0, closedAt: Number.NEGATIVE_INFINITY };
+const WARM_WINDOW = 400;
+function isWarm() {
+  return group.open > 0 || Date.now() - group.closedAt < WARM_WINDOW;
+}
 export function Tooltip({
   trigger,
   content,
@@ -15,6 +23,7 @@ export function Tooltip({
 }: TooltipProps) {
   const { container, config } = useSystem();
   const [open, setOpen] = useState(false);
+  const [instant, setInstant] = useState(false);
   const id = useId();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hovered = useRef(false),
@@ -48,6 +57,16 @@ export function Tooltip({
   );
   const shown = open && !!content && !!container;
   useEffect(() => {
+    if (!shown) return;
+    group.open += 1;
+    return () => {
+      group.open -= 1;
+      group.closedAt = dismissed.current
+        ? Number.NEGATIVE_INFINITY
+        : Date.now();
+    };
+  }, [shown]);
+  useEffect(() => {
     if (!shown || !container) return;
     const doc = container.ownerDocument;
     function keydown(event: KeyboardEvent) {
@@ -79,11 +98,19 @@ export function Tooltip({
           if (event.defaultPrevented || event.pointerType === "touch") return;
           hovered.current = true;
           cancel();
-          if (!dismissed.current)
-            timer.current = setTimeout(
-              () => setOpen(true),
-              Number.isFinite(delayDuration) ? Math.max(0, delayDuration) : 500,
-            );
+          if (dismissed.current) return;
+          if (isWarm()) {
+            setInstant(true);
+            setOpen(true);
+            return;
+          }
+          timer.current = setTimeout(
+            () => {
+              setInstant(false);
+              setOpen(true);
+            },
+            Number.isFinite(delayDuration) ? Math.max(0, delayDuration) : 500,
+          );
         }}
         onPointerLeave={() => {
           hovered.current = false;
@@ -95,6 +122,7 @@ export function Tooltip({
           cancel();
           if (!pointerFocus.current) {
             dismissed.current = false;
+            setInstant(isWarm());
             setOpen(true);
           }
           pointerFocus.current = false;
@@ -121,6 +149,7 @@ export function Tooltip({
             id={id}
             role="tooltip"
             className="tz-tooltip"
+            data-instant={instant || undefined}
             dir={config.direction}
             side="top"
             sideOffset={6}

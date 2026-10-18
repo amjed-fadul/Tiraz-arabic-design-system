@@ -31,7 +31,7 @@ export function LoadingState({
   const ar = config.direction === "rtl";
   const elapsed =
     elapsedMs !== undefined && Number.isFinite(elapsedMs)
-      ? new Intl.NumberFormat(ar ? "ar" : "en", {
+      ? new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en", {
           minimumFractionDigits: 1,
           maximumFractionDigits: 1,
           useGrouping: false,

@@ -1,4 +1,5 @@
 import { Check, LoaderCircle, AlertCircle } from "lucide-react";
+import { useState } from "react";
 import type { ButtonHTMLAttributes } from "react";
 export type ButtonState = "idle" | "loading" | "success" | "error";
 export type ButtonVariant = "primary" | "secondary" | "ghost" | "destructive";
@@ -23,6 +24,10 @@ export function Button({
   type = "button",
   ...props
 }: ButtonProps) {
+  // Labels animate only after the first state change, never on first render.
+  const [initialState] = useState(state);
+  const [changed, setChanged] = useState(false);
+  if (!changed && state !== initialState) setChanged(true);
   const StateIcon =
     state === "loading"
       ? LoaderCircle
@@ -49,7 +54,11 @@ export function Button({
         />
       )}
       {(!iconOnly || state === "idle") && (
-        <span className="tz-button-label" key={state}>
+        <span
+          className="tz-button-label"
+          key={state}
+          data-changed={changed || undefined}
+        >
           {children}
         </span>
       )}

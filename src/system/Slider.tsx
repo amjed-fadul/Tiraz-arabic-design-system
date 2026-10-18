@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import type { ComponentPropsWithRef } from "react";
+import type { ComponentPropsWithRef, CSSProperties } from "react";
 import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl } from "./control-associations";
@@ -92,6 +92,12 @@ export function Slider({
           if (ref) ref.current = node;
         }}
         className={`tz-slider ${className}`}
+        style={
+          {
+            ...props.style,
+            "--slider-fill": `${upper > lower ? ((current - lower) / (upper - lower)) * 100 : 0}%`,
+          } as CSSProperties
+        }
         type="range"
         min={lower}
         max={upper}

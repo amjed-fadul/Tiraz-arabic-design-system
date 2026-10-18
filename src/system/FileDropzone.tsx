@@ -256,7 +256,7 @@ export function FileDropzone({
                   {file.name}
                 </bdi>
                 <span className="tz-file-size" dir="ltr">
-                  {new Intl.NumberFormat(ar ? "ar" : "en", {
+                  {new Intl.NumberFormat(ar ? "ar-u-nu-arab" : "en", {
                     maximumFractionDigits: 1,
                   }).format(
                     file.size < 1024 ? file.size : file.size / 1024,

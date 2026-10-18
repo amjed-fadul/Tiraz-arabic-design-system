@@ -29,6 +29,10 @@ export function Tabs({
   const { config } = useSystem();
   const [local, setLocal] = useState(defaultValue);
   const active = value ?? local;
+  // Panels animate only after the first switch, never on first render.
+  const [initial] = useState(active);
+  const [changed, setChanged] = useState(false);
+  if (!changed && active !== initial) setChanged(true);
   const list = useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = useState({ width: 0, x: 0 });
   useLayoutEffect(() => {
@@ -61,6 +65,7 @@ export function Tabs({
       }}
       dir={config.direction}
       data-variant={variant}
+      data-changed={changed || undefined}
     >
       <Primitive.List ref={list} className="tz-tab-list" aria-label={label}>
         <span

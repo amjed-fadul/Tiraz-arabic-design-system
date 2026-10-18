@@ -58,7 +58,14 @@ async function animations() {
     .locator(
       ".tz-skeleton, .tz-loading-spinner .tz-spinner, .tz-progress-track[data-indeterminate] .tz-progress-indicator",
     )
-    .evaluateAll((els) => els.map((el) => getComputedStyle(el).animationName));
+    .evaluateAll((els) =>
+      els.map(
+        (el) =>
+          // The skeleton's shimmer runs on its ::after layer.
+          getComputedStyle(el, el.matches(".tz-skeleton") ? "::after" : null)
+            .animationName,
+      ),
+    );
 }
 try {
   await page.setViewportSize({ width: 1280, height: 900 });

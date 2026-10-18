@@ -172,6 +172,7 @@ try {
               outline: outer.outlineWidth,
               outlineStyle: outer.outlineStyle,
               offset: outer.outlineOffset,
+              shadow: outer.boxShadow,
               border: outer.borderColor,
               overflow: outer.overflow,
             },
@@ -196,9 +197,9 @@ try {
           "draft must defer to the outer ring",
         );
         assert.equal(styles.inner.shadow, "none");
-        assert.equal(styles.outer.outline, "2px");
-        assert.equal(styles.outer.outlineStyle, "solid");
-        assert.equal(styles.outer.offset, "3px");
+        // The composite shows the shared field focus: accent edge plus halo.
+        assert.equal(styles.outer.outlineStyle, "none");
+        assert.match(styles.outer.shadow, /0px 0px 0px 3px/);
         assert.equal(styles.outer.overflow, "visible");
         // Every remove action keeps its own native keyboard indicator.
         await page.keyboard.press("Shift+Tab");
@@ -452,19 +453,19 @@ try {
     pass(
       "Honest simulated clipboard failures and manual selection; stale pending result ignored after value replacement",
     );
-    // The unrelated native Input retains its original global keyboard focus rule.
+    // The native Input shows the shared field focus: accent edge plus halo.
     await start("input", "en", "light");
     const native = preview().getByRole("textbox");
     await native.focus();
     assert.equal(
-      await native.evaluate((el) => getComputedStyle(el).outlineWidth),
-      "2px",
+      await native.evaluate((el) => getComputedStyle(el).outlineStyle),
+      "none",
     );
-    assert.equal(
-      await native.evaluate((el) => getComputedStyle(el).outlineOffset),
-      "3px",
+    assert.match(
+      await native.evaluate((el) => getComputedStyle(el).boxShadow),
+      /0px 0px 0px 3px/,
     );
-    pass("Unrelated Input focus remains unchanged");
+    pass("Native Input uses the shared field focus");
   }
   assert.deepEqual(errors, []);
   assert.deepEqual(warnings, []);
