@@ -426,11 +426,11 @@ it("selects an accent by keyboard, restores focus and preserves the choice on Es
   ).getByRole("combobox", { name: "Accent" });
   control.focus();
   await user.keyboard("{ArrowDown}{End}{Enter}");
-  expect(control).toHaveTextContent("Slate");
+  expect(control).toHaveTextContent("Ink");
   await waitFor(() => expect(control).toHaveFocus());
-  expect(readSystem().accent).toBe("slate");
+  expect(readSystem().accent).toBe("ink");
   await user.keyboard("{ArrowDown}{Home}{Escape}");
-  expect(control).toHaveTextContent("Slate");
+  expect(control).toHaveTextContent("Ink");
   expect(control).toHaveFocus();
 });
 it("keeps the accent popup inside the mobile settings dialog", async () => {

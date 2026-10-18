@@ -10,7 +10,8 @@ export type Accent =
   | "cyan"
   | "indigo"
   | "rose"
-  | "slate";
+  | "slate"
+  | "ink";
 export interface SystemConfig {
   theme: "light" | "dark";
   direction: Direction;
@@ -41,4 +42,6 @@ export const accentColors: Record<Accent, { light: string; dark: string }> = {
   indigo: { light: "#4F4F96", dark: "#B9B8F5" },
   rose: { light: "#8A3F65", dark: "#F1A5CA" },
   slate: { light: "#4C5968", dark: "#B8C6D8" },
+  /** Monochrome: actions take the text color, for a quiet, editorial look. */
+  ink: { light: "#1F2622", dark: "#E6EBE6" },
 };

@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import { Alert } from "./Alert";
 import { Button } from "./Button";
@@ -12,7 +13,7 @@ export interface UserQuestion {
   label: string;
   description?: string;
   type?: "choice" | "text";
-  choices?: readonly { value: string; label: string }[];
+  choices?: readonly { value: string; label: string; description?: string }[];
   allowOther?: boolean;
   /** Defaults to true; optional questions may be left blank. */
   required?: boolean;
@@ -34,6 +35,10 @@ export interface AskUserQuestionsProps {
   submitLabel?: string;
   resetKey?: string | number;
   className?: string;
+}
+const arabicDigits = new Intl.NumberFormat("ar-u-nu-arab");
+function digits(value: number) {
+  return arabicDigits.format(value);
 }
 /** Application-supplied single-choice/Other and text questions, with controlled drafts. */
 export function AskUserQuestions(props: AskUserQuestionsProps) {
@@ -154,7 +159,12 @@ function QuestionsInstance({
           return;
         const target = event.target as HTMLElement;
         if (target.matches('textarea,input:not([type="radio"])')) return;
-        const number = Number(event.key);
+        // Arabic keyboards type ١–٩ (or ۱–۹) on the number row.
+        const number = Number(
+          event.key.replace(/[٠-٩۰-۹]/, (digit) =>
+            String(digit.charCodeAt(0) - (digit <= "٩" ? 0x660 : 0x6f0)),
+          ),
+        );
         if (number >= 1 && number <= 9 && question.choices?.[number - 1]) {
           event.preventDefault();
           update({ choice: question.choices[number - 1].value });
@@ -167,11 +177,27 @@ function QuestionsInstance({
       {question ? (
         <>
           {questions.length > 1 && (
-            <p className="tz-decision-position">
-              {ar
-                ? `السؤال ${index + 1} من ${questions.length}`
-                : `Question ${index + 1} of ${questions.length}`}
-            </p>
+            <div className="tz-question-progress">
+              <p className="tz-decision-position">
+                {ar
+                  ? `السؤال ${digits(index + 1)} من ${digits(questions.length)}`
+                  : `Question ${index + 1} of ${questions.length}`}
+              </p>
+              <span className="tz-question-steps" aria-hidden="true">
+                {questions.map((q, i) => (
+                  <span
+                    key={q.id}
+                    data-state={
+                      i === index
+                        ? "current"
+                        : i < index || !incomplete(q)
+                          ? "done"
+                          : "upcoming"
+                    }
+                  />
+                ))}
+              </span>
+            </div>
           )}
           <h3 tabIndex={-1} id={`${id}-title`} dir="auto">
             {question.label}
@@ -214,10 +240,7 @@ function QuestionsInstance({
                 disabled={busy}
                 value={answer.choice ?? ""}
                 options={[
-                  ...(question.choices ?? []).map((choice, i) => ({
-                    ...choice,
-                    label: `${i + 1}. ${choice.label}`,
-                  })),
+                  ...(question.choices ?? []),
                   ...(question.allowOther
                     ? [{ value: "other", label: ar ? "إجابة أخرى" : "Other" }]
                     : []),
@@ -278,8 +301,20 @@ function QuestionsInstance({
               disabled={busy || index === 0}
               onClick={() => move(index - 1)}
             >
+              <ArrowLeft
+                aria-hidden="true"
+                size={15}
+                className="tz-mirror-rtl"
+              />
               {ar ? "السؤال السابق" : "Previous question"}
             </Button>
+            {question.type !== "text" && !!question.choices?.length && (
+              <span className="tz-question-hint" aria-hidden="true">
+                {ar
+                  ? `اضغط ${digits(1)}–${digits(Math.min(9, question.choices.length))} للاختيار`
+                  : `Press 1–${Math.min(9, question.choices.length)} to choose`}
+              </span>
+            )}
             {index < questions.length - 1 && (
               <Button
                 variant="secondary"
@@ -287,9 +322,18 @@ function QuestionsInstance({
                 onClick={() => move(index + 1)}
               >
                 {ar ? "السؤال التالي" : "Next question"}
+                <ArrowRight
+                  aria-hidden="true"
+                  size={15}
+                  className="tz-mirror-rtl"
+                />
               </Button>
             )}
-            <Button variant="secondary" type="submit" disabled={busy}>
+            <Button
+              variant={index === questions.length - 1 ? "primary" : "secondary"}
+              type="submit"
+              disabled={busy}
+            >
               {submitLabel ?? (ar ? "إرسال الإجابات" : "Submit answers")}
             </Button>
           </div>

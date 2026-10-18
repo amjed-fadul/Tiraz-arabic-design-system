@@ -317,9 +317,17 @@ export function SelectionActions({
                 }}
               >
                 {expanded ? (
-                  <ChevronLeft size={14} aria-hidden="true" />
+                  <ChevronLeft
+                    size={14}
+                    aria-hidden="true"
+                    className="tz-mirror-rtl"
+                  />
                 ) : (
-                  <ChevronRight size={14} aria-hidden="true" />
+                  <ChevronRight
+                    size={14}
+                    aria-hidden="true"
+                    className="tz-mirror-rtl"
+                  />
                 )}
               </button>
             )}

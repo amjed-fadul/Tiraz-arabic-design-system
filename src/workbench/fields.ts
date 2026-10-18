@@ -918,6 +918,7 @@ export const optionNames: Record<string, Localized> = {
   indigo: ["نيلي", "Indigo"],
   rose: ["وردي", "Rose"],
   slate: ["رمادي", "Slate"],
+  ink: ["حبر", "Ink"],
   button: ["زر", "Button"],
   submit: ["إرسال نموذج", "Submit"],
   reset: ["إعادة ضبط نموذج", "Reset"],

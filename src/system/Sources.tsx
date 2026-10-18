@@ -37,6 +37,22 @@ export interface InlineCitationProps {
   labels?: InlineCitationLabels;
   className?: string;
 }
+const arabicPlural = new Intl.PluralRules("ar");
+/** Arabic counts agree with the noun: one, the dual, 3–10, then 11 and up. */
+function arabicSourceCount(count: number) {
+  switch (arabicPlural.select(count)) {
+    case "one":
+      return "مصدر واحد";
+    case "two":
+      return "مصدران";
+    case "few":
+      return `${count} مصادر`;
+    case "many":
+      return `${count} مصدرًا`;
+    default:
+      return `${count} مصدر`;
+  }
+}
 function destination(href: string) {
   try {
     const url = new URL(href);
@@ -66,7 +82,7 @@ export function Sources({
   const summary =
     labels?.summary?.(items.length) ??
     (ar
-      ? `${items.length} مصادر`
+      ? arabicSourceCount(items.length)
       : `${items.length} ${items.length === 1 ? "source" : "sources"}`);
   return (
     <div className={`tz-sources ${className}`}>

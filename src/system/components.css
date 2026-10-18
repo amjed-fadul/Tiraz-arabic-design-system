@@ -3472,13 +3472,14 @@
 }
 .tz-agent-task {
   min-inline-size: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-panel) + 4px);
   background: var(--surface);
+  box-shadow: var(--shadow-surface);
 }
 .tz-agent-task-trigger {
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr) auto auto 16px;
+  grid-template-columns: 22px minmax(0, 1fr) auto auto 16px;
   align-items: center;
   gap: var(--space-2);
   inline-size: 100%;
@@ -3495,23 +3496,39 @@
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--ease);
 }
+/* Settled steps become filled discs; waiting steps keep their number in a
+   dashed ring; the running step turns its ring into the accent spinner. */
 .tz-agent-task-indicator {
   display: grid;
   place-items: center;
-  inline-size: 24px;
-  block-size: 24px;
-  border: 1px solid var(--border);
+  inline-size: 22px;
+  block-size: 22px;
+  border: 1.5px dashed var(--border-strong);
   border-radius: 50%;
-  color: var(--text-muted);
-  font-size: var(--text-meta);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition:
+    background-color var(--motion-state) var(--ease-out),
+    border-color var(--motion-state) var(--ease-out),
+    color var(--motion-state) var(--ease-out);
 }
 .tz-agent-task-indicator > svg {
-  inline-size: 14px;
-  block-size: 14px;
+  inline-size: 13px;
+  block-size: 13px;
+  stroke-width: 3;
+  animation: tz-glyph-in var(--motion-state) var(--ease-spring);
+}
+.tz-agent-task[data-state="running"] .tz-agent-task-indicator {
+  border: 0;
+  color: var(--action);
 }
 .tz-agent-task-indicator .tz-loading-spinner {
-  inline-size: 16px;
-  block-size: 16px;
+  inline-size: 22px;
+  block-size: 22px;
+  color: inherit;
 }
 .tz-agent-task-title {
   min-inline-size: 0;
@@ -3520,30 +3537,40 @@
 }
 .tz-agent-task-summary {
   font-size: var(--text-meta);
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
   overflow-wrap: anywhere;
 }
+.tz-agent-task-state.tz-badge {
+  border-radius: 100px;
+  padding-inline: var(--space-2);
+}
+.tz-agent-task[data-state="pending"] .tz-agent-task-state.tz-badge {
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+}
 .tz-agent-task-trigger:not(:has(.tz-agent-task-summary)) {
-  grid-template-columns: 24px minmax(0, 1fr) auto 16px;
+  grid-template-columns: 22px minmax(0, 1fr) auto 16px;
 }
 .tz-agent-task-chevron {
   inline-size: 16px;
   block-size: 16px;
   color: var(--text-muted);
-  transition: transform var(--motion-fast) var(--ease);
+  transition: transform calc(var(--motion-state) + 40ms) var(--ease-out);
 }
 .tz-agent-task[data-expanded="true"] .tz-agent-task-chevron {
   transform: rotate(180deg);
 }
 .tz-agent-task[data-state="completed"] .tz-agent-task-indicator {
-  color: var(--success);
-  background: var(--success-soft);
-  border-color: transparent;
+  color: var(--action-text);
+  background: var(--action);
+  border: 0;
 }
 .tz-agent-task[data-state="failed"] .tz-agent-task-indicator {
-  color: var(--danger);
-  background: var(--danger-soft);
-  border-color: transparent;
+  color: var(--surface);
+  background: var(--danger);
+  border: 0;
 }
 .tz-agent-task-panel,
 .tz-agent-task-panel[hidden] {
@@ -3573,8 +3600,8 @@
 }
 .tz-agent-task-content {
   margin-inline: var(--space-3);
-  padding-block: var(--space-2) var(--space-3);
-  padding-inline-start: calc(24px + var(--space-2));
+  padding-block: var(--space-1) var(--space-3);
+  padding-inline-start: calc(22px + var(--space-2));
   color: var(--text-secondary);
   font-size: var(--text-body);
   overflow-wrap: anywhere;
@@ -3585,14 +3612,16 @@
 }
 .tz-task-rows[data-appearance="list"] {
   gap: 0;
-  border: 1px solid var(--border);
+  border: 1px solid transparent;
   border-radius: var(--radius-panel);
   background: var(--surface);
+  box-shadow: var(--shadow-surface);
 }
 .tz-task-rows[data-appearance="list"] > .tz-agent-task {
   border: 0;
   border-radius: 0;
   background: transparent;
+  box-shadow: none;
 }
 .tz-task-rows[data-appearance="list"] > .tz-agent-task:first-child {
   border-start-start-radius: inherit;
@@ -3603,11 +3632,11 @@
   border-end-end-radius: inherit;
 }
 .tz-task-rows[data-appearance="list"] > .tz-agent-task + .tz-agent-task {
-  border-block-start: 1px solid var(--border);
+  border-block-start: 0.5px solid var(--hairline);
 }
 @container (max-width: 460px) {
   .tz-agent-task-trigger {
-    grid-template-columns: 24px minmax(0, 1fr) auto 16px;
+    grid-template-columns: 22px minmax(0, 1fr) auto 16px;
   }
   .tz-agent-task-summary {
     grid-column: 2;
@@ -3628,13 +3657,17 @@
 }
 
 .tz-task-rows > .tz-agent-task {
-  transition: background-color var(--motion-fast) var(--ease);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-state) var(--ease-out);
 }
-.tz-task-rows > .tz-agent-task:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-task-rows > .tz-agent-task:hover {
+    background: color-mix(in srgb, var(--surface), var(--text) 2%);
+  }
 }
 .tz-task-rows > .tz-agent-task:has(> .tz-agent-task-trigger:active) {
-  background: var(--surface-subtle);
+  background: color-mix(in srgb, var(--surface), var(--text) 5%);
 }
 .tz-agent-task-data {
   display: grid;
@@ -4083,20 +4116,32 @@
 }
 
 /* Tool activity: supplied operations and compact summaries. */
+/* Tool rows read as quiet paper cards: a status dot, the tool's plain glyph,
+   a readable label, then the machine name and timing kept muted at the end.
+   .tz-tool-calls stacks a run of them with a small, even gap. */
 .tz-tool-call {
+  --tool-lead: 18px;
   min-inline-size: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+  box-shadow: var(--shadow-surface);
   color: var(--text);
   font-size: var(--text-body);
   overflow: clip;
 }
+.tz-tool-calls {
+  display: grid;
+  gap: 6px;
+  min-inline-size: 0;
+}
 .tz-tool-call-trigger {
   display: flex;
   align-items: center;
-  gap: var(--control-gap);
+  gap: var(--space-2);
   inline-size: 100%;
   min-inline-size: 0;
+  min-block-size: var(--control-height);
   padding: var(--menu-item-padding) var(--control-small-padding);
   border: 0;
   background: transparent;
@@ -4104,10 +4149,51 @@
   font: inherit;
   text-align: start;
   cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease-out);
 }
-.tz-tool-call-trigger:hover,
-button.tz-tool-chip:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-tool-call-trigger:hover,
+  button.tz-tool-chip:hover {
+    background: var(--wash);
+  }
+}
+.tz-tool-icon {
+  display: inline-flex;
+  flex: none;
+  color: var(--text-muted);
+}
+.tz-tool-icon > svg {
+  inline-size: 15px;
+  block-size: 15px;
+}
+.tz-tool-call[data-state="running"] .tz-tool-call-label {
+  background: linear-gradient(
+      90deg,
+      var(--text-secondary) 0%,
+      var(--text-secondary) 35%,
+      var(--text) 50%,
+      var(--text-secondary) 65%,
+      var(--text-secondary) 100%
+    )
+    0 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: tz-text-shimmer 2s linear infinite;
+}
+.tz-tool-call[data-state="running"] .tz-tool-call-label:dir(rtl) {
+  animation-direction: reverse;
+}
+.tz-tool-call[data-state="pending"] .tz-tool-call-label {
+  color: var(--text-secondary);
+}
+@keyframes tz-text-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
 }
 .tz-tool-call-trigger:focus-visible,
 .tz-tool-chip:focus-visible,
@@ -4120,11 +4206,17 @@ button.tz-tool-chip:hover {
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
-.tz-tool-name {
+.tz-tool-name.tz-badge {
   font-family: var(--font-mono);
-  font-weight: 400;
+  font-size: 11px;
+  font-weight: 500;
   min-inline-size: 0;
   max-inline-size: 35%;
+  padding-inline: 0;
+  border-color: transparent;
+  background: transparent;
+  color: var(--text-muted);
+  direction: ltr;
 }
 .tz-tool-name bdi {
   white-space: normal;
@@ -4133,29 +4225,49 @@ button.tz-tool-chip:hover {
 .tz-tool-call-meta {
   color: var(--text-muted);
   font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
   flex: none;
 }
 .tz-tool-status {
-  display: inline-flex;
-  color: var(--text-muted);
+  display: inline-grid;
+  place-items: center;
   flex: none;
+  inline-size: var(--tool-lead, 18px);
+  block-size: var(--tool-lead, 18px);
+  border-radius: 50%;
+  color: var(--text-muted);
 }
 .tz-tool-status > svg {
   inline-size: 14px;
   block-size: 14px;
 }
+.tz-tool-status:is([data-state="completed"], [data-state="failed"]) > svg {
+  inline-size: 11px;
+  block-size: 11px;
+  animation: tz-glyph-in var(--motion-state) var(--ease-spring);
+}
 .tz-tool-status[data-state="completed"] {
-  color: var(--success);
+  background: var(--action);
+  color: var(--action-text);
 }
 .tz-tool-status[data-state="failed"] {
-  color: var(--danger);
+  background: var(--danger);
+  color: var(--surface);
+}
+.tz-tool-status[data-state="running"] {
+  color: var(--action);
+}
+.tz-tool-status[data-state="running"] .tz-loading-spinner {
+  inline-size: 16px;
+  block-size: 16px;
+  color: inherit;
 }
 .tz-tool-chevron {
   inline-size: 14px;
   block-size: 14px;
   flex: none;
   color: var(--text-muted);
-  transition: transform var(--motion-state) ease;
+  transition: transform var(--motion-state) var(--ease-out);
 }
 .tz-tool-call[data-expanded="true"] .tz-tool-chevron {
   transform: rotate(180deg);
@@ -4185,8 +4297,11 @@ button.tz-tool-chip:hover {
 .tz-tool-call-content {
   display: grid;
   gap: var(--space-3);
-  padding: var(--space-2) var(--space-3) var(--space-3);
-  padding-inline-start: calc(var(--space-3) + 22px);
+  border-block-start: 0.5px solid var(--hairline);
+  padding: var(--space-3) var(--control-small-padding) var(--space-3);
+  padding-inline-start: calc(
+    var(--control-small-padding) + var(--tool-lead) + var(--space-2)
+  );
   min-inline-size: 0;
 }
 .tz-tool-call-content > .tz-button {
@@ -4207,19 +4322,31 @@ button.tz-tool-chip:hover {
   min-inline-size: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  padding: var(--space-2);
-  background: var(--surface-subtle);
-  border-radius: var(--radius-small);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: var(--code-surface);
+  box-shadow: inset 0 0 0 0.5px var(--hairline);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
   overflow-wrap: anywhere;
 }
 .tz-tool-output pre {
   margin: 0;
   font-family: var(--font-mono);
   font-size: var(--text-meta);
+  line-height: 1.7;
   white-space: pre;
 }
 .tz-tool-detail[data-error="true"] .tz-tool-output {
+  background: color-mix(in srgb, var(--danger) 5%, var(--surface));
+  box-shadow: inset 0 0 0 0.5px
+    color-mix(in srgb, var(--danger) 30%, transparent);
   color: var(--danger);
+}
+.tz-tool-message {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: 1.7;
 }
 .tz-tool-chips {
   display: flex;
@@ -4235,22 +4362,46 @@ button.tz-tool-chip:hover {
   max-inline-size: 100%;
 }
 .tz-tool-chip {
+  --tool-lead: 16px;
   display: inline-flex;
   align-items: center;
-  gap: var(--control-gap);
+  gap: 6px;
   min-inline-size: 0;
   max-inline-size: 100%;
-  padding: var(--menu-item-padding) var(--space-2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-small);
-  background: transparent;
+  min-block-size: 28px;
+  padding: 2px 10px 2px 6px;
+  padding-inline: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  background: var(--surface);
   color: var(--text-secondary);
   font: inherit;
   font-size: var(--text-meta);
+  box-shadow: var(--shadow-surface);
+}
+.tz-tool-chip .tz-tool-status > svg {
+  inline-size: 12px;
+  block-size: 12px;
+}
+.tz-tool-chip
+  .tz-tool-status:is([data-state="completed"], [data-state="failed"])
+  > svg {
+  inline-size: 10px;
+  block-size: 10px;
 }
 button.tz-tool-chip {
   cursor: pointer;
-  transition: background var(--motion-fast) ease;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
+}
+button.tz-tool-chip:active {
+  transform: scale(0.96);
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+button.tz-tool-chip[aria-expanded="true"] {
+  background: var(--wash);
+  color: var(--text);
 }
 .tz-tool-chip bdi {
   min-inline-size: 0;
@@ -4290,9 +4441,10 @@ button.tz-tool-chip {
   inline-size: 100%;
   min-inline-size: 0;
   max-inline-size: 100%;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-subtle);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--code-surface);
+  box-shadow: var(--shadow-surface);
   overflow: hidden;
 }
 .tz-code-header {
@@ -4300,9 +4452,11 @@ button.tz-tool-chip {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  border-block-end: 1px solid var(--border);
-  color: var(--text-secondary);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  padding-inline: var(--space-3) var(--space-1);
+  border-block-end: 0.5px solid var(--hairline);
+  background: var(--surface);
+  color: var(--text-muted);
   font: var(--text-meta)/1.6 var(--font-mono);
 }
 .tz-code-header bdi {
@@ -4329,16 +4483,20 @@ button.tz-tool-chip {
   outline-offset: -3px;
 }
 .tz-code-token[data-kind="comment"] {
-  color: var(--text-muted);
+  color: var(--code-comment);
+  font-style: normal;
 }
 .tz-code-token[data-kind="keyword"] {
-  color: var(--info);
+  color: var(--code-literal);
+}
+.tz-code-token[data-kind="key"] {
+  color: var(--code-key);
 }
 .tz-code-token[data-kind="string"] {
-  color: var(--success);
+  color: var(--code-string);
 }
 .tz-code-token[data-kind="number"] {
-  color: var(--danger);
+  color: var(--code-number);
 }
 .tz-markdown {
   min-inline-size: 0;
@@ -4533,28 +4691,48 @@ button.tz-tool-chip {
   min-inline-size: 0;
   max-inline-size: 100%;
 }
+/* People speak in soft bubbles on the inline end; the assistant answers
+   flat, at reading width. The newest message settles in; history does not. */
+.tz-chat-message:last-child {
+  animation: tz-message-in calc(var(--motion-enter) + 80ms) var(--ease-out);
+}
 .tz-chat-message[data-role="user"] {
   align-self: flex-end;
-  max-inline-size: 88%;
+  max-inline-size: min(80%, 36rem);
 }
 .tz-chat-message[data-role="user"] .tz-chat-content {
-  border: 1px solid var(--border);
-  background: var(--surface-subtle);
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-panel);
+  background: color-mix(in srgb, var(--surface-hover) 80%, var(--surface));
+  padding: var(--space-2) var(--space-4);
+  border-radius: calc(var(--radius-panel) + 8px);
+  border-end-end-radius: var(--radius-small);
+  line-height: 1.75;
+}
+.tz-chat-message[data-role="user"] .tz-chat-identity {
+  justify-content: flex-end;
+}
+.tz-chat-message[data-role="assistant"] {
+  max-inline-size: min(100%, 44rem);
 }
 .tz-chat-identity {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  margin-block-end: var(--space-1);
+  margin-block-end: var(--space-2);
   color: var(--text-secondary);
   font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+}
+.tz-chat-identity .tz-avatar {
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: 50%;
+  font-size: 11px;
 }
 .tz-chat-content {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   min-inline-size: 0;
+  line-height: 1.85;
 }
 .tz-chat-content .tz-markdown {
   white-space: normal;
@@ -4562,21 +4740,63 @@ button.tz-tool-chip {
 .tz-chat-message-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-1);
-  margin-block-start: var(--space-2);
+  gap: 2px;
+  margin-block-start: var(--space-1);
+  margin-inline-start: calc(-1 * var(--space-1));
+  transition: opacity var(--motion-state) var(--ease-out);
+}
+.tz-chat-message-actions .tz-button {
+  color: var(--text-muted);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-chat-message:not(:last-child):not(:hover):not(:focus-within)
+    .tz-chat-message-actions {
+    opacity: 0;
+  }
+}
+@keyframes tz-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 .tz-chat-entry,
 .tz-prompt-entry {
   min-inline-size: 0;
 }
+/* The composer floats: a soft rounded surface with a lifted shadow. Focus
+   tightens its edge to the accent; the send control is a round key that
+   stays quiet until there is something to send. */
 .tz-chat-entry-surface {
   display: flex;
   align-items: flex-end;
   gap: var(--space-2);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-panel);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-panel) + 6px);
   background: var(--surface);
   padding: var(--space-2);
+  box-shadow:
+    var(--shadow-surface),
+    0 8px 20px -10px #12231a24;
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out);
+}
+.tz-chat-entry-surface:focus-within {
+  border-color: color-mix(in srgb, var(--focus) 55%, transparent);
+  box-shadow:
+    0 0 0 3px var(--focus-halo),
+    0 8px 20px -10px #12231a24;
+}
+.tz-chat-entry-surface > .tz-button {
+  border-radius: 100px;
+  --press-scale: 0.9;
+}
+.tz-chat-entry-surface > .tz-button:disabled {
+  opacity: 1;
+  background: var(--surface-hover);
+  color: var(--text-muted);
+  box-shadow: none;
 }
 .tz-chat-entry textarea {
   display: block;
@@ -4590,7 +4810,7 @@ button.tz-tool-chip {
   resize: none;
   border: 0;
   border-radius: var(--radius-small);
-  padding: var(--space-1);
+  padding: var(--space-1) var(--space-2);
   background: transparent;
   color: var(--text);
   font: inherit;
@@ -4620,7 +4840,9 @@ button.tz-tool-chip {
   margin-block-start: var(--space-1);
 }
 .tz-prompt-bar .tz-chat-entry-surface {
-  border-radius: calc(var(--radius-panel) + 12px);
+  align-items: center;
+  border-radius: 100px;
+  padding-inline-start: var(--space-3);
 }
 .tz-prompt-bar textarea {
   max-block-size: 80px;
@@ -4641,6 +4863,19 @@ button.tz-tool-chip {
   white-space: normal;
   block-size: auto;
   text-align: start;
+  border-radius: 100px;
+  font-weight: var(--weight-regular);
+  color: var(--text-secondary);
+  animation: tz-option-in var(--motion-state) var(--ease-out) both;
+}
+.tz-prompt-suggestions li:nth-child(2) button {
+  animation-delay: 40ms;
+}
+.tz-prompt-suggestions li:nth-child(3) button {
+  animation-delay: 80ms;
+}
+.tz-prompt-suggestions li:nth-child(n + 4) button {
+  animation-delay: 120ms;
 }
 .tz-chat-demo {
   display: flex;
@@ -4670,14 +4905,36 @@ button.tz-tool-chip {
 .tz-image-result[data-aspect="portrait"] {
   max-inline-size: 320px;
 }
+/* The frame holds the final shape from the first frame: a quiet dotted
+   field while waiting, then the image resolves out of a soft blur. */
 .tz-image-result-frame {
   position: relative;
   container-type: inline-size;
   aspect-ratio: 3 / 2;
   overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--radius-panel);
+  box-shadow: var(--shadow-surface);
+  background:
+    radial-gradient(
+        color-mix(in srgb, var(--text) 13%, transparent) 0.8px,
+        transparent 1.2px
+      )
+      0 0 / 10px 10px,
+    var(--surface-subtle);
+}
+.tz-image-result-frame[data-state="loaded"] > img {
+  animation: tz-image-reveal 700ms var(--ease-out);
+}
+.tz-image-result-frame > .tz-skeleton {
+  background: transparent;
+}
+@keyframes tz-image-reveal {
+  from {
+    opacity: 0;
+    filter: blur(14px);
+    transform: scale(1.02);
+  }
 }
 .tz-image-result[data-aspect="square"] .tz-image-result-frame {
   aspect-ratio: 1;
@@ -4713,6 +4970,19 @@ button.tz-tool-chip {
 .tz-image-result-status > * {
   flex-shrink: 0;
 }
+.tz-image-result-status > svg {
+  box-sizing: content-box;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text-muted);
+  box-shadow: var(--shadow-control);
+}
+.tz-image-result-status > strong {
+  color: var(--text);
+  font-weight: var(--weight-medium);
+}
 .tz-image-result-caption {
   display: flex;
   align-items: start;
@@ -4738,19 +5008,34 @@ button.tz-tool-chip {
   min-inline-size: 0;
   font-size: var(--text-meta);
 }
+/* Sources fold into one pill: stacked letter marks and a count. Opened,
+   they become an inset panel of rows that each lead with their number. */
 .tz-sources-trigger {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  border: 0;
-  border-radius: var(--radius);
-  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  background: var(--surface);
   color: var(--text-secondary);
-  padding: var(--space-2);
+  padding: 3px var(--space-3) 3px 3px;
+  padding-inline: 3px var(--space-3);
   font: inherit;
+  font-weight: var(--weight-medium);
   cursor: pointer;
   max-inline-size: 100%;
   overflow-wrap: anywhere;
+  box-shadow: var(--shadow-surface);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-sources-trigger:hover {
+    color: var(--text);
+    background: color-mix(in srgb, var(--surface), var(--text) 3%);
+  }
+}
+.tz-sources-trigger > svg {
+  color: var(--text-muted);
+  transition: transform var(--motion-state) var(--ease-out);
 }
 .tz-sources-trigger[aria-expanded="true"] > svg {
   transform: rotate(180deg);
@@ -4762,44 +5047,68 @@ button.tz-tool-chip {
 .tz-sources-marks > bdi {
   display: grid;
   place-items: center;
-  margin-inline-start: -4px;
+  margin-inline-start: -5px;
   inline-size: 20px;
   block-size: 20px;
   border: 2px solid var(--surface);
   border-radius: 50%;
-  background: var(--surface-hover);
+  background: var(--action-soft);
+  color: var(--action);
   font-size: 10px;
+  font-weight: var(--weight-semibold);
+}
+.tz-sources-marks > bdi:nth-child(2) {
+  background: var(--info-soft);
+  color: var(--info);
+}
+.tz-sources-marks > bdi:nth-child(3) {
+  background: var(--surface-hover);
+  color: var(--text-secondary);
 }
 .tz-sources-list {
+  display: grid;
+  gap: 2px;
   list-style: none;
-  padding: 0;
+  padding: var(--space-1);
   margin: var(--space-2) 0 0;
-}
-.tz-sources-list > li + li {
-  border-block-start: 1px solid var(--border);
+  border: 1px solid transparent;
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+  box-shadow: var(--shadow-surface);
+  animation: tz-option-in var(--motion-state) var(--ease-out);
 }
 .tz-source-row {
   display: flex;
   align-items: start;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-2);
+  padding: var(--space-2);
   color: inherit;
   text-decoration: none;
   border-radius: var(--radius);
   overflow-wrap: anywhere;
 }
 .tz-source-row[href]:hover {
-  background: var(--surface-hover);
+  background: var(--wash);
 }
 .tz-source-number {
-  color: var(--text-muted);
+  display: grid;
+  place-items: center;
+  flex: none;
+  min-inline-size: 20px;
+  block-size: 20px;
+  padding-inline: 4px;
+  border-radius: 6px;
+  background: var(--wash-strong);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
 .tz-source-copy {
   min-inline-size: 0;
   flex: 1;
   display: grid;
-  gap: var(--space-1);
+  gap: 1px;
 }
 .tz-source-copy strong {
   font-weight: 500;
@@ -4813,19 +5122,23 @@ button.tz-tool-chip {
   margin-block-start: 4px;
   color: var(--text-muted);
 }
+/* Citations are small number pills that sit on the text, not above it,
+   and invert while their source is open. */
 .tz-inline-citation {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  vertical-align: super;
+  display: inline-grid;
+  place-items: center;
+  vertical-align: 0.15em;
   line-height: 1;
-  min-inline-size: 1.1em;
-  padding: 0.2em;
+  min-inline-size: 16px;
+  block-size: 16px;
+  margin-inline: 2px;
+  padding-inline: 4px;
   border: 0;
-  border-radius: calc(var(--radius) / 2);
-  background: var(--surface-hover);
-  font-family: inherit;
-  font-size: 0.7em;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: var(--weight-medium);
   color: var(--text-secondary);
   text-decoration: none;
   font-variant-numeric: tabular-nums;
@@ -4834,8 +5147,15 @@ button.tz-inline-citation,
 a.tz-inline-citation {
   cursor: pointer;
 }
-.tz-inline-citation:hover {
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .tz-inline-citation:hover {
+    background: color-mix(in srgb, var(--text) 14%, transparent);
+    color: var(--text);
+  }
+}
+.tz-inline-citation[data-state="open"] {
+  background: var(--text);
+  color: var(--surface);
 }
 .tz-citation-popup {
   z-index: 80;
@@ -4847,10 +5167,10 @@ a.tz-inline-citation {
   gap: var(--space-3);
   padding: var(--space-4);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-panel);
   background: var(--surface);
   color: var(--text);
-  box-shadow: var(--shadow-overlay);
+  box-shadow: var(--shadow-popover);
   font-size: var(--text-body);
   overflow-wrap: anywhere;
 }
@@ -5044,13 +5364,14 @@ a.tz-inline-citation {
 .tz-selection-scope {
   min-inline-size: 0;
 }
+/* A floating pill of quick rewrites; actions are rounded keys inside it. */
 .tz-selection-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
   padding: 4px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-panel);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius-panel) + 10px);
   background: var(--surface);
   box-shadow: var(--shadow-popover);
   z-index: 65;
@@ -5066,16 +5387,33 @@ a.tz-inline-citation {
   color: var(--text-secondary);
   border: 0;
   background: transparent;
-  border-radius: var(--radius-small);
-  min-block-size: var(--control-small);
-  padding: 3px 8px;
+  border-radius: 100px;
+  min-block-size: 30px;
+  padding: 3px 12px;
   font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
   overflow-wrap: anywhere;
   min-inline-size: 0;
 }
-.tz-selection-actions button:hover {
-  background: var(--surface-hover);
-  color: var(--text);
+.tz-selection-actions button > svg {
+  inline-size: 14px;
+  block-size: 14px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-selection-actions button:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+}
+.tz-selection-actions button:first-child {
+  background: var(--text);
+  color: var(--surface);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-selection-actions button:first-child:hover {
+    background: color-mix(in srgb, var(--text) 86%, var(--surface));
+    color: var(--surface);
+  }
 }
 .tz-selection-actions button:disabled {
   opacity: 0.5;
@@ -5090,14 +5428,15 @@ a.tz-inline-citation {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 3px 8px;
+  padding: 3px 10px;
   min-block-size: var(--control-small);
   max-inline-size: 100%;
   border: 1px solid transparent;
-  border-radius: var(--radius-small);
+  border-radius: 100px;
   background: transparent;
   color: var(--text-secondary);
   font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
   line-height: 1.6;
 }
 .tz-context-trigger {
@@ -5316,19 +5655,181 @@ a.tz-inline-citation {
   font-size: var(--text-body);
   overflow-wrap: anywhere;
 }
+/* Decision cards share one frame: content on the surface, then a quieter
+   footer band that holds the note and the actions. */
 .tz-ask-questions,
 .tz-approval-card {
-  padding: var(--space-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  --decision-pad: var(--space-4);
+  padding: var(--decision-pad);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius-panel) + 4px);
   background: var(--surface);
+  box-shadow: var(--shadow-surface);
+  animation: tz-card-in calc(var(--motion-enter) + 80ms) var(--ease-out);
 }
 .tz-ask-questions h3,
 .tz-approval-card h3 {
   margin: 0;
   font-size: var(--text-heading);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
   line-height: 1.5;
+  text-wrap: balance;
+}
+.tz-ask-questions > .tz-decision-actions,
+.tz-approval-card > .tz-decision-footer {
+  margin-block-start: var(--space-1);
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-decision-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+.tz-decision-footer > .tz-decision-note {
+  flex: 1 1 14rem;
+}
+.tz-decision-footer > .tz-decision-actions {
+  margin-inline-start: auto;
+}
+.tz-approval-card .tz-decision-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-3);
+}
+.tz-decision-icon {
+  display: grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: calc(var(--radius) + 1px);
+  background: transparent;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--border);
+  transition:
+    background-color var(--motion-state) var(--ease-out),
+    color var(--motion-state) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out);
+}
+.tz-decision-icon > svg {
+  animation: tz-glyph-in var(--motion-state) var(--ease-spring);
+}
+.tz-decision-title {
+  display: grid;
+  gap: 2px;
+  min-inline-size: 0;
+}
+.tz-decision-title .tz-decision-facts {
+  font-size: var(--text-meta);
+}
+.tz-decision-title .tz-decision-facts > div {
+  display: flex;
+  gap: var(--space-2);
+}
+.tz-approval-card .tz-decision-details {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  background: var(--code-surface);
+  box-shadow: inset 0 0 0 0.5px var(--hairline);
+  color: var(--text-secondary);
+}
+.tz-approval-card .tz-decision-consequences {
+  display: grid;
+  gap: var(--space-1);
+  padding: 0;
+  list-style: none;
+}
+.tz-approval-card .tz-decision-consequences > li {
+  position: relative;
+  padding-inline-start: var(--space-4);
+}
+.tz-approval-card .tz-decision-consequences > li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 2px;
+  inset-block-start: 0.8em;
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.6;
+}
+.tz-approval-card .tz-decision-status {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+}
+/* Once decided, the card folds into a one-line receipt: a tinted mark, the
+   action, and the outcome. Everything else has done its job. */
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"]) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  padding-block: var(--space-3);
+  animation: tz-receipt-in calc(var(--motion-enter) + 160ms) var(--ease-out);
+}
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
+  > :not(.tz-decision-heading, .tz-decision-status) {
+  display: none;
+}
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
+  :is(.tz-decision-facts, .tz-badge) {
+  display: none;
+}
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
+  .tz-decision-heading {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+}
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"]) h3 {
+  font-size: var(--text-body);
+}
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
+  .tz-decision-icon {
+  inline-size: 22px;
+  block-size: 22px;
+  border-radius: 50%;
+  box-shadow: none;
+  animation: tz-glyph-in calc(var(--motion-state) + 160ms) var(--ease-spring)
+    120ms both;
+}
+.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
+  .tz-decision-icon
+  > svg {
+  inline-size: 13px;
+  block-size: 13px;
+  stroke-width: 2.5;
+}
+.tz-approval-card[data-state="approved"] .tz-decision-icon {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.tz-approval-card[data-state="approved"] .tz-decision-status {
+  color: var(--text-muted);
+}
+.tz-approval-card[data-state="rejected"] .tz-decision-icon {
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+}
+.tz-approval-card[data-state="rejected"] .tz-decision-status {
+  color: var(--text-muted);
+}
+@keyframes tz-receipt-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(2px);
+  }
+}
+.tz-approval-card[data-state="failed"] .tz-decision-status {
+  color: var(--danger);
+}
+@keyframes tz-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
 }
 .tz-ask-questions :is(h3, .tz-radio-group):focus-visible,
 .tz-approval-card:focus-visible,
@@ -5388,30 +5889,187 @@ a.tz-inline-citation {
   margin: 0;
   padding-inline-start: var(--space-5);
 }
+/* Settled requests collapse into quiet one-line receipts. */
 .tz-decision-history {
   display: grid;
-  gap: var(--space-2);
+  gap: 2px;
   margin: 0;
-  padding-inline-start: var(--space-5);
+  padding: var(--space-1);
+  list-style: none;
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--surface);
+  box-shadow: var(--shadow-surface);
   font-size: var(--text-meta);
 }
-.tz-decision-history li > span {
-  display: block;
+.tz-decision-history > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 28px;
+  padding-inline: var(--space-2);
+  animation: tz-option-in var(--motion-state) var(--ease-out);
+}
+.tz-decision-history > li > bdi {
+  flex: 1;
+  min-inline-size: 0;
+  color: var(--text);
+}
+.tz-decision-history > li > span:last-child {
   color: var(--text-muted);
+}
+.tz-decision-history > li[data-decision="approved"] > span:last-child {
+  color: var(--success);
+}
+.tz-decision-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: 50%;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+}
+[data-decision="approved"] > .tz-decision-mark {
+  background: var(--success);
+  color: var(--surface);
+}
+.tz-question-steps > [data-state="skipped"] {
+  background: var(--border-strong);
+}
+/* Questions read as a short conversation step: a progress strip, the
+   question, then quiet option rows that each carry their 1–9 key. */
+.tz-question-progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.tz-question-steps {
+  display: flex;
+  gap: 4px;
+}
+.tz-question-steps > span {
+  inline-size: 16px;
+  block-size: 4px;
+  border-radius: 100px;
+  background: var(--surface-hover);
+  transition:
+    background-color var(--motion-state) var(--ease-out),
+    inline-size var(--motion-state) var(--ease-out);
+}
+.tz-question-steps > [data-state="done"] {
+  background: color-mix(in srgb, var(--action) 45%, var(--surface-hover));
+}
+.tz-question-steps > [data-state="current"] {
+  inline-size: 24px;
+  background: var(--action);
+}
+.tz-ask-questions .tz-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tz-ask-questions .tz-radio-group > .tz-field-help {
+  order: -1;
+  margin: calc(-1 * var(--space-2)) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
 }
 .tz-ask-questions .tz-radio-options {
   display: grid;
-  gap: var(--space-2);
+  gap: 2px;
+  margin-inline: calc(-1 * var(--space-2));
+  counter-reset: tz-option;
 }
 .tz-ask-questions .tz-radio-option {
+  position: relative;
+  align-items: flex-start;
+  gap: var(--space-3);
   padding: var(--space-2);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
-  align-items: start;
+  counter-increment: tz-option;
+  animation: tz-option-in calc(var(--motion-state) + 80ms) var(--ease-out) both;
+  animation-delay: calc(var(--option-index, 0) * 40ms);
 }
-.tz-ask-questions .tz-radio-option:has(:checked) {
-  background: var(--surface-hover);
-  border-color: var(--focus);
+.tz-ask-questions .tz-radio-option:nth-child(2) {
+  --option-index: 1;
+}
+.tz-ask-questions .tz-radio-option:nth-child(3) {
+  --option-index: 2;
+}
+.tz-ask-questions .tz-radio-option:nth-child(4) {
+  --option-index: 3;
+}
+.tz-ask-questions .tz-radio-option:nth-child(n + 5) {
+  --option-index: 4;
+}
+.tz-ask-questions .tz-radio-option > .tz-radio {
+  margin-block-start: 3px;
+}
+.tz-ask-questions .tz-radio-option > :is(bdi, .tz-radio-copy) {
+  flex: 1;
+}
+/* The key hint the 1–9 shortcut listens for; «Other» has none. */
+.tz-ask-questions .tz-radio-option:not([data-value="other"])::after {
+  content: counter(tz-option);
+  display: grid;
+  place-items: center;
+  flex: none;
+  min-inline-size: 20px;
+  block-size: 20px;
+  margin-block-start: 1px;
+  padding-inline: 4px;
+  border-radius: 6px;
+  background: var(--wash-strong);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition:
+    color var(--motion-fast) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out);
+}
+.tiraz-system[dir="rtl"]
+  .tz-ask-questions
+  .tz-radio-option:not([data-value="other"])::after {
+  content: counter(tz-option, arabic-indic);
+}
+.tz-ask-questions .tz-radio-option:has(:checked)::after {
+  background: var(--action);
+  color: var(--action-text);
+}
+.tz-ask-questions .tz-radio-option[data-value="other"] {
+  counter-increment: none;
+}
+.tz-radio-copy {
+  display: grid;
+  gap: 1px;
+  min-inline-size: 0;
+}
+.tz-radio-description {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: 1.6;
+}
+.tz-ask-questions .tz-radio-group ~ .tz-field {
+  margin-inline-start: calc(var(--text-body) + var(--space-1) + var(--space-3));
+}
+.tz-question-hint {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  margin-inline-end: auto;
+}
+.tz-mirror-rtl:dir(rtl) {
+  transform: scaleX(-1);
+}
+@keyframes tz-option-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
 }
 .tz-question-control > .tz-field-label {
   position: absolute;
@@ -5432,18 +6090,29 @@ a.tz-inline-citation {
   min-inline-size: 0;
   max-inline-size: 100%;
   overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-subtle);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--code-surface);
+  box-shadow: var(--shadow-surface);
 }
+/* The header is interface chrome in the reading font; only the output and
+   machine values (exit code, duration) use the mono face. */
 .tz-terminal-header {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  border-block-end: 1px solid var(--border);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  padding-inline: var(--space-3) var(--space-1);
+  border-block-end: 0.5px solid var(--hairline);
+  background: var(--surface);
   color: var(--text-secondary);
-  font: var(--text-meta)/1.6 var(--font-mono);
+  font: var(--text-meta)/1.6 var(--font);
+}
+.tz-terminal-meta {
+  font-variant-numeric: tabular-nums;
+}
+.tz-terminal-meta :is(bdi, code) {
+  font-family: var(--font-mono);
 }
 .tz-terminal-title {
   display: flex;
@@ -5463,8 +6132,33 @@ a.tz-inline-citation {
   align-items: center;
   gap: var(--space-2);
 }
+.tz-terminal-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.tz-terminal-state::before {
+  content: "";
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+.tz-terminal[data-state="running"] .tz-terminal-state::before {
+  background: var(--action);
+  animation: tz-status-pulse 1.4s var(--ease-in-out) infinite;
+}
 .tz-terminal[data-state="failed"] .tz-terminal-state {
   color: var(--danger);
+}
+.tz-terminal[data-state="failed"] .tz-terminal-state::before {
+  background: var(--danger);
+}
+@keyframes tz-status-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.8);
+  }
 }
 .tz-terminal pre {
   direction: ltr;
@@ -5701,8 +6395,7 @@ a.tz-inline-citation {
 }
 @media (hover: hover) and (pointer: fine) {
   .tz-ask-questions .tz-radio-option:not(:has(:disabled)):hover {
-    border-color: var(--border-strong);
-    background: var(--surface-subtle);
+    background: var(--wash);
   }
   .tz-ai-image-choice:hover img {
     border-color: var(--border-strong);
@@ -5712,9 +6405,10 @@ a.tz-inline-citation {
   }
 }
 .tz-ask-questions .tz-radio-option:has(:checked) {
-  background: var(--action-soft);
-  border-color: var(--focus);
-  box-shadow: 0 0 0 1px var(--focus) inset;
+  background: var(--wash);
+}
+.tz-ask-questions .tz-radio-option:has(:checked) > :is(bdi, .tz-radio-copy) {
+  font-weight: var(--weight-medium);
 }
 .tz-ai-image-choice:has(:checked) img {
   outline-color: var(--action);
@@ -5802,4 +6496,81 @@ a.tz-inline-citation {
 }
 .tz-select-trigger > :not(:first-child) {
   translate: 0 var(--optical-lift);
+}
+
+/* Keyboard hints sit inside the control they trigger. */
+.tz-kbd {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 20px;
+  block-size: 20px;
+  padding-inline: 5px;
+  border-radius: 6px;
+  background: var(--wash-strong);
+  color: var(--text-muted);
+  font: var(--weight-medium) 11px / 1 var(--font);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.tz-button[data-variant="primary"] .tz-kbd {
+  background: color-mix(in srgb, var(--action-text) 16%, transparent);
+  color: color-mix(in srgb, var(--action-text) 75%, transparent);
+}
+@media (pointer: coarse) {
+  .tz-kbd {
+    display: none;
+  }
+}
+
+/* One edge language for every surface. Cards sit on a hairline ring and a
+   one-pixel lift; floating layers carry the ring inside their shadow. The
+   transparent border stays so forced-colors mode still draws an outline. */
+:is(
+  .tz-menu,
+  .tz-select-popup,
+  .tz-toast,
+  .tz-modal,
+  .tz-datepicker-popup,
+  .tz-context-details,
+  .tz-citation-popup,
+  .tz-model-popup,
+  .tz-selection-actions,
+  .tz-tooltip
+) {
+  border-color: transparent;
+}
+:is(.tz-card, .tz-accordion, .tz-table-container) {
+  border-color: transparent;
+  box-shadow: var(--shadow-surface);
+}
+.tz-card {
+  border-radius: calc(var(--radius) + 4px);
+}
+.tz-accordion-item + .tz-accordion-item {
+  border-block-start-width: 0.5px;
+  border-block-start-color: var(--hairline);
+}
+:is(.tz-modal-header, .tz-sheet-header) {
+  border-block-end-width: 0.5px;
+  border-block-end-color: var(--hairline);
+}
+:is(.tz-modal-footer, .tz-sheet-footer) {
+  border-block-start-width: 0.5px;
+  border-block-start-color: var(--hairline);
+}
+.tz-menu-separator {
+  background: var(--hairline);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-data-table tbody tr:hover {
+    background: var(--wash);
+  }
+}
+.tz-menu-item[data-highlighted] {
+  background: var(--wash-strong);
+  color: var(--text);
+}
+.tz-select-option[data-highlighted] {
+  background: var(--wash-strong);
+  color: var(--text);
 }

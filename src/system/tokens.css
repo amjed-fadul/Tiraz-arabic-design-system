@@ -61,13 +61,27 @@
     0 2px 6px -2px #12231a1f;
   --shadow-pressed: inset 0 1px 2px #12231a1f;
   --shadow-popover:
-    0 0 0 0.5px #12231a0a, 0 1px 2px #12231a0a, 0 4px 8px -2px #12231a0f,
+    0 0 0 0.5px #12231a24, 0 1px 2px #12231a0a, 0 4px 8px -2px #12231a0f,
     0 12px 28px -6px #12231a1f;
   --shadow-overlay:
-    0 2px 6px -2px #0c18111a, 0 12px 24px -8px #0c181124,
+    0 0 0 0.5px #0c18111f, 0 2px 6px -2px #0c18111a, 0 12px 24px -8px #0c181124,
     0 32px 64px -16px #0c181133;
   --shadow-thumb:
     0 0 0 0.5px #12231a1f, 0 1px 2px #12231a2e, 0 2px 6px #12231a14;
+  /* Clean surfaces: the edge is a 0.5px ring plus a one-pixel lift, so cards
+     read as paper rather than outlined boxes. Washes tint hover and press
+     with the text color itself, so they follow any theme or accent. */
+  --shadow-surface:
+    0 0 0 0.5px #12231a1a, 0 1px 1px -1px #12231a1a, 0 1px 2px #12231a0d;
+  --hairline: #12231a14;
+  --wash: color-mix(in srgb, var(--text) 4%, transparent);
+  --wash-strong: color-mix(in srgb, var(--text) 7%, transparent);
+  --code-surface: color-mix(in srgb, var(--surface-subtle) 55%, var(--surface));
+  --code-key: var(--text);
+  --code-string: #0b6f8f;
+  --code-number: #a4520b;
+  --code-literal: #5b4fc4;
+  --code-comment: var(--text-muted);
   --focus-halo: color-mix(in srgb, var(--focus) 22%, transparent);
   --backdrop: #0c18114d;
   --shimmer: #ffffffa6;
@@ -124,13 +138,18 @@
     0 2px 6px -2px #00000047;
   --shadow-pressed: inset 0 1px 2px #00000040;
   --shadow-popover:
-    inset 0 1px 0 #ffffff0a, 0 1px 2px #00000033, 0 4px 8px -2px #00000038,
-    0 12px 28px -6px #00000059;
+    0 0 0 0.5px #ffffff1f, inset 0 1px 0 #ffffff0a, 0 1px 2px #00000033,
+    0 4px 8px -2px #00000038, 0 12px 28px -6px #00000059;
   --shadow-overlay:
-    inset 0 1px 0 #ffffff0a, 0 2px 6px -2px #00000040,
+    0 0 0 0.5px #ffffff1f, inset 0 1px 0 #ffffff0a, 0 2px 6px -2px #00000040,
     0 12px 24px -8px #0000004d, 0 32px 64px -16px #00000073;
   --shadow-thumb:
     0 0 0 0.5px #00000040, 0 1px 2px #00000059, 0 2px 6px #00000033;
+  --shadow-surface: 0 0 0 0.5px #ffffff1f, 0 1px 2px #00000066;
+  --hairline: #ffffff14;
+  --code-string: #6fcbe6;
+  --code-number: #f0a862;
+  --code-literal: #aea8ff;
   --focus-halo: color-mix(in srgb, var(--focus) 30%, transparent);
   --backdrop: #050a0799;
   --shimmer: #ffffff12;

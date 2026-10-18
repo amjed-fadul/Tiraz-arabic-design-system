@@ -1,3 +1,4 @@
+import { Check, ShieldCheck, X } from "lucide-react";
 import { approvalRequestKey } from "./approval-request";
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import { Alert } from "./Alert";
@@ -50,7 +51,8 @@ function ApprovalCardInstance({
     ar = config.direction === "rtl",
     id = useId();
   const task = useDecisionTask(),
-    [local, setLocal] = useState<ApprovalDecision | null>(null);
+    [local, setLocal] = useState<ApprovalDecision | null>(null),
+    [pending, setPending] = useState<ApprovalDecision | null>(null);
   const decision =
     value === undefined
       ? local
@@ -71,6 +73,7 @@ function ApprovalCardInstance({
   }, [decision]);
   function decide(next: ApprovalDecision) {
     if (decision) return;
+    setPending(next);
     void task.run(
       (signal) => onDecision(request, next, { signal }),
       () => setLocal(next),
@@ -128,17 +131,28 @@ function ApprovalCardInstance({
       }}
     >
       <div className="tz-decision-heading">
-        <h3 id={`${id}-title`} dir="auto">
-          {request.action}
-        </h3>
+        <span className="tz-decision-icon" aria-hidden="true">
+          {decision === "approved" ? (
+            <Check size={16} />
+          ) : decision === "rejected" ? (
+            <X size={16} />
+          ) : (
+            <ShieldCheck size={16} />
+          )}
+        </span>
+        <div className="tz-decision-title">
+          <h3 id={`${id}-title`} dir="auto">
+            {request.action}
+          </h3>
+          <dl className="tz-decision-facts">
+            <div>
+              <dt>{ar ? "الهدف" : "Target"}</dt>
+              <dd dir="auto">{request.target}</dd>
+            </div>
+          </dl>
+        </div>
         <Badge>{ar ? "لمرة واحدة" : "One-time decision"}</Badge>
       </div>
-      <dl className="tz-decision-facts">
-        <div>
-          <dt>{ar ? "الهدف" : "Target"}</dt>
-          <dd dir="auto">{request.target}</dd>
-        </div>
-      </dl>
       {request.details && (
         <p className="tz-decision-details" dir="auto">
           {request.details}
@@ -151,11 +165,6 @@ function ApprovalCardInstance({
           </li>
         ))}
       </ul>
-      <p id={`${id}-scope`} className="tz-decision-note">
-        {ar
-          ? "الموافقة تسجّل قرارًا لهذا الطلب فقط. التنفيذ مسؤولية التطبيق."
-          : "Approval records a decision for this request only. Execution belongs to the host."}
-      </p>
       <p
         role="status"
         aria-live="polite"
@@ -172,24 +181,48 @@ function ApprovalCardInstance({
           }
         />
       )}
-      {!decision && (
-        <div className="tz-decision-actions">
-          <Button
-            variant="secondary"
-            disabled={task.state === "submitting" || task.state === "accepted"}
-            onClick={() => decide("rejected")}
-          >
-            {request.rejectLabel}
-          </Button>
-          <Button
-            variant="secondary"
-            disabled={task.state === "submitting" || task.state === "accepted"}
-            onClick={() => decide("approved")}
-          >
-            {request.approveLabel}
-          </Button>
-        </div>
-      )}
+      <div className="tz-decision-footer">
+        <p id={`${id}-scope`} className="tz-decision-note">
+          {ar
+            ? "الموافقة تسجّل قرارًا لهذا الطلب فقط. التنفيذ مسؤولية التطبيق."
+            : "Approval records a decision for this request only. Execution belongs to the host."}
+        </p>
+        {!decision && (
+          <div className="tz-decision-actions">
+            <Button
+              variant="secondary"
+              state={
+                task.state === "submitting" && pending === "rejected"
+                  ? "loading"
+                  : "idle"
+              }
+              disabled={
+                task.state === "submitting" || task.state === "accepted"
+              }
+              onClick={() => decide("rejected")}
+            >
+              {request.rejectLabel}
+              <kbd className="tz-kbd" aria-hidden="true">
+                Esc
+              </kbd>
+            </Button>
+            <Button
+              variant="primary"
+              state={
+                task.state === "submitting" && pending === "approved"
+                  ? "loading"
+                  : "idle"
+              }
+              disabled={
+                task.state === "submitting" || task.state === "accepted"
+              }
+              onClick={() => decide("approved")}
+            >
+              {request.approveLabel}
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

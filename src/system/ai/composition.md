@@ -393,8 +393,10 @@ started local demo with replay/cancel/unmount cleanup.
 
 ## Tool activity
 
-Use ToolCall for one operation's supplied input/output/error. A plain div/list may
-stack calls; no additional family is needed. Use ToolChips for concise activity
+Use ToolCall for one operation's supplied input/output/error. Wrap consecutive
+calls in `<div className="tz-tool-calls">` to join them into one trace; a plain
+div/list with a gap keeps them as separate cards. `icon` adds an optional
+decorative tool glyph. Use ToolChips for concise activity
 labels, states and counts. onActivate is host-owned; informational items stay
 noninteractive. controls/expanded must reference the actual connected detail.
 See [ToolActivityExamples](examples/ToolActivityExamples.tsx) for disclosure, retry,

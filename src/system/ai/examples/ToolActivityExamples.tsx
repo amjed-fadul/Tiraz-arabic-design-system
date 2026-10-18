@@ -1,3 +1,4 @@
+import { FileText, PackageOpen, Save, SpellCheck } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 import { Button, ToolCall, ToolChips } from "../../index";
 import type { ToolCallState } from "../../index";
@@ -13,11 +14,12 @@ export function ToolCallExample({
 }) {
   const ar = language === "ar";
   return (
-    <div style={{ display: "grid", gap: "var(--space-2)", minInlineSize: 0 }}>
+    <div className="tz-tool-calls">
       <ToolCall
         key={String(defaultExpanded)}
         label={ar ? "قراءة ملاحظات العينة" : "Read sample notes"}
         tool="read_file"
+        icon={<FileText />}
         state="completed"
         duration="0.2s"
         defaultExpanded={defaultExpanded}
@@ -35,6 +37,7 @@ export function ToolCallExample({
       <ToolCall
         label={ar ? "مراجعة تسميات العينة" : "Check sample labels"}
         tool="check_labels"
+        icon={<SpellCheck />}
         state="running"
         input={'{ "language": "ar" }'}
         announcement="off"
@@ -42,6 +45,7 @@ export function ToolCallExample({
       <ToolCall
         label={ar ? "حفظ ملخص العينة" : "Save sample summary"}
         tool="save_summary"
+        icon={<Save />}
         state="failed"
         defaultExpanded
         error={
@@ -55,6 +59,7 @@ export function ToolCallExample({
       <ToolCall
         label={ar ? "إعداد التصدير" : "Prepare export"}
         tool="prepare_export"
+        icon={<PackageOpen />}
         state="pending"
         announcement="off"
       />

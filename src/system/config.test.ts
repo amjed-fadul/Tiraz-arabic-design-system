@@ -30,6 +30,7 @@ it.each(["light", "dark"] as const)(
       "indigo",
       "rose",
       "slate",
+      "ink",
     ]);
     for (const [name, colors] of Object.entries(accentColors)) {
       expect(

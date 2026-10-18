@@ -50,7 +50,7 @@ For TypeScript CSS imports, use the host bundler’s declarations (for example,
 configuration error.
 
 Paired light/dark accent presets are `sage`, `blue`, `plum`, `clay`, `lime`,
-`amber`, `teal`, `cyan`, `indigo`, `rose` and `slate`. Set `config.accent` to
+`amber`, `teal`, `cyan`, `indigo`, `rose`, `slate` and the monochrome `ink`. Set `config.accent` to
 one of these keys; controls and focus tokens follow the active theme.
 
 Wrap the interface in `SystemProvider`; configure with

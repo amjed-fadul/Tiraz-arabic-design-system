@@ -1,3 +1,4 @@
+import { Check, X } from "lucide-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import { ApprovalCard } from "./ApprovalCard";
 import { approvalRequestKey } from "./approval-request";
@@ -17,6 +18,7 @@ export interface ApprovalFlowProps {
   resetKey?: string | number;
   className?: string;
 }
+const arabicDigits = new Intl.NumberFormat("ar-u-nu-arab");
 /** Short inline composition. Hosts independently authorize and execute actions. */
 export function ApprovalFlow(props: ApprovalFlowProps) {
   return <ApprovalFlowInstance key={props.resetKey} {...props} />;
@@ -116,11 +118,34 @@ function ApprovalFlowInstance({
       >
         {acceptedAnnouncement}
       </span>
-      <p className="tz-decision-position">
-        {ar
-          ? `الطلب ${position} من ${requests.length}`
-          : `Request ${position} of ${requests.length}`}
-      </p>
+      <div className="tz-question-progress">
+        <p className="tz-decision-position">
+          {ar
+            ? `الطلب ${arabicDigits.format(position)} من ${arabicDigits.format(requests.length)}`
+            : `Request ${position} of ${requests.length}`}
+        </p>
+        <span className="tz-question-steps" aria-hidden="true">
+          {requests.map((request) => {
+            const record = records.find(
+              (item) => item.requestKey === approvalRequestKey(request),
+            );
+            return (
+              <span
+                key={request.id}
+                data-state={
+                  record
+                    ? record.decision === "approved"
+                      ? "done"
+                      : "skipped"
+                    : request === current
+                      ? "current"
+                      : "upcoming"
+                }
+              />
+            );
+          })}
+        </span>
+      </div>
       {records.length > 0 && (
         <ol
           className="tz-decision-history"
@@ -132,7 +157,14 @@ function ApprovalFlowInstance({
             );
             return record
               ? [
-                  <li key={request.id}>
+                  <li key={request.id} data-decision={record.decision}>
+                    <span className="tz-decision-mark" aria-hidden="true">
+                      {record.decision === "approved" ? (
+                        <Check size={12} strokeWidth={2.5} />
+                      ) : (
+                        <X size={12} strokeWidth={2.5} />
+                      )}
+                    </span>
                     <bdi>
                       {request.action} · {request.target}
                     </bdi>

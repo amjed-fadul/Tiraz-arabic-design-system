@@ -37,7 +37,10 @@ export function highlightCode(code: string, language: string): ReactNode {
     const kind = /^(\/\/|\/\*|#)/.test(value)
       ? "comment"
       : /^["'`]/.test(value)
-        ? "string"
+        ? // A JSON string directly followed by a colon is a key.
+          syntax === "json" && /^\s*:/.test(code.slice(index + value.length))
+          ? "key"
+          : "string"
         : /^\d/.test(value)
           ? "number"
           : "keyword";

@@ -961,7 +961,8 @@
           "cyan",
           "indigo",
           "rose",
-          "slate"
+          "slate",
+          "ink"
         ]
       },
       {
@@ -1978,6 +1979,11 @@
           "type": "ToolCallState",
           "required": true,
           "values": ["pending", "running", "completed", "failed"]
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false
         },
         {
           "name": "input",
@@ -6233,6 +6239,12 @@
           "name": "label",
           "type": "string",
           "required": true,
+          "default": "undefined"
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
           "default": "undefined"
         },
         {

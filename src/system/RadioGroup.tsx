@@ -5,6 +5,8 @@ import { mergeDescriptionIds } from "./control-associations";
 export interface RadioOption {
   value: string;
   label: string;
+  /** Secondary line under the label; announced as the option's description. */
+  description?: string;
   disabled?: boolean;
 }
 export type RadioGroupProps = Omit<
@@ -62,8 +64,12 @@ export function RadioGroup({
         )}
       </legend>
       <div className="tz-radio-options">
-        {options.map((option) => (
-          <label key={option.value} className="tz-radio-option">
+        {options.map((option, index) => (
+          <label
+            key={option.value}
+            className="tz-radio-option"
+            data-value={option.value}
+          >
             <input
               type="radio"
               className="tz-choice-input tz-radio"
@@ -76,14 +82,33 @@ export function RadioGroup({
               defaultChecked={
                 value === undefined ? defaultValue === option.value : undefined
               }
-              aria-describedby={description}
+              aria-labelledby={
+                option.description ? `${groupId}-${index}` : undefined
+              }
+              aria-describedby={mergeDescriptionIds(
+                option.description ? `${groupId}-${index}-detail` : undefined,
+                description,
+              )}
               aria-invalid={error ? true : props["aria-invalid"]}
               onChange={(event) => {
                 if (event.currentTarget.checked)
                   onValueChange?.(event.currentTarget.value);
               }}
             />
-            <bdi>{option.label}</bdi>
+            {option.description ? (
+              <span className="tz-radio-copy">
+                <bdi id={`${groupId}-${index}`}>{option.label}</bdi>
+                <span
+                  id={`${groupId}-${index}-detail`}
+                  className="tz-radio-description"
+                  dir="auto"
+                >
+                  {option.description}
+                </span>
+              </span>
+            ) : (
+              <bdi>{option.label}</bdi>
+            )}
           </label>
         ))}
       </div>

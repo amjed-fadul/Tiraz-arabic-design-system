@@ -1,6 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, RotateCcw } from "lucide-react";
+import { highlightCode } from "./code-highlight";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { ToolStatus } from "./ToolStatus";
@@ -11,6 +12,8 @@ export type ToolCallProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
   label: string;
   tool: string;
   state: ToolCallState;
+  /** Optional decorative glyph for the kind of tool (search, file, database…). */
+  icon?: ReactNode;
   /** Preformatted text or application-rendered content. No serialization/execution. */
   input?: ReactNode;
   output?: ReactNode;
@@ -24,6 +27,16 @@ export type ToolCallProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
   retryLabel?: string;
   announcement?: "polite" | "off";
 };
+function isJson(text: string) {
+  const trimmed = text.trim();
+  if (!/^[[{]/.test(trimmed)) return false;
+  try {
+    JSON.parse(trimmed);
+    return true;
+  } catch {
+    return false;
+  }
+}
 function Detail({
   label,
   children,
@@ -43,10 +56,19 @@ function Detail({
         role="region"
         aria-label={label}
       >
-        {typeof children === "string" ? (
-          <pre dir="auto">{children}</pre>
-        ) : (
+        {typeof children !== "string" ? (
           children
+        ) : error ? (
+          // A failure message is prose for people, not program output.
+          <p className="tz-tool-message" dir="auto">
+            {children}
+          </p>
+        ) : (
+          <pre dir="auto">
+            <code>
+              {isJson(children) ? highlightCode(children, "json") : children}
+            </code>
+          </pre>
         )}
       </div>
     </section>
@@ -57,6 +79,7 @@ export function ToolCall({
   label,
   tool,
   state,
+  icon,
   input,
   output,
   error,
@@ -120,6 +143,11 @@ export function ToolCall({
         }}
       >
         <ToolStatus state={state} />
+        {icon && (
+          <span className="tz-tool-icon" aria-hidden="true">
+            {icon}
+          </span>
+        )}
         <bdi className="tz-tool-call-label" id={titleId}>
           {label}
         </bdi>
@@ -177,6 +205,7 @@ export function ToolCall({
                   onRetry();
                 }}
               >
+                <RotateCcw size={14} aria-hidden="true" />
                 {retryLabel ?? labels.retry}
               </Button>
             )}
