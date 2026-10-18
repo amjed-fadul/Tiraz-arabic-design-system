@@ -208,7 +208,7 @@ export function InlineCitation({
         >
           <div className="tz-citation-domain">
             <bdi dir="ltr">{href ? destination(href) : unavailable}</bdi>
-            <bdi>{source.number}</bdi>
+            <bdi>{digits.format(source.number)}</bdi>
           </div>
           <strong id={titleId} dir="auto">
             {source.title}

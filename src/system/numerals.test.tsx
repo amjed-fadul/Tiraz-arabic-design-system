@@ -351,6 +351,24 @@ describe.each(settings)(
         `الحد الأقصى ${n("1")} من الملفات`,
       );
     });
+
+    it("the citation popup shows its number in the configured digits", async () => {
+      const user = userEvent.setup();
+      wrap(
+        <InlineCitation
+          source={{ id: "c", number: 7, title: "دليل", href: "https://a.test" }}
+        />,
+        { numerals },
+      );
+      await user.click(
+        screen.getByRole("button", { name: `المصدر ${n("7")}: دليل` }),
+      );
+      const popup = screen.getByRole("dialog", { name: "دليل" });
+      expect(
+        popup.querySelector(".tz-citation-domain > bdi:last-child")
+          ?.textContent,
+      ).toBe(n("7"));
+    });
   },
 );
 
