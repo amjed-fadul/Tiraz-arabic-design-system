@@ -1,7 +1,8 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
+import { persist, storageKeys } from "./storage";
 import {
   AIDecisionsExample,
   ApprovalCardExample,
@@ -15,6 +16,7 @@ import * as React from "react";
 import * as jsx from "react/jsx-runtime";
 import * as system from "../system";
 import * as ts from "typescript";
+afterEach(() => vi.useRealTimers());
 it.each([
   ["أسئلة للمستخدم", "AskUserQuestions"],
   ["بطاقة القرار", "ApprovalCard"],
@@ -34,12 +36,58 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    for (const name of ["Interactive playground", "Examples", "Usage example"])
-      expect(screen.getByRole("heading", { name })).toBeVisible();
     expect(
-      document.querySelectorAll(".tz-demo-frame").length,
-    ).toBeGreaterThanOrEqual(2);
+      screen.getByRole("heading", { name: "Interactive playground" }),
+    ).toBeVisible();
+    for (const name of ["Examples", "Usage example"])
+      expect(screen.queryByRole("heading", { name })).toBeNull();
+    expect(document.querySelectorAll(".tz-demo-frame")).toHaveLength(1);
+    expect(screen.getByRole("tablist", { name: "View" })).toBeVisible();
     expect(screen.getByRole("switch", { name: "Long content" })).toBeVisible();
+  },
+);
+it.each([
+  [
+    "ask-user-questions",
+    () => {
+      fireEvent.click(screen.getByRole("radio", { name: /Supplier invoices/ }));
+      fireEvent.click(screen.getByRole("button", { name: "Submit answers" }));
+    },
+    "Submitting answers",
+    "Answers accepted.",
+  ],
+  [
+    "approval-card",
+    () => fireEvent.click(screen.getByRole("button", { name: "Keep status" })),
+    "Recording decision",
+    "Rejected",
+  ],
+  [
+    "approval-flow",
+    () => fireEvent.click(screen.getByRole("button", { name: "Mark as paid" })),
+    "Recording decision",
+    "Request 2 of 2",
+  ],
+] as const)(
+  "shows the %s playground pending until the host answers",
+  async (active, decide, pending, done) => {
+    vi.useFakeTimers();
+    persist(storageKeys.documentation, { language: "en", active });
+    render(<Workbench />);
+    const stage = within(
+      screen.getByRole("region", { name: "Interactive playground" }),
+    );
+    await act(async () => decide());
+    expect(stage.getByText(pending)).toBeVisible();
+    await act(async () => vi.advanceTimersByTime(650));
+    expect(stage.getByText(pending)).toBeVisible();
+    await act(async () => vi.advanceTimersByTime(100));
+    expect(stage.queryByText(pending)).toBeNull();
+    expect(stage.getByText(done)).toBeVisible();
+    if (active === "approval-flow")
+      expect(
+        stage.getByRole("list", { name: "Prior decisions" }),
+      ).toHaveTextContent("Approved");
   },
 );
 it("runs a generated source example and records rejection without execution", async () => {
@@ -69,7 +117,11 @@ it("runs a generated source example and records rejection without execution", as
     user = userEvent.setup();
   render(<Example />);
   await user.click(screen.getByRole("button", { name: "Keep status" }));
-  expect(screen.getByText("Rejected")).toBeVisible();
+  // The copied example waits for its stand-in host before recording.
+  expect(screen.getByText("Recording decision")).toBeVisible();
+  expect(
+    await screen.findByText("Rejected", undefined, { timeout: 2000 }),
+  ).toBeVisible();
   expect(screen.queryByText(/completed/i)).not.toBeInTheDocument();
 });
 it("connects an answered question to its target, then records a rejection and an independent approval", async () => {

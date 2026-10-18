@@ -1,7 +1,8 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
+import { persist, storageKeys } from "./storage";
 import { generateCode, generatePrompt } from "./generate";
 import { defaultPlaygrounds } from "./model";
 import { defaultConfig } from "../system";
@@ -9,6 +10,7 @@ import * as React from "react";
 import * as jsx from "react/jsx-runtime";
 import * as system from "../system";
 import * as ts from "typescript";
+afterEach(() => vi.useRealTimers());
 it.each([
   ["الطرفية", "Terminal"],
   ["تطبيق المحادثة", "ChatApp"],
@@ -27,14 +29,16 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    for (const name of ["Interactive playground", "Usage example"])
-      expect(screen.getByRole("heading", { name })).toBeVisible();
     expect(
-      screen.queryByRole("heading", { name: "Examples", level: 2 }),
-    ).toBeNull();
+      screen.getByRole("heading", { name: "Interactive playground" }),
+    ).toBeVisible();
+    // The playground frame carries the code; there is no usage section.
+    for (const name of ["Usage example", "Examples"])
+      expect(screen.queryByRole("heading", { name })).toBeNull();
     expect(
       document.querySelectorAll(".tz-demo-frame").length,
     ).toBeGreaterThanOrEqual(1);
+    expect(screen.getByRole("tablist", { name: "View" })).toBeVisible();
     expect(screen.getByRole("switch", { name: "Long output" })).toBeVisible();
   },
 );
@@ -68,3 +72,55 @@ it.each(["terminal", "chat-app"] as const)(
     expect(prompt).toContain("No HTML/ANSI interpretation");
   },
 );
+it.each(["chat-composer", "prompt-bar"] as const)(
+  "fails %s playground sends from the inspector while keeping the draft",
+  async (active) => {
+    vi.useFakeTimers();
+    persist(storageKeys.documentation, { language: "ar", active });
+    render(<Workbench />);
+    const failSend = within(
+      screen.getByRole("complementary", { name: "التخصيص" }),
+    ).getByRole("switch", { name: "تعذّر الإرسال" });
+    expect(failSend).not.toBeChecked();
+    fireEvent.click(failSend);
+    const stage = within(
+      screen.getByRole("region", { name: "المعاينة التفاعلية" }),
+    );
+    // Let any opening exchange finish before sending.
+    await act(async () => vi.advanceTimersByTime(10000));
+    const input = stage.getByRole("textbox", {
+      name: active === "prompt-bar" ? "طلبك" : "رسالتك",
+    });
+    fireEvent.change(input, { target: { value: "لخّص الملاحظات" } });
+    await act(async () => fireEvent.keyDown(input, { key: "Enter" }));
+    await act(async () => vi.advanceTimersByTime(800));
+    expect(input).toHaveAccessibleDescription(
+      "تعذّر الإرسال. مسودتك محفوظة، حاول مرة أخرى.",
+    );
+    expect(input).toHaveValue("لخّص الملاحظات");
+  },
+);
+it("brings the chat-thread playground answer after a thinking beat, and replays it without resetting the panel", async () => {
+  vi.useFakeTimers();
+  persist(storageKeys.documentation, { language: "en", active: "chat-thread" });
+  render(<Workbench />);
+  const longContent = within(
+    screen.getByRole("complementary", { name: "Customization" }),
+  ).getByRole("switch", { name: "Long content" });
+  fireEvent.click(longContent);
+  const region = () =>
+    screen.getByRole("region", { name: "Interactive playground" });
+  const stage = () => within(region());
+  const thinking = () => region().querySelector(".tz-thinking-indicator");
+  expect(thinking()).toHaveTextContent("Preparing reply");
+  expect(stage().queryByRole("button", { name: "Good response" })).toBeNull();
+  await act(async () => vi.advanceTimersByTime(1400));
+  expect(thinking()).toBeNull();
+  expect(stage().getByRole("button", { name: "Good response" })).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "Replay example" }));
+  expect(thinking()).toHaveTextContent("Preparing reply");
+  expect(stage().queryByRole("button", { name: "Good response" })).toBeNull();
+  expect(longContent).toBeChecked();
+  await act(async () => vi.advanceTimersByTime(1400));
+  expect(stage().getByRole("button", { name: "Good response" })).toBeVisible();
+});

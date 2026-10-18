@@ -178,8 +178,14 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
       "followOutput",
     ),
   ],
-  "chat-composer": [field("disabled", "boolean", "معطّل", "Disabled")],
-  "prompt-bar": [field("disabled", "boolean", "معطّل", "Disabled")],
+  "chat-composer": [
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("failSend", "boolean", "تعذّر الإرسال", "Failed send", "onSubmit"),
+  ],
+  "prompt-bar": [
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("failSend", "boolean", "تعذّر الإرسال", "Failed send", "onSubmit"),
+  ],
   "code-block": [
     field("codeLanguage", "select", "لغة الكود", "Code language", "language", {
       options: ["ts", "python", "json", "text", "unsupported"],
@@ -490,6 +496,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("tone", "select", "النوع", "Tone", "tone", {
       options: ["neutral", "success", "error", "info"],
     }),
+    field("actionLabel", "text", "زر الإجراء", "Action button", "action"),
   ],
   skeleton: [
     field("shape", "select", "الشكل", "Shape", "shape", {
@@ -575,6 +582,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("illustration", "select", "الرسم", "Illustration", "illustration", {
       options: ["no-records", "no-results", "getting-started", "none"],
     }),
+    field("actionLabel", "text", "زر الإجراء", "Action button", "action"),
   ],
   badge: [
     field("children", "text", "النص", "Text"),
@@ -949,8 +957,8 @@ const commonKeys: Record<ComponentId, string[]> = {
   sources: ["defaultExpanded", "longContent"],
   "insight-cards": ["longContent"],
   "chat-thread": ["longContent", "followOutput"],
-  "chat-composer": ["disabled"],
-  "prompt-bar": ["disabled"],
+  "chat-composer": ["disabled", "failSend"],
+  "prompt-bar": ["disabled", "failSend"],
   "code-block": ["codeLanguage", "longContent"],
   markdown: ["longContent"],
   "streaming-text": ["markdown"],
@@ -981,7 +989,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   accordion: ["collapsible", "mode"],
   breadcrumbs: ["label", "current"],
   pagination: ["totalPages"],
-  alert: ["title", "description", "tone"],
+  alert: ["title", "description", "tone", "actionLabel"],
   skeleton: ["shape"],
   progress: ["label", "value", "indeterminate", "showValue"],
   spinner: ["label", "size", "decorative"],
@@ -989,7 +997,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   "avatar-group": ["appearance", "maxVisible", "size"],
   tooltip: ["content"],
   modal: ["title", "description", "footer"],
-  "empty-state": ["title", "description", "illustration"],
+  "empty-state": ["title", "description", "illustration", "actionLabel"],
   badge: ["children", "tone"],
   checkbox: ["label", "checked", "helper", "error", "required", "disabled"],
   "radio-group": [

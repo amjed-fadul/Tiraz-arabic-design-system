@@ -60,10 +60,6 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   ).toBeVisible();
   await userEvent.click(nav.getByRole("button", { name: "Select" }));
   expect(screen.queryByRole("button", { name: "Create customer" })).toBeNull();
-  await userEvent.click(nav.getByRole("button", { name: "Sheet" }));
-  expect(
-    screen.getByRole("button", { name: "Create customer" }),
-  ).toBeInTheDocument();
 });
 it("copies complete direct Input code and guidance despite the collapsed prompt row", async () => {
   const user = userEvent.setup();

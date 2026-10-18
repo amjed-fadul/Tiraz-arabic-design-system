@@ -5,18 +5,14 @@ import type { Language } from "./i18n";
 export function PreviewFrame({
   component,
   language,
-  title,
-  prompt,
-  copyLabel,
+  code,
   onReplay,
   replayable,
   children,
 }: {
   component: ComponentId;
   language: Language;
-  title: string;
-  prompt: string;
-  copyLabel: string;
+  code: string;
   onReplay: () => void;
   replayable: boolean;
   children: ReactNode;
@@ -25,10 +21,8 @@ export function PreviewFrame({
   if (component === "streaming-text") return children;
   return (
     <DemoFrame
-      title={title}
       language={language}
-      prompt={prompt}
-      copyLabel={copyLabel}
+      code={code}
       onReplay={replayable ? onReplay : undefined}
     >
       {children}

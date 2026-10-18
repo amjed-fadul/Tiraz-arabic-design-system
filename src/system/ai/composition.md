@@ -103,7 +103,8 @@ Shared density/text scale/theme/direction apply through SystemProvider. Cells wr
 a 32rem table minimum gives columns space and stays inside its scrolling container.
 Use bdi for mixed Arabic/English names and bdi dir="ltr" for email addresses.
 There is no sorting, filtering, pagination, selection, editing, virtualization or
-sticky-column API. Keep the connected CreateCustomer flow on the Sheet page.
+sticky-column API. The connected CreateCustomer flow lives in
+ai/examples/CreateCustomer.tsx.
 
 ## DataTable v1
 

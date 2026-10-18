@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import * as React from "react";
 import * as jsx from "react/jsx-runtime";
 import * as dialog from "@radix-ui/react-dialog";
@@ -11,6 +11,7 @@ import type { ComponentId } from "./catalog";
 import type { PlaygroundModel } from "./model";
 import { generateCode } from "./generate";
 import { defaultPlaygrounds } from "./model";
+afterEach(() => vi.useRealTimers());
 function copiedExample(component: "modal" | "tooltip", controlled = true) {
   const defaults = defaultPlaygrounds("en");
   const model =
@@ -97,6 +98,7 @@ function feedbackCopy(
   }).outputText;
   const exports: { default?: React.ComponentType } = {};
   const modules: Record<string, unknown> = {
+    react: React,
     "react/jsx-runtime": jsx,
     "./system": system,
     "./system/ai/assets/sara.jpg": saraPortrait,
@@ -125,6 +127,9 @@ it("runs copied feedback modes and photo compositions without workbench imports"
     if (id === "alert") {
       expect(screen.getByText(p.alert.title)).toBeInTheDocument();
       expect(screen.queryByRole("alert")).toBeNull();
+      expect(
+        screen.getByRole("button", { name: p.alert.actionLabel }),
+      ).toBeInTheDocument();
     }
     if (id === "skeleton")
       expect(container.querySelector(".tz-skeleton")).toHaveAttribute(
@@ -152,6 +157,38 @@ it("runs copied feedback modes and photo compositions without workbench imports"
     }
     unmount();
   }
+});
+it("runs the copied skeleton profile from placeholders to content", () => {
+  vi.useFakeTimers();
+  const p = defaultPlaygrounds("en");
+  for (const shape of ["circle", "rectangle", "text"] as const) {
+    const Example = feedbackCopy("skeleton", { ...p.skeleton, shape });
+    const { container, unmount } = render(<Example />);
+    expect(
+      container.querySelector(`.tz-skeleton[data-shape="${shape}"]`),
+    ).not.toBeNull();
+    expect(screen.queryByText("Sara Ali")).toBeNull();
+    act(() => vi.advanceTimersByTime(2400));
+    expect(container.querySelector(".tz-skeleton")).toBeNull();
+    expect(screen.getByText("Sara Ali")).toBeInTheDocument();
+    expect(screen.getByText("sara@madar.sa")).toBeInTheDocument();
+    if (shape === "circle")
+      expect(container.querySelector("img")).toHaveAttribute(
+        "src",
+        saraPortrait,
+      );
+    else expect(container.querySelector("img")).toBeNull();
+    if (shape === "rectangle")
+      expect(screen.getByText("SAR 12,400")).toBeInTheDocument();
+    unmount();
+  }
+});
+it("copies an empty alert action label as an alert without a button", () => {
+  const p = defaultPlaygrounds("en");
+  const Example = feedbackCopy("alert", { ...p.alert, actionLabel: "  " });
+  render(<Example />);
+  expect(screen.getByText(p.alert.title)).toBeInTheDocument();
+  expect(screen.queryByRole("button")).toBeNull();
 });
 it("copies a custom photo URL exactly and ignores it in initials mode", () => {
   const p = defaultPlaygrounds("en").avatar;

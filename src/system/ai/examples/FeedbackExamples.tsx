@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Alert,
-  Avatar,
-  Button,
-  Skeleton,
-  Progress,
-  Spinner,
-} from "../../index";
+import { Alert, Avatar, Button, Skeleton } from "../../index";
 import { useReducedMotion } from "../../useReducedMotion";
 import { saraPortrait } from "./portraits";
 type Language = "ar" | "en";
@@ -124,40 +117,6 @@ export function SkeletonExamples({ language = "ar" }: { language?: Language }) {
             ? "تم تحميل الملف الشخصي"
             : "Profile loaded"}
       </p>
-    </div>
-  );
-}
-export function ProgressExamples({ language = "ar" }: { language?: Language }) {
-  const ar = language === "ar";
-  return (
-    <div className="tz-feedback-examples">
-      <Progress
-        label={ar ? "ترحيل الفواتير" : "Invoice migration"}
-        value={0}
-        showValue
-        locale={language}
-      />
-      <Progress
-        label={ar ? "رفع كشف الحساب" : "Statement upload"}
-        value={100}
-        showValue
-        locale={language}
-      />
-      <Progress
-        label={ar ? "تجهيز ملف التصدير" : "Preparing export file"}
-        locale={language}
-      />
-    </div>
-  );
-}
-export function SpinnerExamples({ language = "ar" }: { language?: Language }) {
-  const ar = language === "ar";
-  return (
-    <div className="tz-feedback-examples">
-      <div role="status" className="tz-preferences-actions">
-        <Spinner decorative />
-        <span>{ar ? "جارٍ مزامنة الفواتير" : "Syncing invoices"}</span>
-      </div>
     </div>
   );
 }

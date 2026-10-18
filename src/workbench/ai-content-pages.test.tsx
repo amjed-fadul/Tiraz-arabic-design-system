@@ -31,19 +31,22 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    expect(
-      screen.queryByRole("heading", { name: "Examples", level: 2 }),
-    ).toBeNull();
+    for (const name of ["Examples", "Usage example"])
+      expect(screen.queryByRole("heading", { name })).toBeNull();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
+    // Code blocks in the preview have their own Copy code; use the frame's.
     await user.click(
-      within(document.querySelector(".code-example") as HTMLElement).getByRole(
-        "button",
-        { name: "Copy code" },
-      ),
+      within(
+        document.querySelector(
+          ".playground-region .tz-demo-header",
+        ) as HTMLElement,
+      ).getByRole("button", { name: "Copy code" }),
     );
     const code = String(copy.mock.calls.at(-1)?.[0]);
     expect(code).toContain(en + "Example");
     expect(code).not.toContain("workbench/");
+    // The code renders only what the preview shows.
+    expect(code).not.toContain("markdown autoStart/>");
     await user.click(screen.getByRole("button", { name: "Copy agent prompt" }));
     const prompt = String(copy.mock.calls.at(-1)?.[0]);
     expect(prompt).toContain(code);
@@ -179,7 +182,7 @@ it.each(["ar", "en"] as const)(
   },
 );
 
-it("uses a compact titled header and named icon-only playback controls in the playground demo", async () => {
+it("uses a compact header with view tabs and named icon-only controls in the playground demo", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "النص المتتابع" }));
@@ -191,8 +194,15 @@ it("uses a compact titled header and named icon-only playback controls in the pl
     ".playground-region",
   ) as HTMLElement;
   expect(document.querySelector(".examples-canvas")).toBeNull();
-  const header = within(playground).getByText("Default").closest("header")!;
+  const header = playground.querySelector(".tz-demo-header") as HTMLElement;
   expect(header).not.toBeNull();
+  // With code, the view switch takes the title's place.
+  expect(within(header).queryByText("Default")).toBeNull();
+  expect(
+    within(within(header).getByRole("tablist", { name: "View" }))
+      .getAllByRole("tab")
+      .map((tab) => tab.textContent),
+  ).toEqual(["Preview", "Code"]);
   const controls = within(header).getAllByRole("button");
   expect(controls).toHaveLength(2);
   for (const control of controls) {
@@ -208,7 +218,7 @@ it("uses a compact titled header and named icon-only playback controls in the pl
   expect(play).toHaveAccessibleName("Replay local demo");
   expect(play).toHaveFocus();
   expect(
-    within(playground).getByRole("button", { name: "Copy playground prompt" }),
+    within(playground).getByRole("button", { name: "Copy code" }),
   ).toBeVisible();
   expect(
     within(playground).queryByRole("button", { name: "Cancel demo" }),

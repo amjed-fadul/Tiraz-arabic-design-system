@@ -42,36 +42,42 @@ it.each(["ar", "en"] as const)(
       ar = language === "ar";
     const Steps = copiedExample("steps", language);
     const view = render(<Steps />);
+    // The copied code renders only the interactive stages the preview shows.
+    expect(screen.queryByRole("textbox")).toBeNull();
+    const stages = screen.getByRole("list", {
+      name: ar ? "مراحل الطلب" : "Application stages",
+    });
+    const statuses = () =>
+      Array.from(stages.querySelectorAll(".tz-step"), (step) =>
+        step.getAttribute("data-status"),
+      );
+    const stage = (label: string) =>
+      within(stages).getByRole("button", { name: new RegExp(label) });
+    expect(statuses()).toEqual(["completed", "current", "upcoming"]);
+    expect(stage(ar ? "التفاصيل" : "Details")).toHaveAttribute(
+      "aria-current",
+      "step",
+    );
+    const back = screen.getByRole("button", { name: ar ? "السابق" : "Back" });
+    await user.click(back);
+    expect(statuses()).toEqual(["current", "upcoming", "upcoming"]);
+    expect(back).toBeDisabled();
+    await user.click(stage(ar ? "المراجعة" : "Review"));
+    expect(statuses()).toEqual(["completed", "completed", "current"]);
     await user.click(
-      screen.getByRole("button", { name: ar ? "التالي" : "Next" }),
+      screen.getByRole("button", { name: ar ? "إنهاء" : "Finish" }),
     );
-    const name = screen.getByRole("textbox", { name: ar ? /الاسم/ : /Name/ });
-    expect(name).toHaveFocus();
-    await user.type(name, "Sara");
-    await user.click(
-      screen.getByRole("button", { name: ar ? "التالي" : "Next" }),
+    expect(screen.getByRole("status")).toHaveTextContent(
+      ar ? "اكتملت جميع المراحل." : "All stages are complete.",
     );
-    await user.type(
-      screen.getByRole("textbox", { name: ar ? /البريد الإلكتروني/ : /Email/ }),
-      "sara@example.com",
-    );
-    await user.click(
-      screen.getByRole("button", { name: ar ? "السابق" : "Back" }),
-    );
-    expect(screen.getByRole("textbox")).toHaveValue("Sara");
-    await user.click(
-      screen.getByRole("button", { name: ar ? "التالي" : "Next" }),
-    );
-    expect(screen.getByRole("textbox")).toHaveValue("sara@example.com");
-    await user.click(
-      screen.getByRole("button", { name: ar ? "التالي" : "Next" }),
-    );
-    await user.click(
-      screen.getByRole("button", {
-        name: ar ? "إرسال الطلب" : "Submit application",
-      }),
-    );
-    expect(screen.getByRole("status")).toHaveTextContent("sara@example.com");
+    expect(statuses()).toEqual(["completed", "completed", "completed"]);
+    expect(stages.querySelector('[aria-current="step"]')).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: ar ? "التالي" : "Next" }),
+    ).toBeNull();
+    await user.click(back);
+    expect(screen.queryByRole("status")).toBeNull();
+    expect(statuses()).toEqual(["completed", "completed", "current"]);
     view.unmount();
     const Timeline = copiedExample("timeline", language);
     render(<Timeline />);

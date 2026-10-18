@@ -25,12 +25,12 @@ it.each([
     expect(
       screen.getByRole("heading", { name: ar, level: 1 }),
     ).toBeInTheDocument();
+    // The code lives behind the playground's Code tab, not in a usage section.
+    for (const name of ["مثال الاستخدام", "أمثلة"])
+      expect(screen.queryByRole("heading", { name })).toBeNull();
     expect(
-      screen.getByRole("heading", { name: "مثال الاستخدام" }),
+      screen.getByRole("tablist", { name: "طريقة العرض" }),
     ).toBeInTheDocument();
-    expect(
-      screen.queryByRole("heading", { name: "أمثلة", level: 2 }),
-    ).toBeNull();
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),
       "en",

@@ -1,5 +1,4 @@
-import { Field, InputCopy } from "../../index";
-import type { InputCopyProps } from "../../index";
+import { InputCopy } from "../../index";
 type Language = "ar" | "en";
 export function InputCopyExample({
   language = "ar",
@@ -31,31 +30,5 @@ export function InputCopyExample({
       value={value}
       disabled={disabled}
     />
-  );
-}
-export function EntryCompositionExample({
-  language = "ar",
-}: {
-  language?: Language;
-}) {
-  const ar = language === "ar";
-  const value: InputCopyProps["value"] = "ws_madar_7KQ2RX9";
-  return (
-    <Field
-      label={ar ? "معرّف مساحة العمل" : "Workspace ID"}
-      helper={
-        ar
-          ? "اذكره عند التواصل مع الدعم."
-          : "Include it when you contact support."
-      }
-    >
-      {(field) => (
-        <InputCopy
-          field={field}
-          value={value}
-          labels={{ copy: ar ? "نسخ معرّف مساحة العمل" : "Copy workspace ID" }}
-        />
-      )}
-    </Field>
   );
 }

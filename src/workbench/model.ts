@@ -195,11 +195,13 @@ export interface EmptyStateModel {
   title: string;
   description: string;
   illustration: "no-records" | "no-results" | "getting-started" | "none";
+  actionLabel: string;
 }
 export interface AlertModel {
   title: string;
   description: string;
   tone: "neutral" | "success" | "error" | "info";
+  actionLabel: string;
 }
 export interface SkeletonModel {
   shape: "text" | "rectangle" | "circle";
@@ -294,8 +296,8 @@ export interface Playgrounds {
     longContent: boolean;
     followOutput: boolean;
   };
-  "chat-composer": { disabled: boolean };
-  "prompt-bar": { disabled: boolean };
+  "chat-composer": { disabled: boolean; failSend: boolean };
+  "prompt-bar": { disabled: boolean; failSend: boolean };
   "code-block": { codeLanguage: string; longContent: boolean };
   markdown: { longContent: boolean };
   "streaming-text": { markdown: boolean };
@@ -422,8 +424,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       longContent: false,
       followOutput: false,
     },
-    "chat-composer": { disabled: false },
-    "prompt-bar": { disabled: false },
+    "chat-composer": { disabled: false, failSend: false },
+    "prompt-bar": { disabled: false, failSend: false },
     "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
     "task-rows": {
       appearance: "capsules",
@@ -554,8 +556,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
         "The new price starts on November 1.",
       ),
       tone: "info",
+      actionLabel: t("عرض الخطة", "View plan"),
     },
-    skeleton: { shape: "text" },
+    skeleton: { shape: "circle" },
     progress: {
       label: t("جارٍ تجهيز التقرير…", "Preparing report"),
       value: 64,
@@ -594,6 +597,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
         "Your records will appear here when added.",
       ),
       illustration: "no-records",
+      actionLabel: t("إضافة سجل", "Add record"),
     },
     badge: { children: t("نشط", "Active"), tone: "neutral" },
     checkbox: {

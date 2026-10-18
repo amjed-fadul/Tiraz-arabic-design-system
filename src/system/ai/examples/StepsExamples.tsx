@@ -8,7 +8,10 @@ export interface StepsExampleProps {
   currentState?: StepStatus;
   longLabels?: boolean;
 }
-/** Static display; application values determine all progress. */
+/**
+ * Your application owns progress: Back and Next move through the stages, and
+ * any stage can be opened directly. `currentState` styles the active stage.
+ */
 export function StepsExample({
   language = "ar",
   orientation = "horizontal",
@@ -16,47 +19,95 @@ export function StepsExample({
   longLabels = false,
 }: StepsExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
+  const [step, setStep] = useState(1);
+  const stages = [
+    {
+      id: "brief",
+      label: longLabels
+        ? t(
+            "مراجعة المعلومات الأساسية للطلب مع فريق المشروع",
+            "Review the application's essential information with the project team",
+          )
+        : t("المعلومات", "Information"),
+      description: t("الاسم وبيانات التواصل", "Name and contact details"),
+    },
+    {
+      id: "details",
+      label: longLabels
+        ? t(
+            "تحديد التفاصيل والمتطلبات الإضافية للمشروع",
+            "Define additional project details and requirements",
+          )
+        : t("التفاصيل", "Details"),
+      description: t("متطلبات المشروع", "Project requirements"),
+    },
+    {
+      id: "review",
+      label: longLabels
+        ? t(
+            "مراجعة جميع البيانات والمرفقات قبل إرسال الطلب",
+            "Review all information and attachments before submitting the application",
+          )
+        : t("المراجعة", "Review"),
+      description: t("تأكيد البيانات", "Confirm the information"),
+    },
+  ];
+  const done = step === stages.length;
   return (
-    <Steps
-      label={t("مراحل الطلب", "Application stages")}
-      locale={language}
-      orientation={orientation}
-      items={[
-        {
-          id: "brief",
-          label: longLabels
-            ? t(
-                "مراجعة المعلومات الأساسية للطلب مع فريق المشروع",
-                "Review the application's essential information with the project team",
-              )
-            : t("المعلومات", "Information"),
-          description: t("الاسم وبيانات التواصل", "Name and contact details"),
-          status: "completed",
-        },
-        {
-          id: "details",
-          label: longLabels
-            ? t(
-                "تحديد التفاصيل والمتطلبات الإضافية للمشروع",
-                "Define additional project details and requirements",
-              )
-            : t("التفاصيل", "Details"),
-          description: t("متطلبات المشروع", "Project requirements"),
-          status: currentState,
-        },
-        {
-          id: "review",
-          label: longLabels
-            ? t(
-                "مراجعة جميع البيانات والمرفقات قبل إرسال الطلب",
-                "Review all information and attachments before submitting the application",
-              )
-            : t("المراجعة", "Review"),
-          description: t("تأكيد البيانات", "Confirm the information"),
-          status: "upcoming",
-        },
-      ]}
-    />
+    <div
+      style={{
+        display: "grid",
+        gap: "var(--space-5)",
+        inlineSize: "100%",
+        minInlineSize: 0,
+      }}
+    >
+      <Steps
+        label={t("مراحل الطلب", "Application stages")}
+        locale={language}
+        orientation={orientation}
+        currentId={done ? "" : stages[step].id}
+        onStepActivate={(id) =>
+          setStep(stages.findIndex((stage) => stage.id === id))
+        }
+        items={stages.map((stage, index) => ({
+          ...stage,
+          status:
+            index < step
+              ? "completed"
+              : index === step
+                ? currentState
+                : "upcoming",
+        }))}
+      />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-2)",
+          flexWrap: "wrap",
+        }}
+      >
+        <Button
+          variant="ghost"
+          disabled={step === 0}
+          onClick={() => setStep(step - 1)}
+        >
+          {t("السابق", "Back")}
+        </Button>
+        {done ? (
+          <p role="status" style={{ margin: 0 }}>
+            {t("اكتملت جميع المراحل.", "All stages are complete.")}
+          </p>
+        ) : (
+          <Button onClick={() => setStep(step + 1)}>
+            {step === stages.length - 1
+              ? t("إنهاء", "Finish")
+              : t("التالي", "Next")}
+          </Button>
+        )}
+      </div>
+    </div>
   );
 }
 

@@ -6,6 +6,7 @@ import type {
   PaginationModel,
 } from "./model";
 import overlaySource from "../system/ai/examples/OverlayExamples.tsx?raw";
+import skeletonSource from "../system/ai/examples/SkeletonExample.tsx?raw";
 import type { SystemConfig } from "../system";
 import { teamMembers } from "../system/ai/examples/team";
 import type {
@@ -77,12 +78,16 @@ export function generateBatchCode(
     }
   } else if (component === "alert") {
     const p = model as AlertModel;
-    imports = "Alert";
-    jsx = `<Alert title={${json(p.title)}} description={${json(p.description)}} tone="${p.tone}" />`;
+    const action = p.actionLabel.trim();
+    imports = action ? "Alert, Button" : "Alert";
+    jsx = `<Alert title={${json(p.title)}} description={${json(p.description)}} tone="${p.tone}"${action ? ` action={<Button variant="secondary" onClick={() => {}}>{${json(action)}}</Button>}` : ""} />`;
   } else if (component === "skeleton") {
     const p = model as SkeletonModel;
-    imports = "Skeleton";
-    jsx = `<Skeleton shape="${p.shape}" />`;
+    imports = "Avatar, Skeleton, useSystem";
+    extra =
+      'import { useEffect, useState } from "react";\nimport saraPortrait from "./system/ai/assets/sara.jpg";';
+    source = skeletonSource.replace(/^import[\s\S]*?;\n/gm, "");
+    jsx = `<SkeletonExample language="${language}" shape="${p.shape}" />`;
   } else if (component === "progress") {
     const p = model as ProgressModel;
     imports = "Progress";
@@ -142,8 +147,9 @@ export function generateBatchCode(
       "getting-started": "GettingStartedIllustration",
       none: "",
     }[p.illustration];
-    imports = `EmptyState${illustration ? `, ${illustration}` : ""}`;
-    jsx = `<EmptyState title={${json(p.title)}} description={${json(p.description)}} ${illustration ? `illustration={<${illustration} />}` : ""} />`;
+    const action = p.actionLabel.trim();
+    imports = `EmptyState${illustration ? `, ${illustration}` : ""}${action ? ", Button" : ""}`;
+    jsx = `<EmptyState title={${json(p.title)}} description={${json(p.description)}} ${illustration ? `illustration={<${illustration} />}` : ""}${action ? ` action={<Button variant="secondary" onClick={() => {}}>{${json(action)}}</Button>}` : ""} />`;
   }
   return `${extra}
 import { SystemProvider, defaultConfig, ${imports} } from "./system";

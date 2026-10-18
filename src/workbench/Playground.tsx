@@ -68,9 +68,9 @@ import type {
   PaginationModel,
 } from "./model";
 import { saraPortrait } from "../system/ai/examples/portraits";
+import { SkeletonExample } from "../system/ai/examples/SkeletonExample";
 import {
   Alert,
-  Skeleton,
   Progress,
   Spinner,
   Avatar,
@@ -151,8 +151,7 @@ interface Props {
   onEvent: (name: string, value?: unknown) => void;
   onButtonAction: () => void;
   buttonState?: ButtonState;
-  prompt?: string;
-  copyLabel?: string;
+  code?: string;
 }
 export function ContentIcon({ icon }: { icon: string }) {
   const Icon =
@@ -198,8 +197,7 @@ export function Playground({
   onEvent,
   onButtonAction,
   buttonState,
-  prompt,
-  copyLabel,
+  code,
 }: Props) {
   const t = words(language);
   if (component === "terminal")
@@ -333,8 +331,7 @@ export function Playground({
     return (
       <StreamingTextExample
         language={language}
-        prompt={prompt}
-        copyLabel={copyLabel}
+        code={code}
         {...(model as Playgrounds["streaming-text"])}
       />
     );
@@ -504,9 +501,28 @@ export function Playground({
       />
     );
   }
-  if (component === "alert") return <Alert {...(model as AlertModel)} />;
+  if (component === "alert") {
+    const { actionLabel, ...p } = model as AlertModel;
+    return (
+      <Alert
+        {...p}
+        action={
+          actionLabel.trim() ? (
+            <Button variant="secondary" onClick={() => onEvent("onClick")}>
+              {actionLabel}
+            </Button>
+          ) : undefined
+        }
+      />
+    );
+  }
   if (component === "skeleton")
-    return <Skeleton {...(model as SkeletonModel)} />;
+    return (
+      <SkeletonExample
+        language={language}
+        shape={(model as SkeletonModel).shape}
+      />
+    );
   if (component === "progress") {
     const { indeterminate, ...p } = model as ProgressModel;
     return (
@@ -570,6 +586,13 @@ export function Playground({
       <EmptyState
         title={p.title}
         description={p.description}
+        action={
+          p.actionLabel.trim() ? (
+            <Button variant="secondary" onClick={() => onEvent("onClick")}>
+              {p.actionLabel}
+            </Button>
+          ) : undefined
+        }
         illustration={
           p.illustration === "none" ? undefined : p.illustration ===
             "no-results" ? (

@@ -4679,6 +4679,137 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-demo-play-icon:dir(rtl) {
   transform: scaleX(-1);
 }
+/* Preview / Code: a small segmented switch whose raised thumb glides between
+   the two views. */
+.tz-demo-views {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: calc(var(--radius) + 2px);
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+  isolation: isolate;
+}
+.tz-demo-views-thumb {
+  position: absolute;
+  inset-block: 2px;
+  left: 0;
+  inline-size: var(--thumb-w);
+  transform: translateX(var(--thumb-x));
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow-control);
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.tz-demo-views[data-ready] > .tz-demo-views-thumb {
+  opacity: 1;
+  transition:
+    transform calc(var(--motion-state) + 80ms) var(--ease-out),
+    inline-size calc(var(--motion-state) + 80ms) var(--ease-out);
+}
+.tz-demo-view {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-block-size: 26px;
+  padding-inline: var(--space-3);
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-state) var(--ease-spring);
+}
+.tz-demo-view > svg {
+  opacity: 0.8;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-demo-view:hover {
+    color: var(--text);
+  }
+}
+.tz-demo-view[aria-selected="true"] {
+  color: var(--text);
+}
+.tz-demo-view:active {
+  transform: scale(0.96);
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+.tz-demo-view:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.tz-demo-panel {
+  display: grid;
+  min-inline-size: 0;
+}
+.tz-demo-panel[hidden] {
+  display: none;
+}
+.tz-demo-frame[data-view="code"] > .tz-demo-panel:not([hidden]) {
+  animation: tz-panel-in var(--motion-state) var(--ease-out);
+}
+.tz-demo-frame[data-view="code"] {
+  padding-block-end: var(--space-4);
+}
+.tz-demo-source {
+  min-inline-size: 0;
+  border-radius: calc(var(--radius) + 4px);
+  background: var(--code-surface);
+  box-shadow: var(--shadow-surface);
+  overflow: hidden;
+}
+.tz-demo-source-file {
+  padding: var(--space-2) var(--space-4);
+  border-block-end: 0.5px solid var(--hairline);
+  color: var(--text-muted);
+  font: var(--text-meta) / 1.6 var(--font-mono);
+}
+.tz-demo-source-scroll {
+  display: flex;
+  align-items: flex-start;
+  max-block-size: min(32rem, 70vh);
+  overflow: auto;
+  overscroll-behavior: contain;
+  text-align: left;
+  font: var(--text-meta) / 1.8 var(--font-mono);
+}
+.tz-demo-source-scroll:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -3px;
+}
+.tz-demo-source-lines {
+  position: sticky;
+  left: 0;
+  flex-shrink: 0;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  background: var(--code-surface);
+  color: var(--text-muted);
+  opacity: 0.6;
+  text-align: right;
+  white-space: pre;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+.tz-demo-source-scroll pre {
+  flex: 1;
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-1);
+  tab-size: 2;
+  white-space: pre;
+  font: inherit;
+}
+.tz-demo-source-scroll code {
+  font: inherit;
+}
 @media (max-width: 600px) {
   .tz-demo-frame {
     padding: var(--space-2) var(--space-3) var(--space-5);

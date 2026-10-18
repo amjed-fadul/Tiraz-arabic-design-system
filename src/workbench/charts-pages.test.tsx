@@ -65,6 +65,8 @@ it("keeps chart inspectors compact and copied prompts consistent with the curren
     const code = write.mock.calls.at(-1)![0];
     await user.click(screen.getByRole("button", { name: "نسخ الطلب" }));
     expect(write.mock.calls.at(-1)![0]).toContain(code);
-    expect(code).toContain("AnalyticsExample");
+    // The code renders only the chart the preview shows.
+    expect(code).toContain("<ChartExample language=");
+    expect(code).not.toContain("<AnalyticsExample");
   }
 });

@@ -289,26 +289,13 @@ bdi {
   font: 12px var(--font-mono);
   color: var(--text-secondary);
 }
-.examples-section {
-  margin-block-end: 36px;
-}
-.examples-section > h2 {
-  margin-block-end: 15px;
-}
-.examples-section > .tiraz-system {
-  border-radius: 7px;
-}
-.examples-canvas {
-  padding: 0;
-}
 .example-row {
   margin-block-end: 20px;
 }
 /* Variant labels name a stage section quietly; the component does the
    talking. */
 .example-row > p,
-.example-caption,
-.examples-canvas section > h3 {
+.example-caption {
   margin: 0 0 12px;
   color: var(--text-muted);
   font-size: var(--text-meta);
@@ -378,46 +365,8 @@ bdi {
   font-family: var(--font-mono);
   font-size: var(--text-meta);
 }
-.usage-section > h2 {
-  margin-block-end: 10px;
-}
-.usage-guidance {
-  color: var(--text-secondary);
-  font-size: 12px;
-  margin: 0 0 14px;
-}
-.code-example {
-  background: var(--surface-page);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.code-example header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
-  border-block-end: 1px solid var(--border);
-}
-.code-example header > bdi {
-  font: 11px var(--font-mono);
-  color: var(--text-secondary);
-}
-.code-example pre {
-  font: 12px/1.85 var(--font-mono);
-  overflow: auto;
-  max-block-size: 380px;
-  margin: 0;
-  padding: 18px;
-  white-space: pre;
-  text-align: start;
-  unicode-bidi: isolate;
-}
-.code-example code {
-  font: inherit;
-}
 .api-reference {
-  margin-block-start: 20px;
+  margin-block-start: 0;
   font-size: 12px;
 }
 .api-reference summary {
@@ -839,10 +788,6 @@ bdi {
 
   .example-inline {
     gap: 10px;
-  }
-  .code-example pre {
-    font-size: 11px;
-    padding: 14px;
   }
   .preview-metadata {
     font-size: 10px;

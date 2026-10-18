@@ -1,7 +1,47 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { AskUserQuestions, ApprovalCard, ApprovalFlow } from "../../index";
 import type { ApprovalRequest, QuestionAnswers } from "../../index";
 type Language = "ar" | "en";
+/**
+ * Stands in for your server: each answer or decision waits a moment so the
+ * pending state shows, then succeeds. Unmounting cancels whatever is waiting.
+ */
+function useHostLatency(ms = 700) {
+  const pending = useRef(new Set<() => void>());
+  useEffect(() => {
+    const callbacks = pending.current;
+    return () => {
+      for (const cancel of callbacks) cancel();
+      callbacks.clear();
+    };
+  }, []);
+  return useCallback(
+    (signal: AbortSignal) =>
+      new Promise<void>((resolve, reject) => {
+        const cancel = () => {
+          clearTimeout(timer);
+          signal.removeEventListener("abort", cancel);
+          pending.current.delete(cancel);
+          reject(new DOMException("Cancelled", "AbortError"));
+        };
+        const timer = setTimeout(() => {
+          signal.removeEventListener("abort", cancel);
+          pending.current.delete(cancel);
+          resolve();
+        }, ms);
+        pending.current.add(cancel);
+        signal.addEventListener("abort", cancel, { once: true });
+        if (signal.aborted) cancel();
+      }),
+    [ms],
+  );
+}
 function markPaidRequest(ar: boolean, target?: string): ApprovalRequest {
   return {
     id: "mark-paid-oct",
@@ -72,7 +112,8 @@ export function AskUserQuestionsExample({
   longContent?: boolean;
 }) {
   const ar = language === "ar",
-    [value, setValue] = useState<QuestionAnswers>({});
+    [value, setValue] = useState<QuestionAnswers>({}),
+    respond = useHostLatency();
   return (
     <AskUserQuestions
       questions={[
@@ -95,7 +136,7 @@ export function AskUserQuestionsExample({
       ]}
       value={value}
       onValueChange={setValue}
-      onSubmit={() => {}}
+      onSubmit={(_answers, { signal }) => respond(signal)}
     />
   );
 }
@@ -106,7 +147,8 @@ export function ApprovalCardExample({
   language?: Language;
   longContent?: boolean;
 }) {
-  const ar = language === "ar";
+  const ar = language === "ar",
+    respond = useHostLatency();
   return (
     <ApprovalCard
       request={markPaidRequest(
@@ -117,7 +159,7 @@ export function ApprovalCardExample({
             : "Supplier invoices · October 2026 / فواتير الموردين — Madar Trading & Contracting Co., Riyadh branch"
           : undefined,
       )}
-      onDecision={() => {}}
+      onDecision={(_request, _decision, { signal }) => respond(signal)}
     />
   );
 }
@@ -128,7 +170,8 @@ export function ApprovalFlowExample({
   language?: Language;
   longContent?: boolean;
 }) {
-  const ar = language === "ar";
+  const ar = language === "ar",
+    respond = useHostLatency();
   return (
     <ApprovalFlow
       label={ar ? "قرارات مطابقة أكتوبر" : "October reconciliation decisions"}
@@ -141,7 +184,7 @@ export function ApprovalFlowExample({
             : undefined,
         ),
       ]}
-      onDecision={() => {}}
+      onDecision={(_request, _decision, { signal }) => respond(signal)}
     />
   );
 }
@@ -154,7 +197,7 @@ export function AIDecisionsExample({
   const ar = language === "ar",
     [answers, setAnswers] = useState<QuestionAnswers>({}),
     [scope, setScope] = useState<string | null>(null);
-  const pending = useRef(new Set<() => void>());
+  const accept = useHostLatency(600);
   const root = useRef<HTMLDivElement>(null),
     hadFocus = useRef(false);
   useLayoutEffect(() => {
@@ -166,32 +209,6 @@ export function AIDecisionsExample({
     )
       root.current?.querySelector<HTMLElement>(".tz-approval-card")?.focus();
   }, [scope]);
-  useEffect(() => {
-    const callbacks = pending.current;
-    return () => {
-      for (const cancel of callbacks) cancel();
-      callbacks.clear();
-    };
-  }, []);
-  function accept(signal: AbortSignal) {
-    return new Promise<void>((resolve, reject) => {
-      const cancel = () => {
-        clearTimeout(timer);
-        signal.removeEventListener("abort", cancel);
-        pending.current.delete(cancel);
-        reject(new DOMException("Cancelled", "AbortError"));
-      };
-      const timer = setTimeout(() => {
-        signal.removeEventListener("abort", cancel);
-        pending.current.delete(cancel);
-        if (signal.aborted) reject(new DOMException("Cancelled", "AbortError"));
-        else resolve();
-      }, 600);
-      pending.current.add(cancel);
-      signal.addEventListener("abort", cancel, { once: true });
-      if (signal.aborted) cancel();
-    });
-  }
   const question = scopeQuestion(ar);
   return (
     <div

@@ -25,14 +25,8 @@ import {
 import { Appearance } from "./Appearance";
 import { Inspector } from "./Inspector";
 import { Playground } from "./Playground";
-import { Examples } from "./Examples";
 import { PreviewFrame } from "./PreviewFrame";
-import {
-  canReplayExamples,
-  canReplayPlayground,
-  hasExamples,
-} from "./demo-capabilities";
-import { CodeExample } from "./CodeExample";
+import { canReplayPlayground } from "./demo-capabilities";
 import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
 import { generateCode, generatePrompt } from "./generate";
@@ -67,9 +61,6 @@ export function Workbench() {
   const [playgrounds, setPlaygrounds] = useState(() =>
     readPlaygrounds(language),
   );
-  const [exampleRevisions, setExampleRevisions] = useState<
-    Record<string, number>
-  >({});
   const [revisions, setRevisions] = useState<Record<string, number>>({});
   const [events, setEvents] = useState<
     Partial<Record<ComponentId, EventRecord[]>>
@@ -196,6 +187,11 @@ export function Workbench() {
         "thinking-state",
         "tool-call",
         "tool-chips",
+        "chat-thread",
+        "steps",
+        "ask-user-questions",
+        "approval-card",
+        "approval-flow",
         "skeleton",
         "spinner",
         "progress",
@@ -434,12 +430,7 @@ export function Workbench() {
                     <PreviewFrame
                       component={active}
                       language={language}
-                      title={t("الافتراضي", "Default")}
-                      prompt={prompt}
-                      copyLabel={t(
-                        "نسخ طلب المعاينة",
-                        "Copy playground prompt",
-                      )}
+                      code={code}
                       replayable={canReplayPlayground(active, model)}
                       onReplay={replayPlayground}
                     >
@@ -453,11 +444,7 @@ export function Workbench() {
                           component={active}
                           model={model}
                           language={language}
-                          prompt={prompt}
-                          copyLabel={t(
-                            "نسخ طلب المعاينة",
-                            "Copy playground prompt",
-                          )}
+                          code={code}
                           onPatch={(patch) => patchPage(active, patch)}
                           onEvent={(name, value) => record(active, name, value)}
                           onButtonAction={buttonAction}
@@ -468,14 +455,12 @@ export function Workbench() {
                   </SystemProvider>
                 </div>
                 {![
-                  "alert",
                   "skeleton",
                   "progress",
                   "spinner",
                   "badge",
                   "avatar",
                   "avatar-group",
-                  "empty-state",
                   "tooltip",
                   "modal",
                 ].includes(active) && (
@@ -503,49 +488,7 @@ export function Workbench() {
                   </div>
                 )}
               </section>
-              {hasExamples(active) && (
-                <section className="examples-section">
-                  <h2 id="examples-heading">{label("examples", language)}</h2>
-                  <SystemProvider config={systemConfig}>
-                    <div className="examples-canvas">
-                      <PreviewFrame
-                        component={active}
-                        language={language}
-                        title={
-                          active === "streaming-text"
-                            ? t("ماركداون", "Markdown")
-                            : t("أمثلة", "Examples")
-                        }
-                        prompt={prompt}
-                        copyLabel={t("نسخ طلب المثال", "Copy example prompt")}
-                        replayable={canReplayExamples(active)}
-                        onReplay={() =>
-                          setExampleRevisions((prev) => ({
-                            ...prev,
-                            [active]: (prev[active] ?? 0) + 1,
-                          }))
-                        }
-                      >
-                        <Examples
-                          key={`${active}-${language}-${exampleRevisions[active] ?? 0}`}
-                          component={active}
-                          language={language}
-                        />
-                      </PreviewFrame>
-                    </div>
-                  </SystemProvider>
-                </section>
-              )}
-              <section className="usage-section">
-                <h2 id="usage-heading">{label("usage", language)}</h2>
-                <p className="usage-guidance">
-                  {t(
-                    "يطابق الكود خصائص المعاينة. تجد استيراد الخط المحلي في",
-                    "Code follows the playground properties. Local font imports are in",
-                  )}{" "}
-                  <bdi dir="ltr">src/main.tsx</bdi>.
-                </p>
-                <CodeExample code={code} language={language} />
+              <section className="reference-section">
                 <ApiReference component={active} language={language} />
               </section>
             </main>

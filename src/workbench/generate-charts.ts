@@ -20,7 +20,7 @@ import "./system/components.css";
 // Host dependencies: Recharts 3.10.1 and react-is matching React (verified React 19.3.0).
 ${source}
 export default function Example() {
-  return <div lang={${JSON.stringify(language)}}><SystemProvider config={{ ...defaultConfig, ...${JSON.stringify(config)} }}><ChartExample language={${JSON.stringify(language)}} kind={${JSON.stringify(component.replace("-chart", ""))}} sample={${JSON.stringify(model.sample)}} legend={${model.legend}} grid={${model.grid}} /><AnalyticsExample language={${JSON.stringify(language)}} /></SystemProvider></div>;
+  return <div lang={${JSON.stringify(language)}}><SystemProvider config={{ ...defaultConfig, ...${JSON.stringify(config)} }}><ChartExample language={${JSON.stringify(language)}} kind={${JSON.stringify(component.replace("-chart", ""))}} sample={${JSON.stringify(model.sample)}} legend={${model.legend}} grid={${model.grid}} /></SystemProvider></div>;
 }
 `;
 }

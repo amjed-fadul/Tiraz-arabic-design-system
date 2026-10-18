@@ -17,12 +17,12 @@ import * as system from "../system";
 import * as ts from "typescript";
 
 it.each([
-  ["إجراءات التحديد", "SelectionActions", false],
-  ["مقياس السياق", "ContextMeter", true],
-  ["اختيار النموذج", "ModelSelector", true],
+  ["إجراءات التحديد", "SelectionActions"],
+  ["مقياس السياق", "ContextMeter"],
+  ["اختيار النموذج", "ModelSelector"],
 ])(
   "places %s under AI patterns with continuous frames and copyable source",
-  async (ar, en, examples) => {
+  async (ar, en) => {
     const user = userEvent.setup();
     render(<Workbench />);
     await user.click(
@@ -35,27 +35,19 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
-    for (const name of ["Interactive playground", "Usage example"])
-      expect(screen.getByRole("heading", { name })).toBeVisible();
-    if (examples)
-      expect(screen.getByRole("heading", { name: "Examples" })).toBeVisible();
-    else
-      expect(
-        screen.queryByRole("heading", { name: "Examples", level: 2 }),
-      ).toBeNull();
+    expect(
+      screen.getByRole("heading", { name: "Interactive playground" }),
+    ).toBeVisible();
+    // The playground frame is the only stage; its Code view holds the source.
+    for (const name of ["Usage example", "Examples"])
+      expect(screen.queryByRole("heading", { name })).toBeNull();
+    expect(screen.getByRole("tablist", { name: "View" })).toBeVisible();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
-    await user.click(
-      within(document.querySelector(".code-example") as HTMLElement).getByRole(
-        "button",
-        { name: "Copy code" },
-      ),
-    );
+    await user.click(screen.getByRole("button", { name: "Copy code" }));
     const code = String(copy.mock.calls.at(-1)?.[0]);
     expect(code).toContain(en + "Example");
     expect(code).not.toContain("workbench/");
-    expect(
-      document.querySelectorAll(".tz-demo-frame").length,
-    ).toBeGreaterThanOrEqual(examples ? 2 : 1);
+    expect(document.querySelectorAll(".tz-demo-frame")).toHaveLength(1);
   },
 );
 it("runs the copied connected example with real model state and editable local submission", async () => {

@@ -113,6 +113,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "CreateCustomer",
       "CustomerDataTable",
       "OverlayExamples",
+      "SkeletonExample",
       "StructureExamples",
       "ChartExamples",
       "SidebarExamples",

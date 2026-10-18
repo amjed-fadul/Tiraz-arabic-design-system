@@ -20,12 +20,10 @@ it.each([
       ).getByRole("button", { name: ar }),
     );
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
-    expect(
-      screen.getByRole("heading", { name: "مثال الاستخدام" }),
-    ).toBeVisible();
-    expect(
-      screen.queryByRole("heading", { name: "أمثلة", level: 2 }),
-    ).toBeNull();
+    // The playground frame is the only stage and carries the code.
+    for (const name of ["مثال الاستخدام", "أمثلة"])
+      expect(screen.queryByRole("heading", { name })).toBeNull();
+    expect(screen.getByRole("tablist", { name: "طريقة العرض" })).toBeVisible();
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),
       "en",

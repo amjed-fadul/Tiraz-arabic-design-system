@@ -118,23 +118,29 @@ export function ThinkingStateExample({
   active?: boolean;
   defaultExpanded?: boolean;
 }) {
-  const ar = language === "ar";
+  const ar = language === "ar",
+    reduced = usePrefersReducedMotion();
+  // While active, each step lands in turn and the label follows the work.
+  const [reached, setReached] = useState(1);
+  useEffect(() => {
+    if (!active || reduced) return;
+    const timers = [1300, 2600].map((delay, index) =>
+      setTimeout(() => setReached(index + 2), delay),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [active, reduced]);
+  const count = active && !reduced ? reached : 3;
+  const working = ar
+    ? ["جارٍ قراءة الفواتير", "جارٍ مطابقة المبالغ", "جارٍ إعداد الملخص"]
+    : ["Reading invoices", "Matching totals", "Preparing summary"];
   return (
     <ThinkingState
       key={String(defaultExpanded)}
-      label={
-        active
-          ? ar
-            ? "جارٍ إعداد الملخص"
-            : "Preparing summary"
-          : ar
-            ? "الملخص جاهز"
-            : "Summary ready"
-      }
+      label={active ? working[count - 1] : ar ? "الملخص جاهز" : "Summary ready"}
       active={active}
       defaultExpanded={defaultExpanded}
     >
-      <StepList language={language} />
+      <StepList language={language} count={count} />
     </ThinkingState>
   );
 }

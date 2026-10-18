@@ -96,21 +96,19 @@ export function MarkdownExample({
 export function StreamingTextExample({
   language = "ar",
   markdown = false,
-  prompt,
-  copyLabel,
+  code,
 }: {
   language?: Language;
   markdown?: boolean;
-  prompt?: string;
-  copyLabel?: string;
+  /** Docs only: the frame's Code view and copy button show this source. */
+  code?: string;
 }) {
   return (
     <StreamingDemo
       language={language}
       markdown={markdown}
       autoStart
-      prompt={prompt}
-      copyLabel={copyLabel}
+      code={code}
     />
   );
 }
@@ -153,14 +151,12 @@ export function StreamingDemo({
   language = "ar",
   markdown = false,
   autoStart = false,
-  prompt,
-  copyLabel,
+  code,
 }: {
   language?: Language;
   markdown?: boolean;
   autoStart?: boolean;
-  prompt?: string;
-  copyLabel?: string;
+  code?: string;
 }) {
   const ar = language === "ar",
     reduced = usePrefersReducedMotion();
@@ -235,11 +231,7 @@ export function StreamingDemo({
       title={
         markdown ? (ar ? "ماركداون" : "Markdown") : ar ? "الافتراضي" : "Default"
       }
-      prompt={
-        prompt ??
-        `Use Tiraz StreamingText with host-supplied ${markdown ? "Markdown" : "plain text"}, explicit streaming/completed state and a local fixed-chunk demo. Read ai/README.md and ai/registry.json from the copied system source root. Reuse ai/examples/AIContentExamples.tsx. Install react-markdown@10.1.0 and remark-gfm@4.0.1 for Markdown support. Keep code LTR and reject raw HTML/unsafe URLs. The host owns transport and cancellation; this demo makes no AI/network request.`
-      }
-      copyLabel={copyLabel}
+      code={code}
       replayLabel={playLabel}
       onReplay={start}
     >

@@ -15,6 +15,15 @@ export function ToolCallExample({
   longContent?: boolean;
 }) {
   const ar = language === "ar";
+  // Retrying the failed save runs it again, and this time it succeeds.
+  const [save, setSave] = useState<ToolCallState>("failed"),
+    retryTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(retryTimer.current), []);
+  function retry() {
+    setSave("running");
+    clearTimeout(retryTimer.current);
+    retryTimer.current = setTimeout(() => setSave("completed"), 1200);
+  }
   return (
     <div className="tz-tool-calls">
       <ToolCall
@@ -60,7 +69,7 @@ export function ToolCallExample({
         label={ar ? "حفظ الملخص في Drive" : "Save summary to Drive"}
         tool="drive.create_file"
         icon={<Save />}
-        state="failed"
+        state={save}
         defaultExpanded
         error={
           ar
@@ -68,6 +77,15 @@ export function ToolCallExample({
             : "Drive rejected the request: storage quota exceeded."
         }
         input={'{ "folder": "Finance/2026", "name": "october-summary.md" }'}
+        output={
+          save === "completed"
+            ? ar
+              ? "حُفظ الملف في Finance/2026/october-summary.md"
+              : "Saved to Finance/2026/october-summary.md"
+            : undefined
+        }
+        duration={save === "completed" ? "1.2s" : undefined}
+        onRetry={retry}
         announcement="off"
       />
       <ToolCall
@@ -87,7 +105,25 @@ export function ToolChipsExample({
   language?: Language;
   counts?: boolean;
 }) {
-  const ar = language === "ar";
+  const ar = language === "ar",
+    reduced = useReducedMotion();
+  // One short run: each chip changes state as its tool starts and finishes.
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    if (reduced) return;
+    const timers = [900, 1700, 2600].map((delay, index) =>
+      setTimeout(() => setStep(index + 1), delay),
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [reduced]);
+  const at = reduced ? 3 : step;
+  const states: ToolCallState[][] = [
+    ["running", "pending", "pending", "pending"],
+    ["completed", "running", "pending", "pending"],
+    ["completed", "running", "running", "pending"],
+    ["completed", "running", "failed", "pending"],
+  ];
+  const [read, check, save, exporting] = states[at];
   return (
     <ToolChips
       label={ar ? "نشاط الأدوات" : "Tool activity"}
@@ -95,54 +131,18 @@ export function ToolChipsExample({
         {
           id: "read",
           label: ar ? "قراءة ملفات" : "Read files",
-          state: "completed",
-          count: counts ? 3 : undefined,
+          state: read,
+          count: counts && read === "completed" ? 3 : undefined,
         },
-        { id: "check", label: ar ? "تدقيق" : "Proofread", state: "running" },
+        { id: "check", label: ar ? "تدقيق" : "Proofread", state: check },
         {
           id: "save",
           label: ar ? "حفظ" : "Save",
-          state: "failed",
-          count: counts ? 1 : undefined,
+          state: save,
+          count: counts && save === "failed" ? 1 : undefined,
         },
-        { id: "export", label: ar ? "تصدير" : "Export", state: "pending" },
+        { id: "export", label: ar ? "تصدير" : "Export", state: exporting },
       ]}
-    />
-  );
-}
-export function ToolRenderedOutputExample({
-  language = "ar",
-}: {
-  language?: Language;
-}) {
-  const ar = language === "ar";
-  return (
-    <ToolCall
-      label={ar ? "عرض صفقات هذا الأسبوع" : "List this week's deals"}
-      tool="crm.list_deals"
-      state="completed"
-      defaultExpanded
-      duration="0.3s"
-      announcement="off"
-      output={
-        <ul style={{ margin: 0, paddingInlineStart: "var(--space-5)" }}>
-          <li>
-            {ar
-              ? "شركة الندى للتجارة · ٤٨٬٠٠٠ د.إ · قيد التفاوض"
-              : "Al Nada Trading · AED 48,000 · Negotiation"}
-          </li>
-          <li>
-            {ar
-              ? "مؤسسة رواسي · ٢٢٬٥٠٠ د.إ · أُرسل عرض السعر"
-              : "Rawasi Est. · AED 22,500 · Quote sent"}
-          </li>
-          <li>
-            {ar
-              ? "مجموعة سَنا · ١٢٠٬٠٠٠ د.إ · قريبة من الإغلاق"
-              : "Sana Group · AED 120,000 · Closing"}
-          </li>
-        </ul>
-      }
     />
   );
 }

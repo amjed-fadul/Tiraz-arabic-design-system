@@ -24,6 +24,14 @@ async function chooseAccent(accent: "blue" | "plum" | "clay") {
 function preview() {
   return within(screen.getByRole("region", { name: "المعاينة التفاعلية" }));
 }
+/** Opens the playground's Code view (if needed) and returns the shown source. */
+async function shownCode() {
+  const tab = screen.getByRole("tab", { name: "الكود" });
+  if (tab.getAttribute("aria-selected") !== "true") await userEvent.click(tab);
+  return screen
+    .getByRole("region", { name: "الكود: src/Example.tsx" })
+    .querySelector("pre")!.textContent!;
+}
 it("isolates portable library paths as complete LTR runs inside the Arabic prompt", () => {
   const { container } = render(<Workbench />);
   const paths = Array.from(container.querySelectorAll(".prompt-preview bdi"));
@@ -90,14 +98,12 @@ it("updates accent through successive selections, navigation and reset despite l
   for (const accent of ["blue", "plum", "clay"] as const) {
     await chooseAccent(accent);
     for (const el of container.querySelectorAll(
-      ".playground-region .tiraz-system,.examples-section .tiraz-system",
+      ".playground-region .tiraz-system",
     ))
       expect((el as HTMLElement).style.getPropertyValue("--action")).toBe(
         accentColors[accent].light,
       );
-    expect(
-      screen.getByRole("region", { name: "مثال الاستخدام" }),
-    ).toHaveTextContent(`accent: "${accent}"`);
+    expect(await shownCode()).toContain(`accent: "${accent}"`);
   }
   await userEvent.click(
     navigation().getByRole("button", { name: "التبويبات" }),
@@ -171,31 +177,41 @@ it("uses one state selector for Button disabled/loading demonstrations", async (
   expect(preview().getByRole("button")).toBeEnabled();
 });
 it("retains continuous documentation, synchronized prompt content and API information on every page", async () => {
-  render(<Workbench />);
-  // Only pages with a sequence or composition to show keep an Examples stage.
-  for (const [name, examples] of [
-    ["الأزرار", false],
-    ["التبويبات", false],
-    ["مفتاح التبديل", false],
-    ["القائمة المنسدلة", false],
-    ["اللوحة الجانبية", true],
-    ["التنبيهات", false],
-  ] as const) {
+  const { container } = render(<Workbench />);
+  // The playground frame carries the code; no page keeps a separate usage
+  // or Examples stage.
+  for (const name of [
+    "الأزرار",
+    "التبويبات",
+    "مفتاح التبديل",
+    "القائمة المنسدلة",
+    "اللوحة الجانبية",
+    "التنبيهات",
+  ]) {
     await userEvent.click(navigation().getByRole("button", { name }));
     expect(screen.getByRole("heading", { name, level: 1 })).toBeInTheDocument();
-    for (const title of [
-      "استخدمه في تطبيقك",
-      "المعاينة التفاعلية",
-      "مثال الاستخدام",
-    ])
+    for (const title of ["استخدمه في تطبيقك", "المعاينة التفاعلية"])
       expect(
         screen.getByRole("heading", { name: title, level: 2 }),
       ).toBeInTheDocument();
+    for (const title of ["مثال الاستخدام", "أمثلة"])
+      expect(screen.queryByRole("heading", { name: title })).toBeNull();
     expect(
-      screen.queryByRole("heading", { name: "أمثلة", level: 2 }) !== null,
-    ).toBe(examples);
+      container.querySelector(".usage-section, .examples-section"),
+    ).toBeNull();
+    const views = screen.getByRole("tablist", { name: "طريقة العرض" });
+    expect(
+      within(views)
+        .getAllByRole("tab")
+        .map((tab) => tab.textContent),
+    ).toEqual(["معاينة", "الكود"]);
+    expect(screen.getByRole("button", { name: "نسخ الكود" })).toBeVisible();
     expect(screen.queryByText("عرض الطلب كاملًا")).not.toBeInTheDocument();
-    expect(screen.getByText("دليل الخصائص")).toBeInTheDocument();
+    expect(
+      within(
+        container.querySelector(".reference-section") as HTMLElement,
+      ).getByText("دليل الخصائص"),
+    ).toBeInTheDocument();
   }
 });
 it("demonstrates both simulated outcomes", async () => {
@@ -308,9 +324,7 @@ it("copies the full current prompt despite its single-line presentation", async 
   );
   expect(copied).not.toContain("/Users/");
   expect(copied).toContain("README.md");
-  expect(copied).toContain(
-    screen.getByRole("region", { name: "مثال الاستخدام" }).textContent!,
-  );
+  expect(copied).toContain(await shownCode());
   expect(copied).toContain("اعتماد الفاتورة");
   expect(copied).toContain('accent: "plum"');
   expect(copied).toContain("src/system/Button.tsx");
@@ -396,7 +410,7 @@ it.each([
         backgroundColor: accentColors[accent][theme],
       });
       for (const provider of container.querySelectorAll<HTMLElement>(
-        ".playground-region .tiraz-system,.examples-section .tiraz-system",
+        ".playground-region .tiraz-system",
       ))
         expect(provider.style.getPropertyValue("--action")).toBe(
           accentColors[accent][theme],

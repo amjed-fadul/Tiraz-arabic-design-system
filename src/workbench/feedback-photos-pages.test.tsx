@@ -1,7 +1,10 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
+import { SkeletonExample } from "../system/ai/examples/SkeletonExample";
+import { SystemProvider, defaultConfig } from "../system";
+afterEach(() => vi.useRealTimers());
 it("documents four feedback pages with complete copied code and prompts", async () => {
   render(<Workbench />);
   const user = userEvent.setup(),
@@ -23,8 +26,104 @@ it("documents four feedback pages with complete copied code and prompts", async 
     await user.click(screen.getByRole("button", { name: "نسخ الطلب" }));
     expect(write.mock.calls.at(-1)![0]).toContain(code);
     expect(code).toContain("SystemProvider");
-    expect(code).not.toContain("setTimeout");
+    if (name === "هيكل التحميل") {
+      // The skeleton stage is a loading profile, so its code carries the timer.
+      expect(code).toContain("export function SkeletonExample");
+      expect(code).toContain(
+        '<SkeletonExample language="ar" shape="circle" />',
+      );
+      expect(code).toContain("Avatar, Skeleton, useSystem");
+    } else expect(code).not.toContain("setTimeout");
+    if (name === "الرسالة الدلالية") {
+      expect(code).toContain("Alert, Button");
+      expect(code).toContain(
+        'action={<Button variant="secondary" onClick={() => {}}>{"عرض الخطة"}</Button>}',
+      );
+    }
   }
+});
+it("records the Alert playground action and drops it when its label is cleared", async () => {
+  render(<Workbench />);
+  const user = userEvent.setup(),
+    write = vi.spyOn(navigator.clipboard, "writeText");
+  await user.click(
+    within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
+      "button",
+      { name: "الرسالة الدلالية" },
+    ),
+  );
+  const stage = within(
+    screen.getByRole("region", { name: "المعاينة التفاعلية" }),
+  );
+  await user.click(stage.getByRole("button", { name: "عرض الخطة" }));
+  expect(screen.getByRole("status", { name: "آخر حدث" })).toHaveTextContent(
+    "onClick",
+  );
+  await user.clear(
+    within(screen.getByRole("complementary", { name: "التخصيص" })).getByRole(
+      "textbox",
+      { name: "زر الإجراء" },
+    ),
+  );
+  expect(stage.queryByRole("button")).toBeNull();
+  await user.click(screen.getByRole("button", { name: "نسخ الكود" }));
+  const code = String(write.mock.calls.at(-1)![0]);
+  expect(code).not.toContain("action=");
+  expect(code).not.toContain("Alert, Button");
+});
+it("loads the skeleton playground profile after its placeholders and replays the load", async () => {
+  vi.useFakeTimers();
+  render(<Workbench />);
+  fireEvent.click(
+    within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
+      "button",
+      { name: "هيكل التحميل" },
+    ),
+  );
+  const canvas = () =>
+    screen.getByRole("region", { name: "المعاينة التفاعلية" });
+  const profile = () => canvas().querySelector("[aria-busy]")!;
+  expect(profile()).toHaveAttribute("aria-busy", "true");
+  // The default shape holds a photo slot beside the text lines.
+  expect(
+    profile().querySelector('.tz-skeleton[data-shape="circle"]'),
+  ).not.toBeNull();
+  expect(
+    within(canvas()).getByText("جارٍ تحميل الملف الشخصي…"),
+  ).toBeInTheDocument();
+  expect(within(canvas()).queryByText("سارة علي")).toBeNull();
+  await act(async () => vi.advanceTimersByTime(2400));
+  expect(profile()).toHaveAttribute("aria-busy", "false");
+  expect(profile().querySelector(".tz-skeleton")).toBeNull();
+  expect(within(canvas()).getByText("سارة علي")).toBeVisible();
+  expect(within(canvas()).getByText("sara@madar.sa")).toBeVisible();
+  expect(
+    within(canvas()).getByText("تم تحميل الملف الشخصي"),
+  ).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
+  expect(profile()).toHaveAttribute("aria-busy", "true");
+  expect(within(canvas()).queryByText("سارة علي")).toBeNull();
+});
+it("holds the skeleton placeholders under reduced motion", () => {
+  vi.useFakeTimers();
+  const view = render(
+    <SystemProvider
+      config={{ ...defaultConfig, direction: "ltr", reducedMotion: true }}
+    >
+      <SkeletonExample language="en" shape="rectangle" />
+    </SystemProvider>,
+  );
+  expect(vi.getTimerCount()).toBe(0);
+  act(() => vi.advanceTimersByTime(5000));
+  expect(view.container.querySelector("[aria-busy]")).toHaveAttribute(
+    "aria-busy",
+    "true",
+  );
+  expect(
+    view.container.querySelector('.tz-skeleton[data-shape="rectangle"]'),
+  ).not.toBeNull();
+  expect(screen.queryByText("Sara Ali")).toBeNull();
+  expect(screen.getByRole("status")).toHaveTextContent("Loading profile…");
 });
 it("exposes existing src with a minimal photo choice and accurate imports", async () => {
   localStorage.setItem(

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { ThumbsUp } from "lucide-react";
 import { useLocalResponse } from "./useLocalResponse";
@@ -14,6 +14,32 @@ import {
 } from "../../index";
 import type { ChatMessage } from "../../index";
 type Language = "ar" | "en";
+/**
+ * Stands in for your server's response time: the send succeeds, or fails as
+ * it would offline, after a moment. Unmounting cancels the wait.
+ */
+function useLatency() {
+  const timers = useRef(new Set<ReturnType<typeof setTimeout>>());
+  useEffect(() => {
+    const pending = timers.current;
+    return () => {
+      pending.forEach(clearTimeout);
+      pending.clear();
+    };
+  }, []);
+  return useCallback(
+    (ms: number, fail = false) =>
+      new Promise<void>((resolve, reject) => {
+        const timer = setTimeout(() => {
+          timers.current.delete(timer);
+          if (fail) reject(new Error("Network unavailable"));
+          else resolve();
+        }, ms);
+        timers.current.add(timer);
+      }),
+    [],
+  );
+}
 /** Config or OS preference; scripted openings start on their final state. */
 function useReducedMotion() {
   const { config } = useSystem();
@@ -36,7 +62,16 @@ export function ChatThreadExample({
   followOutput?: boolean;
 }) {
   const ar = language === "ar",
-    [helpful, setHelpful] = useState(false);
+    [helpful, setHelpful] = useState(false),
+    reduced = useReducedMotion(),
+    [arrived, setArrived] = useState(false);
+  // The reply arrives after a short thinking beat; reduced motion shows it at once.
+  useEffect(() => {
+    if (reduced) return;
+    const timer = setTimeout(() => setArrived(true), 1400);
+    return () => clearTimeout(timer);
+  }, [reduced]);
+  const answered = reduced || arrived;
   const tips = ar
     ? [
         "التزم بنوع واحد من الأرقام في الجداول، عربية أو لاتينية.",
@@ -69,7 +104,12 @@ export function ChatThreadExample({
     {
       id: "answer",
       role: "assistant",
-      content: (
+      content: !answered ? (
+        <ThinkingIndicator
+          label={ar ? "جارٍ إعداد الرد" : "Preparing reply"}
+          announcement="off"
+        />
+      ) : (
         <Markdown
           text={
             (ar
@@ -81,7 +121,7 @@ export function ChatThreadExample({
           }
         />
       ),
-      actions: (
+      actions: answered && (
         <Button
           variant="ghost"
           size="sm"
@@ -109,10 +149,13 @@ export function ChatConversation({
   language = "ar",
   compact = false,
   disabled = false,
+  failSend = false,
 }: {
   language?: Language;
   compact?: boolean;
   disabled?: boolean;
+  /** Every send fails: the composer explains why and keeps the draft. */
+  failSend?: boolean;
 }) {
   // A locale change unmounts the host and cancels its pending run.
   return (
@@ -121,6 +164,7 @@ export function ChatConversation({
       language={language}
       compact={compact}
       disabled={disabled}
+      failSend={failSend}
     />
   );
 }
@@ -157,17 +201,20 @@ function ConversationHost({
   language,
   compact,
   disabled,
+  failSend,
 }: {
   language: Language;
   compact: boolean;
   disabled: boolean;
+  failSend: boolean;
 }) {
   const ar = language === "ar";
   const response = useLocalResponse(language),
     { start } = response,
     sequence = useRef(0),
     reduced = useReducedMotion(),
-    played = useRef(reduced);
+    played = useRef(reduced),
+    wait = useLatency();
   const opening = ar
     ? "كيف أجهّز واجهة عربية واضحة؟"
     : "How do I prepare a clear Arabic interface?";
@@ -206,6 +253,7 @@ function ConversationHost({
     onValueChange: setDraft,
     onSubmit: (text: string) => {
       if (disabled || response.active.current || !text.trim()) return;
+      if (failSend) return wait(800, true);
       setDraft("");
       exchange(start, setMessages, setPhase, String(++sequence.current), text);
     },
@@ -262,24 +310,31 @@ function ConversationHost({
 export function ChatComposerExample(props: {
   language?: Language;
   disabled?: boolean;
+  failSend?: boolean;
 }) {
   return <ChatConversation {...props} />;
 }
 export function PromptBarExample({
   language = "ar",
   disabled = false,
+  failSend = false,
 }: {
   language?: Language;
   disabled?: boolean;
+  /** Every send fails: the bar explains why and keeps the draft. */
+  failSend?: boolean;
 }) {
   const ar = language === "ar",
-    [draft, setDraft] = useState("");
+    [draft, setDraft] = useState(""),
+    wait = useLatency();
   return (
     <PromptBar
       value={draft}
       onValueChange={setDraft}
       disabled={disabled}
-      onSubmit={() => setDraft("")}
+      onSubmit={() =>
+        failSend ? wait(800, true) : wait(700).then(() => setDraft(""))
+      }
       suggestions={
         ar
           ? [
@@ -295,56 +350,5 @@ export function PromptBarExample({
       }
       onSuggestionSelect={setDraft}
     />
-  );
-}
-
-/** Sending fails: the message explains why and the draft stays put. */
-export function ChatEntryFailure({
-  language = "ar",
-  compact = false,
-}: {
-  language?: Language;
-  compact?: boolean;
-}) {
-  const ar = language === "ar",
-    [draft, setDraft] = useState(
-      ar
-        ? "لخّص ملاحظات اجتماع الإطلاق في خمس نقاط"
-        : "Summarize the launch meeting notes in five points",
-    );
-  const Entry = compact ? PromptBar : ChatComposer;
-  return (
-    <Entry
-      value={draft}
-      onValueChange={setDraft}
-      onSubmit={() => Promise.reject(new Error("Network unavailable"))}
-    />
-  );
-}
-export function ChatEntryStates({
-  language = "ar",
-  compact = false,
-}: {
-  language?: Language;
-  compact?: boolean;
-}) {
-  const ar = language === "ar";
-  const Entry = compact ? PromptBar : ChatComposer;
-  return (
-    <div style={{ display: "grid", gap: "var(--space-5)" }}>
-      <section>
-        <h3>{ar ? "تعذّر الإرسال" : "Submission failure"}</h3>
-        <ChatEntryFailure language={language} compact={compact} />
-      </section>
-      <section>
-        <h3>{ar ? "معطّل" : "Disabled"}</h3>
-        <Entry
-          value={ar ? "أرفق تقرير الربع الثالث" : "Attach the Q3 report"}
-          onValueChange={() => {}}
-          onSubmit={() => {}}
-          disabled
-        />
-      </section>
-    </div>
   );
 }

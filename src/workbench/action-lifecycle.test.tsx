@@ -30,9 +30,15 @@ it.each(["success", "error"] as const)(
       JSON.parse(localStorage.getItem(storageKeys.playgrounds)!).button.state,
     ).toBe("idle");
     expect(controls().getByLabelText("الحالة")).toHaveValue("idle");
+    // The Code view keeps the persisted state while the preview is busy.
+    fireEvent.click(screen.getByRole("tab", { name: "الكود" }));
     expect(
-      screen.getByRole("region", { name: "مثال الاستخدام" }),
+      screen
+        .getByRole("region", { name: "الكود: src/Example.tsx" })
+        .querySelector("pre"),
     ).toHaveTextContent('ButtonState>("idle")');
+    fireEvent.click(screen.getByRole("tab", { name: "معاينة" }));
+    expect(preview()).toHaveAttribute("data-state", "loading");
     tick(1200);
     expect(preview()).toHaveAttribute("data-state", outcome);
     tick(1000);

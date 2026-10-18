@@ -2,6 +2,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
+import { persist, storageKeys } from "./storage";
 import { defaultPlaygrounds, normalizePlaygrounds } from "./model";
 import { generateCode, generatePrompt } from "./generate";
 import { defaultConfig } from "../system";
@@ -23,17 +24,12 @@ it.each([
       ).getByRole("button", { name: ar }),
     );
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
+    // The playground frame is the only stage and carries the code.
+    for (const name of ["مثال الاستخدام", "أمثلة"])
+      expect(screen.queryByRole("heading", { name })).toBeNull();
     expect(
-      screen.getByRole("heading", { name: "مثال الاستخدام" }),
+      screen.getByRole("tablist", { name: "طريقة العرض" }),
     ).toBeInTheDocument();
-    if (id === "steps")
-      expect(
-        screen.getByRole("heading", { name: "أمثلة" }),
-      ).toBeInTheDocument();
-    else
-      expect(
-        screen.queryByRole("heading", { name: "أمثلة", level: 2 }),
-      ).toBeNull();
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),
       "en",
@@ -56,6 +52,8 @@ it.each([
     if (id === "steps") {
       expect(code).toContain('"orientation":"vertical"');
       expect(code).toContain('"currentState":"error"');
+      // Only the stages the preview shows; the form flow is not rendered.
+      expect(code).not.toContain("<StepsFormExample");
     }
     await user.click(screen.getByRole("button", { name: "Copy agent prompt" }));
     const prompt = String(copy.mock.calls.at(-1)?.[0]);
@@ -67,6 +65,44 @@ it.each([
     );
   },
 );
+it("moves through the steps playground with Back, Next and the stages, and replays without losing panel values", async () => {
+  persist(storageKeys.documentation, { language: "en", active: "steps" });
+  const user = userEvent.setup();
+  render(<Workbench />);
+  const rail = within(
+    screen.getByRole("complementary", { name: "Customization" }),
+  );
+  await user.selectOptions(
+    rail.getByRole("combobox", { name: "Current state" }),
+    "error",
+  );
+  const stage = () =>
+    within(screen.getByRole("region", { name: "Interactive playground" }));
+  const statuses = () =>
+    Array.from(
+      stage()
+        .getByRole("list", { name: "Application stages" })
+        .querySelectorAll(".tz-step"),
+      (step) => step.getAttribute("data-status"),
+    );
+  // Starts on the second stage, styled by the panel's current state.
+  expect(statuses()).toEqual(["completed", "error", "upcoming"]);
+  await user.click(stage().getByRole("button", { name: "Next" }));
+  expect(statuses()).toEqual(["completed", "completed", "error"]);
+  await user.click(stage().getByRole("button", { name: "Finish" }));
+  expect(stage().getByRole("status")).toHaveTextContent(
+    "All stages are complete.",
+  );
+  expect(stage().queryByRole("button", { name: /Next|Finish/ })).toBeNull();
+  await user.click(stage().getByRole("button", { name: /^Information/ }));
+  expect(statuses()).toEqual(["error", "upcoming", "upcoming"]);
+  expect(stage().getByRole("button", { name: "Back" })).toBeDisabled();
+  await user.click(screen.getByRole("button", { name: "Replay example" }));
+  expect(statuses()).toEqual(["completed", "error", "upcoming"]);
+  expect(rail.getByRole("combobox", { name: "Current state" })).toHaveValue(
+    "error",
+  );
+});
 it("normalizes persisted sequence options against the real enums", () => {
   const p = normalizePlaygrounds(
     { steps: { orientation: "diagonal", currentState: "saving" } },

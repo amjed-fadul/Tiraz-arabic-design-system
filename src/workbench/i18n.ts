@@ -17,10 +17,7 @@ export const labels = {
   copyConfig: ["نسخ إعدادات النظام", "Copy system configuration"],
   useInApp: ["استخدمه في تطبيقك", "Use it in your app"],
   playground: ["المعاينة التفاعلية", "Interactive playground"],
-  examples: ["أمثلة", "Examples"],
-  usage: ["مثال الاستخدام", "Usage example"],
   copyPrompt: ["نسخ الطلب", "Copy agent prompt"],
-  copyCode: ["نسخ الكود", "Copy code"],
   copied: ["تم النسخ", "Copied"],
   failed: [
     "تعذّر النسخ. حدّد النص وانسخه يدويًا.",

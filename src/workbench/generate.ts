@@ -209,7 +209,7 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "./system/tokens.css";
 import "./system/components.css";
-export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><div style={{display:"grid",gap:"var(--space-5)",minInlineSize:0}}><${name} language={${json(language)}} {...${json(model)}}/>${component === "streaming-text" ? `<StreamingDemo language={${json(language)}} markdown autoStart/>` : ""}</div></SystemProvider></div>;}`;
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
   if (
     component === "tool-call" ||
@@ -267,7 +267,7 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "./system/tokens.css";
 import "./system/components.css";
-export default function Example() { return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><div style={{display:"grid",gap:"var(--space-8)",minInlineSize:0}}><${name} language={${json(language)}} {...${json(model)}} />${component === "steps" ? `<StepsFormExample language={${json(language)}} />` : ""}</div></SystemProvider></div>; }
+export default function Example() { return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}} /></SystemProvider></div>; }
 `;
   }
   if (
