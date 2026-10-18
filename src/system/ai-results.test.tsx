@@ -475,3 +475,55 @@ it("formats the supplied percentage for Arabic and keeps 100 percent loading unt
   ).toHaveAttribute("aria-valuenow", "100");
   expect(screen.getByText("١٠٠٪؜")).toBeVisible();
 });
+it("agrees Arabic source counts with their noun", () => {
+  const make = (n: number): SourceReference[] =>
+    Array.from({ length: n }, (_, i) => ({
+      id: `s${i}`,
+      number: i + 1,
+      title: `مصدر ${i + 1}`,
+    }));
+  const cases: [number, string][] = [
+    [1, "مصدر واحد"],
+    [2, "مصدران"],
+    [3, "٣ مصادر"],
+    [11, "١١ مصدرًا"],
+    [100, "١٠٠ مصدر"],
+  ];
+  for (const [n, text] of cases) {
+    const { unmount } = render(
+      <SystemProvider config={defaultConfig}>
+        <Sources items={make(n)} />
+      </SystemProvider>,
+    );
+    expect(screen.getByRole("button", { expanded: false })).toHaveTextContent(
+      text,
+    );
+    unmount();
+  }
+});
+it("agrees Arabic source counts with their noun under Western digits", () => {
+  const make = (n: number): SourceReference[] =>
+    Array.from({ length: n }, (_, i) => ({
+      id: `s${i}`,
+      number: i + 1,
+      title: `مصدر ${i + 1}`,
+    }));
+  const cases: [number, string][] = [
+    [1, "مصدر واحد"],
+    [2, "مصدران"],
+    [3, "3 مصادر"],
+    [11, "11 مصدرًا"],
+    [100, "100 مصدر"],
+  ];
+  for (const [n, text] of cases) {
+    const { unmount } = render(
+      <SystemProvider config={{ ...defaultConfig, numerals: "latn" }}>
+        <Sources items={make(n)} />
+      </SystemProvider>,
+    );
+    expect(screen.getByRole("button", { expanded: false })).toHaveTextContent(
+      text,
+    );
+    unmount();
+  }
+});

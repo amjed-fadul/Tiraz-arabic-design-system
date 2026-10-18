@@ -1435,7 +1435,7 @@
           "name": "locale",
           "type": "string",
           "required": false,
-          "note": "Pins the Intl locale for all figures. Omitted: direction with config.numerals."
+          "note": "Intl locale for all figures: ar digits follow config.numerals and other locales format as supplied. Omitted: direction with config.numerals."
         },
         {
           "name": "className",

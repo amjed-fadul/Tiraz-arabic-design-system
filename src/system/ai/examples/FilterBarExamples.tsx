@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FilterBar, Input, Select } from "../../index";
+import { FilterBar, Input, Select, numberLocale, useSystem } from "../../index";
 type Language = "ar" | "en";
 export interface FilterBarExampleProps {
   language?: Language;
@@ -14,6 +14,9 @@ export function FilterBarExample({
   clearAll = true,
 }: FilterBarExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
+  const number = new Intl.NumberFormat(
+    numberLocale(useSystem().config, language),
+  );
   const [query, setQuery] = useState(initialQuery),
     [kind, setKind] = useState(initialKind);
   const documents = [
@@ -37,7 +40,7 @@ export function FilterBarExample({
         ? "مستند واحد"
         : n === 2
           ? "مستندان"
-          : `${new Intl.NumberFormat("ar-u-nu-arab").format(n)} مستندات`
+          : `${number.format(n)} مستندات`
       : `${n} ${n === 1 ? "document" : "documents"}`;
   const kindLabel =
     kind === "guide" ? t("أدلة", "Guides") : t("ملاحظات", "Notes");

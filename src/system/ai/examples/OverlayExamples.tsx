@@ -9,6 +9,8 @@ import {
   Modal,
   Select,
   Tooltip,
+  numberLocale,
+  useSystem,
 } from "../../index";
 type Language = "ar" | "en";
 export function TeamExample({
@@ -22,6 +24,9 @@ export function TeamExample({
   photos?: boolean;
   size?: "sm" | "md";
 }) {
+  const number = new Intl.NumberFormat(
+    numberLocale(useSystem().config, language),
+  );
   return (
     <AvatarGroup
       members={photos ? photoMembers(language) : teamMembers(language)}
@@ -29,7 +34,9 @@ export function TeamExample({
       size={size}
       label={language === "ar" ? "فريق المشروع" : "Project team"}
       overflowLabel={(count) =>
-        language === "ar" ? `${count} أعضاء آخرون` : `${count} more members`
+        language === "ar"
+          ? `${number.format(count)} أعضاء آخرون`
+          : `${count} more members`
       }
     />
   );

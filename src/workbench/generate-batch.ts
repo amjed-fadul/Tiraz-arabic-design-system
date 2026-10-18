@@ -118,7 +118,19 @@ export function generateBatchCode(
       p.appearance === "mixed"
         ? `${json(teamMembers(language))}.map(member => ({ ...member, src: member.id === "sara" ? saraPortrait : member.id === "omar" ? omarPortrait : undefined }))`
         : json(teamMembers(language));
-    jsx = `<AvatarGroup members={${members}} label={${json(ar ? "فريق المشروع" : "Project team")}} maxVisible={${p.maxVisible}} size="${p.size}" overflowLabel={count => ${ar ? "`${count} أعضاء آخرون`" : "`${count} more members`"}} />`;
+    const group = (overflow: string) =>
+      `<AvatarGroup members={${members}} label={${json(ar ? "فريق المشروع" : "Project team")}} maxVisible={${p.maxVisible}} size="${p.size}" overflowLabel={count => ${overflow}} />`;
+    if (ar) {
+      // Arabic copy spells the count in SystemConfig.numerals, so it needs the
+      // system config; the wrapper keeps the hook inside the provider.
+      imports = "AvatarGroup, numberLocale, useSystem";
+      source = `function TeamExample() {
+  const number = new Intl.NumberFormat(numberLocale(useSystem().config, "ar"));
+  return ${group("`${number.format(count)} أعضاء آخرون`")};
+}
+`;
+      jsx = "<TeamExample />";
+    } else jsx = group("`${count} more members`");
   } else if (component === "tooltip") {
     const p = model as TooltipModel;
     imports = "Tooltip, Button";

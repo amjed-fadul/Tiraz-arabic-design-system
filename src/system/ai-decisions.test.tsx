@@ -435,3 +435,40 @@ it("does not steal focus on host failure when the user has moved away", async ()
   await act(async () => task.reject(new Error("host")));
   expect(screen.getByRole("button", { name: "Outside" })).toHaveFocus();
 });
+it("ignores digit keys with modifiers or inside the other-answer field", async () => {
+  const user = userEvent.setup();
+  function Host() {
+    const [value, setValue] = useState<QuestionAnswers>({});
+    return (
+      <SystemProvider config={defaultConfig}>
+        <AskUserQuestions
+          questions={[
+            {
+              id: "q",
+              label: "أي الفواتير أبدأ؟",
+              allowOther: true,
+              choices: [
+                { value: "suppliers", label: "فواتير الموردين" },
+                { value: "customers", label: "فواتير العملاء" },
+                { value: "expenses", label: "المصروفات" },
+              ],
+            },
+          ]}
+          value={value}
+          onValueChange={setValue}
+          onSubmit={async () => {}}
+        />
+      </SystemProvider>
+    );
+  }
+  render(<Host />);
+  await user.click(screen.getByRole("radio", { name: /فواتير الموردين/ }));
+  await user.keyboard("۳");
+  expect(screen.getByRole("radio", { name: /المصروفات/ })).toBeChecked();
+  await user.keyboard("{Control>}١{/Control}");
+  expect(screen.getByRole("radio", { name: /المصروفات/ })).toBeChecked();
+  await user.click(screen.getByRole("radio", { name: /إجابة أخرى/ }));
+  await user.type(screen.getByRole("textbox", { name: "إجابة أخرى" }), "١");
+  expect(screen.getByRole("textbox", { name: "إجابة أخرى" })).toHaveValue("١");
+  expect(screen.getByRole("radio", { name: /إجابة أخرى/ })).toBeChecked();
+});

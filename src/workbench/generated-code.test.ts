@@ -467,3 +467,17 @@ it("emits the numerals setting in generated examples", () => {
     'numerals: "arab"',
   );
 });
+it("formats the Arabic AvatarGroup overflow count through numberLocale", () => {
+  const code = (language: "ar" | "en") =>
+    generateCode(
+      "avatar-group",
+      defaultPlaygrounds(language)["avatar-group"],
+      defaultConfig,
+      language,
+    );
+  // A raw ${count} in Arabic copy prints Western digits whatever `numerals` says.
+  expect(code("ar")).toContain("numberLocale");
+  expect(code("ar")).not.toMatch(/\$\{count\} أعضاء آخرون/);
+  // English copy keeps its plain count.
+  expect(code("en")).toContain("${count} more members");
+});

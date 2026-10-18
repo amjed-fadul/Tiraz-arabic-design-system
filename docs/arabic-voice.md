@@ -55,9 +55,13 @@ Short status words that Arabic interfaces already use are fine: «تم النس�
 - Arabic marks in Arabic text: «،» «؛» «؟» and quotes «…». No space before a
   mark, one space after it.
 - Ellipsis is one character «…».
-- Arabic-Indic digits (٠١٢٣) in Arabic interface text, through
-  `Intl.NumberFormat("ar-u-nu-arab")` when the number is data. Keep Latin
-  digits in code, identifiers, units in code (`14px`)، SKUs and keyboard keys.
+- Numbers in Arabic interface text go through `numberLocale(config)`:
+  Arabic-Indic digits (٠١٢٣) by default, Western digits (0123) when the host
+  sets `numerals: "latn"`. Digit key hints, such as the 1–9 of
+  AskUserQuestions, follow the same setting, because Arabic keyboards type
+  ١–٩ on the number row and both digit sets are accepted. Latin digits stay
+  in code, identifiers, units in code (`14px`), SKUs and key _names_ such as
+  Enter or Ctrl.
 - Code names, props and file paths stay in Latin script inside the sentence;
   do not translate `onValueChange` or `src/system`.
 

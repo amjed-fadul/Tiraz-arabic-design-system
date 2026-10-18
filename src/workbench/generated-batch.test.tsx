@@ -83,11 +83,16 @@ function feedbackCopy(
   component: ComponentId,
   model: PlaygroundModel,
   language: "ar" | "en" = "en",
+  config: Partial<system.SystemConfig> = {},
 ) {
   const code = generateCode(
     component,
     model,
-    { ...system.defaultConfig, direction: language === "ar" ? "rtl" : "ltr" },
+    {
+      ...system.defaultConfig,
+      direction: language === "ar" ? "rtl" : "ltr",
+      ...config,
+    },
     language,
   );
   const js = ts.transpileModule(code, {
@@ -158,6 +163,24 @@ it("runs copied feedback modes and photo compositions without workbench imports"
     unmount();
   }
 });
+it.each(["arab", "latn"] as const)(
+  "runs the copied Arabic AvatarGroup with its overflow count in %s digits",
+  (numerals) => {
+    const Example = feedbackCopy(
+      "avatar-group",
+      defaultPlaygrounds("ar")["avatar-group"],
+      "ar",
+      { numerals },
+    );
+    const { container } = render(<Example />);
+    // Three of five members show; the hidden label names the other two.
+    expect(
+      container.querySelector(".tz-avatar-overflow .tz-visually-hidden"),
+    ).toHaveTextContent(
+      numerals === "arab" ? /^٢ أعضاء آخرون/ : /^2 أعضاء آخرون/,
+    );
+  },
+);
 it("runs the copied skeleton profile from placeholders to content", () => {
   vi.useFakeTimers();
   const p = defaultPlaygrounds("en");

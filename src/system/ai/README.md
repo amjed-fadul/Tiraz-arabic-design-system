@@ -873,7 +873,8 @@ accessible name reports full values and statuses; visible status text supplement
 color. Estimated values are explicitly labeled. Details use the existing Popover
 (click/Enter/Space; Escape restores focus). Details are supplied independently;
 the component does not infer parts, cost, limits, truncation or host behavior.
-A supplied locale pins the Intl locale for every figure; otherwise digits follow
+A supplied locale sets the Intl locale for every figure: ar digits follow
+config.numerals and other locales format as supplied. Without one, digits follow
 direction and config.numerals.
 
 ModelSelector requires models, controlled value and onValueChange(id). Every

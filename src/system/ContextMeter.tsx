@@ -37,8 +37,8 @@ export function ContextMeter({
   const { config, container } = useSystem(),
     ar = config.direction === "rtl",
     title = useId();
-  // Digits follow the system numerals unless the host pins a locale.
-  const numbers = locale ?? numberLocale(config);
+  // A pinned "ar" still follows the system numerals; other locales are used as given.
+  const numbers = numberLocale(config, locale);
   const format = new Intl.NumberFormat(numbers, {
     maximumFractionDigits: 2,
   });

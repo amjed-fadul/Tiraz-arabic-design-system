@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { describe, expect, it } from "vitest";
@@ -29,6 +35,8 @@ import {
 } from "./index";
 import type { Numerals, SystemConfig } from "./config";
 import { chartCategory, chartNumber } from "./chart-format";
+import { AvatarExamples } from "./ai/examples/AvatarExamples";
+import { TeamExample } from "./ai/examples/OverlayExamples";
 
 // Digits only from the expected system, at least one present.
 const digits: Record<Numerals, RegExp> = {
@@ -224,6 +232,23 @@ describe.each(settings)("numerals=%s", (numerals) => {
     expect(meter).toHaveAccessibleName(digits[numerals]);
     expect(meter).toHaveAccessibleName(numerals === "arab" ? /٦٤٪/ : /64/);
   });
+
+  it('ContextMeter follows the setting when the host passes locale="ar"', () => {
+    wrap(<ContextMeter used={64} capacity={100} locale="ar" />, { numerals });
+    const meter = screen.getByRole("button", { name: /السياق/ });
+    // The full and percent figures are in the name; the compact ones show.
+    expect(meter).toHaveAccessibleName(digits[numerals]);
+    expect(meter).toHaveAccessibleName(numerals === "arab" ? /٦٤٪/ : /64/);
+    expect(meter.textContent).toMatch(digits[numerals]);
+    // An explicit Arabic locale under LTR follows the setting too.
+    wrap(<ContextMeter used={64} capacity={100} locale="ar" />, {
+      direction: "ltr",
+      numerals,
+    });
+    const english = screen.getByRole("button", { name: /Context/ });
+    expect(english).toHaveAccessibleName(digits[numerals]);
+    expect(english.textContent).toMatch(digits[numerals]);
+  });
 });
 
 describe.each(settings)(
@@ -350,6 +375,58 @@ describe.each(settings)(
       expect(view.container).toHaveTextContent(
         `الحد الأقصى ${n("1")} من الملفات`,
       );
+    });
+
+    it("the ApprovalFlow announcement names the next request in the configured digits", async () => {
+      const user = userEvent.setup();
+      const view = wrap(
+        <ApprovalFlow
+          label="الطلبات"
+          requests={["a", "b", "c"].map((id) => ({
+            id,
+            action: "نقل",
+            target: id,
+            consequences: [],
+            approveLabel: "موافقة",
+            rejectLabel: "رفض",
+          }))}
+          onDecision={async () => {}}
+        />,
+        { numerals },
+      );
+      await user.click(screen.getByRole("button", { name: "موافقة" }));
+      // The flow's own hidden live region, not the status line of the card.
+      const live = view.container.querySelector(
+        ".tz-approval-flow > [role=status]",
+      );
+      await waitFor(() =>
+        expect(live).toHaveTextContent(
+          `تمت الموافقة: نقل · a. الطلب ${n("2")} من ${n("3")}`,
+        ),
+      );
+      expect(live?.textContent).toMatch(digits[numerals]);
+      // What is announced is what the visible position says.
+      expect(
+        view.container.querySelector(".tz-decision-position"),
+      ).toHaveTextContent(`الطلب ${n("2")} من ${n("3")}`);
+    });
+
+    it("the AvatarGroup examples spell their overflow count in the configured digits", () => {
+      const view = wrap(
+        <>
+          <TeamExample language="ar" />
+          <AvatarExamples language="ar" />
+        </>,
+        { numerals },
+      );
+      const labels = view.container.querySelectorAll(
+        ".tz-avatar-overflow .tz-visually-hidden",
+      );
+      expect(labels).toHaveLength(2);
+      for (const label of Array.from(labels)) {
+        expect(label).toHaveTextContent(`${n("2")} أعضاء آخرون`);
+        expect(label.textContent).toMatch(digits[numerals]);
+      }
     });
 
     it("the citation popup shows its number in the configured digits", async () => {

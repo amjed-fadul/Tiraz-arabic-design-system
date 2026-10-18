@@ -220,3 +220,22 @@ it("uses FilterBar to remove individual customer filters while preserving sortin
   expect(screen.getByText("1–6 of 18 customers")).toBeInTheDocument();
   expect(filters.queryByRole("button", { name: "Clear filters" })).toBeNull();
 });
+
+it("shows Arabic-Indic digits in the Arabic dashboard", () => {
+  render(<Dashboard />);
+  const note = (id: string) =>
+    screen
+      .getByTestId(id)
+      .closest("div")!
+      .querySelector(".dashboard-metric-note")!;
+  // The order count, the order revenue and the period note under each.
+  for (const element of [
+    screen.getByTestId("order-count"),
+    screen.getByTestId("revenue"),
+    note("order-count"),
+    note("revenue"),
+  ]) {
+    expect(element).toHaveTextContent(/[٠-٩]/);
+    expect(element).not.toHaveTextContent(/[0-9]/);
+  }
+});

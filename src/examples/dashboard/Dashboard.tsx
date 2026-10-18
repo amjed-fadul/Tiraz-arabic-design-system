@@ -38,6 +38,8 @@ import {
   SystemProvider,
   ToastProvider,
   defaultConfig,
+  numberLocale,
+  useSystem,
 } from "../../system";
 import type { DataTableColumn } from "../../system";
 import { CreateCustomer } from "./CreateCustomer";
@@ -94,8 +96,10 @@ function DashboardContent({
   onTheme: () => void;
 }) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const number = (value: number) =>
-    new Intl.NumberFormat(language).format(value);
+  const { config } = useSystem();
+  // Arabic digits follow SystemConfig.numerals; plain "ar" renders Western ones.
+  const locale = numberLocale(config, language);
+  const number = (value: number) => new Intl.NumberFormat(locale).format(value);
   const [period, setPeriod] = useState<Period>(7);
   const [preview, setPreview] = useState<Preview>("sample");
   const [customers, setCustomers] = useState<Customer[]>(sampleCustomers);
@@ -146,7 +150,7 @@ function DashboardContent({
       nextId.current = sampleCustomers.length + 1;
     }
   }
-  const range = `${new Intl.DateTimeFormat(language, { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${orders.start}T00:00:00Z`))} – ${new Intl.DateTimeFormat(language, { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${orders.end}T00:00:00Z`))}`;
+  const range = `${new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${orders.start}T00:00:00Z`))} – ${new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${orders.end}T00:00:00Z`))}`;
   const channels = [
     {
       key: "web" as const,
@@ -435,7 +439,7 @@ function DashboardContent({
               {
                 key: "revenue",
                 label: t("إيرادات الطلبات", "Order revenue"),
-                value: new Intl.NumberFormat(language, {
+                value: new Intl.NumberFormat(locale, {
                   style: "currency",
                   currency: "AED",
                   maximumFractionDigits: 0,

@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup } from "../../index";
+import { Avatar, AvatarGroup, numberLocale, useSystem } from "../../index";
 import { saraPortrait, omarPortrait, photoMembers } from "./portraits";
 export function AvatarExamples({
   language = "ar",
@@ -6,6 +6,9 @@ export function AvatarExamples({
   language?: "ar" | "en";
 }) {
   const ar = language === "ar";
+  const number = new Intl.NumberFormat(
+    numberLocale(useSystem().config, language),
+  );
   return (
     <div className="tz-feedback-examples">
       <div className="tz-preferences-actions">
@@ -29,7 +32,7 @@ export function AvatarExamples({
         label={ar ? "فريق المشروع" : "Project team"}
         maxVisible={3}
         overflowLabel={(count) =>
-          ar ? `${count} أعضاء آخرون` : `${count} more members`
+          ar ? `${number.format(count)} أعضاء آخرون` : `${count} more members`
         }
       />
     </div>
