@@ -83,7 +83,7 @@ From the inventory of `aa1d0e3`:
 6. **Use it in your app:** the agent prompt and copy control, unchanged in behavior. It moves below the demo, so the page reads job first and code last. **(call)**
 7. **API reference:** unchanged in structure.
 
-The notes need new content for all 68 pages. It lives in `src/workbench/docs-notes.ts` as `Localized` values, so catalog entries stay small. **(call)**
+The notes need new content for all 67 pages (every `navigationCatalog` entry; `field` opens Input). It lives in `src/workbench/docs-notes.ts` as `Localized` values, so catalog entries stay small. **(call)**
 
 On pattern pages, the API reference also shows a table for each new shared part the pattern uses (AIMark, StatusPill, Tray…), generated from the registry's `support` entries. These parts have no page of their own, so the Anatomy legend links to these tables. **(call)**
 
@@ -340,7 +340,7 @@ This spec's steps slot into one order shared by all three specs (below).
 1. Fix enum validation and the Toast fallback; add their tests.
 2. Extend DemoFrame (states, notes, names, layout) and its styles, keeping standalone use working.
 3. Add `demo-states.ts`, and the `phase` / `onPhaseChange` pair on lifecycle examples, for the states that exist today.
-4. Write `docs-notes.ts` for all 68 pages in Arabic and English.
+4. Write `docs-notes.ts` for all 67 pages in Arabic and English.
 5. Restyle the chrome (after the Woven foundations land).
 6. Pattern pages: each AI pattern ships its own catalog, registry and docs page, its states and its Anatomy, Placements and Copy sections, using the infrastructure from steps 2 to 4 (AI patterns spec).
 7. Regroup the navigation in one move (AI sections, Parts, the Display additions) once Wave 1 is complete. Regrouping earlier would show an AI group with empty sections and fifteen pages folded into Parts.

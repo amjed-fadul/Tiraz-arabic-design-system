@@ -117,7 +117,7 @@ The proposal page itself also used other faces for its own chrome (a Kufi displa
 Rules:
 
 - Every literal size in `components.css` maps to a token. The ten hard-coded 10 and 11 px sizes become `--text-micro`. The `calc((body + meta) / 2)` sizes become `--text-label`. Today none of them grow with `typography="large"`; after the change they all do.
-- Leading becomes tokens: `--leading-display 1.3`, `--leading-heading 1.5`, `--line-height 1.8` (body, existing), `--leading-reading 1.95`, `--leading-meta 1.6`, `--leading-micro 1.4`. The 20+ literal line heights map to them.
+- Leading becomes tokens: `--leading-display 1.3`, `--leading-title 1.35`, `--leading-heading 1.5`, `--line-height 1.8` (body, existing), `--leading-reading 1.95`, `--leading-meta 1.6` (also used by labels), `--leading-micro 1.4`, `--leading-figure 1.25`. These match the table above. The 20+ literal line heights map to them.
 - Conversation text (user bubbles, the composer input, answers, drafts) uses the `--text-reading` size; bubbles and inputs keep the body leading of 1.8. The examples used a few in-between sizes (14.5 and 13.5 px); the scale rounds them to the nearest token.
 - One heading weight: 600. AskUserQuestions' 18/500 heading and InsightCards' 14/500 titles move to the ladder.
 - **Arabic typography.** No letter-spacing, no `text-transform`, no italics on Arabic. Uppercase and tracking are allowed only for Latin eyebrows in the docs (`:lang(en)`). Headings use `text-wrap: balance`, body text `text-wrap: pretty`. Underlines keep `--underline-offset` (0.24em; 0.45em in RTL) so they clear Arabic dots.
@@ -130,10 +130,16 @@ Today `--text-muted` (#5f6b62) is slightly *darker* than `--text-secondary` (#61
 | Token | Light | Dark | Role |
 | --- | --- | --- | --- |
 | `--text` | #232a26 (unchanged) | #ecf0ec (unchanged) | primary |
-| `--text-secondary` | #56615a | #a5b0a9 | supporting text, labels in rows |
-| `--text-muted` | #616b64 | #8e9a93 | meta, placeholders, timestamps |
+| `--text-secondary` | #56615a | #adb9af (unchanged) | supporting text, labels in rows |
+| `--text-muted` | #616b64 | #9ba8a0 | meta, placeholders, timestamps |
 
-The hierarchy comes mainly from size and weight; color separates three tiers only modestly, because a lighter muted gray would fail AA on the tray. Computed on 18 October 2026 against page, tray, paper and well in both themes, the lowest pair is `--text-muted` on the light tray and well at 4.74:1. Every AI and attention pair in section 8.2 is 5.1:1 or better on paper, tray and its soft fill. The existing success, danger and info colors also pass on every surface. The builder keeps these checks as the contrast test (section 20) and adjusts lightness, never hue, if a later value fails.
+The hierarchy comes mainly from size and weight; color separates three tiers only modestly, because a lighter muted gray would fail AA on the tray. Computed on 18 October 2026:
+
+- **Page, tray, paper and well, both themes.** The lowest pair is `--text-muted` on the light tray and well, at 4.74:1.
+- **Soft tones** (section 20). The lowest is dark `--text-muted` on `--ai-soft`, at 4.59:1.
+- **Hover washes.** The lowest is light `--text-muted` on the page under `--wash-strong`, at 4.58:1.
+
+A first draft darkened both dark tiers (#a5b0a9 and #8e9a93). That put muted text at 3.88:1 on the AI tint, so planning kept today's dark secondary and raised muted's lightness only. Every AI and attention pair in section 8.2 is 5.1:1 or better on paper, tray and its soft fill. The existing success, danger and info colors also pass on every surface. The builder keeps these checks as the contrast test (section 20) and adjusts lightness, never hue, if a later value fails.
 
 ## 8. Color roles
 
@@ -168,7 +174,7 @@ The hue space of twelve accents plus five semantic colors is too crowded for any
 
 The documentation notes that the indigo, blue, plum and slate accents bring the accent close to the AI color, and the amber and clay accents bring it close to attention. **(call)**
 
-`config.test.ts` gains checks:
+A new `tokens.test.ts`, beside `config.test.ts`, holds these checks, because they read `tokens.css`:
 
 - `--ai` and `--attention` reach 4.5:1 on paper, tray and their soft fills in both themes.
 - The reserved and semantic colors (AI, attention, success, danger, info) are pairwise distinguishable: at least 0.08 apart in OKLab distance. **(call)** Measured on 18 October 2026:
@@ -243,7 +249,7 @@ The formulas keep three properties across the whole 0–16 range:
 
 | State | One rule |
 | --- | --- |
-| Hover | Neutral fills use `--wash` (4% text); pressed or active fills use `--wash-strong` (7%). Primary buttons keep `--action-hover`. Field borders darken 22% toward text. **Every** hover rule sits inside `@media (hover: hover) and (pointer: fine)`. Twelve rules are not gated today (`components.css` 1030, 1033, 1890, 1992, 2425, 3080, 3169, 3728, 3956, 5231, 5592, 6569). |
+| Hover | Neutral fills use `--wash` (4% text); pressed or active fills use `--wash-strong` (7%). Primary buttons keep `--action-hover`. Field borders darken 22% toward text. On a tray, hoverable rows keep their text at `--text` or `--text-secondary`: muted text on a hovered light tray falls to 4.40:1 (found while planning). **Every** hover rule sits inside `@media (hover: hover) and (pointer: fine)`. Twelve rules are not gated today (`components.css` 1030, 1033, 1890, 1992, 2425, 3080, 3169, 3728, 3956, 5231, 5592, 6569). |
 | Press | `--press-scale: 0.97` on every pressable: buttons (icon-only too), chips, segments, swatches, the send button, legend items, navigation items. Released with `--ease-out`, never the spring. This replaces today's .9, .92, .94, .95 and .96 scales and the 1.06 and 1.12 growth. |
 | Focus | Pressables: a 2 px `--focus` outline at a 2 px offset (the global rule). Rows inside scroll containers (tabs, sidebar, tree, menus, options): the same outline inset at −2 px, so overflow never clips it. Field-like controls, and containers that focus as a field (dropzone, color entry): the border turns `--focus` plus a 3 px `--focus-halo`. |
 | Field boundary | Field-like controls (Input, Textarea, Select trigger, DatePicker trigger, OTP slots, the TagInput shell, the ColorPicker entry) and checkbox and radio edges use the new `--border-field`: #848a85 light (3.31:1 on page, 3.53:1 on paper, 3.02:1 on the tray) and #5f6f65 dark (3.28, 3.04 and 3.41:1). This meets WCAG 1.4.11 (Amjed, 18 Oct). Today `--border-strong` (#c5cec7) gives 1.38 to 1.61:1. `--border-strong` keeps its value for secondary buttons and dashed edges, which their text or role already identifies. Hover darkens the field border 22% toward text, as today. |
@@ -361,7 +367,7 @@ This is the precedent the `data-theme-switching` kill switch (tokens.css:209–2
 
 - Kept: `--motion-press`, `--motion-fast`, `--motion-state`, `--motion-enter`, `--motion-exit`.
 - Changed: `--motion-enter` 220 → 180 and `--motion-exit` 150 → 120 for popovers, with new `--motion-dialog-*` for dialogs; `--motion-panel` 420 → 280 and `--motion-panel-exit` 260 → 200.
-- New: `--motion-toast` 240, `--motion-collapse` 200, `--motion-stagger` 40, `--motion-word` 34 (word interval), `--motion-loop-stitch`, `--motion-loop-shimmer`, `--motion-loop-turn`.
+- New: `--motion-release` 160 (press release), `--motion-toast` 240, `--motion-toast-exit` 150, `--motion-collapse` 200, `--motion-collapse-exit` 150, `--motion-stagger` 40, `--motion-word` 34 (word interval), `--motion-loop-stitch` 800, `--motion-loop-shimmer` 1,900, `--motion-loop-turn` 1,800 and `--motion-loop-skeleton` 1,600. The release, exit and skeleton tokens give the durations in the tables above a name, so no component rule needs a literal time.
 - `--ease-spring` stays defined but unused by everyday controls.
 - The seven written-out `cubic-bezier(0.23, 1, 0.32, 1)` and the plain `ease` keyword at `components.css:4290` become tokens.
 
@@ -521,12 +527,12 @@ Each item has a regression test where a unit test can observe it, or a browser c
 
 - `SystemConfig` gains only `numerals` (from the numerals work, with its `numberLocale()` helper and the Provider's `data-numerals` attribute). The AI and attention colors live in `tokens.css` like the other semantic pairs (section 8.2).
 - The Provider owns `data-modality` (section 15). The modality listener is attached once per provider root, and nested providers share it.
-- `config.test.ts` gains the contrast and distinguishability checks (section 8.2).
+- `tokens.test.ts` (new, beside `config.test.ts`) holds the contrast and distinguishability checks (section 8.2).
 
 ## 20. Verification
 
 - **Contrast script** (a Vitest test reading the token values): every text token on every surface (page, tray, paper, well, each soft tone) in both themes and with all twelve accents reaches 4.5:1, or 3:1 for text at 24 px and above or 18.66 px bold and above. The focus ring, status discs, switch track, and checkbox and radio edges reach 3:1 against their background. Field boundaries (`--border-field`) reach 3:1 on page, paper and tray in both themes (section 12).
-- **Unit tests.** Existing tests keep passing. New tests cover data-modality, the accent-to-AI and accent-to-attention maps, every digit fix, the read-only selector, the DatePicker trigger size, and the Alert and Badge tones.
+- **Unit tests.** Existing tests keep passing. New tests cover data-modality, the fixed AI and attention colors (section 8.2), every digit fix, the read-only selector, the DatePicker trigger size, and the Alert and Badge tones.
 - **Browser evidence.** A screenshot matrix per family: light and dark, Arabic RTL and English LTR, at defaults; plus radius 0 and 16, standard density, large typography, and 390 px width. Before and after pairs are saved under `docs/woven/`. The 21 computed font and radius assertions in `tests/browser` are updated. Stale scripts are fixed or marked retired: `documentation-groups.mjs` expects 32 buttons and a 190 px sidebar, and `ai-decisions.mjs:146` expects a 2 px radius the CSS cannot produce.
 - **Forced colors.** Chromium's `forced-colors: active` emulation shows every control's boundary and focus.
 - **Performance.** Only `transform` and `opacity` animate, with these documented exceptions:
