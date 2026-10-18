@@ -257,10 +257,6 @@ bdi {
 .playground-section {
   margin-block-end: 36px;
 }
-.preview-metadata {
-  color: var(--text-muted);
-  font-size: 11px;
-}
 .playground-region {
   overflow: visible;
 }
@@ -268,9 +264,9 @@ bdi {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-block-size: 100px;
+  min-block-size: 180px;
   min-inline-size: 0;
-  padding: 0;
+  padding: var(--space-4) 0;
 }
 .playground-tabs {
   inline-size: 100%;
@@ -293,33 +289,6 @@ bdi {
   font: 12px var(--font-mono);
   color: var(--text-secondary);
 }
-.event-feedback {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  font-size: 11px;
-  margin-block-start: 10px;
-  color: var(--text-secondary);
-  flex-wrap: wrap;
-}
-.event-feedback > span {
-  flex-shrink: 0;
-}
-.event-feedback code {
-  font: 11px/1.8 var(--font-mono);
-  overflow-wrap: anywhere;
-  unicode-bidi: isolate;
-  color: var(--text);
-}
-.event-feedback p {
-  margin: 0;
-  font-size: 11px;
-}
-.playground-help {
-  font-size: 11px;
-  color: var(--text-secondary);
-  margin: 5px 0 0;
-}
 .examples-section {
   margin-block-end: 36px;
 }
@@ -335,26 +304,22 @@ bdi {
 .example-row {
   margin-block-end: 20px;
 }
+/* Variant labels name a stage section quietly; the component does the
+   talking. */
 .example-row > p,
-.example-caption {
+.example-caption,
+.examples-canvas section > h3 {
   margin: 0 0 12px;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: 1.6;
 }
 .example-inline {
   display: flex;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-}
-.example-feedback {
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-  margin: 10px 0 0;
-  min-block-size: 0;
-}
-.example-feedback:empty {
-  display: none;
 }
 .example-row:last-of-type {
   margin-block-end: 0;

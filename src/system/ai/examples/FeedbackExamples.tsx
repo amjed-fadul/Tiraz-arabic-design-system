@@ -1,75 +1,77 @@
-import { useEffect, useRef, useState } from "react";
-import { Alert, Button, Skeleton, Progress, Spinner } from "../../index";
+import { useEffect, useState } from "react";
+import {
+  Alert,
+  Avatar,
+  Button,
+  Skeleton,
+  Progress,
+  Spinner,
+} from "../../index";
+import { useReducedMotion } from "../../useReducedMotion";
+import { saraPortrait } from "./portraits";
 type Language = "ar" | "en";
 export function AlertExamples({ language = "ar" }: { language?: Language }) {
   const ar = language === "ar";
-  const [visible, setVisible] = useState(true);
-  const actionRef = useRef<HTMLDivElement>(null);
-  const focusRequested = useRef(false);
-  useEffect(() => {
-    if (focusRequested.current) {
-      actionRef.current
-        ?.querySelector<HTMLButtonElement>("[data-note-action]")
-        ?.focus();
-      focusRequested.current = false;
-    }
-  }, [visible]);
-  function toggleNote() {
-    focusRequested.current = true;
-    setVisible((value) => !value);
-  }
+  const [sent, setSent] = useState(false);
   return (
-    <div ref={actionRef} className="tz-feedback-examples">
-      <Alert
-        title={ar ? "تم إعداد المعاينة" : "Preview prepared"}
-        tone="success"
-      />
+    <div className="tz-feedback-examples">
+      <Alert title={ar ? "تم حفظ التغييرات" : "Changes saved"} tone="success" />
       <Alert
         title={ar ? "تعذّر حفظ التغييرات" : "Changes could not be saved"}
         description={
           ar
-            ? "هذا مثال ثابت لرسالة خطأ؛ لم يحدث طلب شبكة."
-            : "This is a static error example; no network request occurred."
+            ? "تحقق من اتصالك ثم أعد المحاولة."
+            : "Check your connection and try again."
         }
         tone="error"
       />
-      {visible ? (
-        <Alert
-          title={ar ? "ملاحظة للمعاينة" : "Preview note"}
-          description={
-            ar
-              ? "إغلاق هذه الرسالة يخص هذا المثال فقط."
-              : "Dismissing this message affects this example only."
-          }
-          action={
-            <Button
-              data-note-action=""
-              variant="secondary"
-              onClick={toggleNote}
-            >
-              {ar ? "إغلاق الملاحظة" : "Dismiss note"}
-            </Button>
-          }
-        />
-      ) : (
-        <>
-          <p role="status">{ar ? "أُغلقت الملاحظة" : "Note dismissed"}</p>
-          <Button data-note-action="" variant="secondary" onClick={toggleNote}>
-            {ar ? "إظهار الملاحظة" : "Show note"}
+      <Alert
+        title={
+          ar
+            ? "الفاتورة INV-2048 مستحقة غدًا"
+            : "Invoice INV-2048 is due tomorrow"
+        }
+        description={
+          sent
+            ? ar
+              ? "أرسلنا تذكيرًا إلى hello@madar.sa."
+              : "We sent a reminder to hello@madar.sa."
+            : ar
+              ? "شركة مدار للتقنية · ١٢٬٤٠٠ ر.س"
+              : "Madar Technology · SAR 12,400"
+        }
+        announcement="polite"
+        action={
+          <Button
+            variant="secondary"
+            state={sent ? "success" : "idle"}
+            onClick={() => setSent(true)}
+          >
+            {sent
+              ? ar
+                ? "أُرسل التذكير"
+                : "Reminder sent"
+              : ar
+                ? "إرسال تذكير"
+                : "Send reminder"}
           </Button>
-        </>
-      )}
-      <p>
-        {ar
-          ? "الرسائل الثابتة لا تعلن تلقائيًا. استخدم announcement=polite لتحديث عادي أو assertive لرسالة عاجلة."
-          : "Static messages are silent. Use announcement=polite for a routine update or assertive for urgent feedback."}
-      </p>
+        }
+      />
     </div>
   );
 }
 export function SkeletonExamples({ language = "ar" }: { language?: Language }) {
   const ar = language === "ar";
-  const [loading, setLoading] = useState(true);
+  const reduced = useReducedMotion();
+  // Plays the loading state once on mount. With reduced motion the skeleton
+  // simply holds still (its shimmer is already off), so the page still shows it.
+  const [ready, setReady] = useState(false);
+  const loading = !ready;
+  useEffect(() => {
+    if (reduced) return;
+    const timer = setTimeout(() => setReady(true), 2400);
+    return () => clearTimeout(timer);
+  }, [reduced]);
   return (
     <div className="tz-feedback-examples">
       <div aria-busy={loading} className="tz-feedback-placeholder">
@@ -83,31 +85,34 @@ export function SkeletonExamples({ language = "ar" }: { language?: Language }) {
             </div>
           </>
         ) : (
-          <p>
-            {ar
-              ? "المحتوى النموذجي جاهز للقراءة."
-              : "The sample content is ready to read."}
-          </p>
+          <>
+            <Avatar
+              name={ar ? "سارة علي" : "Sara Ali"}
+              fallback={ar ? "س ع" : "SA"}
+              src={saraPortrait}
+              decorative
+            />
+            <div className="tz-feedback-lines">
+              <strong>{ar ? "سارة علي" : "Sara Ali"}</strong>
+              <bdi dir="ltr">sara@madar.sa</bdi>
+              <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+                {ar
+                  ? "مديرة الحسابات في شركة مدار للتقنية. تتابع الفواتير المستحقة وتذكيرات العملاء."
+                  : "Accounts manager at Madar Technology. Follows up on due invoices and customer reminders."}
+              </p>
+            </div>
+          </>
         )}
       </div>
-      <p role="status">
+      <p role="status" className="tz-visually-hidden">
         {loading
           ? ar
-            ? "جارٍ تجهيز المحتوى"
-            : "Preparing content"
+            ? "جارٍ تحميل الملف الشخصي"
+            : "Loading profile"
           : ar
-            ? "المحتوى جاهز"
-            : "Content ready"}
+            ? "تم تحميل الملف الشخصي"
+            : "Profile loaded"}
       </p>
-      <Button variant="secondary" onClick={() => setLoading((value) => !value)}>
-        {loading
-          ? ar
-            ? "عرض المحتوى"
-            : "Show content"
-          : ar
-            ? "عرض حالة التحميل"
-            : "Show loading state"}
-      </Button>
     </div>
   );
 }
@@ -116,26 +121,21 @@ export function ProgressExamples({ language = "ar" }: { language?: Language }) {
   return (
     <div className="tz-feedback-examples">
       <Progress
-        label={ar ? "لم يبدأ" : "Not started"}
+        label={ar ? "ترحيل الفواتير" : "Invoice migration"}
         value={0}
         showValue
         locale={language}
       />
       <Progress
-        label={ar ? "مكتمل" : "Complete"}
+        label={ar ? "رفع كشف الحساب" : "Statement upload"}
         value={100}
         showValue
         locale={language}
       />
       <Progress
-        label={ar ? "بانتظار معرفة الحجم" : "Waiting for total size"}
+        label={ar ? "تجهيز ملف التصدير" : "Preparing export file"}
         locale={language}
       />
-      <p>
-        {ar
-          ? "أمثلة حالات صريحة؛ قيمة null أو غير محدودة تعني تقدمًا غير محدد."
-          : "Explicit example states; null or a nonfinite value means indeterminate progress."}
-      </p>
     </div>
   );
 }
@@ -145,13 +145,8 @@ export function SpinnerExamples({ language = "ar" }: { language?: Language }) {
     <div className="tz-feedback-examples">
       <div role="status" className="tz-preferences-actions">
         <Spinner decorative />
-        <span>{ar ? "جارٍ تجهيز المحتوى" : "Preparing content"}</span>
+        <span>{ar ? "جارٍ مزامنة الفواتير" : "Syncing invoices"}</span>
       </div>
-      <p>
-        {ar
-          ? "عند تقليل الحركة يبقى المؤشر ثابتًا والتسمية متاحة. استخدم decorative عندما يعلن النص المجاور الحالة."
-          : "With reduced motion the indicator remains static and its label remains available. Use decorative when adjacent text announces the state."}
-      </p>
     </div>
   );
 }

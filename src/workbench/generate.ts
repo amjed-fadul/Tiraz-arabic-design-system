@@ -441,7 +441,7 @@ export default function Example() {
             {
               id: "madar",
               name: t("شركة مدار للتقنية", "Madar Technology"),
-              email: "hello@madar.example",
+              email: "hello@madar.sa",
               status: t("نشط", "Active"),
             },
             {
@@ -450,7 +450,7 @@ export default function Example() {
                 "مؤسسة نور للخدمات والاستشارات",
                 "Nour Services and Consulting",
               ),
-              email: "team@nour.example",
+              email: "team@nour.com.sa",
               status: t("متوقف", "Paused"),
             },
           ])};`;
@@ -594,7 +594,7 @@ export default function Example() {
       p.mode === "controlled"
         ? `const [open, setOpen] = useState(${p.open});`
         : "";
-    jsx = `<Sheet\n        trigger={<Button variant="${p.triggerVariant}" size="${p.triggerSize}">{${json(p.triggerLabel)}}</Button>}\n        ${attribute("title", p.title)}\n        ${attribute("description", p.description)}\n        ${attribute("closeLabel", p.closeLabel)}\n        ${p.side === "auto" ? "" : `side="${p.side}"`}\n        ${p.mode === "controlled" ? "open={open}" : ""}\n        onOpenChange={(next) => { ${p.mode === "controlled" ? "setOpen(next); " : ""}${recordEvent}("onOpenChange: " + next); }}\n        ${p.footer ? `footer={<SheetClose asChild><Button>{${json(p.footerLabel)}}</Button></SheetClose>}` : ""}\n      >\n        <p dir="auto">{${json(p.children)}}</p>\n        <dl>\n          <div><dt>{${json(t("البريد الإلكتروني", "Email"))}}</dt><dd><bdi dir="ltr">hello@madar.example</bdi></dd></div>\n          <div><dt>{${json(t("الموقع الإلكتروني", "Website"))}}</dt><dd><bdi dir="ltr">https://madar.example</bdi></dd></div>\n        </dl>\n      </Sheet>`;
+    jsx = `<Sheet\n        trigger={<Button variant="${p.triggerVariant}" size="${p.triggerSize}">{${json(p.triggerLabel)}}</Button>}\n        ${attribute("title", p.title)}\n        ${attribute("description", p.description)}\n        ${attribute("closeLabel", p.closeLabel)}\n        ${p.side === "auto" ? "" : `side="${p.side}"`}\n        ${p.mode === "controlled" ? "open={open}" : ""}\n        onOpenChange={(next) => { ${p.mode === "controlled" ? "setOpen(next); " : ""}${recordEvent}("onOpenChange: " + next); }}\n        ${p.footer ? `footer={<SheetClose asChild><Button>{${json(p.footerLabel)}}</Button></SheetClose>}` : ""}\n      >\n        <p dir="auto">{${json(p.children)}}</p>\n        <dl>\n          <div><dt>{${json(t("البريد الإلكتروني", "Email"))}}</dt><dd><bdi dir="ltr">hello@madar.sa</bdi></dd></div>\n          <div><dt>{${json(t("الموقع الإلكتروني", "Website"))}}</dt><dd><bdi dir="ltr">https://madar.sa</bdi></dd></div>\n        </dl>\n      </Sheet>`;
   } else {
     const p = model as ToastModel;
     imports.add("Button");

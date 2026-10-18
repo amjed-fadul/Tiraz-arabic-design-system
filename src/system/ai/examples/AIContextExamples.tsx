@@ -14,44 +14,45 @@ function sampleModels(ar: boolean, longContent = false): ModelOption[] {
   return [
     {
       id: "studio-draft",
-      name: ar ? "مسودة" : "Draft",
-      provider: ar ? "الاستوديو · عينة" : "Studio · sample",
+      name: ar ? "فلك سريع" : "Falak Swift",
+      provider: ar ? "فلك" : "Falak",
       description: ar
-        ? "للملاحظات والردود القصيرة"
-        : "For notes and short replies",
-      tags: [ar ? "عينة" : "Sample"],
+        ? "ردود سريعة ومسودات قصيرة"
+        : "Quick replies and short drafts",
+      tags: [ar ? "الأسرع" : "Fastest"],
       context: "32k",
-      price: ar ? "سعر عينة: ١ وحدة" : "Sample price: 1 credit",
+      price: ar ? "٠٫٢٥ دولار / مليون رمز" : "$0.25 / M tokens",
     },
     {
       id: "studio-review",
-      name: ar ? "مراجعة" : "Review",
-      provider: ar ? "الاستوديو · عينة" : "Studio · sample",
+      name: ar ? "فلك متقن" : "Falak Precise",
+      provider: ar ? "فلك" : "Falak",
       description: longContent
         ? ar
-          ? "وصف طويل للاختبار: مراجعة المستندات المختلطة باللغة العربية والإنجليزية والحفاظ على المسودة الحالية."
-          : "Long sample description: review mixed Arabic and English documents while preserving the current draft and selected text."
+          ? "يحلّل العقود والتقارير المالية الطويلة بالعربية والإنجليزية ويحافظ على الجداول والأرقام كما هي — suited to quarterly reports and bilingual contracts."
+          : "Analyzes long contracts and financial reports in Arabic and English while keeping tables and figures intact — مناسب للتقارير الربعية والعقود ثنائية اللغة."
         : ar
-          ? "لمراجعة المستندات الطويلة"
-          : "For longer document reviews",
-      tags: [ar ? "مراجعة" : "Review"],
-      context: "64k",
+          ? "المستندات الطويلة وتحليل الجداول"
+          : "Long documents and spreadsheet analysis",
+      tags: [ar ? "الأدق" : "Most capable"],
+      context: "200k",
+      price: ar ? "٣ دولارات / مليون رمز" : "$3 / M tokens",
     },
     {
       id: "local-unavailable",
-      name: ar ? "محلي" : "Local",
-      provider: ar ? "مساحة العمل · عينة" : "Workspace · sample",
+      name: ar ? "مدار الخاص" : "Madar Private",
+      provider: ar ? "خوادم مدار" : "Madar servers",
       description: ar
-        ? "غير مهيّأ في هذا المثال"
-        : "Unavailable in this example",
+        ? "قيد الصيانة حتى ٢٠ نوفمبر"
+        : "Under maintenance until Nov 20",
       disabled: true,
     },
   ];
 }
 const reply = (ar: boolean, long = false) =>
   ar
-    ? `تبدأ خطة Tiraz بمراجعة المحتوى، ثم ترتيب الأولويات. يمكن نقل النص المحدّد إلى المسودة دون تغيير الرد الأصلي.${long ? " نراجع النص العربي والإنجليزي معًا: Draft 2026 — جاهز للمراجعة. اختَر عبارة قصيرة أو فقرة كاملة." : ""}`
-    : `The Tiraz plan starts with a content review, followed by priorities. Selected text can be placed in the draft while the original reply stays intact.${long ? " Review Arabic and English together: المسودة جاهزة — Draft 2026. Select a short phrase or a whole paragraph." : ""}`;
+    ? `راجعتُ فواتير أكتوبر لشركة مدار: تطابقت ٢١٤ فاتورة مع أوامر الشراء، وتحتاج ٣ فواتير إلى مراجعة لأن مبالغها تختلف عن الإيصالات. أكبر فرق في الفاتورة INV-1043 بقيمة ١٬٢٥٠ ر.س.${long ? " ملاحظة المورّد على الفاتورة: “Partial delivery — second shipment on Nov 20”. أقترح تعليق الدفع حتى تأكيد الشحنة الثانية، ثم صرف المبلغ المتبقي وإرفاق إشعار التسليم بأمر الشراء PO-7781." : ""}`
+    : `I reviewed Madar’s October invoices: 214 match their purchase orders, and 3 need review because their totals differ from the receipts. The largest gap is 1,250 SAR on invoice INV-1043.${long ? " The supplier’s note on that invoice reads «تم التسليم جزئيًا، والشحنة الثانية تصل في ٢٠ نوفمبر». I suggest holding payment until the second shipment is confirmed, then releasing the balance and attaching the delivery note to PO-7781." : ""}`;
 export function AIContextExample({
   language = "ar",
   longContent = false,
@@ -61,52 +62,39 @@ export function AIContextExample({
 }) {
   const ar = language === "ar";
   const [model, setModel] = useState("studio-draft"),
-    [draft, setDraft] = useState(""),
-    [result, setResult] = useState("");
+    [draft, setDraft] = useState("");
   const [sent, setSent] = useState<ChatMessage[]>([]);
   const models = sampleModels(ar, longContent);
   function append(text: string) {
     setDraft((value) => (value ? `${value}\n${text}` : text));
-    setResult(
-      ar
-        ? "أُضيف النص المحدّد إلى المسودة."
-        : "Selected text added to the draft.",
-    );
   }
   return (
     <div className="tz-context-connected">
-      <p className="tz-context-note">
-        {ar
-          ? "مثال محلي · نماذج وقيم سياق وأسعار عينات؛ لا نشاط شبكة."
-          : "Local example · sample models, context values and prices; no network activity."}
-      </p>
       <div className="tz-context-controls-row">
         <ModelSelector models={models} value={model} onValueChange={setModel} />
         <ContextMeter
           used={4800}
-          capacity={model === "studio-review" ? 64000 : 32000}
+          capacity={model === "studio-review" ? 200000 : 32000}
           estimated
           details={[
             {
               id: "messages",
-              label: ar ? "الرسائل · عينة" : "Messages · sample",
+              label: ar ? "الرسائل" : "Messages",
               value: 3600,
             },
             {
               id: "instructions",
-              label: ar ? "التعليمات · عينة" : "Instructions · sample",
+              label: ar ? "التعليمات" : "Instructions",
               value: 1200,
             },
           ]}
           metadata={
-            ar
-              ? "قيم عينات يزوّدها التطبيق"
-              : "Sample values supplied by the application"
+            ar ? "حُدّث بعد آخر رسالة" : "Updated after your last message"
           }
         />
       </div>
       <SelectionActions
-        label={ar ? "رد قابل للتحديد" : "Selectable reply"}
+        label={ar ? "رد المساعد" : "Assistant reply"}
         actions={[
           {
             id: "draft",
@@ -119,18 +107,7 @@ export function AIContextExample({
             label: ar ? "نسخ" : "Copy",
             icon: <Copy size={14} aria-hidden="true" />,
             onSelect: (text) => {
-              void navigator.clipboard.writeText(text).then(
-                () =>
-                  setResult(
-                    ar ? "نُسخ النص المحدّد." : "Selected text copied.",
-                  ),
-                () =>
-                  setResult(
-                    ar
-                      ? "تعذّر النسخ؛ حدّد النص واستخدم أمر النسخ."
-                      : "Copy failed; select the text and use the system copy command.",
-                  ),
-              );
+              void navigator.clipboard?.writeText(text).catch(() => {});
             },
           },
           {
@@ -142,48 +119,37 @@ export function AIContextExample({
         ]}
       >
         <ChatThread
-          label={ar ? "محادثة المثال" : "Example conversation"}
+          label={ar ? "محادثة مطابقة الفواتير" : "Invoice reconciliation chat"}
           messages={[
             {
-              id: "sample-reply",
+              id: "reconciliation-reply",
               role: "assistant",
-              identity: ar ? "المساعد · نص عينة" : "Assistant · sample text",
+              identity: ar ? "مساعد المالية" : "Finance assistant",
               content: <p>{reply(ar, longContent)}</p>,
             },
             ...sent,
           ]}
         />
       </SelectionActions>
-      <p className="tz-context-note">
-        {ar
-          ? "حدّد نص الرد. Alt+Enter للإجراءات، والأسهم للتنقّل، وEscape للإغلاق."
-          : "Select reply text. Alt+Enter for actions, arrows to navigate, Escape to dismiss."}
-      </p>
       <ChatComposer
         value={draft}
         onValueChange={setDraft}
         label={ar ? "مسودة الرسالة" : "Message draft"}
         placeholder={
-          ar ? "اكتب أو أضف نصًا محدّدًا…" : "Write or add selected text…"
+          ar ? "اكتب ردك أو أضف نصًا محدّدًا…" : "Reply or add selected text…"
         }
         onSubmit={(text) => {
           setSent((items) => [
             ...items,
             {
-              id: `local-${items.length + 1}`,
+              id: `sent-${items.length + 1}`,
               role: "user",
               content: <p>{text}</p>,
             },
           ]);
           setDraft("");
-          setResult(
-            ar ? "أُضيفت الرسالة محليًا فقط." : "Message added locally only.",
-          );
         }}
       />
-      <p role="status" className="tz-context-note">
-        {result}
-      </p>
     </div>
   );
 }
@@ -206,22 +172,12 @@ export function ModelSelectorExample({
     [value, setValue] = useState("studio-draft");
   return (
     <div className="tz-context-example">
-      <div className="tz-context-controls-row">
-        <ModelSelector
-          models={sampleModels(ar, longContent)}
-          value={value}
-          onValueChange={setValue}
-          disabled={disabled}
-        />
-        <span className="tz-context-note">
-          {ar ? "يجيب ضمن هذا المثال" : "answers in this example"}
-        </span>
-      </div>
-      <p className="tz-context-note">
-        {ar
-          ? "نماذج وأوصاف وأسعار عينات يزوّدها التطبيق."
-          : "Application-supplied sample models, descriptions and prices."}
-      </p>
+      <ModelSelector
+        models={sampleModels(ar, longContent)}
+        value={value}
+        onValueChange={setValue}
+        disabled={disabled}
+      />
     </div>
   );
 }
@@ -265,13 +221,10 @@ export function ContextMeterExample({
               ]
             : undefined
         }
-        metadata={ar ? "قيم عينات فقط" : "Sample values only"}
+        metadata={
+          ar ? "حُدّث بعد آخر رسالة" : "Updated after your last message"
+        }
       />
-      <p className="tz-context-note">
-        {ar
-          ? "الاستخدام والسعة عينات صريحة؛ لا تقدير أو اقتطاع تلقائي."
-          : "Usage and capacity are explicit sample values; no automatic estimation or truncation."}
-      </p>
     </div>
   );
 }

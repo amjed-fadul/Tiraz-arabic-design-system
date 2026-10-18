@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import {
+  CodeBlockExample,
+  MarkdownExample,
   StreamingDemo,
   StreamingTextExample,
 } from "../system/ai/examples/AIContentExamples";
@@ -60,18 +62,18 @@ it("explicitly starts fixed chunks and invalidates replay/unmount callbacks", as
   expect(content()).toBe("");
   fireEvent.click(screen.getByRole("button", { name: "Start local demo" }));
   await act(async () => vi.advanceTimersByTime(960));
-  expect(content()).toContain("Tiraz");
+  expect(content()).toContain("214 invoices");
   expect(screen.queryByRole("button", { name: "Cancel demo" })).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
   await act(async () => vi.advanceTimersByTime(320));
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
   expect(content()).toBe("");
   await act(async () => vi.advanceTimersByTime(320));
-  expect(content()).toBe("Local summary");
+  expect(content()).toBe("Reconciliation summary");
   await act(async () => vi.advanceTimersByTime(4000));
   expect(
     document.querySelector(".tz-streaming-text > [role=status]"),
-  ).toHaveTextContent("Local sample complete");
+  ).toHaveTextContent("Response complete");
   expect(screen.getByRole("table")).toBeVisible();
   expect(vi.getTimerCount()).toBe(0);
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
@@ -104,25 +106,76 @@ it("automatically streams the playground once, preserving replay and invalidatin
   ).toBeVisible();
   await act(async () => vi.advanceTimersByTime(160));
   expect(document.querySelector(".tz-stream-content")).toHaveTextContent(
-    "This",
+    "October",
   );
   fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
   await act(async () => vi.advanceTimersByTime(4000));
   expect(
     document.querySelector(".tz-streaming-text > [role=status]"),
-  ).toHaveTextContent("Local sample complete");
+  ).toHaveTextContent("Response complete");
   expect(vi.getTimerCount()).toBe(0);
   view.rerender(wrap("ar", true));
   await act(async () => vi.advanceTimersByTime(320));
   expect(document.querySelector(".tz-stream-content")).toHaveTextContent(
-    "ملخص محلي",
+    "ملخص المطابقة",
   );
   expect(document.querySelector(".tz-stream-content")).not.toHaveTextContent(
-    "This",
+    "October",
   );
   view.unmount();
   expect(vi.getTimerCount()).toBe(0);
 });
+
+it("shows the complete response at once under reduced motion, including on replay", async () => {
+  vi.useFakeTimers();
+  render(
+    <SystemProvider
+      config={{ ...defaultConfig, direction: "ltr", reducedMotion: true }}
+    >
+      <StreamingDemo language="en" markdown autoStart />
+    </SystemProvider>,
+  );
+  await act(async () => vi.advanceTimersByTime(0));
+  expect(document.querySelector(".tz-streaming-text")).toHaveAttribute(
+    "data-state",
+    "completed",
+  );
+  expect(screen.getByRole("table")).toBeVisible();
+  expect(vi.getTimerCount()).toBe(0);
+  fireEvent.click(screen.getByRole("button", { name: "Replay local demo" }));
+  expect(screen.getByRole("table")).toBeVisible();
+  expect(vi.getTimerCount()).toBe(0);
+});
+it.each(["ar", "en"] as const)(
+  "renders %s content examples as product content only",
+  async (language) => {
+    vi.useFakeTimers();
+    const view = render(
+      <SystemProvider
+        config={{
+          ...defaultConfig,
+          direction: language === "ar" ? "rtl" : "ltr",
+        }}
+      >
+        {["ts", "python", "json", "text", "unsupported"].map((code) => (
+          <CodeBlockExample
+            key={code}
+            language={language}
+            codeLanguage={code}
+            longContent
+          />
+        ))}
+        <MarkdownExample language={language} longContent />
+        <StreamingDemo language={language} markdown autoStart />
+        <StreamingTextExample language={language} />
+      </SystemProvider>,
+    );
+    await act(async () => vi.advanceTimersByTime(4000));
+    expect(view.container).not.toHaveTextContent(
+      /\b(sample|example|local|demo|simulat\w*|fictional|scripted|greet)\b|تجريبي|عينة|محلي|نموذجي|محاكاة/i,
+    );
+  },
+);
 
 it("uses compact titled headers and named icon-only playback controls in both demos", async () => {
   const user = userEvent.setup();
@@ -202,6 +255,7 @@ it("keeps an empty announcement owner mounted before the first real action, with
     region,
   );
   expect(region).toHaveAccessibleName("آخر حدث");
-  expect(region).not.toHaveClass("tz-visually-hidden");
+  // Announced to assistive tech; the stage itself stays visually clean.
+  expect(region).toHaveClass("tz-visually-hidden");
   expect(region).not.toBeEmptyDOMElement();
 });

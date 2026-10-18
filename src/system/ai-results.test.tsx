@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { sampleSources } from "./ai/examples/ai-result-samples";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { act, render, screen, fireEvent, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import {
@@ -18,6 +18,8 @@ import type { ReactNode } from "react";
 import {
   ImageResultExample,
   ImageResultStates,
+  InsightCardsExample,
+  SourcesStates,
 } from "./ai/examples/AIResultsExamples";
 const source: SourceReference = {
   id: "menu-audit",
@@ -289,15 +291,18 @@ it("retains supplied zero details rather than treating them as absent", () => {
 });
 
 it.each(["ar", "en"] as const)(
-  "keeps %s sample descriptions supported by their actual local documents",
+  "keeps %s source quotations supported by their actual local documents",
   (language) => {
-    const [audit, brief] = sampleSources(language);
-    for (const [source, file] of [
-      [audit, "menu-audit.txt"],
-      [brief, "menu-brief.txt"],
-    ] as const) {
+    const sources = sampleSources(language);
+    const files: Record<string, string> = {
+      "menu-audit": "menu-audit.txt",
+      "menu-brief": "menu-brief.txt",
+    };
+    const quoted = sources.filter((source) => source.description);
+    expect(quoted.length).toBeGreaterThan(0);
+    for (const source of quoted) {
       const text = readFileSync(
-        `src/system/ai/assets/results/${file}`,
+        `src/system/ai/assets/results/${files[source.id]}`,
         "utf8",
       ).replace(/\s+/g, " ");
       expect(text).toContain(source.description);
@@ -305,16 +310,93 @@ it.each(["ar", "en"] as const)(
   },
 );
 
-it("keeps the actual loading/failure demo figure focused through keyboard retry", async () => {
+it("keeps the failed result figure focused through keyboard retry and recovery", async () => {
   const user = userEvent.setup();
-  const view = render(wrap(<ImageResultStates language="en" />));
-  await user.click(screen.getByRole("button", { name: "Break image" }));
-  fireEvent.error(view.container.querySelector(".tz-image-result img")!);
+  render(wrap(<ImageResultStates language="en" />));
   const retry = screen.getByRole("button", { name: "Try again" });
+  const figure = retry.closest("figure")!;
+  expect(
+    within(figure).getByText("Couldn’t generate this image"),
+  ).toBeVisible();
   retry.focus();
   await user.keyboard("{Enter}");
-  expect(view.container.querySelector("figure")).toHaveFocus();
+  expect(figure).toHaveFocus();
+  expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+  fireEvent.load(figure.querySelector("img")!);
+  expect(figure).toHaveFocus();
+  expect(
+    within(figure).getByRole("img", {
+      name: "Coffee cup and menu board on a dark background",
+    }),
+  ).toBeVisible();
 });
+it("autoplays the generating result once with real progress, then hands it to the loaded image", () => {
+  vi.useFakeTimers();
+  try {
+    const view = render(wrap(<ImageResultStates language="en" />));
+    const bar = () =>
+      screen.queryByRole("progressbar", { name: "Generating image" });
+    const step = (count: number) => {
+      for (let i = 0; i < count; i++) act(() => vi.advanceTimersByTime(260));
+    };
+    expect(bar()).toHaveAttribute("aria-valuenow", "8");
+    step(4);
+    expect(bar()).toHaveAttribute("aria-valuenow", "56");
+    step(4);
+    expect(bar()).toHaveAttribute("aria-valuenow", "100");
+    expect(vi.getTimerCount()).toBe(0);
+    const image = view.container.querySelector<HTMLImageElement>(
+      'img[alt="Coffee cup and menu board in clay tones"]',
+    )!;
+    fireEvent.load(image);
+    expect(bar()).toBeNull();
+    expect(image).toBeVisible();
+    view.unmount();
+    expect(vi.getTimerCount()).toBe(0);
+  } finally {
+    vi.useRealTimers();
+  }
+});
+it("shows the finished result immediately under reduced motion", () => {
+  vi.useFakeTimers();
+  try {
+    render(
+      <SystemProvider
+        config={{ ...defaultConfig, direction: "ltr", reducedMotion: true }}
+      >
+        <ImageResultStates language="en" />
+      </SystemProvider>,
+    );
+    expect(
+      screen.getByRole("progressbar", { name: "Generating image" }),
+    ).toHaveAttribute("aria-valuenow", "100");
+    expect(vi.getTimerCount()).toBe(0);
+    fireEvent.load(
+      screen.getByAltText("Coffee cup and menu board in clay tones"),
+    );
+    expect(screen.queryByRole("progressbar")).toBeNull();
+  } finally {
+    vi.useRealTimers();
+  }
+});
+it.each(["ar", "en"] as const)(
+  "renders %s result examples as product content only",
+  (language) => {
+    const view = render(
+      wrap(
+        <>
+          <ImageResultExample language={language} />
+          <ImageResultStates language={language} />
+          <SourcesStates language={language} />
+          <InsightCardsExample language={language} longContent />
+        </>,
+      ),
+    );
+    expect(view.container).not.toHaveTextContent(
+      /\b(sample|example|local|demo|simulat\w*|fictional|scripted)\b|تجريبي|عينة|محلي|نموذجي|محاكاة/i,
+    );
+  },
+);
 it("retains focus on insight paging controls at both boundaries and ignores unavailable navigation", async () => {
   const user = userEvent.setup();
   render(

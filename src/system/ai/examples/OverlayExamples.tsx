@@ -49,8 +49,8 @@ export function TooltipExample({
         content={
           content ??
           (ar
-            ? "عرض معلومات إضافية في هذه المعاينة."
-            : "Show extra information in this preview.")
+            ? "يعرض المبلغ والضريبة لكل بند."
+            : "Shows the amount and VAT for each line.")
         }
         trigger={
           <Button
@@ -71,8 +71,8 @@ export function TooltipExample({
       {details && (
         <p>
           {ar
-            ? "هذه معاينة محلية للمكوّن."
-            : "This is a local component preview."}
+            ? "١٠٬٠٠٠ ر.س + ضريبة ١٬٥٠٠ ر.س = ١١٬٥٠٠ ر.س"
+            : "SAR 10,000 + VAT SAR 1,500 = SAR 11,500"}
         </p>
       )}
     </div>
@@ -96,73 +96,67 @@ export function ModalExample({
     [layout, setLayout] = useState("list");
   const focusRef = useRef<HTMLButtonElement>(null);
   return (
-    <div>
-      <Modal
-        title={title ?? (ar ? "خيارات العرض" : "Display options")}
-        description={
-          description ??
-          (ar
-            ? "اختر تخطيطًا لهذه المعاينة فقط."
-            : "Choose a layout for this preview only.")
-        }
-        closeLabel={ar ? "إغلاق النافذة" : "Close dialog"}
-        trigger={
-          <Button variant="secondary">
-            {ar ? "عرض الخيارات" : "View options"}
-          </Button>
-        }
-        open={controlled ? open : undefined}
-        onOpenChange={setOpen}
-        initialFocusRef={focusRef}
-        footer={
-          footer ? (
-            <Close asChild>
-              <Button>{ar ? "تم" : "Done"}</Button>
-            </Close>
-          ) : undefined
-        }
-      >
-        <div className="tz-preferences-form">
-          <Select
-            ref={focusRef}
-            aria-label={ar ? "التخطيط" : "Layout"}
-            value={layout}
-            onValueChange={setLayout}
-            options={[
-              { value: "list", label: ar ? "قائمة" : "List" },
-              { value: "cards", label: ar ? "بطاقات" : "Cards" },
-            ]}
-          />
-          <DropdownMenu
-            trigger={
-              <Button variant="secondary">
-                {ar ? "إجراءات المعاينة" : "Preview actions"}
-              </Button>
-            }
-            items={[
-              {
-                id: "reset",
-                label: ar ? "استعادة القائمة" : "Reset to list",
-                onSelect: () => setLayout("list"),
-              },
-            ]}
-          />
-          <Tooltip
-            content={
-              ar ? "لا تُحفظ هذه الإعدادات." : "These settings are not saved."
-            }
-            trigger={
-              <span tabIndex={0}>
-                {ar ? "إعدادات مؤقتة" : "Temporary settings"}
-              </span>
-            }
-          />
-        </div>
-      </Modal>
-      <p role="status">
-        {ar ? "التخطيط: " : "Layout: "}
-        {layout === "list" ? (ar ? "قائمة" : "List") : ar ? "بطاقات" : "Cards"}
-      </p>
-    </div>
+    <Modal
+      title={title ?? (ar ? "خيارات العرض" : "Display options")}
+      description={
+        description ??
+        (ar ? "اختر طريقة عرض الفواتير." : "Choose how invoices are shown.")
+      }
+      closeLabel={ar ? "إغلاق النافذة" : "Close dialog"}
+      trigger={
+        <Button variant="secondary">
+          {ar ? "عرض الخيارات" : "View options"}
+        </Button>
+      }
+      open={controlled ? open : undefined}
+      onOpenChange={setOpen}
+      initialFocusRef={focusRef}
+      footer={
+        footer ? (
+          <Close asChild>
+            <Button>{ar ? "تم" : "Done"}</Button>
+          </Close>
+        ) : undefined
+      }
+    >
+      <div className="tz-preferences-form">
+        <Select
+          ref={focusRef}
+          aria-label={ar ? "التخطيط" : "Layout"}
+          value={layout}
+          onValueChange={setLayout}
+          options={[
+            { value: "list", label: ar ? "قائمة" : "List" },
+            { value: "cards", label: ar ? "بطاقات" : "Cards" },
+          ]}
+        />
+        <DropdownMenu
+          trigger={
+            <Button variant="secondary">
+              {ar ? "خيارات إضافية" : "More options"}
+            </Button>
+          }
+          items={[
+            {
+              id: "reset",
+              label: ar ? "استعادة الإعداد الافتراضي" : "Restore default",
+              onSelect: () => setLayout("list"),
+            },
+          ]}
+        />
+        <Tooltip
+          content={
+            ar
+              ? "يُحفظ التخطيط لحسابك على كل الأجهزة."
+              : "Your layout is saved to your account on every device."
+          }
+          trigger={
+            <span tabIndex={0}>
+              {ar ? "يُطبَّق على حسابك" : "Applies to your account"}
+            </span>
+          }
+        />
+      </div>
+    </Modal>
   );
 }

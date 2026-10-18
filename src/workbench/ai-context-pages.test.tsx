@@ -4,7 +4,12 @@ import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import { generateCode, generatePrompt } from "./generate";
 import { defaultPlaygrounds } from "./model";
-import { defaultConfig } from "../system";
+import { SystemProvider, defaultConfig } from "../system";
+import {
+  AIContextExample,
+  ContextMeterStates,
+  ModelSelectorExample,
+} from "../system/ai/examples/AIContextExamples";
 import * as React from "react";
 import * as jsx from "react/jsx-runtime";
 import * as icons from "lucide-react";
@@ -75,9 +80,9 @@ it("runs the copied connected example with real model state and editable local s
     user = userEvent.setup();
   render(<Example />);
   await user.click(screen.getByRole("combobox", { name: "Model" }));
-  await user.click(screen.getByRole("option", { name: /Review/ }));
+  await user.click(screen.getByRole("option", { name: /Falak Precise/ }));
   expect(screen.getByRole("combobox", { name: "Model" })).toHaveTextContent(
-    "Review",
+    "Falak Precise",
   );
   const draft = screen.getByRole("textbox", { name: "Message draft" });
   await user.type(draft, "Normal editable draft");
@@ -85,11 +90,11 @@ it("runs the copied connected example with real model state and editable local s
   expect(draft).toHaveValue("Normal editable draft\nsecond line");
   await user.keyboard("{Enter}");
   expect(
-    screen.getByRole("region", { name: "Example conversation" }),
+    screen.getByRole("region", { name: "Invoice reconciliation chat" }),
   ).toHaveTextContent("Normal editable draft");
   expect(draft).toHaveValue("");
   expect(screen.getByRole("combobox", { name: "Model" })).toHaveTextContent(
-    "Review",
+    "Falak Precise",
   );
 });
 it("includes host ownership and focus/scope guidance with each generated prompt", () => {
@@ -109,3 +114,26 @@ it("includes host ownership and focus/scope guidance with each generated prompt"
     expect(prompt).toContain("Usage, capacity, estimates");
   }
 });
+it.each(["ar", "en"] as const)(
+  "renders %s context examples as product content only",
+  async (language) => {
+    const user = userEvent.setup();
+    const view = render(
+      <SystemProvider
+        config={{
+          ...defaultConfig,
+          direction: language === "ar" ? "rtl" : "ltr",
+        }}
+      >
+        <AIContextExample language={language} longContent />
+        <ModelSelectorExample language={language} longContent />
+        <ContextMeterStates language={language} />
+      </SystemProvider>,
+    );
+    expect(view.container.querySelector(".tz-context-note")).toBeNull();
+    await user.click(screen.getAllByRole("combobox")[0]);
+    expect(document.body).not.toHaveTextContent(
+      /\b(sample|example|local|demo|simulat\w*|fictional|scripted)\b|تجريبي|عينة|محلي|نموذجي|محاكاة/i,
+    );
+  },
+);

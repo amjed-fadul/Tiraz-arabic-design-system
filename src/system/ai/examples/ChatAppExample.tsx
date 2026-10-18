@@ -1,7 +1,5 @@
 import { useRef, useState } from "react";
 import {
-  Avatar,
-  Button,
   ChatApp,
   ChatComposer,
   ChatThread,
@@ -26,7 +24,7 @@ type Conversation = {
   messages: Message[];
   phase: "idle" | "streaming" | "completed" | "stopped";
 };
-function samples(ar: boolean): Conversation[] {
+function conversationsFor(ar: boolean): Conversation[] {
   return [
     {
       id: "build",
@@ -36,16 +34,18 @@ function samples(ar: boolean): Conversation[] {
       phase: "idle",
       messages: [
         {
-          id: "sample-user",
+          id: "build-user",
           role: "user",
-          text: ar ? "اعرض سجل البناء المرفق." : "Show the supplied build log.",
+          text: ar
+            ? "شغّل البناء وأخبرني إن ظهرت أخطاء."
+            : "Run the build and tell me if anything fails.",
         },
         {
-          id: "sample-assistant",
+          id: "build-assistant",
           role: "assistant",
           text: ar
-            ? "هذه مخرجات مرفقة بالعينة، ولم يُنفّذ أي أمر."
-            : "These are supplied sample outputs. No command was executed.",
+            ? "اكتمل البناء دون أخطاء: ٤١٨ وحدة في ١٫٦٣ ثانية، وحجم الصفحة الرئيسية ٠٫٤٠ كيلوبايت."
+            : "The build finished cleanly: 418 modules in 1.63s, and the entry page is 0.40 kB.",
           tool: true,
         },
       ],
@@ -58,17 +58,24 @@ function samples(ar: boolean): Conversation[] {
       phase: "idle",
       messages: [
         {
-          id: "arabic-sample",
+          id: "arabic-user",
+          role: "user",
+          text: ar
+            ? "ما الذي أراجعه قبل إطلاق الواجهة العربية؟"
+            : "What should I check before launching the Arabic interface?",
+        },
+        {
+          id: "arabic-assistant",
           role: "assistant",
           text: ar
-            ? "راجع اتجاه الإدخال ولوحة المفاتيح والنص المختلط."
-            : "Review input direction, keyboard navigation and mixed text.",
+            ? "ثلاثة أمور: اتجاه حقول الإدخال، والتنقل الكامل بلوحة المفاتيح، وعرض النص المختلط مثل أسماء المنتجات اللاتينية داخل الجمل العربية."
+            : "Three things: input direction, full keyboard navigation, and how mixed text such as Latin product names reads inside Arabic sentences.",
         },
       ],
     },
   ];
 }
-/** In-memory application example. Switching/new cancels and keeps received text; reset restores samples. */
+/** In-memory chat application. Switching or starting a conversation stops a reply and keeps received text. */
 export function ChatAppExample({
   language = "ar",
   longContent = false,
@@ -88,7 +95,9 @@ function ChatAppHost({
   longContent: boolean;
 }) {
   const ar = language === "ar";
-  const [conversations, setConversations] = useState(() => samples(ar)),
+  const [conversations, setConversations] = useState(() =>
+      conversationsFor(ar),
+    ),
     [activeId, setActiveId] = useState("build");
   const sequence = useRef(0),
     response = useLocalResponse(language);
@@ -132,8 +141,20 @@ function ChatAppHost({
     }));
   }
   const models = [
-    { id: "concise", name: ar ? "عينة موجزة" : "Concise sample" },
-    { id: "detailed", name: ar ? "عينة مفصّلة" : "Detailed sample" },
+    {
+      id: "concise",
+      name: ar ? "موجز" : "Concise",
+      description: ar
+        ? "ردود قصيرة للمهام اليومية"
+        : "Short answers for daily work",
+    },
+    {
+      id: "detailed",
+      name: ar ? "مفصّل" : "Detailed",
+      description: ar
+        ? "شرح أطول للمسائل المعقدة"
+        : "Longer reasoning for complex questions",
+    },
   ];
   const entry = {
     value: current.draft,
@@ -146,19 +167,15 @@ function ChatAppHost({
         : ("idle" as const),
     onStop: cancel,
   };
-  const status = {
-    idle: ar ? "جاهز لعينة محلية" : "Ready for local sample",
-    streaming: ar ? "جارٍ استلام العينة المحلية" : "Receiving local sample",
-    completed: ar ? "اكتمل الرد المحلي" : "Local response complete",
-    stopped: ar ? "توقف الرد؛ احتُفظ بالنص" : "Stopped; received text kept",
-  }[current.phase];
+  const last = current.messages.at(-1)?.id;
+  const replyStatus = {
+    idle: ar ? "اكتمل الرد" : "Response complete",
+    streaming: ar ? "جارٍ استلام الرد" : "Receiving response",
+    completed: ar ? "اكتمل الرد" : "Response complete",
+    stopped: ar ? "توقف الرد" : "Response stopped",
+  };
   return (
     <div className="tz-chat-app-example">
-      <p className="tz-chat-app-note">
-        {ar
-          ? "تطبيق محادثة في الذاكرة · ردود ثابتة · لا اتصال بنموذج أو أدوات"
-          : "In-memory chat app · fixed responses · no model or tool connection"}
-      </p>
       <ChatApp
         conversations={conversations}
         activeConversationId={activeId}
@@ -176,8 +193,8 @@ function ChatAppHost({
             {
               id,
               title: ar
-                ? `محادثة ${sequence.current}`
-                : `Conversation ${sequence.current}`,
+                ? `محادثة ${conversations.length + 1}`
+                : `Chat ${conversations.length + 1}`,
               draft: "",
               model: current.model,
               messages: [],
@@ -187,19 +204,6 @@ function ChatAppHost({
           setActiveId(id);
         }}
         brand={ar ? "استوديو طِراز" : "Tiraz Studio"}
-        toolbar={
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => {
-              response.cancel();
-              setConversations(samples(ar));
-              setActiveId("build");
-            }}
-          >
-            {ar ? "إعادة ضبط المثال" : "Reset example"}
-          </Button>
-        }
         composer={
           <div style={{ display: "grid", gap: "var(--space-2)" }}>
             {current.messages.length === 0 ? (
@@ -214,15 +218,7 @@ function ChatAppHost({
             ) : (
               <ChatComposer key={activeId} {...entry} />
             )}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "var(--space-2)",
-              }}
-            >
+            <div style={{ display: "flex" }}>
               <ModelSelector
                 models={models}
                 value={current.model}
@@ -230,9 +226,6 @@ function ChatAppHost({
                   patch(activeId, (item) => ({ ...item, model }))
                 }
               />
-              <span role="status" className="tz-chat-app-note">
-                {status}
-              </span>
             </div>
           </div>
         }
@@ -240,62 +233,49 @@ function ChatAppHost({
         <ChatThread
           key={activeId}
           followOutput
-          label={ar ? "محادثة محلية تجريبية" : "Local sample conversation"}
-          messages={current.messages.map((message) => ({
-            id: message.id,
-            role: message.role,
-            identity:
-              message.role === "assistant"
-                ? ar
-                  ? "المساعد المحلي"
-                  : "Local assistant"
-                : undefined,
-            avatar:
-              message.role === "assistant" ? (
-                <Avatar
-                  name={ar ? "طِراز" : "Tiraz"}
-                  fallback="ط"
-                  size="sm"
-                  decorative
-                />
-              ) : undefined,
-            content:
-              message.role === "user" ? (
-                message.text
-              ) : (
-                <>
-                  <StreamingText
-                    text={message.text}
-                    state={
-                      current.phase === "streaming" &&
-                      message.id === current.messages.at(-1)?.id
-                        ? "streaming"
-                        : "completed"
-                    }
-                    announcement="off"
-                    statusLabel=""
-                  />
-                  {message.tool && (
-                    <Terminal
-                      label={ar ? "سجل بناء مرفق" : "Supplied build log"}
-                      command="npm run build"
-                      output={
-                        "vite building for production…\n  ✓ 418 modules transformed.\n  dist/index.html    0.40 kB\n✓ built in 1.63s\n" +
-                        (longContent
-                          ? Array.from(
-                              { length: 60 },
-                              (_, i) => `  supplied log line ${i + 1}\n`,
-                            ).join("")
-                          : "")
+          label={ar ? "الرسائل" : "Messages"}
+          messages={current.messages.map((message) => {
+            const live = current.phase === "streaming" && message.id === last;
+            return {
+              id: message.id,
+              role: message.role,
+              content:
+                message.role === "user" ? (
+                  message.text
+                ) : (
+                  <>
+                    <StreamingText
+                      text={message.text}
+                      state={live ? "streaming" : "completed"}
+                      announcement={message.id === last ? "polite" : "off"}
+                      statusLabel={
+                        message.id === last ? replyStatus[current.phase] : ""
                       }
-                      state="completed"
-                      exitCode={0}
-                      duration="2s"
                     />
-                  )}
-                </>
-              ),
-          }))}
+                    {message.tool && (
+                      <Terminal
+                        label={ar ? "سجل البناء" : "Build log"}
+                        command="npm run build"
+                        output={
+                          "vite v7.1.4 building for production…\n✓ 418 modules transformed.\ndist/index.html                  0.40 kB │ gzip:  0.27 kB\ndist/assets/index-4f2a9c1e.css  38.12 kB │ gzip:  7.41 kB\ndist/assets/index-b7d3a1f5.js  182.41 kB │ gzip: 58.12 kB\n" +
+                          (longContent
+                            ? Array.from(
+                                { length: 60 },
+                                (_, i) =>
+                                  `dist/assets/route-${String(i + 1).padStart(2, "0")}-${((0x9e3779b1 * (i + 1)) >>> 0).toString(16).padStart(8, "0")}.js   ${(1 + ((i * 37) % 900) / 100).toFixed(2)} kB │ gzip: ${(0.4 + ((i * 37) % 900) / 300).toFixed(2)} kB\n`,
+                              ).join("")
+                            : "") +
+                          "✓ built in 1.63s\n"
+                        }
+                        state="completed"
+                        exitCode={0}
+                        duration="2s"
+                      />
+                    )}
+                  </>
+                ),
+            };
+          })}
         />
       </ChatApp>
     </div>

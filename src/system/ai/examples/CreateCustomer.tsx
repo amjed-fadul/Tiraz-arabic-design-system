@@ -167,12 +167,6 @@ export function CreateCustomer({
   if (children) return children(customers, create);
   return (
     <div className="customer-example">
-      <p>
-        {t(
-          "البيانات في ذاكرة هذا المثال فقط؛ تُفقد عند إعادة التحميل أو مغادرة المثال.",
-          "Data lives in this example's memory only; reloading or leaving the example clears it.",
-        )}
-      </p>
       {create}
       <Table caption={t("العملاء", "Customers")}>
         <TableHeader>

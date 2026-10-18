@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { ThumbsUp } from "lucide-react";
 import { useLocalResponse } from "./useLocalResponse";
 import {
-  Avatar,
   Button,
   ChatComposer,
   ChatThread,
@@ -9,24 +10,54 @@ import {
   PromptBar,
   StreamingText,
   ThinkingIndicator,
+  useSystem,
 } from "../../index";
 import type { ChatMessage } from "../../index";
 type Language = "ar" | "en";
+/** Config or OS preference; scripted openings start on their final state. */
+function useReducedMotion() {
+  const { config } = useSystem();
+  return (
+    config.reducedMotion ||
+    (typeof window !== "undefined" &&
+      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+  );
+}
 
 export function ChatThreadExample({
   language = "ar",
-  identities = true,
   longContent = false,
   followOutput = false,
 }: {
   language?: Language;
+  /** Accepted for compatibility; assistant replies carry no identity. */
   identities?: boolean;
   longContent?: boolean;
   followOutput?: boolean;
 }) {
   const ar = language === "ar",
     [helpful, setHelpful] = useState(false);
-  const assistant = ar ? "المساعد" : "Assistant";
+  const tips = ar
+    ? [
+        "استخدم الأرقام العربية أو اللاتينية بشكل متسق في الجداول.",
+        "ضع الإجراء الأساسي في نهاية الصف وفق اتجاه القراءة.",
+        "اختبر الأسماء الطويلة مثل «مؤسسة رواسي للتجارة العامة» داخل البطاقات.",
+        "اعكس الأيقونات الاتجاهية مع اتجاه الواجهة، واترك أيقونات التشغيل كما هي.",
+        "اعرض التواريخ بصيغة المستخدم: ١٥ أكتوبر ٢٠٢٦ بدلًا من 2026-10-15.",
+        "اجعل رسائل الخطأ قريبة من الحقل وواضحة بلا مصطلحات تقنية.",
+        "تحقق من أن رموز المنتجات مثل SKU-4821 تبقى من اليسار إلى اليمين.",
+        "راجع المسافات بعد علامات الترقيم العربية مثل الفاصلة «،».",
+      ]
+    : [
+        "Use Arabic or Latin digits consistently across tables.",
+        "Place the primary action at the end of the row in reading order.",
+        "Test long names such as «Rawasi General Trading Est.» inside cards.",
+        "Mirror directional icons with the interface, but keep media icons as they are.",
+        "Show dates in the reader's format: 15 October 2026 rather than 2026-10-15.",
+        "Keep error messages next to the field and free of technical terms.",
+        "Check that product codes like SKU-4821 stay left-to-right.",
+        "Review spacing after Arabic punctuation such as the comma «،».",
+      ];
   const messages: ChatMessage[] = [
     {
       id: "question",
@@ -38,10 +69,6 @@ export function ChatThreadExample({
     {
       id: "answer",
       role: "assistant",
-      identity: identities ? assistant : undefined,
-      avatar: identities ? (
-        <Avatar name={assistant} fallback="ط" decorative />
-      ) : undefined,
       content: (
         <Markdown
           text={
@@ -49,12 +76,7 @@ export function ChatThreadExample({
               ? "ابدأ بتسميات **واضحة** ومسافات مدمجة. حافظ على اتجاه الشيفرة `LTR` داخل النص العربي."
               : "Start with **clear labels** and compact spacing. Preserve Arabic shaping and keep `LTR` code readable.") +
             (longContent
-              ? "\n\n" +
-                Array.from({ length: 12 }, (_, i) =>
-                  ar
-                    ? `ملاحظة ${i + 1}: راجع ترتيب القراءة والنص المختلط Tiraz / طِراز.`
-                    : `Note ${i + 1}: review reading order and mixed text Tiraz / طِراز.`,
-                ).join("\n\n")
+              ? "\n\n" + tips.map((tip, i) => `${i + 1}. ${tip}`).join("\n")
               : "")
           }
         />
@@ -63,16 +85,12 @@ export function ChatThreadExample({
         <Button
           variant="ghost"
           size="sm"
+          iconOnly
+          aria-label={ar ? "رد مفيد" : "Good response"}
           aria-pressed={helpful}
           onClick={() => setHelpful(!helpful)}
         >
-          {helpful
-            ? ar
-              ? "تم تسجيل الملاحظة"
-              : "Marked helpful"
-            : ar
-              ? "رد مفيد"
-              : "Helpful response"}
+          <ThumbsUp size={16} fill={helpful ? "currentColor" : "none"} />
         </Button>
       ),
     },
@@ -86,7 +104,7 @@ export function ChatThreadExample({
   );
 }
 
-/** Application-owned demo. Every response is fixed local text; there is no network. */
+/** Application-owned conversation. Replies are fixed local text; there is no network. */
 export function ChatConversation({
   language = "ar",
   compact = false,
@@ -107,6 +125,34 @@ export function ChatConversation({
   );
 }
 type Message = { id: string; role: "user" | "assistant"; text: string };
+type Phase = "idle" | "streaming" | "completed" | "stopped";
+/** Appends one exchange and streams the fixed reply into its assistant message. */
+function exchange(
+  start: ReturnType<typeof useLocalResponse>["start"],
+  setMessages: Dispatch<SetStateAction<Message[]>>,
+  setPhase: (phase: Phase) => void,
+  id: string,
+  text: string,
+) {
+  const started = start(
+    (reply) =>
+      setMessages((previous) =>
+        previous.map((message) =>
+          message.id === `assistant-${id}`
+            ? { ...message, text: reply }
+            : message,
+        ),
+      ),
+    () => setPhase("completed"),
+  );
+  if (!started) return;
+  setMessages((previous) => [
+    ...previous,
+    { id: `user-${id}`, role: "user", text },
+    { id: `assistant-${id}`, role: "assistant", text: "" },
+  ]);
+  setPhase("streaming");
+}
 function ConversationHost({
   language,
   compact,
@@ -117,52 +163,56 @@ function ConversationHost({
   disabled: boolean;
 }) {
   const ar = language === "ar";
-  const [messages, setMessages] = useState<Message[]>([]),
-    [draft, setDraft] = useState("");
-  const [phase, setPhase] = useState<
-    "idle" | "streaming" | "completed" | "stopped"
-  >("idle");
   const response = useLocalResponse(language),
-    sequence = useRef(0);
-  const invalidate = response.cancel;
-  function submit(text: string) {
-    if (response.active.current || disabled || !text.trim()) return;
-    const id = ++sequence.current;
-    setMessages((previous) => [
-      ...previous,
-      { id: `user-${id}`, role: "user", text },
-      { id: `assistant-${id}`, role: "assistant", text: "" },
-    ]);
-    setDraft("");
-    setPhase("streaming");
-    response.start(
-      (text) => {
-        setMessages((previous) =>
-          previous.map((message) =>
-            message.id === `assistant-${id}` ? { ...message, text } : message,
-          ),
-        );
-      },
-      () => setPhase("completed"),
-    );
-  }
-
-  const status = {
-    idle: ar
-      ? "عينة محلية ثابتة · أرسل للبدء"
-      : "Fixed local sample · send to begin",
-    streaming: ar ? "جارٍ استلام العينة المحلية" : "Receiving local sample",
-    completed: ar ? "اكتمل الرد المحلي" : "Local response complete",
-    stopped: ar ? "توقف الرد؛ احتُفظ بالنص" : "Stopped; received text kept",
-  }[phase];
+    { start } = response,
+    sequence = useRef(0),
+    reduced = useReducedMotion(),
+    played = useRef(reduced);
+  const opening = ar
+    ? "كيف أجهّز واجهة عربية واضحة؟"
+    : "How do I prepare a clear Arabic interface?";
+  const [messages, setMessages] = useState<Message[]>(() =>
+      reduced
+        ? [
+            { id: "user-opening", role: "user", text: opening },
+            {
+              id: "assistant-opening",
+              role: "assistant",
+              text: response.reply,
+            },
+          ]
+        : [],
+    ),
+    [draft, setDraft] = useState("");
+  const [phase, setPhase] = useState<Phase>(reduced ? "completed" : "idle");
+  // The opening exchange plays once; reduced motion starts on its final state.
+  useEffect(() => {
+    if (played.current || reduced) return;
+    const timer = setTimeout(() => {
+      played.current = true;
+      exchange(start, setMessages, setPhase, "opening", opening);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [reduced, start, opening]);
+  const last = messages.at(-1)?.id;
+  const replyStatus = {
+    idle: ar ? "اكتمل الرد" : "Response complete",
+    streaming: ar ? "جارٍ استلام الرد" : "Receiving response",
+    completed: ar ? "اكتمل الرد" : "Response complete",
+    stopped: ar ? "توقف الرد" : "Response stopped",
+  };
   const entry = {
     value: draft,
     onValueChange: setDraft,
-    onSubmit: submit,
+    onSubmit: (text: string) => {
+      if (disabled || response.active.current || !text.trim()) return;
+      setDraft("");
+      exchange(start, setMessages, setPhase, String(++sequence.current), text);
+    },
     disabled,
     state: phase === "streaming" ? ("streaming" as const) : ("idle" as const),
     onStop: () => {
-      invalidate();
+      response.cancel();
       setPhase("stopped");
     },
   };
@@ -170,36 +220,31 @@ function ConversationHost({
     <div className="tz-chat-demo">
       <ChatThread
         followOutput
-        label={ar ? "محادثة محلية تجريبية" : "Local sample conversation"}
-        messages={messages.map((message) => ({
-          id: message.id,
-          role: message.role,
-          content:
-            message.role === "user" ? (
-              message.text
-            ) : (
-              <StreamingText
-                text={message.text}
-                state={
-                  phase === "streaming" && message.id === messages.at(-1)?.id
-                    ? "streaming"
-                    : "completed"
-                }
-                announcement="off"
-                statusLabel=""
-              />
-            ),
-        }))}
+        label={ar ? "المحادثة" : "Conversation"}
+        messages={messages.map((message) => {
+          const live = phase === "streaming" && message.id === last;
+          return {
+            id: message.id,
+            role: message.role,
+            content:
+              message.role === "user" ? (
+                message.text
+              ) : live && !message.text ? (
+                <ThinkingIndicator
+                  label={ar ? "جارٍ إعداد الرد" : "Preparing reply"}
+                  announcement="off"
+                />
+              ) : (
+                <StreamingText
+                  text={message.text}
+                  state={live ? "streaming" : "completed"}
+                  announcement={message.id === last ? "polite" : "off"}
+                  statusLabel={message.id === last ? replyStatus[phase] : ""}
+                />
+              ),
+          };
+        })}
       />
-      <div className="tz-chat-demo-status">
-        <span role="status">{status}</span>
-        {phase === "streaming" && (
-          <ThinkingIndicator
-            label={ar ? "جارٍ إعداد الرد" : "Preparing reply"}
-            announcement="off"
-          />
-        )}
-      </div>
       {compact ? (
         <PromptBar
           {...entry}
@@ -211,18 +256,6 @@ function ConversationHost({
       ) : (
         <ChatComposer {...entry} />
       )}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => {
-          invalidate();
-          setMessages([]);
-          setDraft("");
-          setPhase("idle");
-        }}
-      >
-        {ar ? "إعادة ضبط المحادثة" : "Reset conversation"}
-      </Button>
     </div>
   );
 }
@@ -240,37 +273,28 @@ export function PromptBarExample({
   disabled?: boolean;
 }) {
   const ar = language === "ar",
-    [draft, setDraft] = useState(""),
-    [accepted, setAccepted] = useState("");
+    [draft, setDraft] = useState("");
   return (
-    <div style={{ display: "grid", gap: "var(--space-3)" }}>
-      <PromptBar
-        value={draft}
-        onValueChange={setDraft}
-        disabled={disabled}
-        onSubmit={(text) => {
-          setAccepted(text);
-          setDraft("");
-        }}
-        suggestions={
-          ar
-            ? ["لخّص ملاحظات الواجهة", "راجع النص العربي"]
-            : ["Summarize interface notes", "Review Arabic copy"]
-        }
-        onSuggestionSelect={setDraft}
-      />
-      <span
-        role="status"
-        style={{ fontSize: "var(--text-meta)", color: "var(--text-secondary)" }}
-      >
-        {accepted
-          ? (ar ? "قُبل الموجّه محليًا: " : "Prompt accepted locally: ") +
-            accepted
-          : ar
-            ? "عينة محلية · اختر اقتراحًا أو اكتب مهمة"
-            : "Local sample · choose a suggestion or enter a task"}
-      </span>
-    </div>
+    <PromptBar
+      value={draft}
+      onValueChange={setDraft}
+      disabled={disabled}
+      onSubmit={() => setDraft("")}
+      suggestions={
+        ar
+          ? [
+              "لخّص اجتماع الإطلاق",
+              "صُغ ردًا على شركة الندى",
+              "راجع نصوص صفحة الدفع",
+            ]
+          : [
+              "Summarize the launch meeting",
+              "Draft a reply to Al Nada Trading",
+              "Review the checkout copy",
+            ]
+      }
+      onSuggestionSelect={setDraft}
+    />
   );
 }
 
@@ -283,7 +307,9 @@ export function ChatEntryStates({
 }) {
   const ar = language === "ar",
     [draft, setDraft] = useState(
-      ar ? "مسودة محفوظة عند الفشل" : "Draft kept after failure",
+      ar
+        ? "لخّص ملاحظات اجتماع الإطلاق في خمس نقاط"
+        : "Summarize the launch meeting notes in five points",
     );
   const Entry = compact ? PromptBar : ChatComposer;
   return (
@@ -293,13 +319,13 @@ export function ChatEntryStates({
         <Entry
           value={draft}
           onValueChange={setDraft}
-          onSubmit={() => Promise.reject(new Error("Local demo rejection"))}
+          onSubmit={() => Promise.reject(new Error("Network unavailable"))}
         />
       </section>
       <section>
         <h3>{ar ? "معطّل" : "Disabled"}</h3>
         <Entry
-          value={ar ? "غير متاح الآن" : "Unavailable for now"}
+          value={ar ? "أرفق تقرير الربع الثالث" : "Attach the Q3 report"}
           onValueChange={() => {}}
           onSubmit={() => {}}
           disabled

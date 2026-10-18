@@ -15,7 +15,9 @@ it("uses the plotted Cartesian data for the missing-values summary", () => {
     </SystemProvider>,
   );
   expect(
-    screen.getByText(/Sample data, October 2026: 1,642 orders/),
+    screen.getByText(
+      "October 2026: 1,642 orders across 6 days. Days without data are excluded.",
+    ),
   ).toBeVisible();
 });
 it("changes both rows and total when the application selects a period", async () => {

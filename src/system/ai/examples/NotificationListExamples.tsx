@@ -47,7 +47,7 @@ export function NotificationListExample({
     markAllRead: t("تحديد الكل كمقروء", "Mark all as read"),
   };
   const title = t("طلب مراجعة", "Review requested");
-  const sample: NotificationItem[] = empty
+  const notifications: NotificationItem[] = empty
     ? []
     : [
         {
@@ -64,12 +64,12 @@ export function NotificationListExample({
           ) : undefined,
           description: (
             <>
-              {t("ملاحظات على ", "Notes on ")}
-              <bdi dir="ltr">DOC-42/2026</bdi>
+              {t("عرض سعر شركة الندى ", "Al Nada Trading quote ")}
+              <bdi dir="ltr">PRO-2026-118</bdi>
               {longContent &&
                 t(
-                  " — مراجعة تفصيلية لجميع المسافات والتسميات والمحتوى المختلط قبل اعتماد الحزمة للاستخدام في التطبيق.",
-                  " — A detailed review of spacing, names and mixed content before approving the package for use in the application.",
+                  " — مراجعة تفصيلية لجدول الأسعار وشروط الدفع وأسماء المنتجات قبل إرسال العرض إلى العميل يوم الخميس.",
+                  " — A detailed review of the price table, payment terms and product names before the quote goes to the client on Thursday.",
                 )}
             </>
           ),
@@ -93,8 +93,8 @@ export function NotificationListExample({
               {details.includes("review") && (
                 <p style={{ flexBasis: "100%", margin: 0 }}>
                   {t(
-                    "المسافات والتسميات بحاجة إلى مراجعة ضمن النسخة المحلية. لا يتغير وضع القراءة عند فتح هذه التفاصيل.",
-                    "Spacing and naming need review in the local draft. Opening these details does not change read state.",
+                    "تطلب سارة مراجعة جدول الأسعار في الصفحة ٤ وتأكيد مدة الضمان قبل الإرسال.",
+                    "Sara asks you to check the price table on page 4 and confirm the warranty period before it goes out.",
                   )}
                 </p>
               )}
@@ -103,35 +103,37 @@ export function NotificationListExample({
         },
         {
           id: "note",
-          title: t("ملاحظة جديدة في الحزمة", "New package note"),
+          title: t("تعليق جديد على العقد", "New comment on the contract"),
           read: readIds.includes("note"),
           timestamp: t("١٤ أكتوبر", "14 Oct"),
           dateTime: "2026-10-14",
           icon: <FileText />,
           description: longContent ? (
             <bdi dir="ltr">
-              TIRAZ-PACKAGE-NOTE-WITH-A-LONG-IDENTIFIER-012345678901234567890123456789
+              CONTRACT-AL-NADA-SUPPLY-2026-CLAUSE-07-RENEWAL-COMMENT-4F2A9C1E7B3D5A8F
             </bdi>
           ) : (
             t(
-              "أضيف مثال عربي لشرح استخدام التسميات.",
-              "An Arabic example explains how labels are used.",
+              "أضاف خالد ملاحظة على البند ٧ (مدة التجديد).",
+              "Khalid commented on clause 7 (renewal term).",
             )
           ),
         },
         {
           id: "ready",
-          title: t("المعاينة جاهزة", "Preview ready"),
+          title: t("التقرير الشهري جاهز", "Monthly report ready"),
           read: readIds.includes("ready"),
           timestamp: t("أمس", "Yesterday"),
           description: t(
-            "بيانات توضيحية محلية؛ لا توجد خدمة متصلة.",
-            "Local sample data; no connected service.",
+            "تقرير مبيعات سبتمبر جاهز للتنزيل.",
+            "The September sales report is ready to download.",
           ),
         },
       ];
   const visible =
-    filter === "unread" ? sample.filter((item) => !item.read) : sample;
+    filter === "unread"
+      ? notifications.filter((item) => !item.read)
+      : notifications;
   return (
     <div
       style={{
@@ -141,12 +143,6 @@ export function NotificationListExample({
         minInlineSize: 0,
       }}
     >
-      <p style={{ margin: 0, color: "var(--text-secondary)" }}>
-        {t(
-          "إشعارات نموذجية في الذاكرة فقط؛ لا مزامنة أو حفظ أو نشاط خادم.",
-          "Sample notifications in memory only; no syncing, saving or server activity.",
-        )}
-      </p>
       <div
         ref={filtersRef}
         role="group"
@@ -194,30 +190,30 @@ export function NotificationListExample({
             ? () => {
                 if (listRef.current?.contains(document.activeElement))
                   pendingFocus.current = filter === "unread" ? 0 : -1;
-                setReadIds(sample.map((item) => item.id));
+                setReadIds(notifications.map((item) => item.id));
               }
             : undefined
         }
         emptyState={
           <EmptyState
             title={
-              sample.length === 0
+              notifications.length === 0
                 ? t("لا توجد إشعارات", "No notifications")
                 : t("لا توجد إشعارات غير مقروءة", "No unread notifications")
             }
             description={
-              sample.length === 0
+              notifications.length === 0
                 ? t(
-                    "لم تُضف إشعارات لهذا المثال.",
-                    "No notifications were supplied to this example.",
+                    "ستظهر هنا التحديثات والطلبات الموجّهة إليك.",
+                    "Updates and requests for you will appear here.",
                   )
                 : t(
-                    "يمكنك العودة إلى الكل لقراءة الإشعارات السابقة.",
-                    "Return to All to read earlier notifications.",
+                    "لقد اطّلعت على كل شيء. اعرض الكل لقراءة الإشعارات السابقة.",
+                    "You're all caught up. Show all to read earlier notifications.",
                   )
             }
             action={
-              sample.length > 0 ? (
+              notifications.length > 0 ? (
                 <Button
                   size="sm"
                   variant="secondary"

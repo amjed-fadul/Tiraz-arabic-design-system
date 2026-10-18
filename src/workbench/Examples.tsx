@@ -85,6 +85,7 @@ import { TableExample } from "../system/ai/examples/TableExample";
 import { CreateCustomer } from "../system/ai/examples/CreateCustomer";
 import { Settings2 } from "lucide-react";
 import type { ComponentId } from "./catalog";
+import { hasExamples } from "./demo-capabilities";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import { optionNames } from "./fields";
@@ -99,6 +100,32 @@ const AnalyticsExample = lazy(() =>
     default: module.AnalyticsExample,
   })),
 );
+function toastMessages(language: Language) {
+  const t = words(language);
+  return {
+    success: {
+      title: t("حُفظت الفاتورة", "Invoice saved"),
+      description: t(
+        "أُرسلت INV-2048 إلى شركة مدار.",
+        "INV-2048 was sent to Madar.",
+      ),
+    },
+    error: {
+      title: t("تعذّر الإرسال", "Couldn’t send"),
+      description: t(
+        "تحقق من الاتصال ثم أعد المحاولة.",
+        "Check your connection and try again.",
+      ),
+    },
+    info: {
+      title: t("تحديث متاح", "Update available"),
+      description: t(
+        "أُضيفت ثلاث فواتير جديدة إلى القائمة.",
+        "Three new invoices were added to the list.",
+      ),
+    },
+  };
+}
 function ToastExamples({ language }: { language: Language }) {
   const { toast } = useToast();
   return (
@@ -107,16 +134,7 @@ function ToastExamples({ language }: { language: Language }) {
         <Button
           key={tone}
           variant="secondary"
-          onClick={() =>
-            toast({
-              title: localize(optionNames[tone], language),
-              description: words(language)(
-                "رسالة تجريبية لنتيجة الإجراء.",
-                "Example feedback for an action.",
-              ),
-              tone,
-            })
-          }
+          onClick={() => toast({ ...toastMessages(language)[tone], tone })}
         >
           {localize(optionNames[tone], language)}
         </Button>
@@ -128,11 +146,10 @@ function EditableSheet({ language }: { language: Language }) {
   const t = words(language);
   const [saved, setSaved] = useState({
     name: t("شركة مدار للتقنية", "Madar Technology"),
-    email: "hello@madar.example",
+    email: "hello@madar.sa",
   });
   const [draft, setDraft] = useState(saved);
   const [open, setOpen] = useState(false);
-  const [feedback, setFeedback] = useState("");
   return (
     <>
       <Sheet
@@ -143,10 +160,10 @@ function EditableSheet({ language }: { language: Language }) {
         }}
         title={t("تفاصيل العميل", "Customer details")}
         description={t(
-          "مثال للتعديل والحفظ المحلي",
-          "Local editing and saving example",
+          "حدّث بيانات التواصل لهذا العميل.",
+          "Update this customer’s contact details.",
         )}
-        closeLabel={t("إغلاق المثال", "Close example")}
+        closeLabel={t("إغلاق", "Close")}
         trigger={
           <Button variant="secondary">
             {t("تعديل بيانات العميل", "Edit customer information")}
@@ -170,9 +187,6 @@ function EditableSheet({ language }: { language: Language }) {
             e.preventDefault();
             setSaved(draft);
             setOpen(false);
-            setFeedback(
-              t("حُفظت البيانات خلال هذه الجلسة.", "Saved for this session."),
-            );
           }}
         >
           <Field
@@ -208,14 +222,10 @@ function EditableSheet({ language }: { language: Language }) {
             )}
           </Field>
           <p>
-            <bdi dir="ltr">CUS-0082</bdi> ·{" "}
-            <bdi dir="ltr">https://madar.example</bdi>
+            <bdi dir="ltr">CUS-0082</bdi> · <bdi dir="ltr">madar.sa</bdi>
           </p>
         </form>
       </Sheet>
-      <p role="status" className="example-feedback">
-        {feedback}
-      </p>
     </>
   );
 }
@@ -231,7 +241,7 @@ export function Examples({
   copyLabel?: string;
 }) {
   const t = words(language);
-  const [event, setEvent] = useState("");
+  const [status, setStatus] = useState("");
   const [checked, setChecked] = useState(false);
   if (component === "loading-state")
     return (
@@ -254,13 +264,11 @@ export function Examples({
     return (
       <div style={{ display: "grid", gap: "var(--space-8)" }}>
         <section>
-          <h3>{t("كلمات يزوّدها التطبيق", "Application-supplied words")}</h3>
+          <h3>{t("كلمات متتابعة", "Rotating words")}</h3>
           <ThinkingIndicatorExample language={language} />
         </section>
         <section>
-          <h3>
-            {t("نص فقط ضمن المحادثة", "Text only, inline in a conversation")}
-          </h3>
+          <h3>{t("داخل المحادثة", "Inline in a conversation")}</h3>
           <p
             style={{
               display: "flex",
@@ -323,16 +331,11 @@ export function Examples({
     return (
       <div style={{ display: "grid", gap: "var(--space-8)", minInlineSize: 0 }}>
         <section>
-          <h3>{t("مخرجات يَرسمها التطبيق", "Application-rendered output")}</h3>
+          <h3>{t("مخرجات مخصّصة", "Custom output")}</h3>
           <ToolRenderedOutputExample language={language} />
         </section>
         <section>
-          <h3>
-            {t(
-              "شريحة متصلة بالتفاصيل ومحاولة مجددًا",
-              "Connected chip, details and retry",
-            )}
-          </h3>
+          <h3>{t("ملخص متصل بالتفاصيل", "Summary linked to details")}</h3>
           <ToolActivityDemo language={language} />
         </section>
       </div>
@@ -349,7 +352,7 @@ export function Examples({
           />
         </section>
         <section>
-          <h3>{t("عرض محلي متصل", "Connected local demo")}</h3>
+          <h3>{t("أثناء العمل", "While working")}</h3>
           <AIFeedbackDemo language={language} />
         </section>
       </div>
@@ -434,13 +437,7 @@ export function Examples({
           />
         </section>
         <section>
-          <h3>{t("تفعيل اختياري للمعاينة", "Optional preview activation")}</h3>
-          <p>
-            {t(
-              "أزرار حقيقية؛ التطبيق يختار الخطوة دون تقدم تلقائي.",
-              "Real buttons; the application chooses the step without automatic advancement.",
-            )}
-          </p>
+          <h3>{t("خطوات قابلة للتنقل", "Navigable steps")}</h3>
           <ActivatableStepsExample language={language} />
         </section>
       </div>
@@ -459,10 +456,7 @@ export function Examples({
         language={language}
         mode="uncontrolled"
         multiple={false}
-        helper={t(
-          "ملف واحد؛ يحل الاختيار الصحيح محل السابق.",
-          "One file; a valid selection replaces the previous file.",
-        )}
+        helper={t("ملف واحد فقط.", "One file only.")}
       />
     );
   if (component === "color-picker")
@@ -485,7 +479,7 @@ export function Examples({
       >
         <InputCopyExample
           language={language}
-          value="src/system/ai/examples/InputCopyExamples.tsx"
+          value="https://madar.sa/invite/7KQ2-RX9"
         />
         <EntryCompositionExample language={language} />
       </div>
@@ -509,63 +503,17 @@ export function Examples({
         </div>
       </Suspense>
     );
-  if (["card", "accordion", "breadcrumbs", "pagination"].includes(component))
-    return (
-      <p className="example-caption">
-        {component === "card"
-          ? t(
-              "البطاقة سطح للمحتوى. يملك التطبيق إجراءات الرأس والتذييل؛ ليست عنصرًا قابلًا للنقر.",
-              "Card groups content. The application supplies header/footer actions; the surface has no interaction.",
-            )
-          : component === "accordion"
-            ? t(
-                "Accordion يظهر التفاصيل تحت العناوين. Tabs يبدّل بين عروض مرتبطة. قيم العناصر ثابتة وفريدة؛ لا تضع عناصر تفاعلية داخل التسميات.",
-                "Accordion reveals details below headings. Tabs switches related views. Use stable unique values and no interactive content inside labels.",
-              )
-            : component === "breadcrumbs"
-              ? t(
-                  "الروابط تصل إلى أقسام فعلية في المثال. يحدد التطبيق الوجهات؛ الصفحة الحالية نص.",
-                  "Links reach actual example sections. The caller supplies destinations; the current page is text.",
-                )
-              : t(
-                  "المثال يقسم قائمة محلية صغيرة. Pagination يطلب الصفحة فقط؛ التطبيق يملك الحجم والتصفية والجلب. DataTable يملك حالة الفرز والصفحات الداخلية الخاصة به.",
-                  "This example slices a small local list. Pagination requests a page; the caller owns size, filtering and fetching. DataTable retains its internal sorting and page state.",
-                )}
-      </p>
-    );
+  // These pages show the live component in the playground; no second stage.
+  if (!hasExamples(component)) return null;
   if (component === "alert") return <AlertExamples language={language} />;
   if (component === "skeleton") return <SkeletonExamples language={language} />;
   if (component === "progress") return <ProgressExamples language={language} />;
   if (component === "spinner") return <SpinnerExamples language={language} />;
   if (component === "avatar-group")
-    return (
-      <div className="tz-feedback-examples">
-        <TeamExample language={language} photos />
-        <p>
-          {t(
-            "صور محلية وأحرف ثابتة. الأسماء متاحة حتى للأعضاء المخفيين.",
-            "Bundled portraits and stable initials. Names remain available for hidden members.",
-          )}
-        </p>
-      </div>
-    );
+    return <TeamExample language={language} photos />;
   if (component === "avatar") return <AvatarExamples language={language} />;
   if (component === "empty-state")
     return <EmptyStateExamples language={language} />;
-  if (["tooltip", "modal"].includes(component))
-    return (
-      <p className="example-caption">
-        {component === "tooltip"
-          ? t(
-              "مرّر المؤشر أو ركّز بلوحة المفاتيح لعرض التوضيح. Escape يغلقه؛ الزر يعرض التفاصيل.",
-              "Hover or focus to see the explanation. Escape dismisses it; the button toggles details.",
-            )
-          : t(
-              "نافذة واحدة. الاختيار يغيّر المعاينة، والقائمة تستعيد التخطيط الافتراضي. الإغلاق يعيد التركيز.",
-              "One dialog. Select changes the preview, the menu resets its layout, and dismissal restores focus.",
-            )}
-      </p>
-    );
   if (component === "badge")
     return (
       <div className="example-inline">
@@ -609,40 +557,20 @@ export function Examples({
         ]}
       />
     );
-  if (component === "textarea")
-    return (
-      <div className="quiet-examples">
-        <p className="example-caption">
-          {t(
-            "نموذج صغير · التطبيق يملك التحقق",
-            "Small form · application-owned validation",
-          )}
-        </p>
-        <FeedbackForm language={language} />
-      </div>
-    );
-  if (component === "data-table")
-    return (
-      <p className="example-caption">
-        {t(
-          "Table للمحتوى الجدولي البسيط. DataTable للفرز وتقسيم الصفحات في الذاكرة؛ التطبيق يملك التصفية والإجراءات. اختر حالة المثال أعلاه لعرض التحميل أو الخطأ أو الفراغ.",
-          "Use Table for simple tabular content. DataTable handles in-memory sorting and pagination; the application owns filtering and actions. Choose an example state above to demonstrate loading, error or empty data.",
-        )}
-      </p>
-    );
+  if (component === "textarea") return <FeedbackForm language={language} />;
   if (component === "table")
     return (
       <div className="quiet-examples">
         <div className="example-row">
           <TableExample
             language={language}
-            caption={t("عملاء نموذجيون", "Sample customers")}
+            caption={t("العملاء", "Customers")}
           />
         </div>
         <div className="example-row">
           <TableExample
             language={language}
-            caption={t("قائمة فارغة", "Empty list")}
+            caption={t("لا يوجد عملاء بعد", "No customers yet")}
             empty
           />
         </div>
@@ -656,11 +584,7 @@ export function Examples({
           <div className="example-inline">
             {(["primary", "secondary", "ghost", "destructive"] as const).map(
               (variant) => (
-                <Button
-                  key={variant}
-                  variant={variant}
-                  onClick={() => setEvent(`${variant} · onClick`)}
-                >
+                <Button key={variant} variant={variant}>
                   {localize(optionNames[variant], language)}
                 </Button>
               ),
@@ -668,8 +592,7 @@ export function Examples({
             <Button
               variant="secondary"
               iconOnly
-              aria-label={t("إعدادات المثال", "Example settings")}
-              onClick={() => setEvent("iconOnly · onClick")}
+              aria-label={t("الإعدادات", "Settings")}
             >
               <Settings2 size={15} />
             </Button>
@@ -682,26 +605,16 @@ export function Examples({
             <Button state="loading">{t("جارٍ الحفظ", "Saving")}</Button>
             <Button state="success">{t("تم الحفظ", "Saved")}</Button>
             <Button state="error">{t("تعذّر الحفظ", "Save failed")}</Button>
-            <Button
-              size="md"
-              variant="secondary"
-              onClick={() => setEvent("size md · onClick")}
-            >
-              {t("حجم عادي · md", "Regular · md")}
+            <Button size="md" variant="secondary">
+              {t("حجم عادي", "Regular size")}
             </Button>
           </div>
         </div>
-        <p className="example-feedback" role="status">
-          {event}
-        </p>
       </div>
     );
   if (component === "tabs")
     return (
       <div className="quiet-examples">
-        <p className="example-caption">
-          {t("اختيار مدمج لفترة التقرير", "A segmented report-period selector")}
-        </p>
         <Tabs
           label={t("فترة التقرير", "Report period")}
           variant="segment"
@@ -757,12 +670,6 @@ export function Examples({
   if (component === "dropdown")
     return (
       <div className="quiet-examples">
-        <p className="example-caption">
-          {t(
-            "محاذاة النهاية، مع إجراء معطّل وآخر للحذف",
-            "End alignment with disabled and destructive actions",
-          )}
-        </p>
         <DropdownMenu
           align="end"
           trigger={
@@ -774,13 +681,8 @@ export function Examples({
             {
               id: "copy",
               label: t("نسخ رقم الفاتورة", "Copy invoice ID"),
-              onSelect: async () => {
-                try {
-                  await navigator.clipboard.writeText("INV-2048");
-                  setEvent(t("تم نسخ INV-2048", "Copied INV-2048"));
-                } catch {
-                  setEvent(t("تعذّر النسخ", "Copy failed"));
-                }
+              onSelect: () => {
+                void navigator.clipboard.writeText("INV-2048").catch(() => {});
               },
             },
             {
@@ -790,19 +692,12 @@ export function Examples({
             },
             {
               id: "delete",
-              label: t("حذف تجريبي", "Simulated delete"),
+              label: t("حذف الفاتورة", "Delete invoice"),
               destructive: true,
               separatorBefore: true,
-              onSelect: () =>
-                setEvent(
-                  t("طُلب حذف تجريبي فقط.", "Simulated deletion requested."),
-                ),
             },
           ]}
         />
-        <p className="example-feedback" role="status" dir="auto">
-          {event}
-        </p>
       </div>
     );
   if (component === "input")
@@ -858,8 +753,8 @@ export function Examples({
           {(field) => (
             <Select
               field={field}
-              value={event}
-              onValueChange={setEvent}
+              value={status}
+              onValueChange={setStatus}
               placeholder={t("اختر الحالة", "Choose status")}
               options={[
                 { value: "active", label: t("نشط", "Active") },
@@ -873,20 +768,11 @@ export function Examples({
             />
           )}
         </Field>
-        <output className="example-feedback" aria-live="polite">
-          {event}
-        </output>
       </div>
     );
   if (component === "sheet")
     return (
       <div className="quiet-examples">
-        <p className="example-caption">
-          {t(
-            "إنشاء عميل: تحقق من البيانات ثم احفظها في ذاكرة المثال.",
-            "Create a customer: validate, then save in this example’s memory.",
-          )}
-        </p>
         {component === "sheet" && <EditableSheet language={language} />}
         <ToastProvider
           label={t("تنبيهات العملاء", "Customer notifications")}
@@ -898,16 +784,10 @@ export function Examples({
     );
   return (
     <ToastProvider
-      label={t("تنبيهات الأمثلة", "Example notifications")}
-      closeLabel={t("إغلاق تنبيه المثال", "Dismiss example notification")}
+      label={t("التنبيهات", "Notifications")}
+      closeLabel={t("إغلاق التنبيه", "Dismiss notification")}
     >
       <ToastExamples language={language} />
-      <p className="example-caption">
-        {t(
-          "تتوقف المهلة أثناء التركيز أو مرور المؤشر. F8 للوصول إلى التنبيهات.",
-          "Expiry pauses on focus or hover. Press F8 to reach notifications.",
-        )}
-      </p>
     </ToastProvider>
   );
 }

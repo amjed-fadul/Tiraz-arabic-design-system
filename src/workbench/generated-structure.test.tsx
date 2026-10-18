@@ -106,11 +106,12 @@ it.each(["controlled", "uncontrolled"] as const)(
       ),
       user = userEvent.setup();
     render(<Example />);
-    await user.click(screen.getByRole("button", { name: "Layout" }));
-    expect(screen.getByRole("region", { name: "Layout" })).toHaveTextContent(
-      "Content stays in reading order",
-    );
-    await user.click(screen.getByRole("button", { name: "Layout" }));
+    const plan = screen.getByRole("button", { name: "Can I change my plan?" });
+    await user.click(plan);
+    expect(
+      screen.getByRole("region", { name: "Can I change my plan?" }),
+    ).toHaveTextContent("next billing cycle");
+    await user.click(plan);
     expect(screen.queryByRole("region")).toBeNull();
   },
 );

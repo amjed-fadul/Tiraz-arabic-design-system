@@ -1,11 +1,9 @@
-﻿Tiraz sample reference — Menu brief / موجز القائمة
-Fictional local content for component demonstration. No live retrieval.
+Winter menu design brief — v3 / موجز تصميم قائمة الشتاء — الإصدار ٣
 
 The brief calls for bilingual names and clear prices.
-The example brief calls for a landscape illustration, a quiet caption, and
-Arabic/English menu headings. The host application chooses the final image.
-These illustrations are original SVG samples, not generated results.
+Use a landscape illustration, a quiet caption and Arabic/English section headings.
+Final artwork is chosen by the brand team.
 
 يطلب الموجز أسماء ثنائية اللغة وأسعارًا واضحة.
-يطلب موجز المثال رسمًا أفقيًا وتعليقًا موجزًا وعناوين قائمة بالعربية والإنجليزية.
-يختار التطبيق الصورة النهائية. الرسوم عينات SVG أصلية وليست نتائج توليد.
+رسم أفقي، وتعليق هادئ، وعناوين أقسام بالعربية والإنجليزية.
+يختار فريق العلامة التجارية العمل الفني النهائي.

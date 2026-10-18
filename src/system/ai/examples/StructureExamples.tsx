@@ -85,41 +85,39 @@ export function AccordionExample({
   collapsible?: boolean;
 }) {
   const ar = language === "ar";
-  const [value, setValue] = useState("reading");
+  const [value, setValue] = useState("billing");
   return (
     <Accordion
       collapsible={collapsible}
       value={controlled ? value : undefined}
-      defaultValue={controlled ? undefined : "reading"}
+      defaultValue={controlled ? undefined : "billing"}
       onValueChange={setValue}
       items={[
         {
-          value: "reading",
-          label: ar ? "القراءة" : "Reading",
+          value: "billing",
+          label: ar ? "كيف تُحسب الفاتورة؟" : "How is my invoice calculated?",
           content: (
             <p>
               {ar
-                ? "أظهر تفاصيل قسم واحد مع بقاء العناوين متاحة."
-                : "Reveal one section while keeping every heading available."}
+                ? "تُحسب شهريًا حسب عدد المستخدمين النشطين، وتشمل ضريبة القيمة المضافة ١٥٪."
+                : "Monthly, by the number of active users, including 15% VAT."}
             </p>
           ),
         },
         {
-          value: "layout",
-          label: ar ? "التنسيق" : "Layout",
+          value: "plan",
+          label: ar ? "هل يمكنني تغيير خطتي؟" : "Can I change my plan?",
           content: (
             <p>
               {ar
-                ? "يبقى المحتوى بترتيب القراءة، مع مسافات من الرموز المشتركة."
-                : "Content stays in reading order, with spacing from shared tokens."}
+                ? "نعم، ويسري التغيير من بداية دورة الفوترة التالية."
+                : "Yes. The change applies from the start of your next billing cycle."}
             </p>
           ),
         },
         {
-          value: "advanced",
-          label: ar
-            ? "خيارات متقدمة · غير متاحة"
-            : "Advanced options · unavailable",
+          value: "export",
+          label: ar ? "تصدير البيانات · قريبًا" : "Data export · coming soon",
           disabled: true,
           content: null,
         },
@@ -138,34 +136,18 @@ export function BreadcrumbsExample({
   current?: string;
 }) {
   const ar = language === "ar",
-    rootId = useId(),
-    libraryId = useId();
+    rootId = useId();
+  // Parent links stay inside the example instead of leaving the page.
   return (
-    <div className="tz-structure-example">
+    <div className="tz-structure-example" id={rootId}>
       <Breadcrumbs
         label={label ?? (ar ? "مسار الصفحة" : "Page path")}
         items={[
           { label: ar ? "الدليل" : "Guide", href: `#${rootId}` },
-          { label: ar ? "المكتبة" : "Library", href: `#${libraryId}` },
+          { label: ar ? "المكتبة" : "Library", href: `#${rootId}` },
           { label: current ?? (ar ? "القراءة" : "Reading") },
         ]}
       />
-      <section id={rootId}>
-        <h3>{ar ? "الدليل" : "Guide"}</h3>
-        <p>
-          {ar
-            ? "روابط هذا المثال تصل إلى أقسام موجودة في الصفحة."
-            : "These example links reach existing sections on this page."}
-        </p>
-      </section>
-      <section id={libraryId}>
-        <h3>{ar ? "المكتبة" : "Library"}</h3>
-        <p>
-          {ar
-            ? "يحدد التطبيق الوجهات. الصفحة الحالية نص دون رابط."
-            : "The application supplies destinations. The current page is text without a link."}
-        </p>
-      </section>
     </div>
   );
 }
@@ -185,7 +167,7 @@ export function PaginationExample({
 }) {
   const ar = language === "ar";
   const [localPage, setLocalPage] = useState(initialPage);
-  // This example owns a small local list: one guide note per page, at most 20.
+  // One guide note per page, at most 20.
   const total = Number.isFinite(totalPages)
     ? Math.min(20, Math.max(1, Math.floor(totalPages)))
     : 1;
@@ -207,10 +189,8 @@ export function PaginationExample({
           <article key={note.id}>
             <h3>{note.title}</h3>
             <p>
-              {ar
-                ? "يختار التطبيق المحتوى المعروض لهذه الصفحة."
-                : "The application selects the content shown on this page."}{" "}
-              <bdi dir="ltr">DOC-{note.id}</bdi>
+              <bdi dir="ltr">DOC-{note.id}</bdi> ·{" "}
+              {ar ? "٤ دقائق قراءة" : "4 min read"}
             </p>
           </article>
         ))}

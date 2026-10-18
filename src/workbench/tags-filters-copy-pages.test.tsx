@@ -53,16 +53,19 @@ for (const component of ["tag-input", "filter-bar", "input-copy"] as const) {
     );
     if (component === "tag-input") {
       await user.type(preview.getByRole("textbox"), "Local{Enter}draft");
-      await user.click(
-        preview.getByRole("button", { name: "Read form values" }),
-      );
-      expect(preview.getByText(/Local form values/)).toHaveTextContent(
-        '["Design","Reading","Local"]',
-      );
-      await user.click(preview.getByRole("button", { name: "Reset tags" }));
+      const submitted = () =>
+        Array.from(
+          document.querySelectorAll<HTMLInputElement>(
+            '.playground-canvas input[type="hidden"][name="tags"]',
+          ),
+          (input) => input.value,
+        );
+      expect(submitted()).toEqual(["Design", "Urgent", "Local"]);
+      await user.click(preview.getByRole("button", { name: "Remove Local" }));
       expect(
         preview.queryByRole("button", { name: "Remove Local" }),
       ).toBeNull();
+      expect(submitted()).toEqual(["Design", "Urgent"]);
     } else if (component === "filter-bar") {
       await user.type(preview.getByRole("searchbox"), "guide");
       expect(preview.getByRole("status")).toHaveTextContent("2 documents");
@@ -73,14 +76,16 @@ for (const component of ["tag-input", "filter-bar", "input-copy"] as const) {
         within(
           screen.getByRole("complementary", { name: "Customization" }),
         ).getByLabelText("Value", { exact: true }),
-      ).toHaveValue("src/system/TagInput.tsx");
+      ).toHaveValue("https://madar.sa/invite/7KQ2-RX9");
       expect(preview.getByRole("textbox")).toHaveValue(
-        "src/system/TagInput.tsx",
+        "https://madar.sa/invite/7KQ2-RX9",
       );
       await user.click(
-        preview.getByRole("button", { name: "Copy Source path" }),
+        preview.getByRole("button", { name: "Copy Invite link" }),
       );
-      expect(write).toHaveBeenLastCalledWith("src/system/TagInput.tsx");
+      expect(write).toHaveBeenLastCalledWith(
+        "https://madar.sa/invite/7KQ2-RX9",
+      );
     }
   });
 }

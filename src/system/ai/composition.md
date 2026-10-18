@@ -148,7 +148,7 @@ RadioGroup requires label, name and options (unique nonempty stable value, strin
 
 Textarea mirrors Input's optional label/helper/error convenience mode and separate Field composition mode. Do not combine those modes. Without label, supply a native label or accessible name. Native rows (default 3), name/form, value/defaultValue, editing/selection events, disabled, readOnly, className/style and HTMLTextAreaElement ref remain on the textarea. Resize vertically; no automatic growth or character counter.
 
-All three native controls preserve uncontrolled form submission/reset and cancellation of reset. Native reset does not emit change callbacks. Controlled modes require caller state updates and application onReset to restore controlled values. Keep validation rules/messages/focus in the application. Use [FeedbackForm](examples/FeedbackForm.tsx) for a small combined example; its Check form action validates required notes and reports the result. It demonstrates a persistent associated error, first-invalid focus and native reset. It does not save values or add a service or customer workflow.
+All three native controls preserve uncontrolled form submission/reset and cancellation of reset. Native reset does not emit change callbacks. Controlled modes require caller state updates and application onReset to restore controlled values. Keep validation rules/messages/focus in the application. Use [FeedbackForm](examples/FeedbackForm.tsx) for a small combined example; its Send feedback action validates required notes and confirms the send. It demonstrates a persistent associated error, first-invalid focus and native reset after a successful send. It does not save values or add a service or customer workflow.
 
 ## Avatars, tooltips, centered dialogs and empty content
 
@@ -510,9 +510,9 @@ flat assistant replies/user bubbles and a composer below.
 
 Use `ai/examples/ChatAppExample.tsx` as an in-memory example only. A fixed scheduler
 shared with ChatExamples updates one assistant message. Stop/switch/new cancel and
-retain received text. Switching preserves per-conversation drafts/models; reset
-restores samples and locale change resets the example. Unmount clears timers.
+retain received text. Switching preserves per-conversation drafts/models; locale
+change resets the example. Assistant replies show no identity or avatar. Unmount clears timers.
 Capture conversation and message IDs, invalidate run generations, and never let an
 old callback update the active conversation by accident. Models are controlled
-local choices, not connected services. Supplied Terminal tool output is explicitly
-labeled; do not invent real execution, auth, backend, persistence or navigation.
+local choices, not connected services. Supplied Terminal tool output is fixed;
+do not invent real execution, auth, backend, persistence or navigation.

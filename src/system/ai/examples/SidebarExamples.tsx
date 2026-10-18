@@ -10,7 +10,6 @@ import {
   Layers,
   Link,
   Menu,
-  Info,
 } from "lucide-react";
 import type { ReactNode, MouseEvent } from "react";
 import {
@@ -42,7 +41,7 @@ export interface SidebarExampleProps {
   footer?: boolean;
   longLabels?: boolean;
 }
-/** Local library notes and actions; no product service or saved data. */
+/** App shell: library navigation beside the selected page. */
 export function SidebarExample({
   language = "ar",
   idPrefix = "tiraz-sidebar",
@@ -61,16 +60,16 @@ export function SidebarExample({
       key: "overview",
       label: t("نظرة عامة", "Overview"),
       summary: t(
-        "معاينة محلية للمكتبة: ثلاث ملاحظات وثلاث وثائق ومساهمان توضيحيان.",
-        "A local library preview: three notes, three documents and two fictional contributors.",
+        "٢٤ مكوّنًا وثلاثة أدلة، حُدّثت قبل يومين.",
+        "24 components and three guides, updated two days ago.",
       ),
     },
     {
       key: "guide",
       label: t("الأدلة", "Guides"),
       summary: t(
-        "ملاحظات قصيرة لقراءة واجهات المكتبة.",
-        "Short notes for reading library interfaces.",
+        "أدلة قصيرة لكتابة واجهات عربية واضحة.",
+        "Short guides for writing clear Arabic interfaces.",
       ),
     },
     {
@@ -85,48 +84,48 @@ export function SidebarExample({
       key: "layout",
       label: t("المراجع", "Resources"),
       summary: t(
-        "روابط إلى محتوى موجود في هذه المعاينة.",
-        "Links to existing content in this preview.",
+        "مراجع يستخدمها الفريق يوميًا.",
+        "References the team uses every day.",
       ),
     },
     {
       key: "documents",
       label: t("الوثائق", "Documents"),
       summary: t(
-        "ثلاث وثائق قصيرة داخل المثال، دون ملفات للتحميل.",
-        "Three short documents within the example, with no downloadable files.",
+        "أحدث الوثائق المشتركة مع الفريق.",
+        "Documents recently shared with the team.",
       ),
     },
     {
       key: "people",
       label: t("الأشخاص", "People"),
       summary: t(
-        "مساهمان خياليان لتوضيح محتوى المكتبة.",
-        "Two fictional contributors illustrating library content.",
+        "المساهمون في المكتبة هذا الشهر.",
+        "Library contributors this month.",
       ),
     },
     {
       key: "activity",
       label: t("النشاط", "Activity"),
       summary: t(
-        "آخر اختياراتك في هذه المعاينة فقط.",
-        "Your recent selections in this mounted preview only.",
+        "آخر التحديثات على المكتبة.",
+        "Latest updates to the library.",
       ),
     },
     {
       key: "notifications",
       label: t("التنبيهات", "Notifications"),
       summary: t(
-        "تذكيرات محلية لمراجعة المثال، وليست إشعارات من خدمة.",
-        "Local reminders for reviewing this example, not notifications from a service.",
+        "تذكيرات بانتظار مراجعتك.",
+        "Reminders waiting for your review.",
       ),
     },
     {
       key: "settings",
       label: t("الإعدادات", "Settings"),
       summary: t(
-        "إعدادات عرض محتوى هذه المعاينة فقط.",
-        "Display preferences for this preview's content only.",
+        "تفضيلات العرض لمساحة العمل.",
+        "Display preferences for this workspace.",
       ),
     },
   ];
@@ -137,11 +136,8 @@ export function SidebarExample({
       ? key
       : "reading";
   });
-  const [details, setDetails] = useState(false);
   const [mobile, setMobile] = useState(false);
-  const [recent, setRecent] = useState([active]);
   const [reminders, setReminders] = useState(["labels", "keyboard"]);
-  const [summaries, setSummaries] = useState(true);
   const destination = useRef<string | null>(null);
   useEffect(() => {
     const sync = () => {
@@ -214,8 +210,10 @@ export function SidebarExample({
       event.altKey
     )
       return;
+    go(key, isMobile);
+  }
+  function go(key: string, isMobile: boolean) {
     setActive(key);
-    setRecent((previous) => [key, ...previous].slice(0, 5));
     if (isMobile) {
       destination.current = key;
       setMobile(false);
@@ -310,10 +308,9 @@ export function SidebarExample({
               <SidebarLabel>{people[0].name}</SidebarLabel>
             </SidebarIdentity>
             <SidebarAction
-              icon={<Info size={18} />}
-              label={t("تفاصيل المثال", "Example details")}
-              aria-pressed={details}
-              onClick={() => setDetails(!details)}
+              icon={<Settings2 size={18} />}
+              label={t("إعدادات الحساب", "Account settings")}
+              onClick={() => go("settings", isMobile)}
             />
           </SidebarFooter>
         )}
@@ -331,8 +328,8 @@ export function SidebarExample({
             onOpenChange={setMobile}
             title={t("تنقّل المكتبة", "Library navigation")}
             description={t(
-              "انتقل إلى محتوى محلي في المثال.",
-              "Go to local content in the example.",
+              "انتقل بين أقسام المكتبة.",
+              "Move between library sections.",
             )}
             closeLabel={t("إغلاق التنقّل", "Close navigation")}
             trigger={
@@ -356,19 +353,12 @@ export function SidebarExample({
           </Sheet>
         </div>
         <article aria-label={current.label}>
-          <h3>{t("معاينة المكتبة", "Library preview")}</h3>
-          <p>
-            {t(
-              "محتوى توضيحي محلي. الروابط تختار المحتوى وتوجّه التركيز إلى عنوانه.",
-              "Local sample content. Links select content and focus its heading.",
-            )}
-          </p>
           {pages.map((page) => (
             <section key={page.key} hidden={active !== page.key}>
-              <h4 id={`${base}-${page.key}`} tabIndex={-1}>
+              <h3 id={`${base}-${page.key}`} tabIndex={-1}>
                 {page.label}
-              </h4>
-              {summaries && <p>{page.summary}</p>}
+              </h3>
+              <p>{page.summary}</p>
               {page.key === "guide" && (
                 <ul>
                   <li>{t("استخدم عناوين قصيرة.", "Use short headings.")}</li>
@@ -379,14 +369,6 @@ export function SidebarExample({
                     {t("اختبر بلوحة المفاتيح.", "Test with the keyboard.")}
                   </li>
                 </ul>
-              )}
-              {page.key === "reading" && (
-                <p>
-                  {t(
-                    "الرأس والتذييل ثابتان بينما يتمرّر التنقّل. شريط الأيقونات يحتفظ بأسماء العناصر.",
-                    "Header and footer stay available while navigation scrolls. The icon rail retains control names.",
-                  )}
-                </p>
               )}
               {page.key === "layout" && (
                 <ul>
@@ -428,11 +410,18 @@ export function SidebarExample({
               )}
               {page.key === "activity" && (
                 <ol>
-                  {recent.map((key, index) => (
-                    <li key={`${key}-${index}`}>
-                      {t("اختيار:", "Selected:")} {label(key)}
-                    </li>
-                  ))}
+                  <li>
+                    {t(
+                      "سارة علي حدّثت «دليل التركيب» · قبل ساعتين",
+                      "Sara Ali updated “Composition guide” · 2 hours ago",
+                    )}
+                  </li>
+                  <li>
+                    {t(
+                      "عمر خالد أضاف «ملاحظات الرموز» · أمس",
+                      "Omar Khalid added “Token notes” · yesterday",
+                    )}
+                  </li>
                 </ol>
               )}
               {page.key === "notifications" && (
@@ -454,10 +443,7 @@ export function SidebarExample({
                   </ul>
                   {reminders.length === 0 && (
                     <p role="status">
-                      {t(
-                        "لا توجد تذكيرات متبقية في هذا المثال.",
-                        "No reminders left in this example.",
-                      )}
+                      {t("لا توجد تذكيرات جديدة.", "You’re all caught up.")}
                     </p>
                   )}
                   <Button
@@ -470,26 +456,19 @@ export function SidebarExample({
                 </>
               )}
               {page.key === "settings" && (
-                <Button
-                  variant="secondary"
-                  aria-pressed={summaries}
-                  onClick={() => setSummaries(!summaries)}
-                >
-                  {summaries
-                    ? t("إخفاء الملخصات", "Hide summaries")
-                    : t("إظهار الملخصات", "Show summaries")}
-                </Button>
+                <dl>
+                  <div>
+                    <dt>{t("اللغة", "Language")}</dt>
+                    <dd>{t("العربية", "English")}</dd>
+                  </div>
+                  <div>
+                    <dt>{t("المنطقة الزمنية", "Time zone")}</dt>
+                    <dd>{t("الرياض (GMT+3)", "Riyadh (GMT+3)")}</dd>
+                  </div>
+                </dl>
               )}
             </section>
           ))}
-          {details && (
-            <p role="status">
-              {t(
-                "هذا حساب خيالي. الملاحظات والوثائق والمساهمون والتذكيرات محلية؛ لا توجد خدمة أو بيانات محفوظة.",
-                "This is a fictional account. Notes, documents, contributors and reminders are local; no service or saved data.",
-              )}
-            </p>
-          )}
         </article>
       </div>
     </div>

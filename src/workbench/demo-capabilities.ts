@@ -30,7 +30,6 @@ const staticExamples: ComponentId[] = [
   "selection-actions",
   "context-meter",
   "model-selector",
-  "image-result",
   "sources",
   "insight-cards",
   "chat-composer",
@@ -60,4 +59,17 @@ export function canReplayPlayground(
 }
 export function canReplayExamples(component: ComponentId) {
   return !staticExamples.includes(component);
+}
+// The playground already stages these live; a second stage would only repeat it.
+const playgroundOnly: ComponentId[] = [
+  "card",
+  "accordion",
+  "breadcrumbs",
+  "pagination",
+  "tooltip",
+  "modal",
+  "data-table",
+];
+export function hasExamples(component: ComponentId) {
+  return !playgroundOnly.includes(component);
 }

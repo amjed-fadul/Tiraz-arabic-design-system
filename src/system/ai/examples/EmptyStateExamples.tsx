@@ -16,18 +16,20 @@ export function EmptyStateExamples({
   return (
     <div className="tz-empty-examples">
       <EmptyState
-        title={ar ? "لا توجد سجلات بعد" : "No records yet"}
+        title={ar ? "لا توجد فواتير بعد" : "No invoices yet"}
         description={
           ar
-            ? "ستظهر سجلاتك هنا عند إضافتها."
-            : "Your records will appear here when added."
+            ? "ستظهر فواتيرك هنا بعد إنشائها."
+            : "Your invoices will appear here once created."
         }
         illustration={<NoRecordsIllustration />}
       />
       <EmptyState
-        title={ar ? "لا توجد نتائج" : "No search results"}
+        title={ar ? "لا توجد نتائج لـ «الريان»" : "No results for “Rayyan”"}
         description={
-          ar ? "جرّب كلمات بحث مختلفة." : "Try different search terms."
+          ar
+            ? "جرّب اسمًا آخر أو رقم فاتورة."
+            : "Try another name or invoice number."
         }
         illustration={<NoSearchResultsIllustration />}
       />
@@ -36,8 +38,8 @@ export function EmptyStateExamples({
           <h3>{ar ? "دليل البداية" : "Getting started guide"}</h3>
           <p>
             {ar
-              ? "١. حدد المهمة. ٢. اختر المكوّن المناسب. ٣. اربط الإجراء بنتيجته."
-              : "1. Define the task. 2. Choose a component. 3. Connect the action to its outcome."}
+              ? "١. أضف بيانات شركتك. ٢. أضف أول عميل. ٣. أرسل أول فاتورة."
+              : "1. Add your company details. 2. Add your first customer. 3. Send your first invoice."}
           </p>
           <Button variant="secondary" onClick={() => setStarted(false)}>
             {ar ? "العودة" : "Back"}
@@ -48,8 +50,8 @@ export function EmptyStateExamples({
           title={ar ? "ابدأ بخطوة بسيطة" : "Start with a small step"}
           description={
             ar
-              ? "تعرف على خطوات استخدام المكوّنات."
-              : "Learn the steps for using these components."
+              ? "ثلاث خطوات تفصلك عن أول فاتورة."
+              : "Three steps to your first invoice."
           }
           illustration={<GettingStartedIllustration />}
           action={

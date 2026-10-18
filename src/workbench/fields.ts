@@ -159,13 +159,6 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   "chat-thread": [
     field(
-      "identities",
-      "boolean",
-      "هوية المساعد",
-      "Assistant identity",
-      "messages[].identity / avatar",
-    ),
-    field(
       "longContent",
       "boolean",
       "محتوى طويل",
@@ -938,7 +931,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   "image-result": ["state", "progress", "aspectRatio"],
   sources: ["defaultExpanded", "longContent"],
   "insight-cards": ["longContent"],
-  "chat-thread": ["identities", "longContent", "followOutput"],
+  "chat-thread": ["longContent", "followOutput"],
   "chat-composer": ["disabled"],
   "prompt-bar": ["disabled"],
   "code-block": ["codeLanguage", "longContent"],

@@ -7,7 +7,7 @@ export interface FileTreeExampleProps {
   metadata?: boolean;
   empty?: boolean;
 }
-/** All names and preview strings belong to this application example. */
+/** A project tree beside a preview of the selected file. */
 export function FileTreeExample({
   language = "ar",
   mode = "uncontrolled",
@@ -24,12 +24,12 @@ export function FileTreeExample({
   const files: Record<string, string> = {
     app: 'import { Welcome } from "./components/Welcome";\n\nexport function App() {\n  return <Welcome />;\n}',
     welcome: ar
-      ? "// محتوى نموذجي يملكه التطبيق\nexport const Welcome = () => <h1>مرحبًا بك</h1>;"
+      ? "export const Welcome = () => <h1>مرحبًا بك</h1>;"
       : "export const Welcome = () => <h1>Welcome</h1>;",
     tokens: ":root {\n  --space: 8px;\n  --surface: #ffffff;\n}",
     guide: ar
-      ? "# دليل المشروع\n\nأسماء ومحتوى نموذجي يزوّدها التطبيق."
-      : "# Project guide\n\nSample names and content supplied by the application.",
+      ? "# دليل المشروع\n\nثبّت الحزم ثم شغّل npm run dev."
+      : "# Project guide\n\nInstall dependencies, then run npm run dev.",
     package: '{ "name": "tiraz-project", "private": true }',
   };
   const file = (id: string, name: string, detail: string): FileTreeFile => ({
@@ -88,17 +88,6 @@ export function FileTreeExample({
   })(nodes);
   return (
     <div style={{ display: "grid", gap: "var(--space-4)", minInlineSize: 0 }}>
-      <p
-        style={{
-          margin: 0,
-          color: "var(--text-secondary)",
-          fontSize: "var(--text-meta)",
-        }}
-      >
-        {ar
-          ? "بيانات يزوّدها التطبيق. انقر أو اضغط المسافة لتحديد ملف ومعاينة نصه النموذجي. Enter ينشط الملف؛ الأسهم تنقل التركيز فقط."
-          : "Application-supplied data. Click or press Space to select a file and preview its sample text. Enter activates the file; arrows move focus only."}
-      </p>
       <FileTree
         nodes={empty ? [] : nodes}
         label={ar ? "ملفات المشروع" : "Project files"}
@@ -119,8 +108,8 @@ export function FileTreeExample({
             title={ar ? "لا توجد ملفات" : "No files"}
             description={
               ar
-                ? "أضف بيانات المشروع في تطبيقك لعرضها هنا."
-                : "Supply project data from your application to display it here."
+                ? "ارفع ملفات المشروع لتظهر هنا."
+                : "Upload project files to see them here."
             }
           />
         }
@@ -143,7 +132,7 @@ export function FileTreeExample({
                   overflowWrap: "anywhere",
                 }}
               >
-                <bdi>{selectedName}</bdi> · {ar ? "نص نموذجي" : "Sample text"}
+                <bdi>{selectedName}</bdi>
               </p>
               <pre
                 dir="auto"
@@ -168,9 +157,7 @@ export function FileTreeExample({
                 color: "var(--text-secondary)",
               }}
             >
-              {ar
-                ? "حدد ملفًا لمعاينة نصه النموذجي."
-                : "Select a file to preview its sample text."}
+              {ar ? "اختر ملفًا لمعاينته." : "Select a file to preview it."}
             </p>
           )}
         </section>

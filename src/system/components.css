@@ -1058,10 +1058,6 @@
   inline-size: auto;
   min-inline-size: 9rem;
 }
-.customer-memory-note {
-  color: var(--text-muted);
-  font-size: var(--text-meta);
-}
 .customer-details {
   margin: 0;
   display: grid;
@@ -4625,13 +4621,16 @@ button.tz-tool-chip[aria-expanded="true"] {
 }
 
 /* Shared documentation and portable example frame. */
+/* The stage: a calm, slightly recessed canvas so white component surfaces
+   read on it. Only a quiet title and two ghost icons sit above the work. */
 .tz-demo-frame {
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
-  background: var(--surface);
-  padding: var(--space-6);
+  border: 1px solid transparent;
+  border-radius: calc(var(--radius) + 8px);
+  background: color-mix(in srgb, var(--surface-subtle) 75%, var(--surface));
+  box-shadow: inset 0 0 0 0.5px var(--hairline);
+  padding: var(--space-3) var(--space-4) var(--space-8);
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
   inline-size: 100%;
   min-inline-size: 0;
 }
@@ -4640,16 +4639,21 @@ button.tz-tool-chip[aria-expanded="true"] {
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+  min-block-size: 32px;
 }
 .tz-demo-title {
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: var(--text-meta);
+  font-size: 11px;
   font-weight: var(--weight-medium);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 .tz-demo-title:lang(ar) {
   font-family: var(--font);
+  font-size: var(--text-meta);
+  letter-spacing: 0;
+  text-transform: none;
 }
 .tz-demo-actions {
   display: flex;
@@ -4666,7 +4670,7 @@ button.tz-tool-chip[aria-expanded="true"] {
 }
 @media (max-width: 600px) {
   .tz-demo-frame {
-    padding: var(--space-4);
+    padding: var(--space-2) var(--space-3) var(--space-5);
   }
 }
 
@@ -4886,15 +4890,6 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-chat-demo .tz-chat-thread {
   block-size: min(300px, 45dvh);
 }
-.tz-chat-demo-status {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-block-size: 28px;
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-}
-
 /* Application-owned AI results. Fixed image frames survive every resource state. */
 .tz-image-result {
   margin: 0;
@@ -5691,6 +5686,9 @@ a.tz-inline-citation {
 .tz-decision-footer > .tz-decision-note {
   flex: 1 1 14rem;
 }
+.tz-decision-footer:not(:has(> .tz-decision-note)) {
+  justify-content: flex-end;
+}
 .tz-decision-footer > .tz-decision-actions {
   margin-inline-start: auto;
 }
@@ -5774,7 +5772,7 @@ a.tz-inline-citation {
   display: none;
 }
 .tz-approval-card:is([data-state="approved"], [data-state="rejected"])
-  :is(.tz-decision-facts, .tz-badge) {
+  .tz-badge {
   display: none;
 }
 .tz-approval-card:is([data-state="approved"], [data-state="rejected"])
@@ -6258,11 +6256,6 @@ a.tz-inline-citation {
 }
 .tz-chat-app-mobile {
   display: none;
-}
-.tz-chat-app-note {
-  margin: 0;
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
 }
 .tz-chat-app-example {
   display: grid;

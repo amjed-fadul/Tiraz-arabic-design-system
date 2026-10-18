@@ -45,10 +45,12 @@ it("connects Card reveal, Accordion disclosure, Breadcrumb destinations and Pagi
   ).toBeVisible();
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   await user.click(nav.getByRole("button", { name: "Accordion" }));
-  await user.click(preview().getByRole("button", { name: "Layout" }));
-  expect(preview().getByRole("region", { name: "Layout" })).toHaveTextContent(
-    "Content stays in reading order",
+  await user.click(
+    preview().getByRole("button", { name: "Can I change my plan?" }),
   );
+  expect(
+    preview().getByRole("region", { name: "Can I change my plan?" }),
+  ).toHaveTextContent("next billing cycle");
   await user.click(nav.getByRole("button", { name: "Breadcrumbs" }));
   for (const link of preview().getAllByRole("link"))
     expect(

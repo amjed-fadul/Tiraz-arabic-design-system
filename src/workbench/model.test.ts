@@ -163,3 +163,12 @@ it.each([
     );
   },
 );
+
+it("replaces retired demo wording in saved playgrounds but keeps custom text", () => {
+  const state = defaultPlaygrounds("ar");
+  state.slider = { ...state.slider, label: "قيمة محلية" };
+  state.tooltip = { ...state.tooltip, content: "نص كتبه الفريق" };
+  const result = normalizePlaygrounds(state, "ar");
+  expect(result.slider.label).toBe(defaultPlaygrounds("ar").slider.label);
+  expect(result.tooltip.content).toBe("نص كتبه الفريق");
+});

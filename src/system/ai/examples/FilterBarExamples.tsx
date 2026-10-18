@@ -17,15 +17,28 @@ export function FilterBarExample({
   const [query, setQuery] = useState(initialQuery),
     [kind, setKind] = useState(initialKind);
   const documents = [
-    { id: "guide", name: t("دليل القراءة", "Reading guide"), kind: "guide" },
-    { id: "note", name: t("ملاحظات التصميم", "Design notes"), kind: "note" },
-    { id: "rtl", name: t("دليل العربية", "Arabic guide"), kind: "guide" },
+    { id: "pricing", name: t("دليل التسعير", "Pricing guide"), kind: "guide" },
+    {
+      id: "launch",
+      name: t("ملاحظات اجتماع الإطلاق", "Launch meeting notes"),
+      kind: "note",
+    },
+    { id: "brand", name: t("دليل الهوية", "Brand guide"), kind: "guide" },
   ];
   const results = documents.filter(
     (doc) =>
       doc.name.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()) &&
       (kind === "all" || doc.kind === kind),
   );
+  const n = results.length;
+  const count =
+    language === "ar"
+      ? n === 1
+        ? "مستند واحد"
+        : n === 2
+          ? "مستندان"
+          : `${new Intl.NumberFormat("ar-u-nu-arab").format(n)} مستندات`
+      : `${n} ${n === 1 ? "document" : "documents"}`;
   const kindLabel =
     kind === "guide" ? t("أدلة", "Guides") : t("ملاحظات", "Notes");
   return (
@@ -86,8 +99,8 @@ export function FilterBarExample({
           ]}
         />
       </FilterBar>
-      <p role="status" style={{ margin: 0 }}>
-        {t(`${results.length} مستند`, `${results.length} documents`)}
+      <p role="status" style={{ margin: 0, color: "var(--text-secondary)" }}>
+        {count}
       </p>
       {results.length ? (
         <ul style={{ margin: 0, paddingInlineStart: 20 }}>
@@ -98,8 +111,8 @@ export function FilterBarExample({
       ) : (
         <p style={{ margin: 0 }}>
           {t(
-            "لا توجد نتائج. أزل عامل تصفية لعرض المزيد.",
-            "No results. Remove a filter to see more.",
+            "لا توجد مستندات مطابقة. أزل عامل تصفية لعرض المزيد.",
+            "No matching documents. Remove a filter to see more.",
           )}
         </p>
       )}

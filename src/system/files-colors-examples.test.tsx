@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
 import { FileDropzoneExample } from "./ai/examples/FileDropzoneExamples";
@@ -10,9 +16,13 @@ const wrap = (node: React.ReactNode) => (
     {node}
   </SystemProvider>
 );
-it("live multiple changes keep uncontrolled selection and its local report in sync", async () => {
+it("live multiple changes keep the uncontrolled selection until its form resets", async () => {
   const view = render(
-    wrap(<FileDropzoneExample language="en" mode="uncontrolled" multiple />),
+    wrap(
+      <form>
+        <FileDropzoneExample language="en" mode="uncontrolled" multiple />
+      </form>,
+    ),
   );
   fireEvent.change(document.querySelector("input[type=file]")!, {
     target: {
@@ -21,42 +31,44 @@ it("live multiple changes keep uncontrolled selection and its local report in sy
   });
   view.rerender(
     wrap(
-      <FileDropzoneExample
-        language="en"
-        mode="uncontrolled"
-        multiple={false}
-      />,
+      <form>
+        <FileDropzoneExample
+          language="en"
+          mode="uncontrolled"
+          multiple={false}
+        />
+      </form>,
     ),
   );
   expect(screen.getByText("local.txt")).toBeInTheDocument();
-  await userEvent.click(
-    screen.getByRole("button", { name: "Read local selection" }),
-  );
-  expect(document.querySelector("output")).toHaveTextContent("local.txt");
-  await userEvent.click(screen.getByRole("button", { name: "Reset files" }));
+  act(() => document.querySelector("form")!.reset());
   await waitFor(() =>
     expect(document.querySelector(".tz-selected-files")).toBeNull(),
   );
-  await userEvent.click(
-    screen.getByRole("button", { name: "Read local selection" }),
-  );
-  expect(document.querySelector("output")).toHaveTextContent("No files");
 });
 it.each(["controlled", "uncontrolled"] as const)(
-  "working color example mode=%s synchronizes sample, submission and reset",
+  "working color example mode=%s keeps the field and form value in sync",
   async (mode) => {
-    render(wrap(<ColorPickerExample language="en" mode={mode} />));
+    render(
+      wrap(
+        <form>
+          <ColorPickerExample language="en" mode={mode} />
+        </form>,
+      ),
+    );
+    const form = document.querySelector("form")!;
+    expect(screen.getByRole("textbox", { name: "Brand color" })).toHaveValue(
+      "#805475",
+    );
     await userEvent.click(screen.getByRole("button", { name: "Blue" }));
-    expect(document.querySelector("figcaption")).toHaveTextContent("#355C87");
-    await userEvent.click(
-      screen.getByRole("button", { name: "Read form value" }),
-    );
-    expect(document.querySelector("output")).toHaveTextContent("#355C87");
-    await userEvent.click(screen.getByRole("button", { name: "Reset color" }));
-    await waitFor(() =>
-      expect(screen.getByRole("textbox")).toHaveValue("#805475"),
-    );
-    expect(document.querySelector("figcaption")).toHaveTextContent("#805475");
+    expect(screen.getByRole("textbox")).toHaveValue("#355C87");
+    expect(new FormData(form).get("brandColor")).toBe("#355C87");
+    if (mode === "uncontrolled") {
+      act(() => form.reset());
+      await waitFor(() =>
+        expect(screen.getByRole("textbox")).toHaveValue("#805475"),
+      );
+    }
   },
 );
 

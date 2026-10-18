@@ -187,45 +187,51 @@ it("renders an application empty state", () => {
   );
   expect(screen.getByRole("heading", { name: "No agent tasks" })).toBeVisible();
 });
-// Fake time tests the application simulation only; the library has no timers.
-it("runs only after Run, waits for explicit retry and cancels replay/retry timers", async () => {
+// Fake time tests the example's scripted run only; the library has no timers.
+it("autoplays one run: the draft fails, retries and completes while the handoff stays pending", async () => {
   vi.useFakeTimers();
   render(<TaskRowsExample language="en" />);
-  const build = () =>
-    screen.getByRole("button", { name: /Build sample outline/ });
-  expect(build()).toHaveTextContent("Pending");
-  fireEvent.click(screen.getByRole("button", { name: "Run local simulation" }));
-  expect(build()).toHaveTextContent("Running");
-  await act(async () => vi.advanceTimersByTime(900));
-  expect(build()).toHaveTextContent("Failed");
-  await act(async () => vi.advanceTimersByTime(5000));
-  expect(build()).toHaveTextContent("Failed");
-  fireEvent.click(build());
-  fireEvent.click(
-    screen.getByRole("button", { name: "Retry local simulation" }),
-  );
-  expect(build()).toHaveTextContent("Running");
-  await act(async () => vi.advanceTimersByTime(400));
-  fireEvent.click(
-    screen.getByRole("button", { name: "Replay local simulation" }),
-  );
-  await act(async () => vi.advanceTimersByTime(500));
-  expect(build()).toHaveTextContent("Running");
-  await act(async () => vi.advanceTimersByTime(400));
-  expect(build()).toHaveTextContent("Failed");
-  fireEvent.click(
-    screen.getByRole("button", { name: "Retry local simulation" }),
-  );
-  await act(async () => vi.advanceTimersByTime(900));
-  expect(build()).toHaveTextContent("Completed");
-  expect(screen.getByRole("status")).toHaveTextContent(
-    /No files, emails or backend tasks were processed/,
-  );
+  const draft = () =>
+    screen.getByRole("button", { name: /Draft customer emails/ });
+  expect(draft()).toHaveTextContent("Running");
+  expect(
+    screen.getByRole("button", { name: /Send summary to finance/ }),
+  ).toHaveTextContent("Pending");
+  fireEvent.click(draft());
+  expect(
+    screen.getByText("Writing drafts from the latest meeting notes."),
+  ).toBeVisible();
+  await act(async () => vi.advanceTimersByTime(1400));
+  expect(draft()).toHaveTextContent("Failed");
+  expect(screen.getByText(/timed out after 30 seconds/)).toBeVisible();
+  await act(async () => vi.advanceTimersByTime(1000));
+  expect(draft()).toHaveTextContent("Running");
+  await act(async () => vi.advanceTimersByTime(1400));
+  expect(draft()).toHaveTextContent("Completed");
+  expect(draft()).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByText("Al Nada Trading — quote follow-up")).toBeVisible();
+  expect(vi.getTimerCount()).toBe(0);
+  expect(
+    screen.getByRole("button", { name: /Send summary to finance/ }),
+  ).toHaveTextContent("Pending");
+  expect(screen.queryByRole("status")).toBeNull();
+  expect(screen.queryByText(/sample|simulation|local/i)).toBeNull();
 });
-it("cancels scheduled simulation work on unmount", async () => {
+it("starts on the final state under reduced motion and cancels the run on unmount", () => {
   vi.useFakeTimers();
+  const reduced = render(
+    <System.SystemProvider
+      config={{ ...System.defaultConfig, reducedMotion: true }}
+    >
+      <TaskRowsExample language="en" />
+    </System.SystemProvider>,
+  );
+  expect(
+    screen.getByRole("button", { name: /Draft customer emails/ }),
+  ).toHaveTextContent("Completed");
+  expect(vi.getTimerCount()).toBe(0);
+  reduced.unmount();
   const view = render(<TaskRowsExample language="en" />);
-  fireEvent.click(screen.getByRole("button", { name: "Run local simulation" }));
   expect(vi.getTimerCount()).toBeGreaterThan(0);
   view.unmount();
   expect(vi.getTimerCount()).toBe(0);
@@ -296,10 +302,12 @@ it("uses existing semantic Badges for each task state", () => {
     );
   }
 });
-it("shows sample result rows directly without a local-note button", async () => {
+it("shows result rows directly without a note button", async () => {
   const user = userEvent.setup();
   render(<TaskRowsExample language="en" />);
-  await user.click(screen.getByRole("button", { name: /Sample .* ready/ }));
+  await user.click(
+    screen.getByRole("button", { name: /Reconcile October invoices/ }),
+  );
   expect(screen.queryByRole("button", { name: "Show local note" })).toBeNull();
   expect(
     screen.getByText("Matched contacts and tax IDs").nextElementSibling,

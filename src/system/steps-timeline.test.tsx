@@ -126,11 +126,9 @@ it("validates local form fields, focuses errors, preserves Back/Next values and 
   );
   await user.click(screen.getByRole("button", { name: "Next" }));
   expect(screen.getByText("sara@example.com")).toBeVisible();
-  await user.click(
-    screen.getByRole("button", { name: "Complete local example" }),
-  );
+  await user.click(screen.getByRole("button", { name: "Submit application" }));
   expect(screen.getByRole("status")).toHaveTextContent(
-    "The local example is complete. Nothing was saved or sent.",
+    "Thanks, Sara. We'll contact you at sara@example.com within two business days.",
   );
   expect(document.querySelector('[aria-current="step"]')).toBeNull();
 });
@@ -185,21 +183,18 @@ it("shows caller-owned empty content and appends real in-memory events without r
   expect(screen.getByText("No activity yet")).toBeVisible();
   unmount();
   render(<TimelineExample language="en" empty />);
-  expect(
-    screen.getByText(
-      "In-memory sample data; cleared when this example unmounts.",
-    ),
-  ).toBeVisible();
-  expect(screen.getByText("No local events yet.")).toBeVisible();
+  expect(screen.queryByText(/sample|in-memory|local/i)).toBeNull();
+  expect(screen.getByText("No activity yet.")).toBeVisible();
   const user = userEvent.setup();
-  await user.click(screen.getByRole("button", { name: "Append local event" }));
-  await user.click(screen.getByRole("button", { name: "Append local event" }));
+  await user.click(screen.getByRole("button", { name: "Log a call" }));
+  await user.click(screen.getByRole("button", { name: "Log a call" }));
   expect(
-    screen
-      .getByRole("list", { name: "Local activity" })
-      .querySelectorAll("time"),
+    screen.getByRole("list", { name: "Activity log" }).querySelectorAll("time"),
   ).toHaveLength(2);
-  expect(screen.getAllByText(/Local event [12]/)).toHaveLength(2);
+  expect(screen.getAllByText("Follow-up call with the client")).toHaveLength(2);
+  expect(screen.getByRole("status")).toHaveTextContent(
+    "Follow-up call logged (2).",
+  );
 });
 
 it("focuses the updated stage text only after the application commits it", async () => {
@@ -219,8 +214,6 @@ it("focuses the updated stage text only after the application commits it", async
   );
   await user.click(screen.getByRole("button", { name: "Next" }));
   expect(namesAtFocus.at(-1)).toBe("Review");
-  await user.click(
-    screen.getByRole("button", { name: "Complete local example" }),
-  );
-  expect(namesAtFocus.at(-1)).toBe("Local example complete");
+  await user.click(screen.getByRole("button", { name: "Submit application" }));
+  expect(namesAtFocus.at(-1)).toBe("Application submitted");
 });

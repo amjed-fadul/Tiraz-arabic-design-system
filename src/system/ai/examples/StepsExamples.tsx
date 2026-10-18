@@ -48,8 +48,8 @@ export function StepsExample({
           id: "review",
           label: longLabels
             ? t(
-                "مراجعة جميع البيانات قبل إنهاء المثال المحلي",
-                "Review all information before completing the local example",
+                "مراجعة جميع البيانات والمرفقات قبل إرسال الطلب",
+                "Review all information and attachments before submitting the application",
               )
             : t("المراجعة", "Review"),
           description: t("تأكيد البيانات", "Confirm the information"),
@@ -124,12 +124,10 @@ export function StepsFormExample({
       }}
     >
       <h3 id={titleId} ref={headingRef} tabIndex={-1} style={{ margin: 0 }}>
-        {complete
-          ? t("اكتمل المثال المحلي", "Local example complete")
-          : labels[step]}
+        {complete ? t("تم إرسال الطلب", "Application submitted") : labels[step]}
       </h3>
       <Steps
-        label={t("تقدم المثال المحلي", "Local example progress")}
+        label={t("تقدم الطلب", "Application progress")}
         locale={language}
         items={ids.map((id, index) => ({
           id,
@@ -146,20 +144,15 @@ export function StepsFormExample({
         currentId={complete ? "" : ids[step]}
       />
       {complete ? (
-        <p role="status">
-          {t(
-            "اكتمل المثال المحلي. لم تُحفظ أو تُرسل أي بيانات.",
-            "The local example is complete. Nothing was saved or sent.",
-          )}
+        <p role="status" style={{ margin: 0, overflowWrap: "anywhere" }}>
+          {t("شكرًا ", "Thanks, ")}
+          {name}
+          {t("، سنتواصل معك على ", ". We'll contact you at ")}
+          <bdi dir="ltr">{email}</bdi>
+          {t(" خلال يومَي عمل.", " within two business days.")}
         </p>
       ) : (
         <>
-          <p style={{ margin: 0, color: "var(--text-secondary)" }}>
-            {t(
-              "نموذج محلي فقط؛ تبقى القيم أثناء التنقل بين الخطوات.",
-              "Local form only; values remain while moving between steps.",
-            )}
-          </p>
           {step === 0 && (
             <Input
               ref={nameRef}
@@ -226,7 +219,7 @@ export function StepsFormExample({
             </Button>
             <Button type="submit">
               {step === 2
-                ? t("إكمال المثال المحلي", "Complete local example")
+                ? t("إرسال الطلب", "Submit application")
                 : t("التالي", "Next")}
             </Button>
           </div>
@@ -246,7 +239,7 @@ export function ActivatableStepsExample({
   const ar = language === "ar";
   return (
     <Steps
-      label={ar ? "اختيار خطوة للمعاينة" : "Choose a preview step"}
+      label={ar ? "أقسام الطلب" : "Application sections"}
       locale={language}
       currentId={currentId}
       onStepActivate={setCurrentId}

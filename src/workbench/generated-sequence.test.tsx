@@ -68,22 +68,20 @@ it.each(["ar", "en"] as const)(
     );
     await user.click(
       screen.getByRole("button", {
-        name: ar ? "إكمال المثال المحلي" : "Complete local example",
+        name: ar ? "إرسال الطلب" : "Submit application",
       }),
     );
-    expect(screen.getByRole("status")).toHaveTextContent(
-      ar ? "لم تُحفظ أو تُرسل" : "Nothing was saved or sent",
-    );
+    expect(screen.getByRole("status")).toHaveTextContent("sara@example.com");
     view.unmount();
     const Timeline = copiedExample("timeline", language);
     render(<Timeline />);
     const list = screen.getByRole("list", {
-      name: ar ? "النشاط المحلي" : "Local activity",
+      name: ar ? "سجل النشاط" : "Activity log",
     });
     const original = within(list).getAllByRole("listitem")[0];
     await user.click(
       screen.getByRole("button", {
-        name: ar ? "إضافة حدث محلي" : "Append local event",
+        name: ar ? "تسجيل مكالمة" : "Log a call",
       }),
     );
     expect(within(list).getAllByRole("listitem")).toHaveLength(3);

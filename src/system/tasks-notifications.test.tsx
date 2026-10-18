@@ -98,10 +98,11 @@ it("filters actual notifications, preserves action/read separation and moves foc
       <NotificationListExample language="en" />
     </System.SystemProvider>,
   );
+  expect(screen.queryByText(/sample|in memory|local/i)).toBeNull();
   await user.click(
     screen.getByRole("button", { name: "Show details: Review requested" }),
   );
-  expect(screen.getByText(/Spacing and naming/)).toBeVisible();
+  expect(screen.getByText(/price table on page 4/)).toBeVisible();
   expect(screen.getByText("2 unread")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "Unread" }));
   let controls = screen.getAllByRole("button", { name: /^Mark as read:/ });

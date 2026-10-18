@@ -21,7 +21,7 @@ it("combines name/email search, status, sorting and pagination resets while keep
     name: "Search customers by name or email",
   });
   await user.click(screen.getByRole("button", { name: "Next" }));
-  await user.type(search, "example");
+  await user.type(search, "@");
   expect(search).toHaveFocus();
   expect(screen.getByRole("status")).toHaveTextContent("1–10 of 26");
   await user.click(screen.getByRole("combobox", { name: "Customer status" }));

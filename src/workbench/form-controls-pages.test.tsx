@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
 import { Workbench } from "./Workbench";
@@ -35,30 +35,28 @@ it("adds four continuous documentation pages with complete prompt/code and prese
 for (const copy of [
   {
     language: "en",
-    action: "Check form",
+    action: "Send feedback",
     notes: "Notes",
-    helper: "Add a short note.",
-    error: "Enter a note to complete the form check.",
-    success: "Form check passed.",
+    helper: "Tell us what we could improve.",
+    error: "Write your note before sending.",
+    success: "Thanks — we received your note.",
     updates: "Receive updates",
     weekly: "Weekly",
     monthly: "Monthly",
-    reset: "Reset",
   },
   {
     language: "ar",
-    action: "تحقق من النموذج",
+    action: "إرسال الملاحظات",
     notes: "ملاحظات",
-    helper: "أضف ملاحظة قصيرة.",
-    error: "أدخل ملاحظة لإكمال التحقق من النموذج.",
-    success: "تم التحقق من النموذج بنجاح.",
+    helper: "أخبرنا بما يمكننا تحسينه.",
+    error: "اكتب ملاحظتك قبل الإرسال.",
+    success: "شكرًا لك، وصلتنا ملاحظتك.",
     updates: "تلقي التحديثات",
     weekly: "أسبوعيًا",
     monthly: "شهريًا",
-    reset: "إعادة الضبط",
   },
 ] as const) {
-  it(`checks the ${copy.language} form accurately with associated errors, focus and native reset`, async () => {
+  it(`validates the ${copy.language} form with associated errors and focus, then resets natively after sending`, async () => {
     render(<FeedbackForm language={copy.language} />);
     const user = userEvent.setup(),
       notes = screen.getByRole("textbox", { name: copy.notes }),
@@ -79,14 +77,13 @@ for (const copy of [
     expect(status).toHaveTextContent(copy.success);
     expect(notes).toHaveAccessibleDescription(copy.helper);
     expect(notes).not.toHaveAttribute("aria-invalid", "true");
-    await user.click(screen.getByRole("button", { name: copy.reset }));
-    expect(notes).toHaveValue("");
-    expect(screen.getByLabelText(copy.weekly)).toBeChecked();
+    await waitFor(() => expect(notes).toHaveValue(""));
+    await waitFor(() =>
+      expect(screen.getByLabelText(copy.weekly)).toBeChecked(),
+    );
     expect(screen.getByLabelText(copy.updates)).not.toBeChecked();
-    expect(status).toBeEmptyDOMElement();
     await user.click(screen.getByRole("button", { name: copy.action }));
-    await user.click(screen.getByRole("button", { name: copy.reset }));
-    expect(notes).toHaveAccessibleDescription(copy.helper);
-    expect(notes).not.toHaveAttribute("aria-invalid", "true");
+    expect(notes).toHaveAttribute("aria-invalid", "true");
+    expect(status).toBeEmptyDOMElement();
   });
 }

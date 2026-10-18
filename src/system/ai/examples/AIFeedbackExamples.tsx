@@ -1,13 +1,54 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  Button,
   LoadingState,
   ThinkingIndicator,
   ThinkingState,
+  useSystem,
 } from "../../index";
 import { Check } from "lucide-react";
 
 type Language = "ar" | "en";
+function usePrefersReducedMotion() {
+  const { config } = useSystem();
+  return (
+    config.reducedMotion ||
+    (typeof window !== "undefined" &&
+      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+  );
+}
+const steps = {
+  ar: [
+    "قراءة ٢١٧ فاتورة من شركة مدار",
+    "مطابقة المبالغ مع أوامر الشراء",
+    "إعداد ملخص الفروقات",
+  ],
+  en: [
+    "Read 217 invoices from Madar",
+    "Match totals against purchase orders",
+    "Draft a summary of the differences",
+  ],
+};
+function StepList({
+  language,
+  count = 3,
+}: {
+  language: Language;
+  count?: number;
+}) {
+  return (
+    <ol
+      className="tz-thinking-steps"
+      aria-label={language === "ar" ? "خطوات الإعداد" : "Preparation steps"}
+    >
+      {steps[language].slice(0, count).map((text) => (
+        <li key={text}>
+          <Check aria-hidden="true" />
+          <span>{text}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
 export function LoadingStateExample({
   language = "ar",
   label,
@@ -93,66 +134,28 @@ export function ThinkingStateExample({
       active={active}
       defaultExpanded={defaultExpanded}
     >
-      <ol
-        className="tz-thinking-steps"
-        aria-label={
-          ar
-            ? "خطوات نموذجية يزوّدها التطبيق"
-            : "Application-supplied sample steps"
-        }
-      >
-        {(ar
-          ? ["مراجعة تسميات العينة", "تجميع مواضيع العينة", "إعداد مخطط العينة"]
-          : [
-              "Review sample labels",
-              "Group sample topics",
-              "Prepare sample outline",
-            ]
-        ).map((text) => (
-          <li key={text}>
-            <Check aria-hidden="true" />
-            <span>{text}</span>
-          </li>
-        ))}
-      </ol>
+      <StepList language={language} />
     </ThinkingState>
   );
 }
-/** Explicit local simulation. No AI service, network request or library progress. */
+/** One short scripted run on mount; unmount clears every timer. */
 export function AIFeedbackDemo({ language = "ar" }: { language?: Language }) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [phase, setPhase] = useState<
-    "idle" | "loading" | "arranging" | "ready" | "cancelled"
-  >("idle");
+  const reduced = usePrefersReducedMotion();
+  const [run, setRun] = useState<"reading" | "matching" | "ready">("reading");
   const [elapsedMs, setElapsedMs] = useState(0);
   const startedAt = useRef(0);
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([]),
-    generation = useRef(0);
-  function clearRun() {
-    generation.current += 1;
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-  }
-  useEffect(() => () => clearRun(), []);
-  function run() {
-    clearRun();
-    const current = generation.current;
+  const phase = reduced ? "ready" : run;
+  const active = phase !== "ready";
+  useEffect(() => {
+    if (reduced) return;
     startedAt.current = Date.now();
-    setElapsedMs(0);
-    setPhase("loading");
-    timers.current = [
-      setTimeout(() => {
-        if (generation.current === current) setPhase("arranging");
-      }, 900),
-      setTimeout(() => {
-        if (generation.current === current) {
-          timers.current = [];
-          setPhase("ready");
-        }
-      }, 1800),
+    const timers = [
+      setTimeout(() => setRun("matching"), 1200),
+      setTimeout(() => setRun("ready"), 2800),
     ];
-  }
-  const active = phase === "loading" || phase === "arranging";
+    return () => timers.forEach(clearTimeout);
+  }, [reduced]);
   useEffect(() => {
     if (!active) return;
     const clock = setInterval(
@@ -162,67 +165,38 @@ export function AIFeedbackDemo({ language = "ar" }: { language?: Language }) {
     return () => clearInterval(clock);
   }, [active]);
   const labels = {
-    idle: t("العرض جاهز", "Demo ready"),
-    loading: t("عرض توضيحي: إعداد العينة", "Demo: preparing sample"),
-    arranging: t("عرض توضيحي: ترتيب العينة", "Demo: arranging sample"),
-    ready: t("ملخص العرض جاهز", "Demo summary ready"),
-    cancelled: t("أُلغي العرض", "Demo cancelled"),
+    reading: t("جارٍ قراءة الفواتير", "Reading invoices"),
+    matching: t("جارٍ مطابقة المبالغ", "Matching totals"),
+    ready: t("ملخص المطابقة جاهز", "Reconciliation summary ready"),
   };
   return (
     <div style={{ display: "grid", gap: "var(--space-3)", minInlineSize: 0 }}>
-      <p
-        style={{
-          margin: 0,
-          color: "var(--text-secondary)",
-          fontSize: "var(--text-meta)",
-        }}
-      >
-        {t("محاكاة محلية", "Local simulation")}
-      </p>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-        <Button size="sm" variant="secondary" onClick={run}>
-          {phase === "idle"
-            ? t("تشغيل العرض", "Run demo")
-            : t("إعادة العرض", "Replay demo")}
-        </Button>
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-disabled={!active}
-          onClick={() => {
-            if (!active) return;
-            clearRun();
-            setPhase("cancelled");
-          }}
-        >
-          {t("إلغاء العرض", "Cancel demo")}
-        </Button>
-      </div>
-      {phase === "loading" && (
+      {phase === "reading" && (
         <LoadingState
           announcement="off"
           elapsedMs={elapsedMs}
-          label={t("تحميل عينة محلية", "Loading local sample")}
+          label={t("جارٍ قراءة ٢١٧ فاتورة", "Reading 217 invoices")}
         />
       )}
-      {phase === "arranging" && (
+      {phase === "matching" && (
         <ThinkingIndicator
           announcement="off"
-          label={t("ترتيب ملاحظات العينة", "Arranging sample notes")}
+          label={t(
+            "جارٍ مطابقة المبالغ مع أوامر الشراء",
+            "Matching totals against purchase orders",
+          )}
         />
       )}
       <ThinkingState label={labels[phase]} active={active}>
-        <p style={{ margin: 0 }}>
-          {t(
-            "عينة ثابتة: اتجاه عربي افتراضي، حالات تحميل موجزة، وتفاصيل اختيارية.",
-            "Fixed sample: Arabic by default, compact loading feedback, and optional details.",
-          )}
-        </p>
+        <StepList
+          language={language}
+          count={phase === "reading" ? 1 : phase === "matching" ? 2 : 3}
+        />
         {phase === "ready" && (
           <p style={{ marginBlockEnd: 0 }}>
             {t(
-              "تجمع هذه العينة ثلاث ملاحظات في ملخص قصير.",
-              "This sample combines three notes into a short summary.",
+              "تطابقت ٢١٤ فاتورة، وتحتاج ٣ فواتير إلى مراجعة. أكبر فرق ١٬٢٥٠ ر.س في INV-1043.",
+              "214 invoices match and 3 need review. The largest gap is 1,250 SAR on INV-1043.",
             )}
           </p>
         )}

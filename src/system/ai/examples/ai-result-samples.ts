@@ -8,26 +8,24 @@ export function sampleSources(language: Language): SourceReference[] {
     {
       id: "menu-audit",
       number: 1,
-      title: ar ? "مراجعة القائمة — عينة محلية" : "Menu review — local sample",
+      title: ar
+        ? "مراجعة قابلية استخدام قائمة نخلة"
+        : "Nakhla menu usability review",
       href: auditUrl,
       description: ar
-        ? "طلب خمسة من ثمانية مشاركين في السيناريو أسماء الأصناف بالعربية بجانب الإنجليزية."
-        : "Five of eight participants in the scripted scenario requested Arabic item names beside English names.",
-      metadata: ar
-        ? "سيناريو خيالي · 8 جلسات مكتوبة"
-        : "Fictional scenario · 8 scripted sessions",
+        ? "طلب خمسة من ثمانية ضيوف أسماء الأصناف بالعربية بجانب الإنجليزية."
+        : "Five of eight guests asked for Arabic item names beside the English names.",
+      metadata: ar ? "٨ جلسات · ١٢ أكتوبر ٢٠٢٦" : "8 sessions · Oct 12, 2026",
     },
     {
       id: "menu-brief",
       number: 2,
-      title: ar ? "موجز القائمة — عينة محلية" : "Menu brief — local sample",
+      title: ar ? "موجز تصميم قائمة الشتاء" : "Winter menu design brief",
       href: briefUrl,
       description: ar
         ? "يطلب الموجز أسماء ثنائية اللغة وأسعارًا واضحة."
         : "The brief calls for bilingual names and clear prices.",
-      metadata: ar
-        ? "محتوى ثابت يزوّده التطبيق"
-        : "Fixed application-supplied content",
+      metadata: ar ? "فريق العلامة التجارية · الإصدار ٣" : "Brand team · v3",
     },
   ];
 }

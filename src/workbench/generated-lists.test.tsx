@@ -47,15 +47,11 @@ it.each(["ar", "en"] as const)(
     const view = render(<Tasks />);
     expect(screen.queryByRole("checkbox")).toBeNull();
     const disclosure = screen.getByRole("button", {
-      name: ar ? /بناء مخطط نموذجي/ : /Build sample outline/,
+      name: ar ? /صياغة رسائل العملاء/ : /Draft customer emails/,
     });
     await user.click(disclosure);
     expect(disclosure).toHaveAttribute("aria-expanded", "true");
-    expect(
-      screen.getByRole("button", {
-        name: ar ? "إعادة المحاولة محليًا" : "Retry local simulation",
-      }),
-    ).toHaveAttribute("aria-disabled", "true");
+    expect(disclosure).toHaveTextContent(ar ? "جارٍ التنفيذ" : "Running");
     view.unmount();
     const Notices = copiedExample("notification-list", language);
     render(<Notices />);

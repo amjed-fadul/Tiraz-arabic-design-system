@@ -13,7 +13,7 @@ it("documents DataTable with minimal controls and copies the connected portable 
   ).toBeInTheDocument();
   const canvas = document.querySelector(".playground-canvas") as HTMLElement;
   expect(within(canvas).getByRole("searchbox")).toBeInTheDocument();
-  expect(within(canvas).getByRole("table")).toHaveTextContent("madar.example");
+  expect(within(canvas).getByRole("table")).toHaveTextContent("hello@madar.sa");
   await user.clear(screen.getByLabelText("Caption", { exact: true }));
   await user.type(
     screen.getByLabelText("Caption", { exact: true }),

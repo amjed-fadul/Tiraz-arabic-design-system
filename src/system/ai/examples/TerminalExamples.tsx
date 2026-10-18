@@ -1,61 +1,90 @@
-import { useState } from "react";
-import { Button, Terminal } from "../../index";
+import { useEffect, useState } from "react";
+import { Terminal, useSystem } from "../../index";
 type Language = "ar" | "en";
+const header = "vite v7.1.4 building for production…\n";
+const progress = [
+  "transforming (96) src/system/Button.tsx",
+  "transforming (241) src/system/ChatThread.tsx",
+  "transforming (418) src/main.tsx",
+  "✓ 418 modules transformed.",
+  "rendering chunks (3)...",
+  "computing gzip size (2)...",
+];
+const built =
+  "✓ 418 modules transformed.\ndist/index.html                  0.40 kB │ gzip:  0.27 kB\ndist/assets/index-4f2a9c1e.css  38.12 kB │ gzip:  7.41 kB\ndist/assets/index-b7d3a1f5.js  182.41 kB │ gzip: 58.12 kB\n";
+const error =
+  "src/billing/invoice.ts(42,9): error TS2322: Type 'string' is not assignable to type 'number'.\n";
+/** Config or OS preference; a running log shows all of its lines at once. */
+function useReducedMotion() {
+  const { config } = useSystem();
+  return (
+    config.reducedMotion ||
+    (typeof window !== "undefined" &&
+      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
+  );
+}
 export function TerminalExample({
-  language = "ar",
   state = "completed",
   longContent = false,
   followOutput = false,
 }: {
+  /** Accepted for compatibility; the log text is the same in every language. */
   language?: Language;
   state?: "running" | "completed" | "failed";
   longContent?: boolean;
   followOutput?: boolean;
 }) {
-  const ar = language === "ar",
-    [appended, setAppended] = useState(0);
+  const reduced = useReducedMotion(),
+    live = state === "running" && !reduced,
+    [shown, setShown] = useState(0);
+  // Each time the log goes live it streams again from the first line.
+  const [liveFor, setLiveFor] = useState(live);
+  if (liveFor !== live) {
+    setLiveFor(live);
+    setShown(0);
+  }
+  useEffect(() => {
+    if (!live) return;
+    let count = 0;
+    const timer = setInterval(() => {
+      setShown(++count);
+      if (count === progress.length) clearInterval(timer);
+    }, 500);
+    return () => clearInterval(timer);
+  }, [live]);
+  const long = longContent
+    ? Array.from({ length: 80 }, (_, i) =>
+        state === "failed"
+          ? `src/billing/lines/item-${i + 1}.ts(18,7): error TS2345: Argument of type 'string | undefined' is not assignable to parameter of type 'string'.\n`
+          : state === "running"
+            ? `transforming (${i + 1}) src/routes/customers/invoices/line-items/section-${i + 1}.tsx\n`
+            : `dist/assets/route-${String(i + 1).padStart(2, "0")}-${((0x9e3779b1 * (i + 1)) >>> 0).toString(16).padStart(8, "0")}.js   ${(1 + ((i * 37) % 900) / 100).toFixed(2)} kB │ gzip: ${(0.4 + ((i * 37) % 900) / 300).toFixed(2)} kB\n`,
+      ).join("")
+    : "";
   const output =
     state === "failed"
-      ? "src/sample.ts(4,9): error TS2322\n  Type 'string' is not assignable to type 'number'.\nFound 1 error.\n"
-      : "vite building for production…\n  ✓ 418 modules transformed.\n  dist/index.html    0.40 kB\n" +
-        (state === "completed" ? "✓ built in 1.63s\n" : "");
+      ? error +
+        long +
+        (longContent
+          ? "\nFound 81 errors in 81 files.\n"
+          : "\nFound 1 error in src/billing/invoice.ts:42\n")
+      : state === "running"
+        ? header +
+          long +
+          progress
+            .slice(0, live ? shown : progress.length)
+            .map((line) => `${line}\n`)
+            .join("")
+        : header + built + long + "✓ built in 1.63s\n";
   return (
-    <div style={{ display: "grid", gap: "var(--space-2)", minInlineSize: 0 }}>
-      <p className="tz-chat-app-note">
-        {ar
-          ? "نص يزوّده التطبيق · لا تنفيذ أو اتصال"
-          : "Application-supplied text · no execution or connection"}
-      </p>
-      <Terminal
-        command={state === "failed" ? "tsc -b" : "npm run build"}
-        output={
-          output +
-          (longContent
-            ? Array.from(
-                { length: 80 },
-                (_, i) => `  supplied line ${i + 1}: ${"output ".repeat(14)}\n`,
-              ).join("")
-            : "") +
-          Array.from(
-            { length: appended },
-            (_, i) => `  appended local output ${i + 1}\n`,
-          ).join("")
-        }
-        state={state}
-        exitCode={state === "running" ? undefined : state === "failed" ? 1 : 0}
-        duration={state === "running" ? undefined : "2s"}
-        followOutput={followOutput}
-      />
-      {state === "running" && (
-        <Button
-          size="sm"
-          variant="ghost"
-          onClick={() => setAppended((value) => value + 1)}
-        >
-          {ar ? "إضافة مخرجات محلية" : "Append local output"}
-        </Button>
-      )}
-    </div>
+    <Terminal
+      command={state === "failed" ? "tsc -b" : "npm run build"}
+      output={output}
+      state={state}
+      exitCode={state === "running" ? undefined : state === "failed" ? 1 : 0}
+      duration={state === "running" ? undefined : "2s"}
+      followOutput={followOutput}
+    />
   );
 }
 export function TerminalStates({ language = "ar" }: { language?: Language }) {

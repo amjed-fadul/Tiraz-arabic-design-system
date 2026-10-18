@@ -52,7 +52,7 @@ it("delegates conversation identity and creation and restores Sheet trigger focu
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(trigger).toHaveFocus();
 });
-it("keeps drafts per conversation, model state, stable assistant identity and stops on switching/new/reset/unmount", async () => {
+it("keeps drafts per conversation, model state, stable assistant identity and stops on switching/new/unmount", async () => {
   vi.useFakeTimers();
   const user = {
     type: async (node: HTMLElement, text: string) => {
@@ -97,14 +97,18 @@ it("keeps drafts per conversation, model state, stable assistant identity and st
     within(nav()).getByRole("button", { name: "Arabic interface" }),
   );
   expect(draft()).toHaveValue("other draft");
-  const saved = assistant?.textContent;
+  const prose = () =>
+    document.querySelector('[data-message-id="assistant-1"] .tz-stream-prose')
+      ?.textContent;
+  const saved = assistant?.querySelector(".tz-stream-prose")?.textContent;
   await act(() => vi.advanceTimersByTime(10000));
   await user.click(within(nav()).getByRole("button", { name: "Build notes" }));
+  expect(prose()).toBe(saved);
   expect(
-    document.querySelector('[data-message-id="assistant-1"]')?.textContent,
-  ).toBe(saved);
+    document.querySelector('[data-message-id="assistant-1"]'),
+  ).toHaveTextContent("Response stopped");
   expect(screen.getByRole("combobox", { name: "Model" })).toHaveTextContent(
-    "Concise sample",
+    "Concise",
   );
   await user.type(draft(), "again");
   await user.click(screen.getByRole("button", { name: "Send" }));
@@ -125,11 +129,6 @@ it("keeps drafts per conversation, model state, stable assistant identity and st
   await act(() => vi.advanceTimersByTime(10000));
   expect(screen.queryByText("new run")).toBeNull();
   expect(draft()).toHaveValue("");
-  await user.type(draft(), "reset run");
-  await user.click(screen.getByRole("button", { name: "Send" }));
-  await user.click(screen.getByRole("button", { name: "Reset example" }));
-  await act(() => vi.advanceTimersByTime(10000));
-  expect(screen.queryByText("reset run")).toBeNull();
   await user.type(draft(), "unmount run");
   await user.click(screen.getByRole("button", { name: "Send" }));
   unmount();
@@ -140,8 +139,18 @@ it("connects model selection to real local state", async () => {
   const user = userEvent.setup();
   render(<ChatAppExample language="en" />, { wrapper });
   await user.click(screen.getByRole("combobox", { name: "Model" }));
-  await user.click(screen.getByRole("option", { name: /Detailed sample/ }));
+  await user.click(screen.getByRole("option", { name: /Detailed/ }));
   expect(screen.getByRole("combobox", { name: "Model" })).toHaveTextContent(
-    "Detailed sample",
+    "Detailed",
   );
+});
+it("renders assistant replies without an identity or avatar and drops example-only controls", () => {
+  render(<ChatAppExample language="en" />, { wrapper });
+  const thread = screen.getByRole("region", { name: "Messages" });
+  expect(thread.querySelector(".tz-chat-identity")).toBeNull();
+  expect(
+    thread.querySelector('[data-role="assistant"]')?.textContent,
+  ).toContain("The build finished cleanly");
+  expect(screen.queryByRole("button", { name: /Reset/ })).toBeNull();
+  expect(screen.queryByText(/sample|local/i)).toBeNull();
 });

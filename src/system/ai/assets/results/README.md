@@ -9,4 +9,5 @@ Copy this entire `results/` directory along with `ai/`. Preserve the example's
 local imports (`?url&no-inline` for text documents); Vite supplies asset URL handling via
 `vite/client`. For another bundler, use its asset URL support or copy the files
 to the host public directory and replace the imports with those real paths.
-Keep image alt text and sample-content notices when adapting the example.
+Keep image alt text when adapting the example; this README records that the
+content is fictional.

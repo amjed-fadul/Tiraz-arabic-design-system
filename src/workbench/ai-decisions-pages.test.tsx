@@ -2,7 +2,12 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
 import { Workbench } from "./Workbench";
-import { AIDecisionsExample } from "../system/ai/examples/AIDecisionsExamples";
+import {
+  AIDecisionsExample,
+  ApprovalCardExample,
+  ApprovalFlowExample,
+  AskUserQuestionsExample,
+} from "../system/ai/examples/AIDecisionsExamples";
 import { SystemProvider, defaultConfig } from "../system";
 import { generateCode } from "./generate";
 import { defaultPlaygrounds } from "./model";
@@ -63,37 +68,58 @@ it("runs a generated source example and records rejection without execution", as
   const Example = result.default!,
     user = userEvent.setup();
   render(<Example />);
-  await user.click(screen.getByRole("button", { name: "Keep sample title" }));
-  expect(screen.getByText("Rejected · decision only")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Keep status" }));
+  expect(screen.getByText("Rejected")).toBeVisible();
   expect(screen.queryByText(/completed/i)).not.toBeInTheDocument();
 });
-it("connects questions, local failure/retry, rejection and a fresh independent decision", async () => {
+it("connects an answered question to its target, then records a rejection and an independent approval", async () => {
   const user = userEvent.setup();
-  render(
+  const view = render(
     <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
       <AIDecisionsExample language="en" />
     </SystemProvider>,
   );
-  await user.click(screen.getByRole("radio", { name: /Concise draft/ }));
+  expect(view.container.querySelectorAll("button, input")).toHaveLength(
+    view.container.querySelectorAll(".tz-ask-questions :is(button, input)")
+      .length,
+  );
+  await user.click(screen.getByRole("radio", { name: /Supplier invoices/ }));
   await user.click(screen.getByRole("button", { name: "Submit answers" }));
-  await screen.findByRole("button", { name: "Keep sample title" });
+  await screen.findByRole("button", { name: "Keep status" });
   expect(
-    screen.getByRole("group", { name: "Rename sample draft" }),
+    screen.getByRole("group", { name: "Mark 3 invoices as paid" }),
   ).toHaveFocus();
-  await user.click(screen.getByRole("button", { name: "Keep sample title" }));
-  await screen.findByText("Decision was not accepted. Review and try again.");
-  await user.click(screen.getByRole("button", { name: "Keep sample title" }));
+  expect(screen.getByText("Supplier invoices · October 2026")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Keep status" }));
   await screen.findByText("Request 2 of 2");
   expect(
     screen.getByRole("list", { name: "Prior decisions" }),
   ).toHaveTextContent("Rejected");
-  await user.click(screen.getByRole("button", { name: "Approve sample note" }));
-  await screen.findByText("All decisions recorded. No actions executed.");
+  await user.click(screen.getByRole("button", { name: "Send summary" }));
+  await screen.findByText("All decisions made.");
   expect(
     screen.getByRole("list", { name: "Prior decisions" }),
   ).toHaveTextContent("Approved");
-  await user.click(screen.getByRole("button", { name: "Reset example" }));
-  expect(
-    screen.getByRole("radio", { name: /Concise draft/ }),
-  ).not.toBeChecked();
+  view.unmount();
 });
+it.each(["ar", "en"] as const)(
+  "renders %s decision examples as product content only",
+  (language) => {
+    const view = render(
+      <SystemProvider
+        config={{
+          ...defaultConfig,
+          direction: language === "ar" ? "rtl" : "ltr",
+        }}
+      >
+        <AskUserQuestionsExample language={language} longContent />
+        <ApprovalCardExample language={language} longContent />
+        <ApprovalFlowExample language={language} longContent />
+        <AIDecisionsExample language={language} />
+      </SystemProvider>,
+    );
+    expect(view.container).not.toHaveTextContent(
+      /\b(sample|example|local|demo|simulat\w*|fictional|scripted)\b|تجريبي|عينة|محلي|نموذجي|محاكاة/i,
+    );
+  },
+);

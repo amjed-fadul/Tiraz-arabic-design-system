@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { expect, it } from "vitest";
 import { SystemProvider } from "./index";
 import { SidebarExample } from "./ai/examples/SidebarExamples";
@@ -31,7 +37,7 @@ it("opens native hash destinations and follows browser history in the sample", (
     "page",
   );
   expect(
-    screen.getByRole("heading", { level: 4, name: "Components" }),
+    screen.getByRole("heading", { level: 3, name: "Components" }),
   ).toBeVisible();
   window.history.replaceState(null, "", "/#tiraz-sidebar-layout");
   fireEvent(window, new HashChangeEvent("hashchange"));
@@ -40,12 +46,12 @@ it("opens native hash destinations and follows browser history in the sample", (
     "page",
   );
   expect(
-    screen.getByRole("heading", { level: 4, name: "Resources" }),
+    screen.getByRole("heading", { level: 3, name: "Resources" }),
   ).toBeVisible();
   window.history.replaceState(null, "", "/");
 });
 
-it("demonstrates seven top-level library destinations in two groups, active children and local actions", async () => {
+it("demonstrates seven top-level library destinations in two groups, active children and page actions", async () => {
   const { default: userEvent } = await import("@testing-library/user-event");
   const user = userEvent.setup();
   render(
@@ -75,14 +81,30 @@ it("demonstrates seven top-level library destinations in two groups, active chil
     "Settings",
   ]) {
     await user.click(within(nav).getByRole("link", { name }));
-    expect(screen.getByRole("heading", { level: 4, name })).toBeVisible();
+    expect(screen.getByRole("heading", { level: 3, name })).toBeVisible();
   }
-  await user.click(screen.getByRole("button", { name: "Hide summaries" }));
-  expect(screen.getByRole("button", { name: "Show summaries" })).toHaveFocus();
   await user.click(within(nav).getByRole("link", { name: "Notifications" }));
   await user.click(screen.getByRole("button", { name: "Clear reminders" }));
-  expect(screen.getByText("No reminders left in this example.")).toBeVisible();
+  expect(screen.getByText("You’re all caught up.")).toBeVisible();
   expect(
     within(nav).getByRole("link", { name: "Notifications" }),
   ).toHaveTextContent("0");
+});
+
+it("routes the footer action to the settings page and focuses its heading", async () => {
+  const { default: userEvent } = await import("@testing-library/user-event");
+  const user = userEvent.setup();
+  render(
+    <SystemProvider>
+      <SidebarExample language="en" idPrefix="footer-sidebar" />
+    </SystemProvider>,
+  );
+  const nav = screen.getByRole("navigation", { name: "Library navigation" });
+  await user.click(screen.getByRole("button", { name: "Account settings" }));
+  expect(within(nav).getByRole("link", { name: "Settings" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  const heading = screen.getByRole("heading", { level: 3, name: "Settings" });
+  await waitFor(() => expect(heading).toHaveFocus());
 });

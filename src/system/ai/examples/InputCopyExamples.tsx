@@ -6,7 +6,7 @@ export function InputCopyExample({
   label,
   helper,
   error,
-  value = "src/system/TagInput.tsx",
+  value = "https://madar.sa/invite/7KQ2-RX9",
   disabled = false,
 }: {
   language?: Language;
@@ -19,12 +19,12 @@ export function InputCopyExample({
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
   return (
     <InputCopy
-      label={label ?? t("مسار المصدر", "Source path")}
+      label={label ?? t("رابط الدعوة", "Invite link")}
       helper={
         helper ??
         t(
-          "حدّد النص أو انسخ القيمة كاملة.",
-          "Select the text or copy the full value.",
+          "شارك الرابط مع زملائك للانضمام إلى المساحة.",
+          "Share this link so teammates can join the workspace.",
         )
       }
       error={error}
@@ -39,21 +39,21 @@ export function EntryCompositionExample({
   language?: Language;
 }) {
   const ar = language === "ar";
-  const value: InputCopyProps["value"] = "src/system/InputCopy.tsx";
+  const value: InputCopyProps["value"] = "ws_madar_7KQ2RX9";
   return (
     <Field
-      label={ar ? "مصدر النسخ" : "Copy source"}
+      label={ar ? "معرّف المساحة" : "Workspace ID"}
       helper={
         ar
-          ? "تركيب باستخدام Field مستقل."
-          : "Composition with a separate Field."
+          ? "اذكره عند التواصل مع الدعم."
+          : "Include it when you contact support."
       }
     >
       {(field) => (
         <InputCopy
           field={field}
           value={value}
-          labels={{ copy: ar ? "نسخ مسار المصدر" : "Copy source path" }}
+          labels={{ copy: ar ? "نسخ معرّف المساحة" : "Copy workspace ID" }}
         />
       )}
     </Field>

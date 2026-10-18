@@ -11,26 +11,22 @@ export function FeedbackForm({ language = "ar" }: { language?: "ar" | "en" }) {
     <form
       className="tz-preferences-form"
       noValidate
-      onReset={() => {
-        setError("");
-        setFeedback("");
-      }}
       onSubmit={(event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if (!String(data.get("notes") ?? "").trim()) {
           setError(
-            t(
-              "أدخل ملاحظة لإكمال التحقق من النموذج.",
-              "Enter a note to complete the form check.",
-            ),
+            t("اكتب ملاحظتك قبل الإرسال.", "Write your note before sending."),
           );
           setFeedback("");
           notes.current?.focus();
           return;
         }
         setError("");
-        setFeedback(t("تم التحقق من النموذج بنجاح.", "Form check passed."));
+        event.currentTarget.reset();
+        setFeedback(
+          t("شكرًا لك، وصلتنا ملاحظتك.", "Thanks — we received your note."),
+        );
       }}
     >
       <Checkbox
@@ -56,17 +52,17 @@ export function FeedbackForm({ language = "ar" }: { language?: "ar" | "en" }) {
       <Textarea
         ref={notes}
         label={t("ملاحظات", "Notes")}
-        helper={t("أضف ملاحظة قصيرة.", "Add a short note.")}
+        helper={t(
+          "أخبرنا بما يمكننا تحسينه.",
+          "Tell us what we could improve.",
+        )}
         error={error}
         required
         name="notes"
         rows={3}
       />
       <div className="tz-preferences-actions">
-        <Button type="submit">{t("تحقق من النموذج", "Check form")}</Button>
-        <Button type="reset" variant="secondary">
-          {t("إعادة الضبط", "Reset")}
-        </Button>
+        <Button type="submit">{t("إرسال الملاحظات", "Send feedback")}</Button>
       </div>
       <p role="status">{feedback}</p>
     </form>

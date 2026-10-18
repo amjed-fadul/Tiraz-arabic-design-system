@@ -15,32 +15,32 @@ import type { DataTableColumn } from "../../index";
 export type CustomerPreset =
   "populated" | "loading" | "empty" | "no-results" | "error";
 const sampleCustomers: Customer[] = [
-  ["شركة مدار للتقنية", "hello@madar.example"],
-  ["Nadia Hassan", "nadia@atlas.example"],
-  ["مؤسسة نور للاستشارات", "team@nour.example"],
-  ["Omar Khalid", "omar@cedar.example"],
-  ["ليلى أحمد", "layla@bayt.example"],
-  ["Daniel Chen", "daniel@orbit.example"],
-  ["استوديو سارة", "sara@studio.example"],
-  ["Maya Patel", "maya@loom.example"],
-  ["خالد المنصوري", "khalid@wadi.example"],
-  ["Atlas Design", "contact@atlas.example"],
-  ["أفق للخدمات", "hello@ofuq.example"],
-  ["Yara Nasser", "yara@field.example"],
-  ["يوسف علي", "yousef@sahl.example"],
-  ["Cedar Consulting", "team@cedar.example"],
-  ["ريم الشامسي", "reem@dune.example"],
-  ["Adam Wilson", "adam@north.example"],
-  ["دار للتصميم", "hello@dar.example"],
-  ["Lina Haddad", "lina@linen.example"],
-  ["مريم إبراهيم", "mariam@bay.example"],
-  ["Oliver Smith", "oliver@oak.example"],
-  ["سالم الكعبي", "salem@palm.example"],
-  ["Sofia Garcia", "sofia@arch.example"],
-  ["شركة روافد", "contact@rawafid.example"],
-  ["Noor Studio", "team@noor.example"],
-  ["حسن مصطفى", "hassan@bahr.example"],
-  ["Emma Brown", "emma@stone.example"],
+  ["شركة مدار للتقنية", "hello@madar.sa"],
+  ["Nadia Hassan", "nadia@atlasco.com"],
+  ["مؤسسة نور للاستشارات", "team@nour.com.sa"],
+  ["Omar Khalid", "omar@cedarlabs.io"],
+  ["ليلى أحمد", "layla@baytstudio.sa"],
+  ["Daniel Chen", "daniel@orbitpay.com"],
+  ["استوديو سارة", "sara@sarastudio.sa"],
+  ["Maya Patel", "maya@loomworks.co"],
+  ["خالد المنصوري", "khalid@wadi.ae"],
+  ["Atlas Design", "contact@atlas.design"],
+  ["أفق للخدمات", "hello@ofuq.sa"],
+  ["Yara Nasser", "yara@fieldnotes.io"],
+  ["يوسف علي", "yousef@sahl.sa"],
+  ["Cedar Consulting", "team@cedar.consulting"],
+  ["ريم الشامسي", "reem@dune.ae"],
+  ["Adam Wilson", "adam@northwind.co"],
+  ["دار للتصميم", "hello@dar-design.sa"],
+  ["Lina Haddad", "lina@linen.co"],
+  ["مريم إبراهيم", "mariam@bayan.sa"],
+  ["Oliver Smith", "oliver@oakandco.com"],
+  ["سالم الكعبي", "salem@palmgroup.ae"],
+  ["Sofia Garcia", "sofia@archstudio.com"],
+  ["شركة روافد", "contact@rawafid.sa"],
+  ["Noor Studio", "team@noorstudio.co"],
+  ["حسن مصطفى", "hassan@bahr.sa"],
+  ["Emma Brown", "emma@stonehouse.co"],
 ].map(([name, email], index) => ({
   id: index + 1,
   name,
@@ -130,7 +130,7 @@ function CustomerActions({
     </>
   );
 }
-/** Connected application example. No persistence or simulated requests. */
+/** Connected application example: search, status filter, creation and details. */
 export function CustomerDataTable({
   language = "ar",
   caption,
@@ -142,7 +142,7 @@ export function CustomerDataTable({
 }) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
   const [query, setQuery] = useState(
-    preset === "no-results" ? "unmatched" : "",
+    preset === "no-results" ? t("الريان", "Rayyan") : "",
   );
   const [status, setStatus] = useState("all");
   const [failed, setFailed] = useState(preset === "error");
@@ -266,12 +266,6 @@ export function CustomerDataTable({
                         ),
               }}
             />
-            <p className="customer-memory-note">
-              {t(
-                "البيانات في ذاكرة المثال فقط.",
-                "Data lives in this example's memory only.",
-              )}
-            </p>
           </div>
         );
       }}

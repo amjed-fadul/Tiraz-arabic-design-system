@@ -40,8 +40,8 @@ function chartSample(language: Language, sample: ChartSample) {
             ...(sample === "long"
               ? {
                   category: ar
-                    ? `قناة الطلبات الرقمية — الفرع المركزي ABC-${index + 1}`
-                    : `Digital orders — central branch ABC-${index + 1}`,
+                    ? `قناة الطلبات الرقمية — الفرع المركزي RUH-${index + 1}`
+                    : `Digital orders — central branch RUH-${index + 1}`,
                 }
               : {}),
           }));
@@ -53,8 +53,8 @@ function chartSample(language: Language, sample: ChartSample) {
           label:
             sample === "long"
               ? ar
-                ? `طلبات ${entry.label} — الفرع المركزي ABC-${index + 1}`
-                : `${entry.label} orders — central branch ABC-${index + 1}`
+                ? `طلبات ${entry.label} — الفرع المركزي RUH-${index + 1}`
+                : `${entry.label} orders — central branch RUH-${index + 1}`
               : entry.label,
           value:
             sample === "gaps" && index === 1
@@ -113,9 +113,15 @@ export function ChartExample({
           0,
         ),
   );
+  const gaps =
+    sample === "gaps"
+      ? ar
+        ? " الأيام دون بيانات غير محسوبة."
+        : " Days without data are excluded."
+      : "";
   const summary = ar
-    ? `بيانات تجريبية، أكتوبر ٢٠٢٦: الطلبات: ${total}؛ الأيام: ${count}. القيم المفقودة غير محسوبة؛ الزمن من اليسار إلى اليمين.`
-    : `Sample data, October 2026: ${total} orders across ${count} ${values.data.length === 1 ? "day" : "days"}. Missing values are excluded; time runs left to right.`;
+    ? `أكتوبر ٢٠٢٦: ${total} طلبًا خلال ${values.data.length === 1 ? "يوم واحد" : `${count} أيام`}.${gaps}`
+    : `October 2026: ${total} orders across ${count} ${values.data.length === 1 ? "day" : "days"}.${gaps}`;
   const props = { label, summary, locale: language, legend, dataTable: true };
   const Renderer =
     kind === "line" ? LineChart : kind === "area" ? AreaChart : BarChart;
@@ -132,7 +138,7 @@ export function ChartExample({
   );
 }
 
-/** Application-owned example: the selected period changes the actual in-memory rows. */
+/** The selected period changes the plotted rows and the total. */
 export function AnalyticsExample({ language = "ar" }: { language?: Language }) {
   const ar = language === "ar",
     [period, setPeriod] = useState("week");
@@ -154,9 +160,7 @@ export function AnalyticsExample({ language = "ar" }: { language?: Language }) {
       <CardHeader>
         <CardTitle>{ar ? "نظرة على الطلبات" : "Orders overview"}</CardTitle>
         <CardDescription>
-          {ar
-            ? "بيانات تجريبية في الذاكرة؛ لا تمثل نشاطًا حقيقيًا."
-            : "In-memory sample data; this is not real business activity."}
+          {ar ? "متجر مدار · أكتوبر ٢٠٢٦" : "Madar store · October 2026"}
         </CardDescription>
       </CardHeader>
       <CardContent>

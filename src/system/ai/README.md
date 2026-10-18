@@ -450,9 +450,9 @@ with `<bdi dir="ltr">`. Icons carry no accessible meaning; put it in the title.
 Compose content/actions with existing components. `emptyState` accepts application
 content; the fallback text follows direction. There is no trailing connector.
 
-[TimelineExamples](examples/TimelineExamples.tsx) uses clearly marked in-memory
-sample data, Dubai-localized fixed sample dates and a button that appends a real
-local event at the click time. Data lasts only while mounted. Neither component
+[TimelineExamples](examples/TimelineExamples.tsx) uses fictional in-memory data,
+Dubai-localized fixed dates and a «Log a call» action that appends a real event
+at the click time. Data lasts only while mounted. Neither component
 fetches, sorts, groups, virtualizes or runs relative-time timers. Both preserve
 native ordered-list attributes and refs. Copy these examples with the source
 bundle; they import only React, existing lucide icons and the source-root index.
@@ -568,10 +568,11 @@ Provider AND OS reduced motion stop CSS shimmer, word transitions/rotation and
 SVG morphing, leaving a still glyph and stable first word. Disclosure is immediate.
 The general-purpose Spinner is unchanged. No animation dependency is added.
 
-See [standalone examples and connected demo](examples/AIFeedbackExamples.tsx).
-The explicitly started Local simulation owns its elapsed clock, progress summaries
-and example steps, and cancels stale timers on replay/cancel/unmount. Library
-cosmetic rotation never drives execution. No real AI/network activity is implied.
+See [standalone examples and a live trace](examples/AIFeedbackExamples.tsx).
+The trace plays once on mount (reading → matching → summary ready), owns its
+elapsed clock and steps, cancels its timers on unmount and replay, and shows the
+final summary under reduced motion. Library cosmetic rotation never drives
+execution. No real AI/network activity is implied.
 
 ## Tool activity
 
@@ -593,9 +594,10 @@ private model reasoning is supplied. Only meaningful ToolCall label/state change
 are announced; use announcement="off" when another host region owns announcements.
 
 The portable ai/examples/ToolActivityExamples.tsx includes static states, rendered
-output and an explicitly started local simulation: running → success, failure →
-host retry, and a chip that opens and focuses its call. Replay/reset/unmount cancel
-stale timers. Sample data contains no secrets and performs no tool operation.
+output and a run that plays once on mount: read → save → failed, which the user
+retries with ToolCall's own Try again; a chip opens and focuses its call. Replay
+and unmount cancel stale timers; reduced motion starts at the final state. The
+fictional data contains no secrets and performs no tool operation.
 
 ## AI response content
 
@@ -722,16 +724,18 @@ invent decorative model, tool, attachment or microphone controls.
 
 The example app appends one user and one stable assistant message, updates that
 assistant in place, guards duplicate sends, keeps composer focus, and invalidates
-its timer generation on stop/reset/locale change/unmount. Stop retains received
-text. Documentation Replay remounts and invalidates the old example. StreamingText
-announcements are off; one visible status supplies concise feedback. These are
-local simulation checks, not physical mobile/OS IME or screen-reader validation.
+its timer generation on stop/locale change/unmount. Stop retains received text.
+The thread plays one opening exchange on mount, then stays interactive.
+Documentation Replay remounts and invalidates the old example. StreamingText
+announcements are off. These are in-memory checks, not physical mobile/OS IME or
+screen-reader validation.
 
 ## Images, sources and findings
 
 ImageResult, Sources / InlineCitation and InsightCards live under **AI patterns**.
-Use [the connected bilingual examples](examples/AIResultsExamples.tsx). All content
-is explicitly fictional/local; no retrieval or image generation occurs.
+Use [the connected bilingual examples](examples/AIResultsExamples.tsx). Their
+content is fictional (see [assets/results](assets/results/README.md)); no
+retrieval or image generation occurs.
 
 `ImageResult` requires meaningful `alt`; `src`, `caption` and `metadata` are supplied
 by the host. `state` defaults to `loaded`, but the image is shown only after the
@@ -810,9 +814,9 @@ Progress primitive. Set `progress={42}` for an actual application-supplied
 percentage; omit it or use null when progress is unknown. Finite values clamp
 to 0–100; nonfinite values remain indeterminate. A percentage of 100 does not
 automatically finish loading: the host state and actual image load still govern
-readiness. Updating progress does not reload the image. The local sample's
-progress slider demonstrates supplied values; it measures no network request
-or image generation. Percentages use the provider's Arabic/English locale.
+readiness. Updating progress does not reload the image. The example plays a
+supplied progress sequence once on mount; it measures no network request or
+image generation. Percentages use the provider's Arabic/English locale.
 
 ## Selection, context and model controls
 
@@ -882,7 +886,7 @@ question IDs, and guards duplicate submissions. Failure preserves the draft.
 
 Use [ApprovalCard](../ApprovalCard.tsx) for a concrete proposed action. Supply
 `request: {id, action, target, consequences, details?, approveLabel, rejectLabel}`.
-Write specific labels, such as “Approve sample rename” and “Keep sample title”.
+Write specific labels, such as “Approve rename” and “Keep current title”.
 Show critical parameters verbatim. Use a deliberate consequence-appropriate
 confirmation in the host for irreversible actions; these compact inline cards
 are suitable for reversible proposals. Rejection is safe and equally available;
@@ -893,8 +897,9 @@ host requires a trapped dialog and place initial focus on its safe action.
 
 `onDecision(request, "approved" | "rejected", {signal})` acknowledges the
 **decision only**. Resolving it records approved/rejected; it does not mean that
-an action executed or completed. Rejection/failure keeps the concrete proposal
-visible. A failed acknowledgement restores the initiating button when focus has
+an action executed or completed. Once decided, the card condenses to a one-line
+receipt that keeps the action, its target and the outcome; a failed
+acknowledgement keeps the full proposal visible. A failed acknowledgement restores the initiating button when focus has
 not intentionally moved elsewhere. Buttons are guarded while submitting and
 after acceptance. A controlled `value` is an `ApprovalRecord` (or null), bound to
 both `requestId` and `approvalRequestKey(request)`; stale records are ignored.
@@ -926,11 +931,11 @@ Never treat a UI record as proof of authorization. One-time approval grants no
 ongoing permissions. This batch has no approve-all or permission management.
 
 [Compiling examples](examples/AIDecisionsExamples.tsx) include independent basic
-examples and `AIDecisionsExample`, a local Studio Assistant that asks a question,
-previews a sample rename, then requests an independent note decision. A visible
-simulation switch fails the next acknowledgement; retry or reject. Reset cancels
-sample timers, and unmount/replacement cancels their signal listeners. No data
-leaves memory, no action executes, and approved is never labeled completed.
+examples and `AIDecisionsExample`: a question whose answer hands off to a
+two-request ApprovalFlow. Host acknowledgements resolve after a short delay, and
+unmount/replacement cancels their signal listeners. No data leaves memory, no
+action executes, and approved is never labeled completed. Failure and retry are
+covered by the component tests rather than a visible demo switch.
 Use `SystemProvider` for Arabic/English direction, theme, accent, typography,
 density and reduced motion. These patterns do not animate. Screen-reader speech
 and physical-device behavior require host testing; automated checks alone do not
@@ -972,21 +977,21 @@ The shell has a bounded height; navigation and thread scroll independently. Set
 its block-size in host CSS if embedding in a different viewport. Keep the existing
 composer styling and provider-driven RTL caret direction.
 
-`ai/examples/ChatAppExample.tsx` is a clearly labeled in-memory app with no real AI
-or tools. It reuses existing renderers/entries and the fixed local response
+`ai/examples/ChatAppExample.tsx` is an in-memory app with fictional content and
+no real AI or tools. Assistant replies carry no name or avatar; only the user
+speaks in bubbles. It reuses existing renderers/entries and the fixed local response
 scheduler shared with `ChatExamples.tsx`. Sending clears only the accepted draft,
 adds a user message and one stable assistant message, then updates that assistant
 with fixed chunks. Each conversation keeps its own draft and model. Stop cancels
 future chunks and keeps received text. Switching to a different conversation or
 creating a new one cancels the previous response, retains its content and drafts,
 and shows the selected/new conversation; selecting the current one keeps its run.
-Reset cancels and restores the two samples (clearing drafts/models to defaults).
 Locale change remounts the example and restores that locale's samples. Theme
 changes preserve state. Unmount cancels timers. Generation guards and captured
 conversation/message IDs prevent stale callbacks from crossing conversations.
 Key entries and threads by conversation ID to isolate submission feedback and
 scroll position. New conversation copies the selected model; model choice is
-real local state, but every response remains a fixed sample.
+real local state, but every response is fixed.
 
 The supplied build log in one assistant message demonstrates Terminal as tool
 output without implying execution. No authentication, backend, persistent history,

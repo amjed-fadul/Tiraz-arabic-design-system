@@ -36,7 +36,7 @@ it.each([
     );
     await user.click(screen.getByRole("button", { name: "Copy agent prompt" }));
     expect(String(copy.mock.calls.at(-1)?.[0])).toContain(code);
-    const chip = screen.getByRole("button", { name: /Read notes/ });
+    const chip = screen.getByRole("button", { name: /Read contracts/ });
     await user.click(chip);
     const detail = document.getElementById(
       chip.getAttribute("aria-controls")!,

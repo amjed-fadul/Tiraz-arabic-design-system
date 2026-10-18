@@ -83,11 +83,11 @@ function ApprovalCardInstance({
   const status = decision
     ? decision === "approved"
       ? ar
-        ? "تمت الموافقة · قرار فقط"
-        : "Approved · decision only"
+        ? "تمت الموافقة"
+        : "Approved"
       : ar
-        ? "تم الرفض · قرار فقط"
-        : "Rejected · decision only"
+        ? "تم الرفض"
+        : "Rejected"
     : task.state === "submitting" || task.state === "accepted"
       ? ar
         ? "جارٍ تسجيل القرار"
@@ -96,9 +96,7 @@ function ApprovalCardInstance({
         ? ar
           ? "لم يُقبل القرار. راجع وحاول مجددًا."
           : "Decision was not accepted. Review and try again."
-        : ar
-          ? "بانتظار قرارك"
-          : "Awaiting your decision";
+        : "";
   return (
     <div
       ref={root}
@@ -182,7 +180,8 @@ function ApprovalCardInstance({
         />
       )}
       <div className="tz-decision-footer">
-        <p id={`${id}-scope`} className="tz-decision-note">
+        {/* Announced with the card; the decision buttons say the rest. */}
+        <p id={`${id}-scope`} className="tz-visually-hidden">
           {ar
             ? "الموافقة تسجّل قرارًا لهذا الطلب فقط. التنفيذ مسؤولية التطبيق."
             : "Approval records a decision for this request only. Execution belongs to the host."}

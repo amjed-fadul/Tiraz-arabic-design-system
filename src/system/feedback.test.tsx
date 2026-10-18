@@ -1,10 +1,10 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   AlertExamples,
   SkeletonExamples,
 } from "./ai/examples/FeedbackExamples";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import {
   Alert,
   Avatar,
@@ -187,27 +187,52 @@ it("preserves Avatar fallback/name during loading, failure, replacement and remo
   expect(screen.getAllByRole("img")).toHaveLength(1);
 });
 
-it("lets the Alert example dismiss and restore its own note", async () => {
+it("lets the Alert example action update its own polite alert in place", async () => {
   render(<AlertExamples language="en" />);
-  await userEvent.click(screen.getByRole("button", { name: "Dismiss note" }));
-  expect(screen.queryByText("Preview note")).toBeNull();
-  expect(screen.getByRole("button", { name: "Show note" })).toHaveFocus();
-  expect(screen.getByRole("status")).toHaveTextContent("Note dismissed");
-  await userEvent.click(screen.getByRole("button", { name: "Show note" }));
-  expect(screen.getByText("Preview note")).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Dismiss note" })).toHaveFocus();
+  const action = screen.getByRole("button", { name: "Send reminder" });
+  const reminder = screen.getByRole("status");
+  expect(reminder).toHaveTextContent("Invoice INV-2048 is due tomorrow");
+  await userEvent.click(action);
+  expect(action).toHaveAccessibleName("Reminder sent");
+  expect(action).toHaveAttribute("data-state", "success");
+  expect(action).toHaveFocus();
+  expect(reminder).toHaveTextContent("We sent a reminder to hello@madar.sa.");
+  expect(screen.getAllByRole("status")).toHaveLength(1);
   expect(screen.queryByRole("alert")).toBeNull();
 });
-it("switches explicit Skeleton loading/ready state with one host announcement", async () => {
-  const { container } = render(<SkeletonExamples language="en" />);
-  expect(container.querySelector('[aria-busy="true"]')).not.toBeNull();
-  expect(container.querySelectorAll(".tz-skeleton")).toHaveLength(4);
-  await userEvent.click(screen.getByRole("button", { name: "Show content" }));
-  expect(container.querySelector('[aria-busy="false"]')).not.toBeNull();
-  expect(container.querySelectorAll(".tz-skeleton")).toHaveLength(0);
-  expect(screen.getByRole("status")).toHaveTextContent("Content ready");
-  await userEvent.click(
-    screen.getByRole("button", { name: "Show loading state" }),
-  );
-  expect(container.querySelectorAll(".tz-skeleton")).toHaveLength(4);
+it("plays the Skeleton loading state once, then reveals content with one host announcement", () => {
+  vi.useFakeTimers();
+  try {
+    render(<SkeletonExamples language="en" />).unmount();
+    expect(vi.getTimerCount()).toBe(0);
+    const { container } = render(<SkeletonExamples language="en" />);
+    expect(container.querySelector('[aria-busy="true"]')).not.toBeNull();
+    expect(container.querySelectorAll(".tz-skeleton")).toHaveLength(4);
+    expect(screen.getByRole("status")).toHaveTextContent("Loading profile");
+    act(() => vi.advanceTimersByTime(2400));
+    expect(container.querySelector('[aria-busy="false"]')).not.toBeNull();
+    expect(container.querySelectorAll(".tz-skeleton")).toHaveLength(0);
+    expect(screen.getByText("sara@madar.sa")).toBeInTheDocument();
+    expect(screen.getAllByRole("status")).toHaveLength(1);
+    expect(screen.getByRole("status")).toHaveTextContent("Profile loaded");
+  } finally {
+    vi.useRealTimers();
+  }
+});
+it("holds a still Skeleton example with reduced motion instead of advancing", () => {
+  vi.useFakeTimers();
+  try {
+    const { container } = render(
+      <SystemProvider config={{ ...defaultConfig, reducedMotion: true }}>
+        <SkeletonExamples language="en" />
+      </SystemProvider>,
+    );
+    act(() => vi.advanceTimersByTime(5000));
+    expect(container.querySelectorAll(".tz-skeleton").length).toBeGreaterThan(
+      0,
+    );
+    expect(container.querySelector('[aria-busy="true"]')).not.toBeNull();
+  } finally {
+    vi.useRealTimers();
+  }
 });

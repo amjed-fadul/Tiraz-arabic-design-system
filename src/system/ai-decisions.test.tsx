@@ -126,9 +126,7 @@ it("invalidates a pending decision when content changes with the same ID", async
   expect(signal.aborted).toBe(true);
   await act(async () => task.resolve());
   expect(screen.getByRole("button", { name: "Approve rename" })).toBeEnabled();
-  expect(
-    screen.queryByText("Approved · decision only"),
-  ).not.toBeInTheDocument();
+  expect(screen.queryByText("Approved")).not.toBeInTheDocument();
 });
 it("aborts on reset and unmount and ignores stale completion", async () => {
   const task = deferred(),
@@ -182,7 +180,7 @@ it("reopens changed requests and retains unchanged decisions on append/reorder",
     ),
   );
   await user.click(screen.getByRole("button", { name: "Keep title" }));
-  await screen.findByText("All decisions recorded. No actions executed.");
+  await screen.findByText("All decisions made.");
   rerender(
     wrap(
       <ApprovalFlow label="Review" requests={[b, request]} onDecision={host} />,
@@ -217,7 +215,7 @@ it("Escape inside an inline pending card records rejection without stealing init
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     ),
   );
-  expect(screen.getByText("Rejected · decision only")).toBeVisible();
+  expect(screen.getByText("Rejected")).toBeVisible();
 });
 it("does not revive invalidated approval when an old proposal returns", async () => {
   const user = userEvent.setup(),
@@ -228,7 +226,7 @@ it("does not revive invalidated approval when an old proposal returns", async ()
     ),
   );
   await user.click(screen.getByRole("button", { name: "Approve rename" }));
-  await screen.findByText("All decisions recorded. No actions executed.");
+  await screen.findByText("All decisions made.");
   rerender(
     wrap(
       <ApprovalFlow

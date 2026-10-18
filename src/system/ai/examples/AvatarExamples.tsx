@@ -32,11 +32,6 @@ export function AvatarExamples({
           ar ? `${count} أعضاء إضافيون` : `${count} more members`
         }
       />
-      <p>
-        {ar
-          ? "صور خيالية مولّدة ومضمّنة محليًا، مرخّصة ضمن MIT. انسخ ai/assets مع المصدر."
-          : "Fictional generated portraits bundled under MIT. Copy ai/assets with the source."}
-      </p>
     </div>
   );
 }

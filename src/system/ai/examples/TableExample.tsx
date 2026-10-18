@@ -21,13 +21,13 @@ export function TableExample({
     {
       id: "madar",
       name: t("شركة مدار للتقنية", "Madar Technology"),
-      email: "hello@madar.example",
+      email: "hello@madar.sa",
       status: t("نشط", "Active"),
     },
     {
       id: "nour",
       name: t("مؤسسة نور للخدمات والاستشارات", "Nour Services and Consulting"),
-      email: "team@nour.example",
+      email: "team@nour.com.sa",
       status: t("متوقف", "Paused"),
     },
   ];

@@ -900,13 +900,13 @@ export function Playground({
           <div>
             <dt>{t("البريد الإلكتروني", "Email")}</dt>
             <dd>
-              <bdi dir="ltr">hello@madar.example</bdi>
+              <bdi dir="ltr">hello@madar.sa</bdi>
             </dd>
           </div>
           <div>
             <dt>{t("الموقع الإلكتروني", "Website")}</dt>
             <dd>
-              <bdi dir="ltr">https://madar.example</bdi>
+              <bdi dir="ltr">https://madar.sa</bdi>
             </dd>
           </div>
         </dl>

@@ -131,30 +131,49 @@ it("preserves a deliberate focus departure during host collapse", () => {
   );
   expect(screen.getByRole("button", { name: "Outside" })).toHaveFocus();
 });
-it("replays only the latest simulation and cancels reset/unmount timers", async () => {
+it("plays once on mount, hands retry to ToolCall and cancels timers on unmount", async () => {
   vi.useFakeTimers();
   try {
     const view = render(wrap(<ToolActivityDemo language="en" />));
-    expect(vi.getTimerCount()).toBe(0);
-    act(() => screen.getByRole("button", { name: "Run demo" }).click());
-    act(() => vi.advanceTimersByTime(600));
-    act(() => screen.getByRole("button", { name: "Replay demo" }).click());
-    act(() => vi.advanceTimersByTime(600));
+    expect(
+      screen.queryByRole("button", { name: /^(Run|Replay|Reset)\b/ }),
+    ).toBeNull();
     expect(screen.getAllByRole("status")[0]).toHaveTextContent("Running");
-    act(() => vi.advanceTimersByTime(600));
+    act(() => vi.advanceTimersByTime(1200));
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Completed");
+    expect(screen.getAllByRole("status")[1]).toHaveTextContent("Running");
+    act(() => vi.advanceTimersByTime(1200));
+    expect(vi.getTimerCount()).toBe(0);
     const retry = screen.getByRole("button", { name: "Try again" });
     act(() => retry.click());
     expect(
-      screen.getByRole("button", { name: /Save sample summary/ }),
+      screen.getByRole("button", { name: /Save renewals summary/ }),
     ).toHaveFocus();
     act(() => vi.advanceTimersByTime(1000));
     expect(screen.getAllByRole("status")[1]).toHaveTextContent("Completed");
-    act(() => screen.getByRole("button", { name: "Replay demo" }).click());
-    act(() => screen.getByRole("button", { name: "Reset demo" }).click());
-    expect(vi.getTimerCount()).toBe(0);
-    act(() => screen.getByRole("button", { name: "Run demo" }).click());
+    expect(
+      screen.getByText("Saved to Legal/2026/renewals-summary.md"),
+    ).toBeVisible();
     view.unmount();
+    render(wrap(<ToolActivityDemo language="en" />)).unmount();
     expect(vi.getTimerCount()).toBe(0);
+  } finally {
+    vi.useRealTimers();
+  }
+});
+it("starts on the final run state under reduced motion", () => {
+  vi.useFakeTimers();
+  try {
+    render(
+      <SystemProvider
+        config={{ ...defaultConfig, direction: "ltr", reducedMotion: true }}
+      >
+        <ToolActivityDemo language="en" />
+      </SystemProvider>,
+    );
+    expect(vi.getTimerCount()).toBe(0);
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Completed");
+    expect(screen.getByRole("button", { name: "Try again" })).toBeVisible();
   } finally {
     vi.useRealTimers();
   }

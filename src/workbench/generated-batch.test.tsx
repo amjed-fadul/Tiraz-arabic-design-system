@@ -50,12 +50,11 @@ function copiedExample(component: "modal" | "tooltip", controlled = true) {
 it("runs the copied Tooltip details action without workbench dependencies", async () => {
   const Example = copiedExample("tooltip");
   render(<Example />);
+  const breakdown = "SAR 10,000 + VAT SAR 1,500 = SAR 11,500";
   await userEvent.click(screen.getByRole("button", { name: "Show details" }));
-  expect(
-    screen.getByText("This is a local component preview."),
-  ).toBeInTheDocument();
+  expect(screen.getByText(breakdown)).toBeInTheDocument();
   await userEvent.click(screen.getByRole("button", { name: "Hide details" }));
-  expect(screen.queryByText("This is a local component preview.")).toBeNull();
+  expect(screen.queryByText(breakdown)).toBeNull();
 });
 it.each([true, false])(
   "runs copied Modal controlled=%s preview, nested reset and footer dismissal",
@@ -70,13 +69,12 @@ it.each([true, false])(
     await user.keyboard("{ArrowDown}");
     await user.click(screen.getByRole("option", { name: "Cards" }));
     expect(select).toHaveTextContent("Cards");
-    await user.click(screen.getByRole("button", { name: "Preview actions" }));
-    await user.click(screen.getByRole("menuitem", { name: "Reset to list" }));
+    await user.click(screen.getByRole("button", { name: "More options" }));
+    await user.click(screen.getByRole("menuitem", { name: "Restore default" }));
     expect(select).toHaveTextContent("List");
     await user.click(screen.getByRole("button", { name: "Done" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     await waitFor(() => expect(trigger).toHaveFocus());
-    expect(screen.getByRole("status")).toHaveTextContent("Layout: List");
   },
 );
 

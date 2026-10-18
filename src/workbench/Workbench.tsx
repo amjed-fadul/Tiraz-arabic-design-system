@@ -27,7 +27,11 @@ import { Inspector } from "./Inspector";
 import { Playground } from "./Playground";
 import { Examples } from "./Examples";
 import { PreviewFrame } from "./PreviewFrame";
-import { canReplayExamples, canReplayPlayground } from "./demo-capabilities";
+import {
+  canReplayExamples,
+  canReplayPlayground,
+  hasExamples,
+} from "./demo-capabilities";
 import { CodeExample } from "./CodeExample";
 import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
@@ -424,11 +428,6 @@ export function Workbench() {
                   <h2 id="playground-heading">
                     {label("playground", language)}
                   </h2>
-                  <span className="preview-metadata">
-                    <bdi dir="ltr">
-                      {effectiveConfig.theme} · {effectiveConfig.density}
-                    </bdi>
-                  </span>
                 </div>
                 <div className="playground-region">
                   <SystemProvider config={effectiveConfig}>
@@ -481,11 +480,8 @@ export function Workbench() {
                   "modal",
                 ].includes(active) && (
                   <div
-                    className={
-                      (events[active]?.length ?? 0) > 0
-                        ? "event-feedback"
-                        : "tz-visually-hidden"
-                    }
+                    // Announced for assistive tech; the stage stays visually clean.
+                    className="tz-visually-hidden"
                     role="status"
                     aria-label={
                       (events[active]?.length ?? 0) > 0
@@ -506,49 +502,48 @@ export function Workbench() {
                     )}
                   </div>
                 )}
-                {active === "button" &&
-                  (model as ButtonModel).action === "simulate" && (
-                    <p className="playground-help">
-                      {label("simulation", language)}
-                    </p>
-                  )}
               </section>
-              <section className="examples-section">
-                <h2 id="examples-heading">{label("examples", language)}</h2>
-                <SystemProvider config={systemConfig}>
-                  <div className="examples-canvas">
-                    <PreviewFrame
-                      component={active}
-                      language={language}
-                      title={
-                        active === "streaming-text"
-                          ? t("ماركداون", "Markdown")
-                          : t("أمثلة", "Examples")
-                      }
-                      prompt={prompt}
-                      copyLabel={t("نسخ الموجّه للمثال", "Copy example prompt")}
-                      replayable={canReplayExamples(active)}
-                      onReplay={() =>
-                        setExampleRevisions((prev) => ({
-                          ...prev,
-                          [active]: (prev[active] ?? 0) + 1,
-                        }))
-                      }
-                    >
-                      <Examples
-                        key={`${active}-${language}-${exampleRevisions[active] ?? 0}`}
+              {hasExamples(active) && (
+                <section className="examples-section">
+                  <h2 id="examples-heading">{label("examples", language)}</h2>
+                  <SystemProvider config={systemConfig}>
+                    <div className="examples-canvas">
+                      <PreviewFrame
                         component={active}
                         language={language}
+                        title={
+                          active === "streaming-text"
+                            ? t("ماركداون", "Markdown")
+                            : t("أمثلة", "Examples")
+                        }
                         prompt={prompt}
                         copyLabel={t(
                           "نسخ الموجّه للمثال",
                           "Copy example prompt",
                         )}
-                      />
-                    </PreviewFrame>
-                  </div>
-                </SystemProvider>
-              </section>
+                        replayable={canReplayExamples(active)}
+                        onReplay={() =>
+                          setExampleRevisions((prev) => ({
+                            ...prev,
+                            [active]: (prev[active] ?? 0) + 1,
+                          }))
+                        }
+                      >
+                        <Examples
+                          key={`${active}-${language}-${exampleRevisions[active] ?? 0}`}
+                          component={active}
+                          language={language}
+                          prompt={prompt}
+                          copyLabel={t(
+                            "نسخ الموجّه للمثال",
+                            "Copy example prompt",
+                          )}
+                        />
+                      </PreviewFrame>
+                    </div>
+                  </SystemProvider>
+                </section>
+              )}
               <section className="usage-section">
                 <h2 id="usage-heading">{label("usage", language)}</h2>
                 <p className="usage-guidance">

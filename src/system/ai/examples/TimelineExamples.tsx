@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { FileText, Plus } from "lucide-react";
+import { FileText, Phone } from "lucide-react";
 import { Button, Timeline } from "../../index";
 import type { TimelineItem } from "../../index";
 
@@ -20,9 +20,9 @@ export function TimelineExample({
   longContent = false,
 }: TimelineExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [appended, setAppended] = useState<
-    Array<{ id: string; dateTime: string }>
-  >([]);
+  const [calls, setCalls] = useState<Array<{ id: string; dateTime: string }>>(
+    [],
+  );
   const [details, setDetails] = useState(false);
   const nextId = useRef(1);
   const format = (dateTime: string) =>
@@ -31,27 +31,27 @@ export function TimelineExample({
       timeStyle: "short",
       timeZone: "Asia/Dubai",
     }).format(new Date(dateTime));
-  const sample: TimelineItem[] = empty
+  const history: TimelineItem[] = empty
     ? []
     : [
         {
           id: "brief",
           title: longContent
             ? t(
-                "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
-                "Add detailed application notes for review with every member of the project team",
+                "إنشاء عرض سعر تفصيلي لشركة الندى للتجارة يشمل التوريد والتركيب والصيانة السنوية",
+                "Detailed quote created for Al Nada Trading covering supply, installation and annual maintenance",
               )
-            : t("إضافة ملاحظة تجريبية", "Sample note added"),
+            : t("أُنشئ عرض السعر", "Quote created"),
           timestamp: format("2026-10-15T05:12:00Z"),
           dateTime: "2026-10-15T05:12:00Z",
           description: descriptions ? (
             <>
-              {t("معرّف المثال: ", "Sample identifier: ")}
-              <bdi dir="ltr">DOC-42/2026</bdi>
+              {t("رقم العرض: ", "Quote number: ")}
+              <bdi dir="ltr">PRO-2026-118</bdi>
               {longContent &&
                 t(
-                  " — ملاحظة طويلة تلتف بوضوح دون تغطية خط الأحداث أو الخروج من المساحة المتاحة.",
-                  " — A long note that wraps clearly without covering the event connector or overflowing the available space.",
+                  " — يشمل ثلاثة بنود بأسعار مختلفة وشروط دفع على دفعتين، مع ملاحظات العميل حول موعد التسليم في نهاية الشهر.",
+                  " — Three line items with different prices and two-part payment terms, plus the client's notes on an end-of-month delivery.",
                 )}
             </>
           ) : undefined,
@@ -65,14 +65,14 @@ export function TimelineExample({
                 onClick={() => setDetails((value) => !value)}
               >
                 {details
-                  ? t("إخفاء التفاصيل المحلية", "Hide local details")
-                  : t("عرض التفاصيل المحلية", "Show local details")}
+                  ? t("إخفاء التفاصيل", "Hide details")
+                  : t("عرض التفاصيل", "Show details")}
               </Button>
               {details && (
                 <p>
                   {t(
-                    "هذه تفاصيل نموذجية في الذاكرة فقط.",
-                    "These are sample details held only in memory.",
+                    "٣ بنود · الإجمالي ٤٨٬٠٠٠ د.إ · صالح حتى ٣١ أكتوبر",
+                    "3 line items · Total AED 48,000 · Valid until 31 Oct",
                   )}
                 </p>
               )}
@@ -81,31 +81,28 @@ export function TimelineExample({
         },
         {
           id: "review",
-          title: t("تجهيز المعاينة", "Preview prepared"),
+          title: t("أُرسل العرض إلى العميل", "Quote sent to client"),
           timestamp: format("2026-10-15T06:40:00Z"),
           dateTime: "2026-10-15T06:40:00Z",
           description: descriptions
-            ? t(
-                "بيانات نموذجية قابلة للتعديل محليًا.",
-                "Sample data available to edit locally.",
-              )
+            ? t("إلى شركة الندى للتجارة", "To Al Nada Trading")
             : undefined,
         },
       ];
+  const count = new Intl.NumberFormat(
+    language === "ar" ? "ar-u-nu-arab" : "en",
+  ).format(calls.length);
   const items: TimelineItem[] = [
-    ...sample,
-    ...appended.map((event, index) => ({
-      id: event.id,
-      title: t(`حدث محلي ${index + 1}`, `Local event ${index + 1}`),
-      timestamp: format(event.dateTime),
-      dateTime: event.dateTime,
+    ...history,
+    ...calls.map((call) => ({
+      id: call.id,
+      title: t("مكالمة متابعة مع العميل", "Follow-up call with the client"),
+      timestamp: format(call.dateTime),
+      dateTime: call.dateTime,
       description: descriptions
-        ? t(
-            "أُضيف بالضغط على الزر في هذا المثال.",
-            "Appended by pressing the button in this example.",
-          )
+        ? t("سجّلتها سارة علي", "Logged by Sara Ali")
         : undefined,
-      icon: icons ? <Plus /> : undefined,
+      icon: icons ? <Phone /> : undefined,
     })),
   ];
   return (
@@ -117,36 +114,30 @@ export function TimelineExample({
         minInlineSize: 0,
       }}
     >
-      <p style={{ margin: 0, color: "var(--text-secondary)" }}>
-        {t(
-          "بيانات نموذجية في الذاكرة؛ تُمسح عند إغلاق هذا المثال.",
-          "In-memory sample data; cleared when this example unmounts.",
-        )}
-      </p>
       <Timeline
-        label={t("النشاط المحلي", "Local activity")}
+        label={t("سجل النشاط", "Activity log")}
         items={items}
-        emptyState={t("لا توجد أحداث محلية بعد.", "No local events yet.")}
+        emptyState={t("لا يوجد نشاط بعد.", "No activity yet.")}
       />
       <div>
         <Button
           variant="secondary"
           onClick={() => {
-            const event = {
-              id: `local-${nextId.current++}`,
+            const call = {
+              id: `call-${nextId.current++}`,
               dateTime: new Date().toISOString(),
             };
-            setAppended((events) => [...events, event]);
+            setCalls((previous) => [...previous, call]);
           }}
         >
-          {t("إضافة حدث محلي", "Append local event")}
+          {t("تسجيل مكالمة", "Log a call")}
         </Button>
       </div>
       <span className="tz-visually-hidden" role="status">
-        {appended.length > 0 &&
+        {calls.length > 0 &&
           t(
-            `أُضيف ${appended.length} من الأحداث المحلية.`,
-            `${appended.length} local events appended.`,
+            `سُجّلت مكالمة متابعة (${count}).`,
+            `Follow-up call logged (${count}).`,
           )}
       </span>
     </div>

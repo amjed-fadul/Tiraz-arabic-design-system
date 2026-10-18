@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import { Terminal } from "./Terminal";
+import { TerminalExample } from "./ai/examples/TerminalExamples";
 import { SystemProvider } from "./Provider";
 import { defaultConfig } from "./config";
 const view = (output: string, followOutput = false) => (
@@ -139,4 +140,28 @@ it("preserves a substring selection across append-only output updates", () => {
   rerender(view("first line\nsecond line\nthird line\n", true));
   expect(selection.toString()).toBe(selected);
   expect(selection.isCollapsed).toBe(false);
+});
+it("streams the example's running log once, without demo controls, and stops its timer on unmount", () => {
+  vi.useFakeTimers();
+  try {
+    const example = render(<TerminalExample state="running" />);
+    const region = () => screen.getByRole("region");
+    expect(region()).not.toHaveTextContent("transforming (96)");
+    expect(screen.queryByRole("button", { name: /append/i })).toBeNull();
+    act(() => vi.advanceTimersByTime(3000));
+    expect(region()).toHaveTextContent("computing gzip size (2)...");
+    expect(vi.getTimerCount()).toBe(0);
+    example.unmount();
+    render(<TerminalExample state="running" />).unmount();
+    expect(vi.getTimerCount()).toBe(0);
+    render(
+      <SystemProvider config={{ ...defaultConfig, reducedMotion: true }}>
+        <TerminalExample state="running" />
+      </SystemProvider>,
+    );
+    expect(region()).toHaveTextContent("computing gzip size (2)...");
+    expect(vi.getTimerCount()).toBe(0);
+  } finally {
+    vi.useRealTimers();
+  }
 });

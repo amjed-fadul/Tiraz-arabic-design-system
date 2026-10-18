@@ -131,22 +131,20 @@ it("announces copy failure honestly, supports retry, and ignores stale clipboard
   expect(screen.getByRole("status")).toBeEmptyDOMElement();
 });
 
-it("replays the interactive empty Timeline example after a local event is appended", async () => {
+it("replays the interactive empty Timeline example after an event is logged", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "الخط الزمني" }));
   const frame = document.querySelector(
     ".examples-canvas .tz-demo-frame",
   ) as HTMLElement;
-  expect(within(frame).getByText("لا توجد أحداث محلية بعد.")).toBeVisible();
-  await user.click(
-    within(frame).getByRole("button", { name: "إضافة حدث محلي" }),
-  );
-  expect(within(frame).queryByText("لا توجد أحداث محلية بعد.")).toBeNull();
+  expect(within(frame).getByText("لا يوجد نشاط بعد.")).toBeVisible();
+  await user.click(within(frame).getByRole("button", { name: "تسجيل مكالمة" }));
+  expect(within(frame).queryByText("لا يوجد نشاط بعد.")).toBeNull();
   const replay = within(frame.querySelector("header")!).getByRole("button", {
     name: "إعادة المثال",
   });
   await user.click(replay);
   expect(replay).toHaveFocus();
-  expect(within(frame).getByText("لا توجد أحداث محلية بعد.")).toBeVisible();
+  expect(within(frame).getByText("لا يوجد نشاط بعد.")).toBeVisible();
 });

@@ -291,7 +291,6 @@ export interface Playgrounds {
   sources: { defaultExpanded: boolean; longContent: boolean };
   "insight-cards": { longContent: boolean };
   "chat-thread": {
-    identities: boolean;
     longContent: boolean;
     followOutput: boolean;
   };
@@ -420,7 +419,6 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     sources: { defaultExpanded: false, longContent: false },
     "insight-cards": { longContent: false },
     "chat-thread": {
-      identities: true,
       longContent: false,
       followOutput: false,
     },
@@ -448,10 +446,10 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       longContent: false,
     },
     slider: {
-      label: t("قيمة محلية", "Local amount"),
+      label: t("الحد الشهري", "Monthly limit"),
       helper: t(
-        "اسحب أو استخدم الأسهم وHome وEnd.",
-        "Drag or use arrows, Home and End.",
+        "عدد الفواتير المسموح بها شهريًا.",
+        "Invoices allowed per month.",
       ),
       error: "",
       min: 0,
@@ -462,11 +460,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       mode: "controlled",
     },
     "otp-input": {
-      label: t("رمز تجريبي", "Sample code"),
-      helper: t(
-        "أرقام عربية أو إنجليزية؛ دون تحقق.",
-        "Arabic or ASCII digits; no verification.",
-      ),
+      label: t("رمز التحقق", "Verification code"),
+      helper: t("أرسلناه إلى بريدك الإلكتروني.", "We sent it to your email."),
       error: "",
       length: 6,
       disabled: false,
@@ -474,11 +469,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       mode: "controlled",
     },
     "date-picker": {
-      label: t("موعد محلي", "Local date"),
-      helper: t(
-        "تاريخ ميلادي واحد؛ Escape للإغلاق.",
-        "One Gregorian date; Escape to close.",
-      ),
+      label: t("تاريخ الاستحقاق", "Due date"),
+      helper: t("نذكّرك قبل يومين.", "We’ll remind you two days before."),
       error: "",
       min: "",
       max: "",
@@ -487,9 +479,10 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     "file-dropzone": {
       label: t("ملفات المراجعة", "Review files"),
+      // Stays true whatever type, size and count the inspector sets.
       helper: t(
-        "اختر ملفات ضمن قيود النوع والحجم والعدد المحددة لهذا المثال.",
-        "Choose files within this example's configured type, size and count limits.",
+        "اختر ملفات بالأنواع والحجم المسموح بها.",
+        "Choose files of an allowed type and size.",
       ),
       error: "",
       multiple: true,
@@ -500,7 +493,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       mode: "controlled",
     },
     "color-picker": {
-      label: t("لون العيّنة", "Sample color"),
+      label: t("لون العلامة", "Brand color"),
       helper: t(
         "صيغة #RGB أو #RRGGBB، دون شفافية.",
         "Use #RGB or #RRGGBB, without transparency.",
@@ -512,10 +505,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     "tag-input": {
       label: t("وسوم الملاحظات", "Note tags"),
-      helper: t(
-        "Enter يضيف وسمًا. النص غير المؤكد لا يُرسل.",
-        "Enter adds a tag. Uncommitted text is not submitted.",
-      ),
+      helper: t("اضغط Enter لإضافة وسم.", "Press Enter to add a tag."),
       error: "",
       placeholder: t("أضف وسمًا…", "Add a tag…"),
       maxTags: 5,
@@ -524,12 +514,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       mode: "controlled",
     },
     "input-copy": {
-      label: t("مسار المصدر", "Source path"),
-      value: "src/system/TagInput.tsx",
-      helper: t(
-        "حدّد النص أو انسخ القيمة كاملة.",
-        "Select the text or copy the full value.",
-      ),
+      label: t("رابط الدعوة", "Invite link"),
+      value: "https://madar.sa/invite/7KQ2-RX9",
+      helper: t("شاركه مع فريقك.", "Share it with your team."),
       error: "",
       disabled: false,
     },
@@ -561,10 +548,10 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     pagination: { page: 1, totalPages: 12 },
     alert: {
-      title: t("المعاينة جاهزة", "Preview ready"),
+      title: t("تم تحديث خطة الفوترة", "Billing plan updated"),
       description: t(
-        "هذه رسالة ثابتة داخل الصفحة.",
-        "This is persistent feedback within the page.",
+        "يبدأ السعر الجديد في ١ نوفمبر.",
+        "The new price starts on November 1.",
       ),
       tone: "info",
     },
@@ -589,16 +576,13 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     "avatar-group": { maxVisible: 3, size: "sm", appearance: "mixed" },
     tooltip: {
-      content: t(
-        "عرض معلومات إضافية في هذه المعاينة.",
-        "Show extra information in this preview.",
-      ),
+      content: t("يشمل ضريبة القيمة المضافة ١٥٪.", "Includes 15% VAT."),
     },
     modal: {
       title: t("خيارات العرض", "Display options"),
       description: t(
-        "اختر تخطيطًا لهذه المعاينة فقط.",
-        "Choose a layout for this preview only.",
+        "اختر طريقة عرض الفواتير.",
+        "Choose how invoices are displayed.",
       ),
       footer: true,
       mode: "controlled",
@@ -798,8 +782,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       ),
       closeLabel: t("إغلاق اللوحة", "Close panel"),
       children: t(
-        "شركة مدار للتقنية · هذه بيانات تجريبية.",
-        "Madar Technology · Example customer data.",
+        "شركة مدار للتقنية · عميل منذ ٢٠٢٢.",
+        "Madar Technology · Customer since 2022.",
       ),
       footer: true,
       footerLabel: t("إغلاق", "Close"),
@@ -927,6 +911,78 @@ export function validateCollection(
     valid && (component === "dropdown" || value.some((item) => !item.disabled))
   );
 }
+// Demo-flavoured defaults from earlier versions. A saved value that still
+// equals one of them was never customised, so it follows the current default.
+const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
+  {
+    slider: {
+      label: ["قيمة محلية", "Local amount"],
+      helper: [
+        "اسحب أو استخدم الأسهم وHome وEnd.",
+        "Drag or use arrows, Home and End.",
+      ],
+    },
+    "otp-input": {
+      label: ["رمز تجريبي", "Sample code"],
+      helper: [
+        "أرقام عربية أو إنجليزية؛ دون تحقق.",
+        "Arabic or ASCII digits; no verification.",
+      ],
+    },
+    "date-picker": {
+      label: ["موعد محلي", "Local date"],
+      helper: [
+        "تاريخ ميلادي واحد؛ Escape للإغلاق.",
+        "One Gregorian date; Escape to close.",
+      ],
+    },
+    "file-dropzone": {
+      helper: [
+        "اختر ملفات ضمن قيود النوع والحجم والعدد المحددة لهذا المثال.",
+        "Choose files within this example's configured type, size and count limits.",
+      ],
+    },
+    "color-picker": { label: ["لون العيّنة", "Sample color"] },
+    "tag-input": {
+      helper: [
+        "Enter يضيف وسمًا. النص غير المؤكد لا يُرسل.",
+        "Enter adds a tag. Uncommitted text is not submitted.",
+      ],
+    },
+    "input-copy": {
+      label: ["مسار المصدر", "Source path"],
+      value: ["src/system/TagInput.tsx"],
+      helper: [
+        "حدّد النص أو انسخ القيمة كاملة.",
+        "Select the text or copy the full value.",
+      ],
+    },
+    alert: {
+      title: ["المعاينة جاهزة", "Preview ready"],
+      description: [
+        "هذه رسالة ثابتة داخل الصفحة.",
+        "This is persistent feedback within the page.",
+      ],
+    },
+    tooltip: {
+      content: [
+        "عرض معلومات إضافية في هذه المعاينة.",
+        "Show extra information in this preview.",
+      ],
+    },
+    modal: {
+      description: [
+        "اختر تخطيطًا لهذه المعاينة فقط.",
+        "Choose a layout for this preview only.",
+      ],
+    },
+    sheet: {
+      children: [
+        "شركة مدار للتقنية · هذه بيانات تجريبية.",
+        "Madar Technology · Example customer data.",
+      ],
+    },
+  };
 export function normalizePlaygrounds(
   value: unknown,
   language: Language,
@@ -958,6 +1014,11 @@ export function normalizePlaygrounds(
         defaults[key] = nativeAttributes(item, component);
         continue;
       }
+      if (
+        typeof item === "string" &&
+        retiredDefaults[component]?.[key]?.includes(item)
+      )
+        continue;
       if (
         typeof item === typeof defaults[key] &&
         ["string", "boolean", "number"].includes(typeof item)

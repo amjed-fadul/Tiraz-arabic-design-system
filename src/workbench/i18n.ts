@@ -58,10 +58,6 @@ export const labels = {
   nativeAttrs: ["سمات العنصر", "DOM attributes"],
   previewOverrides: ["تجاوز إعداد النظام", "Playground overrides"],
   show: ["فتح", "Open"],
-  simulation: [
-    "محاكاة محلية · 1.2s · لا تُرسل بيانات",
-    "Local simulation · 1.2s · no data is sent",
-  ],
   docTheme: ["تبديل المظهر", "Toggle theme"],
 } satisfies Record<string, Localized>;
 export type LabelKey = keyof typeof labels;
