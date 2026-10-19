@@ -4,11 +4,17 @@
   --surface: #ffffff;
   --surface-subtle: #f2f4f2;
   --surface-hover: #eaecea;
+  /* Content sits on paper (--surface); status, meta and decisions on the tray;
+     code and output in a well cut into the paper. */
+  --surface-tray: #eceeea;
+  --surface-well: color-mix(in srgb, var(--surface-tray) 55%, var(--surface));
   --text: #232a26;
-  --text-secondary: #616b64;
-  --text-muted: #5f6b62;
+  --text-secondary: #56615a;
+  --text-muted: #616b64;
   --border: #e2e7e3;
   --border-strong: #c5cec7;
+  /* Field edges reach 3:1 on page, paper and tray; --border-strong does not. */
+  --border-field: #848a85;
   --action-text: #ffffff;
   --action-hover: color-mix(in srgb, var(--action), black 12%);
   --action-soft: color-mix(in srgb, var(--action) 8%, var(--surface));
@@ -19,22 +25,43 @@
   --danger-soft: #fbefef;
   --info: #355c87;
   --info-soft: #eef3f9;
+  /* AI and attention are fixed; neither follows the accent. Meaning never rests
+     on color alone: each also carries its mark, glyph or word. */
+  --ai: #4b47c6;
+  --ai-soft: color-mix(in srgb, var(--ai) 11%, var(--surface));
+  --attention: #935200;
+  --attention-soft: color-mix(in srgb, var(--attention) 12%, var(--surface));
   --focus: var(--action);
   --switch-track: #77857b;
-  --font: "IBM Plex Sans Arabic", sans-serif;
+  --font: "IBM Plex Sans Arabic", system-ui, sans-serif;
   /* Mono fonts carry no Arabic; without the UI face ahead of the generic
      fallback, Arabic in code and output falls to a font that breaks joining. */
   --font-mono:
     ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas,
     "Liberation Mono", "DejaVu Sans Mono", "IBM Plex Sans Arabic", monospace;
+  --text-display: 30px;
   --text-title: 24px;
   --text-heading: 18px;
+  --text-subheading: 16px;
+  --text-reading: 15.5px;
   --text-body: 14px;
-  --text-meta: 12px;
+  --text-label: 13px;
+  --text-meta: 12.5px;
+  --text-micro: 11px;
+  --text-figure: 28px;
+  --text-figure-small: 20px;
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;
+  /* Leading follows the role; --line-height is the body leading. */
   --line-height: 1.8;
+  --leading-display: 1.3;
+  --leading-title: 1.35;
+  --leading-heading: 1.5;
+  --leading-reading: 1.95;
+  --leading-meta: 1.6;
+  --leading-micro: 1.4;
+  --leading-figure: 1.25;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -44,7 +71,21 @@
   --space-8: 32px;
   --space-10: 40px;
   --radius-small: max(2px, calc(var(--radius) - 3px));
-  --radius-panel: calc(var(--radius) + 4px);
+  /* One radius scale from --radius. Paper is never squarer than its controls
+     and stops at 24px; the tray is concentric with its paper at the default
+     radius and above. */
+  --tray-pad: 5px;
+  --radius-item: var(--radius);
+  --radius-control: calc(var(--radius) * 1.25);
+  --radius-paper: min(
+    24px,
+    max(var(--radius-control), calc(var(--radius) * 1.875))
+  );
+  --radius-tray: calc(
+    var(--radius-paper) + min(var(--tray-pad), calc(var(--radius) * 0.625))
+  );
+  --radius-pill: calc(var(--radius) * 999);
+  --radius-panel: var(--radius-paper);
   --control-height: 40px;
   --control-small: 36px;
   --control-small-padding: 12px;
@@ -53,6 +94,19 @@
   --tab-padding: 8px;
   --menu-item-padding: 5px;
   --row-gap: 16px;
+  /* Fixed sizes and states shared by the families. */
+  --status-size: 22px;
+  --remove-size: 24px;
+  --switch-track-width: 38px;
+  --switch-track-height: 22px;
+  --switch-thumb: 16px;
+  --slider-track: 6px;
+  --slider-thumb: 18px;
+  --avatar-sm: 32px;
+  --avatar-md: 40px;
+  --chat-avatar: 24px;
+  --press-scale: 0.97;
+  --disabled-opacity: 0.5;
   /* Materials: a hairline edge, a lit top lip and short layered contact
      shadows read as one surface instead of a blurred box. */
   --shadow-control: 0 1px 2px #152c1d0f, 0 1px 1px #152c1d08;
@@ -68,19 +122,24 @@
     0 32px 64px -16px #0c181133;
   --shadow-thumb:
     0 0 0 0.5px #12231a1f, 0 1px 2px #12231a2e, 0 2px 6px #12231a14;
-  /* Clean surfaces: the edge is a 0.5px ring plus a one-pixel lift, so cards
-     read as paper rather than outlined boxes. Washes tint hover and press
-     with the text color itself, so they follow any theme or accent. */
-  --shadow-surface:
-    0 0 0 0.5px #12231a1a, 0 1px 1px -1px #12231a1a, 0 1px 2px #12231a0d;
+  /* Paper: a 1px ring, a short contact shadow and a soft drop, so cards read as
+     paper rather than outlined boxes; a chip is small paper on the tray.
+     --shadow-surface stays as an alias. Washes tint hover and press with the
+     text color itself, so they follow any theme or accent. */
+  --shadow-paper:
+    0 0 0 1px rgb(18 35 26 / 7%), 0 1px 2px rgb(18 35 26 / 5%),
+    0 10px 24px -16px rgb(18 35 26 / 30%);
+  --shadow-chip: 0 0 0 1px rgb(18 35 26 / 10%), 0 1px 2px rgb(18 35 26 / 6%);
+  --shadow-surface: var(--shadow-paper);
   --hairline: #12231a14;
   --wash: color-mix(in srgb, var(--text) 4%, transparent);
   --wash-strong: color-mix(in srgb, var(--text) 7%, transparent);
-  --code-surface: color-mix(in srgb, var(--surface-subtle) 55%, var(--surface));
+  --code-surface: var(--surface-well);
   --code-key: var(--text);
   --code-string: #0b6f8f;
   --code-number: #a4520b;
-  --code-literal: #5b4fc4;
+  /* Rose, so code never borrows the AI indigo. */
+  --code-literal: #9b3a6c;
   --code-comment: var(--text-muted);
   --focus-halo: color-mix(in srgb, var(--focus) 22%, transparent);
   --backdrop: #0c18114d;
@@ -91,12 +150,26 @@
   /* Motion: one strong ease-out drives entrances and state changes; exits are
      shorter; presses are near-instant and release on a small overshoot. */
   --motion-press: 90ms;
+  --motion-release: 160ms;
   --motion-fast: 120ms;
   --motion-state: 200ms;
-  --motion-enter: 220ms;
-  --motion-exit: 150ms;
-  --motion-panel: 420ms;
-  --motion-panel-exit: 260ms;
+  --motion-enter: 180ms;
+  --motion-exit: 120ms;
+  --motion-dialog-enter: 220ms;
+  --motion-dialog-exit: 150ms;
+  --motion-panel: 280ms;
+  --motion-panel-exit: 200ms;
+  --motion-toast: 240ms;
+  --motion-toast-exit: 150ms;
+  --motion-collapse: 200ms;
+  --motion-collapse-exit: 150ms;
+  /* Stagger and word are gaps between items; the loops are decorative. */
+  --motion-stagger: 40ms;
+  --motion-word: 34ms;
+  --motion-loop-stitch: 800ms;
+  --motion-loop-shimmer: 1900ms;
+  --motion-loop-turn: 1800ms;
+  --motion-loop-skeleton: 1600ms;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
@@ -117,11 +190,13 @@
   --surface: #1c221e;
   --surface-subtle: #232b25;
   --surface-hover: #2b352e;
+  --surface-tray: #121714;
   --text: #ecf0ec;
   --text-secondary: #adb9af;
-  --text-muted: #99a69c;
+  --text-muted: #9ba8a0;
   --border: #333e36;
   --border-strong: #546259;
+  --border-field: #5f6f65;
   --action-text: #17241c;
   --action-hover: color-mix(in srgb, var(--action), white 10%);
   --action-soft: color-mix(in srgb, var(--action) 9%, var(--surface));
@@ -132,6 +207,10 @@
   --danger-soft: #3e2729;
   --info: #adcaf0;
   --info-soft: #253347;
+  --ai: #aba7ff;
+  --ai-soft: color-mix(in srgb, var(--ai) 18%, var(--surface));
+  --attention: #f1b45e;
+  --attention-soft: color-mix(in srgb, var(--attention) 16%, var(--surface));
   --shadow-control: 0 1px 2px #00000033, inset 0 1px 0 #ffffff0a;
   --shadow-raised:
     inset 0 1px 0 #ffffff47, inset 0 -1px 0 #0000001f, 0 1px 2px #00000052,
@@ -145,11 +224,13 @@
     0 12px 24px -8px #0000004d, 0 32px 64px -16px #00000073;
   --shadow-thumb:
     0 0 0 0.5px #00000040, 0 1px 2px #00000059, 0 2px 6px #00000033;
-  --shadow-surface: 0 0 0 0.5px #ffffff1f, 0 1px 2px #00000066;
+  --shadow-paper:
+    0 0 0 1px rgb(255 255 255 / 7%), 0 12px 28px -18px rgb(0 0 0 / 80%);
+  --shadow-chip: 0 0 0 1px rgb(255 255 255 / 10%), 0 1px 2px rgb(0 0 0 / 40%);
   --hairline: #ffffff14;
   --code-string: #6fcbe6;
   --code-number: #f0a862;
-  --code-literal: #aea8ff;
+  --code-literal: #f0a5cb;
   --focus-halo: color-mix(in srgb, var(--focus) 30%, transparent);
   --backdrop: #050a0799;
   --shimmer: #ffffff12;
@@ -169,22 +250,48 @@
 }
 .tiraz-system[data-reduced-motion="true"] {
   --motion-press: 0ms;
+  --motion-release: 0ms;
   --motion-fast: 0ms;
   --motion-state: 0ms;
   --motion-enter: 0ms;
   --motion-exit: 0ms;
+  --motion-dialog-enter: 0ms;
+  --motion-dialog-exit: 0ms;
   --motion-panel: 0ms;
   --motion-panel-exit: 0ms;
+  --motion-toast: 0ms;
+  --motion-toast-exit: 0ms;
+  --motion-collapse: 0ms;
+  --motion-collapse-exit: 0ms;
+  --motion-stagger: 0ms;
+  --motion-word: 0ms;
+  --motion-loop-stitch: 0ms;
+  --motion-loop-shimmer: 0ms;
+  --motion-loop-turn: 0ms;
+  --motion-loop-skeleton: 0ms;
 }
 @media (prefers-reduced-motion: reduce) {
   .tiraz-system {
     --motion-press: 0ms;
+    --motion-release: 0ms;
     --motion-fast: 0ms;
     --motion-state: 0ms;
     --motion-enter: 0ms;
     --motion-exit: 0ms;
+    --motion-dialog-enter: 0ms;
+    --motion-dialog-exit: 0ms;
     --motion-panel: 0ms;
     --motion-panel-exit: 0ms;
+    --motion-toast: 0ms;
+    --motion-toast-exit: 0ms;
+    --motion-collapse: 0ms;
+    --motion-collapse-exit: 0ms;
+    --motion-stagger: 0ms;
+    --motion-word: 0ms;
+    --motion-loop-stitch: 0ms;
+    --motion-loop-shimmer: 0ms;
+    --motion-loop-turn: 0ms;
+    --motion-loop-skeleton: 0ms;
   }
   .tiraz-system *,
   .tiraz-system *::before,
@@ -218,6 +325,13 @@
   --text-meta: 14px;
   --text-heading: 20px;
   --text-title: 26px;
+  --text-display: 34px;
+  --text-subheading: 18px;
+  --text-reading: 17px;
+  --text-label: 15px;
+  --text-micro: 12.5px;
+  --text-figure: 32px;
+  --text-figure-small: 22px;
 }
 
 /* Restrained categorical palette, paired for each system theme. */
