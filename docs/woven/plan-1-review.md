@@ -295,3 +295,19 @@ Animated regions were not compared.
 - **`docs/ai-decisions/source.sha256:73` lists the deleted `ToolStatus.tsx`:** a dated evidence manifest, not a live reference.
 - **The modality listener sits on the global `document` only:** a provider in another document (an iframe) is outside the spec's provider model.
 - **The keyboard rule zeroes `--motion-state` for StatusIcon's draw:** spec §15 lists «no check drawing» under keyboard modality. Only the borrowed-token cases are raised (Minor 8).
+
+## Fixes applied (74bcf16..18a8ecb)
+
+The eight must-fix items above went in as one commit, `18a8ecb`. Gates afterwards: 91 files and 1176 tests passing (1173 before; items 4, 5 and 8 add one test each), lint with zero warnings, build and format clean.
+
+1. `tests/browser/ai-decisions-fixture.tsx:33`: `FailingHostFlow` is exported. `npm run lint` now reports no warnings.
+2. `tests/browser/data-table.mjs:195`: the Arabic pass accepts either digit set, `/(?:11|١١).*(?:20|٢٠)/`, so it matches «١١–٢٠ من ٢٦ عميل».
+3. `src/workbench/model.test.ts:201`: the unknown-select test sends `state: "idle"` instead of `"bogus"`. On the old shared-table code it fails (`'idle'` is kept instead of `'completed'`), where `"bogus"` passed.
+4. `src/workbench/exhaustive.test.ts:25–30`: a `// @ts-expect-error` sits above `assertNever("toast" as ComponentId, "test")` inside an expect-to-throw. Loosening `value: never` to `unknown` fails `tsc -b` with TS2578.
+5. `src/system/useInputModality.ts:21–24`: a key of up to two non-ASCII letters counts as typing, so «لا» switches to keyboard. ASCII named keys such as Shift, Fn and F1 stay out. `modality.test.tsx:36` covers both sides.
+6. The spec notes for Rulings 12 and 13:
+   - `docs/superpowers/specs/2026-10-18-woven-visual-language-design.md:303`: sheet entrances and exits (280 / 200 ms) are named as the exception to the 90–240 ms budget.
+   - The same file, `:184`: the code literal is 0.20 from `--ai` in light and 0.125 in dark, held to the 0.08 semantic floor.
+   - `src/system/tokens.test.ts:672–674` and `:699–704`: both comments now state the settled rulings and cite the spec. `overBudgetInSpec` is `sheetEntrance`.
+7. `src/system/tokens.css:150–152`: the motion comment says presses release over `--motion-release` with `--ease-out`, never the spring (spec section 12).
+8. `src/system/ai-decisions.test.tsx:475`: Ctrl+Enter and Cmd+Enter in a text question's field submit the answers (`AskUserQuestions.tsx:218–225`). Removing the handler, or keeping only one of the two modifiers, fails the test.
