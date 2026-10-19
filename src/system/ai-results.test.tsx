@@ -495,9 +495,10 @@ it("agrees Arabic source counts with their noun", () => {
         <Sources items={make(n)} />
       </SystemProvider>,
     );
-    expect(screen.getByRole("button", { expanded: false })).toHaveTextContent(
-      text,
-    );
+    // The whole summary, not a substring: «١٠٠ مصدرًا» must not pass for «١٠٠ مصدر».
+    expect(
+      within(screen.getByRole("button", { expanded: false })).getByText(text),
+    ).toBeInTheDocument();
     unmount();
   }
 });
@@ -521,9 +522,10 @@ it("agrees Arabic source counts with their noun under Western digits", () => {
         <Sources items={make(n)} />
       </SystemProvider>,
     );
-    expect(screen.getByRole("button", { expanded: false })).toHaveTextContent(
-      text,
-    );
+    // The whole summary again, so «100 مصدرًا» cannot pass for «100 مصدر».
+    expect(
+      within(screen.getByRole("button", { expanded: false })).getByText(text),
+    ).toBeInTheDocument();
     unmount();
   }
 });

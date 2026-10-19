@@ -373,7 +373,7 @@ export default function Example() {
     return `import { useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { MoreHorizontal } from "lucide-react";
-import { Button, Field, Input, Select, Sheet, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, useToast, DataTable, Badge, DropdownMenu, SystemProvider, ToastProvider, defaultConfig } from "./system";
+import { Button, Field, Input, Select, Sheet, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, useToast, DataTable, Badge, DropdownMenu, SystemProvider, ToastProvider, defaultConfig, numberLocale, useSystem } from "./system";
 import type { DataTableColumn } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";

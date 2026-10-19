@@ -8,6 +8,8 @@ import {
   Input,
   Select,
   Sheet,
+  numberLocale,
+  useSystem,
 } from "../../index";
 import { CreateCustomer } from "./CreateCustomer";
 import type { Customer } from "./CreateCustomer";
@@ -141,6 +143,9 @@ export function CustomerDataTable({
   preset?: CustomerPreset;
 }) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
+  const number = new Intl.NumberFormat(
+    numberLocale(useSystem().config, language),
+  );
   const [query, setQuery] = useState(
     preset === "no-results" ? t("الريان", "Rayyan") : "",
   );
@@ -261,7 +266,7 @@ export function CustomerDataTable({
                     : failed
                       ? t("عدد العملاء غير متاح", "Customer count unavailable")
                       : t(
-                          `${from}–${to} من ${total} عميل`,
+                          `${number.format(from)}–${number.format(to)} من ${number.format(total)} عميل`,
                           `${from}–${to} of ${total} customers`,
                         ),
               }}

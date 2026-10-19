@@ -29,6 +29,7 @@ import {
   SystemProvider,
   TagInput,
   TaskRows,
+  ToastProvider,
   ToolChips,
   defaultConfig,
   numberLocale,
@@ -36,6 +37,8 @@ import {
 import type { Numerals, SystemConfig } from "./config";
 import { chartCategory, chartNumber } from "./chart-format";
 import { AvatarExamples } from "./ai/examples/AvatarExamples";
+import { ChatAppExample } from "./ai/examples/ChatAppExample";
+import { CustomerDataTable } from "./ai/examples/CustomerDataTable";
 import { TeamExample } from "./ai/examples/OverlayExamples";
 
 // Digits only from the expected system, at least one present.
@@ -427,6 +430,40 @@ describe.each(settings)(
         expect(label).toHaveTextContent(`${n("2")} أعضاء آخرون`);
         expect(label.textContent).toMatch(digits[numerals]);
       }
+    });
+
+    it("the DataTable example's result count follows the setting", () => {
+      wrap(
+        <ToastProvider label="تنبيهات العملاء" closeLabel="إغلاق التنبيه">
+          <CustomerDataTable language="ar" />
+        </ToastProvider>,
+        { numerals },
+      );
+      // DataTable hands resultCount raw numbers, so the host formats them.
+      const count = within(
+        screen.getByRole("navigation", { name: "صفحات العملاء" }),
+      ).getByRole("status");
+      expect(count.textContent).toBe(`${n("1")}–${n("10")} من ${n("26")} عميل`);
+      expect(count.textContent).toMatch(digits[numerals]);
+    });
+
+    it("a new conversation in the ChatApp example is titled in the configured digits", async () => {
+      const user = userEvent.setup();
+      const view = wrap(<ChatAppExample language="ar" />, { numerals });
+      const navigation = screen.getAllByRole("navigation", {
+        name: "المحادثات",
+      })[0];
+      await user.click(
+        within(navigation).getByRole("button", { name: "محادثة جديدة" }),
+      );
+      // The example starts with two conversations, so the new one is the third.
+      const title = `محادثة ${n("3")}`;
+      expect(
+        within(navigation).getByRole("button", { name: title }),
+      ).toHaveAttribute("aria-current", "true");
+      expect(
+        view.container.querySelector(".tz-chat-app-title")?.textContent,
+      ).toBe(title);
     });
 
     it("the citation popup shows its number in the configured digits", async () => {

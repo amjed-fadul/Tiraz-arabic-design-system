@@ -7,6 +7,8 @@ import {
   PromptBar,
   StreamingText,
   Terminal,
+  numberLocale,
+  useSystem,
 } from "../../index";
 import { useLocalResponse } from "./useLocalResponse";
 type Language = "ar" | "en";
@@ -95,6 +97,9 @@ function ChatAppHost({
   longContent: boolean;
 }) {
   const ar = language === "ar";
+  const number = new Intl.NumberFormat(
+    numberLocale(useSystem().config, language),
+  );
   const [conversations, setConversations] = useState(() =>
       conversationsFor(ar),
     ),
@@ -193,7 +198,7 @@ function ChatAppHost({
             {
               id,
               title: ar
-                ? `محادثة ${conversations.length + 1}`
+                ? `محادثة ${number.format(conversations.length + 1)}`
                 : `Chat ${conversations.length + 1}`,
               draft: "",
               model: current.model,

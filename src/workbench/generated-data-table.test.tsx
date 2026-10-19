@@ -8,12 +8,22 @@ import * as system from "../system";
 import * as ts from "typescript";
 import { generateCode } from "./generate";
 import { defaultPlaygrounds } from "./model";
-function example(preset: "empty" | "loading" | "error" = "empty") {
+function example(
+  preset: "populated" | "empty" | "loading" | "error" = "empty",
+  {
+    language = "en",
+    numerals = "arab",
+  }: { language?: "ar" | "en"; numerals?: system.Numerals } = {},
+) {
   const code = generateCode(
     "data-table",
-    { ...defaultPlaygrounds("en")["data-table"], preset },
-    { ...system.defaultConfig, direction: "ltr" },
-    "en",
+    { ...defaultPlaygrounds(language)["data-table"], preset },
+    {
+      ...system.defaultConfig,
+      direction: language === "ar" ? "rtl" : "ltr",
+      numerals,
+    },
+    language,
   );
   const js = ts.transpileModule(code, {
     compilerOptions: {
@@ -74,3 +84,13 @@ it("runs copied loading and error/Retry presets", async () => {
   await userEvent.click(screen.getByRole("button", { name: "Retry" }));
   expect(screen.getByRole("status")).toHaveTextContent("of 26");
 });
+it.each(["arab", "latn"] as const)(
+  "runs the copied Arabic data table with its result count in %s digits",
+  (numerals) => {
+    const Example = example("populated", { language: "ar", numerals });
+    render(<Example />);
+    expect(screen.getByRole("status").textContent).toBe(
+      numerals === "arab" ? "١–١٠ من ٢٦ عميل" : "1–10 من 26 عميل",
+    );
+  },
+);
