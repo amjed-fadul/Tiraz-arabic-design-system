@@ -15,6 +15,11 @@ export interface DemoStateDef {
   matches?(model: PlaygroundModel): boolean;
   phase?: string;
 }
+/**
+ * A press of a state without a phase leaves the example with none. If the
+ * example runs on its own when it has no phase, give every state in its
+ * family a phase.
+ */
 export interface DemoStatesDef {
   states: readonly DemoStateDef[];
   /** The state a fresh page shows: the one that shows the most. */

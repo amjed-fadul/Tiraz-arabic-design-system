@@ -4840,6 +4840,10 @@ button.tz-tool-chip[aria-expanded="true"] {
 }
 .tz-demo-views[data-ready] > .tz-demo-views-thumb {
   opacity: 1;
+}
+/* Placed without motion when the frame mounts; it glides once the view has
+   changed. */
+.tz-demo-views[data-changed] > .tz-demo-views-thumb {
   transition:
     transform var(--motion-state) var(--ease-in-out),
     inline-size var(--motion-state) var(--ease-in-out);

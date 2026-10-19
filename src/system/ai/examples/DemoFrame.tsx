@@ -3,6 +3,7 @@ import type { CSSProperties, KeyboardEvent, ReactNode } from "react";
 import { AlertCircle, Check, Code2, Copy, Eye, Play } from "lucide-react";
 import { Button } from "../../Button";
 import { highlightCode } from "../../code-highlight";
+import { useChanged } from "../../useChanged";
 
 type View = "preview" | "code";
 
@@ -328,6 +329,8 @@ function ViewSwitch({
 }) {
   const list = useRef<HTMLDivElement>(null);
   const [thumb, setThumb] = useState({ x: 0, width: 0 });
+  // The thumb is placed on mount and glides only once the view changes.
+  const changed = useChanged(view);
   useLayoutEffect(() => {
     const el = list.current;
     if (!el) return;
@@ -380,6 +383,7 @@ function ViewSwitch({
         } as CSSProperties
       }
       data-ready={thumb.width > 0 || undefined}
+      data-changed={changed || undefined}
     >
       <span aria-hidden="true" className="tz-demo-views-thumb" />
       {views.map((item) => (

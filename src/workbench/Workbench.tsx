@@ -88,10 +88,10 @@ export function Workbench() {
     patch: Record<string, unknown>;
   } | null>(null);
   // Lifecycle phases live for the session only; opening a page starts it at
-  // its resting phase.
-  const [phases, setPhases] = useState<Partial<Record<ComponentId, string>>>(
-    {},
-  );
+  // its resting phase. `null` records a press of a state with no phase.
+  const [phases, setPhases] = useState<
+    Partial<Record<ComponentId, string | null>>
+  >({});
   const [replaying, setReplaying] = useState(false);
   const replayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const stopReplay = useCallback(() => {
@@ -122,10 +122,12 @@ export function Workbench() {
   const model = playgrounds[active],
     effectiveConfig = previewConfig(systemConfig, model);
   const pageStates = demoStates[active];
-  const phase = pageStates
-    ? (phases[active] ??
-      pageStates.states.find((state) => state.id === pageStates.resting)?.phase)
-    : undefined;
+  const pressedPhase = phases[active];
+  const phase =
+    pressedPhase === undefined
+      ? pageStates?.states.find((state) => state.id === pageStates.resting)
+          ?.phase
+      : (pressedPhase ?? undefined);
   const code = generateCode(active, model, systemConfig, language),
     prompt = generatePrompt(active, model, systemConfig, language);
   useEffect(() => {
@@ -245,8 +247,8 @@ export function Workbench() {
   function applyState(id: string) {
     const state = pageStates?.states.find((item) => item.id === id);
     if (!state) return;
-    const next = state.phase;
-    if (next !== undefined) setPhases((prev) => ({ ...prev, [active]: next }));
+    // A state without a phase clears it, so the switcher can show that state.
+    setPhases((prev) => ({ ...prev, [active]: state.phase ?? null }));
     if (state.props) fromInspector(propsOf(state, language));
   }
   const applyLatest = useRef(applyState);

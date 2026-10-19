@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import type { ComponentId } from "./catalog";
-import { stateWords } from "./demo-states";
+import { demoStates, stateWords } from "./demo-states";
 import { persist, storageKeys } from "./storage";
 import { ToolChipsExample } from "../system/ai/examples/ToolActivityExamples";
 import { SystemProvider, defaultConfig } from "../system";
@@ -132,6 +132,33 @@ it("holds a phase until it is changed", async () => {
   fireEvent.click(nav.getByRole("button", { name: "ملخص الأدوات" }));
   expect(pressed()).toEqual([word("done")]);
   expect(chips()).toEqual(chipsDone);
+});
+
+it("lets phase and props states share a page", () => {
+  // A family that mixes both kinds and rests on a phase.
+  const saved = demoStates.terminal;
+  demoStates.terminal = {
+    states: [
+      { id: "thinking", label: stateWords.thinking, phase: "thinking" },
+      { id: "done", label: stateWords.done, phase: "done" },
+      { id: "failed", label: stateWords.failed, props: { state: "failed" } },
+    ],
+    resting: "thinking",
+  };
+  try {
+    open("terminal");
+    expect(pressed()).toEqual([word("thinking")]);
+    // A props state replaces the resting phase...
+    fireEvent.click(states().getByRole("button", { name: word("failed") }));
+    expect(pressed()).toEqual([word("failed")]);
+    // ...and a phase pressed before it.
+    fireEvent.click(states().getByRole("button", { name: word("done") }));
+    expect(pressed()).toEqual([word("done")]);
+    fireEvent.click(states().getByRole("button", { name: word("failed") }));
+    expect(pressed()).toEqual([word("failed")]);
+  } finally {
+    demoStates.terminal = saved;
+  }
 });
 
 it("plays Replay in order", async () => {
