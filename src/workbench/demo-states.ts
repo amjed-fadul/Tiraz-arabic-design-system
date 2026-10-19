@@ -9,6 +9,7 @@ import type {
   InputModel,
   PaginationModel,
   PlaygroundModel,
+  Playgrounds,
   ProgressModel,
   RadioGroupModel,
   SelectModel,
@@ -468,6 +469,33 @@ export function propsOf(state: DemoStateDef, language: Language) {
   return typeof state.props === "function"
     ? state.props(language)
     : (state.props ?? {});
+}
+
+/**
+ * A state writes its text into the model when pressed, so a language change
+ * translates it as it does a default: a field that holds a state's text in
+ * `from` takes that state's text in `to`.
+ */
+export function translateStates(
+  playgrounds: Playgrounds,
+  from: Language,
+  to: Language,
+): Playgrounds {
+  const next = structuredClone(playgrounds);
+  for (const id of Object.keys(demoStates) as ComponentId[]) {
+    const record = next[id] as unknown as Record<string, unknown>;
+    for (const state of demoStates[id]?.states ?? []) {
+      const after = propsOf(state, to);
+      for (const [key, text] of Object.entries(propsOf(state, from)))
+        if (
+          typeof text === "string" &&
+          text !== after[key] &&
+          record[key] === text
+        )
+          record[key] = after[key];
+    }
+  }
+  return next;
 }
 
 /**

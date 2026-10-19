@@ -27,7 +27,7 @@ import { Inspector } from "./Inspector";
 import { Playground } from "./Playground";
 import { PreviewFrame } from "./PreviewFrame";
 import { canReplayPlayground } from "./demo-capabilities";
-import { demoStates, propsOf, stateOf } from "./demo-states";
+import { demoStates, propsOf, stateOf, translateStates } from "./demo-states";
 import { docsNotes } from "./docs-notes";
 import type { DemoFrameNotes } from "../system/ai/examples/DemoFrame";
 import { ApiReference } from "./ApiReference";
@@ -311,7 +311,9 @@ export function Workbench() {
   function changeLanguage(next: Language) {
     if (next === language) return;
     cancelButtonAction();
-    setPlaygrounds((prev) => translateDefaults(prev, language, next));
+    setPlaygrounds((prev) =>
+      translateStates(translateDefaults(prev, language, next), language, next),
+    );
     setDocumentation((prev) => ({ ...prev, language: next }));
   }
   function buttonAction() {

@@ -191,6 +191,7 @@ export interface ModalModel {
   description: string;
   footer: boolean;
   mode: "controlled" | "uncontrolled";
+  // Also the mark of props saved after the states (see defaultsBeforeStates).
   open: boolean;
 }
 export interface EmptyStateModel {

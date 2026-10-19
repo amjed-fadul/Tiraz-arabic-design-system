@@ -555,3 +555,27 @@ it("loads saved props from before the states", () => {
   expect(picked.input.value).toBe("");
   expect(picked.checkbox.checked).toBe(false);
 });
+
+it("translates a state's text when the language changes", async () => {
+  const user = userEvent.setup();
+  open("input");
+  press("invalid");
+  expect(screen.getByText("أدخل اسم العميل للمتابعة.")).toBeInTheDocument();
+  const language = () =>
+    screen.getByRole("combobox", {
+      name: /^(لغة التوثيق|Documentation language)$/,
+    });
+  await user.selectOptions(language(), "en");
+  // The message follows the language, on the stage and in the saved props
+  // (the code and the prompt are built from them); the state stays pressed.
+  expect(
+    screen.getByText("Enter the customer name to continue."),
+  ).toBeInTheDocument();
+  expect(savedProps("input").error).toBe(
+    "Enter the customer name to continue.",
+  );
+  expect(pressedWords()).toEqual([stateWords.invalid[1]]);
+  await user.selectOptions(language(), "ar");
+  expect(screen.getByText("أدخل اسم العميل للمتابعة.")).toBeInTheDocument();
+  expect(savedProps("input").error).toBe("أدخل اسم العميل للمتابعة.");
+});
