@@ -1,7 +1,12 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, it } from "vitest";
-import { auditFamily, familyRuleCount, type AuditIssue } from "./css-audit";
+import {
+  auditFamily,
+  familyRuleCount,
+  unmatchedPrefixes,
+  type AuditIssue,
+} from "./css-audit";
 import { wovenFamilies } from "./css-audit.families";
 
 // Self-tests for the Woven CSS audit, then the audit itself on every registered
@@ -148,6 +153,41 @@ const declarationViolations: DeclarationRow[] = [
     "a logical corner with the raw radius",
     "border-end-end-radius: var(--radius)",
   ],
+  [
+    3,
+    "a unitless factor on a named token",
+    "border-radius: calc(var(--radius-control) * 0.5)",
+  ],
+  [
+    3,
+    "a factor of 1, which is not 0",
+    "border-radius: calc(var(--radius-paper) * 1)",
+  ],
+  [
+    3,
+    "a bare 50, which is not 50%",
+    "border-radius: calc(var(--radius-small) * 50)",
+  ],
+  [
+    3,
+    "a size token added to a named token",
+    "border-radius: calc(var(--radius-paper) + var(--space-2))",
+  ],
+  [3, "a size token as the radius", "border-radius: var(--control-height)"],
+  [3, "a size token halved", "border-radius: calc(var(--control-small) / 2)"],
+  [3, "a radius name outside the scale", "border-radius: var(--radius-huge)"],
+  [
+    3,
+    "a token as the fallback of a token",
+    "border-radius: var(--radius-small, var(--radius-item))",
+  ],
+  [3, "a var() in capitals", "border-radius: VAR(--radius-huge)"],
+  [3, "a radius name that holds digits", "border-radius: var(--radius-2xl)"],
+  [
+    3,
+    "a logical corner with a name outside the scale",
+    "border-end-end-radius: var(--radius-huge)",
+  ],
 
   // 4. Times, including offsets inside calc().
   [4, "a decimal seconds time", "transition: opacity 0.2s var(--ease-out)"],
@@ -187,6 +227,18 @@ const declarationViolations: DeclarationRow[] = [
     4,
     "several literals in one value",
     "transition: opacity 100ms, transform 200ms",
+  ],
+  [4, "a literal time in a custom property", "--delay: 120ms"],
+  [
+    4,
+    "a literal inside calc() in a custom property",
+    "--shift: calc(var(--motion-state) + 60ms)",
+  ],
+  [4, "a whole transition in a custom property", "--fade: opacity 0.2s"],
+  [
+    4,
+    "a custom property that only starts like a motion token",
+    "--motionless: 1s",
   ],
 
   // 5. Curves.
@@ -465,6 +517,78 @@ const ruleViolations: RuleRow[] = [
   ],
   [
     7,
+    "arithmetic on the token",
+    ".tz-demo:active { transform: scale(calc(var(--press-scale) * 0.97)) }",
+    ".tz-demo:active",
+    "transform",
+    "scale(calc(var(--press-scale) * 0.97))",
+  ],
+  [
+    7,
+    "subtraction from the token",
+    ".tz-demo:active { transform: scale(calc(var(--press-scale) - 0.03)) }",
+    ".tz-demo:active",
+    "transform",
+    "scale(calc(var(--press-scale) - 0.03))",
+  ],
+  [
+    7,
+    "a scale derived from the token",
+    ".tz-demo:active { transform: scale(calc(var(--press-scale) * 1.02)) }",
+    ".tz-demo:active",
+    "transform",
+    "scale(calc(var(--press-scale) * 1.02))",
+  ],
+  [
+    7,
+    "a literal second axis beside the token",
+    ".tz-demo:active { transform: scale(var(--press-scale), 1) }",
+    ".tz-demo:active",
+    "transform",
+    "scale(var(--press-scale), 1)",
+  ],
+  [
+    7,
+    "the token after a nested group",
+    ".tz-demo:active { transform: scale(calc(1 + 0), var(--press-scale)) }",
+    ".tz-demo:active",
+    "transform",
+    "scale(calc(1 + 0), var(--press-scale))",
+  ],
+  [
+    7,
+    "a literal third axis beside the token",
+    ".tz-demo:active { transform: scale3d(var(--press-scale), var(--press-scale), 1) }",
+    ".tz-demo:active",
+    "transform",
+    "scale3d(var(--press-scale), var(--press-scale), 1)",
+  ],
+  [
+    7,
+    "the token with a fallback",
+    ".tz-demo:active { transform: scale(var(--press-scale, 0.97)) }",
+    ".tz-demo:active",
+    "transform",
+    "scale(var(--press-scale, 0.97))",
+  ],
+  [
+    7,
+    "the scale property with a literal second value",
+    ".tz-demo:active { scale: var(--press-scale) 1 }",
+    ".tz-demo:active",
+    "scale",
+    "var(--press-scale) 1",
+  ],
+  [
+    7,
+    "the scale property with arithmetic",
+    ".tz-demo:active { scale: calc(var(--press-scale) * 0.97) }",
+    ".tz-demo:active",
+    "scale",
+    "calc(var(--press-scale) * 0.97)",
+  ],
+  [
+    7,
     "a press selector earlier in the selector",
     ".tz-demo:active .tz-demo-icon { transform: scale(0.9) }",
     ".tz-demo:active .tz-demo-icon",
@@ -592,8 +716,10 @@ const allowed: AllowedRow[] = [
   ],
   [
     3,
-    "concentric arithmetic with --tray-pad",
-    demo("border-radius: calc(var(--radius-paper) - var(--tray-pad))"),
+    "the concentric inner corners of paper and tray",
+    demo(
+      "border-radius: calc(var(--radius-paper) - var(--tray-pad)); border-radius: calc(var(--radius-tray) - var(--tray-pad))",
+    ),
   ],
   [
     3,
@@ -606,16 +732,6 @@ const allowed: AllowedRow[] = [
     3,
     "tokens with zero corners",
     demo("border-radius: var(--radius-small) var(--radius-small) 0 0"),
-  ],
-  [
-    3,
-    "a unitless factor on a named token",
-    demo("border-radius: calc(var(--radius-control) * 0.5)"),
-  ],
-  [
-    3,
-    "a token whose name holds digits",
-    demo("border-radius: var(--radius-2xl)"),
   ],
   [
     3,
@@ -652,6 +768,13 @@ const allowed: AllowedRow[] = [
     4,
     "an animation name that holds digits",
     demo("animation: tz-fade-2s var(--motion-state) both"),
+  ],
+  [
+    4,
+    "custom properties without a literal time",
+    demo(
+      "--delay: 0s; --stagger: calc(var(--option-index, 0) * var(--motion-stagger)); --gap: 4px; --count: 3",
+    ),
   ],
   [
     4,
@@ -746,18 +869,13 @@ const allowed: AllowedRow[] = [
   ],
   [
     7,
-    "a scale derived from the token",
-    ".tz-demo:active { transform: scale(calc(var(--press-scale) * 1.02)) }",
-  ],
-  [
-    7,
-    "the token after a nested group",
-    ".tz-demo:active { transform: scale(calc(1 + 0), var(--press-scale)) }",
+    "every axis of scale3d() from the token",
+    ".tz-demo:active { transform: scale3d(var(--press-scale), var(--press-scale), var(--press-scale)) }",
   ],
   [
     7,
     "a press with no scale",
-    ".tz-demo:active { transform: translateY(1px); scale: none }",
+    ".tz-demo:active { transform: translateY(1px); scale: none; scale: unset }",
   ],
   [
     7,
@@ -855,7 +973,7 @@ const allowed: AllowedRow[] = [
   [
     11,
     "custom properties are case-sensitive",
-    demo("--Press-Scale: 1; --Motion-state: 1ms"),
+    demo("--Press-Scale: 1; --Motion-state: 1"),
   ],
   [
     11,
@@ -927,8 +1045,27 @@ it("names the literals it found, so a long value can be fixed from the message",
   );
   expect(time.message).toMatch(/^Time literal 60ms, 40ms:/);
   const [radius] = audit(demo("border-radius: calc(var(--radius) + 2px)"));
-  expect(radius.message).toContain("var(--radius)");
-  expect(radius.message).toContain("2px");
+  expect(radius.message).toContain(
+    "uses the raw var(--radius) and the literal 2px;",
+  );
+  // Only what is off the scale is named. A name that holds digits is a name,
+  // not a number.
+  const [offScale] = audit(
+    demo("border-radius: calc(var(--radius-paper) + var(--space-2))"),
+  );
+  expect(offScale.message).toContain(
+    "uses var(--space-2), which is not a radius token;",
+  );
+  const [factor] = audit(
+    demo("border-radius: calc(var(--radius-control) * 0.5)"),
+  );
+  expect(factor.message).toContain("uses the literal 0.5;");
+  const [pair] = audit(demo("border-radius: 2px 3px"));
+  expect(pair.message).toContain("uses the literals 2px, 3px;");
+  const [digits] = audit(demo("border-radius: var(--radius-2xl)"));
+  expect(digits.message).toContain(
+    "uses var(--radius-2xl), which is not a radius token;",
+  );
 });
 
 it("reports one issue for each check a declaration breaks", () => {
@@ -1167,6 +1304,93 @@ it("counts the rules a family owns", () => {
   expect(familyRuleCount(css, [".tz-missing"])).toBe(0);
 });
 
+it("names the prefixes that own no rule, since one typo in a family must not hide", () => {
+  const css = `
+.tz-demo {}
+.tz-demo-x:hover {}
+.tz-other {}
+@media (min-width: 1px) { .x .tz-third-y {} }`;
+  // The family still owns rules as a whole, which is how a misspelled prefix
+  // slips through a count over all of them.
+  expect(familyRuleCount(css, [".tz-demo", ".tz-demo-typo"])).toBe(2);
+  expect(unmatchedPrefixes(css, [".tz-demo", ".tz-demo-typo"])).toEqual([
+    ".tz-demo-typo",
+  ]);
+  expect(
+    unmatchedPrefixes(css, [".tz-demo", ".tz-other", ".tz-third"]),
+  ).toEqual([]);
+  expect(unmatchedPrefixes(css, [".tz-nada", ".tz-demo", ".tz-zip"])).toEqual([
+    ".tz-nada",
+    ".tz-zip",
+  ]);
+  // One selector can name several prefixes.
+  expect(
+    unmatchedPrefixes(".tz-pair-a .tz-pair-b {}", [".tz-pair-a", ".tz-pair-b"]),
+  ).toEqual([]);
+  // A longer name of the family counts for its prefix; another class does not.
+  expect(unmatchedPrefixes(".tz-button-label {}", [".tz-button"])).toEqual([]);
+  expect(unmatchedPrefixes(".tz-buttons {}", [".tz-button"])).toEqual([
+    ".tz-button",
+  ]);
+});
+
+it("ends each message with where its rule sits, so a repeated selector can be found", () => {
+  const css = `
+.tz-demo { color: #fff }
+
+@media (min-width: 600px) {
+  .tz-demo { color: #fff }
+}
+
+@media not (forced-colors: active) {
+  @media (hover: hover) and (pointer: fine) {
+    .tz-demo { color: #000 }
+  }
+}
+
+@supports (color: red) {
+  .tz-demo { color: #fff }
+}
+
+@media (min-width: 600px)
+  and (max-width: 900px) {
+  .tz-demo { color: #fff }
+}
+
+.tz-demo:hover {
+  font-size: 13px;
+}
+`;
+  const issues = audit(css);
+  expect(issues.map((issue) => issue.property)).toEqual([
+    "color",
+    "color",
+    "color",
+    "color",
+    "color",
+    ":hover",
+    "font-size",
+  ]);
+  // The label still opens the message; the location closes it. Only @media
+  // conditions are shown, outermost first.
+  expect(
+    issues.map((issue) =>
+      issue.message.slice(issue.message.lastIndexOf(" (line ")),
+    ),
+  ).toEqual([
+    " (line 2)",
+    " (line 5, @media (min-width: 600px))",
+    " (line 10, @media not (forced-colors: active) > @media (hover: hover) and (pointer: fine))",
+    " (line 15)",
+    " (line 20, @media (min-width: 600px) and (max-width: 900px))",
+    " (line 23)",
+    " (line 23)",
+  ]);
+  expect(issues[0].message).toMatch(label[1]);
+  expect(issues[5].message).toMatch(label[6]);
+  expect(issues[6].message).toMatch(label[2]);
+});
+
 // ---------------------------------------------------------------------------
 // Context that changes a verdict
 
@@ -1222,6 +1446,9 @@ it("refuses a prefix that is not a class, so a typo cannot pass an empty match",
   expect(() => familyRuleCount(demo("color: red"), [""])).toThrow(
     /class prefix/,
   );
+  expect(() => unmatchedPrefixes(demo("color: red"), ["tz-demo"])).toThrow(
+    /class prefix/,
+  );
 });
 
 it("refuses nesting, which would hide declarations from the audit", () => {
@@ -1248,11 +1475,12 @@ const line = ({ selector, property, value, message }: AuditIssue) =>
 for (const [name, prefixes] of Object.entries(wovenFamilies)) {
   it(`${name} follows the Woven audit`, () => {
     const css = readFileSync(resolve("src/system/components.css"), "utf8");
-    // A prefix that matches no rule would pass by auditing nothing.
+    // A prefix that names no rule would pass by auditing nothing, and a typo in
+    // one of several prefixes would hide behind the others.
     expect(
-      familyRuleCount(css, prefixes),
-      `no rule in components.css names ${prefixes.join(", ")}`,
-    ).toBeGreaterThan(0);
+      unmatchedPrefixes(css, prefixes),
+      "no rule in components.css names these prefixes",
+    ).toEqual([]);
     expect(auditFamily(css, prefixes).map(line)).toEqual([]);
   });
 }

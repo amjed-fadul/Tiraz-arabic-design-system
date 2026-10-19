@@ -20,22 +20,31 @@ import {
 // that read selectors (hover, press, English), so a shared rule such as
 // `.tz-a:hover, .tz-b { … }` is held against `.tz-a` and `.tz-b` separately.
 //
-// The checks. Each issue carries one message that starts with the check's name.
+// The checks. Each issue carries one message that starts with the check's name
+// and ends with where its rule sits, "(line 6799, @media …)", since many rules
+// share one selector.
 //   1. Color literal: a hex color, rgb(), rgba(), hsl(), hsla(), hwb(), lab(),
 //      lch(), oklab(), oklch(), color(), or the keywords white and black, in any
 //      value. Exempt inside @media (forced-colors: active). transparent,
 //      currentColor and inherit are fine.
 //   2. Font size: a font-size that is not var(--text-…), inherit or 1em.
-//   3. Radius: a radius that holds a length or percentage other than 0 and 50%,
-//      or the raw var(--radius), which is the base unit and not a value.
-//   4. Time literal: a literal time other than 0ms or 0s in a transition or an
-//      animation, calc() included: an offset such as `+ 60ms` survives keyboard
-//      and reduced-motion zeroing. Times are var(--motion-…).
+//   3. Radius: a radius built from anything but the radius scale. Only
+//      var(--radius-small|item|control|paper|tray|pill|panel) and var(--tray-pad)
+//      may be referenced, without a fallback, and the only numbers are 0 and 50%.
+//      So the raw var(--radius), a token from another scale, a multiplier and an
+//      offset are all flagged, while calc(var(--radius-paper) - var(--tray-pad))
+//      is the concentric corner.
+//   4. Time literal: a literal time other than 0ms or 0s in a transition, an
+//      animation or a custom property, calc() included: an offset such as
+//      `+ 60ms` survives keyboard and reduced-motion zeroing. Times are
+//      var(--motion-…). The --motion- tokens themselves are check 11's.
 //   5. Curve literal: any cubic-bezier(). Easings are var(--ease-…).
 //   6. Hover gating: a selector with :hover outside
 //      @media (hover: hover) and (pointer: fine).
-//   7. Press scale: a scale in an :active or [data-pressed] selector that does
-//      not use var(--press-scale).
+//   7. Press scale: a scale in an :active or [data-pressed] selector whose
+//      arguments are not each exactly var(--press-scale). Keyboard modality sets
+//      the token to 1, so arithmetic on it, a fallback or a literal second axis
+//      would let a press survive it.
 //   8. Line height: a line-height that is not var(--leading-…), var(--line-height),
 //      1, 0, inherit or normal.
 //   9. Font weight: a font-weight that is not var(--weight-…), 400, 500, 600,
@@ -54,8 +63,10 @@ import {
 // declarations would otherwise go unread.
 //
 // What it does not read: @keyframes frames; named colors other than white and
-// black; keyword easings such as `ease`; and a literal time held in a custom
-// property (a cubic-bezier() is caught in any declaration).
+// black; and keyword easings such as `ease`.
+//
+// Besides auditFamily, unmatchedPrefixes names the prefixes of a family that no
+// rule names, and familyRuleCount counts the rules a family owns.
 
 export interface AuditIssue {
   /** The rule's selectors that name the family, on one line. */
@@ -64,6 +75,7 @@ export interface AuditIssue {
   property: string;
   /** The value at fault, or the hovered selectors for a hover rule. */
   value: string;
+  /** Opens with the check's name and closes with where the rule sits: "(line 12, @media …)". */
   message: string;
 }
 
@@ -237,7 +249,25 @@ function mediaOf(rule: Rule) {
     forcedColors: queries.some((query) =>
       requires(query, ["(forced-colors: active)"]),
     ),
+    /** The conditions around the rule as written, outermost first. */
+    conditions: queries.map(squash).reverse(),
   };
+}
+
+/**
+ * Where a rule sits, for the end of each message: its line, and the @media
+ * conditions around it. Many rules share one selector, so the selector alone
+ * does not find them.
+ */
+function whereIs(rule: Rule, conditions: readonly string[]): string {
+  const line = rule.source?.start?.line;
+  const parts = [
+    ...(line === undefined ? [] : [`line ${line}`]),
+    ...(conditions.length === 0
+      ? []
+      : [conditions.map((condition) => `@media ${condition}`).join(" > ")]),
+  ];
+  return parts.length === 0 ? "" : ` (${parts.join(", ")})`;
 }
 
 // ---------------------------------------------------------------------------
@@ -299,20 +329,43 @@ const RADII = new Set([
   "border-end-end-radius",
 ]);
 
+/**
+ * The radius scale of tokens.css, and the pad that makes a tray's corners
+ * concentric with its paper. Nothing else may stand in a radius: a token from
+ * another scale, a multiplier or an offset is an off-scale radius.
+ */
+const RADIUS_TOKENS = new Set([
+  "--radius-small",
+  "--radius-item",
+  "--radius-control",
+  "--radius-paper",
+  "--radius-tray",
+  "--radius-pill",
+  "--radius-panel",
+  "--tray-pad",
+]);
+
 // 3.
 const radius: Check = (property, value) => {
   if (!RADII.has(property)) return undefined;
-  const problems: string[] = [];
-  if (/var\(\s*--radius\s*[,)]/.test(value))
-    problems.push("the raw var(--radius)");
-  const lengths = quantities(value).filter(
-    ({ amount, unit }) =>
-      unit !== "" && amount !== 0 && !(unit === "%" && amount === 50),
+  const problems = new Set<string>();
+  for (const [, name, next] of value.matchAll(
+    /var\(\s*(--[\w-]+)\s*([,)])/gi,
+  )) {
+    if (name === "--radius") problems.add("the raw var(--radius)");
+    else if (!RADIUS_TOKENS.has(name))
+      problems.add(`var(${name}), which is not a radius token`);
+    else if (next === ",") problems.add(`a fallback on var(${name})`);
+  }
+  const literals = quantities(value).filter(
+    ({ amount, unit }) => amount !== 0 && !(unit === "%" && amount === 50),
   );
-  if (lengths.length > 0)
-    problems.push(`the length ${lengths.map(({ text }) => text).join(", ")}`);
-  if (problems.length === 0) return undefined;
-  return `Radius: ${value} uses ${problems.join(" and ")}; use a named radius token, var(--radius-…), with var(--tray-pad) in arithmetic, or 50% or 0.`;
+  if (literals.length > 0)
+    problems.add(
+      `the literal${literals.length > 1 ? "s" : ""} ${literals.map(({ text }) => text).join(", ")}`,
+    );
+  if (problems.size === 0) return undefined;
+  return `Radius: ${value} uses ${[...problems].join(" and ")}; use var(--radius-small|item|control|paper|tray|pill|panel), with var(--tray-pad) in arithmetic, or 50% or 0.`;
 };
 
 const MOTION = new Set([
@@ -324,9 +377,17 @@ const MOTION = new Set([
   "animation-delay",
 ]);
 
+/**
+ * Where a time is read: the motion properties, and any custom property that
+ * holds one. The --motion- tokens are left to check 11, which reports them.
+ */
+const holdsTimes = (property: string) =>
+  MOTION.has(property) ||
+  (property.startsWith("--") && !property.startsWith("--motion-"));
+
 // 4.
 const timeLiteral: Check = (property, value) => {
-  if (!MOTION.has(property)) return undefined;
+  if (!holdsTimes(property)) return undefined;
   const times = quantities(value).filter(
     ({ amount, unit }) => /^m?s$/i.test(unit) && amount !== 0,
   );
@@ -340,7 +401,16 @@ const curveLiteral: Check = (_property, value) =>
     ? "Curve literal: use an easing token, var(--ease-…)."
     : undefined;
 
-const PRESS_TOKEN = /var\(\s*--press-scale\s*[,)]/;
+const PRESS_TOKEN = String.raw`var\(\s*--press-scale\s*\)`;
+/**
+ * The arguments of a scale call, each exactly the token. Keyboard modality sets
+ * --press-scale to 1, so arithmetic on it, a fallback or a literal second axis
+ * would let a press survive it.
+ */
+const PRESS_ARGUMENTS = new RegExp(
+  `^${PRESS_TOKEN}(?:\\s*,\\s*${PRESS_TOKEN})*$`,
+);
+const PRESS_VALUE = new RegExp(`^${PRESS_TOKEN}$`);
 const CSS_WIDE = /^(?:inherit|initial|unset|revert|revert-layer)$/i;
 
 // 7.
@@ -349,13 +419,16 @@ const pressScale: Check = (property, value, { pressed }) => {
   let loose: string[] = [];
   if (property === "transform")
     loose = calls(value, "scale(?:x|y|z|3d)?").filter(
-      (call) => !PRESS_TOKEN.test(call),
+      (call) =>
+        !PRESS_ARGUMENTS.test(
+          call.slice(call.indexOf("(") + 1, call.lastIndexOf(")")),
+        ),
     );
   else if (
     property === "scale" &&
     !CSS_WIDE.test(value) &&
     !/^none$/i.test(value) &&
-    !PRESS_TOKEN.test(value)
+    !PRESS_VALUE.test(value)
   )
     loose = [value];
   if (loose.length === 0) return undefined;
@@ -489,6 +562,8 @@ interface FamilyRule {
   rule: Rule;
   /** The rule's selectors that name the family. */
   selectors: string[];
+  /** The prefixes those selectors name. */
+  named: Set<string>;
 }
 
 /** Native CSS nesting would hide declarations from the walk, so it is refused. */
@@ -508,11 +583,16 @@ function familyRules(css: string, prefixes: readonly string[]): FamilyRule[] {
   const found: FamilyRule[] = [];
   parse(css).walkRules((rule) => {
     checkFlat(rule);
-    const selectors = rule.selectors.map(squash).filter((selector) => {
+    const selectors: string[] = [];
+    const named = new Set<string>();
+    for (const selector of rule.selectors.map(squash)) {
       const text = blank(selector);
-      return prefixes.some((prefix) => namesClass(text, prefix));
-    });
-    if (selectors.length > 0) found.push({ rule, selectors });
+      const hits = prefixes.filter((prefix) => namesClass(text, prefix));
+      if (hits.length === 0) continue;
+      selectors.push(selector);
+      for (const prefix of hits) named.add(prefix);
+    }
+    if (selectors.length > 0) found.push({ rule, selectors, named });
   });
   return found;
 }
@@ -525,6 +605,21 @@ export function familyRuleCount(
   return familyRules(css, prefixes).length;
 }
 
+/**
+ * The prefixes of the family that no rule names. A family that owns rules as a
+ * whole can still hold one misspelled prefix, which would audit nothing, so the
+ * registry test asks every prefix on its own.
+ */
+export function unmatchedPrefixes(
+  css: string,
+  prefixes: readonly string[],
+): string[] {
+  const owned = familyRules(css, prefixes);
+  return prefixes.filter(
+    (prefix) => !owned.some(({ named }) => named.has(prefix)),
+  );
+}
+
 export function auditFamily(
   css: string,
   prefixes: readonly string[],
@@ -532,9 +627,10 @@ export function auditFamily(
   const issues: AuditIssue[] = [];
   for (const { rule, selectors } of familyRules(css, prefixes)) {
     const selector = selectors.join(", ");
-    const add = (property: string, value: string, message: string) =>
-      issues.push({ selector, property, value, message });
     const media = mediaOf(rule);
+    const where = whereIs(rule, media.conditions);
+    const add = (property: string, value: string, message: string) =>
+      issues.push({ selector, property, value, message: message + where });
 
     // 6.
     const hovered = selectors.filter(isHover);
