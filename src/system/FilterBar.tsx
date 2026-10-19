@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
-import { X } from "lucide-react";
 import { Button } from "./Button";
+import { RemoveButton } from "./RemoveButton";
 import { useSystem } from "./useSystem";
 export interface FilterBarFilter {
   id: string;
@@ -63,24 +63,19 @@ export function FilterBar({
           {filters.map((filter, index) => (
             <span key={filter.id} className="tz-tag">
               <bdi>{filter.label}</bdi>
-              <Button
-                variant="ghost"
-                iconOnly
-                className="tz-tag-remove"
-                aria-label={filter.removeLabel}
+              <RemoveButton
+                label={filter.removeLabel}
                 disabled={disabled}
                 onClick={() => {
                   const next =
                     scope.current?.querySelectorAll<HTMLButtonElement>(
-                      ".tz-filter-active .tz-tag-remove",
+                      ".tz-filter-active .tz-remove-button",
                     )[index + 1];
                   if (next) next.focus();
                   else focusControls();
                   filter.onRemove();
                 }}
-              >
-                <X size={12} aria-hidden="true" />
-              </Button>
+              />
             </span>
           ))}
           {onClearAll && (

@@ -2407,26 +2407,42 @@
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
-.tz-tag-remove,
-.tz-tag-remove.tz-button {
+/* The remove action of a tag, a filter chip and a selected file. A plain button,
+   not .tz-button: Button's hover rule out-ranks any class written for a chip
+   and hid the chip's hover. The press is near-instant and the release takes
+   its time. */
+.tz-remove-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 24px;
-  inline-size: 24px;
-  min-block-size: 24px;
+  flex: none;
+  inline-size: var(--remove-size);
+  block-size: var(--remove-size);
   padding: 0;
   background: transparent;
   border: 0;
-  color: inherit;
-  border-radius: calc(var(--radius) * 0.5);
-  box-shadow: none;
+  border-radius: var(--radius-small);
+  color: var(--text-secondary);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
 }
-.tz-tag-remove:hover:not(:disabled) {
-  background: var(--surface);
+@media (hover: hover) and (pointer: fine) {
+  .tz-remove-button:not(:disabled):hover {
+    background: var(--wash-strong);
+    color: var(--text);
+  }
 }
-.tz-tag-remove:disabled {
-  opacity: 0.5;
+.tz-remove-button:not(:disabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+.tz-remove-button:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
 }
 .tz-tag-draft {
   flex: 1 1 100px;

@@ -1,9 +1,9 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { ComponentPropsWithRef } from "react";
-import { X } from "lucide-react";
 import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
+import { RemoveButton } from "./RemoveButton";
 import { useSystem } from "./useSystem";
 import { useArrivals } from "./useArrivals";
 import { numberLocale } from "./config";
@@ -158,17 +158,13 @@ export function TagInput({
               }}
             >
               <bdi>{tag}</bdi>
-              <button
-                type="button"
-                className="tz-tag-remove"
-                disabled={disabled || readOnly}
-                aria-label={
+              <RemoveButton
+                label={
                   labels?.remove?.(tag) ?? (ar ? `حذف ${tag}` : `Remove ${tag}`)
                 }
+                disabled={disabled || readOnly}
                 onClick={() => remove(index)}
-              >
-                <X size={12} aria-hidden="true" />
-              </button>
+              />
             </span>
           ))}
           <input

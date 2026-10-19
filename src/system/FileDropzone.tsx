@@ -1,9 +1,10 @@
 import { useId, useRef, useState } from "react";
 import type { ComponentPropsWithRef } from "react";
-import { File, Paperclip, X } from "lucide-react";
+import { File, Paperclip } from "lucide-react";
 import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
+import { RemoveButton } from "./RemoveButton";
 import { useSystem } from "./useSystem";
 import { numberLocale } from "./config";
 import { useEntryReset } from "./useEntryReset";
@@ -279,23 +280,19 @@ export function FileDropzone({
                   )}{" "}
                   {file.size < 1024 ? "B" : "KB"}
                 </span>
-                <button
-                  type="button"
-                  className="tz-tag-remove"
-                  disabled={disabled}
-                  aria-label={
+                <RemoveButton
+                  label={
                     labels?.remove?.(file) ??
                     (ar ? `إزالة ${file.name}` : `Remove ${file.name}`)
                   }
+                  disabled={disabled}
                   onClick={() => {
                     if (blocked()) return;
                     browseRef.current?.focus();
                     update(files.filter((_, i) => i !== index));
                     setFeedback([]);
                   }}
-                >
-                  <X size={14} aria-hidden="true" />
-                </button>
+                />
               </li>
             ))}
           </ul>

@@ -112,7 +112,7 @@ try {
         const t = (ar, en) => (language === "ar" ? ar : en);
         await start("tag-input", language, theme, width);
         const input = preview().getByRole("textbox"),
-          buttons = preview().locator(".tz-tag-remove");
+          buttons = preview().locator(".tz-remove-button");
         await buttons.first().focus();
         await page.keyboard.press("Tab");
         for (let i = 1; i < 2; i++) {
