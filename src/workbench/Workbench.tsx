@@ -161,6 +161,13 @@ export function Workbench() {
       [component]: [...(prev[component] ?? []).slice(-2), { name, value }],
     }));
   }
+  // A remount must never invent a decision. Editing or resetting a request
+  // voids its decision, as the component does, so a decision example starts
+  // over at its resting state; a state press still sets its own phase.
+  function restartDecision() {
+    if (active === "approval-card" || active === "approval-flow")
+      setPhases((prev) => ({ ...prev, [active]: undefined }));
+  }
   function patchPage(component: ComponentId, patch: Record<string, unknown>) {
     setPlaygrounds((prev) =>
       normalizePlaygrounds(
@@ -201,6 +208,7 @@ export function Workbench() {
       !("mode" in patch)
     )
       return;
+    restartDecision();
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
   function resetSystem() {
@@ -215,6 +223,7 @@ export function Workbench() {
       [active]: defaultPlaygrounds(language)[active],
     }));
     setEvents((prev) => ({ ...prev, [active]: [] }));
+    restartDecision();
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
   function replayPlayground() {

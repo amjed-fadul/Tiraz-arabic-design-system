@@ -120,6 +120,15 @@ it.each([
       expect(
         screen.getByRole("list", { name: "Prior decisions" }),
       ).toHaveTextContent("Rejected");
+    // Editing the request voids its decision: the example starts over at
+    // rest, and a remount never invents an approval.
+    fireEvent.click(screen.getByRole("switch", { name: "Long content" }));
+    expect(pressed()).toEqual([before]);
+    const stage = within(
+      screen.getByRole("region", { name: "Interactive playground" }),
+    );
+    expect(stage.queryByText("Approved")).toBeNull();
+    expect(stage.getByRole("button", { name: decide })).toBeEnabled();
   },
 );
 it("runs a generated source example and records rejection without execution", async () => {
