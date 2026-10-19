@@ -9,4 +9,5 @@
 export const wovenFamilies: Record<string, readonly string[]> = {
   "status-icon": [".tz-status-icon"],
   "remove-button": [".tz-remove-button"],
+  "demo-frame": [".tz-demo"],
 };

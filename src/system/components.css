@@ -4663,74 +4663,174 @@ button.tz-tool-chip[aria-expanded="true"] {
   }
 }
 
-/* Shared documentation and portable example frame. */
-/* The stage: a calm, slightly recessed canvas so white component surfaces
-   read on it. Only a quiet title and two ghost icons sit above the work. */
+/* Shared documentation and portable example frame (docs spec section 7). Paper
+   in three parts: a bar that names the example and holds its controls, a stage
+   with faint warp lines, and a tray of notes under it. The bar is one row while
+   it fits and wraps when it does not; below 620px the name always takes its
+   own row. The states never wrap their chips: they scroll sideways. */
 .tz-demo-frame {
-  border: 1px solid transparent;
-  border-radius: calc(var(--radius) + 8px);
-  background: color-mix(in srgb, var(--surface-subtle) 75%, var(--surface));
-  box-shadow: inset 0 0 0 0.5px var(--hairline);
-  padding: var(--space-3) var(--space-4) var(--space-8);
   display: grid;
-  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
   inline-size: 100%;
   min-inline-size: 0;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
 }
+.tz-demo-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-block-end: 0.5px solid var(--hairline);
+}
+/* The interface language's name comes first and is the louder one. */
+.tz-demo-name {
+  display: flex;
+  flex: 1 0 100%;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-3);
+  min-inline-size: 0;
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-demo-name > [lang="ar"] {
+  font-size: var(--text-heading);
+}
+.tz-demo-name > [lang="en"] {
+  font-size: var(--text-subheading);
+}
+.tz-demo-name > :nth-child(2) {
+  color: var(--text-secondary);
+}
+/* Replay, the View tablist and Copy, at the end of the bar. */
 .tz-demo-header {
   display: flex;
+  flex: 1 1 auto;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-  min-block-size: 32px;
+  justify-content: flex-end;
+  gap: var(--space-2);
 }
 .tz-demo-title {
+  margin-inline-end: auto;
   color: var(--text-muted);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-meta);
   font-weight: var(--weight-medium);
+}
+.tz-demo-title:lang(en) {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
-.tz-demo-title:lang(ar) {
-  font-family: var(--font);
-  font-size: var(--text-meta);
-  letter-spacing: 0;
-  text-transform: none;
-}
-.tz-demo-actions {
+/* The states: a pill tray of buttons, the pressed one a paper chip. A scroll
+   container, so the focus ring sits inside the chip. */
+.tz-demo-states {
   display: flex;
-  align-items: center;
-  gap: var(--space-1);
-  flex-shrink: 0;
+  flex: 0 1 auto;
+  gap: 2px;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: var(--space-1);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  border-radius: var(--radius-pill);
+  background: var(--surface-tray);
 }
-.tz-demo-actions .tz-button {
-  color: var(--text-muted);
-  padding: 0;
+.tz-demo-states::-webkit-scrollbar {
+  display: none;
+}
+.tz-demo-state {
+  flex: none;
+  min-block-size: calc(var(--control-small) - var(--space-2));
+  padding-inline: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+}
+.tz-demo-state[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-chip);
+}
+.tz-demo-state:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-press);
+}
+.tz-demo-state:focus-visible,
+.tz-demo-view:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+/* Replay: a dark pill, the word beside the icon; with a caller's own label it
+   is the icon alone. */
+.tz-demo-replay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  block-size: var(--control-small);
+  padding-inline: var(--space-3) var(--space-4);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--text);
+  color: var(--surface);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+}
+.tz-demo-replay[data-icon-only] {
+  inline-size: var(--control-small);
+  padding-inline: 0;
+}
+.tz-demo-replay:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
 }
 .tz-demo-play-icon:dir(rtl) {
   transform: scaleX(-1);
 }
-/* Preview / Code: a small segmented switch whose raised thumb glides between
-   the two views. */
+/* Preview / Code: the same tray, with a paper thumb that glides between the
+   two views and jumps under keyboard modality (its time is --motion-state). */
 .tz-demo-views {
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 2px;
-  border-radius: calc(var(--radius) + 2px);
-  background: color-mix(in srgb, var(--text) 5%, transparent);
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tray);
   isolation: isolate;
 }
 .tz-demo-views-thumb {
   position: absolute;
-  inset-block: 2px;
+  inset-block: var(--space-1);
   left: 0;
   inline-size: var(--thumb-w);
   transform: translateX(var(--thumb-x));
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   background: var(--surface);
-  box-shadow: var(--shadow-control);
+  box-shadow: var(--shadow-chip);
   opacity: 0;
   z-index: -1;
   pointer-events: none;
@@ -4738,46 +4838,92 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-demo-views[data-ready] > .tz-demo-views-thumb {
   opacity: 1;
   transition:
-    transform calc(var(--motion-state) + 80ms) var(--ease-out),
-    inline-size calc(var(--motion-state) + 80ms) var(--ease-out);
+    transform var(--motion-state) var(--ease-in-out),
+    inline-size var(--motion-state) var(--ease-in-out);
 }
 .tz-demo-view {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-block-size: 26px;
+  min-block-size: calc(var(--control-small) - var(--space-2));
   padding-inline: var(--space-3);
   border: 0;
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   background: transparent;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font: inherit;
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
   font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
   cursor: pointer;
   touch-action: manipulation;
   transition:
     color var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    transform var(--motion-release) var(--ease-out);
 }
 .tz-demo-view > svg {
   opacity: 0.8;
-}
-@media (hover: hover) and (pointer: fine) {
-  .tz-demo-view:hover {
-    color: var(--text);
-  }
 }
 .tz-demo-view[aria-selected="true"] {
   color: var(--text);
 }
 .tz-demo-view:active {
-  transform: scale(0.96);
+  transform: scale(var(--press-scale));
   transition-duration: var(--motion-fast), var(--motion-press);
 }
-.tz-demo-view:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 1px;
+@media (hover: hover) and (pointer: fine) {
+  .tz-demo-state:not([aria-pressed="true"]):hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+  .tz-demo-replay:hover {
+    background: color-mix(in srgb, var(--text) 85%, var(--surface));
+  }
+  .tz-demo-view:hover {
+    color: var(--text);
+  }
+}
+@media (forced-colors: active) {
+  /* Forced colors drop fills and shadows, which is all that marks the pressed
+     state. */
+  .tz-demo-state[aria-pressed="true"] {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+/* The stage: paper with vertical warp lines, 1px every 14px in --warp, under a
+   radial mask that fades them toward the edges. The panels sit above them. */
+.tz-demo-stage {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  padding: 30px var(--space-3);
+}
+.tz-demo-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* The mask reads only alpha, so an opaque token stands in for black. */
+  color: var(--text);
+  background: repeating-linear-gradient(
+    90deg,
+    var(--warp) 0 1px,
+    transparent 1px 14px
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 72% 85% at 50% 50%,
+    currentColor 25%,
+    transparent 80%
+  );
+  mask-image: radial-gradient(
+    ellipse 72% 85% at 50% 50%,
+    currentColor 25%,
+    transparent 80%
+  );
+  pointer-events: none;
 }
 .tz-demo-panel {
   display: grid;
@@ -4786,24 +4932,28 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-demo-panel[hidden] {
   display: none;
 }
-.tz-demo-frame[data-view="code"] > .tz-demo-panel:not([hidden]) {
+.tz-demo-frame[data-view="code"] .tz-demo-panel:not([hidden]) {
   animation: tz-panel-in var(--motion-state) var(--ease-out);
 }
-.tz-demo-frame[data-view="code"] {
-  padding-block-end: var(--space-4);
+/* The code sits at the top of a plain paper stage, in a well cut into it. */
+.tz-demo-frame[data-view="code"] .tz-demo-stage {
+  align-content: start;
+}
+.tz-demo-frame[data-view="code"] .tz-demo-stage::before {
+  content: none;
 }
 .tz-demo-source {
   min-inline-size: 0;
-  border-radius: calc(var(--radius) + 4px);
-  background: var(--code-surface);
-  box-shadow: var(--shadow-surface);
+  border: 0.5px solid var(--hairline);
+  border-radius: var(--radius-paper);
+  background: var(--surface-well);
   overflow: hidden;
 }
 .tz-demo-source-file {
   padding: var(--space-2) var(--space-4);
   border-block-end: 0.5px solid var(--hairline);
   color: var(--text-muted);
-  font: var(--text-meta) / 1.6 var(--font-mono);
+  font: var(--text-meta) / var(--leading-meta) var(--font-mono);
 }
 .tz-demo-source-scroll {
   display: flex;
@@ -4812,7 +4962,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   overflow: auto;
   overscroll-behavior: contain;
   text-align: left;
-  font: var(--text-meta) / 1.8 var(--font-mono);
+  font: var(--text-meta) / var(--line-height) var(--font-mono);
 }
 .tz-demo-source-scroll:focus-visible {
   outline: 2px solid var(--focus);
@@ -4823,7 +4973,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   left: 0;
   flex-shrink: 0;
   padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
-  background: var(--code-surface);
+  background: var(--surface-well);
   color: var(--text-muted);
   opacity: 0.6;
   text-align: right;
@@ -4842,9 +4992,54 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-demo-source-scroll code {
   font: inherit;
 }
-@media (max-width: 600px) {
-  .tz-demo-frame {
-    padding: var(--space-2) var(--space-3) var(--space-5);
+/* The notes: a tray band under the stage, one column each for when to use the
+   example, when to use something else and what to notice. */
+.tz-demo-notes {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-end-start-radius: var(--radius-paper);
+  border-end-end-radius: var(--radius-paper);
+  background: var(--surface-tray);
+}
+.tz-demo-notes h3 {
+  margin: 0 0 var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-meta);
+}
+.tz-demo-notes h3:lang(en) {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.tz-demo-notes ul {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding-inline-start: var(--space-4);
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+}
+@media (min-width: 620px) {
+  .tz-demo-bar {
+    gap: var(--space-3) var(--space-4);
+    padding-inline: var(--space-6);
+  }
+  .tz-demo-name {
+    flex: none;
+  }
+  .tz-demo-stage {
+    min-block-size: 380px;
+    padding: 48px var(--space-6);
+  }
+  .tz-demo-notes {
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    padding: var(--space-5) var(--space-6) var(--space-6);
   }
 }
 

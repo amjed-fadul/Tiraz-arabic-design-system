@@ -134,6 +134,8 @@
   --hairline: #12231a14;
   --wash: color-mix(in srgb, var(--text) 4%, transparent);
   --wash-strong: color-mix(in srgb, var(--text) 7%, transparent);
+  /* The faint vertical lines of the demo stage; they follow the text color. */
+  --warp: color-mix(in srgb, var(--text) 6%, transparent);
   --code-surface: var(--surface-well);
   --code-key: var(--text);
   --code-string: #0b6f8f;

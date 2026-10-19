@@ -5,10 +5,18 @@ import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import { canReplayPlayground } from "./demo-capabilities";
 import { defaultPlaygrounds } from "./model";
-import { DemoFrame } from "../system/ai/examples/DemoFrame";
+import {
+  DemoFrame,
+  type DemoFrameState,
+} from "../system/ai/examples/DemoFrame";
 import { SystemProvider, defaultConfig } from "../system";
 afterEach(() => vi.useRealTimers());
 const source = 'import { Button } from "./system";\n  <Button />\n';
+const stateList: DemoFrameState[] = [
+  { id: "a", label: { ar: "فارغ", en: "Empty" } },
+  { id: "b", label: { ar: "تحميل", en: "Loading" } },
+  { id: "c", label: { ar: "تم", en: "Done" } },
+];
 function Draft() {
   const [value, setValue] = useState("");
   return (
@@ -299,4 +307,260 @@ it("records the EmptyState playground action without offering a replay", async (
     ),
   );
   expect(within(frame).queryByRole("button", { name: "إضافة سجل" })).toBeNull();
+});
+
+it("renders the states group and reports a press", async () => {
+  const user = userEvent.setup();
+  const onStateChange = vi.fn();
+  const frame = (state: string) => (
+    <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+      <DemoFrame
+        language="ar"
+        code={source}
+        states={stateList}
+        state={state}
+        onStateChange={onStateChange}
+      >
+        <p>مثال</p>
+      </DemoFrame>
+    </SystemProvider>
+  );
+  const view = render(frame("a"));
+  const group = screen.getByRole("group", { name: "حالات المثال" });
+  const buttons = within(group).getAllByRole("button");
+  expect(buttons.map((button) => button.textContent)).toEqual([
+    "فارغ",
+    "تحميل",
+    "تم",
+  ]);
+  for (const button of buttons)
+    expect(button).toHaveAttribute("type", "button");
+  const pressed = () =>
+    buttons.map((button) => button.getAttribute("aria-pressed"));
+  expect(pressed()).toEqual(["true", "false", "false"]);
+  // The group sits beside the header's buttons, not among them.
+  const header = document.querySelector(".tz-demo-header") as HTMLElement;
+  expect(group.closest(".tz-demo-header")).toBeNull();
+  expect(within(header).getAllByRole("button")).toHaveLength(1);
+  await user.click(buttons[1]);
+  expect(onStateChange).toHaveBeenCalledTimes(1);
+  expect(onStateChange).toHaveBeenCalledWith("b");
+  expect(buttons[1]).toHaveFocus();
+  view.rerender(frame("b"));
+  expect(pressed()).toEqual(["false", "true", "false"]);
+  expect(buttons[1]).toHaveFocus();
+  // Plain Tab moves to the next state: the group has no roving focus.
+  await user.tab();
+  expect(buttons[2]).toHaveFocus();
+});
+
+it("announces a state change, but not the first render or replay steps", () => {
+  const frame = (language: "ar" | "en", state: string, replaying?: boolean) => (
+    <SystemProvider config={defaultConfig}>
+      <DemoFrame
+        language={language}
+        code={source}
+        states={stateList}
+        state={state}
+        replaying={replaying}
+      >
+        <p>Example</p>
+      </DemoFrame>
+    </SystemProvider>
+  );
+  const view = render(frame("ar", "a"));
+  const status = screen.getByRole("status");
+  expect(status).toBeEmptyDOMElement();
+  view.rerender(frame("ar", "b"));
+  expect(status).toHaveTextContent("الحالة: تحميل");
+  // Replay steps through the states in silence...
+  view.rerender(frame("ar", "a", true));
+  expect(status).toBeEmptyDOMElement();
+  view.rerender(frame("ar", "b", true));
+  expect(status).toBeEmptyDOMElement();
+  view.rerender(frame("ar", "c", true));
+  expect(status).toBeEmptyDOMElement();
+  // ...and says the state it ended on, once.
+  view.rerender(frame("ar", "c", false));
+  expect(status).toHaveTextContent("الحالة: تم");
+  view.unmount();
+  const english = render(frame("en", "a"));
+  expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  english.rerender(frame("en", "b"));
+  expect(screen.getByRole("status")).toHaveTextContent("State: Loading");
+});
+
+it("keeps one status for a copy and a state change, saying the latest", async () => {
+  const user = userEvent.setup();
+  const frame = (state: string) => (
+    <SystemProvider config={defaultConfig}>
+      <DemoFrame language="en" code={source} states={stateList} state={state}>
+        <p>Example</p>
+      </DemoFrame>
+    </SystemProvider>
+  );
+  const view = render(frame("a"));
+  const status = screen.getByRole("status");
+  const copy = screen.getByRole("button", { name: "Copy code" });
+  await user.click(copy);
+  expect(status).toHaveTextContent("Code copied");
+  view.rerender(frame("b"));
+  expect(status).toHaveTextContent("State: Loading");
+  await user.click(copy);
+  expect(status).toHaveTextContent("Code copied");
+});
+
+it("reports view changes", async () => {
+  const user = userEvent.setup();
+  const onViewChange = vi.fn();
+  render(
+    <SystemProvider config={defaultConfig}>
+      <DemoFrame language="en" code={source} onViewChange={onViewChange}>
+        <p>Example</p>
+      </DemoFrame>
+    </SystemProvider>,
+  );
+  const code = screen.getByRole("tab", { name: "Code" });
+  await user.click(code);
+  expect(onViewChange).toHaveBeenCalledTimes(1);
+  expect(onViewChange).toHaveBeenLastCalledWith("code");
+  // Pressing the view that is already shown is not a change.
+  await user.click(code);
+  expect(onViewChange).toHaveBeenCalledTimes(1);
+  await user.keyboard("{ArrowLeft}");
+  expect(onViewChange).toHaveBeenCalledTimes(2);
+  expect(onViewChange).toHaveBeenLastCalledWith("preview");
+});
+
+it("keeps the visible Replay word inside its name", () => {
+  const frame = (language: "ar" | "en", replayLabel?: string) => (
+    <SystemProvider config={defaultConfig}>
+      <DemoFrame
+        language={language}
+        code={source}
+        onReplay={() => {}}
+        replayLabel={replayLabel}
+      >
+        <p>Example</p>
+      </DemoFrame>
+    </SystemProvider>
+  );
+  for (const [language, word, name] of [
+    ["ar", "إعادة تشغيل", "إعادة تشغيل المثال"],
+    ["en", "Replay", "Replay example"],
+  ] as const) {
+    const view = render(frame(language));
+    const pill = screen.getByRole("button", { name });
+    expect(pill).toHaveTextContent(word);
+    // WCAG 2.5.3: the name holds the word that is on the button.
+    expect(name).toContain(pill.textContent);
+    view.unmount();
+  }
+  // A caller's own label names the pill, and then it shows only its icon.
+  render(frame("ar", "تشغيل المثال"));
+  const icon = screen.getByRole("button", { name: "تشغيل المثال" });
+  expect(icon.textContent).toBe("");
+  expect(icon.querySelector("svg")).not.toBeNull();
+});
+
+it("renders the notes row with its three labels", () => {
+  const notes = {
+    useWhen: ["أولًا"],
+    instead: ["ثانيًا"],
+    notice: ["ثالثًا", "رابعًا"],
+  };
+  const frame = (language: "ar" | "en", extra = {}) => (
+    <SystemProvider config={defaultConfig}>
+      <DemoFrame language={language} notes={{ ...notes, ...extra }}>
+        <p>Example</p>
+      </DemoFrame>
+    </SystemProvider>
+  );
+  const labels = {
+    ar: ["استخدمه عندما", "استخدم غيره عندما", "لاحظ"],
+    en: ["Use it when", "Use something else when", "What to notice"],
+  };
+  for (const language of ["ar", "en"] as const) {
+    const view = render(frame(language));
+    const row = document.querySelector(".tz-demo-notes") as HTMLElement;
+    const headings = within(row).getAllByRole("heading", { level: 3 });
+    expect(headings.map((heading) => heading.textContent)).toEqual(
+      labels[language],
+    );
+    // Each label names its own language, so English-only styling can find it.
+    for (const heading of headings)
+      expect(heading).toHaveAttribute("lang", language);
+    expect(
+      within(row)
+        .getAllByRole("list")
+        .map((list) => within(list).getAllByRole("listitem").length),
+    ).toEqual([1, 1, 2]);
+    view.unmount();
+  }
+  // A pattern lists what it replaces in the middle column.
+  render(frame("ar", { replaces: ["الأول", "الثاني"] }));
+  const row = document.querySelector(".tz-demo-notes") as HTMLElement;
+  expect(
+    within(row)
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent),
+  ).toEqual(["استخدمه عندما", "يحل محل", "لاحظ"]);
+  expect(within(row).getByText("الأول")).toBeInTheDocument();
+  expect(within(row).queryByText("ثانيًا")).toBeNull();
+});
+
+it("shows both names, interface language first", () => {
+  const name = { ar: "الزر", en: "Button" };
+  const after = (before: Node, next: Node) =>
+    Boolean(
+      before.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+  const names = {
+    ar: {
+      states: "حالات المثال",
+      replay: "إعادة تشغيل المثال",
+      views: "طريقة العرض",
+      copy: "نسخ الكود",
+    },
+    en: {
+      states: "Example states",
+      replay: "Replay example",
+      views: "View",
+      copy: "Copy code",
+    },
+  };
+  for (const language of ["ar", "en"] as const) {
+    const view = render(
+      <SystemProvider config={defaultConfig}>
+        <DemoFrame
+          language={language}
+          code={source}
+          name={name}
+          states={stateList}
+          onReplay={() => {}}
+        >
+          <p>Example</p>
+        </DemoFrame>
+      </SystemProvider>,
+    );
+    const arabic = screen.getByText("الزر");
+    const english = screen.getByText("Button");
+    expect(arabic).toHaveAttribute("lang", "ar");
+    expect(english).toHaveAttribute("lang", "en");
+    const [first, second] =
+      language === "ar" ? [arabic, english] : [english, arabic];
+    // The header reads: the names, the states, Replay, the View tablist, Copy.
+    const order = [
+      first,
+      second,
+      screen.getByRole("group", { name: names[language].states }),
+      screen.getByRole("button", { name: names[language].replay }),
+      screen.getByRole("tablist", { name: names[language].views }),
+      screen.getByRole("button", { name: names[language].copy }),
+    ];
+    order.slice(1).forEach((node, index) => {
+      expect(after(order[index], node)).toBe(true);
+    });
+    view.unmount();
+  }
 });
