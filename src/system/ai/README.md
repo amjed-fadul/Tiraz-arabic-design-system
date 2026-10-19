@@ -482,8 +482,9 @@ for local notifications. Both preserve supplied order and stable unique IDs.
 
 TaskRows takes items and label. Each item requires id, string title, state
 (pending/running/completed/failed) and content; summary is an optional short
-string. Pending uses its supplied-order number, running a restrained decorative
-Spinner, completed a check and failed an error glyph. State text uses the existing
+string. Each indicator is the shared StatusIcon: pending shows its supplied-order
+number in a dashed ring, running a decorative arc in the AI color, completed a check
+on a success disc and failed a cross on a danger disc. State text uses the existing
 Badge: neutral pending, info running, success completed and error failed. stateLabels translates all four states; defaults and number digits follow
 direction and config.numerals. appearance defaults to capsules; list connects rows with subtle separators.
 
@@ -604,6 +605,13 @@ shown on failure; focus moves to disclosure before retry.
 ToolChips takes a named list of items (stable id, label, state, optional count).
 Informational items are spans. onActivate creates a button; connect it to real
 behavior before supplying controls/expanded. No built-in details are implied.
+ToolCall, ToolChips and TaskRows draw their status with StatusIcon, which is also
+exported: state is pending, running, needs-you, completed, failed, stopped or
+skipped; number gives a pending ring its position (digits follow config.numerals);
+tone="ai" turns the running arc to the AI color when the assistant is the actor.
+Without label it is decorative, so adjacent text must state the status. A check or
+cross draws itself only after the state changes, never on first render. Size it
+with --status-size.
 Use ToolCall for operation details, ToolChips for compact summaries, TaskRows for
 broader tasks, and ThinkingState for a brief application-owned activity summary.
 No tool execution, network, permissions, orchestration, execution timers or

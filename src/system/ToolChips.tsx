@@ -1,6 +1,6 @@
 import type { ComponentPropsWithRef } from "react";
 import type { ToolCallState } from "./ToolCall";
-import { ToolStatus } from "./ToolStatus";
+import { StatusIcon } from "./StatusIcon";
 import { useToolLabels } from "./useToolLabels";
 import { useSystem } from "./useSystem";
 import { Tick } from "./Tick";
@@ -40,7 +40,7 @@ export function ToolChips({
       {items.map((item) => {
         const contents = (
           <>
-            <ToolStatus state={item.state} />
+            <StatusIcon state={item.state} tone="ai" />
             <bdi>{item.label}</bdi>
             <span className="tz-visually-hidden">{labels[item.state]}</span>
             {item.count != null &&

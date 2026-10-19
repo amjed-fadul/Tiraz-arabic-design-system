@@ -3461,6 +3461,107 @@
   cursor: default;
 }
 
+/* Status icon: the one glyph for the status of a task, a tool call or a step of
+   agent work (Woven spec section 13). Done, failed and needs-you are filled
+   discs holding a --surface glyph; pending and skipped are dashed rings, stopped
+   an outline and running the live arc. A host sizes it with --status-size. The
+   check and cross draw themselves only after a change (data-changed), over the
+   state-change time with no pop; first paint is still. */
+.tz-status-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--status-size);
+  block-size: var(--status-size);
+  vertical-align: middle;
+  /* A filled disc has no edge of its own. Forced colors drop its fill, and this
+     transparent border becomes the outline that keeps it visible. */
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: var(--text-secondary);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition:
+    background-color var(--motion-state) var(--ease-out),
+    border-color var(--motion-state) var(--ease-out),
+    color var(--motion-state) var(--ease-out);
+}
+.tz-status-icon > svg {
+  inline-size: 12px;
+  block-size: 12px;
+}
+.tz-status-icon[data-state="pending"] {
+  border: 1.5px dashed var(--border-strong);
+}
+.tz-status-icon[data-state="running"] {
+  border: 0;
+}
+.tz-status-icon[data-state="running"][data-tone="ai"] {
+  color: var(--ai);
+}
+/* The arc fills the disc and takes its color; its wrapper only names the glyph. */
+.tz-status-icon > [data-glyph="spinner"] {
+  display: contents;
+}
+.tz-status-icon .tz-loading-spinner {
+  inline-size: var(--status-size);
+  block-size: var(--status-size);
+  color: inherit;
+}
+.tz-status-icon[data-state="needs-you"] {
+  background: var(--attention);
+  color: var(--surface);
+}
+.tz-status-icon[data-state="completed"] {
+  background: var(--success);
+  color: var(--surface);
+}
+.tz-status-icon[data-state="failed"] {
+  background: var(--danger);
+  color: var(--surface);
+}
+.tz-status-icon[data-state="stopped"] {
+  border: 1.5px solid var(--border-strong);
+}
+.tz-status-icon > [data-glyph="square"] {
+  inline-size: 8px;
+  block-size: 8px;
+  border-radius: 0;
+  background: currentColor;
+}
+.tz-status-icon[data-state="skipped"] {
+  border: 1.5px dashed var(--border-strong);
+  color: var(--text-muted);
+}
+@media (forced-colors: active) {
+  /* The square is painted by its background, which forced colors would drop. */
+  .tz-status-icon > [data-glyph="square"] {
+    forced-color-adjust: none;
+    background: CanvasText;
+  }
+}
+/* A check draws its short stroke first, as written by hand; a cross draws stroke
+   by stroke. The dash lengths are the paths' lengths in icon units. */
+.tz-status-icon > [data-glyph="check"] {
+  --draw: 23;
+  --draw-from: -23;
+}
+.tz-status-icon > [data-glyph="x"] {
+  --draw: 17;
+  --draw-from: 17;
+}
+.tz-status-icon[data-changed]
+  > :is([data-glyph="check"], [data-glyph="x"])
+  path {
+  stroke-dasharray: var(--draw) var(--draw);
+  animation: tz-draw var(--motion-state) var(--ease-out) both;
+}
+.tz-status-icon[data-changed] > [data-glyph="x"] path:nth-child(2) {
+  animation-delay: var(--motion-stagger);
+}
+
 /* Agent-task disclosures. Execution state never drives entry animations. */
 .tz-task-rows {
   list-style: none;
@@ -3480,7 +3581,7 @@
 }
 .tz-agent-task-trigger {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr) auto auto 16px;
+  grid-template-columns: var(--status-size) minmax(0, 1fr) auto auto 16px;
   align-items: center;
   gap: var(--space-2);
   inline-size: 100%;
@@ -3497,40 +3598,8 @@
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--ease);
 }
-/* Settled steps become filled discs; waiting steps keep their number in a
-   dashed ring; the running step turns its ring into the accent spinner. */
-.tz-agent-task-indicator {
-  display: grid;
-  place-items: center;
-  inline-size: 22px;
-  block-size: 22px;
-  border: 1.5px dashed var(--border-strong);
-  border-radius: 50%;
-  color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: var(--weight-medium);
-  font-variant-numeric: tabular-nums;
-  line-height: 1;
-  transition:
-    background-color var(--motion-state) var(--ease-out),
-    border-color var(--motion-state) var(--ease-out),
-    color var(--motion-state) var(--ease-out);
-}
-.tz-agent-task-indicator > svg {
-  inline-size: 13px;
-  block-size: 13px;
-  stroke-width: 3;
-  animation: tz-glyph-in var(--motion-state) var(--ease-spring);
-}
-.tz-agent-task[data-state="running"] .tz-agent-task-indicator {
-  border: 0;
-  color: var(--action);
-}
-.tz-agent-task-indicator .tz-loading-spinner {
-  inline-size: 22px;
-  block-size: 22px;
-  color: inherit;
-}
+/* The indicator is a StatusIcon (see above); .tz-agent-task-indicator stays on
+   it as a hook for layout in host CSS. */
 .tz-agent-task-title {
   min-inline-size: 0;
   font-weight: var(--weight-medium);
@@ -3555,7 +3624,7 @@
   color: var(--text-muted);
 }
 .tz-agent-task-trigger:not(:has(.tz-agent-task-summary)) {
-  grid-template-columns: 22px minmax(0, 1fr) auto 16px;
+  grid-template-columns: var(--status-size) minmax(0, 1fr) auto 16px;
 }
 .tz-agent-task-chevron {
   inline-size: 16px;
@@ -3565,16 +3634,6 @@
 }
 .tz-agent-task[data-expanded="true"] .tz-agent-task-chevron {
   transform: rotate(180deg);
-}
-.tz-agent-task[data-state="completed"] .tz-agent-task-indicator {
-  color: var(--action-text);
-  background: var(--action);
-  border: 0;
-}
-.tz-agent-task[data-state="failed"] .tz-agent-task-indicator {
-  color: var(--surface);
-  background: var(--danger);
-  border: 0;
 }
 .tz-agent-task-panel,
 .tz-agent-task-panel[hidden] {
@@ -3605,7 +3664,7 @@
 .tz-agent-task-content {
   margin-inline: var(--space-3);
   padding-block: var(--space-1) var(--space-3);
-  padding-inline-start: calc(22px + var(--space-2));
+  padding-inline-start: calc(var(--status-size) + var(--space-2));
   color: var(--text-secondary);
   font-size: var(--text-body);
   overflow-wrap: anywhere;
@@ -3640,7 +3699,7 @@
 }
 @container (max-width: 460px) {
   .tz-agent-task-trigger {
-    grid-template-columns: 22px minmax(0, 1fr) auto 16px;
+    grid-template-columns: var(--status-size) minmax(0, 1fr) auto 16px;
   }
   .tz-agent-task-summary {
     grid-column: 2;
@@ -4124,7 +4183,6 @@
    a readable label, then the machine name and timing kept muted at the end.
    .tz-tool-calls stacks a run of them with a small, even gap. */
 .tz-tool-call {
-  --tool-lead: 18px;
   min-inline-size: 0;
   border: 1px solid transparent;
   border-radius: calc(var(--radius) + 2px);
@@ -4232,43 +4290,6 @@
   font-variant-numeric: tabular-nums;
   flex: none;
 }
-.tz-tool-status {
-  display: inline-grid;
-  place-items: center;
-  flex: none;
-  inline-size: var(--tool-lead, 18px);
-  block-size: var(--tool-lead, 18px);
-  border-radius: 50%;
-  color: var(--text-muted);
-  transition:
-    background-color var(--motion-state) var(--ease-out),
-    color var(--motion-state) var(--ease-out);
-}
-.tz-tool-status > svg {
-  inline-size: 14px;
-  block-size: 14px;
-}
-.tz-tool-status:is([data-state="completed"], [data-state="failed"]) > svg {
-  inline-size: 11px;
-  block-size: 11px;
-  animation: tz-glyph-in var(--motion-state) var(--ease-spring);
-}
-.tz-tool-status[data-state="completed"] {
-  background: var(--action);
-  color: var(--action-text);
-}
-.tz-tool-status[data-state="failed"] {
-  background: var(--danger);
-  color: var(--surface);
-}
-.tz-tool-status[data-state="running"] {
-  color: var(--action);
-}
-.tz-tool-status[data-state="running"] .tz-loading-spinner {
-  inline-size: 16px;
-  block-size: 16px;
-  color: inherit;
-}
 .tz-tool-chevron {
   inline-size: 14px;
   block-size: 14px;
@@ -4307,7 +4328,7 @@
   border-block-start: 0.5px solid var(--hairline);
   padding: var(--space-3) var(--control-small-padding) var(--space-3);
   padding-inline-start: calc(
-    var(--control-small-padding) + var(--tool-lead) + var(--space-2)
+    var(--control-small-padding) + var(--status-size) + var(--space-2)
   );
   min-inline-size: 0;
 }
@@ -4369,7 +4390,7 @@
   max-inline-size: 100%;
 }
 .tz-tool-chip {
-  --tool-lead: 16px;
+  --status-size: 18px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -4385,16 +4406,6 @@
   font: inherit;
   font-size: var(--text-meta);
   box-shadow: var(--shadow-surface);
-}
-.tz-tool-chip .tz-tool-status > svg {
-  inline-size: 12px;
-  block-size: 12px;
-}
-.tz-tool-chip
-  .tz-tool-status:is([data-state="completed"], [data-state="failed"])
-  > svg {
-  inline-size: 10px;
-  block-size: 10px;
 }
 button.tz-tool-chip {
   cursor: pointer;
@@ -4423,11 +4434,11 @@ button.tz-tool-chip[aria-expanded="true"] {
     flex-wrap: wrap;
   }
   .tz-tool-call-label {
-    flex-basis: calc(100% - 30px);
+    flex-basis: calc(100% - var(--status-size) - var(--space-3));
   }
   .tz-tool-name {
     max-inline-size: 65%;
-    margin-inline-start: 22px;
+    margin-inline-start: calc(var(--status-size) + var(--space-1));
   }
   .tz-tool-chevron {
     margin-inline-start: auto;
@@ -6782,8 +6793,6 @@ a.tz-inline-citation {
   }
 }
 :is(
-    .tz-tool-status,
-    .tz-agent-task-indicator,
     .tz-decision-icon,
     .tz-decision-mark,
     .tz-step-indicator,
@@ -6797,8 +6806,6 @@ a.tz-inline-citation {
   --draw-from: -23;
 }
 :is(
-    .tz-tool-status,
-    .tz-agent-task-indicator,
     .tz-decision-icon,
     .tz-decision-mark,
     .tz-step-indicator,
@@ -6812,13 +6819,11 @@ a.tz-inline-citation {
   stroke-dasharray: var(--draw) var(--draw);
   animation: tz-draw calc(var(--motion-enter) + 120ms) var(--ease-out) 60ms both;
 }
-:is(.tz-tool-status, .tz-decision-icon, .tz-decision-mark) > .lucide-x {
+:is(.tz-decision-icon, .tz-decision-mark) > .lucide-x {
   --draw: 17;
   --draw-from: 17;
 }
-:is(.tz-tool-status, .tz-decision-icon, .tz-decision-mark)
-  > .lucide-x
-  path:nth-child(2) {
+:is(.tz-decision-icon, .tz-decision-mark) > .lucide-x path:nth-child(2) {
   animation-delay: 150ms;
 }
 .tz-toast > .lucide-circle-check {

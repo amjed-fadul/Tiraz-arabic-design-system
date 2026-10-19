@@ -6,4 +6,6 @@
 // on. Until a family is listed, its CSS is not held to the audit. Every prefix
 // must name at least one rule, so a misspelled one fails instead of auditing
 // nothing.
-export const wovenFamilies: Record<string, readonly string[]> = {};
+export const wovenFamilies: Record<string, readonly string[]> = {
+  "status-icon": [".tz-status-icon"],
+};

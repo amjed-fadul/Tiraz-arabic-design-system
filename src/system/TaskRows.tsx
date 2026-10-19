@@ -1,12 +1,11 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
-import { Check, ChevronDown, CircleAlert } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { Badge } from "./Badge";
 import { EmptyState } from "./EmptyState";
-import { Spinner } from "./Spinner";
+import { StatusIcon } from "./StatusIcon";
 import { useChanged } from "./useChanged";
 import { useSystem } from "./useSystem";
-import { numberLocale } from "./config";
 
 export type TaskState = "pending" | "running" | "completed" | "failed";
 export interface TaskRowItem {
@@ -37,7 +36,7 @@ function TaskRow({
   stateLabel,
 }: {
   item: TaskRowItem;
-  number: string;
+  number: number;
   expanded: boolean;
   onToggle: () => void;
   stateLabel: string;
@@ -78,17 +77,12 @@ function TaskRow({
         aria-controls={panelId}
         onClick={onToggle}
       >
-        <span className="tz-agent-task-indicator" aria-hidden="true">
-          {item.state === "running" ? (
-            <Spinner decorative />
-          ) : item.state === "completed" ? (
-            <Check />
-          ) : item.state === "failed" ? (
-            <CircleAlert />
-          ) : (
-            number
-          )}
-        </span>
+        <StatusIcon
+          className="tz-agent-task-indicator"
+          state={item.state}
+          number={number}
+          tone="ai"
+        />
         <bdi id={titleId} className="tz-agent-task-title">
           {item.title}
         </bdi>
@@ -166,7 +160,6 @@ export function TaskRows({
     completed: ar ? "مكتملة" : "Completed",
     failed: ar ? "فشلت" : "Failed",
   };
-  const format = new Intl.NumberFormat(numberLocale(config));
   return (
     <ul
       {...props}
@@ -186,7 +179,7 @@ export function TaskRows({
           <TaskRow
             key={item.id}
             item={item}
-            number={format.format(index + 1)}
+            number={index + 1}
             expanded={expanded.includes(item.id)}
             stateLabel={labels[item.state]}
             onToggle={() => {

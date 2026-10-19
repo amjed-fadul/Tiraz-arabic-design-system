@@ -4,7 +4,7 @@ import { ChevronDown, RotateCcw } from "lucide-react";
 import { highlightCode } from "./code-highlight";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
-import { ToolStatus } from "./ToolStatus";
+import { StatusIcon } from "./StatusIcon";
 import { useToolLabels } from "./useToolLabels";
 
 export type ToolCallState = "pending" | "running" | "completed" | "failed";
@@ -142,7 +142,7 @@ export function ToolCall({
           onExpandedChange?.(!open);
         }}
       >
-        <ToolStatus state={state} />
+        <StatusIcon state={state} tone="ai" />
         {icon && (
           <span className="tz-tool-icon" aria-hidden="true">
             {icon}

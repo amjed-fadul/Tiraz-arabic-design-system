@@ -701,6 +701,18 @@
       "source": "ToolChips.tsx"
     },
     {
+      "name": "StatusIcon",
+      "source": "StatusIcon.tsx"
+    },
+    {
+      "name": "StatusIconProps",
+      "source": "StatusIcon.tsx"
+    },
+    {
+      "name": "StatusIconState",
+      "source": "StatusIcon.tsx"
+    },
+    {
       "name": "CodeBlock",
       "source": "CodeBlock.tsx"
     },
@@ -2435,7 +2447,7 @@
       "state": "Execution state is always application-owned. Internal expansion starts from defaultExpandedIds; expandedIds/onExpandedChange controls multiple rows. Disclosure never alters execution.",
       "accessibility": [
         "Native named ul, stable keyed rows; native disclosure buttons with aria-expanded, aria-controls and labeled panels. Title/summary are noninteractive strings. Detail actions are outside triggers.",
-        "Visible translated state Badge (neutral/info/success/error) plus decorative number/spinner/check/error. Disclosure grid-height/opacity transitions honor system/OS reduced motion; the whole task shares hover feedback. Closing panels are aria-hidden/inert immediately while retained DOM preserves detail values; hidden stays set with a CSS grid override during exit. Controlled collapse returns panel focus to its trigger without stealing outside focus. State updates retain focus and expansion."
+        "Visible translated state Badge (neutral/info/success/error) plus the shared decorative StatusIcon (number, spinner, check or cross). Disclosure grid-height/opacity transitions honor system/OS reduced motion; the whole task shares hover feedback. Closing panels are aria-hidden/inert immediately while retained DOM preserves detail values; hidden stays set with a CSS grid override during exit. Controlled collapse returns panel focus to its trigger without stealing outside focus. State updates retain focus and expansion."
       ],
       "limitations": [
         "Supply stable unique nonempty IDs. No agent runtime, networking, library timers, automatic progression, sorting or persistence.",
@@ -7047,6 +7059,48 @@
       "source": "Sidebar.tsx",
       "componentId": "sidebar",
       "purpose": "Sidebar accepts native aside props/ref. SidebarHeader/Footer native div, SidebarContent native nav (supply aria-label), SidebarLabel native span. SidebarGroup native div plus optional heading:string. SidebarItem native anchor excluding children plus required label:string, icon:ReactNode, optional count:string|number, active:boolean=false; real href supplied by caller. SidebarAction native button excluding children plus label, icon, count. SidebarToggle native button plus required collapseLabel/expandLabel strings. SidebarDisclosure native button excluding children plus required label/icon/children, optional count, activeChild=false, open/defaultOpen=false/onOpenChange. All native attributes/events/ref/className/style remain on the underlying element. Buttons default type=button. Preventing default in click cancels built-in toggle/disclosure behavior. SidebarIdentity is a native div/ref for icon/avatar + SidebarLabel composition; header aligns identity/toggle in a row, then stacks them in the rail. Footer identity centers the actual avatar box in the rail."
+    },
+    {
+      "id": "status-icon",
+      "exports": ["StatusIcon", "StatusIconProps", "StatusIconState"],
+      "source": "StatusIcon.tsx",
+      "props": [
+        {
+          "name": "state",
+          "type": "StatusIconState",
+          "required": true,
+          "default": "undefined",
+          "note": "pending, running, needs-you, completed, failed, stopped or skipped. Completed is the success color, failed the danger color and needs-you the attention color, each a filled disc; pending and skipped are dashed rings, and stopped is an outlined ring holding a small square."
+        },
+        {
+          "name": "number",
+          "type": "number",
+          "required": false,
+          "default": "undefined",
+          "note": "Position of an ordered item. Only a pending icon shows it, formatted with numberLocale (Arabic-Indic digits by default); without it, or for a negative or non-finite value, the dashed ring stays empty."
+        },
+        {
+          "name": "tone",
+          "type": "\"ai\" | \"neutral\"",
+          "required": false,
+          "default": "neutral",
+          "note": "Pass ai when the assistant is the actor: it turns the running arc to the AI color instead of the neutral text color. No other state changes with tone."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Accessible name. Without one the icon is decorative and aria-hidden, which is right wherever adjacent text already states the status; with one it is an img."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "purpose": "The shared status glyph of ToolCall, ToolChips and TaskRows: one vocabulary of seven states for tasks, tool calls and steps of agent work. A --status-size disc (22px; ToolChips set 18px) with a 12px glyph: a dashed ring holding an optional number, a spinning arc, ! on an attention disc, a check on a success disc, a cross on a danger disc, a small square in an outlined ring and a dashed ring with a dash. The check and cross draw themselves only after the state changes, never on first render, and reduced motion or keyboard modality make the draw instant. Filled discs keep a transparent border, so forced colors still outline them. A span that accepts no other attributes and is not interactive; pair it with text that states the status."
     }
   ],
   "conventions": {

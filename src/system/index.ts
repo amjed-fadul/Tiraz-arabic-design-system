@@ -106,6 +106,8 @@ export { ToolCall } from "./ToolCall";
 export type { ToolCallProps, ToolCallState } from "./ToolCall";
 export { ToolChips } from "./ToolChips";
 export type { ToolChipsProps, ToolChipItem } from "./ToolChips";
+export { StatusIcon } from "./StatusIcon";
+export type { StatusIconProps, StatusIconState } from "./StatusIcon";
 export { CodeBlock } from "./CodeBlock";
 export type { CodeBlockProps } from "./CodeBlock";
 export { Markdown } from "./Markdown";

@@ -83,7 +83,7 @@ it("retries the failed save in the tool-call playground until it completes, and 
 });
 function chips(container: HTMLElement) {
   return Array.from(container.querySelectorAll(".tz-tool-chip"), (chip) => [
-    chip.querySelector(".tz-tool-status")?.getAttribute("data-state"),
+    chip.querySelector(".tz-status-icon")?.getAttribute("data-state"),
     chip.querySelector(".tz-tool-count")?.textContent ?? null,
   ]);
 }
