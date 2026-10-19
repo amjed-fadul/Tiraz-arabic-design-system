@@ -7077,7 +7077,7 @@
           "type": "number",
           "required": false,
           "default": "undefined",
-          "note": "Position of an ordered item. Only a pending icon shows it, formatted with numberLocale (Arabic-Indic digits by default); without it, or for a negative or non-finite value, the dashed ring stays empty."
+          "note": "Position of an ordered item. Only a pending icon shows it, formatted with numberLocale (Arabic-Indic digits by default); without it, or for a negative or non-finite value, the dashed ring stays empty and takes the field boundary color, so the ring alone keeps 3:1."
         },
         {
           "name": "tone",

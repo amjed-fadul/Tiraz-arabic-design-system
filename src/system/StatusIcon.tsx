@@ -26,21 +26,18 @@ export interface StatusIconProps {
 
 function Glyph({
   state,
-  number,
-  locale,
+  position,
 }: {
   state: StatusIconState;
-  number?: number;
-  locale: string;
+  /** The formatted position a pending ring holds, if it has one. */
+  position?: string;
 }) {
   switch (state) {
     case "pending":
       // The ring holds its position when it has one, and is empty otherwise.
-      return number != null && Number.isFinite(number) && number >= 0 ? (
-        <span data-glyph="number">
-          {new Intl.NumberFormat(locale).format(Math.floor(number))}
-        </span>
-      ) : null;
+      return position === undefined ? null : (
+        <span data-glyph="number">{position}</span>
+      );
     case "running":
       return (
         <span data-glyph="spinner">
@@ -75,17 +72,27 @@ export function StatusIcon({
 }: StatusIconProps) {
   const { config } = useSystem();
   const changed = useChanged(state);
+  const position =
+    state === "pending" &&
+    number != null &&
+    Number.isFinite(number) &&
+    number >= 0
+      ? new Intl.NumberFormat(numberLocale(config)).format(Math.floor(number))
+      : undefined;
   return (
     <span
       className={className ? `tz-status-icon ${className}` : "tz-status-icon"}
       data-state={state}
       data-tone={tone ?? "neutral"}
       data-changed={changed || undefined}
+      // With no number the ring alone says "not started", so the stylesheet
+      // gives its edge a 3:1 boundary. A hook, because the ring may gain children.
+      data-empty={(state === "pending" && position === undefined) || undefined}
       role={label ? "img" : undefined}
       aria-label={label || undefined}
       aria-hidden={label ? undefined : true}
     >
-      <Glyph state={state} number={number} locale={numberLocale(config)} />
+      <Glyph state={state} position={position} />
     </span>
   );
 }

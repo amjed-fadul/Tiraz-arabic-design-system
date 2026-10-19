@@ -607,8 +607,9 @@ Informational items are spans. onActivate creates a button; connect it to real
 behavior before supplying controls/expanded. No built-in details are implied.
 ToolCall, ToolChips and TaskRows draw their status with StatusIcon, which is also
 exported: state is pending, running, needs-you, completed, failed, stopped or
-skipped; number gives a pending ring its position (digits follow config.numerals);
-tone="ai" turns the running arc to the AI color when the assistant is the actor.
+skipped; number gives a pending ring its position (digits follow config.numerals),
+and a ring without one takes the field boundary color so it keeps 3:1; tone="ai"
+turns the running arc to the AI color when the assistant is the actor.
 Without label it is decorative, so adjacent text must state the status. A check or
 cross draws itself only after the state changes, never on first render. Size it
 with --status-size.

@@ -3495,6 +3495,11 @@
 .tz-status-icon[data-state="pending"] {
   border: 1.5px dashed var(--border-strong);
 }
+/* With no number inside, the ring alone says "not started", so its edge is the
+   field boundary, which keeps 3:1 on page, paper and tray. */
+.tz-status-icon[data-state="pending"][data-empty] {
+  border-color: var(--border-field);
+}
 .tz-status-icon[data-state="running"] {
   border: 0;
 }

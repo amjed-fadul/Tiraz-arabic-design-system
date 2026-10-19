@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { render, screen } from "@testing-library/react";
-import { parse } from "postcss";
+import { parse, type Rule } from "postcss";
 import type { ReactNode } from "react";
 import { expect, it } from "vitest";
 import {
@@ -84,6 +84,35 @@ it.each([Number.NaN, Number.POSITIVE_INFINITY, -1])(
     expect(iconOf(container)).toBeEmptyDOMElement();
   },
 );
+
+it("marks a pending ring that holds no number, which the stylesheet gives a firmer edge", () => {
+  const { container } = mount(
+    <>
+      <StatusIcon state="pending" />
+      <StatusIcon state="pending" number={Number.NaN} />
+      <StatusIcon state="pending" number={-1} />
+      <StatusIcon state="pending" number={0} />
+      <StatusIcon state="pending" number={2} />
+    </>,
+  );
+  // No usable position leaves the ring empty; zero is a position.
+  expect(
+    iconsOf(container).map((icon) => icon.hasAttribute("data-empty")),
+  ).toEqual([true, true, true, false, false]);
+  // No other state is ever empty, whatever number it is offered.
+  const others = mount(
+    <>
+      {vocabulary
+        .filter(([state]) => state !== "pending")
+        .map(([state]) => (
+          <StatusIcon key={state} state={state} number={2} />
+        ))}
+    </>,
+  );
+  expect(
+    iconsOf(others.container).filter((icon) => icon.hasAttribute("data-empty")),
+  ).toEqual([]);
+});
 
 const numbering: Array<[string, Partial<SystemConfig>, number, string]> = [
   ["the default settings", {}, 3, "٣"],
@@ -279,19 +308,29 @@ function declared(matches: (selector: string) => boolean) {
   return found;
 }
 
+/** The declarations of the rules written for each selector shape, later shapes winning. */
+function cascade(...shapes: string[]) {
+  const painted: Record<string, string> = {};
+  for (const shape of shapes)
+    for (const { prop, value } of declared((selector) => selector === shape))
+      painted[prop] = value;
+  return painted;
+}
+
 /**
  * What the stylesheet gives a state: the base rule, then the state, then the
- * state with its tone, which is how the three selector shapes cascade.
+ * state with its tone, then an empty ring, which is how the four selector shapes
+ * cascade. A border-color longhand recolors the last token of the shorthand.
  */
-function paint(state: StatusIconState, tone: "ai" | "neutral") {
-  const painted: Record<string, string> = {};
-  for (const shape of [
+function paint(state: StatusIconState, tone: "ai" | "neutral", empty = false) {
+  const painted = cascade(
     ".tz-status-icon",
     `.tz-status-icon[data-state="${state}"]`,
     `.tz-status-icon[data-state="${state}"][data-tone="${tone}"]`,
-  ])
-    for (const { prop, value } of declared((selector) => selector === shape))
-      painted[prop] = value;
+    ...(empty ? [`.tz-status-icon[data-state="${state}"][data-empty]`] : []),
+  );
+  if (painted["border-color"])
+    painted.border = painted.border.replace(/\S+$/, painted["border-color"]);
   return painted;
 }
 
@@ -299,12 +338,24 @@ const filled = {
   color: "var(--surface)",
   border: "1px solid transparent",
 };
-const looks: Array<[StatusIconState, "ai" | "neutral", object]> = [
+type Look = StatusIconState | "pending without a number";
+const looks: Array<[Look, "ai" | "neutral", object]> = [
   [
+    // A number identifies the ring, so it keeps the quiet --border-strong edge.
     "pending",
     "neutral",
     {
       border: expect.stringMatching(/ dashed var\(--border-strong\)$/),
+      color: "var(--text-secondary)",
+    },
+  ],
+  [
+    // Nothing else says "not started", so the ring alone must reach 3:1, which
+    // --border-field does on page, paper and tray (tokens.test.ts).
+    "pending without a number",
+    "ai",
+    {
+      border: expect.stringMatching(/ dashed var\(--border-field\)$/),
       color: "var(--text-secondary)",
     },
   ],
@@ -333,10 +384,11 @@ const looks: Array<[StatusIconState, "ai" | "neutral", object]> = [
 
 it.each(looks)(
   "paints %s (%s tone) in the Woven vocabulary",
-  (state, tone, look) => {
+  (name, tone, look) => {
     // Filled discs keep a transparent border, which forced colors turn into the
     // outline that stops a dropped fill from erasing them.
-    expect(paint(state, tone)).toMatchObject(look);
+    const empty = name === "pending without a number";
+    expect(paint(empty ? "pending" : name, tone, empty)).toMatchObject(look);
   },
 );
 
@@ -407,6 +459,61 @@ it("no longer draws or pops the old status classes when they mount", () => {
       selector.includes(".tz-agent-task-indicator"),
     ).filter(({ prop }) => /^(?:animation|stroke-dasharray|--draw)/.test(prop)),
   ).toEqual([]);
+});
+
+it("lets the running arc take the icon's color", () => {
+  // .tz-loading-spinner paints itself --text-secondary at one class of
+  // specificity, so only this two-class rule lets tone="ai" reach the arc.
+  expect(
+    cascade(".tz-loading-spinner", ".tz-status-icon .tz-loading-spinner").color,
+  ).toBe("inherit");
+});
+
+it("leaves the icon's look to StatusIcon, so no host paints it again", () => {
+  // TaskRows once drew its own accent disc beside a badge that said something
+  // else (spec section 18, defect 29). The hook class may lay the indicator out,
+  // never color, fill or outline it.
+  expect(
+    declared((selector) =>
+      selector.includes(".tz-agent-task-indicator"),
+    ).filter(({ prop }) => /^(?:color|background|border)(?:-|$)/.test(prop)),
+  ).toEqual([]);
+
+  // The Status icon section is the unbroken run of icon rules under its header
+  // comment; a family outside it may only size the icon.
+  const header = sheet.nodes.findIndex(
+    (node) =>
+      node.type === "comment" && node.text.trim().startsWith("Status icon:"),
+  );
+  expect(header, "the Status icon header comment moved").toBeGreaterThanOrEqual(
+    0,
+  );
+  const names = (rule: Rule) =>
+    rule.selectors.some((selector) =>
+      /\.tz-status-icon(?![\w-])/.test(selector),
+    );
+  const section = new Set<Rule>();
+  for (const node of sheet.nodes.slice(header + 1)) {
+    if (node.type === "comment") continue;
+    const rules =
+      node.type === "rule"
+        ? [node]
+        : node.type === "atrule"
+          ? (node.nodes ?? []).filter((child) => child.type === "rule")
+          : [];
+    if (!rules.some(names)) break;
+    for (const rule of rules) section.add(rule);
+  }
+  expect(section.size).toBeGreaterThan(0);
+  const outside: string[] = [];
+  sheet.walkRules((rule) => {
+    if (section.has(rule) || !names(rule)) return;
+    rule.walkDecls((declaration) => {
+      if (declaration.prop !== "--status-size")
+        outside.push(`${squash(rule.selector)} { ${declaration.prop} }`);
+    });
+  });
+  expect(outside).toEqual([]);
 });
 
 it("passes the Woven CSS audit", () => {
