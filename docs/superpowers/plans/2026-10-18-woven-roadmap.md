@@ -16,8 +16,8 @@
 
 | # | Plan | Covers | Status |
 | --- | --- | --- | --- |
-| 1 | `2026-10-18-woven-1-foundations.md` | Before evidence; in-flight work brought in (numerals setting, browser-test repairs); the remaining Arabic digit fixes and the two missing Arabic tests; workbench enum and fallback bugs; Woven tokens with contrast tests; input modality; CSS audit harness; StatusIcon; shared remove button | written |
-| 2 | `…-woven-2-demo-frame.md` | Docs spec §6–9, §11–14: DemoFrame states, notes and Replay; `demo-states.ts`; `phase` / `onPhaseChange` on lifecycle examples; notes for all 67 pages; page order | written when Plan 1 lands |
+| 1 | `2026-10-18-woven-1-foundations.md` | Before evidence; in-flight work brought in (numerals setting, browser-test repairs); the remaining Arabic digit fixes and the two missing Arabic tests; workbench enum and fallback bugs; Woven tokens with contrast tests; input modality; CSS audit harness; StatusIcon; shared remove button | done (0fb781a) |
+| 2 | `2026-10-19-woven-2-demo-frame.md` | Docs spec §6–9, §11–14: DemoFrame states, notes and Replay; `demo-states.ts`; `phase` / `onPhaseChange` on lifecycle examples; notes for all 67 pages; page order | written |
 | 3 | `…-woven-3-restyle.md` | Woven spec §12–18: every family's restyle (forms, files, navigation, data, display, overlays, charts, AI parts at CSS level) and the docs chrome; each family joins the CSS audit | written when Plan 2 lands |
 | 4 | `…-woven-4-ai-patterns.md` | AI patterns spec: part API additions, new shared parts, Wave 1 patterns with their pages, navigation regroup, screens, agent-facing docs, consumer exercise | written when Plan 3 lands |
 | 5 | Wave 2 patterns | After Amjed reviews Wave 1 | later |
@@ -42,7 +42,7 @@ Every task names its implementer model. The controller passes it as the Agent to
 
 1. A Haiku subagent runs `npm test`, `npm run lint`, `npm run build` and `npm run format:check`, and captures the plan's browser evidence with `tests/browser/woven-evidence.mjs`.
 2. A fresh Opus subagent reviews the whole plan's diff, and the before and after evidence, against its spec.
-3. The controller stops for Amjed's checkpoint before writing the next plan.
+3. The controller stops for Amjed's checkpoint before writing the next plan. **Changed by Amjed on 19 Oct:** after Plan 1, continue without waiting for approval, and keep Plans 2–4 lean ("don't over-engineer").
 
 ## Rules for every task
 
