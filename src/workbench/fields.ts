@@ -865,6 +865,15 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     ),
   ],
 };
+// The values the inspector offers for one page's select field. A select with
+// no static list (Tabs' value follows its own items) returns undefined.
+export function selectOptions(
+  component: ComponentId,
+  key: string,
+): readonly string[] | undefined {
+  return fields[component].find((f) => f.kind === "select" && f.key === key)
+    ?.options;
+}
 export const optionNames: Record<string, Localized> = {
   horizontal: ["أفقي", "Horizontal"],
   vertical: ["عمودي", "Vertical"],

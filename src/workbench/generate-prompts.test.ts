@@ -77,6 +77,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "src/system/ai/examples/team.ts",
       "src/workbench/catalog.ts",
       "src/workbench/model.ts",
+      "src/workbench/fields.ts",
       "src/workbench/i18n.ts",
       "src/workbench/native-attributes.ts",
       "src/system/config.ts",

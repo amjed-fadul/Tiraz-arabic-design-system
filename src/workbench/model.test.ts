@@ -8,6 +8,8 @@ import {
   nativeAttributes,
 } from "./model";
 import { defaultConfig } from "../system";
+import { navigationCatalog } from "./catalog";
+import { fields } from "./fields";
 import { generateCode, generatePrompt } from "./generate";
 it("rejects duplicate collection identifiers and unusable tab sets", () => {
   expect(
@@ -172,3 +174,77 @@ it("replaces retired demo wording in saved playgrounds but keeps custom text", (
   expect(result.slider.label).toBe(defaultPlaygrounds("ar").slider.label);
   expect(result.tooltip.content).toBe("نص كتبه الفريق");
 });
+
+// Each patch has the same shape Workbench.tsx's patchPage builds.
+it("keeps every select option of every page through normalization", () => {
+  const defaults = defaultPlaygrounds("ar") as unknown as Record<
+    string,
+    Record<string, unknown>
+  >;
+  for (const item of navigationCatalog)
+    for (const f of fields[item.id] ?? []) {
+      if (f.kind !== "select" || !f.options) continue;
+      for (const option of f.options) {
+        const out = normalizePlaygrounds(
+          { ...defaults, [item.id]: { ...defaults[item.id], [f.key]: option } },
+          "ar",
+        ) as unknown as Record<string, Record<string, unknown>>;
+        expect(out[item.id][f.key], `${item.id}.${f.key}=${option}`).toBe(
+          option,
+        );
+      }
+    }
+});
+it("resets an unknown select value to that page's own default", () => {
+  const defaults = defaultPlaygrounds("ar");
+  const out = normalizePlaygrounds(
+    { terminal: { ...defaults.terminal, state: "bogus" } },
+    "ar",
+  );
+  expect(out.terminal.state).toBe(defaults.terminal.state);
+});
+it("keeps shared validation for keys without a page-specific select", () => {
+  const defaults = defaultPlaygrounds("ar");
+  const keep = normalizePlaygrounds(
+    { checkbox: { ...defaults.checkbox, mode: "uncontrolled" } },
+    "ar",
+  );
+  expect(keep.checkbox.mode).toBe("uncontrolled");
+  const reset = normalizePlaygrounds(
+    { checkbox: { ...defaults.checkbox, mode: "bogus" } },
+    "ar",
+  );
+  expect(reset.checkbox.mode).toBe("controlled");
+});
+it("restores a legacy saved object without losing valid per-page values", () => {
+  const saved = {
+    terminal: { state: "running" },
+    "image-result": { state: "loaded" },
+    "context-meter": { preset: "near" },
+    unknownPage: { x: 1 },
+  };
+  const out = normalizePlaygrounds(saved, "ar");
+  expect(out.terminal.state).toBe("running");
+  expect(out["image-result"].state).toBe("loaded");
+  expect(out["context-meter"].preset).toBe("near");
+});
+// The shared table has no entry for these page selects, so each must be
+// validated from the page's own options.
+it.each([
+  ["image-result", "aspectRatio"],
+  ["code-block", "codeLanguage"],
+  ["filter-bar", "initialKind"],
+] as const)(
+  "resets an unknown %s.%s to that page's own default",
+  (page, key) => {
+    const defaults = defaultPlaygrounds("ar") as unknown as Record<
+      string,
+      Record<string, unknown>
+    >;
+    const out = normalizePlaygrounds(
+      { [page]: { ...defaults[page], [key]: "bogus" } },
+      "ar",
+    ) as unknown as Record<string, Record<string, unknown>>;
+    expect(out[page][key]).toBe(defaults[page][key]);
+  },
+);

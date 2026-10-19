@@ -6,6 +6,7 @@ import type { DatePickerExampleProps } from "../system/ai/examples/DatePickerExa
 import { defaultConfig } from "../system/config";
 import type { ButtonState, ButtonVariant, SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
+import { fields, selectOptions } from "./fields";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import { nativeRules } from "./native-attributes";
@@ -1132,9 +1133,17 @@ export function normalizePlaygrounds(
     const original = defaultPlaygrounds(language)[
       component
     ] as unknown as Record<string, unknown>;
-    for (const [key, allowed] of Object.entries(enums))
-      if (key in r && !allowed.includes(r[key] as string))
+    // A page's own select options decide what is valid on that page. The shared
+    // table above is keyed by field name alone, so it only covers keys the page
+    // has no list for.
+    const pageSelectKeys = fields[component]
+      .filter((f) => f.kind === "select" && f.options)
+      .map((f) => f.key);
+    for (const key of new Set([...Object.keys(enums), ...pageSelectKeys])) {
+      const allowed = selectOptions(component, key) ?? enums[key];
+      if (allowed && key in r && !allowed.includes(r[key] as string))
         r[key] = original[key];
+    }
     if (component === "pagination") {
       r.totalPages = Number.isFinite(r.totalPages)
         ? Math.min(20, Math.max(1, Math.floor(Number(r.totalPages))))
