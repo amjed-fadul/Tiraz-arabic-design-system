@@ -101,21 +101,30 @@ export function ToolCallExample({
 export function ToolChipsExample({
   language = "ar",
   counts = true,
+  phase,
 }: {
   language?: Language;
   counts?: boolean;
+  /**
+   * "running" or "done": shows that phase and stays in it. Without a phase
+   * the example plays its own short run once.
+   */
+  phase?: string;
+  /** Part of the phase pair; nothing here moves the run, so it never fires. */
+  onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar",
-    reduced = useReducedMotion();
+    reduced = useReducedMotion(),
+    scripted = phase === undefined;
   // One short run: each chip changes state as its tool starts and finishes.
   const [step, setStep] = useState(0);
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || !scripted) return;
     const timers = [900, 1700, 2600].map((delay, index) =>
       setTimeout(() => setStep(index + 1), delay),
     );
     return () => timers.forEach(clearTimeout);
-  }, [reduced]);
+  }, [reduced, scripted]);
   const at = reduced ? 3 : step;
   const states: ToolCallState[][] = [
     ["running", "pending", "pending", "pending"],
@@ -123,7 +132,11 @@ export function ToolChipsExample({
     ["completed", "running", "running", "pending"],
     ["completed", "running", "failed", "pending"],
   ];
-  const [read, check, save, exporting] = states[at];
+  const [read, check, save, exporting]: ToolCallState[] = scripted
+    ? states[at]
+    : phase === "running"
+      ? states[2]
+      : ["completed", "completed", "completed", "completed"];
   return (
     <ToolChips
       label={ar ? "نشاط الأدوات" : "Tool activity"}

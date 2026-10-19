@@ -86,12 +86,12 @@ try {
                     : name === "ContextMeter" || name === "مقياس السياق"
                       ? "context"
                       : "model";
-              // Every page is agent prompt → playground → API reference.
+              // Every page is playground → agent prompt → API reference.
               assert.deepEqual(
                 await page
                   .locator(".component-page > section")
                   .evaluateAll((els) => els.map((el) => el.className)),
-                ["agent-section", "playground-section", "reference-section"],
+                ["playground-section", "agent-section", "reference-section"],
               );
               assert.equal(await page.locator(".examples-section").count(), 0);
               assert.equal(await page.locator(".usage-section").count(), 0);

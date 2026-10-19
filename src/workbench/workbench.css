@@ -260,6 +260,16 @@ bdi {
 .playground-region {
   overflow: visible;
 }
+/* A page the notes row suggests instead; activating it opens that page. */
+.note-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
 .playground-canvas {
   display: flex;
   align-items: center;

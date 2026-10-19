@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Moon, Sun, SlidersHorizontal, Menu } from "lucide-react";
 import { SystemProvider, defaultConfig } from "../system";
 import type { ButtonState, SystemConfig } from "../system";
-import { catalog, navigationGroups } from "./catalog";
+import { catalog, groupOf, navigationGroups } from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
 import type { Language } from "./i18n";
@@ -27,6 +27,9 @@ import { Inspector } from "./Inspector";
 import { Playground } from "./Playground";
 import { PreviewFrame } from "./PreviewFrame";
 import { canReplayPlayground } from "./demo-capabilities";
+import { demoStates, propsOf, stateOf } from "./demo-states";
+import { docsNotes } from "./docs-notes";
+import type { DemoFrameNotes } from "../system/ai/examples/DemoFrame";
 import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
 import { generateCode, generatePrompt } from "./generate";
@@ -84,6 +87,23 @@ export function Workbench() {
     component: ComponentId;
     patch: Record<string, unknown>;
   } | null>(null);
+  // Lifecycle phases live for the session only; opening a page starts it at
+  // its resting phase.
+  const [phases, setPhases] = useState<Partial<Record<ComponentId, string>>>(
+    {},
+  );
+  const [replaying, setReplaying] = useState(false);
+  const replayTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const stopReplay = useCallback(() => {
+    if (replayTimer.current !== null) clearTimeout(replayTimer.current);
+    replayTimer.current = null;
+    setReplaying(false);
+  }, []);
+  // A dialog opened from the Open state hands focus back to it on close.
+  const openedFromState = useRef(false);
+  const stopFocusReturn = useRef<(() => void) | null>(null);
+  const playgroundRegion = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLElement>(null);
   const systemConfig = useMemo<SystemConfig>(
     () => ({ ...settings, direction, theme }),
     [settings, direction, theme],
@@ -101,6 +121,11 @@ export function Workbench() {
   const current = catalog.find((item) => item.id === active)!;
   const model = playgrounds[active],
     effectiveConfig = previewConfig(systemConfig, model);
+  const pageStates = demoStates[active];
+  const phase = pageStates
+    ? (phases[active] ??
+      pageStates.states.find((state) => state.id === pageStates.resting)?.phase)
+    : undefined;
   const code = generateCode(active, model, systemConfig, language),
     prompt = generatePrompt(active, model, systemConfig, language);
   useEffect(() => {
@@ -121,6 +146,13 @@ export function Workbench() {
       busy.current = false;
     };
   }, [active, language]);
+  useEffect(
+    () => () => {
+      if (replayTimer.current !== null) clearTimeout(replayTimer.current);
+      stopFocusReturn.current?.();
+    },
+    [],
+  );
   function record(component: ComponentId, name: string, value?: unknown) {
     setEvents((prev) => ({
       ...prev,
@@ -200,6 +232,76 @@ export function Workbench() {
       setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
     } else resetPlayground();
   }
+  function openPage(id: ComponentId) {
+    cancelButtonAction();
+    stopReplay();
+    openedFromState.current = false;
+    stopFocusReturn.current?.();
+    setPhases({});
+    setDocumentation((prev) => ({ ...prev, active: id }));
+  }
+  // A props state takes the inspector's path, so it persists, cancels the
+  // simulated click and remounts where an edit would.
+  function applyState(id: string) {
+    const state = pageStates?.states.find((item) => item.id === id);
+    if (!state) return;
+    const next = state.phase;
+    if (next !== undefined) setPhases((prev) => ({ ...prev, [active]: next }));
+    if (state.props) fromInspector(propsOf(state, language));
+  }
+  const applyLatest = useRef(applyState);
+  useEffect(() => {
+    applyLatest.current = applyState;
+  });
+  function pressState(id: string) {
+    stopReplay();
+    stopFocusReturn.current?.();
+    applyState(id);
+    openedFromState.current = id === "open";
+  }
+  function playReplay() {
+    const steps = pageStates?.replay;
+    if (!steps) return;
+    if (replayTimer.current !== null) clearTimeout(replayTimer.current);
+    openedFromState.current = false;
+    // Raised with the first step, so the frame stays silent until the end.
+    setReplaying(true);
+    const play = (index: number) => {
+      applyLatest.current(steps[index].state);
+      replayTimer.current = setTimeout(() => {
+        if (index + 1 < steps.length) play(index + 1);
+        else {
+          replayTimer.current = null;
+          setReplaying(false);
+        }
+      }, steps[index].ms);
+    };
+    play(0);
+  }
+  // Radix gives focus back to the dialog's own trigger once it has closed.
+  // When the Open state opened it, focus moves on to that state instead.
+  function returnFocusToOpenState() {
+    stopFocusReturn.current?.();
+    const index = pageStates!.states.findIndex((state) => state.id === "open");
+    const region = playgroundRegion.current;
+    const stop = () => {
+      document.removeEventListener("focusin", onFocus);
+      stopFocusReturn.current = null;
+    };
+    function onFocus(event: FocusEvent) {
+      const target = event.target as Element;
+      // Focus still inside the closing dialog, or the frame, is not the return.
+      if (region?.contains(target) && !target.closest(".playground-canvas"))
+        return;
+      stop();
+      if (target.closest(".playground-canvas"))
+        region
+          ?.querySelectorAll<HTMLElement>(".tz-demo-states button")
+          [index]?.focus();
+    }
+    document.addEventListener("focusin", onFocus);
+    stopFocusReturn.current = stop;
+  }
   function changeLanguage(next: Language) {
     if (next === language) return;
     cancelButtonAction();
@@ -237,6 +339,34 @@ export function Workbench() {
     patchPage(pending.component, pending.patch);
     return true;
   }
+  const pageNotes = docsNotes[active];
+  const notes: DemoFrameNotes | undefined = pageNotes && {
+    useWhen: pageNotes.useWhen.map((item) => localize(item, language)),
+    instead: pageNotes.instead?.map(({ text, page }) => (
+      <>
+        {localize(text, language)}
+        {page && (
+          <>
+            {" "}
+            <button
+              type="button"
+              className="note-link"
+              onClick={() => {
+                openPage(page);
+                mainRef.current?.focus();
+              }}
+            >
+              {localize(
+                catalog.find((item) => item.id === page)!.name,
+                language,
+              )}
+            </button>
+          </>
+        )}
+      </>
+    )),
+    notice: pageNotes.notice?.map((item) => localize(item, language)),
+  };
   const inspector = (
     <Inspector
       key={active}
@@ -273,8 +403,7 @@ export function Workbench() {
                 key={item.id}
                 aria-current={active === item.id ? "page" : undefined}
                 onClick={() => {
-                  cancelButtonAction();
-                  setDocumentation((prev) => ({ ...prev, active: item.id }));
+                  openPage(item.id);
                   setNavigationOpen(false);
                 }}
               >
@@ -304,10 +433,7 @@ export function Workbench() {
           <a
             className="docs-brand"
             href="#main-content"
-            onClick={() => {
-              cancelButtonAction();
-              setDocumentation((prev) => ({ ...prev, active: "button" }));
-            }}
+            onClick={() => openPage("button")}
           >
             <BrandMark />
             <span>{t("طِراز", "Tiraz")}</span>
@@ -384,55 +510,48 @@ export function Workbench() {
             {navigation}
           </aside>
           <div className="docs-workspace">
-            <main id="main-content" className="component-page" tabIndex={-1}>
+            <main
+              ref={mainRef}
+              id="main-content"
+              className="component-page"
+              tabIndex={-1}
+            >
               <header className="component-heading">
                 <p className="component-kicker">
-                  {label("components", language)}
+                  {localize(groupOf(active), language)}
                 </p>
                 <h1>{localize(current.name, language)}</h1>
                 <p>{localize(current.description, language)}</p>
               </header>
-              <section className="agent-section">
-                <h2 id="agent-heading">{label("useInApp", language)}</h2>
-                <div className="prompt-row">
-                  <p className="prompt-preview" dir="auto">
-                    {prompt
-                      .replace(/\s+/g, " ")
-                      .split(
-                        /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
-                      )
-                      .map((part, index) =>
-                        index % 2 === 1 ? (
-                          <bdi dir="ltr" key={index}>
-                            {part}
-                          </bdi>
-                        ) : (
-                          part
-                        ),
-                      )}
-                  </p>
-                  <CopyControl
-                    text={prompt}
-                    caption={label("copyPrompt", language)}
-                    language={language}
-                    iconOnly
-                  />
-                </div>
-              </section>
               <section className="playground-section">
                 <div className="section-title-row">
                   <h2 id="playground-heading">
                     {label("playground", language)}
                   </h2>
                 </div>
-                <div className="playground-region">
+                <div className="playground-region" ref={playgroundRegion}>
                   <SystemProvider config={effectiveConfig}>
                     <PreviewFrame
+                      // One frame per page, so a page change is never
+                      // announced as a state change.
+                      key={active}
                       component={active}
                       language={language}
                       code={code}
                       replayable={canReplayPlayground(active, model)}
-                      onReplay={replayPlayground}
+                      onReplay={pageStates ? playReplay : replayPlayground}
+                      name={{ ar: current.name[0], en: current.name[1] }}
+                      states={pageStates?.states.map((state) => ({
+                        id: state.id,
+                        label: { ar: state.label[0], en: state.label[1] },
+                      }))}
+                      state={stateOf(active, model, phase, language)}
+                      onStateChange={pressState}
+                      notes={notes}
+                      onViewChange={(view) => {
+                        if (view === "code") stopReplay();
+                      }}
+                      replaying={replaying}
                     >
                       <div
                         className={`playground-canvas playground-${active}`}
@@ -445,10 +564,23 @@ export function Workbench() {
                           model={model}
                           language={language}
                           code={code}
-                          onPatch={(patch) => patchPage(active, patch)}
+                          onPatch={(patch) => {
+                            patchPage(active, patch);
+                            if (
+                              patch.open === false &&
+                              openedFromState.current
+                            ) {
+                              openedFromState.current = false;
+                              returnFocusToOpenState();
+                            }
+                          }}
                           onEvent={(name, value) => record(active, name, value)}
                           onButtonAction={buttonAction}
                           buttonState={buttonFeedback ?? undefined}
+                          phase={phase}
+                          onPhaseChange={(next) =>
+                            setPhases((prev) => ({ ...prev, [active]: next }))
+                          }
                         />
                       </div>
                     </PreviewFrame>
@@ -487,6 +619,33 @@ export function Workbench() {
                     )}
                   </div>
                 )}
+              </section>
+              <section className="agent-section">
+                <h2 id="agent-heading">{label("useInApp", language)}</h2>
+                <div className="prompt-row">
+                  <p className="prompt-preview" dir="auto">
+                    {prompt
+                      .replace(/\s+/g, " ")
+                      .split(
+                        /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
+                      )
+                      .map((part, index) =>
+                        index % 2 === 1 ? (
+                          <bdi dir="ltr" key={index}>
+                            {part}
+                          </bdi>
+                        ) : (
+                          part
+                        ),
+                      )}
+                  </p>
+                  <CopyControl
+                    text={prompt}
+                    caption={label("copyPrompt", language)}
+                    language={language}
+                    iconOnly
+                  />
+                </div>
               </section>
               <section className="reference-section">
                 <ApiReference component={active} language={language} />

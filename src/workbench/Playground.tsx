@@ -154,6 +154,9 @@ interface Props {
   onButtonAction: () => void;
   buttonState?: ButtonState;
   code?: string;
+  /** The lifecycle phase the workbench shows; examples without one ignore it. */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }
 export function ContentIcon({ icon }: { icon: string }) {
   const Icon =
@@ -200,6 +203,8 @@ export function Playground({
   onButtonAction,
   buttonState,
   code,
+  phase,
+  onPhaseChange,
 }: Props) {
   const t = words(language);
   if (component === "terminal")
@@ -350,6 +355,8 @@ export function Playground({
       <ToolChipsExample
         language={language}
         {...(model as Playgrounds["tool-chips"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "thinking-state")

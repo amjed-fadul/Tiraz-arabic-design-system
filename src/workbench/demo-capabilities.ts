@@ -1,4 +1,5 @@
 import type { ComponentId } from "./catalog";
+import { demoStates } from "./demo-states";
 import type { PlaygroundModel, ProgressModel } from "./model";
 
 // Replay describes the actual rendered section, not just the component family.
@@ -29,6 +30,9 @@ export function canReplayPlayground(
   component: ComponentId,
   model: PlaygroundModel,
 ) {
+  // A page with states replays only a lifecycle it has.
+  const states = demoStates[component];
+  if (states) return states.replay !== undefined;
   if (component === "progress") return (model as ProgressModel).indeterminate;
   return !staticPlaygrounds.includes(component);
 }

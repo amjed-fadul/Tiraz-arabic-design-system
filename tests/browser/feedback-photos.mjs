@@ -331,12 +331,12 @@ try {
         );
         await page.goto(base, { waitUntil: "networkidle" });
         await noOverflow();
-        // Every page is agent prompt -> playground -> API reference.
+        // Every page is playground -> agent prompt -> API reference.
         assert.deepEqual(
           await page
             .locator(".component-page > section")
             .evaluateAll((sections) => sections.map((el) => el.className)),
-          ["agent-section", "playground-section", "reference-section"],
+          ["playground-section", "agent-section", "reference-section"],
         );
         const playground = page.getByRole("region", {
           name:

@@ -736,6 +736,14 @@ const documentationGroups = [
   ids: Exclude<ComponentId, "field">[];
 }>;
 
+/** The name of the group a page sits in; Field's reference lives under Input. */
+export function groupOf(id: ComponentId): Localized {
+  const page = id === "field" ? "input" : id;
+  return documentationGroups.find((group) =>
+    (group.ids as readonly ComponentId[]).includes(page),
+  )!.name;
+}
+
 // Only implemented pages appear in documentation groups.
 export const navigationGroups = documentationGroups
   .map((group) => ({

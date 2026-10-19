@@ -442,13 +442,13 @@ try {
           .getByRole("button", { name, exact: true })
           .click();
         await page.getByRole("heading", { name, level: 1 }).waitFor();
-        // Every page is agent prompt → playground → API reference; the
+        // Every page is playground → agent prompt → API reference; the
         // frame's Code view and Copy code button carry the source.
         assert.deepEqual(
           await page
             .locator(".component-page > section")
             .evaluateAll((els) => els.map((el) => el.className)),
-          ["agent-section", "playground-section", "reference-section"],
+          ["playground-section", "agent-section", "reference-section"],
         );
         for (const heading of ["Use it in your app", "Interactive playground"])
           assert.equal(

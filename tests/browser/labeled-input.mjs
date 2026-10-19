@@ -100,7 +100,7 @@ try {
         for (const id of ids)
           assert.equal(await page.locator(`[id="${id}"]`).count(), 1);
         if (stage === "after") {
-          // Every page is agent prompt → playground → reference.
+          // Every page is playground → agent prompt → reference.
           assert.deepEqual(
             await page
               .locator("main section")
@@ -109,7 +109,7 @@ try {
                   .map((node) => node.className)
                   .filter((name) => /-section$/.test(name)),
               ),
-            ["agent-section", "playground-section", "reference-section"],
+            ["playground-section", "agent-section", "reference-section"],
           );
           const styles = await page
             .locator(".playground-canvas .tz-input")

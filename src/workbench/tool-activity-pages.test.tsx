@@ -87,7 +87,7 @@ function chips(container: HTMLElement) {
     chip.querySelector(".tz-tool-count")?.textContent ?? null,
   ]);
 }
-it("runs the tool-chips playground once, counting only finished reads and failed saves", async () => {
+it("opens the tool-chips playground on Done, counting the finished read, and replays the run", async () => {
   vi.useFakeTimers();
   persist(storageKeys.documentation, { language: "en", active: "tool-chips" });
   render(<Workbench />);
@@ -96,38 +96,25 @@ it("runs the tool-chips playground once, counting only finished reads and failed
   expect(
     within(stage()).getByRole("list", { name: "Tool activity" }),
   ).toBeVisible();
-  expect(chips(stage())).toEqual([
-    ["running", null],
-    ["pending", null],
-    ["pending", null],
-    ["pending", null],
-  ]);
-  await act(async () => vi.advanceTimersByTime(900));
-  expect(chips(stage())).toEqual([
+  const done = [
     ["completed", "3"],
-    ["running", null],
-    ["pending", null],
-    ["pending", null],
-  ]);
-  await act(async () => vi.advanceTimersByTime(800));
-  expect(chips(stage())).toEqual([
-    ["completed", "3"],
-    ["running", null],
-    ["running", null],
-    ["pending", null],
-  ]);
-  await act(async () => vi.advanceTimersByTime(900));
-  const final = [
-    ["completed", "3"],
-    ["running", null],
-    ["failed", "1"],
-    ["pending", null],
+    ["completed", null],
+    ["completed", null],
+    ["completed", null],
   ];
-  expect(chips(stage())).toEqual(final);
+  expect(chips(stage())).toEqual(done);
+  // Nothing autoplays: the page is complete at rest.
   await act(async () => vi.advanceTimersByTime(5000));
-  expect(chips(stage())).toEqual(final);
+  expect(chips(stage())).toEqual(done);
   fireEvent.click(screen.getByRole("button", { name: "Replay example" }));
-  expect(chips(stage())[0]).toEqual(["running", null]);
+  expect(chips(stage())).toEqual([
+    ["completed", "3"],
+    ["running", null],
+    ["running", null],
+    ["pending", null],
+  ]);
+  await act(async () => vi.advanceTimersByTime(1800));
+  expect(chips(stage())).toEqual(done);
 });
 it("shows the final tool-chips state at once under reduced motion", () => {
   vi.useFakeTimers();
