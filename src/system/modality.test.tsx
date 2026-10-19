@@ -33,6 +33,20 @@ it("switches between keyboard and pointer", () => {
   fireEvent.keyDown(document, { key: "ب" });
   expect(root).toHaveAttribute("data-modality", "keyboard");
 });
+it("counts the two-letter lam-alef key as typing, but not named keys", () => {
+  const { container } = render(
+    <SystemProvider>
+      <p>x</p>
+    </SystemProvider>,
+  );
+  const root = container.querySelector(".tiraz-system")!;
+  // Two-character ASCII keys are named keys, not typing.
+  for (const key of ["Fn", "F1"]) fireEvent.keyDown(document, { key });
+  expect(root).toHaveAttribute("data-modality", "pointer");
+  // Arabic layouts report the lam-alef key as the two letters «لا».
+  fireEvent.keyDown(document, { key: "لا" });
+  expect(root).toHaveAttribute("data-modality", "keyboard");
+});
 it("ignores modifier and other non-navigation keys", () => {
   const { container } = render(
     <SystemProvider>

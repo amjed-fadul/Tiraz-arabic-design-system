@@ -181,7 +181,7 @@ A new `tokens.test.ts`, beside `config.test.ts`, holds these checks, because the
   - The closest pairs are attention and danger in light mode (0.091), and success and info in dark mode (0.100). All five pass.
   - For comparison, the accents closest to the reserved colors are amber (0.038 from attention), clay (0.051 from attention) and indigo (0.081 from AI). That is why meaning never rests on color alone.
 
-**Code colors must not borrow the AI color.** Today `--code-literal` (#5b4fc4 / #aea8ff) is effectively the AI indigo, which would put AI color on code the assistant did not write. It moves to a rose hue: #9b3a6c light (6.0:1 on the well) and #f0a5cb dark (9.0:1), 0.20 away from the AI color in OKLab.
+**Code colors must not borrow the AI color.** Today `--code-literal` (#5b4fc4 / #aea8ff) is effectively the AI indigo, which would put AI color on code the assistant did not write. It moves to a rose hue: #9b3a6c light (6.0:1 on the well) and #f0a5cb dark (9.0:1). Measured from the AI color in OKLab, it is 0.20 away in light and 0.125 in dark (held to the 0.08 semantic floor).
 
 **Focus** stays `var(--action)`. The AI color never replaces the focus ring, even inside AI components, so keyboard focus looks the same everywhere.
 
@@ -300,7 +300,7 @@ LoadingState keeps its `variant` values (`drive | dots | orbit`, a public API) b
 
 ## 15. Motion
 
-**Budget.** Interface motion stays between 90 and 240 ms.
+**Budget.** Interface motion stays between 90 and 240 ms. Sheet entrances and exits (280 / 200 ms, from the table below) are the named exception.
 
 | Use | Duration | Easing |
 | --- | --- | --- |

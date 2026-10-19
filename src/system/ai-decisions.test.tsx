@@ -472,3 +472,29 @@ it("ignores digit keys with modifiers or inside the other-answer field", async (
   expect(screen.getByRole("textbox", { name: "إجابة أخرى" })).toHaveValue("١");
   expect(screen.getByRole("radio", { name: /إجابة أخرى/ })).toBeChecked();
 });
+it("submits a text answer with Ctrl+Enter or Cmd+Enter", async () => {
+  const user = userEvent.setup();
+  for (const modifier of ["Control", "Meta"]) {
+    const onSubmit = vi.fn();
+    const { unmount } = render(
+      wrap(
+        <AskUserQuestions
+          questions={[{ id: "notes", label: "Notes?", type: "text" }]}
+          value={{ notes: { text: "Keep concise" } }}
+          onValueChange={() => {}}
+          onSubmit={onSubmit}
+        />,
+      ),
+    );
+    await user.click(screen.getByRole("textbox", { name: "Notes?" }));
+    // Enter alone only adds a line to the answer.
+    await user.keyboard("{Enter}");
+    expect(onSubmit, modifier).not.toHaveBeenCalled();
+    await user.keyboard(`{${modifier}>}{Enter}{/${modifier}}`);
+    expect(onSubmit, modifier).toHaveBeenCalledTimes(1);
+    expect(onSubmit.mock.calls[0][0], modifier).toEqual({
+      notes: { text: "Keep concise" },
+    });
+    unmount();
+  }
+});

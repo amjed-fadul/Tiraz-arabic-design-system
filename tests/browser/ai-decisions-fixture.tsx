@@ -30,7 +30,7 @@ const failingRequests: ApprovalRequest[] = [
   },
 ];
 /** Verification host: the first decision fails, later ones are accepted. */
-function FailingHostFlow() {
+export function FailingHostFlow() {
   const failed = useRef(false);
   return (
     <ApprovalFlow

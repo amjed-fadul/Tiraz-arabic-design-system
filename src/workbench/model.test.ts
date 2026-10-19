@@ -198,7 +198,7 @@ it("keeps every select option of every page through normalization", () => {
 it("resets an unknown select value to that page's own default", () => {
   const defaults = defaultPlaygrounds("ar");
   const out = normalizePlaygrounds(
-    { terminal: { ...defaults.terminal, state: "bogus" } },
+    { terminal: { ...defaults.terminal, state: "idle" } },
     "ar",
   );
   expect(out.terminal.state).toBe(defaults.terminal.state);

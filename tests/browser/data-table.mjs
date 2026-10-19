@@ -192,7 +192,7 @@ try {
               await canvas()
                 .locator(".tz-data-pagination [role=status]")
                 .textContent(),
-              /11.*20/,
+              /(?:11|١١).*(?:20|٢٠)/,
             );
             const search = canvas().getByRole("searchbox");
             await search.fill("nadia");

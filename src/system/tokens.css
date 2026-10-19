@@ -148,7 +148,8 @@
      Arabic; underlines clear them instead of slicing through. */
   --underline-offset: 0.24em;
   /* Motion: one strong ease-out drives entrances and state changes; exits are
-     shorter; presses are near-instant and release on a small overshoot. */
+     shorter; presses are near-instant and release over --motion-release with
+     --ease-out, never the spring (spec section 12). */
   --motion-press: 90ms;
   --motion-release: 160ms;
   --motion-fast: 120ms;

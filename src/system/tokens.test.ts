@@ -669,9 +669,9 @@ it("keeps the five semantic colors apart", () => {
 });
 
 it("keeps code literals off the AI color", () => {
-  // Spec section 8.2 puts the literal 0.20 from --ai in OKLab. That holds in
-  // light (0.203). Dark measures 0.125, so until the spec settles the figure dark
-  // is held to 0.08, the floor that keeps the semantic colors apart.
+  // Spec section 8.2: the literal is 0.20 from --ai in OKLab in light (0.203
+  // measured) and 0.125 in dark, where it is held to 0.08, the floor that keeps
+  // the semantic colors apart.
   const leastApart = { light: 0.15, dark: 0.08 };
   for (const theme of themes) {
     const literal = color(theme, "--code-literal");
@@ -698,14 +698,14 @@ it("keeps motion in budget and stops it under reduced motion", () => {
 
   // Interface durations stay within 90 to 240 ms. Stagger and word are gaps
   // between items and the loops are decorative (spec section 15). The sheet
-  // token is the one exception: the spec's own table gives sheets 280 ms in,
-  // over its 240 ms budget. The value is pinned above, and the exception is
-  // listed here until the spec settles which of the two gives way.
-  const overBudgetInSpec = ["--motion-panel"];
+  // token is the one named exception: spec section 15 gives sheets 280 ms in
+  // and 200 ms out and names them as the exception to the budget. The value is
+  // pinned above.
+  const sheetEntrance = ["--motion-panel"];
   const outside = Object.entries(base)
     .filter(([name]) => name.startsWith("--motion-"))
     .filter(([name]) => !/^--motion-(stagger|word|loop-)/.test(name))
-    .filter(([name]) => !overBudgetInSpec.includes(name))
+    .filter(([name]) => !sheetEntrance.includes(name))
     .filter(([, value]) => {
       const milliseconds = /^(\d+(?:\.\d+)?)ms$/.exec(value);
       return !milliseconds || +milliseconds[1] < 90 || +milliseconds[1] > 240;

@@ -18,11 +18,18 @@ const navigationKeys = new Set([
   "End",
 ]);
 const letterOrDigit = /^[\p{L}\p{N}]$/u;
+// Arabic layouts report the lam-alef key as the two-letter key «لا». Named
+// keys ("Shift", "Fn", "F1") are all ASCII, so a key of up to two non-ASCII
+// letters is a character key, not a named one.
+const shortNonAsciiLetters = /^(?=\P{ASCII}{1,2}$)\p{L}+$/u;
 
 function isNavigation(key: string | undefined) {
   // Chrome's autofill sends keydown events that carry no key.
   return (
-    key !== undefined && (navigationKeys.has(key) || letterOrDigit.test(key))
+    key !== undefined &&
+    (navigationKeys.has(key) ||
+      letterOrDigit.test(key) ||
+      shortNonAsciiLetters.test(key))
   );
 }
 
