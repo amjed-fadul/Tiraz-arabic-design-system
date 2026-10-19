@@ -312,6 +312,27 @@
   transition-duration: 0ms !important;
   scroll-behavior: auto !important;
 }
+/* Keyboard actions never animate: under keyboard modality interaction motion
+   is instant and presses do not scale. Streamed words and the decorative loops
+   keep their timing. */
+.tiraz-system[data-modality="keyboard"] {
+  --motion-press: 0ms;
+  --motion-release: 0ms;
+  --motion-fast: 0ms;
+  --motion-state: 0ms;
+  --motion-enter: 0ms;
+  --motion-exit: 0ms;
+  --motion-dialog-enter: 0ms;
+  --motion-dialog-exit: 0ms;
+  --motion-panel: 0ms;
+  --motion-panel-exit: 0ms;
+  --motion-toast: 0ms;
+  --motion-toast-exit: 0ms;
+  --motion-collapse: 0ms;
+  --motion-collapse-exit: 0ms;
+  --motion-stagger: 0ms;
+  --press-scale: 1;
+}
 
 .tiraz-system[data-theme-switching],
 .tiraz-system[data-theme-switching] *,

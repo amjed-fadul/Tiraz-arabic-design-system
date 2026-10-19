@@ -25,6 +25,7 @@ const DARK = '.tiraz-system[data-theme="dark"]';
 const LARGE = '.tiraz-system[data-typography="large"]';
 const REDUCED = '.tiraz-system[data-reduced-motion="true"]';
 const PREFERS_REDUCED = "(prefers-reduced-motion: reduce)";
+const KEYBOARD = '.tiraz-system[data-modality="keyboard"]';
 
 /** Prettier wraps long values; compare them with its breaks and indents gone. */
 const squash = (text: string) =>
@@ -728,4 +729,50 @@ it("keeps motion in budget and stops it under reduced motion", () => {
       motionTokens.filter((token) => rule[token] !== "0ms"),
       `motion tokens that ${name} leaves above 0ms`,
     ).toEqual([]);
+});
+
+it("zeroes interaction motion under keyboard modality", () => {
+  // Keyboard actions never animate (spec section 15). Toasts are included
+  // because the toast stack's height animation is skipped under keyboard
+  // modality (section 20).
+  const interaction = [
+    "--motion-press",
+    "--motion-release",
+    "--motion-fast",
+    "--motion-state",
+    "--motion-enter",
+    "--motion-exit",
+    "--motion-dialog-enter",
+    "--motion-dialog-exit",
+    "--motion-panel",
+    "--motion-panel-exit",
+    "--motion-toast",
+    "--motion-toast-exit",
+    "--motion-collapse",
+    "--motion-collapse-exit",
+    "--motion-stagger",
+  ];
+  const keyboard = readRule(KEYBOARD);
+  expect(
+    interaction.filter((token) => keyboard[token] !== "0ms"),
+    `interaction motion tokens that ${KEYBOARD} leaves above 0ms`,
+  ).toEqual([]);
+  expect(keyboard["--press-scale"]).toBe("1");
+
+  // Every other motion token on the root is a streamed word or a decorative
+  // loop, so a new interaction token is not missed, and those keep their time.
+  const kept = Object.keys(readRule(BASE)).filter(
+    (name) => name.startsWith("--motion-") && !interaction.includes(name),
+  );
+  expect(kept.sort()).toEqual([
+    "--motion-loop-shimmer",
+    "--motion-loop-skeleton",
+    "--motion-loop-stitch",
+    "--motion-loop-turn",
+    "--motion-word",
+  ]);
+  expect(
+    kept.filter((name) => name in keyboard),
+    `streamed word and loop tokens that ${KEYBOARD} changes`,
+  ).toEqual([]);
 });
