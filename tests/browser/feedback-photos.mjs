@@ -378,8 +378,8 @@ try {
           );
         }
         if (language === "en" && width === 1280 && active === "skeleton") {
-          // The loading profile moved into the playground: placeholders, then
-          // content after 2.4s; Replay and shape changes restart it.
+          // The playground opens on the loaded profile; Replay plays the
+          // placeholders for a moment, then the content takes their place.
           const profile = playground.locator(".tz-feedback-placeholder");
           assert.equal(
             await page.getByLabel("Shape", { exact: true }).inputValue(),
@@ -405,7 +405,7 @@ try {
             .waitFor();
           assert.ok((await profile.innerText()).includes("Balance due"));
           report.checks.push(
-            "Documentation Skeleton playground plays placeholders to profile, replays and restarts on shape change.",
+            "Documentation Skeleton playground opens loaded, replays placeholders to profile and restarts on shape change.",
           );
         }
         if (language === "en" && width === 1280 && active === "avatar") {

@@ -66,7 +66,7 @@ export function generateBatchCode(
     }
     if (component === "accordion") {
       const p = model as AccordionModel;
-      jsx = `<AccordionExample language="${language}" controlled={${p.mode === "controlled"}} collapsible={${p.collapsible}} />`;
+      jsx = `<AccordionExample language="${language}" controlled={${p.mode === "controlled"}} collapsible={${p.collapsible}} defaultOpen={${p.defaultOpen}} />`;
     }
     if (component === "breadcrumbs") {
       const p = model as BreadcrumbsModel;

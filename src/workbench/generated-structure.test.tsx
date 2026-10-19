@@ -101,7 +101,7 @@ it.each(["controlled", "uncontrolled"] as const)(
   async (mode) => {
     const Example = copiedExample(
         "accordion",
-        { mode, collapsible: true },
+        { ...defaultPlaygrounds("en").accordion, mode, collapsible: true },
         "en",
       ),
       user = userEvent.setup();

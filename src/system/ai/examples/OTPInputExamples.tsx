@@ -9,6 +9,8 @@ export interface OTPInputExampleProps {
   disabled?: boolean;
   readOnly?: boolean;
   mode?: "controlled" | "uncontrolled";
+  /** The code the example opens with; the visitor can still change it. */
+  defaultValue?: string;
 }
 export function OTPInputExample({
   language = "ar",
@@ -19,9 +21,10 @@ export function OTPInputExample({
   disabled = false,
   readOnly = false,
   mode = "controlled",
+  defaultValue = "",
 }: OTPInputExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(defaultValue);
   return (
     <OTPInput
       key={mode}
@@ -36,6 +39,7 @@ export function OTPInputExample({
       readOnly={readOnly}
       name="code"
       value={mode === "controlled" ? code : undefined}
+      defaultValue={defaultValue}
       onValueChange={setCode}
     />
   );

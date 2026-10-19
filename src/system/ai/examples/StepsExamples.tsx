@@ -7,6 +7,8 @@ export interface StepsExampleProps {
   orientation?: "horizontal" | "vertical";
   currentState?: StepStatus;
   longLabels?: boolean;
+  /** The stage the example opens on: 0 is the first, 3 is all stages done. */
+  step?: number;
 }
 /**
  * Your application owns progress: Back and Next move through the stages, and
@@ -17,9 +19,12 @@ export function StepsExample({
   orientation = "horizontal",
   currentState = "current",
   longLabels = false,
+  step: openingStep = 1,
 }: StepsExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(
+    Math.min(3, Math.max(0, Math.trunc(openingStep) || 0)),
+  );
   const stages = [
     {
       id: "brief",

@@ -11,6 +11,8 @@ export interface TagInputExampleProps {
   disabled?: boolean;
   readOnly?: boolean;
   mode?: "controlled" | "uncontrolled";
+  /** Opens with two sample tags; false opens with none. */
+  filled?: boolean;
 }
 export function TagInputExample({
   language = "ar",
@@ -22,9 +24,10 @@ export function TagInputExample({
   disabled = false,
   readOnly = false,
   mode = "controlled",
+  filled = true,
 }: TagInputExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const initial = [t("تصميم", "Design"), t("عاجل", "Urgent")];
+  const initial = filled ? [t("تصميم", "Design"), t("عاجل", "Urgent")] : [];
   const [tags, setTags] = useState(initial);
   return (
     <TagInput

@@ -9,6 +9,8 @@ export interface DatePickerExampleProps {
   max?: string;
   disabled?: boolean;
   mode?: "controlled" | "uncontrolled";
+  /** The date the example opens with, as YYYY-MM-DD; empty for none. */
+  defaultValue?: string;
 }
 export function DatePickerExample({
   language = "ar",
@@ -19,9 +21,10 @@ export function DatePickerExample({
   max = "",
   disabled = false,
   mode = "controlled",
+  defaultValue = "",
 }: DatePickerExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState(defaultValue);
   return (
     <DatePicker
       key={mode}
@@ -37,6 +40,7 @@ export function DatePickerExample({
       locale={language}
       name="dueDate"
       value={mode === "controlled" ? date : undefined}
+      defaultValue={defaultValue}
       onValueChange={setDate}
     />
   );

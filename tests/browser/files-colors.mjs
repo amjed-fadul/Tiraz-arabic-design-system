@@ -53,6 +53,8 @@ async function start(
   extra = {},
   model,
 ) {
+  // The documentation page opens with sample files; these checks start empty.
+  if (component === "file-dropzone") model = { filled: false, ...model };
   await page.setViewportSize({ width, height: 1000 });
   await page.goto(
     root +

@@ -11,7 +11,12 @@ export interface FileDropzoneExampleProps {
   maxFiles?: number;
   disabled?: boolean;
   mode?: "controlled" | "uncontrolled";
+  /** Opens with two sample files; false opens with none. */
+  filled?: boolean;
 }
+// Stand-ins for chosen files: real File objects of a believable size.
+const sample = (name: string, type: string, size: number) =>
+  new File([new Uint8Array(size)], name, { type });
 export function FileDropzoneExample({
   language = "ar",
   label,
@@ -23,9 +28,26 @@ export function FileDropzoneExample({
   maxFiles = 3,
   disabled = false,
   mode = "controlled",
+  filled = false,
 }: FileDropzoneExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [files, setFiles] = useState<File[]>([]);
+  const [initial] = useState<File[]>(() =>
+    filled
+      ? [
+          sample(
+            t("عرض-سعر-مدار.pdf", "madar-quote.pdf"),
+            "application/pdf",
+            248_000,
+          ),
+          sample(
+            t("ملاحظات-المراجعة.txt", "review-notes.txt"),
+            "text/plain",
+            3_200,
+          ),
+        ]
+      : [],
+  );
+  const [files, setFiles] = useState<File[]>(initial);
   // Name the limits only while they match the defaults, so guidance stays truthful.
   const defaultRules =
     multiple &&
@@ -55,6 +77,7 @@ export function FileDropzoneExample({
       maxFiles={maxFiles}
       disabled={disabled}
       value={mode === "controlled" ? files : undefined}
+      defaultValue={initial}
       onValueChange={setFiles}
     />
   );

@@ -6,6 +6,7 @@ import type {
   ButtonModel,
   ChartModel,
   CheckboxModel,
+  FilterBarModel,
   InputModel,
   PaginationModel,
   PlaygroundModel,
@@ -104,6 +105,19 @@ export const stateWords = {
   submitting: ["يُرسَل", "Submitting"],
   asking: ["يسأل", "Asking"],
   second: ["الثانية", "Second"],
+  partial: ["جزئي", "Partial"],
+  tagged: ["موسوم", "Tagged"],
+  filesAdded: ["أُضيفت ملفات", "Files added"],
+  copied: ["تم النسخ", "Copied"],
+  start: ["البداية", "Start"],
+  midway: ["في المنتصف", "Midway"],
+  noFilters: ["بلا تصفية", "No filters"],
+  filtered: ["مصفّى", "Filtered"],
+  sorted: ["مرتّب", "Sorted"],
+  unread: ["غير مقروءة", "Unread"],
+  allRead: ["كلها مقروءة", "All read"],
+  hidden: ["مخفي", "Hidden"],
+  shown: ["ظاهر", "Shown"],
 } satisfies Record<string, Localized>;
 
 /** A state whose id and label both come from one word in `stateWords`. */
@@ -130,6 +144,22 @@ const required = {
   select: ["اختر حالة للمتابعة.", "Choose a status to continue."],
   checkbox: ["حدّد هذا الخيار للمتابعة.", "Select this option to continue."],
   "radio-group": ["اختر وتيرة للمتابعة.", "Choose a frequency to continue."],
+  "otp-input": [
+    "الرمز غير صحيح. حاول مرة أخرى.",
+    "That code isn't right. Try again.",
+  ],
+  "date-picker": [
+    "اختر تاريخ الاستحقاق للمتابعة.",
+    "Choose a due date to continue.",
+  ],
+  "tag-input": [
+    "أضف وسمًا واحدًا على الأقل للمتابعة.",
+    "Add at least one tag to continue.",
+  ],
+  "file-dropzone": [
+    "أرفق ملفًا واحدًا على الأقل للمتابعة.",
+    "Attach at least one file to continue.",
+  ],
 } satisfies Record<string, Localized>;
 
 // Disabled wins over Read-only, which wins over an error; only then does the
@@ -406,9 +436,10 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
   },
   "data-table": {
     states: [
-      state("loaded", { preset: "populated" }),
-      state("loading", { preset: "loading" }),
-      state("empty", { preset: "empty" }),
+      state("loaded", { preset: "populated", sort: "none" }),
+      state("loading", { preset: "loading", sort: "none" }),
+      state("empty", { preset: "empty", sort: "none" }),
+      state("sorted", { preset: "populated", sort: "name" }),
     ],
     resting: "loaded",
   },
@@ -536,6 +567,211 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
   "approval-flow": {
     states: [phased("first"), phased("second"), phased("done")],
     resting: "first",
+  },
+  // Seeded states: the example opens from the model's value, and the visitor
+  // then moves it on. A press starts it afresh. A text state keeps its text
+  // in the model, so a language change translates it.
+  "otp-input": {
+    states: [
+      state(
+        "empty",
+        { defaultValue: "", error: "" },
+        (m: Playgrounds["otp-input"]) => !m.error && m.defaultValue === "",
+      ),
+      state(
+        "partial",
+        { defaultValue: "482", error: "" },
+        (m: Playgrounds["otp-input"]) =>
+          !m.error && m.defaultValue !== "" && m.defaultValue.length < m.length,
+      ),
+      state(
+        "complete",
+        { defaultValue: "482915", error: "" },
+        (m: Playgrounds["otp-input"]) =>
+          !m.error && m.defaultValue.length >= m.length,
+      ),
+      // A full code that the host turned down.
+      state(
+        "invalid",
+        (language) => ({
+          defaultValue: "482915",
+          error: localize(required["otp-input"], language),
+        }),
+        (m: Playgrounds["otp-input"]) => m.error !== "",
+      ),
+    ],
+    resting: "complete",
+  },
+  "date-picker": {
+    states: [
+      state(
+        "empty",
+        { defaultValue: "", error: "" },
+        (m: Playgrounds["date-picker"]) => !m.error && m.defaultValue === "",
+      ),
+      state(
+        "selected",
+        { defaultValue: "2026-11-15", error: "" },
+        (m: Playgrounds["date-picker"]) => !m.error && m.defaultValue !== "",
+      ),
+      state(
+        "invalid",
+        (language) => ({
+          defaultValue: "",
+          error: localize(required["date-picker"], language),
+        }),
+        (m: Playgrounds["date-picker"]) => m.error !== "",
+      ),
+    ],
+    resting: "selected",
+  },
+  "tag-input": {
+    states: [
+      state(
+        "empty",
+        { filled: false, error: "" },
+        (m: Playgrounds["tag-input"]) => !m.error && !m.filled,
+      ),
+      state(
+        "tagged",
+        { filled: true, error: "" },
+        (m: Playgrounds["tag-input"]) => !m.error && m.filled,
+      ),
+      state(
+        "invalid",
+        (language) => ({
+          filled: false,
+          error: localize(required["tag-input"], language),
+        }),
+        (m: Playgrounds["tag-input"]) => m.error !== "",
+      ),
+    ],
+    resting: "tagged",
+  },
+  // The copy result comes from pressing the button: each state is a phase.
+  "input-copy": {
+    states: [phased("idle"), phased("copied"), phased("failed")],
+    resting: "idle",
+  },
+  "file-dropzone": {
+    states: [
+      state(
+        "empty",
+        { filled: false, error: "" },
+        (m: Playgrounds["file-dropzone"]) => !m.error && !m.filled,
+      ),
+      state(
+        "filesAdded",
+        { filled: true, error: "" },
+        (m: Playgrounds["file-dropzone"]) => !m.error && m.filled,
+      ),
+      state(
+        "invalid",
+        (language) => ({
+          filled: false,
+          error: localize(required["file-dropzone"], language),
+        }),
+        (m: Playgrounds["file-dropzone"]) => m.error !== "",
+      ),
+    ],
+    resting: "filesAdded",
+  },
+  "file-tree": {
+    states: [
+      state("collapsed", { defaultExpanded: false, defaultSelected: false }),
+      state("expanded", { defaultExpanded: true, defaultSelected: false }),
+      state("selected", { defaultExpanded: true, defaultSelected: true }),
+    ],
+    resting: "expanded",
+  },
+  steps: {
+    states: [
+      state(
+        "start",
+        { step: 0, currentState: "current" },
+        (m: Playgrounds["steps"]) => m.step === 0 && m.currentState !== "error",
+      ),
+      state(
+        "midway",
+        { step: 1, currentState: "current" },
+        (m: Playgrounds["steps"]) =>
+          m.step > 0 && m.step < 3 && m.currentState !== "error",
+      ),
+      state(
+        "error",
+        { step: 1, currentState: "error" },
+        (m: Playgrounds["steps"]) => m.step < 3 && m.currentState === "error",
+      ),
+      state(
+        "complete",
+        { step: 3, currentState: "current" },
+        (m: Playgrounds["steps"]) => m.step >= 3,
+      ),
+    ],
+    resting: "midway",
+    replay: [
+      { state: "start", ms: 1400 },
+      { state: "midway", ms: 1400 },
+      { state: "complete", ms: 1000 },
+    ],
+  },
+  "filter-bar": {
+    states: [
+      state(
+        "noFilters",
+        { initialQuery: "", initialKind: "all" },
+        (m: FilterBarModel) => m.initialQuery === "" && m.initialKind === "all",
+      ),
+      state(
+        "filtered",
+        { initialQuery: "", initialKind: "guide" },
+        (m: FilterBarModel) => m.initialQuery !== "" || m.initialKind !== "all",
+      ),
+    ],
+    resting: "filtered",
+  },
+  "notification-list": {
+    states: [
+      state(
+        "unread",
+        { empty: false, allRead: false },
+        (m: Playgrounds["notification-list"]) => !m.empty && !m.allRead,
+      ),
+      state(
+        "allRead",
+        { empty: false, allRead: true },
+        (m: Playgrounds["notification-list"]) => !m.empty && m.allRead,
+      ),
+      state(
+        "empty",
+        { empty: true, allRead: false },
+        (m: Playgrounds["notification-list"]) => m.empty,
+      ),
+    ],
+    resting: "unread",
+  },
+  accordion: {
+    states: [
+      state("closed", { defaultOpen: false }),
+      state("open", { defaultOpen: true }),
+    ],
+    resting: "open",
+  },
+  toast: {
+    states: [phased("hidden"), phased("shown")],
+    resting: "hidden",
+    replay: [
+      { state: "hidden", ms: 800 },
+      { state: "shown", ms: 2600 },
+    ],
+  },
+  skeleton: {
+    states: [phased("loading"), phased("loaded")],
+    resting: "loaded",
+    replay: [
+      { state: "loading", ms: 1800 },
+      { state: "loaded", ms: 800 },
+    ],
   },
 };
 

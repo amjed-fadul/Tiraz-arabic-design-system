@@ -8,11 +8,16 @@ import * as ts from "typescript";
 import * as system from "../system";
 import { generateCode } from "./generate";
 import { defaultPlaygrounds } from "./model";
+import type { PlaygroundModel } from "./model";
 function copiedExample(
   component: "task-rows" | "notification-list" | "file-tree",
   language: "ar" | "en",
+  state: Record<string, unknown> = {},
 ) {
-  const model = defaultPlaygrounds(language)[component];
+  const model = {
+    ...defaultPlaygrounds(language)[component],
+    ...state,
+  } as PlaygroundModel;
   const code = generateCode(
     component,
     model,
@@ -79,7 +84,8 @@ it.each(["ar", "en"] as const)(
   "runs copied %s FileTree source with host-owned sample text",
   async (language) => {
     const user = userEvent.setup(),
-      Example = copiedExample("file-tree", language);
+      // The copied tree opens as the Selected state does: App.tsx chosen.
+      Example = copiedExample("file-tree", language, { defaultSelected: true });
     render(<Example />);
     const tree = screen.getByRole("tree");
     const file = tree.querySelector('[aria-selected="true"]') as HTMLElement;

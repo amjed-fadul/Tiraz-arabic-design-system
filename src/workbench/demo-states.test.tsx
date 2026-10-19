@@ -411,15 +411,6 @@ const propsFamilies: Family[] = [
     ],
   },
   {
-    id: "data-table",
-    resting: "loaded",
-    list: [
-      ["loaded", { preset: "populated" }],
-      ["loading", { preset: "loading" }],
-      ["empty", { preset: "empty" }],
-    ],
-  },
-  {
     id: "avatar",
     resting: "photo",
     list: [
@@ -761,6 +752,507 @@ it.each(phaseFamilies)(
   },
 );
 
+// The rest of the families, props and phase alike. Each page lists its states
+// with what the stage shows once one is pressed and, for a props state, what
+// the model holds; Replay steps follow where the page has a sequence.
+type RestFamily = {
+  id: ComponentId;
+  resting: WordKey;
+  list: ReadonlyArray<
+    readonly [WordKey, () => unknown, Record<string, unknown>?]
+  >;
+  replay?: ReadonlyArray<WordKey>;
+  // What the page needs from the browser, and how to give it back.
+  setup?: () => () => void;
+};
+const canvas = () => stageNode();
+const count = (selector: string) => canvas().querySelectorAll(selector).length;
+const otpCode = () =>
+  (canvas().querySelector("input.tz-otp-input") as HTMLInputElement).value;
+const dateButton = () => canvas().querySelector(".tz-date-trigger")!;
+const stepStatuses = () =>
+  Array.from(canvas().querySelectorAll(".tz-step"), (step) =>
+    step.getAttribute("data-status"),
+  );
+const unread = () => count('.tz-notification-row[data-unread="true"]');
+const busy = () =>
+  canvas().querySelector("[aria-busy]")?.getAttribute("aria-busy");
+const copyStatus = () => canvas().querySelector("[role='status']");
+const accordionOpen = () =>
+  canvas()
+    .querySelector(".tz-accordion-trigger")
+    ?.getAttribute("aria-expanded");
+const customers = () =>
+  Array.from(canvas().querySelectorAll("tbody th"), (th) => th.textContent);
+// The browser's clipboard, as the page finds it: a press of Copied or Failed
+// must leave it as it was, and must never write to it.
+const clipboard = { writeText: vi.fn().mockResolvedValue(undefined) };
+const withClipboard = () => {
+  const own = Object.getOwnPropertyDescriptor(navigator, "clipboard");
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: clipboard,
+  });
+  return () => {
+    if (own) Object.defineProperty(navigator, "clipboard", own);
+    else delete (navigator as { clipboard?: Clipboard }).clipboard;
+  };
+};
+const restFamilies: RestFamily[] = [
+  {
+    id: "otp-input",
+    resting: "complete",
+    list: [
+      [
+        "empty",
+        () => expect(otpCode()).toBe(""),
+        { defaultValue: "", error: "" },
+      ],
+      [
+        "partial",
+        () => expect(otpCode()).toBe("482"),
+        { defaultValue: "482", error: "" },
+      ],
+      [
+        "complete",
+        () => expect(otpCode()).toBe("482915"),
+        { defaultValue: "482915", error: "" },
+      ],
+      [
+        "invalid",
+        () => {
+          expect(otpCode()).toBe("482915");
+          expect(
+            stage().getByText("الرمز غير صحيح. حاول مرة أخرى."),
+          ).toBeVisible();
+        },
+        { error: text },
+      ],
+    ],
+  },
+  {
+    id: "date-picker",
+    resting: "selected",
+    list: [
+      [
+        "empty",
+        () => expect(dateButton()).toHaveTextContent("اختر تاريخًا"),
+        { defaultValue: "", error: "" },
+      ],
+      [
+        "selected",
+        () => {
+          expect(dateButton()).toHaveTextContent("٢٠٢٦");
+          expect(dateButton()).not.toHaveTextContent("اختر تاريخًا");
+        },
+        { defaultValue: text, error: "" },
+      ],
+      [
+        "invalid",
+        () => {
+          expect(dateButton()).toHaveTextContent("اختر تاريخًا");
+          expect(
+            stage().getByText("اختر تاريخ الاستحقاق للمتابعة."),
+          ).toBeVisible();
+        },
+        { defaultValue: "", error: text },
+      ],
+    ],
+  },
+  {
+    id: "tag-input",
+    resting: "tagged",
+    list: [
+      [
+        "empty",
+        () => expect(count(".tz-tag")).toBe(0),
+        { filled: false, error: "" },
+      ],
+      [
+        "tagged",
+        () => expect(count(".tz-tag")).toBe(2),
+        { filled: true, error: "" },
+      ],
+      [
+        "invalid",
+        () => {
+          expect(count(".tz-tag")).toBe(0);
+          expect(
+            stage().getByText("أضف وسمًا واحدًا على الأقل للمتابعة."),
+          ).toBeVisible();
+        },
+        { filled: false, error: text },
+      ],
+    ],
+  },
+  {
+    id: "input-copy",
+    resting: "idle",
+    setup: withClipboard,
+    list: [
+      ["idle", () => expect(copyStatus()).toBeEmptyDOMElement()],
+      [
+        "copied",
+        async () => {
+          await waitFor(() =>
+            expect(copyStatus()).toHaveTextContent("تم النسخ."),
+          );
+          expect(navigator.clipboard).toBe(clipboard);
+          expect(clipboard.writeText).not.toHaveBeenCalled();
+        },
+      ],
+      [
+        "failed",
+        () => {
+          expect(copyStatus()).toHaveTextContent("تعذّر النسخ.");
+          expect(navigator.clipboard).toBe(clipboard);
+          expect(clipboard.writeText).not.toHaveBeenCalled();
+        },
+      ],
+    ],
+  },
+  {
+    id: "file-dropzone",
+    resting: "filesAdded",
+    list: [
+      [
+        "empty",
+        () => expect(count(".tz-selected-files li")).toBe(0),
+        { filled: false, error: "" },
+      ],
+      [
+        "filesAdded",
+        () => expect(count(".tz-selected-files li")).toBe(2),
+        { filled: true, error: "" },
+      ],
+      [
+        "invalid",
+        () => {
+          expect(count(".tz-selected-files li")).toBe(0);
+          expect(
+            stage().getByText("أرفق ملفًا واحدًا على الأقل للمتابعة."),
+          ).toBeVisible();
+        },
+        { filled: false, error: text },
+      ],
+    ],
+  },
+  {
+    id: "file-tree",
+    resting: "expanded",
+    list: [
+      [
+        "collapsed",
+        () => {
+          expect(count('[role="treeitem"]')).toBe(1);
+          expect(stage().getByText("اختر ملفًا لمعاينته.")).toBeVisible();
+        },
+        { defaultExpanded: false, defaultSelected: false },
+      ],
+      [
+        "expanded",
+        () => {
+          expect(count('[role="treeitem"]')).toBeGreaterThan(5);
+          expect(canvas().querySelector('[aria-selected="true"]')).toBeNull();
+          expect(stage().getByText("اختر ملفًا لمعاينته.")).toBeVisible();
+        },
+        { defaultExpanded: true, defaultSelected: false },
+      ],
+      [
+        "selected",
+        () => {
+          expect(
+            stage().getByRole("treeitem", { name: /App\.tsx/, selected: true }),
+          ).toBeVisible();
+          expect(stage().getByText(/export function App/)).toBeVisible();
+        },
+        { defaultExpanded: true, defaultSelected: true },
+      ],
+    ],
+  },
+  {
+    id: "steps",
+    resting: "midway",
+    list: [
+      [
+        "start",
+        () =>
+          expect(stepStatuses()).toEqual(["current", "upcoming", "upcoming"]),
+        { step: 0, currentState: "current" },
+      ],
+      [
+        "midway",
+        () =>
+          expect(stepStatuses()).toEqual(["completed", "current", "upcoming"]),
+        { step: 1, currentState: "current" },
+      ],
+      [
+        "error",
+        () =>
+          expect(stepStatuses()).toEqual(["completed", "error", "upcoming"]),
+        { step: 1, currentState: "error" },
+      ],
+      [
+        "complete",
+        () => {
+          expect(stepStatuses()).toEqual([
+            "completed",
+            "completed",
+            "completed",
+          ]);
+          expect(stage().getByText("اكتملت جميع المراحل.")).toBeVisible();
+        },
+        { step: 3 },
+      ],
+    ],
+    replay: ["start", "midway", "complete"],
+  },
+  {
+    id: "filter-bar",
+    resting: "filtered",
+    list: [
+      [
+        "noFilters",
+        () => {
+          expect(count(".tz-filter-active .tz-tag")).toBe(0);
+          expect(stage().getByRole("status")).toHaveTextContent("٣ مستندات");
+        },
+        { initialQuery: "", initialKind: "all" },
+      ],
+      [
+        "filtered",
+        () => {
+          expect(count(".tz-filter-active .tz-tag")).toBe(1);
+          expect(stage().getByRole("status")).toHaveTextContent("مستندان");
+        },
+        { initialKind: "guide" },
+      ],
+    ],
+  },
+  {
+    id: "data-table",
+    resting: "loaded",
+    list: [
+      [
+        "loaded",
+        () => {
+          expect(canvas().querySelector("table")).toHaveAttribute(
+            "aria-busy",
+            "false",
+          );
+          expect(canvas().querySelector("[aria-sort='ascending']")).toBeNull();
+        },
+        { preset: "populated", sort: "none" },
+      ],
+      [
+        "loading",
+        () =>
+          expect(canvas().querySelector("table")).toHaveAttribute(
+            "aria-busy",
+            "true",
+          ),
+        { preset: "loading", sort: "none" },
+      ],
+      [
+        "empty",
+        () => expect(stage().getByText("لا يوجد عملاء بعد.")).toBeVisible(),
+        { preset: "empty", sort: "none" },
+      ],
+      [
+        "sorted",
+        () => {
+          // The Name header was pressed once, so the rows run in its order.
+          expect(
+            canvas().querySelector("[aria-sort='ascending']"),
+          ).toHaveTextContent("الاسم");
+          const rows = customers();
+          const order = new Intl.Collator("ar", {
+            numeric: true,
+            sensitivity: "base",
+          });
+          expect(rows).toEqual([...rows].sort(order.compare));
+          expect(rows[0]).not.toBe("شركة مدار للتقنية");
+        },
+        { preset: "populated", sort: "name" },
+      ],
+    ],
+  },
+  {
+    id: "notification-list",
+    resting: "unread",
+    list: [
+      [
+        "unread",
+        () => {
+          expect(count(".tz-notification-row")).toBe(3);
+          expect(unread()).toBe(2);
+        },
+        { empty: false, allRead: false },
+      ],
+      [
+        "allRead",
+        () => {
+          expect(count(".tz-notification-row")).toBe(3);
+          expect(unread()).toBe(0);
+        },
+        { empty: false, allRead: true },
+      ],
+      [
+        "empty",
+        () => {
+          expect(count(".tz-notification-row")).toBe(0);
+          expect(
+            stage().getByRole("heading", { name: "لا توجد إشعارات" }),
+          ).toBeVisible();
+        },
+        { empty: true },
+      ],
+    ],
+  },
+  {
+    id: "accordion",
+    resting: "open",
+    list: [
+      [
+        "closed",
+        () => expect(accordionOpen()).toBe("false"),
+        { defaultOpen: false },
+      ],
+      [
+        "open",
+        () => expect(accordionOpen()).toBe("true"),
+        { defaultOpen: true },
+      ],
+    ],
+  },
+  {
+    id: "toast",
+    resting: "hidden",
+    list: [
+      ["hidden", () => expect(document.querySelector(".tz-toast")).toBeNull()],
+      [
+        "shown",
+        () => {
+          expect(document.querySelector(".tz-toast")).not.toBeNull();
+          expect(screen.getByText("حُفظت الفاتورة")).toBeVisible();
+        },
+      ],
+    ],
+    replay: ["hidden", "shown"],
+  },
+  {
+    id: "skeleton",
+    resting: "loaded",
+    list: [
+      ["loading", () => expect(busy()).toBe("true")],
+      [
+        "loaded",
+        () => {
+          expect(busy()).toBe("false");
+          expect(stage().getByText("سارة علي")).toBeVisible();
+        },
+      ],
+    ],
+    replay: ["loading", "loaded"],
+  },
+];
+
+it.each(restFamilies)(
+  "applies every remaining state: $id",
+  async ({ id, resting, list, replay, setup }) => {
+    const restore = setup?.();
+    try {
+      open(id);
+      expect(stateButtons().map((button) => button.textContent)).toEqual(
+        list.map(([key]) => word(key)),
+      );
+      expect(pressedWords()).toEqual([word(resting)]);
+      for (const [key, shows, props] of list) {
+        press(key);
+        expect(pressedWords()).toEqual([word(key)]);
+        // A props state leaves its values in the model, as an edit would.
+        if (props) expect(savedProps(id)).toMatchObject(props);
+        await shows();
+      }
+      if (!replay) return;
+      vi.useFakeTimers();
+      const sequence = demoStates[id]!.replay!;
+      fireEvent.click(
+        screen.getByRole("button", { name: "إعادة تشغيل المثال" }),
+      );
+      for (const [index, key] of replay.entries()) {
+        expect(pressedWords()).toEqual([word(key)]);
+        await list.find(([state]) => state === key)![1]();
+        await wait(sequence[index].ms);
+      }
+      expect(pressedWords()).toEqual([word(replay.at(-1)!)]);
+    } finally {
+      restore?.();
+    }
+  },
+);
+
+it("returns a phase page to its resting phase when the inspector resets it", async () => {
+  vi.useFakeTimers();
+  open("tool-chips");
+  // jsdom queues a toggle task for the inspector; let it run.
+  await wait(0);
+  const reset = () =>
+    fireEvent.click(rail().getByRole("button", { name: "إعادة ضبط المعاينة" }));
+  fireEvent.click(states().getByRole("button", { name: word("running") }));
+  expect(pressed()).toEqual([word("running")]);
+  reset();
+  expect(pressed()).toEqual([word("done")]);
+  expect(chips()).toEqual(chipsDone);
+  // A reset also ends a Replay, so a later step cannot undo it.
+  fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
+  expect(pressed()).toEqual([word("running")]);
+  reset();
+  expect(vi.getTimerCount()).toBe(0);
+  await wait(5000);
+  expect(pressed()).toEqual([word("done")]);
+  expect(chips()).toEqual(chipsDone);
+});
+
+it("moves the switcher to Shown when the trigger raises a toast, and raises it once", () => {
+  open("toast");
+  expect(pressed()).toEqual([word("hidden")]);
+  fireEvent.click(stage().getByRole("button", { name: "عرض التنبيه" }));
+  expect(pressed()).toEqual([word("shown")]);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
+});
+
+it("loads props saved before the last states: an old default moves, new keys default", () => {
+  const fresh = defaultPlaygrounds("ar");
+  const old = { ...fresh["filter-bar"], initialKind: "all" };
+  // Saved after the earlier states, before these: no Steps `step`, and a page
+  // with a seed it did not have, such as OTPInput's code.
+  const steps: Record<string, unknown> = { ...fresh.steps };
+  delete steps.step;
+  const otp: Record<string, unknown> = {
+    ...fresh["otp-input"],
+    label: "رمز خاص",
+  };
+  delete otp.defaultValue;
+  persist(storageKeys.playgrounds, {
+    ...fresh,
+    steps,
+    "otp-input": otp,
+    "filter-bar": old,
+  });
+  const saved = readPlaygrounds("ar");
+  expect(saved["filter-bar"].initialKind).toBe("guide");
+  expect(saved["otp-input"]).toMatchObject({
+    label: "رمز خاص",
+    defaultValue: "482915",
+  });
+  // Saved after: a visitor who picked No filters keeps it.
+  persist(storageKeys.playgrounds, { ...fresh, "filter-bar": old });
+  expect(readPlaygrounds("ar")["filter-bar"].initialKind).toBe("all");
+  open("filter-bar");
+  expect(pressed()).toEqual([word("noFilters")]);
+});
+
 it("loads saved props from before the states", () => {
   // Saved before the states: pages on the old defaults, no Modal `open`.
   persist(storageKeys.playgrounds, {
@@ -829,3 +1321,43 @@ it("translates a state's text when the language changes", async () => {
   expect(screen.getByText("أدخل اسم العميل للمتابعة.")).toBeInTheDocument();
   expect(savedProps("input").error).toBe("أدخل اسم العميل للمتابعة.");
 });
+
+it.each([
+  [
+    "otp-input",
+    "الرمز غير صحيح. حاول مرة أخرى.",
+    "That code isn't right. Try again.",
+  ],
+  [
+    "date-picker",
+    "اختر تاريخ الاستحقاق للمتابعة.",
+    "Choose a due date to continue.",
+  ],
+  [
+    "tag-input",
+    "أضف وسمًا واحدًا على الأقل للمتابعة.",
+    "Add at least one tag to continue.",
+  ],
+  [
+    "file-dropzone",
+    "أرفق ملفًا واحدًا على الأقل للمتابعة.",
+    "Attach at least one file to continue.",
+  ],
+] as const)(
+  "translates the Invalid message of %s when the language changes",
+  async (id, ar, en) => {
+    const user = userEvent.setup();
+    open(id);
+    press("invalid");
+    expect(screen.getByText(ar)).toBeInTheDocument();
+    await user.selectOptions(
+      screen.getByRole("combobox", {
+        name: /^(لغة التوثيق|Documentation language)$/,
+      }),
+      "en",
+    );
+    expect(screen.getByText(en)).toBeInTheDocument();
+    expect(savedProps(id).error).toBe(en);
+    expect(pressedWords()).toEqual([stateWords.invalid[1]]);
+  },
+);

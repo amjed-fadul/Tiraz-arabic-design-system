@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
+import { persist, storageKeys } from "./storage";
 import { SkeletonExample } from "../system/ai/examples/SkeletonExample";
 import { SystemProvider, defaultConfig } from "../system";
 afterEach(() => vi.useRealTimers());
@@ -71,7 +72,7 @@ it("records the Alert playground action and drops it when its label is cleared",
   expect(code).not.toContain("action=");
   expect(code).not.toContain("Alert, Button");
 });
-it("loads the skeleton playground profile after its placeholders and replays the load", async () => {
+it("opens the skeleton playground loaded and replays the load", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
   fireEvent.click(
@@ -83,6 +84,18 @@ it("loads the skeleton playground profile after its placeholders and replays the
   const canvas = () =>
     screen.getByRole("region", { name: "المعاينة التفاعلية" });
   const profile = () => canvas().querySelector("[aria-busy]")!;
+  // Nothing autoplays: the page is complete at rest, and stays so.
+  expect(profile()).toHaveAttribute("aria-busy", "false");
+  expect(profile().querySelector(".tz-skeleton")).toBeNull();
+  expect(within(canvas()).getByText("سارة علي")).toBeVisible();
+  expect(within(canvas()).getByText("sara@madar.sa")).toBeVisible();
+  expect(
+    within(canvas()).getByText("تم تحميل الملف الشخصي"),
+  ).toBeInTheDocument();
+  await act(async () => vi.advanceTimersByTime(5000));
+  expect(profile()).toHaveAttribute("aria-busy", "false");
+  // Replay shows the placeholders, then the profile takes their place.
+  fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
   expect(profile()).toHaveAttribute("aria-busy", "true");
   // The default shape holds a photo slot beside the text lines.
   expect(
@@ -92,17 +105,39 @@ it("loads the skeleton playground profile after its placeholders and replays the
     within(canvas()).getByText("جارٍ تحميل الملف الشخصي…"),
   ).toBeInTheDocument();
   expect(within(canvas()).queryByText("سارة علي")).toBeNull();
-  await act(async () => vi.advanceTimersByTime(2400));
+  await act(async () => vi.advanceTimersByTime(1800));
   expect(profile()).toHaveAttribute("aria-busy", "false");
-  expect(profile().querySelector(".tz-skeleton")).toBeNull();
   expect(within(canvas()).getByText("سارة علي")).toBeVisible();
-  expect(within(canvas()).getByText("sara@madar.sa")).toBeVisible();
-  expect(
-    within(canvas()).getByText("تم تحميل الملف الشخصي"),
-  ).toBeInTheDocument();
+});
+it("replays the skeleton load under reduced motion, since the states are content", async () => {
+  vi.useFakeTimers();
+  persist(storageKeys.system, { reducedMotion: true });
+  persist(storageKeys.documentation, { language: "ar", active: "skeleton" });
+  render(<Workbench />);
+  const profile = () =>
+    screen
+      .getByRole("region", { name: "المعاينة التفاعلية" })
+      .querySelector("[aria-busy]")!;
+  expect(profile()).toHaveAttribute("aria-busy", "false");
   fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
   expect(profile()).toHaveAttribute("aria-busy", "true");
-  expect(within(canvas()).queryByText("سارة علي")).toBeNull();
+  await act(async () => vi.advanceTimersByTime(1800));
+  expect(profile()).toHaveAttribute("aria-busy", "false");
+});
+it("loads the skeleton profile on its own when it has no phase", () => {
+  vi.useFakeTimers();
+  const view = render(
+    <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+      <SkeletonExample language="en" />
+    </SystemProvider>,
+  );
+  const profile = () => view.container.querySelector("[aria-busy]")!;
+  expect(profile()).toHaveAttribute("aria-busy", "true");
+  act(() => vi.advanceTimersByTime(2399));
+  expect(profile()).toHaveAttribute("aria-busy", "true");
+  act(() => vi.advanceTimersByTime(1));
+  expect(profile()).toHaveAttribute("aria-busy", "false");
+  expect(screen.getByText("Sara Ali")).toBeVisible();
 });
 it("holds the skeleton placeholders under reduced motion", () => {
   vi.useFakeTimers();

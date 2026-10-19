@@ -3,7 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
-import { canReplayPlayground } from "./demo-capabilities";
+import { navigationCatalog } from "./catalog";
+import { demoStates } from "./demo-states";
 import { defaultPlaygrounds } from "./model";
 import {
   DemoFrame,
@@ -133,28 +134,37 @@ it("resets an interactive playground from the inspector without remounting the f
   expect(frame.querySelector("header")).toBe(header);
 });
 
-it("offers replay only on pages with a lifecycle to play", () => {
-  const playgrounds = defaultPlaygrounds("en");
-  // A page with states replays only a sequence it has, so Textarea has none.
-  for (const component of [
-    "context-meter",
-    "model-selector",
-    "input-copy",
-    "alert",
-    "empty-state",
-    "textarea",
-    "chat-composer",
-  ] as const)
-    expect(canReplayPlayground(component, playgrounds[component])).toBe(false);
-  for (const component of [
+it("shows Replay only where a sequence exists", () => {
+  render(<Workbench />);
+  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
+  const replaying: string[] = [];
+  // Every page of the catalog: Replay needs a sequence of states to play.
+  for (const page of navigationCatalog) {
+    fireEvent.click(nav.getByRole("button", { name: page.name[0] }));
+    if (screen.queryByRole("button", { name: "إعادة تشغيل المثال" }))
+      replaying.push(page.id);
+  }
+  expect(replaying.sort()).toEqual([
+    "button",
     "chat-thread",
-    "steps",
-    "tool-chips",
     "progress",
+    "skeleton",
+    "steps",
+    "streaming-text",
+    "task-rows",
+    "terminal",
     "thinking-state",
-  ] as const)
-    expect(canReplayPlayground(component, playgrounds[component])).toBe(true);
-});
+    "toast",
+    "tool-call",
+    "tool-chips",
+  ]);
+  expect(replaying.sort()).toEqual(
+    navigationCatalog
+      .filter((page) => demoStates[page.id]?.replay)
+      .map((page) => page.id)
+      .sort(),
+  );
+}, 30000);
 it("switches between preview and code by click and keyboard, keeping the preview's state", async () => {
   const user = userEvent.setup();
   render(

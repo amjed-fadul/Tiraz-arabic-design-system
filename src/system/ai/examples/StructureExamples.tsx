@@ -81,18 +81,21 @@ export function AccordionExample({
   language = "ar",
   controlled = true,
   collapsible = true,
+  defaultOpen = true,
 }: {
   language?: Language;
   controlled?: boolean;
   collapsible?: boolean;
+  /** Opens with the first question answered; false opens with none. */
+  defaultOpen?: boolean;
 }) {
   const ar = language === "ar";
-  const [value, setValue] = useState("billing");
+  const [value, setValue] = useState(defaultOpen ? "billing" : "");
   return (
     <Accordion
       collapsible={collapsible}
       value={controlled ? value : undefined}
-      defaultValue={controlled ? undefined : "billing"}
+      defaultValue={controlled || !defaultOpen ? undefined : "billing"}
       onValueChange={setValue}
       items={[
         {

@@ -93,7 +93,7 @@ it("type-checks copied code for every component, state mode and composition pres
       "completed",
       "error",
     ] as const)
-      cases.push(["steps", { orientation, currentState }]);
+      cases.push(["steps", { ...p.steps, orientation, currentState }]);
   cases.push([
     "timeline",
     {
@@ -281,7 +281,7 @@ it("type-checks copied code for every component, state mode and composition pres
   ]);
   for (const mode of ["controlled", "uncontrolled"] as const)
     for (const collapsible of [false, true])
-      cases.push(["accordion", { mode, collapsible }]);
+      cases.push(["accordion", { ...p.accordion, mode, collapsible }]);
   cases.push(["card", { ...p.card, actions: false, description: "" }]);
   for (const page of [1, 4, 10, 20])
     cases.push(["pagination", { page, totalPages: 20 }]);

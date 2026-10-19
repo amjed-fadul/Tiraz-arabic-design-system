@@ -1,11 +1,12 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import { persist, storageKeys } from "./storage";
 import { defaultPlaygrounds, normalizePlaygrounds } from "./model";
 import { generateCode, generatePrompt } from "./generate";
 import { defaultConfig } from "../system";
+afterEach(() => vi.useRealTimers());
 it.each([
   ["steps", "الخطوات", "Steps", "التنقّل"],
   ["timeline", "الخط الزمني", "Timeline", "البيانات"],
@@ -65,12 +66,16 @@ it.each([
     );
   },
 );
-it("moves through the steps playground with Back, Next and the stages, and replays without losing panel values", async () => {
+it("moves through the steps playground with Back, Next and the stages, and replays Start to Complete", async () => {
   persist(storageKeys.documentation, { language: "en", active: "steps" });
   const user = userEvent.setup();
   render(<Workbench />);
   const rail = within(
     screen.getByRole("complementary", { name: "Customization" }),
+  );
+  await user.selectOptions(
+    rail.getByRole("combobox", { name: "Orientation" }),
+    "vertical",
   );
   await user.selectOptions(
     rail.getByRole("combobox", { name: "Current state" }),
@@ -97,10 +102,22 @@ it("moves through the steps playground with Back, Next and the stages, and repla
   await user.click(stage().getByRole("button", { name: /^Information/ }));
   expect(statuses()).toEqual(["error", "upcoming", "upcoming"]);
   expect(stage().getByRole("button", { name: "Back" })).toBeDisabled();
-  await user.click(screen.getByRole("button", { name: "Replay example" }));
-  expect(statuses()).toEqual(["completed", "error", "upcoming"]);
+  // Replay plays the page's own states from Start, whatever the panel held;
+  // the rest of the panel stays.
+  vi.useFakeTimers();
+  fireEvent.click(screen.getByRole("button", { name: "Replay example" }));
+  expect(statuses()).toEqual(["current", "upcoming", "upcoming"]);
   expect(rail.getByRole("combobox", { name: "Current state" })).toHaveValue(
-    "error",
+    "current",
+  );
+  await act(async () => vi.advanceTimersByTime(1400));
+  expect(statuses()).toEqual(["completed", "current", "upcoming"]);
+  await act(async () => vi.advanceTimersByTime(1400));
+  expect(stage().getByRole("status")).toHaveTextContent(
+    "All stages are complete.",
+  );
+  expect(rail.getByRole("combobox", { name: "Orientation" })).toHaveValue(
+    "vertical",
   );
 });
 it("normalizes persisted sequence options against the real enums", () => {

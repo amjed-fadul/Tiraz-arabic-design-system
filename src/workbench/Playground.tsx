@@ -52,7 +52,8 @@ import { InputCopyExample } from "../system/ai/examples/InputCopyExamples";
 import type { TagInputModel, FilterBarModel, InputCopyModel } from "./model";
 import { SidebarExample } from "../system/ai/examples/SidebarExamples";
 import type { SidebarModel } from "./model";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react";
+import type { ReactNode } from "react";
 import type { ChartKind } from "../system/ai/examples/ChartExamples";
 import type { ChartModel } from "./model";
 import {
@@ -168,25 +169,78 @@ export function ContentIcon({ icon }: { icon: string }) {
           : null;
   return Icon ? <Icon size={16} aria-hidden="true" /> : null;
 }
+/**
+ * Presses a control of the example once, as soon as it has mounted. A state
+ * the component only reaches through a press (a sorted header, a copied
+ * value) is shown this way, so the stage reacts as it does for a visitor. A
+ * state press remounts the stage, so this runs once per state.
+ */
+function PressOnMount({
+  children,
+  press,
+}: {
+  children: ReactNode;
+  press?: (stage: HTMLElement) => void;
+}) {
+  const stage = useRef<HTMLDivElement>(null);
+  const first = useRef(press);
+  useLayoutEffect(() => {
+    if (stage.current) first.current?.(stage.current);
+  }, []);
+  return (
+    <div ref={stage} style={{ display: "contents" }}>
+      {children}
+    </div>
+  );
+}
+function pressNameSort(stage: HTMLElement) {
+  stage.querySelector<HTMLElement>(".tz-table-sort")?.click();
+}
+function pressCopy(stage: HTMLElement, copies: boolean) {
+  // The component asks the browser for the clipboard when it is pressed. It
+  // gets one that answers, or none, so the state never depends on the
+  // visitor's permissions and never writes to their clipboard.
+  const own = Object.getOwnPropertyDescriptor(navigator, "clipboard");
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    value: copies ? { writeText: () => Promise.resolve() } : undefined,
+  });
+  stage.querySelector<HTMLElement>(".tz-input-copy button")?.click();
+  if (own) Object.defineProperty(navigator, "clipboard", own);
+  else delete (navigator as { clipboard?: Clipboard }).clipboard;
+}
+const toastOf = (model: ToastModel) => ({
+  title: model.title,
+  description: model.description,
+  tone: model.tone,
+  duration: model.duration,
+});
 function ToastPlayground({
   model,
   onEvent,
+  phase,
+  onPhaseChange,
 }: {
   model: ToastModel;
   onEvent: Props["onEvent"];
+  phase?: string;
+  onPhaseChange?: Props["onPhaseChange"];
 }) {
   const { toast } = useToast();
+  const raised = useRef(false);
+  // A Shown phase puts the toast on screen, unless the trigger already did.
+  useEffect(() => {
+    if (phase === "shown" && !raised.current) toast(toastOf(model));
+    raised.current = phase === "shown";
+  }, [phase, toast, model]);
   return (
     <Button
       variant="secondary"
       onClick={() => {
-        toast({
-          title: model.title,
-          description: model.description,
-          tone: model.tone,
-          duration: model.duration,
-        });
+        raised.current = true;
+        toast(toastOf(model));
         onEvent("toast", { tone: model.tone, duration: model.duration });
+        onPhaseChange?.("shown");
       }}
     >
       {model.triggerLabel}
@@ -459,7 +513,15 @@ export function Playground({
     );
   if (component === "input-copy")
     return (
-      <InputCopyExample language={language} {...(model as InputCopyModel)} />
+      <PressOnMount
+        press={
+          phase === "copied" || phase === "failed"
+            ? (stage) => pressCopy(stage, phase === "copied")
+            : undefined
+        }
+      >
+        <InputCopyExample language={language} {...(model as InputCopyModel)} />
+      </PressOnMount>
     );
   if (component === "sidebar") {
     const p = model as SidebarModel;
@@ -502,6 +564,7 @@ export function Playground({
         language={language}
         controlled={p.mode === "controlled"}
         collapsible={p.collapsible}
+        defaultOpen={p.defaultOpen}
       />
     );
   }
@@ -545,6 +608,7 @@ export function Playground({
       <SkeletonExample
         language={language}
         shape={(model as SkeletonModel).shape}
+        phase={phase}
       />
     );
   if (component === "progress") {
@@ -711,12 +775,16 @@ export function Playground({
         label={t("تنبيهات العملاء", "Customer notifications")}
         closeLabel={t("إغلاق التنبيه", "Dismiss notification")}
       >
-        <CustomerDataTable
-          key={p.preset}
-          language={language}
-          caption={p.caption}
-          preset={p.preset}
-        />
+        <PressOnMount
+          key={`${p.preset}-${p.sort}`}
+          press={p.sort === "name" ? pressNameSort : undefined}
+        >
+          <CustomerDataTable
+            language={language}
+            caption={p.caption}
+            preset={p.preset}
+          />
+        </PressOnMount>
       </ToastProvider>
     );
   }
@@ -968,7 +1036,12 @@ export function Playground({
     const p = model as ToastModel;
     return (
       <ToastProvider label={p.providerLabel} closeLabel={p.closeLabel}>
-        <ToastPlayground model={p} onEvent={onEvent} />
+        <ToastPlayground
+          model={p}
+          onEvent={onEvent}
+          phase={phase}
+          onPhaseChange={onPhaseChange}
+        />
       </ToastProvider>
     );
   }

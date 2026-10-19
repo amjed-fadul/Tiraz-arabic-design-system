@@ -9,6 +9,8 @@ export interface NotificationListExampleProps {
   longContent?: boolean;
   avatars?: boolean;
   readControls?: boolean;
+  /** Opens with every notification read; false leaves two unread. */
+  allRead?: boolean;
 }
 export function NotificationListExample({
   language = "ar",
@@ -16,9 +18,12 @@ export function NotificationListExample({
   longContent = false,
   avatars = true,
   readControls = true,
+  allRead = false,
 }: NotificationListExampleProps) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const [readIds, setReadIds] = useState(["ready"]);
+  const [readIds, setReadIds] = useState(
+    allRead ? ["review", "note", "ready"] : ["ready"],
+  );
   const [filter, setFilter] = useState<"all" | "unread">("all");
   const [details, setDetails] = useState<string[]>([]);
   const listRef = useRef<HTMLDivElement>(null);

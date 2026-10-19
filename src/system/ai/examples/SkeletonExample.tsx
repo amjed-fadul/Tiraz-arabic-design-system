@@ -19,19 +19,26 @@ function usePrefersReducedMotion() {
 export function SkeletonExample({
   language = "ar",
   shape = "circle",
+  phase,
 }: {
   language?: Language;
   shape?: "text" | "rectangle" | "circle";
+  /**
+   * "loading" or "loaded": shows that phase and stays in it. Without a phase
+   * the profile loads on its own after 2.4 seconds.
+   */
+  phase?: string;
 }) {
   const ar = language === "ar",
-    reduced = usePrefersReducedMotion();
+    reduced = usePrefersReducedMotion(),
+    scripted = phase === undefined;
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || !scripted) return;
     const timer = setTimeout(() => setReady(true), 2400);
     return () => clearTimeout(timer);
-  }, [reduced]);
-  const loading = !ready;
+  }, [reduced, scripted]);
+  const loading = scripted ? !ready : phase === "loading";
   const name = ar ? "سارة علي" : "Sara Ali";
   return (
     <div className="tz-feedback-examples" style={{ maxInlineSize: 380 }}>

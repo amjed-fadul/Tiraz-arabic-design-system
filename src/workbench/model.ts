@@ -20,6 +20,8 @@ export interface FileDropzoneModel {
   maxFiles: number;
   disabled: boolean;
   mode: "controlled" | "uncontrolled";
+  // The example opens with sample files.
+  filled: boolean;
 }
 export interface ColorPickerModel {
   label: string;
@@ -146,6 +148,8 @@ export interface TableModel {
 export interface DataTableModel {
   caption: string;
   preset: "populated" | "loading" | "empty" | "no-results" | "error";
+  // The column the table opens sorted by.
+  sort: "none" | "name";
 }
 export interface BadgeModel {
   children: string;
@@ -228,6 +232,7 @@ export interface CardModel {
 export interface AccordionModel {
   mode: "controlled" | "uncontrolled";
   collapsible: boolean;
+  defaultOpen: boolean;
 }
 export interface BreadcrumbsModel {
   label: string;
@@ -259,6 +264,8 @@ export interface TagInputModel {
   disabled: boolean;
   readOnly: boolean;
   mode: "controlled" | "uncontrolled";
+  // The example opens with sample tags.
+  filled: boolean;
 }
 export interface InputCopyModel {
   label: string;
@@ -320,12 +327,17 @@ export interface Playgrounds {
     mode: "controlled" | "uncontrolled";
     metadata: boolean;
     empty: boolean;
+    defaultExpanded: boolean;
+    defaultSelected: boolean;
   };
   "task-rows": Required<Omit<TaskRowsExampleProps, "language">>;
   "notification-list": Required<Omit<NotificationListExampleProps, "language">>;
   steps: {
     orientation: "horizontal" | "vertical";
     currentState: "upcoming" | "current" | "completed" | "error";
+    // The stage the example opens on. Also the mark of props saved after the
+    // last of the states (see defaultsBeforeRest).
+    step: number;
   };
   timeline: {
     descriptions: boolean;
@@ -430,7 +442,13 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     "chat-composer": { disabled: false, failSend: false },
     "prompt-bar": { disabled: false, failSend: false },
-    "file-tree": { mode: "uncontrolled", metadata: true, empty: false },
+    "file-tree": {
+      mode: "uncontrolled",
+      metadata: true,
+      empty: false,
+      defaultExpanded: true,
+      defaultSelected: false,
+    },
     "task-rows": {
       appearance: "capsules",
       mode: "uncontrolled",
@@ -442,8 +460,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       longContent: false,
       avatars: true,
       readControls: true,
+      allRead: false,
     },
-    steps: { orientation: "horizontal", currentState: "current" },
+    steps: { orientation: "horizontal", currentState: "current", step: 1 },
     timeline: {
       descriptions: true,
       icons: true,
@@ -473,6 +492,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       disabled: false,
       readOnly: false,
       mode: "controlled",
+      defaultValue: "482915",
     },
     "date-picker": {
       label: t("تاريخ الاستحقاق", "Due date"),
@@ -482,6 +502,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       max: "",
       disabled: false,
       mode: "controlled",
+      defaultValue: "2026-11-15",
     },
     "file-dropzone": {
       label: t("ملفات المراجعة", "Review files"),
@@ -497,6 +518,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       maxFiles: 3,
       disabled: false,
       mode: "controlled",
+      filled: true,
     },
     "color-picker": {
       label: t("لون العلامة التجارية", "Brand color"),
@@ -518,6 +540,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       disabled: false,
       readOnly: false,
       mode: "controlled",
+      filled: true,
     },
     "input-copy": {
       label: t("رابط الدعوة", "Invite link"),
@@ -526,7 +549,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       error: "",
       disabled: false,
     },
-    "filter-bar": { initialQuery: "", initialKind: "all", clearAll: true },
+    "filter-bar": { initialQuery: "", initialKind: "guide", clearAll: true },
     sidebar: {
       collapsed: false,
       grouped: true,
@@ -547,7 +570,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       ),
       actions: true,
     },
-    accordion: { mode: "controlled", collapsible: true },
+    accordion: { mode: "controlled", collapsible: true, defaultOpen: true },
     breadcrumbs: {
       label: t("مسار الصفحة", "Page path"),
       current: t("القراءة", "Reading"),
@@ -651,7 +674,11 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       rows: 3,
       mode: "controlled",
     },
-    "data-table": { caption: t("العملاء", "Customers"), preset: "populated" },
+    "data-table": {
+      caption: t("العملاء", "Customers"),
+      preset: "populated",
+      sort: "none",
+    },
     table: { caption: t("العملاء", "Customers"), preset: "populated" },
     field: {
       label: t("اسم العميل", "Customer name"),
@@ -1018,9 +1045,10 @@ const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
 // Old defaults that the states replaced (spec §8). Each is also a state a
 // visitor can pick (Empty, Unchecked, First...), so it moves to the new
 // resting state only in props saved before the states, never on an edit.
-const defaultsBeforeStates: Partial<
+type MovedDefaults = Partial<
   Record<ComponentId, Record<string, (string | number | boolean)[]>>
-> = {
+>;
+const defaultsBeforeStates: MovedDefaults = {
   input: { value: [""] },
   textarea: { value: [""] },
   select: { value: [""] },
@@ -1030,6 +1058,17 @@ const defaultsBeforeStates: Partial<
   "image-result": { state: ["loading"] },
   sources: { defaultExpanded: [false] },
 };
+// The same for the last of the states: props saved before them have no Steps
+// `step`, and every later save does.
+const defaultsBeforeRest: MovedDefaults = {
+  "filter-bar": { initialKind: ["all"] },
+};
+const wasDefault = (
+  moved: MovedDefaults,
+  component: ComponentId,
+  key: string,
+  item: unknown,
+) => moved[component]?.[key]?.some((old) => old === item) === true;
 export function normalizePlaygrounds(
   value: unknown,
   language: Language,
@@ -1038,8 +1077,12 @@ export function normalizePlaygrounds(
   if (!value || typeof value !== "object" || Array.isArray(value))
     return result;
   // Props saved before the states have no Modal `open`; every later save does.
-  const modal = (value as Record<string, unknown>).modal;
-  const beforeStates = !(modal && typeof modal === "object" && "open" in modal);
+  const savedWith = (page: string, key: string) => {
+    const model = (value as Record<string, unknown>)[page];
+    return !!model && typeof model === "object" && key in model;
+  };
+  const beforeStates = !savedWith("modal", "open"),
+    beforeRest = !savedWith("steps", "step");
   for (const component of Object.keys(result) as ComponentId[]) {
     const saved = (value as Record<string, unknown>)[component];
     if (!saved || typeof saved !== "object" || Array.isArray(saved)) continue;
@@ -1070,8 +1113,9 @@ export function normalizePlaygrounds(
       )
         continue;
       if (
-        beforeStates &&
-        defaultsBeforeStates[component]?.[key]?.some((old) => old === item)
+        (beforeStates &&
+          wasDefault(defaultsBeforeStates, component, key, item)) ||
+        (beforeRest && wasDefault(defaultsBeforeRest, component, key, item))
       )
         continue;
       if (
@@ -1103,11 +1147,6 @@ export function normalizePlaygrounds(
         ? Math.max(0, Math.min(20, Math.floor(p.maxTags)))
         : 5;
     }
-    if (
-      component === "filter-bar" &&
-      !["all", "guide", "note"].includes(result[component].initialKind)
-    )
-      result[component].initialKind = "all";
     // Carry the old invalid preset into the single error control.
     if (
       component === "input" &&
@@ -1134,6 +1173,7 @@ export function normalizePlaygrounds(
             ? ["initials", "photo"]
             : ["initials", "mixed"],
       shape: ["text", "rectangle", "circle"],
+      sort: ["none", "name"],
       illustration: ["no-records", "no-results", "getting-started", "none"],
       mode: ["controlled", "uncontrolled"],
       variant:

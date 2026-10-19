@@ -6,6 +6,10 @@ export interface FileTreeExampleProps {
   mode?: "controlled" | "uncontrolled";
   metadata?: boolean;
   empty?: boolean;
+  /** Opens with the project's folders open; false opens them closed. */
+  defaultExpanded?: boolean;
+  /** Opens with App.tsx selected and previewed; false opens with none. */
+  defaultSelected?: boolean;
 }
 /** A project tree beside a preview of the selected file. */
 export function FileTreeExample({
@@ -13,14 +17,15 @@ export function FileTreeExample({
   mode = "uncontrolled",
   metadata = true,
   empty = false,
+  defaultExpanded = true,
+  defaultSelected = true,
 }: FileTreeExampleProps) {
   const ar = language === "ar";
-  const [expanded, setExpanded] = useState<string[]>([
-    "project",
-    "src",
-    "components",
-  ]);
-  const [selected, setSelected] = useState<string | null>("app");
+  const openFolders = defaultExpanded ? ["project", "src", "components"] : [];
+  const [expanded, setExpanded] = useState<string[]>(openFolders);
+  const [selected, setSelected] = useState<string | null>(
+    defaultSelected ? "app" : null,
+  );
   const files: Record<string, string> = {
     app: 'import { Welcome } from "./components/Welcome";\n\nexport function App() {\n  return <Welcome />;\n}',
     welcome: ar
@@ -98,8 +103,8 @@ export function FileTreeExample({
               selectedId: selected,
             }
           : {
-              defaultExpandedIds: ["project", "src", "components"],
-              defaultSelectedId: "app",
+              defaultExpandedIds: openFolders,
+              defaultSelectedId: defaultSelected ? "app" : undefined,
             })}
         onSelectedChange={setSelected}
         onActivate={(node) => setSelected(node.id)}

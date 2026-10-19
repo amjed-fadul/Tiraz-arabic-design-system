@@ -161,9 +161,9 @@ export function Workbench() {
       [component]: [...(prev[component] ?? []).slice(-2), { name, value }],
     }));
   }
-  // A remount must never invent a decision. Editing or resetting a request
-  // voids its decision, as the component does, so a decision example starts
-  // over at its resting state; a state press still sets its own phase.
+  // A remount must never invent a decision. Editing a request voids its
+  // decision, as the component does, so a decision example starts over at its
+  // resting state; a state press still sets its own phase.
   function restartDecision() {
     if (active === "approval-card" || active === "approval-flow")
       setPhases((prev) => ({ ...prev, [active]: undefined }));
@@ -198,10 +198,12 @@ export function Workbench() {
       return;
     if (
       (active === "file-dropzone" || active === "color-picker") &&
-      !("mode" in patch)
+      !("mode" in patch) &&
+      !("filled" in patch)
     )
       return;
-    if (active === "tag-input" && !("mode" in patch)) return;
+    if (active === "tag-input" && !("mode" in patch) && !("filled" in patch))
+      return;
     if (active === "input" && !("mode" in patch) && !("value" in patch)) return;
     if (
       ["textarea", "checkbox", "radio-group"].includes(active) &&
@@ -216,36 +218,17 @@ export function Workbench() {
     setSettings({ ...defaultSettings });
     setTheme(defaultConfig.theme);
   }
+  // The one way back to a page's start: its props, its phase and the example.
   function resetPlayground() {
     if (active === "button") cancelButtonAction();
+    stopReplay();
     setPlaygrounds((prev) => ({
       ...prev,
       [active]: defaultPlaygrounds(language)[active],
     }));
     setEvents((prev) => ({ ...prev, [active]: [] }));
-    restartDecision();
+    setPhases((prev) => ({ ...prev, [active]: undefined }));
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
-  }
-  function replayPlayground() {
-    if (
-      [
-        "loading-state",
-        "thinking-indicator",
-        "thinking-state",
-        "tool-call",
-        "tool-chips",
-        "chat-thread",
-        "steps",
-        "ask-user-questions",
-        "approval-card",
-        "approval-flow",
-        "skeleton",
-        "spinner",
-        "progress",
-      ].includes(active)
-    ) {
-      setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
-    } else resetPlayground();
   }
   function openPage(id: ComponentId) {
     cancelButtonAction();
@@ -560,8 +543,8 @@ export function Workbench() {
                       key={active}
                       language={language}
                       code={code}
-                      replayable={canReplayPlayground(active, model)}
-                      onReplay={pageStates ? playReplay : replayPlayground}
+                      replayable={canReplayPlayground(active)}
+                      onReplay={playReplay}
                       name={{ ar: current.name[0], en: current.name[1] }}
                       states={pageStates?.states.map((state) => ({
                         id: state.id,
