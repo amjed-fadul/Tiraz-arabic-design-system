@@ -31,7 +31,8 @@ import createSource from "../system/ai/examples/CreateCustomer.tsx?raw";
 import type { DataTableModel } from "./model";
 import type { SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
-import { catalog } from "./catalog";
+import { catalog, chartIds } from "./catalog";
+import { assertNever, isOneOf } from "./exhaustive";
 import type {
   BadgeModel,
   CheckboxModel,
@@ -99,7 +100,7 @@ import "./system/components.css";
 export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
   if (
-    ["ask-user-questions", "approval-card", "approval-flow"].includes(component)
+    isOneOf(component, ["ask-user-questions", "approval-card", "approval-flow"])
   ) {
     const source = aiDecisionsSource.replace(
       /from "\.\.\/\.\.\/index"/g,
@@ -121,7 +122,7 @@ import "./system/components.css";
 export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
   if (
-    ["selection-actions", "context-meter", "model-selector"].includes(component)
+    isOneOf(component, ["selection-actions", "context-meter", "model-selector"])
   ) {
     const source = aiContextSource.replace(
       /from "\.\.\/\.\.\/index"/g,
@@ -142,7 +143,7 @@ import "./system/tokens.css";
 import "./system/components.css";
 export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
-  if (["image-result", "sources", "insight-cards"].includes(component)) {
+  if (isOneOf(component, ["image-result", "sources", "insight-cards"])) {
     const source = aiResultsSource
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replaceAll(
@@ -169,7 +170,7 @@ import "./system/tokens.css";
 import "./system/components.css";
 export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
-  if (["chat-thread", "chat-composer", "prompt-bar"].includes(component)) {
+  if (isOneOf(component, ["chat-thread", "chat-composer", "prompt-bar"])) {
     const source = chatSource
       .replace(
         'import { useLocalResponse } from "./useLocalResponse";',
@@ -191,7 +192,7 @@ import "./system/tokens.css";
 import "./system/components.css";
 export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
-  if (["code-block", "markdown", "streaming-text"].includes(component)) {
+  if (isOneOf(component, ["code-block", "markdown", "streaming-text"])) {
     const source = aiContentSource
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replace('from "./DemoFrame"', 'from "./system/ai/examples/DemoFrame"');
@@ -271,7 +272,7 @@ export default function Example() { return <div lang={${json(language)}}><System
 `;
   }
   if (
-    [
+    isOneOf(component, [
       "slider",
       "otp-input",
       "date-picker",
@@ -280,7 +281,7 @@ export default function Example() { return <div lang={${json(language)}}><System
       "tag-input",
       "filter-bar",
       "input-copy",
-    ].includes(component)
+    ])
   ) {
     const name =
       component === "slider"
@@ -347,10 +348,10 @@ export default function Example() {
 }
 `;
   }
-  if (component.endsWith("-chart"))
+  if (isOneOf(component, chartIds))
     return generateChartCode(component, model as ChartModel, config, language);
   if (
-    [
+    isOneOf(component, [
       "card",
       "accordion",
       "breadcrumbs",
@@ -364,7 +365,7 @@ export default function Example() {
       "tooltip",
       "modal",
       "empty-state",
-    ].includes(component)
+    ])
   )
     return generateBatchCode(component, model, config, language);
   if (component === "data-table") {
@@ -595,13 +596,15 @@ export default function Example() {
         ? `const [open, setOpen] = useState(${p.open});`
         : "";
     jsx = `<Sheet\n        trigger={<Button variant="${p.triggerVariant}" size="${p.triggerSize}">{${json(p.triggerLabel)}}</Button>}\n        ${attribute("title", p.title)}\n        ${attribute("description", p.description)}\n        ${attribute("closeLabel", p.closeLabel)}\n        ${p.side === "auto" ? "" : `side="${p.side}"`}\n        ${p.mode === "controlled" ? "open={open}" : ""}\n        onOpenChange={(next) => { ${p.mode === "controlled" ? "setOpen(next); " : ""}${recordEvent}("onOpenChange: " + next); }}\n        ${p.footer ? `footer={<SheetClose asChild><Button>{${json(p.footerLabel)}}</Button></SheetClose>}` : ""}\n      >\n        <p dir="auto">{${json(p.children)}}</p>\n        <dl>\n          <div><dt>{${json(t("البريد الإلكتروني", "Email"))}}</dt><dd><bdi dir="ltr">hello@madar.sa</bdi></dd></div>\n          <div><dt>{${json(t("الموقع الإلكتروني", "Website"))}}</dt><dd><bdi dir="ltr">https://madar.sa</bdi></dd></div>\n        </dl>\n      </Sheet>`;
-  } else {
+  } else if (component === "toast") {
     const p = model as ToastModel;
     imports.add("Button");
     imports.add("ToastProvider");
     imports.add("useToast");
     declarations = "const { toast } = useToast();";
     jsx = `<Button variant="secondary" onClick={() => {\n        toast(${JSON.stringify({ title: p.title, description: p.description, tone: p.tone, duration: p.duration }, null, 2)});\n        setEvent("toast: ${p.tone}");\n      }}>{${json(p.triggerLabel)}}</Button>`;
+  } else {
+    return assertNever(component, "generateCode");
   }
   const importsCode = `${["table", "badge"].includes(component) ? "" : `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\n`}import { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "@fontsource/ibm-plex-sans-arabic/400.css";\nimport "@fontsource/ibm-plex-sans-arabic/500.css";\nimport "@fontsource/ibm-plex-sans-arabic/600.css";\nimport "./system/tokens.css";\nimport "./system/components.css";`;
   const configCode = `const config: SystemConfig = {\n  ...defaultConfig,\n  theme: "${c.theme}",\n  direction: "${c.direction}",\n  density: "${c.density}",\n  accent: "${c.accent}",\n  typography: "${c.typography ?? "standard"}",\n  numerals: "${c.numerals ?? "arab"}",\n  radius: ${c.radius},\n  reducedMotion: ${c.reducedMotion},\n};`;

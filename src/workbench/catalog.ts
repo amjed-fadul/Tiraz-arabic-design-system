@@ -625,6 +625,15 @@ export const catalog = [
 }>;
 export type ComponentId = (typeof catalog)[number]["id"];
 
+// The pages that share one chart renderer. Playground and generateCode branch
+// on this list, so a chart page left out of it fails type-checking there.
+export const chartIds = [
+  "line-chart",
+  "area-chart",
+  "bar-chart",
+  "donut-chart",
+] as const satisfies readonly ComponentId[];
+
 // Field remains a public family; its composition reference lives under Input.
 export const navigationCatalog = catalog.filter((item) => item.id !== "field");
 

@@ -74,6 +74,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "src/workbench/generate.ts",
       "src/workbench/generate-batch.ts",
       "src/workbench/generate-charts.ts",
+      "src/workbench/exhaustive.ts",
       "src/system/ai/examples/team.ts",
       "src/workbench/catalog.ts",
       "src/workbench/model.ts",

@@ -134,7 +134,9 @@ import type {
   TableModel,
 } from "./model";
 import { nativeAttributes } from "./model";
+import { chartIds } from "./catalog";
 import type { ComponentId } from "./catalog";
+import { assertNever, isOneOf } from "./exhaustive";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import type { ButtonProps, ButtonState } from "../system";
@@ -454,7 +456,7 @@ export function Playground({
       />
     );
   }
-  if (component.endsWith("-chart"))
+  if (isOneOf(component, chartIds))
     return (
       <Suspense
         fallback={
@@ -938,10 +940,13 @@ export function Playground({
       </Sheet>
     );
   }
-  const p = model as ToastModel;
-  return (
-    <ToastProvider label={p.providerLabel} closeLabel={p.closeLabel}>
-      <ToastPlayground model={p} onEvent={onEvent} />
-    </ToastProvider>
-  );
+  if (component === "toast") {
+    const p = model as ToastModel;
+    return (
+      <ToastProvider label={p.providerLabel} closeLabel={p.closeLabel}>
+        <ToastPlayground model={p} onEvent={onEvent} />
+      </ToastProvider>
+    );
+  }
+  return assertNever(component, "Playground");
 }
