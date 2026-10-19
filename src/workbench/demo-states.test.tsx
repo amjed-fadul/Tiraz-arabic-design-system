@@ -511,6 +511,256 @@ it.each(propsFamilies)(
   },
 );
 
+// Each phase page with its resting state, each state with what the stage shows
+// in that phase, and the Replay steps where the page has any.
+type PhaseFamily = {
+  id: ComponentId;
+  resting: WordKey;
+  list: ReadonlyArray<readonly [WordKey, () => unknown]>;
+  replay?: ReadonlyArray<WordKey>;
+};
+const stageNode = () =>
+  screen.getByRole("region", { name: "المعاينة التفاعلية" });
+const streamed = (state: string) => () =>
+  expect(stageNode().querySelector(".tz-streaming-text")).toHaveAttribute(
+    "data-state",
+    state,
+  );
+const saveCall = () =>
+  stage().getByText("حفظ الملخص في Drive").closest(".tz-tool-call");
+const draftTask = () =>
+  stage().getByText("صياغة رسائل العملاء").closest(".tz-agent-task");
+const thinking = () => stageNode().querySelector(".tz-thinking-indicator");
+const field = (name: string) =>
+  (stage().getByRole("textbox", { name }) as HTMLTextAreaElement).value;
+const toolbar = () =>
+  screen.queryByRole("toolbar", { name: "إجراءات النص المحدّد", hidden: true });
+const phaseFamilies: PhaseFamily[] = [
+  {
+    id: "streaming-text",
+    resting: "done",
+    list: [
+      ["streaming", streamed("streaming")],
+      [
+        "done",
+        () => {
+          streamed("completed")();
+          expect(stageNode()).toHaveTextContent("INV-1043");
+        },
+      ],
+    ],
+    replay: ["streaming", "done"],
+  },
+  {
+    id: "tool-call",
+    resting: "done",
+    list: [
+      [
+        "pending",
+        () => expect(saveCall()).toHaveAttribute("data-state", "pending"),
+      ],
+      [
+        "running",
+        () => {
+          expect(saveCall()).toHaveAttribute("data-state", "running");
+          expect(saveCall()).toHaveTextContent("جارٍ التنفيذ");
+        },
+      ],
+      [
+        "done",
+        () =>
+          expect(saveCall()).toHaveTextContent(
+            "حُفظ الملف في Finance/2026/october-summary.md",
+          ),
+      ],
+      [
+        "failed",
+        () =>
+          expect(
+            within(saveCall() as HTMLElement).getByRole("button", {
+              name: "إعادة المحاولة",
+            }),
+          ).toBeVisible(),
+      ],
+    ],
+    replay: ["pending", "running", "done"],
+  },
+  {
+    id: "task-rows",
+    resting: "running",
+    list: [
+      ["running", () => expect(draftTask()).toHaveTextContent("جارٍ التنفيذ")],
+      ["done", () => expect(draftTask()).toHaveTextContent("مكتملة")],
+    ],
+    replay: ["running", "done"],
+  },
+  {
+    id: "chat-thread",
+    resting: "newMessage",
+    list: [
+      [
+        "default",
+        () => expect(thinking()).toHaveTextContent("جارٍ إعداد الرد"),
+      ],
+      [
+        "newMessage",
+        () => {
+          expect(thinking()).toBeNull();
+          expect(
+            stage().getByRole("button", { name: "رد مفيد" }),
+          ).toBeVisible();
+        },
+      ],
+    ],
+    replay: ["default", "newMessage"],
+  },
+  {
+    id: "chat-composer",
+    resting: "writing",
+    list: [
+      ["empty", () => expect(field("رسالتك")).toBe("")],
+      ["writing", () => expect(field("رسالتك")).toMatch(/\S/)],
+      [
+        "submitting",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "إيقاف الرد" }),
+          ).toBeVisible();
+          expect(thinking()).toHaveTextContent("جارٍ إعداد الرد");
+        },
+      ],
+    ],
+  },
+  {
+    id: "prompt-bar",
+    resting: "writing",
+    list: [
+      [
+        "empty",
+        () => {
+          expect(field("طلبك")).toBe("");
+          expect(
+            stage().getByRole("list", { name: "طلبات مقترحة" }),
+          ).toBeVisible();
+        },
+      ],
+      ["writing", () => expect(field("طلبك")).toMatch(/\S/)],
+    ],
+  },
+  {
+    id: "selection-actions",
+    resting: "selected",
+    list: [
+      [
+        "idle",
+        () => {
+          expect(document.getSelection()?.isCollapsed).toBe(true);
+          expect(toolbar()).toBeNull();
+        },
+      ],
+      [
+        "selected",
+        async () => {
+          // A real selection of the reply's first sentence, which the toolbar
+          // answers.
+          expect(document.getSelection()?.toString()).toMatch(
+            /^راجعتُ فواتير أكتوبر.*الإيصالات\.$/,
+          );
+          await waitFor(() => expect(toolbar()).not.toBeNull());
+        },
+      ],
+    ],
+  },
+  {
+    id: "ask-user-questions",
+    resting: "asking",
+    list: [
+      [
+        "asking",
+        () => {
+          expect(
+            stage().getByRole("heading", {
+              name: "بأي الفواتير أبدأ المطابقة؟",
+            }),
+          ).toBeVisible();
+          expect(
+            stage().getByRole("button", { name: "إرسال الإجابات" }),
+          ).toBeEnabled();
+        },
+      ],
+    ],
+  },
+  {
+    id: "approval-card",
+    resting: "waiting",
+    list: [
+      [
+        "waiting",
+        () =>
+          expect(
+            stage().getByRole("button", { name: "تعليم كمدفوعة" }),
+          ).toBeEnabled(),
+      ],
+      [
+        "approved",
+        () => {
+          expect(stage().getByText("تمت الموافقة")).toBeVisible();
+          expect(
+            stage().queryByRole("button", { name: "تعليم كمدفوعة" }),
+          ).toBeNull();
+        },
+      ],
+      ["rejected", () => expect(stage().getByText("تم الرفض")).toBeVisible()],
+    ],
+  },
+  {
+    id: "approval-flow",
+    resting: "first",
+    list: [
+      ["first", () => expect(stage().getByText("الطلب ١ من ٢")).toBeVisible()],
+      [
+        "second",
+        () => {
+          expect(stage().getByText("الطلب ٢ من ٢")).toBeVisible();
+          expect(
+            stage().getByRole("button", { name: "إرسال الملخص" }),
+          ).toBeEnabled();
+        },
+      ],
+      [
+        "done",
+        () => expect(stage().getByText("اكتملت مراجعة الطلبات.")).toBeVisible(),
+      ],
+    ],
+  },
+];
+
+it.each(phaseFamilies)(
+  "applies every phase state: $id",
+  async ({ id, resting, list, replay }) => {
+    open(id);
+    expect(stateButtons().map((button) => button.textContent)).toEqual(
+      list.map(([key]) => word(key)),
+    );
+    expect(pressedWords()).toEqual([word(resting)]);
+    for (const [key, shows] of list) {
+      press(key);
+      expect(pressedWords()).toEqual([word(key)]);
+      await shows();
+    }
+    if (!replay) return;
+    vi.useFakeTimers();
+    const steps = demoStates[id]!.replay!;
+    fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
+    for (const [index, key] of replay.entries()) {
+      expect(pressedWords()).toEqual([word(key)]);
+      await list.find(([state]) => state === key)![1]();
+      await wait(steps[index].ms);
+    }
+    expect(pressedWords()).toEqual([word(replay.at(-1)!)]);
+  },
+);
+
 it("loads saved props from before the states", () => {
   // Saved before the states: pages on the old defaults, no Modal `open`.
   persist(storageKeys.playgrounds, {

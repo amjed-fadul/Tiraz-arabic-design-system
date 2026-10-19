@@ -100,7 +100,7 @@ it.each(["chat-composer", "prompt-bar"] as const)(
     expect(input).toHaveValue("لخّص الملاحظات");
   },
 );
-it("brings the chat-thread playground answer after a thinking beat, and replays it without resetting the panel", async () => {
+it("opens the chat-thread playground on the new message, and replays the thinking beat without resetting the panel", async () => {
   vi.useFakeTimers();
   persist(storageKeys.documentation, { language: "en", active: "chat-thread" });
   render(<Workbench />);
@@ -112,15 +112,16 @@ it("brings the chat-thread playground answer after a thinking beat, and replays 
     screen.getByRole("region", { name: "Interactive playground" });
   const stage = () => within(region());
   const thinking = () => region().querySelector(".tz-thinking-indicator");
-  expect(thinking()).toHaveTextContent("Preparing reply");
-  expect(stage().queryByRole("button", { name: "Good response" })).toBeNull();
-  await act(async () => vi.advanceTimersByTime(1400));
+  // The page rests on the answer, and nothing plays on its own.
   expect(thinking()).toBeNull();
   expect(stage().getByRole("button", { name: "Good response" })).toBeVisible();
+  await act(async () => vi.advanceTimersByTime(1400));
+  expect(thinking()).toBeNull();
   fireEvent.click(screen.getByRole("button", { name: "Replay example" }));
   expect(thinking()).toHaveTextContent("Preparing reply");
   expect(stage().queryByRole("button", { name: "Good response" })).toBeNull();
   expect(longContent).toBeChecked();
   await act(async () => vi.advanceTimersByTime(1400));
+  expect(thinking()).toBeNull();
   expect(stage().getByRole("button", { name: "Good response" })).toBeVisible();
 });

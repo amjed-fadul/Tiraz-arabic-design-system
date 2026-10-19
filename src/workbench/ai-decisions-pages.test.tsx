@@ -90,6 +90,38 @@ it.each([
       ).toHaveTextContent("Approved");
   },
 );
+it.each([
+  ["approval-card", "Waiting", "Mark as paid", "Approved"],
+  ["approval-flow", "First", "Keep status", "Second"],
+] as const)(
+  "follows an interactive flow on %s",
+  async (active, before, decide, after) => {
+    vi.useFakeTimers();
+    persist(storageKeys.documentation, { language: "en", active });
+    render(<Workbench />);
+    const pressed = () =>
+      within(screen.getByRole("group", { name: "Example states" }))
+        .getAllByRole("button")
+        .filter((button) => button.getAttribute("aria-pressed") === "true")
+        .map((button) => button.textContent);
+    expect(pressed()).toEqual([before]);
+    await act(async () =>
+      fireEvent.click(screen.getByRole("button", { name: decide })),
+    );
+    // The switcher moves once the host has accepted the decision, and says so.
+    expect(pressed()).toEqual([before]);
+    await act(async () => vi.advanceTimersByTime(700));
+    expect(pressed()).toEqual([after]);
+    expect(
+      document.querySelector(".tz-demo-header > [role='status']"),
+    ).toHaveTextContent(`State: ${after}`);
+    // The decision made stays as it was made.
+    if (active === "approval-flow")
+      expect(
+        screen.getByRole("list", { name: "Prior decisions" }),
+      ).toHaveTextContent("Rejected");
+  },
+);
 it("runs a generated source example and records rejection without execution", async () => {
   const code = generateCode(
     "approval-card",

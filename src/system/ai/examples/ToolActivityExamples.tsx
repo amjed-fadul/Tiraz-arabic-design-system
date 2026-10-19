@@ -9,20 +9,33 @@ export function ToolCallExample({
   language = "ar",
   defaultExpanded = false,
   longContent = false,
+  phase,
+  onPhaseChange,
 }: {
   language?: Language;
   defaultExpanded?: boolean;
   longContent?: boolean;
+  /**
+   * The save's state ("pending", "running", "completed" or "failed"), held
+   * until a retry moves it on and reports each step.
+   */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar";
   // Retrying the failed save runs it again, and this time it succeeds.
-  const [save, setSave] = useState<ToolCallState>("failed"),
+  const [local, setLocal] = useState<ToolCallState>("failed"),
     retryTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const save = (phase as ToolCallState | undefined) ?? local;
   useEffect(() => () => clearTimeout(retryTimer.current), []);
+  function move(next: ToolCallState) {
+    setLocal(next);
+    onPhaseChange?.(next);
+  }
   function retry() {
-    setSave("running");
+    move("running");
     clearTimeout(retryTimer.current);
-    retryTimer.current = setTimeout(() => setSave("completed"), 1200);
+    retryTimer.current = setTimeout(() => move("completed"), 1200);
   }
   return (
     <div className="tz-tool-calls">

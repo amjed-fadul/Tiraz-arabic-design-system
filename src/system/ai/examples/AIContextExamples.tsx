@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Copy, CornerDownLeft, Quote } from "lucide-react";
 import {
   ChatComposer,
@@ -56,15 +56,32 @@ const reply = (ar: boolean, long = false) =>
 export function AIContextExample({
   language = "ar",
   longContent = false,
+  phase,
 }: {
   language?: Language;
   longContent?: boolean;
+  /**
+   * "idle" or "selected": Selected selects the reply's first sentence, and
+   * the toolbar answers that real selection.
+   */
+  phase?: string;
+  /** Part of the phase pair; a selection is not reported, so it never fires. */
+  onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar";
   const [model, setModel] = useState("studio-draft"),
     [draft, setDraft] = useState("");
   const [sent, setSent] = useState<ChatMessage[]>([]);
   const models = sampleModels(ar, longContent);
+  const sample = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    const node = sample.current,
+      text = node?.firstChild,
+      words = text?.textContent;
+    if (phase !== "selected" || !node || !text || !words) return;
+    const end = words.indexOf(".") + 1 || words.length;
+    node.ownerDocument.getSelection()?.setBaseAndExtent(text, 0, text, end);
+  }, [phase, ar, longContent]);
   function append(text: string) {
     setDraft((value) => (value ? `${value}\n${text}` : text));
   }
@@ -125,7 +142,7 @@ export function AIContextExample({
               id: "reconciliation-reply",
               role: "assistant",
               identity: ar ? "مساعد المالية" : "Finance assistant",
-              content: <p>{reply(ar, longContent)}</p>,
+              content: <p ref={sample}>{reply(ar, longContent)}</p>,
             },
             ...sent,
           ]}
@@ -158,6 +175,9 @@ export function AIContextExample({
 export function SelectionActionsExample(props: {
   language?: Language;
   longContent?: boolean;
+  /** "idle" or "selected"; see AIContextExample. */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
   return <AIContextExample {...props} />;
 }

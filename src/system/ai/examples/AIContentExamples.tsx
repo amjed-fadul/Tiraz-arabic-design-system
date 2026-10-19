@@ -96,19 +96,24 @@ export function MarkdownExample({
 export function StreamingTextExample({
   language = "ar",
   markdown = false,
-  code,
+  phase,
 }: {
   language?: Language;
   markdown?: boolean;
-  /** Docs only: the frame's Code view and copy button show this source. */
-  code?: string;
+  /**
+   * "streaming" or "done": shows that phase and stays in it. Without a phase
+   * the example plays once in its own frame.
+   */
+  phase?: string;
+  /** Part of the phase pair; nothing here moves the text, so it never fires. */
+  onPhaseChange?: (phase: string) => void;
 }) {
   return (
     <StreamingDemo
       language={language}
       markdown={markdown}
       autoStart
-      code={code}
+      phase={phase}
     />
   );
 }
@@ -152,19 +157,28 @@ export function StreamingDemo({
   markdown = false,
   autoStart = false,
   code,
+  phase,
 }: {
   language?: Language;
   markdown?: boolean;
   autoStart?: boolean;
   code?: string;
+  /**
+   * "streaming" streams the chunks and stays streaming; "done" shows them
+   * all. A phase leaves the frame to the page, so there is none here.
+   */
+  phase?: string;
 }) {
   const ar = language === "ar",
     reduced = usePrefersReducedMotion();
-  const [identity, setIdentity] = useState({ language, markdown, autoStart });
+  const [identity, setIdentity] = useState({
+    language,
+    markdown,
+    autoStart,
+    phase,
+  });
   const [text, setText] = useState("");
-  const [phase, setPhase] = useState<"idle" | "streaming" | "completed">(
-    "idle",
-  );
+  const [run, setRun] = useState<"idle" | "streaming" | "completed">("idle");
   const generation = useRef(0),
     timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const invalidate = useCallback(() => {
@@ -175,32 +189,33 @@ export function StreamingDemo({
   if (
     identity.language !== language ||
     identity.markdown !== markdown ||
-    identity.autoStart !== autoStart
+    identity.autoStart !== autoStart ||
+    identity.phase !== phase
   ) {
-    setIdentity({ language, markdown, autoStart });
+    setIdentity({ language, markdown, autoStart, phase });
     setText("");
-    setPhase("idle");
+    setRun("idle");
   }
   const start = useCallback(() => {
     invalidate();
-    const run = generation.current;
+    const current = generation.current;
     const chunks = streamChunks(ar, markdown);
     if (reduced) {
       setText(chunks.join(""));
-      setPhase("completed");
+      setRun("completed");
       return;
     }
     setText("");
-    setPhase("streaming");
+    setRun("streaming");
     chunks.forEach((_, i) =>
       timers.current.push(
         setTimeout(
           () => {
-            if (generation.current !== run) return;
+            if (generation.current !== current) return;
             setText(chunks.slice(0, i + 1).join(""));
             if (i === chunks.length - 1) {
               timers.current = [];
-              setPhase("completed");
+              setRun("completed");
             }
           },
           (i + 1) * (markdown ? 320 : 160),
@@ -212,11 +227,23 @@ export function StreamingDemo({
     invalidate();
     // Defer autoplay to a cancellable host callback: StrictMode cleanup, prop
     // changes and unmount all invalidate it before a run can start.
-    if (autoStart) timers.current.push(setTimeout(start, 0));
+    if (phase === undefined ? autoStart : phase === "streaming")
+      timers.current.push(setTimeout(start, 0));
     return invalidate;
-  }, [autoStart, start, invalidate]);
+  }, [autoStart, phase, start, invalidate]);
+  const stream = (
+    <div style={{ minBlockSize: 100 }}>
+      <StreamingText
+        text={phase === "done" ? streamChunks(ar, markdown).join("") : text}
+        state={(phase ?? run) === "streaming" ? "streaming" : "completed"}
+        markdown={markdown}
+        statusLabel={run === "idle" && phase !== "done" ? "" : undefined}
+      />
+    </div>
+  );
+  if (phase !== undefined) return stream;
   const playLabel =
-    phase === "idle"
+    run === "idle"
       ? ar
         ? "تشغيل المثال"
         : "Start local demo"
@@ -235,14 +262,7 @@ export function StreamingDemo({
       replayLabel={playLabel}
       onReplay={start}
     >
-      <div style={{ minBlockSize: 100 }}>
-        <StreamingText
-          text={text}
-          state={phase === "streaming" ? "streaming" : "completed"}
-          markdown={markdown}
-          statusLabel={phase === "idle" ? "" : undefined}
-        />
-      </div>
+      {stream}
     </DemoFrame>
   );
 }

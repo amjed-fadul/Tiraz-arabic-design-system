@@ -1,9 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 import { DemoFrame } from "../system/ai/examples/DemoFrame";
-import type { ComponentId } from "./catalog";
 import type { Language } from "./i18n";
 export function PreviewFrame({
-  component,
   language,
   code,
   onReplay,
@@ -11,7 +9,6 @@ export function PreviewFrame({
   children,
   ...frame
 }: {
-  component: ComponentId;
   language: Language;
   code: string;
   onReplay: () => void;
@@ -27,8 +24,6 @@ export function PreviewFrame({
   | "onViewChange"
   | "replaying"
 >) {
-  // StreamingDemo shares this frame but owns replay so its header never remounts.
-  if (component === "streaming-text") return children;
   return (
     <DemoFrame
       language={language}

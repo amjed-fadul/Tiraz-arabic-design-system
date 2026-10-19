@@ -53,37 +53,57 @@ it("gives static previews a matching frame with view tabs and only a copy-code h
       .querySelector("pre")!.textContent,
   ).toBe(copied);
 });
-it("keeps streaming autoplay, replaces stop with copy, and replays without losing header focus", async () => {
+it("replays streaming text from the page's own frame, replacing stop with copy and keeping header focus", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
   fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
-  await act(async () => vi.advanceTimersByTime(640));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
-  // Streaming now lives only in the playground frame.
+  // The page's frame is the only one, and the text is complete at rest.
   const frames = document.querySelectorAll(".tz-demo-frame");
   expect(frames).toHaveLength(1);
-  for (const frame of frames) {
-    const header = frame.querySelector(".tz-demo-header") as HTMLElement;
-    expect(within(header).getByRole("tablist")).toBeVisible();
-    expect(within(header).getAllByRole("button")).toHaveLength(2);
-    expect(within(header).queryByRole("button", { name: /إلغاء/ })).toBeNull();
-    expect(
-      within(header).getByRole("button", { name: "نسخ الكود" }),
-    ).toBeVisible();
-    const replay = within(header).getByRole("button", {
-      name: "إعادة تشغيل المثال",
-    });
-    replay.focus();
-    fireEvent.click(replay);
-    expect(replay).toHaveFocus();
-    expect(frame.querySelector(".tz-stream-content")?.textContent).toBe("");
-  }
-  await act(async () => vi.advanceTimersByTime(4000));
-  for (const frame of frames)
-    expect(frame.querySelector(".tz-streaming-text")).toHaveAttribute(
-      "data-state",
-      "completed",
+  const frame = frames[0] as HTMLElement;
+  const text = () => frame.querySelector(".tz-streaming-text");
+  const content = () => frame.querySelector(".tz-stream-content")?.textContent;
+  const pressed = () =>
+    Array.from(
+      frame.querySelectorAll(".tz-demo-states [aria-pressed='true']"),
+      (button) => button.textContent,
     );
+  await act(async () => vi.advanceTimersByTime(4000));
+  expect(text()).toHaveAttribute("data-state", "completed");
+  expect(content()).toContain("INV-1043");
+  expect(pressed()).toEqual(["اكتمل"]);
+  const header = frame.querySelector(".tz-demo-header") as HTMLElement;
+  expect(within(header).getByRole("tablist")).toBeVisible();
+  expect(within(header).getAllByRole("button")).toHaveLength(2);
+  expect(within(header).queryByRole("button", { name: /إلغاء/ })).toBeNull();
+  expect(
+    within(header).getByRole("button", { name: "نسخ الكود" }),
+  ).toBeVisible();
+  const replay = within(header).getByRole("button", {
+    name: "إعادة تشغيل المثال",
+  });
+  replay.focus();
+  fireEvent.click(replay);
+  expect(replay).toHaveFocus();
+  // Replay streams the text again from its first word...
+  expect(pressed()).toEqual(["يصل تباعًا"]);
+  expect(text()).toHaveAttribute("data-state", "streaming");
+  expect(content()).toBe("");
+  await act(async () => vi.advanceTimersByTime(160));
+  expect(content()).toContain("اكتملت");
+  expect(content()).not.toContain("INV-1043");
+  // ...then shows it done, and says so once.
+  await act(async () => vi.advanceTimersByTime(2440));
+  expect(pressed()).toEqual(["اكتمل"]);
+  expect(text()).toHaveAttribute("data-state", "completed");
+  expect(content()).toContain("INV-1043");
+  await act(async () => vi.advanceTimersByTime(800));
+  expect(header.querySelector(":scope > [role='status']")).toHaveTextContent(
+    "الحالة: اكتمل",
+  );
+  expect(vi.getTimerCount()).toBe(0);
+  expect(replay).toHaveFocus();
 });
 it("resets an interactive playground from the inspector without remounting the frame", async () => {
   const user = userEvent.setup();
@@ -123,11 +143,11 @@ it("offers replay only on pages with a lifecycle to play", () => {
     "alert",
     "empty-state",
     "textarea",
+    "chat-composer",
   ] as const)
     expect(canReplayPlayground(component, playgrounds[component])).toBe(false);
   for (const component of [
     "chat-thread",
-    "chat-composer",
     "steps",
     "tool-chips",
     "progress",

@@ -47,7 +47,7 @@ it.each([
     expect(String(copy.mock.calls.at(-1)?.[0])).toContain(code);
   },
 );
-it("retries the failed save in the tool-call playground until it completes, and replays the failure", async () => {
+it("retries a failed save in the tool-call playground until it completes, with the switcher following, and replays the run", async () => {
   vi.useFakeTimers();
   persist(storageKeys.documentation, { language: "ar", active: "tool-call" });
   render(<Workbench />);
@@ -57,12 +57,22 @@ it("retries the failed save in the tool-call playground until it completes, and 
     within(stage())
       .getByText("حفظ الملخص في Drive")
       .closest(".tz-tool-call") as HTMLElement;
+  const states = within(screen.getByRole("group", { name: "حالات المثال" }));
+  const pressed = () =>
+    states
+      .getAllByRole("button")
+      .filter((button) => button.getAttribute("aria-pressed") === "true")
+      .map((button) => button.textContent);
+  // The page rests on Done; Failed shows the save that can be retried.
+  expect(save()).toHaveAttribute("data-state", "completed");
+  fireEvent.click(states.getByRole("button", { name: "تعثّر" }));
   expect(save()).toHaveAttribute("data-state", "failed");
   const trigger = within(save()).getByRole("button", { expanded: true });
   fireEvent.click(
     within(save()).getByRole("button", { name: "إعادة المحاولة" }),
   );
   expect(save()).toHaveAttribute("data-state", "running");
+  expect(pressed()).toEqual(["يعمل"]);
   expect(trigger).toHaveFocus();
   expect(
     within(save()).queryByRole("button", { name: "إعادة المحاولة" }),
@@ -71,15 +81,18 @@ it("retries the failed save in the tool-call playground until it completes, and 
   expect(save()).toHaveAttribute("data-state", "running");
   await act(async () => vi.advanceTimersByTime(1));
   expect(save()).toHaveAttribute("data-state", "completed");
+  expect(pressed()).toEqual(["اكتمل"]);
   expect(save()).toHaveTextContent(
     "حُفظ الملف في Finance/2026/october-summary.md",
   );
   expect(save()).toHaveTextContent("1.2s");
+  // Replay plays the save from waiting to done.
   fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
-  expect(save()).toHaveAttribute("data-state", "failed");
-  expect(
-    within(save()).getByRole("button", { name: "إعادة المحاولة" }),
-  ).toBeVisible();
+  expect(save()).toHaveAttribute("data-state", "pending");
+  await act(async () => vi.advanceTimersByTime(1000));
+  expect(save()).toHaveAttribute("data-state", "running");
+  await act(async () => vi.advanceTimersByTime(1200));
+  expect(save()).toHaveAttribute("data-state", "completed");
 });
 function chips(container: HTMLElement) {
   return Array.from(container.querySelectorAll(".tz-tool-chip"), (chip) => [

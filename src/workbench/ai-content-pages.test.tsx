@@ -182,7 +182,7 @@ it.each(["ar", "en"] as const)(
   },
 );
 
-it("uses a compact header with view tabs and named icon-only controls in the playground demo", async () => {
+it("uses the page's frame header for the streaming demo, with view tabs, Replay and an icon-only copy control", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "النص المتتابع" }));
@@ -207,37 +207,35 @@ it("uses a compact header with view tabs and named icon-only controls in the pla
   expect(controls).toHaveLength(2);
   for (const control of controls) {
     expect(control).toHaveAccessibleName();
-    expect(control.textContent).toBe("");
     expect(control.querySelector("svg")).not.toBeNull();
   }
-  const play = within(playground).getByRole("button", {
-    name: "Replay local demo",
-  });
+  // Replay says its word inside its name; Copy is an icon alone.
+  const play = within(header).getByRole("button", { name: "Replay example" });
+  expect(play).toHaveTextContent("Replay");
+  const copy = within(header).getByRole("button", { name: "Copy code" });
+  expect(copy.textContent).toBe("");
   play.focus();
   await user.keyboard("{Enter}");
-  expect(play).toHaveAccessibleName("Replay local demo");
   expect(play).toHaveFocus();
-  expect(
-    within(playground).getByRole("button", { name: "Copy code" }),
-  ).toBeVisible();
+  expect(copy).toBeVisible();
   expect(
     within(playground).queryByRole("button", { name: "Cancel demo" }),
   ).toBeNull();
 });
 
-it("automatically runs the documentation demo without local footer or empty event scaffolding", async () => {
+it("opens the documentation demo complete, without autoplay, local footer or empty event scaffolding", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
   fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(0));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
-  const demos = document.querySelectorAll(".tz-stream-demo");
-  expect(demos).toHaveLength(1);
-  for (const demo of demos)
-    expect(demo.querySelector(".tz-streaming-text")).toHaveAttribute(
-      "data-state",
-      "streaming",
-    );
+  // The page rests on Done; nothing streams until Replay.
+  const texts = document.querySelectorAll(
+    ".playground-region .tz-streaming-text",
+  );
+  expect(texts).toHaveLength(1);
+  expect(texts[0]).toHaveAttribute("data-state", "completed");
+  expect(texts[0]).toHaveTextContent("INV-1043");
   expect(document.querySelector(".tz-stream-demo-note")).toBeNull();
   expect(
     screen.queryByText("عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."),

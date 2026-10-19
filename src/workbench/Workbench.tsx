@@ -263,6 +263,10 @@ export function Workbench() {
     stopReplay();
     stopFocusReturn.current?.();
     applyState(id);
+    // A phase starts its example afresh, dropping what the visitor did and
+    // anything still waiting on the host.
+    if (pageStates?.states.find((state) => state.id === id)?.phase)
+      setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
     openedFromState.current = id === "open";
   }
   function playReplay() {
@@ -270,6 +274,8 @@ export function Workbench() {
     if (!steps) return;
     if (replayTimer.current !== null) clearTimeout(replayTimer.current);
     openedFromState.current = false;
+    // The example starts over, even when it is already in the first phase.
+    setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
     // Raised with the first step, so the frame stays silent until the end.
     setReplaying(true);
     const play = (index: number) => {
@@ -543,7 +549,6 @@ export function Workbench() {
                       // One frame per page, so a page change is never
                       // announced as a state change.
                       key={active}
-                      component={active}
                       language={language}
                       code={code}
                       replayable={canReplayPlayground(active, model)}
@@ -571,7 +576,6 @@ export function Workbench() {
                           component={active}
                           model={model}
                           language={language}
-                          code={code}
                           onPatch={(patch) => {
                             patchPage(active, patch);
                             if (
@@ -586,9 +590,12 @@ export function Workbench() {
                           onButtonAction={buttonAction}
                           buttonState={buttonFeedback ?? undefined}
                           phase={phase}
-                          onPhaseChange={(next) =>
-                            setPhases((prev) => ({ ...prev, [active]: next }))
-                          }
+                          onPhaseChange={(next) => {
+                            // The visitor moved the example on, which ends
+                            // a Replay before its next step overwrites it.
+                            stopReplay();
+                            setPhases((prev) => ({ ...prev, [active]: next }));
+                          }}
                         />
                       </div>
                     </PreviewFrame>

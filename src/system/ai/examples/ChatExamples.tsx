@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { Dispatch, SetStateAction } from "react";
 import { ThumbsUp } from "lucide-react";
 import { useLocalResponse } from "./useLocalResponse";
@@ -40,6 +46,24 @@ function useLatency() {
     [],
   );
 }
+/**
+ * Reports where the visitor moves the example. It runs when that changes, not
+ * when the phase does, so a phase the example was given is never sent back.
+ */
+function usePhaseReport(
+  now: string,
+  phase?: string,
+  onPhaseChange?: (phase: string) => void,
+) {
+  const latest = useRef({ phase, onPhaseChange });
+  useLayoutEffect(() => {
+    latest.current = { phase, onPhaseChange };
+  });
+  useEffect(() => {
+    const { phase, onPhaseChange } = latest.current;
+    if (phase !== undefined && now !== phase) onPhaseChange?.(now);
+  }, [now]);
+}
 /** Config or OS preference; scripted openings start on their final state. */
 function useReducedMotion() {
   const { config } = useSystem();
@@ -54,12 +78,20 @@ export function ChatThreadExample({
   language = "ar",
   longContent = false,
   followOutput = false,
+  phase,
 }: {
   language?: Language;
   /** Accepted for compatibility; assistant replies carry no identity. */
   identities?: boolean;
   longContent?: boolean;
   followOutput?: boolean;
+  /**
+   * "default" (the reply is being prepared) or "new-message" (it has
+   * arrived), held as given. Without a phase the reply arrives on its own.
+   */
+  phase?: string;
+  /** Part of the phase pair; nothing here moves the thread, so it never fires. */
+  onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar",
     [helpful, setHelpful] = useState(false),
@@ -67,11 +99,12 @@ export function ChatThreadExample({
     [arrived, setArrived] = useState(false);
   // The reply arrives after a short thinking beat; reduced motion shows it at once.
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || phase !== undefined) return;
     const timer = setTimeout(() => setArrived(true), 1400);
     return () => clearTimeout(timer);
-  }, [reduced]);
-  const answered = reduced || arrived;
+  }, [reduced, phase]);
+  const answered =
+    phase === undefined ? reduced || arrived : phase === "new-message";
   const tips = ar
     ? [
         "التزم بنوع واحد من الأرقام في الجداول، عربية أو لاتينية.",
@@ -150,12 +183,21 @@ export function ChatConversation({
   compact = false,
   disabled = false,
   failSend = false,
+  phase,
+  onPhaseChange,
 }: {
   language?: Language;
   compact?: boolean;
   disabled?: boolean;
   /** Every send fails: the composer explains why and keeps the draft. */
   failSend?: boolean;
+  /**
+   * "empty", "writing" or "submitting": opens there, after the opening
+   * exchange, and reports where the visitor moves it. Without a phase the
+   * opening exchange plays on its own.
+   */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
   // A locale change unmounts the host and cancels its pending run.
   return (
@@ -165,16 +207,18 @@ export function ChatConversation({
       compact={compact}
       disabled={disabled}
       failSend={failSend}
+      phase={phase}
+      onPhaseChange={onPhaseChange}
     />
   );
 }
 type Message = { id: string; role: "user" | "assistant"; text: string };
-type Phase = "idle" | "streaming" | "completed" | "stopped";
+type Stream = "idle" | "streaming" | "completed" | "stopped";
 /** Appends one exchange and streams the fixed reply into its assistant message. */
 function exchange(
   start: ReturnType<typeof useLocalResponse>["start"],
   setMessages: Dispatch<SetStateAction<Message[]>>,
-  setPhase: (phase: Phase) => void,
+  setStream: (stream: Stream) => void,
   id: string,
   text: string,
 ) {
@@ -187,7 +231,7 @@ function exchange(
             : message,
         ),
       ),
-    () => setPhase("completed"),
+    () => setStream("completed"),
   );
   if (!started) return;
   setMessages((previous) => [
@@ -195,52 +239,75 @@ function exchange(
     { id: `user-${id}`, role: "user", text },
     { id: `assistant-${id}`, role: "assistant", text: "" },
   ]);
-  setPhase("streaming");
+  setStream("streaming");
 }
 function ConversationHost({
   language,
   compact,
   disabled,
   failSend,
+  phase,
+  onPhaseChange,
 }: {
   language: Language;
   compact: boolean;
   disabled: boolean;
   failSend: boolean;
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar";
   const response = useLocalResponse(language),
     { start } = response,
     sequence = useRef(0),
     reduced = useReducedMotion(),
-    played = useRef(reduced),
+    // A phase opens on the finished opening exchange, as reduced motion does.
+    settled = reduced || phase !== undefined,
+    played = useRef(settled),
     wait = useLatency();
   const opening = ar
     ? "كيف أجهّز واجهة عربية واضحة؟"
     : "How do I prepare a clear Arabic interface?";
-  const [messages, setMessages] = useState<Message[]>(() =>
-      reduced
+  const followUp = ar
+    ? "وماذا عن الأرقام داخل النص العربي؟"
+    : "What about numbers inside Arabic text?";
+  const [messages, setMessages] = useState<Message[]>(() => [
+      ...(settled
         ? [
-            { id: "user-opening", role: "user", text: opening },
+            { id: "user-opening", role: "user" as const, text: opening },
             {
               id: "assistant-opening",
-              role: "assistant",
+              role: "assistant" as const,
               text: response.reply,
             },
           ]
-        : [],
-    ),
-    [draft, setDraft] = useState("");
-  const [phase, setPhase] = useState<Phase>(reduced ? "completed" : "idle");
+        : []),
+      // Submitting: the follow-up has gone and its reply is on its way.
+      ...(phase === "submitting"
+        ? [
+            { id: "user-follow-up", role: "user" as const, text: followUp },
+            { id: "assistant-follow-up", role: "assistant" as const, text: "" },
+          ]
+        : []),
+    ]),
+    [draft, setDraft] = useState(phase === "writing" ? followUp : "");
+  const [stream, setStream] = useState<Stream>(
+    phase === "submitting" ? "streaming" : settled ? "completed" : "idle",
+  );
   // The opening exchange plays once; reduced motion starts on its final state.
   useEffect(() => {
     if (played.current || reduced) return;
     const timer = setTimeout(() => {
       played.current = true;
-      exchange(start, setMessages, setPhase, "opening", opening);
+      exchange(start, setMessages, setStream, "opening", opening);
     }, 500);
     return () => clearTimeout(timer);
   }, [reduced, start, opening]);
+  usePhaseReport(
+    stream === "streaming" ? "submitting" : draft.trim() ? "writing" : "empty",
+    phase,
+    onPhaseChange,
+  );
   const last = messages.at(-1)?.id;
   const replyStatus = {
     idle: ar ? "اكتمل الرد" : "Response complete",
@@ -255,13 +322,13 @@ function ConversationHost({
       if (disabled || response.active.current || !text.trim()) return;
       if (failSend) return wait(800, true);
       setDraft("");
-      exchange(start, setMessages, setPhase, String(++sequence.current), text);
+      exchange(start, setMessages, setStream, String(++sequence.current), text);
     },
     disabled,
-    state: phase === "streaming" ? ("streaming" as const) : ("idle" as const),
+    state: stream === "streaming" ? ("streaming" as const) : ("idle" as const),
     onStop: () => {
       response.cancel();
-      setPhase("stopped");
+      setStream("stopped");
     },
   };
   return (
@@ -270,7 +337,7 @@ function ConversationHost({
         followOutput
         label={ar ? "المحادثة" : "Conversation"}
         messages={messages.map((message) => {
-          const live = phase === "streaming" && message.id === last;
+          const live = stream === "streaming" && message.id === last;
           return {
             id: message.id,
             role: message.role,
@@ -287,7 +354,7 @@ function ConversationHost({
                   text={message.text}
                   state={live ? "streaming" : "completed"}
                   announcement={message.id === last ? "polite" : "off"}
-                  statusLabel={message.id === last ? replyStatus[phase] : ""}
+                  statusLabel={message.id === last ? replyStatus[stream] : ""}
                 />
               ),
           };
@@ -311,22 +378,53 @@ export function ChatComposerExample(props: {
   language?: Language;
   disabled?: boolean;
   failSend?: boolean;
+  /** "empty", "writing" or "submitting"; see ChatConversation. */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
   return <ChatConversation {...props} />;
 }
+const promptSuggestions = {
+  ar: [
+    "لخّص اجتماع الإطلاق",
+    "صُغ ردًا على شركة الندى",
+    "راجع نصوص صفحة الدفع",
+  ],
+  en: [
+    "Summarize the launch meeting",
+    "Draft a reply to Al Nada Trading",
+    "Review the checkout copy",
+  ],
+};
 export function PromptBarExample({
   language = "ar",
   disabled = false,
   failSend = false,
+  phase,
+  onPhaseChange,
 }: {
   language?: Language;
   disabled?: boolean;
   /** Every send fails: the bar explains why and keeps the draft. */
   failSend?: boolean;
+  /**
+   * "empty" or "writing" (the first suggestion written in): opens there and
+   * reports where the visitor moves it.
+   */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
-  const ar = language === "ar",
-    [draft, setDraft] = useState(""),
+  const suggestions = promptSuggestions[language],
+    [draft, setDraft] = useState(phase === "writing" ? suggestions[0] : ""),
     wait = useLatency();
+  // A suggestion written in follows the interface language.
+  const [shown, setShown] = useState(language);
+  if (shown !== language) {
+    setShown(language);
+    const index = promptSuggestions[shown].indexOf(draft);
+    if (index >= 0) setDraft(suggestions[index]);
+  }
+  usePhaseReport(draft.trim() ? "writing" : "empty", phase, onPhaseChange);
   return (
     <PromptBar
       value={draft}
@@ -335,19 +433,7 @@ export function PromptBarExample({
       onSubmit={() =>
         failSend ? wait(800, true) : wait(700).then(() => setDraft(""))
       }
-      suggestions={
-        ar
-          ? [
-              "لخّص اجتماع الإطلاق",
-              "صُغ ردًا على شركة الندى",
-              "راجع نصوص صفحة الدفع",
-            ]
-          : [
-              "Summarize the launch meeting",
-              "Draft a reply to Al Nada Trading",
-              "Review the checkout copy",
-            ]
-      }
+      suggestions={suggestions}
       onSuggestionSelect={setDraft}
     />
   );

@@ -30,10 +30,26 @@ export function TaskRowsExample({
   mode = "uncontrolled",
   empty = false,
   longContent = false,
-}: TaskRowsExampleProps) {
+  phase,
+}: TaskRowsExampleProps & {
+  /**
+   * The drafting task's state, "running" or "completed", held as given.
+   * Without a phase it plays its own run once.
+   */
+  phase?: string;
+  /** Part of the phase pair; nothing here moves the run, so it never fires. */
+  onPhaseChange?: (phase: string) => void;
+}) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
   const reduced = useReducedMotion(),
-    run = reduced ? "final" : empty ? "idle" : "live";
+    run =
+      phase !== undefined
+        ? "held"
+        : reduced
+          ? "final"
+          : empty
+            ? "idle"
+            : "live";
   const [state, setState] = useState<TaskState>(
     reduced ? "completed" : "running",
   );
@@ -58,6 +74,7 @@ export function TaskRowsExample({
     next();
     return () => clearTimeout(timer);
   }, [run]);
+  const drafting = (phase as TaskState | undefined) ?? state;
   const labels = {
     pending: t("قيد الانتظار", "Pending"),
     running: t("جارٍ التنفيذ", "Running"),
@@ -113,7 +130,7 @@ export function TaskRowsExample({
               )
             : t("صياغة رسائل العملاء", "Draft customer emails"),
           summary: t("٣ رسائل", "3 emails"),
-          state,
+          state: drafting,
           content: (
             <div style={{ display: "grid", gap: "var(--space-3)" }}>
               <p style={{ margin: 0 }}>
@@ -128,7 +145,7 @@ export function TaskRowsExample({
                   </>
                 )}
               </p>
-              {state === "completed" ? (
+              {drafting === "completed" ? (
                 <ul style={{ margin: 0, paddingInlineStart: "var(--space-5)" }}>
                   {drafts.map((draft) => (
                     <li key={draft}>{draft}</li>
@@ -136,7 +153,7 @@ export function TaskRowsExample({
                 </ul>
               ) : (
                 <p style={{ margin: 0, color: "var(--text-secondary)" }}>
-                  {state === "failed"
+                  {drafting === "failed"
                     ? t(
                         "لم يستجب CRM خلال ٣٠ ثانية. جارٍ إعادة المحاولة…",
                         "The CRM timed out after 30 seconds. Retrying…",

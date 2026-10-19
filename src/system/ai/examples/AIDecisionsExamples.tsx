@@ -5,8 +5,17 @@ import {
   useRef,
   useState,
 } from "react";
-import { AskUserQuestions, ApprovalCard, ApprovalFlow } from "../../index";
-import type { ApprovalRequest, QuestionAnswers } from "../../index";
+import {
+  AskUserQuestions,
+  ApprovalCard,
+  ApprovalFlow,
+  approvalRequestKey,
+} from "../../index";
+import type {
+  ApprovalDecision,
+  ApprovalRequest,
+  QuestionAnswers,
+} from "../../index";
 type Language = "ar" | "en";
 /**
  * Stands in for your server: each answer or decision waits a moment so the
@@ -143,47 +152,104 @@ export function AskUserQuestionsExample({
 export function ApprovalCardExample({
   language = "ar",
   longContent = false,
+  phase,
+  onPhaseChange,
 }: {
   language?: Language;
   longContent?: boolean;
+  /**
+   * "waiting", "approved" or "rejected", held as given. A decision reports
+   * its phase once the host has accepted it.
+   */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar",
     respond = useHostLatency();
+  const request = markPaidRequest(
+    ar,
+    longContent
+      ? ar
+        ? "فواتير الموردين · أكتوبر ٢٠٢٦ / Supplier invoices — شركة مدار للتجارة والمقاولات، فرع الرياض"
+        : "Supplier invoices · October 2026 / فواتير الموردين — Madar Trading & Contracting Co., Riyadh branch"
+      : undefined,
+  );
   return (
     <ApprovalCard
-      request={markPaidRequest(
-        ar,
-        longContent
-          ? ar
-            ? "فواتير الموردين · أكتوبر ٢٠٢٦ / Supplier invoices — شركة مدار للتجارة والمقاولات، فرع الرياض"
-            : "Supplier invoices · October 2026 / فواتير الموردين — Madar Trading & Contracting Co., Riyadh branch"
-          : undefined,
-      )}
-      onDecision={(_request, _decision, { signal }) => respond(signal)}
+      request={request}
+      value={
+        phase === undefined
+          ? undefined
+          : phase === "approved" || phase === "rejected"
+            ? {
+                requestId: request.id,
+                requestKey: approvalRequestKey(request),
+                decision: phase,
+              }
+            : null
+      }
+      onDecision={async (_request, decision, { signal }) => {
+        await respond(signal);
+        onPhaseChange?.(decision);
+      }}
     />
   );
 }
 export function ApprovalFlowExample({
   language = "ar",
   longContent = false,
+  phase,
+  onPhaseChange,
 }: {
   language?: Language;
   longContent?: boolean;
+  /**
+   * "first", "second" or "done": opens with the requests before it approved,
+   * and reports the next phase once the host has accepted a decision.
+   */
+  phase?: string;
+  onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar",
     respond = useHostLatency();
+  const requests = [
+    markPaidRequest(ar),
+    sendSummaryRequest(
+      ar,
+      longContent
+        ? "finance@madar.sa, cfo.office@madar.sa / فريق المالية — المكتب الرئيسي"
+        : undefined,
+    ),
+  ];
+  // With a phase, the decisions so far, kept as the visitor makes them.
+  const [decisions, setDecisions] = useState<ApprovalDecision[]>(
+    phase === "done"
+      ? ["approved", "approved"]
+      : phase === "second"
+        ? ["approved"]
+        : [],
+  );
   return (
     <ApprovalFlow
       label={ar ? "قرارات مطابقة أكتوبر" : "October reconciliation decisions"}
-      requests={[
-        markPaidRequest(ar),
-        sendSummaryRequest(
-          ar,
-          longContent
-            ? "finance@madar.sa, cfo.office@madar.sa / فريق المالية — المكتب الرئيسي"
-            : undefined,
-        ),
-      ]}
+      requests={requests}
+      value={
+        phase === undefined
+          ? undefined
+          : decisions.map((decision, index) => ({
+              requestId: requests[index].id,
+              requestKey: approvalRequestKey(requests[index]),
+              decision,
+            }))
+      }
+      onValueChange={
+        phase === undefined
+          ? undefined
+          : (records) => {
+              setDecisions(records.map((record) => record.decision));
+              onPhaseChange?.(["first", "second", "done"][records.length]);
+            }
+      }
       onDecision={(_request, _decision, { signal }) => respond(signal)}
     />
   );

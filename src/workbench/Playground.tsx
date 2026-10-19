@@ -153,7 +153,6 @@ interface Props {
   onEvent: (name: string, value?: unknown) => void;
   onButtonAction: () => void;
   buttonState?: ButtonState;
-  code?: string;
   /** The lifecycle phase the workbench shows; examples without one ignore it. */
   phase?: string;
   onPhaseChange?: (phase: string) => void;
@@ -202,7 +201,6 @@ export function Playground({
   onEvent,
   onButtonAction,
   buttonState,
-  code,
   phase,
   onPhaseChange,
 }: Props) {
@@ -233,6 +231,8 @@ export function Playground({
       <ApprovalCardExample
         language={language}
         {...(model as Playgrounds["approval-card"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "approval-flow")
@@ -240,6 +240,8 @@ export function Playground({
       <ApprovalFlowExample
         language={language}
         {...(model as Playgrounds["approval-flow"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "loading-state")
@@ -261,6 +263,8 @@ export function Playground({
       <SelectionActionsExample
         language={language}
         {...(model as Playgrounds["selection-actions"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "context-meter")
@@ -304,6 +308,8 @@ export function Playground({
       <ChatThreadExample
         language={language}
         {...(model as Playgrounds["chat-thread"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "chat-composer")
@@ -311,6 +317,8 @@ export function Playground({
       <ChatComposerExample
         language={language}
         {...(model as Playgrounds["chat-composer"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "prompt-bar")
@@ -318,6 +326,8 @@ export function Playground({
       <PromptBarExample
         language={language}
         {...(model as Playgrounds["prompt-bar"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "code-block")
@@ -338,8 +348,9 @@ export function Playground({
     return (
       <StreamingTextExample
         language={language}
-        code={code}
         {...(model as Playgrounds["streaming-text"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "tool-call")
@@ -348,6 +359,8 @@ export function Playground({
         key={JSON.stringify(model)}
         language={language}
         {...(model as Playgrounds["tool-call"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "tool-chips")
@@ -379,6 +392,8 @@ export function Playground({
       <TaskRowsExample
         language={language}
         {...(model as Playgrounds["task-rows"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "notification-list")

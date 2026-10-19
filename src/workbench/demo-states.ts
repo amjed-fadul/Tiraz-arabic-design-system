@@ -19,7 +19,8 @@ import type {
 
 /**
  * One state on a page's switcher. A props state patches the playground model
- * through the inspector's path; a phase state hands the example its `phase`.
+ * through the inspector's path; a phase state hands the example its `phase`,
+ * and a press of it starts the example afresh in that phase.
  */
 export interface DemoStateDef {
   id: string;
@@ -97,6 +98,12 @@ export const stateWords = {
   near: ["شبه ممتلئ", "Near"],
   over: ["تجاوز السعة", "Over"],
   working: ["يعمل", "Working"],
+  streaming: ["يصل تباعًا", "Streaming"],
+  pending: ["قيد الانتظار", "Pending"],
+  newMessage: ["رسالة جديدة", "New message"],
+  submitting: ["يُرسَل", "Submitting"],
+  asking: ["يسأل", "Asking"],
+  second: ["الثانية", "Second"],
 } satisfies Record<string, Localized>;
 
 /** A state whose id and label both come from one word in `stateWords`. */
@@ -106,6 +113,13 @@ function state(
   matches?: DemoStateDef["matches"],
 ): DemoStateDef {
   return { id: word, label: stateWords[word], props, matches };
+}
+/** A lifecycle state: the example takes `phase`, which is the word unless given. */
+function phased(
+  word: keyof typeof stateWords,
+  phase: string = word,
+): DemoStateDef {
+  return { id: word, label: stateWords[word], phase };
 }
 
 // What Invalid tells the visitor to do: no blame, and not the placeholder's
@@ -461,6 +475,67 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "working", ms: 2600 },
       { state: "done", ms: 800 },
     ],
+  },
+  // Lifecycle states: each example takes the phase and reports where the
+  // visitor moves it. ToolCall and TaskRows take Done as their "completed".
+  "streaming-text": {
+    states: [phased("streaming"), phased("done")],
+    resting: "done",
+    replay: [
+      { state: "streaming", ms: 2600 },
+      { state: "done", ms: 800 },
+    ],
+  },
+  "tool-call": {
+    states: [
+      phased("pending"),
+      phased("running"),
+      phased("done", "completed"),
+      phased("failed"),
+    ],
+    resting: "done",
+    replay: [
+      { state: "pending", ms: 1000 },
+      { state: "running", ms: 1200 },
+      { state: "done", ms: 800 },
+    ],
+  },
+  "task-rows": {
+    states: [phased("running"), phased("done", "completed")],
+    resting: "running",
+    replay: [
+      { state: "running", ms: 1400 },
+      { state: "done", ms: 800 },
+    ],
+  },
+  "chat-thread": {
+    states: [phased("default"), phased("newMessage", "new-message")],
+    resting: "newMessage",
+    replay: [
+      { state: "default", ms: 1400 },
+      { state: "newMessage", ms: 800 },
+    ],
+  },
+  "chat-composer": {
+    states: [phased("empty"), phased("writing"), phased("submitting")],
+    resting: "writing",
+  },
+  "prompt-bar": {
+    states: [phased("empty"), phased("writing")],
+    resting: "writing",
+  },
+  "selection-actions": {
+    states: [phased("idle"), phased("selected")],
+    resting: "selected",
+  },
+  "ask-user-questions": { states: [phased("asking")], resting: "asking" },
+  "approval-card": {
+    states: [phased("waiting"), phased("approved"), phased("rejected")],
+    resting: "waiting",
+  },
+  "approval-flow": {
+    states: [phased("first"), phased("second"), phased("done")],
+    resting: "first",
   },
 };
 
