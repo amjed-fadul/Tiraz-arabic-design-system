@@ -4673,6 +4673,8 @@ button.tz-tool-chip[aria-expanded="true"] {
   grid-template-columns: minmax(0, 1fr);
   inline-size: 100%;
   min-inline-size: 0;
+  /* Forced colors drop the ring shadow; this border becomes the card's edge. */
+  border: 1px solid transparent;
   border-radius: var(--radius-paper);
   background: var(--surface);
   box-shadow: var(--shadow-paper);
@@ -4709,6 +4711,7 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-demo-header {
   display: flex;
   flex: 1 1 auto;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-2);
@@ -4747,7 +4750,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   flex: none;
   min-block-size: calc(var(--control-small) - var(--space-2));
   padding-inline: var(--space-3);
-  border: 0;
+  border: 1px solid transparent;
   border-radius: var(--radius-pill);
   background: transparent;
   color: var(--text-secondary);
@@ -4787,7 +4790,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   gap: var(--space-2);
   block-size: var(--control-small);
   padding-inline: var(--space-3) var(--space-4);
-  border: 0;
+  border: 1px solid transparent;
   border-radius: var(--radius-pill);
   background: var(--text);
   color: var(--surface);
@@ -4862,6 +4865,7 @@ button.tz-tool-chip[aria-expanded="true"] {
     transform var(--motion-release) var(--ease-out);
 }
 .tz-demo-view > svg {
+  display: none;
   opacity: 0.8;
 }
 .tz-demo-view[aria-selected="true"] {
@@ -4993,11 +4997,16 @@ button.tz-tool-chip[aria-expanded="true"] {
   font: inherit;
 }
 /* The notes: a tray band under the stage, one column each for when to use the
-   example, when to use something else and what to notice. */
+   example, when to use something else and what to notice. It runs out over the
+   frame's transparent border and carries one of its own, so the tray reaches
+   the card's edge and forced colors still draw that edge. */
 .tz-demo-notes {
   display: grid;
   gap: var(--space-4);
+  margin: 0 -1px -1px;
   padding: var(--space-4);
+  border: 1px solid transparent;
+  border-block-start: 0;
   border-end-start-radius: var(--radius-paper);
   border-end-end-radius: var(--radius-paper);
   background: var(--surface-tray);
@@ -5030,6 +5039,9 @@ button.tz-tool-chip[aria-expanded="true"] {
   }
   .tz-demo-name {
     flex: none;
+  }
+  .tz-demo-view > svg {
+    display: block;
   }
   .tz-demo-stage {
     min-block-size: 380px;
