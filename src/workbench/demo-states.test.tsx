@@ -11,7 +11,8 @@ import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import type { ComponentId } from "./catalog";
 import { demoStates, stateWords } from "./demo-states";
-import { persist, storageKeys } from "./storage";
+import { defaultPlaygrounds } from "./model";
+import { persist, readPlaygrounds, storageKeys } from "./storage";
 import { ToolChipsExample } from "../system/ai/examples/ToolActivityExamples";
 import { SystemProvider, defaultConfig } from "../system";
 afterEach(() => vi.useRealTimers());
@@ -299,4 +300,258 @@ it("puts the demo before the prompt", () => {
   const frame = container.querySelector(".tz-demo-frame") as HTMLElement;
   expect(within(frame).getByText("الأزرار")).toHaveAttribute("lang", "ar");
   expect(within(frame).getByText("Button")).toHaveAttribute("lang", "en");
+});
+
+// The states by DOM rather than role: an open dialog hides the page from
+// assistive technology, but its state buttons are still the page's.
+const stateButtons = () =>
+  Array.from(
+    document.querySelectorAll<HTMLButtonElement>(".tz-demo-states button"),
+  );
+const pressedWords = () =>
+  stateButtons()
+    .filter((button) => button.getAttribute("aria-pressed") === "true")
+    .map((button) => button.textContent);
+const press = (key: keyof typeof stateWords) =>
+  fireEvent.click(stateButtons().find((b) => b.textContent === word(key))!);
+const savedProps = (id: ComponentId) =>
+  JSON.parse(localStorage.getItem(storageKeys.playgrounds)!)[id];
+const text = expect.stringMatching(/\S/);
+type WordKey = keyof typeof stateWords;
+// Each page with its resting state, each state with what the model holds once
+// it is pressed, and the Replay steps where the page has any.
+type Family = {
+  id: ComponentId;
+  resting: WordKey;
+  list: ReadonlyArray<readonly [WordKey, Record<string, unknown>]>;
+  replay?: ReadonlyArray<WordKey>;
+};
+// What Open puts on the page: a dialog, or the menu.
+const overlay = '[role="dialog"], [role="menu"]';
+const textStates: Family["list"] = [
+  ["empty", { value: "", error: "", disabled: false, readOnly: false }],
+  ["filled", { value: text, error: "", disabled: false, readOnly: false }],
+  ["invalid", { error: text, disabled: false, readOnly: false }],
+  ["disabled", { disabled: true, readOnly: false }],
+  ["readOnly", { disabled: false, readOnly: true }],
+];
+const overlayStates: Family["list"] = [
+  ["closed", { open: false }],
+  ["open", { mode: "controlled", open: true }],
+];
+const chartStates: Family["list"] = [
+  ["data", { sample: "multi" }],
+  ["empty", { sample: "empty" }],
+];
+const propsFamilies: Family[] = [
+  { id: "input", resting: "filled", list: textStates },
+  { id: "textarea", resting: "filled", list: textStates },
+  {
+    id: "select",
+    resting: "selected",
+    list: [
+      ["empty", { value: "", invalid: false, disabled: false }],
+      ["selected", { value: "active", invalid: false, disabled: false }],
+      ["invalid", { invalid: true, disabled: false }],
+      ["disabled", { disabled: true }],
+    ],
+  },
+  {
+    id: "checkbox",
+    resting: "checked",
+    list: [
+      ["unchecked", { checked: false, error: "", disabled: false }],
+      ["checked", { checked: true, error: "", disabled: false }],
+      ["invalid", { error: text, disabled: false }],
+      ["disabled", { disabled: true }],
+    ],
+  },
+  {
+    id: "radio-group",
+    resting: "selected",
+    list: [
+      ["unselected", { value: "", error: "", disabled: false }],
+      ["selected", { value: "weekly", error: "", disabled: false }],
+      ["invalid", { value: "", error: text, disabled: false }],
+      ["disabled", { disabled: true }],
+    ],
+  },
+  {
+    id: "switch",
+    resting: "on",
+    list: [
+      ["off", { checked: false, disabled: false }],
+      ["on", { checked: true, disabled: false }],
+      ["disabled", { disabled: true }],
+    ],
+  },
+  {
+    id: "slider",
+    resting: "default",
+    list: [
+      ["default", { disabled: false }],
+      ["disabled", { disabled: true }],
+    ],
+  },
+  {
+    id: "sidebar",
+    resting: "expanded",
+    list: [
+      ["expanded", { mode: "controlled", collapsed: false }],
+      ["collapsed", { mode: "controlled", collapsed: true }],
+    ],
+  },
+  {
+    id: "pagination",
+    resting: "middle",
+    list: [
+      ["first", { page: 1 }],
+      ["middle", { page: 6 }],
+      ["last", { page: 12 }],
+    ],
+  },
+  {
+    id: "data-table",
+    resting: "loaded",
+    list: [
+      ["loaded", { preset: "populated" }],
+      ["loading", { preset: "loading" }],
+      ["empty", { preset: "empty" }],
+    ],
+  },
+  {
+    id: "avatar",
+    resting: "photo",
+    list: [
+      ["photo", { appearance: "photo" }],
+      ["initials", { appearance: "initials" }],
+    ],
+  },
+  {
+    id: "progress",
+    resting: "determinate",
+    list: [
+      ["determinate", { indeterminate: false, value: 64 }],
+      ["indeterminate", { indeterminate: true }],
+      ["complete", { indeterminate: false, value: 100 }],
+    ],
+    replay: ["determinate", "complete"],
+  },
+  { id: "dropdown", resting: "closed", list: overlayStates },
+  { id: "sheet", resting: "closed", list: overlayStates },
+  { id: "modal", resting: "closed", list: overlayStates },
+  { id: "line-chart", resting: "data", list: chartStates },
+  { id: "area-chart", resting: "data", list: chartStates },
+  { id: "bar-chart", resting: "data", list: chartStates },
+  { id: "donut-chart", resting: "data", list: chartStates },
+  {
+    id: "context-meter",
+    resting: "normal",
+    list: [
+      ["normal", { preset: "normal" }],
+      ["high", { preset: "high" }],
+      ["near", { preset: "near" }],
+      ["over", { preset: "over" }],
+    ],
+  },
+  {
+    id: "image-result",
+    resting: "loaded",
+    list: [
+      ["loading", { state: "loading" }],
+      ["loaded", { state: "loaded" }],
+      ["error", { state: "error" }],
+    ],
+  },
+  {
+    id: "sources",
+    resting: "expanded",
+    list: [
+      ["collapsed", { defaultExpanded: false }],
+      ["expanded", { defaultExpanded: true }],
+    ],
+  },
+  {
+    id: "thinking-state",
+    resting: "working",
+    list: [
+      ["working", { active: true }],
+      ["done", { active: false }],
+    ],
+    replay: ["working", "done"],
+  },
+];
+
+it.each(propsFamilies)(
+  "applies every props state: $id",
+  async ({ id, resting, list, replay }) => {
+    open(id);
+    // The family's states in order, and a fresh page opens on the resting one.
+    expect(stateButtons().map((button) => button.textContent)).toEqual(
+      list.map(([key]) => word(key)),
+    );
+    expect(pressedWords()).toEqual([word(resting)]);
+    for (const [key, props] of list) {
+      press(key);
+      expect(pressedWords()).toEqual([word(key)]);
+      // The model holds the state, as if the inspector had set it.
+      expect(savedProps(id)).toMatchObject(props);
+      if (key === "open")
+        expect(document.querySelector(overlay)).not.toBeNull();
+    }
+    if (!replay) return;
+    vi.useFakeTimers();
+    const steps = demoStates[id]!.replay!;
+    fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
+    for (const [index, key] of replay.entries()) {
+      expect(pressedWords()).toEqual([word(key)]);
+      await wait(steps[index].ms);
+    }
+    expect(pressedWords()).toEqual([word(replay.at(-1)!)]);
+  },
+);
+
+it("loads saved props from before the states", () => {
+  // Saved before the states: pages on the old defaults, no Modal `open`.
+  persist(storageKeys.playgrounds, {
+    input: { value: "", label: "اسم خاص" },
+    textarea: { value: "" },
+    select: { value: "" },
+    checkbox: { checked: false },
+    pagination: { page: 1 },
+    avatar: { appearance: "initials" },
+    "image-result": { state: "loading" },
+    sources: { defaultExpanded: false },
+    modal: { title: "عنوان خاص", footer: false, mode: "controlled" },
+  });
+  const fresh = defaultPlaygrounds("ar");
+  const saved = readPlaygrounds("ar");
+  // Each old default follows the page to its resting state...
+  expect(saved.input.value).toBe(fresh.input.value);
+  expect(saved.input.value).not.toBe("");
+  expect(saved.textarea.value).toBe(fresh.textarea.value);
+  expect(saved.select.value).toBe("active");
+  expect(saved.checkbox.checked).toBe(true);
+  expect(saved.pagination.page).toBe(6);
+  expect(saved.avatar.appearance).toBe("photo");
+  expect(saved["image-result"].state).toBe("loaded");
+  expect(saved.sources.defaultExpanded).toBe(true);
+  // ...what the visitor wrote stays, and Modal is closed.
+  expect(saved.input.label).toBe("اسم خاص");
+  expect(saved.modal).toMatchObject({
+    title: "عنوان خاص",
+    footer: false,
+    open: false,
+  });
+  open("checkbox");
+  expect(pressed()).toEqual([word("checked")]);
+  // A page saved after the states keeps the old default a visitor picked.
+  persist(storageKeys.playgrounds, {
+    ...fresh,
+    input: { ...fresh.input, value: "" },
+    checkbox: { ...fresh.checkbox, checked: false },
+  });
+  const picked = readPlaygrounds("ar");
+  expect(picked.input.value).toBe("");
+  expect(picked.checkbox.checked).toBe(false);
 });

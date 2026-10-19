@@ -141,8 +141,7 @@ it("exposes existing src with a minimal photo choice and accurate imports", asyn
     preview = within(
       screen.getByRole("region", { name: "Interactive playground" }),
     );
-  expect(screen.queryByLabelText("Image URL · optional")).toBeNull();
-  await user.selectOptions(screen.getByLabelText("Appearance"), "photo");
+  // The page opens on Photo, so the photo and its URL field are already there.
   expect(
     preview.getByRole("img", { name: "Sara Ali" }).querySelector("img"),
   ).not.toBeNull();
@@ -158,4 +157,6 @@ it("exposes existing src with a minimal photo choice and accurate imports", asyn
   expect(
     preview.getByRole("img", { name: "Sara Ali" }).querySelector("img"),
   ).toBeNull();
+  // The URL field belongs to the photo choice only.
+  expect(screen.queryByLabelText("Image URL · optional")).toBeNull();
 });

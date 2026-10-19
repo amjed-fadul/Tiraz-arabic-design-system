@@ -57,12 +57,13 @@ it("connects Card reveal, Accordion disclosure, Breadcrumb destinations and Pagi
       document.getElementById(link.getAttribute("href")!.slice(1)),
     ).not.toBeNull();
   await user.click(nav.getByRole("button", { name: "Pagination" }));
+  // The page opens on its middle, page 6.
   await user.click(preview().getByRole("button", { name: "Next" }));
-  expect(preview().getByRole("button", { name: "Page 2" })).toHaveAttribute(
+  expect(preview().getByRole("button", { name: "Page 7" })).toHaveAttribute(
     "aria-current",
     "page",
   );
   expect(
-    preview().getByRole("heading", { name: "Guide note 2" }),
+    preview().getByRole("heading", { name: "Guide note 7" }),
   ).toBeVisible();
 });

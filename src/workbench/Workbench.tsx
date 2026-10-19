@@ -184,7 +184,11 @@ export function Workbench() {
     // Keep Input's IDs and native editing state through label/help/error edits.
     // Mode/default-value changes still need a fresh uncontrolled demonstration.
     // Image percentages and sizing update the existing request rather than replaying it.
-    if (["data-table", "input-copy", "image-result"].includes(active)) return;
+    // Progress holds nothing of its own, so its bar moves to the new value.
+    if (
+      ["data-table", "input-copy", "image-result", "progress"].includes(active)
+    )
+      return;
     if (
       (active === "file-dropzone" || active === "color-picker") &&
       !("mode" in patch)

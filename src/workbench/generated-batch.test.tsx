@@ -225,6 +225,11 @@ it("copies a custom photo URL exactly and ignores it in initials mode", () => {
     ),
   ).toContain(`src={"${url}"}`);
   expect(
-    generateCode("avatar", { ...p, src: url }, system.defaultConfig, "en"),
+    generateCode(
+      "avatar",
+      { ...p, appearance: "initials", src: url },
+      system.defaultConfig,
+      "en",
+    ),
   ).not.toContain(url);
 });

@@ -189,12 +189,13 @@ export function ContextMeterExample({
   estimated = false,
 }: {
   language?: Language;
-  preset?: "normal" | "near" | "over" | "zero" | "missing" | "invalid";
+  preset?: "normal" | "high" | "near" | "over" | "zero" | "missing" | "invalid";
   estimated?: boolean;
 }) {
   const ar = language === "ar";
   const values = {
     normal: [4800, 20000],
+    high: [16800, 20000],
     near: [19400, 20000],
     over: [24000, 20000],
     zero: [0, 0],

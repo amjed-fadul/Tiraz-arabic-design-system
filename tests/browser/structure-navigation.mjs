@@ -415,7 +415,8 @@ try {
           assert(
             await preview
               .getByRole("heading", {
-                name: ar ? "ملاحظة الدليل ٢" : "Guide note 2",
+                // The docs page opens on page 6.
+                name: ar ? "ملاحظة الدليل ٧" : "Guide note 7",
                 exact: true,
               })
               .isVisible(),

@@ -248,9 +248,11 @@ try {
                 const c = page.locator(
                   ".playground-region input[type=checkbox]",
                 );
+                // The page opens checked; Space toggles it.
+                const before = await c.isChecked();
                 await c.focus();
                 await page.keyboard.press("Space");
-                assert.equal(await c.isChecked(), true);
+                assert.equal(await c.isChecked(), !before);
               }
               if (id === "badge") {
                 // The page shows one badge; cycle its tone in the inspector.

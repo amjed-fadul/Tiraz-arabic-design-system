@@ -191,6 +191,7 @@ export interface ModalModel {
   description: string;
   footer: boolean;
   mode: "controlled" | "uncontrolled";
+  open: boolean;
 }
 export interface EmptyStateModel {
   title: string;
@@ -282,7 +283,8 @@ export interface Playgrounds {
   "approval-flow": { longContent: boolean };
   "selection-actions": { longContent: boolean };
   "context-meter": {
-    preset: "normal" | "near" | "over" | "zero" | "missing" | "invalid";
+    preset:
+      "normal" | "high" | "near" | "over" | "zero" | "missing" | "invalid";
     estimated: boolean;
   };
   "model-selector": { disabled: boolean; longContent: boolean };
@@ -415,11 +417,11 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "context-meter": { preset: "normal", estimated: false },
     "model-selector": { disabled: false, longContent: false },
     "image-result": {
-      state: "loading",
+      state: "loaded",
       aspectRatio: "landscape",
       progress: 42,
     },
-    sources: { defaultExpanded: false, longContent: false },
+    sources: { defaultExpanded: true, longContent: false },
     "insight-cards": { longContent: false },
     "chat-thread": {
       longContent: false,
@@ -549,7 +551,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       label: t("مسار الصفحة", "Page path"),
       current: t("القراءة", "Reading"),
     },
-    pagination: { page: 1, totalPages: 12 },
+    pagination: { page: 6, totalPages: 12 },
     alert: {
       title: t("تغيّرت خطة الفوترة", "Billing plan updated"),
       description: t(
@@ -572,7 +574,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       decorative: false,
     },
     avatar: {
-      appearance: "initials",
+      appearance: "photo",
       src: "",
       name: t("سارة علي", "Sara Ali"),
       fallback: t("س ع", "SA"),
@@ -590,6 +592,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       ),
       footer: true,
       mode: "controlled",
+      open: false,
     },
     "empty-state": {
       title: t("لا توجد سجلات بعد", "No records yet"),
@@ -606,7 +609,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       helper: t("تحديثات اختيارية عن حسابك", "Optional account updates"),
       error: "",
       required: false,
-      checked: false,
+      checked: true,
       disabled: false,
       name: "updates",
       value: "yes",
@@ -636,7 +639,10 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       helper: "",
       error: "",
       required: false,
-      value: "",
+      value: t(
+        "يفضّل العميل التواصل عبر البريد الإلكتروني.",
+        "The customer prefers to be contacted by email.",
+      ),
       placeholder: t("أضف تفاصيل مفيدة", "Add useful details"),
       disabled: false,
       readOnly: false,
@@ -657,7 +663,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       helper: "",
       error: "",
       required: false,
-      value: "",
+      value: t("شركة مدار للتقنية", "Madar Technology"),
       placeholder: t("مثلًا: شركة مدار للتقنية", "e.g. Madar Technology"),
       mode: "controlled",
       size: "sm",
@@ -671,7 +677,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       helper: "",
       error: "",
       required: false,
-      value: "",
+      value: "active",
       placeholder: t("اختر الحالة", "Choose status"),
       mode: "controlled",
       size: "sm",
@@ -1008,6 +1014,21 @@ const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
       description: ["الفاتورة جاهزة للمشاركة مع العميل."],
     },
   };
+// Old defaults that the states replaced (spec §8). Each is also a state a
+// visitor can pick (Empty, Unchecked, First...), so it moves to the new
+// resting state only in props saved before the states, never on an edit.
+const defaultsBeforeStates: Partial<
+  Record<ComponentId, Record<string, (string | number | boolean)[]>>
+> = {
+  input: { value: [""] },
+  textarea: { value: [""] },
+  select: { value: [""] },
+  checkbox: { checked: [false] },
+  pagination: { page: [1] },
+  avatar: { appearance: ["initials"] },
+  "image-result": { state: ["loading"] },
+  sources: { defaultExpanded: [false] },
+};
 export function normalizePlaygrounds(
   value: unknown,
   language: Language,
@@ -1015,6 +1036,9 @@ export function normalizePlaygrounds(
   const result = defaultPlaygrounds(language);
   if (!value || typeof value !== "object" || Array.isArray(value))
     return result;
+  // Props saved before the states have no Modal `open`; every later save does.
+  const modal = (value as Record<string, unknown>).modal;
+  const beforeStates = !(modal && typeof modal === "object" && "open" in modal);
   for (const component of Object.keys(result) as ComponentId[]) {
     const saved = (value as Record<string, unknown>)[component];
     if (!saved || typeof saved !== "object" || Array.isArray(saved)) continue;
@@ -1042,6 +1066,11 @@ export function normalizePlaygrounds(
       if (
         typeof item === "string" &&
         retiredDefaults[component]?.[key]?.includes(item)
+      )
+        continue;
+      if (
+        beforeStates &&
+        defaultsBeforeStates[component]?.[key]?.some((old) => old === item)
       )
         continue;
       if (

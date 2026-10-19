@@ -85,34 +85,44 @@ it("keeps streaming autoplay, replaces stop with copy, and replays without losin
       "completed",
     );
 });
-it("provides replay for an interactive playground and clears its local state without remounting the header", async () => {
+it("resets an interactive playground from the inspector without remounting the frame", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "مربع النص" }));
   const frame = document.querySelector(
     ".playground-region .tz-demo-frame",
   ) as HTMLElement;
+  const header = frame.querySelector("header") as HTMLElement;
+  const filled = defaultPlaygrounds("ar").textarea.value;
   const notes = within(frame).getByRole("textbox", { name: "ملاحظات" });
-  await user.type(notes, "تفاصيل الطلب");
-  expect(notes).toHaveValue("تفاصيل الطلب");
-  const replay = within(frame.querySelector("header")!).getByRole("button", {
-    name: "إعادة تشغيل المثال",
-  });
-  await user.click(replay);
-  expect(replay).toHaveFocus();
-  expect(within(frame).getByRole("textbox", { name: "ملاحظات" })).toHaveValue(
-    "",
+  await user.type(notes, " وتفاصيل الطلب");
+  expect(notes).toHaveValue(`${filled} وتفاصيل الطلب`);
+  // Replay no longer resets a page; the inspector does.
+  expect(
+    within(header).queryByRole("button", { name: "إعادة تشغيل المثال" }),
+  ).toBeNull();
+  await user.click(
+    within(screen.getByRole("complementary", { name: "التخصيص" })).getByRole(
+      "button",
+      { name: "إعادة ضبط المعاينة" },
+    ),
   );
+  expect(within(frame).getByRole("textbox", { name: "ملاحظات" })).toHaveValue(
+    filled,
+  );
+  expect(frame.querySelector("header")).toBe(header);
 });
 
-it("offers replay only when the actual section has state or motion to restart", () => {
+it("offers replay only on pages with a lifecycle to play", () => {
   const playgrounds = defaultPlaygrounds("en");
+  // A page with states replays only a sequence it has, so Textarea has none.
   for (const component of [
     "context-meter",
     "model-selector",
     "input-copy",
     "alert",
     "empty-state",
+    "textarea",
   ] as const)
     expect(canReplayPlayground(component, playgrounds[component])).toBe(false);
   for (const component of [
@@ -120,16 +130,10 @@ it("offers replay only when the actual section has state or motion to restart", 
     "chat-composer",
     "steps",
     "tool-chips",
-    "textarea",
+    "progress",
+    "thinking-state",
   ] as const)
     expect(canReplayPlayground(component, playgrounds[component])).toBe(true);
-  const progress = playgrounds.progress;
-  expect(
-    canReplayPlayground("progress", { ...progress, indeterminate: false }),
-  ).toBe(false);
-  expect(
-    canReplayPlayground("progress", { ...progress, indeterminate: true }),
-  ).toBe(true);
 });
 it("switches between preview and code by click and keyboard, keeping the preview's state", async () => {
   const user = userEvent.setup();

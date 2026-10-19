@@ -91,16 +91,22 @@ export function ModalExample({
   description,
   footer = true,
   controlled = true,
+  open: openProp,
+  onOpenChange,
 }: {
   language?: Language;
   title?: string;
   description?: string;
   footer?: boolean;
   controlled?: boolean;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }) {
   const ar = language === "ar";
-  const [open, setOpen] = useState(false),
+  const [openState, setOpenState] = useState(false),
     [layout, setLayout] = useState("list");
+  // A caller's `open` wins; without one the example keeps its own.
+  const open = openProp ?? openState;
   const focusRef = useRef<HTMLButtonElement>(null);
   return (
     <Modal
@@ -116,7 +122,10 @@ export function ModalExample({
         </Button>
       }
       open={controlled ? open : undefined}
-      onOpenChange={setOpen}
+      onOpenChange={(next) => {
+        setOpenState(next);
+        onOpenChange?.(next);
+      }}
       initialFocusRef={focusRef}
       footer={
         footer ? (

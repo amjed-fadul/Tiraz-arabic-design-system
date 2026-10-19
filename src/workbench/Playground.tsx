@@ -586,6 +586,8 @@ export function Playground({
         description={p.description}
         footer={p.footer}
         controlled={p.mode === "controlled"}
+        open={p.mode === "controlled" ? p.open : undefined}
+        onOpenChange={(open) => onPatch({ open })}
       />
     );
   }
