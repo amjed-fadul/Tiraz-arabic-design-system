@@ -1222,6 +1222,30 @@ it("moves the switcher to Shown when the trigger raises a toast, and raises it o
   expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
 });
 
+it("never raises a toast from an inspector edit", async () => {
+  const user = userEvent.setup();
+  open("toast");
+  fireEvent.click(stage().getByRole("button", { name: "عرض التنبيه" }));
+  expect(pressed()).toEqual([word("shown")]);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
+  // An edit starts the example afresh at its resting state, so it raises
+  // nothing, and the switcher says Hidden.
+  await user.selectOptions(
+    rail().getByRole("combobox", { name: "النوع" }),
+    "error",
+  );
+  expect(pressed()).toEqual([word("hidden")]);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(0);
+  // Typing raises nothing either: every key remounts the example.
+  await user.type(rail().getByRole("textbox", { name: "العنوان" }), "ab");
+  expect(pressed()).toEqual([word("hidden")]);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(0);
+  // The trigger still raises one, and the switcher follows.
+  fireEvent.click(stage().getByRole("button", { name: "عرض التنبيه" }));
+  expect(pressed()).toEqual([word("shown")]);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
+});
+
 it("loads props saved before the last states: an old default moves, new keys default", () => {
   const fresh = defaultPlaygrounds("ar");
   const old = { ...fresh["filter-bar"], initialKind: "all" };

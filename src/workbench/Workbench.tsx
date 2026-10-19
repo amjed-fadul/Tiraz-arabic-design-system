@@ -161,11 +161,16 @@ export function Workbench() {
       [component]: [...(prev[component] ?? []).slice(-2), { name, value }],
     }));
   }
-  // A remount must never invent a decision. Editing a request voids its
-  // decision, as the component does, so a decision example starts over at its
-  // resting state; a state press still sets its own phase.
-  function restartDecision() {
-    if (active === "approval-card" || active === "approval-flow")
+  // A remount must never invent a decision or an event. Editing a request
+  // voids its decision, as the component does, and a Shown toast would sound
+  // again on every edit, so these examples start over at their resting state;
+  // a state press still sets its own phase.
+  function restartOnEdit() {
+    if (
+      active === "approval-card" ||
+      active === "approval-flow" ||
+      active === "toast"
+    )
       setPhases((prev) => ({ ...prev, [active]: undefined }));
   }
   function patchPage(component: ComponentId, patch: Record<string, unknown>) {
@@ -210,7 +215,7 @@ export function Workbench() {
       !("mode" in patch)
     )
       return;
-    restartDecision();
+    restartOnEdit();
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
   function resetSystem() {
