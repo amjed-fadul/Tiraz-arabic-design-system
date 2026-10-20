@@ -94,6 +94,7 @@
   --control-padding: 16px;
   --control-gap: 8px;
   --tab-padding: 8px;
+  --cell-padding: 8px;
   --menu-item-padding: 5px;
   --row-gap: 16px;
   /* Paper padding follows density: cards, dialogs and toasts. */
@@ -255,6 +256,7 @@
   --control-padding: 12px;
   --control-gap: 6px;
   --tab-padding: 4px;
+  --cell-padding: 4px;
   --menu-item-padding: 3px;
   --row-gap: 12px;
   --paper-padding-block: 14px;

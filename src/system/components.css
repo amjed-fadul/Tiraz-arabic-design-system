@@ -1034,7 +1034,7 @@ input.tz-input:read-only {
   font-weight: var(--weight-medium);
 }
 .tz-table :where(th, td) {
-  padding-block: var(--space-2);
+  padding-block: var(--cell-padding);
   padding-inline: var(--control-padding);
   text-align: start;
   vertical-align: top;
@@ -1064,7 +1064,8 @@ input.tz-input:read-only {
 }
 /* A data table is one paper: the table scrolls inside it, and the footer with
    its pagination is a tray band along the bottom. The paper clips its corners,
-   so the scroll area's focus ring sits inside. */
+   so the scroll area's focus ring sits inside, rounded with the paper's top
+   corners. */
 .tz-data-table {
   inline-size: 100%;
   min-inline-size: 0;
@@ -1077,6 +1078,8 @@ input.tz-input:read-only {
 .tz-data-table > .tz-table-container {
   border: 0;
   border-radius: 0;
+  border-start-start-radius: var(--radius-paper);
+  border-start-end-radius: var(--radius-paper);
   box-shadow: none;
 }
 .tz-data-table > .tz-table-container:focus-visible {

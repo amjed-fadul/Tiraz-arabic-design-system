@@ -369,6 +369,12 @@ const paperPadding = {
   },
 };
 
+/** Table cell padding at standard and compact density (spec section 11). */
+const cellPadding = {
+  standard: { "--cell-padding": "8px" },
+  compact: { "--cell-padding": "4px" },
+};
+
 const radii = {
   "--radius-small": "max(2px, calc(var(--radius) - 3px))",
   "--tray-pad": "5px",
@@ -541,6 +547,12 @@ it("sets the fixed sizes and the press and disabled states", () => {
 
 it("pads paper by density", () => {
   const { standard, compact } = paperPadding;
+  expect(valuesOf(readRule(BASE), standard)).toEqual(standard);
+  expect(valuesOf(readRule(COMPACT), compact)).toEqual(compact);
+});
+
+it("pads table cells by density", () => {
+  const { standard, compact } = cellPadding;
   expect(valuesOf(readRule(BASE), standard)).toEqual(standard);
   expect(valuesOf(readRule(COMPACT), compact)).toEqual(compact);
 });

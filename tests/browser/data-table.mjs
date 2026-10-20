@@ -149,7 +149,7 @@ try {
             });
             assert.equal(g.documentWidth, g.viewportWidth, JSON.stringify(g));
             assert.equal(g.fontSize, typography === "large" ? "16px" : "14px");
-            assert.equal(g.padding, "8px");
+            assert.equal(g.padding, density === "compact" ? "4px" : "8px");
             assert.equal(g.direction, language === "ar" ? "rtl" : "ltr");
             assert.ok(g.fontLoaded);
             assert.equal(g.animations, "none");

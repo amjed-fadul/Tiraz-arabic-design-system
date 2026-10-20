@@ -129,8 +129,7 @@ async function geometry(container, c, active) {
   if (overflow.length)
     report.failures.push({ ...c, active, checks: overflow, geometry: g });
   assert.equal(g.fontSize, c.typography === "large" ? "16px" : "14px");
-  // Cells pad with --space-2 at both densities (Woven: no tab token).
-  assert.equal(g.paddingBlock, "8px");
+  assert.equal(g.paddingBlock, c.density === "compact" ? "4px" : "8px");
   assert.equal(g.direction, c.language === "ar" ? "rtl" : "ltr");
   assert.equal(g.alignment, "start");
   assert.equal(g.wrap, "anywhere");
