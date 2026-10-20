@@ -267,7 +267,15 @@ export function AskUserQuestionsExample({
   // Editing the answers opens the questions again, with the draft kept.
   const [round, setRound] = useState(0);
   const replay = useRef(sent),
-    root = useRef<HTMLDivElement>(null);
+    root = useRef<HTMLDivElement>(null),
+    editing = useRef(false);
+  // Editing remounts the questions, so focus goes to the reopened question
+  // rather than dropping to the page.
+  useLayoutEffect(() => {
+    if (!editing.current) return;
+    editing.current = false;
+    root.current?.querySelector<HTMLElement>(".tz-question-heading")?.focus();
+  }, [round]);
   // Sent from a timer, so only the mount that stays sends them.
   useEffect(() => {
     if (!replay.current) return;
@@ -287,6 +295,7 @@ export function AskUserQuestionsExample({
         resetKey={round}
         receipt
         onEditAnswers={() => {
+          editing.current = true;
           setRound((count) => count + 1);
           onPhaseChange?.("asking");
         }}

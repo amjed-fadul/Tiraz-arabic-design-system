@@ -163,6 +163,28 @@ function ApprovalFlowInstance({
       </span>
     </div>
   );
+  // Without a host to record a decision the card gets no handler, so its own
+  // guard renders no actions.
+  const record: ApprovalCardProps["onDecision"] =
+    typeof onDecision === "function"
+      ? async (request, decision, context) => {
+          await onDecision(request, decision, context);
+          if (context.signal.aborted) return;
+          const next = [
+            ...latest.current.records.filter(
+              (item) => item.requestId !== request.id,
+            ),
+            {
+              requestId: request.id,
+              requestKey: approvalRequestKey(request),
+              decision,
+            },
+          ];
+          if (latest.current.value === undefined)
+            setHistory((previous) => ({ ...previous, records: next }));
+          latest.current.onValueChange?.(next);
+        }
+      : onDecision;
   const body = (
     <>
       {records.length > 0 && (
@@ -209,23 +231,7 @@ function ApprovalFlowInstance({
           appearance="plain"
           headingLevel={headingLevel}
           value={null}
-          onDecision={async (request, decision, context) => {
-            await onDecision(request, decision, context);
-            if (context.signal.aborted) return;
-            const next = [
-              ...latest.current.records.filter(
-                (record) => record.requestId !== request.id,
-              ),
-              {
-                requestId: request.id,
-                requestKey: approvalRequestKey(request),
-                decision,
-              },
-            ];
-            if (latest.current.value === undefined)
-              setHistory((previous) => ({ ...previous, records: next }));
-            latest.current.onValueChange?.(next);
-          }}
+          onDecision={record}
         />
       ) : (
         <p className="tz-decision-status">

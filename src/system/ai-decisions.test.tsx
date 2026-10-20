@@ -13,6 +13,7 @@ import { AskUserQuestions } from "./AskUserQuestions";
 import type { QuestionAnswers } from "./AskUserQuestions";
 import { ApprovalCard } from "./ApprovalCard";
 import { ApprovalFlow } from "./ApprovalFlow";
+import type { ApprovalFlowProps } from "./ApprovalFlow";
 import type {
   ApprovalRecord,
   ApprovalRequest,
@@ -701,6 +702,48 @@ it("never approves the next request with a held or repeated chord", async () => 
   );
   expect(host).toHaveBeenCalledTimes(2);
   expect(host.mock.calls[1].slice(0, 2)).toEqual([second, "approved"]);
+});
+it("waits 500 ms again before approving when an impact value changes", async () => {
+  vi.useFakeTimers();
+  const onDecision = vi.fn();
+  const card = (value: string) =>
+    wrap(
+      <ApprovalCard
+        request={request}
+        reversible
+        impact={[{ id: "draft", label: "Draft A", value }]}
+        onDecision={onDecision}
+      />,
+    );
+  const view = render(card("SAR 100"));
+  const group = screen.getByRole("group", { name: "Rename sample" });
+  act(() => group.focus());
+  act(() => vi.advanceTimersByTime(600));
+  view.rerender(card("SAR 100,000"));
+  act(() => vi.advanceTimersByTime(100));
+  await act(async () =>
+    fireEvent.keyDown(group, { key: "Enter", ctrlKey: true }),
+  );
+  expect(onDecision).not.toHaveBeenCalled();
+  act(() => vi.advanceTimersByTime(500));
+  await act(async () =>
+    fireEvent.keyDown(group, { key: "Enter", ctrlKey: true }),
+  );
+  expect(onDecision).toHaveBeenCalledTimes(1);
+});
+it("renders no Approve or Reject in a flow without onDecision", () => {
+  render(
+    wrap(
+      <ApprovalFlow
+        label="Review"
+        requests={[request]}
+        {...({} as Pick<ApprovalFlowProps, "onDecision">)}
+      />,
+    ),
+  );
+  expect(screen.getByRole("group", { name: "Rename sample" })).toBeVisible();
+  expect(screen.queryByRole("button", { name: "Approve rename" })).toBeNull();
+  expect(screen.queryByRole("button", { name: "Keep title" })).toBeNull();
 });
 it("expires on the host's word, aborting a decision in flight", async () => {
   const task = deferred(),

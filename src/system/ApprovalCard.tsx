@@ -214,6 +214,17 @@ function ApprovalCardInstance({
       onSelect: () => decide("approved"),
     },
   ];
+  // The approve chord waits again whenever what it approves changes, the
+  // impact figures included. Only strings and numbers go into the key: a
+  // React element can be circular.
+  const prim = (value: unknown) =>
+    typeof value === "string" || typeof value === "number" ? value : null;
+  const contentKey = JSON.stringify([
+    reversible,
+    !!irreversible,
+    expired,
+    impact?.map((row) => [row.id, prim(row.label), prim(row.value)]),
+  ]);
   const Heading = `h${headingLevel}` as const;
   const header = (
     <div className="tz-approval-header" data-zone="header">
@@ -301,11 +312,7 @@ function ApprovalCardInstance({
       {/* No action without a host to record it. */}
       {!closed && typeof onDecision === "function" && (
         <div className="tz-approval-decision" data-zone="decision">
-          <DecisionBar
-            actions={actions}
-            scope={root}
-            contentKey={JSON.stringify([reversible, !!irreversible, expired])}
-          />
+          <DecisionBar actions={actions} scope={root} contentKey={contentKey} />
         </div>
       )}
     </>
