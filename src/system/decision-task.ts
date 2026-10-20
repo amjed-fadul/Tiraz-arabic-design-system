@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 /** Instance-scoped UI task. Hosts must also honor the signal and validate identity. */
 export function useDecisionTask() {
   const [state, setState] = useState<
@@ -49,5 +49,12 @@ export function useDecisionTask() {
         active.current = null;
     }
   }
-  return { state, run };
+  /** Drops the decision in flight: its signal aborts, so its result is never recorded. */
+  const cancel = useCallback(() => {
+    if (!active.current) return;
+    active.current.abort();
+    active.current = null;
+    setState("idle");
+  }, []);
+  return { state, run, cancel };
 }

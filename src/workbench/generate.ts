@@ -102,10 +102,12 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
   if (
     isOneOf(component, ["ask-user-questions", "approval-card", "approval-flow"])
   ) {
-    const source = aiDecisionsSource.replace(
-      /from "\.\.\/\.\.\/index"/g,
-      'from "./system"',
-    );
+    const source = aiDecisionsSource
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
+      .replace(
+        /from "\.\/finance-story"/g,
+        'from "./system/ai/examples/finance-story"',
+      );
     const name =
       component === "ask-user-questions"
         ? "AskUserQuestionsExample"

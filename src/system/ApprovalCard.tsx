@@ -1,9 +1,14 @@
-import { Check, ShieldCheck, X } from "lucide-react";
+import { Check, Clock, TriangleAlert, X } from "lucide-react";
 import { approvalRequestKey } from "./approval-request";
 import { useId, useLayoutEffect, useRef, useState } from "react";
+import type { FocusEvent, ReactNode } from "react";
+import { AIMark } from "./AIMark";
 import { Alert } from "./Alert";
-import { Badge } from "./Badge";
-import { Button } from "./Button";
+import { DecisionBar } from "./DecisionBar";
+import type { DecisionAction } from "./DecisionBar";
+import { StatusPill } from "./StatusPill";
+import { Tray } from "./Tray";
+import { approvalCardCopy } from "./decision-copy";
 import { useSystem } from "./useSystem";
 import { useChanged } from "./useChanged";
 import { useDecisionTask } from "./decision-task";
@@ -22,6 +27,23 @@ export interface ApprovalRecord {
   requestKey: string;
   decision: ApprovalDecision;
 }
+/** Every built-in string the card shows; `labels` overrides any of them. */
+export interface ApprovalCardLabels {
+  target: string;
+  oneTime: string;
+  recording: string;
+  failed: string;
+  retryHint: string;
+  approved: string;
+  rejected: string;
+  expired: string;
+  /** The note `irreversible={true}` shows. */
+  irreversible: string;
+  /** The status pill while the request waits. */
+  needsYou: string;
+  /** The card's description: approval records a decision, nothing more. */
+  scope: string;
+}
 export interface ApprovalCardProps {
   request: ApprovalRequest;
   onDecision: (
@@ -33,7 +55,43 @@ export interface ApprovalCardProps {
   value?: ApprovalRecord | null;
   resetKey?: string | number;
   className?: string;
+  /** Who or what the action affects, with amounts, as a compact table. */
+  impact?: readonly {
+    id: string;
+    label: ReactNode;
+    value?: ReactNode;
+    note?: ReactNode;
+  }[];
+  /** True shows the default note in the attention color; a node replaces it. */
+  irreversible?: boolean | ReactNode;
+  /** Lets Ctrl or Cmd+Enter approve, unless the request is also irreversible. */
+  reversible?: boolean;
+  /** The host's expiry text. The card runs no clock of its own. */
+  expiryLabel?: ReactNode;
+  /** The host's word that the request lapsed. A decision in flight is aborted. */
+  expired?: boolean;
+  /** An optional middle action, such as viewing the messages. */
+  secondaryAction?: { label: ReactNode; onSelect(): void };
+  /** Host-formatted time after the approved receipt, such as «قبل دقيقة». */
+  receiptTime?: ReactNode;
+  /** The title's level; 3 by default. */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
+  labels?: Partial<ApprovalCardLabels>;
+  /** "card" sits on a tray; "plain" lives on its host's paper. */
+  appearance?: "card" | "plain";
 }
+/** What a card shows beyond its request; ApprovalFlow's `approval` returns it. */
+export type ApprovalDetails = Pick<
+  ApprovalCardProps,
+  | "impact"
+  | "irreversible"
+  | "reversible"
+  | "expiryLabel"
+  | "expired"
+  | "secondaryAction"
+  | "receiptTime"
+  | "labels"
+>;
 export function ApprovalCard(props: ApprovalCardProps) {
   return (
     <ApprovalCardInstance
@@ -47,9 +105,22 @@ function ApprovalCardInstance({
   onDecision,
   value,
   className = "",
+  impact,
+  irreversible,
+  reversible,
+  expiryLabel,
+  expired = false,
+  secondaryAction,
+  receiptTime,
+  headingLevel = 3,
+  labels,
+  appearance = "card",
 }: ApprovalCardProps) {
   const { config } = useSystem(),
-    ar = config.direction === "rtl",
+    copy = {
+      ...approvalCardCopy[config.direction === "rtl" ? "ar" : "en"],
+      ...labels,
+    },
     id = useId();
   const task = useDecisionTask(),
     [local, setLocal] = useState<ApprovalDecision | null>(null),
@@ -61,172 +132,232 @@ function ApprovalCardInstance({
           value.requestKey === approvalRequestKey(request)
         ? value.decision
         : null;
-  // The receipt folds in and its glyph pops and draws only once a decision
-  // lands here, never when the card mounts already decided.
-  const changed = useChanged(decision);
+  // A recorded decision stands; otherwise the host's expiry closes the card.
+  const closed = decision ?? (expired ? "expired" : null);
+  // The receipt folds in and its glyph pops and draws only once the card
+  // closes here, never when it mounts closed.
+  const changed = useChanged(closed);
   const root = useRef<HTMLDivElement>(null),
     hadFocus = useRef(false);
+  // Expiry aborts a decision in flight, so a late answer records nothing.
+  const { cancel } = task;
+  useLayoutEffect(() => {
+    if (expired) cancel();
+  }, [expired, cancel]);
+  // The actions are gone once the card closes, so focus that went with them
+  // moves to the card.
   useLayoutEffect(() => {
     if (
-      decision &&
+      closed &&
       hadFocus.current &&
       root.current?.ownerDocument.activeElement ===
         root.current?.ownerDocument.body
     )
       root.current?.focus();
-  }, [decision]);
+  }, [closed]);
   function decide(next: ApprovalDecision) {
-    if (decision) return;
+    if (closed) return;
     setPending(next);
     void task.run(
       (signal) => onDecision(request, next, { signal }),
       () => setLocal(next),
     );
   }
-  const state = decision ?? task.state;
-  const status = decision
-    ? decision === "approved"
-      ? ar
-        ? "تمت الموافقة"
-        : "Approved"
-      : ar
-        ? "تم الرفض"
-        : "Rejected"
-    : task.state === "submitting" || task.state === "accepted"
-      ? ar
-        ? "جارٍ تسجيل القرار"
-        : "Recording decision"
-      : task.state === "failed"
-        ? ar
-          ? "تعذّر تسجيل القرار. راجع الطلب وحاول مرة أخرى."
-          : "Decision was not accepted. Review and try again."
-        : "";
-  return (
-    <div
-      ref={root}
-      tabIndex={-1}
-      role="group"
-      aria-labelledby={`${id}-title`}
-      aria-describedby={`${id}-scope`}
-      className={`tz-approval-card ${className}`}
-      data-state={state}
-      data-changed={changed || undefined}
-      onFocusCapture={() => {
-        hadFocus.current = true;
-      }}
-      onBlurCapture={(event) => {
-        if (
-          event.relatedTarget &&
-          !event.currentTarget.contains(event.relatedTarget)
-        )
-          hadFocus.current = false;
-      }}
-      onKeyDown={(event) => {
-        if (
-          event.key === "Escape" &&
-          !decision &&
-          task.state !== "submitting"
-        ) {
-          event.preventDefault();
-          event.stopPropagation();
-          decide("rejected");
-        }
-      }}
-    >
-      <div className="tz-decision-heading">
+  const busy = task.state === "submitting" || task.state === "accepted";
+  // One live region: the receipt it holds once closed is the visible one.
+  const status =
+    closed === "approved" ? (
+      <>
+        {copy.approved}
+        {receiptTime != null && (
+          <span className="tz-approval-receipt-time"> · {receiptTime}</span>
+        )}
+      </>
+    ) : closed === "rejected" ? (
+      copy.rejected
+    ) : closed === "expired" ? (
+      copy.expired
+    ) : busy ? (
+      copy.recording
+    ) : task.state === "failed" ? (
+      copy.failed
+    ) : (
+      ""
+    );
+  const actions: DecisionAction[] = [
+    {
+      id: "reject",
+      label: request.rejectLabel,
+      shortcut: "Escape",
+      loading: task.state === "submitting" && pending === "rejected",
+      disabled: busy,
+      onSelect: () => decide("rejected"),
+    },
+    ...(secondaryAction
+      ? [
+          {
+            id: "secondary",
+            label: secondaryAction.label,
+            onSelect: () => secondaryAction.onSelect(),
+          },
+        ]
+      : []),
+    {
+      id: "approve",
+      label: request.approveLabel,
+      tone: "primary",
+      // Spec section 8: an irreversible approval needs a click, or Enter or
+      // Space on the focused button.
+      shortcut: reversible && !irreversible ? "Mod+Enter" : undefined,
+      loading: task.state === "submitting" && pending === "approved",
+      disabled: busy,
+      onSelect: () => decide("approved"),
+    },
+  ];
+  const Heading = `h${headingLevel}` as const;
+  const header = (
+    <div className="tz-approval-header" data-zone="header">
+      {closed ? (
         <span className="tz-decision-icon" aria-hidden="true">
-          {decision === "approved" ? (
+          {closed === "approved" ? (
             <Check size={16} />
-          ) : decision === "rejected" ? (
+          ) : closed === "rejected" ? (
             <X size={16} />
           ) : (
-            <ShieldCheck size={16} />
+            <Clock size={16} />
           )}
         </span>
-        <div className="tz-decision-title">
-          <h3 id={`${id}-title`} dir="auto">
-            {request.action}
-          </h3>
-          <dl className="tz-decision-facts">
-            <div>
-              <dt>{ar ? "الهدف" : "Target"}</dt>
-              <dd dir="auto">{request.target}</dd>
-            </div>
-          </dl>
+      ) : (
+        <AIMark />
+      )}
+      <Heading id={`${id}-title`} className="tz-approval-title" dir="auto">
+        {request.action}
+      </Heading>
+      {!closed && <StatusPill state="needs-you" label={copy.needsYou} />}
+    </div>
+  );
+  const paper = (
+    <>
+      <dl className="tz-decision-facts">
+        <div>
+          <dt>{copy.target}</dt>
+          <dd dir="auto">{request.target}</dd>
         </div>
-        <Badge>{ar ? "لمرة واحدة" : "One-time decision"}</Badge>
-      </div>
+      </dl>
       {request.details && (
         <p className="tz-decision-details" dir="auto">
           {request.details}
         </p>
       )}
-      <ul className="tz-decision-consequences">
-        {request.consequences.map((item, index) => (
-          <li key={index} dir="auto">
-            {item}
-          </li>
-        ))}
-      </ul>
-      <p
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="tz-decision-status"
-      >
-        {status}
-      </p>
-      {task.state === "failed" && !decision && (
-        <Alert
-          tone="error"
-          title={
-            ar ? "يمكنك إعادة المحاولة أو الرفض." : "You can retry or reject."
-          }
-        />
+      {!!impact?.length && (
+        <table className="tz-approval-impact">
+          <tbody>
+            {impact.map((row) => (
+              <tr key={row.id}>
+                <th scope="row" dir="auto">
+                  {row.label}
+                  {row.note != null && (
+                    <span className="tz-approval-impact-note">{row.note}</span>
+                  )}
+                </th>
+                <td>{row.value}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
-      <div className="tz-decision-footer">
-        {/* Announced with the card; the decision buttons say the rest. */}
-        <p id={`${id}-scope`} className="tz-visually-hidden">
-          {ar
-            ? "الموافقة تخصّ هذا الطلب وحده، ويتولّى التطبيق تنفيذه."
-            : "Approval records a decision for this request only. Execution belongs to the host."}
+      {request.consequences.length > 0 && (
+        <ul className="tz-decision-consequences">
+          {request.consequences.map((item, index) => (
+            <li key={index} dir="auto">
+              {item}
+            </li>
+          ))}
+        </ul>
+      )}
+      {!!irreversible && (
+        <p className="tz-approval-irreversible">
+          <TriangleAlert aria-hidden="true" size={15} />
+          <span dir="auto">
+            {irreversible === true ? copy.irreversible : irreversible}
+          </span>
         </p>
-        {!decision && (
-          <div className="tz-decision-actions">
-            <Button
-              variant="secondary"
-              state={
-                task.state === "submitting" && pending === "rejected"
-                  ? "loading"
-                  : "idle"
-              }
-              disabled={
-                task.state === "submitting" || task.state === "accepted"
-              }
-              onClick={() => decide("rejected")}
-            >
-              {request.rejectLabel}
-              <kbd className="tz-kbd" aria-hidden="true">
-                Esc
-              </kbd>
-            </Button>
-            <Button
-              variant="primary"
-              state={
-                task.state === "submitting" && pending === "approved"
-                  ? "loading"
-                  : "idle"
-              }
-              disabled={
-                task.state === "submitting" || task.state === "accepted"
-              }
-              onClick={() => decide("approved")}
-            >
-              {request.approveLabel}
-            </Button>
-          </div>
-        )}
+      )}
+      {task.state === "failed" && !closed && (
+        <Alert tone="error" title={copy.retryHint} />
+      )}
+    </>
+  );
+  const footer = (
+    <>
+      <div className="tz-approval-meta" data-zone="meta">
+        <span>{copy.oneTime}</span>
+        {expiryLabel != null && <span>{expiryLabel}</span>}
+        {/* Announced with the card; the decision buttons say the rest. */}
+        <span id={`${id}-scope`} className="tz-visually-hidden">
+          {copy.scope}
+        </span>
       </div>
+      {/* No action without a host to record it. */}
+      {!closed && typeof onDecision === "function" && (
+        <div className="tz-approval-decision" data-zone="decision">
+          <DecisionBar
+            actions={actions}
+            scope={root}
+            contentKey={JSON.stringify([reversible, !!irreversible, expired])}
+          />
+        </div>
+      )}
+    </>
+  );
+  const statusLine = (
+    <p
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      className="tz-decision-status"
+    >
+      {status}
+    </p>
+  );
+  const rootProps = {
+    ref: root,
+    tabIndex: -1,
+    role: "group",
+    "aria-labelledby": `${id}-title`,
+    "aria-describedby": `${id}-scope`,
+    className: `tz-approval-card ${className}`,
+    "data-state": closed ?? task.state,
+    "data-appearance": appearance,
+    "data-changed": changed || undefined,
+    onFocusCapture: () => {
+      hadFocus.current = true;
+    },
+    onBlurCapture: (event: FocusEvent<HTMLDivElement>) => {
+      if (
+        event.relatedTarget &&
+        !event.currentTarget.contains(event.relatedTarget)
+      )
+        hadFocus.current = false;
+    },
+  };
+  // The paper and the status line sit between the header and the footer in
+  // both appearances, so the live region never moves.
+  return appearance === "card" ? (
+    <Tray {...rootProps} paper={false} header={header} footer={footer}>
+      <div className="tz-tray-paper tz-approval-paper" data-zone="paper">
+        {paper}
+      </div>
+      {statusLine}
+    </Tray>
+  ) : (
+    <div {...rootProps}>
+      {header}
+      <div className="tz-approval-paper" data-zone="paper">
+        {paper}
+      </div>
+      {statusLine}
+      <div className="tz-approval-footer">{footer}</div>
     </div>
   );
 }

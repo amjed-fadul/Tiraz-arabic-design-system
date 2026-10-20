@@ -913,6 +913,10 @@
       "source": "AskUserQuestions.tsx"
     },
     {
+      "name": "AskUserQuestionsLabels",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
       "name": "UserQuestion",
       "source": "AskUserQuestions.tsx"
     },
@@ -933,6 +937,14 @@
       "source": "ApprovalCard.tsx"
     },
     {
+      "name": "ApprovalCardLabels",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalDetails",
+      "source": "ApprovalCard.tsx"
+    },
+    {
       "name": "ApprovalRequest",
       "source": "ApprovalCard.tsx"
     },
@@ -950,6 +962,10 @@
     },
     {
       "name": "ApprovalFlowProps",
+      "source": "ApprovalFlow.tsx"
+    },
+    {
+      "name": "ApprovalFlowLabels",
       "source": "ApprovalFlow.tsx"
     },
     {
@@ -1220,9 +1236,14 @@
       "id": "ask-user-questions",
       "api": "AskUserQuestions",
       "source": "AskUserQuestions.tsx",
+      "kind": "pattern",
+      "parts": ["ai-mark", "status-pill", "tray"],
+      "states": ["asking", "submitting", "answered", "failed"],
+      "events": ["onValueChange", "onSubmit", "onSkip", "onEditAnswers"],
       "exports": [
         "AskUserQuestions",
         "AskUserQuestionsProps",
+        "AskUserQuestionsLabels",
         "UserQuestion",
         "QuestionAnswer",
         "QuestionAnswers"
@@ -1267,12 +1288,59 @@
           "name": "className",
           "type": "string",
           "required": false
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card sits on a tray, at most 38rem wide, and its options cascade in when the question changes; plain drops the tray and its surface."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "The question heading, which moving between questions focuses."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<AskUserQuestionsLabels>",
+          "required": false,
+          "note": "Replaces any built-in text. position(current, total) and hint(first, last) receive digits already formatted for config.numerals."
+        },
+        {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Names the asking agent in the header."
+        },
+        {
+          "name": "onSkip",
+          "type": "() => void",
+          "required": false,
+          "note": "Adds a ghost Skip questions action for questions the agent can do without."
+        },
+        {
+          "name": "receipt",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Folds the answers the host accepted into Your answers. Without it, the accepted form stays as it is."
+        },
+        {
+          "name": "onEditAnswers",
+          "type": "() => void",
+          "required": false,
+          "note": "Adds Edit answers to the receipt; the host reopens the questions, for example with resetKey."
         }
       ],
-      "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
+      "state": "Controlled question drafts. Submission is guarded and aborted on schema replacement, reset and unmount. States: asking, submitting, answered (with receipt, the answers the host accepted) and failed (the draft stays). The receipt shows what the host accepted, never what the agent did with it.",
       "accessibility": [
-        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Keys 1–9 (ASCII, Arabic-Indic or Eastern Arabic) choose the matching choice; choice numbers and the question position follow config.numerals. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
-        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. No animation."
+        "A named form with native radios and labeled text fields. Never steals focus on mount. Keys 1–9 (ASCII, Arabic-Indic or Eastern Arabic) choose the matching choice; the position and the key hint follow config.numerals. Required errors focus the first incomplete question, and moving between questions focuses the question heading. Ctrl or Cmd+Enter submits from a text answer.",
+        "A polite status line, and on failure an alert that keeps the draft. The status pill says needs-you while the questions wait. When the receipt replaces the focused control, focus moves to the form."
       ],
       "limitations": [
         "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
@@ -1287,9 +1355,22 @@
       "id": "approval-card",
       "api": "ApprovalCard",
       "source": "ApprovalCard.tsx",
+      "kind": "pattern",
+      "parts": ["ai-mark", "status-pill", "tray"],
+      "states": [
+        "pending",
+        "submitting",
+        "approved",
+        "rejected",
+        "expired",
+        "failed"
+      ],
+      "events": ["onDecision"],
       "exports": [
         "ApprovalCard",
         "ApprovalCardProps",
+        "ApprovalCardLabels",
+        "ApprovalDetails",
         "ApprovalRequest",
         "ApprovalDecision",
         "approvalRequestKey"
@@ -1319,12 +1400,78 @@
           "name": "className",
           "type": "string",
           "required": false
+        },
+        {
+          "name": "impact",
+          "type": "readonly { id: string; label: ReactNode; value?: ReactNode; note?: ReactNode }[]",
+          "required": false,
+          "note": "Who or what the action affects, with amounts: a table with end-aligned figures."
+        },
+        {
+          "name": "irreversible",
+          "type": "boolean | ReactNode",
+          "required": false,
+          "note": "true shows the default note in the attention color; a node replaces it. An irreversible request has no approve shortcut, even when also marked reversible."
+        },
+        {
+          "name": "reversible",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Lets Ctrl or Cmd+Enter approve, 500 ms after the request appears and never on key repeat, unless the request is also irreversible."
+        },
+        {
+          "name": "expiryLabel",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The host’s expiry text, such as ينتهي الطلب خلال ٢٣ ساعة. The card runs no clock."
+        },
+        {
+          "name": "expired",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "The host’s word that the request lapsed: the expired receipt replaces the actions and is announced, and a decision in flight is aborted, so a late resolve records nothing."
+        },
+        {
+          "name": "secondaryAction",
+          "type": "{ label: ReactNode; onSelect(): void }",
+          "required": false,
+          "note": "An optional middle action, such as viewing the messages, between reject and approve."
+        },
+        {
+          "name": "receiptTime",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Host-formatted time after the approved receipt, such as قبل دقيقة."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "The title, which is request.action."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<ApprovalCardLabels>",
+          "required": false,
+          "note": "Replaces any built-in text."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card puts the header and the decisions on a tray and the content on paper; plain lives on its host’s paper, as inside Agent task."
         }
       ],
-      "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
+      "state": "Optional controlled approval record bound to the exact request content. A decision counts only after the host’s promise resolves; reset, content replacement, unmount and host expiry abort it. Receipts record the decision, never the outcome: approved (with an optional receiptTime), rejected and expired. No undo.",
       "accessibility": [
-        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
-        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. No animation."
+        "A named group whose heading is the request’s action. Never steals focus on mount, and approve never takes default focus. Escape rejects a pending request; inside a Sheet or Modal the dialog takes Escape and nothing is recorded. Ctrl or Cmd+Enter approves only a reversible request that is not irreversible. Key hints sit inside the buttons and their shortcuts in each button’s description.",
+        "One polite live region for recording, failure and the receipt. Failure keeps the details and restores focus to the initiating button when focus has not moved elsewhere. When the card closes, focus that went with its actions moves to the card. The status pill says needs-you while the request is open."
       ],
       "limitations": [
         "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
@@ -1339,7 +1486,16 @@
       "id": "approval-flow",
       "api": "ApprovalFlow",
       "source": "ApprovalFlow.tsx",
-      "exports": ["ApprovalFlow", "ApprovalFlowProps", "ApprovalRecord"],
+      "kind": "pattern",
+      "parts": ["approval-card", "tray"],
+      "states": ["pending", "submitting", "failed", "all-decided"],
+      "events": ["onDecision", "onValueChange"],
+      "exports": [
+        "ApprovalFlow",
+        "ApprovalFlowProps",
+        "ApprovalFlowLabels",
+        "ApprovalRecord"
+      ],
       "props": [
         {
           "name": "label",
@@ -1375,12 +1531,40 @@
           "name": "className",
           "type": "string",
           "required": false
+        },
+        {
+          "name": "approval",
+          "type": "(request: ApprovalRequest) => ApprovalDetails | undefined",
+          "required": false,
+          "note": "What each request’s card shows beyond the request: impact, irreversible, reversible, expiry, secondaryAction, receiptTime and labels."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<ApprovalFlowLabels>",
+          "required": false,
+          "note": "Replaces any built-in text. position(current, total) receives digits already formatted for config.numerals."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "Passed to its card’s title."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card puts the whole flow in one tray, its card plain inside; plain drops the tray."
         }
       ],
-      "state": "Controlled question drafts or optional controlled approval records. Pending callbacks are guarded and aborted on schema/request content replacement, reset and unmount. Host acknowledgement records a decision only.",
+      "state": "Optional controlled approval records bound to request content. The flow advances only after the host accepts; changed requests reopen, invalidated records never return, and host expiry aborts a decision in flight.",
       "accessibility": [
-        "Inline named form/group, native radios and labeled text fields. Never steals focus on mount. Required errors focus the first incomplete question. Inline Escape rejects a pending approval.",
-        "Polite status announcements. Failure retains details/drafts and restores initiating focus when focus has not moved elsewhere. Flow advancement recovers focus only when it was inside the flow. Request position digits follow config.numerals. No animation."
+        "A named group. After each accepted decision focus moves to the next card, only when focus was inside the flow. A held or repeated Ctrl or Cmd+Enter never approves the next request: each card waits 500 ms.",
+        "The flow’s own polite region announces each accepted decision with the next position, in config.numerals digits."
       ],
       "limitations": [
         "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
@@ -7045,6 +7229,184 @@
           "name": "empty",
           "type": "string",
           "required": false
+        }
+      ]
+    },
+    {
+      "type": "AskUserQuestionsLabels",
+      "source": "AskUserQuestions.tsx",
+      "props": [
+        {
+          "name": "name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "position",
+          "type": "(current: string, total: string) => string",
+          "required": true
+        },
+        {
+          "name": "previous",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "next",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "submit",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "skip",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "other",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "otherAnswer",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "required",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "submitting",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "accepted",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "hint",
+          "type": "(first: string, last: string) => string",
+          "required": true
+        },
+        {
+          "name": "empty",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "answers",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "editAnswers",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "needsYou",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "ApprovalCardLabels",
+      "source": "ApprovalCard.tsx",
+      "props": [
+        {
+          "name": "target",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "oneTime",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "recording",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retryHint",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "approved",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "rejected",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "expired",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "irreversible",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "needsYou",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "scope",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "ApprovalFlowLabels",
+      "source": "ApprovalFlow.tsx",
+      "props": [
+        {
+          "name": "position",
+          "type": "(current: string, total: string) => string",
+          "required": true
+        },
+        {
+          "name": "history",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "allDecided",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "none",
+          "type": "string",
+          "required": true
         }
       ]
     }

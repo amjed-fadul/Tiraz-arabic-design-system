@@ -71,7 +71,7 @@ try {
   await page.getByText("Request 2 of 2", { exact: true }).waitFor();
   assert.match(
     await page.getByRole("list", { name: "Prior decisions" }).innerText(),
-    /Rejected/,
+    /Request rejected/,
   );
   assert.equal(
     await page.getByRole("button", { name: "Send summary" }).isEnabled(),
@@ -86,7 +86,7 @@ try {
       .getByRole("status")
       .first()
       .textContent(),
-    /All decisions recorded\. No actions executed\./,
+    /All decisions made\./,
   );
   await page.screenshot({ path: `${out}/decisions-recorded.png` });
   checks.push(
@@ -147,15 +147,16 @@ try {
           .screenshot({ path: screenshot });
         const css = await page.locator(".tz-approval-card").evaluate((el) => ({
           font: getComputedStyle(el).fontFamily,
-          radius: getComputedStyle(el).borderRadius,
+          radius: getComputedStyle(el.closest(".tz-tray")).borderRadius,
           direction: getComputedStyle(el).direction,
           animations: el
             .getAnimations({ subtree: true })
             .filter((a) => a.playState === "running").length,
         }));
         assert.match(css.font, /IBM Plex Sans Arabic/);
-        // --radius-paper with radius 2: max(2.5px, 2 × 1.875px).
-        assert.equal(css.radius, "3.75px");
+        // The card sits plain on the flow's tray. --radius-tray with radius
+        // 2: 2 × 1.875px of paper plus min(5px, 2 × 0.625px).
+        assert.equal(css.radius, "5px");
         assert.equal(css.direction, ar ? "rtl" : "ltr");
         assert.equal(css.animations, 0);
         // Scan the resting card, not the button left under the pointer.
@@ -188,9 +189,9 @@ try {
   );
   checks.push("OS reduced motion");
   for (const [ar, en] of [
-    ["أسئلة للمستخدم", "AskUserQuestions"],
-    ["بطاقة القرار", "ApprovalCard"],
-    ["تسلسل القرارات", "ApprovalFlow"],
+    ["أسئلة قبل البدء", "Clarifying questions"],
+    ["طلب موافقة", "Approval request"],
+    ["سلسلة موافقات", "Approval sequence"],
   ]) {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto(base);

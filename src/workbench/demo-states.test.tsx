@@ -684,12 +684,35 @@ const phaseFamilies: PhaseFamily[] = [
         () => {
           expect(
             stage().getByRole("heading", {
-              name: "بأي الفواتير أبدأ المطابقة؟",
+              name: "أي الفواتير أبدأ مطابقتها؟",
             }),
           ).toBeVisible();
           expect(
             stage().getByRole("button", { name: "إرسال الإجابات" }),
           ).toBeEnabled();
+        },
+      ],
+      [
+        "answered",
+        async () => {
+          expect(
+            await stage().findByRole("heading", { name: "إجاباتك" }),
+          ).toBeVisible();
+          expect(stage().getByText("فواتير الموردين")).toBeVisible();
+        },
+      ],
+      [
+        "failed",
+        async () => {
+          expect(
+            await stage().findByText(
+              "تعذّر إرسال الإجابات. مسودتك محفوظة، حاول مرة أخرى.",
+            ),
+          ).toBeVisible();
+          // The draft stays as it was.
+          expect(
+            stage().getByRole("radio", { name: /فواتير الموردين/ }),
+          ).toBeChecked();
         },
       ],
     ],
@@ -702,7 +725,7 @@ const phaseFamilies: PhaseFamily[] = [
         "waiting",
         () =>
           expect(
-            stage().getByRole("button", { name: "تعليم كمدفوعة" }),
+            stage().getByRole("button", { name: "أرسل الرسائل" }),
           ).toBeEnabled(),
       ],
       [
@@ -710,11 +733,18 @@ const phaseFamilies: PhaseFamily[] = [
         () => {
           expect(stage().getByText("تمت الموافقة")).toBeVisible();
           expect(
-            stage().queryByRole("button", { name: "تعليم كمدفوعة" }),
+            stage().queryByRole("button", { name: "أرسل الرسائل" }),
           ).toBeNull();
         },
       ],
-      ["rejected", () => expect(stage().getByText("تم الرفض")).toBeVisible()],
+      ["rejected", () => expect(stage().getByText("رُفض الطلب")).toBeVisible()],
+      [
+        "expired",
+        () => {
+          expect(stage().getByText("انتهت مهلة الطلب")).toBeVisible();
+          expect(stage().queryByRole("button")).toBeNull();
+        },
+      ],
     ],
   },
   {
@@ -727,7 +757,7 @@ const phaseFamilies: PhaseFamily[] = [
         () => {
           expect(stage().getByText("الطلب ٢ من ٢")).toBeVisible();
           expect(
-            stage().getByRole("button", { name: "إرسال الملخص" }),
+            stage().getByRole("button", { name: /ترحيل القيود/ }),
           ).toBeEnabled();
         },
       ],

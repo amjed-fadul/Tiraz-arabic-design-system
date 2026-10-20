@@ -4,13 +4,27 @@ import { ApprovalCard } from "./ApprovalCard";
 import { approvalRequestKey } from "./approval-request";
 import type {
   ApprovalCardProps,
+  ApprovalDetails,
   ApprovalRecord,
   ApprovalRequest,
 } from "./ApprovalCard";
+import { Tray } from "./Tray";
+import { approvalCardCopy, approvalFlowCopy } from "./decision-copy";
 import { useSystem } from "./useSystem";
 import { useArrivals } from "./useArrivals";
 import { numberLocale } from "./config";
 export type { ApprovalRecord } from "./ApprovalCard";
+/** Every built-in string the flow shows; `labels` overrides any of them. */
+export interface ApprovalFlowLabels {
+  /** «الطلب ١ من ٢». The digits arrive formatted for the page's numerals. */
+  position: (current: string, total: string) => string;
+  /** Names the list of decisions already recorded. */
+  history: string;
+  /** Shown, and announced after the last decision, once all are decided. */
+  allDecided: string;
+  /** Shown when there are no requests. */
+  none: string;
+}
 export interface ApprovalFlowProps {
   label: string;
   requests: readonly ApprovalRequest[];
@@ -19,6 +33,13 @@ export interface ApprovalFlowProps {
   onValueChange?: (decisions: readonly ApprovalRecord[]) => void;
   resetKey?: string | number;
   className?: string;
+  /** What each request's card shows beyond the request itself. */
+  approval?: (request: ApprovalRequest) => ApprovalDetails | undefined;
+  labels?: Partial<ApprovalFlowLabels>;
+  /** Its card's title level; 3 by default. */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
+  /** "card" puts the whole flow in one tray, its card plain inside. */
+  appearance?: "card" | "plain";
 }
 /** Short inline composition. Hosts independently authorize and execute actions. */
 export function ApprovalFlow(props: ApprovalFlowProps) {
@@ -31,6 +52,10 @@ function ApprovalFlowInstance({
   value,
   onValueChange,
   className = "",
+  approval,
+  labels,
+  headingLevel = 3,
+  appearance = "card",
 }: ApprovalFlowProps) {
   const schemaKey = JSON.stringify(requests.map(approvalRequestKey));
   const [history, setHistory] = useState<{
@@ -38,7 +63,16 @@ function ApprovalFlowInstance({
     records: readonly ApprovalRecord[];
   }>({ schemaKey, records: [] });
   const { config } = useSystem(),
-    ar = config.direction === "rtl";
+    language = config.direction === "rtl" ? "ar" : "en",
+    copy = { ...approvalFlowCopy[language], ...labels };
+  // A decision reads in its own card's words.
+  const decided = (record: ApprovalRecord, request: ApprovalRequest) => {
+    const words = {
+      ...approvalCardCopy[language],
+      ...approval?.(request)?.labels,
+    };
+    return record.decision === "approved" ? words.approved : words.rejected;
+  };
   const validRecord = (record: ApprovalRecord) =>
     requests.some(
       (request) =>
@@ -71,9 +105,10 @@ function ApprovalFlowInstance({
   const digits = new Intl.NumberFormat(numberLocale(config), {
       useGrouping: false,
     }),
-    place = ar
-      ? `الطلب ${digits.format(position)} من ${digits.format(requests.length)}`
-      : `Request ${digits.format(position)} of ${digits.format(requests.length)}`;
+    place = copy.position(
+      digits.format(position),
+      digits.format(requests.length),
+    );
   const last = records.at(-1);
   const lastRequest = last
     ? requests.find(
@@ -82,7 +117,7 @@ function ApprovalFlowInstance({
     : undefined;
   const acceptedAnnouncement =
     last && lastRequest
-      ? `${last.decision === "approved" ? (ar ? "تمت الموافقة" : "Approved") : ar ? "تم الرفض" : "Rejected"}: ${lastRequest.action} · ${lastRequest.target}. ${current ? place : ar ? "سُجّلت جميع القرارات. لم يُنفّذ أي إجراء." : "All decisions recorded. No actions executed."}`
+      ? `${decided(last, lastRequest)}: ${lastRequest.action} · ${lastRequest.target}. ${current ? place : copy.allDecided}`
       : "";
   const root = useRef<HTMLDivElement>(null),
     focused = useRef(false),
@@ -102,61 +137,36 @@ function ApprovalFlowInstance({
     }
     previous.current = currentKey;
   }, [currentKey]);
-  return (
-    <div
-      ref={root}
-      role="group"
-      aria-label={label}
-      tabIndex={-1}
-      className={`tz-approval-flow ${className}`}
-      onFocusCapture={() => {
-        focused.current = true;
-      }}
-      onBlurCapture={(event) => {
-        if (
-          event.relatedTarget &&
-          !event.currentTarget.contains(event.relatedTarget)
-        )
-          focused.current = false;
-      }}
-    >
-      <span
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        {acceptedAnnouncement}
+  const progress = (
+    <div className="tz-question-progress">
+      <p className="tz-decision-position">{place}</p>
+      <span className="tz-question-steps" aria-hidden="true">
+        {requests.map((request) => {
+          const record = records.find(
+            (item) => item.requestKey === approvalRequestKey(request),
+          );
+          return (
+            <span
+              key={request.id}
+              data-state={
+                record
+                  ? record.decision === "approved"
+                    ? "done"
+                    : "skipped"
+                  : request === current
+                    ? "current"
+                    : "upcoming"
+              }
+            />
+          );
+        })}
       </span>
-      <div className="tz-question-progress">
-        <p className="tz-decision-position">{place}</p>
-        <span className="tz-question-steps" aria-hidden="true">
-          {requests.map((request) => {
-            const record = records.find(
-              (item) => item.requestKey === approvalRequestKey(request),
-            );
-            return (
-              <span
-                key={request.id}
-                data-state={
-                  record
-                    ? record.decision === "approved"
-                      ? "done"
-                      : "skipped"
-                    : request === current
-                      ? "current"
-                      : "upcoming"
-                }
-              />
-            );
-          })}
-        </span>
-      </div>
+    </div>
+  );
+  const body = (
+    <>
       {records.length > 0 && (
-        <ol
-          className="tz-decision-history"
-          aria-label={ar ? "القرارات السابقة" : "Prior decisions"}
-        >
+        <ol className="tz-decision-history" aria-label={copy.history}>
           {requests.flatMap((request) => {
             const record = records.find(
               (item) => item.requestKey === approvalRequestKey(request),
@@ -184,15 +194,7 @@ function ApprovalFlowInstance({
                     <bdi>
                       {request.action} · {request.target}
                     </bdi>
-                    <span>
-                      {record.decision === "approved"
-                        ? ar
-                          ? "تمت الموافقة"
-                          : "Approved"
-                        : ar
-                          ? "تم الرفض"
-                          : "Rejected"}
-                    </span>
+                    <span>{decided(record, request)}</span>
                   </li>,
                 ]
               : [];
@@ -203,6 +205,9 @@ function ApprovalFlowInstance({
         <ApprovalCard
           key={currentKey}
           request={current}
+          {...approval?.(current)}
+          appearance="plain"
+          headingLevel={headingLevel}
           value={null}
           onDecision={async (request, decision, context) => {
             await onDecision(request, decision, context);
@@ -224,14 +229,45 @@ function ApprovalFlowInstance({
         />
       ) : (
         <p className="tz-decision-status">
-          {requests.length
-            ? ar
-              ? "اكتملت مراجعة الطلبات."
-              : "All decisions made."
-            : ar
-              ? "لا طلبات للمراجعة."
-              : "No requests to review."}
+          {requests.length ? copy.allDecided : copy.none}
         </p>
+      )}
+    </>
+  );
+  return (
+    <div
+      ref={root}
+      role="group"
+      aria-label={label}
+      tabIndex={-1}
+      className={`tz-approval-flow ${className}`}
+      data-appearance={appearance}
+      onFocusCapture={() => {
+        focused.current = true;
+      }}
+      onBlurCapture={(event) => {
+        if (
+          event.relatedTarget &&
+          !event.currentTarget.contains(event.relatedTarget)
+        )
+          focused.current = false;
+      }}
+    >
+      <span
+        className="tz-visually-hidden"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {acceptedAnnouncement}
+      </span>
+      {appearance === "card" ? (
+        <Tray header={progress}>{body}</Tray>
+      ) : (
+        <>
+          {progress}
+          {body}
+        </>
       )}
     </div>
   );

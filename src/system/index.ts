@@ -161,6 +161,7 @@ export type { ModelOption, ModelSelectorProps } from "./ModelSelector";
 export { AskUserQuestions } from "./AskUserQuestions";
 export type {
   AskUserQuestionsProps,
+  AskUserQuestionsLabels,
   UserQuestion,
   QuestionAnswer,
   QuestionAnswers,
@@ -169,11 +170,17 @@ export { ApprovalCard } from "./ApprovalCard";
 export { approvalRequestKey } from "./approval-request";
 export type {
   ApprovalCardProps,
+  ApprovalCardLabels,
+  ApprovalDetails,
   ApprovalRequest,
   ApprovalDecision,
 } from "./ApprovalCard";
 export { ApprovalFlow } from "./ApprovalFlow";
-export type { ApprovalFlowProps, ApprovalRecord } from "./ApprovalFlow";
+export type {
+  ApprovalFlowProps,
+  ApprovalFlowLabels,
+  ApprovalRecord,
+} from "./ApprovalFlow";
 export { Terminal } from "./Terminal";
 export type { TerminalProps } from "./Terminal";
 export { ChatApp } from "./ChatApp";

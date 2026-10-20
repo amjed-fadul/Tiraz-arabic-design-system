@@ -6996,93 +6996,163 @@ a.tz-inline-citation {
   margin-block: 8px;
 }
 
-/* Inline AI questions and one-time decisions. Shared density/typography tokens. */
+/* Inline AI questions and one-time decisions (spec sections 12.4 and 12.5).
+   In card appearance each sits on a tray: the header (the AI mark, the task
+   and the attention pill) and the decisions on the tray, the content on
+   paper. Plain drops the tray and its surface and lives on its host's paper.
+   Nothing rises on mount; a card moves only once something changed in it
+   (data-changed, spec section 15). */
 .tz-ask-questions,
 .tz-approval-card,
 .tz-approval-flow,
 .tz-decisions-example {
-  display: grid;
-  gap: var(--space-3);
   min-inline-size: 0;
   inline-size: 100%;
-  max-inline-size: 38rem;
   color: var(--text);
   font-size: var(--text-body);
   overflow-wrap: anywhere;
 }
-/* Decision cards share one frame: paper whose padding follows density, then
-   a quieter footer band that holds the note and the actions. A card never
-   rises on mount; it moves only once something changed in it (data-changed,
-   spec section 15). */
-.tz-ask-questions,
-.tz-approval-card {
-  padding: var(--paper-padding-block) var(--paper-padding-inline);
-  border: 1px solid transparent;
-  border-radius: var(--radius-paper);
-  background: var(--surface);
-  box-shadow: var(--shadow-paper);
+/* A card stops at 38rem; plain fills its host. */
+.tz-ask-questions[data-appearance="card"],
+.tz-approval-card[data-appearance="card"],
+.tz-approval-flow[data-appearance="card"],
+.tz-decisions-example {
+  max-inline-size: 38rem;
 }
-.tz-ask-questions h3,
-.tz-approval-card h3 {
+.tz-decisions-example,
+.tz-ask-questions[data-appearance="plain"],
+.tz-approval-flow[data-appearance="plain"],
+.tz-approval-flow > .tz-tray > .tz-tray-paper,
+.tz-question-paper,
+.tz-approval-paper {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+/* The header names the task once: the mark, the title or the agent, and one
+   status, which shows only while the decision is open. */
+.tz-approval-header,
+.tz-question-header {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-question-header > .tz-status-pill {
+  margin-inline-start: auto;
+}
+.tz-question-agent {
+  min-inline-size: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-approval-title,
+.tz-question-heading {
   margin: 0;
   font-size: var(--text-subheading);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-heading);
-  text-wrap: balance;
 }
-.tz-ask-questions > .tz-decision-actions,
-.tz-approval-card > .tz-decision-footer {
-  margin-block-start: var(--space-1);
-  padding-block-start: var(--space-3);
-  border-block-start: 0.5px solid var(--hairline);
+.tz-approval-title {
+  flex: 1;
+  min-inline-size: 0;
 }
-.tz-decision-footer {
+/* Plain stacks the zones with margins rather than a gap, so the empty live
+   region between the paper and the footer takes no room. */
+.tz-approval-card[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+}
+.tz-approval-card[data-appearance="plain"]
+  > :is(.tz-approval-paper, .tz-approval-footer) {
+  margin-block-start: var(--space-3);
+}
+/* Meta first, then the decisions with the primary last. The plain footer
+   draws the hairline that the tray's edge draws in a card. */
+.tz-approval-footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-2) var(--space-4);
+  gap: var(--space-2) var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
 }
-.tz-decision-footer > .tz-decision-note {
-  flex: 1 1 14rem;
-}
-.tz-decision-footer:not(:has(> .tz-decision-note)) {
-  justify-content: flex-end;
-}
-.tz-decision-footer > .tz-decision-actions {
-  margin-inline-start: auto;
-}
-.tz-approval-card .tz-decision-heading {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: start;
-  gap: var(--space-3);
-}
-.tz-decision-icon {
-  display: grid;
-  place-items: center;
-  inline-size: 32px;
-  block-size: 32px;
-  border-radius: var(--radius-control);
-  background: transparent;
-  color: var(--text);
-  box-shadow: inset 0 0 0 1px var(--border);
-  transition:
-    background-color var(--motion-state) var(--ease-out),
-    color var(--motion-state) var(--ease-out),
-    box-shadow var(--motion-state) var(--ease-out);
-}
-.tz-decision-title {
-  display: grid;
-  gap: 2px;
+.tz-approval-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
   min-inline-size: 0;
 }
-.tz-decision-title .tz-decision-facts {
+.tz-approval-meta > span:not(:first-child, .tz-visually-hidden)::before {
+  content: "·";
+  margin-inline-end: var(--space-2);
+}
+.tz-approval-decision {
+  margin-inline-start: auto;
+}
+/* Long action labels wrap inside their buttons rather than overflow. */
+:is(.tz-decision-actions, .tz-approval-decision .tz-decision-bar) > .tz-button {
+  white-space: normal;
+  block-size: auto;
+  min-block-size: var(--control-small);
+}
+:is(.tz-decision-actions, .tz-approval-decision) .tz-button-label {
+  white-space: normal;
+}
+/* Who the action reaches, with amounts. Arabic-Indic digits have no tabular
+   widths, so the figures end-align (spec section 15). */
+.tz-approval-impact {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-approval-impact :is(th, td) {
+  padding-block: var(--space-2);
+  border-block-end: 0.5px solid var(--hairline);
+  vertical-align: baseline;
+}
+.tz-approval-impact tr:last-child > * {
+  border-block-end: 0;
+}
+.tz-approval-impact th {
+  font-weight: var(--weight-regular);
+  text-align: start;
+}
+.tz-approval-impact td {
+  padding-inline-start: var(--space-4);
+  text-align: end;
+  white-space: nowrap;
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+.tz-approval-impact-note {
+  display: block;
+  color: var(--text-muted);
   font-size: var(--text-meta);
 }
-.tz-decision-title .tz-decision-facts > div {
+/* What cannot be undone, in the attention color, with a glyph so color is
+   never the only signal. */
+.tz-approval-irreversible {
   display: flex;
+  align-items: flex-start;
   gap: var(--space-2);
+  margin: 0;
+  color: var(--attention);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-approval-irreversible > svg {
+  flex: none;
+  margin-block-start: 0.2em;
 }
 .tz-approval-card .tz-decision-details {
   padding: var(--space-2) var(--space-3);
@@ -7118,59 +7188,86 @@ a.tz-inline-citation {
     opacity: 1;
   }
 }
-.tz-approval-card .tz-decision-status {
-  color: var(--text-muted);
+/* The card's one live region. Empty while the request waits, so it takes no
+   room; it says when a decision is being recorded or failed, and once the
+   card closes it is the receipt beside the title. */
+.tz-approval-card > .tz-decision-status {
+  color: var(--text-secondary);
   font-size: var(--text-meta);
 }
-/* Once decided, the card folds into a one-line receipt: a tinted mark, the
-   action, and the outcome. Everything else has done its job. The fold, the
-   disc's pop and its check play only when the decision lands here, never
-   when a card mounts decided. */
-.tz-approval-card:is([data-state="approved"], [data-state="rejected"]) {
+.tz-approval-card > .tz-decision-status:not(:empty) {
+  padding-block-start: var(--space-2);
+}
+.tz-approval-card[data-appearance="card"] > .tz-decision-status:not(:empty) {
+  padding-inline: var(--space-3);
+}
+.tz-approval-card[data-state="failed"] > .tz-decision-status {
+  color: var(--danger);
+}
+/* Once closed, the card folds into a one-line receipt: the outcome's disc,
+   the action and the outcome. Everything else has done its job. The fold,
+   the disc's pop and its check play only when the card closes here, never
+   when it mounts closed. */
+.tz-approval-card:is(
+  [data-state="approved"],
+  [data-state="rejected"],
+  [data-state="expired"]
+) {
+  display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  padding-block: var(--space-3);
+}
+.tz-approval-card:is(
+    [data-state="approved"],
+    [data-state="rejected"],
+    [data-state="expired"]
+  )
+  > :not(.tz-tray-header, .tz-approval-header, .tz-decision-status) {
+  display: none;
+}
+.tz-approval-card:is(
+    [data-state="approved"],
+    [data-state="rejected"],
+    [data-state="expired"]
+  )
+  > .tz-decision-status {
+  padding-block: 0;
+}
+.tz-approval-card[data-appearance="card"]:is(
+    [data-state="approved"],
+    [data-state="rejected"],
+    [data-state="expired"]
+  )
+  > .tz-decision-status {
+  padding-block: 6px var(--space-2);
+  padding-inline: 0 var(--space-3);
+}
+.tz-approval-card:is(
+    [data-state="approved"],
+    [data-state="rejected"],
+    [data-state="expired"]
+  )
+  .tz-approval-title {
+  font-size: var(--text-body);
 }
 .tz-approval-card[data-changed]:is(
     [data-state="approved"],
-    [data-state="rejected"]
+    [data-state="rejected"],
+    [data-state="expired"]
   ) {
   animation: tz-receipt-in var(--motion-receipt) var(--ease-out);
 }
-.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
-  > :not(.tz-decision-heading, .tz-decision-status) {
-  display: none;
-}
-.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
-  .tz-badge {
-  display: none;
-}
-.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
-  .tz-decision-heading {
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-}
-.tz-approval-card:is([data-state="approved"], [data-state="rejected"]) h3 {
-  font-size: var(--text-body);
-}
-.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
-  .tz-decision-icon {
+.tz-decision-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
   inline-size: 22px;
   block-size: 22px;
   border-radius: 50%;
-  box-shadow: none;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
 }
-.tz-approval-card[data-changed]:is(
-    [data-state="approved"],
-    [data-state="rejected"]
-  )
-  .tz-decision-icon {
-  animation: tz-glyph-in var(--motion-state) var(--ease-out)
-    var(--motion-stagger) both;
-}
-.tz-approval-card:is([data-state="approved"], [data-state="rejected"])
-  .tz-decision-icon
-  > svg {
+.tz-decision-icon > svg {
   inline-size: 13px;
   block-size: 13px;
   stroke-width: 2.5;
@@ -7179,15 +7276,9 @@ a.tz-inline-citation {
   background: var(--success-soft);
   color: var(--success);
 }
-.tz-approval-card[data-state="approved"] .tz-decision-status {
-  color: var(--text-muted);
-}
-.tz-approval-card[data-state="rejected"] .tz-decision-icon {
-  background: var(--surface-hover);
-  color: var(--text-secondary);
-}
-.tz-approval-card[data-state="rejected"] .tz-decision-status {
-  color: var(--text-muted);
+.tz-approval-card[data-changed] .tz-decision-icon {
+  animation: tz-glyph-in var(--motion-state) var(--ease-out)
+    var(--motion-stagger) both;
 }
 @keyframes tz-receipt-in {
   from {
@@ -7195,32 +7286,26 @@ a.tz-inline-citation {
     transform: translateY(4px);
   }
 }
-.tz-approval-card[data-state="failed"] .tz-decision-status {
-  color: var(--danger);
-}
-.tz-ask-questions :is(h3, .tz-radio-group):focus-visible,
+.tz-ask-questions :is(.tz-question-heading, .tz-radio-group):focus-visible,
 .tz-approval-card:focus-visible,
 .tz-approval-flow:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
-.tz-decision-heading,
 .tz-decision-actions {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   flex-wrap: wrap;
 }
-.tz-decision-heading {
-  justify-content: space-between;
+/* On the tray the actions take the footer's width, so the key hint can push
+   the forward actions to the end; plain draws the hairline above them. */
+.tz-tray-footer > .tz-decision-actions {
+  flex: 1;
 }
-.tz-decision-actions > .tz-button {
-  white-space: normal;
-  block-size: auto;
-  min-block-size: var(--control-small);
-}
-.tz-decision-actions .tz-button-label {
-  white-space: normal;
+.tz-ask-questions[data-appearance="plain"] > .tz-decision-actions {
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
 }
 .tz-decision-position,
 .tz-decision-note,
@@ -7260,17 +7345,40 @@ a.tz-inline-citation {
   margin: 0;
   padding-inline-start: var(--space-5);
 }
-/* Settled requests collapse into quiet one-line receipts. */
+/* Answers the host accepted, folded into «إجاباتك»: each question with the
+   person's answer. */
+.tz-question-receipt {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+.tz-question-receipt > div {
+  display: grid;
+  gap: 2px;
+}
+.tz-question-receipt dt {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-question-receipt dd {
+  margin: 0;
+  font-weight: var(--weight-medium);
+}
+/* The flow's position and steps sit on the tray header; its history and its
+   card share the paper. */
+.tz-approval-flow .tz-tray-header > .tz-question-progress {
+  flex: 1;
+}
+/* Settled requests collapse into quiet one-line receipts, above the request
+   that waits. They share its paper, so they draw no surface of their own. */
 .tz-decision-history {
   display: grid;
   gap: 2px;
   margin: 0;
-  padding: var(--space-1);
+  padding: 0 0 var(--space-2);
   list-style: none;
-  border: 1px solid transparent;
-  border-radius: var(--radius-paper);
-  background: var(--surface);
-  box-shadow: var(--shadow-paper);
+  border-block-end: 0.5px solid var(--hairline);
   font-size: var(--text-meta);
 }
 .tz-decision-history > li {
@@ -7371,7 +7479,7 @@ a.tz-inline-citation {
   transition: background-color var(--motion-fast) var(--ease-out);
   touch-action: manipulation;
 }
-.tz-ask-questions[data-changed] .tz-radio-option {
+.tz-ask-questions[data-appearance="card"][data-changed] .tz-radio-option {
   animation: tz-option-in var(--motion-state) var(--ease-out) both;
   animation-delay: calc(var(--option-index, 0) * var(--motion-stagger));
 }
@@ -7773,8 +7881,8 @@ a.tz-inline-citation {
   .tz-sheet-header h2,
   .tz-toast-title,
   .tz-alert strong,
-  .tz-ask-questions h3,
-  .tz-approval-card h3
+  .tz-question-heading,
+  .tz-approval-title
 ) {
   text-wrap: balance;
 }

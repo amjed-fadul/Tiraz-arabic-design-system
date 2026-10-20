@@ -75,6 +75,17 @@ const trigger: WorkbenchField[] = [
     { advanced: true, options: ["sm", "md"] },
   ),
 ];
+// Where a pattern sits: on its own tray, or plain on its host's paper.
+const appearance = field(
+  "appearance",
+  "select",
+  "المظهر",
+  "Appearance",
+  "appearance",
+  {
+    options: ["card", "plain"],
+  },
+);
 const chartFields = [
   field("sample", "select", "بيانات المثال", "Sample dataset", "example", {
     options: ["single", "multi", "gaps", "point", "zero", "empty", "long"],
@@ -94,12 +105,15 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("longContent", "boolean", "مخرجات طويلة", "Long output", "example"),
   ],
   "ask-user-questions": [
+    appearance,
     field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
   ],
   "approval-card": [
+    appearance,
     field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
   ],
   "approval-flow": [
+    appearance,
     field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
   ],
 
@@ -945,6 +959,8 @@ export const optionNames: Record<string, Localized> = {
   "no-results": ["لا توجد نتائج مطابقة", "No matching results"],
   populated: ["مع بيانات", "Populated"],
   empty: ["فارغ", "Empty"],
+  card: ["بطاقة", "Card"],
+  plain: ["مدمج", "Plain"],
   capsules: ["كبسولات", "Capsules"],
   list: ["قائمة متصلة", "Connected list"],
   inherit: ["إعداد النظام", "System setting"],
@@ -971,9 +987,9 @@ export const optionNames: Record<string, Localized> = {
 const commonKeys: Record<ComponentId, string[]> = {
   terminal: ["state", "longContent", "followOutput"],
   "chat-app": ["longContent"],
-  "ask-user-questions": ["longContent"],
-  "approval-card": ["longContent"],
-  "approval-flow": ["longContent"],
+  "ask-user-questions": ["appearance", "longContent"],
+  "approval-card": ["appearance", "longContent"],
+  "approval-flow": ["appearance", "longContent"],
 
   "selection-actions": ["longContent"],
   "context-meter": ["preset", "estimated"],

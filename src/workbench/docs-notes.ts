@@ -134,6 +134,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "إن فشل الإرسال بقيت الإجابات كما كُتبت، ولا تأخذ البطاقة التركيز حين تظهر.",
         "If sending fails, the answers stay as typed. The card never takes focus when it appears.",
       ],
+      [
+        "مع receipt تُطوى الإجابات التي قبلها تطبيقك في «إجاباتك»، ومع onEditAnswers يظهر زر لتعديلها.",
+        "With receipt, the answers your app accepted fold into “Your answers”, and onEditAnswers adds a button to edit them.",
+      ],
     ],
   },
   "approval-card": {
@@ -169,8 +173,12 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "Recording an approval does not mean the action ran. Your app checks the request and runs it itself.",
       ],
       [
-        "يرفض Escape الطلب المعلّق من داخل البطاقة، وإن فشل تسجيل القرار بقيت التفاصيل والتركيز في مكانهما.",
-        "Escape inside the card rejects the pending request. If saving the decision fails, the details and focus stay where they were.",
+        "يرفض Escape الطلب من داخل البطاقة، أما داخل نافذة فيغلقها ولا يسجّل شيئًا. ولا يوافق Ctrl أو Cmd+Enter إلا على طلب يعلّمه تطبيقك reversible، فلا اختصار لإجراء لا يمكن التراجع عنه.",
+        "Escape inside the card rejects the request; inside a dialog it closes the dialog and records nothing. Ctrl or Cmd+Enter approves only a request your app marks reversible, so an action that can't be undone has no shortcut.",
+      ],
+      [
+        "تنهي مهلة الطلب حين يمرّر تطبيقك expired، فيُلغى أي قرار ما زال قيد التسجيل.",
+        "The request lapses when your app passes expired, and a decision still being recorded is cancelled.",
       ],
     ],
   },
@@ -206,6 +214,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       [
         "يظهر رقم الطلب من إجمالي الطلبات بحسب إعداد الأرقام، عربية كانت أو لاتينية.",
         "The request number out of the total follows the numerals setting, Arabic or Latin.",
+      ],
+      [
+        "لا يوافق اختصار مضغوط على الطلب التالي: ينتظر Ctrl أو Cmd+Enter نصف ثانية بعد ظهور كل طلب.",
+        "A held shortcut never approves the next request: Ctrl or Cmd+Enter waits half a second after each request appears.",
       ],
     ],
   },

@@ -15,12 +15,13 @@ import { defaultPlaygrounds } from "./model";
 import * as React from "react";
 import * as jsx from "react/jsx-runtime";
 import * as system from "../system";
+import * as financeStory from "../system/ai/examples/finance-story";
 import * as ts from "typescript";
 afterEach(() => vi.useRealTimers());
 it.each([
-  ["أسئلة للمستخدم", "AskUserQuestions"],
-  ["بطاقة القرار", "ApprovalCard"],
-  ["تسلسل القرارات", "ApprovalFlow"],
+  ["أسئلة قبل البدء", "Clarifying questions"],
+  ["طلب موافقة", "Approval request"],
+  ["سلسلة موافقات", "Approval sequence"],
 ])(
   "documents %s in AI patterns with continuous shared frames",
   async (ar, en) => {
@@ -51,6 +52,8 @@ it.each([
     "ask-user-questions",
     () => {
       fireEvent.click(screen.getByRole("radio", { name: /Supplier invoices/ }));
+      fireEvent.click(screen.getByRole("button", { name: "Next question" }));
+      fireEvent.click(screen.getByRole("radio", { name: /Yes, leave it out/ }));
       fireEvent.click(screen.getByRole("button", { name: "Submit answers" }));
     },
     "Submitting answers",
@@ -58,13 +61,16 @@ it.each([
   ],
   [
     "approval-card",
-    () => fireEvent.click(screen.getByRole("button", { name: "Keep status" })),
+    () => fireEvent.click(screen.getByRole("button", { name: "Reject" })),
     "Recording decision",
-    "Rejected",
+    "Request rejected",
   ],
   [
     "approval-flow",
-    () => fireEvent.click(screen.getByRole("button", { name: "Mark as paid" })),
+    () =>
+      fireEvent.click(
+        screen.getByRole("button", { name: "Send the reminders" }),
+      ),
     "Recording decision",
     "Request 2 of 2",
   ],
@@ -77,7 +83,9 @@ it.each([
     const stage = within(
       screen.getByRole("region", { name: "Interactive playground" }),
     );
-    await act(async () => decide());
+    // Each event renders before the next, as the questions take two answers.
+    decide();
+    await act(async () => {});
     expect(stage.getByText(pending)).toBeVisible();
     await act(async () => vi.advanceTimersByTime(650));
     expect(stage.getByText(pending)).toBeVisible();
@@ -91,8 +99,8 @@ it.each([
   },
 );
 it.each([
-  ["approval-card", "Waiting", "Mark as paid", "Approved"],
-  ["approval-flow", "First", "Keep status", "Second"],
+  ["approval-card", "Waiting", "Send the reminders", "Approved"],
+  ["approval-flow", "First", "Reject", "Second"],
 ] as const)(
   "follows an interactive flow on %s",
   async (active, before, decide, after) => {
@@ -119,7 +127,7 @@ it.each([
     if (active === "approval-flow")
       expect(
         screen.getByRole("list", { name: "Prior decisions" }),
-      ).toHaveTextContent("Rejected");
+      ).toHaveTextContent("Request rejected");
     // Editing the request voids its decision: the example starts over at
     // rest, and a remount never invents an approval.
     fireEvent.click(screen.getByRole("switch", { name: "Long content" }));
@@ -149,6 +157,7 @@ it("runs a generated source example and records rejection without execution", as
       react: React,
       "react/jsx-runtime": jsx,
       "./system": system,
+      "./system/ai/examples/finance-story": financeStory,
     };
   new Function("require", "exports", js)(
     (name: string) => (name.endsWith(".css") ? {} : modules[name]),
@@ -157,11 +166,11 @@ it("runs a generated source example and records rejection without execution", as
   const Example = result.default!,
     user = userEvent.setup();
   render(<Example />);
-  await user.click(screen.getByRole("button", { name: "Keep status" }));
+  await user.click(screen.getByRole("button", { name: "Reject" }));
   // The copied example waits for its stand-in host before recording.
   expect(screen.getByText("Recording decision")).toBeVisible();
   expect(
-    await screen.findByText("Rejected", undefined, { timeout: 2000 }),
+    await screen.findByText("Request rejected", undefined, { timeout: 2000 }),
   ).toBeVisible();
   expect(screen.queryByText(/completed/i)).not.toBeInTheDocument();
 });
@@ -187,7 +196,7 @@ it("connects an answered question to its target, then records a rejection and an
   await screen.findByText("Request 2 of 2");
   expect(
     screen.getByRole("list", { name: "Prior decisions" }),
-  ).toHaveTextContent("Rejected");
+  ).toHaveTextContent("Request rejected");
   await user.click(screen.getByRole("button", { name: "Send summary" }));
   await screen.findByText("All decisions made.");
   expect(

@@ -21,28 +21,28 @@ export const catalog = [
 
   {
     id: "ask-user-questions",
-    name: ["أسئلة للمستخدم", "AskUserQuestions"],
+    name: ["أسئلة قبل البدء", "Clarifying questions"],
     description: [
-      "يطرح أسئلتك على المستخدم، ويتيح له تعديل إجاباته قبل إرسالها.",
-      "Application-supplied questions with editable answers and deliberate submission.",
+      "يطرح سؤالًا إلى ثلاثة أسئلة عمّا لا يستطيع الوكيل تخمينه قبل أن يبدأ.",
+      "Ask the one to three things the agent cannot guess before it starts.",
     ],
     file: "AskUserQuestions.tsx",
   },
   {
     id: "approval-card",
-    name: ["بطاقة القرار", "ApprovalCard"],
+    name: ["طلب موافقة", "Approval request"],
     description: [
-      "يعرض الإجراء وهدفه وعواقبه ليوافق المستخدم عليه أو يرفضه مرة واحدة.",
-      "A concrete one-time action preview with independent approve and reject decisions.",
+      "يبيّن بالضبط ما سيحدث ولمن وما لا يمكن التراجع عنه، ثم يتيح الموافقة أو التعديل أو الرفض.",
+      "Show exactly what will happen, to whom, and what cannot be undone; then approve, edit or reject.",
     ],
     file: "ApprovalCard.tsx",
   },
   {
     id: "approval-flow",
-    name: ["تسلسل القرارات", "ApprovalFlow"],
+    name: ["سلسلة موافقات", "Approval sequence"],
     description: [
-      "يعرض طلبات مستقلة بالتتابع، وينتقل إلى التالي حين يقبل تطبيقك القرار.",
-      "A short sequence of independent requests, advanced after host acceptance.",
+      "يعرض طلبات موافقة مستقلة واحدًا بعد آخر، ولا ينتقل إلى التالي حتى يقبل تطبيقك القرار.",
+      "Show independent approval requests one at a time, moving on only once the host accepts each decision.",
     ],
     file: "ApprovalFlow.tsx",
   },

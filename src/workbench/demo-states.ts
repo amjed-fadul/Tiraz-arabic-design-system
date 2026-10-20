@@ -104,6 +104,7 @@ export const stateWords = {
   newMessage: ["رسالة جديدة", "New message"],
   submitting: ["يُرسَل", "Submitting"],
   asking: ["يسأل", "Asking"],
+  answered: ["تمت الإجابة", "Answered"],
   second: ["الثانية", "Second"],
   partial: ["جزئي", "Partial"],
   tagged: ["موسوم", "Tagged"],
@@ -559,9 +560,17 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
     states: [phased("idle"), phased("selected")],
     resting: "selected",
   },
-  "ask-user-questions": { states: [phased("asking")], resting: "asking" },
+  "ask-user-questions": {
+    states: [phased("asking"), phased("answered"), phased("failed")],
+    resting: "asking",
+  },
   "approval-card": {
-    states: [phased("waiting"), phased("approved"), phased("rejected")],
+    states: [
+      phased("waiting"),
+      phased("approved"),
+      phased("rejected"),
+      phased("expired"),
+    ],
     resting: "waiting",
   },
   "approval-flow": {

@@ -281,15 +281,15 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
-  "ask-user-questions": { longContent: boolean };
+  "ask-user-questions": { appearance: "card" | "plain"; longContent: boolean };
   terminal: {
     state: "running" | "completed" | "failed";
     longContent: boolean;
     followOutput: boolean;
   };
   "chat-app": { longContent: boolean };
-  "approval-card": { longContent: boolean };
-  "approval-flow": { longContent: boolean };
+  "approval-card": { appearance: "card" | "plain"; longContent: boolean };
+  "approval-flow": { appearance: "card" | "plain"; longContent: boolean };
   "selection-actions": { longContent: boolean };
   "context-meter": {
     preset:
@@ -422,11 +422,11 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
-    "ask-user-questions": { longContent: false },
+    "ask-user-questions": { appearance: "card", longContent: false },
     terminal: { state: "completed", longContent: false, followOutput: false },
     "chat-app": { longContent: false },
-    "approval-card": { longContent: false },
-    "approval-flow": { longContent: false },
+    "approval-card": { appearance: "card", longContent: false },
+    "approval-flow": { appearance: "card", longContent: false },
     "selection-actions": { longContent: false },
     "context-meter": { preset: "normal", estimated: false },
     "model-selector": { disabled: false, longContent: false },

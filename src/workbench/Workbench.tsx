@@ -167,6 +167,7 @@ export function Workbench() {
   // a state press still sets its own phase.
   function restartOnEdit() {
     if (
+      active === "ask-user-questions" ||
       active === "approval-card" ||
       active === "approval-flow" ||
       active === "toast"

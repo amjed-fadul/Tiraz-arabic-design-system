@@ -197,6 +197,30 @@ export function ApiReference({
         ),
       ],
       [
+        "appearance / headingLevel",
+        '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3',
+        t(
+          "تضع card الأسئلة على صينية بعرض أقصاه 38rem، وتتركها plain على سطح تطبيقك. يحدد headingLevel مستوى عنوان السؤال.",
+          "card sits on a tray up to 38rem wide; plain lives on your app's paper. headingLevel sets the question heading's level.",
+        ),
+      ],
+      [
+        "labels / agent",
+        "Partial<AskUserQuestionsLabels> / ReactNode",
+        t(
+          "تستبدل labels أي نص مدمج: التنقل والحالة والخطأ وتلميح المفاتيح. ويسمّي agent الوكيل الذي يسأل في الرأس.",
+          "labels replaces any built-in text: navigation, status, error and the key hint. agent names the asking agent in the header.",
+        ),
+      ],
+      [
+        "onSkip / receipt / onEditAnswers",
+        "() => void / boolean / () => void",
+        t(
+          "يضيف onSkip زر «تخطّي الأسئلة». ومع receipt تُطوى الإجابات التي قبلها تطبيقك في «إجاباتك»، ويضيف onEditAnswers زر «تعديل الإجابات».",
+          "onSkip adds Skip questions. With receipt, the answers your app accepted fold into Your answers; onEditAnswers adds Edit answers.",
+        ),
+      ],
+      [
         "keyboard",
         "native radios / Tab / Enter / Ctrl+Enter",
         t(
@@ -239,6 +263,46 @@ export function ApiReference({
         ),
       ],
       [
+        "impact / irreversible",
+        "readonly { id, label, value?, note? }[] / boolean | ReactNode",
+        t(
+          "يعرض impact في جدول من يتأثر مع المبالغ. وتُظهر irreversible ملاحظة بلون الانتباه، وتلغي اختصار الموافقة.",
+          "impact lists who is affected, with amounts, in a table. irreversible shows a note in the attention color and removes the approve shortcut.",
+        ),
+      ],
+      [
+        "reversible",
+        "boolean",
+        t(
+          "يتيح Ctrl أو Cmd+Enter للموافقة بعد نصف ثانية من ظهور الطلب، ما لم يكن irreversible أيضًا. ويرفض Escape دائمًا.",
+          "Lets Ctrl or Cmd+Enter approve, half a second after the request appears, unless it is also irreversible. Escape always rejects.",
+        ),
+      ],
+      [
+        "expiryLabel / expired",
+        "ReactNode / boolean",
+        t(
+          "يمرّر تطبيقك نص المهلة، ولا تشغّل البطاقة ساعة. وحين يمرّر expired تحل محل الإجراءات «انتهت مهلة الطلب»، ويُلغى أي قرار قيد التسجيل.",
+          "Your app supplies the expiry text; the card runs no clock. expired replaces the actions with Request expired and aborts a decision in flight.",
+        ),
+      ],
+      [
+        "secondaryAction / receiptTime",
+        "{ label, onSelect } / ReactNode",
+        t(
+          "إجراء أوسط اختياري بين الرفض والموافقة، مثل عرض الرسائل، ووقت يكتبه تطبيقك بعد «تمت الموافقة».",
+          "An optional middle action between reject and approve, such as viewing the messages, and host-formatted time after Approved.",
+        ),
+      ],
+      [
+        "appearance / headingLevel / labels",
+        '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3 / Partial<ApprovalCardLabels>',
+        t(
+          "استخدم plain داخل نمط آخر مثل مهمة الوكيل. وتستبدل labels أي نص مدمج.",
+          "Use plain inside another pattern, such as Agent task. labels replaces any built-in text.",
+        ),
+      ],
+      [
         "className",
         "string?",
         t(
@@ -270,6 +334,22 @@ export function ApiReference({
         t(
           "مرّرهما إن أردت أن يدير تطبيقك السجلات. يرتبط كل سجل بمعرّف الطلب وبصمة محتواه.",
           "Optional controlled records bind requestId and approvalRequestKey. Changed requests reopen; unchanged records survive append/reorder. Publish records in onValueChange.",
+        ),
+      ],
+      [
+        "approval",
+        "(request) => ApprovalDetails | undefined",
+        t(
+          "ما تعرضه بطاقة كل طلب فوق الطلب نفسه: الأثر وعدم إمكان التراجع وإمكانه والمهلة.",
+          "What each request's card shows beyond the request: impact, irreversibility, reversibility and expiry.",
+        ),
+      ],
+      [
+        "labels / headingLevel / appearance",
+        'Partial<ApprovalFlowLabels> / 2 | 3 | 4 | 5 | 6 · 3 / "card" | "plain" · card',
+        t(
+          "تصل أرقام position منسّقة بحسب إعداد الأرقام. وتضع card السلسلة كلها على صينية واحدة، وبطاقتها مدمجة داخلها.",
+          "position receives digits already formatted for the numerals setting. card puts the whole sequence on one tray, its card plain inside.",
         ),
       ],
       [

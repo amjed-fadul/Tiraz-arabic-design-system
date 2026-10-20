@@ -325,6 +325,8 @@ export function Playground({
       <AskUserQuestionsExample
         language={language}
         {...(model as Playgrounds["ask-user-questions"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
       />
     );
   if (component === "approval-card")
