@@ -121,4 +121,8 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   // holds .tz-inline-diff to the inline-citation family's audit.
   "suggested-edits": [".tz-suggested-edits"],
   "inline-diff": [".tz-inline-diff"],
+  // Image generation and its WeaveCanvas, of Plan 4 Task 7. .tz-image also
+  // holds .tz-image-generation to the image-result family's audit.
+  "weave-canvas": [".tz-weave"],
+  "image-generation": [".tz-image-generation"],
 };

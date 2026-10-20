@@ -42,6 +42,7 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
     "إجابة موثّقة",
     "مهمة الوكيل",
     "تعديلات مقترحة",
+    "توليد صورة",
     "ما الذي تغيّر",
     "الطرفية",
     "تطبيق المحادثة",

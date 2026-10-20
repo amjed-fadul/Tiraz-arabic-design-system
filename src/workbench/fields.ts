@@ -106,6 +106,16 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   "suggested-edits": [
     field("undo", "boolean", "إتاحة التراجع", "Offer undo", "onUndo"),
   ],
+  "image-generation": [
+    appearance,
+    field(
+      "knownProgress",
+      "boolean",
+      "نسبة التقدّم معروفة",
+      "Known progress",
+      "progress",
+    ),
+  ],
   "agent-task": [
     appearance,
     field(
@@ -1011,6 +1021,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   "cited-answer": ["appearance", "question"],
   "agent-task": ["appearance", "autoStart"],
   "suggested-edits": ["undo"],
+  "image-generation": ["appearance", "knownProgress"],
   "change-summary": ["appearance"],
   terminal: ["state", "longContent", "followOutput"],
   "chat-app": ["longContent"],

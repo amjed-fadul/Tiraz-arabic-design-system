@@ -1,6 +1,7 @@
 import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
 import { TaskStarterExample } from "../system/ai/examples/TaskStarterExamples";
 import { SuggestedEditsExample } from "../system/ai/examples/SuggestedEditsExamples";
+import { ImageGenerationExample } from "../system/ai/examples/ImageGenerationExamples";
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
@@ -343,6 +344,15 @@ export function Playground({
       <SuggestedEditsExample
         language={language}
         {...(model as Playgrounds["suggested-edits"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "image-generation")
+    return (
+      <ImageGenerationExample
+        language={language}
+        {...(model as Playgrounds["image-generation"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
       />

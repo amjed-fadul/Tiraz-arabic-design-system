@@ -869,6 +869,50 @@ const phaseFamilies: PhaseFamily[] = [
     replay: ["selecting", "rewriting", "reviewing", "applied"],
   },
   {
+    id: "image-generation",
+    resting: "done",
+    list: [
+      [
+        "weaving",
+        () => {
+          // The weave is one image with a progress tag; versions and actions
+          // wait quietly until it is done.
+          expect(stage().getByRole("progressbar")).toHaveTextContent("يُنسج");
+          expect(
+            stage().getByRole("radio", { name: "النسخة ١" }),
+          ).toBeDisabled();
+          expect(
+            stage().getByRole("button", { name: "استخدم الصورة" }),
+          ).toBeDisabled();
+        },
+      ],
+      [
+        "done",
+        () => {
+          expect(
+            stage().getByRole("radio", { name: "النسخة ١" }),
+          ).toBeEnabled();
+          expect(
+            stage().getByRole("button", { name: "استخدم الصورة" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent("مصمّم الحملات · ٤ صور · ١٢ث");
+        },
+      ],
+      [
+        "failed",
+        () => {
+          expect(stage().getByRole("figure")).toHaveTextContent(
+            "تعذّر توليد الصورة",
+          );
+          expect(
+            stage().getByRole("button", { name: "أعد المحاولة" }),
+          ).toBeEnabled();
+        },
+      ],
+    ],
+    replay: ["weaving", "done"],
+  },
+  {
     id: "chat-thread",
     resting: "newMessage",
     list: [

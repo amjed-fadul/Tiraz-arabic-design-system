@@ -7746,6 +7746,381 @@ button.tz-tool-chip[aria-expanded="true"] {
   color: var(--text-muted);
   font-size: var(--text-meta);
 }
+
+/* WeaveCanvas (Woven spec section 14): faint warp threads, then the picture
+   woven in row by row from the inline-start edge. The one loop writes the
+   picture's clip-path as --weave-clip on the box and how far each row has come,
+   0 to 1, as --front on the row, so no CSS duration drives the weave. Each row's
+   weft line and shuttle sit at its front, measured from the inline-start edge,
+   and fade out as the row completes. */
+.tz-weave {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: var(--weave-ratio, 3 / 2);
+  overflow: hidden;
+  /* Forced colors drop the ring shadow; this border becomes the edge. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--surface-tray);
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+.tz-weave-warp {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--warp) 0 1px,
+    transparent 1px 14px
+  );
+}
+.tz-weave-image {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+  clip-path: var(--weave-clip, none);
+}
+.tz-weave-rows {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+}
+.tz-weave-row {
+  position: relative;
+  flex: 1 1 0;
+  min-block-size: 0;
+}
+.tz-weave-weft {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0;
+  inline-size: calc(var(--front, 0) * 100%);
+  block-size: 1px;
+  background: color-mix(in srgb, var(--ai) 55%, transparent);
+  opacity: clamp(0, calc((1 - var(--front, 0)) * 3), 1);
+}
+.tz-weave-shuttle {
+  position: absolute;
+  inset-block: 22%;
+  inset-inline-start: calc(var(--front, 0) * 100%);
+  inline-size: 8px;
+  margin-inline-start: -4px;
+  border-radius: var(--radius-pill);
+  background: var(--ai);
+  opacity: clamp(0, calc(var(--front, 0) * (1 - var(--front, 0)) * 40), 1);
+}
+/* Reduced motion keeps no loop: a still thread says the loom is working, and
+   the picture, when it comes, fades in whole. That fade is the one duration
+   reduced motion keeps (Woven spec section 15), so it says !important to stand
+   against the global rule that zeroes every other. */
+.tz-weave-still {
+  position: absolute;
+  inset-inline: 12%;
+  inset-block-start: 50%;
+}
+.tz-weave[data-fade] > .tz-weave-image {
+  animation: tz-weave-fade var(--weave-fade) var(--ease-out) !important;
+}
+@keyframes tz-weave-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Image generation (spec section 12.7): make an image from a description and
+   pick the version to use. The paper holds the prompt, what was asked besides
+   it, the canvas and the versions; the tray's footer holds the agent, the
+   count and the time, then the person's actions, which wait, in place, until
+   the images are done. A size tag sits at the canvas's inline-end top corner
+   and a progress tag at its inline-start bottom corner. Plain drops the tray
+   and lives on its host's paper. */
+.tz-image-generation {
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-image-generation[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-image-generation[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+}
+.tz-image-generation:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-image-generation-header {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-image-generation-title {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-image-generation-paper {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.tz-image-generation[data-appearance="plain"] > .tz-image-generation-paper {
+  margin-block-start: var(--space-2);
+}
+.tz-image-generation-prompt {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.tz-image-generation-prompt-text {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+  text-wrap: pretty;
+}
+.tz-image-generation-prompt > .tz-button {
+  flex: none;
+}
+.tz-image-generation-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-image-generation-options > li {
+  padding: 1px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+/* The canvas holds the final shape from the first frame, wide or tall: the
+   weave and the result share one aspect ratio, and a tall image stays narrow
+   rather than running the paper's width. */
+.tz-image-generation-canvas {
+  position: relative;
+  inline-size: 100%;
+  max-inline-size: calc(26rem * var(--weave-aspect, 1.5));
+  min-inline-size: 0;
+  margin-inline: auto;
+}
+.tz-image-generation-canvas > .tz-image-result[data-aspect] {
+  position: relative;
+  z-index: 1;
+  max-inline-size: none;
+}
+/* The weave stays beneath the finished result. While the result's picture
+   loads, its frame lets the weave show through, with none of its own loading
+   marks, so completing never blinks. */
+.tz-image-generation-weave[data-under] {
+  position: absolute;
+  inset: 0;
+}
+.tz-image-generation-canvas .tz-image-result-frame[data-state="loading"] {
+  background: transparent;
+  box-shadow: none;
+}
+.tz-image-generation-canvas
+  .tz-image-result-frame[data-state="loading"]
+  > :not(img) {
+  visibility: hidden;
+}
+.tz-image-generation-canvas
+  .tz-image-result[data-aspect]
+  .tz-image-result-frame {
+  aspect-ratio: var(--weave-ratio, 3 / 2);
+  border-radius: var(--radius-item);
+  /* The warp threads stop at the picture's edge, not in the border's ring. */
+  background-clip: padding-box;
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+/* Tags sit on paper, whatever the picture beneath them. */
+.tz-image-generation-tag {
+  position: absolute;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  padding: 1px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.tz-image-generation-size {
+  inset-block-start: var(--space-2);
+  inset-inline-end: var(--space-2);
+}
+/* The tag counts, and Arabic-Indic digits are proportional, so it holds the
+   width of its widest value in ch, so it never resizes while it counts: ٣٣
+   in «يُنسج · ٣٣٪», 100 in the Latin forms. */
+.tz-image-generation-progress {
+  inset-block-end: var(--space-2);
+  inset-inline-start: var(--space-2);
+  color: var(--ai);
+}
+.tz-image-generation-progress[aria-valuenow] {
+  box-sizing: content-box;
+  min-inline-size: 12.2ch;
+}
+.tz-image-generation-progress[aria-valuenow]:dir(rtl) {
+  min-inline-size: 7.8ch;
+}
+.tiraz-system[data-numerals="latn"]
+  .tz-image-generation-progress[aria-valuenow]:dir(rtl) {
+  min-inline-size: 9.3ch;
+}
+.tz-image-generation-blocked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  aspect-ratio: var(--weave-ratio, 3 / 2);
+  padding: var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background:
+    repeating-linear-gradient(90deg, var(--warp) 0 1px, transparent 1px 14px),
+    var(--surface-tray);
+  box-shadow: 0 0 0 1px var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  text-align: center;
+}
+.tz-image-generation-blocked > svg {
+  flex: none;
+  color: var(--attention);
+}
+.tz-image-generation-blocked > strong {
+  color: var(--text);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+/* The versions are native radios laid over their thumbnails, so a click, the
+   arrow keys and the group all work as the browser does them. The chosen one
+   has a ring and a check; the ring is not the only signal. */
+.tz-image-generation-variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.tz-image-generation-variant {
+  position: relative;
+  flex: 1 1 3.5rem;
+  min-inline-size: 0;
+  max-inline-size: 5rem;
+  cursor: pointer;
+}
+.tz-image-generation-variant > input {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.tz-image-generation-thumb {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: var(--thumb-ratio, 3 / 2);
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background:
+    repeating-linear-gradient(90deg, var(--warp) 0 1px, transparent 1px 8px),
+    var(--surface-tray);
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+.tz-image-generation-thumb > img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+.tz-image-generation-variant > input:checked + .tz-image-generation-thumb {
+  box-shadow: 0 0 0 2px var(--action);
+}
+.tz-image-generation-variant
+  > input:focus-visible
+  + .tz-image-generation-thumb {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-image-generation-variant > input:disabled {
+  cursor: default;
+}
+.tz-image-generation-variant > input:disabled + .tz-image-generation-thumb {
+  opacity: var(--disabled-opacity);
+}
+.tz-image-generation-check {
+  position: absolute;
+  inset-block-start: var(--space-1);
+  inset-inline-start: var(--space-1);
+  box-sizing: content-box;
+  padding: 2px;
+  border-radius: 50%;
+  background: var(--action);
+  color: var(--surface);
+}
+.tz-image-generation-variant
+  > input:not(:checked)
+  + .tz-image-generation-thumb
+  > .tz-image-generation-check {
+  display: none;
+}
+.tz-image-generation-meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-inline-size: 0;
+}
+.tz-image-generation-decision {
+  margin-inline-start: auto;
+}
+.tz-image-generation-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+@media (forced-colors: active) {
+  .tz-image-generation-variant > input:checked + .tz-image-generation-thumb {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
 .tz-sources {
   min-inline-size: 0;
   font-size: var(--text-meta);

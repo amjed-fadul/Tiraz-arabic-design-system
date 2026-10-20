@@ -103,6 +103,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "AgentTaskExamples",
       "TaskStarterExamples",
       "SuggestedEditsExamples",
+      "ImageGenerationExamples",
       "CitedAnswerExamples",
       "ChangeSummaryExamples",
       "AIDecisionsExamples",

@@ -425,6 +425,64 @@ export function ApiReference({
         ),
       ],
     ],
+    "image-generation": [
+      [
+        "prompt / options",
+        "ReactNode · required / readonly { id, label }[]",
+        t(
+          "prompt وصف المستخدم للصورة بكلماته. وoptions ما طُلب معه، كالنسبة والأسلوب والعدد، وتظهر شرائح للقراءة فقط.",
+          "prompt is the person's description of the image, in their own words. options is what was asked with it, such as ratio, style and count, shown as read-only chips.",
+        ),
+      ],
+      [
+        "status / progress",
+        "queued | weaving | completed | failed | blocked · required / number | null?",
+        t(
+          "يقرّر تطبيقك الحالة. في queued وweaving تكون اللوحة نسّاجة: مع progress من 0 إلى 100 يتبع النسج النسبة، وبدونها يعبر مكّوك واحد الصفوف حتى تصل الصورة فيكتمل النسج في أقل من 1.2 ثانية. ومع الحركة المخفَّضة تتلاشى الصورة كاملة في 200ms بلا حلقة. وتبقى النسخ والإجراءات معطّلة حتى completed.",
+          "Your app owns the status. While queued or weaving the canvas is a loom: with progress from 0 to 100 the weave follows it; without, one shuttle crosses the rows until a picture arrives, and the weave then finishes in under 1.2 seconds. With reduced motion the picture fades in whole over 200ms and nothing loops. The versions and actions stay inert until completed.",
+        ),
+      ],
+      [
+        "images / selected / onSelectedChange",
+        "readonly { id, src?, alt, width, height }[] · required / string? / (id: string) => void",
+        t(
+          "تُعرض النسخ مجموعة اختيار أصلية باسم «اختر نسخة»، وتُسمّى النسخة ١ والنسخة ٢ وهكذا. selected اختيارية، وبدونها يحتفظ النمط باختياره ويبدأ من الأولى. تحدّد width وheight شكل اللوحة قبل وصول الصورة، وتسمّي alt الصورة لقارئ الشاشة.",
+          "The versions are a native radio group named «Choose a version», called Version 1, Version 2 and so on. selected is optional: without it the pattern keeps its own choice, starting at the first. width and height set the canvas's shape before the picture arrives, and alt names the image for assistive technology.",
+        ),
+      ],
+      [
+        "onUse / onVariations / onEditPrompt / onRetry",
+        "(id) => void / (id) => void / () => void / () => void",
+        t(
+          "يستدعي «استخدم الصورة» الدالة onUse بمعرّف النسخة المختارة، و«تنويعات مشابهة» الدالة onVariations بالمعرّف نفسه، و«تعديل بالوصف» الدالة onEditPrompt. ويستدعي «أعد المحاولة» في عرض الإخفاق الدالة onRetry بعد أن ينقل التركيز إلى الصورة، فإن زالت الصورة وهي في التركيز انتقل التركيز إلى النمط.",
+          "Use image calls onUse with the chosen version's id, Similar variations calls onVariations with the same id, and Edit with a description calls onEditPrompt. Try again in the failed view calls onRetry after moving focus to the figure; if the figure goes while it has focus, focus moves to the pattern.",
+        ),
+      ],
+      [
+        "blockedReason",
+        "ReactNode?",
+        t(
+          "يعرضها عرض blocked، أي طلب رفضته سياسة المنتج، نصًّا ثابتًا مع «تعديل بالوصف». ولا يُعدّ الرفض فشلًا: الحالة «بانتظارك».",
+          "Shown by the blocked view, a request that product policy refused, as persistent text beside Edit with a description. A refusal is not a failure: the status is Needs you.",
+        ),
+      ],
+      [
+        "agent / duration",
+        "ReactNode? / number? (seconds)",
+        t(
+          "يقرأ الشريط السفلي «الوكيل · عدد الصور · المدة»، مثل «مصمّم الحملات · ٤ صور · ١٢ث». مرّر المدة مرة واحدة عند الاكتمال.",
+          "The footer reads «agent · image count · time», such as «Campaign designer · 4 images · 12s». Pass the duration once, when it is done.",
+        ),
+      ],
+      [
+        "headingLevel / labels / appearance",
+        '2 | 3 | 4 | 5 | 6 · 3 / Partial<ImageGenerationLabels> / "card" | "plain" · card',
+        t(
+          "استخدم plain داخل محادثة أو نمط آخر. وتستبدل labels أي نص مدمج.",
+          "Use plain inside a conversation or another pattern. labels replaces any built-in text.",
+        ),
+      ],
+    ],
     terminal: [
       [
         "command / output",

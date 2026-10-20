@@ -194,6 +194,11 @@
   --motion-loop-progress: 1500ms;
   --motion-loop-pixel: 650ms;
   --motion-loop-orbit: 950ms;
+  /* The one duration reduced motion keeps (Woven spec section 15): an image
+     that would have been woven in fades in whole over this long instead. It is
+     an opacity change, not movement, so it is not a --motion- token, which
+     reduced motion zeroes. */
+  --weave-fade: 200ms;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);

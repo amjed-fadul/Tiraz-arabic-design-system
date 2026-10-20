@@ -787,6 +787,12 @@ it("keeps motion in budget and stops it under reduced motion", () => {
       motionTokens.filter((token) => rule[token] !== "0ms"),
       `motion tokens that ${name} leaves above 0ms`,
     ).toEqual([]);
+
+  // The one duration reduced motion keeps (spec section 15): the weave's 200 ms
+  // crossfade. It is not a --motion- token, so neither rule above zeroes it.
+  expect(base["--weave-fade"]).toBe("200ms");
+  for (const rule of Object.values(rules))
+    expect(rule["--weave-fade"]).toBeUndefined();
 });
 
 it("zeroes interaction motion under keyboard modality", () => {

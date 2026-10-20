@@ -195,6 +195,13 @@ export type {
 } from "./SuggestedEdits";
 export { InlineDiff } from "./InlineDiff";
 export type { InlineDiffProps, DiffSegment } from "./InlineDiff";
+export { WeaveCanvas } from "./WeaveCanvas";
+export type { WeaveCanvasProps } from "./WeaveCanvas";
+export { ImageGeneration } from "./ImageGeneration";
+export type {
+  ImageGenerationProps,
+  ImageGenerationLabels,
+} from "./ImageGeneration";
 export { TaskStarter } from "./TaskStarter";
 export type {
   TaskStarterProps,

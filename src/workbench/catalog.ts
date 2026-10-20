@@ -37,6 +37,15 @@ export const catalog = [
     file: "SuggestedEdits.tsx",
   },
   {
+    id: "image-generation",
+    name: ["توليد صورة", "Image generation"],
+    description: [
+      "ينشئ صورة من وصف مكتوب، ويختار المستخدم النسخة التي سيستخدمها.",
+      "Make an image from a description and pick the version to use.",
+    ],
+    file: "ImageGeneration.tsx",
+  },
+  {
     id: "change-summary",
     name: ["ما الذي تغيّر", "What changed"],
     description: [
@@ -692,6 +701,7 @@ const documentationGroups = [
       "cited-answer",
       "agent-task",
       "suggested-edits",
+      "image-generation",
       "change-summary",
       "terminal",
       "chat-app",

@@ -232,6 +232,48 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  "image-generation": {
+    useWhen: [
+      [
+        "يصف المستخدم الصورة التي يريدها بكلماته، وتُنتج منها عدة نسخ ليختار بينها.",
+        "A person describes the image they want in words, and you make several versions for them to choose between.",
+      ],
+      [
+        "يستغرق التوليد وقتًا يكفي ليحتاج المستخدم إلى أن يرى أنه يتقدّم.",
+        "The generation takes long enough that people need to see it moving.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "تعرض صورة جاهزة من تطبيقك دون توليد، فاستخدم",
+          "You are showing a finished image from your app, with nothing to generate, so use",
+        ],
+        page: "image-result",
+      },
+      {
+        text: [
+          "الصورة جزء من عمل أكبر من عدة خطوات، فاستخدم",
+          "The image is one part of larger multi-step work, so use",
+        ],
+        page: "agent-task",
+      },
+    ],
+    notice: [
+      [
+        "يقرّر تطبيقك الحالة والنسبة والصور. تتبع اللوحة النسبة التي تعلنها، أو يعبر مكّوك واحد الصفوف حتى تصل الصورة. ويعلن النمط كل حالة مرة واحدة، ولا يعلن النسبة ولا الوقت.",
+        "Your app owns the status, the progress and the images. The canvas follows the progress you report, or one shuttle crosses the rows until the picture arrives. The pattern announces each status once, never the progress or the time.",
+      ],
+      [
+        "تبقى النسخ والإجراءات معطّلة حتى تكتمل الصورة. ومع الحركة المخفَّضة لا تدور أي حلقة: يظهر خيط ساكن ثم تتلاشى الصورة كاملة.",
+        "The versions and actions stay inert until the image is done. With reduced motion nothing loops: a still thread shows, then the picture fades in whole.",
+      ],
+      [
+        "قد ترفض سياسة منتجك بعض الطلبات: مرّر blocked مع سببه ليظهر نصًّا ثابتًا بجانب «تعديل بالوصف». ولا يُعدّ ذلك فشلًا.",
+        "Your product's policy may refuse some requests: pass blocked with its reason, shown as persistent text beside Edit with a description. That is not a failure.",
+      ],
+    ],
+  },
   terminal: {
     useWhen: [
       [

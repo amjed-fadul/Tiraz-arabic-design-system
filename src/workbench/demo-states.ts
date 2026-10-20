@@ -622,6 +622,14 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "applied", ms: 800 },
     ],
   },
+  "image-generation": {
+    states: [phased("weaving"), phased("done", "completed"), phased("failed")],
+    resting: "done",
+    replay: [
+      { state: "weaving", ms: 2600 },
+      { state: "done", ms: 800 },
+    ],
+  },
   "change-summary": {
     states: [phased("updating"), phased("ready"), phased("stale")],
     resting: "ready",
