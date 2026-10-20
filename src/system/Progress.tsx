@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { useSystem } from "./useSystem";
 import { numberLocale } from "./config";
 export interface ProgressProps {
@@ -43,9 +44,11 @@ export function Progress({
         <span
           className="tz-progress-indicator"
           aria-hidden="true"
-          style={{
-            inlineSize: normalized === null ? undefined : `${normalized}%`,
-          }}
+          style={
+            normalized === null
+              ? undefined
+              : ({ "--progress-fraction": normalized / 100 } as CSSProperties)
+          }
         />
       </div>
     </div>

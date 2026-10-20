@@ -57,4 +57,11 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   // .tz-row and .tz-unread are the notification rows' title, meta, actions
   // and unread dot.
   "notification-list": [".tz-notification", ".tz-row", ".tz-unread"],
+  skeleton: [".tz-skeleton"],
+  progress: [".tz-progress"],
+  // .tz-spinner is the turning arc, which Button's loading state shares.
+  spinner: [".tz-loading-spinner", ".tz-spinner"],
+  tick: [".tz-tick"],
+  // .tz-chart covers the Line, Area, Bar and Donut charts' shared frame.
+  charts: [".tz-chart"],
 };

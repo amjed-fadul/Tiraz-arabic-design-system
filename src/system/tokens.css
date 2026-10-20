@@ -173,6 +173,7 @@
   --motion-toast-exit: 150ms;
   --motion-collapse: 200ms;
   --motion-collapse-exit: 150ms;
+  --motion-progress: 240ms;
   /* Stagger and word are gaps between items; the loops are decorative. */
   --motion-stagger: 40ms;
   --motion-word: 34ms;
@@ -181,6 +182,8 @@
   --motion-loop-turn: 1800ms;
   --motion-loop-skeleton: 1600ms;
   --motion-loop-caret: 1100ms;
+  --motion-loop-spinner: 800ms;
+  --motion-loop-progress: 1500ms;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
@@ -278,6 +281,7 @@
   --motion-toast-exit: 0ms;
   --motion-collapse: 0ms;
   --motion-collapse-exit: 0ms;
+  --motion-progress: 0ms;
   --motion-stagger: 0ms;
   --motion-word: 0ms;
   --motion-loop-stitch: 0ms;
@@ -285,6 +289,8 @@
   --motion-loop-turn: 0ms;
   --motion-loop-skeleton: 0ms;
   --motion-loop-caret: 0ms;
+  --motion-loop-spinner: 0ms;
+  --motion-loop-progress: 0ms;
 }
 @media (prefers-reduced-motion: reduce) {
   .tiraz-system {
@@ -303,6 +309,7 @@
     --motion-toast-exit: 0ms;
     --motion-collapse: 0ms;
     --motion-collapse-exit: 0ms;
+    --motion-progress: 0ms;
     --motion-stagger: 0ms;
     --motion-word: 0ms;
     --motion-loop-stitch: 0ms;
@@ -310,6 +317,8 @@
     --motion-loop-turn: 0ms;
     --motion-loop-skeleton: 0ms;
     --motion-loop-caret: 0ms;
+    --motion-loop-spinner: 0ms;
+    --motion-loop-progress: 0ms;
   }
   .tiraz-system *,
   .tiraz-system *::before,
@@ -331,8 +340,9 @@
   scroll-behavior: auto !important;
 }
 /* Keyboard actions never animate: under keyboard modality interaction motion
-   is instant and presses do not scale. Streamed words and the decorative loops
-   keep their timing. */
+   is instant and presses do not scale. Streamed words, the progress fill and
+   the decorative loops follow the system, not a key, so they keep their
+   timing. */
 .tiraz-system[data-modality="keyboard"] {
   --motion-press: 0ms;
   --motion-release: 0ms;

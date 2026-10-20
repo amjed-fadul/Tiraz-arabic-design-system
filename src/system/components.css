@@ -142,7 +142,7 @@
   animation: tz-glyph-in var(--motion-state) var(--ease-out);
 }
 .tz-spinner {
-  animation: tz-spin 800ms linear infinite;
+  animation: tz-spin var(--motion-loop-spinner) linear infinite;
 }
 /* The close button of Modal, Sheet and Toast. It presses like every other
    pressable and eases back out on release. */
@@ -1768,7 +1768,7 @@ textarea.tz-textarea:read-only {
   max-inline-size: 100%;
   block-size: var(--text-body);
   border-radius: var(--radius-small);
-  background: var(--surface-hover);
+  background: var(--surface-tray);
   position: relative;
   overflow: hidden;
   isolation: isolate;
@@ -1780,14 +1780,14 @@ textarea.tz-textarea:read-only {
   inset: 0;
   background: linear-gradient(90deg, transparent, var(--shimmer), transparent);
   transform: translateX(-100%);
-  animation: tz-shimmer 1.6s var(--ease-in-out) infinite;
+  animation: tz-shimmer var(--motion-loop-skeleton) var(--ease-in-out) infinite;
 }
 .tz-skeleton:dir(rtl)::after {
   animation-direction: reverse;
 }
 .tz-skeleton[data-shape="rectangle"] {
   block-size: calc(var(--control-height) * 2);
-  border-radius: var(--radius);
+  border-radius: var(--radius-item);
 }
 .tz-skeleton[data-shape="circle"] {
   inline-size: var(--control-small);
@@ -1813,31 +1813,40 @@ textarea.tz-textarea:read-only {
   --progress-dir: 1;
   block-size: calc(var(--control-small) / 4);
   border-radius: var(--radius-small);
-  background: var(--surface-hover);
+  background: var(--surface-tray);
   overflow: hidden;
 }
 .tz-progress-track:dir(rtl) {
   --progress-dir: -1;
 }
+/* The fill spans the track and scales from its inline-start edge, so it moves
+   on the compositor; Progress.tsx passes the fraction as --progress-fraction. */
 .tz-progress-indicator {
   display: block;
   block-size: 100%;
-  margin-inline-end: auto;
   background: var(--action);
   border-radius: inherit;
-  transition: inline-size calc(var(--motion-state) * 2) var(--ease-out);
+  transform: scaleX(var(--progress-fraction));
+  transform-origin: left;
+  transition: transform var(--motion-progress) var(--ease-out);
 }
-/* Indeterminate work travels along the reading direction, never in place. */
+.tz-progress-indicator:dir(rtl) {
+  transform-origin: right;
+}
+/* Indeterminate work travels along the reading direction, never in place: a
+   40% stretch of the fill slides by `translate`, so leaving this state snaps it
+   home and only its scale eases into the value. */
 .tz-progress-track[data-indeterminate="true"] .tz-progress-indicator {
-  inline-size: 40%;
-  animation: tz-progress-slide 1.5s var(--ease-in-out) infinite;
+  transform: scaleX(0.4);
+  animation: tz-progress-slide var(--motion-loop-progress) var(--ease-in-out)
+    infinite;
 }
 @keyframes tz-progress-slide {
   from {
-    transform: translateX(calc(var(--progress-dir) * -110%));
+    translate: calc(var(--progress-dir) * -44%);
   }
   to {
-    transform: translateX(calc(var(--progress-dir) * 260%));
+    translate: calc(var(--progress-dir) * 104%);
   }
 }
 @keyframes tz-shimmer {
@@ -1862,10 +1871,17 @@ textarea.tz-textarea:read-only {
   inline-size: var(--space-6);
   block-size: var(--space-6);
 }
+.tz-loading-spinner[data-tone="ai"] {
+  color: var(--ai);
+}
 .tz-loading-spinner svg {
   inline-size: 100%;
   block-size: 100%;
 }
+/* Without motion the loops hold still and still say "working": the arc stops
+   (as the star does), the skeleton keeps its tray, and indeterminate progress
+   becomes a faint full line (as the stitch does, spec section 15), so it never
+   reads as a measured amount. */
 .tiraz-system[data-reduced-motion="true"] .tz-skeleton::after,
 .tiraz-system[data-reduced-motion="true"]
   .tz-progress-track[data-indeterminate="true"]
@@ -1876,6 +1892,12 @@ textarea.tz-textarea:read-only {
 .tiraz-system[data-reduced-motion="true"] .tz-skeleton::after {
   display: none;
 }
+.tiraz-system[data-reduced-motion="true"]
+  .tz-progress-track[data-indeterminate="true"]
+  .tz-progress-indicator {
+  transform: none;
+  opacity: 0.45;
+}
 @media (prefers-reduced-motion: reduce) {
   .tz-skeleton::after,
   .tz-progress-track[data-indeterminate="true"] .tz-progress-indicator,
@@ -1884,6 +1906,10 @@ textarea.tz-textarea:read-only {
   }
   .tz-skeleton::after {
     display: none;
+  }
+  .tz-progress-track[data-indeterminate="true"] .tz-progress-indicator {
+    transform: none;
+    opacity: 0.45;
   }
 }
 
@@ -2196,7 +2222,14 @@ textarea.tz-textarea:read-only {
     background-color var(--motion-fast) var(--ease-out),
     border-color var(--motion-fast) var(--ease-out),
     color var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-chart-legend > button:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-press);
 }
 .tz-chart-legend > button[aria-pressed="true"] {
   background: var(--surface-subtle);
@@ -2206,8 +2239,10 @@ textarea.tz-textarea:read-only {
   color: var(--text-secondary);
   text-decoration: line-through;
 }
-.tz-chart-legend > button:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-chart-legend > button:hover {
+    background: var(--surface-hover);
+  }
 }
 .tz-chart-legend > button:focus-visible,
 .tz-chart-table > summary:focus-visible {
@@ -2217,7 +2252,7 @@ textarea.tz-textarea:read-only {
 .tz-chart-swatch {
   inline-size: 8px;
   block-size: 8px;
-  border-radius: 2px;
+  border-radius: var(--radius-small);
   flex: 0 0 auto;
 }
 .tz-chart-summary {
@@ -2226,13 +2261,15 @@ textarea.tz-textarea:read-only {
   margin: var(--chart-chrome) 0 0;
   line-height: var(--line-height);
 }
+/* Paper floating over the plot: the popover shadow carries the ring, and the
+   transparent border is the edge forced colors draw. */
 .tz-chart-tooltip {
   background: var(--surface);
   color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-small);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
   box-shadow: var(--shadow-popover);
-  padding: var(--chart-chrome);
+  padding: var(--space-2) var(--space-3);
   font-family: var(--font);
   font-size: var(--text-meta);
   max-inline-size: min(240px, calc(100vw - 100px));
@@ -6177,7 +6214,7 @@ a.tz-inline-citation {
 }
 .tz-image-result-loading .tz-progress-track {
   block-size: 4px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
 }
 
 /* Application-owned AI context controls. Geometry/motion belongs to Radix. */
@@ -7218,7 +7255,6 @@ a.tz-inline-citation {
   .tz-model-trigger,
   .tz-model-option,
   .tz-selection-actions button,
-  .tz-chart-legend > button,
   .tz-ask-questions .tz-radio-option,
   .tz-ai-image-choice img
 ) {
@@ -7236,8 +7272,7 @@ a.tz-inline-citation {
     .tz-inline-citation,
     .tz-context-trigger,
     .tz-model-trigger,
-    .tz-selection-actions button,
-    .tz-chart-legend > button
+    .tz-selection-actions button
   ):not(:disabled):active {
   transform: scale(0.95);
   transition-duration:

@@ -190,6 +190,21 @@ it("formats Progress for Arabic and can explicitly use English in RTL", () => {
     "64%",
   );
 });
+it("passes the Progress fraction to CSS for scaleX, not as an inline size", () => {
+  render(<Progress label="Uploading" value={64} />);
+  const indicator = screen
+    .getByRole("progressbar", { name: "Uploading" })
+    .querySelector<HTMLElement>(".tz-progress-indicator")!;
+  expect(indicator.style.getPropertyValue("--progress-fraction")).toBe("0.64");
+  expect(indicator.style.inlineSize).toBe("");
+});
+it("renders Spinner's ai tone", () => {
+  const { container } = render(<Spinner label="Thinking" tone="ai" />);
+  expect(container.querySelector(".tz-loading-spinner")).toHaveAttribute(
+    "data-tone",
+    "ai",
+  );
+});
 it("names Spinner and supports decorative composition without an extra announcement", () => {
   const { rerender, container } = render(<Spinner label="Loading report" />);
   expect(

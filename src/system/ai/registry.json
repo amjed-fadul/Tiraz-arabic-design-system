@@ -5354,6 +5354,14 @@
           "values": ["sm", "md"]
         },
         {
+          "name": "tone",
+          "type": "\"neutral\" | \"ai\"",
+          "required": false,
+          "default": "neutral",
+          "values": ["neutral", "ai"],
+          "note": "ai paints the arc in the AI color, for work the assistant is doing."
+        },
+        {
           "name": "decorative",
           "type": "boolean",
           "required": false,

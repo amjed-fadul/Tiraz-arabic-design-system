@@ -404,6 +404,7 @@ const motion = {
   "--motion-toast-exit": "150ms",
   "--motion-collapse": "200ms",
   "--motion-collapse-exit": "150ms",
+  "--motion-progress": "240ms",
   "--motion-stagger": "40ms",
   "--motion-word": "34ms",
   "--motion-loop-stitch": "800ms",
@@ -411,6 +412,8 @@ const motion = {
   "--motion-loop-turn": "1800ms",
   "--motion-loop-skeleton": "1600ms",
   "--motion-loop-caret": "1100ms",
+  "--motion-loop-spinner": "800ms",
+  "--motion-loop-progress": "1500ms",
 };
 
 /** Colors and shadows; their values are held to the rules below, not pinned. */
@@ -793,17 +796,21 @@ it("zeroes interaction motion under keyboard modality", () => {
   ).toEqual([]);
   expect(keyboard["--press-scale"]).toBe("1");
 
-  // Every other motion token on the root is a streamed word or a decorative
-  // loop, so a new interaction token is not missed, and those keep their time.
+  // Every other motion token on the root is a streamed word, the progress fill
+  // or a decorative loop, which the system drives, so a new interaction token
+  // is not missed, and those keep their time.
   const kept = Object.keys(readRule(BASE)).filter(
     (name) => name.startsWith("--motion-") && !interaction.includes(name),
   );
   expect(kept.sort()).toEqual([
     "--motion-loop-caret",
+    "--motion-loop-progress",
     "--motion-loop-shimmer",
     "--motion-loop-skeleton",
+    "--motion-loop-spinner",
     "--motion-loop-stitch",
     "--motion-loop-turn",
+    "--motion-progress",
     "--motion-word",
   ]);
   expect(

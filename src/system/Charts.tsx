@@ -336,7 +336,7 @@ function CartesianPlot({
               {grid && (
                 <CartesianGrid
                   vertical={false}
-                  stroke="var(--border)"
+                  stroke="var(--hairline)"
                   strokeDasharray="3 4"
                 />
               )}

@@ -245,7 +245,7 @@ try {
         await canvas()
           .locator(".tz-chart-tooltip")
           .evaluate((el) => getComputedStyle(el).borderRadius),
-        "11px",
+        "17.5px",
       );
       assert(
         await page.evaluate(
