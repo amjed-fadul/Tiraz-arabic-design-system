@@ -2791,6 +2791,7 @@ textarea.tz-textarea:read-only {
   border-color: var(--danger);
 }
 .tz-file-drop[data-invalid="true"]:has(> .tz-file-browse:focus-visible) {
+  border-color: var(--danger);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
 }
 .tz-color-entry[data-invalid="true"]:has(:focus-visible) {
