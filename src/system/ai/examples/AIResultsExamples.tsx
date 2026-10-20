@@ -6,7 +6,7 @@ import {
   InlineCitation,
   InsightCards,
   Modal,
-  useSystem,
+  useReducedMotion,
 } from "../../index";
 import type { ImageResultProps, SourceReference } from "../../index";
 import sageImage from "../assets/results/coffee-sage.svg?url&no-inline";
@@ -20,14 +20,6 @@ const images = [
   { id: "clay", src: clayImage, ar: "الطيني", en: "Clay" },
   { id: "night", src: nightImage, ar: "الليلي", en: "Night" },
 ];
-function usePrefersReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-  );
-}
 export function ImageResultExample({
   language = "ar",
   state = "loaded",
@@ -88,7 +80,7 @@ export function ImageResultGenerating({
   language?: Language;
 }) {
   const ar = language === "ar",
-    reduced = usePrefersReducedMotion(),
+    reduced = useReducedMotion(),
     [progress, setProgress] = useState(8);
   const generated = reduced || progress >= 100;
   useEffect(() => {

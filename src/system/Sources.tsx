@@ -5,6 +5,7 @@ import { sourceHref } from "./source-url";
 import { useSystem } from "./useSystem";
 import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
+import { formatCount } from "./format";
 
 export interface SourceReference {
   /** Unique, stable application ID; not derived from array position. */
@@ -39,22 +40,6 @@ export interface InlineCitationProps {
   labels?: InlineCitationLabels;
   className?: string;
 }
-const arabicPlural = new Intl.PluralRules("ar");
-/** Arabic counts agree with the noun: one, the dual, 3–10, then 11 and up. */
-function arabicSourceCount(count: number, digits: Intl.NumberFormat) {
-  switch (arabicPlural.select(count)) {
-    case "one":
-      return "مصدر واحد";
-    case "two":
-      return "مصدران";
-    case "few":
-      return `${digits.format(count)} مصادر`;
-    case "many":
-      return `${digits.format(count)} مصدرًا`;
-    default:
-      return `${digits.format(count)} مصدر`;
-  }
-}
 function destination(href: string) {
   try {
     const url = new URL(href);
@@ -86,11 +71,10 @@ export function Sources({
         {labels?.empty ?? (ar ? "لا توجد مصادر" : "No sources supplied")}
       </p>
     );
+  // Arabic agrees with the noun: one, the dual, 3–10, then 11 and up.
   const summary =
     labels?.summary?.(items.length) ??
-    (ar
-      ? arabicSourceCount(items.length, digits)
-      : `${digits.format(items.length)} ${items.length === 1 ? "source" : "sources"}`);
+    formatCount(items.length, "source", config);
   return (
     <div
       className={`tz-sources ${className}`}

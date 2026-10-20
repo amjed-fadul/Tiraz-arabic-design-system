@@ -1,7 +1,7 @@
 import type { ComponentPropsWithRef, CSSProperties } from "react";
 import { Skeleton } from "./Skeleton";
 import { useSystem } from "./useSystem";
-import { numberLocale } from "./config";
+import { formatElapsed } from "./format";
 export type LoadingStateProps = Omit<
   ComponentPropsWithRef<"div">,
   "children"
@@ -29,14 +29,10 @@ export function LoadingState({
   ...props
 }: LoadingStateProps) {
   const { config } = useSystem();
-  const ar = config.direction === "rtl";
+  // One fraction digit under a minute (٦٫٢ث), then ١د ١٢ث, as the pill shows.
   const elapsed =
     elapsedMs !== undefined && Number.isFinite(elapsedMs)
-      ? new Intl.NumberFormat(numberLocale(config), {
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-          useGrouping: false,
-        }).format(Math.max(0, elapsedMs) / 1000) + (ar ? "ث" : "s")
+      ? formatElapsed(elapsedMs / 1000, config, { fractionDigits: 1 })
       : undefined;
   return (
     <div {...props} className={`tz-loading-state ${className}`}>

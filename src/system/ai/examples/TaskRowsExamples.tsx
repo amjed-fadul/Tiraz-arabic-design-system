@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EmptyState, TaskRows, useSystem } from "../../index";
+import { EmptyState, TaskRows, useReducedMotion } from "../../index";
 import type { TaskRowItem, TaskState } from "../../index";
 
 export interface TaskRowsExampleProps {
@@ -8,15 +8,6 @@ export interface TaskRowsExampleProps {
   mode?: "controlled" | "uncontrolled";
   empty?: boolean;
   longContent?: boolean;
-}
-/** Config or OS preference; the scripted run starts on its final state. */
-function useReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-  );
 }
 // The drafting task times out once, retries and completes; the handoff waits for approval.
 const draftRun: Array<[delay: number, state: TaskState]> = [

@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { Terminal, numberLocale, useSystem } from "../../index";
+import {
+  Terminal,
+  numberLocale,
+  useSystem,
+  useReducedMotion,
+} from "../../index";
 type Language = "ar" | "en";
 const header = "vite v7.1.4 building for production…\n";
 const progress = [
@@ -14,15 +19,6 @@ const built =
   "✓ 418 modules transformed.\ndist/index.html                  0.40 kB │ gzip:  0.27 kB\ndist/assets/index-4f2a9c1e.css  38.12 kB │ gzip:  7.41 kB\ndist/assets/index-b7d3a1f5.js  182.41 kB │ gzip: 58.12 kB\n";
 const error =
   "src/billing/invoice.ts(42,9): error TS2322: Type 'string' is not assignable to type 'number'.\n";
-/** Config or OS preference; a running log shows all of its lines at once. */
-function useReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-  );
-}
 export function TerminalExample({
   state = "completed",
   longContent = false,

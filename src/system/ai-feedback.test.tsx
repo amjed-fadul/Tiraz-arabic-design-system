@@ -259,7 +259,7 @@ it("does not restart cosmetic words for equal arrays on elapsed parent renders, 
   expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
     "Reading",
   );
-  expect(view.container.querySelector("animate")).toBeNull();
+  expect(view.container.querySelector(".tz-ai-mark[data-working]")).toBeNull();
   expect(vi.getTimerCount()).toBe(0);
   act(() => vi.advanceTimersByTime(10000));
   expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
@@ -301,7 +301,9 @@ it("reacts to OS reduced motion, removes SVG motion, stops words, and unsubscrib
         words={["Reading", "Checking"]}
       />,
     );
-    expect(view.container.querySelector("animate")).not.toBeNull();
+    expect(
+      view.container.querySelector(".tz-ai-mark[data-working]"),
+    ).not.toBeNull();
     act(() => vi.advanceTimersByTime(3200));
     expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
       "Checking",
@@ -310,7 +312,9 @@ it("reacts to OS reduced motion, removes SVG motion, stops words, and unsubscrib
       matches = true;
       listeners.forEach((listener) => listener());
     });
-    expect(view.container.querySelector("animate")).toBeNull();
+    expect(
+      view.container.querySelector(".tz-ai-mark[data-working]"),
+    ).toBeNull();
     expect(view.container.querySelector(".tz-thinking-word")).toHaveTextContent(
       "Reading",
     );

@@ -1,6 +1,12 @@
 import { FileText, PackageOpen, Save, SpellCheck } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import { ToolCall, ToolChips, numberLocale, useSystem } from "../../index";
+import {
+  ToolCall,
+  ToolChips,
+  numberLocale,
+  useSystem,
+  useReducedMotion,
+} from "../../index";
 import type { ToolCallState } from "../../index";
 type Language = "ar" | "en";
 const clause =
@@ -176,15 +182,6 @@ export function ToolChipsExample({
         { id: "export", label: ar ? "تصدير" : "Export", state: exporting },
       ]}
     />
-  );
-}
-/** Config or OS preference; the scripted run starts on its final state. */
-function useReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
   );
 }
 /** Host-owned run with fixed results; never executes a tool. Plays once on mount, then retry belongs to ToolCall. */

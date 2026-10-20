@@ -83,7 +83,7 @@ export function generateBatchCode(
     jsx = `<Alert title={${json(p.title)}} description={${json(p.description)}} tone="${p.tone}"${action ? ` action={<Button variant="secondary" onClick={() => {}}>{${json(action)}}</Button>}` : ""} />`;
   } else if (component === "skeleton") {
     const p = model as SkeletonModel;
-    imports = "Avatar, Skeleton, useSystem";
+    imports = "Avatar, Skeleton, useReducedMotion";
     extra =
       'import { useEffect, useState } from "react";\nimport saraPortrait from "./system/ai/assets/sara.jpg";';
     source = skeletonSource.replace(/^import[\s\S]*?;\n/gm, "");

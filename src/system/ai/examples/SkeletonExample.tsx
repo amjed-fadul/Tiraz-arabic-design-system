@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
-import { Avatar, Skeleton, useSystem } from "../../index";
+import { Avatar, Skeleton, useReducedMotion } from "../../index";
 import { saraPortrait } from "./portraits";
 type Language = "ar" | "en";
-function usePrefersReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-  );
-}
 /**
  * Placeholders hold the layout while a profile loads, then the content takes
  * their place. `shape` picks the placeholder for the profile's media: a photo
@@ -30,7 +22,7 @@ export function SkeletonExample({
   phase?: string;
 }) {
   const ar = language === "ar",
-    reduced = usePrefersReducedMotion(),
+    reduced = useReducedMotion(),
     scripted = phase === undefined;
   const [ready, setReady] = useState(false);
   useEffect(() => {

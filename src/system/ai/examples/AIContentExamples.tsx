@@ -1,15 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CodeBlock, Markdown, StreamingText, useSystem } from "../../index";
+import {
+  CodeBlock,
+  Markdown,
+  StreamingText,
+  useReducedMotion,
+} from "../../index";
 import { DemoFrame } from "./DemoFrame";
 type Language = "ar" | "en";
-function usePrefersReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-  );
-}
 const ledgerNote =
   "Partial delivery, second shipment pending — الشحنة الثانية بانتظار تأكيد المستودع الرئيسي في الرياض";
 const ledger = Array.from({ length: 45 }, (_, i) => ({
@@ -170,7 +167,7 @@ export function StreamingDemo({
   phase?: string;
 }) {
   const ar = language === "ar",
-    reduced = usePrefersReducedMotion();
+    reduced = useReducedMotion();
   const [identity, setIdentity] = useState({
     language,
     markdown,

@@ -713,6 +713,46 @@
       "source": "StatusIcon.tsx"
     },
     {
+      "name": "AIMark",
+      "source": "AIMark.tsx"
+    },
+    {
+      "name": "AIMarkProps",
+      "source": "AIMark.tsx"
+    },
+    {
+      "name": "StatusPill",
+      "source": "StatusPill.tsx"
+    },
+    {
+      "name": "StatusPillProps",
+      "source": "StatusPill.tsx"
+    },
+    {
+      "name": "StatusPillState",
+      "source": "StatusPill.tsx"
+    },
+    {
+      "name": "Tray",
+      "source": "Tray.tsx"
+    },
+    {
+      "name": "TrayProps",
+      "source": "Tray.tsx"
+    },
+    {
+      "name": "Countdown",
+      "source": "Countdown.tsx"
+    },
+    {
+      "name": "CountdownProps",
+      "source": "Countdown.tsx"
+    },
+    {
+      "name": "useReducedMotion",
+      "source": "useReducedMotion.ts"
+    },
+    {
       "name": "CodeBlock",
       "source": "CodeBlock.tsx"
     },
@@ -2165,7 +2205,7 @@
       "state": "Host owns execution and elapsedMs. No library elapsed clock. indicator=spinner selects the pixel grid for compatibility; skeleton retains its existing placeholder. variant selects Drive/Dots/Orbit.",
       "accessibility": [
         "A stable polite atomic label/description lives outside decorative grid, shimmer and elapsed time. Ticks never change the live announcement. announcement=off opts out.",
-        "Application and OS reduced motion use a still grid and plain readable label. Finite elapsedMs clamps below zero; nonfinite values hide elapsed time. Display digits follow provider direction and config.numerals."
+        "Application and OS reduced motion use a still grid and plain readable label. Finite elapsedMs clamps below zero; nonfinite values hide elapsed time. Elapsed shows one decimal under a minute (٦٫٢ث / 6.2s), then ١د ١٢ث / 1m 12s. Display digits follow provider direction and config.numerals."
       ],
       "limitations": [
         "No execution, network or elapsed-time simulation; the host must provide real elapsedMs and activity state."
@@ -2178,7 +2218,7 @@
       "api": "ThinkingIndicator",
       "source": "ThinkingIndicator.tsx",
       "exports": ["ThinkingIndicator", "ThinkingIndicatorProps"],
-      "purpose": "Circle/infinity morph with a shimmering whole-word display and optional cosmetic word rotation or text-only presentation.",
+      "purpose": "The turning AI mark beside a shimmering whole-word display, with optional cosmetic word rotation or text-only presentation.",
       "props": [
         {
           "name": "label",
@@ -2209,8 +2249,8 @@
       "inheritedProps": "Native attributes, style, className and ref target span; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
       "state": "Host owns the stable accessible label. Optional nonempty words rotate cosmetically approximately every 3.2s; equal arrays do not reset the clock. A changed sequence starts at its first word. Blank/empty words fall back to label. Timer cleans up on change, reduced motion and unmount.",
       "accessibility": [
-        "Only label is in the polite live region; decorative glyph and changing words are aria-hidden. Whole strings preserve connected Arabic shaping. textOnly removes the glyph.",
-        "Application/OS reduced motion removes SVG animate, stops the word timer and shows a still circle with the first readable word."
+        "Only label is in the polite live region; the decorative AI mark and changing words are aria-hidden. Whole strings preserve connected Arabic shaping. textOnly removes the mark.",
+        "Application/OS reduced motion holds the AI mark still, stops the word timer and shows the first readable word."
       ],
       "limitations": [
         "Word changes are cosmetic, not execution progress. No private model reasoning or invented logs."
@@ -2270,7 +2310,7 @@
         }
       ],
       "inheritedProps": "Native attributes, style, className and ref target div; children are managed except in ThinkingState. Status and disclosure semantics are managed internally.",
-      "state": "Host owns label, active and child steps. Active label shimmers; false shows the supplied completed summary. No automatic execution transition. Internal/controlled disclosure preserves mounted detail state and recovers focus.",
+      "state": "Host owns label, active and child steps. The AI mark turns and the label shimmers while active; false shows the supplied completed summary. No automatic execution transition. Internal/controlled disclosure preserves mounted detail state and recovers focus.",
       "accessibility": [
         "Only supplied label changes announce politely. Decorative star, shimmer, chevron and disclosure motion do not announce.",
         "Collapsed content is immediately hidden/aria-hidden/inert while CSS exit motion finishes. Focus inside a collapsed panel returns to its trigger, including replaced children; outside focus is preserved. Application/OS reduced motion makes disclosure immediate."
@@ -7123,6 +7163,167 @@
         }
       ],
       "purpose": "The shared status glyph of ToolCall, ToolChips and TaskRows: one vocabulary of seven states for tasks, tool calls and steps of agent work. A --status-size disc (22px; ToolChips set 18px) with a 12px glyph: a dashed ring holding an optional number, a spinning arc, ! on an attention disc, a check on a success disc, a cross on a danger disc, a small square in an outlined ring and a dashed ring with a dash. The check and cross draw themselves only after the state changes, never on first render, and reduced motion or keyboard modality make the draw instant. Filled discs keep a transparent border, so forced colors still outline them. A span that accepts no other attributes and is not interactive; pair it with text that states the status."
+    },
+    {
+      "id": "ai-mark",
+      "exports": ["AIMark", "AIMarkProps"],
+      "source": "AIMark.tsx",
+      "props": [
+        {
+          "name": "size",
+          "type": "\"xs\" | \"sm\" | \"md\"",
+          "required": false,
+          "default": "sm",
+          "note": "Glyph 10, 13 or 16 px in an 18, 24 or 30 px tile."
+        },
+        {
+          "name": "working",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Turns the star a quarter step on a loop (--motion-loop-turn) while the assistant works. Application or OS reduced motion holds it still."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Accessible name. Without one the mark is decorative and aria-hidden; with one it is an img."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "purpose": "The eight-point star that marks AI presence: --ai on an --ai-soft tile. Use it only where the assistant acts or produced the content, never on content it did not produce. The star is symmetric, so it never rests tilted. ThinkingIndicator and ThinkingState draw it at xs. A span that accepts no other attributes."
+    },
+    {
+      "id": "status-pill",
+      "exports": ["StatusPill", "StatusPillProps", "StatusPillState"],
+      "source": "StatusPill.tsx",
+      "props": [
+        {
+          "name": "state",
+          "type": "StatusPillState",
+          "required": true,
+          "default": "undefined",
+          "note": "idle, running, needs-you, completed, failed or stopped. Default words: جاهز / Ready, يعمل / Working, بانتظارك / Needs you, اكتمل / Done, تعثّر / Failed and أُوقف / Stopped, chosen by provider direction. Colors: neutral fill, AI, attention, success, danger and a neutral outline."
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Replaces the default word, for example the feminine اكتملت when the subject is feminine."
+        },
+        {
+          "name": "elapsed",
+          "type": "number",
+          "required": false,
+          "default": "undefined",
+          "note": "Seconds, shown after the word as ٦ث / 6s, ١د ١٢ث / 1m 12s or ١س ٢د / 1h 2m with digits from config.numerals, in a fixed ch width. Update it at most once per second; it is never announced."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "purpose": "The single place a pattern names its state, with one vocabulary across every pattern. The word is real text and the dot decorative. It pings once when the state changes into needs-you, never on mount. Amber is reserved for needs-you. Not a live region: the pattern announces transitions in its own polite status. A span that accepts no other attributes."
+    },
+    {
+      "id": "tray",
+      "exports": ["Tray", "TrayProps"],
+      "source": "Tray.tsx",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "default": "undefined",
+          "note": "On paper by default: what the assistant produced or proposes."
+        },
+        {
+          "name": "header",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Sits on the tray above the paper: the AI mark, the task and the status pill."
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "default": "undefined",
+          "note": "Sits on the tray below the paper: meta and decisions, spread to either end."
+        },
+        {
+          "name": "paper",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "note": "False puts the children straight on the tray, with no paper."
+        }
+      ],
+      "purpose": "The tray and paper composition: --surface-tray with --tray-pad around paper (--surface, --radius-paper, --shadow-paper and --paper-padding-*), with concentric corners. Never nest a tray inside a tray or a card inside a card. Accepts native div attributes, className, style and ref."
+    },
+    {
+      "id": "countdown",
+      "exports": ["Countdown", "CountdownProps"],
+      "source": "Countdown.tsx",
+      "props": [
+        {
+          "name": "seconds",
+          "type": "number",
+          "required": true,
+          "default": "undefined",
+          "note": "Whole seconds to count down from. Remount with a new key to restart."
+        },
+        {
+          "name": "onComplete",
+          "type": "() => void",
+          "required": true,
+          "default": "undefined",
+          "note": "Called once, at zero."
+        },
+        {
+          "name": "paused",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Stops the one-second timer; it resumes from the time left. Owners pause while the pointer is over them or focus is inside."
+        },
+        {
+          "name": "label",
+          "type": "(remaining: string) => string",
+          "required": false,
+          "default": "undefined",
+          "note": "The sentence around the formatted time left; defaults to خلال {t} / in {t}."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "Polite announces label(total) once, set after mount; the ticking label is aria-hidden and never announced. Use off when the owner pattern announces it."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined"
+        }
+      ],
+      "purpose": "A ring and a label for an auto-start or undo window, a real UI affordance the host opted into. The ring drains a step each second; reduced motion makes each step instant. Unmount clears the timer. A span that accepts no other attributes."
+    },
+    {
+      "id": "reduced-motion",
+      "exports": ["useReducedMotion"],
+      "source": "useReducedMotion.ts",
+      "purpose": "useReducedMotion(): boolean. True when config.reducedMotion is set or the OS prefers reduced motion, and it follows changes to the OS setting. Use it for cosmetic timers and scripted demos instead of re-implementing the check."
     }
   ],
   "conventions": {

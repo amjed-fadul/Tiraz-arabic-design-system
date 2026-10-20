@@ -3,19 +3,11 @@ import {
   LoadingState,
   ThinkingIndicator,
   ThinkingState,
-  useSystem,
+  useReducedMotion,
 } from "../../index";
 import { Check } from "lucide-react";
 
 type Language = "ar" | "en";
-function usePrefersReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-  );
-}
 const steps = {
   ar: [
     "قراءة ٢١٧ فاتورة من شركة مدار",
@@ -119,7 +111,7 @@ export function ThinkingStateExample({
   defaultExpanded?: boolean;
 }) {
   const ar = language === "ar",
-    reduced = usePrefersReducedMotion();
+    reduced = useReducedMotion();
   // While active, each step lands in turn and the label follows the work.
   const [reached, setReached] = useState(1);
   useEffect(() => {
@@ -147,7 +139,7 @@ export function ThinkingStateExample({
 /** One short scripted run on mount; unmount clears every timer. */
 export function AIFeedbackDemo({ language = "ar" }: { language?: Language }) {
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
-  const reduced = usePrefersReducedMotion();
+  const reduced = useReducedMotion();
   const [run, setRun] = useState<"reading" | "matching" | "ready">("reading");
   const [elapsedMs, setElapsedMs] = useState(0);
   const startedAt = useRef(0);

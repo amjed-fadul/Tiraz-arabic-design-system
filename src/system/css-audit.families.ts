@@ -99,4 +99,11 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "insight-cards": [".tz-insight", ".tz-insights"],
   // .tz-ai is the shared AI shimmer and the AIResultsExamples layout.
   ai: [".tz-ai"],
+  // The shared parts of the AI patterns.
+  "ai-mark": [".tz-ai-mark"],
+  "status-pill": [".tz-status-pill"],
+  thread: [".tz-thread"],
+  tray: [".tz-tray"],
+  countdown: [".tz-countdown"],
+  "decision-bar": [".tz-decision-bar"],
 };

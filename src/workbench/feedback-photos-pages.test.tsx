@@ -33,7 +33,7 @@ it("documents four feedback pages with complete copied code and prompts", async 
       expect(code).toContain(
         '<SkeletonExample language="ar" shape="circle" />',
       );
-      expect(code).toContain("Avatar, Skeleton, useSystem");
+      expect(code).toContain("Avatar, Skeleton, useReducedMotion");
     } else expect(code).not.toContain("setTimeout");
     if (name === "الرسالة الدلالية") {
       expect(code).toContain("Alert, Button");

@@ -16,7 +16,7 @@ import {
   PromptBar,
   StreamingText,
   ThinkingIndicator,
-  useSystem,
+  useReducedMotion,
 } from "../../index";
 import type { ChatMessage } from "../../index";
 type Language = "ar" | "en";
@@ -63,15 +63,6 @@ function usePhaseReport(
     const { phase, onPhaseChange } = latest.current;
     if (phase !== undefined && now !== phase) onPhaseChange?.(now);
   }, [now]);
-}
-/** Config or OS preference; scripted openings start on their final state. */
-function useReducedMotion() {
-  const { config } = useSystem();
-  return (
-    config.reducedMotion ||
-    (typeof window !== "undefined" &&
-      !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)
-  );
 }
 
 export function ChatThreadExample({

@@ -4056,6 +4056,297 @@ textarea.tz-textarea:read-only {
   animation-delay: var(--motion-stagger);
 }
 
+/* AI mark: the eight-point star in the AI color on its soft tile (Woven spec
+   section 14). While the assistant works it turns a quarter step, rests and
+   turns again; the star is symmetric, so it never rests tilted. Reduced motion
+   drops data-working, so it holds still. */
+.tz-ai-mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 24px;
+  block-size: 24px;
+  border-radius: var(--radius-item);
+  background: var(--ai-soft);
+  color: var(--ai);
+}
+.tz-ai-mark[data-size="xs"] {
+  inline-size: 18px;
+  block-size: 18px;
+  border-radius: var(--radius-small);
+}
+.tz-ai-mark[data-size="md"] {
+  inline-size: 30px;
+  block-size: 30px;
+  border-radius: var(--radius-control);
+}
+.tz-ai-mark > svg {
+  inline-size: 13px;
+  block-size: 13px;
+  fill: currentColor;
+}
+.tz-ai-mark[data-size="xs"] > svg {
+  inline-size: 10px;
+  block-size: 10px;
+}
+.tz-ai-mark[data-size="md"] > svg {
+  inline-size: 16px;
+  block-size: 16px;
+}
+.tz-ai-mark[data-working] > svg {
+  animation: tz-ai-mark-turn var(--motion-loop-turn) var(--ease-in-out) infinite;
+}
+@keyframes tz-ai-mark-turn {
+  0%,
+  30% {
+    transform: rotate(0deg);
+  }
+  70%,
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+/* Status pill: the one place a pattern names its state (spec section 10). The
+   word is real text and the dot decorative; each state takes its color role,
+   and amber means only "needs you". Entering needs-you pings the dot once
+   (data-changed, never on mount); the system sets that state, not a key, so
+   the ping runs on --motion-status. The elapsed time keeps a fixed width in
+   ch, so the pill never resizes as it counts. Its transparent border is the
+   pill's edge in forced colors. */
+.tz-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  padding: 2px 9px;
+  padding-inline-end: 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  transition:
+    background-color var(--motion-state) var(--ease-out),
+    color var(--motion-state) var(--ease-out);
+}
+.tz-status-pill[data-state="running"] {
+  background: var(--ai-soft);
+  color: var(--ai);
+}
+.tz-status-pill[data-state="needs-you"] {
+  background: var(--attention-soft);
+  color: var(--attention);
+}
+.tz-status-pill[data-state="completed"] {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.tz-status-pill[data-state="failed"] {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.tz-status-pill[data-state="stopped"] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+.tz-status-pill-dot {
+  position: relative;
+  flex: none;
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tz-status-pill-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0;
+}
+.tz-status-pill[data-changed][data-state="needs-you"]
+  .tz-status-pill-dot::after {
+  animation: tz-status-ping var(--motion-status) var(--ease-out);
+}
+@keyframes tz-status-ping {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3);
+  }
+}
+/* Arabic-Indic digits have no tabular widths, so each range holds the width of
+   its widest value: ٣٣ث under a minute, ٣د ٣٣ث from one. */
+.tz-status-pill-elapsed {
+  min-inline-size: 3.6ch;
+}
+.tz-status-pill-elapsed[data-minutes] {
+  min-inline-size: 5.8ch;
+}
+
+/* Thread: the stitch line under a working label (Woven spec section 14). Its
+   dashes run one period past each end, so moving one period never shows a
+   gap; they travel in the reading direction and close into a solid line when
+   the work is done. Its ends fade. With reduced motion (data-still) a running
+   thread is a still line at 45%. */
+.tz-thread {
+  position: relative;
+  display: block;
+  block-size: 2px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  color: var(--ai);
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    currentColor 12%,
+    currentColor 88%,
+    transparent
+  );
+}
+.tz-thread::before,
+.tz-thread::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  transition: opacity var(--motion-state) var(--ease-out);
+}
+.tz-thread::before {
+  inset-inline: -10px;
+  background: repeating-linear-gradient(
+    90deg,
+    currentColor 0 6px,
+    transparent 6px 10px
+  );
+  animation: tz-thread-stitch var(--motion-loop-stitch) linear infinite;
+}
+.tz-thread:dir(rtl)::before {
+  animation-direction: reverse;
+}
+.tz-thread::after {
+  inset-inline: 0;
+  background: currentColor;
+  opacity: 0;
+}
+.tz-thread[data-state="completed"]::before,
+.tz-thread[data-still]::before {
+  animation: none;
+  opacity: 0;
+}
+.tz-thread[data-state="completed"]::after {
+  opacity: 1;
+}
+.tz-thread[data-still][data-state="running"]::after {
+  opacity: 0.45;
+}
+@keyframes tz-thread-stitch {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(10px);
+  }
+}
+
+/* Tray and paper (Woven spec section 9): the assistant's output on paper;
+   status, meta and decisions on the tray around it. The tray pads its paper
+   by --tray-pad, its transparent border included, so the corners stay
+   concentric. A hairline ring draws the tray's edge, which a dark page
+   barely shows; both transparent borders draw the edges in forced colors. */
+.tz-tray {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  padding: calc(var(--tray-pad) - 1px);
+  border: 1px solid transparent;
+  border-radius: var(--radius-tray);
+  background: var(--surface-tray);
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+.tz-tray-paper {
+  min-inline-size: 0;
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
+}
+.tz-tray-header,
+.tz-tray-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  min-inline-size: 0;
+  padding: 6px var(--space-3) var(--space-2);
+}
+.tz-tray-footer {
+  justify-content: space-between;
+  padding-block: var(--space-2) 6px;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+
+/* Countdown: a ring and a label for an auto-start or undo window. The ring
+   drains a step each second over the progress time, so reduced motion makes
+   each step instant; the label is aria-hidden and the status speaks once. */
+.tz-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  font-variant-numeric: tabular-nums;
+}
+.tz-countdown-ring {
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+  transform: rotate(-90deg);
+}
+.tz-countdown-ring circle {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 2.5;
+}
+.tz-countdown-ring circle + circle {
+  stroke: currentColor;
+  transition: stroke-dasharray var(--motion-progress) var(--ease-out);
+}
+.tz-countdown-label {
+  display: inline-grid;
+  min-inline-size: 0;
+}
+.tz-countdown-label > span {
+  grid-area: 1 / 1;
+}
+.tz-countdown-label > span:first-child {
+  visibility: hidden;
+}
+
+/* Decision bar: the person's options on the tray, primary last in reading
+   order, each real shortcut hinted inside its button (.tz-kbd). */
+.tz-decision-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--control-gap);
+  min-inline-size: 0;
+}
+
 /* Agent-task disclosures. Execution state never drives entry animations. */
 .tz-task-rows {
   list-style: none;
@@ -4463,12 +4754,6 @@ textarea.tz-textarea:read-only {
   font-size: var(--text-label);
   line-height: var(--leading-meta);
 }
-.tz-thinking-glyph {
-  inline-size: 18px;
-  block-size: 18px;
-  flex: none;
-  color: var(--text-muted);
-}
 .tz-thinking-words {
   display: inline-grid;
   overflow: hidden;
@@ -4535,13 +4820,6 @@ textarea.tz-textarea:read-only {
 .tz-thinking-state-trigger > bdi {
   min-inline-size: 0;
   overflow-wrap: anywhere;
-}
-.tz-thinking-state-glyph {
-  inline-size: 16px;
-  block-size: 16px;
-  fill: currentColor;
-  color: var(--text-muted);
-  flex: none;
 }
 .tz-thinking-state-chevron {
   inline-size: 14px;
@@ -7535,6 +7813,13 @@ a.tz-inline-citation {
   font: var(--weight-medium) var(--text-micro) / 1 var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
+  grid-auto-flow: column;
+  column-gap: 2px;
+}
+/* The hint itself is LTR, so its Enter arrow mirrors with the page around it
+   rather than with the hint. */
+:dir(rtl) > .tz-kbd > .tz-mirror-rtl {
+  transform: scaleX(-1);
 }
 .tz-button[data-variant="primary"] .tz-kbd {
   background: color-mix(in srgb, var(--action-text) 16%, transparent);
