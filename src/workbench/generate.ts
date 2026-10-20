@@ -646,8 +646,8 @@ export function generatePrompt(
       : "") +
     (["code-block", "markdown", "streaming-text"].includes(component)
       ? t(
-          "\nإذا نسخت المصدر فثبّت react-markdown@10.1.0 وremark-gfm@4.0.1. يدعم المكوّن CommonMark وGFM فقط. HTML معطّل، والروابط غير الآمنة مرفوضة. تظهر لغات الكود غير المدعومة نصًا عاديًا، ويبقى الكود باتجاه LTR. يتولّى التطبيق النص وحالة streaming/completed والإلغاء. لا تضف طابور كتابة ولا شبكة. تفتح صفحة StreamingText مكتملة، وفيها حالتا «يصل تباعًا» و«اكتمل»، ويبثّ زر «إعادة تشغيل» عينتها المحلية من جديد. لا يبدأ شيء تلقائيًا. ألغِ المؤقتات عند إعادة التشغيل والإزالة، واحتفظ بالنص الذي وصل عند الإلغاء.",
-          "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The StreamingText page opens complete, with Streaming and Done states, and Replay streams its local sample again. Nothing starts on its own. Invalidate timers on replay/unmount and retain received text on cancellation.",
+          "\nإذا نسخت المصدر فثبّت react-markdown@10.1.0 وremark-gfm@4.0.1. يدعم المكوّن CommonMark وGFM فقط. HTML معطّل، والروابط غير الآمنة مرفوضة. تظهر لغات الكود غير المدعومة نصًا عاديًا، ويبقى الكود باتجاه LTR. يتولّى التطبيق النص وحالة streaming/completed والإلغاء. لا تضف طابور كتابة ولا شبكة. يشغّل مثال StreamingText المنسوخ عينته المحلية مرة واحدة عند ظهوره. ألغِ المؤقتات عند إعادة التشغيل والإزالة، واحتفظ بالنص الذي وصل عند الإلغاء.",
+          "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The copied StreamingText example plays its local sample once when it mounts. Invalidate timers on replay/unmount and retain received text on cancellation.",
         )
       : "") +
     ([

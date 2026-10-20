@@ -688,10 +688,11 @@ shares that frame: the page name in both languages, a state switcher where the
 component has meaningful states, Replay only where it has a lifecycle, the
 Preview/Code switch and Copy code. Replay steps through states and never resets
 props; the inspector's "Reset playground" does that. Workbench copies include
-current settings, source examples and dependency instructions. The standalone
-StreamingDemo, as copied into an app, renders its own portable frame, keeps its
-local provenance in the group's accessible name rather than a visible footer,
-and starts explicitly unless given `autoStart`. Runs invalidate timers
+current settings, source examples and dependency instructions. Copied into an
+app, StreamingTextExample passes autoStart, so it plays once on mount inside
+StreamingDemo's own portable frame; StreamingDemo used on its own starts only on
+request. That frame keeps local provenance in its accessible name rather than a
+visible footer. Runs invalidate timers
 on replay, configuration changes and unmount. The host still owns cancellation
 and should keep received text if a real stream is cancelled. The local demo has
 no stop control and makes no AI/network request. Plain demo chunks

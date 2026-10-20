@@ -285,7 +285,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "Unavailable models stay visible but disabled, and the arrow keys skip them.",
       ],
       [
-        "لا يستبدل المكوّن اختيار المستخدم حين تتغيّر القائمة. وإن غاب المعرّف المختار ظهر النص البديل دون إرسال أي حدث.",
+        "لا يستبدل المكوّن اختيار المستخدم حين تتغيّر القائمة. وإن غاب المعرّف المختار ظهر النص الإرشادي دون إرسال أي حدث.",
         "A changed list never replaces the person's choice. If the chosen ID disappears, the placeholder shows and no change event is sent.",
       ],
     ],
@@ -556,8 +556,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   "thinking-state": {
     useWhen: [
       [
-        "يريد المستخدم أن يعرف ما يفعله المساعد الآن، ويطّلع على التفاصيل إن أراد.",
-        "Someone wants to know what the assistant is doing now, and to see the details if they like.",
+        "يعمل المساعد عدة ثوانٍ قبل أن يرد، ويريد المستخدم أن يطمئن إلى أن العمل يتقدّم دون أن يقرأ كل خطوة.",
+        "The assistant works for several seconds before replying, and people want to know it is moving without reading every step.",
       ],
     ],
     instead: [
@@ -650,8 +650,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "يقرأ قارئ الشاشة العنوان والحالة فقط، دون المدة أو المخرجات.",
-        "A screen reader hears only the label and the state, never the duration or the output.",
+        "لا يُعلَن عند تغيّر الحالة إلا العنوان والحالة، دون المدة أو المخرجات.",
+        "A state change announces only the label and the state, never the duration or the output.",
       ],
       [
         "يظهر زر إعادة المحاولة خارج زر التوسيع عند التعثّر، ويعود التركيز إلى زر التوسيع عند الطيّ.",
@@ -756,7 +756,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "يُهمَل HTML الخام. وتظهر الروابط ذات البروتوكولات غير الآمنة نصًا، وصورها بوصفها البديل.",
+        "يُهمَل HTML الخام. ويظهر الرابط ذو البروتوكول غير الآمن نصًا عاديًا، وتظهر الصورة غير الآمنة بنصها البديل.",
         "Raw HTML is dropped. A link with an unsafe protocol shows as text, and an unsafe image shows as its alt text.",
       ],
       [
@@ -787,8 +787,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "A screen reader does not read the reply as it arrives. It hears one short status instead.",
       ],
       [
-        "مع تقليل الحركة يظهر النص فورًا. وعند الإلغاء أبقِ ما وصل وسمِّ الحالة مكتملة.",
-        "With reduced motion the text appears at once. If a stream is cancelled, keep what arrived and mark it completed.",
+        "مع تقليل الحركة يظهر النص فورًا. وعند الإلغاء أبقِ ما وصل، واجعل state مساوية لـ completed، ومرّر statusLabel يقول إن الرد أُوقف.",
+        "With reduced motion the text appears at once. If a stream is cancelled, keep what arrived, set state to completed and pass a statusLabel saying the reply was stopped.",
       ],
     ],
   },
@@ -896,7 +896,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   "otp-input": {
     useWhen: [
       [
-        "يصل المستخدم رمز تحقق برسالة أو بريد ويحتاج إلى إدخاله.",
+        "يتلقى المستخدم رمز تحقق برسالة نصية أو بريد، ويحتاج إلى إدخاله.",
         "Someone receives a verification code by message or email and has to enter it.",
       ],
     ],
@@ -923,7 +923,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   "date-picker": {
     useWhen: [
       [
-        "يحدّد المستخدم موعد استحقاق أو تسليم أو ميلاد.",
+        "يحدّد المستخدم تاريخ استحقاق أو تسليم، أو تاريخ ميلاد.",
         "Someone picks a due date, a delivery date or a birthday.",
       ],
     ],
@@ -984,7 +984,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   "color-picker": {
     useWhen: [
       [
-        "يختار المستخدم لون علامة أو وسم أو سمة.",
+        "يختار المستخدم لون العلامة التجارية أو لون وسم أو سمة.",
         "Someone picks a brand, tag or theme color.",
       ],
     ],
@@ -999,8 +999,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "يعتمد Enter أو مغادرة الحقل رمز HEX القصير أو الكامل بصيغته الكاملة. وإن كان الرمز خاطئًا بقي كما كُتب ولم يتغيّر اللون.",
-        "Enter or leaving the field commits a short or full HEX code in full form. An invalid code stays as typed and the color does not change.",
+        "يُعتمد الرمز عند الضغط على Enter أو مغادرة الحقل، ويُكتب الرمز المختصر بصيغته الكاملة. وإن كان الرمز خاطئًا بقي كما كُتب ولم يتغيّر اللون.",
+        "Enter or leaving the field commits the HEX code, and a short code is written out in full. An invalid code stays as typed and the color does not change.",
       ],
       [
         "حقل HEX باتجاه LTR دائمًا، ويختلف مظهر منتقي المتصفح من متصفح إلى آخر.",
@@ -1071,7 +1071,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "There is no search and no multiple choice, and arrow keys skip disabled options.",
       ],
       [
-        "تنقل الكتابة التركيز إلى الخيار المطابق، والقيمة الفارغة تُظهر النص البديل.",
+        "تنقل الكتابة التركيز إلى الخيار المطابق، والقيمة الفارغة تُظهر النص الإرشادي.",
         "Typing jumps to a matching option, and the empty value shows the placeholder.",
       ],
     ],
@@ -1200,8 +1200,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "يبدّل Space الحالة، ويصل نص الوصف إلى المفتاح فيقرؤه قارئ الشاشة.",
-        "Space flips it, and the description is attached to the switch so a screen reader reads it.",
+        "تتبدّل الحالة بـ Space أو Enter، ويقرأ قارئ الشاشة نص الوصف مع اسم الإعداد.",
+        "Space or Enter flips it, and a screen reader reads the description with the setting's name.",
       ],
     ],
   },
@@ -1259,7 +1259,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "لا يشارك المكوّن الملفات المختارة مع النموذج. ابنِ FormData منها بنفسك، وافحصها على الخادم أيضًا.",
+        "لا تُرسَل الملفات المختارة مع النموذج وحدها. ابنِ منها FormData بنفسك، وافحصها على الخادم أيضًا.",
         "The chosen files are not part of the form on their own. Build FormData from them yourself, and check them on the server too.",
       ],
       [
@@ -1409,8 +1409,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   steps: {
     useWhen: [
       [
-        "يمرّ المستخدم بعملية من عدة مراحل، كالتسجيل أو الدفع، ويريد أن يعرف أين وصل.",
-        "Someone goes through a process in stages, such as sign-up or checkout, and wants to know where they are.",
+        "يبدأ المستخدم عملية طويلة كالتسجيل أو الدفع، ويحتاج إلى أن يعرف كم بقي منها.",
+        "Someone starts a long process such as sign-up or checkout and needs to know how much is left.",
       ],
     ],
     instead: [
@@ -1513,8 +1513,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   "data-table": {
     useWhen: [
       [
-        "يبحث المستخدم عن عميل، أو يرتّب القائمة، أو يتصفح أكثر من صفحة منها.",
-        "Someone looks for a customer, sorts the list or pages through it.",
+        "يتابع فريق مبيعات أو دعم مئات العملاء، ويحتاج إلى الوصول إلى عميل بعينه بسرعة.",
+        "A sales or support team handles hundreds of customers and needs to reach one quickly.",
       ],
     ],
     instead: [
@@ -1535,8 +1535,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "يعيد الفرز المستخدم إلى الصفحة الأولى، وتُرتَّب الأرقام داخل النص بقيمتها، فيسبق ٢ العدد ١٠.",
-        "Sorting returns to the first page, and numbers inside text sort by value, so 2 comes before 10.",
+        "يعود الجدول إلى الصفحة الأولى عند الفرز، وتُرتَّب الأرقام داخل النص بقيمتها، فيأتي «طلب ٢» قبل «طلب ١٠».",
+        "Sorting returns to the first page, and numbers inside text sort by value, so “Order 2” comes before “Order 10”.",
       ],
       [
         "أثناء التحميل تتعطّل أزرار الصفحات ويُعلَن أن الجدول مشغول. وتمرّر أنت المحتوى الذي يظهر عند الفراغ أو الخطأ.",
@@ -1696,8 +1696,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "يُعلن الاسم لقارئ الشاشة مرة واحدة والصورة للزينة. وإن غابت الصورة أو تعذّر تحميلها ظهرت أحرف ثابتة تختارها أنت.",
-        "The name is announced once and the picture is decoration. If the picture is missing or fails to load, initials that you choose show instead.",
+        "يُعلَن الاسم لقارئ الشاشة مرة واحدة، والصورة للزينة. وإن غابت الصورة أو تعذّر تحميلها ظهرت الأحرف الأولى من الاسم، أو ما تمرّره في fallback.",
+        "The name is announced once and the picture is decoration. If the picture is missing or fails to load, the name's initials show instead, or whatever you pass as fallback.",
       ],
       [
         "إن جاور الصورة نص يؤدي المعنى نفسه فاجعلها زخرفية لئلا يُقرأ الاسم مرتين.",
@@ -1934,8 +1934,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "The value is clamped between 0 and 100, and with null no percentage is announced.",
       ],
       [
-        "لا تظهر النسبة مكتوبة إلا مع showValue، وتُكتب بأرقام عربية حين تكون اللغة ar.",
-        "The percentage is written out only with showValue, and with the ar locale it uses Arabic digits.",
+        "لا تظهر النسبة مكتوبة إلا مع showValue، وتتبع أرقامها في العربية إعداد الأرقام.",
+        "The percentage is written out only with showValue, and in Arabic its digits follow the numerals setting.",
       ],
     ],
   },
@@ -2012,8 +2012,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   sheet: {
     useWhen: [
       [
-        "يريد المستخدم أن يرى تفاصيل صف أو يعدّل إعدادًا دون أن يترك القائمة التي كان فيها.",
-        "Someone wants to see a row's details or edit a setting without leaving the list they were on.",
+        "يراجع المستخدم سجلات في جدول، ويفتح أحدها ليعدّله ثم يعود إلى موضعه.",
+        "Someone works through records in a table, opens one to edit it, then carries on from the same spot.",
       ],
     ],
     instead: [
@@ -2172,8 +2172,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "يخفي المستخدم سلسلة بالضغط على عنصرها في المفتاح حين تفعّل interactiveLegend، ويبقى الجدول الاختياري كاملًا.",
-        "With interactiveLegend, people can hide a series by pressing its legend item. The optional table still lists every value.",
+        "مع legend يصبح كل عنصر في مفتاح الرسم زرًا يخفي سلسلته أو يُظهرها، ما لم تعطّل interactiveLegend. ويبقى الجدول الاختياري كاملًا.",
+        "With legend on, each legend item is a button that hides or shows its series unless you turn interactiveLegend off. The optional table still lists every value.",
       ],
       [
         "تتكرر الألوان الافتراضية بعد أربع سلاسل، فحدّد ألوانًا مقصودة لما زاد عليها.",
@@ -2206,8 +2206,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
-        "تُرسم الفئات بالترتيب الذي تمرّره حتى في RTL، فرتّب بياناتك كما تريد أن تُقرأ.",
-        "Categories are drawn in the order you pass, in RTL too, so order your data the way you want it read.",
+        "تُرسم الفئات من اليسار إلى اليمين بالترتيب الذي تمرّره، حتى في RTL، فرتّب بياناتك على هذا الأساس.",
+        "Categories are drawn left to right in the order you pass, in RTL too, so order your data with that in mind.",
       ],
       [
         "حين تضع رسمين متجاورين، أعد استخدام ترتيب السلاسل وألوانها نفسها ليحتفظ كل لون بمعناه.",
