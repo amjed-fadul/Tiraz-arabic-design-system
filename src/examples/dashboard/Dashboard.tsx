@@ -24,6 +24,7 @@ import {
   Avatar,
   Badge,
   Button,
+  ChangeSummary,
   DataTable,
   DonutChart,
   EmptyState,
@@ -41,18 +42,49 @@ import {
   numberLocale,
   useSystem,
 } from "../../system";
-import type { DataTableColumn } from "../../system";
+import type { ChangeSummaryProps, DataTableColumn } from "../../system";
 import { CreateCustomer } from "./CreateCustomer";
 import {
   calculateOrders,
   filterCustomers,
   sampleCustomers,
+  sampleEnd,
   sampleOrders,
 } from "./data";
-import type { Customer, CustomerStatus, Period } from "./data";
+import type { Customer, CustomerStatus, Order, Period } from "./data";
 import "./dashboard.css";
 
 type Preview = "sample" | "loading" | "empty" | "error";
+// The last seven days against the seven before them, for What changed: orders,
+// revenue and the average order, each with its fourteen days for the sparkline.
+function weekOverWeek(orders: readonly Order[]) {
+  const end = Date.parse(`${sampleEnd}T00:00:00Z`);
+  const days = Array.from({ length: 14 }, (_, index) => {
+    const date = new Date(end - (13 - index) * 86_400_000)
+      .toISOString()
+      .slice(0, 10);
+    const day = orders.filter((order) => order.date === date);
+    return {
+      orders: day.length,
+      revenue: day.reduce((total, order) => total + order.amount, 0),
+    };
+  });
+  const week = (from: number) => {
+    const slice = days.slice(from, from + 7);
+    const count = slice.reduce((total, day) => total + day.orders, 0);
+    const revenue = slice.reduce((total, day) => total + day.revenue, 0);
+    return { orders: count, revenue, average: count ? revenue / count : 0 };
+  };
+  return {
+    last: week(7),
+    previous: week(0),
+    series: {
+      orders: days.map((day) => day.orders),
+      revenue: days.map((day) => day.revenue),
+      average: days.map((day) => (day.orders ? day.revenue / day.orders : 0)),
+    },
+  };
+}
 export function Dashboard() {
   const [language, setLanguage] = useState<"ar" | "en">("ar");
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -150,6 +182,46 @@ function DashboardContent({
       nextId.current = sampleCustomers.length + 1;
     }
   }
+  // What changed: up is good for all three, so more is green and less is red.
+  const weeks = weekOverWeek(preview === "empty" ? [] : sampleOrders);
+  const money = (value: number) =>
+    new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: "AED",
+      maximumFractionDigits: 0,
+    }).format(value);
+  const percent = new Intl.NumberFormat(locale, {
+    style: "percent",
+    maximumFractionDigits: 1,
+  });
+  const changes: ChangeSummaryProps["rows"] = (
+    [
+      ["orders", t("الطلبات", "Orders"), number],
+      ["revenue", t("إيرادات الطلبات", "Order revenue"), money],
+      ["average", t("متوسط قيمة الطلب", "Average order value"), money],
+    ] as const
+  ).map(([key, metric, format]) => {
+    const [last, previous] = [weeks.last[key], weeks.previous[key]];
+    const direction =
+      last > previous ? "up" : last < previous ? "down" : "flat";
+    return {
+      id: key,
+      metric,
+      change: [
+        previous > 0 && percent.format(Math.abs(last / previous - 1)),
+        t(
+          `من ${format(previous)} إلى ${format(last)}`,
+          `from ${format(previous)} to ${format(last)}`,
+        ),
+      ]
+        .filter(Boolean)
+        .join(" · "),
+      direction,
+      tone:
+        direction === "up" ? "good" : direction === "down" ? "bad" : "neutral",
+      series: weeks.series[key],
+    };
+  });
   const range = `${new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${orders.start}T00:00:00Z`))} – ${new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }).format(new Date(`${orders.end}T00:00:00Z`))}`;
   const channels = [
     {
@@ -421,6 +493,24 @@ function DashboardContent({
                 "In memory only · reload restores the sample",
               )}
             </span>
+          </div>
+          <div className="dashboard-changes">
+            <ChangeSummary
+              headingLevel={2}
+              status={
+                preview === "loading"
+                  ? "updating"
+                  : preview === "error"
+                    ? "failed"
+                    : "ready"
+              }
+              rows={changes}
+              basedOn={t(
+                `آخر ${number(7)} أيام مقابل ${number(7)} أيام قبلها`,
+                `The last ${number(7)} days against the ${number(7)} before`,
+              )}
+              onRefresh={() => changePreview("sample")}
+            />
           </div>
           <dl className="dashboard-metrics" aria-busy={preview === "loading"}>
             {[

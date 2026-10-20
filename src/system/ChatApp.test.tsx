@@ -52,105 +52,247 @@ it("delegates conversation identity and creation and restores Sheet trigger focu
   expect(screen.queryByRole("dialog")).toBeNull();
   expect(trigger).toHaveFocus();
 });
-it("keeps drafts per conversation, model state, stable assistant identity and stops on switching/new/unmount", async () => {
+it("keeps a draft per conversation, answers a sent request in its own conversation and leaves no timer behind", async () => {
   vi.useFakeTimers();
-  const user = {
-    type: async (node: HTMLElement, text: string) => {
-      await act(async () => {
-        fireEvent.change(node, { target: { value: text } });
-      });
-    },
-    click: async (node: HTMLElement) => {
-      await act(async () => {
-        fireEvent.click(node);
-      });
-    },
-    keyboard: async (_keys: string) => {
-      await act(async () => {
-        fireEvent.keyDown(draft(), { key: "Enter" });
-        fireEvent.keyDown(draft(), { key: "Enter" });
-      });
-    },
+  // Fake timers rule out userEvent, so each step is one act-wrapped event.
+  const step = async (change: () => void) => {
+    await act(async () => change());
   };
   const { unmount } = render(<ChatAppExample language="en" />, { wrapper });
   const draft = () => screen.getByRole("textbox"),
-    nav = () => screen.getAllByRole("navigation", { name: "Conversations" })[0];
-  await user.type(draft(), "kept draft");
-  await user.click(
-    within(nav()).getByRole("button", { name: "Arabic interface" }),
+    nav = () => screen.getAllByRole("navigation", { name: "Conversations" })[0],
+    open = (name: string) =>
+      step(() => fireEvent.click(within(nav()).getByRole("button", { name })));
+  await step(() =>
+    fireEvent.change(draft(), { target: { value: "kept draft" } }),
   );
+  await open("Late customers");
   expect(draft()).toHaveValue("");
-  await user.type(draft(), "other draft");
-  await user.click(within(nav()).getByRole("button", { name: "Build notes" }));
+  await step(() =>
+    fireEvent.change(draft(), { target: { value: "other draft" } }),
+  );
+  await open("October close");
   expect(draft()).toHaveValue("kept draft");
-  await user.click(screen.getByRole("button", { name: "Send" }));
-  await user.keyboard("{Enter}{Enter}");
+  // Enter sends it once: Laila's request, and the example's answer to it.
+  await step(() => {
+    fireEvent.keyDown(draft(), { key: "Enter" });
+    fireEvent.keyDown(draft(), { key: "Enter" });
+  });
   expect(screen.getAllByText("kept draft")).toHaveLength(1);
-  const assistant = document.querySelector('[data-message-id="assistant-1"]');
-  expect(assistant).not.toBeNull();
-  await act(() => vi.advanceTimersByTime(600));
-  expect(document.querySelector('[data-message-id="assistant-1"]')).toBe(
-    assistant,
-  );
-  expect(assistant?.textContent).toContain("Start");
-  await user.click(
-    within(nav()).getByRole("button", { name: "Arabic interface" }),
-  );
-  expect(draft()).toHaveValue("other draft");
-  const prose = () =>
-    document.querySelector('[data-message-id="assistant-1"] .tz-stream-prose')
-      ?.textContent;
-  const saved = assistant?.querySelector(".tz-stream-prose")?.textContent;
-  await act(() => vi.advanceTimersByTime(10000));
-  await user.click(within(nav()).getByRole("button", { name: "Build notes" }));
-  expect(prose()).toBe(saved);
-  expect(
-    document.querySelector('[data-message-id="assistant-1"]'),
-  ).toHaveTextContent("Response stopped");
-  expect(screen.getByRole("combobox", { name: "Model" })).toHaveTextContent(
-    "Concise",
-  );
-  await user.type(draft(), "again");
-  await user.click(screen.getByRole("button", { name: "Send" }));
-  await act(() => vi.advanceTimersByTime(300));
-  await user.click(screen.getByRole("button", { name: "Stop generating" }));
-  const stopped = document.querySelector(
-    '[data-message-id="assistant-2"]',
-  )?.textContent;
-  await act(() => vi.advanceTimersByTime(10000));
-  expect(
-    document.querySelector('[data-message-id="assistant-2"]')?.textContent,
-  ).toBe(stopped);
-  await user.type(draft(), "new run");
-  await user.click(screen.getByRole("button", { name: "Send" }));
-  await user.click(
-    within(nav()).getByRole("button", { name: "New conversation" }),
-  );
-  await act(() => vi.advanceTimersByTime(10000));
-  expect(screen.queryByText("new run")).toBeNull();
   expect(draft()).toHaveValue("");
-  await user.type(draft(), "unmount run");
-  await user.click(screen.getByRole("button", { name: "Send" }));
+  expect(screen.getAllByText(/come back with the result/)).toHaveLength(1);
+  // The other conversation kept its own draft, and none of this.
+  await open("Late customers");
+  expect(draft()).toHaveValue("other draft");
+  expect(screen.queryByText("kept draft")).toBeNull();
+  // A new conversation starts empty, in Today.
+  await step(() =>
+    fireEvent.click(
+      within(nav()).getByRole("button", { name: "New conversation" }),
+    ),
+  );
+  expect(document.querySelectorAll("[data-message-id]")).toHaveLength(0);
+  expect(draft()).toHaveValue("");
+  expect(
+    within(within(nav()).getByRole("group", { name: "Today" })).getByRole(
+      "button",
+      { name: "Chat 5" },
+    ),
+  ).toHaveAttribute("aria-current", "true");
+  await act(() => vi.advanceTimersByTimeAsync(10000));
   unmount();
   expect(vi.getTimerCount()).toBe(0);
 });
-
-it("connects model selection to real local state", async () => {
-  const user = userEvent.setup();
-  render(<ChatAppExample language="en" />, { wrapper });
-  await user.click(screen.getByRole("combobox", { name: "Model" }));
-  await user.click(screen.getByRole("option", { name: /Detailed/ }));
-  expect(screen.getByRole("combobox", { name: "Model" })).toHaveTextContent(
-    "Detailed",
-  );
-});
-it("renders assistant replies without an identity or avatar and drops example-only controls", () => {
+it("renders the thread without an identity or avatar and drops example-only controls", () => {
   render(<ChatAppExample language="en" />, { wrapper });
   const thread = screen.getByRole("region", { name: "Messages" });
   expect(thread.querySelector(".tz-chat-identity")).toBeNull();
   expect(
     thread.querySelector('[data-role="assistant"]')?.textContent,
-  ).toContain("The build finished cleanly");
+  ).toContain("Net cash flow fell");
   expect(screen.queryByRole("button", { name: /Reset/ })).toBeNull();
   expect(screen.queryByText(/sample|local/i)).toBeNull();
+});
+
+it("groups conversations and offers rename and delete as intents", async () => {
+  const user = userEvent.setup(),
+    rename = vi.fn(),
+    remove = vi.fn(),
+    select = vi.fn();
+  const conversations = [
+    { id: "a", title: "Alpha", group: "Today" },
+    { id: "b", title: "Beta", group: "Last week" },
+    { id: "c", title: "Gamma", group: "Today" },
+    { id: "d", title: "Delta" },
+  ];
+  const app = (props: Partial<React.ComponentProps<typeof ChatApp>> = {}) => (
+    <ChatApp
+      conversations={conversations}
+      activeConversationId="a"
+      onConversationSelect={select}
+      onNewConversation={() => {}}
+      composer={<textarea aria-label="Draft" />}
+      {...props}
+    >
+      <p>Thread slot</p>
+    </ChatApp>
+  );
+  const view = render(
+    app({ onConversationRename: rename, onConversationDelete: remove }),
+    { wrapper },
+  );
+  const desktop = () =>
+    screen.getAllByRole("navigation", { name: "Conversations" })[0];
+  // Groups follow their first conversation; the ungrouped one sits under the
+  // existing heading.
+  expect(
+    within(desktop())
+      .getAllByRole("group")
+      .map((group) => [
+        group.querySelector(".tz-sidebar-heading")?.textContent,
+        within(group)
+          .getAllByRole("button", { name: /^(?!Options for)/ })
+          .map((row) => row.getAttribute("aria-label")),
+      ]),
+  ).toEqual([
+    ["Today", ["Alpha", "Gamma"]],
+    ["Last week", ["Beta"]],
+    ["Conversations", ["Delta"]],
+  ]);
+  await user.click(within(desktop()).getByRole("button", { name: "Beta" }));
+  expect(select).toHaveBeenCalledExactlyOnceWith("b");
+  // Each row has a menu named for it. Its items report intents: the host owns
+  // the rename field and the confirmation.
+  await user.click(
+    within(desktop()).getByRole("button", { name: "Options for Gamma" }),
+  );
+  expect(
+    screen.getAllByRole("menuitem").map((item) => item.textContent),
+  ).toEqual(["Rename", "Delete"]);
+  await user.click(screen.getByRole("menuitem", { name: "Rename" }));
+  expect(rename).toHaveBeenCalledExactlyOnceWith("c");
+  await user.click(
+    within(desktop()).getByRole("button", { name: "Options for Delta" }),
+  );
+  await user.click(screen.getByRole("menuitem", { name: "Delete" }));
+  expect(remove).toHaveBeenCalledExactlyOnceWith("d");
+  expect(select).toHaveBeenCalledOnce();
+  // One callback offers one item, and labels rename the words.
+  view.rerender(
+    app({
+      onConversationDelete: remove,
+      labels: {
+        delete: "Remove",
+        conversationActions: (title) => `${title} menu`,
+      },
+    }),
+  );
+  await user.click(
+    within(desktop()).getByRole("button", { name: "Alpha menu" }),
+  );
+  expect(
+    screen.getAllByRole("menuitem").map((item) => item.textContent),
+  ).toEqual(["Remove"]);
+  await user.keyboard("{Escape}");
+  // Without either callback there is no menu.
+  view.rerender(app());
+  expect(screen.queryByRole("button", { name: /menu|Options for/ })).toBeNull();
+});
+it("shows a side panel and header actions, and no brand unless given", () => {
+  const app = (props: Partial<React.ComponentProps<typeof ChatApp>> = {}) => (
+    <ChatApp
+      conversations={[{ id: "a", title: "Alpha" }]}
+      activeConversationId="a"
+      onConversationSelect={() => {}}
+      onNewConversation={() => {}}
+      composer={<textarea aria-label="Draft" />}
+      {...props}
+    >
+      <p>Thread slot</p>
+    </ChatApp>
+  );
+  const view = render(
+    app({ sidePanel: <p>Task details</p>, actions: <button>Share</button> }),
+    { wrapper },
+  );
+  const main = screen.getByRole("region", { name: "Alpha" });
+  // The panel is an aside beside the conversation, after it so it sits at the
+  // inline end, and it has its own name.
+  const panel = screen.getByRole("complementary", { name: "Details" });
+  expect(panel).toHaveTextContent("Task details");
+  expect(main.compareDocumentPosition(panel)).toBe(
+    Node.DOCUMENT_POSITION_FOLLOWING,
+  );
+  // The header ends with the actions, after the title.
+  const header = main.querySelector("header")!;
+  const share = within(header).getByRole("button", { name: "Share" });
+  expect(
+    header.querySelector(".tz-chat-app-title")!.compareDocumentPosition(share),
+  ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+  // With no brand the navigation draws no name, and no header for it.
+  expect(screen.queryByText("Tiraz")).toBeNull();
+  expect(view.container.querySelector(".tz-sidebar-header")).toBeNull();
+  view.rerender(app({ brand: "Finance team" }));
+  expect(
+    screen.getByText("Finance team").closest(".tz-sidebar-header"),
+  ).not.toBeNull();
+  expect(screen.queryByRole("complementary", { name: "Details" })).toBeNull();
+});
+it("tells the October close with patterns in plain appearance", async () => {
+  vi.useFakeTimers();
+  const rtl = ({ children }: { children: React.ReactNode }) => (
+    <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+      {children}
+    </SystemProvider>
+  );
+  const view = render(<ChatAppExample language="ar" />, { wrapper: rtl });
+  // The questions are answered from a timer, which settles at once.
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(50);
+  });
+  const thread = screen.getByRole("region", { name: "الرسائل" });
+  // Laila asks twice, and a pattern answers each time.
+  expect(
+    [...thread.querySelectorAll('[data-role="user"]')].map(
+      (message) => message.textContent,
+    ),
+  ).toEqual(["لماذا انخفض التدفق النقدي في أكتوبر؟", "جهّز إقفال أكتوبر"]);
+  expect(
+    thread.querySelector('section.tz-cited-answer[data-appearance="plain"]'),
+  ).toHaveAttribute("data-status", "completed");
+  const questions = thread.querySelector(
+    'form.tz-ask-questions[data-appearance="plain"]',
+  )!;
+  expect(questions).not.toBeNull();
+  // They are answered, and the receipt says so.
+  expect(within(questions as HTMLElement).getByText("إجاباتك")).toBeVisible();
+  const task = thread.querySelector(
+    '.tz-agent-run[data-appearance="plain"]',
+  ) as HTMLElement;
+  expect(task).toHaveAttribute("data-status", "needs-you");
+  // The task waits on the reminders' approval, drawn plain inside it.
+  const approval = within(task).getByRole("group", {
+    name: "إرسال تذكيرات الدفع إلى العملاء الثلاثة",
+  });
+  expect(approval).toHaveAttribute("data-appearance", "plain");
+  // Start a task is the composer, and the side panel holds the task's details.
+  expect(
+    view.container.querySelector(
+      '.tz-chat-app-composer section.tz-task-starter[data-appearance="plain"]',
+    ),
+  ).not.toBeNull();
+  expect(
+    screen.getByRole("complementary", { name: "تفاصيل المهمة" }),
+  ).toBeVisible();
+  // Approving finishes the task, once the host has recorded it.
+  fireEvent.click(
+    within(approval).getByRole("button", { name: "أرسل الرسائل" }),
+  );
+  await act(async () => {
+    await vi.advanceTimersByTimeAsync(700);
+  });
+  expect(task).toHaveAttribute("data-status", "completed");
+  // Nothing is left running when the example goes.
+  view.unmount();
+  expect(vi.getTimerCount()).toBe(0);
 });

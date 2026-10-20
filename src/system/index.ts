@@ -134,8 +134,12 @@ export { Markdown } from "./Markdown";
 export type { MarkdownProps } from "./Markdown";
 export { StreamingText } from "./StreamingText";
 export type { StreamingTextProps } from "./StreamingText";
-export { ChatThread } from "./ChatThread";
-export type { ChatThreadProps, ChatMessage } from "./ChatThread";
+export { ChatThread, ChatThreadMessage } from "./ChatThread";
+export type {
+  ChatThreadProps,
+  ChatThreadMessageProps,
+  ChatMessage,
+} from "./ChatThread";
 export { ChatComposer } from "./ChatComposer";
 export type {
   ChatComposerProps,

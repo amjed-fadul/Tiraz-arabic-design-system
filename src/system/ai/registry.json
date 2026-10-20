@@ -829,6 +829,14 @@
       "source": "ChatThread.tsx"
     },
     {
+      "name": "ChatThreadMessage",
+      "source": "ChatThread.tsx"
+    },
+    {
+      "name": "ChatThreadMessageProps",
+      "source": "ChatThread.tsx"
+    },
+    {
       "name": "ChatComposer",
       "source": "ChatComposer.tsx"
     },
@@ -2296,9 +2304,34 @@
           "required": false
         },
         {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Controls at the header's end, after the toolbar."
+        },
+        {
+          "name": "sidePanel",
+          "type": "ReactNode",
+          "required": false,
+          "note": "An aside at the inline end for evidence, a draft or a task's details; it scrolls on its own and sits under the conversation when the container is narrower than 960px. labels.sidePanel names it; Details by default."
+        },
+        {
+          "name": "onConversationRename",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "With this or onConversationDelete each row gets an options menu; this adds Rename. An intent only: the host owns the rename field."
+        },
+        {
+          "name": "onConversationDelete",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "Adds Delete to each row's menu. An intent only: the host owns the confirmation and the removal."
+        },
+        {
           "name": "brand",
           "type": "ReactNode",
-          "required": false
+          "required": false,
+          "note": "The navigation's name. Nothing shows when it is absent."
         },
         {
           "name": "title",
@@ -2316,18 +2349,24 @@
           "required": false
         }
       ],
-      "state": "Composition only. Host owns unique stable conversation IDs, active conversation, messages, draft, model and execution. Only mobile navigation open state is internal.",
+      "state": "Composition only. Host owns unique stable conversation IDs, their groups, the active conversation, messages, draft and execution, and the rename field and delete confirmation. Only mobile navigation open state is internal.",
       "accessibility": [
-        "Sidebar on desktop; existing Sheet for container widths <=640px, with dismissal, focus trap, Escape, outside click and trigger focus restoration. Selection/new closes the sheet.",
-        "Compose existing ChatThread, ChatComposer or PromptBar and ModelSelector. Bound shell height; thread and navigation scroll independently. Preserve approved entry RTL caret and keyboard/IME behavior."
+        "Sidebar on desktop; existing Sheet for container widths <=640px, with dismissal, focus trap, Escape, outside click and trigger focus restoration. Selection, new, rename and delete close the sheet.",
+        "Conversations that share a group sit under its heading in first-seen order; ungrouped ones sit under the list's own heading. With onConversationRename or onConversationDelete each row has a menu button named for it («خيارات {title}»), shown on hover and focus and always on touch.",
+        "The side panel is its own named complementary landmark beside the conversation, not inside it, and a keyboard-scrollable region. The header's end holds toolbar then actions.",
+        "Compose ChatThread with the assistant's patterns as messages in plain appearance, and Start a task in plain appearance as the composer. Bound shell height; thread, navigation and side panel scroll independently. Preserve approved entry RTL caret and keyboard/IME behavior."
       ],
       "limitations": [
-        "No authentication, backend, persistence, model/tool connection or application framework. children/composer/toolbar are explicit composition slots, not a configuration engine.",
-        "Key thread and entry by conversation ID. Host must cancel and invalidate delayed work on switch/new/reset/unmount. Bind callbacks to both run and conversation identity.",
-        "Connected in-memory example uses fixed local chunks updating one stable assistant. Switch/new retains received text and per-conversation drafts/models while canceling the run. Reset restores samples; unmount cancels timers. No real commands or AI execution."
+        "No authentication, backend, persistence, model/tool connection or application framework. children/composer/toolbar/actions/sidePanel are explicit composition slots, not a configuration engine.",
+        "Key thread and entry by conversation ID. Host must cancel and invalidate delayed work on switch/new/delete/unmount. Bind callbacks to both run and conversation identity.",
+        "Focus after a rename or a delete is the host's: a deleted row's menu goes with the row, and the host's dialog returns focus to its own trigger.",
+        "Connected in-memory example tells the October close: a cited answer, the agent's questions with their receipt and a task waiting on an approval, with Start a task as the composer and the task's details in the side panel. Approving finishes the task; rename opens a Modal and delete removes the conversation. Unmount cancels timers. No real commands or AI execution."
       ],
       "alternative": "Use ChatThread with ChatComposer for a single conversation without navigation.",
-      "dependencies": ["@radix-ui/react-dialog"],
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu"
+      ],
       "examples": ["ai/examples/ChatAppExample.tsx"]
     },
     {
@@ -3069,7 +3108,13 @@
       "id": "chat-thread",
       "api": "ChatThread",
       "source": "ChatThread.tsx",
-      "exports": ["ChatThread", "ChatThreadProps", "ChatMessage"],
+      "exports": [
+        "ChatThread",
+        "ChatThreadProps",
+        "ChatMessage",
+        "ChatThreadMessage",
+        "ChatThreadMessageProps"
+      ],
       "props": [
         {
           "name": "messages",
@@ -3091,7 +3136,8 @@
       "state": "Host owns message array and immutable updates with stable unique IDs. No internal messages.",
       "accessibility": [
         "Named keyboard-scrollable region without response-wide live announcements. Preserve keyed message content and actions; settled StreamingText/Markdown nodes remain stable.",
-        "User bubbles align to inline-end in both directions. Identity/avatar/actions are caller slots; avoid duplicate avatar naming."
+        "User bubbles align to inline-end in both directions. Identity/avatar/actions are caller slots; avoid duplicate avatar naming.",
+        "ChatThread draws each message through ChatThreadMessage, which also works alone for one message. A message with status stopped says «أُوقف الرد» / Response stopped; one with status failed keeps its error as persistent text, not a live region, with «أعد المحاولة» / Try again calling onRetry, which then moves focus to the message. The message's data-status follows its status."
       ],
       "limitations": [
         "No persistence, backend, virtualization or orchestration. Host sets bounded height. followOutput defaults false; when true follows only within 48px of bottom and pauses for an active text selection in the thread. No window scrolling.",
@@ -8254,6 +8300,92 @@
         {
           "name": "actions",
           "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "status",
+          "type": "streaming | completed | stopped | failed",
+          "required": false,
+          "values": ["streaming", "completed", "stopped", "failed"]
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "onRetry",
+          "type": "() => void",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "ChatConversationItem",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "group",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "ChatAppLabels",
+      "props": [
+        {
+          "name": "navigation",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "newConversation",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "openNavigation",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "closeNavigation",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "navigationDescription",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "conversationActions",
+          "type": "(title: string) => string",
+          "required": false
+        },
+        {
+          "name": "rename",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "delete",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "sidePanel",
+          "type": "string",
           "required": false
         }
       ]

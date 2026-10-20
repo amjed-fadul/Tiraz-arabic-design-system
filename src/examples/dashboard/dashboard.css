@@ -130,6 +130,9 @@
   color: var(--text-secondary);
   font-size: var(--text-meta);
 }
+.dashboard-changes {
+  margin-block-start: var(--space-5);
+}
 .dashboard-metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

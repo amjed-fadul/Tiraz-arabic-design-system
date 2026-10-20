@@ -239,3 +239,50 @@ it("shows Arabic-Indic digits in the Arabic dashboard", () => {
     expect(element).not.toHaveTextContent(/[0-9]/);
   }
 });
+
+it("puts What changed at the top of the overview with rows from the orders", async () => {
+  render(<Dashboard />);
+  const overview = document.getElementById("overview")!;
+  const summary = () =>
+    within(overview).getByRole("region", {
+      name: /^(ما الذي تغيّر|What changed)$/,
+    });
+  // After the heading and before the figures.
+  expect(
+    overview.querySelector("h1")!.compareDocumentPosition(summary()) &
+      Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+  expect(
+    summary().compareDocumentPosition(
+      overview.querySelector(".dashboard-metrics")!,
+    ) & Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+  // Orders, revenue and the average order: the last seven days (71 orders,
+  // 22,160 AED) against the seven before (45 orders, 13,815 AED). More is good.
+  const rows = () => [...summary().querySelectorAll(".tz-change-summary-row")];
+  expect(rows()).toHaveLength(3);
+  expect(
+    rows().map(
+      (row) => row.querySelector(".tz-change-summary-metric")!.textContent,
+    ),
+  ).toEqual(["الطلبات", "إيرادات الطلبات", "متوسط قيمة الطلب"]);
+  for (const row of rows()) {
+    const badge = row.querySelector(".tz-change-summary-badge")!;
+    expect(badge).toHaveAttribute("data-direction", "up");
+    expect(badge).toHaveAttribute("data-tone", "good");
+  }
+  for (const [row, figures] of [
+    [0, ["٥٧٫٨٪", "٤٥", "٧١"]],
+    [1, ["٦٠٫٤٪", "١٣٬٨١٥", "٢٢٬١٦٠"]],
+    [2, ["١٫٧٪", "٣٠٧", "٣١٢"]],
+  ] as const)
+    for (const figure of figures) expect(rows()[row]).toHaveTextContent(figure);
+  // Arabic-Indic digits everywhere in it, and Western ones in English.
+  expect(summary().textContent).toMatch(/[٠-٩]/);
+  expect(summary().textContent).not.toMatch(/[0-9]/);
+  await userEvent
+    .setup()
+    .click(screen.getByRole("button", { name: "English" }));
+  expect(summary()).toHaveTextContent("57.8%");
+  expect(summary().textContent).not.toMatch(/[٠-٩]/);
+});

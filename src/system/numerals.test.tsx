@@ -456,8 +456,8 @@ describe.each(settings)(
       await user.click(
         within(navigation).getByRole("button", { name: "محادثة جديدة" }),
       );
-      // The example starts with two conversations, so the new one is the third.
-      const title = `محادثة ${n("3")}`;
+      // The example starts with four conversations, so the new one is the fifth.
+      const title = `محادثة ${n("5")}`;
       expect(
         within(navigation).getByRole("button", { name: title }),
       ).toHaveAttribute("aria-current", "true");

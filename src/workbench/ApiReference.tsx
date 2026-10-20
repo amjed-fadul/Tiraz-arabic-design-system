@@ -547,8 +547,8 @@ export function ApiReference({
         "conversations / activeConversationId",
         "ChatConversationItem[] / string | null",
         t(
-          "مرّر المحادثات من تطبيقك بمعرّفات فريدة ثابتة وعناوينها.",
-          "Host-owned unique stable IDs and titles.",
+          "مرّر المحادثات من تطبيقك بمعرّفات فريدة ثابتة وعناوينها. تجتمع المحادثات التي تشترك في group تحت عنوان واحد بترتيب ظهورها الأول، وتبقى غير المجمّعة تحت عنوان القائمة.",
+          "Host-owned unique stable IDs and titles. Conversations that share a group sit under one heading, in first-seen order; ungrouped ones stay under the list's own heading.",
         ),
       ],
       [
@@ -560,19 +560,35 @@ export function ApiReference({
         ),
       ],
       [
-        "children / composer / toolbar",
-        "ReactNode / ReactNode / ReactNode?",
+        "onConversationRename / onConversationDelete",
+        "(id: string) => void · optional",
         t(
-          "ركّب داخلها ChatThread وChatComposer أو PromptBar وModelSelector. يتولّى تطبيقك الحالة والإلغاء.",
-          "Compose ChatThread, ChatComposer or PromptBar and ModelSelector. Host owns state and cancellation; key entries/threads by conversation ID.",
+          "مع أيٍّ منهما يحصل كل صف على قائمة «خيارات {العنوان}» فيها «إعادة التسمية» و«حذف». هما نيّتان فقط: يتولّى تطبيقك حقل الاسم والتأكيد، ويغلق اختيار إحداهما لوحة التنقّل على الجوال.",
+          "With either, each row gets an options menu with Rename and Delete. They are intents only: your app owns the rename field and the confirmation, and on a phone choosing one closes the sheet.",
+        ),
+      ],
+      [
+        "children / composer / toolbar / actions",
+        "ReactNode / ReactNode / ReactNode? / ReactNode?",
+        t(
+          "ركّب داخلها ChatThread وأنماط المساعد رسائل بمظهر plain، وTaskStarter بمظهر plain محرّرًا. تقع toolbar وactions في نهاية الترويسة، وactions بعد toolbar. يتولّى تطبيقك الحالة والإلغاء.",
+          "Put ChatThread inside, with the assistant's patterns as messages in plain appearance, and Start a task in plain appearance as the composer. toolbar and actions sit at the header's end, actions last. Host owns state and cancellation; key the thread and composer by conversation ID.",
+        ),
+      ],
+      [
+        "sidePanel",
+        "ReactNode?",
+        t(
+          "لوحة جانبية (aside) في نهاية السطر لأدلة أو مسودة أو تفاصيل مهمة، وتتمرّر وحدها. تنزل تحت المحادثة حين يقلّ عرض الحاوية عن 960px. يسمّيها labels.sidePanel، والاسم الافتراضي «التفاصيل».",
+          "An aside at the inline end for evidence, a draft or a task's details; it scrolls on its own and moves under the conversation when the container is narrower than 960px. labels.sidePanel names it (Details by default).",
         ),
       ],
       [
         "brand / title / labels / className",
         "ReactNode? / string? / ChatAppLabels? / string?",
         t(
-          "الهوية والعنوان والتسميات اختيارية. يُستخدم Sheet حين لا يتجاوز عرض الحاوية 640px.",
-          "Optional identity, title and labels. Existing Sheet at container widths up to 640px. Bound shell height; thread and navigation scroll independently.",
+          "الهوية والعنوان والتسميات اختيارية، ولا يظهر شيء للهوية إن لم تمرّرها. يُستخدم Sheet حين لا يتجاوز عرض الحاوية 640px.",
+          "Optional identity, title and labels; nothing shows for brand unless you pass it. Existing Sheet at container widths up to 640px. Bound shell height; thread, navigation and side panel scroll independently.",
         ),
       ],
     ],
@@ -1125,8 +1141,16 @@ export function ApiReference({
         "messages",
         "ChatMessage[] · required",
         t(
-          "لكل رسالة معرّف فريد ثابت ودور user أو assistant ومحتوى ReactNode. يمكنك تمرير identity وavatar وactions من تطبيقك.",
-          "Unique stable id, user/assistant role and ReactNode content; optional host-supplied identity, avatar and actions.",
+          "لكل رسالة معرّف فريد ثابت ودور user أو assistant ومحتوى ReactNode. يمكنك تمرير identity وavatar وactions من تطبيقك. وتأخذ status بإحدى القيم streaming وcompleted وstopped وfailed: تكتب الرسالة الموقوفة «أُوقف الرد»، وتعرض الفاشلة error نصًا دائمًا مع «أعد المحاولة» تستدعي onRetry.",
+          "Unique stable id, user/assistant role and ReactNode content; optional host-supplied identity, avatar and actions. status is streaming, completed, stopped or failed: a stopped message says so, and a failed one keeps error as text with Retry calling onRetry.",
+        ),
+      ],
+      [
+        "ChatThreadMessage",
+        "{ message: ChatMessage } · article props",
+        t(
+          "يرسم رسالة واحدة كما يرسمها ChatThread، ويعمل خارج أي محادثة. تتبع data-status قيمة status.",
+          "Draws one message the way ChatThread does, and works outside a thread. Its data-status follows status.",
         ),
       ],
       [

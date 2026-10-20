@@ -91,8 +91,8 @@ export function generateCode(
     const source = (component === "terminal" ? terminalSource : chatAppSource)
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replace(
-        'import { useLocalResponse } from "./useLocalResponse";',
-        localResponseSource,
+        /from "\.\/finance-story"/g,
+        'from "./system/ai/examples/finance-story"',
       );
     const name =
       component === "terminal" ? "TerminalExample" : "ChatAppExample";
@@ -672,8 +672,8 @@ export function generatePrompt(
     ) +
     (["terminal", "chat-app"].includes(component)
       ? t(
-          "\nTerminal للقراءة فقط. مرّر النص وحالة التنفيذ ورمز الخروج والمدة من التطبيق. ينسخ زر النسخ command ثم سطرًا جديدًا ثم output، أو output وحده. لا يفسّر المكوّن HTML ولا ANSI، ولا ينفّذ شيئًا ولا يتصل بأي جهة. يتمرّر المحتوى داخليًا بلوحة المفاتيح. تعمل المتابعة قرب النهاية فقط، ولا تُفقد المستخدم ما حدّده. يركّب ChatApp مكوّني Sidebar وSheet مع children وcomposer وtoolbar. يتولّى التطبيق المحادثات بمعرّفات فريدة ثابتة، والرسائل والمسودات والنموذج والإلغاء. استخدم ChatThread وChatComposer وPromptBar وModelSelector. تلغي العينة المحفوظة في الذاكرة الرد عند التبديل أو إنشاء محادثة، وتحتفظ بالنص والمسودات. تستعيد إعادة الضبط العينات، وتلغي إزالة المكوّن المؤقتات. لا تسمح لاستدعاء قديم بتحديث محادثة أخرى.",
-          "\nTerminal is read-only: the host supplies text, execution state, exit code and duration. Copy is command + newline + output, or output alone. No HTML/ANSI interpretation, execution, shell or connection. Output scrolls internally by keyboard; opt-in following respects selection and older reading. ChatApp composes Sidebar and Sheet with children, composer and toolbar slots. Host owns conversations with unique stable IDs, messages, drafts, model and cancellation. Reuse ChatThread, ChatComposer, PromptBar and ModelSelector. The in-memory example cancels on switch/new and keeps received text and per-conversation drafts/models; reset restores samples; unmount cancels timers. Bind callbacks to conversation and run identity; stale work must never update another conversation. No backend, auth, persistence, real AI or tool execution.",
+          "\nTerminal للقراءة فقط. مرّر النص وحالة التنفيذ ورمز الخروج والمدة من التطبيق. ينسخ زر النسخ command ثم سطرًا جديدًا ثم output، أو output وحده. لا يفسّر المكوّن HTML ولا ANSI، ولا ينفّذ شيئًا ولا يتصل بأي جهة. يتمرّر المحتوى داخليًا بلوحة المفاتيح. تعمل المتابعة قرب النهاية فقط، ولا تُفقد المستخدم ما حدّده. يركّب ChatApp مكوّني Sidebar وSheet مع children وcomposer وtoolbar وactions وsidePanel. يتولّى التطبيق المحادثات بمعرّفات فريدة ثابتة والمجموعات والرسائل والمسودات والإلغاء، وحقل إعادة التسمية والتأكيد قبل الحذف، فلا يستدعي المكوّن إلا onConversationRename وonConversationDelete. استخدم ChatThread، وضع فيه أنماط المساعد رسائل بمظهر plain، واستخدم TaskStarter بمظهر plain في خانة composer. العينة المحفوظة في الذاكرة تروي إقفال أكتوبر، وتلغي إزالة المكوّن مؤقتاتها. لا تسمح لاستدعاء قديم بتحديث محادثة أخرى.",
+          "\nTerminal is read-only: the host supplies text, execution state, exit code and duration. Copy is command + newline + output, or output alone. No HTML/ANSI interpretation, execution, shell or connection. Output scrolls internally by keyboard; opt-in following respects selection and older reading. ChatApp composes Sidebar and Sheet with children, composer, toolbar, actions and sidePanel slots. Host owns conversations with unique stable IDs, groups, messages, drafts and cancellation, plus the rename field and the confirmation before a delete: the component only calls onConversationRename and onConversationDelete. Use ChatThread with the assistant's patterns as messages in plain appearance, and TaskStarter in plain appearance as the composer. The in-memory example tells the October close, and unmount cancels its timers. Bind callbacks to conversation and run identity; stale work must never update another conversation. No backend, auth, persistence, real AI or tool execution.",
         )
       : "") +
     (["image-result", "sources", "insight-cards"].includes(component)

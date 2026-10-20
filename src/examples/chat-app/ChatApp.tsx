@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SystemProvider, defaultConfig } from "../../system";
 import { ChatAppExample } from "../../system/ai/examples/ChatAppExample";
 export function ChatAppDemo() {
@@ -10,6 +10,10 @@ export function ChatAppDemo() {
       query.get("theme") === "dark" ? "dark" : "light",
     );
   const ar = language === "ar";
+  const title = ar ? "مساحة عمل المساعد" : "Assistant workspace";
+  useEffect(() => {
+    document.title = ar ? `طِراز · ${title}` : `Tiraz · ${title}`;
+  }, [ar, title]);
   return (
     <SystemProvider
       config={{ ...defaultConfig, theme, direction: ar ? "rtl" : "ltr" }}
@@ -33,7 +37,7 @@ export function ChatAppDemo() {
           }}
         >
           <h1 style={{ fontSize: "var(--text-title)", margin: 0, flex: 1 }}>
-            ChatApp
+            {title}
           </h1>
           <label>
             {ar ? "اللغة" : "Language"}{" "}

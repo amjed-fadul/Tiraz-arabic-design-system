@@ -7452,6 +7452,40 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-chat-content .tz-markdown {
   white-space: normal;
 }
+/* The message takes focus when its Retry button goes. */
+.tz-chat-message:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+/* A stopped reply says so, and a failed one keeps its error as text with
+   Retry beside it. The soft fill's transparent border keeps its edge in forced
+   colors. */
+.tz-chat-message-note {
+  margin-block-start: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-chat-message-note[data-tone="danger"] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--danger-soft);
+  color: var(--text);
+}
+.tz-chat-message-note > p {
+  margin: 0;
+  min-inline-size: 0;
+}
+.tz-chat-message-note[data-tone="danger"] strong {
+  color: var(--danger);
+  font-weight: var(--weight-semibold);
+}
 .tz-chat-message-actions {
   display: flex;
   flex-wrap: wrap;
@@ -9551,21 +9585,73 @@ a.tz-inline-citation {
   background: var(--surface);
   box-shadow: var(--shadow-paper);
 }
+/* Navigation, conversation and the side panel are grid areas, so the panel
+   can sit beside the conversation or under it. The navigation's column has no
+   width while a phone's sheet holds it. */
 .tz-chat-app-layout {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr);
   block-size: 100%;
   min-block-size: 0;
 }
 .tz-chat-app-navigation {
   display: flex;
+  grid-column: 1;
+  grid-row: 1 / span 2;
   border-inline-end: 0.5px solid var(--hairline);
+}
+/* With no brand the list starts the navigation, so it takes the header's room.
+   The phone's sheet holds the same sidebar. */
+.tz-chat-app-sidebar > .tz-sidebar-content:first-child {
+  padding-block-start: var(--space-2);
 }
 .tz-chat-app-main {
   display: flex;
-  flex: 1;
+  grid-column: 2;
+  grid-row: 1;
   flex-direction: column;
   min-inline-size: 0;
   min-block-size: 0;
+}
+/* A conversation's row holds its button and, when the host handles rename or
+   delete, a menu at the inline end. The menu shows when the row is pointed at
+   or holds focus, and always on touch. */
+.tz-chat-app-conversation {
+  position: relative;
+}
+.tz-chat-app-conversation[data-menu] .tz-sidebar-item {
+  padding-inline-end: calc(32px + var(--space-2));
+}
+.tz-chat-app-menu {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--space-1);
+  margin-block: auto;
+}
+.tz-chat-app-menu:focus-visible {
+  outline-offset: -2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-chat-app-conversation:not(:hover):not(:focus-within)
+    .tz-chat-app-menu:not([data-state="open"]) {
+    opacity: 0;
+  }
+}
+/* The side panel: details beside the conversation, scrolling on its own. */
+.tz-chat-app-panel {
+  grid-column: 3;
+  grid-row: 1;
+  inline-size: 20rem;
+  min-inline-size: 0;
+  min-block-size: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-4);
+  border-inline-start: 0.5px solid var(--hairline);
+}
+.tz-chat-app-panel:focus-visible {
+  outline-offset: -2px;
 }
 .tz-chat-app-header {
   display: flex;
@@ -9582,7 +9668,8 @@ a.tz-inline-citation {
   font-weight: 500;
   font-size: var(--text-meta);
 }
-.tz-chat-app-toolbar {
+.tz-chat-app-toolbar,
+.tz-chat-app-actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
@@ -9615,9 +9702,27 @@ a.tz-inline-citation {
   gap: var(--space-2);
   min-inline-size: 0;
 }
+/* Under 960px the panel is a strip under the conversation: as tall as its
+   content, up to 30% of the shell. */
+@container chat-app (width < 960px) {
+  .tz-chat-app-layout {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) fit-content(30%);
+  }
+  .tz-chat-app-panel {
+    grid-column: 2;
+    grid-row: 2;
+    inline-size: auto;
+    border-inline-start: 0;
+    border-block-start: 0.5px solid var(--hairline);
+  }
+}
 @container chat-app (max-width: 640px) {
   .tz-chat-app-navigation {
     display: none;
+  }
+  .tz-chat-app-panel {
+    padding: var(--space-2) var(--space-3);
   }
   .tz-chat-app-mobile {
     display: inline-flex;

@@ -4,7 +4,7 @@ import { expect, it, vi } from "vitest";
 import { useState } from "react";
 import { ChatComposer } from "./ChatComposer";
 import { PromptBar } from "./PromptBar";
-import { ChatThread } from "./ChatThread";
+import { ChatThread, ChatThreadMessage } from "./ChatThread";
 import { StreamingText } from "./StreamingText";
 import { SystemProvider } from "./Provider";
 import { defaultConfig } from "./config";
@@ -399,4 +399,58 @@ it("places tools around the entry and drops the shadow when plain", () => {
     "data-appearance",
     "card",
   );
+});
+it("shows a failed message's error with Retry, and renders one message alone", async () => {
+  const user = userEvent.setup(),
+    retry = vi.fn();
+  const failed = {
+    id: "m",
+    role: "assistant" as const,
+    content: "Net cash flow fell",
+    status: "failed" as const,
+    error: "The ledger connection dropped.",
+    onRetry: retry,
+  };
+  // One message, outside any thread.
+  const view = render(wrap(<ChatThreadMessage message={failed} />));
+  const message = view.container.querySelector("article")!;
+  expect(message).toHaveAttribute("data-status", "failed");
+  expect(message).toHaveAttribute("data-message-id", "m");
+  // The error stays as text, and nothing in the message speaks on its own.
+  expect(message).toHaveTextContent("The ledger connection dropped.");
+  expect(
+    message.querySelector("[aria-live], [role=status], [role=alert]"),
+  ).toBe(null);
+  await user.click(screen.getByRole("button", { name: "Try again" }));
+  expect(retry).toHaveBeenCalledOnce();
+  // Retry takes itself away, so focus moves to the message.
+  expect(message).toHaveFocus();
+  // A stopped message notes it, with nothing to retry.
+  view.rerender(
+    wrap(
+      <ChatThreadMessage
+        message={{ ...failed, status: "stopped", error: undefined }}
+      />,
+    ),
+  );
+  expect(message).toHaveAttribute("data-status", "stopped");
+  expect(message).toHaveTextContent("Response stopped");
+  expect(screen.queryByRole("button", { name: "Try again" })).toBeNull();
+  // The thread draws each of its messages the same way.
+  view.rerender(wrap(<ChatThread messages={[failed]} />));
+  expect(
+    view.container.querySelector('.tz-chat-message[data-status="failed"]'),
+  ).toHaveTextContent("The ledger connection dropped.");
+  // Arabic by default in an Arabic interface.
+  view.unmount();
+  const arabic = render(
+    <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+      <ChatThreadMessage message={failed} />
+      <ChatThreadMessage
+        message={{ ...failed, id: "s", status: "stopped", error: undefined }}
+      />
+    </SystemProvider>,
+  );
+  expect(screen.getByRole("button", { name: "أعد المحاولة" })).toBeVisible();
+  expect(arabic.container).toHaveTextContent("أُوقف الرد");
 });

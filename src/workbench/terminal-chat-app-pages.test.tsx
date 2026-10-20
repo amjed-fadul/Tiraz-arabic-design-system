@@ -8,13 +8,16 @@ import { defaultPlaygrounds } from "./model";
 import { defaultConfig } from "../system";
 import * as React from "react";
 import * as jsx from "react/jsx-runtime";
+import * as icons from "lucide-react";
 import * as system from "../system";
+import * as financeStory from "../system/ai/examples/finance-story";
 import * as ts from "typescript";
 afterEach(() => vi.useRealTimers());
 it.each([
-  // Terminal is a content block, which moved to Display; ChatApp is a screen.
+  // Terminal is a content block, which moved to Display; the chat-app page is
+  // the Assistant workspace screen.
   ["الطرفية", "Terminal", "العرض والتنبيهات"],
-  ["تطبيق المحادثة", "ChatApp", "أنماط الذكاء الاصطناعي"],
+  ["مساحة عمل المساعد", "Assistant workspace", "أنماط الذكاء الاصطناعي"],
 ])(
   "documents %s in its group with continuous shared frames",
   async (ar, en, group) => {
@@ -59,7 +62,9 @@ it.each(["terminal", "chat-app"] as const)(
       modules: Record<string, unknown> = {
         react: React,
         "react/jsx-runtime": jsx,
+        "lucide-react": icons,
         "./system": system,
+        "./system/ai/examples/finance-story": financeStory,
       };
     new Function("require", "exports", js)(
       (name: string) => (name.endsWith(".css") ? {} : modules[name]),

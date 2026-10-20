@@ -65,10 +65,10 @@ export const catalog = [
   },
   {
     id: "chat-app",
-    name: ["تطبيق المحادثة", "ChatApp"],
+    name: ["مساحة عمل المساعد", "Assistant workspace"],
     description: [
-      "يجمع أجزاء المحادثة في واجهة واحدة، ويترك الحالة والمحتوى لتطبيقك.",
-      "Reusable chat composition with application-owned state and content.",
+      "محادثة تعرض أنماط المساعد رسائل، مع قائمة محادثات مجمّعة ولوحة جانبية للتفاصيل، ويتولّى تطبيقك الحالة والمحتوى.",
+      "A conversation that shows the assistant's patterns as messages, with grouped conversations and a side panel for details; your app owns state and content.",
     ],
     file: "ChatApp.tsx",
   },

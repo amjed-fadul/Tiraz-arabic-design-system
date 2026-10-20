@@ -47,7 +47,9 @@ async function load(query = "") {
   await page.evaluate(() => document.fonts.ready);
 }
 const nav = () =>
-  page.locator(".tz-chat-app-navigation").getByRole("navigation");
+    page.locator(".tz-chat-app-navigation").getByRole("navigation"),
+  // Each row's menu button names it as well, so a row is found by its exact name.
+  rowButton = (name) => nav().getByRole("button", { name, exact: true });
 const input = () => page.locator(".tz-chat-app textarea");
 await page.setViewportSize({ width: 1280, height: 900 });
 await load("lang=en");
@@ -148,75 +150,109 @@ await check("clipboard denied gives accessible visible failure", async () => {
   assert.ok(await terminal.getByRole("status").isVisible());
 });
 await check(
-  "drafts, model, send duplicate guard, stable stream and switch cancellation",
+  "October close: drafts per conversation, one send, and a new conversation",
   async () => {
     await load("lang=en");
+    // The close conversation opens with Laila's two requests, each answered by
+    // a pattern drawn plain, and the task waits on the reminders' approval.
+    assert.equal(await page.locator('[data-role="user"]').count(), 2);
+    assert.equal(
+      await page.locator('.tz-cited-answer[data-appearance="plain"]').count(),
+      1,
+    );
+    assert.equal(
+      await page
+        .locator(
+          '.tz-agent-run[data-appearance="plain"][data-status="needs-you"]',
+        )
+        .count(),
+      1,
+    );
+    assert.equal(
+      await page
+        .locator(
+          '.tz-chat-app-composer .tz-task-starter[data-appearance="plain"]',
+        )
+        .count(),
+      1,
+    );
     await input().fill("  Exact draft / مرحبا  ");
-    await nav().getByRole("button", { name: "Arabic interface" }).click();
+    await rowButton("Late customers").click();
     assert.equal(await input().inputValue(), "");
     await input().fill("other draft");
-    await nav().getByRole("button", { name: "Build notes" }).click();
+    await rowButton("October close").click();
     assert.equal(await input().inputValue(), "  Exact draft / مرحبا  ");
-    await page.getByRole("combobox", { name: "Model" }).click();
-    await page.getByRole("option", { name: /Detailed/ }).click();
-    assert.match(
-      await page.getByRole("combobox", { name: "Model" }).innerText(),
-      /Detailed/,
-    );
+    // A held Enter sends once, and the example answers it in this conversation.
     await input().press("Enter");
     await input().press("Enter");
-    assert.equal(await page.locator('[data-role="user"]').count(), 2);
-    const assistant = page.locator('[data-message-id="assistant-1"]');
-    await assistant.getByText(/Start/).waitFor();
-    const handle = await assistant.elementHandle();
-    await page.waitForTimeout(350);
-    assert.ok(await assistant.evaluate((el, old) => el === old, handle));
-    const received = () =>
-        assistant.locator(".tz-stream-content").textContent(),
-      content = await received();
-    await nav().getByRole("button", { name: "Arabic interface" }).click();
+    await page.getByText(/come back with the result/).waitFor();
+    assert.equal(await page.locator('[data-role="user"]').count(), 3);
+    assert.equal(await input().inputValue(), "");
+    await rowButton("Late customers").click();
     assert.equal(await input().inputValue(), "other draft");
-    await page.waitForTimeout(600);
-    await nav().getByRole("button", { name: "Build notes" }).click();
-    assert.equal(await received(), content);
-    assert.match(await assistant.textContent(), /Response stopped$/);
-    assert.match(
-      await page.getByRole("combobox", { name: "Model" }).innerText(),
-      /Detailed/,
-    );
+    assert.equal(await page.locator('[data-role="user"]').count(), 1);
+    await nav().getByRole("button", { name: "New conversation" }).click();
+    assert.equal(await input().inputValue(), "");
+    assert.equal(await page.locator("[data-message-id]").count(), 0);
+    await rowButton("Chat 5").waitFor();
   },
 );
 await check(
-  "stop preserves content; new and switch cancel pending replies",
+  "approving finishes the task; rename and delete keep focus",
   async () => {
-    await input().fill("Stop sample");
-    await input().press("Enter");
-    await page
-      .locator('[data-message-id="assistant-2"]')
-      .getByText(/Start/)
-      .waitFor();
-    await page.getByRole("button", { name: "Stop generating" }).click();
-    const assistant = page.locator('[data-message-id="assistant-2"]'),
-      text = await assistant.textContent();
-    await page.waitForTimeout(600);
-    assert.equal(await assistant.textContent(), text);
-    await input().fill("Cancel on new");
-    await input().press("Enter");
-    await nav().getByRole("button", { name: "New conversation" }).click();
-    assert.equal(await input().inputValue(), "");
-    await page.waitForTimeout(600);
-    assert.equal(await page.locator("[data-message-id]").count(), 0);
-    await input().fill("Switch pending");
-    await input().press("Enter");
-    const pending = page.locator('[data-message-id="assistant-5"]');
-    await pending.getByText(/Start/).waitFor();
-    await nav().getByRole("button", { name: "Build notes" }).click();
-    await page.waitForTimeout(600);
-    await nav().getByRole("button", { name: "Chat 3" }).click();
-    const kept = await pending.textContent();
-    await page.waitForTimeout(600);
-    assert.equal(await pending.textContent(), kept);
-    assert.equal(await page.locator("[data-message-id]").count(), 2);
+    await load("lang=en");
+    const task = page.locator(".tz-agent-run");
+    await page.getByRole("button", { name: "Send the reminders" }).click();
+    await page.waitForFunction(
+      () =>
+        document.querySelector(".tz-agent-run")?.getAttribute("data-status") ===
+        "completed",
+    );
+    assert.equal(await task.getAttribute("data-status"), "completed");
+    // The task is the focus once its approval card has gone.
+    assert.ok(await task.evaluate((el) => el === document.activeElement));
+    // Rename from a row's menu: the dialog opens on the name, Escape records
+    // nothing, and Enter saves. Focus goes back to the dialog's own trigger.
+    const row = nav().locator('[data-conversation-id="late"]');
+    const rename = async () => {
+      await row.hover();
+      await row.getByRole("button", { name: /^Options for / }).click();
+      await page.getByRole("menuitem", { name: "Rename" }).click();
+    };
+    const dialog = page.getByRole("dialog");
+    const field = dialog.getByRole("textbox", { name: "Conversation name" });
+    await rename();
+    assert.ok(await field.evaluate((el) => el === document.activeElement));
+    assert.equal(await field.inputValue(), "Late customers");
+    await field.fill("Collections");
+    await page.keyboard.press("Escape");
+    await dialog.waitFor({ state: "hidden" });
+    await rowButton("Late customers").waitFor();
+    await rename();
+    await field.fill("Collections");
+    await page.keyboard.press("Enter");
+    await dialog.waitFor({ state: "hidden" });
+    await rowButton("Collections").waitFor();
+    assert.equal(
+      await page.evaluate(() =>
+        document.activeElement?.getAttribute("aria-label"),
+      ),
+      "Rename conversation",
+    );
+    // Delete the open conversation: its row goes, the next one opens, its task
+    // details leave with it, and focus lands on the row now open.
+    const open = nav().locator('[data-conversation-id="close"]');
+    await open.hover();
+    await open.getByRole("button", { name: /^Options for / }).click();
+    await page.getByRole("menuitem", { name: "Delete" }).click();
+    await rowButton("October close").waitFor({ state: "detached" });
+    assert.equal(await page.locator(".tz-chat-app-panel").count(), 0);
+    assert.equal(
+      await page.evaluate(() =>
+        document.activeElement?.getAttribute("aria-label"),
+      ),
+      "Collections",
+    );
   },
 );
 await check(
@@ -257,10 +293,7 @@ await check(
           );
           if (height === 320) {
             await input().focus();
-            for (const name of [
-              lang === "ar" ? "إرسال" : "Send",
-              lang === "ar" ? "النموذج" : "Model",
-            ]) {
+            for (const name of [lang === "ar" ? "إرسال" : "Send"]) {
               await page.keyboard.press("Tab");
               const focused = page.locator(":focus");
               assert.equal(await focused.getAttribute("aria-label"), name);
@@ -289,9 +322,16 @@ await check(
       const trigger = page.getByRole("button", {
           name: lang === "ar" ? "فتح المحادثات" : "Open conversations",
         }),
-        select = lang === "ar" ? "الواجهة العربية" : "Arabic interface";
-      await trigger.click();
+        select = lang === "ar" ? "العملاء المتأخرون" : "Late customers";
       const dialog = page.getByRole("dialog");
+      // The sheet slides in, so let it settle before pressing keys and clicking
+      // inside it, or the click lands on the move.
+      const openSheet = async () => {
+        await trigger.click();
+        await dialog.waitFor();
+        await page.waitForTimeout(400);
+      };
+      await openSheet();
       const close = dialog.getByRole("button", {
         name: lang === "ar" ? "إغلاق المحادثات" : "Close conversations",
       });
@@ -305,11 +345,11 @@ await check(
       await dialog.getByRole("button", { name: select, exact: true }).click();
       await dialog.waitFor({ state: "hidden" });
       assert.ok(await trigger.evaluate((el) => el === document.activeElement));
-      await trigger.click();
+      await openSheet();
       await page.keyboard.press("Escape");
       await dialog.waitFor({ state: "hidden" });
       assert.ok(await trigger.evaluate((el) => el === document.activeElement));
-      await trigger.click();
+      await openSheet();
       await dialog
         .getByRole("button", {
           name: lang === "ar" ? "محادثة جديدة" : "New conversation",
@@ -319,7 +359,7 @@ await check(
       await dialog.waitFor({ state: "hidden" });
       assert.equal(await page.locator("[data-message-id]").count(), 0);
       assert.ok(await trigger.evaluate((el) => el === document.activeElement));
-      await trigger.click();
+      await openSheet();
       await page.screenshot({ path: `${out}/${lang}-mobile-sheet.png` });
       const rect = await dialog.boundingBox();
       await page.mouse.click(lang === "ar" ? 5 : 315, rect.y + 100);
@@ -385,10 +425,14 @@ await check("continuous documentation pages", async () => {
     fullPage: true,
   });
   await page
-    .getByRole("button", { name: "تطبيق المحادثة", exact: true })
+    .getByRole("button", { name: "مساحة عمل المساعد", exact: true })
     .click();
   await page
-    .getByRole("heading", { name: "تطبيق المحادثة", exact: true, level: 1 })
+    .getByRole("heading", {
+      name: "مساحة عمل المساعد",
+      exact: true,
+      level: 1,
+    })
     .waitFor();
   const canvas = page.locator(".playground-chat-app"),
     app = canvas.locator(".tz-chat-app");

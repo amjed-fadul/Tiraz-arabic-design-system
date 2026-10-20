@@ -1,6 +1,15 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { Menu, MessageSquare, Plus } from "lucide-react";
+import {
+  Menu,
+  MessageSquare,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+  Trash2,
+} from "lucide-react";
+import { DropdownMenu } from "./DropdownMenu";
+import type { MenuItem } from "./DropdownMenu";
 import {
   Sidebar,
   SidebarAction,
@@ -16,6 +25,12 @@ import { useSystem } from "./useSystem";
 export interface ChatConversationItem {
   id: string;
   title: string;
+  /**
+   * Conversations that share a group sit under its heading, and groups follow
+   * the order of their first conversation. Ungrouped ones sit under the
+   * navigation's own heading.
+   */
+  group?: string;
 }
 export interface ChatAppLabels {
   navigation?: string;
@@ -23,6 +38,12 @@ export interface ChatAppLabels {
   openNavigation?: string;
   closeNavigation?: string;
   navigationDescription?: string;
+  /** Names a row's menu button, for example «خيارات {title}». */
+  conversationActions?: (title: string) => string;
+  rename?: string;
+  delete?: string;
+  /** Names the side panel; «التفاصيل» by default. */
+  sidePanel?: string;
 }
 export interface ChatAppProps {
   conversations: readonly ChatConversationItem[];
@@ -32,6 +53,21 @@ export interface ChatAppProps {
   children: ReactNode;
   composer: ReactNode;
   toolbar?: ReactNode;
+  /** Controls at the header's end, after the toolbar. */
+  actions?: ReactNode;
+  /**
+   * An aside at the inline end, for evidence, a draft or a task's details.
+   * Below 960px it sits under the conversation.
+   */
+  sidePanel?: ReactNode;
+  /**
+   * Each row's menu offers «إعادة التسمية» and «حذف» when its callback is
+   * given. They are intents: the host owns the rename field and the
+   * confirmation. Without either callback the rows have no menu.
+   */
+  onConversationRename?: (id: string) => void;
+  onConversationDelete?: (id: string) => void;
+  /** The navigation's name. Nothing shows when it is absent. */
   brand?: ReactNode;
   title?: string;
   labels?: ChatAppLabels;
@@ -46,6 +82,10 @@ export function ChatApp({
   children,
   composer,
   toolbar,
+  actions,
+  sidePanel,
+  onConversationRename,
+  onConversationDelete,
   brand,
   title,
   labels,
@@ -57,6 +97,7 @@ export function ChatApp({
   const navigation = labels?.navigation ?? (ar ? "المحادثات" : "Conversations");
   const newConversation =
     labels?.newConversation ?? (ar ? "محادثة جديدة" : "New conversation");
+  const hasMenu = !!(onConversationRename || onConversationDelete);
   useLayoutEffect(() => {
     if (typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver((entries) => {
@@ -65,14 +106,61 @@ export function ChatApp({
     observer.observe(root.current!);
     return () => observer.disconnect();
   }, []);
+  // Conversations gather under their group in first-seen order. The ungrouped
+  // ones are a group of their own, headed by the navigation's name.
+  const groups: { name?: string; items: ChatConversationItem[] }[] = [];
+  for (const conversation of conversations) {
+    const name = conversation.group || undefined;
+    let group = groups.find((entry) => entry.name === name);
+    if (!group) groups.push((group = { name, items: [] }));
+    group.items.push(conversation);
+  }
+  if (!groups.length) groups.push({ items: [] });
+  function menuItems(id: string): MenuItem[] {
+    // Choosing an intent closes the phone's sheet, as choosing a row does.
+    const choose = (act: (id: string) => void) => () => {
+      setOpen(false);
+      act(id);
+    };
+    return [
+      ...(onConversationRename
+        ? [
+            {
+              id: "rename",
+              label: labels?.rename ?? (ar ? "إعادة التسمية" : "Rename"),
+              icon: <Pencil size={15} />,
+              onSelect: choose(onConversationRename),
+            },
+          ]
+        : []),
+      ...(onConversationDelete
+        ? [
+            {
+              id: "delete",
+              label: labels?.delete ?? (ar ? "حذف" : "Delete"),
+              icon: <Trash2 size={15} />,
+              destructive: true,
+              separatorBefore: !!onConversationRename,
+              onSelect: choose(onConversationDelete),
+            },
+          ]
+        : []),
+    ];
+  }
   function sidebar() {
     return (
-      <Sidebar collapsed={false} aria-label={navigation}>
-        <SidebarHeader>
-          <SidebarIdentity>
-            <SidebarLabel>{brand ?? "Tiraz"}</SidebarLabel>
-          </SidebarIdentity>
-        </SidebarHeader>
+      <Sidebar
+        className="tz-chat-app-sidebar"
+        collapsed={false}
+        aria-label={navigation}
+      >
+        {brand ? (
+          <SidebarHeader>
+            <SidebarIdentity>
+              <SidebarLabel>{brand}</SidebarLabel>
+            </SidebarIdentity>
+          </SidebarHeader>
+        ) : null}
         <SidebarContent aria-label={navigation}>
           <SidebarAction
             label={newConversation}
@@ -82,23 +170,55 @@ export function ChatApp({
               onNewConversation();
             }}
           />
-          <SidebarGroup heading={navigation}>
-            {conversations.map((conversation) => (
-              <SidebarAction
-                key={conversation.id}
-                label={conversation.title}
-                icon={<MessageSquare size={16} />}
-                aria-current={
-                  conversation.id === activeConversationId ? true : undefined
-                }
-                data-active={conversation.id === activeConversationId}
-                onClick={() => {
-                  setOpen(false);
-                  onConversationSelect(conversation.id);
-                }}
-              />
-            ))}
-          </SidebarGroup>
+          {groups.map((group) => (
+            <SidebarGroup
+              key={group.name ?? ""}
+              heading={group.name ?? navigation}
+            >
+              {group.items.map((conversation) => (
+                <div
+                  key={conversation.id}
+                  className="tz-chat-app-conversation"
+                  data-conversation-id={conversation.id}
+                  data-menu={hasMenu || undefined}
+                >
+                  <SidebarAction
+                    label={conversation.title}
+                    icon={<MessageSquare size={16} />}
+                    aria-current={
+                      conversation.id === activeConversationId
+                        ? true
+                        : undefined
+                    }
+                    data-active={conversation.id === activeConversationId}
+                    onClick={() => {
+                      setOpen(false);
+                      onConversationSelect(conversation.id);
+                    }}
+                  />
+                  {hasMenu && (
+                    <DropdownMenu
+                      align="end"
+                      trigger={
+                        <button
+                          type="button"
+                          className="tz-icon-button tz-chat-app-menu"
+                          aria-label={(
+                            labels?.conversationActions ??
+                            ((name: string) =>
+                              ar ? `خيارات ${name}` : `Options for ${name}`)
+                          )(conversation.title)}
+                        >
+                          <MoreHorizontal size={16} aria-hidden="true" />
+                        </button>
+                      }
+                      items={menuItems(conversation.id)}
+                    />
+                  )}
+                </div>
+              ))}
+            </SidebarGroup>
+          ))}
         </SidebarContent>
       </Sidebar>
     );
@@ -156,10 +276,22 @@ export function ChatApp({
                 newConversation}
             </span>
             {toolbar && <div className="tz-chat-app-toolbar">{toolbar}</div>}
+            {actions && <div className="tz-chat-app-actions">{actions}</div>}
           </header>
           <div className="tz-chat-app-content">{children}</div>
           <footer className="tz-chat-app-composer">{composer}</footer>
         </section>
+        {sidePanel && (
+          // Its own landmark beside the conversation, not inside it, so it
+          // stays at the top level. It scrolls, so the keyboard reaches it.
+          <aside
+            className="tz-chat-app-panel"
+            aria-label={labels?.sidePanel ?? (ar ? "التفاصيل" : "Details")}
+            tabIndex={0}
+          >
+            {sidePanel}
+          </aside>
+        )}
       </div>
     </div>
   );

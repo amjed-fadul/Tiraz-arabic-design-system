@@ -238,8 +238,12 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   "chat-app": {
     useWhen: [
       [
-        "يحتاج المستخدم إلى التنقّل بين عدة محادثات وبدء محادثة جديدة.",
-        "People need to move between several conversations and start a new one.",
+        "تعرض محادثة يجمع فيها المساعد أكثر من نمط، كإجابة موثّقة ومهمة وأسئلة وطلب موافقة، مع قائمة محادثات للتنقّل بينها.",
+        "You show a conversation where the assistant mixes patterns, such as a cited answer, a task, questions and an approval, with a list to move between conversations.",
+      ],
+      [
+        "تحتاج لوحة جانبية بجوار المحادثة، لأدلة أو مسودة أو تفاصيل مهمة.",
+        "You need a panel beside the conversation, for evidence, a draft or a task's details.",
       ],
       [
         "تريد أن تتحوّل قائمة المحادثات إلى لوحة جانبية على الجوال دون عمل إضافي منك.",
@@ -270,6 +274,14 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       [
         "على الجوال يُغلق اختيار محادثة أو إنشاؤها اللوحة، ويعود التركيز إلى زر فتحها.",
         "On a phone, choosing or creating a conversation closes the sheet and returns focus to the button that opened it.",
+      ],
+      [
+        "القائمة لا تحذف ولا تعيد التسمية بنفسها: كل من «إعادة التسمية» و«حذف» يستدعي دالتك فقط، ويتولّى تطبيقك حقل الاسم والتأكيد.",
+        "The list never renames or deletes: Rename and Delete only call your functions, and your app owns the name field and the confirmation.",
+      ],
+      [
+        "تنزل اللوحة الجانبية تحت المحادثة حين يقلّ عرض المساحة عن 960px، وتتمرّر وحدها.",
+        "The side panel moves under the conversation when the space is narrower than 960px, and scrolls on its own.",
       ],
     ],
   },
