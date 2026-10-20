@@ -312,15 +312,17 @@ They cover exact source copying, safe CommonMark/GFM presentation and immediate
 host-driven streaming, with compact token-based styles. Source-copy consumers
 must install `react-markdown@10.1.0 remark-gfm@4.0.1`; see
 [src/system/ai/README.md](src/system/ai/README.md#ai-response-content) for parsing,
-URL/HTML restrictions, language fallback and host responsibilities. The local
-streaming playground and documentation example each run one fixed-chunk sample
-automatically, with compact playback icons and a shared frame.
+URL/HTML restrictions, language fallback and host responsibilities. The
+StreamingText page opens complete, with Streaming and Done states, and Replay
+streams its local fixed-chunk sample again.
 
-Documentation previews share a compact titled frame with matching borders, surface
-and responsive padding. Each header copies the current component prompt, including
-source-copy dependency instructions. Interactive examples also have replay/reset;
-static displays keep only Copy prompt. Streaming demos autoplay and provide Replay
-without a stop control. Shared appearance settings persist when replaying.
+Every documentation page shows its example in one demo frame: the page name in
+both languages, a state switcher where the component has meaningful states,
+Replay only where it has a lifecycle, a Preview/Code switch and Copy code, with
+a notes row below. Nothing autoplays, and Replay steps through the states
+without a stop control. Replay no longer resets props: the inspector's "Reset
+playground" does. The agent prompt, including source-copy dependency
+instructions, sits below the frame under "Use it in your app".
 
 ## Chat foundations
 

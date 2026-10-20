@@ -1982,7 +1982,7 @@
       "limitations": [
         "Host owns buffering, cancellation, errors, size limits, URL trust and final text/state. Cancelling should retain received text, set completed and supply a cancelled statusLabel.",
         "Markdown structural changes may replace affected nodes; selection inside syntax being reinterpreted cannot be guaranteed. No response-wide live region.",
-        "Both documentation demos start one local sample automatically, use the same portable frame and retain local provenance in accessible naming. The lower-level StreamingDemo helper defaults to explicit start. Both use compact Copy prompt and Replay controls, with no stop control. Both invalidate timers on replay, configuration change and unmount. No AI/network request."
+        "The workbench page opens complete and nothing starts on its own: its frame offers the Streaming and Done states, and Replay streams the local sample again from its first word. The standalone StreamingDemo renders its own portable frame, keeps local provenance in accessible naming and defaults to explicit start. Runs invalidate timers on replay, configuration change and unmount, and there is no stop control. No AI/network request."
       ],
       "inheritedProps": "Native div attributes, style, className and React 19 ref; children managed internally.",
       "alternative": "CodeBlock for source, Markdown for static formatted responses, StreamingText for host-driven updates.",

@@ -124,7 +124,7 @@ Below 620 px the name takes its own row and the controls sit on a second row. Th
 
 **Replay.**
 
-- A dark pill with an icon and the word "إعادة التشغيل" / "Replay". Its accessible name stays "Replay example" and the Arabic equivalent, which existing tests look up.
+- A dark pill with an icon and the word "إعادة تشغيل" / "Replay". Its accessible name stays "Replay example" and the Arabic equivalent, "إعادة تشغيل المثال", which existing tests look up. The visible Arabic word has no article ("إعادة تشغيل", not "إعادة التشغيل") so that it sits inside the accessible name, as WCAG 2.5.3 (label in name) asks.
 - Shown only on pages with a Replay sequence (section 8). Today about 46 pages show Replay, and on most of them it resets the page's props to their defaults. That reset would wipe a state the visitor just picked, so it moves to the inspector's existing "reset component" control and Replay means only "play the lifecycle". The existing test in which Replay clears the Textarea text is rewritten against the inspector reset.
 - Hidden in the Code view, as today.
 - During Replay the pressed state follows the phases.

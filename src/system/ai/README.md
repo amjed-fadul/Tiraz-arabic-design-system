@@ -681,18 +681,17 @@ host. Never announce every character. The host owns transport, buffering, errors
 limits and cancellation. On cancellation keep received text, set completed and
 supply a cancelled statusLabel. No model connection, execution timer, token count
 or transport belongs in the component. The bundled demo alone uses fixed chunks
-and timers. The StreamingText playground and documentation example each start
-one local sample automatically on entry and after language/mode changes. Their shared demo
-frame owns the same border, surface and padding; the workbench adds no second
-frame. Local provenance is retained in accessible group naming and this guidance,
-without a repeated visible footer. Both demos use a compact Default/Markdown
-header with named, icon-only Copy prompt and Play/Replay controls. All documentation
-playgrounds and example sections share this frame, with 24px padding on desktop
-and 16px on narrow screens. Static displays have only Copy prompt; interactive
-examples also offer replay/reset. Workbench copies include current settings,
-source examples and dependency instructions. Replaying a non-streaming playground
-restores its initial component props; shared appearance settings are retained.
-The standalone StreamingDemo starts explicitly by default. Runs invalidate timers
+and timers. In the workbench the StreamingText page opens complete, and nothing
+starts on its own. Its frame offers the Streaming and Done states, and Replay
+streams the local sample again from its first word. Every documentation page
+shares that frame: the page name in both languages, a state switcher where the
+component has meaningful states, Replay only where it has a lifecycle, the
+Preview/Code switch and Copy code. Replay steps through states and never resets
+props; the inspector's "Reset playground" does that. Workbench copies include
+current settings, source examples and dependency instructions. The standalone
+StreamingDemo, as copied into an app, renders its own portable frame, keeps its
+local provenance in the group's accessible name rather than a visible footer,
+and starts explicitly unless given `autoStart`. Runs invalidate timers
 on replay, configuration changes and unmount. The host still owns cancellation
 and should keep received text if a real stream is cancelled. The local demo has
 no stop control and makes no AI/network request. Plain demo chunks
