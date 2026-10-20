@@ -1551,7 +1551,8 @@ textarea.tz-textarea:read-only {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--control-gap);
-  padding: var(--paper-padding-block) var(--paper-padding-inline);
+  /* Less the 1px border, so the actions line up with the header and body. */
+  padding: var(--paper-padding-block) calc(var(--paper-padding-inline) - 1px);
   border: 1px solid transparent;
   border-block-start: 0.5px solid var(--hairline);
   background: var(--surface-tray);
