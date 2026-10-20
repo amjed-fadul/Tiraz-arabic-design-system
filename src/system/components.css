@@ -5676,8 +5676,8 @@ button.tz-source-chip {
   > span {
   background: var(--danger);
 }
-/* The @ picker is a listbox the text area points at. It is as wide as the row
-   it is anchored to and scrolls past six rows' worth. */
+/* The @ picker is a listbox the text area points at. It is as wide as the
+   entry it is anchored to and scrolls past six rows' worth. */
 .tz-task-starter-mentions {
   --enter-x: 0px;
   --enter-y: -4px;

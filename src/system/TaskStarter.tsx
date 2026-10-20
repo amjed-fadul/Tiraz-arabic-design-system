@@ -134,6 +134,15 @@ function mentionAt(text: string, caret: number): Mention | null {
   const query = before.slice(start + 1);
   return /\s/.test(query) ? null : { start, end: caret, query };
 }
+// Names match as Arabic is typed: without marks or tatweel (NFKD also folds
+// أ, إ and آ to ا), with ة as ه and ى as ي, and Latin in any case.
+const fold = (s: string) =>
+  s
+    .normalize("NFKD")
+    .replace(/[\p{M}\u0640]/gu, "")
+    .replace(/ة/g, "ه")
+    .replace(/ى/g, "ي")
+    .toLowerCase();
 // An icon button on the entry's row of tools.
 function ToolButton({
   label,
@@ -218,7 +227,6 @@ export function TaskStarter({
     paper = useRef<HTMLDivElement>(null),
     field = useRef<HTMLTextAreaElement>(null),
     list = useRef<HTMLDivElement>(null),
-    row = useRef<HTMLElement | null>(null),
     lastFocus = useRef<HTMLElement | null>(null),
     composing = useRef(false),
     caret = useRef<number | null>(null),
@@ -244,7 +252,7 @@ export function TaskStarter({
       ? mentionOptions.filter(
           (option) =>
             !context.some((item) => item.id === option.id) &&
-            option.label.toLowerCase().includes(mention.query.toLowerCase()),
+            fold(option.label).includes(fold(mention.query)),
         )
       : [];
   const open = matches.length > 0 && !closed && !disabled && !submitting;
@@ -301,10 +309,7 @@ export function TaskStarter({
     // A reset says nothing, and empties the sentence so the next one is heard.
     else if (added.length || removed.length) live.current.textContent = "";
   });
-  // The picker anchors to the row of tools, which the entry draws.
   useLayoutEffect(() => {
-    row.current =
-      paper.current?.querySelector<HTMLElement>(".tz-chat-entry-tools") ?? null;
     // A chosen record takes its "@word" with it; the caret goes where it was.
     const place = caret.current;
     caret.current = null;
@@ -762,7 +767,9 @@ export function TaskStarter({
         </Heading>
       )}
       <Popper.Root>
-        <Popper.Anchor virtualRef={row as RefObject<HTMLElement>} />
+        {/* The picker anchors to the whole entry, so a flip lands above the
+            draft rather than over it. */}
+        <Popper.Anchor virtualRef={paper as RefObject<HTMLElement>} />
         {appearance === "card" ? (
           <Tray paper={false} footer={footer || undefined}>
             {entry}

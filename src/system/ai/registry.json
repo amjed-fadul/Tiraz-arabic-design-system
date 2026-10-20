@@ -1435,7 +1435,7 @@
         "When a change removes the focused control (a chip's remove button), focus moves to the section."
       ],
       "limitations": [
-        "No model call, upload, speech recognition or transport: attach and dictate are intents. The listbox is anchored to the tools row, not to the caret, which cannot be measured reliably in right-to-left text.",
+        "No model call, upload, speech recognition or transport: attach and dictate are intents. The listbox is anchored to the whole entry, not to the caret, which cannot be measured reliably in right-to-left text, so when it flips it lands above the draft.",
         "Records already in context are not offered again. The @ word ends at a space, so the query is one word. Digits follow config.numerals; the percent is formatted without direction marks."
       ],
       "alternative": "Use ChatComposer for a reply inside a conversation, PromptBar for a compact prompt with suggestions, and Input for plain search with no assistant.",

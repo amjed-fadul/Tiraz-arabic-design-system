@@ -76,7 +76,10 @@ it("opens the record picker on @ and chooses with the keyboard while the text ar
     wrap(
       <div onKeyDown={page}>
         <Host
-          mentionOptions={options}
+          mentionOptions={[
+            ...options,
+            { id: "october", label: "تقرير أكتوبر", kind: "تقرير" },
+          ]}
           onAddContext={add}
           onValueChange={change}
           onSubmit={submit}
@@ -120,6 +123,14 @@ it("opens the record picker on @ and chooses with the keyboard while the text ar
   expect(field).toHaveFocus();
   await user.keyboard("{Escape}");
   expect(page).toHaveBeenCalledTimes(1);
+  // The search folds how Arabic is typed: «@اكتوبر» finds «تقرير أكتوبر».
+  await user.keyboard("اكتوبر");
+  expect(
+    within(screen.getByRole("listbox", { name: "إضافة سجل" })).getByRole(
+      "option",
+      { name: /تقرير أكتوبر/ },
+    ),
+  ).toBeInTheDocument();
 });
 
 it("never chooses or submits while composing", async () => {
