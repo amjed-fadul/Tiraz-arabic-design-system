@@ -8,6 +8,7 @@ import type {
   ApprovalRequest,
 } from "./ApprovalCard";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
 export type { ApprovalRecord } from "./ApprovalCard";
 export interface ApprovalFlowProps {
@@ -53,6 +54,9 @@ function ApprovalFlowInstance({
   if (history.schemaKey !== schemaKey)
     setHistory({ schemaKey, records: local });
   const records = (value ?? local).filter(validRecord);
+  // A receipt rises into the history and its mark draws only once a decision
+  // was recorded here, never for history the flow mounts with.
+  const changed = useChanged(records.length);
   const latest = useRef({ records, value, onValueChange });
   useLayoutEffect(() => {
     latest.current = { records, value, onValueChange };
@@ -105,6 +109,7 @@ function ApprovalFlowInstance({
       aria-label={label}
       tabIndex={-1}
       className={`tz-approval-flow ${className}`}
+      data-changed={changed || undefined}
       onFocusCapture={() => {
         focused.current = true;
       }}

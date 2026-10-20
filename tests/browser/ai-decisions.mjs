@@ -154,8 +154,8 @@ try {
             .filter((a) => a.playState === "running").length,
         }));
         assert.match(css.font, /IBM Plex Sans Arabic/);
-        // calc(var(--radius-panel) + 4px) with radius 2.
-        assert.equal(css.radius, "10px");
+        // --radius-paper with radius 2: max(2.5px, 2 × 1.875px).
+        assert.equal(css.radius, "3.75px");
         assert.equal(css.direction, ar ? "rtl" : "ltr");
         assert.equal(css.animations, 0);
         // Scan the resting card, not the button left under the pointer.

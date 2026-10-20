@@ -8,6 +8,7 @@ import { RadioGroup } from "./RadioGroup";
 import { Textarea } from "./Textarea";
 import { useDecisionTask } from "./decision-task";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
 export interface UserQuestion {
   id: string;
@@ -69,6 +70,8 @@ function QuestionsInstance({
     task = useDecisionTask();
   const question = questions[index],
     answer = question ? (value[question.id] ?? {}) : {};
+  // Options cascade in only once the question changed, never on mount.
+  const changed = useChanged(index);
   const hadFocus = useRef(false);
   useLayoutEffect(() => {
     if (
@@ -131,6 +134,7 @@ function QuestionsInstance({
       aria-label={label ?? (ar ? "أسئلة المساعد" : "Assistant questions")}
       tabIndex={-1}
       className={`tz-ask-questions ${className}`}
+      data-changed={changed || undefined}
       onSubmit={(event) => {
         event.preventDefault();
         if (busy || !questions.length) return;

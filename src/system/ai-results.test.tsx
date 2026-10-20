@@ -161,7 +161,8 @@ it.each([
   expect(screen.queryByRole("link")).toBeNull();
   expect(screen.getByText("Destination unavailable")).toBeVisible();
   await user.click(screen.getByRole("button", { name: "1 source" }));
-  expect(screen.queryByText("Destination unavailable")).toBeNull();
+  // Closed, the list stays in the document, hidden, so it can fade out.
+  expect(screen.getByText("Destination unavailable")).not.toBeVisible();
 });
 it.each([
   "https://example.com/a?b=1#c",

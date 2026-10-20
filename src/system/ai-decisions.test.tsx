@@ -13,6 +13,7 @@ import type { QuestionAnswers } from "./AskUserQuestions";
 import { ApprovalCard } from "./ApprovalCard";
 import { ApprovalFlow } from "./ApprovalFlow";
 import type { ApprovalRequest, ApprovalCardProps } from "./ApprovalCard";
+import { approvalRequestKey } from "./approval-request";
 import { SystemProvider } from "./Provider";
 import { defaultConfig } from "./config";
 const request: ApprovalRequest = {
@@ -88,6 +89,50 @@ it("validates, focuses first missing answer and preserves editable drafts after 
   expect(screen.getByRole("textbox", { name: "Other answer" })).toHaveValue(
     "Intro",
   );
+});
+it("gives a decision card no entry hook on its first render, only after a change", async () => {
+  const user = userEvent.setup(),
+    receipt = { ...request, id: "b" };
+  const view = render(
+    wrap(
+      <>
+        <AskUserQuestions
+          questions={[
+            {
+              id: "scope",
+              label: "Scope?",
+              choices: [{ value: "title", label: "Title" }],
+            },
+            { id: "notes", label: "Notes?", type: "text" },
+          ]}
+          value={{}}
+          onValueChange={() => {}}
+          onSubmit={() => {}}
+        />
+        <ApprovalCard request={request} onDecision={() => {}} />
+        <ApprovalCard
+          request={receipt}
+          value={{
+            requestId: "b",
+            requestKey: approvalRequestKey(receipt),
+            decision: "approved",
+          }}
+          onDecision={() => {}}
+        />
+      </>,
+    ),
+  );
+  const questions = view.container.querySelector(".tz-ask-questions")!;
+  const [pending, decided] =
+    view.container.querySelectorAll(".tz-approval-card");
+  // Nothing rises, cascades, pops or draws on mount, not even a receipt.
+  for (const card of [questions, pending, decided])
+    expect(card).not.toHaveAttribute("data-changed");
+  await user.click(screen.getByRole("button", { name: "Next question" }));
+  expect(questions).toHaveAttribute("data-changed");
+  await user.click(screen.getByRole("button", { name: "Approve rename" }));
+  await waitFor(() => expect(pending).toHaveAttribute("data-changed"));
+  expect(decided).not.toHaveAttribute("data-changed");
 });
 it("guards duplicate decisions and restores the initiating button after host failure", async () => {
   const task = deferred(),

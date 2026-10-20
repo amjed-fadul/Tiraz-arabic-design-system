@@ -1,8 +1,9 @@
 import * as Popover from "@radix-ui/react-popover";
-import { ChevronDown, ExternalLink } from "lucide-react";
+import { ChevronDown, ExternalLink, FileText, Globe } from "lucide-react";
 import { useId, useState } from "react";
 import { sourceHref } from "./source-url";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
 
 export interface SourceReference {
@@ -75,6 +76,8 @@ export function Sources({
     }),
     id = useId();
   const [expanded, setExpanded] = useState(defaultExpanded);
+  // The list rises in only when it is opened, never when it mounts open.
+  const changed = useChanged(expanded);
   const unavailable =
     labels?.unavailable ?? (ar ? "الرابط غير متاح" : "Destination unavailable");
   if (!items.length)
@@ -89,7 +92,10 @@ export function Sources({
       ? arabicSourceCount(items.length, digits)
       : `${digits.format(items.length)} ${items.length === 1 ? "source" : "sources"}`);
   return (
-    <div className={`tz-sources ${className}`}>
+    <div
+      className={`tz-sources ${className}`}
+      data-changed={changed || undefined}
+    >
       <button
         type="button"
         className="tz-sources-trigger"
@@ -98,51 +104,56 @@ export function Sources({
         onClick={() => setExpanded(!expanded)}
       >
         <span aria-hidden="true" className="tz-sources-marks">
-          {items.slice(0, 3).map((item) => (
-            <bdi key={item.id}>{Array.from(item.title.trim())[0]}</bdi>
-          ))}
+          {items.slice(0, 3).map((item) => {
+            // A web page shows a globe; a document or local file, a page.
+            const Icon = /^https?:\/\//i.test(sourceHref(item.href) ?? "")
+              ? Globe
+              : FileText;
+            return (
+              <span key={item.id}>
+                <Icon size={12} />
+              </span>
+            );
+          })}
         </span>
         <span>{summary}</span>
         <ChevronDown size={14} aria-hidden="true" />
       </button>
-      {expanded && (
-        <ol id={id} className="tz-sources-list">
-          {items.map((source) => {
-            const href = sourceHref(source.href);
-            const content = (
-              <>
-                <bdi className="tz-source-number">
-                  {digits.format(source.number)}
-                </bdi>{" "}
-                <span className="tz-source-copy">
-                  <strong dir="auto">{source.title}</strong>{" "}
-                  {href && (
-                    <small>
-                      <bdi dir="ltr">{destination(href)}</bdi>
-                    </small>
-                  )}{" "}
-                  {source.metadata && (
-                    <small dir="auto">{source.metadata}</small>
-                  )}
-                  {!href && <small>{unavailable}</small>}
-                </span>
-                {href && <ExternalLink size={13} aria-hidden="true" />}
-              </>
-            );
-            return (
-              <li key={source.id} data-source-id={source.id}>
-                {href ? (
-                  <a href={href} className="tz-source-row">
-                    {content}
-                  </a>
-                ) : (
-                  <div className="tz-source-row">{content}</div>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      )}
+      {/* Hidden rather than removed, so the list can fade out as it closes. */}
+      <ol id={id} className="tz-sources-list" hidden={!expanded}>
+        {items.map((source) => {
+          const href = sourceHref(source.href);
+          const content = (
+            <>
+              <bdi className="tz-source-number">
+                {digits.format(source.number)}
+              </bdi>{" "}
+              <span className="tz-source-copy">
+                <strong dir="auto">{source.title}</strong>{" "}
+                {href && (
+                  <small>
+                    <bdi dir="ltr">{destination(href)}</bdi>
+                  </small>
+                )}{" "}
+                {source.metadata && <small dir="auto">{source.metadata}</small>}
+                {!href && <small>{unavailable}</small>}
+              </span>
+              {href && <ExternalLink size={13} aria-hidden="true" />}
+            </>
+          );
+          return (
+            <li key={source.id} data-source-id={source.id}>
+              {href ? (
+                <a href={href} className="tz-source-row">
+                  {content}
+                </a>
+              ) : (
+                <div className="tz-source-row">{content}</div>
+              )}
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }

@@ -64,8 +64,9 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   tick: [".tz-tick"],
   // .tz-chart covers the Line, Area, Bar and Donut charts' shared frame.
   charts: [".tz-chart"],
-  // .tz-loading also covers the spinner's .tz-loading-spinner.
-  "loading-state": [".tz-loading"],
+  // .tz-loading also covers the spinner's .tz-loading-spinner, and .tz-pixel
+  // is the pixel grid LoadingState draws.
+  "loading-state": [".tz-loading", ".tz-pixel"],
   // .tz-thinking covers ThinkingIndicator and ThinkingState.
   thinking: [".tz-thinking"],
   "streaming-text": [".tz-streaming", ".tz-stream"],
@@ -81,4 +82,21 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   chat: [".tz-chat"],
   // .tz-prompt is PromptBar's wrapper, bar and suggestions.
   "prompt-bar": [".tz-prompt"],
+  // The decision families share .tz-decision (status, note, actions, icon,
+  // facts, history) and .tz-question (the progress strip and key hint).
+  "ask-user-questions": [".tz-ask", ".tz-question", ".tz-decision"],
+  "approval-card": [".tz-approval", ".tz-decision"],
+  "approval-flow": [".tz-approval", ".tz-decision", ".tz-question"],
+  "selection-actions": [".tz-selection"],
+  // .tz-context also covers the AIContextExamples layout.
+  "context-meter": [".tz-context"],
+  "model-selector": [".tz-model"],
+  "image-result": [".tz-image"],
+  // .tz-source is each row of the list, never .tz-sources.
+  sources: [".tz-sources", ".tz-source"],
+  // .tz-inline is the citation chip and .tz-citation its popup.
+  "inline-citation": [".tz-inline", ".tz-citation"],
+  "insight-cards": [".tz-insight", ".tz-insights"],
+  // .tz-ai is the shared AI shimmer and the AIResultsExamples layout.
+  ai: [".tz-ai"],
 };

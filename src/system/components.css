@@ -4393,19 +4393,22 @@ textarea.tz-textarea:read-only {
   direction: ltr;
   color: var(--text-secondary);
 }
+/* Square pixels pulse on decorative loops; dots are round, and orbit runs
+   its slower circuit. Reduced motion stops them. */
 .tz-pixel-grid > span {
   inline-size: 4px;
   block-size: 4px;
-  border-radius: 1px;
+  border-radius: 0;
   background: currentColor;
   opacity: 0.15;
-  animation: tz-pixel-on 650ms ease-in-out var(--pixel-delay) infinite;
+  animation: tz-pixel-on var(--motion-loop-pixel) ease-in-out var(--pixel-delay)
+    infinite;
 }
 .tz-pixel-grid[data-variant="dots"] > span {
   border-radius: 50%;
 }
 .tz-pixel-grid[data-variant="orbit"] > span {
-  animation-duration: 950ms;
+  animation-duration: var(--motion-loop-orbit);
 }
 .tz-pixel-grid[data-variant="orbit"] > span:nth-child(5) {
   animation: none;
@@ -5826,26 +5829,23 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-image-result[data-aspect="portrait"] {
   max-inline-size: 320px;
 }
-/* The frame holds the final shape from the first frame: a quiet dotted
-   field while waiting, then the image resolves out of a soft blur. */
+/* The frame holds the final shape from the first frame: paper over the tray
+   and its warp lines while waiting, then the image crossfades in. The weave
+   belongs to Image generation. */
 .tz-image-result-frame {
   position: relative;
   container-type: inline-size;
   aspect-ratio: 3 / 2;
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: var(--radius-panel);
-  box-shadow: var(--shadow-surface);
+  border-radius: var(--radius-paper);
+  box-shadow: var(--shadow-paper);
   background:
-    radial-gradient(
-        color-mix(in srgb, var(--text) 13%, transparent) 0.8px,
-        transparent 1.2px
-      )
-      0 0 / 10px 10px,
-    var(--surface-subtle);
+    repeating-linear-gradient(90deg, var(--warp) 0 1px, transparent 1px 14px),
+    var(--surface-tray);
 }
 .tz-image-result-frame[data-state="loaded"] > img {
-  animation: tz-image-reveal 700ms var(--ease-out);
+  animation: tz-image-reveal var(--motion-reveal) var(--ease-out);
 }
 .tz-image-result-frame > .tz-skeleton {
   background: transparent;
@@ -5853,8 +5853,6 @@ button.tz-tool-chip[aria-expanded="true"] {
 @keyframes tz-image-reveal {
   from {
     opacity: 0;
-    filter: blur(14px);
-    transform: scale(1.02);
   }
 }
 .tz-image-result[data-aspect="square"] .tz-image-result-frame {
@@ -5929,14 +5927,15 @@ button.tz-tool-chip[aria-expanded="true"] {
   min-inline-size: 0;
   font-size: var(--text-meta);
 }
-/* Sources fold into one pill: stacked letter marks and a count. Opened,
-   they become an inset panel of rows that each lead with their number. */
+/* Sources fold into one paper pill: stacked source icons and a count.
+   Opened, they become a paper list of rows that each lead with their number.
+   The pill presses by the shared amount and releases with ease-out. */
 .tz-sources-trigger {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   border: 1px solid transparent;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   background: var(--surface);
   color: var(--text-secondary);
   padding: 3px var(--space-3) 3px 3px;
@@ -5946,12 +5945,22 @@ button.tz-tool-chip[aria-expanded="true"] {
   cursor: pointer;
   max-inline-size: 100%;
   overflow-wrap: anywhere;
-  box-shadow: var(--shadow-surface);
+  box-shadow: var(--shadow-paper);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-sources-trigger:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
 @media (hover: hover) and (pointer: fine) {
   .tz-sources-trigger:hover {
     color: var(--text);
-    background: color-mix(in srgb, var(--surface), var(--text) 3%);
+    background: color-mix(in srgb, var(--surface), var(--text) 4%);
   }
 }
 .tz-sources-trigger > svg {
@@ -5961,32 +5970,31 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-sources-trigger[aria-expanded="true"] > svg {
   transform: rotate(180deg);
 }
+/* Each source shows its icon on a tray chip. The chips overlap, ringed in the
+   pill's paper, and fan out toward the inline end by --fan under the pointer. */
 .tz-sources-marks {
+  --fan: 3px;
   display: inline-flex;
   padding-inline-start: 4px;
 }
-.tz-sources-marks > bdi {
+.tz-sources-marks:dir(rtl) {
+  --fan: -3px;
+}
+.tz-sources-marks > span {
   display: grid;
   place-items: center;
-  margin-inline-start: -5px;
-  transition: margin-inline-start var(--motion-state) var(--ease-spring);
   inline-size: 20px;
   block-size: 20px;
+  margin-inline-start: -5px;
   border: 2px solid var(--surface);
-  border-radius: 50%;
-  background: var(--action-soft);
-  color: var(--action);
-  font-size: 10px;
-  font-weight: var(--weight-semibold);
-}
-.tz-sources-marks > bdi:nth-child(2) {
-  background: var(--info-soft);
-  color: var(--info);
-}
-.tz-sources-marks > bdi:nth-child(3) {
-  background: var(--surface-hover);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tray);
   color: var(--text-secondary);
+  transition: transform var(--motion-state) var(--ease-out);
 }
+/* Closed, the list stays in the document, hidden: it fades out over the exit
+   time, then leaves the layout. Opened after mount, it rises in (the rows'
+   cascade sits with the motion rules); a list that mounts open stays still. */
 .tz-sources-list {
   display: grid;
   gap: 2px;
@@ -5994,9 +6002,18 @@ button.tz-tool-chip[aria-expanded="true"] {
   padding: var(--space-1);
   margin: var(--space-2) 0 0;
   border: 1px solid transparent;
-  border-radius: var(--radius-panel);
+  border-radius: var(--radius-paper);
   background: var(--surface);
-  box-shadow: var(--shadow-surface);
+  box-shadow: var(--shadow-paper);
+  transition:
+    opacity var(--motion-exit) var(--ease-exit),
+    display var(--motion-exit) allow-discrete;
+}
+.tz-sources-list[hidden] {
+  display: none;
+  opacity: 0;
+}
+.tz-sources[data-changed] > .tz-sources-list:not([hidden]) {
   animation: tz-option-in var(--motion-state) var(--ease-out);
 }
 .tz-source-row {
@@ -6006,21 +6023,29 @@ button.tz-tool-chip[aria-expanded="true"] {
   padding: var(--space-2);
   color: inherit;
   text-decoration: none;
-  border-radius: var(--radius);
+  border-radius: var(--radius-item);
   overflow-wrap: anywhere;
 }
+/* Rows only shade under the pointer and while pressed; they never scale. */
 .tz-source-row[href] {
   transition: background-color var(--motion-fast) var(--ease-out);
+  touch-action: manipulation;
 }
-.tz-source-row[href]:hover {
-  background: var(--wash);
+.tz-source-row[href]:active {
+  background: var(--wash-strong);
 }
 .tz-source-row > .lucide-external-link {
   transition: color var(--motion-fast) var(--ease-out);
 }
-.tz-source-row[href]:hover > .lucide-external-link {
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .tz-source-row[href]:hover {
+    background: var(--wash);
+  }
+  .tz-source-row[href]:hover > .lucide-external-link {
+    color: var(--text);
+  }
 }
+/* Citation numbers are AI chips, in the provider's digits. */
 .tz-source-number {
   display: grid;
   place-items: center;
@@ -6028,11 +6053,10 @@ button.tz-tool-chip[aria-expanded="true"] {
   min-inline-size: 20px;
   block-size: 20px;
   padding-inline: 4px;
-  border-radius: 6px;
-  background: var(--wash-strong);
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  border-radius: var(--radius-small);
+  background: var(--ai-soft);
+  color: var(--ai);
+  font-size: var(--text-micro);
   font-variant-numeric: tabular-nums;
 }
 .tz-source-copy {
@@ -6053,8 +6077,9 @@ button.tz-tool-chip[aria-expanded="true"] {
   margin-block-start: 4px;
   color: var(--text-muted);
 }
-/* Citations are small number pills that sit on the text, not above it,
-   and invert while their source is open. */
+/* Citations are small AI number chips that sit on the text, not above it,
+   and invert while their source is open. A citation that opens something
+   presses by the shared amount. */
 .tz-inline-citation {
   display: inline-grid;
   place-items: center;
@@ -6065,27 +6090,35 @@ button.tz-tool-chip[aria-expanded="true"] {
   margin-inline: 2px;
   padding-inline: 4px;
   border: 0;
-  border-radius: 5px;
-  background: color-mix(in srgb, var(--text) 8%, transparent);
-  font-family: var(--font-mono);
-  font-size: 10px;
+  border-radius: var(--radius-small);
+  background: var(--ai-soft);
+  font-size: var(--text-micro);
   font-weight: var(--weight-medium);
-  color: var(--text-secondary);
+  color: var(--ai);
   text-decoration: none;
   font-variant-numeric: tabular-nums;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
 }
 button.tz-inline-citation,
 a.tz-inline-citation {
   cursor: pointer;
 }
+:is(button, a).tz-inline-citation:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
 @media (hover: hover) and (pointer: fine) {
-  .tz-inline-citation:hover {
-    background: color-mix(in srgb, var(--text) 14%, transparent);
-    color: var(--text);
+  :is(button, a).tz-inline-citation:hover {
+    background: color-mix(in srgb, var(--ai-soft), var(--ai) 6%);
   }
 }
 .tz-inline-citation[data-state="open"] {
-  background: var(--text);
+  background: var(--ai);
   color: var(--surface);
 }
 .tz-citation-popup {
@@ -6097,8 +6130,8 @@ a.tz-inline-citation {
   display: grid;
   gap: var(--space-3);
   padding: var(--space-4);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   background: var(--surface);
   color: var(--text);
   box-shadow: var(--shadow-popover);
@@ -6160,10 +6193,14 @@ a.tz-inline-citation {
   gap: var(--space-3);
   overflow-wrap: anywhere;
 }
+/* Switching findings fades the new one in; the first finding is still. */
+.tz-insights[data-changed] > .tz-insight-page {
+  animation: tz-fade-in var(--motion-release) var(--ease-out);
+}
 .tz-insight-page > .tz-card-title {
-  font-size: var(--text-body);
-  font-weight: 500;
-  line-height: var(--line-height);
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
   margin: 0;
 }
 .tz-insight-detail {
@@ -6172,6 +6209,12 @@ a.tz-inline-citation {
   padding: var(--space-4);
   display: grid;
   gap: var(--space-3);
+}
+/* The finding's detail is a well cut into the host's paper, never a nested
+   card. */
+.tz-insight-page > .tz-insight-detail {
+  border-radius: var(--radius-paper);
+  background: var(--surface-well);
 }
 .tz-insight-detail > .tz-badge {
   justify-self: start;
@@ -6216,12 +6259,20 @@ a.tz-inline-citation {
   font-size: var(--text-meta);
 }
 .tz-ai-image-choice img {
-  width: 100%;
+  inline-size: 100%;
   aspect-ratio: 3 / 2;
   object-fit: contain;
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-paper);
   background: var(--surface-subtle);
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    outline-color var(--motion-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-ai-image-choice:hover img {
+    border-color: var(--border-strong);
+  }
 }
 .tz-ai-image-choice:has(:checked) img {
   outline: 2px solid var(--action);
@@ -6240,7 +6291,7 @@ a.tz-inline-citation {
   justify-self: start;
 }
 .tz-insights-nav .tz-button[aria-disabled="true"] {
-  opacity: 0.45;
+  opacity: var(--disabled-opacity);
   cursor: default;
 }
 
@@ -6256,7 +6307,7 @@ a.tz-inline-citation {
   overflow: auto;
   background: radial-gradient(
     ellipse at center,
-    color-mix(in srgb, var(--action) 7%, transparent),
+    color-mix(in srgb, var(--ai) 10%, transparent),
     transparent 70%
   );
 }
@@ -6271,9 +6322,9 @@ a.tz-inline-citation {
   place-items: safe center;
   inline-size: clamp(36px, 18cqi, 64px);
   block-size: clamp(36px, 18cqi, 64px);
-  border: 1px solid color-mix(in srgb, var(--action) 18%, var(--border));
-  border-radius: calc(var(--radius) + var(--space-2));
-  color: var(--action);
+  border: 1px solid color-mix(in srgb, var(--ai) 18%, var(--border));
+  border-radius: var(--radius-paper);
+  color: var(--ai);
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   box-shadow: var(--shadow-control);
 }
@@ -6295,14 +6346,16 @@ a.tz-inline-citation {
 .tz-selection-scope {
   min-inline-size: 0;
 }
-/* A floating pill of quick rewrites; actions are rounded keys inside it. */
+/* A floating paper pill of quick rewrites; the actions are rounded keys inside
+   it, the first one inverted. Keys press by the shared amount and release
+   with ease-out. */
 .tz-selection-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
   padding: 4px;
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius-panel) + 10px);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
   background: var(--surface);
   box-shadow: var(--shadow-popover);
   z-index: 65;
@@ -6318,21 +6371,31 @@ a.tz-inline-citation {
   color: var(--text-secondary);
   border: 0;
   background: transparent;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   min-block-size: 30px;
   padding: 3px 12px;
   font-size: var(--text-meta);
   font-weight: var(--weight-medium);
   overflow-wrap: anywhere;
   min-inline-size: 0;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-selection-actions button:not(:disabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
 .tz-selection-actions button > svg {
   inline-size: 14px;
   block-size: 14px;
 }
 @media (hover: hover) and (pointer: fine) {
-  .tz-selection-actions button:hover {
-    background: var(--surface-hover);
+  .tz-selection-actions button:not(:disabled):hover {
+    background: var(--wash);
     color: var(--text);
   }
 }
@@ -6341,18 +6404,20 @@ a.tz-inline-citation {
   color: var(--surface);
 }
 @media (hover: hover) and (pointer: fine) {
-  .tz-selection-actions button:first-child:hover {
+  .tz-selection-actions button:first-child:not(:disabled):hover {
     background: color-mix(in srgb, var(--text) 86%, var(--surface));
     color: var(--surface);
   }
 }
 .tz-selection-actions button:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
 }
 .tz-selection-actions[data-reference-hidden] {
   visibility: hidden;
   pointer-events: none;
 }
+/* The context and model triggers are pills that press by the shared amount
+   and release with ease-out. */
 .tz-context-trigger,
 .tz-model-trigger {
   display: inline-flex;
@@ -6363,24 +6428,40 @@ a.tz-inline-citation {
   min-block-size: var(--control-small);
   max-inline-size: 100%;
   border: 1px solid transparent;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   background: transparent;
   color: var(--text-secondary);
   font-size: var(--text-meta);
   font-weight: var(--weight-medium);
-  line-height: 1.6;
+  line-height: var(--leading-meta);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-context-trigger:not(:disabled):active,
+.tz-model-trigger:not(:disabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
 .tz-context-trigger {
   flex-wrap: wrap;
 }
-.tz-context-trigger:hover,
-.tz-model-trigger:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-context-trigger:hover {
+    background: var(--wash);
+  }
 }
+/* The ring and the status words share their threshold's tone: the AI color
+   while there is room, attention from 80% and danger from 95% and over
+   capacity. The fill follows the host's count over the progress time. */
 .tz-context-ring {
   inline-size: 16px;
   block-size: 16px;
   transform: rotate(-90deg);
+  color: var(--ai);
 }
 .tz-context-ring circle {
   fill: none;
@@ -6390,19 +6471,21 @@ a.tz-inline-citation {
 .tz-context-ring circle + circle {
   stroke: currentColor;
   transition:
-    stroke-dasharray calc(var(--motion-state) * 2) var(--ease-out),
+    stroke-dasharray var(--motion-progress) var(--ease-out),
     color var(--motion-state) var(--ease-out);
-}
-.tz-context-trigger[data-tone="high"] .tz-context-ring {
-  color: var(--info);
-}
-.tz-context-trigger[data-tone="over"] .tz-context-ring,
-.tz-context-trigger[data-tone="near"] .tz-context-ring {
-  color: var(--danger);
 }
 .tz-context-status {
   font-size: var(--text-meta);
   font-weight: var(--weight-medium);
+  color: var(--ai);
+}
+.tz-context-trigger[data-tone="high"] .tz-context-ring,
+.tz-context-status[data-tone="high"] {
+  color: var(--attention);
+}
+.tz-context-trigger:is([data-tone="near"], [data-tone="over"]) .tz-context-ring,
+.tz-context-status:is([data-tone="near"], [data-tone="over"]) {
+  color: var(--danger);
 }
 .tz-context-details {
   inline-size: 280px;
@@ -6411,8 +6494,8 @@ a.tz-inline-citation {
   overflow: auto;
   padding: var(--space-3);
   background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   box-shadow: var(--shadow-popover);
   z-index: 65;
   font-size: var(--text-meta);
@@ -6424,7 +6507,7 @@ a.tz-inline-citation {
 .tz-context-details dl {
   margin: 10px 0;
   padding-block: 8px;
-  border-block: 1px solid var(--border);
+  border-block: 0.5px solid var(--hairline);
 }
 .tz-context-details dl > div {
   display: flex;
@@ -6437,10 +6520,17 @@ a.tz-inline-citation {
 .tz-context-details small {
   color: var(--text-secondary);
 }
+/* The model trigger is paper: its ring is the paper shadow, over the
+   transparent edge that forced colors draw. */
 .tz-model-trigger {
-  border-color: var(--border);
   background: var(--surface);
   color: var(--text);
+  box-shadow: var(--shadow-paper);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-model-trigger:not(:disabled):hover {
+    background: color-mix(in srgb, var(--surface), var(--text) 4%);
+  }
 }
 .tz-model-trigger[data-size="md"] {
   min-block-size: var(--control-height);
@@ -6457,15 +6547,15 @@ a.tz-inline-citation {
   white-space: nowrap;
 }
 .tz-model-trigger:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
 }
 .tz-model-popup {
   inline-size: 360px;
   max-inline-size: calc(100vw - 16px);
   max-block-size: min(420px, var(--radix-select-content-available-height));
   overflow: hidden;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   background: var(--surface);
   box-shadow: var(--shadow-popover);
   z-index: 65;
@@ -6486,21 +6576,24 @@ a.tz-inline-citation {
   padding: 8px 24px 8px 8px;
   padding-inline-end: 24px;
   padding-inline-start: 8px;
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-item);
   outline: none;
   font-size: var(--text-meta);
-  line-height: 1.6;
+  line-height: var(--leading-meta);
   cursor: pointer;
   user-select: none;
+  touch-action: manipulation;
 }
-.tz-model-option[data-highlighted] {
-  background: var(--surface-hover);
+/* With the glide attached, its wash travels here instead (useGlide). */
+.tz-model-option[data-highlighted],
+.tz-model-option:active {
+  background: var(--wash-strong);
 }
 .tz-model-option[data-state="checked"] {
   background: var(--action-soft);
 }
 .tz-model-option[data-disabled] {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
 .tz-model-mark {
@@ -6529,7 +6622,7 @@ a.tz-inline-citation {
   border: 1px solid var(--border);
   border-radius: var(--radius-small);
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: var(--text-micro);
   font-weight: var(--weight-regular);
 }
 .tz-model-copy small {
@@ -6543,7 +6636,7 @@ a.tz-inline-citation {
   align-items: flex-end;
   max-inline-size: 28%;
   color: var(--text-secondary);
-  font-size: 11px;
+  font-size: var(--text-micro);
   overflow-wrap: anywhere;
 }
 .tz-model-check {
@@ -6589,24 +6682,24 @@ a.tz-inline-citation {
   font-size: var(--text-body);
   overflow-wrap: anywhere;
 }
-/* Decision cards share one frame: content on the surface, then a quieter
-   footer band that holds the note and the actions. */
+/* Decision cards share one frame: paper whose padding follows density, then
+   a quieter footer band that holds the note and the actions. A card never
+   rises on mount; it moves only once something changed in it (data-changed,
+   spec section 15). */
 .tz-ask-questions,
 .tz-approval-card {
-  --decision-pad: var(--space-4);
-  padding: var(--decision-pad);
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
   border: 1px solid transparent;
-  border-radius: calc(var(--radius-panel) + 4px);
+  border-radius: var(--radius-paper);
   background: var(--surface);
-  box-shadow: var(--shadow-surface);
-  animation: tz-card-in calc(var(--motion-enter) + 80ms) var(--ease-out);
+  box-shadow: var(--shadow-paper);
 }
 .tz-ask-questions h3,
 .tz-approval-card h3 {
   margin: 0;
-  font-size: var(--text-heading);
-  font-weight: var(--weight-medium);
-  line-height: 1.5;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
   text-wrap: balance;
 }
 .tz-ask-questions > .tz-decision-actions,
@@ -6642,7 +6735,7 @@ a.tz-inline-citation {
   place-items: center;
   inline-size: 32px;
   block-size: 32px;
-  border-radius: calc(var(--radius) + 1px);
+  border-radius: var(--radius-control);
   background: transparent;
   color: var(--text);
   box-shadow: inset 0 0 0 1px var(--border);
@@ -6650,9 +6743,6 @@ a.tz-inline-citation {
     background-color var(--motion-state) var(--ease-out),
     color var(--motion-state) var(--ease-out),
     box-shadow var(--motion-state) var(--ease-out);
-}
-.tz-decision-icon > svg {
-  animation: tz-glyph-in var(--motion-state) var(--ease-spring);
 }
 .tz-decision-title {
   display: grid;
@@ -6668,8 +6758,8 @@ a.tz-inline-citation {
 }
 .tz-approval-card .tz-decision-details {
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius);
-  background: var(--code-surface);
+  border-radius: var(--radius-item);
+  background: var(--surface-well);
   box-shadow: inset 0 0 0 0.5px var(--hairline);
   color: var(--text-secondary);
 }
@@ -6699,12 +6789,19 @@ a.tz-inline-citation {
   font-size: var(--text-meta);
 }
 /* Once decided, the card folds into a one-line receipt: a tinted mark, the
-   action, and the outcome. Everything else has done its job. */
+   action, and the outcome. Everything else has done its job. The fold, the
+   disc's pop and its check play only when the decision lands here, never
+   when a card mounts decided. */
 .tz-approval-card:is([data-state="approved"], [data-state="rejected"]) {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   padding-block: var(--space-3);
-  animation: tz-receipt-in calc(var(--motion-enter) + 160ms) var(--ease-out);
+}
+.tz-approval-card[data-changed]:is(
+    [data-state="approved"],
+    [data-state="rejected"]
+  ) {
+  animation: tz-receipt-in var(--motion-receipt) var(--ease-out);
 }
 .tz-approval-card:is([data-state="approved"], [data-state="rejected"])
   > :not(.tz-decision-heading, .tz-decision-status) {
@@ -6728,8 +6825,14 @@ a.tz-inline-citation {
   block-size: 22px;
   border-radius: 50%;
   box-shadow: none;
-  animation: tz-glyph-in calc(var(--motion-state) + 160ms) var(--ease-spring)
-    120ms both;
+}
+.tz-approval-card[data-changed]:is(
+    [data-state="approved"],
+    [data-state="rejected"]
+  )
+  .tz-decision-icon {
+  animation: tz-glyph-in var(--motion-state) var(--ease-out)
+    var(--motion-stagger) both;
 }
 .tz-approval-card:is([data-state="approved"], [data-state="rejected"])
   .tz-decision-icon
@@ -6756,17 +6859,10 @@ a.tz-inline-citation {
   from {
     opacity: 0;
     transform: translateY(4px);
-    filter: blur(2px);
   }
 }
 .tz-approval-card[data-state="failed"] .tz-decision-status {
   color: var(--danger);
-}
-@keyframes tz-card-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
 }
 .tz-ask-questions :is(h3, .tz-radio-group):focus-visible,
 .tz-approval-card:focus-visible,
@@ -6786,7 +6882,7 @@ a.tz-inline-citation {
 }
 .tz-decision-actions > .tz-button {
   white-space: normal;
-  height: auto;
+  block-size: auto;
   min-block-size: var(--control-small);
 }
 .tz-decision-actions .tz-button-label {
@@ -6797,7 +6893,7 @@ a.tz-inline-citation {
 .tz-decision-details,
 .tz-decision-status {
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--leading-meta);
 }
 .tz-decision-position,
 .tz-decision-note {
@@ -6812,8 +6908,12 @@ a.tz-inline-citation {
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--space-3);
 }
+/* A label such as «الهدف» wraps only between words: the card's
+   overflow-wrap: anywhere would let it shrink and split mid-word, so here a
+   word breaks only when it cannot fit a line on its own. */
 .tz-decision-facts dt {
   color: var(--text-muted);
+  overflow-wrap: break-word;
 }
 .tz-decision-facts dd {
   margin: 0;
@@ -6834,9 +6934,9 @@ a.tz-inline-citation {
   padding: var(--space-1);
   list-style: none;
   border: 1px solid transparent;
-  border-radius: calc(var(--radius) + 2px);
+  border-radius: var(--radius-paper);
   background: var(--surface);
-  box-shadow: var(--shadow-surface);
+  box-shadow: var(--shadow-paper);
   font-size: var(--text-meta);
 }
 .tz-decision-history > li {
@@ -6845,6 +6945,10 @@ a.tz-inline-citation {
   gap: var(--space-2);
   min-block-size: 28px;
   padding-inline: var(--space-2);
+}
+/* A receipt rises into the history only once a decision was recorded after
+   the flow mounted; history it mounts with stays still. */
+.tz-approval-flow[data-changed] .tz-decision-history > li {
   animation: tz-option-in var(--motion-state) var(--ease-out);
 }
 .tz-decision-history > li > bdi {
@@ -6887,14 +6991,14 @@ a.tz-inline-citation {
   display: flex;
   gap: 4px;
 }
+/* Only a step's color eases; the current step's extra length is set at once,
+   so no layout property animates. */
 .tz-question-steps > span {
   inline-size: 16px;
   block-size: 4px;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   background: var(--surface-hover);
-  transition:
-    background-color var(--motion-state) var(--ease-out),
-    inline-size var(--motion-state) var(--ease-out);
+  transition: background-color var(--motion-state) var(--ease-out);
 }
 .tz-question-steps > [data-state="done"] {
   background: color-mix(in srgb, var(--action) 45%, var(--surface-hover));
@@ -6920,6 +7024,9 @@ a.tz-inline-citation {
   margin-inline: calc(-1 * var(--space-2));
   counter-reset: tz-option;
 }
+/* Options are rows: they shade under the pointer and when chosen, and never
+   scale. They cascade in only once the question changed, never on mount and
+   never again when a 1–9 key picks one. */
 .tz-ask-questions .tz-radio-option {
   position: relative;
   align-items: flex-start;
@@ -6927,8 +7034,23 @@ a.tz-inline-citation {
   padding: var(--space-2);
   border-radius: var(--radius-item);
   counter-increment: tz-option;
+  transition: background-color var(--motion-fast) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-ask-questions[data-changed] .tz-radio-option {
   animation: tz-option-in var(--motion-state) var(--ease-out) both;
   animation-delay: calc(var(--option-index, 0) * var(--motion-stagger));
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-ask-questions .tz-radio-option:not(:has(:disabled)):hover {
+    background: var(--wash);
+  }
+}
+.tz-ask-questions .tz-radio-option:has(:checked) {
+  background: var(--wash);
+}
+.tz-ask-questions .tz-radio-option:has(:checked) > :is(bdi, .tz-radio-copy) {
+  font-weight: var(--weight-medium);
 }
 .tz-ask-questions .tz-radio-option:nth-child(2) {
   --option-index: 1;
@@ -7214,7 +7336,8 @@ a.tz-inline-citation {
 /* Floating surfaces share one entrance: they grow out of their anchor along
    Radix's computed origin and leave faster than they arrive. The Select list
    grows the same way (.tz-select-popup); the model and year lists only fade,
-   so an option never moves under a resting pointer. */
+   so an option never moves under a resting pointer, and the model list fades
+   out over the exit time. */
 .tz-datepicker-popup,
 .tz-context-details,
 .tz-citation-popup {
@@ -7235,6 +7358,9 @@ a.tz-inline-citation {
 .tz-model-popup,
 .tz-date-years-popup {
   animation: tz-select-in var(--motion-fast) var(--ease-out);
+}
+.tz-model-popup[data-state="closed"] {
+  animation: tz-fade-out var(--motion-exit) var(--ease-exit) forwards;
 }
 :is(.tz-citation-popup, .tz-context-details, .tz-selection-actions) {
   --enter-x: 0px;
@@ -7295,63 +7421,6 @@ a.tz-inline-citation {
     .tz-selection-actions
   ):dir(rtl)[data-side="top"][data-align="end"] {
   transform-origin: 0 100%;
-}
-
-/* One interaction feel for composite controls. Colors settle quickly; small
-   pressables sink and spring back; rows and cards only shade, because
-   scaling a wide surface reads as a wobble rather than a press. */
-:where(
-  .tz-sources-trigger,
-  .tz-source-row,
-  .tz-inline-citation,
-  .tz-context-trigger,
-  .tz-model-trigger,
-  .tz-model-option,
-  .tz-selection-actions button,
-  .tz-ask-questions .tz-radio-option,
-  .tz-ai-image-choice img
-) {
-  transition:
-    background-color var(--motion-fast) var(--ease-out),
-    border-color var(--motion-fast) var(--ease-out),
-    color var(--motion-fast) var(--ease-out),
-    box-shadow var(--motion-state) var(--ease-out),
-    outline-color var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
-  touch-action: manipulation;
-}
-:where(
-    .tz-sources-trigger,
-    .tz-inline-citation,
-    .tz-context-trigger,
-    .tz-model-trigger,
-    .tz-selection-actions button
-  ):not(:disabled):active {
-  transform: scale(0.95);
-  transition-duration:
-    var(--motion-fast), var(--motion-fast), var(--motion-fast),
-    var(--motion-state), var(--motion-fast), var(--motion-press);
-  transition-timing-function: var(--ease-out);
-}
-:where(.tz-source-row[href], .tz-model-option):active {
-  background: var(--surface-hover);
-}
-@media (hover: hover) and (pointer: fine) {
-  .tz-ask-questions .tz-radio-option:not(:has(:disabled)):hover {
-    background: var(--wash);
-  }
-  .tz-ai-image-choice:hover img {
-    border-color: var(--border-strong);
-  }
-}
-.tz-ask-questions .tz-radio-option:has(:checked) {
-  background: var(--wash);
-}
-.tz-ask-questions .tz-radio-option:has(:checked) > :is(bdi, .tz-radio-copy) {
-  font-weight: var(--weight-medium);
-}
-.tz-ai-image-choice:has(:checked) img {
-  outline-color: var(--action);
 }
 
 /* No synthesized italics: Arabic has no oblique tradition that leans right,
@@ -7456,20 +7525,6 @@ a.tz-inline-citation {
   }
 }
 
-/* One edge language for every surface. Cards sit on a hairline ring and a
-   one-pixel lift; floating layers carry the ring inside their shadow. The
-   transparent border stays so forced-colors mode still draws an outline.
-   Menus, toasts, modals, tooltips, cards, accordions and tables set theirs in
-   their own rules. */
-:is(
-  .tz-context-details,
-  .tz-citation-popup,
-  .tz-model-popup,
-  .tz-selection-actions
-) {
-  border-color: transparent;
-}
-
 /* Gliding highlight: one soft wash travels to the active row (useGlide).
    Rows stop painting their own highlight once the glide is attached. Only its
    position animates; a row of another height takes its size at once. Keyboard
@@ -7522,19 +7577,21 @@ a.tz-inline-citation {
 /* Checks and crosses draw themselves as a state lands on them. A check is
    drawn in handwriting order (short stroke first); a cross stroke by stroke.
    A Button's success check draws only after its state changed (data-changed),
-   never on mount, and so do the ColorPicker's check once the color changed and
-   a Steps check once its step became complete; an icon-only button's check
-   appears only after an action. The list sits in :where(), so the overrides
-   after it (a cross's own length and stroke delay, the receipt's delay, the
-   toast's shorter check) take effect. */
+   never on mount, and so do the ColorPicker's check once the color changed, a
+   Steps check once its step became complete, an approval receipt's mark once
+   its decision landed and a history mark once a decision was recorded; an
+   icon-only button's check appears only after an action. The list sits in
+   :where(), so the overrides after it (a cross's own length and stroke delay,
+   the receipt's delay, the toast's shorter check) take effect. The decision
+   delays are motion tokens, so keyboard modality zeroes them with the draw. */
 @keyframes tz-draw {
   from {
     stroke-dashoffset: var(--draw-from);
   }
 }
 :where(
-    .tz-decision-icon,
-    .tz-decision-mark,
+    .tz-approval-card[data-changed] .tz-decision-icon,
+    .tz-approval-flow[data-changed] .tz-decision-mark,
     .tz-step-indicator[data-changed],
     .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,
@@ -7547,8 +7604,8 @@ a.tz-inline-citation {
   --draw-from: -23;
 }
 :where(
-    .tz-decision-icon,
-    .tz-decision-mark,
+    .tz-approval-card[data-changed] .tz-decision-icon,
+    .tz-approval-flow[data-changed] .tz-decision-mark,
     .tz-step-indicator[data-changed],
     .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,
@@ -7566,7 +7623,7 @@ a.tz-inline-citation {
   --draw-from: 17;
 }
 :is(.tz-decision-icon, .tz-decision-mark) > .lucide-x path:nth-child(2) {
-  animation-delay: 150ms;
+  animation-delay: var(--motion-stagger);
 }
 .tz-toast > .lucide-circle-check {
   --draw: 12;
@@ -7577,7 +7634,7 @@ a.tz-inline-citation {
   .tz-decision-icon
   > svg
   path {
-  animation-delay: 240ms;
+  animation-delay: calc(var(--motion-stagger) + var(--motion-state));
 }
 
 /* Counts roll in from the direction they moved (Tick). */
@@ -7664,41 +7721,43 @@ a.tz-inline-citation {
     var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
 
-/* Opened sources arrive row by row; the folded marks fan out on hover. */
-.tz-sources-list > li {
+/* Sources opened after mount arrive row by row, the first four a stagger
+   apart and the rest together; the folded marks fan out on hover. */
+.tz-sources[data-changed] .tz-sources-list:not([hidden]) > li {
   animation: tz-option-in var(--motion-enter) var(--ease-out) both;
 }
-.tz-sources-list > li:nth-child(2) {
-  animation-delay: 30ms;
+.tz-sources[data-changed] .tz-sources-list:not([hidden]) > li:nth-child(2) {
+  animation-delay: var(--motion-stagger);
 }
-.tz-sources-list > li:nth-child(3) {
-  animation-delay: 60ms;
+.tz-sources[data-changed] .tz-sources-list:not([hidden]) > li:nth-child(3) {
+  animation-delay: calc(var(--motion-stagger) * 2);
 }
-.tz-sources-list > li:nth-child(4) {
-  animation-delay: 90ms;
-}
-.tz-sources-list > li:nth-child(n + 5) {
-  animation-delay: 120ms;
+.tz-sources[data-changed] .tz-sources-list:not([hidden]) > li:nth-child(n + 4) {
+  animation-delay: calc(var(--motion-stagger) * 3);
 }
 @media (hover: hover) and (pointer: fine) {
-  .tz-sources-trigger:hover .tz-sources-marks > bdi + bdi {
-    margin-inline-start: -2px;
+  .tz-sources-trigger:hover .tz-sources-marks > span:nth-child(2) {
+    transform: translateX(var(--fan));
+  }
+  .tz-sources-trigger:hover .tz-sources-marks > span:nth-child(3) {
+    transform: translateX(calc(var(--fan) * 2));
   }
 }
 /* A portrait fades over its initials once it has loaded. */
 .tz-avatar img:not([hidden]) {
   animation: tz-fade-in var(--motion-state) var(--ease-out);
 }
-/* Selection actions unfold from the first action outward. */
+/* Selection actions unfold from the first action outward, a stagger apart;
+   from the fourth on they arrive together. */
 .tz-selection-actions > button {
   animation: tz-option-in var(--motion-enter) var(--ease-out) both;
 }
 .tz-selection-actions > button:nth-child(2) {
-  animation-delay: 25ms;
+  animation-delay: var(--motion-stagger);
 }
 .tz-selection-actions > button:nth-child(3) {
-  animation-delay: 50ms;
+  animation-delay: calc(var(--motion-stagger) * 2);
 }
 .tz-selection-actions > button:nth-child(n + 4) {
-  animation-delay: 75ms;
+  animation-delay: calc(var(--motion-stagger) * 3);
 }

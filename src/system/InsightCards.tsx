@@ -4,8 +4,9 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "./Badge";
 import type { BadgeTone } from "./Badge";
 import { Button } from "./Button";
-import { Card, CardTitle } from "./Card";
+import { CardTitle } from "./Card";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
 export interface InsightItem {
   id: string;
@@ -46,6 +47,8 @@ export function InsightCards({
     ),
     item = items[index];
   if (item && item.id !== selected) setSelected(item.id);
+  // A finding fades in only when another one is shown, never on mount.
+  const changed = useChanged(item?.id);
   if (!item)
     return (
       <p className={`tz-insights-empty ${className}`}>
@@ -57,6 +60,7 @@ export function InsightCards({
   return (
     <div
       className={`tz-insights ${className}`}
+      data-changed={changed || undefined}
       role="group"
       aria-label={labels?.title ?? (ar ? "النتائج" : "Insights")}
     >
@@ -104,14 +108,18 @@ export function InsightCards({
         <CardTitle dir="auto">{item.title}</CardTitle>
         {((item.details !== undefined && item.details !== null) ||
           item.label) && (
-          <Card className="tz-insight-detail">
+          <div className="tz-insight-detail">
             {item.label && <Badge tone={item.tone}>{item.label}</Badge>}
             {item.details}
-          </Card>
+          </div>
         )}
         {item.action && (
           <Button variant="secondary" size="sm" onClick={item.action.onClick}>
-            <ArrowUpRight size={14} aria-hidden="true" />
+            <ArrowUpRight
+              size={14}
+              aria-hidden="true"
+              className="tz-mirror-rtl"
+            />
             {item.action.label}
           </Button>
         )}

@@ -131,7 +131,11 @@ export function ContextMeter({
             / {c ? compact.format(capacity) : "—"}
           </bdi>
         </span>
-        {status && <span className="tz-context-status">{status}</span>}
+        {status && (
+          <span className="tz-context-status" data-tone={tone}>
+            {status}
+          </span>
+        )}
       </Popover.Trigger>
       <Popover.Portal container={container}>
         <Popover.Content

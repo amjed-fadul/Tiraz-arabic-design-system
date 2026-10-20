@@ -173,9 +173,13 @@
   --motion-toast-exit: 150ms;
   --motion-collapse: 200ms;
   --motion-collapse-exit: 150ms;
+  /* A decided approval folds into its one-line receipt. */
+  --motion-receipt: 240ms;
   --motion-progress: 240ms;
-  /* A status glyph draws its check or cross when the system sets the status. */
+  /* A status glyph draws its check or cross when the system sets the status,
+     and a generated image crossfades in once it has loaded. */
   --motion-status: 200ms;
+  --motion-reveal: 240ms;
   /* Stagger and word are gaps between items, and a streamed word settles over
      the word settle; the loops are decorative. */
   --motion-stagger: 40ms;
@@ -188,6 +192,8 @@
   --motion-loop-caret: 1100ms;
   --motion-loop-spinner: 800ms;
   --motion-loop-progress: 1500ms;
+  --motion-loop-pixel: 650ms;
+  --motion-loop-orbit: 950ms;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
@@ -285,8 +291,10 @@
   --motion-toast-exit: 0ms;
   --motion-collapse: 0ms;
   --motion-collapse-exit: 0ms;
+  --motion-receipt: 0ms;
   --motion-progress: 0ms;
   --motion-status: 0ms;
+  --motion-reveal: 0ms;
   --motion-stagger: 0ms;
   --motion-word: 0ms;
   --motion-word-settle: 0ms;
@@ -297,6 +305,8 @@
   --motion-loop-caret: 0ms;
   --motion-loop-spinner: 0ms;
   --motion-loop-progress: 0ms;
+  --motion-loop-pixel: 0ms;
+  --motion-loop-orbit: 0ms;
 }
 @media (prefers-reduced-motion: reduce) {
   .tiraz-system {
@@ -315,8 +325,10 @@
     --motion-toast-exit: 0ms;
     --motion-collapse: 0ms;
     --motion-collapse-exit: 0ms;
+    --motion-receipt: 0ms;
     --motion-progress: 0ms;
     --motion-status: 0ms;
+    --motion-reveal: 0ms;
     --motion-stagger: 0ms;
     --motion-word: 0ms;
     --motion-word-settle: 0ms;
@@ -327,6 +339,8 @@
     --motion-loop-caret: 0ms;
     --motion-loop-spinner: 0ms;
     --motion-loop-progress: 0ms;
+    --motion-loop-pixel: 0ms;
+    --motion-loop-orbit: 0ms;
   }
   .tiraz-system *,
   .tiraz-system *::before,
@@ -349,8 +363,8 @@
 }
 /* Keyboard actions never animate: under keyboard modality interaction motion
    is instant and presses do not scale. Streamed words, status glyphs, the
-   progress fill and the decorative loops follow the system, not a key, so
-   they keep their timing. */
+   progress fill, a loaded image's reveal and the decorative loops follow the
+   system, not a key, so they keep their timing. */
 .tiraz-system[data-modality="keyboard"] {
   --motion-press: 0ms;
   --motion-release: 0ms;
@@ -367,6 +381,7 @@
   --motion-toast-exit: 0ms;
   --motion-collapse: 0ms;
   --motion-collapse-exit: 0ms;
+  --motion-receipt: 0ms;
   --motion-stagger: 0ms;
   --press-scale: 1;
 }

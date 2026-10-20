@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import * as system from "./index";
@@ -35,6 +35,27 @@ it.each([
     if (detail) expect(screen.getByRole("dialog")).toHaveTextContent(detail);
     if (used === 120)
       expect(screen.getByRole("dialog")).toHaveTextContent("Over capacity");
+  },
+);
+
+it.each([
+  [85, "high", "Filling up"],
+  [97, "near", "Near capacity"],
+  [120, "over", "Over capacity"],
+] as const)(
+  "gives the status text at %s of 100 the %s tone, in the trigger and the details",
+  async (used, tone, status) => {
+    const user = userEvent.setup();
+    render(wrap(<system.ContextMeter used={used} capacity={100} />));
+    const trigger = screen.getByRole("button", { name: new RegExp(status) });
+    expect(within(trigger).getByText(status)).toHaveAttribute(
+      "data-tone",
+      tone,
+    );
+    await user.click(trigger);
+    expect(
+      within(screen.getByRole("dialog")).getByText(status),
+    ).toHaveAttribute("data-tone", tone);
   },
 );
 

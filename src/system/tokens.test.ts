@@ -404,8 +404,10 @@ const motion = {
   "--motion-toast-exit": "150ms",
   "--motion-collapse": "200ms",
   "--motion-collapse-exit": "150ms",
+  "--motion-receipt": "240ms",
   "--motion-progress": "240ms",
   "--motion-status": "200ms",
+  "--motion-reveal": "240ms",
   "--motion-stagger": "40ms",
   "--motion-word": "34ms",
   "--motion-word-settle": "300ms",
@@ -416,6 +418,8 @@ const motion = {
   "--motion-loop-caret": "1100ms",
   "--motion-loop-spinner": "800ms",
   "--motion-loop-progress": "1500ms",
+  "--motion-loop-pixel": "650ms",
+  "--motion-loop-orbit": "950ms",
 };
 
 /** Colors and shadows; their values are held to the rules below, not pinned. */
@@ -805,6 +809,7 @@ it("zeroes interaction motion under keyboard modality", () => {
     "--motion-toast-exit",
     "--motion-collapse",
     "--motion-collapse-exit",
+    "--motion-receipt",
     "--motion-stagger",
   ];
   const keyboard = readRule(KEYBOARD);
@@ -815,13 +820,15 @@ it("zeroes interaction motion under keyboard modality", () => {
   expect(keyboard["--press-scale"]).toBe("1");
 
   // Every other motion token on the root is a streamed word, a status glyph,
-  // the progress fill or a decorative loop, which the system drives, so a new
-  // interaction token is not missed, and those keep their time.
+  // the progress fill, an image reveal or a decorative loop, which the system
+  // drives, so a new interaction token is not missed, and those keep their time.
   const kept = Object.keys(readRule(BASE)).filter(
     (name) => name.startsWith("--motion-") && !interaction.includes(name),
   );
   expect(kept.sort()).toEqual([
     "--motion-loop-caret",
+    "--motion-loop-orbit",
+    "--motion-loop-pixel",
     "--motion-loop-progress",
     "--motion-loop-shimmer",
     "--motion-loop-skeleton",
@@ -829,6 +836,7 @@ it("zeroes interaction motion under keyboard modality", () => {
     "--motion-loop-stitch",
     "--motion-loop-turn",
     "--motion-progress",
+    "--motion-reveal",
     "--motion-status",
     "--motion-word",
     "--motion-word-settle",

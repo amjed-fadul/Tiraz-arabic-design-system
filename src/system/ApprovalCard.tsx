@@ -5,6 +5,7 @@ import { Alert } from "./Alert";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 import { useDecisionTask } from "./decision-task";
 export type ApprovalDecision = "approved" | "rejected";
 export interface ApprovalRequest {
@@ -60,6 +61,9 @@ function ApprovalCardInstance({
           value.requestKey === approvalRequestKey(request)
         ? value.decision
         : null;
+  // The receipt folds in and its glyph pops and draws only once a decision
+  // lands here, never when the card mounts already decided.
+  const changed = useChanged(decision);
   const root = useRef<HTMLDivElement>(null),
     hadFocus = useRef(false);
   useLayoutEffect(() => {
@@ -106,6 +110,7 @@ function ApprovalCardInstance({
       aria-describedby={`${id}-scope`}
       className={`tz-approval-card ${className}`}
       data-state={state}
+      data-changed={changed || undefined}
       onFocusCapture={() => {
         hadFocus.current = true;
       }}
