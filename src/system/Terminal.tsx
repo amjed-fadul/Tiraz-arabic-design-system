@@ -3,6 +3,7 @@ import { Check, Copy, Terminal as TerminalIcon } from "lucide-react";
 import { Button } from "./Button";
 import type { InputCopyLabels } from "./InputCopy";
 import { numberLocale } from "./config";
+import { StatusIcon } from "./StatusIcon";
 import { useExactCopy } from "./useExactCopy";
 import { useSystem } from "./useSystem";
 export interface TerminalProps {
@@ -70,6 +71,7 @@ export function Terminal({
         <span className="tz-terminal-meta">
           {duration && <bdi>{duration}</bdi>}
           <span className="tz-terminal-state">
+            <StatusIcon state={state} />
             {state === "running"
               ? ar
                 ? "جارٍ التشغيل"

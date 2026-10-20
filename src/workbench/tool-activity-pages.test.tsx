@@ -85,7 +85,7 @@ it("retries a failed save in the tool-call playground until it completes, with t
   expect(save()).toHaveTextContent(
     "حُفظ الملف في Finance/2026/october-summary.md",
   );
-  expect(save()).toHaveTextContent("1.2s");
+  expect(save()).toHaveTextContent("١٫٢ث");
   // Replay plays the save from waiting to done.
   fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
   expect(save()).toHaveAttribute("data-state", "pending");

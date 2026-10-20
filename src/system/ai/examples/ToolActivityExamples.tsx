@@ -1,6 +1,6 @@
 import { FileText, PackageOpen, Save, SpellCheck } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import { ToolCall, ToolChips, useSystem } from "../../index";
+import { ToolCall, ToolChips, numberLocale, useSystem } from "../../index";
 import type { ToolCallState } from "../../index";
 type Language = "ar" | "en";
 const clause =
@@ -22,7 +22,11 @@ export function ToolCallExample({
   phase?: string;
   onPhaseChange?: (phase: string) => void;
 }) {
-  const ar = language === "ar";
+  const ar = language === "ar",
+    { config } = useSystem(),
+    // Durations are display text you format, in the reader's digits.
+    number = new Intl.NumberFormat(numberLocale(config, language)),
+    second = ar ? "ث" : "s";
   // Retrying the failed save runs it again, and this time it succeeds.
   const [local, setLocal] = useState<ToolCallState>("failed"),
     retryTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -45,7 +49,7 @@ export function ToolCallExample({
         tool="read_file"
         icon={<FileText />}
         state="completed"
-        duration="0.4s"
+        duration={`${number.format(0.4)}${second}`}
         defaultExpanded={defaultExpanded}
         input={JSON.stringify(
           { path: "contracts/2026/al-nada-supply.pdf" },
@@ -97,7 +101,9 @@ export function ToolCallExample({
               : "Saved to Finance/2026/october-summary.md"
             : undefined
         }
-        duration={save === "completed" ? "1.2s" : undefined}
+        duration={
+          save === "completed" ? `${number.format(1.2)}${second}` : undefined
+        }
         onRetry={retry}
         announcement="off"
       />
@@ -185,7 +191,8 @@ function useReducedMotion() {
 export function ToolActivityDemo({ language = "ar" }: { language?: Language }) {
   const ar = language === "ar",
     uid = useId(),
-    reduced = useReducedMotion();
+    reduced = useReducedMotion(),
+    { config } = useSystem();
   const [read, setRead] = useState<ToolCallState>(
       reduced ? "completed" : "running",
     ),
@@ -261,7 +268,11 @@ export function ToolActivityDemo({ language = "ar" }: { language?: Language }) {
               ? '{ "files": 3, "renewals_due": 1 }'
               : undefined
           }
-          duration={read === "completed" ? "1.2s" : undefined}
+          duration={
+            read === "completed"
+              ? `${new Intl.NumberFormat(numberLocale(config, language)).format(1.2)}${ar ? "ث" : "s"}`
+              : undefined
+          }
         />
         <ToolCall
           label={ar ? "حفظ ملخص التجديدات" : "Save renewals summary"}

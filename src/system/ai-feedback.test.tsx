@@ -156,6 +156,22 @@ it("recovers panel focus when the host replaces focused details during controlle
   expect(screen.getByRole("button", { name: "Ready" })).toHaveFocus();
 });
 
+it("has no change hook when a ThinkingState mounts completed, only after its state changes", () => {
+  const view = render(
+    <System.ThinkingState label="Ready" active={false} defaultExpanded>
+      <p>Summary supplied by host</p>
+    </System.ThinkingState>,
+  );
+  const root = view.container.querySelector(".tz-thinking-state")!;
+  expect(root).not.toHaveAttribute("data-changed");
+  view.rerender(
+    <System.ThinkingState label="Preparing" active defaultExpanded>
+      <p>Summary supplied by host</p>
+    </System.ThinkingState>,
+  );
+  expect(root).toHaveAttribute("data-changed");
+});
+
 it("keeps host elapsed ticks out of the stable loading announcement for each grid variant", () => {
   const view = render(
     <System.LoadingState

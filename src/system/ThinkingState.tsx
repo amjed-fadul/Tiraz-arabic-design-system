@@ -1,6 +1,7 @@
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
+import { useChanged } from "./useChanged";
 
 export type ThinkingStateProps = Omit<
   ComponentPropsWithRef<"div">,
@@ -37,6 +38,8 @@ export function ThinkingState({
     panel = useRef<HTMLDivElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null),
     previous = useRef(open);
+  // The completed label fades in only once the state changed, never on mount.
+  const changed = useChanged(active);
   // Same focus recovery rule as TaskRows: recover from this panel only, never
   // reclaim a deliberate move elsewhere. The host may replace the focused child
   // in the same commit as collapse, so membership after commit is not required.
@@ -59,6 +62,7 @@ export function ThinkingState({
       className={`tz-thinking-state ${className}`}
       data-active={active}
       data-expanded={open}
+      data-changed={changed || undefined}
     >
       <span
         className="tz-visually-hidden"

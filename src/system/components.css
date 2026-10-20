@@ -4550,7 +4550,9 @@ textarea.tz-textarea:read-only {
 .tz-thinking-state[data-expanded="true"] .tz-thinking-state-chevron {
   transform: rotate(180deg);
 }
-.tz-thinking-completed {
+/* The completed label fades in only after the state changed (data-changed),
+   never when a finished state mounts. */
+.tz-thinking-state[data-changed] .tz-thinking-completed {
   animation: tz-ai-complete var(--motion-state) var(--ease-out) both;
 }
 @keyframes tz-ai-complete {
@@ -4612,6 +4614,9 @@ textarea.tz-textarea:read-only {
   gap: var(--space-2);
   min-block-size: 28px;
   min-inline-size: 0;
+}
+/* Steps rise in only while the work is live; a finished list stays still. */
+.tz-thinking-state[data-active="true"] .tz-thinking-steps > li {
   animation: tz-ai-word-in var(--motion-state) var(--ease-out) both;
 }
 .tz-thinking-steps > li > svg {
@@ -5030,10 +5035,16 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-code-token[data-kind="number"] {
   color: var(--code-number);
 }
+/* Answers are set for reading (spec section 7.2): the reading size and its
+   leading, wherever Markdown or streamed text appears. */
+.tz-markdown,
+.tz-streaming-text {
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
 .tz-markdown {
   min-inline-size: 0;
   overflow-wrap: anywhere;
-  line-height: var(--line-height);
 }
 .tz-markdown > :first-child {
   margin-block-start: 0;
@@ -5070,8 +5081,9 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-markdown ul ul {
   list-style-type: circle;
 }
+/* List numbers follow the provider's direction and numerals. */
 .tz-markdown ol {
-  list-style-type: decimal;
+  list-style-type: var(--key-digits);
 }
 .tz-markdown :is(ul, ol) {
   padding-inline-start: var(--space-6);
@@ -5575,8 +5587,10 @@ button.tz-tool-chip[aria-expanded="true"] {
   overflow-anchor: none;
   padding: var(--space-2);
 }
+/* The thread is a focusable scroll region, so its ring sits inside its edge. */
 .tz-chat-thread:focus-visible {
-  outline: none;
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
 }
 .tz-chat-messages {
   display: flex;
@@ -5604,6 +5618,10 @@ button.tz-tool-chip[aria-expanded="true"] {
   border-radius: var(--radius-paper);
   border-end-end-radius: var(--radius-small);
   line-height: var(--line-height);
+}
+/* Text rendered inside a bubble keeps the bubble's body leading. */
+.tz-chat-message[data-role="user"] :is(.tz-markdown, .tz-streaming-text) {
+  line-height: inherit;
 }
 .tz-chat-message[data-role="user"] .tz-chat-identity {
   justify-content: flex-end;
@@ -7041,35 +7059,17 @@ a.tz-inline-citation {
   align-items: center;
   gap: var(--space-2);
 }
+/* The run's state is the shared, neutral StatusIcon: an arc while running, a
+   check on success and a cross on danger. It is sized to the meta line, as in
+   ToolChips. */
 .tz-terminal-state {
+  --status-size: 18px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
 }
-.tz-terminal-state::before {
-  content: "";
-  inline-size: 6px;
-  block-size: 6px;
-  border-radius: 50%;
-  background: var(--success);
-}
-/* Running is neutral, done is success and failed is danger. */
-.tz-terminal[data-state="running"] .tz-terminal-state::before {
-  background: var(--text-secondary);
-  animation: tz-status-pulse var(--motion-loop-pulse) var(--ease-in-out)
-    infinite;
-}
 .tz-terminal[data-state="failed"] .tz-terminal-state {
   color: var(--danger);
-}
-.tz-terminal[data-state="failed"] .tz-terminal-state::before {
-  background: var(--danger);
-}
-@keyframes tz-status-pulse {
-  50% {
-    opacity: 0.35;
-    transform: scale(0.8);
-  }
 }
 .tz-terminal pre {
   direction: ltr;
@@ -7159,10 +7159,6 @@ a.tz-inline-citation {
 }
 .tz-chat-app-content > .tz-chat-thread {
   flex: 1;
-}
-.tz-chat-app-content > .tz-chat-thread:focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: -2px;
 }
 .tz-chat-app-composer {
   flex: none;
