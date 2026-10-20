@@ -201,6 +201,9 @@ bdi {
     background: Highlight;
     color: HighlightText;
   }
+  .component-nav button[aria-current="page"]:focus-visible {
+    outline-color: CanvasText;
+  }
 }
 .docs-workspace {
   min-inline-size: 0;

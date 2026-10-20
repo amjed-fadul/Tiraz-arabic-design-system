@@ -1976,7 +1976,7 @@
       "state": "Fully host driven text and streaming/completed state. No internal queue, transport, timer or token accounting.",
       "accessibility": [
         "Content is readable without a live region. One concise state status, with optional translated statusLabel or announcement=off for host ownership.",
-        "Plain text uses stable word spans with a brief 360ms soft reveal and trailing cursor while streaming. Completion removes cursor and stops reveal. System and OS reduced motion suppress decoration and show all supplied content immediately.",
+        "Plain text uses stable word spans with a brief 300ms soft reveal (`--motion-word-settle`) and trailing cursor while streaming. Completion removes cursor and stops reveal. System and OS reduced motion suppress decoration and show all supplied content immediately.",
         "Markdown mode composes the same renderer, reparsing partial syntax/fences; existing settled nodes stay mounted where parser structure is unchanged."
       ],
       "limitations": [
