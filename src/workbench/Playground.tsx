@@ -1,4 +1,5 @@
 import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
+import { TaskStarterExample } from "../system/ai/examples/TaskStarterExamples";
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
@@ -309,6 +310,15 @@ export function Playground({
   onPhaseChange,
 }: Props) {
   const t = words(language);
+  if (component === "task-starter")
+    return (
+      <TaskStarterExample
+        language={language}
+        {...(model as Playgrounds["task-starter"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
   if (component === "cited-answer")
     return (
       <CitedAnswerExample

@@ -1,6 +1,15 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "task-starter",
+    name: ["ابدأ مهمة", "Start a task"],
+    description: [
+      "يبدأ أي طلب من الصفحة التي أنت فيها، ومعه السجلات المناسبة.",
+      "Start any request from the page you are on, with the right records attached.",
+    ],
+    file: "TaskStarter.tsx",
+  },
+  {
     id: "cited-answer",
     name: ["إجابة موثّقة", "Cited answer"],
     description: [
@@ -670,6 +679,7 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "task-starter",
       "cited-answer",
       "agent-task",
       "change-summary",

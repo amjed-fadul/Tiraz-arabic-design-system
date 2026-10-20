@@ -1013,6 +1013,26 @@
       "source": "AgentTask.tsx"
     },
     {
+      "name": "TaskStarter",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "TaskStarterProps",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "TaskStarterLabels",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "ContextItem",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "ModeOption",
+      "source": "TaskStarter.tsx"
+    },
+    {
       "name": "CitedAnswer",
       "source": "CitedAnswer.tsx"
     },
@@ -1164,6 +1184,243 @@
     }
   },
   "components": [
+    {
+      "id": "task-starter",
+      "api": "TaskStarter",
+      "source": "TaskStarter.tsx",
+      "kind": "pattern",
+      "parts": [
+        "chat-composer",
+        "prompt-bar",
+        "model-selector",
+        "context-meter",
+        "status-pill",
+        "tray"
+      ],
+      "states": ["empty", "writing", "choosing-mode", "submitting", "disabled"],
+      "events": [
+        "onValueChange",
+        "onSubmit",
+        "onRemoveContext",
+        "onAttach",
+        "onVoice",
+        "onAddContext",
+        "onMention",
+        "onModeChange",
+        "onModelChange",
+        "onModeMenuOpenChange",
+        "onSuggestion",
+        "onOpenRecent"
+      ],
+      "exports": [
+        "TaskStarter",
+        "TaskStarterProps",
+        "TaskStarterLabels",
+        "ContextItem",
+        "ModeOption"
+      ],
+      "purpose": "Start any request from the page you are on, with the right records attached: a greeting, a text area with chips for the attached records, a tools row (attach, the @ picker, the mode menu, dictate, send), suggestions from the current page and a list of recent tasks.",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "note": "The draft, owned by the host."
+        },
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true
+        },
+        {
+          "name": "onSubmit",
+          "type": "(value: string, context: ContextItem[]) => void | Promise<void>",
+          "required": true,
+          "note": "Enter or Send hands over the draft exactly as written and a copy of the attached records. A rejected promise keeps the draft and shows the reason as text under the entry, only while the text still equals the failed draft. While the promise is pending the text area is read-only, send shows progress, a repeat is blocked and the suggestions are disabled."
+        },
+        {
+          "name": "context",
+          "type": "readonly ContextItem[]",
+          "required": false,
+          "note": "The records attached to the request, shown as chips above the text area. ContextItem is { id, label, kind?, icon? }."
+        },
+        {
+          "name": "onRemoveContext",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "Gives each chip a remove button. Backspace in an empty text area never removes a chip."
+        },
+        {
+          "name": "onAttach",
+          "type": "() => void",
+          "required": false,
+          "note": "Shows the attach button. An intent only: the pattern uploads nothing."
+        },
+        {
+          "name": "onVoice",
+          "type": "() => void",
+          "required": false,
+          "note": "Shows the dictate button. An intent only: the pattern recognizes no speech."
+        },
+        {
+          "name": "mentionOptions",
+          "type": "readonly ContextItem[]",
+          "required": false,
+          "note": "The records \"@\" offers. Typing @ at the start of the text or after a space, or pressing the @ button, opens a listbox of the ones not yet attached whose labels hold what follows the @. The text area becomes the combobox: it keeps focus and owns aria-expanded, aria-controls, aria-autocomplete=\"list\" and aria-activedescendant. ArrowDown and ArrowUp move, Enter chooses, Escape closes the picker and goes no further. Keys from an input method never move or choose, and text that is still being composed never opens it (an open picker keeps filtering as the word is composed)."
+        },
+        {
+          "name": "onAddContext",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "Called with the chosen record's id; the host adds it to context. The \"@word\" is removed from the draft through onValueChange."
+        },
+        {
+          "name": "onMention",
+          "type": "(query: string) => void",
+          "required": false,
+          "note": "Used when mentionOptions is absent, so the host opens its own picker: each change to the @ word calls it with what follows the @, and the @ button calls it with an empty string."
+        },
+        {
+          "name": "modes",
+          "type": "readonly ModeOption[]",
+          "required": false,
+          "note": "The modes, as radio items with descriptions in the mode menu. ModeOption is { id, label, description? }. The menu shows when modes or models is given."
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": false,
+          "note": "The current mode's id."
+        },
+        {
+          "name": "onModeChange",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "Called when a different mode is chosen; the host sets mode."
+        },
+        {
+          "name": "models",
+          "type": "readonly ModelOption[]",
+          "required": false,
+          "note": "Explicit models, as a second radio section of the same menu. An unavailable model shows disabled with its reason."
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "required": false,
+          "note": "The current model's id."
+        },
+        {
+          "name": "onModelChange",
+          "type": "(id: string) => void",
+          "required": false
+        },
+        {
+          "name": "contextUsage",
+          "type": "ContextMeterProps",
+          "required": false,
+          "note": "The existing ContextMeter data. A ring beside the mode shows how much is used, in the meter's tones from its thresholds, and the menu ends with a bar and «السياق المستخدم ٣٢٪ · سجلّان مرفقان», whose count agrees in Arabic."
+        },
+        {
+          "name": "suggestions",
+          "type": "readonly { id: string; label: string; prompt?: string; icon?: ReactNode }[]",
+          "required": false,
+          "note": "Suggestions from the current page. They stay while the person types (PromptBar hides them) and are disabled while submitting."
+        },
+        {
+          "name": "onSuggestion",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "Called with the chosen suggestion's id; the host fills the draft with its prompt or label, or sends."
+        },
+        {
+          "name": "recent",
+          "type": "readonly { id: string; title: string; status: StatusPillState; time: ReactNode }[]",
+          "required": false,
+          "note": "Recent tasks, each with a status pill and a relative time the host writes."
+        },
+        {
+          "name": "onOpenRecent",
+          "type": "(id: string) => void",
+          "required": false
+        },
+        {
+          "name": "greeting",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The small line above the question."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The question; «ماذا نُنجز اليوم؟» by default."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Turns off the text area, the tools, the chips' remove buttons and the suggestions."
+        },
+        {
+          "name": "disabledReason",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Why the assistant cannot take a request, as a line under the entry that the text area is described by."
+        },
+        {
+          "name": "modeMenuOpen",
+          "type": "boolean",
+          "required": false,
+          "note": "Controls the mode menu; pair it with onModeMenuOpenChange."
+        },
+        {
+          "name": "onModeMenuOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The question's level; the recent list's is one lower."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<TaskStarterLabels>",
+          "required": false,
+          "note": "Replaces any built-in text."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "card sits on a tray with the field on paper; plain drops the tray and lives on its host's paper, keeping the field's hairline."
+        }
+      ],
+      "state": "The host owns the draft, the attached records, the mode and the model. The pattern keeps only what the moment needs: the @ word at the caret, which option is active and whether a submission is pending. It never runs a request: onSubmit hands the draft and the records to the host.",
+      "accessibility": [
+        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. A failed send is announced and shown by the entry's own status.",
+        "The @ picker is a standard combobox on the text area: focus never leaves it, aria-activedescendant names the active option, and Escape closes the picker, not the page. A held Enter acts once. Keys from an input method (composition events, isComposing and keyCode 229) never choose, move or send.",
+        "The mode menu is a Radix menu of radio items: arrows move, Escape closes it and returns focus to the button, Tab closes it. The button's name is «الوضع: تلقائي» and it is described by «السياق المستخدم ٣٢٪».",
+        "When a change removes the focused control (a chip's remove button), focus moves to the section."
+      ],
+      "limitations": [
+        "No model call, upload, speech recognition or transport: attach and dictate are intents. The listbox is anchored to the tools row, not to the caret, which cannot be measured reliably in right-to-left text.",
+        "Records already in context are not offered again. The @ word ends at a space, so the query is one word. Digits follow config.numerals; the percent is formatted without direction marks."
+      ],
+      "alternative": "Use ChatComposer for a reply inside a conversation, PromptBar for a compact prompt with suggestions, and Input for plain search with no assistant.",
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu@2.2.0",
+        "@radix-ui/react-popper@1.4.0"
+      ],
+      "examples": ["ai/examples/TaskStarterExamples.tsx"]
+    },
     {
       "id": "cited-answer",
       "api": "CitedAnswer",
@@ -2212,6 +2469,23 @@
           "name": "className",
           "type": "string",
           "required": false
+        },
+        {
+          "name": "thresholds",
+          "type": "{ high?: number; near?: number }",
+          "required": false,
+          "note": "Where the status moves, as a share of capacity: high (0.8) is where the meter reads Filling up and near (0.95) where it reads Near capacity. Over capacity is always above 1."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "note": "Controls the details; pair it with onOpenChange."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false
         }
       ],
       "state": "Compact ring and counts with a keyboard-operated details popover. Values are host supplied; estimates are explicitly labeled.",
@@ -2269,6 +2543,12 @@
           "type": "\"sm\" | \"md\"",
           "required": false,
           "default": "sm"
+        },
+        {
+          "name": "labels",
+          "type": "{ unavailable?: string }",
+          "required": false,
+          "note": "The word beside a model that cannot be chosen; «غير متاح» or \"Unavailable\" by default. It is also read in the option's description."
         },
         {
           "name": "className",
@@ -2562,6 +2842,27 @@
           "name": "labels",
           "type": "ChatEntryLabels",
           "required": false
+        },
+        {
+          "name": "tools",
+          "type": "{ start?: ReactNode; end?: ReactNode }",
+          "required": false,
+          "note": "Controls on a row under the text area: start, a flexible space, end, and send last. Without tools send sits beside the text area. Start a task puts attach, the @ button, the mode menu and dictate here."
+        },
+        {
+          "name": "compact",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "The bounded entry that PromptBar draws: one line, growing to 80px."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "plain drops the floating shadow, for an entry inside another surface; a hairline keeps the field's edge."
         }
       ],
       "state": "Fully controlled value/onValueChange. Host owns acceptance, clearing, cancellation and execution state. Internal pending lock only.",
@@ -2573,7 +2874,7 @@
       ],
       "limitations": [
         "Whitespace-only submission blocked without trimming valid text. onSubmit may throw or reject; generic localized failure is shown, host may retry. Never clears draft automatically. Prevent duplicate sends while pending or host is busy.",
-        "Streaming Stop is shown only when onStop exists; busy state allows editing the next draft. No uploads, model menus, dictation, history or queue."
+        "Streaming Stop is shown only when onStop exists; busy state allows editing the next draft. A host that sets state to submitting sees the send button show progress. No uploads, model menus, dictation, history or queue of its own: tools holds the host's controls."
       ],
       "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission. dir defaults to the provider direction rather than auto; the host can override it explicitly.",
       "alternative": "ChatComposer for multiline conversation replies; PromptBar for compact task prompts; Textarea for ordinary forms.",
@@ -2624,13 +2925,14 @@
         },
         {
           "name": "suggestions",
-          "type": "string[]",
+          "type": "(string | { id: string; label: string; prompt?: string; icon?: ReactNode })[]",
           "required": false
         },
         {
           "name": "onSuggestionSelect",
           "type": "(suggestion: string) => void",
-          "required": false
+          "required": false,
+          "note": "Receives the suggestion's prompt, or its label when it has no prompt (a string suggestion is its own label)."
         }
       ],
       "state": "Fully controlled value/onValueChange. Host owns acceptance, clearing, cancellation and execution state. Internal pending lock only.",
@@ -8308,6 +8610,154 @@
         {
           "name": "retry",
           "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "ContextItem",
+      "source": "TaskStarter.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "kind",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "icon",
+          "type": "ReactNode",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "ModeOption",
+      "source": "TaskStarter.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "TaskStarterLabels",
+      "source": "TaskStarter.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "field",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attach",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "mention",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "voice",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "send",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failure",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "removeContext",
+          "type": "(name: string) => string",
+          "required": true
+        },
+        {
+          "name": "contextAdded",
+          "type": "(name: string) => string",
+          "required": true
+        },
+        {
+          "name": "contextRemoved",
+          "type": "(name: string) => string",
+          "required": true
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "unavailable",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "used",
+          "type": "(percent: string) => string",
+          "required": true
+        },
+        {
+          "name": "attached",
+          "type": "(count: number, records: string) => string",
+          "required": true
+        },
+        {
+          "name": "suggestions",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "recent",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "recentStates",
+          "type": "Record<StatusPillState, string>",
           "required": true
         }
       ]

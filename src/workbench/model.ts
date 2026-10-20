@@ -281,6 +281,7 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "task-starter": { appearance: "card" | "plain"; disabled: boolean };
   "cited-answer": { appearance: "card" | "plain"; question: boolean };
   "agent-task": { appearance: "card" | "plain"; autoStart: boolean };
   "change-summary": { appearance: "card" | "plain" };
@@ -425,6 +426,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
+    "task-starter": { appearance: "card", disabled: false },
     "cited-answer": { appearance: "card", question: true },
     "agent-task": { appearance: "card", autoStart: true },
     "change-summary": { appearance: "card" },

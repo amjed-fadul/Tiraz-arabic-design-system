@@ -126,13 +126,22 @@ it("suggestions populate only through the host callback", () => {
         value=""
         onValueChange={() => {}}
         onSubmit={send}
-        suggestions={["Explain RTL"]}
+        suggestions={[
+          "Explain RTL",
+          { id: "week", label: "This week", prompt: "Summarize this week" },
+          { id: "late", label: "Late payers" },
+        ]}
         onSuggestionSelect={select}
       />,
     ),
   );
   fireEvent.click(screen.getByRole("button", { name: "Explain RTL" }));
-  expect(select).toHaveBeenCalledWith("Explain RTL");
+  expect(select).toHaveBeenLastCalledWith("Explain RTL");
+  // An object suggestion hands over its prompt, or its label without one.
+  fireEvent.click(screen.getByRole("button", { name: "This week" }));
+  expect(select).toHaveBeenLastCalledWith("Summarize this week");
+  fireEvent.click(screen.getByRole("button", { name: "Late payers" }));
+  expect(select).toHaveBeenLastCalledWith("Late payers");
   expect(send).not.toHaveBeenCalled();
 });
 it("preserves keyed message, action focus and settled text selection across streaming updates", () => {
@@ -349,3 +358,45 @@ it.each(
     expect(input).toHaveFocus();
   },
 );
+it("places tools around the entry and drops the shadow when plain", () => {
+  const view = render(
+    wrap(
+      <ChatComposer
+        value=""
+        onValueChange={() => {}}
+        onSubmit={() => {}}
+        appearance="plain"
+        tools={{ start: <button>Attach</button>, end: <button>Mode</button> }}
+      />,
+    ),
+  );
+  const input = screen.getByRole("textbox");
+  // Two rows: the text area, then start, end and send, send last.
+  const row = input.nextElementSibling as HTMLElement;
+  expect(row.parentElement).toBe(input.parentElement);
+  expect(
+    [...row.querySelectorAll("button")].map(
+      (button) => button.textContent || button.getAttribute("aria-label"),
+    ),
+  ).toEqual(["Attach", "Mode", "Send"]);
+  expect(row.lastElementChild).toBe(
+    screen.getByRole("button", { name: "Send" }),
+  );
+  expect(view.container.querySelector(".tz-chat-entry")).toHaveAttribute(
+    "data-appearance",
+    "plain",
+  );
+  // Without tools the send button stays beside the text area, on the card.
+  view.rerender(
+    wrap(
+      <ChatComposer value="" onValueChange={() => {}} onSubmit={() => {}} />,
+    ),
+  );
+  expect(screen.getByRole("textbox").nextElementSibling).toBe(
+    screen.getByRole("button", { name: "Send" }),
+  );
+  expect(view.container.querySelector(".tz-chat-entry")).toHaveAttribute(
+    "data-appearance",
+    "card",
+  );
+});

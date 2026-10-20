@@ -264,3 +264,73 @@ it("does not replace the controlled model or emit changes when choices are reord
   );
   expect(screen.getByRole("combobox", { name: "Model" })).toBeDisabled();
 });
+
+it("names unavailable models through labels", async () => {
+  const user = userEvent.setup();
+  const models = [
+    { id: "a", name: "Draft" },
+    { id: "b", name: "Offline", disabled: true },
+  ];
+  const view = render(
+    wrap(
+      <system.ModelSelector
+        models={models}
+        value="a"
+        onValueChange={() => {}}
+      />,
+    ),
+  );
+  await user.click(screen.getByRole("combobox", { name: "Model" }));
+  expect(screen.getByRole("option", { name: /Offline/ })).toHaveTextContent(
+    "Unavailable",
+  );
+  await user.keyboard("{Escape}");
+  view.rerender(
+    wrap(
+      <system.ModelSelector
+        models={models}
+        value="a"
+        onValueChange={() => {}}
+        labels={{ unavailable: "غير متوفر" }}
+      />,
+    ),
+  );
+  await user.click(screen.getByRole("combobox", { name: "Model" }));
+  const offline = screen.getByRole("option", { name: /Offline/ });
+  expect(offline).toHaveTextContent("غير متوفر");
+  expect(offline).toHaveAccessibleDescription("غير متوفر");
+  expect(offline).not.toHaveTextContent("Unavailable");
+});
+
+it("moves the context status at the host's thresholds and honors controlled open", async () => {
+  const user = userEvent.setup(),
+    onOpenChange = vi.fn();
+  const meter = (props: Partial<system.ContextMeterProps>) =>
+    wrap(<system.ContextMeter used={60} capacity={100} {...props} />);
+  const view = render(meter({ thresholds: { high: 0.5, near: 0.9 } }));
+  const trigger = () => screen.getByRole("button");
+  expect(trigger()).toHaveAttribute("data-tone", "high");
+  expect(within(trigger()).getByText("Filling up")).toBeVisible();
+  view.rerender(meter({ used: 92, thresholds: { high: 0.5, near: 0.9 } }));
+  expect(trigger()).toHaveAttribute("data-tone", "near");
+  expect(within(trigger()).getByText("Near capacity")).toBeVisible();
+  // One threshold set leaves the other at its default.
+  view.rerender(meter({ used: 85, thresholds: { near: 0.9 } }));
+  expect(trigger()).toHaveAttribute("data-tone", "high");
+  // The defaults hold without thresholds, and over capacity stays above 1.
+  view.rerender(meter({}));
+  expect(trigger()).toHaveAttribute("data-tone", "normal");
+  view.rerender(meter({ used: 120, thresholds: { high: 2, near: 3 } }));
+  expect(trigger()).toHaveAttribute("data-tone", "over");
+  // A controlled meter shows what the host says; Escape asks to close it.
+  view.rerender(meter({ open: true, onOpenChange }));
+  expect(screen.getByRole("dialog")).toBeVisible();
+  await user.keyboard("{Escape}");
+  expect(onOpenChange).toHaveBeenLastCalledWith(false);
+  expect(screen.getByRole("dialog")).toBeVisible();
+  view.rerender(meter({ open: false, onOpenChange }));
+  expect(screen.queryByRole("dialog")).toBeNull();
+  await user.click(trigger());
+  expect(onOpenChange).toHaveBeenLastCalledWith(true);
+  expect(screen.queryByRole("dialog")).toBeNull();
+});

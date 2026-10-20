@@ -19,6 +19,15 @@ export interface ContextMeterProps {
   label?: string;
   unit?: string;
   locale?: string;
+  /**
+   * Where the status moves, as a share of capacity: "high" is where the meter
+   * fills up (0.8) and "near" where it nears capacity (0.95). Over capacity is
+   * always above 1.
+   */
+  thresholds?: { high?: number; near?: number };
+  /** Controls the details; pair `open` with `onOpenChange`. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   className?: string;
 }
 const valid = (n: unknown): n is number =>
@@ -32,6 +41,9 @@ export function ContextMeter({
   label,
   unit,
   locale,
+  thresholds,
+  open,
+  onOpenChange,
   className = "",
 }: ContextMeterProps) {
   const { config, container } = useSystem(),
@@ -51,7 +63,9 @@ export function ContextMeter({
     maximumFractionDigits: 1,
   });
   const u = valid(used),
-    c = valid(capacity);
+    c = valid(capacity),
+    near = thresholds?.near ?? 0.95,
+    high = thresholds?.high ?? 0.8;
   const ratio = u && c && capacity > 0 ? used / capacity : null;
   const percentage =
     ratio !== null && Number.isFinite(ratio * 100)
@@ -85,11 +99,11 @@ export function ContextMeter({
         ? ar
           ? "السعة صفر"
           : "Capacity is zero"
-        : ratio !== null && ratio >= 0.95
+        : ratio !== null && ratio >= near
           ? ar
             ? "شبه ممتلئ"
             : "Near capacity"
-          : ratio !== null && ratio >= 0.8
+          : ratio !== null && ratio >= high
             ? ar
               ? "يقترب من الامتلاء"
               : "Filling up"
@@ -97,13 +111,13 @@ export function ContextMeter({
   const tone =
     u && c && used > capacity
       ? "over"
-      : ratio !== null && ratio >= 0.95
+      : ratio !== null && ratio >= near
         ? "near"
-        : ratio !== null && ratio >= 0.8
+        : ratio !== null && ratio >= high
           ? "high"
           : "normal";
   return (
-    <Popover.Root>
+    <Popover.Root open={open} onOpenChange={onOpenChange}>
       <Popover.Trigger
         type="button"
         className={`tz-context-trigger ${className}`}

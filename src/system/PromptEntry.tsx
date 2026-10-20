@@ -28,6 +28,15 @@ export type ChatComposerProps = Omit<
   onStop?: () => void;
   label?: string;
   labels?: ChatEntryLabels;
+  /**
+   * Controls on a row under the text area: `start`, a flexible space, `end`,
+   * and send last. Without `tools` send sits beside the text area.
+   */
+  tools?: { start?: ReactNode; end?: ReactNode };
+  /** The bounded entry that PromptBar draws: one line, growing to a limit. */
+  compact?: boolean;
+  /** "plain" drops the floating shadow, for an entry inside another surface. */
+  appearance?: "card" | "plain";
 };
 /** Shared editing/submission behavior. No draft, transport or execution ownership. */
 export function PromptEntry({
@@ -49,10 +58,11 @@ export function PromptEntry({
   onCompositionStart,
   onCompositionEnd,
   compact = false,
+  appearance = "card",
+  tools,
   renderSuggestions,
   ...props
 }: ChatComposerProps & {
-  compact?: boolean;
   renderSuggestions?: (busy: boolean) => ReactNode;
 }) {
   const ar = useSystem().config.direction === "rtl";
@@ -120,14 +130,47 @@ export function PromptEntry({
   const stop = state === "streaming" && onStop;
   // Send and stop trade places with a glyph pop, never on first render.
   const morphed = useChanged(Boolean(stop));
+  const send = (
+    <Button
+      className="tz-chat-entry-send"
+      size="sm"
+      iconOnly
+      // A host that says it is submitting sees the send button at work.
+      state={state === "submitting" ? "loading" : "idle"}
+      data-morph={morphed || undefined}
+      aria-label={
+        stop
+          ? (labels?.stop ?? (ar ? "إيقاف الرد" : "Stop generating"))
+          : (labels?.send ?? (ar ? "إرسال" : "Send"))
+      }
+      disabled={disabled || (!stop && (readOnly || busy || !value.trim()))}
+      onMouseDown={(event) => {
+        if (document.activeElement === input.current) event.preventDefault();
+      }}
+      onClick={() => {
+        if (stop) onStop?.();
+        else void submit();
+      }}
+    >
+      {stop ? (
+        <Square size={14} fill="currentColor" aria-hidden="true" />
+      ) : (
+        <ArrowUp size={18} aria-hidden="true" />
+      )}
+    </Button>
+  );
   return (
     <div
       className={`tz-chat-entry ${compact ? "tz-prompt-bar" : "tz-chat-composer"} ${className}`}
       style={style}
       data-state={state}
+      data-appearance={appearance}
       data-disabled={disabled || undefined}
     >
-      <div className="tz-chat-entry-surface">
+      <div
+        className="tz-chat-entry-surface"
+        data-tools={tools ? "" : undefined}
+      >
         <textarea
           {...props}
           id={id}
@@ -170,31 +213,16 @@ export function PromptEntry({
             }
           }}
         />
-        <Button
-          size="sm"
-          iconOnly
-          data-morph={morphed || undefined}
-          aria-label={
-            stop
-              ? (labels?.stop ?? (ar ? "إيقاف الرد" : "Stop generating"))
-              : (labels?.send ?? (ar ? "إرسال" : "Send"))
-          }
-          disabled={disabled || (!stop && (readOnly || busy || !value.trim()))}
-          onMouseDown={(event) => {
-            if (document.activeElement === input.current)
-              event.preventDefault();
-          }}
-          onClick={() => {
-            if (stop) onStop?.();
-            else void submit();
-          }}
-        >
-          {stop ? (
-            <Square size={14} fill="currentColor" aria-hidden="true" />
-          ) : (
-            <ArrowUp size={18} aria-hidden="true" />
-          )}
-        </Button>
+        {tools ? (
+          <div className="tz-chat-entry-tools">
+            {tools.start}
+            <span className="tz-chat-entry-space" />
+            {tools.end}
+            {send}
+          </div>
+        ) : (
+          send
+        )}
       </div>
       <span
         id={statusId}

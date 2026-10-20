@@ -564,6 +564,9 @@ const handoffTask = () =>
 const thinking = () => stageNode().querySelector(".tz-thinking-indicator");
 const field = (name: string) =>
   (stage().getByRole("textbox", { name }) as HTMLTextAreaElement).value;
+// With records to mention, the entry is a combobox.
+const starterField = () =>
+  stage().getByRole("combobox", { name: "طلبك" }) as HTMLTextAreaElement;
 const toolbar = () =>
   screen.queryByRole("toolbar", { name: "إجراءات النص المحدّد", hidden: true });
 const phaseFamilies: PhaseFamily[] = [
@@ -832,6 +835,39 @@ const phaseFamilies: PhaseFamily[] = [
     replay: ["default", "newMessage"],
   },
   {
+    id: "task-starter",
+    resting: "writing",
+    list: [
+      [
+        "empty",
+        () => {
+          expect(starterField().value).toBe("");
+          expect(stage().getByRole("button", { name: "إرسال" })).toBeDisabled();
+        },
+      ],
+      [
+        "writing",
+        () => {
+          expect(starterField().value).toMatch(/\S/);
+          expect(stage().getByRole("button", { name: "إرسال" })).toBeEnabled();
+          // The suggestions stay while there is text.
+          expect(
+            stage().getByRole("list", { name: "مقترحة من هذه الصفحة" }),
+          ).toBeVisible();
+        },
+      ],
+      [
+        "choosingMode",
+        () => {
+          // The menu opens in the provider's layer, with the three modes.
+          const menu = screen.getByRole("menu");
+          expect(within(menu).getAllByRole("menuitemradio")).toHaveLength(3);
+          expect(menu).toHaveTextContent("السياق المستخدم ٣٢٪ · سجلّان مرفقان");
+        },
+      ],
+    ],
+  },
+  {
     id: "chat-composer",
     resting: "writing",
     list: [
@@ -844,6 +880,29 @@ const phaseFamilies: PhaseFamily[] = [
             stage().getByRole("button", { name: "إيقاف الرد" }),
           ).toBeVisible();
           expect(thinking()).toHaveTextContent("جارٍ إعداد الرد");
+          // Stopping before a word has come leaves no empty reply behind.
+          fireEvent.click(stage().getByRole("button", { name: "إيقاف الرد" }));
+          expect(
+            stageNode().querySelector(
+              '[data-message-id="assistant-follow-up"]',
+            ),
+          ).toBeNull();
+          expect(
+            stageNode().querySelector('[data-message-id="user-follow-up"]'),
+          ).not.toBeNull();
+        },
+      ],
+      [
+        "failed",
+        async () => {
+          // The seeded draft went to a host that is offline: the reason shows
+          // as text and the draft stays.
+          expect(
+            await stage().findByText(
+              "تعذّر الإرسال. مسودتك محفوظة، حاول مرة أخرى.",
+            ),
+          ).toBeVisible();
+          expect(field("رسالتك")).toMatch(/\S/);
         },
       ],
     ],

@@ -126,6 +126,7 @@ export const stateWords = {
   updating: ["يحدّث", "Updating"],
   ready: ["جاهز", "Ready"],
   stale: ["قديم", "Stale"],
+  choosingMode: ["اختيار الوضع", "Choosing mode"],
 } satisfies Record<string, Localized>;
 
 /** A state whose id and label both come from one word in `stateWords`. */
@@ -562,6 +563,14 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "done", ms: 800 },
     ],
   },
+  "task-starter": {
+    states: [
+      phased("empty"),
+      phased("writing"),
+      phased("choosingMode", "choosing-mode"),
+    ],
+    resting: "writing",
+  },
   "agent-task": {
     states: [
       phased("plan"),
@@ -611,7 +620,12 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
     ],
   },
   "chat-composer": {
-    states: [phased("empty"), phased("writing"), phased("submitting")],
+    states: [
+      phased("empty"),
+      phased("writing"),
+      phased("submitting"),
+      phased("failed"),
+    ],
     resting: "writing",
   },
   "prompt-bar": {

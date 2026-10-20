@@ -21,6 +21,8 @@ export interface ModelSelectorProps {
   placeholder?: string;
   disabled?: boolean;
   size?: "sm" | "md";
+  /** The word beside a model that cannot be chosen; «غير متاح» or "Unavailable" by default. */
+  labels?: { unavailable?: string };
   className?: string;
 }
 /** Controlled choice only. All availability, capability and pricing data is supplied. */
@@ -32,10 +34,12 @@ export function ModelSelector({
   placeholder,
   disabled = false,
   size = "sm",
+  labels,
   className = "",
 }: ModelSelectorProps) {
   const { config, container } = useSystem(),
     ar = config.direction === "rtl";
+  const unavailable = labels?.unavailable ?? (ar ? "غير متاح" : "Unavailable");
   const descriptionId = useId();
   const glide = useGlide();
   const selected = models.find((model) => model.id === value);
@@ -125,9 +129,7 @@ export function ModelSelector({
                         {model.description && (
                           <small dir="auto">{model.description}</small>
                         )}
-                        {model.disabled && (
-                          <small>{ar ? "غير متاح" : "Unavailable"}</small>
-                        )}
+                        {model.disabled && <small>{unavailable}</small>}
                       </span>
                       {(model.context || model.price) && (
                         <span className="tz-model-meta">
@@ -144,11 +146,7 @@ export function ModelSelector({
                           model.description,
                           model.context,
                           model.price,
-                          model.disabled
-                            ? ar
-                              ? "غير متاح"
-                              : "Unavailable"
-                            : null,
+                          model.disabled ? unavailable : null,
                         ]
                           .filter(Boolean)
                           .join(". ")}

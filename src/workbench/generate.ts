@@ -1,5 +1,6 @@
 import localResponseSource from "../system/ai/examples/useLocalResponse.ts?raw";
 import agentTaskSource from "../system/ai/examples/AgentTaskExamples.tsx?raw";
+import taskStarterSource from "../system/ai/examples/TaskStarterExamples.tsx?raw";
 import changeSummarySource from "../system/ai/examples/ChangeSummaryExamples.tsx?raw";
 import citedAnswerSource from "../system/ai/examples/CitedAnswerExamples.tsx?raw";
 import terminalSource from "../system/ai/examples/TerminalExamples.tsx?raw";
@@ -104,6 +105,7 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
   }
   if (
     isOneOf(component, [
+      "task-starter",
       "cited-answer",
       "agent-task",
       "change-summary",
@@ -113,13 +115,15 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
     ])
   ) {
     const source = (
-      component === "cited-answer"
-        ? citedAnswerSource
-        : component === "agent-task"
-          ? agentTaskSource
-          : component === "change-summary"
-            ? changeSummarySource
-            : aiDecisionsSource
+      component === "task-starter"
+        ? taskStarterSource
+        : component === "cited-answer"
+          ? citedAnswerSource
+          : component === "agent-task"
+            ? agentTaskSource
+            : component === "change-summary"
+              ? changeSummarySource
+              : aiDecisionsSource
     )
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replace(
@@ -127,17 +131,19 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
         'from "./system/ai/examples/finance-story"',
       );
     const name =
-      component === "cited-answer"
-        ? "CitedAnswerExample"
-        : component === "agent-task"
-          ? "AgentTaskExample"
-          : component === "change-summary"
-            ? "ChangeSummaryExample"
-            : component === "ask-user-questions"
-              ? "AskUserQuestionsExample"
-              : component === "approval-card"
-                ? "ApprovalCardExample"
-                : "ApprovalFlowExample";
+      component === "task-starter"
+        ? "TaskStarterExample"
+        : component === "cited-answer"
+          ? "CitedAnswerExample"
+          : component === "agent-task"
+            ? "AgentTaskExample"
+            : component === "change-summary"
+              ? "ChangeSummaryExample"
+              : component === "ask-user-questions"
+                ? "AskUserQuestionsExample"
+                : component === "approval-card"
+                  ? "ApprovalCardExample"
+                  : "ApprovalFlowExample";
     return `${source}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";

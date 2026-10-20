@@ -188,6 +188,13 @@ export type {
 } from "./ApprovalCard";
 export { AgentTask } from "./AgentTask";
 export type { AgentStep, AgentTaskProps, AgentTaskLabels } from "./AgentTask";
+export { TaskStarter } from "./TaskStarter";
+export type {
+  TaskStarterProps,
+  TaskStarterLabels,
+  ContextItem,
+  ModeOption,
+} from "./TaskStarter";
 export { CitedAnswer } from "./CitedAnswer";
 export type { CitedAnswerProps, CitedAnswerLabels } from "./CitedAnswer";
 export { ChangeSummary } from "./ChangeSummary";

@@ -95,6 +95,104 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "task-starter": [
+      [
+        "value / onValueChange / onSubmit",
+        "string / (value) => void / (value, context: ContextItem[]) => void | Promise<void> · required",
+        t(
+          "يدير تطبيقك المسودة. يصلك نصها كما كُتب مع السجلات المرفقة عند Enter أو زر الإرسال. إذا رُفض الوعد بقيت المسودة وظهر السبب نصًّا. أثناء الإرسال يصير الحقل للقراءة فقط، وتتعطّل الاقتراحات ويُمنع التكرار.",
+          "Your app owns the draft. Enter or Send hands you its text as written with the attached records. A rejected promise keeps the draft and shows the reason as text. While sending, the text area is read-only, the suggestions are disabled and a repeat is blocked.",
+        ),
+      ],
+      [
+        "context / onRemoveContext",
+        "ContextItem[] / (id: string) => void",
+        t(
+          "السجلات المرفقة، لكلٍّ منها id وlabel، وlabel وkind وicon اختيارية. يظهر زر إزالة لكل سجل إذا مرّرت onRemoveContext، ولا يزيل Backspace في حقل فارغ أيًّا منها. إذا زال زر وهو في التركيز انتقل التركيز إلى النمط.",
+          "The attached records: each has an id and a label, and optionally a kind and an icon. Each gets a remove button when you pass onRemoveContext, and Backspace in an empty field removes none. If a button that has focus goes away, focus moves to the pattern.",
+        ),
+      ],
+      [
+        "mentionOptions / onAddContext / onMention",
+        "ContextItem[] / (id) => void / (query: string) => void",
+        t(
+          "مع mentionOptions يفتح الحرف @ قائمة بالسجلات غير المرفقة، وتضيق بما يُكتب بعده. الحقل يبقى في التركيز ويملك aria-activedescendant. يختار Enter السجل فيستدعي onAddContext(id) ويُزال «@ والكلمة»، ويغلق Escape القائمة وحدها، ولا يختار الإدخال بمحرر (IME) شيئًا ولا يفتحها، وتواصل المفتوحة تصفية ما يُكتب. دون mentionOptions يستدعي كل تغيير في كلمة @ الدالة onMention(query)، ويستدعيها زر @ بنص فارغ ليفتح تطبيقك قائمته.",
+          "With mentionOptions, @ opens a list of the records not yet attached, narrowing as you type after it. The text area keeps focus and owns aria-activedescendant. Enter chooses the record, calling onAddContext(id) and removing «@ and the word»; Escape closes the list alone; an input method (IME) never chooses or opens it, and an open list keeps filtering what is composed. Without mentionOptions, each change to the @ word calls onMention(query), and the @ button calls it with an empty string for your own picker.",
+        ),
+      ],
+      [
+        "modes / mode / onModeChange",
+        "ModeOption[] / string / (id: string) => void",
+        t(
+          "يعرض زر واحد الوضع الحالي، وتحمل قائمته الأوضاع عناصر اختيار لكلٍّ منها وصفها. تعيد Escape التركيز إلى الزر. يختار تطبيقك الوضع ويمرّره من جديد.",
+          "One button shows the current mode and its menu holds the modes as radio items, each with its description. Escape returns focus to the button. Your app sets the mode and passes it back.",
+        ),
+      ],
+      [
+        "models / model / onModelChange",
+        "ModelOption[] / string / (id: string) => void",
+        t(
+          "قسم ثانٍ من عناصر الاختيار في القائمة نفسها لمن يحتاج نماذج صريحة. تظهر النماذج غير المتاحة معطّلة مع كلمة «غير متاح».",
+          "A second section of radio items in the same menu, for hosts that need explicit models. Unavailable models show disabled, marked «Unavailable».",
+        ),
+      ],
+      [
+        "contextUsage",
+        "ContextMeterProps",
+        t(
+          "بيانات ContextMeter نفسها: used وcapacity وthresholds. تظهر حلقة صغيرة قرب اسم الوضع يتبع لونها العتبات، وسطر «السياق المستخدم ٣٢٪ · سجلّان مرفقان» في آخر القائمة، والعدد يتبع المعدود في العربية.",
+          "The same data as ContextMeter: used, capacity and thresholds. A small ring beside the mode takes its color from the thresholds, and the menu ends with «Context used 32% · 2 records attached», its count agreeing in Arabic.",
+        ),
+      ],
+      [
+        "modeMenuOpen / onModeMenuOpenChange",
+        "boolean / (open: boolean) => void",
+        t(
+          "يتحكم تطبيقك في فتح القائمة. تعتمد عليهما حالة «اختيار الوضع» في هذه الصفحة.",
+          "Your app can hold the menu open. This page's Choosing mode state relies on them.",
+        ),
+      ],
+      [
+        "suggestions / onSuggestion",
+        "{ id, label, prompt?, icon? }[] / (id: string) => void",
+        t(
+          "اقتراحات من الصفحة الحالية تبقى ظاهرة أثناء الكتابة وتتعطّل أثناء الإرسال. يصلك id الاقتراح، فتملأ الحقل بـ prompt أو بالتسمية، أو ترسل.",
+          "Suggestions from the current page stay while you type and are disabled while sending. You get the suggestion's id, and fill the field with its prompt or label, or send.",
+        ),
+      ],
+      [
+        "recent / onOpenRecent",
+        "{ id, title, status, time }[] / (id: string) => void",
+        t(
+          "مهام حديثة، لكلٍّ منها حالة بالألوان والكلمات المشتركة ووقت نسبي تكتبه أنت. تفتح onOpenRecent المهمة في تطبيقك.",
+          "Recent tasks, each with a status in the shared colors and words and a relative time you write. onOpenRecent opens the task in your app.",
+        ),
+      ],
+      [
+        "onAttach / onVoice",
+        "() => void",
+        t(
+          "يظهر زر الإرفاق وزر الإملاء الصوتي إذا مرّرت دالتيهما. لا يرفع المكوّن ملفات ولا يتعرّف على الكلام، فكلاهما نيّة يعالجها تطبيقك.",
+          "The attach and dictate buttons show when you pass their callbacks. The pattern uploads nothing and recognizes no speech; both are intents your app handles.",
+        ),
+      ],
+      [
+        "greeting / title / disabled / disabledReason",
+        "ReactNode / ReactNode / boolean / ReactNode",
+        t(
+          "greeting سطر صغير فوق السؤال، وtitle هو السؤال «ماذا نُنجز اليوم؟» افتراضيًا. مع disabled يتعطّل الحقل وأدواته، ويظهر disabledReason سطرًا تحته.",
+          "greeting is the small line above the question, and title is the question, «What should we get done today?» by default. With disabled the field and its tools are off, and disabledReason shows as a line under it.",
+        ),
+      ],
+      [
+        "headingLevel / labels / appearance",
+        '2–6 · 3 / Partial<TaskStarterLabels> / "card" | "plain" · card',
+        t(
+          "headingLevel مستوى السؤال، وقائمة المهام الحديثة أدنى منه بمستوى. يستبدل labels أي نص مضمّن. card يضع الحقل على صينية، وplain يتركه على سطح تطبيقك.",
+          "headingLevel is the question's level, and the recent list sits one below it. labels replaces any built-in text. card puts the field on a tray; plain leaves it on your app's own surface.",
+        ),
+      ],
+    ],
     "cited-answer": [
       [
         "status / question",
@@ -611,6 +709,14 @@ export function ApiReference({
           "Clear name and full values in details; compact summary uses a keyboard-accessible disclosure button.",
         ),
       ],
+      [
+        "thresholds / open / onOpenChange",
+        "{ high?, near? } · 0.8, 0.95 / boolean? / (open) => void",
+        t(
+          "تحدّد thresholds نسبة السعة التي تنتقل عندها الحالة إلى «يقترب من الامتلاء» ثم «شبه ممتلئ»، ويبقى تجاوز السعة فوق ١ دائمًا. مرّر open مع onOpenChange لتتحكم في التفاصيل من تطبيقك.",
+          "thresholds sets the share of capacity where the status moves to Filling up and then Near capacity; over capacity is always above 1. Pass open with onOpenChange to hold the details from your app.",
+        ),
+      ],
     ],
     "model-selector": [
       [
@@ -635,6 +741,14 @@ export function ApiReference({
         t(
           "يفتح زر موجز القائمة. تنقّل بالأسهم وHome/End أو بالكتابة للبحث، ويعيد Escape التركيز إلى الزر.",
           "Compact trigger; arrows, Home/End, typeahead and Escape with focus restoration.",
+        ),
+      ],
+      [
+        "labels",
+        "{ unavailable? }",
+        t(
+          "الكلمة التي تظهر بجوار نموذج لا يمكن اختياره، «غير متاح» افتراضيًا. تُقرأ أيضًا في وصف الخيار.",
+          "The word beside a model that cannot be chosen, «Unavailable» by default. It is also read in the option's description.",
         ),
       ],
     ],
@@ -941,6 +1055,14 @@ export function ApiReference({
         ),
       ],
       [
+        "tools / compact / appearance",
+        '{ start?, end? } / boolean · false / "card" | "plain" · card',
+        t(
+          "يضع tools أدواتك في صف تحت الحقل: start ثم مساحة مرنة ثم end ثم زر الإرسال أخيرًا. يعطي compact حدّ PromptBar. ويُسقط plain الظل العائم ليسكن الحقل داخل سطح آخر.",
+          "tools puts your controls on a row under the text area: start, a flexible space, end, and send last. compact gives PromptBar's limit. plain drops the floating shadow, for an entry inside another surface.",
+        ),
+      ],
+      [
         "Native attributes / ref",
         "textarea",
         t(
@@ -960,10 +1082,10 @@ export function ApiReference({
       ],
       [
         "suggestions / onSuggestionSelect",
-        "string[]? / (string) => void",
+        "(string | { id, label, prompt?, icon? })[]? / (string) => void",
         t(
-          "إذا مرّرت suggestions فمرّر onSuggestionSelect أيضًا، ثم املأ الحقل أو أرسل صراحةً من تطبيقك. تظهر الاقتراحات حين يكون الحقل فارغًا فقط.",
-          "Supplying suggestions requires the callback; host explicitly populates or submits. Shown only with an empty value.",
+          "إذا مرّرت suggestions فمرّر onSuggestionSelect أيضًا، ثم املأ الحقل أو أرسل صراحةً من تطبيقك. يصلك prompt الاقتراح، أو تسميته إن لم يكن له prompt. تظهر الاقتراحات حين يكون الحقل فارغًا فقط.",
+          "Supplying suggestions requires the callback; host explicitly populates or submits. It receives the suggestion's prompt, or its label without one. Shown only with an empty value.",
         ),
       ],
       [

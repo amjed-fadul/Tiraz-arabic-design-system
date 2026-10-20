@@ -183,9 +183,10 @@ export function ChatConversation({
   /** Every send fails: the composer explains why and keeps the draft. */
   failSend?: boolean;
   /**
-   * "empty", "writing" or "submitting": opens there, after the opening
-   * exchange, and reports where the visitor moves it. Without a phase the
-   * opening exchange plays on its own.
+   * "empty", "writing", "submitting" or "failed": opens there, after the
+   * opening exchange, and reports where the visitor moves it. Failed sends the
+   * seeded draft to a host that is offline. Without a phase the opening
+   * exchange plays on its own.
    */
   phase?: string;
   onPhaseChange?: (phase: string) => void;
@@ -251,6 +252,7 @@ function ConversationHost({
   const response = useLocalResponse(language),
     { start } = response,
     sequence = useRef(0),
+    input = useRef<HTMLTextAreaElement>(null),
     reduced = useReducedMotion(),
     // A phase opens on the finished opening exchange, as reduced motion does.
     settled = reduced || phase !== undefined,
@@ -281,10 +283,35 @@ function ConversationHost({
           ]
         : []),
     ]),
-    [draft, setDraft] = useState(phase === "writing" ? followUp : "");
+    [draft, setDraft] = useState(
+      phase === "writing" || phase === "failed" ? followUp : "",
+    );
   const [stream, setStream] = useState<Stream>(
     phase === "submitting" ? "streaming" : settled ? "completed" : "idle",
   );
+  // The draft the host turned down; the failed phase opens with it.
+  const [turnedDown, setTurnedDown] = useState<string | null>(
+    phase === "failed" ? followUp : null,
+  );
+  // The failed phase sends its draft once the entry is up, to a host that is
+  // offline, so the entry shows what it does with a draft it cannot send. Only
+  // the phase the example opened in does this, never a later move into it.
+  const openedIn = useRef(phase);
+  useEffect(() => {
+    if (openedIn.current !== "failed") return;
+    const timer = setTimeout(
+      () =>
+        input.current?.dispatchEvent(
+          new KeyboardEvent("keydown", {
+            key: "Enter",
+            bubbles: true,
+            cancelable: true,
+          }),
+        ),
+      0,
+    );
+    return () => clearTimeout(timer);
+  }, []);
   // The opening exchange plays once; reduced motion starts on its final state.
   useEffect(() => {
     if (played.current || reduced) return;
@@ -295,7 +322,13 @@ function ConversationHost({
     return () => clearTimeout(timer);
   }, [reduced, start, opening]);
   usePhaseReport(
-    stream === "streaming" ? "submitting" : draft.trim() ? "writing" : "empty",
+    stream === "streaming"
+      ? "submitting"
+      : turnedDown === draft
+        ? "failed"
+        : draft.trim()
+          ? "writing"
+          : "empty",
     phase,
     onPhaseChange,
   );
@@ -307,11 +340,17 @@ function ConversationHost({
     stopped: ar ? "توقف الرد" : "Response stopped",
   };
   const entry = {
+    ref: input,
     value: draft,
     onValueChange: setDraft,
     onSubmit: (text: string) => {
       if (disabled || response.active.current || !text.trim()) return;
-      if (failSend) return wait(800, true);
+      // Offline: the send is turned down, and the entry keeps the draft.
+      if (failSend || phase === "failed")
+        return wait(phase === "failed" ? 0 : 800, true).catch((error) => {
+          setTurnedDown(text);
+          throw error;
+        });
       setDraft("");
       exchange(start, setMessages, setStream, String(++sequence.current), text);
     },
@@ -320,6 +359,12 @@ function ConversationHost({
     onStop: () => {
       response.cancel();
       setStream("stopped");
+      // A reply that had not begun leaves no empty bubble behind.
+      setMessages((previous) =>
+        previous.filter(
+          (message) => message.role === "user" || message.text !== "",
+        ),
+      );
     },
   };
   return (
@@ -369,7 +414,7 @@ export function ChatComposerExample(props: {
   language?: Language;
   disabled?: boolean;
   failSend?: boolean;
-  /** "empty", "writing" or "submitting"; see ChatConversation. */
+  /** "empty", "writing", "submitting" or "failed"; see ChatConversation. */
   phase?: string;
   onPhaseChange?: (phase: string) => void;
 }) {

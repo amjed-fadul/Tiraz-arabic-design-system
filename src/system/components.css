@@ -5510,6 +5510,287 @@ button.tz-source-chip {
   line-height: var(--leading-meta);
 }
 
+/* Start a task (spec section 12.1): a request from the page you are on. The
+   greeting asks the question; the paper holds the attached records, the text
+   area and the tools row; suggestions sit on the tray beneath, and recent
+   tasks below it. The paper draws the focus for everything inside it, so the
+   entry's own surface is bare. Plain drops the tray and lives on its host's
+   paper, keeping the field's hairline. */
+.tz-task-starter {
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-task-starter[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-task-starter:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-task-starter-greeting {
+  margin-block-end: var(--space-4);
+}
+.tz-task-starter-hello {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-task-starter-title {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title);
+}
+.tz-task-starter-paper {
+  padding: 0;
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out);
+}
+.tz-task-starter[data-appearance="plain"] .tz-task-starter-paper {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+}
+.tz-task-starter-paper:focus-within {
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 3px var(--focus-halo),
+    var(--shadow-paper);
+}
+.tz-task-starter[data-appearance="plain"] .tz-task-starter-paper:focus-within {
+  box-shadow: 0 0 0 3px var(--focus-halo);
+}
+@media (forced-colors: active) {
+  .tz-task-starter-paper:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
+}
+.tz-task-starter .tz-chat-entry[data-appearance="plain"] .tz-chat-entry-surface,
+.tz-task-starter
+  .tz-chat-entry[data-appearance="plain"]
+  .tz-chat-entry-surface:focus-within {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+@media (forced-colors: active) {
+  .tz-task-starter
+    .tz-chat-entry[data-appearance="plain"]
+    .tz-chat-entry-surface {
+    border-width: 0;
+  }
+  .tz-task-starter
+    .tz-chat-entry[data-appearance="plain"]
+    .tz-chat-entry-surface:focus-within {
+    outline: none;
+  }
+}
+/* The text area grows to six lines, its own padding included, then scrolls. */
+.tz-task-starter .tz-chat-entry textarea {
+  max-block-size: calc(6lh + var(--space-2));
+}
+.tz-task-starter-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-2) var(--space-3) 0;
+  list-style: none;
+}
+/* A chip's edge is only its fill, so a transparent border keeps it in forced
+   colors; the padding gives up what the border takes, so the chip keeps its
+   size. */
+.tz-task-starter-chip {
+  padding: 0 4px;
+  border: 1px solid transparent;
+}
+.tz-task-starter-chip > span[aria-hidden="true"] {
+  display: inline-flex;
+}
+.tz-task-starter-mode {
+  max-inline-size: 12rem;
+}
+.tz-task-starter-mode > bdi {
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tz-task-starter-mode:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+.tz-task-starter-menu {
+  inline-size: 18rem;
+}
+.tz-task-starter-item-copy {
+  display: grid;
+  min-inline-size: 0;
+}
+.tz-task-starter-item-copy > small {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-task-starter-menu-label {
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+/* The usage line: a bar of how much of the context is used, in the ring's
+   tones, and the words that say it. */
+.tz-task-starter-usage {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-task-starter-meter {
+  display: block;
+  block-size: 4px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--border-strong);
+}
+.tz-task-starter-meter > span {
+  display: block;
+  block-size: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--ai);
+  transition: inline-size var(--motion-progress) var(--ease-out);
+}
+.tz-task-starter-usage[data-tone="high"] .tz-task-starter-meter > span {
+  background: var(--attention);
+}
+.tz-task-starter-usage:is([data-tone="near"], [data-tone="over"])
+  .tz-task-starter-meter
+  > span {
+  background: var(--danger);
+}
+/* The @ picker is a listbox the text area points at. It is as wide as the row
+   it is anchored to and scrolls past six rows' worth. */
+.tz-task-starter-mentions {
+  --enter-x: 0px;
+  --enter-y: -4px;
+  z-index: 65;
+  inline-size: var(--radix-popper-anchor-width);
+  max-block-size: min(14rem, var(--radix-popper-available-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-popover);
+  font-size: var(--text-body);
+  transform-origin: var(--radix-popper-transform-origin);
+  animation: tz-menu-in var(--motion-enter) var(--ease-out);
+}
+.tz-task-starter-mentions[data-side="top"] {
+  --enter-y: 4px;
+}
+.tz-task-starter-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--control-small);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-item);
+  cursor: pointer;
+  user-select: none;
+}
+.tz-task-starter-option-label {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-task-starter-option > small {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.tz-task-starter-option[aria-selected="true"] {
+  background: var(--wash-strong);
+}
+@media (forced-colors: active) {
+  .tz-task-starter-option[aria-selected="true"] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+}
+.tz-task-starter-reason {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-task-starter .tz-tray-footer {
+  flex-direction: column;
+  align-items: stretch;
+}
+.tz-task-starter .tz-prompt-suggestions {
+  margin: 0;
+}
+.tz-task-starter-footer {
+  display: grid;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+.tz-task-starter-recent {
+  margin-block-start: var(--space-4);
+}
+.tz-task-starter-recent-title {
+  margin: 0 0 var(--space-1);
+  padding-inline: var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-task-starter-recent > ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-task-starter-task {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  inline-size: 100%;
+  min-block-size: var(--control-height);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: transparent;
+  color: var(--text);
+  text-align: start;
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  button.tz-task-starter-task:hover {
+    background: var(--wash);
+  }
+}
+.tz-task-starter-task-title {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tz-task-starter-time {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  white-space: nowrap;
+}
+
 /* Supplied-data file navigator: only visible items participate in roving focus. */
 .tz-file-tree {
   min-inline-size: 0;
@@ -6997,14 +7278,44 @@ button.tz-tool-chip[aria-expanded="true"] {
     outline-offset: 1px;
   }
 }
-.tz-chat-entry-surface > .tz-button {
+.tz-chat-entry-surface .tz-chat-entry-send {
   border-radius: var(--radius-pill);
 }
-.tz-chat-entry-surface > .tz-button:disabled {
+.tz-chat-entry-surface .tz-chat-entry-send:disabled {
   opacity: 1;
   background: var(--surface-tray);
   color: var(--text-muted);
   box-shadow: none;
+}
+/* With tools the surface has two rows: the text area, then start, a flexible
+   space, end and send. */
+.tz-chat-entry-surface[data-tools] {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+/* Down a column the text area keeps the height its content gives it. */
+.tz-chat-entry-surface[data-tools] > textarea {
+  flex: none;
+}
+.tz-chat-entry-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.tz-chat-entry-space {
+  flex: 1;
+}
+/* Plain drops the floating shadow. A hairline keeps the field's edge, and focus
+   still draws its edge and halo. */
+.tz-chat-entry[data-appearance="plain"] .tz-chat-entry-surface {
+  border-color: var(--border);
+  box-shadow: none;
+}
+.tz-chat-entry[data-appearance="plain"] .tz-chat-entry-surface:focus-within {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px var(--focus-halo);
 }
 .tz-chat-entry textarea {
   display: block;

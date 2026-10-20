@@ -94,6 +94,10 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "task-starter": [
+    appearance,
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
   "cited-answer": [
     appearance,
     field("question", "boolean", "عرض السؤال", "Show the question", "question"),
@@ -1000,6 +1004,7 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "task-starter": ["appearance", "disabled"],
   "cited-answer": ["appearance", "question"],
   "agent-task": ["appearance", "autoStart"],
   "change-summary": ["appearance"],

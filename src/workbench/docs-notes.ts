@@ -22,6 +22,48 @@ export interface PageNotes {
 // A page without notes shows no notes row; Field opens Input and has none.
 export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   // AI patterns
+  "task-starter": {
+    useWhen: [
+      [
+        "يبدأ المستخدم عملًا مع المساعد من صفحة رئيسية أو لوحة جانبية أو حالة فارغة لصفحة.",
+        "Someone starts work with the assistant from a home screen, a side panel or a page's empty state.",
+      ],
+      [
+        "يحتاج الطلب إلى سجلات بعينها، كفاتورة أو عميل أو تقرير، فيرفقها المستخدم أو يستدعيها بـ @.",
+        "The request needs particular records, such as an invoice, a customer or a report, which the person attaches or calls up with @.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "يردّ المستخدم داخل محادثة قائمة، فاستخدم",
+          "The person is replying inside a conversation, so use",
+        ],
+        page: "chat-composer",
+      },
+      {
+        text: [
+          "يبحث المستخدم بلا مساعد، فاستخدم",
+          "The person is only searching, with no assistant, so use",
+        ],
+        page: "input",
+      },
+    ],
+    notice: [
+      [
+        "يفتح الحرف @ قائمة بسجلاتك وتضيق بما يُكتب بعده. يبقى التركيز في الحقل، ويختار Enter السجل ويغلق Escape القائمة دون أن يغلق الصفحة.",
+        "@ opens a list of your records that narrows as you type after it. Focus stays in the text area; Enter chooses a record and Escape closes the list, not the page.",
+      ],
+      [
+        "لا يختار الإدخال بمحرر (IME) سجلًّا ولا يرسل ولا يحرّك القائمة أثناء الكتابة به.",
+        "An input method (IME) never chooses, sends or moves the list while it is composing.",
+      ],
+      [
+        "يقرّر تطبيقك المسودة والسجلات المرفقة والوضع. تبقى الاقتراحات ظاهرة أثناء الكتابة وتتعطّل أثناء الإرسال، ولا يزيل Backspace في حقل فارغ سجلًّا مرفقًا.",
+        "Your app owns the draft, the attached records and the mode. Suggestions stay while you type and are disabled while sending, and Backspace in an empty field never removes an attached record.",
+      ],
+    ],
+  },
   "cited-answer": {
     useWhen: [
       [

@@ -101,6 +101,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "ChatAppExample",
       "useLocalResponse",
       "AgentTaskExamples",
+      "TaskStarterExamples",
       "CitedAnswerExamples",
       "ChangeSummaryExamples",
       "AIDecisionsExamples",
