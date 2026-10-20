@@ -1,6 +1,6 @@
 # Woven Restyle Implementation Plan (Plan 3 of 4)
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task by task. Each task names its implementer model; a fresh Opus subagent reviews every task (see the roadmap). Steps use checkbox (`- [ ]`) syntax for tracking. Keep the work lean (Amjed, 19 Oct: "don't over-engineer"). The CSS audit is the gate. Tests cover only what a unit test can see.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task by task. Each task names its implementer model; a fresh Opus subagent reviews every task (see the roadmap). Steps use checkbox (`- [ ]`) syntax for tracking. Keep the work lean. Amjed, 19 and 20 Oct: "don't over-engineer"; Plan 3 runs on Opus. Do exactly what your family rows say, write only the tests your task names, and add no extra helpers or out-of-scope changes. The CSS audit is the gate. Tests cover only what a unit test can see.
 
 **Goal:** Every component family and the documentation chrome wear the Woven look:
 
@@ -75,7 +75,7 @@ Each family joins the CSS audit, and the spec's defects are fixed along the way.
 
 ### Task 1: Forms A
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Families** (Woven §17.1): Button, Field, Input, Textarea, Select, Checkbox, RadioGroup and Switch.
 
@@ -109,7 +109,7 @@ Each family joins the CSS audit, and the spec's defects are fixed along the way.
 
 ### Task 2: Forms B and Files
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Families** (Woven §17.1–17.2): Slider, OTPInput, DatePicker, TagInput, ColorPicker, InputCopy, FileDropzone, FileTree.
 
@@ -143,7 +143,7 @@ Each family joins the CSS audit, and the spec's defects are fixed along the way.
 
 ### Task 3: Surfaces and overlays
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Families** (Woven §17.5–17.6): Card, Modal, Sheet, Toast, DropdownMenu, Tooltip, Alert, Badge, EmptyState, Accordion, Avatar, AvatarGroup.
 
@@ -191,7 +191,7 @@ Each family joins the CSS audit, and the spec's defects are fixed along the way.
 
 ### Task 4: Navigation and data
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Families** (Woven §17.3–17.5): Sidebar, Tabs, Breadcrumbs, Pagination, Steps, Table, DataTable, Timeline, FilterBar, NotificationList.
 
@@ -218,7 +218,7 @@ Each family joins the CSS audit, and the spec's defects are fixed along the way.
 
 ### Task 5: Feedback and charts
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Families** (Woven §17.5, §17.7): Skeleton, Progress, Spinner, Tick, and the Line, Area, Bar and Donut charts.
 
@@ -247,7 +247,7 @@ Each family joins the CSS audit, and the spec's defects are fixed along the way.
 
 ### Task 6: AI parts A (thinking, content, tools, chat)
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Families** (Woven §17.8): LoadingState, ThinkingIndicator, ThinkingState, StreamingText, Markdown, CodeBlock, Terminal, ToolCall, ToolChips, TaskRows, ChatThread, ChatComposer, PromptEntry, PromptBar, ChatApp.
 
@@ -284,7 +284,7 @@ The AIMark is Plan 4's; here ThinkingIndicator and ThinkingState get only token,
 
 ### Task 7: AI parts B (decisions, context, results)
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Families** (Woven §17.8): AskUserQuestions, ApprovalCard, ApprovalFlow, SelectionActions, ContextMeter, ModelSelector, ImageResult, Sources, InlineCitation, InsightCards.
 
@@ -314,7 +314,7 @@ The tray and paper anatomy of the decision families, and the attention pill, are
 
 ### Task 8: Documentation chrome and docs
 
-**Model:** Sonnet
+**Model:** Opus
 
 **Scope:**
 
@@ -346,17 +346,17 @@ The tray and paper anatomy of the decision families, and the attention pill, are
 
 ### Task 9: Evidence, review and fixes
 
-**Model:** Haiku for the evidence, Opus for the review, Sonnet for the fix wave.
+**Model:** Opus for every step.
 
-- [ ] **Step 1 (Haiku): Extend the evidence script and capture.**
+- [ ] **Step 1: Extend the evidence script and capture.**
   1. In `tests/browser/woven-evidence.mjs`, add an `ar-light-forced` variant using `newContext({ forcedColors: "active" })`.
   2. Add a `TIRAZ_FULLPAGE=1` mode that captures the whole page instead of `.playground-section`.
   3. Run the gate.
   4. `curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:5411/` must print 200.
   5. Capture into `docs/woven/after-restyle`: all ten variants, one run each. Then capture full pages for `button` and `task-rows` in `ar-light`, `ar-dark`, `en-light` and `ar-light-390`, into `docs/woven/after-restyle/full`.
   6. Commit: `docs(woven): capture restyle evidence`.
-- [ ] **Step 2 (Opus): Review the whole diff** against Woven §9–18 and §20, and Docs §6 and §10.
+- [ ] **Step 2: Review the whole diff** against Woven §9–18 and §20, and Docs §6 and §10.
   - Compare `docs/woven/before/<variant>` with `docs/woven/after-restyle/<variant>` for 15 families across the groups, in ar-light, ar-dark, en-light, ar-light-r0, ar-light-r16, ar-light-390 and ar-light-forced.
   - Review the full-page chrome captures.
   - Write `docs/woven/plan-3-review.md` with a must-fix list, and commit it.
-- [ ] **Step 3: Fix wave.** One Sonnet fix wave for the must-fix list, then one scoped Opus re-review. Then continue to Plan 4 with no checkpoint (Amjed, 19 Oct).
+- [ ] **Step 3: Fix wave.** One fix wave for the must-fix list, then one scoped re-review. Then continue to Plan 4 with no checkpoint (Amjed, 19 Oct).
