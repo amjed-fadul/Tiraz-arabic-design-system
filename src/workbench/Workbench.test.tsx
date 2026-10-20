@@ -287,8 +287,9 @@ it("system reset restores the shared theme and documented configuration defaults
   await userEvent.click(
     controls().getByRole("button", { name: "إعادة ضبط النظام" }),
   );
-  expect(container.querySelector(".docs-shell")).toHaveAttribute(
-    "data-doc-theme",
+  // The chrome's provider carries the theme.
+  expect(container.querySelector(".tiraz-system")).toHaveAttribute(
+    "data-theme",
     "light",
   );
   expect(JSON.parse(localStorage.getItem(storageKeys.theme)!)).toBe("light");
@@ -299,6 +300,12 @@ it("system reset restores the shared theme and documented configuration defaults
     radius: 8,
     reducedMotion: false,
   });
+});
+
+it("leaves no data-doc-theme on the docs shell", async () => {
+  const { container } = render(<Workbench />);
+  await userEvent.click(screen.getByRole("button", { name: "تبديل المظهر" }));
+  expect(container.querySelector("[data-doc-theme]")).toBeNull();
 });
 
 it("copies the full current prompt despite its single-line presentation", async () => {

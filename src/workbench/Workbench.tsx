@@ -12,7 +12,7 @@ import {
   previewConfig,
   translateDefaults,
 } from "./model";
-import type { ButtonModel } from "./model";
+import type { ButtonModel, TabsModel } from "./model";
 import {
   persist,
   readDocumentation,
@@ -115,7 +115,7 @@ export function Workbench() {
     density: "standard",
     typography: "standard",
     accent: "sage",
-    radius: 6,
+    radius: 8,
     reducedMotion: false,
   };
   const current = catalog.find((item) => item.id === active)!;
@@ -196,9 +196,27 @@ export function Workbench() {
     // Keep Input's IDs and native editing state through label/help/error edits.
     // Mode/default-value changes still need a fresh uncontrolled demonstration.
     // Image percentages and sizing update the existing request rather than replaying it.
-    // Progress holds nothing of its own, so its bar moves to the new value.
+    // Progress, Button and Terminal hold nothing of their own, so a new value
+    // or state reaches the mounted example and its transition plays.
     if (
-      ["data-table", "input-copy", "image-result", "progress"].includes(active)
+      [
+        "data-table",
+        "input-copy",
+        "image-result",
+        "progress",
+        "button",
+        "terminal",
+      ].includes(active)
+    )
+      return;
+    // ThinkingState settles into Done where it stands, so its fade plays;
+    // Working starts its run afresh.
+    if (active === "thinking-state" && patch.active === false) return;
+    // Controlled tabs follow their value, so the indicator glides to it.
+    if (
+      active === "tabs" &&
+      !("mode" in patch) &&
+      (model as TabsModel).mode === "controlled"
     )
       return;
     if (
@@ -242,6 +260,8 @@ export function Workbench() {
     stopFocusReturn.current?.();
     setPhases({});
     setDocumentation((prev) => ({ ...prev, active: id }));
+    // The new page opens at its top, not where the old one was scrolled to.
+    window.scrollTo(0, 0);
   }
   // A props state takes the inspector's path, so it persists, cancels the
   // simulated click and remounts where an edit would.
@@ -436,7 +456,7 @@ export function Workbench() {
   );
   return (
     <SystemProvider config={documentationConfig}>
-      <div className="docs-shell" data-doc-theme={theme}>
+      <div className="docs-shell">
         <a className="skip-link" href="#main-content">
           {t("انتقل إلى المحتوى", "Skip to content")}
         </a>
@@ -482,7 +502,7 @@ export function Workbench() {
                 trigger={
                   <button type="button" className="doc-button">
                     <SlidersHorizontal size={14} />
-                    {label("customize", language)}
+                    <span>{label("customize", language)}</span>
                   </button>
                 }
               >

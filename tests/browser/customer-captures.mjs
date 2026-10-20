@@ -34,8 +34,10 @@ try {
         await page.locator(".language-control").selectOption(language);
         const ar = language === "ar";
         if (
-          (await page.locator(".docs-shell").getAttribute("data-doc-theme")) !==
-          theme
+          (await page
+            .locator(".tiraz-system")
+            .first()
+            .getAttribute("data-theme")) !== theme
         )
           await page
             .getByRole("button", {

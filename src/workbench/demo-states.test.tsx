@@ -191,6 +191,19 @@ it("plays Replay in order", async () => {
   expect(replay).toHaveFocus();
 });
 
+it("keeps the example mounted through a Replay step, so its change plays", async () => {
+  vi.useFakeTimers();
+  open("button");
+  fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
+  const button = stage().getByRole("button");
+  expect(button).toHaveAttribute("data-state", "idle");
+  await wait(800);
+  // The same button takes Loading, so its transition plays.
+  expect(stage().getByRole("button")).toBe(button);
+  expect(button).toHaveAttribute("data-state", "loading");
+  expect(button).toHaveAttribute("data-changed");
+});
+
 it("cancels replay on state press, Code view, page change and unmount", async () => {
   vi.useFakeTimers();
   const view = open("button");

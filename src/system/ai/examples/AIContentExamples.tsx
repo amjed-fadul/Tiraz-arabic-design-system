@@ -254,7 +254,7 @@ export function StreamingDemo({
     <DemoFrame
       className="tz-stream-demo"
       language={language}
-      label={ar ? "مثال نص يظهر تباعًا" : "Local text demo"}
+      label={ar ? "مثال محلي لنص يظهر تباعًا" : "Local text demo"}
       title={
         markdown ? (ar ? "ماركداون" : "Markdown") : ar ? "الافتراضي" : "Default"
       }

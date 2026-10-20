@@ -37,7 +37,7 @@ bdi {
   background: var(--action);
   color: var(--action-text);
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: var(--radius-control);
 }
 .skip-link:focus {
   inset-block-start: 12px;
@@ -48,13 +48,32 @@ bdi {
   color: var(--text);
 }
 .docs-header {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 24px;
   block-size: 58px;
   padding-inline: 24px;
-  border-block-end: 1px solid var(--border);
+  /* The band draws the edge; forced colors draw this border instead. */
+  border-block-end: 1px solid transparent;
   background: var(--surface);
+}
+/* The woven band under the header: two stitched lines with lozenges between
+   them, in the accent at half strength. The star belongs to the AI, so the
+   brand uses the lozenge, a textile border motif. The pattern is symmetric and
+   centred, so it reads the same in both directions. */
+.docs-header::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 9px;
+  background: color-mix(in srgb, var(--action) 50%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3E%3Cpath d='M1 0h4v1H1zM7 0h4v1H7zM1 8h4v1H1zM7 8h4v1H7zM6 2l2.5 2.5L6 7 3.5 4.5z'/%3E%3C/svg%3E")
+    center / 12px 9px repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 9'%3E%3Cpath d='M1 0h4v1H1zM7 0h4v1H7zM1 8h4v1H1zM7 8h4v1H7zM6 2l2.5 2.5L6 7 3.5 4.5z'/%3E%3C/svg%3E")
+    center / 12px 9px repeat-x;
+  pointer-events: none;
 }
 .docs-brand {
   display: flex;
@@ -62,7 +81,7 @@ bdi {
   gap: 9px;
   inline-size: 142px;
   flex-shrink: 0;
-  font-size: 19px;
+  font-size: var(--text-heading);
   font-weight: 500;
 }
 .docs-brand svg {
@@ -71,7 +90,7 @@ bdi {
   color: var(--action);
 }
 .header-description {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
 }
 .header-actions {
@@ -90,16 +109,16 @@ bdi {
   justify-content: center;
   gap: 6px;
   min-block-size: 32px;
-  border-radius: 6px;
+  border-radius: var(--radius-control);
   padding: 4px 8px;
   line-height: 1.6;
-  font-size: 12px !important;
+  font-size: var(--text-meta) !important;
   font-weight: 400;
   cursor: pointer;
 }
 .doc-button:hover,
 .doc-icon-button:hover {
-  background: var(--surface-subtle);
+  background: var(--wash);
   color: var(--text);
 }
 .doc-icon-button {
@@ -111,7 +130,7 @@ bdi {
   background: transparent;
   border: 0;
   color: var(--text-secondary);
-  font-size: 12px !important;
+  font-size: var(--text-meta) !important;
   padding: 6px;
   min-block-size: 32px;
   cursor: pointer;
@@ -132,12 +151,17 @@ bdi {
   display: flex;
   flex-direction: column;
   align-self: start;
-  border-inline-end: 1px solid var(--border);
+  /* The tray draws the edge; forced colors draw this border instead. */
+  border-inline-end: 1px solid transparent;
+  background: var(--surface-tray);
+  /* Once stuck, the sidebar ends a header's height above the viewport's
+     bottom; the tray carries on under it. */
+  box-shadow: 0 58px 0 var(--surface-tray);
   min-inline-size: 0;
 }
 .navigation-label {
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: var(--text-meta);
   padding-inline: 9px;
   margin-block-end: 12px;
 }
@@ -151,21 +175,32 @@ bdi {
   text-align: start;
   padding: 5px 10px;
   min-block-size: 34px;
-  border-radius: 5px;
-  font-size: 13px;
+  border-radius: var(--radius-item);
+  font-size: var(--text-label);
   color: var(--text-secondary);
   border: 0;
   background: transparent;
   font-weight: 400;
 }
+/* The current page is a paper chip on the tray. */
 .component-nav button[aria-current="page"] {
   color: var(--text);
-  background: var(--surface-subtle);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
   font-weight: 500;
 }
-.component-nav button:hover {
+.component-nav button:not([aria-current="page"]):hover {
   color: var(--text);
-  background: var(--surface-subtle);
+  background: var(--wash);
+}
+@media (forced-colors: active) {
+  /* Forced colors drop the chip's fill and ring. The Highlight pair stays as
+     written, so the text keeps no Canvas backplate over it. */
+  .component-nav button[aria-current="page"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
 }
 .docs-workspace {
   min-inline-size: 0;
@@ -183,27 +218,35 @@ bdi {
   margin-block-end: 32px;
 }
 .component-kicker {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
   margin: 0 0 5px;
 }
+/* An English eyebrow is mono, upper case and tracked; Arabic never is. */
+.component-kicker:lang(en) {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 .component-heading h1 {
-  font-size: 24px;
-  line-height: 1.6;
+  font-size: var(--text-display);
+  line-height: var(--leading-display);
   font-weight: 600;
   margin: 0 0 7px;
 }
 .component-heading > p:last-child {
-  font-size: 14px;
+  font-size: var(--text-body);
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.9;
 }
-.component-page h2 {
-  font-size: 16px;
-  font-weight: 500;
+/* The page's own section headings; an example's dialog title keeps its own. */
+:is(.section-title-row, .agent-section) > h2 {
+  font-size: var(--text-title);
+  font-weight: 600;
   margin: 0;
-  line-height: 1.8;
+  line-height: var(--leading-title);
 }
 .section-title-row {
   display: flex;
@@ -216,17 +259,17 @@ bdi {
   margin-block-end: 34px;
 }
 .agent-section > p {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
   margin: 0;
   line-height: 1.9;
 }
 .agent-section bdi {
-  font: 11px var(--font-mono);
+  font: var(--text-micro) var(--font-mono);
 }
 .prompt-disclosure {
   margin-block-start: 9px;
-  font-size: 12px;
+  font-size: var(--text-meta);
 }
 .prompt-disclosure summary {
   color: var(--text-secondary);
@@ -234,12 +277,12 @@ bdi {
   display: list-item;
 }
 .prompt-disclosure pre {
-  border-radius: 8px;
+  border-radius: var(--radius-paper);
   background: var(--surface-subtle);
   border: 1px solid var(--border);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  font: 12px/1.8 var(--font);
+  font: var(--text-meta) / 1.8 var(--font);
   padding: 16px;
   max-block-size: 330px;
   overflow: auto;
@@ -251,7 +294,7 @@ bdi {
   gap: 5px;
 }
 .copy-error {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--danger);
 }
 .playground-section {
@@ -296,7 +339,7 @@ bdi {
   margin: 0;
 }
 .tab-demo-content bdi {
-  font: 12px var(--font-mono);
+  font: var(--text-meta) var(--font-mono);
   color: var(--text-secondary);
 }
 .example-row {
@@ -377,22 +420,28 @@ bdi {
 }
 .api-reference {
   margin-block-start: 0;
-  font-size: 12px;
+  font-size: var(--text-meta);
 }
 .api-reference summary {
-  font-size: 13px;
+  font-size: var(--text-label);
   color: var(--text-secondary);
   cursor: pointer;
   display: list-item;
 }
 .api-reference > p {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
   line-height: 1.8;
 }
+/* Paper with hairline rows. Forced colors drop the ring; the border becomes
+   its edge. */
 .api-scroll {
   overflow: auto;
-  border-block: 1px solid var(--border);
+  margin-block: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
 }
 .api-scroll table {
   inline-size: 100%;
@@ -403,11 +452,11 @@ bdi {
 .api-scroll td {
   padding: 12px 10px;
   vertical-align: top;
-  border-block-end: 1px solid var(--border);
+  border-block-end: 0.5px solid var(--hairline);
 }
 .api-scroll th {
   text-align: start;
-  font-size: 12px;
+  font-size: var(--text-meta);
   font-weight: 500;
 }
 .api-scroll td:first-child {
@@ -415,14 +464,14 @@ bdi {
 }
 .api-scroll code {
   display: inline-block;
-  font: 11px/1.7 var(--font-mono);
+  font: var(--text-micro) / 1.7 var(--font-mono);
   overflow-wrap: anywhere;
   unicode-bidi: isolate;
 }
 .api-scroll td p {
   margin: 6px 0 0;
   color: var(--text-secondary);
-  font-size: 12px;
+  font-size: var(--text-meta);
 }
 .api-scroll tr:last-child td {
   border: 0;
@@ -438,7 +487,7 @@ bdi {
   gap: 8px;
   border: 0;
   background: transparent;
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
   padding: 3px 3px 13px;
   inline-size: 100%;
@@ -452,9 +501,9 @@ bdi {
 }
 .floating-settings {
   background: var(--surface-subtle);
-  border-radius: 10px;
+  border-radius: var(--radius-tray);
   padding: 17px;
-  box-shadow: 0 4px 22px #00000003;
+  box-shadow: var(--shadow-paper);
   max-block-size: calc(100dvh - 108px);
   overflow-y: auto;
 }
@@ -466,11 +515,11 @@ bdi {
 }
 .settings-heading h2 {
   margin: 0;
-  font-size: 13px;
+  font-size: var(--text-label);
   font-weight: 500;
 }
 .settings-scope {
-  font-size: 11px;
+  font-size: var(--text-micro);
   color: var(--text-secondary);
   margin: 2px 0 21px;
 }
@@ -480,7 +529,7 @@ bdi {
 .setting-field > label,
 .radius-setting label {
   display: block;
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
   margin-block-end: 6px;
 }
@@ -492,9 +541,9 @@ bdi {
   inline-size: 100%;
   background: var(--surface);
   border: 1px solid var(--border-strong);
-  border-radius: 5px;
+  border-radius: var(--radius-control);
   min-block-size: 32px;
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text);
   padding: 4px 7px;
 }
@@ -509,7 +558,7 @@ bdi {
   justify-content: space-between;
 }
 .radius-setting bdi {
-  font: 10px var(--font-mono);
+  font: var(--text-micro) var(--font-mono);
   color: var(--text-secondary);
 }
 .radius-setting input {
@@ -524,17 +573,17 @@ bdi {
   gap: 8px;
 }
 .motion-setting label {
-  font-size: 12px;
+  font-size: var(--text-meta);
   font-weight: 400;
 }
 .settings-saved {
-  font-size: 10px;
+  font-size: var(--text-micro);
   color: var(--text-muted);
   margin: 8px 0 0;
 }
 .appearance-content .copy-button {
   padding-inline: 0;
-  font-size: 11px !important;
+  font-size: var(--text-micro) !important;
 }
 .playground-inspector {
   margin-block-start: 28px;
@@ -544,7 +593,7 @@ bdi {
 }
 .playground-inspector > summary {
   cursor: pointer;
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text);
   font-weight: 500;
   display: list-item;
@@ -566,7 +615,7 @@ bdi {
 }
 .inspector-scope p {
   color: var(--text-secondary);
-  font-size: 10px;
+  font-size: var(--text-micro);
   margin: 0;
 }
 .inspector-field {
@@ -578,11 +627,11 @@ bdi {
   align-items: baseline;
   justify-content: space-between;
   gap: 5px;
-  font-size: 12px;
+  font-size: var(--text-meta);
   margin-block-end: 5px;
 }
 .inspector-field > label code {
-  font: 9px/1.6 var(--font-mono);
+  font: var(--text-micro) / 1.6 var(--font-mono);
   color: var(--text-muted);
   text-align: end;
   max-inline-size: 44%;
@@ -594,11 +643,11 @@ bdi {
   gap: 7px;
 }
 .boolean-field .tz-switch-copy label {
-  font-size: 12px;
+  font-size: var(--text-meta);
   font-weight: 400;
 }
 .boolean-field .tz-switch-copy p {
-  font: 9px/1.7 var(--font-mono);
+  font: var(--text-micro) / 1.7 var(--font-mono);
   unicode-bidi: isolate;
   color: var(--text-muted);
   overflow-wrap: anywhere;
@@ -607,35 +656,35 @@ bdi {
   margin-block-start: 18px;
 }
 .advanced-inspector summary {
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
   cursor: pointer;
   display: list-item;
   margin-block-end: 15px;
 }
 .field-help {
-  font-size: 10px;
+  font-size: var(--text-micro);
   color: var(--text-secondary);
   line-height: 1.8;
   margin: 7px 0 0;
 }
 .field-error {
   color: var(--danger);
-  font-size: 11px;
+  font-size: var(--text-micro);
   margin: 7px 0 0;
 }
 .collection-field textarea {
-  font: 10px/1.8 var(--font-mono);
+  font: var(--text-micro) / 1.8 var(--font-mono);
   resize: vertical;
   min-block-size: 100px;
 }
 .collection-field .doc-button {
-  font-size: 11px !important;
+  font-size: var(--text-micro) !important;
   margin-block-start: 4px;
   padding-inline: 0;
 }
 .override-heading {
-  font-size: 12px;
+  font-size: var(--text-meta);
   margin-block: 20px 10px;
   color: var(--text-secondary);
 }
@@ -643,7 +692,7 @@ bdi {
   position: fixed;
   inset: 0;
   z-index: 85;
-  background: #10181055;
+  background: var(--backdrop);
   animation: tz-fade-in var(--motion-enter);
 }
 .docs-drawer-backdrop[data-state="closed"] {
@@ -681,7 +730,7 @@ bdi {
 }
 .docs-drawer > header h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: var(--text-subheading);
   font-weight: 500;
 }
 .docs-drawer-body {
@@ -746,7 +795,6 @@ bdi {
   }
   .docs-brand {
     inline-size: auto;
-    font-size: 18px;
     margin-inline-end: auto;
   }
   .header-description {
@@ -757,14 +805,22 @@ bdi {
     margin: 0;
   }
   .header-actions .doc-button {
-    font-size: 11px !important;
+    font-size: var(--text-micro) !important;
     padding-inline: 6px;
   }
   .mobile-settings .doc-button {
     inline-size: 32px;
     padding: 0;
-    font-size: 0 !important;
     gap: 0;
+  }
+  /* The icon alone shows; the word stays the button's name. */
+  .mobile-settings .doc-button > span {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
   .mobile-settings .doc-button svg {
     inline-size: 16px;
@@ -772,7 +828,7 @@ bdi {
   .language-control {
     inline-size: 76px;
     padding-inline: 3px;
-    font-size: 11px !important;
+    font-size: var(--text-micro) !important;
   }
   .component-heading {
     margin-block-end: 28px;
@@ -780,17 +836,14 @@ bdi {
   .section-title-row {
     gap: 8px;
   }
-  .component-page h2 {
-    font-size: 15px;
-  }
   .copy-button {
-    font-size: 11px !important;
+    font-size: var(--text-micro) !important;
     padding-inline: 3px;
   }
 
   .playground-tabs .tz-tab {
     padding-inline: 8px;
-    font-size: 12px;
+    font-size: var(--text-meta);
   }
   .playground-tabs .tz-tab-list {
     flex-wrap: nowrap;
@@ -800,16 +853,16 @@ bdi {
     gap: 10px;
   }
   .preview-metadata {
-    font-size: 10px;
+    font-size: var(--text-micro);
   }
   .event-feedback {
-    font-size: 10px;
+    font-size: var(--text-micro);
   }
   .api-scroll td:first-child {
     inline-size: 35%;
   }
   .api-scroll code {
-    font-size: 10px;
+    font-size: var(--text-micro);
   }
 }
 @media (max-width: 360px) {
@@ -883,8 +936,8 @@ bdi {
 .playground-inspector,
 .customization-scroll > .system-collapse {
   flex-shrink: 0;
-  background: var(--surface-subtle);
-  border-radius: 12px;
+  background: var(--surface-tray);
+  border-radius: var(--radius-tray);
   padding: 12px;
 }
 .settings-heading {
@@ -892,7 +945,7 @@ bdi {
   margin-block-end: 12px;
 }
 .settings-heading h2 {
-  font-size: 12px;
+  font-size: var(--text-meta);
   line-height: 1.7;
 }
 .settings-actions {
@@ -916,7 +969,7 @@ bdi {
 .inspector-field > label {
   display: block;
   margin: 0;
-  font-size: 12px;
+  font-size: var(--text-meta);
   color: var(--text-secondary);
 }
 .setting-field select,
@@ -924,7 +977,7 @@ bdi {
 .inspector-field select,
 .inspector-field input {
   min-block-size: 30px;
-  font-size: 12px;
+  font-size: var(--text-meta);
   padding: 3px 6px;
 }
 .radius-control {
@@ -939,7 +992,7 @@ bdi {
   accent-color: var(--action);
 }
 .radius-control output {
-  font: 10px var(--font-mono);
+  font: var(--text-micro) var(--font-mono);
   flex-shrink: 0;
   min-inline-size: 24px;
   text-align: end;
@@ -960,7 +1013,7 @@ bdi {
 }
 .motion-setting .tz-switch-copy label,
 .boolean-field .tz-switch-copy label {
-  font-size: 12px;
+  font-size: var(--text-meta);
   font-weight: 400;
   color: var(--text-secondary);
 }
@@ -976,7 +1029,7 @@ bdi {
   margin-block-start: 0;
 }
 .playground-inspector > summary {
-  font-size: 12px;
+  font-size: var(--text-meta);
   padding: 0;
 }
 .inspector-scroll {
@@ -988,7 +1041,7 @@ bdi {
   margin: 4px 0 8px;
 }
 .inspector-scope p {
-  font-size: 10px;
+  font-size: var(--text-micro);
 }
 .collection-field {
   grid-template-columns: minmax(0, 1fr);
@@ -997,7 +1050,7 @@ bdi {
 .collection-field textarea {
   min-block-size: 100px;
   inline-size: 100%;
-  font: 10px/1.7 var(--font-mono);
+  font: var(--text-micro) / 1.7 var(--font-mono);
 }
 .collection-field .doc-button {
   justify-self: start;
@@ -1012,14 +1065,18 @@ bdi {
 .agent-section > h2 {
   margin-block-end: 10px;
 }
+/* Paper with a ring. Forced colors drop the ring; the border becomes its
+   edge. */
 .prompt-row {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 7px 9px;
   min-inline-size: 0;
-  border-radius: 6px;
-  background: var(--surface-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
 }
 .prompt-preview {
   min-inline-size: 0;
@@ -1028,21 +1085,12 @@ bdi {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font: 12px/1.8 var(--font);
+  font: var(--text-meta) / 1.8 var(--font);
   unicode-bidi: plaintext;
   color: var(--text-secondary);
 }
 .prompt-row .copy-control {
   flex-shrink: 0;
-}
-.prompt-row .copy-icon {
-  inline-size: 30px;
-  min-block-size: 30px;
-  padding: 0;
-}
-.copy-icon {
-  inline-size: 30px;
-  padding: 0;
 }
 .docs-drawer .settings-heading {
   display: flex;
@@ -1081,7 +1129,7 @@ bdi {
     padding: 28px 22px 50px;
   }
   .prompt-preview {
-    font-size: 11px;
+    font-size: var(--text-micro);
   }
 }
 @media (max-width: 360px) {
@@ -1135,7 +1183,7 @@ bdi {
 .component-nav-heading {
   margin: 0;
   padding: 4px 10px;
-  font-size: 11px;
+  font-size: var(--text-meta);
   font-weight: 500;
   color: var(--text-muted);
 }
@@ -1164,12 +1212,12 @@ bdi {
   display: inline-block;
   inline-size: 11px;
   block-size: 11px;
-  border-radius: 50%;
+  border-radius: var(--radius-pill);
   border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
 }
 .accent-popup {
   z-index: 90;
-  border-radius: 5px;
+  border-radius: var(--radius-paper);
 }
 .accent-options {
   padding: 4px;
@@ -1181,8 +1229,8 @@ bdi {
 .accent-option {
   min-block-size: 30px;
   padding: 3px 6px;
-  font-size: 12px;
-  border-radius: 3px;
+  font-size: var(--text-meta);
+  border-radius: var(--radius-item);
 }
 .accent-scroll {
   display: flex;

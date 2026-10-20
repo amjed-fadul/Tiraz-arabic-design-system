@@ -1733,7 +1733,7 @@ export function ApiReference({
       ],
       [
         "tone",
-        "neutral | success | error | info",
+        "neutral | success | error | info | warning | ai",
         t(
           "القيمة الافتراضية info. لا تتأثر الألوان الدلالية باللون الأساسي.",
           "Defaults to info; semantic colors stay independent of accent.",
@@ -1815,6 +1815,14 @@ export function ApiReference({
         t(
           "الحجم الافتراضي sm. مع تقليل الحركة يتوقف الدوران ويبقى المؤشر والتسمية.",
           "Defaults to sm. Reduced motion stops rotation while keeping the indicator and name.",
+        ),
+      ],
+      [
+        "tone",
+        "neutral | ai",
+        t(
+          "القيمة الافتراضية neutral. استخدم ai حين يعمل المساعد، فيأخذ القوس لون الذكاء الاصطناعي.",
+          "Defaults to neutral. ai paints the arc in the AI color, for work the assistant is doing.",
         ),
       ],
     ],
@@ -1943,7 +1951,7 @@ export function ApiReference({
     badge: [
       [
         "children / tone",
-        "ReactNode / neutral | success | error | info",
+        "ReactNode / neutral | success | error | info | warning | ai",
         t(
           "النص هو ما يحمل المعنى. اللون محايد افتراضيًا، ولا إجراء ولا إعلان تلقائي.",
           "Text carries meaning. Defaults to neutral; no action or automatic announcement.",
@@ -2547,7 +2555,7 @@ export function ApiReference({
       ],
       [
         "title / description / tone",
-        "string / string? / success | error | info",
+        "string / string? / success | error | info | warning",
         t(
           "title مطلوب وdescription اختياري، وقيمة tone الافتراضية info.",
           "title is required; tone defaults to info; description is optional.",

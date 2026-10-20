@@ -112,7 +112,7 @@ export interface ToastModel {
   triggerLabel: string;
   title: string;
   description: string;
-  tone: "success" | "error" | "info";
+  tone: "success" | "error" | "info" | "warning";
   duration: number;
   providerLabel: string;
   closeLabel: string;
@@ -153,7 +153,7 @@ export interface DataTableModel {
 }
 export interface BadgeModel {
   children: string;
-  tone: "neutral" | "success" | "error" | "info";
+  tone: "neutral" | "success" | "error" | "info" | "warning" | "ai";
 }
 export interface CheckboxModel extends FieldModel, Stateful {
   checked: boolean;
@@ -207,7 +207,7 @@ export interface EmptyStateModel {
 export interface AlertModel {
   title: string;
   description: string;
-  tone: "neutral" | "success" | "error" | "info";
+  tone: "neutral" | "success" | "error" | "info" | "warning" | "ai";
   actionLabel: string;
 }
 export interface SkeletonModel {
@@ -222,6 +222,7 @@ export interface ProgressModel {
 export interface SpinnerModel {
   label: string;
   size: "sm" | "md";
+  tone: "neutral" | "ai";
   decorative: boolean;
 }
 export interface CardModel {
@@ -595,6 +596,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     spinner: {
       label: t("جارٍ التحميل…", "Loading"),
       size: "sm",
+      tone: "neutral",
       decorative: false,
     },
     avatar: {
@@ -1197,8 +1199,8 @@ export function normalizePlaygrounds(
       align: ["start", "end"],
       side: ["auto", "left", "right"],
       tone: ["badge", "alert"].includes(component)
-        ? ["neutral", "success", "error", "info"]
-        : ["success", "error", "info"],
+        ? ["neutral", "success", "error", "info", "warning", "ai"]
+        : ["success", "error", "info", "warning"],
     };
     const original = defaultPlaygrounds(language)[
       component

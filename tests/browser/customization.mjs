@@ -227,11 +227,21 @@ for (let i = 0; i < ids.length; i++) {
       metrics: large,
     });
     await select("Typography", "حجم النص", "standard");
+    // accentColors[accent].light in src/system/config.ts.
+    const accentValues = {
+      sage: "#355E4C",
+      blue: "#365B87",
+      plum: "#6B487A",
+      clay: "#88543F",
+    };
     for (const accent of ["sage", "blue", "plum", "clay"]) {
       await selectAccent(rail(), accent);
       const m = await metrics();
       for (const provider of m.providers)
-        assert.equal(provider.action, m.providers[0].action);
+        assert.equal(
+          provider.action.trim().toUpperCase(),
+          accentValues[accent],
+        );
       report.system.push({
         component: ids[i],
         control: "accent",

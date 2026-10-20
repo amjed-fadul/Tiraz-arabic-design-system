@@ -531,6 +531,9 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   spinner: [
     field("label", "text", "التسمية", "Label"),
     field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+    field("tone", "select", "النوع", "Tone", "tone", {
+      options: ["neutral", "ai"],
+    }),
     field(
       "decorative",
       "boolean",
@@ -1014,7 +1017,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   alert: ["title", "description", "tone", "actionLabel"],
   skeleton: ["shape"],
   progress: ["label", "value", "indeterminate", "showValue"],
-  spinner: ["label", "size", "decorative"],
+  spinner: ["label", "size", "tone", "decorative"],
   avatar: ["appearance", "src", "name", "fallback", "size"],
   "avatar-group": ["appearance", "maxVisible", "size"],
   tooltip: ["content"],

@@ -672,11 +672,11 @@ export function Playground({
     const p = model as SpinnerModel;
     return p.decorative ? (
       <div role="status" className="tz-preferences-actions">
-        <Spinner decorative size={p.size} />
+        <Spinner decorative size={p.size} tone={p.tone} />
         <span>{p.label}</span>
       </div>
     ) : (
-      <Spinner label={p.label} size={p.size} />
+      <Spinner label={p.label} size={p.size} tone={p.tone} />
     );
   }
   if (component === "avatar") {

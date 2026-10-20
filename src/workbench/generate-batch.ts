@@ -96,8 +96,8 @@ export function generateBatchCode(
     const p = model as SpinnerModel;
     imports = "Spinner";
     jsx = p.decorative
-      ? `<div role="status" style={{display:"flex",alignItems:"center",gap:"var(--space-2)"}}><Spinner decorative size="${p.size}" /><span>{${json(p.label)}}</span></div>`
-      : `<Spinner label={${json(p.label)}} size="${p.size}" />`;
+      ? `<div role="status" style={{display:"flex",alignItems:"center",gap:"var(--space-2)"}}><Spinner decorative size="${p.size}" tone="${p.tone}" /><span>{${json(p.label)}}</span></div>`
+      : `<Spinner label={${json(p.label)}} size="${p.size}" tone="${p.tone}" />`;
   } else if (component === "avatar") {
     const p = model as AvatarModel;
     imports = "Avatar";

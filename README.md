@@ -38,7 +38,7 @@ Arabic mode has navigation only in the compact 190px right sidebar. A separate 2
 
 The inspector presents common controls without technical subtitles or an advanced disclosure. Button has label, variant, size, one state selector (including disabled/loading), icon preset and icon-only mode. Tabs has variant/selection; Switch has label/checked/disabled; Menu has trigger label/alignment/validated items; Sheet has title/content/side; Toast has title/description/tone/duration. Input has label/placeholder/helper/error/required/size/disabled/read-only; Field stays available as a composition helper under Input; Select has placeholder/size/disabled/options. Other public props, native attributes, functions and refs remain documented and supported by the library. Per-component edits survive navigation and reload.
 
-One header light/dark preference updates documentation, both rails, controls, playgrounds, examples and scoped portals. One language selector pairs Arabic + RTL and English + LTR. Rail settings affect preview/example accent, text scale, numerals, density, corners and motion; documentation typography and layout stay stable. Accent choices show theme-aware swatches beside localized names: Green, Blue, Purple, Brown, Lime, Amber, Teal, Cyan, Indigo, Rose and Slate. The original four paired values and internal palette IDs are retained.
+One header light/dark preference updates documentation, both rails, controls, playgrounds, examples and scoped portals. One language selector pairs Arabic + RTL and English + LTR. Rail settings affect preview/example accent, text scale, numerals, density, corners and motion; documentation typography and layout stay stable. Accent choices show theme-aware swatches beside localized names: Green, Blue, Purple, Brown, Lime, Amber, Teal, Cyan, Indigo, Rose, Slate and Ink. The original four paired values and internal palette IDs are retained.
 
 Navigation and the combined customization rail move into separate accessible drawers on narrow screens. Code and API tables scroll within their own containers. The prompt remains one line with a visible copy button at 320px.
 
@@ -112,6 +112,8 @@ export function App() {
 }
 ```
 
+Keep `:dir()` as written in your CSS pipeline. Tiraz sets every direction-bearing detail with `:dir(rtl)` (mirrored icons, popup origins, the switch, slider and progress fills, the skeleton sweep, shimmers and the Sources fan), which Chrome and Edge 120+, Firefox 49+ and Safari 16.4+ support; a build that targets older browsers rewrites it to `:lang()`, which follows the page language instead of its direction. This repository's `vite.config.ts` sets `build.cssTarget` for that reason.
+
 `Button` defaults to `sm`; the system defaults to compact density. `md` and standard density remain available. Small labels use readable 14px Arabic text and normal pointer targets; Sheet widths remain **440px**, bounded by the viewport.
 
 `ButtonProps` requires an accessible name for icon-only buttons; loading blocks repeated clicks and exposes `aria-busy`. State icons accompany caller-supplied labels. `Tabs` and `Switch` support controlled/internal state. Switch inherits native Radix Root attributes/ref; the wrapper owns Thumb markup, so `children` and `asChild` are excluded.
@@ -122,9 +124,127 @@ Use `useToast()` inside `ToastProvider` for success/error/info feedback. At most
 
 ## Configuration
 
-`SystemConfig` contains `theme`, `direction`, `density`, `accent`, `radius`, `reducedMotion`, optional `typography` (`standard` or `large`) and optional `numerals` (`arab` for Arabic-Indic ٠١٢, the default, or `latn` for Western 012). Every component number and date formatter follows `numerals` through the exported `numberLocale(config, language?)` helper; English always uses Western digits. Paired accent presets are sage, blue, plum, clay, lime, amber, teal, cyan, indigo, rose and slate. The corner control ranges from 0–16px. Standard typography is 24px titles, 18px section headings, 14px body/control labels and 12px metadata; large previews use 26/20/16/14px. Documentation has its own fixed typography and control styling.
+`SystemConfig` contains `theme`, `direction`, `density`, `accent`, `radius`, `reducedMotion`, optional `typography` (`standard` or `large`) and optional `numerals` (`arab` for Arabic-Indic ٠١٢, the default, or `latn` for Western 012). Every component number and date formatter follows `numerals` through the exported `numberLocale(config, language?)` helper; English always uses Western digits. Paired accent presets are sage, blue, plum, clay, lime, amber, teal, cyan, indigo, rose, slate and the monochrome ink. The AI and attention colors are fixed and never follow the accent. Indigo, blue, plum and slate bring the accent close to the AI color, and amber and clay close to attention, so meaning never rests on color: AI content carries its mark or label, and "needs you" its glyph and word. The corner control ranges from 0–16px. `typography="large"` raises every step of the type scale below. The documentation chrome keeps its own fixed configuration: standard density and typography, the sage accent and 8px corners.
 
-Hover/press feedback uses 120ms, state changes 180ms, overlay entrance 240ms and exit 160ms. OS reduced-motion preferences always win; component settings can additionally disable preview motion.
+Interface motion stays between 90 and 240ms. A press takes 90ms and releases over 160ms; hover and color changes take 120ms and state changes 200ms; popovers and menus enter in 180ms and leave in 120ms; dialogs take 220ms in and 150ms out, and toasts 240ms and 150ms. Sheets are the one exception, at 280ms in and 200ms out. Keyboard actions do not animate. OS reduced-motion preferences always win; component settings can additionally disable preview motion.
+
+### Tokens
+
+Components read these custom properties from `tokens.css`. The provider sets `--action` (the accent's light or dark value) and `--radius` (the corner setting) inline; everything else sits under `.tiraz-system`, with blocks for the dark theme, compact density, large typography, reduced motion and keyboard modality. Values are for the light theme, standard density and standard typography unless a column says otherwise.
+
+**Type.** Headings use weight 600.
+
+| Size                  | Standard | Large  | Leading                  | Use                                                  |
+| --------------------- | -------- | ------ | ------------------------ | ---------------------------------------------------- |
+| `--text-display`      | 30px     | 34px   | `--leading-display` 1.3  | page titles                                          |
+| `--text-title`        | 24px     | 26px   | `--leading-title` 1.35   | section headings, Markdown h1                        |
+| `--text-heading`      | 18px     | 20px   | `--leading-heading` 1.5  | card, dialog and panel titles                        |
+| `--text-subheading`   | 16px     | 18px   | `--leading-heading` 1.5  | titles in compact cards, patterns and popovers       |
+| `--text-reading`      | 15.5px   | 17px   | `--leading-reading` 1.95 | long reading: answers, drafts, Markdown, dialog text |
+| `--text-body`         | 14px     | 16px   | `--line-height` 1.8      | controls and body text                               |
+| `--text-label`        | 13px     | 15px   | `--leading-meta` 1.6     | chips, tags, sidebar and tree items, step labels     |
+| `--text-meta`         | 12.5px   | 14px   | `--leading-meta` 1.6     | help, timestamps, descriptions in rows               |
+| `--text-micro`        | 11px     | 12.5px | `--leading-micro` 1.4    | key hints, tool IDs, citation numbers                |
+| `--text-figure`       | 28px     | 32px   | `--leading-figure` 1.25  | KPI values and totals                                |
+| `--text-figure-small` | 20px     | 22px   | —                        | amounts in headers and rows                          |
+
+`--text-touch` is `max(16px, var(--text-body))`, so fields on touch screens never zoom the page. `--weight-regular`, `--weight-medium` and `--weight-semibold` are 400, 500 and 600, the bundled weights. `--underline-offset` is 0.24em, and 0.45em in RTL so underlines clear Arabic dots.
+
+**Fonts.** `--font` is `"IBM Plex Sans Arabic", system-ui, sans-serif`. `--font-mono` is `ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", "DejaVu Sans Mono", "IBM Plex Sans Arabic", monospace`: the Arabic face sits ahead of `monospace`, so Arabic inside code still joins. Mono is for machine values only: code, tool IDs, key hints and file names. The root sets `font-synthesis: none`, so every weight a token uses must be bundled.
+
+**Color.**
+
+| Token                                                          | Light                                 | Dark                                  | Use                                                                                        |
+| -------------------------------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `--surface-page`                                               | #f7f8f7                               | #161b18                               | app background                                                                             |
+| `--surface-tray`                                               | #eceeea                               | #121714                               | trays, sidebars, table headers, dialog footers                                             |
+| `--surface`                                                    | #ffffff                               | #1c221e                               | paper: content surfaces                                                                    |
+| `--surface-well`                                               | tray 55% into paper                   | tray 55% into paper                   | code, tool output and details inside paper                                                 |
+| `--surface-subtle`, `--surface-hover`                          | #f2f4f2, #eaecea                      | #232b25, #2b352e                      | kept for compatibility                                                                     |
+| `--text`, `--text-secondary`, `--text-muted`                   | #232a26, #56615a, #616b64             | #ecf0ec, #adb9af, #9ba8a0             | the three text tiers                                                                       |
+| `--border`, `--border-strong`                                  | #e2e7e3, #c5cec7                      | #333e36, #546259                      | dividers; secondary buttons and dashed edges                                               |
+| `--border-field`                                               | #848a85                               | #5f6f65                               | field, checkbox and radio edges (3:1)                                                      |
+| `--hairline`                                                   | #12231a14                             | #ffffff14                             | 0.5px rows and edges                                                                       |
+| `--action-text`                                                | #ffffff                               | #17241c                               | text on the accent                                                                         |
+| `--action-hover`                                               | accent, 12% black                     | accent, 10% white                     | primary hover                                                                              |
+| `--action-soft`, `--action-border`                             | accent 8% into paper; 24% into border | accent 9% into paper; 24% into border | selected rows and their edges                                                              |
+| `--focus`, `--focus-halo`                                      | the accent; 22% of it                 | the accent; 30% of it                 | focus ring and field halo                                                                  |
+| `--success`, `--success-soft`                                  | #316746, #edf5ee                      | #a5d4b3, #24372a                      | success                                                                                    |
+| `--danger`, `--danger-soft`                                    | #a93738, #fbefef                      | #f0a4a5, #3e2729                      | errors and destructive actions                                                             |
+| `--info`, `--info-soft`                                        | #355c87, #eef3f9                      | #adcaf0, #253347                      | information                                                                                |
+| `--ai`, `--ai-soft`                                            | #4b47c6, 11% into paper               | #aba7ff, 18% into paper               | AI presence; fixed                                                                         |
+| `--attention`, `--attention-soft`                              | #935200, 12% into paper               | #f1b45e, 16% into paper               | "needs you" and warnings; fixed                                                            |
+| `--wash`, `--wash-strong`                                      | 4% and 7% of `--text`                 | 4% and 7% of `--text`                 | hover and pressed fills                                                                    |
+| `--warp`                                                       | 6% of `--text`                        | 6% of `--text`                        | the demo stage's lines                                                                     |
+| `--backdrop`                                                   | #0c18114d                             | #050a0799                             | behind dialogs, sheets and drawers                                                         |
+| `--shimmer`                                                    | #ffffffa6                             | #ffffff12                             | the skeleton sweep                                                                         |
+| `--switch-track`                                               | #77857b                               | #67776b                               | an off switch                                                                              |
+| `--code-string`, `--code-number`, `--code-literal`             | #0b6f8f, #a4520b, #9b3a6c             | #6fcbe6, #f0a862, #f0a5cb             | code; `--code-key` is `--text`, `--code-comment` `--text-muted`, `--code-surface` the well |
+| `--chart-sage`, `--chart-blue`, `--chart-plum`, `--chart-clay` | #355e4c, #365b87, #6b487a, #88543f    | #a5c9b4, #a8c6ef, #d6b6e5, #e8baa3    | chart series                                                                               |
+
+**Shadows.** Each has a dark-theme value in `tokens.css`. `--shadow-paper` is paper's 1px ring, contact shadow and soft drop (`--shadow-surface` is an alias); `--shadow-chip` is small paper on a tray, such as a selected segment or the current sidebar item; `--shadow-control` sits under resting controls; `--shadow-raised` and `--shadow-pressed` are a primary button and its press; `--shadow-popover` lifts menus, selects and tooltips; `--shadow-overlay` lifts dialogs, sheets and drawers; `--shadow-thumb` is the switch and slider thumb. Content sits on paper; status, meta and decisions sit on the tray, with `--tray-pad` (5px) between a tray and the paper it holds.
+
+**Radii**, from `--radius` (r):
+
+| Token              | Formula                              | r = 0 | r = 8 (default) | r = 16 | Use                                                 |
+| ------------------ | ------------------------------------ | ----- | --------------- | ------ | --------------------------------------------------- |
+| `--radius-small`   | max(2px, r − 3px)                    | 2px   | 5px             | 13px   | checkbox, kbd, small tags, swatches                 |
+| `--radius-item`    | r                                    | 0     | 8px             | 16px   | menu items, options, navigation, tree and list rows |
+| `--radius-control` | r × 1.25                             | 0     | 10px            | 20px   | buttons, inputs, selects, segments                  |
+| `--radius-paper`   | min(24px, max(control, r × 1.875))   | 0     | 15px            | 24px   | cards, popovers, dialogs, toasts, tables            |
+| `--radius-tray`    | paper + min(`--tray-pad`, r × 0.625) | 0     | 20px            | 29px   | trays                                               |
+| `--radius-pill`    | r × 999                              | 0     | pill            | pill   | status pills, switch tracks, round buttons, chips   |
+| `--radius-panel`   | `--radius-paper`                     | 0     | 15px            | 24px   | kept for compatibility                              |
+
+**Space, sizing and density.** `--space-1`, `--space-2`, `--space-3`, `--space-4`, `--space-5`, `--space-6`, `--space-8` and `--space-10` are 4, 8, 12, 16, 20, 24, 32 and 40px.
+
+| Token                     | Standard | Compact (default) | Use                                     |
+| ------------------------- | -------- | ----------------- | --------------------------------------- |
+| `--control-height`        | 40px     | 36px              | `size="md"` controls                    |
+| `--control-small`         | 36px     | 32px              | `size="sm"` controls                    |
+| `--control-padding`       | 16px     | 12px              | inline padding of md controls and cells |
+| `--control-small-padding` | 12px     | 10px              | inline padding of sm controls           |
+| `--control-gap`           | 8px      | 6px               | between an icon and its label           |
+| `--tab-padding`           | 8px      | 4px               | block padding of tabs                   |
+| `--cell-padding`          | 8px      | 4px               | block padding of table cells            |
+| `--menu-item-padding`     | 5px      | 3px               | block padding of menu and option rows   |
+| `--row-gap`               | 16px     | 12px              | between stacked rows                    |
+| `--paper-padding-block`   | 16px     | 14px              | block padding of cards, dialogs, toasts |
+| `--paper-padding-inline`  | 18px     | 16px              | inline padding of the same              |
+
+Fixed sizes: `--status-size` 22px, `--remove-size` 24px, `--switch-track-width` 38px, `--switch-track-height` 22px, `--switch-thumb` 16px, `--slider-track` 6px, `--slider-thumb` 18px, `--avatar-sm` 32px, `--avatar-md` 40px and `--chat-avatar` 24px. A press scales to `--press-scale` (0.97); disabled controls fade to `--disabled-opacity` (0.5).
+
+**Motion.**
+
+| Token                                           | Duration     | Use                                            |
+| ----------------------------------------------- | ------------ | ---------------------------------------------- |
+| `--motion-press`, `--motion-release`            | 90ms, 160ms  | a press and its release                        |
+| `--motion-fast`                                 | 120ms        | hover and color                                |
+| `--motion-state`                                | 200ms        | state changes and moving indicators            |
+| `--motion-enter`, `--motion-exit`               | 180ms, 120ms | popovers, menus and selects                    |
+| `--motion-tooltip-exit`                         | 100ms        | a tooltip leaving                              |
+| `--motion-dialog-enter`, `--motion-dialog-exit` | 220ms, 150ms | dialogs                                        |
+| `--motion-panel`, `--motion-panel-exit`         | 280ms, 200ms | sheets                                         |
+| `--motion-toast`, `--motion-toast-exit`         | 240ms, 150ms | toasts                                         |
+| `--motion-collapse`, `--motion-collapse-exit`   | 200ms, 150ms | expanding and collapsing                       |
+| `--motion-receipt`                              | 240ms        | a decided approval folding into its receipt    |
+| `--motion-progress`                             | 240ms        | the progress fill moving to a new value        |
+| `--motion-status`                               | 200ms        | a status glyph drawing its check or cross      |
+| `--motion-reveal`                               | 240ms        | a loaded image fading in                       |
+| `--motion-stagger`                              | 40ms         | between cascading items, at most four          |
+| `--motion-word`, `--motion-word-settle`         | 34ms, 300ms  | between streamed words, and a word settling in |
+
+Decorative loops: `--motion-loop-stitch` 800ms, `--motion-loop-shimmer` 1900ms, `--motion-loop-turn` 1800ms, `--motion-loop-skeleton` 1600ms, `--motion-loop-caret` 1100ms, `--motion-loop-spinner` 800ms, `--motion-loop-progress` 1500ms, `--motion-loop-pixel` 650ms and `--motion-loop-orbit` 950ms.
+
+| Easing                      | Curve                             | Use                                         |
+| --------------------------- | --------------------------------- | ------------------------------------------- |
+| `--ease-out` (and `--ease`) | cubic-bezier(0.23, 1, 0.32, 1)    | entrances, state changes and press releases |
+| `--ease-in-out`             | cubic-bezier(0.77, 0, 0.175, 1)   | indicators that glide                       |
+| `--ease-exit`               | cubic-bezier(0.4, 0, 0.6, 1)      | exits                                       |
+| `--ease-drawer`             | cubic-bezier(0.32, 0.72, 0, 1)    | sheets and toasts                           |
+| `--ease-spring`             | cubic-bezier(0.22, 1.32, 0.36, 1) | defined; everyday controls do not use it    |
+
+Reduced motion, from the OS or `reducedMotion`, sets every motion token to 0ms and stops the loops. Under keyboard modality (`data-modality="keyboard"`, which the provider sets) interaction motion is 0ms and presses do not scale; status glyphs, the progress fill, image reveals, streamed words and the loops follow the system rather than a key, so they keep their timing.
 
 ## Verification and screenshots
 

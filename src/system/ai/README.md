@@ -49,6 +49,13 @@ For TypeScript CSS imports, use the host bundler’s declarations (for example,
 `vite/client` in Vite), rather than inventing a library API to solve a host
 configuration error.
 
+Keep `:dir()` as written in the host's CSS pipeline. Every direction-bearing
+detail uses `:dir(rtl)` (mirrored icons, popup origins, the switch, slider and
+progress fills, the skeleton sweep, shimmers and the Sources fan), which Chrome
+and Edge 120+, Firefox 49+ and Safari 16.4+ support. A CSS target below those (Vite's
+default baseline is one) rewrites it to `:lang()`, which follows the page
+language instead of its direction; raise the target (in Vite, `build.cssTarget`).
+
 Paired light/dark accent presets are `sage`, `blue`, `plum`, `clay`, `lime`,
 `amber`, `teal`, `cyan`, `indigo`, `rose`, `slate` and the monochrome `ink`. Set `config.accent` to
 one of these keys; controls and focus tokens follow the active theme.
@@ -691,12 +698,13 @@ props; the inspector's "Reset playground" does that. Workbench copies include
 current settings, source examples and dependency instructions. Copied into an
 app, StreamingTextExample passes autoStart, so it plays once on mount inside
 StreamingDemo's own portable frame; StreamingDemo used on its own starts only on
-request. That frame keeps local provenance in its accessible name rather than a
-visible footer. Runs invalidate timers
+request. That frame keeps local provenance in its accessible name, in Arabic and
+English, rather than a visible footer. Runs invalidate timers
 on replay, configuration changes and unmount. The host still owns cancellation
 and should keep received text if a real stream is cancelled. The local demo has
 no stop control and makes no AI/network request. Plain demo chunks
-arrive every 160ms, overlapping a gentle 360ms reveal with less blur; no movement
+arrive every 160ms, overlapping a 300ms reveal (`--motion-word-settle`) in which
+each word settles out of a light blur; no movement
 is applied to Arabic glyphs or existing content. The component still owns no timer.
 
 ## Chat foundations

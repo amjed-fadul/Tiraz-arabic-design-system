@@ -29,7 +29,12 @@ export function CopyControl({
     <span className="copy-control">
       <button
         type="button"
-        className={`doc-button copy-button${iconOnly ? " copy-icon" : ""}`}
+        // The icon alone is the shared icon button.
+        className={
+          iconOnly
+            ? "tz-icon-button copy-button copy-icon"
+            : "doc-button copy-button"
+        }
         aria-label={caption}
         title={failed ? label("failed", language) : caption}
         data-copy-state={failed ? "failed" : copied ? "copied" : "idle"}

@@ -88,7 +88,7 @@ try {
           .locator(".component-nav-heading")
           .first()
           .evaluate((el) => getComputedStyle(el).fontSize),
-        "11px",
+        "12.5px",
       );
       assert.equal(
         await menu
