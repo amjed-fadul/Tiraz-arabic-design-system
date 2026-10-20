@@ -5832,6 +5832,8 @@ button.tz-source-chip {
   overflow-wrap: anywhere;
 }
 .tz-suggested-edits-card > .tz-tray {
+  max-block-size: var(--radix-popper-available-height);
+  overflow-y: auto;
   box-shadow:
     0 0 0 1px var(--hairline),
     var(--shadow-popover);

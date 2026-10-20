@@ -180,6 +180,7 @@ export function SuggestedEditsExample({
       status={status}
       actions={actions}
       onAction={(action, picked) => {
+        if (sample) setEdited(text);
         setRequest({
           action,
           start: picked.start,
