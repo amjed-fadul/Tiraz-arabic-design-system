@@ -175,6 +175,7 @@
   --motion-loop-shimmer: 1900ms;
   --motion-loop-turn: 1800ms;
   --motion-loop-skeleton: 1600ms;
+  --motion-loop-caret: 1100ms;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   --ease-exit: cubic-bezier(0.4, 0, 0.6, 1);
@@ -274,6 +275,7 @@
   --motion-loop-shimmer: 0ms;
   --motion-loop-turn: 0ms;
   --motion-loop-skeleton: 0ms;
+  --motion-loop-caret: 0ms;
 }
 @media (prefers-reduced-motion: reduce) {
   .tiraz-system {
@@ -297,6 +299,7 @@
     --motion-loop-shimmer: 0ms;
     --motion-loop-turn: 0ms;
     --motion-loop-skeleton: 0ms;
+    --motion-loop-caret: 0ms;
   }
   .tiraz-system *,
   .tiraz-system *::before,

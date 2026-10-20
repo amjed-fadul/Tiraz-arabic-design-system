@@ -4,6 +4,7 @@ import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl } from "./control-associations";
 import { useEntryReset } from "./useEntryReset";
+import { useChanged } from "./useChanged";
 export type OTPInputProps = Omit<
   ComponentPropsWithRef<"input">,
   | "value"
@@ -22,6 +23,8 @@ export type OTPInputProps = Omit<
   defaultValue?: string;
   length?: number;
   onValueChange?: (value: string) => void;
+  /** The slots' height. */
+  size?: "sm" | "md";
   invalid?: boolean;
 } & (
     | { label: string; helper?: string; error?: string; field?: never }
@@ -42,6 +45,7 @@ export function OTPInput({
   helper,
   error,
   field,
+  size = "sm",
   invalid,
   className = "",
   ref,
@@ -62,6 +66,9 @@ export function OTPInput({
   const initial = useRef(defaultValue);
   const [local, setLocal] = useState(defaultValue);
   const current = normalize(value ?? local);
+  // A prefilled code is not a completion: the success edge plays only after
+  // the code changed.
+  const changed = useChanged(current);
   const inputRef = useRef<HTMLInputElement>(null);
   const [focused, setFocused] = useState(false);
   const [selection, setSelection] = useState({
@@ -139,6 +146,8 @@ export function OTPInput({
       className="tz-otp"
       dir="ltr"
       style={{ "--otp-length": count } as CSSProperties}
+      data-size={size}
+      data-changed={changed || undefined}
       data-disabled={props.disabled || undefined}
     >
       <span className="tz-otp-slots" aria-hidden="true">

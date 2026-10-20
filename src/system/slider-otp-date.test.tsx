@@ -381,4 +381,33 @@ describe("DatePicker", () => {
     await waitFor(() => expect(year).toHaveFocus());
     expect(document.querySelector(".tz-datepicker-popup")).toBeInTheDocument();
   });
+  it("renders Today and Clear as Buttons at the picker's size", async () => {
+    const user = userEvent.setup();
+    render(
+      <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+        <DatePicker label="Date" size="md" defaultValue="2024-02-28" />
+      </SystemProvider>,
+    );
+    await user.click(screen.getByRole("button", { name: /^Date/ }));
+    for (const name of ["Today", "Clear"]) {
+      const button = await screen.findByRole("button", { name });
+      expect(button).toHaveClass("tz-button");
+      expect(button).toHaveAttribute("data-size", "md");
+    }
+  });
+  it("gives the trigger the size it was given", () => {
+    const view = render(
+      <SystemProvider>
+        <DatePicker label="Date" />
+      </SystemProvider>,
+    );
+    const trigger = screen.getByRole("button", { name: /^Date/ });
+    expect(trigger).toHaveAttribute("data-size", "sm");
+    view.rerender(
+      <SystemProvider>
+        <DatePicker label="Date" size="md" />
+      </SystemProvider>,
+    );
+    expect(trigger).toHaveAttribute("data-size", "md");
+  });
 });

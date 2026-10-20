@@ -390,6 +390,7 @@ const motion = {
   "--motion-loop-shimmer": "1900ms",
   "--motion-loop-turn": "1800ms",
   "--motion-loop-skeleton": "1600ms",
+  "--motion-loop-caret": "1100ms",
 };
 
 /** Colors and shadows; their values are held to the rules below, not pinned. */
@@ -765,6 +766,7 @@ it("zeroes interaction motion under keyboard modality", () => {
     (name) => name.startsWith("--motion-") && !interaction.includes(name),
   );
   expect(kept.sort()).toEqual([
+    "--motion-loop-caret",
     "--motion-loop-shimmer",
     "--motion-loop-skeleton",
     "--motion-loop-stitch",

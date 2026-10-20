@@ -2379,7 +2379,9 @@ textarea.tz-textarea:read-only {
   }
 }
 
-/* Text-array entry and application-owned filter chips. */
+/* Text-array entry and application-owned filter chips. The shell is an Input:
+   paper with the field edge, and one row of tags keeps it at the control
+   height of its size. */
 .tz-tag-input {
   display: flex;
   flex-wrap: wrap;
@@ -2387,19 +2389,27 @@ textarea.tz-textarea:read-only {
   gap: 4px;
   min-inline-size: 0;
   min-block-size: var(--control-height);
-  padding: 4px var(--control-padding);
+  padding: 2px var(--control-padding);
   background: var(--surface);
   color: var(--text);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border: 1px solid var(--border-field);
+  border-radius: var(--radius-control);
   box-shadow: var(--shadow-control);
   transition:
     border-color var(--motion-fast) var(--ease-out),
-    box-shadow var(--motion-state) var(--ease-out);
+    box-shadow var(--motion-state) var(--ease-out),
+    background-color var(--motion-fast) var(--ease-out);
 }
 .tz-tag-input[data-size="sm"] {
   min-block-size: var(--control-small);
   padding-inline: var(--control-small-padding);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-tag-input:not([data-disabled="true"]):not(:focus-within):not(
+      [data-invalid="true"]
+    ):hover {
+    border-color: color-mix(in srgb, var(--border-field), var(--text) 22%);
+  }
 }
 .tz-tag-input:focus-within {
   border-color: var(--focus);
@@ -2424,21 +2434,43 @@ textarea.tz-textarea:read-only {
 .tz-tag-input[data-invalid="true"] {
   border-color: var(--danger);
 }
-.tz-tag-input[data-disabled="true"] {
-  opacity: 0.5;
+.tz-tag-input[data-invalid="true"]:has(> .tz-tag-draft:focus) {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
+    var(--shadow-control);
 }
+/* Read-only keeps the field edge on the well, without the lift or a caret. */
+.tz-tag-input:has(> .tz-tag-draft:read-only:not(:disabled)) {
+  background: var(--surface-well);
+  box-shadow: none;
+}
+.tz-tag-draft:read-only {
+  caret-color: transparent;
+}
+/* Disabled dims the shell once. Its remove buttons, and a disabled
+   dropzone's, do not dim again. */
+.tz-tag-input[data-disabled="true"] {
+  opacity: var(--disabled-opacity);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+:is(.tz-tag-input[data-disabled="true"], .tz-file-selection[data-disabled])
+  .tz-remove-button:disabled {
+  opacity: 1;
+}
+/* Tags are tray chips. */
 .tz-tag {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   max-inline-size: 100%;
   min-inline-size: 0;
-  padding: 2px 5px;
-  border-radius: calc(var(--radius) * 0.6);
-  background: var(--surface-hover);
+  padding: 1px 5px;
+  border-radius: var(--radius-small);
+  background: var(--surface-tray);
   color: var(--text-secondary);
-  font-size: var(--text-meta);
-  line-height: 1.5;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
 }
 .tz-tag > bdi {
   min-inline-size: 0;
@@ -2485,12 +2517,12 @@ textarea.tz-textarea:read-only {
   flex: 1 1 100px;
   min-inline-size: 0;
   inline-size: 100px;
-  padding: 2px 0;
+  padding: 0;
   background: transparent;
   color: var(--text);
   border: 0;
   font-size: var(--text-body);
-  line-height: 1.6;
+  line-height: var(--leading-meta);
 }
 .tz-tag-draft::placeholder {
   color: var(--text-muted);
@@ -2499,7 +2531,7 @@ textarea.tz-textarea:read-only {
   display: block;
   color: var(--text-secondary);
   font-size: var(--text-meta);
-  line-height: 1.6;
+  line-height: var(--leading-meta);
   overflow-wrap: anywhere;
 }
 .tz-entry-feedback:empty {
@@ -2519,19 +2551,40 @@ textarea.tz-textarea:read-only {
   flex: 1 1 0;
   min-inline-size: 0;
   text-overflow: ellipsis;
-  padding-inline-end: calc(28px + var(--control-padding));
+  padding-inline-end: calc(
+    var(--remove-size) + var(--space-1) + var(--control-padding)
+  );
 }
+/* The copy control is the shared small icon button, the remove button's size,
+   corner and wash. */
 .tz-input-copy > .tz-button {
-  --button-height: 24px;
+  --button-height: var(--remove-size);
   position: absolute;
-  inset-inline-end: 4px;
+  inset-inline-end: var(--space-1);
   inset-block: 0;
   margin-block: auto;
-  block-size: 24px;
+  block-size: var(--remove-size);
   padding: 0;
+  border-radius: var(--radius-small);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-input-copy > .tz-button[data-variant="ghost"]:not(:disabled):hover {
+    background: var(--wash-strong);
+  }
 }
 .tz-input-copy > .tz-button:focus-visible {
   outline-offset: 1px;
+}
+/* Copied: the icon swaps to a check that takes the success color, with no
+   pop. */
+.tz-input-copy .tz-button-label {
+  transition: color var(--motion-release) var(--ease-out);
+}
+.tz-input-copy .tz-button-label:has(> .lucide-check) {
+  color: var(--success);
+}
+.tz-input-copy > .tz-button[data-icon-only] .tz-button-label > .lucide-check {
+  animation: none;
 }
 .tz-filter-bar {
   display: grid;
@@ -2567,6 +2620,8 @@ textarea.tz-textarea:read-only {
   min-inline-size: 0;
   inline-size: 100%;
 }
+/* The dropzone is a tray with a dashed edge; files dragged over it tint it
+   with the accent. */
 .tz-file-drop {
   display: flex;
   align-items: center;
@@ -2574,14 +2629,15 @@ textarea.tz-textarea:read-only {
   flex-wrap: wrap;
   gap: var(--space-2);
   padding: var(--space-5) var(--space-3);
-  background: var(--surface-subtle);
+  background: var(--surface-tray);
   border: 1px dashed var(--border-strong);
-  border-radius: var(--radius);
+  border-radius: var(--radius-paper);
   color: var(--text-secondary);
   font-size: var(--text-body);
   transition:
-    background var(--motion-fast) var(--ease),
-    border-color var(--motion-fast) var(--ease);
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out);
 }
 .tz-file-drop[data-dragging] {
   background: var(--action-soft);
@@ -2599,12 +2655,30 @@ textarea.tz-textarea:read-only {
   text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
   border-radius: var(--radius-small);
   cursor: pointer;
+  touch-action: manipulation;
 }
-.tz-file-drop:has(.tz-file-browse:focus-visible),
-.tz-file-drop:has(input:focus-visible),
+@media (hover: hover) and (pointer: fine) {
+  .tz-file-browse:not(:disabled):hover {
+    text-decoration-color: currentColor;
+  }
+}
+/* The dropzone and the color entry focus as a field: the edge turns to the
+   accent with a halo, and the control inside shows no ring of its own. */
+.tz-file-drop:has(:focus-visible) {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px var(--focus-halo);
+}
 .tz-color-entry:has(:focus-visible) {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
+  border-color: var(--focus);
+  box-shadow:
+    0 0 0 3px var(--focus-halo),
+    var(--shadow-control);
+}
+@media (forced-colors: active) {
+  :is(.tz-file-drop, .tz-color-entry):has(:focus-visible) {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
 }
 .tz-file-browse:focus-visible,
 .tz-color-entry input:focus-visible {
@@ -2615,6 +2689,14 @@ textarea.tz-textarea:read-only {
 .tz-color-entry[data-invalid="true"] {
   border-color: var(--danger);
 }
+.tz-file-drop[data-invalid="true"]:has(:focus-visible) {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
+}
+.tz-color-entry[data-invalid="true"]:has(:focus-visible) {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
+    var(--shadow-control);
+}
 .tz-selected-files {
   list-style: none;
   padding: 0;
@@ -2622,14 +2704,18 @@ textarea.tz-textarea:read-only {
   display: grid;
   gap: var(--space-1);
 }
+/* Selected files are paper chips; the transparent border is their edge in
+   forced colors. */
 .tz-selected-files li {
   display: flex;
   align-items: center;
   min-inline-size: 0;
   gap: var(--space-2);
   padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-small);
-  background: var(--surface-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
   font-size: var(--text-meta);
 }
 .tz-selected-files svg {
@@ -2650,20 +2736,35 @@ textarea.tz-textarea:read-only {
 }
 .tz-file-selection[data-disabled],
 .tz-color-picker[data-disabled] {
-  opacity: 0.55;
+  opacity: var(--disabled-opacity);
+}
+.tz-color-picker[data-disabled] .tz-color-entry {
+  box-shadow: none;
 }
 .tz-file-browse:disabled {
   cursor: not-allowed;
 }
+/* The entry is a field: paper with the field edge at the control height. */
 .tz-color-entry {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  min-block-size: var(--control-small);
+  block-size: var(--control-small);
   padding-inline: var(--space-2);
   background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border: 1px solid var(--border-field);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-control);
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-state) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-color-entry:not(:has(:disabled, :focus-visible)):not(
+      [data-invalid="true"]
+    ):hover {
+    border-color: color-mix(in srgb, var(--border-field), var(--text) 22%);
+  }
 }
 .tz-color-native {
   appearance: none;
@@ -2696,7 +2797,7 @@ textarea.tz-textarea:read-only {
   border: 0;
   inline-size: 100%;
   min-inline-size: 0;
-  min-block-size: var(--control-small);
+  align-self: stretch;
   padding: 0;
 }
 .tz-color-swatches {
@@ -2705,6 +2806,8 @@ textarea.tz-textarea:read-only {
   gap: var(--space-2);
   margin-block-start: var(--space-2);
 }
+/* Swatches give under the finger and never grow. The chosen one keeps its
+   size: an ink ring around a paper gap. */
 .tz-color-swatch {
   display: grid;
   place-items: center;
@@ -2713,9 +2816,22 @@ textarea.tz-textarea:read-only {
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-small);
   cursor: pointer;
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-color-swatch:not(:disabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
 .tz-color-swatch[aria-pressed="true"] {
-  box-shadow: inset 0 0 0 2px var(--surface);
+  border-color: var(--text);
+  box-shadow:
+    inset 0 0 0 1px var(--text),
+    inset 0 0 0 3px var(--surface);
 }
 .tz-color-swatch:focus-visible {
   outline: 2px solid var(--focus);
@@ -2760,14 +2876,21 @@ textarea.tz-textarea:read-only {
 }
 .tz-slider:disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: var(--disabled-opacity);
 }
 /* Custom track and thumb; forced-colors keeps the native control. The fill
-   grows from the inline start, so it mirrors with the range itself. */
+   grows from the inline start, so it mirrors with the range itself. The thumb
+   is paper in both themes, edged like a field so it holds 3:1 on any surface,
+   and it does not grow under the finger. Invalid turns the edge to danger,
+   with a danger halo on focus: the field recipe on the thumb. */
+.tz-slider {
+  --slider-edge: var(--border-field);
+}
+.tz-slider[aria-invalid="true"] {
+  --slider-edge: var(--danger);
+}
 @media not (forced-colors: active) {
   .tz-slider {
-    --slider-track: 6px;
-    --slider-thumb: 18px;
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
@@ -2775,7 +2898,7 @@ textarea.tz-textarea:read-only {
   }
   .tz-slider::-webkit-slider-runnable-track {
     block-size: var(--slider-track);
-    border-radius: 100px;
+    border-radius: var(--radius-pill);
     background: linear-gradient(
       to right,
       var(--action) var(--slider-fill, 50%),
@@ -2791,12 +2914,12 @@ textarea.tz-textarea:read-only {
   }
   .tz-slider::-moz-range-track {
     block-size: var(--slider-track);
-    border-radius: 100px;
+    border-radius: var(--radius-pill);
     background: var(--surface-hover);
   }
   .tz-slider::-moz-range-progress {
     block-size: var(--slider-track);
-    border-radius: 100px;
+    border-radius: var(--radius-pill);
     background: var(--action);
   }
   .tz-slider::-webkit-slider-thumb {
@@ -2807,46 +2930,42 @@ textarea.tz-textarea:read-only {
     margin-block-start: calc((var(--slider-track) - var(--slider-thumb)) / 2);
     border: 0;
     border-radius: 50%;
-    background: #fff;
+    background: var(--surface);
     box-shadow:
       var(--shadow-thumb),
+      inset 0 0 0 1px var(--slider-edge),
       0 0 0 0 var(--focus-halo);
-    transition:
-      transform var(--motion-state) var(--ease-spring),
-      box-shadow var(--motion-state) var(--ease-out);
+    transition: box-shadow var(--motion-state) var(--ease-out);
   }
   .tz-slider::-moz-range-thumb {
     inline-size: var(--slider-thumb);
     block-size: var(--slider-thumb);
     border: 0;
     border-radius: 50%;
-    background: #fff;
+    background: var(--surface);
     box-shadow:
       var(--shadow-thumb),
+      inset 0 0 0 1px var(--slider-edge),
       0 0 0 0 var(--focus-halo);
-    transition:
-      transform var(--motion-state) var(--ease-spring),
-      box-shadow var(--motion-state) var(--ease-out);
+    transition: box-shadow var(--motion-state) var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {
-    .tz-slider:not(:disabled):hover::-webkit-slider-thumb {
+    .tz-slider:not(:disabled):not(
+        [aria-invalid="true"]
+      ):hover::-webkit-slider-thumb {
       box-shadow:
         var(--shadow-thumb),
+        inset 0 0 0 1px var(--slider-edge),
         0 0 0 6px var(--focus-halo);
     }
-    .tz-slider:not(:disabled):hover::-moz-range-thumb {
+    .tz-slider:not(:disabled):not(
+        [aria-invalid="true"]
+      ):hover::-moz-range-thumb {
       box-shadow:
         var(--shadow-thumb),
+        inset 0 0 0 1px var(--slider-edge),
         0 0 0 6px var(--focus-halo);
     }
-  }
-  .tz-slider:not(:disabled):active::-webkit-slider-thumb {
-    transform: scale(1.12);
-    transition-duration: var(--motion-press), var(--motion-state);
-    transition-timing-function: var(--ease-out);
-  }
-  .tz-slider:not(:disabled):active::-moz-range-thumb {
-    transform: scale(1.12);
   }
   .tiraz-system .tz-slider:focus-visible {
     outline: none;
@@ -2854,20 +2973,29 @@ textarea.tz-textarea:read-only {
   .tz-slider:focus-visible::-webkit-slider-thumb {
     box-shadow:
       var(--shadow-thumb),
+      inset 0 0 0 1px var(--slider-edge),
       0 0 0 2px var(--surface),
       0 0 0 4px var(--focus);
   }
   .tz-slider:focus-visible::-moz-range-thumb {
     box-shadow:
       var(--shadow-thumb),
+      inset 0 0 0 1px var(--slider-edge),
       0 0 0 2px var(--surface),
       0 0 0 4px var(--focus);
   }
-}
-.tz-slider[aria-invalid="true"] {
-  outline: 1px solid var(--danger);
-  outline-offset: 2px;
-  border-radius: var(--radius-small);
+  .tz-slider[aria-invalid="true"]:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+      var(--shadow-thumb),
+      inset 0 0 0 1px var(--slider-edge),
+      0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
+  }
+  .tz-slider[aria-invalid="true"]:focus-visible::-moz-range-thumb {
+    box-shadow:
+      var(--shadow-thumb),
+      inset 0 0 0 1px var(--slider-edge),
+      0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
+  }
 }
 .tz-slider-value {
   min-inline-size: 3ch;
@@ -2881,6 +3009,9 @@ textarea.tz-textarea:read-only {
   block-size: var(--control-height);
   font-size: var(--text-body);
 }
+.tz-otp[data-size="sm"] {
+  block-size: var(--control-small);
+}
 .tz-otp-slots {
   position: absolute;
   inset: 0;
@@ -2888,30 +3019,20 @@ textarea.tz-textarea:read-only {
   grid-template-columns: repeat(var(--otp-length), minmax(0, 1fr));
   pointer-events: none;
 }
+/* Each slot is a field. Digits appear as they are typed, without motion. */
 .tz-otp-slot {
   position: relative;
   display: grid;
   place-items: center;
   margin-inline: 2px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-small);
+  border: 1px solid var(--border-field);
+  border-radius: var(--radius-control);
   background: var(--surface);
   box-shadow: var(--shadow-control);
   transition:
     border-color var(--motion-fast) var(--ease-out),
     box-shadow var(--motion-state) var(--ease-out),
     background-color var(--motion-fast) var(--ease-out);
-}
-/* Each digit lands with a small settle as its slot fills. */
-.tz-otp-slot[data-filled] > .tz-otp-digit {
-  animation: tz-digit-in var(--motion-state) var(--ease-spring);
-}
-@keyframes tz-digit-in {
-  from {
-    opacity: 0;
-    filter: blur(2px);
-    transform: translateY(4px) scale(0.9);
-  }
 }
 .tz-otp-digit {
   font-family: var(--font-mono);
@@ -2959,7 +3080,7 @@ textarea.tz-textarea:read-only {
   transform: translateY(-50%);
   block-size: 1em;
   border-inline-start: 1.5px solid var(--focus);
-  animation: tz-caret-blink 1.1s var(--ease-in-out) infinite;
+  animation: tz-caret-blink var(--motion-loop-caret) var(--ease-in-out) infinite;
 }
 @keyframes tz-caret-blink {
   0%,
@@ -2980,8 +3101,36 @@ textarea.tz-textarea:read-only {
 .tz-otp:has([aria-invalid="true"]) .tz-otp-slot {
   border-color: var(--danger);
 }
+.tz-otp:has([aria-invalid="true"]) .tz-otp-slot[data-active] {
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
+    var(--shadow-control);
+}
+/* A code completed after mount: the slots briefly take the success edge. A
+   prefilled code shows nothing, and neither does an invalid one. */
+.tz-otp[data-changed]:not(
+    :has(.tz-otp-slot:not([data-filled])),
+    :has([aria-invalid="true"])
+  )
+  .tz-otp-slot {
+  animation: tz-otp-done var(--motion-state) var(--ease-out);
+}
+@keyframes tz-otp-done {
+  from,
+  50% {
+    border-color: var(--success);
+  }
+}
+/* Read-only keeps the field edge on the well, without the lift. */
+.tz-otp:has(> .tz-otp-input:read-only:not(:disabled)) .tz-otp-slot {
+  background: var(--surface-well);
+  box-shadow: none;
+}
 .tz-otp[data-disabled] {
-  opacity: 0.55;
+  opacity: var(--disabled-opacity);
+}
+.tz-otp[data-disabled] .tz-otp-slot {
+  box-shadow: none;
 }
 .tz-date-trigger {
   display: flex;
@@ -3006,8 +3155,8 @@ textarea.tz-textarea:read-only {
   padding: var(--space-2);
   background: var(--surface);
   color: var(--text);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-panel);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   box-shadow: var(--shadow-popover);
   font-size: var(--text-body);
 }
@@ -3130,8 +3279,14 @@ textarea.tz-textarea:read-only {
 .tz-datepicker-popup .rdp-day_button {
   max-inline-size: 100%;
 }
-.tz-datepicker-popup button:hover:enabled {
-  background: var(--surface-hover);
+/* The chosen day's cell is the only .rdp-selected parent, so it keeps its
+   accent under the pointer. */
+@media (hover: hover) and (pointer: fine) {
+  .tz-datepicker-popup
+    :not(.rdp-selected)
+    > button:enabled:not([aria-disabled="true"]):hover {
+    background: var(--wash);
+  }
 }
 .tz-datepicker-popup .rdp-selected .rdp-day_button {
   background: var(--action);
@@ -3143,7 +3298,7 @@ textarea.tz-textarea:read-only {
 }
 .tz-datepicker-popup button:disabled,
 .tz-datepicker-popup button[aria-disabled="true"] {
-  opacity: 0.4;
+  opacity: var(--disabled-opacity);
 }
 .tz-datepicker-popup .rdp-outside {
   color: var(--text-muted);
@@ -3811,7 +3966,7 @@ textarea.tz-textarea:read-only {
 .tz-file-tree {
   min-inline-size: 0;
   color: var(--text);
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
 }
 .tz-file-tree[data-size="md"] {
   font-size: var(--text-body);
@@ -3821,7 +3976,8 @@ textarea.tz-textarea:read-only {
   padding: 0;
   margin: 0;
 }
-.tz-file-tree-item {
+/* The row draws the focus ring, inset, so the item draws none (defect 5). */
+.tiraz-system .tz-file-tree-item:focus-visible {
   outline: none;
 }
 .tz-file-tree-row {
@@ -3835,19 +3991,22 @@ textarea.tz-textarea:read-only {
   padding-inline-start: calc(
     var(--space-1) + min(var(--tree-depth), 6) * var(--space-4)
   );
-  border-radius: var(--radius);
+  border-radius: var(--radius-item);
   cursor: pointer;
   transition: background-color var(--motion-fast) var(--ease);
 }
 .tz-file-tree[data-size="md"] .tz-file-tree-row {
   min-block-size: var(--control-height);
 }
-.tz-file-tree-row:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-file-tree-row:hover {
+    background: var(--wash);
+  }
 }
 .tz-file-tree-item[aria-selected="true"] > .tz-file-tree-row {
   background: var(--action-soft);
   color: var(--action);
+  font-weight: var(--weight-medium);
 }
 .tz-file-tree-item:focus-visible > .tz-file-tree-row {
   outline: 2px solid var(--focus);
@@ -6756,6 +6915,7 @@ a.tz-inline-citation {
   --enter-y: -4px;
 }
 :is(
+  .tz-datepicker-popup,
   .tz-citation-popup,
   .tz-context-details,
   .tz-selection-actions
@@ -6778,11 +6938,8 @@ a.tz-inline-citation {
   .tz-chart-legend > button,
   .tz-sidebar-item,
   .tz-sidebar-toggle,
-  .tz-color-swatch,
-  .tz-file-browse,
   .tz-ask-questions .tz-radio-option,
-  .tz-ai-image-choice img,
-  .tz-datepicker-popup button
+  .tz-ai-image-choice img
 ) {
   transition:
     background-color var(--motion-fast) var(--ease-out),
@@ -6800,9 +6957,7 @@ a.tz-inline-citation {
     .tz-model-trigger,
     .tz-selection-actions button,
     .tz-chart-legend > button,
-    .tz-sidebar-toggle,
-    .tz-color-swatch,
-    .tz-datepicker-popup button
+    .tz-sidebar-toggle
   ):not(:disabled):active {
   transform: scale(0.95);
   transition-duration:
@@ -6820,9 +6975,6 @@ a.tz-inline-citation {
   .tz-ai-image-choice:hover img {
     border-color: var(--border-strong);
   }
-  .tz-color-swatch:not(:disabled):hover {
-    transform: scale(1.06);
-  }
 }
 .tz-ask-questions .tz-radio-option:has(:checked) {
   background: var(--wash);
@@ -6833,12 +6985,8 @@ a.tz-inline-citation {
 .tz-ai-image-choice:has(:checked) img {
   outline-color: var(--action);
 }
-.tz-color-swatch[aria-pressed="true"] {
-  transform: scale(1.06);
-}
 
-.tz-markdown a:hover,
-.tz-file-browse:hover {
+.tz-markdown a:hover {
   text-decoration-color: currentColor;
 }
 /* No synthesized italics: Arabic has no oblique tradition that leans right,
@@ -6949,7 +7097,6 @@ a.tz-inline-citation {
   .tz-menu,
   .tz-toast,
   .tz-modal,
-  .tz-datepicker-popup,
   .tz-context-details,
   .tz-citation-popup,
   .tz-model-popup,
@@ -7042,8 +7189,9 @@ a.tz-inline-citation {
 /* Checks and crosses draw themselves as a state lands on them. A check is
    drawn in handwriting order (short stroke first); a cross stroke by stroke.
    A Button's success check draws only after its state changed (data-changed),
-   never on mount; an icon-only button's check appears only after an action.
-   :where() keeps the list's specificity where it was. */
+   never on mount, and so does the ColorPicker's check once the color changed;
+   an icon-only button's check appears only after an action. :where() keeps
+   the list's specificity where it was. */
 @keyframes tz-draw {
   from {
     stroke-dashoffset: var(--draw-from);
@@ -7053,7 +7201,7 @@ a.tz-inline-citation {
     .tz-decision-icon,
     .tz-decision-mark,
     .tz-step-indicator,
-    .tz-color-check,
+    .tz-color-check:where([data-changed]),
     .tz-button[data-icon-only] .tz-button-label,
     .tz-button[data-state="success"]:where([data-changed]),
     .tz-button[data-state="success"]:where([data-changed]) .tz-button-label,
@@ -7067,7 +7215,7 @@ a.tz-inline-citation {
     .tz-decision-icon,
     .tz-decision-mark,
     .tz-step-indicator,
-    .tz-color-check,
+    .tz-color-check:where([data-changed]),
     .tz-button[data-icon-only] .tz-button-label,
     .tz-button[data-state="success"]:where([data-changed]),
     .tz-button[data-state="success"]:where([data-changed]) .tz-button-label,
@@ -7131,77 +7279,54 @@ a.tz-inline-citation {
   }
 }
 
-/* A tag or file that arrives after mount pops into place once. */
+/* A tag that arrives after mount fades in. One added with Enter appears at
+   once, because keyboard modality zeroes the time. */
 .tz-tag[data-fresh] {
-  animation: tz-tag-in var(--motion-state) var(--ease-spring);
+  animation: tz-fade-in var(--motion-fast) var(--ease-out);
 }
-@keyframes tz-tag-in {
-  from {
-    opacity: 0;
-    filter: blur(2px);
-    transform: scale(0.85);
-  }
-}
+/* New files fade and rise; only the first three are staggered. */
 .tz-selected-files li[data-fresh] {
-  animation: tz-option-in var(--motion-enter) var(--ease-out) both;
+  animation: tz-option-in var(--motion-release) var(--ease-out) both;
 }
 .tz-selected-files li[data-fresh]:nth-child(2) {
-  animation-delay: 40ms;
+  animation-delay: var(--motion-stagger);
 }
-.tz-selected-files li[data-fresh]:nth-child(3) {
-  animation-delay: 80ms;
-}
-.tz-selected-files li[data-fresh]:nth-child(n + 4) {
-  animation-delay: 120ms;
+.tz-selected-files li[data-fresh]:nth-child(n + 3) {
+  animation-delay: calc(var(--motion-stagger) * 2);
 }
 /* Dragging files over the zone lifts the paperclip to meet them. */
 .tz-file-drop > svg {
   transition:
-    transform var(--motion-state) var(--ease-spring),
+    transform var(--motion-release) var(--ease-out),
     color var(--motion-fast) var(--ease-out);
 }
 .tz-file-drop[data-dragging] > svg {
   color: var(--action);
-  transform: translateY(-2px) rotate(-12deg) scale(1.1);
+  transform: translateY(-2px);
 }
-/* Calendar days give under the finger and settle when chosen. */
-.tz-datepicker-popup .rdp-day_button {
+/* Calendar buttons shade over the hover time; the month and day buttons give
+   under the finger and settle as they are released. */
+.tz-datepicker-popup
+  :is(
+    .rdp-button_previous,
+    .rdp-button_next,
+    .rdp-day_button,
+    .tz-date-year-trigger
+  ) {
   transition:
     background-color var(--motion-fast) var(--ease-out),
     color var(--motion-fast) var(--ease-out),
-    transform var(--motion-press) var(--ease-out);
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
 }
-.tz-datepicker-popup .rdp-day_button:active:enabled {
-  transform: scale(0.92);
-}
-/* A completed code ripples once across its slots. */
-.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot {
-  animation: tz-otp-wave calc(var(--motion-state) * 2) var(--ease-out);
-}
-.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(2) {
-  animation-delay: 35ms;
-}
-.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(3) {
-  animation-delay: 70ms;
-}
-.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(4) {
-  animation-delay: 105ms;
-}
-.tz-otp:not(:has(.tz-otp-slot:not([data-filled]))) .tz-otp-slot:nth-child(5) {
-  animation-delay: 140ms;
-}
-.tz-otp:not(:has(.tz-otp-slot:not([data-filled])))
-  .tz-otp-slot:nth-child(n + 6) {
-  animation-delay: 175ms;
-}
-.tz-otp:has([aria-invalid="true"]) .tz-otp-slot {
-  animation: none;
-}
-@keyframes tz-otp-wave {
-  40% {
-    transform: translateY(-3px);
-    border-color: var(--action);
-  }
+.tz-datepicker-popup
+  :is(.rdp-button_previous, .rdp-button_next, .rdp-day_button):not(
+    :disabled,
+    [aria-disabled="true"]
+  ):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
 
 /* Opened sources arrive row by row; the folded marks fan out on hover. */

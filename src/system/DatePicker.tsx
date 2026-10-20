@@ -13,6 +13,7 @@ import {
   useState,
 } from "react";
 import type { ChangeEvent, ComponentPropsWithRef } from "react";
+import { Button } from "./Button";
 import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
@@ -33,6 +34,8 @@ export type DatePickerProps = Omit<
   /** Direct year choices only; min/max alone constrain selectable dates. */
   yearRange?: readonly [number, number];
   placeholder?: string;
+  /** The trigger's height and the size of the Today and Clear buttons. */
+  size?: "sm" | "md";
   invalid?: boolean;
 } & (
     | { label: string; helper?: string; error?: string; field?: never }
@@ -154,6 +157,7 @@ export function DatePicker({
   helper,
   error,
   field,
+  size = "sm",
   invalid,
   disabled,
   name,
@@ -271,6 +275,7 @@ export function DatePicker({
             )}
             type="button"
             disabled={disabled}
+            data-size={size}
             className={`tz-input tz-date-trigger ${className}`}
             aria-describedby={mergeDescriptionIds(
               associateControl(association, props)["aria-describedby"],
@@ -353,24 +358,22 @@ export function DatePicker({
               />
             </YearChoices.Provider>
             <div className="tz-date-actions">
-              <button
-                type="button"
-                className="tz-button"
-                data-variant="ghost"
+              <Button
+                variant="ghost"
+                size={size}
                 disabled={todayDisabled}
                 onClick={() => commit(todayValue)}
               >
                 {arabic ? "اليوم" : "Today"}
-              </button>
-              <button
-                type="button"
-                className="tz-button"
-                data-variant="ghost"
+              </Button>
+              <Button
+                variant="ghost"
+                size={size}
                 disabled={!raw}
                 onClick={() => commit("")}
               >
                 {arabic ? "مسح" : "Clear"}
-              </button>
+              </Button>
             </div>
           </Popover.Content>
         </Popover.Portal>

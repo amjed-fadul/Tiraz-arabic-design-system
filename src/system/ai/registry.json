@@ -2800,6 +2800,13 @@
           "default": 6
         },
         {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
           "name": "readOnly",
           "type": "boolean",
           "required": false,
@@ -2934,6 +2941,13 @@
           "type": "string",
           "required": false,
           "default": "localized Choose a date"
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
         },
         {
           "name": "label",

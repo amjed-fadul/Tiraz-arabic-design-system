@@ -6,6 +6,7 @@ import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
 import { useSystem } from "./useSystem";
 import { useEntryReset } from "./useEntryReset";
+import { useChanged } from "./useChanged";
 export interface ColorSwatch {
   label: string;
   value: string;
@@ -74,6 +75,8 @@ export function ColorPicker({
   const [local, setLocal] = useState(initial);
   const selected =
     value === undefined ? local : (normalize(value) ?? "#316746");
+  // The check draws only once the color changed, never on first render.
+  const changed = useChanged(selected);
   const [editing, setEditing] = useState({ selected, draft: selected });
   const draft = editing.selected === selected ? editing.draft : selected;
   const [feedback, setFeedback] = useState("");
@@ -217,7 +220,10 @@ export function ColorPicker({
                   onClick={() => commit(color)}
                 >
                   {active && (
-                    <span className="tz-color-check">
+                    <span
+                      className="tz-color-check"
+                      data-changed={changed || undefined}
+                    >
                       <Check size={12} aria-hidden="true" />
                     </span>
                   )}

@@ -19,4 +19,15 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   checkbox: [".tz-checkbox", ".tz-choice"],
   "radio-group": [".tz-radio", ".tz-choice"],
   switch: [".tz-switch"],
+  slider: [".tz-slider"],
+  "otp-input": [".tz-otp"],
+  // .tz-entry-feedback is the feedback line that five entry families share.
+  "date-picker": [".tz-datepicker", ".tz-date", ".tz-entry"],
+  // .tz-tag also covers FilterBar's chips.
+  "tag-input": [".tz-tag", ".tz-entry"],
+  "color-picker": [".tz-color", ".tz-entry"],
+  "input-copy": [".tz-input-copy", ".tz-entry"],
+  // .tz-file covers the dropzone's own rules and the tree's.
+  "file-dropzone": [".tz-file", ".tz-selected-files", ".tz-entry"],
+  "file-tree": [".tz-file-tree"],
 };
