@@ -358,6 +358,12 @@ try {
         () => document.querySelector(".playground-region input").value === "",
       );
     } else {
+      // The page opens on a selected date and its calendar on that month. Start
+      // empty, so the min date decides the month.
+      await page
+        .getByRole("group", { name: "Example states", exact: true })
+        .getByRole("button", { name: "Empty", exact: true })
+        .click();
       await page
         .getByRole("textbox", { name: "Min date", exact: true })
         .fill("2024-02-28");

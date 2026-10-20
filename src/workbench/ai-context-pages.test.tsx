@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
@@ -9,6 +9,7 @@ import {
   AIContextExample,
   ContextMeterStates,
   ModelSelectorExample,
+  SelectionActionsExample,
 } from "../system/ai/examples/AIContextExamples";
 import * as React from "react";
 import * as jsx from "react/jsx-runtime";
@@ -135,3 +136,62 @@ it.each(["ar", "en"] as const)(
     );
   },
 );
+
+// jsdom fires `selectionchange` in a task of its own after a selection moves.
+const settle = () =>
+  act(() => new Promise((resolve) => setTimeout(resolve, 20)));
+const withPhase = (
+  phase: string | undefined,
+  onPhaseChange: (phase: string) => void,
+) => (
+  <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+    <SelectionActionsExample
+      language="en"
+      phase={phase}
+      onPhaseChange={onPhaseChange}
+    />
+  </SystemProvider>
+);
+it("reports a change of selection once, and never the phase it was given", async () => {
+  const onPhaseChange = vi.fn();
+  const selection = document.getSelection()!;
+  selection.removeAllRanges();
+  const { rerender } = render(withPhase("selected", onPhaseChange));
+  await settle();
+  // It opens on the selection it was given and says nothing about it.
+  expect(selection.toString()).toMatch(/^I reviewed Madar/);
+  expect(onPhaseChange).not.toHaveBeenCalled();
+  // Collapsing it is reported once, however many events follow.
+  selection.collapse(document.body, 0);
+  await settle();
+  selection.collapse(document.body, 1);
+  await settle();
+  expect(onPhaseChange.mock.calls).toEqual([["idle"]]);
+  // Once the host has followed, a word of the reply is reported and kept: the
+  // phase does not select the first sentence over it.
+  rerender(withPhase("idle", onPhaseChange));
+  const reply = screen.getByText(/^I reviewed Madar/).firstChild!;
+  const start = reply.textContent!.indexOf("October");
+  selection.setBaseAndExtent(reply, start, reply, start + "October".length);
+  await settle();
+  expect(onPhaseChange.mock.calls).toEqual([["idle"], ["selected"]]);
+  rerender(withPhase("selected", onPhaseChange));
+  await settle();
+  expect(selection.toString()).toBe("October");
+  expect(onPhaseChange).toHaveBeenCalledTimes(2);
+});
+it("leaves the selection alone without a phase", async () => {
+  const onPhaseChange = vi.fn();
+  const selection = document.getSelection()!;
+  selection.removeAllRanges();
+  render(withPhase(undefined, onPhaseChange));
+  await settle();
+  // Nothing is selected for it, and a selection of the reply reports nothing.
+  expect(selection.toString()).toBe("");
+  const reply = screen.getByText(/^I reviewed Madar/).firstChild!;
+  selection.setBaseAndExtent(reply, 0, reply, 10);
+  await settle();
+  selection.collapse(document.body, 0);
+  await settle();
+  expect(onPhaseChange).not.toHaveBeenCalled();
+});

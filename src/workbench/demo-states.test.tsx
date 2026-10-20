@@ -1214,6 +1214,42 @@ it("returns a phase page to its resting phase when the inspector resets it", asy
   expect(chips()).toEqual(chipsDone);
 });
 
+it("moves the switcher with the visitor's selection on the selection-actions page", async () => {
+  open("selection-actions");
+  // The page opens on a real selection of the reply's first sentence.
+  expect(pressed()).toEqual([word("selected")]);
+  const selection = document.getSelection()!;
+  expect(selection.isCollapsed).toBe(false);
+  // The toolbar by class, not by role: jsdom has no layout, so Popper marks it
+  // `visibility: hidden` a moment after it appears.
+  const actions = () => document.querySelector(".tz-selection-actions");
+  await waitFor(() => expect(actions()).not.toBeNull());
+  // A click elsewhere collapses it, and the switcher follows.
+  selection.collapse(document.body, 0);
+  await waitFor(() => expect(pressed()).toEqual([word("idle")]));
+  await waitFor(() => expect(actions()).toBeNull());
+  // Selecting a word of the reply moves it back, and the word stays selected
+  // rather than giving way to the first sentence.
+  const reply = stage().getByText(/^راجعتُ فواتير/).firstChild!;
+  const start = reply.textContent!.indexOf("أكتوبر");
+  selection.setBaseAndExtent(reply, start, reply, start + "أكتوبر".length);
+  await waitFor(() => expect(pressed()).toEqual([word("selected")]));
+  expect(selection.toString()).toBe("أكتوبر");
+  await waitFor(() => expect(actions()).not.toBeNull());
+  // A selection outside the toolbar's scope is not the reply's.
+  selection.selectAllChildren(screen.getByRole("heading", { level: 1 }));
+  await waitFor(() => expect(pressed()).toEqual([word("idle")]));
+  await waitFor(() => expect(actions()).toBeNull());
+  // A triple-click selects the paragraph through the start of the next
+  // element, as Chrome does. That is still the toolbar's selection.
+  const next = document.querySelector(
+    ".tz-selection-scope .tz-visually-hidden",
+  );
+  selection.setBaseAndExtent(reply, 0, next!, 0);
+  await waitFor(() => expect(pressed()).toEqual([word("selected")]));
+  await waitFor(() => expect(actions()).not.toBeNull());
+});
+
 it("moves the switcher to Shown when the trigger raises a toast, and raises it once", () => {
   open("toast");
   expect(pressed()).toEqual([word("hidden")]);
@@ -1244,6 +1280,52 @@ it("never raises a toast from an inspector edit", async () => {
   fireEvent.click(stage().getByRole("button", { name: "عرض التنبيه" }));
   expect(pressed()).toEqual([word("shown")]);
   expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
+});
+
+it("moves the switcher back to Hidden once the toast has expired", async () => {
+  vi.useFakeTimers();
+  open("toast");
+  fireEvent.click(stage().getByRole("button", { name: "عرض التنبيه" }));
+  expect(pressed()).toEqual([word("shown")]);
+  // Shown holds for as long as a toast is on screen: five seconds by default.
+  await wait(4900);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
+  expect(pressed()).toEqual([word("shown")]);
+  await wait(200);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(0);
+  expect(pressed()).toEqual([word("hidden")]);
+  // The trigger still raises one, and the switcher follows it again.
+  fireEvent.click(stage().getByRole("button", { name: "عرض التنبيه" }));
+  expect(pressed()).toEqual([word("shown")]);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
+});
+
+it("moves the switcher back to Hidden when the visitor dismisses the toast", async () => {
+  const user = userEvent.setup();
+  open("toast");
+  await user.click(stage().getByRole("button", { name: "عرض التنبيه" }));
+  expect(pressed()).toEqual([word("shown")]);
+  await user.click(screen.getByRole("button", { name: "إغلاق التنبيه" }));
+  await waitFor(() => expect(pressed()).toEqual([word("hidden")]));
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(0);
+});
+
+it("ends a Toast Replay on Shown, then on Hidden when its toast expires", async () => {
+  vi.useFakeTimers();
+  open("toast");
+  fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
+  expect(pressed()).toEqual([word("hidden")]);
+  await wait(800);
+  expect(pressed()).toEqual([word("shown")]);
+  await wait(2600);
+  // The Replay ends on Shown and says so once...
+  expect(pressed()).toEqual([word("shown")]);
+  expect(frameStatus()).toHaveTextContent(`الحالة: ${word("shown")}`);
+  // ...and the switcher follows the toast out, as it does for a visitor.
+  await wait(2400);
+  expect(document.querySelectorAll(".tz-toast")).toHaveLength(0);
+  expect(pressed()).toEqual([word("hidden")]);
+  expect(frameStatus()).toHaveTextContent(`الحالة: ${word("hidden")}`);
 });
 
 it("loads props saved before the last states: an old default moves, new keys default", () => {

@@ -215,6 +215,53 @@ const toastOf = (model: ToastModel) => ({
   tone: model.tone,
   duration: model.duration,
 });
+/**
+ * Calls `onClosed` once the last open toast has gone, whether it expired or
+ * the visitor dismissed it. The provider has no close callback, so this
+ * watches the stage for toasts leaving `data-state="open"`. It waits to see a
+ * toast open first, because a new one mounts a moment after it is raised.
+ */
+function ToastWatch({
+  children,
+  watching,
+  onClosed,
+}: {
+  children: ReactNode;
+  watching: boolean;
+  onClosed: () => void;
+}) {
+  const stage = useRef<HTMLDivElement>(null);
+  const latest = useRef(onClosed);
+  useLayoutEffect(() => {
+    latest.current = onClosed;
+  });
+  useEffect(() => {
+    const node = stage.current;
+    if (!watching || !node) return;
+    let seen = false;
+    const check = () => {
+      if (node.querySelector('.tz-toast[data-state="open"]')) seen = true;
+      else if (seen) {
+        watch.disconnect();
+        latest.current();
+      }
+    };
+    const watch = new MutationObserver(check);
+    watch.observe(node, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ["data-state"],
+    });
+    check();
+    return () => watch.disconnect();
+  }, [watching]);
+  return (
+    <div ref={stage} style={{ display: "contents" }}>
+      {children}
+    </div>
+  );
+}
 function ToastPlayground({
   model,
   onEvent,
@@ -1035,14 +1082,19 @@ export function Playground({
   if (component === "toast") {
     const p = model as ToastModel;
     return (
-      <ToastProvider label={p.providerLabel} closeLabel={p.closeLabel}>
-        <ToastPlayground
-          model={p}
-          onEvent={onEvent}
-          phase={phase}
-          onPhaseChange={onPhaseChange}
-        />
-      </ToastProvider>
+      <ToastWatch
+        watching={phase === "shown"}
+        onClosed={() => onPhaseChange?.("hidden")}
+      >
+        <ToastProvider label={p.providerLabel} closeLabel={p.closeLabel}>
+          <ToastPlayground
+            model={p}
+            onEvent={onEvent}
+            phase={phase}
+            onPhaseChange={onPhaseChange}
+          />
+        </ToastProvider>
+      </ToastWatch>
     );
   }
   return assertNever(component, "Playground");

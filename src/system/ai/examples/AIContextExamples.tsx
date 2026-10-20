@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Copy, CornerDownLeft, Quote } from "lucide-react";
 import {
   ChatComposer,
@@ -53,10 +53,27 @@ const reply = (ar: boolean, long = false) =>
   ar
     ? `راجعتُ فواتير أكتوبر لشركة مدار: تطابقت ٢١٤ فاتورة مع أوامر الشراء، وتحتاج ٣ فواتير إلى مراجعة لأن مبالغها تختلف عن الإيصالات. أكبر فرق في الفاتورة INV-1043 بقيمة ١٬٢٥٠ ر.س.${long ? " كتب المورّد على الفاتورة: «Partial delivery — second shipment on Nov 20». أقترح تعليق الدفع حتى تتأكد الشحنة الثانية، ثم صرف المبلغ المتبقي وإرفاق إشعار التسليم بأمر الشراء PO-7781." : ""}`
     : `I reviewed Madar’s October invoices: 214 match their purchase orders, and 3 need review because their totals differ from the receipts. The largest gap is 1,250 SAR on invoice INV-1043.${long ? " The supplier’s note on that invoice reads «تم التسليم جزئيًا، والشحنة الثانية تصل في ٢٠ نوفمبر». I suggest holding payment until the second shipment is confirmed, then releasing the balance and attaching the delivery note to PO-7781." : ""}`;
+/**
+ * Whether text is selected where the toolbar answers: both ends of the
+ * selection inside the reply's selection scope. Selecting a paragraph by
+ * triple-click ends at the start of the next element, not inside the paragraph.
+ */
+function selectionInScope(reply: HTMLElement | null) {
+  const scope = reply?.closest(".tz-selection-scope");
+  const selection = reply?.ownerDocument.getSelection();
+  return (
+    !!scope &&
+    !!selection &&
+    !selection.isCollapsed &&
+    scope.contains(selection.anchorNode) &&
+    scope.contains(selection.focusNode)
+  );
+}
 export function AIContextExample({
   language = "ar",
   longContent = false,
   phase,
+  onPhaseChange,
 }: {
   language?: Language;
   longContent?: boolean;
@@ -65,7 +82,10 @@ export function AIContextExample({
    * the toolbar answers that real selection.
    */
   phase?: string;
-  /** Part of the phase pair; a selection is not reported, so it never fires. */
+  /**
+   * Reports "selected" or "idle" when the visitor selects text for the toolbar
+   * to answer, or clears it. The phase it was given is not sent back.
+   */
   onPhaseChange?: (phase: string) => void;
 }) {
   const ar = language === "ar";
@@ -79,9 +99,34 @@ export function AIContextExample({
       text = node?.firstChild,
       words = text?.textContent;
     if (phase !== "selected" || !node || !text || !words) return;
+    // Leave a selection the visitor already made.
+    if (selectionInScope(node)) return;
     const end = words.indexOf(".") + 1 || words.length;
     node.ownerDocument.getSelection()?.setBaseAndExtent(text, 0, text, end);
   }, [phase, ar, longContent]);
+  // With a phase, the selection is the page's state. This runs when the
+  // selection changes, not when the phase does, so a phase the example was
+  // given is never sent back.
+  const latest = useRef({ phase, onPhaseChange });
+  useLayoutEffect(() => {
+    latest.current = { phase, onPhaseChange };
+  });
+  const reports = phase !== undefined;
+  useEffect(() => {
+    const doc = sample.current?.ownerDocument;
+    if (!reports || !doc) return;
+    let was = latest.current.phase === "selected";
+    function read() {
+      const now = selectionInScope(sample.current);
+      if (now === was) return;
+      was = now;
+      const { phase, onPhaseChange } = latest.current;
+      if (now !== (phase === "selected"))
+        onPhaseChange?.(now ? "selected" : "idle");
+    }
+    doc.addEventListener("selectionchange", read);
+    return () => doc.removeEventListener("selectionchange", read);
+  }, [reports]);
   function append(text: string) {
     setDraft((value) => (value ? `${value}\n${text}` : text));
   }
