@@ -3127,7 +3127,8 @@ textarea.tz-textarea:read-only {
 }
 /* Read-only keeps the field edge on the well, without the lift except on the
    focused slot, which keeps its halo. */
-.tz-otp:has(> .tz-otp-input:read-only:not(:disabled)) .tz-otp-slot {
+.tz-otp:has(> .tz-otp-input:read-only:not(:disabled))
+  .tz-otp-slot:not([data-selected]) {
   background: var(--surface-well);
 }
 .tz-otp:has(> .tz-otp-input:read-only:not(:disabled))
