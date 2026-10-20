@@ -9275,7 +9275,7 @@
           "type": "number",
           "required": false,
           "default": "undefined",
-          "note": "Seconds, shown in the header while running in a fixed width and never announced. Update it at most once per second. Completed uses it in the label."
+          "note": "Seconds, shown in the header while running in a fixed width and never announced. Update it at most once per second. Completed uses it in the header's label, never in the status."
         },
         {
           "name": "sources",
@@ -9317,7 +9317,7 @@
           "required": false,
           "default": "polite",
           "values": ["polite", "off"],
-          "note": "Polite renders one status region holding the label; off renders none, for an owner pattern that announces. Cited answer runs it off."
+          "note": "Polite renders one status region holding «يفكّر» while running and «فكّر» once done, never the time; off renders none, for an owner pattern that announces. Cited answer runs it off."
         }
       ],
       "purpose": "The evidence while an answer is prepared: one line with the AI mark, the label, the time and a chevron, and under it what was searched, the steps and the thread. Built on the disclosure rules of ThinkingState (a closed panel is hidden and inert at once, and collapsing returns focus to the trigger unless the person moved it), with ThinkingIndicator's rule of one stable announced label. Use it inside Cited answer; a standalone page for it is not part of the navigation."
@@ -9358,7 +9358,7 @@
           "type": "() => void | Promise<void>",
           "required": false,
           "default": "undefined",
-          "note": "The host copies the text. «نُسخت» is the copy button's name and a visible word for two seconds once the promise resolves; a rejection shows nothing, and a result that arrives after unmount is ignored."
+          "note": "The host copies the text. «نُسخت» is a visible word for two seconds once the promise resolves; the copy button keeps its name. The word is always rendered, in a polite span with no role, with only its visibility toggled, so the buttons never shift; a rejection shows nothing, and a result that arrives after unmount is ignored."
         },
         {
           "name": "onRegenerate",
@@ -9374,7 +9374,7 @@
           "note": "Replaces any built-in text."
         }
       ],
-      "purpose": "Copy, regenerate, helpful and not helpful (with reasons) as quiet icon buttons in a named group. Each button shows only when its handler exists. The bar is silent: it has no live region, so its owner pattern keeps the one announcement. A thumb that is on is filled, so color is not the only signal."
+      "purpose": "Copy, regenerate, helpful and not helpful (with reasons) as quiet icon buttons in a named group. Each button shows only when its handler exists. The bar has no status region, so its owner pattern keeps the one announcement; only the copy confirmation sits in a polite span with no role. A thumb that is on is filled, so color is not the only signal."
     },
     {
       "id": "follow-ups",

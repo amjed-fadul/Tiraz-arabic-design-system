@@ -7686,8 +7686,10 @@ button.tz-tool-chip[aria-expanded="true"] {
   min-inline-size: 16px;
   block-size: 16px;
   margin-inline: 2px;
-  padding-inline: 4px;
-  border: 0;
+  padding-inline: 3px;
+  /* The chip's edge is only its fill, so the transparent border is what forced
+     colors draw; the padding gives up the pixel it takes. */
+  border: 1px solid transparent;
   border-radius: var(--radius-small);
   background: var(--ai-soft);
   font-size: var(--text-micro);

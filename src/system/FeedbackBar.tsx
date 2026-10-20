@@ -12,7 +12,7 @@ export interface FeedbackBarLabels {
   /** The bar's name. */
   group: string;
   copy: string;
-  /** The copy button's name, and its visible word, for two seconds after a copy. */
+  /** The word that shows beside the buttons for two seconds after a copy. */
   copied: string;
   regenerate: string;
   helpful: string;
@@ -48,8 +48,10 @@ const reasons: readonly FeedbackReason[] = [
  * What the person can do with a finished answer (spec section 11): copy it,
  * ask for another, and rate it helpful or not helpful, the latter with a
  * reason. Each button shows only when its handler exists, and the ratings are
- * toggles. The bar is silent: the copy button's name says «نُسخت» for two
- * seconds, and the owner pattern keeps the one live region.
+ * toggles. The bar has no status of its own, so the owner pattern keeps the one
+ * live region. «نُسخت» is a polite span with no role, always rendered so the
+ * buttons never shift under the pointer; for two seconds after a copy it turns
+ * visible, and the copy button keeps its name.
  */
 export function FeedbackBar({
   feedback,
@@ -125,7 +127,7 @@ export function FeedbackBar({
           <Button
             variant="ghost"
             iconOnly
-            aria-label={copied ? copy.copied : copy.copy}
+            aria-label={copy.copy}
             onClick={() => void copyAnswer()}
           >
             {copied ? (
@@ -167,8 +169,15 @@ export function FeedbackBar({
             </Button>
           </>
         )}
-        {copied && (
-          <span className="tz-feedback-bar-copied">{copy.copied}</span>
+        {onCopy && (
+          <span aria-live="polite" aria-atomic="true">
+            <span
+              className="tz-feedback-bar-copied"
+              style={{ visibility: copied ? "visible" : "hidden" }}
+            >
+              {copy.copied}
+            </span>
+          </span>
         )}
       </div>
       {onFeedbackChange && value === "down" && (

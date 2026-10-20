@@ -8,9 +8,14 @@ import {
   InsightCards,
   StreamingText,
   SystemProvider,
+  ThinkingPanel,
   defaultConfig,
 } from "./index";
-import type { CitedAnswerProps, SourceReference } from "./index";
+import type {
+  CitedAnswerProps,
+  SourceReference,
+  ThinkingPanelProps,
+} from "./index";
 afterEach(() => vi.useRealTimers());
 
 const question = "لماذا انخفض التدفق النقدي في أكتوبر؟";
@@ -266,6 +271,24 @@ it("folds thinking to «فكّر لمدة ٦ث» while writing and honors the co
   expect(header("فكّر لمدة ٦ث")).toHaveAttribute("aria-expanded", "true");
 });
 
+it("keeps the elapsed time out of the thinking panel's status", () => {
+  const panel = (props: Partial<ThinkingPanelProps>) => (
+    <ThinkingPanel status="running" {...props} />
+  );
+  const status = () => screen.getByRole("status");
+  const view = render(panel({ elapsed: 6 }));
+  expect(status()).toHaveTextContent(/^يفكّر$/);
+  // A tick of the clock changes the header, never the sentence.
+  view.rerender(panel({ elapsed: 7 }));
+  expect(status().textContent).toBe("يفكّر");
+  // Done: the header reads «فكّر لمدة ٦ث», and the sentence only «فكّر».
+  view.rerender(panel({ status: "completed", elapsed: 6 }));
+  expect(screen.getByRole("button", { name: "فكّر لمدة ٦ث" })).toBeVisible();
+  expect(status().textContent).toBe("فكّر");
+  view.rerender(panel({ status: "completed", elapsed: 7 }));
+  expect(status().textContent).toBe("فكّر");
+});
+
 it("toggles helpful and not helpful with reasons, and shows «نُسخت» after copy", async () => {
   vi.useFakeTimers();
   const onFeedbackChange = vi.fn(),
@@ -307,25 +330,33 @@ it("toggles helpful and not helpful with reasons, and shows «نُسخت» after
   expect(button("مصدر خاطئ")).toHaveAttribute("aria-pressed", "true");
   fireEvent.click(button("إعادة التوليد"));
   expect(onRegenerate).toHaveBeenCalledTimes(1);
-  // «نُسخت» shows for two seconds once the host's copy resolves.
-  expect(screen.queryByText("نُسخت")).toBeNull();
+  // «نُسخت» shows for two seconds once the host's copy resolves. The word is
+  // always there, in a polite span with no role, and keeps its place, so the
+  // buttons never move under the pointer; only its visibility changes, and the
+  // copy button keeps its name.
+  const word = screen.getByText("نُسخت");
+  expect(word).not.toBeVisible();
+  expect(word.parentElement).toHaveAttribute("aria-live", "polite");
+  expect(word.parentElement).not.toHaveAttribute("role");
   await act(async () => {
     fireEvent.click(button("نسخ الإجابة"));
   });
   expect(onCopy).toHaveBeenCalledTimes(1);
-  expect(screen.getByText("نُسخت")).toBeVisible();
-  expect(button("نُسخت")).toBeVisible();
+  expect(screen.getByText("نُسخت")).toBe(word);
+  expect(word).toBeVisible();
+  expect(screen.queryByRole("button", { name: "نُسخت" })).toBeNull();
   act(() => vi.advanceTimersByTime(1999));
-  expect(screen.getByText("نُسخت")).toBeVisible();
+  expect(word).toBeVisible();
   act(() => vi.advanceTimersByTime(1));
-  expect(screen.queryByText("نُسخت")).toBeNull();
+  expect(screen.getByText("نُسخت")).toBe(word);
+  expect(word).not.toBeVisible();
   expect(button("نسخ الإجابة")).toBeVisible();
   // A copy that fails shows nothing.
   onCopy.mockRejectedValueOnce(new Error("blocked"));
   await act(async () => {
     fireEvent.click(button("نسخ الإجابة"));
   });
-  expect(screen.queryByText("نُسخت")).toBeNull();
+  expect(word).not.toBeVisible();
 });
 
 it("lists follow-ups as buttons", async () => {

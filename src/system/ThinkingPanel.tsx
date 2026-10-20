@@ -100,7 +100,7 @@ export function ThinkingPanel({
           aria-live="polite"
           aria-atomic="true"
         >
-          {label}
+          {running ? copy.thinking : copy.done}
         </span>
       )}
       <button
