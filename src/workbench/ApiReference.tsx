@@ -463,7 +463,7 @@ export function ApiReference({
         "status / progress",
         "queued | weaving | completed | failed | blocked · required / number | null?",
         t(
-          "يقرّر تطبيقك الحالة. في queued وweaving تكون اللوحة نسّاجة: مع progress من 0 إلى 100 يتبع النسج النسبة، وبدونها يعبر مكّوك واحد الصفوف حتى تصل الصورة فيكتمل النسج في أقل من 1.2 ثانية. ومع الحركة المخفَّضة تتلاشى الصورة كاملة في 200ms بلا حلقة. وتبقى النسخ والإجراءات معطّلة حتى completed.",
+          "يقرّر تطبيقك الحالة. في queued وweaving تكون اللوحة نسّاجة: مع progress من 0 إلى 100 يتبع النسج النسبة، وبدونها يعبر مكّوك واحد الصفوف حتى تصل الصورة فيكتمل النسج في أقل من 1.2 ثانية. ومع الحركة المخفَّضة تظهر الصورة كاملة تدريجيًا في 200ms بلا حلقة. وتبقى النسخ والإجراءات معطّلة حتى completed.",
           "Your app owns the status. While queued or weaving the canvas is a loom: with progress from 0 to 100 the weave follows it; without, one shuttle crosses the rows until a picture arrives, and the weave then finishes in under 1.2 seconds. With reduced motion the picture fades in whole over 200ms and nothing loops. The versions and actions stay inert until completed.",
         ),
       ],

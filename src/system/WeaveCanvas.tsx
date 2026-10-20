@@ -17,11 +17,11 @@ export interface WeaveCanvasProps {
 }
 
 // The unknown wait gives one row this long to its shuttle. A weave that is
-// following the host takes at least the shortest and at most the longest (Woven
-// spec section 15 allows the image weave up to 1,200 ms).
+// following the host closes 1 − e^(−dt/easeMs) of its gap each frame, so a
+// whole weave takes about 1,180 ms (Woven spec section 15 allows the image
+// weave up to 1,200 ms).
 const passMs = 520,
-  shortestMs = 400,
-  longestMs = 1200;
+  easeMs = 190;
 
 /**
  * Image reveal that weaves rows in from the inline-start edge (Woven spec
@@ -118,19 +118,24 @@ export function WeaveCanvas({
       frame = requestAnimationFrame(step);
       return () => cancelAnimationFrame(frame);
     }
-    const from = shown.current;
-    if (goal <= from) {
+    if (goal <= shown.current) {
       paint(goal);
       return;
     }
-    const span = Math.min(
-      longestMs,
-      Math.max(shortestMs, (goal - from) * longestMs),
-    );
+    // Ease toward the goal from wherever the front is, so a new value that
+    // arrives mid-weave keeps it moving rather than starting from rest.
+    let last = began;
     const step = (now: number) => {
-      const t = Math.min(1, Math.max(0, now - began) / span);
-      paint(from + (goal - from) * (t * t * (3 - 2 * t)));
-      if (t < 1) frame = requestAnimationFrame(step);
+      const dt = Math.max(0, now - last);
+      last = now;
+      const next =
+        shown.current + (goal - shown.current) * (1 - Math.exp(-dt / easeMs));
+      if (goal - next < 0.002) {
+        paint(goal);
+        return;
+      }
+      paint(next);
+      frame = requestAnimationFrame(step);
     };
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);

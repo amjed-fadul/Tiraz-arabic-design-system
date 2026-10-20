@@ -188,7 +188,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "Your app owns the status, the progress and the images. The canvas follows the progress you report, or one shuttle crosses the rows until the picture arrives. The pattern announces each status once, never the progress or the time.",
       ],
       [
-        "تبقى النسخ والإجراءات معطّلة حتى تكتمل الصورة. ومع الحركة المخفَّضة لا تدور أي حلقة: يظهر خيط ساكن ثم تتلاشى الصورة كاملة.",
+        "تبقى النسخ والإجراءات معطّلة حتى تكتمل الصورة. ومع الحركة المخفَّضة لا تدور أي حلقة: يظهر خيط ساكن ثم تظهر الصورة كاملة تدريجيًا.",
         "The versions and actions stay inert until the image is done. With reduced motion nothing loops: a still thread shows, then the picture fades in whole.",
       ],
       [
