@@ -6113,7 +6113,7 @@ a.tz-inline-citation {
     var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
 @media (hover: hover) and (pointer: fine) {
-  :is(button, a).tz-inline-citation:hover {
+  :is(button, a).tz-inline-citation:not([data-state="open"]):hover {
     background: color-mix(in srgb, var(--ai-soft), var(--ai) 6%);
   }
 }
@@ -6946,9 +6946,9 @@ a.tz-inline-citation {
   min-block-size: 28px;
   padding-inline: var(--space-2);
 }
-/* A receipt rises into the history only once a decision was recorded after
-   the flow mounted; history it mounts with stays still. */
-.tz-approval-flow[data-changed] .tz-decision-history > li {
+/* A receipt rises into the history only when its decision was recorded
+   after the flow mounted; history it mounts with stays still. */
+.tz-decision-history > li[data-changed] {
   animation: tz-option-in var(--motion-state) var(--ease-out);
 }
 .tz-decision-history > li > bdi {
@@ -7591,7 +7591,7 @@ a.tz-inline-citation {
 }
 :where(
     .tz-approval-card[data-changed] .tz-decision-icon,
-    .tz-approval-flow[data-changed] .tz-decision-mark,
+    .tz-decision-history > li[data-changed] > .tz-decision-mark,
     .tz-step-indicator[data-changed],
     .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,
@@ -7605,7 +7605,7 @@ a.tz-inline-citation {
 }
 :where(
     .tz-approval-card[data-changed] .tz-decision-icon,
-    .tz-approval-flow[data-changed] .tz-decision-mark,
+    .tz-decision-history > li[data-changed] > .tz-decision-mark,
     .tz-step-indicator[data-changed],
     .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,

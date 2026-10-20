@@ -12,7 +12,11 @@ import { AskUserQuestions } from "./AskUserQuestions";
 import type { QuestionAnswers } from "./AskUserQuestions";
 import { ApprovalCard } from "./ApprovalCard";
 import { ApprovalFlow } from "./ApprovalFlow";
-import type { ApprovalRequest, ApprovalCardProps } from "./ApprovalCard";
+import type {
+  ApprovalRecord,
+  ApprovalRequest,
+  ApprovalCardProps,
+} from "./ApprovalCard";
 import { approvalRequestKey } from "./approval-request";
 import { SystemProvider } from "./Provider";
 import { defaultConfig } from "./config";
@@ -214,6 +218,38 @@ it("advances only on host acceptance and never carries approval to the next requ
     screen.getByRole("list", { name: "Prior decisions" }),
   ).toHaveTextContent("Approved");
   expect(screen.getByRole("group", { name: "Rename sample" })).toHaveFocus();
+});
+it("gives only a decision recorded after mount an entry hook in the flow's history", async () => {
+  const user = userEvent.setup(),
+    second = { ...request, id: "b", action: "Archive sample" };
+  function Example() {
+    const [value, setValue] = useState<readonly ApprovalRecord[]>([
+      {
+        requestId: "a",
+        requestKey: approvalRequestKey(request),
+        decision: "approved",
+      },
+    ]);
+    return (
+      <ApprovalFlow
+        label="Review"
+        requests={[request, second]}
+        value={value}
+        onValueChange={setValue}
+        onDecision={() => {}}
+      />
+    );
+  }
+  const view = render(wrap(<Example />));
+  const hooks = () =>
+    [...view.container.querySelectorAll(".tz-decision-history > li")].map(
+      (row) => row.hasAttribute("data-changed"),
+    );
+  // The decision the flow mounted with stays still.
+  expect(hooks()).toEqual([false]);
+  await user.click(screen.getByRole("button", { name: "Approve rename" }));
+  await waitFor(() => expect(hooks()).toHaveLength(2));
+  expect(hooks()).toEqual([false, true]);
 });
 it("reopens changed requests and retains unchanged decisions on append/reorder", async () => {
   const user = userEvent.setup(),

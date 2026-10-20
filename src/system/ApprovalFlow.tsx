@@ -8,7 +8,7 @@ import type {
   ApprovalRequest,
 } from "./ApprovalCard";
 import { useSystem } from "./useSystem";
-import { useChanged } from "./useChanged";
+import { useArrivals } from "./useArrivals";
 import { numberLocale } from "./config";
 export type { ApprovalRecord } from "./ApprovalCard";
 export interface ApprovalFlowProps {
@@ -54,9 +54,9 @@ function ApprovalFlowInstance({
   if (history.schemaKey !== schemaKey)
     setHistory({ schemaKey, records: local });
   const records = (value ?? local).filter(validRecord);
-  // A receipt rises into the history and its mark draws only once a decision
-  // was recorded here, never for history the flow mounts with.
-  const changed = useChanged(records.length);
+  // Decisions on the first render are history; only a receipt recorded later
+  // rises in and draws its mark, until its entrance finishes.
+  const arrivals = useArrivals(records.map((record) => record.requestKey));
   const latest = useRef({ records, value, onValueChange });
   useLayoutEffect(() => {
     latest.current = { records, value, onValueChange };
@@ -109,7 +109,6 @@ function ApprovalFlowInstance({
       aria-label={label}
       tabIndex={-1}
       className={`tz-approval-flow ${className}`}
-      data-changed={changed || undefined}
       onFocusCapture={() => {
         focused.current = true;
       }}
@@ -164,7 +163,17 @@ function ApprovalFlowInstance({
             );
             return record
               ? [
-                  <li key={request.id} data-decision={record.decision}>
+                  <li
+                    key={request.id}
+                    data-decision={record.decision}
+                    data-changed={
+                      arrivals.fresh(record.requestKey) || undefined
+                    }
+                    onAnimationEnd={(event) => {
+                      if (event.target === event.currentTarget)
+                        arrivals.settle(record.requestKey);
+                    }}
+                  >
                     <span className="tz-decision-mark" aria-hidden="true">
                       {record.decision === "approved" ? (
                         <Check size={12} strokeWidth={2.5} />
