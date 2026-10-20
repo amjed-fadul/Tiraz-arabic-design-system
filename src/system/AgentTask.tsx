@@ -341,6 +341,7 @@ export function AgentTask({
     said = useRef<HTMLSpanElement>(null),
     live = useRef<HTMLSpanElement>(null),
     lastFocus = useRef<HTMLElement | null>(null),
+    heard = useRef<string | null>(null),
     composing = useRef(false);
   const [hovered, setHovered] = useState(false),
     [focused, setFocused] = useState(false),
@@ -399,8 +400,14 @@ export function AgentTask({
     );
   useEffect(() => {
     const text = said.current?.textContent ?? "";
-    if (live.current && live.current.textContent !== text)
-      live.current.textContent = text;
+    // The status the task mounts in is not news, except a proposed plan, which
+    // asks to be seen (§8 and §18 announce transitions only).
+    if (heard.current === null && status !== "plan") {
+      heard.current = text;
+      return;
+    }
+    if (live.current && text !== heard.current) live.current.textContent = text;
+    heard.current = text;
   });
   // When a change removes the focused control (Stop, Skip step, the steering
   // field), focus moves to the task rather than dropping to the page.

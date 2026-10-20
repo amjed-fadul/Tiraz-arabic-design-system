@@ -272,6 +272,12 @@ it("announces each status once and never the time", () => {
       {...rest}
     />
   );
+  // A task that mounts finished is not news: its region stays empty.
+  const finished = render(
+    task("completed", close(done as AgentStep["state"][]), { elapsed: 220 }),
+  );
+  expect(region()).toBeEmptyDOMElement();
+  finished.unmount();
   const view = render(
     task("plan", close(planned as AgentStep["state"][]), { autoStartAfter: 5 }),
   );
