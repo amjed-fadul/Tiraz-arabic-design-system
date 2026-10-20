@@ -46,7 +46,7 @@ Every task names its implementer model. The controller passes it as the Agent to
 
 ## Rules for every task
 
-- One commit per task, made by the implementer, ending with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
+- One commit per task, made by the implementer, with the task's message and no Co-Authored-By trailer (Amjed, 20 Oct; earlier commits keep theirs).
 - Tests first: write the failing test, watch it fail, implement, watch it pass.
 - The baseline is 82 test files and 806 tests passing on `aa1d0e3`. Existing tests are only changed where they assert something a spec changes on purpose, and the commit message says which.
 - Never modify the other worktrees (`component-craft`, `numerals`, `landing-night-loom`). Plan 1 reads from two of them once, read-only.

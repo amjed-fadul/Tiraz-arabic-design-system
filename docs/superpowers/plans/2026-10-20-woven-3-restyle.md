@@ -61,7 +61,7 @@ Each family joins the CSS audit, and the spec's defects are fixed along the way.
   - Add tests only for API additions, and for defect fixes a unit test can observe: a role, class, attribute, text, or which element renders. Visual results are checked by the audit and by Task 9's evidence.
   - Change an existing test only where the spec changes what it asserts, and name it in the commit.
   - If you change a value that a browser script hard-codes, update the script. Find them with `grep -n 'borderRadius\|fontSize' tests/browser/*.mjs`; known ones are `table.mjs:137`, `charts.mjs:248` and `documentation-groups.mjs:91`.
-- **Commits.** Each ends with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`. Never push, and never start or stop servers. A dev server runs at http://127.0.0.1:5411; restore the workbench preferences after using the browser.
+- **Commits.** One per task, with the task's message and no Co-Authored-By trailer (Amjed, 20 Oct). Never push, and never start or stop servers. A dev server runs at http://127.0.0.1:5411; restore the workbench preferences after using the browser.
 
 ## Review Focus
 
