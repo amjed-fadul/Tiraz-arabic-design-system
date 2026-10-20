@@ -124,9 +124,25 @@ export function generateBatchCode(
       // Arabic copy spells the count in SystemConfig.numerals, so it needs the
       // system config; the wrapper keeps the hook inside the provider.
       imports = "AvatarGroup, numberLocale, useSystem";
-      source = `function TeamExample() {
+      source = `const arabicPlural = new Intl.PluralRules("ar");
+/** Arabic counts agree with the noun: one, the dual, 3–10, then 11 and up. */
+function arabicOthers(count: number, digits: Intl.NumberFormat) {
+  switch (arabicPlural.select(count)) {
+    case "one":
+      return "عضو آخر";
+    case "two":
+      return "عضوان آخران";
+    case "few":
+      return \`\${digits.format(count)} أعضاء آخرون\`;
+    case "many":
+      return \`\${digits.format(count)} عضوًا آخر\`;
+    default:
+      return \`\${digits.format(count)} عضو آخر\`;
+  }
+}
+function TeamExample() {
   const number = new Intl.NumberFormat(numberLocale(useSystem().config, "ar"));
-  return ${group('count === 2 ? "عضوان آخران" : `${number.format(count)} أعضاء آخرون`')};
+  return ${group("arabicOthers(count, number)")};
 }
 `;
       jsx = "<TeamExample />";

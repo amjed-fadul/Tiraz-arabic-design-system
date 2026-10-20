@@ -23,6 +23,7 @@ const stylesheet = parse(
 const BASE = ".tiraz-system";
 const DARK = '.tiraz-system[data-theme="dark"]';
 const LARGE = '.tiraz-system[data-typography="large"]';
+const COMPACT = '.tiraz-system[data-density="compact"]';
 const REDUCED = '.tiraz-system[data-reduced-motion="true"]';
 const PREFERS_REDUCED = "(prefers-reduced-motion: reduce)";
 const KEYBOARD = '.tiraz-system[data-modality="keyboard"]';
@@ -356,6 +357,18 @@ const fixedSizes = {
   "--disabled-opacity": "0.5",
 };
 
+/** Paper padding at standard and compact density (spec section 9). */
+const paperPadding = {
+  standard: {
+    "--paper-padding-block": "16px",
+    "--paper-padding-inline": "18px",
+  },
+  compact: {
+    "--paper-padding-block": "14px",
+    "--paper-padding-inline": "16px",
+  },
+};
+
 const radii = {
   "--radius-small": "max(2px, calc(var(--radius) - 3px))",
   "--tray-pad": "5px",
@@ -524,6 +537,12 @@ it("sets the type scale and leading", () => {
 
 it("sets the fixed sizes and the press and disabled states", () => {
   expect(valuesOf(readRule(BASE), fixedSizes)).toEqual(fixedSizes);
+});
+
+it("pads paper by density", () => {
+  const { standard, compact } = paperPadding;
+  expect(valuesOf(readRule(BASE), standard)).toEqual(standard);
+  expect(valuesOf(readRule(COMPACT), compact)).toEqual(compact);
 });
 
 it("keeps text at 4.5:1 on every surface and soft tone", () => {

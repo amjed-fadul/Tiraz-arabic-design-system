@@ -401,6 +401,11 @@
 .tz-menu-item[data-highlighted] > span[aria-hidden="true"] {
   color: inherit;
 }
+/* On the highlighted row the hint's chip sits on the row's wash, where muted
+   text falls under 4.5:1, so it steps up to the secondary tier. */
+.tz-menu-item[data-highlighted] .tz-kbd {
+  color: var(--text-secondary);
+}
 .tz-menu-item[data-destructive][data-highlighted] {
   background: var(--danger-soft);
   color: var(--danger);
@@ -532,7 +537,7 @@
   border: 1px solid transparent;
   border-radius: var(--radius-paper);
   background: var(--surface);
-  padding: var(--control-padding);
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
   box-shadow: var(--shadow-popover);
   transform-origin: 50% 0;
   transform: translate3d(
@@ -1506,7 +1511,7 @@ textarea.tz-textarea:read-only {
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--control-padding);
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
   flex: none;
   border-block-end: 0.5px solid var(--hairline);
 }
@@ -1536,7 +1541,7 @@ textarea.tz-textarea:read-only {
 }
 .tz-modal-body {
   min-inline-size: 0;
-  padding: var(--control-padding);
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
 }
 /* Decisions sit on a tray band under a hairline. Its own transparent border
    keeps the modal's edge in forced colors, where the tray paints over it. */
@@ -1546,7 +1551,7 @@ textarea.tz-textarea:read-only {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: var(--control-gap);
-  padding: var(--control-padding);
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
   border: 1px solid transparent;
   border-block-start: 0.5px solid var(--hairline);
   background: var(--surface-tray);
@@ -1855,7 +1860,7 @@ textarea.tz-textarea:read-only {
 .tz-card-header,
 .tz-card-content,
 .tz-card-footer {
-  padding: var(--row-gap);
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
 }
 .tz-card-header + .tz-card-content {
   padding-block-start: 0;

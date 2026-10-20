@@ -96,6 +96,9 @@
   --tab-padding: 8px;
   --menu-item-padding: 5px;
   --row-gap: 16px;
+  /* Paper padding follows density: cards, dialogs and toasts. */
+  --paper-padding-block: 16px;
+  --paper-padding-inline: 18px;
   /* Fixed sizes and states shared by the families. */
   --status-size: 22px;
   --remove-size: 24px;
@@ -254,6 +257,8 @@
   --tab-padding: 4px;
   --menu-item-padding: 3px;
   --row-gap: 12px;
+  --paper-padding-block: 14px;
+  --paper-padding-inline: 16px;
 }
 .tiraz-system[data-reduced-motion="true"] {
   --motion-press: 0ms;

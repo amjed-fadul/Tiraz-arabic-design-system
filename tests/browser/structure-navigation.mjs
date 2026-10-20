@@ -322,7 +322,8 @@ try {
   // renders 24px.
   assert.equal(settings.radius, "24px");
   assert.equal(settings.size, "16px");
-  assert.equal(settings.padding, "16px");
+  // Paper padding at standard density: 16px block × 18px inline.
+  assert.equal(settings.padding, "16px 18px");
   assert.match(settings.action, /D6B6E5/i);
   await update(() => window.setPagingDisabled(true));
   assert(

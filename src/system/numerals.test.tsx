@@ -414,20 +414,22 @@ describe.each(settings)(
       ).toHaveTextContent(`الطلب ${n("2")} من ${n("3")}`);
     });
 
-    it("the AvatarGroup examples name two hidden members in the dual, without a digit", () => {
+    it("the AvatarGroup examples agree the Arabic count with the number of hidden members", () => {
       const view = wrap(
         <>
           <TeamExample language="ar" />
           <AvatarExamples language="ar" />
+          <TeamExample language="ar" maxVisible={4} />
         </>,
         { numerals },
       );
       const labels = view.container.querySelectorAll(
         ".tz-avatar-overflow .tz-visually-hidden",
       );
-      expect(labels).toHaveLength(2);
-      for (const label of Array.from(labels))
+      expect(labels).toHaveLength(3);
+      for (const label of Array.from(labels).slice(0, 2))
         expect(label).toHaveTextContent(/^عضوان آخران: /);
+      expect(labels[2]).toHaveTextContent(/^عضو آخر: /);
     });
 
     it("the DataTable example's result count follows the setting", () => {

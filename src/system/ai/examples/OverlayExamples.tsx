@@ -13,6 +13,22 @@ import {
   useSystem,
 } from "../../index";
 type Language = "ar" | "en";
+const arabicPlural = new Intl.PluralRules("ar");
+/** Arabic counts agree with the noun: one, the dual, 3–10, then 11 and up. */
+function arabicOthers(count: number, digits: Intl.NumberFormat) {
+  switch (arabicPlural.select(count)) {
+    case "one":
+      return "عضو آخر";
+    case "two":
+      return "عضوان آخران";
+    case "few":
+      return `${digits.format(count)} أعضاء آخرون`;
+    case "many":
+      return `${digits.format(count)} عضوًا آخر`;
+    default:
+      return `${digits.format(count)} عضو آخر`;
+  }
+}
 export function TeamExample({
   language = "ar",
   maxVisible = 3,
@@ -35,9 +51,7 @@ export function TeamExample({
       label={language === "ar" ? "فريق المشروع" : "Project team"}
       overflowLabel={(count) =>
         language === "ar"
-          ? count === 2
-            ? "عضوان آخران"
-            : `${number.format(count)} أعضاء آخرون`
+          ? arabicOthers(count, number)
           : `${count} more members`
       }
     />
