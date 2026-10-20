@@ -1,8 +1,24 @@
+import registrySource from "../system/ai/registry.json?raw";
 import type { ComponentId } from "./catalog";
-import { catalog } from "./catalog";
+import { catalog, patternJobs } from "./catalog";
 import { fields } from "./fields";
 import { label, words } from "./i18n";
 import type { Language } from "./i18n";
+// The registry's own record of each part. Its prose is English-only, so the
+// part tables show the facts and the page's rows keep the bilingual prose.
+const registry = JSON.parse(registrySource) as {
+  components: readonly { id: string; parts?: readonly string[] }[];
+  support: readonly {
+    id: string;
+    exports: readonly string[];
+    props?: readonly {
+      name: string;
+      type: string;
+      required: boolean;
+      default: unknown;
+    }[];
+  }[];
+};
 export function ApiReference({
   component,
   language,
@@ -12,6 +28,15 @@ export function ApiReference({
 }) {
   const t = words(language);
   const file = catalog.find((item) => item.id === component)!.file;
+  // A pattern page also documents each public shared part it uses.
+  const parts = patternJobs[component]
+    ? (
+        registry.components.find((item) => item.id === component)?.parts ?? []
+      ).flatMap((id) => {
+        const part = registry.support.find((item) => item.id === id);
+        return part?.props ? [{ ...part, props: part.props }] : [];
+      })
+    : [];
   const chartRows: Array<[string, string, string]> = [
     [
       "label / summary",
@@ -3179,6 +3204,54 @@ export function ApiReference({
           </tbody>
         </table>
       </div>
+      {parts.length > 0 && (
+        <p>
+          {t(
+            "الأجزاء المشتركة التي يستخدمها هذا النمط:",
+            "Shared parts this pattern uses:",
+          )}
+        </p>
+      )}
+      {parts.map((part) => (
+        <div key={part.id} className="api-part">
+          <h3 id={`api-part-${part.id}`} tabIndex={-1}>
+            <bdi dir="ltr">{part.exports[0]}</bdi>
+          </h3>
+          <div
+            className="api-scroll"
+            tabIndex={0}
+            role="region"
+            aria-labelledby={`api-part-${part.id}`}
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th>{t("الخاصية", "Property")}</th>
+                  <th>{t("النوع", "Type")}</th>
+                  <th>{t("مطلوبة", "Required")}</th>
+                  <th>{t("القيمة الافتراضية", "Default")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {part.props.map((prop) => (
+                  <tr key={prop.name}>
+                    <td>
+                      <code dir="ltr">{prop.name}</code>
+                    </td>
+                    <td>
+                      <code dir="ltr">{prop.type}</code>
+                    </td>
+                    <td>{prop.required ? t("نعم", "Yes") : t("لا", "No")}</td>
+                    <td>
+                      <code dir="ltr">{String(prop.default)}</code>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
       <p className="api-note">
         {t(
           "يشارك SystemProvider إعدادات المظهر بين المكوّنات. الخصائص التي لا تظهر في المعاينة متاحة في API، فاربط الدوال وrefs في كود تطبيقك.",

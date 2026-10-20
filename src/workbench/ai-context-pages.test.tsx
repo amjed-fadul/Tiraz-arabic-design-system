@@ -26,11 +26,12 @@ it.each([
   async (ar, en) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    await user.click(
-      within(
-        screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-      ).getByRole("button", { name: ar }),
+    const ai = within(
+      screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
     );
+    // The parts are folded until their disclosure opens.
+    await user.click(ai.getByRole("button", { name: "الأجزاء" }));
+    await user.click(ai.getByRole("button", { name: ar }));
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),
       "en",

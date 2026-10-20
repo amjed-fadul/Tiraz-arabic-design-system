@@ -1,8 +1,29 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Moon, Sun, SlidersHorizontal, Menu } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import {
+  ArrowUpRight,
+  ChevronDown,
+  Moon,
+  Sun,
+  SlidersHorizontal,
+  Menu,
+} from "lucide-react";
 import { SystemProvider, defaultConfig } from "../system";
 import type { ButtonState, SystemConfig } from "../system";
-import { catalog, groupOf, navigationGroups } from "./catalog";
+import {
+  aiParts,
+  catalog,
+  groupOf,
+  jobNames,
+  navigationGroups,
+  patternJobs,
+} from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
 import type { Language } from "./i18n";
@@ -34,6 +55,11 @@ import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
 import { generateCode, generatePrompt } from "./generate";
 import { DocsDrawer } from "./DocsDrawer";
+import {
+  PatternAnatomy,
+  PatternCopy,
+  PatternPlacements,
+} from "./pattern-pages";
 interface EventRecord {
   name: string;
   value?: unknown;
@@ -53,8 +79,113 @@ function BrandMark() {
     </svg>
   );
 }
+/**
+ * The component navigation, which the sidebar and the mobile drawer share.
+ * A group with sections shows each under its heading; the collapsible one
+ * (the AI parts) is a disclosure, and its pages are not rendered while it
+ * is closed.
+ */
+function ComponentNavigation({
+  language,
+  active,
+  partsOpen,
+  onPartsOpenChange,
+  onOpen,
+}: {
+  language: Language;
+  active: ComponentId;
+  partsOpen: boolean;
+  onPartsOpenChange: (open: boolean) => void;
+  onOpen: (id: ComponentId) => void;
+}) {
+  const id = useId();
+  const page = (item: (typeof navigationGroups)[number]["items"][number]) => (
+    <button
+      type="button"
+      key={item.id}
+      aria-current={active === item.id ? "page" : undefined}
+      onClick={() => onOpen(item.id)}
+    >
+      {localize(item.name, language)}
+    </button>
+  );
+  return (
+    <>
+      <div className="navigation-label">{label("components", language)}</div>
+      <nav className="component-nav" aria-label={label("components", language)}>
+        {navigationGroups.map((group) => (
+          <div
+            key={group.id}
+            className="component-nav-group"
+            role="group"
+            aria-label={localize(group.name, language)}
+          >
+            <h2 className="component-nav-heading">
+              {localize(group.name, language)}
+            </h2>
+            {group.sections
+              ? group.sections.map((section) => {
+                  const open = !section.collapsible || partsOpen;
+                  return (
+                    <div key={section.id} className="component-nav-section">
+                      <h3
+                        className={`component-nav-subheading${section.collapsible ? " component-nav-toggle" : ""}`}
+                      >
+                        {section.collapsible ? (
+                          <button
+                            type="button"
+                            className="component-nav-disclosure"
+                            aria-expanded={partsOpen}
+                            aria-controls={`${id}-${section.id}`}
+                            onClick={() => onPartsOpenChange(!partsOpen)}
+                          >
+                            {localize(section.name, language)}
+                            <ChevronDown size={14} aria-hidden="true" />
+                          </button>
+                        ) : (
+                          localize(section.name, language)
+                        )}
+                      </h3>
+                      <div
+                        id={`${id}-${section.id}`}
+                        className="component-nav-items"
+                        hidden={!open}
+                      >
+                        {open && section.items.map(page)}
+                        {open &&
+                          section.links?.map((link) => (
+                            <a
+                              key={link.href}
+                              className="component-nav-link"
+                              href={link.href}
+                            >
+                              {localize(link.name, language)}
+                              <ArrowUpRight
+                                size={14}
+                                aria-hidden="true"
+                                className="tz-mirror-rtl"
+                              />
+                            </a>
+                          ))}
+                      </div>
+                    </div>
+                  );
+                })
+              : group.items.map(page)}
+          </div>
+        ))}
+      </nav>
+    </>
+  );
+}
 export function Workbench() {
-  const [documentation, setDocumentation] = useState(readDocumentation);
+  // The Parts disclosure opens for a part's page.
+  const [documentation, setDocumentation] = useState(() => {
+    const saved = readDocumentation();
+    return aiParts.includes(saved.active)
+      ? { ...saved, aiPartsOpen: true }
+      : saved;
+  });
   const language = documentation.language,
     active = documentation.active,
     direction = language === "ar" ? "rtl" : "ltr",
@@ -264,7 +395,11 @@ export function Workbench() {
     openedFromState.current = false;
     stopFocusReturn.current?.();
     setPhases({});
-    setDocumentation((prev) => ({ ...prev, active: id }));
+    setDocumentation((prev) => ({
+      ...prev,
+      active: id,
+      aiPartsOpen: prev.aiPartsOpen || aiParts.includes(id),
+    }));
     // The new page opens at its top, not where the old one was scrolled to.
     window.scrollTo(0, 0);
   }
@@ -376,6 +511,7 @@ export function Workbench() {
     return true;
   }
   const pageNotes = docsNotes[active];
+  const job = patternJobs[active];
   const notes: DemoFrameNotes | undefined = pageNotes && {
     useWhen: pageNotes.useWhen.map((item) => localize(item, language)),
     instead: pageNotes.instead?.map(({ text, page }) => (
@@ -401,6 +537,19 @@ export function Workbench() {
         )}
       </>
     )),
+    replaces: pageNotes.replaces?.map((page) => (
+      <button
+        key={page}
+        type="button"
+        className="note-link"
+        onClick={() => {
+          openPage(page);
+          mainRef.current?.focus();
+        }}
+      >
+        {localize(catalog.find((item) => item.id === page)!.name, language)}
+      </button>
+    )),
     notice: pageNotes.notice?.map((item) => localize(item, language)),
   };
   const inspector = (
@@ -420,36 +569,18 @@ export function Workbench() {
     />
   );
   const navigation = (
-    <>
-      <div className="navigation-label">{label("components", language)}</div>
-      <nav className="component-nav" aria-label={label("components", language)}>
-        {navigationGroups.map((group) => (
-          <div
-            key={group.id}
-            className="component-nav-group"
-            role="group"
-            aria-label={localize(group.name, language)}
-          >
-            <h2 className="component-nav-heading">
-              {localize(group.name, language)}
-            </h2>
-            {group.items.map((item) => (
-              <button
-                type="button"
-                key={item.id}
-                aria-current={active === item.id ? "page" : undefined}
-                onClick={() => {
-                  openPage(item.id);
-                  setNavigationOpen(false);
-                }}
-              >
-                {localize(item.name, language)}
-              </button>
-            ))}
-          </div>
-        ))}
-      </nav>
-    </>
+    <ComponentNavigation
+      language={language}
+      active={active}
+      partsOpen={documentation.aiPartsOpen}
+      onPartsOpenChange={(open) =>
+        setDocumentation((prev) => ({ ...prev, aiPartsOpen: open }))
+      }
+      onOpen={(id) => {
+        openPage(id);
+        setNavigationOpen(false);
+      }}
+    />
   );
   const appearance = (
     <Appearance
@@ -555,6 +686,7 @@ export function Workbench() {
               <header className="component-heading">
                 <p className="component-kicker">
                   {localize(groupOf(active), language)}
+                  {job && ` · ${localize(jobNames[job], language)}`}
                 </p>
                 <h1>{localize(current.name, language)}</h1>
                 <p>{localize(current.description, language)}</p>
@@ -657,6 +789,33 @@ export function Workbench() {
                   </div>
                 )}
               </section>
+              {job && (
+                <>
+                  <PatternAnatomy
+                    key={`anatomy-${active}`}
+                    component={active}
+                    model={model}
+                    config={effectiveConfig}
+                    language={language}
+                    onOpenPage={(id) => {
+                      openPage(id);
+                      mainRef.current?.focus();
+                    }}
+                  />
+                  <PatternPlacements
+                    key={`placements-${active}`}
+                    component={active}
+                    model={model}
+                    config={effectiveConfig}
+                    language={language}
+                  />
+                  <PatternCopy
+                    component={active}
+                    config={effectiveConfig}
+                    language={language}
+                  />
+                </>
+              )}
               <section className="agent-section">
                 <h2 id="agent-heading">{label("useInApp", language)}</h2>
                 <div className="prompt-row">

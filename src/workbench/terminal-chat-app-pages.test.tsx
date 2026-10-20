@@ -12,17 +12,18 @@ import * as system from "../system";
 import * as ts from "typescript";
 afterEach(() => vi.useRealTimers());
 it.each([
-  ["الطرفية", "Terminal"],
-  ["تطبيق المحادثة", "ChatApp"],
+  // Terminal is a content block, which moved to Display; ChatApp is a screen.
+  ["الطرفية", "Terminal", "العرض والتنبيهات"],
+  ["تطبيق المحادثة", "ChatApp", "أنماط الذكاء الاصطناعي"],
 ])(
-  "documents %s under AI patterns with continuous shared frames",
-  async (ar, en) => {
+  "documents %s in its group with continuous shared frames",
+  async (ar, en, group) => {
     const user = userEvent.setup();
     render(<Workbench />);
     await user.click(
-      within(
-        screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-      ).getByRole("button", { name: ar }),
+      within(screen.getByRole("group", { name: group })).getByRole("button", {
+        name: ar,
+      }),
     );
     await user.selectOptions(
       screen.getByRole("combobox", { name: "لغة التوثيق" }),

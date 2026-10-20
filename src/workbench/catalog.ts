@@ -691,42 +691,97 @@ export const chartIds = [
 // Field remains a public family; its composition reference lives under Input.
 export const navigationCatalog = catalog.filter((item) => item.id !== "field");
 
-// Documentation-only groups. Keep page IDs, metadata and source APIs unchanged.
-const documentationGroups = [
+/** The job an AI pattern finishes; its section in the AI group (Docs §9). */
+export type Job = "ask" | "delegate" | "create" | "understand";
+export const jobNames: Record<Job, Localized> = {
+  ask: ["اسأل", "Ask"],
+  delegate: ["فوّض", "Delegate"],
+  create: ["أنشئ", "Create"],
+  understand: ["افهم وتحكّم", "Understand and control"],
+};
+/** The nine pattern pages and their jobs; a page here is a pattern page. */
+export const patternJobs: Partial<Record<ComponentId, Job>> = {
+  "task-starter": "ask",
+  "cited-answer": "ask",
+  "agent-task": "delegate",
+  "ask-user-questions": "delegate",
+  "approval-card": "delegate",
+  "approval-flow": "delegate",
+  "suggested-edits": "create",
+  "image-generation": "create",
+  "change-summary": "understand",
+};
+/** The fifteen parts the patterns are built from (spec §16), folded. */
+export const aiParts: readonly ComponentId[] = [
+  "selection-actions",
+  "context-meter",
+  "model-selector",
+  "image-result",
+  "sources",
+  "insight-cards",
+  "chat-thread",
+  "chat-composer",
+  "prompt-bar",
+  "thinking-indicator",
+  "thinking-state",
+  "task-rows",
+  "tool-call",
+  "tool-chips",
+  "streaming-text",
+];
+interface DocumentationSection {
+  id: string;
+  name: Localized;
+  ids: readonly ComponentId[];
+  collapsible?: boolean;
+  links?: readonly { href: string; name: Localized }[];
+}
+const aiSections: readonly DocumentationSection[] = [
+  {
+    id: "ask",
+    name: jobNames.ask,
+    ids: ["task-starter", "cited-answer"],
+  },
+  {
+    id: "delegate",
+    name: jobNames.delegate,
+    ids: ["agent-task", "ask-user-questions", "approval-card", "approval-flow"],
+  },
+  {
+    id: "create",
+    name: jobNames.create,
+    ids: ["suggested-edits", "image-generation"],
+  },
+  { id: "understand", name: jobNames.understand, ids: ["change-summary"] },
+  {
+    id: "screens",
+    name: ["شاشات", "Screens"],
+    ids: ["chat-app"],
+    links: [
+      {
+        href: "/examples/dashboard",
+        name: ["لوحة بمساعد", "Dashboard with AI"],
+      },
+    ],
+  },
+  { id: "parts", name: ["الأجزاء", "Parts"], ids: aiParts, collapsible: true },
+];
+
+// Documentation-only groups. Keep page IDs, metadata and source APIs unchanged:
+// pages only move between groups, so saved pages, props and links keep working.
+const documentationGroups: ReadonlyArray<{
+  id: string;
+  name: Localized;
+  ids: readonly Exclude<ComponentId, "field">[];
+  sections?: readonly DocumentationSection[];
+}> = [
   {
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
-    ids: [
-      "task-starter",
-      "cited-answer",
-      "agent-task",
-      "suggested-edits",
-      "image-generation",
-      "change-summary",
-      "terminal",
-      "chat-app",
-      "ask-user-questions",
-      "approval-card",
-      "approval-flow",
-      "selection-actions",
-      "context-meter",
-      "model-selector",
-      "image-result",
-      "sources",
-      "insight-cards",
-      "chat-thread",
-      "chat-composer",
-      "prompt-bar",
-      "loading-state",
-      "thinking-indicator",
-      "thinking-state",
-      "task-rows",
-      "tool-call",
-      "tool-chips",
-      "code-block",
-      "markdown",
-      "streaming-text",
-    ],
+    ids: aiSections.flatMap(
+      (section) => section.ids as readonly Exclude<ComponentId, "field">[],
+    ),
+    sections: aiSections,
   },
   {
     id: "forms",
@@ -778,6 +833,11 @@ const documentationGroups = [
       "skeleton",
       "progress",
       "spinner",
+      // Content blocks, which left the AI group.
+      "loading-state",
+      "code-block",
+      "markdown",
+      "terminal",
     ],
   },
   {
@@ -790,11 +850,7 @@ const documentationGroups = [
     name: ["الرسوم", "Charts"],
     ids: ["line-chart", "area-chart", "bar-chart", "donut-chart"],
   },
-] satisfies ReadonlyArray<{
-  id: string;
-  name: Localized;
-  ids: Exclude<ComponentId, "field">[];
-}>;
+];
 
 /** The name of the group a page sits in; Field's reference lives under Input. */
 export function groupOf(id: ComponentId): Localized {
@@ -804,12 +860,17 @@ export function groupOf(id: ComponentId): Localized {
   )!.name;
 }
 
-// Only implemented pages appear in documentation groups.
+// Only implemented pages appear in documentation groups and sections.
+const pagesOf = (ids: readonly ComponentId[]) =>
+  ids
+    .map((id) => navigationCatalog.find((item) => item.id === id))
+    .filter((item) => item !== undefined);
 export const navigationGroups = documentationGroups
   .map((group) => ({
     ...group,
-    items: group.ids
-      .map((id) => navigationCatalog.find((item) => item.id === id))
-      .filter((item) => item !== undefined),
+    items: pagesOf(group.ids),
+    sections: group.sections
+      ?.map((section) => ({ ...section, items: pagesOf(section.ids) }))
+      .filter((section) => section.items.length > 0),
   }))
   .filter((group) => group.items.length > 0);

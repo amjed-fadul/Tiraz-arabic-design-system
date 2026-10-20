@@ -162,7 +162,7 @@ Every task that adds a pattern, or turns a part into one, follows this list. It 
 4. **Catalog.**
    - Add an entry at the top of `catalog` in `src/workbench/catalog.ts`, in §7's table order: `{ id, name: [ar, en], description: [ar, en], file }`.
    - The name comes from §7; the description is §12's "Job." sentence.
-   - Put the id at the front of the `ai` group's `ids` until Task 8 regroups.
+   - Add the id to its job's section in `aiSections` (Ask, Delegate, Create, or Understand and control; Docs §9) and to `patternJobs`. `patternJobs` makes it a pattern page: the kicker names the job, and the page gains Anatomy, Placements and Copy. A section shows once it has a page.
 5. **Registry.**
    - In `src/system/ai/registry.json`, add a `components` entry at the same index as the catalog entry.
    - Give it `kind: "pattern"`, `parts` (the public parts it renders: registry component ids or support ids), `states`, `events` (its `on…` props) and `examples`.
@@ -175,15 +175,17 @@ Every task that adds a pattern, or turns a part into one, follows this list. It 
    - A `generateCode` branch that embeds the example's `?raw` source, as the AI families do.
    - It rewrites `from "../../index"` to `from "./system"`, and `from "./finance-story"` to `from "./system/ai/examples/finance-story"`.
    - Add the example to the raw list in `generate-prompts.test.ts`.
-10. **API reference** (`src/workbench/ApiReference.tsx`): rows for the pattern's props, in both languages.
+10. **Page sections.**
+    - **API reference** (`src/workbench/ApiReference.tsx`): rows for the pattern's props, in both languages. The part tables need no rows: they come from the `support` entries of the support ids in the registry entry's `parts`.
+    - **Anatomy, Placements and Copy** (`src/workbench/pattern-pages.tsx`): an entry in `patternPages`. `zones` names the parts in each §9 zone: a catalog id for a part with its own page, or a support id for a new shared part, which must also be in the registry entry's `parts`, or its legend link finds no table. `copy` is the pattern's `<camelName>Copy`; a part's copy that the pattern's `labels` nests goes under its key, as Cited answer's `thinkingPanel` does. A function label is shown with 3 for a count or 72 seconds for a time; one that takes anything else needs its sample arguments in `samples` in `PatternCopy`.
 11. **States.**
     - In `src/workbench/demo-states.ts`, add the page's Docs §8 states as phases, its resting state and its Replay (steps of 800–2,600 ms).
     - New words go in the second block of `stateWords`.
     - If the example holds a visitor's decision, add the id to `restartOnEdit` in `Workbench.tsx`.
-12. **Notes** (`src/workbench/docs-notes.ts`): `useWhen`, `instead` and `notice`, from the pattern's §12 "Use it when" and "Use something else when".
+12. **Notes** (`src/workbench/docs-notes.ts`): `useWhen`, `notice`, and `replaces` (the part pages it absorbs, §7) or, when it replaces nothing, `instead`; from the pattern's §12 "Use it when" and "Use something else when".
 13. **Tests.**
     - A row in `demo-states.test.tsx`'s `phaseFamilies` table, saying what each state shows.
-    - The AI list in `navigation-groups.test.tsx`.
+    - The AI group's list in `navigation-groups.test.tsx` («groups AI patterns by job…»). The nav counts follow `navigationCatalog`, as `tests/browser/documentation-groups.mjs`'s do through `inventory.mjs`.
 
 ---
 

@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
+import { ids } from "./inventory.mjs";
 const require = createRequire(import.meta.url);
 const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const root = process.env.TIRAZ_URL || "http://127.0.0.1:5212";
@@ -21,8 +22,14 @@ const check = (name) => {
   checks.push(name);
   console.log(`PASS ${name}`);
 };
-// Groups and row count follow navigationGroups in src/workbench/catalog.ts.
-const rowCount = 67;
+// Groups and rows follow navigationGroups in src/workbench/catalog.ts. Every
+// page is a button, the fifteen AI parts only while the Parts disclosure is
+// open, and the disclosure is one more; the Dashboard with AI link is one
+// more stop for Tab.
+const pageCount = ids.length;
+const partCount = 15;
+const closedRows = pageCount - partCount + 1;
+const openRows = pageCount + 1;
 const names = {
   ar: [
     "أنماط الذكاء الاصطناعي",
@@ -78,11 +85,28 @@ try {
           ),
         names[language],
       );
-      assert.equal(await menu.getByRole("button").count(), rowCount);
+      assert.equal(await menu.getByRole("button").count(), closedRows);
       for (const group of await menu.getByRole("group").all())
         assert.ok((await group.getByRole("button").count()) > 0);
+      assert.equal(
+        await menu
+          .getByRole("link", {
+            name: language === "ar" ? "لوحة بمساعد" : "Dashboard with AI",
+            exact: true,
+          })
+          .getAttribute("href"),
+        "/examples/dashboard",
+      );
+      const parts = menu.getByRole("button", {
+        name: language === "ar" ? "الأجزاء" : "Parts",
+        exact: true,
+      });
+      assert.equal(await parts.getAttribute("aria-expanded"), "false");
+      await parts.click();
+      assert.equal(await parts.getAttribute("aria-expanded"), "true");
+      assert.equal(await menu.getByRole("button").count(), openRows);
       const labels = await menu.getByRole("button").allTextContents();
-      assert.equal(new Set(labels).size, rowCount);
+      assert.equal(new Set(labels).size, openRows);
       assert.equal(
         await menu
           .locator(".component-nav-heading")
@@ -114,7 +138,7 @@ try {
       assert.ok(await noOverflow());
       await page.screenshot({ path: `${evidence}/${language}-${theme}.png` });
       check(
-        `${language}/${theme}: implemented expanded groups, compact translated rows, selection, unchanged URL/layout`,
+        `${language}/${theme}: implemented groups, folded and opened Parts, compact translated rows, selection, unchanged URL/layout`,
       );
     }
   const enMenu = nav("en");
@@ -156,8 +180,9 @@ try {
   );
   await page.setViewportSize({ width: 1440, height: 380 });
   const arMenu = nav("ar");
-  await arMenu.getByRole("button", { name: "الطرفية", exact: true }).focus();
-  for (let index = 0; index < rowCount - 1; index++)
+  // Parts stays open, as saved; every row, the link included, takes Tab.
+  await arMenu.getByRole("button", { name: "ابدأ مهمة", exact: true }).focus();
+  for (let index = 0; index < openRows; index++)
     await page.keyboard.press("Tab");
   assert.equal(
     await arMenu
@@ -172,7 +197,7 @@ try {
   );
   await page.screenshot({ path: `${evidence}/short-keyboard-scroll.png` });
   check(
-    "all expanded rows reachable by Tab; short desktop menu scrolls internally",
+    "all rows, Parts open, reachable by Tab; short desktop menu scrolls internally",
   );
   await page.setViewportSize({ width: 390, height: 440 });
   const trigger = page.getByRole("button", { name: "المكوّنات", exact: true });
@@ -186,7 +211,8 @@ try {
       ),
     names.ar,
   );
-  assert.equal(await dialog.getByRole("button").count(), rowCount + 1);
+  // The drawer shares the saved Parts state, and has its close button.
+  assert.equal(await dialog.getByRole("button").count(), openRows + 1);
   await dialog
     .getByRole("button", { name: "الرسم الحلقي", exact: true })
     .focus();

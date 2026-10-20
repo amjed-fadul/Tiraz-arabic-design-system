@@ -3,11 +3,13 @@ import type { Localized } from "./i18n";
 
 /**
  * The notes row under a page's example. `instead` names another page where
- * one fits better; the frame links it by that page's name.
+ * one fits better; the frame links it by that page's name. A pattern page
+ * lists the part pages it `replaces` in that column instead (Docs §7).
  */
 export interface PageNotes {
   useWhen: readonly Localized[];
   instead?: readonly { text: Localized; page?: ComponentId }[];
+  replaces?: readonly ComponentId[];
   notice?: readonly Localized[];
 }
 
@@ -33,21 +35,11 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "The request needs particular records, such as an invoice, a customer or a report, which the person attaches or calls up with @.",
       ],
     ],
-    instead: [
-      {
-        text: [
-          "يردّ المستخدم داخل محادثة قائمة، فاستخدم",
-          "The person is replying inside a conversation, so use",
-        ],
-        page: "chat-composer",
-      },
-      {
-        text: [
-          "يبحث المستخدم بلا مساعد، فاستخدم",
-          "The person is only searching, with no assistant, so use",
-        ],
-        page: "input",
-      },
+    replaces: [
+      "prompt-bar",
+      "chat-composer",
+      "model-selector",
+      "context-meter",
     ],
     notice: [
       [
@@ -75,21 +67,12 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "People want to see what the assistant searched before it wrote.",
       ],
     ],
-    instead: [
-      {
-        text: [
-          "الرد حديث عابر بلا مصادر، فاستخدم",
-          "The reply is casual chat without sources, so use",
-        ],
-        page: "chat-thread",
-      },
-      {
-        text: [
-          "الطلب عمل من عدة خطوات، فاستخدم",
-          "The request is multi-step work, so use",
-        ],
-        page: "agent-task",
-      },
+    replaces: [
+      "thinking-indicator",
+      "thinking-state",
+      "streaming-text",
+      "sources",
+      "markdown",
     ],
     notice: [
       [
@@ -117,22 +100,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "The numbers come from several reports, and your app decides which are good and which are bad.",
       ],
     ],
-    instead: [
-      {
-        text: [
-          "تحتاج رسمًا كاملًا لمقياس واحد، فاستخدم",
-          "You need the full chart of one measure, so use",
-        ],
-        page: "line-chart",
-      },
-      {
-        text: [
-          "تحتاج نظرة على قائمة طويلة من السجلات، فاستخدم",
-          "You need a glance at a long list of records, so use",
-        ],
-        page: "data-table",
-      },
-    ],
+    replaces: ["insight-cards"],
     notice: [
       [
         "يبيّن السهم الاتجاه ويبيّن اللون المعنى، فارتفاع الفواتير المتأخرة أحمر. ولا تُكتب إشارة + أو − بجانب الأرقام.",
@@ -159,22 +127,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "The work runs long enough that people may want to steer or stop it without starting over.",
       ],
     ],
-    instead: [
-      {
-        text: [
-          "يكفي قرار واحد بنعم أو لا، فاستخدم",
-          "A single yes or no is all you need, so use",
-        ],
-        page: "approval-card",
-      },
-      {
-        text: [
-          "تحتاج نظرة على مهام كثيرة معًا، فاستخدم",
-          "You need a glance at many tasks at once, so use",
-        ],
-        page: "data-table",
-      },
-    ],
+    replaces: ["task-rows", "tool-call", "tool-chips", "loading-state"],
     notice: [
       [
         "يقرّر تطبيقك الحالة والخطوات والوقت، ولا يبلّغه النمط إلا بما يطلبه المستخدم: البدء والتوجيه والإيقاف والقرار.",
@@ -201,22 +154,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "People want to see each change and decide on it before their text changes.",
       ],
     ],
-    instead: [
-      {
-        text: [
-          "يكتب المساعد رسائل جديدة لسجلات، كتذكيرات الدفع، فاستخدم",
-          "The assistant writes new messages for records, such as payment reminders, so use",
-        ],
-        page: "agent-task",
-      },
-      {
-        text: [
-          "يكفي نسخ النص المحدّد أو اقتباسه دون إعادة صياغته، فاستخدم",
-          "Copying or quoting the selected text is enough, with no rewrite, so use",
-        ],
-        page: "selection-actions",
-      },
-    ],
+    replaces: ["selection-actions"],
     notice: [
       [
         "يبقى نص تطبيقك كما هو حتى «تطبيق»، ثم يسلّمه onApply النص المقبول وموضعه ليستبدله بنفسه. وإذا امتد التحديد عبر تنسيق يُطبَّق كنص عادي، وتقول البطاقة ذلك.",
@@ -243,22 +181,7 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "The generation takes long enough that people need to see it moving.",
       ],
     ],
-    instead: [
-      {
-        text: [
-          "تعرض صورة جاهزة من تطبيقك دون توليد، فاستخدم",
-          "You are showing a finished image from your app, with nothing to generate, so use",
-        ],
-        page: "image-result",
-      },
-      {
-        text: [
-          "الصورة جزء من عمل أكبر من عدة خطوات، فاستخدم",
-          "The image is one part of larger multi-step work, so use",
-        ],
-        page: "agent-task",
-      },
-    ],
+    replaces: ["image-result"],
     notice: [
       [
         "يقرّر تطبيقك الحالة والنسبة والصور. تتبع اللوحة النسبة التي تعلنها، أو يعبر مكّوك واحد الصفوف حتى تصل الصورة. ويعلن النمط كل حالة مرة واحدة، ولا يعلن النسبة ولا الوقت.",

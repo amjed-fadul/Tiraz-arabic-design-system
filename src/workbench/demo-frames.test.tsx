@@ -57,6 +57,8 @@ it("gives static previews a matching frame with view tabs and only a copy-code h
 it("replays streaming text from the page's own frame, replacing stop with copy and keeping header focus", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
+  // StreamingText is one of the AI parts, folded until their disclosure opens.
+  fireEvent.click(screen.getByRole("button", { name: "الأجزاء" }));
   fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
   // The page's frame is the only one, and the text is complete at rest.
@@ -137,6 +139,8 @@ it("resets an interactive playground from the inspector without remounting the f
 it("shows Replay only where a sequence exists", () => {
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
+  // The AI parts are folded until their disclosure opens.
+  fireEvent.click(nav.getByRole("button", { name: "الأجزاء" }));
   const replaying: string[] = [];
   // Every page of the catalog: Replay needs a sequence of states to play.
   for (const page of navigationCatalog) {

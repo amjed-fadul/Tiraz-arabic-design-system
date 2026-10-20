@@ -14,11 +14,10 @@ it.each([
     const user = userEvent.setup();
     render(<Workbench />);
     const copy = vi.spyOn(navigator.clipboard, "writeText");
-    await user.click(
-      within(
-        screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-      ).getByRole("button", { name: ar }),
-    );
+    // LoadingState sits in Display; the other two in the folded AI parts.
+    const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
+    await user.click(nav.getByRole("button", { name: "الأجزاء" }));
+    await user.click(nav.getByRole("button", { name: ar }));
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
     // The playground is the only stage; the step-by-step run plays there.
     expect(screen.queryByRole("heading", { name: "أمثلة" })).toBeNull();

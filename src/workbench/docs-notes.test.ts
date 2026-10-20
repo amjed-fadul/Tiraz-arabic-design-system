@@ -15,7 +15,11 @@ it("writes a job, an alternative and something to notice for every page, in both
   for (const id of ids) {
     const notes = docsNotes[id]!;
     expect(notes.useWhen.length, `${id} useWhen`).toBeGreaterThan(0);
-    expect(notes.instead?.length, `${id} instead`).toBeGreaterThan(0);
+    // A pattern names the parts it replaces where others name alternatives.
+    expect(
+      (notes.instead?.length ?? 0) + (notes.replaces?.length ?? 0),
+      `${id} instead or replaces`,
+    ).toBeGreaterThan(0);
     expect(notes.notice?.length, `${id} notice`).toBeGreaterThan(0);
     const items = [
       ...notes.useWhen,

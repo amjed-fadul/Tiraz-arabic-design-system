@@ -17,6 +17,10 @@ export const labels = {
   copyConfig: ["نسخ إعدادات النظام", "Copy system configuration"],
   useInApp: ["استخدمه في تطبيقك", "Use it in your app"],
   playground: ["المعاينة التفاعلية", "Interactive playground"],
+  // Pattern pages only, between the demo and the code.
+  anatomy: ["تشريح النمط", "Anatomy"],
+  placements: ["أين يوضع", "Placements"],
+  copyStates: ["نصوص كل حالة", "Copy for every state"],
   copyPrompt: ["نسخ الطلب", "Copy agent prompt"],
   copied: ["تم النسخ", "Copied"],
   failed: [

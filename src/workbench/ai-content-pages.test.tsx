@@ -12,18 +12,20 @@ import {
 import { SystemProvider, defaultConfig } from "../system";
 afterEach(() => vi.useRealTimers());
 it.each([
-  ["كتلة الكود", "CodeBlock"],
-  ["ماركداون", "Markdown"],
-  ["النص المتتابع", "StreamingText"],
+  // Content blocks moved to Display; StreamingText is one of the AI parts.
+  ["كتلة الكود", "CodeBlock", "العرض والتنبيهات"],
+  ["ماركداون", "Markdown", "العرض والتنبيهات"],
+  ["النص المتتابع", "StreamingText", "أنماط الذكاء الاصطناعي"],
 ] as const)(
-  "keeps %s within AI patterns and copies portable examples and dependency guidance",
-  async (ar, en) => {
+  "keeps %s in its group and copies portable examples and dependency guidance",
+  async (ar, en, group) => {
     const user = userEvent.setup();
     render(<Workbench />);
+    await user.click(screen.getByRole("button", { name: "الأجزاء" }));
     await user.click(
-      within(
-        screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-      ).getByRole("button", { name: ar }),
+      within(screen.getByRole("group", { name: group })).getByRole("button", {
+        name: ar,
+      }),
     );
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
     await user.selectOptions(
@@ -185,6 +187,7 @@ it.each(["ar", "en"] as const)(
 it("uses the page's frame header for the streaming demo, with view tabs, Replay and an icon-only copy control", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
+  await user.click(screen.getByRole("button", { name: "الأجزاء" }));
   await user.click(screen.getByRole("button", { name: "النص المتتابع" }));
   await user.selectOptions(
     screen.getByRole("combobox", { name: "لغة التوثيق" }),
@@ -226,6 +229,7 @@ it("uses the page's frame header for the streaming demo, with view tabs, Replay 
 it("opens the documentation demo complete, without autoplay, local footer or empty event scaffolding", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
+  fireEvent.click(screen.getByRole("button", { name: "الأجزاء" }));
   fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(0));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();

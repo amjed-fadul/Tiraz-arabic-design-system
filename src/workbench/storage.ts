@@ -25,12 +25,15 @@ export interface DocumentationPreferences {
   active: ComponentId;
   systemPanelOpen: boolean;
   inspectorOpen: boolean;
+  /** The AI group's Parts disclosure; stored optionally, closed when absent. */
+  aiPartsOpen: boolean;
 }
 export const defaultDocumentation: DocumentationPreferences = {
   language: "ar",
   active: "button",
   systemPanelOpen: true,
   inspectorOpen: true,
+  aiPartsOpen: false,
 };
 function read(key: string): unknown {
   try {
@@ -83,6 +86,7 @@ export function readDocumentation(): DocumentationPreferences {
       typeof p.systemPanelOpen === "boolean" ? p.systemPanelOpen : true,
     inspectorOpen:
       typeof p.inspectorOpen === "boolean" ? p.inspectorOpen : true,
+    aiPartsOpen: p.aiPartsOpen === true,
   };
 }
 export function readSystem(): AppearanceSettings {

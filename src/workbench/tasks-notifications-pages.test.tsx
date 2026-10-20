@@ -11,13 +11,13 @@ it.each([
     const user = userEvent.setup();
     render(<Workbench />);
     const copy = vi.spyOn(navigator.clipboard, "writeText");
+    const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
+    // TaskRows is one of the AI parts, folded until their disclosure opens.
+    await user.click(nav.getByRole("button", { name: "الأجزاء" }));
     await user.click(
-      within(
-        within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-          "group",
-          { name: group },
-        ),
-      ).getByRole("button", { name: ar }),
+      within(nav.getByRole("group", { name: group })).getByRole("button", {
+        name: ar,
+      }),
     );
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
     // The playground frame is the only stage and carries the code.

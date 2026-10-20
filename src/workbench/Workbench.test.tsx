@@ -1,5 +1,11 @@
-import { navigationCatalog } from "./catalog";
-import { render, screen, within, waitFor } from "@testing-library/react";
+import { aiParts, navigationCatalog } from "./catalog";
+import {
+  fireEvent,
+  render,
+  screen,
+  within,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
@@ -54,8 +60,13 @@ it("isolates portable library paths as complete LTR runs inside the Arabic promp
 it("places only navigation in its sidebar and both customization sections in the separate rail", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
+  // Every page, less the fifteen folded AI parts, and their disclosure.
   expect(within(nav).getAllByRole("button")).toHaveLength(
-    navigationCatalog.length,
+    navigationCatalog.length - aiParts.length + 1,
+  );
+  fireEvent.click(within(nav).getByRole("button", { name: "الأجزاء" }));
+  expect(within(nav).getAllByRole("button")).toHaveLength(
+    navigationCatalog.length + 1,
   );
   expect(within(nav).queryByText("خصائص المكوّن")).not.toBeInTheDocument();
   expect(
