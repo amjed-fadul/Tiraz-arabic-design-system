@@ -50,6 +50,8 @@
   --text-micro: 11px;
   --text-figure: 28px;
   --text-figure-small: 20px;
+  /* Fields on touch screens: under 16px, touch keyboards zoom the page. */
+  --text-touch: max(16px, var(--text-body));
   --weight-regular: 400;
   --weight-medium: 500;
   --weight-semibold: 600;

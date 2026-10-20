@@ -145,7 +145,8 @@ await check(
     assert.equal(loading.state, "loading");
     assert.equal(loading.font, "16px");
     assert.equal(loading.action, "#A8C6EF");
-    assert.equal(loading.radius, "16px");
+    // --radius-control is 1.25 × the corner radius: 16 renders 20px.
+    assert.equal(loading.radius, "20px");
     await page.screenshot({
       path: `${evidenceDir}/live-action-loading.png`,
     });

@@ -24,7 +24,8 @@ export function Button({
   type = "button",
   ...props
 }: ButtonProps) {
-  // Labels animate only after the first state change, never on first render.
+  // Labels and state glyphs animate only after the first state change, never
+  // on first render.
   const changed = useChanged(state);
   const StateIcon =
     state === "loading"
@@ -39,6 +40,7 @@ export function Button({
       disabled={disabled || state === "loading"}
       aria-busy={state === "loading" || undefined}
       data-state={state}
+      data-changed={changed || undefined}
       data-variant={variant}
       data-size={size}
       data-icon-only={iconOnly || undefined}

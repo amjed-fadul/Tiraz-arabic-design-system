@@ -21,11 +21,12 @@
 .tiraz-system :where(svg) {
   flex-shrink: 0;
 }
-/* Pressable surfaces sink on press and spring back on release. The press is
-   near-instant; only the release carries the overshoot. */
+/* Pressable surfaces sink on press and settle back on release. The press is
+   near-instant and the release eases out, never on the spring. Every variant
+   presses by the root --press-scale, which keyboard modality sets to 1, so
+   Space never scales a button. */
 .tz-button {
   --button-height: var(--control-height);
-  --press-scale: 0.97;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -35,16 +36,16 @@
   padding-block: 3px;
   font-size: var(--text-body);
   border: 1px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--radius-control);
   font-weight: var(--weight-medium);
-  line-height: 1.6;
+  line-height: var(--leading-meta);
   transition:
     background-color var(--motion-fast) var(--ease-out),
     border-color var(--motion-fast) var(--ease-out),
     color var(--motion-fast) var(--ease-out),
     opacity var(--motion-state) var(--ease-out),
     box-shadow var(--motion-state) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    transform var(--motion-release) var(--ease-out);
   background: var(--action);
   color: var(--action-text);
   box-shadow: var(--shadow-raised);
@@ -69,9 +70,6 @@
   color: var(--danger);
   box-shadow: var(--shadow-control);
 }
-.tz-button[data-icon-only] {
-  --press-scale: 0.94;
-}
 @media (hover: hover) and (pointer: fine) {
   .tz-button[data-state="idle"]:not(:disabled):hover {
     background: var(--action-hover);
@@ -81,7 +79,7 @@
     border-color: color-mix(in srgb, var(--border-strong), var(--text) 18%);
   }
   .tz-button[data-state="idle"][data-variant="ghost"]:not(:disabled):hover {
-    background: var(--surface-hover);
+    background: var(--wash);
     color: var(--text);
   }
   .tz-button[data-state="idle"][data-variant="destructive"]:not(
@@ -101,11 +99,12 @@
   box-shadow: var(--shadow-pressed);
 }
 .tz-button:disabled:not([data-state="loading"]) {
-  opacity: 0.48;
+  opacity: var(--disabled-opacity);
   box-shadow: none;
 }
+/* Loading keeps full opacity: the spinner says it is busy, and the button is
+   disabled while it loads, so clicks never land. */
 .tz-button[data-state="loading"] {
-  opacity: 0.8;
   cursor: wait;
 }
 .tz-button[data-state="success"] {
@@ -132,14 +131,15 @@
   align-items: center;
   gap: var(--control-gap);
 }
-/* Only a state change animates; first render is static. State glyphs pop out
-   of a blur so success/error read as a change rather than a swap. */
+/* Only a state change animates; first render is static (data-changed). State
+   glyphs pop out of a blur so success/error read as a change rather than a
+   swap. */
 .tz-button-label[data-changed] {
   animation: tz-label-in var(--motion-state) var(--ease-out);
 }
-.tz-button:is([data-state="success"], [data-state="error"]) > svg {
-  animation: tz-glyph-in calc(var(--motion-state) + var(--motion-fast))
-    var(--ease-spring);
+.tz-button[data-changed]:is([data-state="success"], [data-state="error"])
+  > svg {
+  animation: tz-glyph-in var(--motion-state) var(--ease-out);
 }
 .tz-spinner {
   animation: tz-spin 800ms linear infinite;
@@ -275,24 +275,25 @@
   color: var(--text-secondary);
   margin: 2px 0 0;
 }
-.tz-switch-field[data-disabled] .tz-switch {
-  opacity: 0.5;
+/* Disabled dims the row once: the track, its label and its description. */
+.tz-switch-field[data-disabled] {
+  opacity: var(--disabled-opacity);
 }
 .tz-switch-field[data-disabled] label {
-  color: var(--text-secondary);
   cursor: not-allowed;
 }
-/* The thumb travels on a small overshoot and stretches toward its travel
-   while held, like a physical toggle; the hit area extends past the track. */
+/* The thumb travels over the state-change time with ease-out, so keyboard
+   modality, which zeroes that time, toggles it at once; the hit area extends
+   past the track. The thumb sits equally far from every edge of the track, so
+   it travels the track's width less its height. */
 .tz-switch {
-  --switch-travel: 16px;
-  --switch-stretch: 0px;
+  --switch-travel: calc(var(--switch-track-width) - var(--switch-track-height));
   position: relative;
   border: 1px solid var(--switch-track);
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   background: var(--switch-track);
-  inline-size: 38px;
-  block-size: 22px;
+  inline-size: var(--switch-track-width);
+  block-size: var(--switch-track-height);
   flex-shrink: 0;
   padding: 2px;
   transition:
@@ -311,34 +312,28 @@
     border-color: color-mix(in srgb, var(--switch-track), var(--text) 14%);
   }
 }
-.tz-switch:not(:disabled):active {
-  --switch-stretch: 4px;
-}
 .tz-switch[data-state="checked"] {
   background: var(--action);
   border-color: var(--action);
 }
 .tz-switch-thumb {
   display: block;
-  inline-size: calc(16px + var(--switch-stretch));
-  block-size: 16px;
-  border-radius: 100px;
+  inline-size: var(--switch-thumb);
+  block-size: var(--switch-thumb);
+  border-radius: var(--radius-pill);
   background: var(--surface);
   box-shadow: var(--shadow-thumb);
   transform: translateX(0);
   transition:
-    transform calc(var(--motion-state) + 40ms) var(--ease-spring),
-    inline-size var(--motion-state) var(--ease-out),
+    transform var(--motion-state) var(--ease-out),
     background-color var(--motion-state) var(--ease-out);
 }
 .tz-switch[data-state="checked"] .tz-switch-thumb {
-  transform: translateX(calc(var(--switch-travel) - var(--switch-stretch)));
+  transform: translateX(var(--switch-travel));
   background: var(--action-text);
 }
 .tz-switch:dir(rtl)[data-state="checked"] .tz-switch-thumb {
-  transform: translateX(
-    calc(-1 * (var(--switch-travel) - var(--switch-stretch)))
-  );
+  transform: translateX(calc(-1 * var(--switch-travel)));
 }
 .tz-menu {
   z-index: 60;
@@ -749,9 +744,13 @@
 }
 .tz-field-label {
   font-weight: var(--weight-medium);
-  font-size: var(--text-body);
+  font-size: var(--text-label);
+  color: var(--text);
 }
-.tz-field-required,
+/* Danger means only that something is wrong, so "required" stays neutral. */
+.tz-field-required {
+  color: var(--text-secondary);
+}
 .tz-field-error {
   color: var(--danger);
 }
@@ -764,6 +763,8 @@
 .tz-field-help {
   color: var(--text-secondary);
 }
+/* Fields are paper with a --border-field edge, which keeps 3:1 on page, paper
+   and tray. */
 .tz-input,
 .tz-select-trigger {
   inline-size: 100%;
@@ -771,12 +772,12 @@
   block-size: var(--control-height);
   padding-inline: var(--control-padding);
   padding-block: 2px;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border: 1px solid var(--border-field);
+  border-radius: var(--radius-control);
   background: var(--surface);
   color: var(--text);
   font-size: var(--text-body);
-  line-height: 1.6;
+  line-height: var(--leading-meta);
   box-shadow: var(--shadow-control);
   transition:
     border-color var(--motion-fast) var(--ease-out),
@@ -798,7 +799,7 @@
   :is(.tz-input, .tz-select-trigger, .tz-textarea):not(:disabled):not(
       :focus-visible
     ):not([aria-invalid="true"]):hover {
-    border-color: color-mix(in srgb, var(--border-strong), var(--text) 22%);
+    border-color: color-mix(in srgb, var(--border-field), var(--text) 22%);
   }
 }
 .tiraz-system :is(.tz-input, .tz-textarea, .tz-select-trigger):focus-visible {
@@ -823,29 +824,10 @@
     0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
     var(--shadow-control);
 }
-/* Turning invalid nudges the field once along the reading axis. */
-:is(.tz-input, .tz-textarea, .tz-select-trigger)[aria-invalid="true"] {
-  animation: tz-shake 320ms var(--ease-out);
-}
-@keyframes tz-shake {
-  0%,
-  100% {
-    transform: none;
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  50% {
-    transform: translateX(4px);
-  }
-  75% {
-    transform: translateX(-2px);
-  }
-}
 /* Touch keyboards zoom the page into fields under 16px. */
 @media (pointer: coarse) {
   :is(.tz-input, .tz-textarea, .tz-tag-draft, .tz-chat-entry textarea) {
-    font-size: max(16px, var(--text-body));
+    font-size: var(--text-touch);
   }
 }
 @media (forced-colors: active) {
@@ -856,11 +838,16 @@
 }
 .tz-input:disabled,
 .tz-select-trigger:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
+  box-shadow: none;
   cursor: not-allowed;
 }
-.tz-input:read-only {
-  background: var(--surface-subtle);
+/* Read-only is still an active field: the same edge on the well, without the
+   lift or a caret. Only text entry can be read-only, never a button. */
+input.tz-input:read-only {
+  background: var(--surface-well);
+  box-shadow: none;
+  caret-color: transparent;
 }
 .tz-select {
   display: block;
@@ -878,19 +865,35 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+/* The chevron turns over while the list is open. */
+.tz-select-trigger > svg {
+  transition: transform var(--motion-state) var(--ease-out);
+}
+.tz-select-trigger[data-state="open"] > svg {
+  transform: rotate(180deg);
+}
+/* The list is paper floating beside its trigger: the popover shadow carries the
+   ring, and the transparent border is what forced colors draw. It grows out of
+   the trigger like a menu and leaves faster than it came. */
 .tz-select-popup {
   z-index: 65;
   background: var(--surface);
   color: var(--text);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   box-shadow: var(--shadow-popover);
   min-inline-size: min(var(--radix-select-trigger-width), calc(100vw - 24px));
   max-inline-size: calc(100vw - 24px);
   max-block-size: var(--radix-select-content-available-height);
   overflow: hidden;
-  /* Opacity only: opening never moves an option under a stationary pointer. */
-  animation: tz-select-in var(--motion-fast) var(--ease);
+  transform-origin: var(--radix-select-content-transform-origin);
+  animation: tz-menu-in var(--motion-enter) var(--ease-out);
+}
+.tz-select-popup[data-side="top"] {
+  --enter-y: 4px;
+}
+.tz-select-popup[data-state="closed"] {
+  animation: tz-menu-out var(--motion-exit) var(--ease-exit) forwards;
 }
 .tz-select-viewport {
   padding: var(--space-1);
@@ -903,19 +906,19 @@
   padding-inline: var(--space-2);
   padding-block: var(--menu-item-padding);
   min-block-size: var(--control-small);
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-item);
   outline-offset: -2px !important;
   font-size: var(--text-body);
   cursor: pointer;
   overflow-wrap: anywhere;
 }
+/* With the glide attached, its wash travels here instead (useGlide). */
 .tz-select-option[data-highlighted] {
-  background: var(--action-soft);
-  color: var(--action);
+  background: var(--wash-strong);
+  color: var(--text);
 }
 .tz-select-option[data-disabled] {
-  color: var(--text-muted);
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
 .tz-select-scroll {
@@ -1124,15 +1127,21 @@
   color: var(--info);
   border-color: color-mix(in srgb, var(--info) 25%, var(--surface));
 }
+/* One line of copy centers in the row; longer copy grows down from its first
+   line, which the control aligns to. */
 .tz-checkbox-field {
   grid-template-columns: auto minmax(0, 1fr);
   column-gap: var(--control-gap);
-  align-items: center;
+  align-items: start;
+  align-content: center;
   min-block-size: var(--control-small);
 }
+/* The label is the option's own text, so it keeps the surrounding size, as a
+   radio option does, rather than a field label's. */
 .tz-checkbox-field > .tz-field-label {
   grid-column: 2;
   grid-row: 1;
+  font-size: inherit;
   cursor: pointer;
 }
 .tz-checkbox-field > .tz-choice-input {
@@ -1142,6 +1151,11 @@
 .tz-checkbox-field > p {
   grid-column: 2;
 }
+/* Centered on the first line box of the copy beside it. */
+.tz-checkbox-field > .tz-choice-input,
+.tz-radio-option > .tz-choice-input {
+  margin-block-start: calc((1lh - var(--text-body) - var(--space-1)) / 2);
+}
 .tz-choice-input {
   appearance: none;
   display: inline-grid;
@@ -1150,7 +1164,7 @@
   inline-size: calc(var(--text-body) + var(--space-1));
   block-size: calc(var(--text-body) + var(--space-1));
   margin: 0;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-field);
   border-radius: var(--radius-small);
   background: var(--surface);
   color: var(--action-text);
@@ -1160,7 +1174,7 @@
     background-color var(--motion-fast) var(--ease-out),
     border-color var(--motion-fast) var(--ease-out),
     box-shadow var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    transform var(--motion-release) var(--ease-out);
   touch-action: manipulation;
 }
 @media (hover: hover) and (pointer: fine) {
@@ -1169,7 +1183,7 @@
   }
 }
 .tz-choice-input:not(:disabled):active {
-  transform: scale(0.9);
+  transform: scale(var(--press-scale));
   transition-duration:
     var(--motion-fast), var(--motion-fast), var(--motion-fast),
     var(--motion-press);
@@ -1189,7 +1203,8 @@
 }
 /* The check is drawn, not swapped: a stroke-shaped mask is revealed in the
    direction the mark is written. Checkmarks never mirror in RTL. Unchecking
-   fades out quickly instead of un-drawing. */
+   fades out quickly instead of un-drawing. The check draws and the radio dot
+   grows over --motion-release, which keyboard modality zeroes. */
 .tz-checkbox::before {
   transform: none;
   opacity: 0;
@@ -1207,10 +1222,10 @@
   clip-path: inset(0);
   transition:
     opacity 0s,
-    clip-path calc(var(--motion-state) + 60ms) var(--ease-out) 40ms;
+    clip-path var(--motion-release) var(--ease-out);
 }
 .tz-radio::before {
-  transition: transform var(--motion-state) var(--ease-spring);
+  transition: transform var(--motion-release) var(--ease-out);
 }
 .tz-choice-input:checked::before {
   transform: scale(1);
@@ -1218,11 +1233,14 @@
 .tz-choice-input[aria-invalid="true"] {
   border-color: var(--danger);
 }
+/* Disabled dims once: the control dims itself and its copy dims beside it. */
 .tz-choice-input:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
+  box-shadow: none;
   cursor: not-allowed;
 }
 .tz-checkbox-field:has(input:disabled) > label {
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
 .tz-radio-group {
@@ -1242,11 +1260,14 @@
   display: grid;
   gap: var(--space-1);
 }
+/* One line of copy centers in the row; longer copy grows down from its first
+   line, which the control aligns to. */
 .tz-radio-option {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--control-gap);
   min-block-size: var(--control-small);
+  padding-block: calc((var(--control-small) - 1lh) / 2);
   font-size: var(--text-body);
   cursor: pointer;
 }
@@ -1255,10 +1276,23 @@
   overflow-wrap: anywhere;
   min-inline-size: 0;
 }
+/* An option with a description stacks the label over a quieter line. */
+.tz-radio-copy {
+  display: grid;
+  gap: 1px;
+  min-inline-size: 0;
+}
+.tz-radio-description {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
 .tz-radio-option:has(:disabled),
 .tz-radio-group:disabled .tz-radio-option {
   cursor: not-allowed;
-  color: var(--text-muted);
+}
+.tz-radio-option:has(:disabled) > :not(.tz-choice-input) {
+  opacity: var(--disabled-opacity);
 }
 .tz-radio,
 .tz-radio::before {
@@ -1271,9 +1305,9 @@
 .tz-textarea {
   inline-size: 100%;
   min-inline-size: 0;
-  padding: var(--control-gap) var(--control-small-padding);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  padding: var(--space-2) var(--control-small-padding);
+  border: 1px solid var(--border-field);
+  border-radius: var(--radius-control);
   background: var(--surface);
   color: var(--text);
   font-size: var(--text-body);
@@ -1291,11 +1325,14 @@
   border-color: var(--danger);
 }
 .tz-textarea:disabled {
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
+  box-shadow: none;
   cursor: not-allowed;
 }
-.tz-textarea:read-only {
-  background: var(--surface-subtle);
+textarea.tz-textarea:read-only {
+  background: var(--surface-well);
+  box-shadow: none;
+  caret-color: transparent;
 }
 @media (forced-colors: active) {
   .tz-choice-input {
@@ -5178,8 +5215,7 @@ button.tz-tool-chip[aria-expanded="true"] {
     0 8px 20px -10px #12231a24;
 }
 .tz-chat-entry-surface > .tz-button {
-  border-radius: 100px;
-  --press-scale: 0.9;
+  border-radius: var(--radius-pill);
 }
 .tz-chat-entry-surface > .tz-button:disabled {
   opacity: 1;
@@ -6384,10 +6420,10 @@ a.tz-inline-citation {
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-2);
-  border-radius: var(--radius);
+  border-radius: var(--radius-item);
   counter-increment: tz-option;
-  animation: tz-option-in calc(var(--motion-state) + 80ms) var(--ease-out) both;
-  animation-delay: calc(var(--option-index, 0) * 40ms);
+  animation: tz-option-in var(--motion-state) var(--ease-out) both;
+  animation-delay: calc(var(--option-index, 0) * var(--motion-stagger));
 }
 .tz-ask-questions .tz-radio-option:nth-child(2) {
   --option-index: 1;
@@ -6425,10 +6461,10 @@ a.tz-inline-citation {
   block-size: 20px;
   margin-block-start: 1px;
   padding-inline: 4px;
-  border-radius: 6px;
+  border-radius: var(--radius-small);
   background: var(--wash-strong);
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--text-micro);
   font-weight: var(--weight-medium);
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -6442,16 +6478,6 @@ a.tz-inline-citation {
 }
 .tz-ask-questions .tz-radio-option[data-value="other"] {
   counter-increment: none;
-}
-.tz-radio-copy {
-  display: grid;
-  gap: 1px;
-  min-inline-size: 0;
-}
-.tz-radio-description {
-  color: var(--text-muted);
-  font-size: var(--text-meta);
-  line-height: 1.6;
 }
 .tz-ask-questions .tz-radio-group ~ .tz-field {
   margin-inline-start: calc(var(--text-body) + var(--space-1) + var(--space-3));
@@ -6921,7 +6947,6 @@ a.tz-inline-citation {
    transparent border stays so forced-colors mode still draws an outline. */
 :is(
   .tz-menu,
-  .tz-select-popup,
   .tz-toast,
   .tz-modal,
   .tz-datepicker-popup,
@@ -6964,13 +6989,11 @@ a.tz-inline-citation {
   background: var(--wash-strong);
   color: var(--text);
 }
-.tz-select-option[data-highlighted] {
-  background: var(--wash-strong);
-  color: var(--text);
-}
 
 /* Gliding highlight: one soft wash travels to the active row (useGlide).
-   Rows stop painting their own highlight once the glide is attached. */
+   Rows stop painting their own highlight once the glide is attached. Only its
+   position animates; a row of another height takes its size at once. Keyboard
+   modality zeroes the time, so arrow keys move it without a glide. */
 [data-glide] {
   position: relative;
   isolation: isolate;
@@ -6984,12 +7007,11 @@ a.tz-inline-citation {
   block-size: var(--glide-h, 0px);
   transform: translateY(var(--glide-y, 0px));
   opacity: var(--glide-opacity, 0);
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-item);
   background: var(--wash-strong);
   pointer-events: none;
   transition:
-    transform calc(var(--motion-state) - 20ms) var(--ease-out),
-    block-size calc(var(--motion-state) - 20ms) var(--ease-out),
+    transform var(--motion-state) var(--ease-out),
     opacity var(--motion-fast) var(--ease-out),
     background-color var(--motion-state) var(--ease-out);
 }
@@ -7018,7 +7040,10 @@ a.tz-inline-citation {
 }
 
 /* Checks and crosses draw themselves as a state lands on them. A check is
-   drawn in handwriting order (short stroke first); a cross stroke by stroke. */
+   drawn in handwriting order (short stroke first); a cross stroke by stroke.
+   A Button's success check draws only after its state changed (data-changed),
+   never on mount; an icon-only button's check appears only after an action.
+   :where() keeps the list's specificity where it was. */
 @keyframes tz-draw {
   from {
     stroke-dashoffset: var(--draw-from);
@@ -7029,8 +7054,9 @@ a.tz-inline-citation {
     .tz-decision-mark,
     .tz-step-indicator,
     .tz-color-check,
-    .tz-button:is([data-state="success"], [data-icon-only]) .tz-button-label,
-    .tz-button[data-state="success"],
+    .tz-button[data-icon-only] .tz-button-label,
+    .tz-button[data-state="success"]:where([data-changed]),
+    .tz-button[data-state="success"]:where([data-changed]) .tz-button-label,
     .tz-toast
   )
   > :is(.lucide-check, .lucide-x, .lucide-circle-check) {
@@ -7042,14 +7068,15 @@ a.tz-inline-citation {
     .tz-decision-mark,
     .tz-step-indicator,
     .tz-color-check,
-    .tz-button:is([data-state="success"], [data-icon-only]) .tz-button-label,
-    .tz-button[data-state="success"],
+    .tz-button[data-icon-only] .tz-button-label,
+    .tz-button[data-state="success"]:where([data-changed]),
+    .tz-button[data-state="success"]:where([data-changed]) .tz-button-label,
     .tz-toast
   )
   > :is(.lucide-check, .lucide-x, .lucide-circle-check)
   path {
   stroke-dasharray: var(--draw) var(--draw);
-  animation: tz-draw calc(var(--motion-enter) + 120ms) var(--ease-out) 60ms both;
+  animation: tz-draw var(--motion-state) var(--ease-out) both;
 }
 :is(.tz-decision-icon, .tz-decision-mark) > .lucide-x {
   --draw: 17;
@@ -7092,8 +7119,7 @@ a.tz-inline-citation {
 /* Icon swaps inside a button pop in: copy → check, send ⇄ stop. */
 .tz-button[data-morph] .tz-button-label > svg,
 .tz-button[data-icon-only] .tz-button-label > .lucide-check {
-  animation: tz-glyph-in calc(var(--motion-state) + var(--motion-fast))
-    var(--ease-spring);
+  animation: tz-glyph-in var(--motion-state) var(--ease-out);
 }
 /* The send arrow leans toward where the message goes. */
 .tz-chat-entry .tz-button .lucide-arrow-up {
@@ -7170,9 +7196,6 @@ a.tz-inline-citation {
 }
 .tz-otp:has([aria-invalid="true"]) .tz-otp-slot {
   animation: none;
-}
-.tz-otp:has(.tz-otp-input[aria-invalid="true"]) .tz-otp-slots {
-  animation: tz-shake 320ms var(--ease-out);
 }
 @keyframes tz-otp-wave {
   40% {

@@ -10,4 +10,13 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "status-icon": [".tz-status-icon"],
   "remove-button": [".tz-remove-button"],
   "demo-frame": [".tz-demo"],
+  button: [".tz-button"],
+  field: [".tz-field"],
+  input: [".tz-input"],
+  textarea: [".tz-textarea"],
+  select: [".tz-select"],
+  // .tz-choice-input is the box that Checkbox and RadioGroup share.
+  checkbox: [".tz-checkbox", ".tz-choice"],
+  "radio-group": [".tz-radio", ".tz-choice"],
+  switch: [".tz-switch"],
 };

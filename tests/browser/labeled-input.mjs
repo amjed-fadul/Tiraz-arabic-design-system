@@ -265,11 +265,12 @@ try {
           action: getComputedStyle(node).getPropertyValue("--action").trim(),
         })),
       );
+    // --radius-control is 1.25 × the corner radius: 16 renders 20px.
     assert.ok(
       controls.every(
         (control) =>
           control.font === "16px" &&
-          control.radius === "16px" &&
+          control.radius === "20px" &&
           control.action === "#365B87",
       ),
     );
