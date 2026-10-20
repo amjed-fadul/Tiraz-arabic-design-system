@@ -144,6 +144,8 @@
 .tz-spinner {
   animation: tz-spin 800ms linear infinite;
 }
+/* The close button of Modal, Sheet and Toast. It presses like every other
+   pressable and eases back out on release. */
 .tz-icon-button {
   display: inline-flex;
   align-items: center;
@@ -157,20 +159,19 @@
   transition:
     background-color var(--motion-fast) var(--ease-out),
     color var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    transform var(--motion-release) var(--ease-out);
   touch-action: manipulation;
 }
 @media (hover: hover) and (pointer: fine) {
   .tz-icon-button:hover {
-    background: var(--surface-hover);
+    background: var(--wash);
     color: var(--text);
   }
 }
 .tz-icon-button:active {
-  transform: scale(0.92);
+  transform: scale(var(--press-scale));
   transition-duration:
     var(--motion-fast), var(--motion-fast), var(--motion-press);
-  transition-timing-function: var(--ease-out);
 }
 .tz-tab-list {
   display: flex;
@@ -346,45 +347,32 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: var(--space-1);
-  border-radius: var(--radius-panel);
+  /* Paper floating beside its trigger: the popover shadow carries the ring,
+     and the transparent border is what forced colors draw. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   background: var(--surface);
-  border: 1px solid var(--border);
   box-shadow: var(--shadow-popover);
   transform-origin: var(--radix-dropdown-menu-content-transform-origin);
   animation: tz-menu-in var(--motion-enter) var(--ease-out);
 }
 .tz-menu[data-state="closed"] {
-  animation: tz-menu-out var(--motion-exit) var(--ease-exit);
+  animation: tz-menu-out var(--motion-exit) var(--ease-exit) forwards;
 }
 /* Floating layers grow out of their trigger: the origin follows Radix's
    placement and the short offset points back toward the anchor. */
-:is(.tz-menu, .tz-tooltip, .tz-datepicker-popup, .tz-popover-surface) {
+:is(.tz-menu, .tz-tooltip, .tz-datepicker-popup) {
   --enter-x: 0px;
   --enter-y: -4px;
 }
-:is(
-  .tz-menu,
-  .tz-tooltip,
-  .tz-datepicker-popup,
-  .tz-popover-surface
-)[data-side="top"] {
+:is(.tz-menu, .tz-tooltip, .tz-datepicker-popup)[data-side="top"] {
   --enter-y: 4px;
 }
-:is(
-  .tz-menu,
-  .tz-tooltip,
-  .tz-datepicker-popup,
-  .tz-popover-surface
-)[data-side="left"] {
+:is(.tz-menu, .tz-tooltip, .tz-datepicker-popup)[data-side="left"] {
   --enter-x: 4px;
   --enter-y: 0px;
 }
-:is(
-  .tz-menu,
-  .tz-tooltip,
-  .tz-datepicker-popup,
-  .tz-popover-surface
-)[data-side="right"] {
+:is(.tz-menu, .tz-tooltip, .tz-datepicker-popup)[data-side="right"] {
   --enter-x: -4px;
   --enter-y: 0px;
 }
@@ -392,7 +380,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-item);
   padding-block: var(--menu-item-padding);
   padding-inline: var(--space-3);
   outline: none;
@@ -404,10 +392,11 @@
   display: inline-flex;
   color: var(--text-secondary);
 }
-/* Highlight follows the pointer instantly: menus never lag behind the hand. */
+/* Highlight follows the pointer instantly: menus never lag behind the hand.
+   With the glide attached, its wash travels here instead (useGlide). */
 .tz-menu-item[data-highlighted] {
-  background: var(--surface-subtle);
-  color: var(--action);
+  background: var(--wash-strong);
+  color: var(--text);
 }
 .tz-menu-item[data-highlighted] > span[aria-hidden="true"] {
   color: inherit;
@@ -417,20 +406,21 @@
   color: var(--danger);
 }
 .tz-menu-item[data-disabled] {
-  opacity: 0.4;
+  opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
 .tz-menu-item[data-destructive] {
   color: var(--danger);
 }
-.tz-menu-item kbd {
-  margin-inline-start: auto;
-  font: 11px var(--font-mono);
-  color: var(--text-muted);
+/* The label takes the free space, so the shortcut hint (the shared .tz-kbd)
+   sits at the row's end. The hint itself is LTR, so its own inline-start
+   margin would push the wrong way in Arabic. */
+.tz-menu-item > span:not([aria-hidden="true"]) {
+  flex: 1;
 }
 .tz-menu-separator {
   block-size: 1px;
-  background: var(--border);
+  background: var(--hairline);
   margin: 4px;
 }
 .tz-sheet-backdrop {
@@ -457,15 +447,21 @@
   overscroll-behavior: contain;
   animation: tz-sheet-in var(--motion-panel) var(--ease-drawer);
 }
+/* Placed by its edge in reading terms (data-edge, from Sheet.tsx); the edge
+   facing the page is a hairline. It slides along its physical side. */
+.tz-sheet[data-edge="start"] {
+  inset-inline-start: 0;
+  border-inline-end: 0.5px solid var(--hairline);
+}
+.tz-sheet[data-edge="end"] {
+  inset-inline-end: 0;
+  border-inline-start: 0.5px solid var(--hairline);
+}
 .tz-sheet[data-side="right"] {
-  right: 0;
   --sheet-offset: 100%;
-  border-left: 1px solid var(--border);
 }
 .tz-sheet[data-side="left"] {
-  left: 0;
   --sheet-offset: -100%;
-  border-right: 1px solid var(--border);
 }
 .tz-sheet[data-state="closed"] {
   animation: tz-sheet-out var(--motion-panel-exit) var(--ease-drawer);
@@ -476,11 +472,12 @@
   justify-content: space-between;
   gap: var(--space-4);
   padding: var(--space-6);
-  border-block-end: 1px solid var(--border);
+  border-block-end: 0.5px solid var(--hairline);
 }
 .tz-sheet-header h2 {
   font-size: var(--text-heading);
   font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
   margin: 0;
 }
 .tz-sheet-header p {
@@ -493,19 +490,22 @@
   overflow-y: auto;
   padding: var(--space-6);
 }
+/* Decisions sit on a tray band under a hairline. */
 .tz-sheet-footer {
-  border-block-start: 1px solid var(--border);
+  border-block-start: 0.5px solid var(--hairline);
+  background: var(--surface-tray);
   padding: var(--space-5) var(--space-6);
   display: flex;
   gap: var(--space-2);
   justify-content: flex-end;
 }
 /* Toasts pile up instead of pushing each other: the newest sits in front and
-   older ones peek behind it, scaled back. Hovering or focusing the pile fans
-   it out (Radix pauses the timers meanwhile). */
+   older ones peek behind it, scaled back. Focusing the pile, or hovering it
+   with a mouse, fans it out (Radix pauses the timers meanwhile). The gap
+   between toasts is TOAST_GAP (Toast.tsx), set on the viewport as
+   --toast-gap. */
 .tz-toast-viewport {
   --toast-peek: 10px;
-  --toast-gap: 8px;
   position: fixed;
   z-index: 100;
   inset-block-end: 20px;
@@ -527,10 +527,12 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
+  /* Paper on the popover shadow, which carries the ring; the transparent
+     border is what forced colors draw. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   background: var(--surface);
-  padding: var(--space-4);
+  padding: var(--control-padding);
   box-shadow: var(--shadow-popover);
   transform-origin: 50% 0;
   transform: translate3d(
@@ -540,10 +542,10 @@
     )
     scale(var(--toast-scale));
   transition:
-    transform var(--motion-panel) var(--ease-out),
-    block-size var(--motion-panel) var(--ease-out),
+    transform var(--motion-toast) var(--ease-out),
+    block-size var(--motion-toast) var(--ease-out),
     opacity var(--motion-state) var(--ease-out);
-  animation: tz-toast-in var(--motion-panel) var(--ease-drawer);
+  animation: tz-toast-in var(--motion-toast) var(--ease-drawer);
 }
 /* Bridges the gaps of an open pile so the pointer never falls through. It
    sits above the toast, outside the measured scroll height. */
@@ -554,20 +556,34 @@
   inset-block-end: 100%;
   block-size: calc(var(--toast-gap) + 1px);
 }
-.tz-toast-viewport:not(:hover):not(:focus-within)
-  > .tz-toast:not([data-depth="0"]) {
+/* Collapsed by default: the toasts behind the front one take its height and
+   hide their content. :where() lets a hovering mouse undo this below. */
+.tz-toast-viewport:not(:focus-within)
+  > .tz-toast:where(:not([data-depth="0"])) {
   block-size: var(--toast-front-height, auto);
   overflow: hidden;
 }
-.tz-toast-viewport:not(:hover):not(:focus-within)
-  > .tz-toast:not([data-depth="0"])
+.tz-toast-viewport:not(:focus-within)
+  > .tz-toast:where(:not([data-depth="0"]))
   > * {
   opacity: 0;
 }
-.tz-toast-viewport:is(:hover, :focus-within) > .tz-toast {
+/* Fanned out: each toast lifts by the heights of those in front of it. */
+.tz-toast-viewport:focus-within > .tz-toast {
   --toast-y: calc(var(--toast-lift, 0px) * -1);
   --toast-scale: 1;
   block-size: var(--toast-height, auto);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-toast-viewport:hover > .tz-toast {
+    --toast-y: calc(var(--toast-lift, 0px) * -1);
+    --toast-scale: 1;
+    block-size: var(--toast-height, auto);
+    overflow: visible;
+  }
+  .tz-toast-viewport:hover > .tz-toast > * {
+    opacity: 1;
+  }
 }
 .tz-toast > * {
   transition: opacity var(--motion-state) var(--ease-out);
@@ -586,6 +602,9 @@
 .tz-toast[data-tone="error"] .tz-toast-icon {
   color: var(--danger);
 }
+.tz-toast[data-tone="warning"] .tz-toast-icon {
+  color: var(--attention);
+}
 .tz-toast-title {
   font-size: var(--text-body);
   font-weight: var(--weight-medium);
@@ -598,7 +617,7 @@
   unicode-bidi: plaintext;
 }
 .tz-toast[data-state="closed"] {
-  animation: tz-toast-out var(--motion-exit) var(--ease-exit) forwards;
+  animation: tz-toast-out var(--motion-toast-exit) var(--ease-drawer) forwards;
 }
 .tz-toast[data-swipe="move"] {
   --swipe-x: var(--radix-toast-swipe-move-x, 0px);
@@ -606,10 +625,11 @@
   transition: none;
 }
 .tz-toast[data-swipe="cancel"] {
-  transition: transform var(--motion-state) var(--ease-spring);
+  transition: transform var(--motion-state) var(--ease-out);
 }
 .tz-toast[data-swipe="end"] {
-  animation: tz-toast-swipe-out var(--motion-exit) var(--ease-out) forwards;
+  animation: tz-toast-swipe-out var(--motion-toast-exit) var(--ease-drawer)
+    forwards;
 }
 @keyframes tz-spin {
   to {
@@ -643,7 +663,7 @@
 @keyframes tz-menu-in {
   from {
     opacity: 0;
-    transform: translate(var(--enter-x, 0px), var(--enter-y, -4px)) scale(0.96);
+    transform: translate(var(--enter-x, 0px), var(--enter-y, -4px)) scale(0.97);
   }
   to {
     opacity: 1;
@@ -1102,7 +1122,7 @@ input.tz-input:read-only {
   align-items: center;
   max-inline-size: 100%;
   padding-block: calc(var(--space-1) / 2);
-  padding-inline: var(--control-gap);
+  padding-inline: var(--space-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-small);
   background: var(--surface-subtle);
@@ -1126,6 +1146,16 @@ input.tz-input:read-only {
   background: var(--info-soft);
   color: var(--info);
   border-color: color-mix(in srgb, var(--info) 25%, var(--surface));
+}
+.tz-badge[data-tone="warning"] {
+  background: var(--attention-soft);
+  color: var(--attention);
+  border-color: color-mix(in srgb, var(--attention) 25%, var(--surface));
+}
+.tz-badge[data-tone="ai"] {
+  background: var(--ai-soft);
+  color: var(--ai);
+  border-color: color-mix(in srgb, var(--ai) 25%, var(--surface));
 }
 /* One line of copy centers in the row; longer copy grows down from its first
    line, which the control aligns to. */
@@ -1366,10 +1396,10 @@ textarea.tz-textarea:read-only {
   align-items: center;
   justify-content: center;
   flex: none;
-  inline-size: max(var(--control-small), calc(var(--text-meta) * 2.8));
-  block-size: max(var(--control-small), calc(var(--text-meta) * 2.8));
+  inline-size: var(--avatar-sm);
+  block-size: var(--avatar-sm);
   border: 1px solid var(--action-border);
-  border-radius: var(--radius);
+  border-radius: var(--radius-item);
   background: var(--action-soft);
   color: var(--action);
   font-size: var(--text-meta);
@@ -1379,8 +1409,8 @@ textarea.tz-textarea:read-only {
   overflow: hidden;
 }
 .tz-avatar[data-size="md"] {
-  inline-size: max(var(--control-height), calc(var(--text-body) * 2.8));
-  block-size: max(var(--control-height), calc(var(--text-body) * 2.8));
+  inline-size: var(--avatar-md);
+  block-size: var(--avatar-md);
   font-size: var(--text-body);
 }
 .tz-avatar img {
@@ -1397,16 +1427,18 @@ textarea.tz-textarea:read-only {
   padding-inline-start: var(--space-2);
   isolation: isolate;
 }
+/* The ring that separates stacked avatars is the surface the group sits on:
+   set --avatar-ring when that is not paper. */
 .tz-avatar-group > * {
   margin-inline-start: calc(-1 * var(--space-2));
-  border: 2px solid var(--surface);
+  border: 2px solid var(--avatar-ring, var(--surface));
 }
 .tz-avatar-overflow {
   display: inline-flex;
   border: 0;
 }
 .tz-avatar-overflow > .tz-avatar {
-  border: 2px solid var(--surface);
+  border: 2px solid var(--avatar-ring, var(--surface));
 }
 .tz-visually-hidden {
   position: absolute;
@@ -1419,25 +1451,33 @@ textarea.tz-textarea:read-only {
   white-space: nowrap;
   border: 0;
 }
+/* Paper on the popover shadow, which carries the ring; the transparent border
+   is what forced colors draw. */
 .tz-tooltip {
   z-index: 110;
   max-inline-size: min(18rem, calc(100vw - var(--space-6)));
   max-block-size: var(--radix-popper-available-height);
   padding: var(--space-1) var(--space-2);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-small);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
   background: var(--surface);
   color: var(--text);
   box-shadow: var(--shadow-popover);
   font-size: var(--text-meta);
-  line-height: 1.6;
+  line-height: var(--leading-meta);
   overflow-wrap: anywhere;
   text-wrap: pretty;
   transform-origin: var(--radix-popper-transform-origin);
-  animation: tz-menu-in calc(var(--motion-fast) + 40ms) var(--ease-out);
+  animation: tz-menu-in var(--motion-enter) var(--ease-out);
 }
 .tz-tooltip[data-instant] {
   animation: none;
+}
+/* It leaves quicker than it came, warm or not (Tooltip.tsx keeps it mounted
+   until the exit ends), and never catches the pointer on its way out. */
+.tz-tooltip[data-state="closed"] {
+  pointer-events: none;
+  animation: tz-menu-out var(--motion-tooltip-exit) var(--ease-exit) forwards;
 }
 .tz-modal {
   position: fixed;
@@ -1450,14 +1490,16 @@ textarea.tz-textarea:read-only {
   display: flex;
   flex-direction: column;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
+  /* The overlay shadow carries the ring; the transparent border is what
+     forced colors draw. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   box-shadow: var(--shadow-overlay);
   overflow-wrap: anywhere;
-  animation: tz-modal-in calc(var(--motion-enter) + 60ms) var(--ease-out);
+  animation: tz-modal-in var(--motion-dialog-enter) var(--ease-out);
 }
 .tz-modal[data-state="closed"] {
-  animation: tz-modal-out var(--motion-exit) var(--ease-exit);
+  animation: tz-modal-out var(--motion-dialog-exit) var(--ease-exit);
 }
 .tz-modal-header {
   display: flex;
@@ -1466,7 +1508,7 @@ textarea.tz-textarea:read-only {
   gap: var(--space-3);
   padding: var(--control-padding);
   flex: none;
-  border-block-end: 1px solid var(--border);
+  border-block-end: 0.5px solid var(--hairline);
 }
 .tz-modal-header > div {
   min-inline-size: 0;
@@ -1475,14 +1517,19 @@ textarea.tz-textarea:read-only {
   margin: 0;
   font-size: var(--text-heading);
   font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
 }
 .tz-modal-header p {
   margin: var(--space-1) 0 0;
-  font-size: var(--text-meta);
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
   color: var(--text-secondary);
 }
+/* The scroller runs out over the modal's transparent border, so the footer's
+   tray reaches the modal's edge; its corners clip to the modal's. */
 .tz-modal-scroll {
   min-block-size: 0;
+  margin: -1px;
   overflow: auto;
   overscroll-behavior: contain;
   border-radius: inherit;
@@ -1491,6 +1538,8 @@ textarea.tz-textarea:read-only {
   min-inline-size: 0;
   padding: var(--control-padding);
 }
+/* Decisions sit on a tray band under a hairline. Its own transparent border
+   keeps the modal's edge in forced colors, where the tray paints over it. */
 .tz-modal-footer {
   flex: none;
   display: flex;
@@ -1498,7 +1547,9 @@ textarea.tz-textarea:read-only {
   justify-content: flex-end;
   gap: var(--control-gap);
   padding: var(--control-padding);
-  border-block-start: 1px solid var(--border);
+  border: 1px solid transparent;
+  border-block-start: 0.5px solid var(--hairline);
+  background: var(--surface-tray);
 }
 .tz-empty-state {
   display: flex;
@@ -1514,11 +1565,14 @@ textarea.tz-textarea:read-only {
   margin: 0;
   font-size: var(--text-heading);
   font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
 }
 .tz-empty-state > p {
   margin: 0;
   max-inline-size: 36ch;
   color: var(--text-secondary);
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
 }
 .tz-empty-action {
   margin-block-start: var(--space-1);
@@ -1532,12 +1586,13 @@ textarea.tz-textarea:read-only {
   inline-size: 100%;
   block-size: auto;
 }
+/* Woven materials: paper with a ring on a tray wash, and accent lines. */
 .tz-illustration-wash {
-  fill: var(--action-soft);
+  fill: var(--surface-tray);
 }
 .tz-illustration-paper {
   fill: var(--surface);
-  stroke: var(--border-strong);
+  stroke: var(--hairline);
   stroke-width: 2;
   stroke-linejoin: round;
 }
@@ -1563,7 +1618,11 @@ textarea.tz-textarea:read-only {
 }
 
 /* Persistent feedback and loading affordances. */
+/* An alert is a tone-soft panel on a hairline ring in its tone; the
+   transparent border is what forced colors draw. The tone colors the ring and
+   the icon only: the title is ink and the description secondary. */
 .tz-alert {
+  --alert-tone: var(--info);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1571,40 +1630,55 @@ textarea.tz-textarea:read-only {
   inline-size: 100%;
   min-inline-size: 0;
   padding: var(--control-padding);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   background: var(--info-soft);
-  color: var(--info);
+  box-shadow: 0 0 0 0.5px color-mix(in srgb, var(--alert-tone) 30%, transparent);
+  color: var(--text);
   overflow-wrap: anywhere;
 }
 .tz-alert[data-tone="neutral"] {
-  background: var(--surface-subtle);
-  color: var(--text);
-  border-color: var(--border);
+  --alert-tone: var(--text-secondary);
+  background: var(--surface-tray);
 }
 .tz-alert[data-tone="success"] {
+  --alert-tone: var(--success);
   background: var(--success-soft);
-  color: var(--success);
-  border-color: color-mix(in srgb, var(--success) 25%, var(--surface));
 }
 .tz-alert[data-tone="error"] {
+  --alert-tone: var(--danger);
   background: var(--danger-soft);
-  color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 25%, var(--surface));
 }
-.tz-alert[data-tone="info"] {
-  border-color: color-mix(in srgb, var(--info) 25%, var(--surface));
+.tz-alert[data-tone="warning"] {
+  --alert-tone: var(--attention);
+  background: var(--attention-soft);
 }
+.tz-alert[data-tone="ai"] {
+  --alert-tone: var(--ai);
+  background: var(--ai-soft);
+}
+/* The icon stands beside the title and centers on its first line. */
 .tz-alert-copy {
   flex: 1 1 16rem;
   min-inline-size: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-3);
+}
+.tz-alert-icon {
+  grid-row: span 2;
+  margin-block-start: calc((1lh - 20px) / 2);
+  color: var(--alert-tone);
 }
 .tz-alert strong {
+  grid-column: 2;
   font-weight: var(--weight-semibold);
 }
 .tz-alert p {
+  grid-column: 2;
   margin: var(--space-1) 0 0;
   font-size: var(--text-body);
+  color: var(--text-secondary);
 }
 .tz-alert-action {
   display: flex;
@@ -1768,11 +1842,14 @@ textarea.tz-textarea:read-only {
 }
 
 /* Quiet structure and native navigation. */
+/* Cards and accordions are paper on a hairline ring; the transparent border
+   is what forced colors draw. */
 .tz-card {
   min-inline-size: 0;
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  box-shadow: var(--shadow-paper);
   overflow-wrap: anywhere;
 }
 .tz-card-header,
@@ -1780,8 +1857,7 @@ textarea.tz-textarea:read-only {
 .tz-card-footer {
   padding: var(--row-gap);
 }
-.tz-card-header + .tz-card-content,
-.tz-card-content + .tz-card-footer {
+.tz-card-header + .tz-card-content {
   padding-block-start: 0;
 }
 .tz-card-header {
@@ -1792,26 +1868,38 @@ textarea.tz-textarea:read-only {
   margin: 0;
   font-size: var(--text-heading);
   font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
 }
 .tz-card-description {
   margin: 0;
   color: var(--text-secondary);
 }
+/* Decisions sit on a tray band. It runs out over the card's transparent
+   border and carries one of its own, so the tray reaches the card's edge and
+   forced colors still draw that edge. */
 .tz-card-footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2);
+  margin-inline: -1px;
+  margin-block-end: -1px;
+  border: 1px solid transparent;
+  border-block-start: 0;
+  border-end-start-radius: var(--radius-paper);
+  border-end-end-radius: var(--radius-paper);
+  background: var(--surface-tray);
 }
 .tz-accordion {
   inline-size: 100%;
   min-inline-size: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   background: var(--surface);
+  box-shadow: var(--shadow-paper);
 }
 .tz-accordion-item + .tz-accordion-item {
-  border-block-start: 1px solid var(--border);
+  border-block-start: 0.5px solid var(--hairline);
 }
 .tz-accordion-heading {
   margin: 0;
@@ -1826,7 +1914,7 @@ textarea.tz-textarea:read-only {
   gap: var(--space-2);
   padding: var(--space-2) var(--row-gap);
   border: 0;
-  border-radius: var(--radius);
+  border-radius: 0;
   background: transparent;
   color: var(--text);
   text-align: start;
@@ -1836,34 +1924,43 @@ textarea.tz-textarea:read-only {
     background-color var(--motion-fast) var(--ease-out),
     color var(--motion-fast) var(--ease-out);
 }
+/* Rows run edge to edge, so only the paper's own corners round their wash. */
+.tz-accordion-item:first-child .tz-accordion-trigger {
+  border-start-start-radius: var(--radius-paper);
+  border-start-end-radius: var(--radius-paper);
+}
+.tz-accordion-item:last-child .tz-accordion-trigger[data-state="closed"] {
+  border-end-start-radius: var(--radius-paper);
+  border-end-end-radius: var(--radius-paper);
+}
 .tz-accordion-trigger > span {
   min-inline-size: 0;
 }
-.tz-accordion-trigger[data-state="open"] {
-  color: var(--action);
-}
 @media (hover: hover) and (pointer: fine) {
   .tz-accordion-trigger:not(:disabled):hover {
-    background: var(--surface-subtle);
+    background: var(--wash);
   }
 }
 .tz-accordion-trigger:disabled {
-  opacity: 0.48;
+  opacity: var(--disabled-opacity);
 }
+/* The open item keeps its ink label; the chevron carries the accent. */
 .tz-accordion-chevron {
   color: var(--text-secondary);
-  transition: transform calc(var(--motion-state) + 60ms) var(--ease-out);
+  transition:
+    transform var(--motion-state) var(--ease-out),
+    color var(--motion-fast) var(--ease-out);
 }
 .tz-accordion-trigger[data-state="open"] .tz-accordion-chevron {
-  color: inherit;
+  color: var(--action);
   transform: rotate(180deg);
 }
 .tz-accordion-panel {
   overflow: hidden;
-  animation: tz-accordion-open calc(var(--motion-state) + 60ms) var(--ease-out);
+  animation: tz-accordion-open var(--motion-collapse) var(--ease-out);
 }
 .tz-accordion-panel[data-state="closed"] {
-  animation: tz-accordion-close var(--motion-state) var(--ease-out);
+  animation: tz-accordion-close var(--motion-collapse-exit) var(--ease-out);
 }
 .tz-accordion-content {
   padding: var(--space-2) var(--row-gap) var(--row-gap);
@@ -3834,7 +3931,7 @@ textarea.tz-textarea:read-only {
   overflow-wrap: anywhere;
 }
 .tz-agent-task-state.tz-badge {
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   padding-inline: var(--space-2);
 }
 .tz-agent-task-state.tz-badge[data-changed] {
@@ -4496,7 +4593,7 @@ textarea.tz-textarea:read-only {
 }
 .tz-tool-name.tz-badge {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--text-micro);
   font-weight: 500;
   min-inline-size: 0;
   max-inline-size: 35%;
@@ -5320,7 +5417,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   inline-size: 24px;
   block-size: 24px;
   border-radius: 50%;
-  font-size: 11px;
+  font-size: var(--text-micro);
 }
 .tz-chat-content {
   white-space: pre-wrap;
@@ -5826,7 +5923,7 @@ a.tz-inline-citation {
 .tz-insight-page > .tz-card-title {
   font-size: var(--text-body);
   font-weight: 500;
-  line-height: 1.7;
+  line-height: var(--line-height);
   margin: 0;
 }
 .tz-insight-detail {
@@ -6896,8 +6993,9 @@ a.tz-inline-citation {
 }
 
 /* Floating surfaces share one entrance: they grow out of their anchor along
-   Radix's computed origin and leave faster than they arrive. Select-based
-   lists only fade, so an option never moves under a resting pointer. */
+   Radix's computed origin and leave faster than they arrive. The Select list
+   grows the same way (.tz-select-popup); the model and year lists only fade,
+   so an option never moves under a resting pointer. */
 .tz-datepicker-popup,
 .tz-context-details,
 .tz-citation-popup {
@@ -6930,6 +7028,54 @@ a.tz-inline-citation {
   .tz-selection-actions
 )[data-side="top"] {
   --enter-y: 4px;
+}
+/* Radix computes a physical origin: "start" is the left edge, even in Arabic,
+   where a start-aligned popup lines up with its trigger's right edge. In RTL
+   the origin's x is mirrored, so every popup that enters with tz-menu-in grows
+   from the corner nearest its trigger. */
+:where(
+    .tz-menu,
+    .tz-select-popup,
+    .tz-tooltip,
+    .tz-datepicker-popup,
+    .tz-context-details,
+    .tz-citation-popup,
+    .tz-selection-actions
+  ):dir(rtl)[data-side="bottom"][data-align="start"] {
+  transform-origin: 100% 0;
+}
+:where(
+    .tz-menu,
+    .tz-select-popup,
+    .tz-tooltip,
+    .tz-datepicker-popup,
+    .tz-context-details,
+    .tz-citation-popup,
+    .tz-selection-actions
+  ):dir(rtl)[data-side="bottom"][data-align="end"] {
+  transform-origin: 0 0;
+}
+:where(
+    .tz-menu,
+    .tz-select-popup,
+    .tz-tooltip,
+    .tz-datepicker-popup,
+    .tz-context-details,
+    .tz-citation-popup,
+    .tz-selection-actions
+  ):dir(rtl)[data-side="top"][data-align="start"] {
+  transform-origin: 100% 100%;
+}
+:where(
+    .tz-menu,
+    .tz-select-popup,
+    .tz-tooltip,
+    .tz-datepicker-popup,
+    .tz-context-details,
+    .tz-citation-popup,
+    .tz-selection-actions
+  ):dir(rtl)[data-side="top"][data-align="end"] {
+  transform-origin: 0 100%;
 }
 
 /* One interaction feel for composite controls. Colors settle quickly; small
@@ -7075,17 +7221,18 @@ a.tz-inline-citation {
   translate: 0 var(--optical-lift);
 }
 
-/* Keyboard hints sit inside the control they trigger. */
+/* Keyboard hints sit inside the control they trigger: a key is a machine
+   value, so it is set in mono at the micro size, in buttons and menus alike. */
 .tz-kbd {
   display: inline-grid;
   place-items: center;
   min-inline-size: 20px;
   block-size: 20px;
   padding-inline: 5px;
-  border-radius: 6px;
+  border-radius: var(--radius-small);
   background: var(--wash-strong);
   color: var(--text-muted);
-  font: var(--weight-medium) 11px / 1 var(--font);
+  font: var(--weight-medium) var(--text-micro) / 1 var(--font-mono);
   direction: ltr;
   unicode-bidi: isolate;
 }
@@ -7101,49 +7248,25 @@ a.tz-inline-citation {
 
 /* One edge language for every surface. Cards sit on a hairline ring and a
    one-pixel lift; floating layers carry the ring inside their shadow. The
-   transparent border stays so forced-colors mode still draws an outline. */
+   transparent border stays so forced-colors mode still draws an outline.
+   Menus, toasts, modals, tooltips, cards and accordions set theirs in their
+   own rules. */
 :is(
-  .tz-menu,
-  .tz-toast,
-  .tz-modal,
   .tz-context-details,
   .tz-citation-popup,
   .tz-model-popup,
-  .tz-selection-actions,
-  .tz-tooltip
+  .tz-selection-actions
 ) {
   border-color: transparent;
 }
-:is(.tz-card, .tz-accordion, .tz-table-container) {
+.tz-table-container {
   border-color: transparent;
   box-shadow: var(--shadow-surface);
-}
-.tz-card {
-  border-radius: calc(var(--radius) + 4px);
-}
-.tz-accordion-item + .tz-accordion-item {
-  border-block-start-width: 0.5px;
-  border-block-start-color: var(--hairline);
-}
-:is(.tz-modal-header, .tz-sheet-header) {
-  border-block-end-width: 0.5px;
-  border-block-end-color: var(--hairline);
-}
-:is(.tz-modal-footer, .tz-sheet-footer) {
-  border-block-start-width: 0.5px;
-  border-block-start-color: var(--hairline);
-}
-.tz-menu-separator {
-  background: var(--hairline);
 }
 @media (hover: hover) and (pointer: fine) {
   .tz-data-table tbody tr:hover {
     background: var(--wash);
   }
-}
-.tz-menu-item[data-highlighted] {
-  background: var(--wash-strong);
-  color: var(--text);
 }
 
 /* Gliding highlight: one soft wash travels to the active row (useGlide).
@@ -7199,35 +7322,36 @@ a.tz-inline-citation {
    drawn in handwriting order (short stroke first); a cross stroke by stroke.
    A Button's success check draws only after its state changed (data-changed),
    never on mount, and so does the ColorPicker's check once the color changed;
-   an icon-only button's check appears only after an action. :where() keeps
-   the list's specificity where it was. */
+   an icon-only button's check appears only after an action. The list sits in
+   :where(), so the overrides after it (a cross's own length and stroke delay,
+   the receipt's delay, the toast's shorter check) take effect. */
 @keyframes tz-draw {
   from {
     stroke-dashoffset: var(--draw-from);
   }
 }
-:is(
+:where(
     .tz-decision-icon,
     .tz-decision-mark,
     .tz-step-indicator,
-    .tz-color-check:where([data-changed]),
+    .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,
-    .tz-button[data-state="success"]:where([data-changed]),
-    .tz-button[data-state="success"]:where([data-changed]) .tz-button-label,
+    .tz-button[data-state="success"][data-changed],
+    .tz-button[data-state="success"][data-changed] .tz-button-label,
     .tz-toast
   )
   > :is(.lucide-check, .lucide-x, .lucide-circle-check) {
   --draw: 23;
   --draw-from: -23;
 }
-:is(
+:where(
     .tz-decision-icon,
     .tz-decision-mark,
     .tz-step-indicator,
-    .tz-color-check:where([data-changed]),
+    .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,
-    .tz-button[data-state="success"]:where([data-changed]),
-    .tz-button[data-state="success"]:where([data-changed]) .tz-button-label,
+    .tz-button[data-state="success"][data-changed],
+    .tz-button[data-state="success"][data-changed] .tz-button-label,
     .tz-toast
   )
   > :is(.lucide-check, .lucide-x, .lucide-circle-check)
@@ -7362,17 +7486,6 @@ a.tz-inline-citation {
 /* A portrait fades over its initials once it has loaded. */
 .tz-avatar img:not([hidden]) {
   animation: tz-fade-in var(--motion-state) var(--ease-out);
-}
-/* Stacked avatars lift out of the pile under the pointer. */
-.tz-avatar-group > * {
-  position: relative;
-  transition: transform var(--motion-state) var(--ease-spring);
-}
-@media (hover: hover) and (pointer: fine) {
-  .tz-avatar-group > *:hover {
-    z-index: 1;
-    transform: translateY(-2px);
-  }
 }
 /* Selection actions unfold from the first action outward. */
 .tz-selection-actions > button {

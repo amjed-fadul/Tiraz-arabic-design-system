@@ -414,7 +414,7 @@ describe.each(settings)(
       ).toHaveTextContent(`الطلب ${n("2")} من ${n("3")}`);
     });
 
-    it("the AvatarGroup examples spell their overflow count in the configured digits", () => {
+    it("the AvatarGroup examples name two hidden members in the dual, without a digit", () => {
       const view = wrap(
         <>
           <TeamExample language="ar" />
@@ -426,10 +426,8 @@ describe.each(settings)(
         ".tz-avatar-overflow .tz-visually-hidden",
       );
       expect(labels).toHaveLength(2);
-      for (const label of Array.from(labels)) {
-        expect(label).toHaveTextContent(`${n("2")} أعضاء آخرون`);
-        expect(label.textContent).toMatch(digits[numerals]);
-      }
+      for (const label of Array.from(labels))
+        expect(label).toHaveTextContent(/^عضوان آخران: /);
     });
 
     it("the DataTable example's result count follows the setting", () => {

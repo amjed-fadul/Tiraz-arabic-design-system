@@ -164,7 +164,7 @@ it("runs copied feedback modes and photo compositions without workbench imports"
   }
 });
 it.each(["arab", "latn"] as const)(
-  "runs the copied Arabic AvatarGroup with its overflow count in %s digits",
+  "runs the copied Arabic AvatarGroup with two hidden members in the dual (%s digits)",
   (numerals) => {
     const Example = feedbackCopy(
       "avatar-group",
@@ -173,12 +173,11 @@ it.each(["arab", "latn"] as const)(
       { numerals },
     );
     const { container } = render(<Example />);
-    // Three of five members show; the hidden label names the other two.
+    // Three of five members show; the hidden label names the other two, in
+    // the dual, which carries no digit in either setting.
     expect(
       container.querySelector(".tz-avatar-overflow .tz-visually-hidden"),
-    ).toHaveTextContent(
-      numerals === "arab" ? /^٢ أعضاء آخرون/ : /^2 أعضاء آخرون/,
-    );
+    ).toHaveTextContent(/^عضوان آخران: /);
   },
 );
 it("runs the copied skeleton profile from placeholders to content", () => {

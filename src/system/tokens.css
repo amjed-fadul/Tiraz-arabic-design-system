@@ -160,6 +160,7 @@
   --motion-state: 200ms;
   --motion-enter: 180ms;
   --motion-exit: 120ms;
+  --motion-tooltip-exit: 100ms;
   --motion-dialog-enter: 220ms;
   --motion-dialog-exit: 150ms;
   --motion-panel: 280ms;
@@ -261,6 +262,7 @@
   --motion-state: 0ms;
   --motion-enter: 0ms;
   --motion-exit: 0ms;
+  --motion-tooltip-exit: 0ms;
   --motion-dialog-enter: 0ms;
   --motion-dialog-exit: 0ms;
   --motion-panel: 0ms;
@@ -285,6 +287,7 @@
     --motion-state: 0ms;
     --motion-enter: 0ms;
     --motion-exit: 0ms;
+    --motion-tooltip-exit: 0ms;
     --motion-dialog-enter: 0ms;
     --motion-dialog-exit: 0ms;
     --motion-panel: 0ms;
@@ -330,6 +333,7 @@
   --motion-state: 0ms;
   --motion-enter: 0ms;
   --motion-exit: 0ms;
+  --motion-tooltip-exit: 0ms;
   --motion-dialog-enter: 0ms;
   --motion-dialog-exit: 0ms;
   --motion-panel: 0ms;

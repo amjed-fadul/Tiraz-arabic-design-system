@@ -8,14 +8,58 @@ import { expect, it, vi } from "vitest";
 import {
   Alert,
   Avatar,
+  Badge,
   Button,
   Progress,
   Skeleton,
   Spinner,
   SystemProvider,
+  ToastProvider,
   defaultConfig,
+  useToast,
 } from "./index";
 
+it.each(["warning", "ai"] as const)(
+  "renders the %s tone on Badge and Alert",
+  (tone) => {
+    const { container } = render(
+      <>
+        <Badge tone={tone}>Label</Badge>
+        <Alert title="Title" tone={tone} />
+      </>,
+    );
+    expect(container.querySelector(".tz-badge")).toHaveAttribute(
+      "data-tone",
+      tone,
+    );
+    expect(container.querySelector(".tz-alert")).toHaveAttribute(
+      "data-tone",
+      tone,
+    );
+  },
+);
+it("renders a warning Toast", async () => {
+  function Demo() {
+    const { toast } = useToast();
+    return (
+      <Button onClick={() => toast({ title: "Check", tone: "warning" })}>
+        Notify
+      </Button>
+    );
+  }
+  render(
+    <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+      <ToastProvider closeLabel="Close" label="Notifications">
+        <Demo />
+      </ToastProvider>
+    </SystemProvider>,
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Notify" }));
+  expect(screen.getByText("Check").closest(".tz-toast")).toHaveAttribute(
+    "data-tone",
+    "warning",
+  );
+});
 it("keeps static Alert feedback nonurgent regardless of semantic tone", () => {
   render(
     <Alert

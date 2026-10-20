@@ -79,7 +79,11 @@ export function DropdownMenu({
               >
                 {item.icon && <span aria-hidden="true">{item.icon}</span>}
                 <span>{item.label}</span>
-                {item.shortcut && <kbd dir="ltr">{item.shortcut}</kbd>}
+                {item.shortcut && (
+                  <kbd className="tz-kbd" dir="ltr">
+                    {item.shortcut}
+                  </kbd>
+                )}
               </Primitive.Item>
             </div>
           ))}

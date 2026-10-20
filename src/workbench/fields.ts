@@ -504,7 +504,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("title", "text", "العنوان", "Title"),
     field("description", "text", "الوصف", "Description"),
     field("tone", "select", "النوع", "Tone", "tone", {
-      options: ["neutral", "success", "error", "info"],
+      options: ["neutral", "success", "error", "info", "warning", "ai"],
     }),
     field("actionLabel", "text", "زر الإجراء", "Action button", "action"),
   ],
@@ -597,7 +597,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   badge: [
     field("children", "text", "النص", "Text"),
     field("tone", "select", "النوع", "Tone", "tone", {
-      options: ["neutral", "success", "error", "info"],
+      options: ["neutral", "success", "error", "info", "warning", "ai"],
     }),
   ],
   checkbox: [
@@ -839,7 +839,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("title", "text", "عنوان التنبيه", "Toast title"),
     field("description", "text", "وصف التنبيه", "Toast description"),
     field("tone", "select", "نوع التنبيه", "Tone", "toast.tone", {
-      options: ["success", "error", "info"],
+      options: ["success", "error", "info", "warning"],
     }),
     field(
       "duration",
@@ -937,6 +937,8 @@ export const optionNames: Record<string, Localized> = {
   left: ["اليسار", "Left"],
   neutral: ["محايد", "Neutral"],
   info: ["معلومة", "Information"],
+  warning: ["تحذير", "Warning"],
+  ai: ["الذكاء الاصطناعي", "AI"],
   "no-results": ["لا توجد نتائج مطابقة", "No matching results"],
   populated: ["مع بيانات", "Populated"],
   empty: ["فارغ", "Empty"],

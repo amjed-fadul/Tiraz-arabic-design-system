@@ -1,6 +1,7 @@
 import type { ComponentPropsWithRef } from "react";
 
-export type BadgeTone = "neutral" | "success" | "error" | "info";
+export type BadgeTone =
+  "neutral" | "success" | "error" | "info" | "warning" | "ai";
 export type BadgeProps = ComponentPropsWithRef<"span"> & {
   tone?: BadgeTone;
 };

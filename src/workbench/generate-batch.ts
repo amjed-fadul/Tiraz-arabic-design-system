@@ -126,7 +126,7 @@ export function generateBatchCode(
       imports = "AvatarGroup, numberLocale, useSystem";
       source = `function TeamExample() {
   const number = new Intl.NumberFormat(numberLocale(useSystem().config, "ar"));
-  return ${group("`${number.format(count)} أعضاء آخرون`")};
+  return ${group('count === 2 ? "عضوان آخران" : `${number.format(count)} أعضاء آخرون`')};
 }
 `;
       jsx = "<TeamExample />";

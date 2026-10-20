@@ -1,5 +1,5 @@
 import * as Popper from "@radix-ui/react-popper";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { HTMLAttributes, ReactElement } from "react";
 import { createPortal } from "react-dom";
 import { useSystem } from "./useSystem";
@@ -56,6 +56,22 @@ export function Tooltip({
     [],
   );
   const shown = open && !!content && !!container;
+  // Once hidden, the tooltip stays mounted while its exit plays, then leaves.
+  // With no exit to see (none declared, a zeroed one under keyboard modality or
+  // reduced motion, or no stylesheet) it leaves at once.
+  const [present, setPresent] = useState(shown);
+  if (shown && !present) setPresent(true);
+  const tip = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (shown || !present) return;
+    const exit = tip.current && getComputedStyle(tip.current);
+    if (
+      !exit?.animationName ||
+      exit.animationName === "none" ||
+      parseFloat(exit.animationDuration) <= 0.001
+    )
+      setPresent(false);
+  }, [shown, present]);
   useEffect(() => {
     if (!shown) return;
     group.open += 1;
@@ -143,12 +159,15 @@ export function Tooltip({
       >
         {trigger}
       </Popper.Anchor>
-      {shown &&
+      {present &&
+        container &&
         createPortal(
           <Popper.Content
+            ref={tip}
             id={id}
             role="tooltip"
             className="tz-tooltip"
+            data-state={shown ? "open" : "closed"}
             data-instant={instant || undefined}
             dir={config.direction}
             side="top"
@@ -162,6 +181,9 @@ export function Tooltip({
             onPointerLeave={() => {
               hovered.current = false;
               leave();
+            }}
+            onAnimationEnd={() => {
+              if (!shown) setPresent(false);
             }}
           >
             {content}

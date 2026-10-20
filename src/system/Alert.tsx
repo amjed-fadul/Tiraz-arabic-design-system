@@ -1,4 +1,12 @@
 import type { ReactNode } from "react";
+import {
+  CircleAlert,
+  CircleCheck,
+  Info,
+  Sparkles,
+  TriangleAlert,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { BadgeTone } from "./Badge";
 export interface AlertProps {
   title: string;
@@ -7,6 +15,16 @@ export interface AlertProps {
   action?: ReactNode;
   announcement?: "off" | "polite" | "assertive";
 }
+// One glyph per tone beside the title. The words carry the meaning; the glyph
+// and the tone color only echo it.
+const icons: Record<BadgeTone, LucideIcon> = {
+  neutral: Info,
+  info: Info,
+  success: CircleCheck,
+  error: CircleAlert,
+  warning: TriangleAlert,
+  ai: Sparkles,
+};
 export function Alert({
   title,
   description,
@@ -20,6 +38,7 @@ export function Alert({
       : announcement === "polite"
         ? "status"
         : undefined;
+  const Icon = icons[tone] ?? Info;
   return (
     <div
       className="tz-alert"
@@ -28,6 +47,7 @@ export function Alert({
       aria-atomic={role ? true : undefined}
     >
       <div className="tz-alert-copy">
+        <Icon className="tz-alert-icon" aria-hidden="true" size={20} />
         <strong>{title}</strong>
         {description && <p>{description}</p>}
       </div>

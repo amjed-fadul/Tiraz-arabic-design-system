@@ -67,10 +67,11 @@ export function NoSearchResultsIllustration() {
     </svg>
   );
 }
+// The steps and the arrow rise in the reading direction, so they mirror in RTL.
 export function GettingStartedIllustration() {
   return (
     <svg
-      className="tz-illustration"
+      className="tz-illustration tz-mirror-rtl"
       viewBox="0 0 160 112"
       fill="none"
       aria-hidden="true"

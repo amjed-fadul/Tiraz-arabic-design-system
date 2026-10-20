@@ -318,8 +318,9 @@ try {
     padding: getComputedStyle(el.querySelector(".tz-card-header")).padding,
     action: getComputedStyle(el).getPropertyValue("--action"),
   }));
-  // .tz-card uses calc(var(--radius) + 4px): radius 16 renders 20px.
-  assert.equal(settings.radius, "20px");
+  // .tz-card is paper at --radius-paper, which stops at 24px: radius 16
+  // renders 24px.
+  assert.equal(settings.radius, "24px");
   assert.equal(settings.size, "16px");
   assert.equal(settings.padding, "16px");
   assert.match(settings.action, /D6B6E5/i);

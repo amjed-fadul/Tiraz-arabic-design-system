@@ -35,7 +35,9 @@ export function TeamExample({
       label={language === "ar" ? "فريق المشروع" : "Project team"}
       overflowLabel={(count) =>
         language === "ar"
-          ? `${number.format(count)} أعضاء آخرون`
+          ? count === 2
+            ? "عضوان آخران"
+            : `${number.format(count)} أعضاء آخرون`
           : `${count} more members`
       }
     />

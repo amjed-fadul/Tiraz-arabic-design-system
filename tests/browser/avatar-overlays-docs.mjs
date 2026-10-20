@@ -84,7 +84,8 @@ try {
         assert.equal(await tooltip.count(), 0);
         await tooltip.waitFor();
         await trigger.click();
-        assert.equal(await tooltip.count(), 0);
+        // A pointer dismissal plays the 100 ms exit before the tooltip leaves.
+        await tooltip.waitFor({ state: "detached", timeout: 1000 });
         assert.equal(
           await trigger.evaluate((el) => el === document.activeElement),
           true,

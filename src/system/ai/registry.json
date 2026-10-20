@@ -4580,7 +4580,7 @@
           "type": "BadgeTone",
           "required": false,
           "default": "neutral",
-          "values": ["neutral", "success", "error", "info"]
+          "values": ["neutral", "success", "error", "info", "warning", "ai"]
         },
         {
           "name": "children",
@@ -5255,7 +5255,7 @@
           "type": "BadgeTone",
           "required": false,
           "default": "info",
-          "values": ["neutral", "success", "error", "info"]
+          "values": ["neutral", "success", "error", "info", "warning", "ai"]
         },
         {
           "name": "action",
@@ -6124,10 +6124,10 @@
         },
         {
           "name": "tone",
-          "type": "success | error | info",
+          "type": "success | error | info | warning",
           "required": false,
           "default": "info",
-          "values": ["success", "error", "info"]
+          "values": ["success", "error", "info", "warning"]
         },
         {
           "name": "duration",
@@ -6961,7 +6961,7 @@
           "name": "tone",
           "type": "BadgeTone",
           "required": false,
-          "values": ["neutral", "success", "error", "info"]
+          "values": ["neutral", "success", "error", "info", "warning", "ai"]
         },
         {
           "name": "action",

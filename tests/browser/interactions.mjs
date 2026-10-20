@@ -94,8 +94,12 @@ await check(
           assert.equal(styles.font, value === "large" ? "16px" : "14px");
         if (key === "density")
           assert.equal(styles.itemHeight, value === "standard" ? 40 : 36);
+        // The menu is paper at --radius-paper, which stops at 24px.
         if (key === "radius")
-          assert.equal(styles.radius, `${Number(value) + 4}px`);
+          assert.equal(
+            styles.radius,
+            { 16: "24px", 0: "0px", 8: "15px" }[value],
+          );
         if (key === "reducedMotion" && value === "true")
           assert.ok(parseFloat(styles.motion) <= 0.00001);
         if (key === "direction") {

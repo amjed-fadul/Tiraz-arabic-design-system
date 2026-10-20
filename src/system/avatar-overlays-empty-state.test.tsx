@@ -91,7 +91,12 @@ it.each(["rtl", "ltr"] as const)(
         .getByText(direction === "rtl" ? "+٢" : "+2")
         .closest("[aria-hidden]"),
     ).toHaveAttribute("aria-hidden", "true");
-    expect(group).toHaveTextContent("2 more members: Omar Noor، Lina Saleh");
+    // The hidden names are joined in the interface language.
+    expect(group).toHaveTextContent(
+      direction === "rtl"
+        ? "2 more members: Omar Noor، Lina Saleh"
+        : "2 more members: Omar Noor, Lina Saleh",
+    );
     expect(within(group).queryByRole("button")).toBeNull();
   },
 );

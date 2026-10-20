@@ -30,4 +30,18 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   // .tz-file covers the dropzone's own rules and the tree's.
   "file-dropzone": [".tz-file", ".tz-selected-files", ".tz-entry"],
   "file-tree": [".tz-file-tree"],
+  card: [".tz-card"],
+  // .tz-icon-button is the close button that Modal, Sheet and Toast share.
+  modal: [".tz-modal", ".tz-icon-button"],
+  sheet: [".tz-sheet", ".tz-icon-button"],
+  toast: [".tz-toast", ".tz-icon-button"],
+  // .tz-kbd is the menu's shortcut hint.
+  "dropdown-menu": [".tz-menu", ".tz-kbd"],
+  tooltip: [".tz-tooltip"],
+  alert: [".tz-alert"],
+  badge: [".tz-badge"],
+  "empty-state": [".tz-empty", ".tz-illustration"],
+  accordion: [".tz-accordion"],
+  // .tz-avatar also covers AvatarGroup's .tz-avatar-group and its overflow.
+  avatar: [".tz-avatar"],
 };

@@ -1,9 +1,11 @@
 import * as Primitive from "@radix-ui/react-toast";
 import { useId, useLayoutEffect, useRef, useState } from "react";
-import { CircleCheck, CircleAlert, Info, X } from "lucide-react";
+import { CircleCheck, CircleAlert, Info, TriangleAlert, X } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import { ToastContext } from "./useToast";
 import type { ToastMessage } from "./useToast";
+// The one gap between stacked toasts: the lift below adds it, and the viewport
+// hands it to the CSS as --toast-gap.
 const TOAST_GAP = 8;
 interface Entry extends ToastMessage {
   id: string;
@@ -101,7 +103,9 @@ export function ToastProvider({
               ? CircleAlert
               : entry.tone === "success"
                 ? CircleCheck
-                : Info;
+                : entry.tone === "warning"
+                  ? TriangleAlert
+                  : Info;
           const { depth, lift } = place(entry);
           return (
             <Primitive.Root
@@ -172,6 +176,7 @@ export function ToastProvider({
           label={label}
           style={
             {
+              "--toast-gap": `${TOAST_GAP}px`,
               "--toast-front-height":
                 front && heights[front.id] ? `${heights[front.id]}px` : "auto",
             } as CSSProperties

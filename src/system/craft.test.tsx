@@ -109,6 +109,18 @@ describe("Toast pile", () => {
     expect(depth("تنبيه 2")).toBe("1");
     expect(depth("تنبيه 1")).toBe("2");
   });
+  it("gives the pile its gap from the one TOAST_GAP the geometry uses", async () => {
+    wrap(
+      <ToastProvider closeLabel="إغلاق" label="التنبيهات">
+        <Demo />
+      </ToastProvider>,
+    );
+    await userEvent.click(screen.getByRole("button", { name: "إرسال" }));
+    const viewport = screen
+      .getByText("تنبيه 1")
+      .closest<HTMLElement>(".tz-toast-viewport")!;
+    expect(viewport.style.getPropertyValue("--toast-gap")).toBe("8px");
+  });
 });
 
 describe("Tooltip group", () => {
