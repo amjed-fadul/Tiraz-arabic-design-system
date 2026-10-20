@@ -154,6 +154,7 @@ it("shows Replay only where a sequence exists", () => {
     "skeleton",
     "steps",
     "streaming-text",
+    "suggested-edits",
     "task-rows",
     "terminal",
     "thinking-state",

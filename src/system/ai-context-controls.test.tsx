@@ -188,7 +188,10 @@ it("only offers actions for scoped non-editable non-code text and retains the se
   const button = screen.getByText("Use selection").closest("button")!;
   fireEvent.pointerDown(button);
   fireEvent.click(button);
-  expect(action).toHaveBeenCalledWith("مرحبا Tiraz sample");
+  expect(action).toHaveBeenCalledWith("مرحبا Tiraz sample", {
+    start: 0,
+    end: 18,
+  });
   expect(window.getSelection()?.toString()).toBe("مرحبا Tiraz sample");
   fireEvent.scroll(window);
   expect(screen.queryByRole("toolbar")).toBeNull();
@@ -214,6 +217,39 @@ it("only offers actions for scoped non-editable non-code text and retains the se
   expect(screen.queryByRole("toolbar", { hidden: true })).toBeNull();
   view.unmount();
   vi.restoreAllMocks();
+});
+
+it("passes start and end offsets within the scope", async () => {
+  const action = vi.fn();
+  render(
+    wrap(
+      <system.SelectionActions
+        label="Reply"
+        actions={[{ id: "use", label: "Use selection", onSelect: action }]}
+      >
+        <p data-testid="sample">
+          أول <strong>ثاني</strong> ثالث
+        </p>
+      </system.SelectionActions>,
+    ),
+  );
+  const sample = screen.getByTestId("sample");
+  // From the start of «ثاني» to three characters into « ثالث».
+  act(() => {
+    window
+      .getSelection()!
+      .setBaseAndExtent(
+        sample.querySelector("strong")!.firstChild!,
+        0,
+        sample.lastChild!,
+        3,
+      );
+    fireEvent(document, new Event("selectionchange"));
+  });
+  const button = (await screen.findByText("Use selection")).closest("button")!;
+  fireEvent.pointerDown(button);
+  fireEvent.click(button);
+  expect(action).toHaveBeenCalledWith("ثاني ثا", { start: 4, end: 11 });
 });
 
 it("does not replace the controlled model or emit changes when choices are reordered or removed", async () => {

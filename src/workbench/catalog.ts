@@ -28,6 +28,15 @@ export const catalog = [
     file: "AgentTask.tsx",
   },
   {
+    id: "suggested-edits",
+    name: ["تعديلات مقترحة", "Suggested edits"],
+    description: [
+      "يحسّن النص المحدّد بتعديلات متعقَّبة يقبلها المستخدم أو يرفضها.",
+      "Improve selected text with tracked changes the person accepts or rejects.",
+    ],
+    file: "SuggestedEdits.tsx",
+  },
+  {
     id: "change-summary",
     name: ["ما الذي تغيّر", "What changed"],
     description: [
@@ -682,6 +691,7 @@ const documentationGroups = [
       "task-starter",
       "cited-answer",
       "agent-task",
+      "suggested-edits",
       "change-summary",
       "terminal",
       "chat-app",

@@ -103,6 +103,9 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     field("question", "boolean", "عرض السؤال", "Show the question", "question"),
   ],
   "change-summary": [appearance],
+  "suggested-edits": [
+    field("undo", "boolean", "إتاحة التراجع", "Offer undo", "onUndo"),
+  ],
   "agent-task": [
     appearance,
     field(
@@ -1007,6 +1010,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   "task-starter": ["appearance", "disabled"],
   "cited-answer": ["appearance", "question"],
   "agent-task": ["appearance", "autoStart"],
+  "suggested-edits": ["undo"],
   "change-summary": ["appearance"],
   terminal: ["state", "longContent", "followOutput"],
   "chat-app": ["longContent"],

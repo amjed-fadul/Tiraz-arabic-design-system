@@ -383,6 +383,48 @@ export function ApiReference({
         ),
       ],
     ],
+    "suggested-edits": [
+      [
+        "children / actions / onAction",
+        "ReactNode / readonly { id, label, icon? }[] · required / (id, { text, start, end }) => void · required",
+        t(
+          "يلفّ children نص تطبيقك كما يلفّه SelectionActions، وتظهر الإجراءات عند تحديد جزء منه. يمرّر onAction الإجراء والنص المحدّد وموضعه في نص المنطقة.",
+          "children wraps your app's text as SelectionActions does, and the actions show when part of it is selected. onAction hands over the action, the selected text and where it sits in the region's text.",
+        ),
+      ],
+      [
+        "status / selection",
+        "idle | rewriting | reviewing | applied · required / { start, end }?",
+        t(
+          "يقرّر تطبيقك الحالة. في rewriting يبقى التحديد مُعلَّمًا بخط المساعد ويظهر «يعيد الصياغة…»، وفي reviewing تُفتح بطاقة المراجعة تحته، وفي applied يظهر الإيصال. مرّر selection لتعيد موضعًا حفظته، وإلا استُخدم موضع آخر إجراء.",
+          "Your app owns the status. While rewriting the selection keeps the assistant's underline and «Rewriting…» shows; reviewing opens the review card below it; applied shows the receipt. Pass selection to restore a range you saved; otherwise the last action's range is used.",
+        ),
+      ],
+      [
+        "suggestion / decisions / onDecisionsChange",
+        "{ title, segments: DiffSegment[] }? / Record<id, accepted | rejected>? / (next) => void",
+        t(
+          "كل تعديل سلسلة متتالية من الإضافات والحذوفات، ويُعرف بمعرّف أول جزء فيه. أبقِ suggestion وdecisions حتى applied ليحسب الإيصال التعديلات. وبدون decisions يحتفظ النمط بقراراته.",
+          "Each change is a run of consecutive inserts and deletes, keyed by its first segment's id. Keep suggestion and decisions through applied, so the receipt can count them. Without decisions the pattern keeps its own.",
+        ),
+      ],
+      [
+        "onApply / onUndo / onDismiss",
+        "(text, { start, end }) => void / () => void / () => void",
+        t(
+          "يسلّم onApply النص بعد التعديلات المقبولة وموضعه، ولا يتغيّر نص تطبيقك قبل ذلك. يظهر «تراجع» في الإيصال مع onUndo فقط، ويستدعي Escape الدالة onDismiss ويعيد التركيز إلى النص.",
+          "onApply hands over the text with the accepted changes and its range; your app's text never changes before then. Undo shows in the receipt only with onUndo, and Escape calls onDismiss and returns focus to the text.",
+        ),
+      ],
+      [
+        "labels",
+        "Partial<SuggestedEditsLabels>",
+        t(
+          "تستبدل أي نص مدمج، ومنه كلمات InlineDiff.",
+          "Replaces any built-in text, InlineDiff's words included.",
+        ),
+      ],
+    ],
     terminal: [
       [
         "command / output",
@@ -663,8 +705,8 @@ export function ApiReference({
         "actions",
         "readonly SelectionAction[] · required",
         t(
-          "لكل إجراء id وlabel وonSelect(text)، وicon وdisabled اختياريان. يظهر أول إجراءين، ثم زر «المزيد».",
-          "id, label and onSelect(text); optional icon/disabled. First two actions then More.",
+          "لكل إجراء id وlabel وonSelect(text, { start, end })، وicon وdisabled اختياريان. يحدّد start وend موضع النص المحدّد في نص النطاق. يظهر أول إجراءين، ثم زر «المزيد».",
+          "id, label and onSelect(text, { start, end }), where start and end place the selection in the scope's text; optional icon/disabled. First two actions then More.",
         ),
       ],
       [

@@ -188,6 +188,13 @@ export type {
 } from "./ApprovalCard";
 export { AgentTask } from "./AgentTask";
 export type { AgentStep, AgentTaskProps, AgentTaskLabels } from "./AgentTask";
+export { SuggestedEdits } from "./SuggestedEdits";
+export type {
+  SuggestedEditsProps,
+  SuggestedEditsLabels,
+} from "./SuggestedEdits";
+export { InlineDiff } from "./InlineDiff";
+export type { InlineDiffProps, DiffSegment } from "./InlineDiff";
 export { TaskStarter } from "./TaskStarter";
 export type {
   TaskStarterProps,

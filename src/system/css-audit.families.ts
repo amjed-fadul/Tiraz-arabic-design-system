@@ -117,4 +117,8 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "change-summary": [".tz-change-summary"],
   // Start a task of Plan 4 Task 5.
   "task-starter": [".tz-task-starter"],
+  // Suggested edits and its InlineDiff, of Plan 4 Task 6. .tz-inline also
+  // holds .tz-inline-diff to the inline-citation family's audit.
+  "suggested-edits": [".tz-suggested-edits"],
+  "inline-diff": [".tz-inline-diff"],
 };

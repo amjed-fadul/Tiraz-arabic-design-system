@@ -1,5 +1,6 @@
 import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
 import { TaskStarterExample } from "../system/ai/examples/TaskStarterExamples";
+import { SuggestedEditsExample } from "../system/ai/examples/SuggestedEditsExamples";
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
@@ -333,6 +334,15 @@ export function Playground({
       <ChangeSummaryExample
         language={language}
         {...(model as Playgrounds["change-summary"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "suggested-edits")
+    return (
+      <SuggestedEditsExample
+        language={language}
+        {...(model as Playgrounds["suggested-edits"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
       />

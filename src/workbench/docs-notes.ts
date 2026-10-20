@@ -190,6 +190,48 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  "suggested-edits": {
+    useWhen: [
+      [
+        "يعيد المساعد صياغة جزء من نص المستخدم: يجعله أقصر أو أوضح أو أكثر رسمية، أو يترجمه.",
+        "The assistant rewrites part of a person's text: shorter, clearer, more formal, or translated.",
+      ],
+      [
+        "يريد المستخدم أن يرى كل تعديل ويقرّر فيه قبل أن يتغيّر نصه.",
+        "People want to see each change and decide on it before their text changes.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "يكتب المساعد رسائل جديدة لسجلات، كتذكيرات الدفع، فاستخدم",
+          "The assistant writes new messages for records, such as payment reminders, so use",
+        ],
+        page: "agent-task",
+      },
+      {
+        text: [
+          "يكفي نسخ النص المحدّد أو اقتباسه دون إعادة صياغته، فاستخدم",
+          "Copying or quoting the selected text is enough, with no rewrite, so use",
+        ],
+        page: "selection-actions",
+      },
+    ],
+    notice: [
+      [
+        "يبقى نص تطبيقك كما هو حتى «تطبيق»، ثم يسلّمه onApply النص المقبول وموضعه ليستبدله بنفسه. وإذا امتد التحديد عبر تنسيق يُطبَّق كنص عادي، وتقول البطاقة ذلك.",
+        "Your app's text stays as it is until Apply; onApply then hands it the accepted text and its range to replace. A selection that spans formatting is applied as plain text, and the card says so.",
+      ],
+      [
+        "يقبل Y التعديل الذي عليه التركيز ويرفضه N، على أي تخطيط للوحة المفاتيح، ولا يعملان مع Ctrl أو Cmd. ويغلق Escape الاقتراح ويعيد التركيز إلى النص.",
+        "Y accepts the focused change and N rejects it, on any keyboard layout, never with Ctrl or Cmd. Escape dismisses the suggestion and returns focus to the text.",
+      ],
+      [
+        "إذا غيّر المساعد كل كلمة تقريبًا فاعرض النسخة الجديدة بجانب القديمة، فالتعديلات المتعقَّبة تصعب قراءتها حينها.",
+        "When the assistant changes almost every word, show the new version beside the old one: tracked changes are hard to read by then.",
+      ],
+    ],
+  },
   terminal: {
     useWhen: [
       [

@@ -5791,6 +5791,235 @@ button.tz-source-chip {
   white-space: nowrap;
 }
 
+/* Suggested edits (spec section 12.6): selected text improved with tracked
+   changes the person accepts or rejects. The host's text stays untouched until
+   Apply. While the assistant rewrites and while the person reviews, the range
+   keeps a soft thread underline, a custom highlight in place of the selection.
+   The note and the review card float below the range in the provider's layer
+   and enter only after a change of status. */
+.tz-suggested-edits {
+  min-inline-size: 0;
+}
+.tz-suggested-edits ::highlight(tz-suggestion) {
+  text-decoration-line: underline;
+  text-decoration-color: var(--ai);
+  text-decoration-thickness: 2px;
+  text-underline-offset: var(--underline-offset);
+}
+/* The note says the assistant is rewriting, with the stitch under its words. */
+.tz-suggested-edits-working {
+  z-index: 65;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 3px var(--space-2);
+  padding: 6px var(--space-3) 5px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-popover);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-suggested-edits-working > .tz-thread {
+  grid-column: 2;
+}
+.tz-suggested-edits-card {
+  z-index: 65;
+  inline-size: min(30rem, calc(100vw - 16px));
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-suggested-edits-card > .tz-tray {
+  box-shadow:
+    0 0 0 1px var(--hairline),
+    var(--shadow-popover);
+}
+:is(.tz-suggested-edits-working, .tz-suggested-edits-card)[data-changed] {
+  transform-origin: var(--radix-popper-transform-origin);
+  animation: tz-menu-in var(--motion-enter) var(--ease-out);
+}
+:is(.tz-suggested-edits-working, .tz-suggested-edits-card)[data-side="top"] {
+  --enter-y: 4px;
+}
+.tz-suggested-edits-header {
+  display: grid;
+  flex: 1;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.tz-suggested-edits-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-suggested-edits-title {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-suggested-edits-nav {
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+/* The counter keeps its width as it counts, so next never moves under the
+   pointer: Arabic-Indic digits are proportional. */
+.tz-suggested-edits-position {
+  min-inline-size: 7ch;
+  text-align: center;
+  white-space: nowrap;
+}
+.tz-suggested-edits-all {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-1);
+}
+.tz-suggested-edits-passage {
+  margin: 0;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
+.tz-suggested-edits-note {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-suggested-edits-decision {
+  margin-inline-start: auto;
+}
+/* The receipt sits under the host's text: a check, what was applied, and
+   Undo when the host offers it. */
+.tz-suggested-edits-receipt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-suggested-edits-receipt > svg {
+  color: var(--success);
+}
+
+/* InlineDiff: tracked changes in running text. A deletion is struck through on
+   the danger tint and an insertion underlined on the success tint, so neither
+   rests on color alone. A decided change keeps both sides, the side that lost
+   faded and struck through, so it can still be found and changed. A focused
+   change shows its small bar, accept (Y) and reject (N), floating below it so
+   the text never moves. */
+.tz-inline-diff-change {
+  position: relative;
+  border-radius: var(--radius-small);
+  cursor: pointer;
+}
+.tz-inline-diff-change :is(del, ins) {
+  padding-inline: 1px;
+  border-radius: var(--radius-small);
+  color: var(--text);
+  text-decoration-thickness: 1px;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out);
+}
+.tz-inline-diff-change del {
+  background: var(--danger-soft);
+  text-decoration-line: line-through;
+  text-decoration-color: var(--danger);
+}
+.tz-inline-diff-change ins {
+  background: var(--success-soft);
+  text-decoration-line: underline;
+  text-decoration-color: var(--success);
+  text-underline-offset: var(--underline-offset);
+}
+.tz-inline-diff-change[data-decision] :is(del, ins) {
+  background: transparent;
+}
+.tz-inline-diff-change[data-decision="accepted"] del,
+.tz-inline-diff-change[data-decision="rejected"] ins {
+  color: var(--text-muted);
+  text-decoration-line: line-through;
+  text-decoration-color: currentColor;
+}
+.tz-inline-diff-change[data-decision="rejected"] del {
+  text-decoration-line: none;
+}
+.tz-inline-diff-bar {
+  position: absolute;
+  inset-block-start: calc(100% + 2px);
+  inset-inline-start: 0;
+  z-index: 1;
+  display: none;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--surface);
+  box-shadow: var(--shadow-popover);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  cursor: default;
+}
+.tz-inline-diff-change:focus-within > .tz-inline-diff-bar {
+  display: flex;
+}
+/* Near the end of a line the bar opens from the change's other side, so it
+   stays over the passage (InlineDiff sets data-flip as it measures). */
+.tz-inline-diff-change[data-flip] > .tz-inline-diff-bar {
+  inset-inline: auto 0;
+}
+.tz-inline-diff-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: 26px;
+  padding: 2px var(--space-2);
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: inherit;
+  font-weight: var(--weight-medium);
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-inline-diff-bar button:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}
+.tz-inline-diff-bar button:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+.tz-inline-diff-bar button[aria-pressed="true"] {
+  background: var(--wash-strong);
+  color: var(--text);
+}
+@media (forced-colors: active) {
+  .tz-inline-diff-bar button[aria-pressed="true"] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+}
+
 /* Supplied-data file navigator: only visible items participate in roving focus. */
 .tz-file-tree {
   min-inline-size: 0;

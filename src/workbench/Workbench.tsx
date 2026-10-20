@@ -169,6 +169,7 @@ export function Workbench() {
   function restartOnEdit() {
     if (
       active === "agent-task" ||
+      active === "suggested-edits" ||
       active === "change-summary" ||
       active === "ask-user-questions" ||
       active === "approval-card" ||

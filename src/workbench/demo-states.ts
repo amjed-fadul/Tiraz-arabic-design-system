@@ -127,6 +127,10 @@ export const stateWords = {
   ready: ["جاهز", "Ready"],
   stale: ["قديم", "Stale"],
   choosingMode: ["اختيار الوضع", "Choosing mode"],
+  selecting: ["تحديد النص", "Selecting"],
+  rewriting: ["يعيد الصياغة", "Rewriting"],
+  reviewing: ["قيد المراجعة", "Reviewing"],
+  applied: ["طُبّق", "Applied"],
 } satisfies Record<string, Localized>;
 
 /** A state whose id and label both come from one word in `stateWords`. */
@@ -601,6 +605,21 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "thinking", ms: 2600 },
       { state: "writing", ms: 2600 },
       { state: "done", ms: 800 },
+    ],
+  },
+  "suggested-edits": {
+    states: [
+      phased("selecting"),
+      phased("rewriting"),
+      phased("reviewing"),
+      phased("applied"),
+    ],
+    resting: "reviewing",
+    replay: [
+      { state: "selecting", ms: 1400 },
+      { state: "rewriting", ms: 1600 },
+      { state: "reviewing", ms: 2600 },
+      { state: "applied", ms: 800 },
     ],
   },
   "change-summary": {

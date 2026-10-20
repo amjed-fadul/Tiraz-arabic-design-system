@@ -284,6 +284,7 @@ export interface Playgrounds {
   "task-starter": { appearance: "card" | "plain"; disabled: boolean };
   "cited-answer": { appearance: "card" | "plain"; question: boolean };
   "agent-task": { appearance: "card" | "plain"; autoStart: boolean };
+  "suggested-edits": { undo: boolean };
   "change-summary": { appearance: "card" | "plain" };
   "ask-user-questions": { appearance: "card" | "plain"; longContent: boolean };
   terminal: {
@@ -429,6 +430,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "task-starter": { appearance: "card", disabled: false },
     "cited-answer": { appearance: "card", question: true },
     "agent-task": { appearance: "card", autoStart: true },
+    "suggested-edits": { undo: true },
     "change-summary": { appearance: "card" },
     "ask-user-questions": { appearance: "card", longContent: false },
     terminal: { state: "completed", longContent: false, followOutput: false },

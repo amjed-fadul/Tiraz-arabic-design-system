@@ -569,6 +569,8 @@ const starterField = () =>
   stage().getByRole("combobox", { name: "طلبك" }) as HTMLTextAreaElement;
 const toolbar = () =>
   screen.queryByRole("toolbar", { name: "إجراءات النص المحدّد", hidden: true });
+// Suggested edits' review card floats in the provider's layer, beside the stage.
+const reviewCard = "اقتراح المساعد · اجعلها أقصر";
 const phaseFamilies: PhaseFamily[] = [
   {
     id: "streaming-text",
@@ -813,6 +815,58 @@ const phaseFamilies: PhaseFamily[] = [
       ],
     ],
     replay: ["updating", "ready"],
+  },
+  {
+    id: "suggested-edits",
+    resting: "reviewing",
+    list: [
+      [
+        "selecting",
+        () => {
+          // A real selection of the summary's first sentence, for the
+          // toolbar to answer.
+          expect(document.getSelection()?.toString()).toMatch(
+            /^خلال إقفال أكتوبر،.*تحتاج إلى مراجعة\.$/,
+          );
+          expect(screen.queryByRole("dialog", { name: reviewCard })).toBeNull();
+        },
+      ],
+      [
+        "rewriting",
+        () => {
+          // The note below the selection; a Replay also announces it.
+          expect(
+            document.querySelector(".tz-suggested-edits-working"),
+          ).toHaveTextContent("يعيد الصياغة…");
+          expect(screen.queryByRole("dialog", { name: reviewCard })).toBeNull();
+        },
+      ],
+      [
+        "reviewing",
+        () => {
+          const card = screen.getByRole("dialog", { name: reviewCard });
+          expect(card).toHaveTextContent("١ من ٣");
+          expect(
+            within(card).getByRole("button", { name: "تطبيق" }),
+          ).toBeEnabled();
+          // The host's text stays as it was while the person reviews.
+          expect(stageNode()).toHaveTextContent(
+            "قام فريق المالية بعملية مطابقة",
+          );
+        },
+      ],
+      [
+        "applied",
+        () => {
+          expect(stageNode()).toHaveTextContent("طُبّق تعديلان من ٣");
+          expect(stageNode()).toHaveTextContent(
+            "طابق فريق المالية ٢١٧ فاتورة للموردين",
+          );
+          expect(stage().getByRole("button", { name: "تراجع" })).toBeEnabled();
+        },
+      ],
+    ],
+    replay: ["selecting", "rewriting", "reviewing", "applied"],
   },
   {
     id: "chat-thread",

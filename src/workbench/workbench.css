@@ -1250,3 +1250,9 @@ bdi {
 .playground-streaming-text {
   display: block;
 }
+/* Suggested edits opens its card below the text, so the text starts at the
+   top and the card has room under it, at one height in every state. */
+.playground-suggested-edits {
+  align-items: flex-start;
+  min-block-size: 22rem;
+}

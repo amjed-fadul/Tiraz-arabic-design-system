@@ -134,6 +134,9 @@ const unknownPage = pageIds.find((id) => !catalogIds.includes(id));
 if (unknownPage) throw new Error(`Unknown page: ${unknownPage}`);
 // TIRAZ_FULLPAGE=1 captures the whole page instead of the playground section.
 const fullPage = process.env.TIRAZ_FULLPAGE === "1";
+// TIRAZ_STATES=1 also presses each of a page's state buttons in turn after its
+// resting capture, and captures each state as <id>--state-<n>.jpg, n from 1.
+const withStates = process.env.TIRAZ_STATES === "1";
 
 await mkdir(evidence, { recursive: true });
 const errorsFile = path.join(evidence, "errors.txt");
@@ -237,14 +240,26 @@ try {
       if ((await section.count()) === 0) {
         failures.push(`${variant.name} ${id}: no .playground-section`);
       } else {
-        const shot = {
-          path: path.join(evidence, variant.name, `${id}.jpg`),
-          type: "jpeg",
-          quality: 70,
+        const capture = async (name) => {
+          const shot = {
+            path: path.join(evidence, variant.name, `${name}.jpg`),
+            type: "jpeg",
+            quality: 70,
+          };
+          if (fullPage) await page.screenshot({ ...shot, fullPage: true });
+          else await section.first().screenshot(shot);
+          saved += 1;
         };
-        if (fullPage) await page.screenshot({ ...shot, fullPage: true });
-        else await section.first().screenshot(shot);
-        saved += 1;
+        await capture(id);
+        if (withStates) {
+          const buttons = page.locator(".tz-demo-states button");
+          const count = await buttons.count();
+          for (let index = 0; index < count; index += 1) {
+            await buttons.nth(index).click();
+            await page.waitForTimeout(1200);
+            await capture(`${id}--state-${index + 1}`);
+          }
+        }
       }
       await flush();
     }

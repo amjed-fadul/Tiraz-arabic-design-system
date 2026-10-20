@@ -10,7 +10,8 @@ export interface SelectionAction {
   label: string;
   icon?: ReactNode;
   disabled?: boolean;
-  onSelect: (text: string) => void;
+  /** The selected text, and where it sits in the scope's text content. */
+  onSelect: (text: string, range: { start: number; end: number }) => void;
 }
 export interface SelectionActionsProps {
   children: ReactNode;
@@ -30,6 +31,14 @@ type Snapshot = {
   focus: Node;
   focusOffset: number;
 };
+/** Where `range` sits in the text content of `scope`, which contains it. */
+function offsetsIn(scope: Node, range: Range) {
+  const before = scope.ownerDocument!.createRange();
+  before.setStart(scope, 0);
+  before.setEnd(range.startContainer, range.startOffset);
+  const start = before.toString().length;
+  return { start, end: start + range.toString().length };
+}
 /** Instance-scoped selection presentation; never executes or replaces content. */
 export function SelectionActions({
   children,
@@ -196,7 +205,7 @@ export function SelectionActions({
         current.focus,
         current.focusOffset,
       );
-    return current.text;
+    return current;
   }
   const shown = snapshot && container && actions.length > 0;
   const visible = expanded ? actions : actions.slice(0, 2);
@@ -294,8 +303,12 @@ export function SelectionActions({
                 key={action.id}
                 disabled={action.disabled}
                 onClick={() => {
-                  const text = restore();
-                  if (text !== null) action.onSelect(text);
+                  const current = restore();
+                  if (current && scope.current)
+                    action.onSelect(
+                      current.text,
+                      offsetsIn(scope.current, current.range),
+                    );
                 }}
               >
                 {action.icon}
