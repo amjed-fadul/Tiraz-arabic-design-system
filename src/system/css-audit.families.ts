@@ -64,4 +64,21 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   tick: [".tz-tick"],
   // .tz-chart covers the Line, Area, Bar and Donut charts' shared frame.
   charts: [".tz-chart"],
+  // .tz-loading also covers the spinner's .tz-loading-spinner.
+  "loading-state": [".tz-loading"],
+  // .tz-thinking covers ThinkingIndicator and ThinkingState.
+  thinking: [".tz-thinking"],
+  "streaming-text": [".tz-streaming", ".tz-stream"],
+  markdown: [".tz-markdown"],
+  "code-block": [".tz-code"],
+  terminal: [".tz-terminal"],
+  // .tz-tool covers ToolCall and ToolChips.
+  tools: [".tz-tool"],
+  // .tz-agent is each task row of TaskRows.
+  "task-rows": [".tz-task", ".tz-agent"],
+  // .tz-chat covers ChatThread, the composer that ChatComposer, PromptEntry
+  // and PromptBar share, and ChatApp.
+  chat: [".tz-chat"],
+  // .tz-prompt is PromptBar's wrapper, bar and suggestions.
+  "prompt-bar": [".tz-prompt"],
 };

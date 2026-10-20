@@ -2,6 +2,7 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Check, Copy, Terminal as TerminalIcon } from "lucide-react";
 import { Button } from "./Button";
 import type { InputCopyLabels } from "./InputCopy";
+import { numberLocale } from "./config";
 import { useExactCopy } from "./useExactCopy";
 import { useSystem } from "./useSystem";
 export interface TerminalProps {
@@ -28,7 +29,8 @@ export function Terminal({
   followOutput = false,
   className = "",
 }: TerminalProps) {
-  const ar = useSystem().config.direction === "rtl";
+  const { config } = useSystem();
+  const ar = config.direction === "rtl";
   const title = label ?? (ar ? "مخرجات الطرفية" : "Terminal output");
   const text = command === undefined ? output : `${command}\n${output}`;
   const feedback = useExactCopy(text);
@@ -80,7 +82,14 @@ export function Terminal({
                   ? "مكتمل"
                   : "Completed"}
           </span>
-          {exitCode !== undefined && <bdi>exit {exitCode}</bdi>}
+          {exitCode !== undefined && (
+            <bdi>
+              {`${ar ? "رمز الخروج" : "exit"} ${new Intl.NumberFormat(
+                numberLocale(config),
+                { useGrouping: false },
+              ).format(exitCode)}`}
+            </bdi>
+          )}
         </span>
         <Button
           variant="ghost"

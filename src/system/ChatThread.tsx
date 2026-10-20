@@ -5,6 +5,7 @@ import {
   useRef,
 } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
+import { useArrivals } from "./useArrivals";
 import { useSystem } from "./useSystem";
 export type ChatMessage = {
   id: string;
@@ -30,6 +31,8 @@ export function ChatThread({
   ...props
 }: ChatThreadProps) {
   const ar = useSystem().config.direction === "rtl";
+  // Messages on the first render are history; only later ones enter.
+  const arrivals = useArrivals(messages.map((message) => message.id));
   const root = useRef<HTMLDivElement>(null),
     content = useRef<HTMLDivElement>(null),
     nearBottom = useRef(true);
@@ -82,6 +85,11 @@ export function ChatThread({
             className="tz-chat-message"
             data-role={message.role}
             data-message-id={message.id}
+            data-fresh={arrivals.fresh(message.id) || undefined}
+            onAnimationEnd={(event) => {
+              if (event.target === event.currentTarget)
+                arrivals.settle(message.id);
+            }}
           >
             {(message.identity || message.avatar) && (
               <header className="tz-chat-identity">

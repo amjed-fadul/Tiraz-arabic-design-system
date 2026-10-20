@@ -125,6 +125,16 @@ it.each(["running", "completed", "failed"] as const)(
     expect(screen.queryByRole("button", { name: /run|stop/i })).toBeNull();
   },
 );
+it("says its state and exit code in Arabic, with Arabic-Indic digits", () => {
+  render(
+    <SystemProvider>
+      <Terminal output="text" state="failed" exitCode={1} />
+    </SystemProvider>,
+  );
+  expect(screen.getByText("فشل")).toBeVisible();
+  expect(screen.getByText("رمز الخروج ١")).toBeVisible();
+  expect(screen.queryByText(/exit/)).toBeNull();
+});
 it("preserves a substring selection across append-only output updates", () => {
   const { rerender } = render(view("first line\nsecond line\n", true));
   const region = screen.getByRole("region"),

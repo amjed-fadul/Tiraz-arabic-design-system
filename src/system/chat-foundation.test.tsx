@@ -165,6 +165,29 @@ it("preserves keyed message, action focus and settled text selection across stre
   expect(view.container.querySelector('[aria-live="polite"]')).toBeNull();
   window.getSelection()?.removeAllRanges();
 });
+it("gives only messages that arrive after the first render an entry hook", () => {
+  const first = [
+    { id: "q", role: "user" as const, content: "مرحبا" },
+    { id: "a", role: "assistant" as const, content: "أهلًا" },
+  ];
+  const view = render(wrap(<ChatThread messages={first} />));
+  const fresh = () =>
+    [...view.container.querySelectorAll(".tz-chat-message[data-fresh]")].map(
+      (message) => message.getAttribute("data-message-id"),
+    );
+  expect(fresh()).toEqual([]);
+  view.rerender(
+    wrap(
+      <ChatThread
+        messages={[...first, { id: "n", role: "user", content: "جديد" }]}
+      />,
+    ),
+  );
+  expect(fresh()).toEqual(["n"]);
+  // An earlier message that becomes the last one again does not replay.
+  view.rerender(wrap(<ChatThread messages={first} />));
+  expect(fresh()).toEqual([]);
+});
 it("follows only near bottom when explicitly enabled; preserves older reader position", () => {
   const view = render(wrap(<ChatThread followOutput messages={[]} />));
   const thread = screen.getByRole("region");

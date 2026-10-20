@@ -292,7 +292,7 @@ it("uses existing semantic Badges for each task state", () => {
   for (const [label, tone] of [
     ["مكتملة", "success"],
     ["قيد الانتظار", "neutral"],
-    ["جارٍ التنفيذ", "info"],
+    ["جارٍ التنفيذ", "ai"],
     ["فشلت", "error"],
   ]) {
     expect(screen.getByText(label, { exact: true })).toHaveClass("tz-badge");

@@ -442,7 +442,8 @@ it("draws the check and cross only after a change, and never pops", () => {
   ).toEqual([]);
   for (const { value } of animated) {
     expect(value).toMatch(/^tz-draw /);
-    expect(value).toContain("var(--motion-state)");
+    // The system sets a status, so keyboard modality leaves this time alone.
+    expect(value).toContain("var(--motion-status)");
     expect(value).toContain("var(--ease-out)");
   }
 });

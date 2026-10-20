@@ -99,7 +99,7 @@ function TaskRow({
               : item.state === "failed"
                 ? "error"
                 : item.state === "running"
-                  ? "info"
+                  ? "ai"
                   : "neutral"
           }
         >

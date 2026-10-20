@@ -2447,7 +2447,7 @@
       "state": "Execution state is always application-owned. Internal expansion starts from defaultExpandedIds; expandedIds/onExpandedChange controls multiple rows. Disclosure never alters execution.",
       "accessibility": [
         "Native named ul, stable keyed rows; native disclosure buttons with aria-expanded, aria-controls and labeled panels. Title/summary are noninteractive strings. Detail actions are outside triggers.",
-        "Visible translated state Badge (neutral/info/success/error) plus the shared decorative StatusIcon (number, spinner, check or cross). Disclosure grid-height/opacity transitions honor system/OS reduced motion; the whole task shares hover feedback. Closing panels are aria-hidden/inert immediately while retained DOM preserves detail values; hidden stays set with a CSS grid override during exit. Controlled collapse returns panel focus to its trigger without stealing outside focus. State updates retain focus and expansion."
+        "Visible translated state Badge (neutral/ai/success/error) plus the shared decorative StatusIcon (number, spinner, check or cross). Disclosure grid-height/opacity transitions honor system/OS reduced motion; the whole task shares hover feedback. Closing panels are aria-hidden/inert immediately while retained DOM preserves detail values; hidden stays set with a CSS grid override during exit. Controlled collapse returns panel focus to its trigger without stealing outside focus. State updates retain focus and expansion."
       ],
       "limitations": [
         "Supply stable unique nonempty IDs. No agent runtime, networking, library timers, automatic progression, sorting or persistence.",

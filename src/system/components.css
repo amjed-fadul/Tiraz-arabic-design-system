@@ -3953,8 +3953,9 @@ textarea.tz-textarea:read-only {
    agent work (Woven spec section 13). Done, failed and needs-you are filled
    discs holding a --surface glyph; pending and skipped are dashed rings, stopped
    an outline and running the live arc. A host sizes it with --status-size. The
-   check and cross draw themselves only after a change (data-changed), over the
-   state-change time with no pop; first paint is still. */
+   check and cross draw themselves only after a change (data-changed), with no
+   pop; first paint is still. The system sets a status, not a key, so the draw
+   runs on --motion-status, which keyboard modality leaves alone. */
 .tz-status-icon {
   display: inline-grid;
   place-items: center;
@@ -4049,7 +4050,7 @@ textarea.tz-textarea:read-only {
   > :is([data-glyph="check"], [data-glyph="x"])
   path {
   stroke-dasharray: var(--draw) var(--draw);
-  animation: tz-draw var(--motion-state) var(--ease-out) both;
+  animation: tz-draw var(--motion-status) var(--ease-out) both;
 }
 .tz-status-icon[data-changed] > [data-glyph="x"] path:nth-child(2) {
   animation-delay: var(--motion-stagger);
@@ -4068,7 +4069,7 @@ textarea.tz-textarea:read-only {
 .tz-agent-task {
   min-inline-size: 0;
   border: 1px solid transparent;
-  border-radius: calc(var(--radius-panel) + 4px);
+  border-radius: var(--radius-paper);
   background: var(--surface);
   box-shadow: var(--shadow-surface);
 }
@@ -4123,7 +4124,7 @@ textarea.tz-textarea:read-only {
   inline-size: 16px;
   block-size: 16px;
   color: var(--text-muted);
-  transition: transform calc(var(--motion-state) + 40ms) var(--ease-out);
+  transition: transform var(--motion-state) var(--ease-out);
 }
 .tz-agent-task[data-expanded="true"] .tz-agent-task-chevron {
   transform: rotate(180deg);
@@ -4169,7 +4170,7 @@ textarea.tz-textarea:read-only {
 .tz-task-rows[data-appearance="list"] {
   gap: 0;
   border: 1px solid transparent;
-  border-radius: var(--radius-panel);
+  border-radius: var(--radius-paper);
   background: var(--surface);
   box-shadow: var(--shadow-surface);
 }
@@ -4373,10 +4374,11 @@ textarea.tz-textarea:read-only {
   font-size: var(--text-meta);
   color: var(--text-secondary);
 }
+/* Elapsed time is a human value, so it is set in the reading face. Its box is
+   fixed, so the label beside it never moves as the count grows. */
 .tz-loading-elapsed {
   inline-size: 8ch;
   flex: none;
-  font-family: var(--font-mono);
   font-size: var(--text-meta);
   font-variant-numeric: tabular-nums;
   color: var(--text-muted);
@@ -4433,8 +4435,12 @@ textarea.tz-textarea:read-only {
     background-size: 200% 100%;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: tz-ai-shimmer 1.4s linear infinite;
+    animation: tz-ai-shimmer var(--motion-loop-shimmer) linear infinite;
   }
+}
+/* The shimmer sweeps in the reading direction. */
+.tz-ai-shimmer:dir(rtl) {
+  animation-direction: reverse;
 }
 @keyframes tz-ai-shimmer {
   from {
@@ -4451,7 +4457,8 @@ textarea.tz-textarea:read-only {
   max-inline-size: 100%;
   min-inline-size: 0;
   color: var(--text-secondary);
-  font-size: calc((var(--text-body) + var(--text-meta)) / 2);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
 }
 .tz-thinking-glyph {
   inline-size: 18px;
@@ -4477,8 +4484,12 @@ textarea.tz-textarea:read-only {
 }
 .tz-thinking-word {
   animation:
-    tz-ai-shimmer 1.4s linear infinite,
-    tz-ai-word-in var(--motion-enter) cubic-bezier(0.23, 1, 0.32, 1) both;
+    tz-ai-shimmer var(--motion-loop-shimmer) linear infinite,
+    tz-ai-word-in var(--motion-enter) var(--ease-out) both;
+}
+/* Only the shimmer reverses in Arabic; the word still rises in. */
+.tz-thinking-word:dir(rtl) {
+  animation-direction: reverse, normal;
 }
 @keyframes tz-ai-word-in {
   from {
@@ -4509,8 +4520,10 @@ textarea.tz-textarea:read-only {
   text-align: start;
   cursor: pointer;
 }
-.tz-thinking-state-trigger:hover {
-  background: var(--surface-hover);
+@media (hover: hover) and (pointer: fine) {
+  .tz-thinking-state-trigger:hover {
+    background: var(--wash);
+  }
 }
 .tz-thinking-state-trigger:focus-visible {
   outline: 2px solid var(--focus);
@@ -4532,14 +4545,13 @@ textarea.tz-textarea:read-only {
   block-size: 14px;
   flex: none;
   color: var(--text-muted);
-  transition: transform calc(var(--motion-state) + var(--motion-fast))
-    cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform var(--motion-state) var(--ease-out);
 }
 .tz-thinking-state[data-expanded="true"] .tz-thinking-state-chevron {
   transform: rotate(180deg);
 }
 .tz-thinking-completed {
-  animation: tz-ai-complete 350ms ease-out both;
+  animation: tz-ai-complete var(--motion-state) var(--ease-out) both;
 }
 @keyframes tz-ai-complete {
   from {
@@ -4557,21 +4569,17 @@ textarea.tz-textarea:read-only {
   visibility: hidden;
   min-inline-size: 0;
   transition:
-    grid-template-rows calc(var(--motion-enter) + var(--motion-exit))
-      cubic-bezier(0.23, 1, 0.32, 1),
-    opacity calc(var(--motion-enter) + var(--motion-exit))
-      cubic-bezier(0.23, 1, 0.32, 1),
-    visibility 0s calc(var(--motion-enter) + var(--motion-exit));
+    grid-template-rows var(--motion-collapse-exit) var(--ease-out),
+    opacity var(--motion-collapse-exit) var(--ease-out),
+    visibility 0s var(--motion-collapse-exit);
 }
 .tz-thinking-state[data-expanded="true"] > .tz-thinking-state-panel {
   grid-template-rows: 1fr;
   opacity: 1;
   visibility: visible;
   transition:
-    grid-template-rows calc(var(--motion-enter) + var(--motion-exit))
-      cubic-bezier(0.23, 1, 0.32, 1),
-    opacity calc(var(--motion-enter) + var(--motion-exit))
-      cubic-bezier(0.23, 1, 0.32, 1),
+    grid-template-rows var(--motion-collapse) var(--ease-out),
+    opacity var(--motion-collapse) var(--ease-out),
     visibility 0s;
 }
 .tz-thinking-state-clip {
@@ -4595,7 +4603,8 @@ textarea.tz-textarea:read-only {
   padding: 0;
   margin: 0;
   list-style: none;
-  font-size: calc((var(--text-body) + var(--text-meta)) / 2);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
 }
 .tz-thinking-steps > li {
   display: flex;
@@ -4603,7 +4612,7 @@ textarea.tz-textarea:read-only {
   gap: var(--space-2);
   min-block-size: 28px;
   min-inline-size: 0;
-  animation: tz-ai-word-in 320ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: tz-ai-word-in var(--motion-state) var(--ease-out) both;
 }
 .tz-thinking-steps > li > svg {
   inline-size: 14px;
@@ -4682,7 +4691,7 @@ textarea.tz-textarea:read-only {
 .tz-tool-call {
   min-inline-size: 0;
   border: 1px solid transparent;
-  border-radius: calc(var(--radius) + 2px);
+  border-radius: var(--radius-paper);
   background: var(--surface);
   box-shadow: var(--shadow-surface);
   color: var(--text);
@@ -4738,7 +4747,7 @@ textarea.tz-textarea:read-only {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: tz-text-shimmer 2s linear infinite;
+  animation: tz-text-shimmer var(--motion-loop-shimmer) linear infinite;
 }
 .tz-tool-call[data-state="running"] .tz-tool-call-label:dir(rtl) {
   animation-direction: reverse;
@@ -4805,15 +4814,18 @@ textarea.tz-textarea:read-only {
   visibility: hidden;
   min-inline-size: 0;
   transition:
-    grid-template-rows var(--motion-enter) ease,
-    opacity var(--motion-enter) ease,
-    visibility 0s var(--motion-enter);
+    grid-template-rows var(--motion-collapse-exit) var(--ease-out),
+    opacity var(--motion-collapse-exit) var(--ease-out),
+    visibility 0s var(--motion-collapse-exit);
 }
 .tz-tool-call[data-expanded="true"] > .tz-tool-call-panel {
   grid-template-rows: 1fr;
   opacity: 1;
   visibility: visible;
-  transition-delay: 0s;
+  transition:
+    grid-template-rows var(--motion-collapse) var(--ease-out),
+    opacity var(--motion-collapse) var(--ease-out),
+    visibility 0s;
 }
 .tz-tool-call-clip {
   min-block-size: 0;
@@ -4851,7 +4863,7 @@ textarea.tz-textarea:read-only {
   border: 0;
   background: var(--code-surface);
   box-shadow: inset 0 0 0 0.5px var(--hairline);
-  border-radius: var(--radius);
+  border-radius: var(--radius-item);
   color: var(--text-secondary);
   overflow-wrap: anywhere;
 }
@@ -4859,7 +4871,7 @@ textarea.tz-textarea:read-only {
   margin: 0;
   font-family: var(--font-mono);
   font-size: var(--text-meta);
-  line-height: 1.7;
+  line-height: var(--line-height);
   white-space: pre;
 }
 .tz-tool-detail[data-error="true"] .tz-tool-output {
@@ -4871,7 +4883,7 @@ textarea.tz-textarea:read-only {
 .tz-tool-message {
   margin: 0;
   font-size: var(--text-body);
-  line-height: 1.7;
+  line-height: var(--line-height);
 }
 .tz-tool-chips {
   display: flex;
@@ -4886,18 +4898,20 @@ textarea.tz-textarea:read-only {
   min-inline-size: 0;
   max-inline-size: 100%;
 }
+/* Chips are paper pills. A connected chip presses by the shared amount and
+   releases with ease-out. */
 .tz-tool-chip {
   --status-size: 18px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--control-gap);
   min-inline-size: 0;
   max-inline-size: 100%;
   min-block-size: 28px;
-  padding: 2px 10px 2px 6px;
-  padding-inline: 5px 10px;
+  padding-block: calc(var(--space-1) / 2);
+  padding-inline: var(--space-1) var(--control-small-padding);
   border: 1px solid transparent;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   background: var(--surface);
   color: var(--text-secondary);
   font: inherit;
@@ -4908,10 +4922,10 @@ button.tz-tool-chip {
   cursor: pointer;
   transition:
     background-color var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    transform var(--motion-release) var(--ease-out);
 }
 button.tz-tool-chip:active {
-  transform: scale(0.96);
+  transform: scale(var(--press-scale));
   transition-duration: var(--motion-fast), var(--motion-press);
 }
 button.tz-tool-chip[aria-expanded="true"] {
@@ -4951,13 +4965,16 @@ button.tz-tool-chip[aria-expanded="true"] {
   }
 }
 
-/* AI response content: bounded source, flowing prose and host-driven updates. */
+/* AI response content: bounded source, flowing prose and host-driven updates.
+   Source and terminal output sit in a well inside a paper ring. Their headers
+   are interface chrome in the reading face; code text is mono at the meta
+   size with the body leading, as in the documentation's code view. */
 .tz-code-block {
   inline-size: 100%;
   min-inline-size: 0;
   max-inline-size: 100%;
   border: 1px solid transparent;
-  border-radius: calc(var(--radius) + 2px);
+  border-radius: var(--radius-paper);
   background: var(--code-surface);
   box-shadow: var(--shadow-surface);
   overflow: hidden;
@@ -4972,7 +4989,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   border-block-end: 0.5px solid var(--hairline);
   background: var(--surface);
   color: var(--text-muted);
-  font: var(--text-meta)/1.6 var(--font-mono);
+  font: var(--text-meta) / var(--leading-meta) var(--font);
 }
 .tz-code-header bdi {
   overflow-wrap: anywhere;
@@ -4987,7 +5004,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   max-block-size: 20rem;
   overflow: auto;
   tab-size: 2;
-  font: var(--text-meta)/1.8 var(--font-mono);
+  font: var(--text-meta) / var(--line-height) var(--font-mono);
   white-space: pre;
 }
 .tz-code-block code {
@@ -5027,19 +5044,25 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-markdown :is(p, ul, ol, blockquote, .tz-code-block, .tz-table-container) {
   margin-block: var(--space-3);
 }
+/* Headings follow the type scale: h1 is the title, then heading and
+   subheading; h4 to h6 keep the size of the text around them. */
 .tz-markdown :is(h1, h2, h3, h4, h5, h6) {
   font-weight: var(--weight-semibold);
-  line-height: 1.8;
+  line-height: var(--leading-heading);
   margin-block: var(--space-5) var(--space-2);
 }
 .tz-markdown h1 {
-  font-size: var(--text-heading);
+  font-size: var(--text-title);
+  line-height: var(--leading-title);
 }
 .tz-markdown h2 {
-  font-size: calc(var(--text-body) + 2px);
+  font-size: var(--text-heading);
 }
-.tz-markdown :is(h3, h4, h5, h6) {
-  font-size: var(--text-body);
+.tz-markdown h3 {
+  font-size: var(--text-subheading);
+}
+.tz-markdown :is(h4, h5, h6) {
+  font-size: 1em;
 }
 .tz-markdown ul {
   list-style-type: disc;
@@ -5063,6 +5086,11 @@ button.tz-tool-chip[aria-expanded="true"] {
   text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
   transition: text-decoration-color var(--motion-fast) var(--ease-out);
 }
+@media (hover: hover) and (pointer: fine) {
+  .tz-markdown a:hover {
+    text-decoration-color: currentColor;
+  }
+}
 .tz-markdown a:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
@@ -5081,7 +5109,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   background: var(--surface-subtle);
   padding: 1px 4px;
   font-family: var(--font-mono);
-  font-size: 0.9em;
+  font-size: var(--text-meta);
 }
 .tz-markdown .tz-table {
   font-size: var(--text-meta);
@@ -5097,19 +5125,22 @@ button.tz-tool-chip[aria-expanded="true"] {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+/* Each new word settles out of a blur. The words and the caret follow the
+   reply, not a key, so keyboard modality leaves their timing alone. */
 .tz-streaming-text[data-state="streaming"]
   :is(.tz-stream-word, .tz-markdown-word) {
-  animation: tz-stream-reveal 360ms var(--ease) both;
+  animation: tz-stream-reveal var(--motion-word-settle) var(--ease-out) both;
 }
 .tz-stream-cursor {
   display: inline-block;
   inline-size: 2px;
   block-size: 0.9em;
   margin-inline-start: var(--space-1);
-  background: currentColor;
+  background: var(--ai);
   vertical-align: baseline;
-  border-radius: 2px;
-  animation: tz-stream-caret 1100ms ease-in-out infinite;
+  border-radius: var(--radius-small);
+  animation: tz-stream-caret var(--motion-loop-caret) var(--ease-in-out)
+    infinite;
 }
 @keyframes tz-stream-reveal {
   from {
@@ -5556,21 +5587,23 @@ button.tz-tool-chip[aria-expanded="true"] {
   min-inline-size: 0;
   max-inline-size: 100%;
 }
-/* People speak in soft bubbles on the inline end; the assistant answers
-   flat, at reading width. The newest message settles in; history does not. */
-.tz-chat-message:last-child {
-  animation: tz-message-in calc(var(--motion-enter) + 80ms) var(--ease-out);
+/* People speak in tray bubbles on the inline end, with a small tail at the
+   end-end corner; the assistant answers flat, at reading width and size. Only
+   a message that arrives after the first render settles in (data-fresh), so
+   history never replays when an earlier message becomes the last. */
+.tz-chat-message[data-fresh] {
+  animation: tz-message-in var(--motion-state) var(--ease-out);
 }
 .tz-chat-message[data-role="user"] {
   align-self: flex-end;
   max-inline-size: min(80%, 36rem);
 }
 .tz-chat-message[data-role="user"] .tz-chat-content {
-  background: color-mix(in srgb, var(--surface-hover) 80%, var(--surface));
+  background: var(--surface-tray);
   padding: var(--space-2) var(--space-4);
-  border-radius: calc(var(--radius-panel) + 8px);
+  border-radius: var(--radius-paper);
   border-end-end-radius: var(--radius-small);
-  line-height: 1.75;
+  line-height: var(--line-height);
 }
 .tz-chat-message[data-role="user"] .tz-chat-identity {
   justify-content: flex-end;
@@ -5588,8 +5621,8 @@ button.tz-tool-chip[aria-expanded="true"] {
   font-weight: var(--weight-medium);
 }
 .tz-chat-identity .tz-avatar {
-  inline-size: 24px;
-  block-size: 24px;
+  inline-size: var(--chat-avatar);
+  block-size: var(--chat-avatar);
   border-radius: 50%;
   font-size: var(--text-micro);
 }
@@ -5597,7 +5630,8 @@ button.tz-tool-chip[aria-expanded="true"] {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   min-inline-size: 0;
-  line-height: 1.85;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
 }
 .tz-chat-content .tz-markdown {
   white-space: normal;
@@ -5629,36 +5663,42 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-prompt-entry {
   min-inline-size: 0;
 }
-/* The composer floats: a soft rounded surface with a lifted shadow. Focus
-   tightens its edge to the accent; the send control is a round key that
-   stays quiet until there is something to send. */
+/* The composer is paper, in the reading size of the conversation. It focuses
+   as a field: the edge turns to the accent with a halo. The send control is
+   a pill; while there is nothing to send it keeps its shape on the tray with
+   a muted icon. */
 .tz-chat-entry-surface {
   display: flex;
   align-items: flex-end;
   gap: var(--space-2);
   border: 1px solid transparent;
-  border-radius: calc(var(--radius-panel) + 6px);
+  border-radius: var(--radius-paper);
   background: var(--surface);
   padding: var(--space-2);
-  box-shadow:
-    var(--shadow-surface),
-    0 8px 20px -10px #12231a24;
+  font-size: var(--text-reading);
+  box-shadow: var(--shadow-paper);
   transition:
     border-color var(--motion-fast) var(--ease-out),
     box-shadow var(--motion-state) var(--ease-out);
 }
 .tz-chat-entry-surface:focus-within {
-  border-color: color-mix(in srgb, var(--focus) 55%, transparent);
+  border-color: var(--focus);
   box-shadow:
     0 0 0 3px var(--focus-halo),
-    0 8px 20px -10px #12231a24;
+    var(--shadow-paper);
+}
+@media (forced-colors: active) {
+  .tz-chat-entry-surface:focus-within {
+    outline: 2px solid Highlight;
+    outline-offset: 1px;
+  }
 }
 .tz-chat-entry-surface > .tz-button {
   border-radius: var(--radius-pill);
 }
 .tz-chat-entry-surface > .tz-button:disabled {
   opacity: 1;
-  background: var(--surface-hover);
+  background: var(--surface-tray);
   color: var(--text-muted);
   box-shadow: none;
 }
@@ -5677,7 +5717,8 @@ button.tz-tool-chip[aria-expanded="true"] {
   padding: var(--space-1) var(--space-2);
   background: transparent;
   color: var(--text);
-  font: inherit;
+  /* The font comes from the surface through the base rule, so the touch rule
+     for fields still lifts it to 16px. */
   line-height: var(--line-height);
   box-sizing: border-box;
 }
@@ -5695,7 +5736,7 @@ button.tz-tool-chip[aria-expanded="true"] {
   flex-shrink: 0;
 }
 .tz-chat-entry[data-disabled] {
-  opacity: 0.55;
+  opacity: var(--disabled-opacity);
 }
 .tz-chat-entry-error {
   display: block;
@@ -5705,7 +5746,6 @@ button.tz-tool-chip[aria-expanded="true"] {
 }
 .tz-prompt-bar .tz-chat-entry-surface {
   align-items: center;
-  border-radius: 100px;
   padding-inline-start: var(--space-3);
 }
 .tz-prompt-bar textarea {
@@ -5723,23 +5763,31 @@ button.tz-tool-chip[aria-expanded="true"] {
   min-inline-size: 0;
   max-inline-size: 100%;
 }
-.tz-prompt-suggestions button {
+/* Suggestions are tray chips; under the pointer the tray deepens rather than
+   giving way to the ghost button's wash. */
+.tz-prompt-suggestions .tz-button {
   white-space: normal;
   block-size: auto;
   text-align: start;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-tray);
   font-weight: var(--weight-regular);
   color: var(--text-secondary);
   animation: tz-option-in var(--motion-state) var(--ease-out) both;
 }
-.tz-prompt-suggestions li:nth-child(2) button {
-  animation-delay: 40ms;
+@media (hover: hover) and (pointer: fine) {
+  .tz-prompt-suggestions .tz-button[data-state="idle"]:not(:disabled):hover {
+    background: color-mix(in srgb, var(--surface-tray), var(--text) 4%);
+  }
 }
-.tz-prompt-suggestions li:nth-child(3) button {
-  animation-delay: 80ms;
+.tz-prompt-suggestions li:nth-child(2) .tz-button {
+  animation-delay: var(--motion-stagger);
 }
-.tz-prompt-suggestions li:nth-child(n + 4) button {
-  animation-delay: 120ms;
+.tz-prompt-suggestions li:nth-child(3) .tz-button {
+  animation-delay: calc(var(--motion-stagger) * 2);
+}
+.tz-prompt-suggestions li:nth-child(n + 4) .tz-button {
+  animation-delay: calc(var(--motion-stagger) * 3);
 }
 .tz-chat-demo {
   display: flex;
@@ -6955,12 +7003,12 @@ a.tz-inline-citation {
   max-inline-size: 100%;
   overflow: hidden;
   border: 1px solid transparent;
-  border-radius: calc(var(--radius) + 2px);
+  border-radius: var(--radius-paper);
   background: var(--code-surface);
   box-shadow: var(--shadow-surface);
 }
-/* The header is interface chrome in the reading font; only the output and
-   machine values (exit code, duration) use the mono face. */
+/* The header is interface chrome in the reading font, the duration and the
+   localized exit code included; only the output uses the mono face. */
 .tz-terminal-header {
   display: flex;
   align-items: center;
@@ -6970,13 +7018,10 @@ a.tz-inline-citation {
   border-block-end: 0.5px solid var(--hairline);
   background: var(--surface);
   color: var(--text-secondary);
-  font: var(--text-meta)/1.6 var(--font);
+  font: var(--text-meta) / var(--leading-meta) var(--font);
 }
 .tz-terminal-meta {
   font-variant-numeric: tabular-nums;
-}
-.tz-terminal-meta :is(bdi, code) {
-  font-family: var(--font-mono);
 }
 .tz-terminal-title {
   display: flex;
@@ -7008,9 +7053,11 @@ a.tz-inline-citation {
   border-radius: 50%;
   background: var(--success);
 }
+/* Running is neutral, done is success and failed is danger. */
 .tz-terminal[data-state="running"] .tz-terminal-state::before {
-  background: var(--action);
-  animation: tz-status-pulse 1.4s var(--ease-in-out) infinite;
+  background: var(--text-secondary);
+  animation: tz-status-pulse var(--motion-loop-pulse) var(--ease-in-out)
+    infinite;
 }
 .tz-terminal[data-state="failed"] .tz-terminal-state {
   color: var(--danger);
@@ -7035,7 +7082,7 @@ a.tz-inline-citation {
   overscroll-behavior: contain;
   overflow-anchor: none;
   tab-size: 2;
-  font: var(--text-meta)/1.8 var(--font-mono);
+  font: var(--text-meta) / var(--line-height) var(--font-mono);
   white-space: pre;
 }
 .tz-terminal code {
@@ -7049,16 +7096,18 @@ a.tz-inline-citation {
   outline-offset: -3px;
 }
 
-/* Container-aware composition: the same shell works inside docs and a host page. */
+/* Container-aware composition: the same shell works inside docs and a host page.
+   The shell is paper, the sidebar its tray, and hairlines divide them. */
 .tz-chat-app {
   container: chat-app / inline-size;
   min-inline-size: 0;
   inline-size: 100%;
   block-size: min(42rem, 85dvh);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-panel);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   overflow: hidden;
   background: var(--surface);
+  box-shadow: var(--shadow-paper);
 }
 .tz-chat-app-layout {
   display: flex;
@@ -7067,7 +7116,7 @@ a.tz-inline-citation {
 }
 .tz-chat-app-navigation {
   display: flex;
-  border-inline-end: 1px solid var(--border);
+  border-inline-end: 0.5px solid var(--hairline);
 }
 .tz-chat-app-main {
   display: flex;
@@ -7082,7 +7131,7 @@ a.tz-inline-citation {
   flex-wrap: wrap;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
-  border-block-end: 1px solid var(--border);
+  border-block-end: 0.5px solid var(--hairline);
 }
 .tz-chat-app-title {
   flex: 1;
@@ -7118,7 +7167,7 @@ a.tz-inline-citation {
 .tz-chat-app-composer {
   flex: none;
   padding: var(--space-3);
-  border-block-start: 1px solid var(--border);
+  border-block-start: 0.5px solid var(--hairline);
 }
 .tz-chat-app-mobile {
   display: none;
@@ -7309,9 +7358,6 @@ a.tz-inline-citation {
   outline-color: var(--action);
 }
 
-.tz-markdown a:hover {
-  text-decoration-color: currentColor;
-}
 /* No synthesized italics: Arabic has no oblique tradition that leans right,
    so emphasis in Arabic text is carried by weight instead. */
 .tiraz-system[dir="rtl"] :where(em, i, cite):not(:lang(en)) {
@@ -7564,7 +7610,7 @@ a.tz-inline-citation {
 }
 /* The send arrow leans toward where the message goes. */
 .tz-chat-entry .tz-button .lucide-arrow-up {
-  transition: transform var(--motion-state) var(--ease-spring);
+  transition: transform var(--motion-state) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
   .tz-chat-entry .tz-button:not(:disabled):hover .lucide-arrow-up {

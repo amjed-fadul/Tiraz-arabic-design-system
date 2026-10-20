@@ -405,8 +405,10 @@ const motion = {
   "--motion-collapse": "200ms",
   "--motion-collapse-exit": "150ms",
   "--motion-progress": "240ms",
+  "--motion-status": "200ms",
   "--motion-stagger": "40ms",
   "--motion-word": "34ms",
+  "--motion-word-settle": "300ms",
   "--motion-loop-stitch": "800ms",
   "--motion-loop-shimmer": "1900ms",
   "--motion-loop-turn": "1800ms",
@@ -414,6 +416,7 @@ const motion = {
   "--motion-loop-caret": "1100ms",
   "--motion-loop-spinner": "800ms",
   "--motion-loop-progress": "1500ms",
+  "--motion-loop-pulse": "1400ms",
 };
 
 /** Colors and shadows; their values are held to the rules below, not pinned. */
@@ -647,6 +650,9 @@ it("keeps colored text at 4.5:1", () => {
 
 it("keeps boundaries and indicators at 3:1", () => {
   expect(accents).toHaveLength(12);
+  // Focus is the accent in both themes, inside AI parts too (spec section 8.2).
+  expect(readRule(BASE)["--focus"]).toBe("var(--action)");
+  expect(readRule(DARK)["--focus"]).toBeUndefined();
   const checks: Check[] = [];
   for (const theme of themes) {
     const grounds = {
@@ -724,6 +730,18 @@ it("keeps code literals off the AI color", () => {
   }
 });
 
+it("keeps code strings and numbers at 4.5:1 on the well", () => {
+  const checks: Check[] = [];
+  for (const theme of themes)
+    for (const name of ["--code-string", "--code-number"])
+      checks.push({
+        label: `${theme} ${name} on --surface-well`,
+        foreground: color(theme, name),
+        background: color(theme, "--surface-well"),
+      });
+  expect(below(4.5, checks)).toEqual([]);
+});
+
 it("derives every radius from --radius", () => {
   expect(valuesOf(readRule(BASE), radii)).toEqual(radii);
 });
@@ -733,7 +751,8 @@ it("keeps motion in budget and stops it under reduced motion", () => {
   expect(valuesOf(base, motion)).toEqual(motion);
 
   // Interface durations stay within 90 to 240 ms. Stagger and word are gaps
-  // between items and the loops are decorative (spec section 15). The sheet
+  // between items, the word settle is the 300 ms the spec gives streamed words
+  // (sections 14 and 17.8) and the loops are decorative (section 15). The sheet
   // token is the one named exception: spec section 15 gives sheets 280 ms in
   // and 200 ms out and names them as the exception to the budget. The value is
   // pinned above.
@@ -796,22 +815,25 @@ it("zeroes interaction motion under keyboard modality", () => {
   ).toEqual([]);
   expect(keyboard["--press-scale"]).toBe("1");
 
-  // Every other motion token on the root is a streamed word, the progress fill
-  // or a decorative loop, which the system drives, so a new interaction token
-  // is not missed, and those keep their time.
+  // Every other motion token on the root is a streamed word, a status glyph,
+  // the progress fill or a decorative loop, which the system drives, so a new
+  // interaction token is not missed, and those keep their time.
   const kept = Object.keys(readRule(BASE)).filter(
     (name) => name.startsWith("--motion-") && !interaction.includes(name),
   );
   expect(kept.sort()).toEqual([
     "--motion-loop-caret",
     "--motion-loop-progress",
+    "--motion-loop-pulse",
     "--motion-loop-shimmer",
     "--motion-loop-skeleton",
     "--motion-loop-spinner",
     "--motion-loop-stitch",
     "--motion-loop-turn",
     "--motion-progress",
+    "--motion-status",
     "--motion-word",
+    "--motion-word-settle",
   ]);
   expect(
     kept.filter((name) => name in keyboard),

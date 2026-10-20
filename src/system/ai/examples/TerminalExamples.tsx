@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Terminal, useSystem } from "../../index";
+import { Terminal, numberLocale, useSystem } from "../../index";
 type Language = "ar" | "en";
 const header = "vite v7.1.4 building for production…\n";
 const progress = [
@@ -34,7 +34,8 @@ export function TerminalExample({
   longContent?: boolean;
   followOutput?: boolean;
 }) {
-  const reduced = useReducedMotion(),
+  const { config } = useSystem(),
+    reduced = useReducedMotion(),
     live = state === "running" && !reduced,
     [shown, setShown] = useState(0);
   // Each time the log goes live it streams again from the first line.
@@ -82,7 +83,12 @@ export function TerminalExample({
       output={output}
       state={state}
       exitCode={state === "running" ? undefined : state === "failed" ? 1 : 0}
-      duration={state === "running" ? undefined : "2s"}
+      // The duration is display text you format, in the reader's digits.
+      duration={
+        state === "running"
+          ? undefined
+          : `${new Intl.NumberFormat(numberLocale(config)).format(2)}${config.direction === "rtl" ? "ث" : "s"}`
+      }
       followOutput={followOutput}
     />
   );

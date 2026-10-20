@@ -258,23 +258,25 @@ function ChatAppHost({
                       }
                     />
                     {message.tool && (
+                      // The log in a reply keeps to file sizes, so its lines
+                      // fit the conversation column.
                       <Terminal
                         label={ar ? "سجل البناء" : "Build log"}
                         command="npm run build"
                         output={
-                          "vite v7.1.4 building for production…\n✓ 418 modules transformed.\ndist/index.html                  0.40 kB │ gzip:  0.27 kB\ndist/assets/index-4f2a9c1e.css  38.12 kB │ gzip:  7.41 kB\ndist/assets/index-b7d3a1f5.js  182.41 kB │ gzip: 58.12 kB\n" +
+                          "vite v7.1.4 building for production…\n✓ 418 modules transformed.\ndist/index.html                  0.40 kB\ndist/assets/index-4f2a9c1e.css  38.12 kB\ndist/assets/index-b7d3a1f5.js  182.41 kB\n" +
                           (longContent
                             ? Array.from(
                                 { length: 60 },
                                 (_, i) =>
-                                  `dist/assets/route-${String(i + 1).padStart(2, "0")}-${((0x9e3779b1 * (i + 1)) >>> 0).toString(16).padStart(8, "0")}.js   ${(1 + ((i * 37) % 900) / 100).toFixed(2)} kB │ gzip: ${(0.4 + ((i * 37) % 900) / 300).toFixed(2)} kB\n`,
+                                  `dist/assets/route-${String(i + 1).padStart(2, "0")}-${((0x9e3779b1 * (i + 1)) >>> 0).toString(16).padStart(8, "0")}.js   ${(1 + ((i * 37) % 900) / 100).toFixed(2)} kB\n`,
                               ).join("")
                             : "") +
                           "✓ built in 1.63s\n"
                         }
                         state="completed"
                         exitCode={0}
-                        duration="2s"
+                        duration={`${number.format(2)}${ar ? "ث" : "s"}`}
                       />
                     )}
                   </>
