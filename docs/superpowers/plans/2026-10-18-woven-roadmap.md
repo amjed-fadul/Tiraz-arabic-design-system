@@ -17,9 +17,9 @@
 | # | Plan | Covers | Status |
 | --- | --- | --- | --- |
 | 1 | `2026-10-18-woven-1-foundations.md` | Before evidence; in-flight work brought in (numerals setting, browser-test repairs); the remaining Arabic digit fixes and the two missing Arabic tests; workbench enum and fallback bugs; Woven tokens with contrast tests; input modality; CSS audit harness; StatusIcon; shared remove button | done (0fb781a) |
-| 2 | `2026-10-19-woven-2-demo-frame.md` | Docs spec §6–9, §11–14: DemoFrame states, notes and Replay; `demo-states.ts`; `phase` / `onPhaseChange` on lifecycle examples; notes for all 67 pages; page order | written |
-| 3 | `…-woven-3-restyle.md` | Woven spec §12–18: every family's restyle (forms, files, navigation, data, display, overlays, charts, AI parts at CSS level) and the docs chrome; each family joins the CSS audit | written when Plan 2 lands |
-| 4 | `…-woven-4-ai-patterns.md` | AI patterns spec: part API additions, new shared parts, Wave 1 patterns with their pages, navigation regroup, screens, agent-facing docs, consumer exercise | written when Plan 3 lands |
+| 2 | `2026-10-19-woven-2-demo-frame.md` | Docs spec §6–9, §11–14: DemoFrame states, notes and Replay; `demo-states.ts`; `phase` / `onPhaseChange` on lifecycle examples; notes for all 67 pages; page order | done |
+| 3 | `2026-10-20-woven-3-restyle.md` | Woven spec §12–18: every family's restyle (forms, files, navigation, data, display, overlays, charts, AI parts at CSS level) and the docs chrome; each family joins the CSS audit | done (ad0683f) |
+| 4 | `2026-10-20-woven-4-ai-patterns.md` | AI patterns spec: part API additions, new shared parts, Wave 1 patterns with their pages, navigation regroup, screens, agent-facing docs, consumer exercise | in progress (plan d3c6dd9) |
 | 5 | Wave 2 patterns | After Amjed reviews Wave 1 | later |
 
 Each later plan is written just before it runs, from the code the previous plan produced. That way it names real files, exports and line numbers instead of guesses. Each plan is reviewed by Opus against its spec before execution starts.
