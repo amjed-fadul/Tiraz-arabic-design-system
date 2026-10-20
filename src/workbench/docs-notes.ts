@@ -22,6 +22,90 @@ export interface PageNotes {
 // A page without notes shows no notes row; Field opens Input and has none.
 export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   // AI patterns
+  "cited-answer": {
+    useWhen: [
+      [
+        "تعتمد الإجابة على بيانات المستخدم أو مستنداته أو أدواته المتصلة، ويريد الناس التحقق من المصادر قبل أن يتصرفوا.",
+        "The answer draws on the user's data, documents or connected tools, and people need to check the sources before they act.",
+      ],
+      [
+        "تريد أن ترى بنفسك ما بحث فيه المساعد قبل أن يكتب.",
+        "People want to see what the assistant searched before it wrote.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "الرد حديث عابر بلا مصادر، فاستخدم",
+          "The reply is casual chat without sources, so use",
+        ],
+        page: "chat-thread",
+      },
+      {
+        text: [
+          "الطلب عمل من عدة خطوات، فاستخدم",
+          "The request is multi-step work, so use",
+        ],
+        page: "agent-task",
+      },
+    ],
+    notice: [
+      [
+        "يقرّر تطبيقك الحالة والنص. يعلن النمط كل حالة بجملة واحدة، ولا يعلن الإجابة نفسها ولا الوقت المنقضي.",
+        "Your app owns the status and the text. The pattern announces each status in one sentence, and never the answer itself or the elapsed time.",
+      ],
+      [
+        "كل [n] في الإجابة رقم استشهاد: مرّر عليه أو ركّز لترى المصدر، ويفتحه Enter أو النقر، ويغلق Escape المعاينة.",
+        "Each [n] in the answer is a citation number: hover or focus it to see the source, Enter or click opens it, and Escape closes the preview.",
+      ],
+      [
+        "تمرّ روابط الإجابة عبر sourceHref، فلا تفتح إلا وجهات http وhttps والنسبية.",
+        "Links in the answer pass through sourceHref, so they open only http, https and relative destinations.",
+      ],
+    ],
+  },
+  "change-summary": {
+    useWhen: [
+      [
+        "يريد مدير أن يعرف ما الذي تحرّك هذا الأسبوع، ولماذا تحرّك، وما الذي يفعله بعد ذلك.",
+        "A manager wants to know what moved this week, why it moved, and what to do about it.",
+      ],
+      [
+        "تأتي الأرقام من عدة تقارير، ويحدّد تطبيقك أيّها جيّد وأيّها سيّئ.",
+        "The numbers come from several reports, and your app decides which are good and which are bad.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "تحتاج رسمًا كاملًا لمقياس واحد، فاستخدم",
+          "You need the full chart of one measure, so use",
+        ],
+        page: "line-chart",
+      },
+      {
+        text: [
+          "تحتاج نظرة على قائمة طويلة من السجلات، فاستخدم",
+          "You need a glance at a long list of records, so use",
+        ],
+        page: "data-table",
+      },
+    ],
+    notice: [
+      [
+        "يبيّن السهم الاتجاه ويبيّن اللون المعنى، فارتفاع الفواتير المتأخرة أحمر. ولا تُكتب إشارة + أو − بجانب الأرقام.",
+        "The arrow shows the direction and the color shows the meaning, so more late invoices is red. No + or − sign sits beside the figures.",
+      ],
+      [
+        "يعلن النمط كل حالة مرة واحدة. وتظهر الإجراءات مع الملخص الجاهز فقط، فلا تُقترح خطوة على أرقام قد تكون قديمة.",
+        "Each status is announced once. Actions show with a ready summary only, so no step is suggested from numbers that may be old.",
+      ],
+      [
+        "تجري الخطوط الصغيرة من اليسار إلى اليمين في الاتجاهين، كما تفعل رسوم Tiraz.",
+        "The sparklines run left to right in both directions, as Tiraz charts do.",
+      ],
+    ],
+  },
   "agent-task": {
     useWhen: [
       [
@@ -841,8 +925,8 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "A screen reader does not read the reply as it arrives. It hears one short status instead.",
       ],
       [
-        "مع تقليل الحركة يظهر النص فورًا. وعند الإلغاء أبقِ ما وصل، واجعل state مساوية لـ completed، ومرّر statusLabel يقول إن الرد أُوقف.",
-        "With reduced motion the text appears at once. If a stream is cancelled, keep what arrived, set state to completed and pass a statusLabel saying the reply was stopped.",
+        "مع تقليل الحركة يظهر النص فورًا. وعند الإلغاء أبقِ ما وصل واجعل state مساوية لـ stopped، وعند الفشل اجعلها failed. فيزول المؤشر وتُعلن الحالة.",
+        "With reduced motion the text appears at once. If a stream is cancelled, keep what arrived and set state to stopped; if it fails, set failed. The cursor goes and the state is announced.",
       ],
     ],
   },

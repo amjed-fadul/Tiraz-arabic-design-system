@@ -112,16 +112,22 @@ export function ThinkingStateExample({
 }) {
   const ar = language === "ar",
     reduced = useReducedMotion();
-  // While active, each step lands in turn and the label follows the work.
-  const [reached, setReached] = useState(1);
+  // While active, each step lands in turn and the label follows the work. The
+  // run starts afresh each time it becomes active, and its third step lands
+  // 800 ms before a Replay's 2.6 s Working step ends, so all three labels show.
+  const [run, setRun] = useState({ active, reached: 1 });
+  if (run.active !== active) setRun({ active, reached: 1 });
   useEffect(() => {
     if (!active || reduced) return;
-    const timers = [1300, 2600].map((delay, index) =>
-      setTimeout(() => setReached(index + 2), delay),
+    const timers = [900, 1800].map((delay, index) =>
+      setTimeout(
+        () => setRun((current) => ({ ...current, reached: index + 2 })),
+        delay,
+      ),
     );
     return () => timers.forEach(clearTimeout);
   }, [active, reduced]);
-  const count = active && !reduced ? reached : 3;
+  const count = active && !reduced ? run.reached : 3;
   const working = ar
     ? ["جارٍ قراءة الفواتير", "جارٍ مطابقة المبالغ", "جارٍ إعداد الملخص"]
     : ["Reading invoices", "Matching totals", "Preparing summary"];

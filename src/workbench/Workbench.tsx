@@ -164,10 +164,12 @@ export function Workbench() {
   // A remount must never invent a decision or an event. Editing a request
   // voids its decision, as the component does, and a Shown toast would sound
   // again on every edit, so these examples start over at their resting state;
-  // a state press still sets its own phase.
+  // a state press still sets its own phase. A refresh waits on its host for a
+  // moment, and a remount would drop that wait and hold Updating.
   function restartOnEdit() {
     if (
       active === "agent-task" ||
+      active === "change-summary" ||
       active === "ask-user-questions" ||
       active === "approval-card" ||
       active === "approval-flow" ||

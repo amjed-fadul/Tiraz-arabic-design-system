@@ -108,4 +108,11 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   tray: [".tz-tray"],
   countdown: [".tz-countdown"],
   "decision-bar": [".tz-decision-bar"],
+  // The answer parts and the two patterns of Plan 4 Task 4.
+  "thinking-panel": [".tz-thinking-panel"],
+  "source-chip": [".tz-source-chip"],
+  "feedback-bar": [".tz-feedback-bar"],
+  "follow-ups": [".tz-follow-ups"],
+  "cited-answer": [".tz-cited-answer"],
+  "change-summary": [".tz-change-summary"],
 };

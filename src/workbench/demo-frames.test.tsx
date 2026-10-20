@@ -147,7 +147,9 @@ it("shows Replay only where a sequence exists", () => {
   expect(replaying.sort()).toEqual([
     "agent-task",
     "button",
+    "change-summary",
     "chat-thread",
+    "cited-answer",
     "progress",
     "skeleton",
     "steps",

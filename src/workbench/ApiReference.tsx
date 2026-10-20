@@ -95,6 +95,122 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "cited-answer": [
+      [
+        "status / question",
+        "thinking | writing | completed | failed | stopped · required / ReactNode?",
+        t(
+          "يقرّر تطبيقك الحالة ويمرّر النص كما يصل. السؤال هو عنوان القسم، واحذفه إذا كانت المحادثة تعرضه. لا يتقدّم النمط بنفسه.",
+          "Your app owns the status and passes the text as it arrives. The question is the section's heading; leave it out when a conversation shows it. The pattern never moves on by itself.",
+        ),
+      ],
+      [
+        "content / sources",
+        "string · required / readonly SourceReference[] · required",
+        t(
+          "نص Markdown فيه علامات [n] يقابل كلٌّ منها number في مصدر. تصير العلامة رقم استشهاد يعرض المصدر عند المرور أو التركيز ويفتحه Enter أو النقر. تبقى العلامة بلا مصدر والعلامة داخل الكود نصًا. وتمرّ روابط الإجابة عبر sourceHref، فيُعرض mailto: وأمثاله نصًا.",
+          "Markdown with [n] markers, each naming a source's number. A marker becomes a citation chip that previews its source on hover or focus and opens it on Enter or click. A marker with no source, or inside code, stays text. Links in the answer pass through sourceHref, so mailto: and the like show as text.",
+        ),
+      ],
+      [
+        "thinking / thinkingOpen / onThinkingOpenChange",
+        "{ elapsed, searched, steps } / boolean? / (open: boolean) => void",
+        t(
+          "elapsed بالثواني وsearched المصادر التي بُحث فيها وsteps الخطوات. تنفتح اللوحة أثناء التفكير وتنطوي إلى «فكّر لمدة ٦ث» عند بدء الكتابة، إلا إذا تحكّمت فيها بالزوج thinkingOpen وonThinkingOpenChange.",
+          "elapsed in seconds, searched for the sources covered and steps for the steps. The panel is open while thinking and folds to «Thought for 6s» when writing starts, unless you hold it with the thinkingOpen pair.",
+        ),
+      ],
+      [
+        "followUps / onFollowUp",
+        "readonly { id, label }[] / (id: string) => void",
+        t(
+          "أسئلة تالية تظهر عند الاكتمال أزرارًا في قائمة. يطرح تطبيقك السؤال المختار.",
+          "Next questions, shown as a list of buttons once the answer is complete. Your app asks the one picked.",
+        ),
+      ],
+      [
+        "feedback / reason / onFeedbackChange / onCopy / onRegenerate",
+        'null | "up" | "down" / FeedbackReason? / (value, reason?) => void / () => void | Promise<void> / () => void',
+        t(
+          "الإجابة المفيدة وغير المفيدة زران قابلان للتبديل، وعند «غير مفيدة» تظهر أربعة أسباب. يظهر «نُسخت» ثانيتين بعد أن يكتمل نسخ تطبيقك. يظهر كل زر إذا وُجد معالجه.",
+          "Helpful and not helpful are toggles; not helpful offers four reasons. «Copied» shows for two seconds once your copy resolves. Each button shows only when its handler exists.",
+        ),
+      ],
+      [
+        "onStop / onRetry / error",
+        "() => void / () => void / ReactNode",
+        t(
+          "أثناء التفكير والكتابة يظهر «إيقاف». عند التعثّر تبقى الإجابة الجزئية ويظهر error نصًا ومعه «أعد المحاولة». عند الإيقاف يظهر «إعادة التوليد». إذا اختفى الزر الذي عليه التركيز انتقل التركيز إلى القسم.",
+          "Stop shows while thinking and writing. When it fails the partial answer stays, with error as text and Try again; when stopped, Regenerate. If the focused button goes away, focus moves to the section.",
+        ),
+      ],
+      [
+        "duration",
+        "number · seconds",
+        t(
+          "تظهر مع عدد المصادر في الشريط السفلي، «٣ مصادر · ٦٫٢ث»، والعدد هو زر قائمة المصادر.",
+          "Shown with the sources' count in the footer, «3 sources · 6.2s»; the count is the button that opens the list.",
+        ),
+      ],
+      [
+        "appearance / headingLevel / labels",
+        '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3 / Partial<CitedAnswerLabels>',
+        t(
+          "استخدم plain داخل محادثة أو نمط آخر. وتستبدل labels أي نص مدمج، ومنها نصوص اللوحة والشريط.",
+          "Use plain inside a conversation or another pattern. labels replaces any built-in text, including the panel's and the bar's.",
+        ),
+      ],
+    ],
+    "change-summary": [
+      [
+        "status / title",
+        "updating | ready | stale | failed · required / ReactNode?",
+        t(
+          "يقرّر تطبيقك الحالة. أثناء التحديث تصير الصفوف خطوطًا هيكلية، وفي القديم يظهر «قد يكون الملخص قديمًا» مع «تحديث».",
+          "Your app owns the status. While updating the rows become skeleton lines; stale shows «The summary may be out of date» with Refresh.",
+        ),
+      ],
+      [
+        "rows",
+        "readonly { id, metric, change, direction, tone, series? }[] · required",
+        t(
+          "تُعرض أول ستة صفوف. change بلا إشارة + أو −. السهم من direction (up | down | flat) يبيّن الاتجاه، واللون من tone (good | bad | neutral) يبيّن المعنى، فارتفاع الفواتير المتأخرة أحمر. series اختيارية ترسم خطًا صغيرًا يجري من اليسار إلى اليمين دائمًا.",
+          "The first six show. change carries no + or − sign. direction (up | down | flat) draws the arrow and tone (good | bad | neutral) the color, so more late invoices is red. An optional series draws a sparkline that always runs left to right.",
+        ),
+      ],
+      [
+        "reason / sources / basedOn / updated",
+        "ReactNode / readonly SourceReference[] / ReactNode / ReactNode",
+        t(
+          "«السبب الأرجح» ومعه استشهاد لكل مصدر في sources. basedOn وupdated نصّان من تطبيقك في الشريط السفلي، مثل «اعتمادًا على ٣ تقارير» و«حُدّث قبل ٥ د».",
+          "«Most likely reason» with a citation for each of sources. basedOn and updated are your own text in the footer, such as «Based on 3 reports» and «Updated 5 min ago».",
+        ),
+      ],
+      [
+        "actions",
+        "readonly { id, label, primary?, onSelect }[]",
+        t(
+          "تظهر مع الملخص الجاهز فقط: خطوة تالية أساسية واحدة وأخرى ثانوية.",
+          "Shown with a ready summary only: one primary next step and one secondary.",
+        ),
+      ],
+      [
+        "onRefresh",
+        "() => void",
+        t(
+          "يطلب تحديث ملخص قديم أو متعثّر. وإذا اختفى الزر الذي عليه التركيز انتقل التركيز إلى القسم.",
+          "Asks for a stale or failed summary to be refreshed. If the focused button goes away, focus moves to the section.",
+        ),
+      ],
+      [
+        "appearance / headingLevel / labels",
+        '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3 / Partial<ChangeSummaryLabels>',
+        t(
+          "استخدم plain داخل لوحة أو نمط آخر. وتستبدل labels أي نص مدمج.",
+          "Use plain inside a dashboard or another pattern. labels replaces any built-in text.",
+        ),
+      ],
+    ],
     "agent-task": [
       [
         "title / agent / status",
@@ -582,19 +698,27 @@ export function ApiReference({
         ),
       ],
       [
-        "defaultExpanded / labels",
-        "boolean / SourcesLabels",
+        "defaultExpanded / expanded / onExpandedChange / labels",
+        "boolean / boolean? / (expanded: boolean) => void / SourcesLabels",
         t(
-          "يعرض صفًا موجزًا يفتح قائمة المصادر، وقيمة defaultExpanded الافتراضية false.",
-          "Compact summary expands to rows; defaults false.",
+          "يعرض صفًا موجزًا يفتح قائمة المصادر، وقيمة defaultExpanded الافتراضية false. تحكّم في القائمة بالزوج expanded وonExpandedChange.",
+          "Compact summary expands to rows; defaults false. Control the list with the expanded pair.",
         ),
       ],
       [
-        "InlineCitation.source / mode",
-        "SourceReference / disclosure | link",
+        "highlightedId",
+        "string?",
         t(
-          "مرّر كائن المصدر نفسه. يعرض وضع disclosure التفاصيل بزر، وينتقل وضع link برابط أصلي.",
-          "Same source record; button disclosure or native link navigation.",
+          "يعلّم صف المصدر الذي تُعرض معاينة استشهاده.",
+          "Marks the row of the source whose citation is being previewed.",
+        ),
+      ],
+      [
+        "InlineCitation.source / mode / onOpenChange",
+        "SourceReference / disclosure | link | preview / (open: boolean) => void",
+        t(
+          "مرّر كائن المصدر نفسه. يعرض وضع disclosure التفاصيل بزر، وينتقل وضع link برابط أصلي. وضع preview رابط يعرض المصدر عند المرور أو التركيز: يفتحه Enter أو النقر، ويغلقه Escape أو فقدان التركيز، وتبقى المعاينة مفتوحة إذا انتقل المؤشر إليها. إذا رُفضت الوجهة صار زرًا يعرض المعاينة عند التركيز أو النقر.",
+          "Same source record; button disclosure or native link navigation. preview is a link that shows the source on hover or focus: Enter or click opens it, Escape or blur closes it, and the pointer moving onto it keeps it open. If the destination is rejected it is a button that shows the preview on focus or click.",
         ),
       ],
       [
@@ -645,6 +769,14 @@ export function ApiReference({
         t(
           "استخدم لونًا دلاليًا فقط حين تبرّره البيانات ويظهر label معه.",
           "Semantic Badge tone only when supplied evidence justifies a label.",
+        ),
+      ],
+      [
+        "headingLevel",
+        "2 | 3 | 4 | 5 | 6 · 3",
+        t(
+          "مستوى عنوان النتيجة، فاجعله تابعًا لما قبله في صفحتك.",
+          "The level of the finding's title; set it to follow the heading before it on your page.",
         ),
       ],
       [
@@ -722,6 +854,14 @@ export function ApiReference({
         t(
           "لا يعرض HTML، ويرفض بروتوكولات javascript وdata وvbscript وfile. تظهر الروابط المرفوضة نصًا، والصور وصفها البديل. يقرّر تطبيقك أي الوجهات موثوقة.",
           "Raw HTML discarded; javascript, data, vbscript and file protocols rejected. Unsafe links become text; images become alt text. Host owns destination trust.",
+        ),
+      ],
+      [
+        "renderCitation / links",
+        '(marker: number) => ReactNode / "default" | "strict" · default',
+        t(
+          'يتحوّل كل [n] في النص إلى renderCitation(n)، ويبقى الكود كما هو، وتبقى العلامة نصًا إذا لم تُرجع الدالة شيئًا. يمرّر links="strict" الروابط والصور عبر sourceHref فلا يبقى إلا http وhttps والنسبي والجزء.',
+          'Each [n] in the text becomes renderCitation(n); code is left alone, and a marker stays text if the function returns nothing. links="strict" sends links and images through sourceHref, so only http, https, relative and fragment targets survive.',
         ),
       ],
       [
@@ -838,10 +978,10 @@ export function ApiReference({
     "streaming-text": [
       [
         "text / state",
-        'string / "streaming" | "completed" · required',
+        'string / "streaming" | "completed" | "stopped" | "failed" · required',
         t(
-          "مرّر النص الحالي وحالته من تطبيقك. يظهر كل تحديث فورًا دون طابور كتابة.",
-          "Current host-supplied text and state. Updates render immediately without a typing queue.",
+          "مرّر النص الحالي وحالته من تطبيقك. يظهر كل تحديث فورًا دون طابور كتابة. يبقي stopped وfailed ما وصل من النص، ويزيلان المؤشر والحركة، ويعلنان «أُوقف الرد» أو «تعذّر إكمال الرد».",
+          "Current host-supplied text and state. Updates render immediately without a typing queue. stopped and failed keep what arrived, end the cursor and the motion, and announce «Response stopped» or «Couldn't finish the response».",
         ),
       ],
       [
@@ -856,8 +996,16 @@ export function ApiReference({
         "statusLabel / announcement",
         'string? / "polite" | "off" · polite',
         t(
-          "يعلن حالة موجزة لا كل حرف. عند الإلغاء أبقِ النص، واضبط state على completed، ومرّر statusLabel يوضّح الإلغاء.",
-          "Concise status without character announcements. On cancel retain text, set completed and supply a cancellation statusLabel.",
+          "يعلن حالة موجزة لا كل حرف. عند الإلغاء أبقِ النص واضبط state على stopped، وعند الفشل اضبطها على failed. ويستبدل statusLabel الجملة المعلنة.",
+          "Concise status without character announcements. On cancel retain text and set state to stopped; on failure set failed. statusLabel replaces the announced sentence.",
+        ),
+      ],
+      [
+        "renderCitation / links",
+        '(marker: number) => ReactNode / "default" | "strict"',
+        t(
+          "في وضع markdown فقط: تعمل كما في Markdown، فيصير كل [n] استشهادًا وتُفلتر الروابط عبر sourceHref عند strict.",
+          "In markdown mode only: they work as in Markdown, so each [n] becomes a citation and links go through sourceHref when strict.",
         ),
       ],
       [

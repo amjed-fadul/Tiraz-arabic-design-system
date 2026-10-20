@@ -515,6 +515,29 @@ it.each(propsFamilies)(
   },
 );
 
+it("plays all three ThinkingState labels in its Replay's Working step", async () => {
+  vi.useFakeTimers();
+  open("thinking-state");
+  // Done first, so Replay starts the run afresh rather than resuming it.
+  press("done");
+  expect(stageNode()).toHaveTextContent("الملخص جاهز");
+  fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
+  const working = demoStates["thinking-state"]!.replay![0].ms;
+  expect(pressedWords()).toEqual([word("working")]);
+  expect(stageNode()).toHaveTextContent("جارٍ قراءة الفواتير");
+  await wait(1000);
+  expect(stageNode()).toHaveTextContent("جارٍ مطابقة المبالغ");
+  // The third label arrives early enough to be seen before Done takes over.
+  await wait(1000);
+  expect(stageNode()).toHaveTextContent("جارٍ إعداد الملخص");
+  await wait(working - 2000 - 1);
+  expect(pressedWords()).toEqual([word("working")]);
+  expect(stageNode()).toHaveTextContent("جارٍ إعداد الملخص");
+  await wait(1);
+  expect(pressedWords()).toEqual([word("done")]);
+  expect(stageNode()).toHaveTextContent("الملخص جاهز");
+});
+
 // Each phase page with its resting state, each state with what the stage shows
 // in that phase, and the Replay steps where the page has any.
 type PhaseFamily = {
@@ -530,6 +553,8 @@ const streamed = (state: string) => () =>
     "data-state",
     state,
   );
+const streamStatus = () =>
+  stageNode().querySelector(".tz-streaming-text [role='status']");
 const saveCall = () =>
   stage().getByText("حفظ الملخص في Drive").closest(".tz-tool-call");
 const draftTask = () =>
@@ -552,6 +577,22 @@ const phaseFamilies: PhaseFamily[] = [
         () => {
           streamed("completed")();
           expect(stageNode()).toHaveTextContent("INV-1043");
+        },
+      ],
+      // The text that arrived stays, with no cursor, and the state says why.
+      [
+        "stopped",
+        () => {
+          streamed("stopped")();
+          expect(stageNode().querySelector(".tz-stream-cursor")).toBeNull();
+          expect(streamStatus()).toHaveTextContent("أُوقف الرد");
+        },
+      ],
+      [
+        "failed",
+        () => {
+          streamed("failed")();
+          expect(streamStatus()).toHaveTextContent("تعذّر إكمال الرد");
         },
       ],
     ],
@@ -683,6 +724,92 @@ const phaseFamilies: PhaseFamily[] = [
       ],
     ],
     replay: ["plan", "running", "needsYou", "done"],
+  },
+  {
+    id: "cited-answer",
+    resting: "done",
+    list: [
+      [
+        "thinking",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "يفكّر" }),
+          ).toHaveAttribute("aria-expanded", "true");
+          expect(stage().getByRole("button", { name: "إيقاف" })).toBeEnabled();
+        },
+      ],
+      [
+        "writing",
+        () => {
+          // The panel has folded to what thinking took.
+          expect(
+            stage().getByRole("button", { name: "فكّر لمدة ٦ث" }),
+          ).toHaveAttribute("aria-expanded", "false");
+          expect(stage().getByRole("button", { name: "إيقاف" })).toBeEnabled();
+        },
+      ],
+      [
+        "done",
+        () => {
+          expect(stage().getByText("٣ مصادر · ٦٫٢ث")).toBeVisible();
+          expect(
+            stage().getByRole("list", { name: "أسئلة تالية" }),
+          ).toBeVisible();
+          expect(
+            stage().getByRole("button", { name: "إجابة مفيدة" }),
+          ).toBeEnabled();
+        },
+      ],
+      [
+        "failed",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "أعد المحاولة" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent("انقطع الاتصال بدفتر الحسابات");
+        },
+      ],
+      [
+        "stopped",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "إعادة التوليد" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent("أُوقفت الإجابة");
+        },
+      ],
+    ],
+    replay: ["thinking", "writing", "done"],
+  },
+  {
+    id: "change-summary",
+    resting: "ready",
+    list: [
+      [
+        "updating",
+        () => {
+          expect(stageNode()).toHaveTextContent("يحدّث الملخص…");
+          expect(stageNode().querySelector(".tz-skeleton")).not.toBeNull();
+        },
+      ],
+      [
+        "ready",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "أرسل تذكيرات السداد" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent("اعتمادًا على ٣ تقارير");
+        },
+      ],
+      [
+        "stale",
+        () => {
+          expect(stage().getByRole("button", { name: "تحديث" })).toBeEnabled();
+          expect(stageNode()).toHaveTextContent("قد يكون الملخص قديمًا");
+        },
+      ],
+    ],
+    replay: ["updating", "ready"],
   },
   {
     id: "chat-thread",

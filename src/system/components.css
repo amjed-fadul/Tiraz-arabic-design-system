@@ -4911,6 +4911,605 @@ button.tz-agent-run-output:active {
   }
 }
 
+/* Source chip: a source as a small paper chip on the tray, with its icon, its
+   title and, when it has one, its meta. A link or a button presses by the
+   shared amount; a static chip does not. */
+.tz-source-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-inline-size: 100%;
+  min-block-size: 24px;
+  padding-inline: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.tz-source-chip > svg {
+  flex: none;
+  color: var(--text-muted);
+}
+.tz-source-chip-title {
+  min-inline-size: 0;
+  max-inline-size: 16ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tz-source-chip-meta {
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+}
+a.tz-source-chip,
+button.tz-source-chip {
+  cursor: pointer;
+  transition:
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+:is(a, button).tz-source-chip:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  :is(a, button).tz-source-chip:hover {
+    color: var(--text);
+  }
+}
+
+/* Thinking panel: one line with the AI mark, the label, the time and a chevron;
+   under it what was searched, the steps and the thread. It folds to the time it
+   took. The finished label fades in only after the status changed, never when
+   a finished panel mounts, and the chips of sources that arrive later fade in
+   too. */
+.tz-thinking-panel {
+  flex: 1;
+  min-inline-size: 0;
+  color: var(--text-secondary);
+}
+.tz-thinking-panel-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-inline-size: 100%;
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  text-align: start;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-thinking-panel-trigger:hover {
+    background: var(--wash);
+  }
+}
+.tz-thinking-panel-trigger > bdi {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  font-weight: var(--weight-medium);
+}
+/* Arabic-Indic digits have no tabular widths, so the time holds the width of
+   its widest value, as the status pill's does. */
+.tz-thinking-panel-elapsed {
+  min-inline-size: 3.6ch;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+}
+.tz-thinking-panel-elapsed[data-minutes] {
+  min-inline-size: 5.8ch;
+}
+.tz-thinking-panel-chevron {
+  inline-size: 14px;
+  block-size: 14px;
+  flex: none;
+  color: var(--text-muted);
+  transition: transform var(--motion-state) var(--ease-out);
+}
+.tz-thinking-panel[data-expanded="true"] .tz-thinking-panel-chevron {
+  transform: rotate(180deg);
+}
+.tz-thinking-panel[data-changed] .tz-thinking-panel-done {
+  animation: tz-ai-complete var(--motion-state) var(--ease-out) both;
+}
+.tz-thinking-panel-panel,
+.tz-thinking-panel-panel[hidden] {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  min-inline-size: 0;
+  transition:
+    grid-template-rows var(--motion-collapse-exit) var(--ease-out),
+    opacity var(--motion-collapse-exit) var(--ease-out),
+    visibility 0s var(--motion-collapse-exit);
+}
+.tz-thinking-panel[data-expanded="true"] > .tz-thinking-panel-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--motion-collapse) var(--ease-out),
+    opacity var(--motion-collapse) var(--ease-out),
+    visibility 0s;
+}
+.tz-thinking-panel-clip {
+  min-block-size: 0;
+  overflow: hidden;
+}
+.tz-thinking-panel-body {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  padding: var(--space-2) var(--space-1) var(--space-1);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  overflow-wrap: anywhere;
+}
+.tz-thinking-panel-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+}
+.tz-thinking-panel-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-thinking-panel-chips > li {
+  display: flex;
+  min-inline-size: 0;
+}
+.tz-thinking-panel-chips > li[data-fresh] {
+  animation: tz-fade-in var(--motion-state) var(--ease-out) both;
+}
+.tz-thinking-panel-more {
+  color: var(--text-muted);
+}
+/* The steps share the status vocabulary; the one in progress shimmers. */
+.tz-thinking-panel-steps {
+  --status-size: 18px;
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-thinking-panel-steps > li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 24px;
+  min-inline-size: 0;
+}
+.tz-thinking-panel-steps > li[data-state="pending"] {
+  color: var(--text-muted);
+}
+
+/* Feedback bar: copy, regenerate, helpful and not helpful as quiet icon buttons.
+   A rating that is on fills its thumb, so color is not the only signal. The
+   reasons open after a change of rating, never on mount. */
+.tz-feedback-bar {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-feedback-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+.tz-feedback-bar .tz-button[aria-pressed="true"] {
+  color: var(--action);
+  background: var(--action-soft);
+}
+.tz-feedback-bar .tz-button[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+.tz-feedback-bar-copied {
+  padding-inline: var(--space-1);
+  color: var(--success);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+/* The reasons wrap into a compact block, so opening them neither widens the
+   bar nor pushes its buttons to another row. */
+.tz-feedback-bar-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  max-inline-size: 18rem;
+}
+.tz-feedback-bar[data-changed] > .tz-feedback-bar-reasons {
+  animation: tz-option-in var(--motion-state) var(--ease-out);
+}
+.tz-feedback-bar-reason {
+  min-block-size: 28px;
+  padding-inline: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-feedback-bar-reason:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-feedback-bar-reason:hover {
+    color: var(--text);
+  }
+}
+.tz-feedback-bar-reason[aria-pressed="true"] {
+  background: var(--action-soft);
+  box-shadow: inset 0 0 0 1px var(--action-border);
+  color: var(--action);
+  font-weight: var(--weight-medium);
+}
+
+/* Follow-ups: suggested next questions as tray chips under a hairline. */
+.tz-follow-ups {
+  display: grid;
+  gap: var(--space-2);
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-follow-ups-label {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-follow-ups ul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-follow-ups li {
+  display: flex;
+  max-inline-size: 100%;
+}
+.tz-follow-ups-item {
+  min-block-size: 32px;
+  max-inline-size: 100%;
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--surface-tray);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  text-align: start;
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-follow-ups-item:active {
+  background: var(--wash-strong);
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-follow-ups-item:hover {
+    background: color-mix(in srgb, var(--surface-tray), var(--text) 5%);
+  }
+}
+
+/* Cited answer (spec section 12.2): the question, then a tray with the thinking
+   on top, the answer on paper and the sources and decisions below. The
+   question sits in a tray-colored bubble at the inline end, as a person's
+   message does in ChatThread. Plain drops the tray and lives on its host's
+   paper. Nothing moves on mount. */
+.tz-cited-answer {
+  display: grid;
+  gap: var(--space-2);
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-cited-answer[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-cited-answer:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-cited-answer-question {
+  justify-self: end;
+  max-inline-size: 85%;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  border-end-end-radius: var(--radius-small);
+  background: var(--surface-tray);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
+}
+.tz-cited-answer-paper {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.tz-cited-answer-answer {
+  min-inline-size: 0;
+}
+.tz-cited-answer-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+/* What went wrong stays as text beside the partial answer, in the danger
+   color's soft fill; a transparent border keeps the edge in forced colors. */
+.tz-cited-answer-note[data-tone="danger"] {
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--danger-soft);
+  color: var(--text);
+}
+.tz-cited-answer-note strong {
+  font-weight: var(--weight-semibold);
+}
+.tz-cited-answer-note[data-tone="danger"] strong {
+  color: var(--danger);
+}
+.tz-cited-answer .tz-tray-footer {
+  align-items: flex-start;
+}
+.tz-cited-answer-meta {
+  flex: 1 1 12rem;
+  min-inline-size: 0;
+}
+.tz-cited-answer-decision {
+  margin-inline-start: auto;
+}
+/* The rating's buttons keep their place at the inline end when the reasons
+   open and widen the bar. */
+.tz-cited-answer-decision .tz-feedback-bar {
+  justify-items: end;
+}
+/* The sources are evidence: a long list scrolls in its own region, never
+   pushing the decision out of view. */
+.tz-cited-answer .tz-sources-list {
+  max-block-size: 18rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+/* Plain draws the hairline that the tray's edge draws in a card. */
+.tz-cited-answer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+
+/* What changed (spec section 12.8): what moved, why, and what to do next. Each
+   row's arrow says which way and its color what it means, so more late
+   invoices is red though it rises. While updating, the rows are skeleton lines
+   with a soft AI shimmer. Plain drops the tray and lives on its host's paper. */
+.tz-change-summary {
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-change-summary[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-change-summary[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+}
+.tz-change-summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-change-summary-header {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-change-summary-heading {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-change-summary-title {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-change-summary-made {
+  margin: 0;
+  color: var(--ai);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-change-summary[data-appearance="plain"] > .tz-change-summary-paper {
+  margin-block-start: var(--space-2);
+}
+.tz-change-summary-rows {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-change-summary-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+}
+.tz-change-summary-row + .tz-change-summary-row {
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-change-summary-copy {
+  display: grid;
+  flex: 1;
+  justify-items: start;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.tz-change-summary-metric {
+  font-weight: var(--weight-medium);
+}
+/* The trend badge: an arrow, a hidden word and the change, in the tone's soft
+   fill. A transparent border keeps its edge in forced colors. */
+.tz-change-summary-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-inline-size: 100%;
+  padding: 1px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-change-summary-badge > svg {
+  flex: none;
+}
+.tz-change-summary-badge[data-tone="good"] {
+  background: var(--success-soft);
+  color: var(--success);
+}
+.tz-change-summary-badge[data-tone="bad"] {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+/* The sparkline keeps time running left to right in both directions, like the
+   charts, and ends on an emphasized point. It is decoration. */
+.tz-change-summary-spark {
+  flex: none;
+  overflow: visible;
+  color: var(--text-muted);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tz-change-summary-spark[data-tone="good"] {
+  color: var(--success);
+}
+.tz-change-summary-spark[data-tone="bad"] {
+  color: var(--danger);
+}
+.tz-change-summary-spark circle {
+  fill: currentColor;
+  stroke: none;
+}
+.tz-change-summary-row[data-skeleton] {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+}
+.tz-change-summary-skeleton:nth-child(1) {
+  inline-size: 40%;
+}
+.tz-change-summary-skeleton:nth-child(2) {
+  inline-size: 65%;
+}
+.tz-change-summary[data-status="updating"] .tz-skeleton::after {
+  background: linear-gradient(90deg, transparent, var(--ai-soft), transparent);
+}
+/* The most likely reason is a well cut into the paper, with a chip for each
+   source it rests on. */
+.tz-change-summary-reason {
+  display: grid;
+  gap: var(--space-1);
+  margin-block-start: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--surface-well);
+}
+.tz-change-summary-reason-label {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-change-summary-meta {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-inline-size: 0;
+}
+.tz-change-summary-decision {
+  margin-inline-start: auto;
+}
+.tz-change-summary-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+
 /* Supplied-data file navigator: only visible items participate in roving focus. */
 .tz-file-tree {
   min-inline-size: 0;
@@ -5756,7 +6355,8 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-markdown li > :is(ul, ol) {
   margin-block: var(--space-1);
 }
-.tz-markdown a {
+/* A citation chip is an anchor too, but it keeps its own look. */
+.tz-markdown a:not(.tz-inline-citation) {
   color: var(--action);
   text-decoration: underline;
   text-underline-offset: var(--underline-offset);
@@ -5764,11 +6364,11 @@ button.tz-tool-chip[aria-expanded="true"] {
   transition: text-decoration-color var(--motion-fast) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
-  .tz-markdown a:hover {
+  .tz-markdown a:not(.tz-inline-citation):hover {
     text-decoration-color: currentColor;
   }
 }
-.tz-markdown a:focus-visible {
+.tz-markdown a:not(.tz-inline-citation):focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
@@ -6759,6 +7359,10 @@ button.tz-tool-chip[aria-expanded="true"] {
   flex: none;
   margin-block-start: 4px;
   color: var(--text-muted);
+}
+/* The row of the source whose citation is being previewed. */
+.tz-sources-list > li[data-highlighted] > .tz-source-row {
+  background: var(--ai-soft);
 }
 /* Citations are small AI number chips that sit on the text, not above it,
    and invert while their source is open. A citation that opens something

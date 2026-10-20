@@ -1,15 +1,35 @@
 import ReactMarkdown, { defaultUrlTransform } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import type { Components, ExtraProps } from "react-markdown";
-import { Children, createElement, isValidElement } from "react";
+import {
+  Children,
+  Fragment,
+  createContext,
+  createElement,
+  isValidElement,
+  useContext,
+} from "react";
 import type { ComponentPropsWithRef, HTMLAttributes, ReactNode } from "react";
 import { CodeBlock } from "./CodeBlock";
 import { Table } from "./Table";
+import { sourceHref } from "./source-url";
 import { useSystem } from "./useSystem";
 export type MarkdownProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
   text: string;
+  /** Turns a `[n]` marker in the text into this node. Code is left alone, and
+   * a marker it returns nothing for stays as written. */
+  renderCitation?: (marker: number) => ReactNode;
+  /** "strict" sends link and image targets through `sourceHref`, so only http,
+   * https, relative and fragment targets survive; the default keeps the
+   * parser's own policy. */
+  links?: "default" | "strict";
 };
 const plugins = [remarkGfm];
+// The component map below is fixed so a growing answer never remounts its
+// nodes; the citation renderer reaches the text through this context.
+const CitationContext =
+  createContext<MarkdownProps["renderCitation"]>(undefined);
+const strictUrl = (url: string) => sourceHref(url) ?? "";
 function MarkdownTable({ children }: ComponentPropsWithRef<"table">) {
   const ar = useSystem().config.direction === "rtl";
   return (
@@ -18,20 +38,38 @@ function MarkdownTable({ children }: ComponentPropsWithRef<"table">) {
 }
 // Only split rendered text; the maintained parser still owns all Markdown syntax.
 // Stable word nodes keep a selection in received prose intact when its paragraph grows.
-function words(children: ReactNode) {
-  return Children.map(children, (child) =>
-    typeof child === "string"
-      ? (child.match(/\S+|\s+/gu) ?? []).map((word, index) =>
-          /\S/u.test(word) ? (
-            <span className="tz-markdown-word" key={index}>
-              {word}
-            </span>
-          ) : (
-            word
-          ),
-        )
-      : child,
+function wordSpans(text: string, prefix: string) {
+  return (text.match(/\S+|\s+/gu) ?? []).map((word, index) =>
+    /\S/u.test(word) ? (
+      <span className="tz-markdown-word" key={`${prefix}${index}`}>
+        {word}
+      </span>
+    ) : (
+      word
+    ),
   );
+}
+function words(
+  children: ReactNode,
+  renderCitation?: MarkdownProps["renderCitation"],
+) {
+  return Children.map(children, (child) => {
+    if (typeof child !== "string") return child;
+    if (!renderCitation) return wordSpans(child, "");
+    // A marker may touch its word or the punctuation after it, so the text is
+    // cut at each marker before it is cut into words.
+    return child.split(/(\[\d+\])/u).map((part, index) => {
+      const marker = /^\[(\d+)\]$/u.exec(part)?.[1];
+      const number = marker === undefined ? NaN : Number(marker);
+      if (!Number.isSafeInteger(number)) return wordSpans(part, `${index}-`);
+      const node = renderCitation(number);
+      return (
+        <Fragment key={`${index}-citation`}>
+          {node === null || node === undefined || node === false ? part : node}
+        </Fragment>
+      );
+    });
+  });
 }
 function prose(
   tag:
@@ -53,7 +91,8 @@ function prose(
     children,
     ...props
   }: HTMLAttributes<HTMLElement> & ExtraProps) {
-    return createElement(tag, props, words(children));
+    const renderCitation = useContext(CitationContext);
+    return createElement(tag, props, words(children, renderCitation));
   };
 }
 // Stable component identities preserve code/copy focus across partial host updates.
@@ -119,17 +158,25 @@ const components: Components = {
   },
 };
 /** CommonMark plus GFM; raw HTML is discarded and parser URL filtering stays enabled. */
-export function Markdown({ text, className = "", ...props }: MarkdownProps) {
+export function Markdown({
+  text,
+  renderCitation,
+  links = "default",
+  className = "",
+  ...props
+}: MarkdownProps) {
   return (
     <div {...props} className={`tz-markdown ${className}`}>
-      <ReactMarkdown
-        skipHtml
-        remarkPlugins={plugins}
-        components={components}
-        urlTransform={defaultUrlTransform}
-      >
-        {text}
-      </ReactMarkdown>
+      <CitationContext value={renderCitation}>
+        <ReactMarkdown
+          skipHtml
+          remarkPlugins={plugins}
+          components={components}
+          urlTransform={links === "strict" ? strictUrl : defaultUrlTransform}
+        >
+          {text}
+        </ReactMarkdown>
+      </CitationContext>
     </div>
   );
 }

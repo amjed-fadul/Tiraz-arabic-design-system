@@ -757,6 +757,42 @@
       "source": "useReducedMotion.ts"
     },
     {
+      "name": "ThinkingPanel",
+      "source": "ThinkingPanel.tsx"
+    },
+    {
+      "name": "ThinkingPanelProps",
+      "source": "ThinkingPanel.tsx"
+    },
+    {
+      "name": "ThinkingPanelLabels",
+      "source": "ThinkingPanel.tsx"
+    },
+    {
+      "name": "FeedbackBar",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "FeedbackBarProps",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "FeedbackBarLabels",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "FeedbackReason",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "FollowUps",
+      "source": "FollowUps.tsx"
+    },
+    {
+      "name": "FollowUpsProps",
+      "source": "FollowUps.tsx"
+    },
+    {
       "name": "CodeBlock",
       "source": "CodeBlock.tsx"
     },
@@ -977,6 +1013,30 @@
       "source": "AgentTask.tsx"
     },
     {
+      "name": "CitedAnswer",
+      "source": "CitedAnswer.tsx"
+    },
+    {
+      "name": "CitedAnswerProps",
+      "source": "CitedAnswer.tsx"
+    },
+    {
+      "name": "CitedAnswerLabels",
+      "source": "CitedAnswer.tsx"
+    },
+    {
+      "name": "ChangeSummary",
+      "source": "ChangeSummary.tsx"
+    },
+    {
+      "name": "ChangeSummaryProps",
+      "source": "ChangeSummary.tsx"
+    },
+    {
+      "name": "ChangeSummaryLabels",
+      "source": "ChangeSummary.tsx"
+    },
+    {
       "name": "ApprovalFlow",
       "source": "ApprovalFlow.tsx"
     },
@@ -1104,6 +1164,182 @@
     }
   },
   "components": [
+    {
+      "id": "cited-answer",
+      "api": "CitedAnswer",
+      "source": "CitedAnswer.tsx",
+      "kind": "pattern",
+      "parts": [
+        "thinking-panel",
+        "streaming-text",
+        "markdown",
+        "sources",
+        "feedback-bar",
+        "follow-ups",
+        "tray"
+      ],
+      "states": ["thinking", "writing", "completed", "failed", "stopped"],
+      "events": [
+        "onThinkingOpenChange",
+        "onFollowUp",
+        "onFeedbackChange",
+        "onCopy",
+        "onRegenerate",
+        "onStop",
+        "onRetry"
+      ],
+      "exports": ["CitedAnswer", "CitedAnswerProps", "CitedAnswerLabels"],
+      "purpose": "Answer a question and show where each claim came from: the thinking while it happens, the answer with numbered citation chips that preview their source, follow-up questions, a rating, and the sources with the time it took.",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"thinking\" | \"writing\" | \"completed\" | \"failed\" | \"stopped\"",
+          "required": true,
+          "values": ["thinking", "writing", "completed", "failed", "stopped"],
+          "note": "Host-owned. Thinking opens the panel and offers Stop; writing folds the panel to «فكّر لمدة ٦ث» and streams the words; completed adds the follow-ups, the rating and the meta; failed keeps the partial answer with the error and Try again; stopped keeps it with «أُوقفت الإجابة» and Regenerate."
+        },
+        {
+          "name": "question",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The question, as the section's heading and a bubble at the inline end. Leave it out when a conversation already shows it; the section is then named «إجابة موثّقة»."
+        },
+        {
+          "name": "content",
+          "type": "string",
+          "required": true,
+          "note": "Markdown, the whole text so far. A [n] marker names a source's number and becomes a citation chip; a marker with no source, or inside code, stays text. Links in it pass through sourceHref."
+        },
+        {
+          "name": "sources",
+          "type": "readonly SourceReference[]",
+          "required": true,
+          "note": "The sources the answer cites. Their count and the answer's duration make the meta; the count is the button that opens the list."
+        },
+        {
+          "name": "thinking",
+          "type": "{ elapsed: number; searched: readonly SourceReference[]; steps?: readonly { id: string; label: string; state: \"pending\" | \"running\" | \"completed\" }[] }",
+          "required": false,
+          "note": "What the search covered, for the thinking panel. Seconds, the sources found so far (the first three show as chips) and the steps. Without it there is no panel."
+        },
+        {
+          "name": "thinkingOpen",
+          "type": "boolean",
+          "required": false,
+          "note": "Controls the panel; pair it with onThinkingOpenChange. Without it the panel is open while thinking and folds when the status leaves thinking."
+        },
+        {
+          "name": "onThinkingOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "followUps",
+          "type": "readonly { id: string; label: string }[]",
+          "required": false,
+          "note": "Shown as a list of buttons once the answer is completed, and only with onFollowUp."
+        },
+        {
+          "name": "onFollowUp",
+          "type": "(id: string) => void",
+          "required": false
+        },
+        {
+          "name": "feedback",
+          "type": "\"up\" | \"down\" | null",
+          "required": false,
+          "note": "The rating, host-owned. The bar shows when onFeedbackChange, onCopy or onRegenerate exists."
+        },
+        {
+          "name": "reason",
+          "type": "FeedbackReason",
+          "required": false,
+          "note": "The reason picked for a \"down\" rating: inaccurate, wrong-source, too-long or outdated."
+        },
+        {
+          "name": "onFeedbackChange",
+          "type": "(value: \"up\" | \"down\" | null, reason?: FeedbackReason) => void",
+          "required": false,
+          "note": "null takes a rating back; a reason comes only with \"down\"."
+        },
+        {
+          "name": "onCopy",
+          "type": "() => void | Promise<void>",
+          "required": false,
+          "note": "The host copies the answer; «نُسخت» shows for two seconds once the promise resolves."
+        },
+        {
+          "name": "onRegenerate",
+          "type": "() => void",
+          "required": false,
+          "note": "In the bar when completed, and as the primary button when stopped."
+        },
+        {
+          "name": "onStop",
+          "type": "() => void",
+          "required": false,
+          "note": "Shown while thinking and writing."
+        },
+        {
+          "name": "onRetry",
+          "type": "() => void",
+          "required": false,
+          "note": "The primary button when the answer failed."
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "note": "Seconds the answer took, shown as ٦٫٢ث beside the sources' count."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "note": "What went wrong, as persistent text beside the partial answer of a failed status."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The question's level."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<CitedAnswerLabels>",
+          "required": false,
+          "note": "Replaces any built-in text; thinkingPanel and feedbackBar carry the nested parts' words."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "card sits on a tray with the answer on paper; plain lives on its host's paper."
+        }
+      ],
+      "state": "The host owns the status, the text, the sources, the rating and every time. The pattern never advances by itself: it shows the thinking panel, streams the words it is given and reports what the person asks for. The panel folds when writing starts unless the host controls it.",
+      "accessibility": [
+        "A section labelled by the question (or «إجابة موثّقة»). One polite region says each change of status in one sentence: يفكّر, يكتب الإجابة, اكتملت الإجابة, تعذّر إكمال الإجابة or أُوقفت الإجابة. The status the answer mounts in is not announced. The answer's words, the elapsed time and the copy confirmation never reach a live region: the thinking panel and the streamed text run with announcement off, and the bar has none.",
+        "A citation chip is a link when its source has a safe destination, so Enter and a click open it; otherwise it is a button that Tab reaches, and a click or focus previews it. Hover or focus shows the source's title and description in a tooltip that carries no link, Escape or blur closes it, and the pointer moving onto it keeps it open (WCAG 1.4.13). The chip's name is «المصدر ١: العنوان» in the provider's digits.",
+        "A failure stays as text beside the partial answer, with Try again. When a change removes the focused control (Stop, Try again, Regenerate), focus moves to the section. Moving to a status never moves focus."
+      ],
+      "limitations": [
+        "No model call, retrieval, streaming transport or timer. Supply the sources, the numbers in the text and the times; update the time at most once a second.",
+        "The answer is Markdown with [n] markers; a number with no source stays as written, so supply every source the text cites.",
+        "Links in the answer are limited to http, https, relative and fragment destinations."
+      ],
+      "alternative": "Use a ChatThread message for casual chat without sources, Agent task for multi-step work, and Sources with InlineCitation alone to cite inside your own content.",
+      "dependencies": [
+        "react-markdown@10.1.0",
+        "remark-gfm@4.0.1 (via Markdown)",
+        "@radix-ui/react-popover@1.3.1 (via InlineCitation)"
+      ],
+      "examples": ["ai/examples/CitedAnswerExamples.tsx"]
+    },
     {
       "id": "agent-task",
       "api": "AgentTask",
@@ -1279,6 +1515,109 @@
       "alternative": "Use ApprovalCard for a single yes or no, TaskRows for a list of tasks without a run, or a table for many tasks at a glance.",
       "dependencies": [],
       "examples": ["ai/examples/AgentTaskExamples.tsx"]
+    },
+    {
+      "id": "change-summary",
+      "api": "ChangeSummary",
+      "source": "ChangeSummary.tsx",
+      "kind": "pattern",
+      "parts": ["ai-mark", "status-pill", "tray", "sources"],
+      "states": ["updating", "ready", "stale", "failed"],
+      "events": ["onRefresh"],
+      "exports": ["ChangeSummary", "ChangeSummaryProps", "ChangeSummaryLabels"],
+      "purpose": "Tell a manager what moved, why it moved, and what to do next: up to six rows with a trend badge and a sparkline, the most likely reason with citations, the next steps, and what the summary rests on.",
+      "props": [
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The heading; «ما الذي تغيّر» by default."
+        },
+        {
+          "name": "status",
+          "type": "\"updating\" | \"ready\" | \"stale\" | \"failed\"",
+          "required": true,
+          "values": ["updating", "ready", "stale", "failed"],
+          "note": "Host-owned. Updating turns the rows into skeleton lines with a soft shimmer and the pill reads يحدّث; ready and stale carry «أعدّه المساعد», and stale adds «قد يكون الملخص قديمًا» with Refresh; failed shows the pill تعثّر and Try again."
+        },
+        {
+          "name": "rows",
+          "type": "readonly { id: string; metric: string; change: ReactNode; direction: \"up\" | \"down\" | \"flat\"; tone: \"good\" | \"bad\" | \"neutral\"; series?: readonly number[] }[]",
+          "required": true,
+          "note": "The first six show. change is the change in words with no + or − sign. direction draws the arrow and its hidden word (ارتفع, انخفض, ثابت); tone is the meaning, in the color: good is success, bad is danger, neutral is muted. series draws a sparkline that runs left to right in both directions."
+        },
+        {
+          "name": "reason",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The most likely reason, under «السبب الأرجح»."
+        },
+        {
+          "name": "sources",
+          "type": "readonly SourceReference[]",
+          "required": false,
+          "note": "A citation chip after the reason for each source."
+        },
+        {
+          "name": "basedOn",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The footer's first line, for example «اعتمادًا على ٣ تقارير»."
+        },
+        {
+          "name": "updated",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The footer's second line, for example «حُدّث قبل ٥ د»."
+        },
+        {
+          "name": "actions",
+          "type": "readonly { id: string; label: string; primary?: boolean; onSelect(): void }[]",
+          "required": false,
+          "note": "One primary next step and one secondary, in the footer. They show only while the summary is ready, so no step rests on numbers that may be old."
+        },
+        {
+          "name": "onRefresh",
+          "type": "() => void",
+          "required": false,
+          "note": "Refresh while stale and Try again when failed."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The title's level."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<ChangeSummaryLabels>",
+          "required": false,
+          "note": "Replaces any built-in text."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "card sits on a tray with the rows on paper; plain lives on its host's paper."
+        }
+      ],
+      "state": "The host owns the status, the rows, their tones, the reason and the times. The pattern never refreshes by itself; Refresh and Try again call onRefresh and the host sets updating.",
+      "accessibility": [
+        "A section labelled by its title. One polite region says each change of status in one sentence: يحدّث الملخص, الملخص جاهز, قد يكون الملخص قديمًا or تعذّر تحديث الملخص. The status the summary mounts in is not announced, and an unchanged status is not announced again.",
+        "Each row reads as its metric, a direction word and the change: the arrow is decorative, the word is hidden text and the color is never the only signal for the direction. The sparkline is decoration and hidden from assistive technology. While updating, the skeleton rows are hidden and the paper is aria-busy.",
+        "When a change removes the focused control (Refresh), focus moves to the section."
+      ],
+      "limitations": [
+        "No data fetching, comparison or generation: the host supplies every row, tone and sentence. The tone is the host's judgement of good or bad, and it is conveyed by color and by the host's own wording.",
+        "Only the first six rows show. Digits in the rows are the host's text, so format them with numberLocale(config)."
+      ],
+      "alternative": "Use a chart for one measure over time, a DataTable for many records, and InsightCards for findings read one at a time.",
+      "dependencies": ["@radix-ui/react-popover@1.3.1 (via InlineCitation)"],
+      "examples": ["ai/examples/ChangeSummaryExamples.tsx"]
     },
     {
       "id": "terminal",
@@ -2052,6 +2391,23 @@
           "default": false
         },
         {
+          "name": "expanded",
+          "type": "boolean",
+          "required": false,
+          "note": "Controls the list; pair it with onExpandedChange. Without it the list is uncontrolled and starts as defaultExpanded says."
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(expanded: boolean) => void",
+          "required": false
+        },
+        {
+          "name": "highlightedId",
+          "type": "string",
+          "required": false,
+          "note": "Marks (data-highlighted) the row of the source whose citation is being previewed."
+        },
+        {
           "name": "labels",
           "type": "SourcesLabels",
           "required": false
@@ -2062,17 +2418,17 @@
           "required": false
         }
       ],
-      "state": "Uncontrolled source-list disclosure. InlineCitation mode defaults to disclosure; link mode uses a native anchor.",
+      "state": "The source-list disclosure is uncontrolled unless expanded is supplied. InlineCitation mode defaults to disclosure; link mode uses a native anchor, and preview shows the source on hover or focus.",
       "accessibility": [
         "Stable application IDs and explicit citation numbers; never renumber on reorder/filter. Pass the same source records to Sources and InlineCitation.",
         "List is numbered through supplied number fields; visible numbers and the default summary count follow config.numerals, while labels callbacks receive raw numbers. Summary is a real button; rows with accepted destinations are native links. Missing/rejected destinations remain static text.",
-        "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog."
+        "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog. Preview mode is a link (or, when the destination is rejected, a button) that shows the source's domain, number, title, description and metadata in a tooltip while the pointer is on it or it has focus: it takes no focus, carries no link, closes on Escape or blur, and stays open while the pointer is on it. onOpenChange reports opening and closing in both modes."
       ],
       "limitations": [
         "Allowed destinations: HTTP(S), relative paths and fragments. Reject controls/embedded whitespace, backslashes, protocol-relative URLs, credentials, malformed URLs and other schemes including javascript/data/file/mailto.",
         "Host owns references, evidence, title, ID, number and destination trust. No credibility scores, fabricated citations or retrieval."
       ],
-      "alternative": "Use InlineCitation mode=\"link\" for direct navigation; default disclosure presents source details and an optional native Open link.",
+      "alternative": "Use InlineCitation mode=\"link\" for direct navigation; default disclosure presents source details and an optional native Open link; preview shows the details on hover or focus and opens the source on Enter or click.",
       "dependencies": ["@radix-ui/react-popover@1.3.1"],
       "examples": ["ai/examples/AIResultsExamples.tsx"]
     },
@@ -2093,6 +2449,14 @@
           "required": true
         },
         {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The level of the finding's title."
+        },
+        {
           "name": "labels",
           "type": "InsightCardsLabels",
           "required": false
@@ -2105,7 +2469,7 @@
       ],
       "state": "One selected application ID; preserves selection on reorder, falls back to the first item if removed. No active animation.",
       "accessibility": [
-        "Named group, concise h3 finding, previous/next buttons and polite position. Default position digits follow config.numerals; labels.position receives raw numbers. Single/empty sets have no navigation.",
+        "Named group, concise finding title at headingLevel (h3 by default), previous/next buttons and polite position. Default position digits follow config.numerals; labels.position receives raw numbers. Single/empty sets have no navigation.",
         "Actions render only when supplied. Optional Badge label/tone is neutral by default; semantic tones must be justified by supplied data."
       ],
       "limitations": [
@@ -2336,6 +2700,20 @@
           "name": "text",
           "type": "string",
           "required": true
+        },
+        {
+          "name": "renderCitation",
+          "type": "(marker: number) => ReactNode",
+          "required": false,
+          "note": "Turns each [n] marker (n a whole number) in text into this node; code and link text are left alone, and a marker stays text if the function returns nothing. The components stay the same across updates, so a growing answer keeps its nodes."
+        },
+        {
+          "name": "links",
+          "type": "default | strict",
+          "required": false,
+          "default": "default",
+          "values": ["default", "strict"],
+          "note": "strict sends link and image targets through sourceHref, so only http, https, relative and fragment targets survive and a rejected link shows as text (a mailto: link included). default keeps the parser's own policy."
         }
       ],
       "dependencies": ["react-markdown@10.1.0", "remark-gfm@4.0.1"],
@@ -2366,9 +2744,10 @@
         },
         {
           "name": "state",
-          "type": "streaming | completed",
+          "type": "streaming | completed | stopped | failed",
           "required": true,
-          "values": ["streaming", "completed"]
+          "values": ["streaming", "completed", "stopped", "failed"],
+          "note": "Stopped and failed keep the text that arrived, end the cursor and the word motion, and announce «أُوقف الرد» or «تعذّر إكمال الرد» (Response stopped, Couldn't finish the response)."
         },
         {
           "name": "markdown",
@@ -2387,22 +2766,36 @@
           "required": false,
           "default": "polite",
           "values": ["polite", "off"]
+        },
+        {
+          "name": "renderCitation",
+          "type": "(marker: number) => ReactNode",
+          "required": false,
+          "note": "In markdown mode only: turns a [n] marker in the text into this node, as Markdown does."
+        },
+        {
+          "name": "links",
+          "type": "default | strict",
+          "required": false,
+          "default": "default",
+          "values": ["default", "strict"],
+          "note": "In markdown mode only: strict sends link targets through sourceHref, as Markdown does."
         }
       ],
       "dependencies": [
         "react-markdown@10.1.0",
         "remark-gfm@4.0.1 (via Markdown)"
       ],
-      "state": "Fully host driven text and streaming/completed state. No internal queue, transport, timer or token accounting.",
+      "state": "Fully host driven text and state: streaming, completed, stopped or failed. No internal queue, transport, timer or token accounting.",
       "accessibility": [
         "Content is readable without a live region. One concise state status, with optional translated statusLabel or announcement=off for host ownership.",
-        "Plain text uses stable word spans with a brief 300ms soft reveal (`--motion-word-settle`) and trailing cursor while streaming. Completion removes cursor and stops reveal. System and OS reduced motion suppress decoration and show all supplied content immediately.",
+        "Plain text uses stable word spans with a brief 300ms soft reveal (`--motion-word-settle`) and trailing cursor while streaming. Completion, stopping or failing removes the cursor and stops the reveal. System and OS reduced motion suppress decoration and show all supplied content immediately.",
         "Markdown mode composes the same renderer, reparsing partial syntax/fences; existing settled nodes stay mounted where parser structure is unchanged."
       ],
       "limitations": [
-        "Host owns buffering, cancellation, errors, size limits, URL trust and final text/state. Cancelling should retain received text, set completed and supply a cancelled statusLabel.",
+        "Host owns buffering, cancellation, errors, size limits, URL trust and final text/state. Cancelling should retain received text and set state to stopped; a failure sets failed. statusLabel replaces the announced sentence.",
         "Markdown structural changes may replace affected nodes; selection inside syntax being reinterpreted cannot be guaranteed. No response-wide live region.",
-        "The workbench page opens complete and nothing starts on its own: its frame offers the Streaming and Done states, and Replay streams the local sample again from its first word. The standalone StreamingDemo renders its own portable frame, keeps local provenance in accessible naming and defaults to explicit start. Runs invalidate timers on replay, configuration change and unmount, and there is no stop control. No AI/network request."
+        "The workbench page opens complete and nothing starts on its own: its frame offers the Streaming, Done, Stopped and Failed states, and Replay streams the local sample again from its first word. The standalone StreamingDemo renders its own portable frame, keeps local provenance in accessible naming and defaults to explicit start. Runs invalidate timers on replay, configuration change and unmount, and there is no stop control. No AI/network request."
       ],
       "inheritedProps": "Native div attributes, style, className and React 19 ref; children managed internally.",
       "alternative": "CodeBlock for source, Markdown for static formatted responses, StreamingText for host-driven updates.",
@@ -7362,9 +7755,15 @@
         },
         {
           "name": "mode",
-          "type": "\"disclosure\" | \"link\"",
+          "type": "\"disclosure\" | \"link\" | \"preview\"",
           "required": false,
-          "values": ["disclosure", "link"]
+          "values": ["disclosure", "link", "preview"]
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "note": "Called when the popup or preview opens or closes."
         },
         {
           "name": "labels",
@@ -7912,6 +8311,225 @@
           "required": true
         }
       ]
+    },
+    {
+      "type": "CitedAnswerLabels",
+      "source": "CitedAnswer.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "thinking",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "writing",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "completed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stopped",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stop",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "regenerate",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "followUps",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "thinkingPanel",
+          "type": "Partial<ThinkingPanelLabels>",
+          "required": false
+        },
+        {
+          "name": "feedbackBar",
+          "type": "Partial<FeedbackBarLabels>",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "ThinkingPanelLabels",
+      "source": "ThinkingPanel.tsx",
+      "props": [
+        {
+          "name": "thinking",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "thought",
+          "type": "(elapsed: string) => string",
+          "required": true
+        },
+        {
+          "name": "done",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "searched",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "more",
+          "type": "(count: string) => string",
+          "required": true
+        },
+        {
+          "name": "steps",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stepStates",
+          "type": "Record<\"pending\" | \"running\" | \"completed\", string>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "FeedbackBarLabels",
+      "source": "FeedbackBar.tsx",
+      "props": [
+        {
+          "name": "group",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "copy",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "copied",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "regenerate",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "helpful",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "notHelpful",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "reasons",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "type": "Record<FeedbackReason, string>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "ChangeSummaryLabels",
+      "source": "ChangeSummary.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "madeByAssistant",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "updatingPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failedPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "directions",
+          "type": "Record<\"up\" | \"down\" | \"flat\", string>",
+          "required": true
+        },
+        {
+          "name": "reason",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "refresh",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "updating",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "ready",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stale",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        }
+      ]
     }
   ],
   "support": [
@@ -8189,6 +8807,153 @@
       "exports": ["useReducedMotion"],
       "source": "useReducedMotion.ts",
       "purpose": "useReducedMotion(): boolean. True when config.reducedMotion is set or the OS prefers reduced motion, and it follows changes to the OS setting. Use it for cosmetic timers and scripted demos instead of re-implementing the check."
+    },
+    {
+      "id": "thinking-panel",
+      "exports": ["ThinkingPanel", "ThinkingPanelProps", "ThinkingPanelLabels"],
+      "source": "ThinkingPanel.tsx",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"running\" | \"completed\"",
+          "required": true,
+          "default": "undefined",
+          "note": "Running reads يفكّر and shimmers with the time in the header; completed reads «فكّر لمدة ٦ث». The label is the one sentence announced, never the time."
+        },
+        {
+          "name": "elapsed",
+          "type": "number",
+          "required": false,
+          "default": "undefined",
+          "note": "Seconds, shown in the header while running in a fixed width and never announced. Update it at most once per second. Completed uses it in the label."
+        },
+        {
+          "name": "sources",
+          "type": "readonly SourceReference[]",
+          "required": false,
+          "default": "[]",
+          "note": "After «بحث في», the first three as chips and then «+٢». A chip that arrives after mount fades in once."
+        },
+        {
+          "name": "steps",
+          "type": "readonly { id: string; label: string; state: \"pending\" | \"running\" | \"completed\" }[]",
+          "required": false,
+          "default": "[]",
+          "note": "Each step has a status icon, its label (shimmering while running) and a hidden state word."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "note": "Controls the disclosure; pair it with onOpenChange. Without it the panel starts open while running and closed once completed."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "Partial<ThinkingPanelLabels>",
+          "required": false,
+          "default": "undefined",
+          "note": "Replaces any built-in text."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "values": ["polite", "off"],
+          "note": "Polite renders one status region holding the label; off renders none, for an owner pattern that announces. Cited answer runs it off."
+        }
+      ],
+      "purpose": "The evidence while an answer is prepared: one line with the AI mark, the label, the time and a chevron, and under it what was searched, the steps and the thread. Built on the disclosure rules of ThinkingState (a closed panel is hidden and inert at once, and collapsing returns focus to the trigger unless the person moved it), with ThinkingIndicator's rule of one stable announced label. Use it inside Cited answer; a standalone page for it is not part of the navigation."
+    },
+    {
+      "id": "feedback-bar",
+      "exports": [
+        "FeedbackBar",
+        "FeedbackBarProps",
+        "FeedbackBarLabels",
+        "FeedbackReason"
+      ],
+      "source": "FeedbackBar.tsx",
+      "props": [
+        {
+          "name": "feedback",
+          "type": "\"up\" | \"down\" | null",
+          "required": false,
+          "default": "undefined",
+          "note": "The rating. Without it the bar keeps its own."
+        },
+        {
+          "name": "reason",
+          "type": "FeedbackReason",
+          "required": false,
+          "default": "undefined",
+          "note": "The reason picked for a \"down\" rating: inaccurate, wrong-source, too-long or outdated. Without it the bar keeps its own."
+        },
+        {
+          "name": "onFeedbackChange",
+          "type": "(value: \"up\" | \"down\" | null, reason?: FeedbackReason) => void",
+          "required": false,
+          "default": "undefined",
+          "note": "Helpful and not helpful are aria-pressed toggles; pressing the one that is on calls it with null. A \"down\" offers the four reasons as buttons, each calling it with (\"down\", reason)."
+        },
+        {
+          "name": "onCopy",
+          "type": "() => void | Promise<void>",
+          "required": false,
+          "default": "undefined",
+          "note": "The host copies the text. «نُسخت» is the copy button's name and a visible word for two seconds once the promise resolves; a rejection shows nothing, and a result that arrives after unmount is ignored."
+        },
+        {
+          "name": "onRegenerate",
+          "type": "() => void",
+          "required": false,
+          "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "Partial<FeedbackBarLabels>",
+          "required": false,
+          "default": "undefined",
+          "note": "Replaces any built-in text."
+        }
+      ],
+      "purpose": "Copy, regenerate, helpful and not helpful (with reasons) as quiet icon buttons in a named group. Each button shows only when its handler exists. The bar is silent: it has no live region, so its owner pattern keeps the one announcement. A thumb that is on is filled, so color is not the only signal."
+    },
+    {
+      "id": "follow-ups",
+      "exports": ["FollowUps", "FollowUpsProps"],
+      "source": "FollowUps.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly { id: string; label: string }[]",
+          "required": true,
+          "default": "undefined",
+          "note": "Renders nothing when empty."
+        },
+        {
+          "name": "onSelect",
+          "type": "(id: string) => void",
+          "required": true,
+          "default": "undefined",
+          "note": "The person picked a question; the host asks it."
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "The list's visible name and accessible name; «أسئلة تالية» / Next questions by default."
+        }
+      ],
+      "purpose": "Suggested next questions as a named list of buttons, each one calling onSelect with its id."
     }
   ],
   "conventions": {

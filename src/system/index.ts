@@ -118,6 +118,16 @@ export type { TrayProps } from "./Tray";
 export { Countdown } from "./Countdown";
 export type { CountdownProps } from "./Countdown";
 export { useReducedMotion } from "./useReducedMotion";
+export { ThinkingPanel } from "./ThinkingPanel";
+export type { ThinkingPanelProps, ThinkingPanelLabels } from "./ThinkingPanel";
+export { FeedbackBar } from "./FeedbackBar";
+export type {
+  FeedbackBarProps,
+  FeedbackBarLabels,
+  FeedbackReason,
+} from "./FeedbackBar";
+export { FollowUps } from "./FollowUps";
+export type { FollowUpsProps } from "./FollowUps";
 export { CodeBlock } from "./CodeBlock";
 export type { CodeBlockProps } from "./CodeBlock";
 export { Markdown } from "./Markdown";
@@ -178,6 +188,10 @@ export type {
 } from "./ApprovalCard";
 export { AgentTask } from "./AgentTask";
 export type { AgentStep, AgentTaskProps, AgentTaskLabels } from "./AgentTask";
+export { CitedAnswer } from "./CitedAnswer";
+export type { CitedAnswerProps, CitedAnswerLabels } from "./CitedAnswer";
+export { ChangeSummary } from "./ChangeSummary";
+export type { ChangeSummaryProps, ChangeSummaryLabels } from "./ChangeSummary";
 export { ApprovalFlow } from "./ApprovalFlow";
 export type {
   ApprovalFlowProps,

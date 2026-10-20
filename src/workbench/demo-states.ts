@@ -123,6 +123,9 @@ export const stateWords = {
   hidden: ["مخفي", "Hidden"],
   shown: ["ظاهر", "Shown"],
   plan: ["خطة", "Plan"],
+  updating: ["يحدّث", "Updating"],
+  ready: ["جاهز", "Ready"],
+  stale: ["قديم", "Stale"],
 } satisfies Record<string, Localized>;
 
 /** A state whose id and label both come from one word in `stateWords`. */
@@ -518,7 +521,12 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
   // Lifecycle states: each example takes the phase and reports where the
   // visitor moves it. ToolCall and TaskRows take Done as their "completed".
   "streaming-text": {
-    states: [phased("streaming"), phased("done")],
+    states: [
+      phased("streaming"),
+      phased("done"),
+      phased("stopped"),
+      phased("failed"),
+    ],
     resting: "done",
     replay: [
       { state: "streaming", ms: 2600 },
@@ -569,6 +577,29 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "running", ms: 2000 },
       { state: "needsYou", ms: 2400 },
       { state: "done", ms: 800 },
+    ],
+  },
+  "cited-answer": {
+    states: [
+      phased("thinking"),
+      phased("writing"),
+      phased("done", "completed"),
+      phased("failed"),
+      phased("stopped"),
+    ],
+    resting: "done",
+    replay: [
+      { state: "thinking", ms: 2600 },
+      { state: "writing", ms: 2600 },
+      { state: "done", ms: 800 },
+    ],
+  },
+  "change-summary": {
+    states: [phased("updating"), phased("ready"), phased("stale")],
+    resting: "ready",
+    replay: [
+      { state: "updating", ms: 1800 },
+      { state: "ready", ms: 800 },
     ],
   },
   "chat-thread": {

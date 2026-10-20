@@ -162,7 +162,8 @@ export function StreamingDemo({
   code?: string;
   /**
    * "streaming" streams the chunks and stays streaming; "done" shows them
-   * all. A phase leaves the frame to the page, so there is none here.
+   * all; "stopped" and "failed" keep the part that had arrived. A phase leaves
+   * the frame to the page, so there is none here.
    */
   phase?: string;
 }) {
@@ -228,14 +229,50 @@ export function StreamingDemo({
       timers.current.push(setTimeout(start, 0));
     return invalidate;
   }, [autoStart, phase, start, invalidate]);
+  // A stopped or failed response keeps the first part of what would arrive,
+  // and the host says so beside it as persistent text.
+  const chunks = streamChunks(ar, markdown),
+    ended = phase === "stopped" || phase === "failed";
   const stream = (
     <div style={{ minBlockSize: 100 }}>
       <StreamingText
-        text={phase === "done" ? streamChunks(ar, markdown).join("") : text}
-        state={(phase ?? run) === "streaming" ? "streaming" : "completed"}
+        text={
+          phase === "done"
+            ? chunks.join("")
+            : ended
+              ? chunks.slice(0, Math.ceil(chunks.length * 0.6)).join("")
+              : text
+        }
+        state={
+          ended
+            ? phase
+            : (phase ?? run) === "streaming"
+              ? "streaming"
+              : "completed"
+        }
         markdown={markdown}
-        statusLabel={run === "idle" && phase !== "done" ? "" : undefined}
+        statusLabel={
+          run === "idle" && phase !== "done" && !ended ? "" : undefined
+        }
       />
+      {ended && (
+        <p
+          style={{
+            margin: 0,
+            marginBlockStart: "var(--space-2)",
+            color: "var(--text-muted)",
+            fontSize: "var(--text-meta)",
+          }}
+        >
+          {phase === "stopped"
+            ? ar
+              ? "أُوقف الرد قبل أن يكتمل."
+              : "The response was stopped before it finished."
+            : ar
+              ? "تعذّر إكمال الرد."
+              : "The response couldn't be finished."}
+        </p>
+      )}
     </div>
   );
   if (phase !== undefined) return stream;

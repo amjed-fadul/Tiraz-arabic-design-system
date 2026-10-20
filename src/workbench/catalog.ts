@@ -1,6 +1,15 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "cited-answer",
+    name: ["إجابة موثّقة", "Cited answer"],
+    description: [
+      "يجيب عن سؤال ويُظهر المصدر الذي جاءت منه كل معلومة.",
+      "Answer a question and show where each claim came from.",
+    ],
+    file: "CitedAnswer.tsx",
+  },
+  {
     id: "agent-task",
     name: ["مهمة الوكيل", "Agent task"],
     description: [
@@ -8,6 +17,15 @@ export const catalog = [
       "Let an agent run a multi-step job while the person stays in control.",
     ],
     file: "AgentTask.tsx",
+  },
+  {
+    id: "change-summary",
+    name: ["ما الذي تغيّر", "What changed"],
+    description: [
+      "يخبر المدير بما تحرّك، ولماذا تحرّك، وما الذي يفعله بعد ذلك.",
+      "Tell a manager what moved, why it moved, and what to do next.",
+    ],
+    file: "ChangeSummary.tsx",
   },
   {
     id: "terminal",
@@ -652,7 +670,9 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "cited-answer",
       "agent-task",
+      "change-summary",
       "terminal",
       "chat-app",
       "ask-user-questions",

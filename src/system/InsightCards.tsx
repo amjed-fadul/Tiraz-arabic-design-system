@@ -4,7 +4,6 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Badge } from "./Badge";
 import type { BadgeTone } from "./Badge";
 import { Button } from "./Button";
-import { CardTitle } from "./Card";
 import { useSystem } from "./useSystem";
 import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
@@ -26,12 +25,15 @@ export interface InsightCardsLabels {
 }
 export interface InsightCardsProps {
   items: readonly InsightItem[];
+  /** The level of the finding's title; 3 by default. */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: InsightCardsLabels;
   className?: string;
 }
 /** One finding at a time; stable IDs preserve the selected finding through updates. */
 export function InsightCards({
   items,
+  headingLevel = 3,
   labels,
   className = "",
 }: InsightCardsProps) {
@@ -56,7 +58,8 @@ export function InsightCards({
       </p>
     );
   const Previous = ar ? ChevronRight : ChevronLeft,
-    Next = ar ? ChevronLeft : ChevronRight;
+    Next = ar ? ChevronLeft : ChevronRight,
+    Heading = `h${headingLevel}` as const;
   return (
     <div
       className={`tz-insights ${className}`}
@@ -105,7 +108,9 @@ export function InsightCards({
         )}
       </header>
       <div key={item.id} className="tz-insight-page" data-insight-id={item.id}>
-        <CardTitle dir="auto">{item.title}</CardTitle>
+        <Heading className="tz-card-title" dir="auto">
+          {item.title}
+        </Heading>
         {((item.details !== undefined && item.details !== null) ||
           item.label) && (
           <div className="tz-insight-detail">

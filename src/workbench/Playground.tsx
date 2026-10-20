@@ -1,4 +1,6 @@
 import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
+import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
+import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
 import { ChatAppExample } from "../system/ai/examples/ChatAppExample";
 import {
@@ -307,6 +309,24 @@ export function Playground({
   onPhaseChange,
 }: Props) {
   const t = words(language);
+  if (component === "cited-answer")
+    return (
+      <CitedAnswerExample
+        language={language}
+        {...(model as Playgrounds["cited-answer"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "change-summary")
+    return (
+      <ChangeSummaryExample
+        language={language}
+        {...(model as Playgrounds["change-summary"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
   if (component === "agent-task")
     return (
       <AgentTaskExample
