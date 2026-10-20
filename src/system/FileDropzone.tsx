@@ -256,47 +256,48 @@ export function FileDropzone({
               event.currentTarget.value = "";
             }}
           />
-        </div>
-        {files.length > 0 && (
-          <ul className="tz-selected-files">
-            {files.map((file, index) => (
-              <li
-                key={`${index}-${file.name}`}
-                data-fresh={arrivals.fresh(fileKey(file)) || undefined}
-                onAnimationEnd={(event) => {
-                  if (event.target === event.currentTarget)
-                    arrivals.settle(fileKey(file));
-                }}
-              >
-                <File size={16} aria-hidden="true" />
-                <bdi className="tz-file-name" title={file.name}>
-                  {file.name}
-                </bdi>
-                <span className="tz-file-size" dir="ltr">
-                  {new Intl.NumberFormat(numberLocale(config), {
-                    maximumFractionDigits: 1,
-                  }).format(
-                    file.size < 1024 ? file.size : file.size / 1024,
-                  )}{" "}
-                  {file.size < 1024 ? "B" : "KB"}
-                </span>
-                <RemoveButton
-                  label={
-                    labels?.remove?.(file) ??
-                    (ar ? `إزالة ${file.name}` : `Remove ${file.name}`)
-                  }
-                  disabled={disabled}
-                  onClick={() => {
-                    if (blocked()) return;
-                    browseRef.current?.focus();
-                    update(files.filter((_, i) => i !== index));
-                    setFeedback([]);
+          {/* The rows sit on the zone's tray, on a row of their own. */}
+          {files.length > 0 && (
+            <ul className="tz-selected-files">
+              {files.map((file, index) => (
+                <li
+                  key={`${index}-${file.name}`}
+                  data-fresh={arrivals.fresh(fileKey(file)) || undefined}
+                  onAnimationEnd={(event) => {
+                    if (event.target === event.currentTarget)
+                      arrivals.settle(fileKey(file));
                   }}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
+                >
+                  <File size={16} aria-hidden="true" />
+                  <bdi className="tz-file-name" title={file.name}>
+                    {file.name}
+                  </bdi>
+                  <span className="tz-file-size" dir="ltr">
+                    {new Intl.NumberFormat(numberLocale(config), {
+                      maximumFractionDigits: 1,
+                    }).format(
+                      file.size < 1024 ? file.size : file.size / 1024,
+                    )}{" "}
+                    {file.size < 1024 ? "B" : "KB"}
+                  </span>
+                  <RemoveButton
+                    label={
+                      labels?.remove?.(file) ??
+                      (ar ? `إزالة ${file.name}` : `Remove ${file.name}`)
+                    }
+                    disabled={disabled}
+                    onClick={() => {
+                      if (blocked()) return;
+                      browseRef.current?.focus();
+                      update(files.filter((_, i) => i !== index));
+                      setFeedback([]);
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <div
           id={statusId}
           role="status"

@@ -100,3 +100,13 @@ it("does not highlight disabled controls and keeps readonly selection available"
   expect(input).toHaveValue("001234");
   expect(input).toHaveAccessibleDescription("Review code");
 });
+it("marks a typed, complete and valid code for the success edge", async () => {
+  const user = userEvent.setup();
+  render(<OTPInput label="Code" length={4} />);
+  const otp = document.querySelector(".tz-otp")!;
+  expect(otp).not.toHaveAttribute("data-changed");
+  await user.type(screen.getByRole("textbox"), "1234");
+  expect(otp).toHaveAttribute("data-changed");
+  expect(slots().every((slot) => slot.hasAttribute("data-filled"))).toBe(true);
+  expect(otp.querySelector('[aria-invalid="true"]')).toBeNull();
+});

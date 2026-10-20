@@ -2439,9 +2439,12 @@ textarea.tz-textarea:read-only {
     0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
     var(--shadow-control);
 }
-/* Read-only keeps the field edge on the well, without the lift or a caret. */
+/* Read-only keeps the field edge on the well, without a caret, and without
+   the lift while unfocused, so focus keeps its halo. */
 .tz-tag-input:has(> .tz-tag-draft:read-only:not(:disabled)) {
   background: var(--surface-well);
+}
+.tz-tag-input:has(> .tz-tag-draft:read-only:not(:disabled):not(:focus)) {
   box-shadow: none;
 }
 .tz-tag-draft:read-only {
@@ -2664,7 +2667,7 @@ textarea.tz-textarea:read-only {
 }
 /* The dropzone and the color entry focus as a field: the edge turns to the
    accent with a halo, and the control inside shows no ring of its own. */
-.tz-file-drop:has(:focus-visible) {
+.tz-file-drop:has(> .tz-file-browse:focus-visible) {
   border-color: var(--focus);
   box-shadow: 0 0 0 3px var(--focus-halo);
 }
@@ -2675,7 +2678,8 @@ textarea.tz-textarea:read-only {
     var(--shadow-control);
 }
 @media (forced-colors: active) {
-  :is(.tz-file-drop, .tz-color-entry):has(:focus-visible) {
+  .tz-file-drop:has(> .tz-file-browse:focus-visible),
+  .tz-color-entry:has(:focus-visible) {
     outline: 2px solid Highlight;
     outline-offset: 1px;
   }
@@ -2689,7 +2693,7 @@ textarea.tz-textarea:read-only {
 .tz-color-entry[data-invalid="true"] {
   border-color: var(--danger);
 }
-.tz-file-drop[data-invalid="true"]:has(:focus-visible) {
+.tz-file-drop[data-invalid="true"]:has(> .tz-file-browse:focus-visible) {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent);
 }
 .tz-color-entry[data-invalid="true"]:has(:focus-visible) {
@@ -2697,15 +2701,20 @@ textarea.tz-textarea:read-only {
     0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
     var(--shadow-control);
 }
+/* Selected files are paper chips on the dropzone's tray, on a row of their
+   own; the transparent border is their edge in forced colors. The list takes
+   the zone's width without widening it. */
 .tz-selected-files {
+  flex-basis: 100%;
+  min-inline-size: 0;
+  contain: inline-size;
   list-style: none;
   padding: 0;
-  margin: var(--space-2) 0 0;
+  margin: 0;
   display: grid;
   gap: var(--space-1);
+  color: var(--text);
 }
-/* Selected files are paper chips; the transparent border is their edge in
-   forced colors. */
 .tz-selected-files li {
   display: flex;
   align-items: center;
@@ -3106,24 +3115,23 @@ textarea.tz-textarea:read-only {
     0 0 0 3px color-mix(in srgb, var(--danger) 20%, transparent),
     var(--shadow-control);
 }
-/* A code completed after mount: the slots briefly take the success edge. A
-   prefilled code shows nothing, and neither does an invalid one. */
+/* A code completed after mount takes the success edge while it stays
+   complete and valid. The edge's transition makes the change instant with the
+   keyboard; a prefilled code shows nothing. */
 .tz-otp[data-changed]:not(
     :has(.tz-otp-slot:not([data-filled])),
     :has([aria-invalid="true"])
   )
   .tz-otp-slot {
-  animation: tz-otp-done var(--motion-state) var(--ease-out);
+  border-color: var(--success);
 }
-@keyframes tz-otp-done {
-  from,
-  50% {
-    border-color: var(--success);
-  }
-}
-/* Read-only keeps the field edge on the well, without the lift. */
+/* Read-only keeps the field edge on the well, without the lift except on the
+   focused slot, which keeps its halo. */
 .tz-otp:has(> .tz-otp-input:read-only:not(:disabled)) .tz-otp-slot {
   background: var(--surface-well);
+}
+.tz-otp:has(> .tz-otp-input:read-only:not(:disabled))
+  .tz-otp-slot:not([data-active]) {
   box-shadow: none;
 }
 .tz-otp[data-disabled] {
