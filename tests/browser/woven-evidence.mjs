@@ -93,6 +93,14 @@ const variants = [
     viewport: { width: 390, height: 844 },
     overrides: {},
   },
+  {
+    name: "ar-light-forced",
+    language: "ar",
+    theme: "light",
+    viewport: desktop,
+    overrides: {},
+    context: { forcedColors: "active" },
+  },
 ];
 
 const requested = process.env.TIRAZ_VARIANTS
@@ -113,20 +121,35 @@ const end = catalogSource.indexOf("] as const", start);
 if (start < 0 || end < 0) {
   throw new Error("src/workbench/catalog.ts: catalog array not found");
 }
-const pageIds = [...catalogSource.slice(start, end).matchAll(/id: "([^"]+)"/g)]
+const catalogIds = [
+  ...catalogSource.slice(start, end).matchAll(/id: "([^"]+)"/g),
+]
   .map((match) => match[1])
   .filter((id) => id !== "field");
+// TIRAZ_PAGES limits the run to a comma list of page ids.
+const pageIds = process.env.TIRAZ_PAGES
+  ? process.env.TIRAZ_PAGES.split(",").map((id) => id.trim())
+  : catalogIds;
+const unknownPage = pageIds.find((id) => !catalogIds.includes(id));
+if (unknownPage) throw new Error(`Unknown page: ${unknownPage}`);
+// TIRAZ_FULLPAGE=1 captures the whole page instead of the playground section.
+const fullPage = process.env.TIRAZ_FULLPAGE === "1";
 
 await mkdir(evidence, { recursive: true });
 const errorsFile = path.join(evidence, "errors.txt");
 const previous = await readFile(errorsFile, "utf8").catch(() => "");
-// Drop lines left by earlier runs of the selected variants so a rerun does not duplicate them.
+// Drop lines left by earlier runs of the selected variants and pages (and
+// their boot, logged with an empty page id) so a rerun does not duplicate them.
 const kept = previous
   .split("\n")
   .filter(
     (line) =>
       line !== "" &&
-      !selected.some((variant) => line.startsWith(`${variant.name} `)),
+      !selected.some((variant) =>
+        ["", ...pageIds].some((id) =>
+          line.startsWith(`${variant.name} ${id}: `),
+        ),
+      ),
   );
 await writeFile(errorsFile, kept.map((line) => `${line}\n`).join(""));
 
@@ -137,6 +160,7 @@ try {
     const context = await browser.newContext({
       viewport: variant.viewport,
       deviceScaleFactor: 1,
+      ...variant.context,
     });
     const page = await context.newPage();
     const pending = [];
@@ -213,11 +237,13 @@ try {
       if ((await section.count()) === 0) {
         failures.push(`${variant.name} ${id}: no .playground-section`);
       } else {
-        await section.first().screenshot({
+        const shot = {
           path: path.join(evidence, variant.name, `${id}.jpg`),
           type: "jpeg",
           quality: 70,
-        });
+        };
+        if (fullPage) await page.screenshot({ ...shot, fullPage: true });
+        else await section.first().screenshot(shot);
         saved += 1;
       }
       await flush();
