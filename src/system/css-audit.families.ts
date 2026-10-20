@@ -75,8 +75,10 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   terminal: [".tz-terminal"],
   // .tz-tool covers ToolCall and ToolChips.
   tools: [".tz-tool"],
-  // .tz-agent is each task row of TaskRows.
+  // .tz-agent is each task row of TaskRows, and covers Agent task too.
   "task-rows": [".tz-task", ".tz-agent"],
+  // Agent task; .tz-agent-task is TaskRows' row class (Decision 5).
+  "agent-task": [".tz-agent-run"],
   // .tz-chat covers ChatThread, the composer that ChatComposer, PromptEntry
   // and PromptBar share, and ChatApp.
   chat: [".tz-chat"],

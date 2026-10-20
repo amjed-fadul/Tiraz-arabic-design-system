@@ -95,6 +95,80 @@ export function ApiReference({
     ],
   ];
   const rows: Record<ComponentId, Array<[string, string, string]>> = {
+    "agent-task": [
+      [
+        "title / agent / status",
+        "ReactNode / ReactNode? / plan | running | needs-you | failed | stopped | completed · required",
+        t(
+          "يمرّر تطبيقك العنوان والوكيل والحالة، ويقرّر متى تتغيّر الحالة. لا يتقدّم النمط بنفسه.",
+          "Your app supplies the title, the agent and the status, and decides when the status changes. The pattern never moves on by itself.",
+        ),
+      ],
+      [
+        "steps",
+        "readonly AgentStep[] · required",
+        t(
+          "لكل خطوة id ثابت وtitle وstate، ومعها اختياريًا detail وduration بالثواني وtools وnotes وrequest وapproval وerror.",
+          "Each step has a stable id, a title and a state, with an optional detail, duration in seconds, tools, notes, request, approval and error.",
+        ),
+      ],
+      [
+        "elapsed",
+        "number · seconds",
+        t(
+          "يظهر في الشارة أثناء العمل وعند الاكتمال، ولا يُعلن أبدًا. حدّثه مرة في الثانية على الأكثر.",
+          "Shown in the pill while running and once done, and never announced. Update it at most once a second.",
+        ),
+      ],
+      [
+        "autoStartAfter / onStart / onEditPlan",
+        "number? / () => void / () => void",
+        t(
+          "في الخطة المقترحة عدّ تنازلي يتوقف ما دام المؤشر أو التركيز داخل المهمة، ثم يستدعي onStart. ويبدأ Ctrl أو Cmd+Enter الخطة بعد نصف ثانية من ظهورها أو تغيّرها.",
+          "A proposed plan counts down while neither the pointer nor focus is inside, then calls onStart. Ctrl or Cmd+Enter starts the plan half a second after it appears or changes.",
+        ),
+      ],
+      [
+        "onSteer / onStop",
+        '(text, when: "next" | "now") => void / () => void',
+        t(
+          "أثناء العمل يوجّه Enter الوكيل مع الخطوة التالية، وCtrl أو Cmd+Enter فورًا، ثم يُفرَّغ الحقل. لا توجيه أثناء الكتابة بلوحة إدخال.",
+          "While running, Enter steers at the next step and Ctrl or Cmd+Enter steers now; the field then clears. Nothing steers while an input method is composing.",
+        ),
+      ],
+      [
+        "onDecision",
+        "(request, decision, { signal }) => void | Promise<void>",
+        t(
+          "يظهر طلب الخطوة المنتظرة بطاقة موافقة مدمجة بقواعدها كلها. وبلا onDecision يظهر الطلب نصًا دون إجراءات.",
+          "A waiting step's request shows as a plain approval card, with all its rules. Without onDecision the request shows as text, with no actions.",
+        ),
+      ],
+      [
+        "onRetryStep / onSkipStep / onReconnect",
+        "(id: string) => void",
+        t(
+          "طرق المتابعة بعد التعثّر، لما تذكره error.actions في الخطوة. إذا اختفى الزر الذي عليه التركيز انتقل التركيز إلى المهمة.",
+          "Ways forward from a failed step, for those its error.actions lists. If the focused button goes away, focus moves to the task.",
+        ),
+      ],
+      [
+        "outputs / primaryAction",
+        "readonly { id, label, icon?, onOpen? }[] / { label, onSelect }",
+        t(
+          "عند الاكتمال تظهر نتائج المهمة رقاقاتٍ، ومعها الإجراء التالي الأساسي.",
+          "Once done, what the task produced shows as chips, with the primary next action.",
+        ),
+      ],
+      [
+        "appearance / headingLevel / labels",
+        '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3 / Partial<AgentTaskLabels>',
+        t(
+          "استخدم plain داخل محادثة أو نمط آخر. وتستبدل labels أي نص مدمج.",
+          "Use plain inside a conversation or another pattern. labels replaces any built-in text.",
+        ),
+      ],
+    ],
     terminal: [
       [
         "command / output",
@@ -907,7 +981,15 @@ export function ApiReference({
         "string / string / ToolCallState · required",
         t(
           "مرّر من تطبيقك عنوانًا يفهمه المستخدم واسم الأداة وحالتها.",
-          "User-facing action, tool name and host-supplied pending/running/completed/failed state.",
+          "User-facing action, tool name and host-supplied pending/running/needs-you/completed/failed state.",
+        ),
+      ],
+      [
+        "appearance / labels / headingLevel",
+        '"card" | "plain" · card / Partial<ToolLabels> / 2 | 3 | 4 | 5 | 6 · 4',
+        t(
+          "استخدم plain داخل نمط آخر مثل مهمة الوكيل. تستبدل labels كلمات الحالة والأقسام، ويحدّد headingLevel مستوى عناوين المدخلات والمخرجات.",
+          "Use plain inside another pattern, such as Agent task. labels replaces the state and section words; headingLevel sets the level of the input and output headings.",
         ),
       ],
       [
@@ -967,6 +1049,11 @@ export function ApiReference({
           "يسمّي label القائمة. لكل عنصر معرّف ثابت وتسمية وحالة، وعدد اختياري.",
           "Named list; stable id, concise label, state and optional nonnegative count per item.",
         ),
+      ],
+      [
+        "labels",
+        "Partial<ToolLabels>",
+        t("تستبدل أي كلمة حالة.", "Replaces any state word."),
       ],
       [
         "items[].onActivate",
@@ -1162,10 +1249,10 @@ export function ApiReference({
       ],
       [
         "state / appearance",
-        "pending | running | completed | failed / capsules | list",
+        "pending | running | needs-you | completed | failed / capsules | list | plain",
         t(
-          "مرّر حالات التنفيذ من تطبيقك. تظهر المهام كبسولات منفصلة افتراضيًا أو قائمة متصلة. يشرح المؤشر والنص الحالة دون الاعتماد على اللون.",
-          "Execution state comes from the application. Separate capsules by default or connected list. Indicators and text explain state independently of color.",
+          "مرّر حالات التنفيذ من تطبيقك. تظهر المهام كبسولات منفصلة افتراضيًا، أو قائمة متصلة، أو صفوفًا بلا سطح في plain داخل نمط آخر. يشرح المؤشر والنص الحالة دون الاعتماد على اللون.",
+          "Execution state comes from the application. Separate capsules by default, a connected list, or plain rows inside another pattern. Indicators and text explain state independently of color.",
         ),
       ],
       [
@@ -1177,11 +1264,11 @@ export function ApiReference({
         ),
       ],
       [
-        "content / stateLabels / emptyState",
-        "ReactNode / Record<TaskState, string> / ReactNode",
+        "content / stateLabels / emptyState / labels",
+        "ReactNode / Partial<Record<TaskState, string>> / ReactNode / { empty?: string }",
         t(
-          "ضع إجراءات تطبيقك داخل اللوحة المرتبطة، خارج زر التوسيع. تستخدم الحالة شارات النظام الموجودة، وتغطي الحركة وتأثير المرور المهمة كلها. عند الإغلاق تصبح اللوحة aria-hidden وinert فورًا، وإذا أُغلقت من الخارج يعود التركيز إلى زرها.",
-          "Application actions live outside the trigger. Existing state Badges, whole-task hover and reduced-motion-aware disclosure transitions. Closing is immediately aria-hidden/inert; external collapse restores panel focus. Default labels follow direction.",
+          "ضع إجراءات تطبيقك داخل اللوحة المرتبطة، خارج زر التوسيع. تستخدم الحالة شارات النظام الموجودة، وتغطي الحركة وتأثير المرور المهمة كلها. عند الإغلاق تصبح اللوحة aria-hidden وinert فورًا، وإذا أُغلقت من الخارج يعود التركيز إلى زرها. تستبدل stateLabels أي كلمة حالة، وlabels.empty عنوان الحالة الفارغة.",
+          "Application actions live outside the trigger. Existing state Badges, whole-task hover and reduced-motion-aware disclosure transitions. Closing is immediately aria-hidden/inert; external collapse restores panel focus. Default labels follow direction; stateLabels replaces any state word and labels.empty the empty state's title.",
         ),
       ],
       [

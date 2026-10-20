@@ -1,6 +1,15 @@
 import type { Localized } from "./i18n";
 export const catalog = [
   {
+    id: "agent-task",
+    name: ["مهمة الوكيل", "Agent task"],
+    description: [
+      "يتيح للوكيل أن ينفّذ مهمة من عدة خطوات، ويبقى المستخدم متحكّمًا فيها.",
+      "Let an agent run a multi-step job while the person stays in control.",
+    ],
+    file: "AgentTask.tsx",
+  },
+  {
     id: "terminal",
     name: ["الطرفية", "Terminal"],
     description: [
@@ -643,6 +652,7 @@ const documentationGroups = [
     id: "ai",
     name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
     ids: [
+      "agent-task",
       "terminal",
       "chat-app",
       "ask-user-questions",

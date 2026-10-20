@@ -94,6 +94,16 @@ const chartFields = [
   field("grid", "boolean", "خطوط الشبكة", "Show grid"),
 ];
 export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "agent-task": [
+    appearance,
+    field(
+      "autoStart",
+      "boolean",
+      "البدء التلقائي",
+      "Auto start",
+      "autoStartAfter",
+    ),
+  ],
   terminal: [
     field("state", "select", "الحالة", "State", "state", {
       options: ["running", "completed", "failed"],
@@ -985,6 +995,7 @@ export const optionNames: Record<string, Localized> = {
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "agent-task": ["appearance", "autoStart"],
   terminal: ["state", "longContent", "followOutput"],
   "chat-app": ["longContent"],
   "ask-user-questions": ["appearance", "longContent"],

@@ -104,6 +104,7 @@ export { ThinkingState } from "./ThinkingState";
 export type { ThinkingStateProps } from "./ThinkingState";
 export { ToolCall } from "./ToolCall";
 export type { ToolCallProps, ToolCallState } from "./ToolCall";
+export type { ToolLabels } from "./useToolLabels";
 export { ToolChips } from "./ToolChips";
 export type { ToolChipsProps, ToolChipItem } from "./ToolChips";
 export { StatusIcon } from "./StatusIcon";
@@ -175,6 +176,8 @@ export type {
   ApprovalRequest,
   ApprovalDecision,
 } from "./ApprovalCard";
+export { AgentTask } from "./AgentTask";
+export type { AgentStep, AgentTaskProps, AgentTaskLabels } from "./AgentTask";
 export { ApprovalFlow } from "./ApprovalFlow";
 export type {
   ApprovalFlowProps,

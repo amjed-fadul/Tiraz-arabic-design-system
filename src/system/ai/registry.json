@@ -689,6 +689,10 @@
       "source": "ToolCall.tsx"
     },
     {
+      "name": "ToolLabels",
+      "source": "useToolLabels.ts"
+    },
+    {
       "name": "ToolChips",
       "source": "ToolChips.tsx"
     },
@@ -957,6 +961,22 @@
       "source": "approval-request.ts"
     },
     {
+      "name": "AgentTask",
+      "source": "AgentTask.tsx"
+    },
+    {
+      "name": "AgentStep",
+      "source": "AgentTask.tsx"
+    },
+    {
+      "name": "AgentTaskProps",
+      "source": "AgentTask.tsx"
+    },
+    {
+      "name": "AgentTaskLabels",
+      "source": "AgentTask.tsx"
+    },
+    {
       "name": "ApprovalFlow",
       "source": "ApprovalFlow.tsx"
     },
@@ -1084,6 +1104,182 @@
     }
   },
   "components": [
+    {
+      "id": "agent-task",
+      "api": "AgentTask",
+      "source": "AgentTask.tsx",
+      "kind": "pattern",
+      "parts": [
+        "ai-mark",
+        "status-pill",
+        "tray",
+        "countdown",
+        "status-icon",
+        "tool-call",
+        "approval-card"
+      ],
+      "states": [
+        "plan",
+        "running",
+        "needs-you",
+        "failed",
+        "stopped",
+        "completed"
+      ],
+      "events": [
+        "onStart",
+        "onEditPlan",
+        "onSteer",
+        "onStop",
+        "onDecision",
+        "onRetryStep",
+        "onSkipStep",
+        "onReconnect"
+      ],
+      "exports": [
+        "AgentTask",
+        "AgentTaskProps",
+        "AgentTaskLabels",
+        "AgentStep"
+      ],
+      "purpose": "Let an agent run a multi-step job while the person stays in control: a proposed plan, the run with steering and Stop, an inline approval when a step needs the person, a failed step's ways forward, and what the task produced.",
+      "props": [
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "note": "The task in plain words; it names the section."
+        },
+        {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Shown before the step count: وكيل المالية · ٥ خطوات."
+        },
+        {
+          "name": "status",
+          "type": "\"plan\" | \"running\" | \"needs-you\" | \"failed\" | \"stopped\" | \"completed\"",
+          "required": true,
+          "values": [
+            "plan",
+            "running",
+            "needs-you",
+            "failed",
+            "stopped",
+            "completed"
+          ],
+          "note": "Host-owned. The pill reads خطة مقترحة, يعمل, بانتظارك, تعثّرت, أُوقفت or اكتملت; the footer changes with it."
+        },
+        {
+          "name": "steps",
+          "type": "readonly AgentStep[]",
+          "required": true,
+          "note": "Each step's state is host-owned: planned, pending, running, completed, needs-you, failed or skipped."
+        },
+        {
+          "name": "elapsed",
+          "type": "number",
+          "required": false,
+          "note": "Seconds, shown in the pill while running and once completed, and in the failed and stopped footers. Update it at most once a second; it is never announced."
+        },
+        {
+          "name": "outputs",
+          "type": "readonly { id: string; label: ReactNode; icon?: ReactNode; onOpen?(): void }[]",
+          "required": false,
+          "note": "What a completed task produced, as chips; a chip is a button only with onOpen."
+        },
+        {
+          "name": "autoStartAfter",
+          "type": "number",
+          "required": false,
+          "note": "Seconds before a proposed plan starts on its own, calling onStart. It pauses while the pointer or focus is inside and restarts when the plan changes."
+        },
+        {
+          "name": "onStart",
+          "type": "() => void",
+          "required": false,
+          "note": "Start now, Ctrl or Cmd+Enter (500 ms after the plan appears or changes, never on key repeat), or the countdown."
+        },
+        {
+          "name": "onEditPlan",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "onSteer",
+          "type": "(text: string, when: \"next\" | \"now\") => void",
+          "required": false,
+          "note": "The running footer's field: Enter steers at the next step, Ctrl or Cmd+Enter now; the field then clears. Empty text and input-method composition never steer."
+        },
+        {
+          "name": "onStop",
+          "type": "() => void",
+          "required": false
+        },
+        {
+          "name": "onDecision",
+          "type": "(request, decision, {signal}) => void | Promise<void>",
+          "required": false,
+          "note": "ApprovalCard's contract for a needs-you step's request, shown plain with its approval details. Without it the request shows as text, with no actions."
+        },
+        {
+          "name": "onRetryStep",
+          "type": "(id: string) => void",
+          "required": false
+        },
+        {
+          "name": "onSkipStep",
+          "type": "(id: string) => void",
+          "required": false
+        },
+        {
+          "name": "onReconnect",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "With onRetryStep and onSkipStep, the ways forward a failed step's error.actions lists."
+        },
+        {
+          "name": "primaryAction",
+          "type": "{ label: ReactNode; onSelect(): void }",
+          "required": false,
+          "note": "The host's next action once the task completes."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "The title's level; the inline approval and the tool details sit one deeper."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<AgentTaskLabels>",
+          "required": false,
+          "note": "Replaces any built-in text, including the step and operation counts."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card sits on a tray with the steps on paper; plain lives on its host's paper."
+        }
+      ],
+      "state": "The host owns the status, the steps, the times and the outputs; the pattern never advances by itself. The countdown is a UI affordance the host opts into, and it calls onStart. The inline approval keeps ApprovalCard's decision integrity: a decision counts only after the host's promise resolves.",
+      "accessibility": [
+        "A section labelled by its title. One polite region says each status once in one sentence: خطة مقترحة (with the countdown's sentence), يعمل, {title}: يحتاج قرارك, تعثّرت: {error title}, أُوقفت and اكتملت المهمة. Elapsed time, step durations and countdown ticks never reach it; the countdown and the tool calls run with announcement off, and the inline approval keeps its own region.",
+        "Each step's icon has a hidden state word (لم تبدأ، قيد التنفيذ، بانتظارك، مكتملة، تعثّرت، تُخطّيت); a failure stays as text beside its step. Details are a disclosure whose closed panel is hidden and inert at once; collapsing returns focus to Details unless the person moved it elsewhere. When a change removes the focused control, focus moves to the section. Moving to needs-you never moves focus."
+      ],
+      "limitations": [
+        "No agent runtime, scheduling, retries or timers of its own beyond the opt-in countdown. Supply stable unique step IDs.",
+        "Approval records a decision only; the host validates and executes it, and shows the outcome on the step."
+      ],
+      "alternative": "Use ApprovalCard for a single yes or no, TaskRows for a list of tasks without a run, or a table for many tasks at a glance.",
+      "dependencies": [],
+      "examples": ["ai/examples/AgentTaskExamples.tsx"]
+    },
     {
       "id": "terminal",
       "api": "Terminal",
@@ -2216,7 +2412,7 @@
       "id": "tool-call",
       "api": "ToolCall",
       "source": "ToolCall.tsx",
-      "exports": ["ToolCall", "ToolCallProps", "ToolCallState"],
+      "exports": ["ToolCall", "ToolCallProps", "ToolCallState", "ToolLabels"],
       "props": [
         {
           "name": "label",
@@ -2232,7 +2428,7 @@
           "name": "state",
           "type": "ToolCallState",
           "required": true,
-          "values": ["pending", "running", "completed", "failed"]
+          "values": ["pending", "running", "needs-you", "completed", "failed"]
         },
         {
           "name": "icon",
@@ -2291,6 +2487,28 @@
           "required": false,
           "default": "polite",
           "values": ["polite", "off"]
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "plain drops the card and lives on its host's surface, as in Agent task's details."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<ToolLabels>",
+          "required": false,
+          "note": "Replaces any of the five state words (the shared step words) or the input, output, error and retry words."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 4,
+          "note": "The level of the input, output and error headings."
         }
       ],
       "inheritedProps": "Native attributes, style, className and ref on div; children and semantics are managed internally.",
@@ -2322,6 +2540,12 @@
           "name": "items",
           "type": "readonly ToolChipItem[]",
           "required": true
+        },
+        {
+          "name": "labels",
+          "type": "Partial<ToolLabels>",
+          "required": false,
+          "note": "Replaces any state word."
         }
       ],
       "inheritedProps": "Native attributes, style, className and ref on ul; children and semantics are managed internally.",
@@ -2609,7 +2833,7 @@
       "api": "TaskRows",
       "source": "TaskRows.tsx",
       "exports": ["TaskRows", "TaskRowsProps", "TaskRowItem", "TaskState"],
-      "purpose": "Expandable agent-task execution rows with application-supplied states, capsules or connected list.",
+      "purpose": "Expandable agent-task execution rows with application-supplied states, as capsules, a connected list or plain rows on a host's paper.",
       "props": [
         {
           "name": "items",
@@ -2625,10 +2849,10 @@
         },
         {
           "name": "appearance",
-          "type": "capsules | list",
+          "type": "capsules | list | plain",
           "required": false,
           "default": "capsules",
-          "values": ["capsules", "list"]
+          "values": ["capsules", "list", "plain"]
         },
         {
           "name": "expandedIds",
@@ -2650,15 +2874,23 @@
         },
         {
           "name": "stateLabels",
-          "type": "Record<TaskState, string>",
+          "type": "Partial<Record<TaskState, string>>",
           "required": false,
-          "default": "undefined"
+          "default": "undefined",
+          "note": "Replaces any of the shared step words: لم تبدأ، قيد التنفيذ، بانتظارك، مكتملة، تعثّرت / Not started, Running, Needs you, Done, Failed."
         },
         {
           "name": "emptyState",
           "type": "ReactNode",
           "required": false,
           "default": "undefined"
+        },
+        {
+          "name": "labels",
+          "type": "{ empty?: string }",
+          "required": false,
+          "default": "undefined",
+          "note": "The default empty state's title."
         },
         {
           "name": "ref",
@@ -2671,7 +2903,7 @@
       "state": "Execution state is always application-owned. Internal expansion starts from defaultExpandedIds; expandedIds/onExpandedChange controls multiple rows. Disclosure never alters execution.",
       "accessibility": [
         "Native named ul, stable keyed rows; native disclosure buttons with aria-expanded, aria-controls and labeled panels. Title/summary are noninteractive strings. Detail actions are outside triggers.",
-        "Visible translated state Badge (neutral/ai/success/error) plus the shared decorative StatusIcon (number, spinner, check or cross). Disclosure grid-height/opacity transitions honor system/OS reduced motion; the whole task shares hover feedback. Closing panels are aria-hidden/inert immediately while retained DOM preserves detail values; hidden stays set with a CSS grid override during exit. Controlled collapse returns panel focus to its trigger without stealing outside focus. State updates retain focus and expansion."
+        "Visible state Badge in the shared step words (neutral, ai, warning for needs-you, success, error) plus the shared decorative StatusIcon (number, spinner, ! on a filled disc, check or cross). Disclosure grid-height/opacity transitions honor system/OS reduced motion; the whole task shares hover feedback. Closing panels are aria-hidden/inert immediately while retained DOM preserves detail values; hidden stays set with a CSS grid override during exit. Controlled collapse returns panel focus to its trigger without stealing outside focus. State updates retain focus and expansion."
       ],
       "limitations": [
         "Supply stable unique nonempty IDs. No agent runtime, networking, library timers, automatic progression, sorting or persistence.",
@@ -6809,7 +7041,7 @@
           "type": "TaskState",
           "required": true,
           "default": "undefined",
-          "values": ["pending", "running", "completed", "failed"]
+          "values": ["pending", "running", "needs-you", "completed", "failed"]
         },
         {
           "name": "content",
@@ -6965,7 +7197,7 @@
           "name": "state",
           "type": "ToolCallState",
           "required": true,
-          "values": ["pending", "running", "completed", "failed"]
+          "values": ["pending", "running", "needs-you", "completed", "failed"]
         },
         {
           "name": "count",
@@ -7405,6 +7637,277 @@
         },
         {
           "name": "none",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "AgentStep",
+      "source": "AgentTask.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "detail",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "state",
+          "type": "\"planned\" | \"pending\" | \"running\" | \"completed\" | \"needs-you\" | \"failed\" | \"skipped\"",
+          "required": true,
+          "values": [
+            "planned",
+            "pending",
+            "running",
+            "completed",
+            "needs-you",
+            "failed",
+            "skipped"
+          ]
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": false,
+          "note": "Seconds; a running step's is live."
+        },
+        {
+          "name": "tools",
+          "type": "readonly Pick<ToolCallProps, \"label\" | \"tool\" | \"state\" | \"input\" | \"output\" | \"error\" | \"duration\">[]",
+          "required": false,
+          "note": "A completed step's operations, under its details; every step's count toward the done footer's operations."
+        },
+        {
+          "name": "notes",
+          "type": "readonly { id: string; text: string; applied: boolean }[]",
+          "required": false
+        },
+        {
+          "name": "request",
+          "type": "ApprovalRequest",
+          "required": false,
+          "note": "Shown inline as a plain ApprovalCard while the step needs you."
+        },
+        {
+          "name": "approval",
+          "type": "ApprovalDetails",
+          "required": false,
+          "note": "Spread onto the inline card: impact, irreversible, reversible, expiry, the middle action, receiptTime and labels."
+        },
+        {
+          "name": "error",
+          "type": "{ title: ReactNode; body?: ReactNode; actions?: readonly (\"retry\" | \"skip\" | \"reconnect\")[] }",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "AgentTaskLabels",
+      "source": "AgentTask.tsx",
+      "props": [
+        {
+          "name": "plan",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "running",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "needsYou",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stopped",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "completed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "needsDecision",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "done",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stepStates",
+          "type": "Record<AgentStep[\"state\"], string>",
+          "required": true
+        },
+        {
+          "name": "skipped",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "autoStart",
+          "type": "(time: string) => string",
+          "required": true
+        },
+        {
+          "name": "editPlan",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "start",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "steer",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "steerNext",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "steerNow",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stop",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "pickedUp",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "details",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "hideDetails",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "skip",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "reconnect",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "waiting",
+          "type": "(step: string) => string",
+          "required": true
+        },
+        {
+          "name": "failedAt",
+          "type": "(step: string) => string",
+          "required": true
+        },
+        {
+          "name": "stoppedAt",
+          "type": "(step: string) => string",
+          "required": true
+        },
+        {
+          "name": "outputs",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "stepCount",
+          "type": "(count: number) => string",
+          "required": false
+        },
+        {
+          "name": "operationCount",
+          "type": "(count: number) => string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "type": "ToolLabels",
+      "source": "useToolLabels.ts",
+      "props": [
+        {
+          "name": "pending",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "running",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "needs-you",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "completed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "input",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "output",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
           "type": "string",
           "required": true
         }

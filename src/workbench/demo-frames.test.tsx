@@ -145,6 +145,7 @@ it("shows Replay only where a sequence exists", () => {
       replaying.push(page.id);
   }
   expect(replaying.sort()).toEqual([
+    "agent-task",
     "button",
     "chat-thread",
     "progress",

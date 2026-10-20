@@ -1,3 +1,4 @@
+import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
 import { ChatAppExample } from "../system/ai/examples/ChatAppExample";
 import {
@@ -306,6 +307,15 @@ export function Playground({
   onPhaseChange,
 }: Props) {
   const t = words(language);
+  if (component === "agent-task")
+    return (
+      <AgentTaskExample
+        language={language}
+        {...(model as Playgrounds["agent-task"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
   if (component === "terminal")
     return (
       <TerminalExample

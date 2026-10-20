@@ -6,8 +6,10 @@ import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { StatusIcon } from "./StatusIcon";
 import { useToolLabels } from "./useToolLabels";
+import type { ToolLabels } from "./useToolLabels";
 
-export type ToolCallState = "pending" | "running" | "completed" | "failed";
+export type ToolCallState =
+  "pending" | "running" | "needs-you" | "completed" | "failed";
 export type ToolCallProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
   label: string;
   tool: string;
@@ -26,6 +28,12 @@ export type ToolCallProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
   onRetry?: () => void;
   retryLabel?: string;
   announcement?: "polite" | "off";
+  /** "card" draws its own surface; "plain" lives on its host's paper. */
+  appearance?: "card" | "plain";
+  /** Replaces any state or section word. */
+  labels?: Partial<ToolLabels>;
+  /** The level of the input, output and error headings; 4 by default. */
+  headingLevel?: 2 | 3 | 4 | 5 | 6;
 };
 function isJson(text: string) {
   const trimmed = text.trim();
@@ -39,16 +47,19 @@ function isJson(text: string) {
 }
 function Detail({
   label,
+  level,
   children,
   error = false,
 }: {
   label: string;
+  level: 2 | 3 | 4 | 5 | 6;
   children: ReactNode;
   error?: boolean;
 }) {
+  const Heading = `h${level}` as const;
   return (
     <section className="tz-tool-detail" data-error={error || undefined}>
-      <h4>{label}</h4>
+      <Heading>{label}</Heading>
       <div
         className="tz-tool-output"
         dir="auto"
@@ -90,6 +101,9 @@ export function ToolCall({
   onRetry,
   retryLabel,
   announcement = "polite",
+  appearance = "card",
+  labels: overrides,
+  headingLevel = 4,
   className = "",
   ...props
 }: ToolCallProps) {
@@ -102,7 +116,7 @@ export function ToolCall({
     panel = useRef<HTMLDivElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null),
     previous = useRef(open);
-  const labels = useToolLabels();
+  const labels = useToolLabels(overrides);
   useLayoutEffect(() => {
     const focused = lastFocus.current,
       doc = panel.current?.ownerDocument;
@@ -121,6 +135,7 @@ export function ToolCall({
       {...props}
       className={`tz-tool-call ${className}`}
       data-state={state}
+      data-appearance={appearance}
       data-expanded={open}
     >
       <span
@@ -188,13 +203,21 @@ export function ToolCall({
       >
         <div className="tz-tool-call-clip">
           <div className="tz-tool-call-content">
-            {input != null && <Detail label={labels.input}>{input}</Detail>}
+            {input != null && (
+              <Detail label={labels.input} level={headingLevel}>
+                {input}
+              </Detail>
+            )}
             {state === "failed" && error != null ? (
-              <Detail label={labels.error} error>
+              <Detail label={labels.error} level={headingLevel} error>
                 {error}
               </Detail>
             ) : (
-              output != null && <Detail label={labels.output}>{output}</Detail>
+              output != null && (
+                <Detail label={labels.output} level={headingLevel}>
+                  {output}
+                </Detail>
+              )
             )}
             {state === "failed" && onRetry && (
               <Button

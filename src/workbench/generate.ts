@@ -1,4 +1,5 @@
 import localResponseSource from "../system/ai/examples/useLocalResponse.ts?raw";
+import agentTaskSource from "../system/ai/examples/AgentTaskExamples.tsx?raw";
 import terminalSource from "../system/ai/examples/TerminalExamples.tsx?raw";
 import chatAppSource from "../system/ai/examples/ChatAppExample.tsx?raw";
 import aiDecisionsSource from "../system/ai/examples/AIDecisionsExamples.tsx?raw";
@@ -100,20 +101,29 @@ import "./system/components.css";
 export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
   }
   if (
-    isOneOf(component, ["ask-user-questions", "approval-card", "approval-flow"])
+    isOneOf(component, [
+      "agent-task",
+      "ask-user-questions",
+      "approval-card",
+      "approval-flow",
+    ])
   ) {
-    const source = aiDecisionsSource
+    const source = (
+      component === "agent-task" ? agentTaskSource : aiDecisionsSource
+    )
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replace(
         /from "\.\/finance-story"/g,
         'from "./system/ai/examples/finance-story"',
       );
     const name =
-      component === "ask-user-questions"
-        ? "AskUserQuestionsExample"
-        : component === "approval-card"
-          ? "ApprovalCardExample"
-          : "ApprovalFlowExample";
+      component === "agent-task"
+        ? "AgentTaskExample"
+        : component === "ask-user-questions"
+          ? "AskUserQuestionsExample"
+          : component === "approval-card"
+            ? "ApprovalCardExample"
+            : "ApprovalFlowExample";
     return `${source}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";

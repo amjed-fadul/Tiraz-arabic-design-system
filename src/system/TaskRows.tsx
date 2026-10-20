@@ -6,8 +6,10 @@ import { EmptyState } from "./EmptyState";
 import { StatusIcon } from "./StatusIcon";
 import { useChanged } from "./useChanged";
 import { useSystem } from "./useSystem";
+import { useToolLabels } from "./useToolLabels";
 
-export type TaskState = "pending" | "running" | "completed" | "failed";
+export type TaskState =
+  "pending" | "running" | "needs-you" | "completed" | "failed";
 export interface TaskRowItem {
   /** Unique, stable application ID. */
   id: string;
@@ -21,12 +23,16 @@ export interface TaskRowItem {
 export type TaskRowsProps = Omit<ComponentPropsWithRef<"ul">, "children"> & {
   items: readonly TaskRowItem[];
   label: string;
-  appearance?: "capsules" | "list";
+  /** Separate capsules, a connected list, or plain rows on the host's paper. */
+  appearance?: "capsules" | "list" | "plain";
   expandedIds?: readonly string[];
   defaultExpandedIds?: readonly string[];
   onExpandedChange?: (ids: string[]) => void;
-  stateLabels?: Record<TaskState, string>;
+  /** Replaces any of the shared state words. */
+  stateLabels?: Partial<Record<TaskState, string>>;
   emptyState?: ReactNode;
+  /** The default empty state's title. */
+  labels?: { empty?: string };
 };
 function TaskRow({
   item,
@@ -100,7 +106,9 @@ function TaskRow({
                 ? "error"
                 : item.state === "running"
                   ? "ai"
-                  : "neutral"
+                  : item.state === "needs-you"
+                    ? "warning"
+                    : "neutral"
           }
         >
           {stateLabel}
@@ -146,6 +154,7 @@ export function TaskRows({
   onExpandedChange,
   stateLabels,
   emptyState,
+  labels,
   className = "",
   ...props
 }: TaskRowsProps) {
@@ -154,12 +163,9 @@ export function TaskRows({
     useState<readonly string[]>(defaultExpandedIds);
   const expanded = expandedIds ?? localIds;
   const ar = config.direction === "rtl";
-  const labels = stateLabels ?? {
-    pending: ar ? "قيد الانتظار" : "Pending",
-    running: ar ? "جارٍ التنفيذ" : "Running",
-    completed: ar ? "مكتملة" : "Completed",
-    failed: ar ? "فشلت" : "Failed",
-  };
+  // The step words every pattern shares (§18), any of them replaceable.
+  const shared = useToolLabels();
+  const words: Record<TaskState, string> = { ...shared, ...stateLabels };
   return (
     <ul
       {...props}
@@ -171,7 +177,11 @@ export function TaskRows({
       {items.length === 0 ? (
         <li>
           {emptyState ?? (
-            <EmptyState title={ar ? "لا توجد مهام بعد" : "No agent tasks"} />
+            <EmptyState
+              title={
+                labels?.empty ?? (ar ? "لا توجد مهام بعد" : "No agent tasks")
+              }
+            />
           )}
         </li>
       ) : (
@@ -181,7 +191,7 @@ export function TaskRows({
             item={item}
             number={index + 1}
             expanded={expanded.includes(item.id)}
-            stateLabel={labels[item.state]}
+            stateLabel={words[item.state]}
             onToggle={() => {
               const next = expanded.includes(item.id)
                 ? expanded.filter((id) => id !== item.id)

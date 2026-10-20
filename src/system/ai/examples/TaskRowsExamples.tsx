@@ -24,7 +24,8 @@ export function TaskRowsExample({
   phase,
 }: TaskRowsExampleProps & {
   /**
-   * The drafting task's state, "running" or "completed", held as given.
+   * "running", "needs-you" or "completed", held as given: the drafts are
+   * written, then the handoff waits for your approval, then both are done.
    * Without a phase it plays its own run once.
    */
   phase?: string;
@@ -65,13 +66,10 @@ export function TaskRowsExample({
     next();
     return () => clearTimeout(timer);
   }, [run]);
-  const drafting = (phase as TaskState | undefined) ?? state;
-  const labels = {
-    pending: t("قيد الانتظار", "Pending"),
-    running: t("جارٍ التنفيذ", "Running"),
-    completed: t("مكتملة", "Completed"),
-    failed: t("فشلت", "Failed"),
-  };
+  const drafting: TaskState =
+    phase === undefined ? state : phase === "running" ? "running" : "completed";
+  const handoff: TaskState =
+    phase === "needs-you" || phase === "completed" ? phase : "pending";
   const drafts = [
     t("شركة الندى — متابعة عرض السعر", "Al Nada Trading — quote follow-up"),
     t("مؤسسة رواسي — تأكيد موعد التسليم", "Rawasi Est. — delivery date"),
@@ -161,8 +159,11 @@ export function TaskRowsExample({
         {
           id: "handoff",
           title: t("إرسال الملخص إلى الفريق المالي", "Send summary to finance"),
-          summary: t("بانتظار موافقتك", "Awaiting your approval"),
-          state: "pending",
+          summary:
+            handoff === "needs-you"
+              ? t("بانتظار موافقتك", "Awaiting your approval")
+              : undefined,
+          state: handoff,
           content: (
             <p style={{ margin: 0 }}>
               {t(
@@ -179,7 +180,6 @@ export function TaskRowsExample({
         label={t("مهام الوكيل", "Agent tasks")}
         items={items}
         appearance={appearance}
-        stateLabels={labels}
         {...(mode === "controlled"
           ? { expandedIds, onExpandedChange: setExpandedIds }
           : {})}
@@ -206,11 +206,11 @@ export function TaskRowsStatesExample({
     { title: string; summary: string; detail: string }
   > = {
     pending: {
-      title: t("إرسال الملخص إلى الفريق المالي", "Send summary to finance"),
-      summary: t("بانتظار الموافقة", "Awaiting approval"),
+      title: t("تجهيز تقرير الربع الرابع", "Prepare the Q4 report"),
+      summary: t("بعد المطابقة", "After reconciliation"),
       detail: t(
-        "يبدأ بعد موافقتك على مسودات الرسائل.",
-        "Starts once you approve the email drafts.",
+        "يبدأ بعد اكتمال مطابقة فواتير أكتوبر.",
+        "Starts once the October invoices are reconciled.",
       ),
     },
     running: {
@@ -219,6 +219,14 @@ export function TaskRowsStatesExample({
       detail: t(
         "جارٍ قراءة contracts/2026/al-nada-supply.pdf",
         "Reading contracts/2026/al-nada-supply.pdf",
+      ),
+    },
+    "needs-you": {
+      title: t("إرسال الملخص إلى الفريق المالي", "Send summary to finance"),
+      summary: t("بانتظار موافقتك", "Awaiting your approval"),
+      detail: t(
+        "يُرسل بعد موافقتك على مسودات الرسائل.",
+        "Sends once you approve the email drafts.",
       ),
     },
     completed: {
@@ -238,17 +246,17 @@ export function TaskRowsStatesExample({
       ),
     },
   };
-  const states: TaskState[] = ["pending", "running", "completed", "failed"];
+  const states: TaskState[] = [
+    "pending",
+    "running",
+    "needs-you",
+    "completed",
+    "failed",
+  ];
   return (
     <TaskRows
       label={t("حالات مهام الوكيل", "Agent task states")}
       appearance={appearance}
-      stateLabels={{
-        pending: t("قيد الانتظار", "Pending"),
-        running: t("جارٍ التنفيذ", "Running"),
-        completed: t("مكتملة", "Completed"),
-        failed: t("فشلت", "Failed"),
-      }}
       items={states.map((state) => ({
         id: state,
         title: tasks[state].title,

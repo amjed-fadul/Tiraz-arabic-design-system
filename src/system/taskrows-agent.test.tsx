@@ -59,7 +59,7 @@ it.each(["capsules", "list"] as const)(
     expect(list).toHaveAttribute("data-test", "native");
     expect(list).toHaveAttribute("data-appearance", appearance);
     expect(screen.queryByRole("checkbox")).toBeNull();
-    for (const name of ["قيد الانتظار", "جارٍ التنفيذ", "مكتملة", "فشلت"])
+    for (const name of ["لم تبدأ", "قيد التنفيذ", "مكتملة", "تعثّرت"])
       expect(within(list).getByText(name, { exact: true })).toBeVisible();
     const trigger = screen.getByRole("button", { name: /Build sample/ });
     expect(trigger).toHaveAttribute("aria-expanded", "false");
@@ -190,13 +190,20 @@ it("renders an application empty state", () => {
 // Fake time tests the example's scripted run only; the library has no timers.
 it("autoplays one run: the draft fails, retries and completes while the handoff stays pending", async () => {
   vi.useFakeTimers();
-  render(<TaskRowsExample language="en" />);
+  // The rows say their states in the provider's language.
+  render(
+    <System.SystemProvider
+      config={{ ...System.defaultConfig, direction: "ltr" }}
+    >
+      <TaskRowsExample language="en" />
+    </System.SystemProvider>,
+  );
   const draft = () =>
     screen.getByRole("button", { name: /Draft customer emails/ });
   expect(draft()).toHaveTextContent("Running");
   expect(
     screen.getByRole("button", { name: /Send summary to finance/ }),
-  ).toHaveTextContent("Pending");
+  ).toHaveTextContent("Not started");
   fireEvent.click(draft());
   expect(
     screen.getByText("Writing drafts from the latest meeting notes."),
@@ -207,13 +214,13 @@ it("autoplays one run: the draft fails, retries and completes while the handoff 
   await act(async () => vi.advanceTimersByTime(1000));
   expect(draft()).toHaveTextContent("Running");
   await act(async () => vi.advanceTimersByTime(1400));
-  expect(draft()).toHaveTextContent("Completed");
+  expect(draft()).toHaveTextContent("Done");
   expect(draft()).toHaveAttribute("aria-expanded", "true");
   expect(screen.getByText("Al Nada Trading — quote follow-up")).toBeVisible();
   expect(vi.getTimerCount()).toBe(0);
   expect(
     screen.getByRole("button", { name: /Send summary to finance/ }),
-  ).toHaveTextContent("Pending");
+  ).toHaveTextContent("Not started");
   expect(screen.queryByRole("status")).toBeNull();
   expect(screen.queryByText(/sample|simulation|local/i)).toBeNull();
 });
@@ -221,14 +228,18 @@ it("starts on the final state under reduced motion and cancels the run on unmoun
   vi.useFakeTimers();
   const reduced = render(
     <System.SystemProvider
-      config={{ ...System.defaultConfig, reducedMotion: true }}
+      config={{
+        ...System.defaultConfig,
+        direction: "ltr",
+        reducedMotion: true,
+      }}
     >
       <TaskRowsExample language="en" />
     </System.SystemProvider>,
   );
   expect(
     screen.getByRole("button", { name: /Draft customer emails/ }),
-  ).toHaveTextContent("Completed");
+  ).toHaveTextContent("Done");
   expect(vi.getTimerCount()).toBe(0);
   reduced.unmount();
   const view = render(<TaskRowsExample language="en" />);
@@ -253,7 +264,7 @@ it("supports a controlled example without changing execution state from disclosu
   await user.click(screen.getByRole("button", { name: /Build sample/ }));
   expect(
     screen.getByRole("button", { name: /Build sample/ }),
-  ).toHaveTextContent("قيد الانتظار");
+  ).toHaveTextContent("لم تبدأ");
 });
 it("does not reclaim focus after the user deliberately blurs a panel control", () => {
   const view = render(
@@ -291,9 +302,9 @@ it("uses existing semantic Badges for each task state", () => {
   render(<System.TaskRows label="Tasks" items={items} />);
   for (const [label, tone] of [
     ["مكتملة", "success"],
-    ["قيد الانتظار", "neutral"],
-    ["جارٍ التنفيذ", "ai"],
-    ["فشلت", "error"],
+    ["لم تبدأ", "neutral"],
+    ["قيد التنفيذ", "ai"],
+    ["تعثّرت", "error"],
   ]) {
     expect(screen.getByText(label, { exact: true })).toHaveClass("tz-badge");
     expect(screen.getByText(label, { exact: true })).toHaveAttribute(
@@ -301,6 +312,65 @@ it("uses existing semantic Badges for each task state", () => {
       tone,
     );
   }
+});
+it("shows needs-you with the attention tone and the shared words", () => {
+  const states: System.TaskState[] = [
+    "pending",
+    "running",
+    "needs-you",
+    "completed",
+    "failed",
+  ];
+  const tasks = states.map((state) => ({
+    id: state,
+    title: state,
+    state,
+    content: null,
+  }));
+  const badges = () =>
+    Array.from(document.querySelectorAll(".tz-agent-task-state"), (badge) => [
+      badge.textContent,
+      badge.getAttribute("data-tone"),
+    ]);
+  const view = render(
+    <System.TaskRows label="Tasks" items={tasks} appearance="plain" />,
+  );
+  expect(screen.getByRole("list", { name: "Tasks" })).toHaveAttribute(
+    "data-appearance",
+    "plain",
+  );
+  expect(badges()).toEqual([
+    ["لم تبدأ", "neutral"],
+    ["قيد التنفيذ", "ai"],
+    ["بانتظارك", "warning"],
+    ["مكتملة", "success"],
+    ["تعثّرت", "error"],
+  ]);
+  expect(
+    document.querySelector(
+      '.tz-agent-task[data-state="needs-you"] .tz-status-icon',
+    ),
+  ).toHaveAttribute("data-state", "needs-you");
+  // One word replaced, the others kept.
+  view.rerender(
+    <System.TaskRows
+      label="Tasks"
+      items={tasks}
+      stateLabels={{ "needs-you": "بانتظار موافقتك" }}
+    />,
+  );
+  expect(badges()[2]).toEqual(["بانتظار موافقتك", "warning"]);
+  expect(badges()[0]).toEqual(["لم تبدأ", "neutral"]);
+  view.rerender(
+    <System.TaskRows
+      label="Tasks"
+      items={[]}
+      labels={{ empty: "لا مهام لهذا الشهر" }}
+    />,
+  );
+  expect(
+    screen.getByRole("heading", { name: "لا مهام لهذا الشهر" }),
+  ).toBeVisible();
 });
 it("shows result rows directly without a note button", async () => {
   const user = userEvent.setup();

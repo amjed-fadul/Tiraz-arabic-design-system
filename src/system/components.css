@@ -4014,6 +4014,11 @@ textarea.tz-textarea:read-only {
 .tz-status-icon[data-state="pending"][data-empty] {
   border-color: var(--border-field);
 }
+/* An Agent task step that is only planned holds its number in a solid ring;
+   one the run will reach next keeps the dashed ring (spec section 12.3). */
+.tz-agent-run-step[data-state="planned"] .tz-status-icon[data-state="pending"] {
+  border-style: solid;
+}
 .tz-status-icon[data-state="running"] {
   border: 0;
 }
@@ -4511,6 +4516,19 @@ textarea.tz-textarea:read-only {
 .tz-task-rows[data-appearance="list"] > .tz-agent-task + .tz-agent-task {
   border-block-start: 0.5px solid var(--hairline);
 }
+/* Plain rows live on their host's paper: no surface, hairlines between. */
+.tz-task-rows[data-appearance="plain"] {
+  gap: 0;
+}
+.tz-task-rows[data-appearance="plain"] > .tz-agent-task {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.tz-task-rows[data-appearance="plain"] > .tz-agent-task + .tz-agent-task {
+  border-block-start: 0.5px solid var(--hairline);
+}
 @container (max-width: 460px) {
   .tz-agent-task-trigger {
     grid-template-columns: var(--status-size) minmax(0, 1fr) auto 16px;
@@ -4561,6 +4579,336 @@ textarea.tz-textarea:read-only {
   margin: 0;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+}
+
+/* Agent task (spec section 12.3): a multi-step job on a tray. The header names
+   the task and its one status; the steps sit on paper along a rail that is
+   dashed while the work is incomplete and solid once it is done; the footer
+   changes with the status. Plain drops the tray and lives on its host's paper.
+   Nothing moves on mount: the icons, the pill and the shimmer move only once
+   something changed or while the agent works. */
+.tz-agent-run {
+  min-inline-size: 0;
+  inline-size: 100%;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-agent-run[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-agent-run[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+}
+.tz-agent-run:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-agent-run-header {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-agent-run-heading {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-agent-run-title {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-agent-run-agent {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-agent-run[data-appearance="plain"] > .tz-agent-run-paper {
+  margin-block-start: var(--space-2);
+}
+/* Each step: its icon on the rail, its words, then its time. The icon sits on
+   the first line of the title, which shares the step's line height. */
+.tz-agent-run-steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-agent-run-step {
+  --agent-run-icon-top: max(0px, (1lh - var(--status-size)) / 2);
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--status-size) minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--space-3);
+  padding-block: var(--space-2);
+  line-height: var(--line-height);
+}
+.tz-agent-run-step-icon {
+  display: grid;
+  margin-block-start: var(--agent-run-icon-top);
+}
+/* The rail runs between the icons, never through them. */
+.tz-agent-run-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(var(--status-size) / 2 - 0.75px);
+  inset-block-start: calc(
+    var(--space-2) + var(--agent-run-icon-top) + var(--status-size) + 3px
+  );
+  inset-block-end: calc(3px - var(--space-2) - var(--agent-run-icon-top));
+  border-inline-start: 1.5px dashed var(--border-strong);
+}
+.tz-agent-run[data-status="completed"]
+  .tz-agent-run-step:not(:last-child)::after {
+  border-inline-start-style: solid;
+}
+.tz-agent-run-step-main {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.tz-agent-run-step-main,
+.tz-agent-run-step-time {
+  align-self: baseline;
+}
+.tz-agent-run-step-title {
+  font-weight: var(--weight-medium);
+}
+.tz-agent-run-step:is(
+    [data-state="planned"],
+    [data-state="pending"],
+    [data-state="skipped"]
+  )
+  .tz-agent-run-step-title {
+  color: var(--text-secondary);
+}
+.tz-agent-run-step-detail,
+.tz-agent-run-notes {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-agent-run-step[data-state="needs-you"] .tz-agent-run-step-detail {
+  color: var(--attention);
+}
+/* Arabic-Indic digits have no tabular widths, so a running step's live time
+   holds the width of its widest value, as the status pill's does. */
+.tz-agent-run-step-time {
+  min-inline-size: 3.6ch;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+.tz-agent-run-step-time[data-minutes] {
+  min-inline-size: 5.8ch;
+}
+.tz-agent-run-notes {
+  display: grid;
+  gap: 2px;
+  padding: 0;
+  list-style: none;
+  color: var(--text-secondary);
+}
+.tz-agent-run-notes > li > [aria-hidden="true"] {
+  display: inline-block;
+  margin-inline-end: var(--space-1);
+}
+/* Details: a quiet link-like button and the tool calls it folds. */
+.tz-agent-run-details {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-small);
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: var(--text-meta);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-agent-run-details:hover {
+    color: var(--text);
+  }
+}
+.tz-agent-run-details:focus-visible,
+.tz-agent-run-output:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-agent-run-tools {
+  display: grid;
+  gap: 2px;
+  max-block-size: 18rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-1);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--surface-well);
+}
+.tz-agent-run-tools[hidden] {
+  display: none;
+}
+/* What the step waits on, in the attention color's soft fill, and what
+   failed, in the danger's. A transparent border keeps each box's edge in
+   forced colors, which drop the fill. */
+.tz-agent-run-approval,
+.tz-agent-run-error {
+  margin-block-start: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+}
+.tz-agent-run-approval {
+  background: var(--attention-soft);
+}
+.tz-agent-run-error {
+  display: grid;
+  gap: var(--space-2);
+  background: var(--danger-soft);
+}
+.tz-agent-run-error > p,
+.tz-agent-run-request {
+  margin: 0;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-agent-run-error strong,
+.tz-agent-run-request strong {
+  font-weight: var(--weight-semibold);
+}
+.tz-agent-run-request {
+  display: grid;
+  gap: 2px;
+}
+.tz-agent-run-request > span {
+  color: var(--text-secondary);
+}
+/* Once done: what the task produced, as chips on paper. */
+.tz-agent-run-summary {
+  display: grid;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--success-soft);
+}
+.tz-agent-run-summary > p {
+  margin: 0;
+  color: var(--success);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-agent-run-outputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--control-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-agent-run-output {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: 28px;
+  padding-inline: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-meta);
+}
+button.tz-agent-run-output {
+  cursor: pointer;
+  transition: transform var(--motion-release) var(--ease-out);
+}
+button.tz-agent-run-output:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-press);
+}
+.tz-agent-run-output-icon {
+  display: inline-flex;
+  color: var(--text-muted);
+}
+.tz-agent-run-output-icon > svg {
+  inline-size: 14px;
+  block-size: 14px;
+}
+/* The footer: meta first, then the decisions with the primary last. Plain
+   draws the hairline that the tray's edge draws in a card. */
+.tz-agent-run-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-agent-run-meta {
+  display: inline-flex;
+  align-items: center;
+  min-inline-size: 0;
+}
+.tz-agent-run-decision {
+  margin-inline-start: auto;
+}
+.tz-agent-run-steer {
+  display: grid;
+  flex: 1;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-agent-run-steer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+.tz-agent-run-steer-row > .tz-decision-bar {
+  margin-inline-start: auto;
+}
+.tz-agent-run-hints {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  color: var(--text-muted);
+}
+.tz-agent-run-hints > span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+/* Key hints help only where there is a keyboard. */
+@media (pointer: coarse) {
+  .tz-agent-run-hints {
+    display: none;
+  }
 }
 
 /* Supplied-data file navigator: only visible items participate in roving focus. */
@@ -5018,6 +5366,13 @@ textarea.tz-textarea:read-only {
   gap: 6px;
   min-inline-size: 0;
 }
+/* Plain drops the card: the row sits on its host's surface. */
+.tz-tool-call[data-appearance="plain"] {
+  border: 0;
+  border-radius: var(--radius-item);
+  background: transparent;
+  box-shadow: none;
+}
 .tz-tool-call-trigger {
   display: flex;
   align-items: center;
@@ -5162,7 +5517,7 @@ textarea.tz-textarea:read-only {
 .tz-tool-detail {
   min-inline-size: 0;
 }
-.tz-tool-detail h4 {
+.tz-tool-detail > :is(h2, h3, h4, h5, h6) {
   margin: 0 0 var(--space-1);
   font-size: var(--text-meta);
   font-weight: 500;

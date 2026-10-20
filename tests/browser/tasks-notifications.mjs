@@ -179,7 +179,7 @@ try {
   );
   assert.ok(await first.evaluate((el) => el === document.activeElement));
   await page.waitForFunction(
-    (el) => el.innerText.includes("Completed"),
+    (el) => el.innerText.includes("Done"),
     await first.elementHandle(),
     { polling: "raf" },
   );
@@ -205,7 +205,7 @@ try {
         .getByRole("region", { name: "Task example", exact: true })
         .getByRole("button", { name: /Draft follow-up emails/ })
         .innerText()
-    ).includes("Completed"),
+    ).includes("Done"),
   );
   await reducedPage.close();
   await first.click();

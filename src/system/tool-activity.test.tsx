@@ -74,7 +74,7 @@ it("announces state changes without duration or output chatter", () => {
   );
   expect(screen.getByRole("status")).toHaveTextContent(/^Read: Running$/);
   view.rerender(wrap(<ToolCall {...props} state="completed" />));
-  expect(screen.getByRole("status")).toHaveTextContent("Read: Completed");
+  expect(screen.getByRole("status")).toHaveTextContent("Read: Done");
 });
 it("keeps informational summaries static and delegates connected chips", async () => {
   const user = userEvent.setup(),
@@ -140,7 +140,7 @@ it("plays once on mount, hands retry to ToolCall and cancels timers on unmount",
     ).toBeNull();
     expect(screen.getAllByRole("status")[0]).toHaveTextContent("Running");
     act(() => vi.advanceTimersByTime(1200));
-    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Completed");
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Done");
     expect(screen.getAllByRole("status")[1]).toHaveTextContent("Running");
     act(() => vi.advanceTimersByTime(1200));
     expect(vi.getTimerCount()).toBe(0);
@@ -150,7 +150,7 @@ it("plays once on mount, hands retry to ToolCall and cancels timers on unmount",
       screen.getByRole("button", { name: /Save renewals summary/ }),
     ).toHaveFocus();
     act(() => vi.advanceTimersByTime(1000));
-    expect(screen.getAllByRole("status")[1]).toHaveTextContent("Completed");
+    expect(screen.getAllByRole("status")[1]).toHaveTextContent("Done");
     expect(
       screen.getByText("Saved to Legal/2026/renewals-summary.md"),
     ).toBeVisible();
@@ -172,11 +172,59 @@ it("starts on the final run state under reduced motion", () => {
       </SystemProvider>,
     );
     expect(vi.getTimerCount()).toBe(0);
-    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Completed");
+    expect(screen.getAllByRole("status")[0]).toHaveTextContent("Done");
     expect(screen.getByRole("button", { name: "Try again" })).toBeVisible();
   } finally {
     vi.useRealTimers();
   }
+});
+
+it("shows needs-you with the attention tone and the shared words", () => {
+  const view = render(
+    <ToolChips
+      label="نشاط الأدوات"
+      items={(
+        ["pending", "running", "needs-you", "completed", "failed"] as const
+      ).map((state) => ({ id: state, label: state, state }))}
+    />,
+  );
+  expect(
+    Array.from(
+      document.querySelectorAll(".tz-tool-chip > .tz-visually-hidden"),
+      (word) => word.textContent,
+    ),
+  ).toEqual(["لم تبدأ", "قيد التنفيذ", "بانتظارك", "مكتملة", "تعثّرت"]);
+  view.rerender(
+    <ToolChips
+      label="نشاط الأدوات"
+      labels={{ "needs-you": "ينتظر إذنك" }}
+      items={[{ id: "save", label: "حفظ", state: "needs-you" }]}
+    />,
+  );
+  expect(screen.getByText("ينتظر إذنك")).toBeInTheDocument();
+  view.unmount();
+  render(
+    <ToolCall
+      label="حفظ الملخص"
+      tool="drive.create_file"
+      state="needs-you"
+      appearance="plain"
+      headingLevel={5}
+      defaultExpanded
+      input={'{ "folder": "Finance/2026" }'}
+      labels={{ input: "الطلب" }}
+    />,
+  );
+  const call = document.querySelector(".tz-tool-call")!;
+  expect(call).toHaveAttribute("data-appearance", "plain");
+  expect(call.querySelector(".tz-status-icon")).toHaveAttribute(
+    "data-state",
+    "needs-you",
+  );
+  expect(screen.getByRole("status")).toHaveTextContent("حفظ الملخص: بانتظارك");
+  expect(
+    screen.getByRole("heading", { level: 5, name: "الطلب" }),
+  ).toBeVisible();
 });
 
 it("lets code direction determine the scroll container inside RTL and scopes error styling", () => {

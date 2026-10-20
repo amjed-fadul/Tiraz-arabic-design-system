@@ -534,6 +534,8 @@ const saveCall = () =>
   stage().getByText("حفظ الملخص في Drive").closest(".tz-tool-call");
 const draftTask = () =>
   stage().getByText("صياغة رسائل العملاء").closest(".tz-agent-task");
+const handoffTask = () =>
+  stage().getByText("إرسال الملخص إلى الفريق المالي").closest(".tz-agent-task");
 const thinking = () => stageNode().querySelector(".tz-thinking-indicator");
 const field = (name: string) =>
   (stage().getByRole("textbox", { name }) as HTMLTextAreaElement).value;
@@ -567,7 +569,14 @@ const phaseFamilies: PhaseFamily[] = [
         "running",
         () => {
           expect(saveCall()).toHaveAttribute("data-state", "running");
-          expect(saveCall()).toHaveTextContent("جارٍ التنفيذ");
+          expect(saveCall()).toHaveTextContent("قيد التنفيذ");
+        },
+      ],
+      [
+        "needsYou",
+        () => {
+          expect(saveCall()).toHaveAttribute("data-state", "needs-you");
+          expect(saveCall()).toHaveTextContent("بانتظارك");
         },
       ],
       [
@@ -591,12 +600,89 @@ const phaseFamilies: PhaseFamily[] = [
   },
   {
     id: "task-rows",
-    resting: "running",
+    resting: "needsYou",
     list: [
-      ["running", () => expect(draftTask()).toHaveTextContent("جارٍ التنفيذ")],
-      ["done", () => expect(draftTask()).toHaveTextContent("مكتملة")],
+      [
+        "running",
+        () => {
+          expect(draftTask()).toHaveTextContent("قيد التنفيذ");
+          expect(handoffTask()).toHaveTextContent("لم تبدأ");
+        },
+      ],
+      [
+        "needsYou",
+        () => {
+          expect(draftTask()).toHaveTextContent("مكتملة");
+          expect(handoffTask()).toHaveTextContent("بانتظارك");
+        },
+      ],
+      [
+        "done",
+        () => {
+          expect(draftTask()).toHaveTextContent("مكتملة");
+          expect(handoffTask()).toHaveTextContent("مكتملة");
+        },
+      ],
     ],
-    replay: ["running", "done"],
+    replay: ["running", "needsYou", "done"],
+  },
+  {
+    id: "agent-task",
+    resting: "needsYou",
+    list: [
+      [
+        "plan",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "ابدأ الآن" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent("تبدأ تلقائيًا خلال ٥ث");
+        },
+      ],
+      [
+        "running",
+        () => {
+          expect(
+            stage().getByRole("textbox", { name: /^وجّه الوكيل/ }),
+          ).toBeVisible();
+          expect(stage().getByRole("button", { name: "إيقاف" })).toBeEnabled();
+        },
+      ],
+      [
+        "needsYou",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "أرسل الرسائل" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent(
+            "متوقفة عند الخطوة ٤ حتى تقرّر",
+          );
+        },
+      ],
+      [
+        "failed",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "أعد الربط" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent("توقفت عند الخطوة ٢");
+        },
+      ],
+      [
+        "done",
+        () => {
+          expect(
+            stage().getByText("اكتملت المهمة، وهذه النتائج:"),
+          ).toBeVisible();
+          expect(stage().getByText("٣د ٤٠ث · ١٢ عملية")).toBeVisible();
+        },
+      ],
+      [
+        "stopped",
+        () => expect(stageNode()).toHaveTextContent("أُوقفت عند الخطوة ٣"),
+      ],
+    ],
+    replay: ["plan", "running", "needsYou", "done"],
   },
   {
     id: "chat-thread",

@@ -56,7 +56,7 @@ it.each(["ar", "en"] as const)(
     });
     await user.click(disclosure);
     expect(disclosure).toHaveAttribute("aria-expanded", "true");
-    expect(disclosure).toHaveTextContent(ar ? "جارٍ التنفيذ" : "Running");
+    expect(disclosure).toHaveTextContent(ar ? "قيد التنفيذ" : "Running");
     view.unmount();
     const Notices = copiedExample("notification-list", language);
     render(<Notices />);

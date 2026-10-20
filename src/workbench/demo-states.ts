@@ -28,7 +28,10 @@ export interface DemoStateDef {
   label: Localized;
   props?:
     Record<string, unknown> | ((language: Language) => Record<string, unknown>);
-  /** For a state that covers a range of values, such as Filled. */
+  /**
+   * For a state that covers a range of values, such as Filled. A phase state
+   * with one is pressed only while it also accepts the model.
+   */
   matches?(model: PlaygroundModel): boolean;
   phase?: string;
 }
@@ -119,6 +122,7 @@ export const stateWords = {
   allRead: ["كلها مقروءة", "All read"],
   hidden: ["مخفي", "Hidden"],
   shown: ["ظاهر", "Shown"],
+  plan: ["خطة", "Plan"],
 } satisfies Record<string, Localized>;
 
 /** A state whose id and label both come from one word in `stateWords`. */
@@ -238,6 +242,9 @@ const chartStates: DemoStatesDef = {
   ],
   resting: "data",
 };
+
+const showsRows = (model: PlaygroundModel) =>
+  !(model as Playgrounds["task-rows"]).empty;
 
 // Pages left out keep the example as it is, with no switcher.
 export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
@@ -522,6 +529,7 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
     states: [
       phased("pending"),
       phased("running"),
+      phased("needsYou", "needs-you"),
       phased("done", "completed"),
       phased("failed"),
     ],
@@ -532,11 +540,34 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "done", ms: 800 },
     ],
   },
+  // The Empty switch shows no rows, so it presses no state.
   "task-rows": {
-    states: [phased("running"), phased("done", "completed")],
-    resting: "running",
+    states: [
+      { ...phased("running"), matches: showsRows },
+      { ...phased("needsYou", "needs-you"), matches: showsRows },
+      { ...phased("done", "completed"), matches: showsRows },
+    ],
+    resting: "needsYou",
     replay: [
       { state: "running", ms: 1400 },
+      { state: "needsYou", ms: 1400 },
+      { state: "done", ms: 800 },
+    ],
+  },
+  "agent-task": {
+    states: [
+      phased("plan"),
+      phased("running"),
+      phased("needsYou", "needs-you"),
+      phased("failed"),
+      phased("done", "completed"),
+      phased("stopped"),
+    ],
+    resting: "needsYou",
+    replay: [
+      { state: "plan", ms: 1600 },
+      { state: "running", ms: 2000 },
+      { state: "needsYou", ms: 2400 },
       { state: "done", ms: 800 },
     ],
   },
@@ -834,7 +865,10 @@ export function stateOf(
   return (
     (phase === undefined
       ? undefined
-      : states.find((state) => state.phase === phase)) ??
+      : states.find(
+          (state) =>
+            state.phase === phase && (!state.matches || state.matches(model)),
+        )) ??
     states.find((state) => state.matches?.(model)) ??
     states.find(
       (state) =>

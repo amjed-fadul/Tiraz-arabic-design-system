@@ -281,6 +281,7 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
+  "agent-task": { appearance: "card" | "plain"; autoStart: boolean };
   "ask-user-questions": { appearance: "card" | "plain"; longContent: boolean };
   terminal: {
     state: "running" | "completed" | "failed";
@@ -422,6 +423,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
+    "agent-task": { appearance: "card", autoStart: true },
     "ask-user-questions": { appearance: "card", longContent: false },
     terminal: { state: "completed", longContent: false, followOutput: false },
     "chat-app": { longContent: false },

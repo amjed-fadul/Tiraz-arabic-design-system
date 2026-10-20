@@ -22,8 +22,8 @@ export function ToolCallExample({
   defaultExpanded?: boolean;
   longContent?: boolean;
   /**
-   * The save's state ("pending", "running", "completed" or "failed"), held
-   * until a retry moves it on and reports each step.
+   * The save's state ("pending", "running", "needs-you", "completed" or
+   * "failed"), held until a retry moves it on and reports each step.
    */
   phase?: string;
   onPhaseChange?: (phase: string) => void;
@@ -101,11 +101,20 @@ export function ToolCallExample({
         }
         input={'{ "folder": "Finance/2026", "name": "october-summary.md" }'}
         output={
-          save === "completed"
-            ? ar
-              ? "حُفظ الملف في Finance/2026/october-summary.md"
-              : "Saved to Finance/2026/october-summary.md"
-            : undefined
+          save === "completed" ? (
+            ar ? (
+              "حُفظ الملف في Finance/2026/october-summary.md"
+            ) : (
+              "Saved to Finance/2026/october-summary.md"
+            )
+          ) : save === "needs-you" ? (
+            // Prose for people, so a paragraph rather than program output.
+            <p style={{ margin: 0 }} dir="auto">
+              {ar
+                ? "يحتاج Drive إذنك للكتابة في Finance/2026."
+                : "Drive needs your permission to write to Finance/2026."}
+            </p>
+          ) : undefined
         }
         duration={
           save === "completed" ? `${number.format(1.2)}${second}` : undefined

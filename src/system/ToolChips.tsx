@@ -2,6 +2,7 @@ import type { ComponentPropsWithRef } from "react";
 import type { ToolCallState } from "./ToolCall";
 import { StatusIcon } from "./StatusIcon";
 import { useToolLabels } from "./useToolLabels";
+import type { ToolLabels } from "./useToolLabels";
 import { useSystem } from "./useSystem";
 import { Tick } from "./Tick";
 import { numberLocale } from "./config";
@@ -19,15 +20,18 @@ export interface ToolChipItem {
 export type ToolChipsProps = Omit<ComponentPropsWithRef<"ul">, "children"> & {
   label: string;
   items: readonly ToolChipItem[];
+  /** Replaces any state word. */
+  labels?: Partial<ToolLabels>;
 };
 /** A compact summary. Informational chips never acquire button semantics. */
 export function ToolChips({
   label,
   items,
+  labels: overrides,
   className = "",
   ...props
 }: ToolChipsProps) {
-  const labels = useToolLabels(),
+  const labels = useToolLabels(overrides),
     { config } = useSystem();
   const format = new Intl.NumberFormat(numberLocale(config));
   return (

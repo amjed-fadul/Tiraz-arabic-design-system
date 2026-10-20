@@ -22,6 +22,48 @@ export interface PageNotes {
 // A page without notes shows no notes row; Field opens Input and has none.
 export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
   // AI patterns
+  "agent-task": {
+    useWhen: [
+      [
+        "ينفّذ الوكيل عملًا من عدة خطوات واستدعاءات أدوات، وقد يحتاج إلى موافقة في أثنائه.",
+        "An agent runs work with several steps and tool calls, and may need an approval along the way.",
+      ],
+      [
+        "يطول العمل حتى يريد المستخدم أن يوجّهه أو يوقفه دون أن يبدأ من جديد.",
+        "The work runs long enough that people may want to steer or stop it without starting over.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "يكفي قرار واحد بنعم أو لا، فاستخدم",
+          "A single yes or no is all you need, so use",
+        ],
+        page: "approval-card",
+      },
+      {
+        text: [
+          "تحتاج نظرة على مهام كثيرة معًا، فاستخدم",
+          "You need a glance at many tasks at once, so use",
+        ],
+        page: "data-table",
+      },
+    ],
+    notice: [
+      [
+        "يقرّر تطبيقك الحالة والخطوات والوقت، ولا يبلّغه النمط إلا بما يطلبه المستخدم: البدء والتوجيه والإيقاف والقرار.",
+        "Your app owns the status, the steps and the time; the pattern only reports what the person asks for: start, steer, stop and decide.",
+      ],
+      [
+        "تُعلن كل حالة مرة واحدة في جملة، ولا يُعلن الوقت المنقضي أبدًا.",
+        "Each status is announced once, in one sentence; the elapsed time never is.",
+      ],
+      [
+        "يوجّه Enter الوكيل مع الخطوة التالية، وCtrl أو Cmd+Enter فورًا. والطلب المدمج يرفضه Escape، ولا اختصار لموافقة لا يمكن التراجع عنها.",
+        "Enter steers at the next step and Ctrl or Cmd+Enter steers now. Escape rejects the inline request, and an approval that can't be undone has no shortcut.",
+      ],
+    ],
+  },
   terminal: {
     useWhen: [
       [
