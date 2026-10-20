@@ -1912,6 +1912,14 @@ textarea.tz-textarea:read-only {
     opacity: 0.45;
   }
 }
+@media (forced-colors: active) {
+  .tz-progress-track {
+    outline: 1px solid CanvasText;
+  }
+  .tz-progress-indicator {
+    background: Highlight;
+  }
+}
 
 .tz-feedback-examples {
   display: grid;
