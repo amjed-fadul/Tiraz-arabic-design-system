@@ -130,9 +130,10 @@ floored, values below one clamp to one, nonfinite values use ten.
 sortDescending(header), resultCount(from,to,total) text functions.
 
 Use application-owned emptyContent to distinguish zero source records from
-filtered-out results. For loading/error, pass empty data and useful persistent
-content; loading=true announces busy and disables pagination. Retry belongs to
-the host. The example's explicit presets do not fetch data or randomly fail.
+filtered-out results. For errors, pass empty data and useful persistent
+content. loading=true shows a page of skeleton rows, announces busy and
+disables pagination; say what is loading in resultCount. Retry belongs to the
+host. The example's explicit presets do not fetch data or randomly fail.
 
 Keep filters, records, validation and create/details Sheets in the application.
 Creating records must preserve active filters; a newly saved customer may be

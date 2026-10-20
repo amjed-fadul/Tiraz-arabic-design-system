@@ -82,6 +82,31 @@ it("defaults to ten, resets on query/sort changes and clamps permanently when re
   expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
 });
 
+it("shows a page of skeleton rows while loading", () => {
+  const { container } = render(
+    <SystemProvider>
+      <DataTable
+        data={rows}
+        columns={columns}
+        getRowId={(row) => row.id}
+        caption="Customers"
+        locale="en"
+        labels={labels}
+        emptyContent="Empty"
+        pageSize={3}
+        loading
+      />
+    </SystemProvider>,
+  );
+  expect(screen.getByRole("table")).toHaveAttribute("aria-busy", "true");
+  const body = container.querySelectorAll("tbody tr");
+  expect(body).toHaveLength(3);
+  for (const row of body) {
+    expect(row).toHaveAttribute("aria-hidden", "true");
+    expect(row.querySelectorAll(".tz-skeleton")).toHaveLength(columns.length);
+  }
+  expect(screen.queryByRole("rowheader")).toBeNull();
+});
 it("uses the caller locale, preserves equal-value order, and sorts Arabic text", async () => {
   const user = userEvent.setup();
   const data = [

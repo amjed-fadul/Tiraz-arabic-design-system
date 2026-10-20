@@ -4456,7 +4456,7 @@
           "default": "undefined"
         }
       ],
-      "inheritedProps": "ComponentPropsWithRef<table>. Native attributes, events, className/style and ref target the table. containerProps is separate native div attributes/ref; retain tabIndex=0 for keyboard scroll. TableHeader/TableBody/TableRow/TableHead/TableCell accept native thead/tbody/tr/th/td props and refs. TableHead defaults scope to col, override with row when appropriate.",
+      "inheritedProps": "ComponentPropsWithRef<table>. Native attributes, events, className/style and ref target the table. containerProps is separate native div attributes/ref; retain tabIndex=0 for keyboard scroll. TableHeader/TableBody/TableRow/TableHead/TableCell accept native thead/tbody/tr/th/td props and refs. TableHead defaults scope to col, override with row when appropriate. Mark a figure column's TableHead and TableCells with data-numeric to end-align them; the table sets tabular figures.",
       "events": ["Native table and element events; no data operations."],
       "accessibility": [
         "Native caption names the table and scroll region. Without caption, supply aria-label or aria-labelledby. Default container tabIndex=0 enables keyboard horizontal scroll. Native headers/scope, colSpan and headers remain available; isolate mixed-direction cell content with bdi."
@@ -4554,7 +4554,7 @@
           "type": "boolean",
           "required": false,
           "default": false,
-          "note": "Sets table aria-busy; disables pagination. Does not fetch data."
+          "note": "Sets table aria-busy, shows a page of skeleton rows and disables pagination. Does not fetch data."
         }
       ],
       "examples": [

@@ -199,11 +199,7 @@ export function CustomerDataTable({
               .toLocaleLowerCase(language)
               .includes(term),
         );
-        const emptyContent = loading ? (
-          <span role="status">
-            {t("جارٍ تحميل العملاء…", "Loading customers…")}
-          </span>
-        ) : failed ? (
+        const emptyContent = failed ? (
           <div role="alert">
             {t("تعذّر عرض العملاء.", "Unable to show customers.")}{" "}
             <Button variant="secondary" onClick={() => setFailed(false)}>

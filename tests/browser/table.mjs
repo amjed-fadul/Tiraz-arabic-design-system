@@ -129,12 +129,14 @@ async function geometry(container, c, active) {
   if (overflow.length)
     report.failures.push({ ...c, active, checks: overflow, geometry: g });
   assert.equal(g.fontSize, c.typography === "large" ? "16px" : "14px");
-  assert.equal(g.paddingBlock, c.density === "compact" ? "4px" : "8px");
+  // Cells pad with --space-2 at both densities (Woven: no tab token).
+  assert.equal(g.paddingBlock, "8px");
   assert.equal(g.direction, c.language === "ar" ? "rtl" : "ltr");
   assert.equal(g.alignment, "start");
   assert.equal(g.wrap, "anywhere");
   assert.deepEqual(g.headers, ["col", "col", "col"]);
-  assert.equal(g.radius, "12px");
+  // Paper at --radius-paper: radius 12 renders min(24px, 12 × 1.875).
+  assert.equal(g.radius, "22.5px");
   assert.equal(await container.getAttribute("tabindex"), "0");
   if (c.width === 390 && g.scrollWidth > g.containerWidth) {
     await container.focus();

@@ -77,7 +77,7 @@ it("runs copied loading and error/Retry presets", async () => {
   const Loading = example("loading");
   const view = render(<Loading />);
   expect(screen.getByRole("table")).toHaveAttribute("aria-busy", "true");
-  expect(screen.getByRole("table")).toHaveTextContent("Loading customers…");
+  expect(screen.getByRole("status")).toHaveTextContent("Loading customers…");
   view.unmount();
   const Error = example("error");
   render(<Error />);

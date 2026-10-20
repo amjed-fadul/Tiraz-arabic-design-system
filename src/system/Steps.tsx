@@ -1,6 +1,7 @@
 import { Check, CircleAlert } from "lucide-react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
 
 export type StepStatus = "upcoming" | "current" | "completed" | "error";
@@ -22,6 +23,25 @@ export type StepsProps = Omit<ComponentPropsWithRef<"ol">, "children"> & {
   locale?: "ar" | "en";
   statusLabels?: Record<StepStatus, string>;
 };
+/** A completed step's check draws once its status changed, never on mount. */
+function StepIndicator({
+  status,
+  children,
+}: {
+  status: StepStatus;
+  children: ReactNode;
+}) {
+  const changed = useChanged(status);
+  return (
+    <span
+      className="tz-step-indicator"
+      aria-hidden="true"
+      data-changed={changed || undefined}
+    >
+      {children}
+    </span>
+  );
+}
 export function Steps({
   items,
   label,
@@ -65,7 +85,7 @@ export function Steps({
         const current = item.id === activeId;
         const content = (
           <>
-            <span className="tz-step-indicator" aria-hidden="true">
+            <StepIndicator status={item.status}>
               {item.status === "completed" ? (
                 <Check size={14} />
               ) : item.status === "error" ? (
@@ -73,7 +93,7 @@ export function Steps({
               ) : (
                 number.format(index + 1)
               )}
-            </span>
+            </StepIndicator>
             <span className="tz-step-copy">
               <span className="tz-step-label">{item.label}</span>
               {item.description != null && (

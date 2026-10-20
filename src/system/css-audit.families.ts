@@ -44,4 +44,17 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   accordion: [".tz-accordion"],
   // .tz-avatar also covers AvatarGroup's .tz-avatar-group and its overflow.
   avatar: [".tz-avatar"],
+  sidebar: [".tz-sidebar"],
+  tabs: [".tz-tabs", ".tz-tab"],
+  breadcrumbs: [".tz-breadcrumbs", ".tz-breadcrumb"],
+  pagination: [".tz-pagination"],
+  steps: [".tz-steps", ".tz-step"],
+  table: [".tz-table"],
+  // .tz-table also covers DataTable's sort button, .tz-table-sort.
+  "data-table": [".tz-data", ".tz-table"],
+  timeline: [".tz-timeline"],
+  "filter-bar": [".tz-filter"],
+  // .tz-row and .tz-unread are the notification rows' title, meta, actions
+  // and unread dot.
+  "notification-list": [".tz-notification", ".tz-row", ".tz-unread"],
 };

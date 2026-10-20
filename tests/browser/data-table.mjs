@@ -149,7 +149,7 @@ try {
             });
             assert.equal(g.documentWidth, g.viewportWidth, JSON.stringify(g));
             assert.equal(g.fontSize, typography === "large" ? "16px" : "14px");
-            assert.equal(g.padding, density === "compact" ? "4px" : "8px");
+            assert.equal(g.padding, "8px");
             assert.equal(g.direction, language === "ar" ? "rtl" : "ltr");
             assert.ok(g.fontLoaded);
             assert.equal(g.animations, "none");
@@ -258,7 +258,12 @@ try {
   await shot("no-matching-results");
   await preset("loading");
   assert.equal(await table().getAttribute("aria-busy"), "true");
-  assert.match(await table().textContent(), /Loading customers/);
+  // A page of skeleton rows; the footer status says what is loading.
+  assert.equal(await table().locator("tbody tr[aria-hidden=true]").count(), 10);
+  assert.match(
+    await canvas().locator(".tz-data-pagination [role=status]").textContent(),
+    /Loading customers/,
+  );
   await shot("loading");
   await preset("error");
   assert.match(await table().textContent(), /Unable to show/);

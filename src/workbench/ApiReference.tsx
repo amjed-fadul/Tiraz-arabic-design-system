@@ -2097,8 +2097,8 @@ export function ApiReference({
         "emptyContent / loading",
         "ReactNode / boolean? = false",
         t(
-          "مرّر من تطبيقك محتوى حالات الفراغ والتحميل والخطأ. يضبط loading السمة aria-busy ويعطّل أزرار الصفحات، فمرّر بيانات فارغة أثناء التحميل.",
-          "Application content for empty, loading and error states. loading sets aria-busy and disables page controls; supply empty data while loading.",
+          "مرّر من تطبيقك محتوى حالتي الفراغ والخطأ. يضبط loading السمة aria-busy ويعرض صفحة من صفوف هيكل التحميل ويعطّل أزرار الصفحات.",
+          "Application content for empty and error states. loading sets aria-busy, shows a page of skeleton rows and disables page controls.",
         ),
       ],
       [

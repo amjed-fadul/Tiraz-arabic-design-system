@@ -291,7 +291,7 @@ function CartesianPlot({
         <TableRow>
           <TableHead>{state.words.category}</TableHead>
           {series.map((entry) => (
-            <TableHead key={entry.key}>
+            <TableHead key={entry.key} data-numeric="">
               <bdi dir="auto">{entry.label}</bdi>
             </TableHead>
           ))}
@@ -304,7 +304,7 @@ function CartesianPlot({
               <bdi dir="auto">{category(row.category)}</bdi>
             </TableHead>
             {series.map((entry) => (
-              <TableCell key={entry.key}>
+              <TableCell key={entry.key} data-numeric="">
                 <bdi>{state.number(row[entry.key])}</bdi>
               </TableCell>
             ))}
@@ -513,7 +513,7 @@ export function DonutChart(props: DonutChartProps) {
       <TableHeader>
         <TableRow>
           <TableHead>{state.words.category}</TableHead>
-          <TableHead>{state.words.value}</TableHead>
+          <TableHead data-numeric="">{state.words.value}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -522,7 +522,7 @@ export function DonutChart(props: DonutChartProps) {
             <TableHead scope="row">
               <bdi dir="auto">{entry.label}</bdi>
             </TableHead>
-            <TableCell>
+            <TableCell data-numeric="">
               <bdi>{state.number(entry.value)}</bdi>
             </TableCell>
           </TableRow>

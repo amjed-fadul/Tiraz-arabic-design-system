@@ -42,9 +42,10 @@ export function Tabs({
       if (tab) {
         const rect = tab.getBoundingClientRect();
         const parent = el.getBoundingClientRect();
+        // From the list's padding edge, where the indicator is placed.
         setIndicator({
           width: rect.width,
-          x: rect.left - parent.left + el.scrollLeft,
+          x: rect.left - parent.left - el.clientLeft + el.scrollLeft,
         });
       }
     };
@@ -72,8 +73,8 @@ export function Tabs({
           className="tz-tab-indicator"
           style={
             {
-              width: indicator.width,
-              transform: `translateX(${indicator.x}px)`,
+              "--tab-x": `${indicator.x}px`,
+              "--tab-w": indicator.width,
             } as CSSProperties
           }
         />

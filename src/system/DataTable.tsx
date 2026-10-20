@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import type { Key, ReactNode } from "react";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { Button } from "./Button";
+import { Skeleton } from "./Skeleton";
 import {
   Table,
   TableBody,
@@ -144,7 +145,19 @@ export function DataTable<T>({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {sorted.length ? (
+          {loading ? (
+            // A page of placeholder rows holds the table's shape while it
+            // loads; aria-busy and the caller's status carry the meaning.
+            Array.from({ length: size }, (_, index) => (
+              <TableRow key={index} aria-hidden="true">
+                {columns.map((column) => (
+                  <TableCell key={column.id}>
+                    <Skeleton />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : sorted.length ? (
             sorted.slice(start, start + size).map((row) => (
               <TableRow key={getRowId(row)}>
                 {columns.map((column) =>

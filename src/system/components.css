@@ -173,10 +173,12 @@
   transition-duration:
     var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
+/* Underline tabs sit on a hairline baseline. The list scrolls, so its
+   overflow would clip an outer focus ring: the ring sits inside the tab. */
 .tz-tab-list {
   display: flex;
   position: relative;
-  border-block-end: 1px solid var(--border);
+  border-block-end: 0.5px solid var(--hairline);
   isolation: isolate;
   overflow-x: auto;
 }
@@ -193,37 +195,48 @@
   transition: color var(--motion-fast) var(--ease-out);
   touch-action: manipulation;
 }
+.tz-tab:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
 @media (hover: hover) and (pointer: fine) {
   .tz-tab:not(:disabled):not([data-state="active"]):hover {
     color: var(--text);
   }
 }
+/* The active label is ink; the indicator carries the accent. */
 .tz-tab[data-state="active"] {
-  color: var(--action);
+  color: var(--text);
 }
 .tz-tab:disabled {
-  opacity: 0.45;
+  opacity: var(--disabled-opacity);
 }
+/* A 1px bar that its transform stretches over the active tab, so only the
+   transform moves. Tabs.tsx measures --tab-x from the list's physical left,
+   hence left: 0. Placed at once on first paint, it glides once the tab has
+   changed and jumps under keyboard modality. */
 .tz-tab-indicator {
   position: absolute;
   left: 0;
-  bottom: 0;
-  height: 2px;
+  inset-block-end: 0;
+  inline-size: 1px;
+  block-size: 2px;
   background: var(--action);
-  transition:
-    width calc(var(--motion-state) + 60ms) var(--ease-out),
-    transform calc(var(--motion-state) + 60ms) var(--ease-out);
+  transform: translateX(var(--tab-x)) scaleX(var(--tab-w));
+  transform-origin: 0 0;
   pointer-events: none;
   z-index: -1;
-  border-start-start-radius: 2px;
-  border-start-end-radius: 2px;
+}
+.tz-tabs[data-changed] > .tz-tab-list > .tz-tab-indicator {
+  transition: transform var(--motion-state) var(--ease-in-out);
 }
 .tz-tab-panel {
   outline-offset: -2px !important;
 }
-/* After the first switch, the incoming panel settles in; first paint is static. */
+/* After the first switch, the incoming panel fades in; first paint is static,
+   and keyboard modality zeroes the time. */
 .tz-tabs[data-changed] > .tz-tab-panel[data-state="active"] {
-  animation: tz-panel-in var(--motion-state) var(--ease-out);
+  animation: tz-fade-in var(--motion-release) var(--ease-out);
 }
 @keyframes tz-panel-in {
   from {
@@ -231,11 +244,14 @@
     transform: translateY(3px);
   }
 }
+/* Segment tabs: a tray list holding a paper chip. The chip's corners and
+   shadow cannot stretch, so it takes the active tab's width at once and
+   glides by its transform alone. */
 .tz-tabs[data-variant="segment"] > .tz-tab-list {
   display: inline-flex;
-  background: var(--surface-subtle);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--surface-tray);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
   padding: 3px;
 }
 .tz-tabs[data-variant="segment"] > .tz-tab-list > .tz-tab {
@@ -244,21 +260,22 @@
   border-radius: var(--radius-small);
   transition:
     color var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    transform var(--motion-release) var(--ease-out);
 }
 .tz-tabs[data-variant="segment"]
   > .tz-tab-list
   > .tz-tab:not(:disabled):active {
-  transform: scale(0.96);
+  transform: scale(var(--press-scale));
   transition-duration: var(--motion-fast), var(--motion-press);
-  transition-timing-function: var(--ease-out);
 }
 .tz-tabs[data-variant="segment"] > .tz-tab-list > .tz-tab-indicator {
-  bottom: 3px;
-  height: calc(100% - 6px);
+  inset-block-end: 3px;
+  inline-size: calc(var(--tab-w) * 1px);
+  block-size: calc(100% - 6px);
+  transform: translateX(var(--tab-x));
   background: var(--surface);
   border-radius: var(--radius-small);
-  box-shadow: var(--shadow-control);
+  box-shadow: var(--shadow-chip);
 }
 .tz-switch-field {
   display: flex;
@@ -986,15 +1003,19 @@ input.tz-input:read-only {
   color: var(--text-secondary);
 }
 
-/* Native table foundation: appearance follows the surrounding SystemProvider. */
+/* Native table foundation: appearance follows the surrounding SystemProvider.
+   The table is paper on a hairline ring (the transparent border is what forced
+   colors draw), its header row sits on the tray and its rows part on
+   hairlines. */
 .tz-table-container {
   inline-size: 100%;
   max-inline-size: 100%;
   min-inline-size: 0;
   overflow-x: auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
   background: var(--surface);
+  box-shadow: var(--shadow-paper);
 }
 .tz-table {
   inline-size: 100%;
@@ -1003,6 +1024,7 @@ input.tz-input:read-only {
   border-collapse: collapse;
   font-size: var(--text-body);
   line-height: var(--line-height);
+  font-variant-numeric: tabular-nums;
   color: var(--text);
   text-align: start;
 }
@@ -1012,28 +1034,59 @@ input.tz-input:read-only {
   font-weight: var(--weight-medium);
 }
 .tz-table :where(th, td) {
-  padding-block: var(--tab-padding);
+  padding-block: var(--space-2);
   padding-inline: var(--control-padding);
   text-align: start;
   vertical-align: top;
   overflow-wrap: anywhere;
-  border-block-end: 1px solid var(--border);
+  border-block-end: 0.5px solid var(--hairline);
+}
+/* Figures line up by their ends: Arabic-Indic digits have no tabular widths. */
+.tz-table :where(th, td)[data-numeric] {
+  text-align: end;
 }
 .tz-table th {
   font-weight: var(--weight-medium);
 }
 .tz-table thead {
-  background: var(--surface-subtle);
+  background: var(--surface-tray);
   color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
 }
 .tz-table tbody tr:last-child :where(th, td) {
   border-block-end: 0;
 }
 
-.tz-data-table,
 .customer-data-example {
   inline-size: 100%;
   min-inline-size: 0;
+}
+/* A data table is one paper: the table scrolls inside it, and the footer with
+   its pagination is a tray band along the bottom. The paper clips its corners,
+   so the scroll area's focus ring sits inside. */
+.tz-data-table {
+  inline-size: 100%;
+  min-inline-size: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
+  overflow: hidden;
+}
+.tz-data-table > .tz-table-container {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.tz-data-table > .tz-table-container:focus-visible {
+  outline-offset: -2px;
+}
+/* A loading row's bar sits on a line of text, so the row keeps the height of
+   the text rows it stands for. */
+.tz-data-table td > .tz-skeleton {
+  display: inline-block;
+  vertical-align: middle;
 }
 .tz-table-sort {
   display: inline-flex;
@@ -1051,15 +1104,24 @@ input.tz-input:read-only {
   flex-shrink: 0;
   opacity: 0.5;
 }
+/* The sorted column reads in ink and its arrow carries the accent; hovering
+   it changes nothing. */
 [aria-sort="ascending"] .tz-table-sort,
 [aria-sort="descending"] .tz-table-sort {
-  color: var(--action);
-}
-.tz-table-sort:hover {
   color: var(--text);
 }
-.tz-data-table tbody tr:hover {
-  background: var(--surface-subtle);
+[aria-sort="ascending"] .tz-table-sort svg,
+[aria-sort="descending"] .tz-table-sort svg {
+  color: var(--action);
+  opacity: 1;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-table-sort:hover {
+    color: var(--text);
+  }
+  .tz-data-table tbody tr:hover {
+    background: var(--wash);
+  }
 }
 .tz-data-pagination,
 .tz-data-pagination > div,
@@ -1071,7 +1133,8 @@ input.tz-input:read-only {
 }
 .tz-data-pagination {
   justify-content: space-between;
-  margin-block-start: var(--space-3);
+  padding: var(--space-2) var(--control-padding);
+  background: var(--surface-tray);
   color: var(--text-secondary);
   font-size: var(--text-meta);
 }
@@ -2025,13 +2088,16 @@ textarea.tz-textarea:read-only {
   text-decoration: underline;
   text-underline-offset: var(--underline-offset);
   text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
-  transition: color var(--motion-fast);
+  transition: color var(--motion-fast) var(--ease-out);
 }
-.tz-breadcrumbs a:hover {
-  color: var(--action);
-  text-decoration-color: currentColor;
+@media (hover: hover) and (pointer: fine) {
+  .tz-breadcrumbs a:hover {
+    color: var(--action);
+    text-decoration-color: currentColor;
+  }
 }
 .tz-breadcrumbs [aria-current] {
+  color: var(--text);
   font-weight: var(--weight-medium);
 }
 .tz-breadcrumb-separator {
@@ -2045,6 +2111,14 @@ textarea.tz-textarea:read-only {
   background: var(--action-soft);
   color: var(--action);
   border-color: var(--action-border);
+}
+/* The current page keeps the selection rule under the pointer, where the
+   ghost Button's hover would wash it out. */
+@media (hover: hover) and (pointer: fine) {
+  .tz-pagination .tz-button[aria-current="page"][data-variant="ghost"]:hover {
+    background: var(--action-soft);
+    color: var(--action);
+  }
 }
 .tz-pagination .tz-button {
   min-inline-size: var(--control-small);
@@ -2220,7 +2294,9 @@ textarea.tz-textarea:read-only {
   margin-block: 12px;
 }
 
-/* Sidebar: the host supplies placement and height; only navigation scrolls. */
+/* Sidebar: the host supplies placement and height; only navigation scrolls.
+   It is a tray. Its width animating is a documented layout exception, which
+   keyboard modality and reduced motion zero. */
 .tz-sidebar {
   --sidebar-rail-control: calc(3.5rem - 2 * var(--space-2));
   inline-size: 14rem;
@@ -2230,9 +2306,10 @@ textarea.tz-textarea:read-only {
   flex-direction: column;
   overflow: hidden;
   color: var(--text);
-  background: var(--surface-subtle);
+  background: var(--surface-tray);
   font-family: var(--font);
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
   transition: inline-size var(--motion-state) var(--ease);
 }
 .tz-sidebar[data-collapsed="true"] {
@@ -2304,7 +2381,7 @@ textarea.tz-textarea:read-only {
   margin: 0;
   padding: var(--space-1) var(--space-2);
   border: 0;
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-item);
   background: transparent;
   color: inherit;
   text-decoration: none;
@@ -2314,7 +2391,9 @@ textarea.tz-textarea:read-only {
   transition:
     background-color var(--motion-fast) var(--ease-out),
     color var(--motion-fast) var(--ease-out),
-    transform var(--motion-state) var(--ease-spring);
+    box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
 }
 .tz-sidebar-item > .tz-sidebar-label {
   flex: 1;
@@ -2322,13 +2401,29 @@ textarea.tz-textarea:read-only {
 @media (hover: hover) and (pointer: fine) {
   .tz-sidebar-item:not([data-active="true"]):hover,
   .tz-sidebar-toggle:hover {
-    background: var(--surface-hover);
+    background: var(--wash);
   }
 }
+.tz-sidebar-item:not(:disabled):active,
+.tz-sidebar-toggle:not(:disabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-press);
+}
+.tz-sidebar-item:not([data-active="true"]):not(:disabled):active,
+.tz-sidebar-toggle:not(:disabled):active {
+  background: var(--wash-strong);
+}
+/* The current page is a paper chip on the tray. Its edge is only a shadow, so
+   a transparent outline gives forced colors an edge without moving the row. */
 .tz-sidebar-item[data-active="true"] {
-  background: var(--action-soft);
-  color: var(--action);
+  background: var(--surface);
+  color: var(--text);
   font-weight: var(--weight-medium);
+  box-shadow: var(--shadow-chip);
+  outline: 1px solid transparent;
+  outline-offset: -1px;
 }
 .tz-sidebar-item:focus-visible,
 .tz-sidebar-toggle:focus-visible {
@@ -2338,7 +2433,7 @@ textarea.tz-textarea:read-only {
 .tz-sidebar-item:disabled,
 .tz-sidebar-toggle:disabled {
   cursor: not-allowed;
-  opacity: 0.5;
+  opacity: var(--disabled-opacity);
 }
 .tz-sidebar-icon {
   inline-size: 24px;
@@ -2361,6 +2456,7 @@ textarea.tz-textarea:read-only {
 .tz-sidebar-chevron {
   flex: 0 0 auto;
   transform: rotate(-90deg);
+  transition: transform var(--motion-fast) var(--ease-out);
 }
 .tz-sidebar[dir="rtl"] .tz-sidebar-chevron {
   transform: rotate(90deg);
@@ -3428,7 +3524,8 @@ textarea.tz-textarea:read-only {
   border-block-start: 1px solid var(--border);
 }
 
-/* Steps and event history share a compact, content-independent rail. */
+/* Steps and event history share a compact, content-independent rail. The
+   connectors and the rail are hairlines. */
 .tz-steps,
 .tz-timeline {
   --sequence-indicator: var(--space-6);
@@ -3458,7 +3555,7 @@ textarea.tz-textarea:read-only {
   inset-block-start: calc(var(--sequence-indicator) / 2);
   inset-inline-start: calc(var(--sequence-indicator) + var(--space-2));
   inset-inline-end: var(--space-2);
-  border-block-start: 1px solid var(--border-strong);
+  border-block-start: 0.5px solid var(--hairline);
   pointer-events: none;
 }
 .tz-step-body {
@@ -3482,14 +3579,17 @@ textarea.tz-textarea:read-only {
   background: transparent;
   cursor: pointer;
   border-radius: var(--radius-small);
+  touch-action: manipulation;
 }
 .tz-step-button:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: var(--space-1);
 }
-.tz-step-button:hover .tz-step-label {
-  text-decoration: underline;
-  text-underline-offset: var(--underline-offset);
+@media (hover: hover) and (pointer: fine) {
+  .tz-step-button:hover .tz-step-label {
+    text-decoration: underline;
+    text-underline-offset: var(--underline-offset);
+  }
 }
 .tz-step-indicator,
 .tz-timeline-indicator {
@@ -3568,7 +3668,7 @@ textarea.tz-textarea:read-only {
   inset-inline-start: calc(var(--sequence-indicator) / 2);
   inset-inline-end: auto;
   border-block-start: 0;
-  border-inline-start: 1px solid var(--border-strong);
+  border-inline-start: 0.5px solid var(--hairline);
 }
 .tz-steps[data-orientation="vertical"] .tz-step:last-child .tz-step-body {
   padding-block-end: 0;
@@ -3588,7 +3688,7 @@ textarea.tz-textarea:read-only {
   inset-inline-start: calc(var(--sequence-indicator) / 2);
   inset-block-start: calc(var(--sequence-indicator) + var(--space-1));
   inset-block-end: var(--space-1);
-  border-inline-start: 1px solid var(--border-strong);
+  border-inline-start: 0.5px solid var(--hairline);
 }
 .tz-timeline-indicator {
   color: var(--text-secondary);
@@ -3643,7 +3743,7 @@ textarea.tz-textarea:read-only {
     inset-inline-start: calc(var(--sequence-indicator) / 2);
     inset-inline-end: auto;
     border-block-start: 0;
-    border-inline-start: 1px solid var(--border-strong);
+    border-inline-start: 0.5px solid var(--hairline);
   }
 }
 @media (max-width: 640px) {
@@ -3664,7 +3764,7 @@ textarea.tz-textarea:read-only {
     inset-inline-start: calc(var(--sequence-indicator) / 2);
     inset-inline-end: auto;
     border-block-start: 0;
-    border-inline-start: 1px solid var(--border-strong);
+    border-inline-start: 0.5px solid var(--hairline);
   }
 }
 .tiraz-system[data-reduced-motion="true"] .tz-step-indicator {
@@ -3676,7 +3776,9 @@ textarea.tz-textarea:read-only {
   }
 }
 
-/* Application-owned notification rows. */
+/* Application-owned notification rows. Rows are padded like paper, by
+   density, part on hairlines and shade under the pointer; the header lines up
+   with them. */
 .tz-notification-items {
   list-style: none;
   padding: 0;
@@ -3688,12 +3790,18 @@ textarea.tz-textarea:read-only {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  padding-block: var(--space-3);
+  padding: var(--paper-padding-block) var(--paper-padding-inline);
   min-inline-size: 0;
   overflow-wrap: anywhere;
+  transition: background-color var(--motion-fast) var(--ease-out);
 }
 .tz-notification-row + .tz-notification-row {
-  border-block-start: 1px solid var(--border);
+  border-block-start: 0.5px solid var(--hairline);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-notification-row:hover {
+    background: var(--wash);
+  }
 }
 .tz-notification-copy {
   flex: 1;
@@ -3743,8 +3851,8 @@ textarea.tz-textarea:read-only {
   overflow-wrap: anywhere;
 }
 .tz-notification-header {
-  padding-block-end: var(--space-2);
-  border-block-end: 1px solid var(--border);
+  padding: 0 var(--paper-padding-inline) var(--space-2);
+  border-block-end: 0.5px solid var(--hairline);
 }
 .tz-notification-header > .tz-button {
   margin-inline-start: auto;
@@ -3777,9 +3885,20 @@ textarea.tz-textarea:read-only {
   flex-shrink: 0;
   padding-block-start: var(--space-1);
 }
+/* A read notification's action stays focusable (aria-disabled), so it takes
+   the disabled rule here: dimmed, with no hover and no press. */
 .tz-notification-list .tz-row-actions button[aria-disabled="true"] {
-  color: var(--text-muted);
-  cursor: default;
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+  transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-notification-list
+    .tz-row-actions
+    .tz-button[aria-disabled="true"][data-variant="ghost"]:hover {
+    background: transparent;
+    color: var(--text-secondary);
+  }
 }
 
 /* Status icon: the one glyph for the status of a task, a tool call or a step of
@@ -7096,10 +7215,7 @@ a.tz-inline-citation {
   .tz-model-trigger,
   .tz-model-option,
   .tz-selection-actions button,
-  .tz-step-button,
   .tz-chart-legend > button,
-  .tz-sidebar-item,
-  .tz-sidebar-toggle,
   .tz-ask-questions .tz-radio-option,
   .tz-ai-image-choice img
 ) {
@@ -7118,8 +7234,7 @@ a.tz-inline-citation {
     .tz-context-trigger,
     .tz-model-trigger,
     .tz-selection-actions button,
-    .tz-chart-legend > button,
-    .tz-sidebar-toggle
+    .tz-chart-legend > button
   ):not(:disabled):active {
   transform: scale(0.95);
   transition-duration:
@@ -7127,7 +7242,7 @@ a.tz-inline-citation {
     var(--motion-state), var(--motion-fast), var(--motion-press);
   transition-timing-function: var(--ease-out);
 }
-:where(.tz-source-row[href], .tz-model-option, .tz-sidebar-item):active {
+:where(.tz-source-row[href], .tz-model-option):active {
   background: var(--surface-hover);
 }
 @media (hover: hover) and (pointer: fine) {
@@ -7256,8 +7371,8 @@ a.tz-inline-citation {
 /* One edge language for every surface. Cards sit on a hairline ring and a
    one-pixel lift; floating layers carry the ring inside their shadow. The
    transparent border stays so forced-colors mode still draws an outline.
-   Menus, toasts, modals, tooltips, cards and accordions set theirs in their
-   own rules. */
+   Menus, toasts, modals, tooltips, cards, accordions and tables set theirs in
+   their own rules. */
 :is(
   .tz-context-details,
   .tz-citation-popup,
@@ -7265,15 +7380,6 @@ a.tz-inline-citation {
   .tz-selection-actions
 ) {
   border-color: transparent;
-}
-.tz-table-container {
-  border-color: transparent;
-  box-shadow: var(--shadow-surface);
-}
-@media (hover: hover) and (pointer: fine) {
-  .tz-data-table tbody tr:hover {
-    background: var(--wash);
-  }
 }
 
 /* Gliding highlight: one soft wash travels to the active row (useGlide).
@@ -7328,10 +7434,11 @@ a.tz-inline-citation {
 /* Checks and crosses draw themselves as a state lands on them. A check is
    drawn in handwriting order (short stroke first); a cross stroke by stroke.
    A Button's success check draws only after its state changed (data-changed),
-   never on mount, and so does the ColorPicker's check once the color changed;
-   an icon-only button's check appears only after an action. The list sits in
-   :where(), so the overrides after it (a cross's own length and stroke delay,
-   the receipt's delay, the toast's shorter check) take effect. */
+   never on mount, and so do the ColorPicker's check once the color changed and
+   a Steps check once its step became complete; an icon-only button's check
+   appears only after an action. The list sits in :where(), so the overrides
+   after it (a cross's own length and stroke delay, the receipt's delay, the
+   toast's shorter check) take effect. */
 @keyframes tz-draw {
   from {
     stroke-dashoffset: var(--draw-from);
@@ -7340,7 +7447,7 @@ a.tz-inline-citation {
 :where(
     .tz-decision-icon,
     .tz-decision-mark,
-    .tz-step-indicator,
+    .tz-step-indicator[data-changed],
     .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,
     .tz-button[data-state="success"][data-changed],
@@ -7354,7 +7461,7 @@ a.tz-inline-citation {
 :where(
     .tz-decision-icon,
     .tz-decision-mark,
-    .tz-step-indicator,
+    .tz-step-indicator[data-changed],
     .tz-color-check[data-changed],
     .tz-button[data-icon-only] .tz-button-label,
     .tz-button[data-state="success"][data-changed],
