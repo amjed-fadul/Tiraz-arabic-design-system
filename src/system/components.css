@@ -1239,7 +1239,7 @@ input.tz-input:read-only {
   box-shadow: none;
   cursor: not-allowed;
 }
-.tz-checkbox-field:has(input:disabled) > label {
+.tz-checkbox-field:has(input:disabled) > :is(label, .tz-field-help) {
   opacity: var(--disabled-opacity);
   cursor: not-allowed;
 }
@@ -7011,7 +7011,7 @@ a.tz-inline-citation {
   background: var(--wash-strong);
   pointer-events: none;
   transition:
-    transform var(--motion-state) var(--ease-out),
+    transform var(--motion-state) var(--ease-in-out),
     opacity var(--motion-fast) var(--ease-out),
     background-color var(--motion-state) var(--ease-out);
 }
