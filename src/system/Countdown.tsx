@@ -58,6 +58,10 @@ export function Countdown({
         ? `خلال ${time}`
         : `in ${time}`;
   const sentence = say(formatElapsed(total, config));
+  // The widest time the count shows: the start under a minute, otherwise its
+  // minutes with 33 seconds, below an hour.
+  const widest =
+    total < 60 ? total : Math.floor(Math.min(total, 3599) / 60) * 60 + 33;
   // Screen readers skip a live region that mounts holding its text, so the
   // status mounts empty and takes the sentence once, after mount. React
   // renders no children into it, so the text is written here.
@@ -95,10 +99,10 @@ export function Countdown({
         />
       </svg>
       {/* Arabic-Indic digits have no tabular widths, so a hidden copy of the
-          starting sentence, set in the widest digit, holds the label's width
+          widest sentence, set in the widest digit, holds the label's width
           while it counts. */}
       <span className="tz-countdown-label" aria-hidden="true">
-        <span>{say(formatElapsed(total, config).replace(/[٠-٩]/g, "٣"))}</span>
+        <span>{say(formatElapsed(widest, config).replace(/[٠-٩]/g, "٣"))}</span>
         <span>{say(formatElapsed(remaining, config))}</span>
       </span>
     </span>

@@ -265,3 +265,12 @@ it("counts down, pauses and announces only once", () => {
   view.unmount();
   expect(vi.getTimerCount()).toBe(0);
 });
+
+it("holds the countdown's width with its widest value, not its start", () => {
+  const { container } = render(
+    <Countdown seconds={60} onComplete={() => {}} />,
+  );
+  // A 60 s start reads «خلال ١د», but at 59 s it reads «خلال ٥٩ث».
+  const copy = container.querySelector(".tz-countdown-label > span");
+  expect(copy?.textContent).toBe("خلال ٣د ٣٣ث");
+});

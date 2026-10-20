@@ -64,6 +64,7 @@ export function StatusPill({
           <span
             className="tz-status-pill-elapsed"
             data-minutes={(elapsed ?? 0) >= 60 || undefined}
+            data-long={(elapsed ?? 0) >= 600 || undefined}
           >
             {time}
           </span>

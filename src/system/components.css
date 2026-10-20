@@ -4210,12 +4210,16 @@ textarea.tz-textarea:read-only {
   }
 }
 /* Arabic-Indic digits have no tabular widths, so each range holds the width of
-   its widest value: ٣٣ث under a minute, ٣د ٣٣ث from one. */
+   its widest value: ٣٣ث under a minute, ٣د ٣٣ث from one, ٣٣د ٣٣ث from ten.
+   Hours stay narrower than that. */
 .tz-status-pill-elapsed {
   min-inline-size: 3.6ch;
 }
 .tz-status-pill-elapsed[data-minutes] {
   min-inline-size: 5.8ch;
+}
+.tz-status-pill-elapsed[data-long] {
+  min-inline-size: 6.9ch;
 }
 
 /* Thread: the stitch line under a working label (Woven spec section 14). Its
