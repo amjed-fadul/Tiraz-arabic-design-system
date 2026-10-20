@@ -135,11 +135,24 @@ try {
               await page.keyboard.press("ArrowUp");
               await page.keyboard.press("Enter");
               assert.equal(await first.getAttribute("aria-expanded"), "true");
-              const duration = await accordion
-                .locator(".tz-accordion-panel[data-state=open]")
-                .evaluate((el) =>
-                  parseFloat(getComputedStyle(el).animationDuration),
-                );
+              const openDuration = () =>
+                accordion
+                  .locator(".tz-accordion-panel[data-state=open]")
+                  .evaluate((el) =>
+                    parseFloat(getComputedStyle(el).animationDuration),
+                  );
+              // Woven §15: a keyboard Enter opens the panel with no motion; a
+              // pointer click follows the OS setting. Reading is closed and
+              // reopened by pointer: its trigger sits above its panel, so the
+              // panel's re-timed open (backlog: input modality) cannot move it.
+              assert(
+                (await openDuration()) <= 0.0001,
+                "keyboard motion duration",
+              );
+              await first.click();
+              await first.click();
+              assert.equal(await first.getAttribute("aria-expanded"), "true");
+              const duration = await openDuration();
               assert(
                 motion === "reduce" ? duration <= 0.0001 : duration > 0.1,
                 "OS motion duration",
@@ -481,7 +494,8 @@ try {
   // The playground region sits inside its provider.
   const provider = page.locator(".playground-region > .tiraz-system");
   await preview.getByRole("button", { name: "Next", exact: true }).click();
-  assert.equal(await preview.locator("[aria-current=page]").textContent(), "2");
+  // The Pagination playground opens on page 6 of 12 (model.ts).
+  assert.equal(await preview.locator("[aria-current=page]").textContent(), "7");
   assert.equal(await provider.getAttribute("data-theme"), "dark");
   assert.equal(await provider.getAttribute("data-density"), "standard");
   assert.equal(await provider.getAttribute("data-typography"), "large");

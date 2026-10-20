@@ -75,7 +75,8 @@ try {
   await page.waitForTimeout(125);
   assert.equal(await tip.count(), 1);
   await page.keyboard.press("Escape");
-  assert.equal(await tip.count(), 0);
+  // Woven §17.6 Tooltip: it stays mounted through its 100 ms exit.
+  await tip.waitFor({ state: "detached" });
   await page.mouse.move(0, 800);
   await details.focus();
   await tip.waitFor();
@@ -97,9 +98,12 @@ try {
   assert.equal(await page.locator("output").textContent(), "Details shown");
   const edge = page.getByRole("button", { name: "Edge help" });
   await edge.focus();
-  await tip.waitFor();
-  await fits(tip, 1280, 900);
-  assert.equal(await tip.getAttribute("data-side"), "bottom");
+  // Woven §17.6 Tooltip: the Details tooltip may still be leaving through its
+  // 100 ms exit, so target the open one.
+  const edgeTip = page.locator("[role=tooltip]:not([data-state=closed])");
+  await edgeTip.waitFor();
+  await fits(edgeTip, 1280, 900);
+  assert.equal(await edgeTip.getAttribute("data-side"), "bottom");
   await page.keyboard.press("Escape");
   report.checks.push(
     "Tooltip true pointer delay, hoverable content, focus/ref/merged descriptions, Escape without focus loss, edge collision flip, trigger action",
@@ -176,7 +180,8 @@ try {
   await tip.waitFor();
   assert.equal(await tip.evaluate((el) => !!el.closest(".tz-modal")), true);
   await page.keyboard.press("Escape");
-  assert.equal(await tip.count(), 0);
+  // Woven §17.6 Tooltip: it stays mounted through its 100 ms exit.
+  await tip.waitFor({ state: "detached" });
   assert.equal(await dialog.count(), 1);
   await page.keyboard.press("Escape");
   await dialog.waitFor({ state: "detached" });

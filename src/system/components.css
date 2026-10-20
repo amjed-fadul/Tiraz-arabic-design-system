@@ -2157,6 +2157,24 @@ textarea.tz-textarea:read-only {
     color: var(--action);
   }
 }
+/* Forced colors drop the soft fill, the accent and its border, which is all
+   that marks the current page. It takes the Highlight pair, kept as written,
+   and a CanvasText ring, as the workbench state chips do. */
+@media (forced-colors: active) {
+  .tz-pagination .tz-button[aria-current="page"],
+  .tz-pagination .tz-button[aria-current="page"] > * {
+    forced-color-adjust: none;
+  }
+  .tz-pagination .tz-button[aria-current="page"] {
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+  }
+  .tz-pagination .tz-button[aria-current="page"]:focus-visible {
+    outline-color: CanvasText;
+    outline-offset: 2px;
+  }
+}
 .tz-pagination .tz-button {
   min-inline-size: var(--control-small);
 }
@@ -2277,7 +2295,7 @@ textarea.tz-textarea:read-only {
   border: 1px solid transparent;
   border-radius: var(--radius-control);
   box-shadow: var(--shadow-popover);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2);
   font-family: var(--font);
   font-size: var(--text-meta);
   max-inline-size: min(240px, calc(100vw - 100px));
@@ -2447,7 +2465,7 @@ textarea.tz-textarea:read-only {
   flex: 1;
 }
 @media (hover: hover) and (pointer: fine) {
-  .tz-sidebar-item:not([data-active="true"]):hover,
+  .tz-sidebar-item:not([data-active="true"]:not([aria-expanded="true"])):hover,
   .tz-sidebar-toggle:hover {
     background: var(--wash);
   }
@@ -2459,16 +2477,23 @@ textarea.tz-textarea:read-only {
     var(--motion-fast), var(--motion-fast), var(--motion-fast),
     var(--motion-press);
 }
-.tz-sidebar-item:not([data-active="true"]):not(:disabled):active,
+.tz-sidebar-item:not([data-active="true"]:not([aria-expanded="true"])):not(
+    :disabled
+  ):active,
 .tz-sidebar-toggle:not(:disabled):active {
   background: var(--wash-strong);
 }
-/* The current page is a paper chip on the tray. Its edge is only a shadow, so
-   a transparent outline gives forced colors an edge without moving the row. */
 .tz-sidebar-item[data-active="true"] {
-  background: var(--surface);
   color: var(--text);
   font-weight: var(--weight-medium);
+}
+/* The current page is a paper chip on the tray. Its edge is only a shadow, so
+   a transparent outline gives forced colors an edge without moving the row.
+   The chip marks the current page, and a closed group that holds it. An open
+   group leaves the chip to the page inside it. Zero specificity keeps the
+   focus ring's outline winning. */
+.tz-sidebar-item:where([data-active="true"]:not([aria-expanded="true"])) {
+  background: var(--surface);
   box-shadow: var(--shadow-chip);
   outline: 1px solid transparent;
   outline-offset: -1px;
@@ -7082,6 +7107,12 @@ a.tz-inline-citation {
   border-radius: 50%;
   background: var(--text-muted);
   opacity: 0.6;
+}
+@media (forced-colors: active) {
+  .tz-approval-card .tz-decision-consequences > li::before {
+    background: CanvasText;
+    opacity: 1;
+  }
 }
 .tz-approval-card .tz-decision-status {
   color: var(--text-muted);

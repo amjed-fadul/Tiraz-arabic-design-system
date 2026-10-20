@@ -295,7 +295,7 @@ try {
   // fixture section above drives directly.
   assert.match(
     code,
-    /<StepsExample language=\{"en"\} \{\.\.\.\{"orientation":"vertical","currentState":"error"\}\} \/>/,
+    /<StepsExample language=\{"en"\} \{\.\.\.\{"orientation":"vertical","currentState":"error","step":1\}\} \/>/,
   );
   assert.doesNotMatch(code, /<StepsFormExample/);
   const view = page.getByRole("tablist", { name: "View", exact: true });
@@ -353,7 +353,10 @@ try {
     .click();
   const prompt = await page.evaluate(() => navigator.clipboard.readText());
   assert.ok(prompt.includes(code) && prompt.includes("ai/README.md"));
-  await page.getByRole("button", { name: "Timeline", exact: true }).click();
+  await page
+    .getByRole("navigation", { name: "Components", exact: true })
+    .getByRole("button", { name: "Timeline", exact: true })
+    .click();
   await page.getByRole("button", { name: "Toggle theme" }).click();
   await page.waitForFunction(() =>
     [

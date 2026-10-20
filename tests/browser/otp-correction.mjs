@@ -133,7 +133,15 @@ async function centers(label) {
     rings.length === 1 && rings[0].active,
     JSON.stringify({ label, slots: result.slots }),
   );
-  assert.equal(rings[0].border, result.focus);
+  // Woven §17.1 OTPInput: a changed, complete, valid code takes the success
+  // edge; an empty or partial code keeps the focus edge.
+  const success = label.includes("/dark/")
+    ? "rgb(165, 212, 179)"
+    : "rgb(49, 103, 70)";
+  assert.equal(
+    rings[0].border,
+    result.value.length === 6 ? success : result.focus,
+  );
   assert.equal(
     new Set(result.slots.filter((s) => !s.active).map((s) => s.border)).size,
     1,

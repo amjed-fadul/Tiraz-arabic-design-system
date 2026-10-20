@@ -322,6 +322,8 @@ try {
             url: page.url(),
           }),
         );
+        // Measure after the scroll, which can move the field.
+        await preview().scrollIntoViewIfNeeded();
         const prior = await geometry();
         measurements.push({
           component: "input-copy",
@@ -330,7 +332,6 @@ try {
           width,
           geometry: prior,
         });
-        await preview().scrollIntoViewIfNeeded();
         await page.screenshot({
           path: `${evidence}/copy-${language}-${theme}-${width}.png`,
         });

@@ -29,6 +29,9 @@ const check = (name) => {
 const select = async (label, option) => {
   await page.getByRole("combobox", { name: label, exact: true }).click();
   await page.getByRole("option", { name: option, exact: true }).click();
+  // Woven §17.1 Select: the popup plays its 120 ms exit, and the page stays
+  // aria-hidden until it unmounts.
+  await page.locator("[role=listbox]").waitFor({ state: "detached" });
 };
 const table = () =>
   page.getByRole("table", { name: "Customer directory", exact: true });
@@ -364,7 +367,8 @@ try {
     "all preview states, working Retry, empty create without orders, OS reduced motion",
   );
   await page.reload();
-  assert.equal(await metric("customer-count"), "18");
+  // Woven §18 #15: Arabic counts use Arabic-Indic digits.
+  assert.equal(await metric("customer-count"), "١٨");
   await page.getByRole("button", { name: "English", exact: true }).click();
   await page.getByRole("button", { name: "Dark mode", exact: true }).click();
   assert.equal(
@@ -479,8 +483,10 @@ try {
     color: getComputedStyle(el).color,
     parentColor: (() => {
       const probe = document.createElement("span");
+      // Woven §17.3 Sidebar and §12 Selection: the active item is a paper
+      // chip in --text.
       probe.style.color =
-        el.dataset.active === "true" ? "var(--action)" : "inherit";
+        el.dataset.active === "true" ? "var(--text)" : "inherit";
       el.parentElement.append(probe);
       const color = getComputedStyle(probe).color;
       probe.remove();

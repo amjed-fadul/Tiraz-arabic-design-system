@@ -251,6 +251,9 @@ try {
   assert.equal(await table().locator("tr[data-identity=original]").count(), 1);
   await canvas().getByRole("combobox", { name: "Customer status" }).click();
   await page.getByRole("option", { name: "Paused", exact: true }).click();
+  // Woven §17.1 Select: the popup plays its 120 ms exit, and the page stays
+  // aria-hidden until it unmounts.
+  await page.locator("[role=listbox]").waitFor({ state: "detached" });
   assert.equal(await table().locator("tbody tr").count(), 1);
   assert.match(await table().textContent(), /Atlas Design/);
   await canvas().getByRole("searchbox").fill("Nadia");
@@ -291,7 +294,17 @@ try {
     name: "Save customer",
     exact: true,
   });
-  await save.click();
+  // Backlog edge (input modality): Enter opened the sheet, so its slide-in ran
+  // at 0 ms. A pointerdown within the slide-in's 280 ms switches modality and
+  // re-times it, so the sheet slides again and the pointerup misses Save. Hold
+  // the press until the sheet's running animations finish (getAnimations()
+  // empty), then release.
+  await save.hover();
+  await page.mouse.down();
+  await dialog.evaluate((el) =>
+    Promise.all(el.getAnimations().map((a) => a.finished.catch(() => {}))),
+  );
+  await page.mouse.up();
   assert.ok(await name.evaluate((el) => el === document.activeElement));
   await name.fill("Copy عميل");
   await email.fill("invalid");

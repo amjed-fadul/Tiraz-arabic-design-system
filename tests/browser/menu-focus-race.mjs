@@ -193,16 +193,14 @@ for (const scenario of cases) {
           result.failures.push(error.message);
         }
       };
+      // Woven §15: ArrowDown opens the menu under keyboard modality, which
+      // skips tz-menu-in. Focus and visibility are still checked below.
       if (!scenario.settled && !scenario.reducedMotion)
         check(() =>
-          assert.ok(
-            result.beforeEnter.endAnimations.some(
-              (a) =>
-                a.name === "tz-menu-in" &&
-                a.playState === "running" &&
-                a.time < a.duration,
-            ),
-            "End must occur during opening animation",
+          assert.deepEqual(
+            result.beforeEnter.endAnimations,
+            [],
+            "A keyboard-opened menu must not animate",
           ),
         );
       check(() =>

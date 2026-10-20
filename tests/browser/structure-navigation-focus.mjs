@@ -60,6 +60,17 @@ try {
       );
       await last.click();
       assert.equal(await last.getAttribute("aria-expanded"), "true");
+      // Backlog edge (input modality): the Tab below zeroes the panels' running
+      // open and close animations, and the breadcrumb pointerdown within their
+      // 200 ms switches modality and re-times them, so the link moves under
+      // the click. Let them finish (getAnimations() empty) before that.
+      await group.evaluate((el) =>
+        Promise.all(
+          el
+            .getAnimations({ subtree: true })
+            .map((a) => a.finished.catch(() => {})),
+        ),
+      );
       const closedPanel = group
         .locator('.tz-accordion-panel[data-state="closed"]')
         .first();

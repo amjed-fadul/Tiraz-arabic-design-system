@@ -240,7 +240,8 @@ try {
       };
     });
     assert.equal(styles.font, "16px");
-    assert.equal(styles.radius, "4px");
+    // Woven §10 and §17.1 DatePicker popup: at radius 0, --radius-paper is 0.
+    assert.equal(styles.radius, "0px");
     assert.equal(styles.motion, "0ms");
     await page.getByRole("button", { name: "Theme", exact: true }).click();
     await trigger.click();

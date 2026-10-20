@@ -197,7 +197,10 @@ try {
     await page
       .getByLabel(/لغة التوثيق|Documentation language/)
       .selectOption("ar");
-    await page.getByRole("button", { name: ar, exact: true }).click();
+    await page
+      .getByRole("navigation", { name: "المكوّنات", exact: true })
+      .getByRole("button", { name: ar, exact: true })
+      .click();
     await page
       .getByLabel(/لغة التوثيق|Documentation language/)
       .selectOption("en");
