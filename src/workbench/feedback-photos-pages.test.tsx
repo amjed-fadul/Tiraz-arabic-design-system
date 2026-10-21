@@ -22,6 +22,7 @@ it("documents four feedback pages with complete copied code and prompts", async 
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),
     ).not.toBeEmptyDOMElement();
     expect(screen.queryByRole("status", { name: "آخر حدث" })).toBeNull();
+    await user.click(screen.getByRole("tab", { name: "الكود" }));
     await user.click(screen.getByRole("button", { name: "نسخ الكود" }));
     const code = write.mock.calls.at(-1)![0];
     await user.click(screen.getByRole("button", { name: "نسخ الطلب" }));
@@ -67,6 +68,7 @@ it("records the Alert playground action and drops it when its label is cleared",
     ),
   );
   expect(stage.queryByRole("button")).toBeNull();
+  await user.click(screen.getByRole("tab", { name: "الكود" }));
   await user.click(screen.getByRole("button", { name: "نسخ الكود" }));
   const code = String(write.mock.calls.at(-1)![0]);
   expect(code).not.toContain("action=");
@@ -180,6 +182,7 @@ it("exposes existing src with a minimal photo choice and accurate imports", asyn
   expect(
     preview.getByRole("img", { name: "Sara Ali" }).querySelector("img"),
   ).not.toBeNull();
+  await user.click(screen.getByRole("tab", { name: "Code" }));
   await user.click(screen.getByRole("button", { name: "Copy code" }));
   expect(write.mock.calls.at(-1)![0]).toContain("./system/ai/assets/sara.jpg");
   await user.type(
@@ -189,6 +192,7 @@ it("exposes existing src with a minimal photo choice and accurate imports", asyn
   await user.click(screen.getByRole("button", { name: "Copy code" }));
   expect(write.mock.calls.at(-1)![0]).toContain('src={"/personal.jpg"}');
   await user.selectOptions(screen.getByLabelText("Appearance"), "initials");
+  await user.click(screen.getByRole("tab", { name: "Preview" }));
   expect(
     preview.getByRole("img", { name: "Sara Ali" }).querySelector("img"),
   ).toBeNull();

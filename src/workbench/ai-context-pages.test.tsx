@@ -45,6 +45,7 @@ it.each([
       expect(screen.queryByRole("heading", { name })).toBeNull();
     expect(screen.getByRole("tablist", { name: "View" })).toBeVisible();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
+    await user.click(screen.getByRole("tab", { name: "Code" }));
     await user.click(screen.getByRole("button", { name: "Copy code" }));
     const code = String(copy.mock.calls.at(-1)?.[0]);
     expect(code).toContain(en + "Example");

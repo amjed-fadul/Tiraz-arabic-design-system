@@ -1,7 +1,21 @@
-import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import type { CSSProperties, KeyboardEvent, ReactNode } from "react";
-import { AlertCircle, Check, Code2, Copy, Eye, Play } from "lucide-react";
-import { Button } from "../../Button";
+import {
+  AlertCircle,
+  ArrowUpRight,
+  Check,
+  Code2,
+  Copy,
+  Eye,
+  RotateCcw,
+} from "lucide-react";
 import { highlightCode } from "../../code-highlight";
 import { useChanged } from "../../useChanged";
 
@@ -11,8 +25,8 @@ type View = "preview" | "code";
 export type DemoFrameState = { id: string; label: { ar: string; en: string } };
 
 /**
- * The guidance row under the stage. A column with no items is left out, and
- * `replaces` (a pattern's parts) takes the middle column from `instead`.
+ * A page's usage guidelines (`DemoNotes`). A column with no items is left out,
+ * and `replaces` (a pattern's parts) takes the middle column from `instead`.
  */
 export type DemoFrameNotes = {
   useWhen: ReactNode[];
@@ -22,14 +36,13 @@ export type DemoFrameNotes = {
 };
 
 /**
- * Documentation/example chrome only; not a public component family. With
- * `code`, the header switches between the live example and its source, and
- * the copy button copies that source. `name`, `states` and `notes` are
- * optional: the frame shows the state it is given, reports a press through
- * `onStateChange` and leaves what a state means to its caller.
+ * Documentation/example chrome only; not a public component family. A toolbar
+ * above the stage holds the View switch (with `code`), the states and the
+ * new-tab link (`openHref`); Replay sits in the stage's corner and Copy in the
+ * code's header. The frame shows the state it is given, reports a press
+ * through `onStateChange` and leaves what a state means to its caller.
  */
 export function DemoFrame({
-  title,
   language,
   code,
   fileName = "src/Example.tsx",
@@ -38,30 +51,28 @@ export function DemoFrame({
   children,
   className = "",
   label,
-  name,
   states,
   state,
   onStateChange,
-  notes,
+  openHref,
   onViewChange,
   replaying,
 }: {
-  title?: string;
   language: "ar" | "en";
   code?: string;
   fileName?: string;
+  /** Names Replay, and is its tooltip, in place of «إعادة تشغيل المثال». */
   replayLabel?: string;
   onReplay?: () => void;
   children: ReactNode;
   className?: string;
   label?: string;
-  /** The example's name in both languages; the interface language comes first. */
-  name?: { ar: string; en: string };
   states?: readonly DemoFrameState[];
   /** The id of the state the example is in. */
   state?: string;
   onStateChange?: (id: string) => void;
-  notes?: DemoFrameNotes;
+  /** Where the new-tab link opens the example on its own. */
+  openHref?: string;
   /** Called when the View tablist moves to the other view. */
   onViewChange?: (view: View) => void;
   /** True while the caller steps through the states: the status stays silent. */
@@ -100,10 +111,16 @@ export function DemoFrame({
       request.value++;
     };
   }, [code]);
+  // A copy shows its check for 2 s; then the button is Copy again.
+  const settle = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(settle.current), []);
   const result = code && feedback?.code === code ? feedback.result : "idle";
   const copyName = ar ? "نسخ الكود" : "Copy code";
   const playName =
     replayLabel ?? (ar ? "إعادة تشغيل المثال" : "Replay example");
+  const openName = ar
+    ? "فتح المعاينة في تبويب جديد"
+    : "Open the playground in a new tab";
   const message =
     result === "copied"
       ? ar
@@ -124,11 +141,15 @@ export function DemoFrame({
     if (!code) return;
     const request = generation.current;
     const current = ++request.value;
+    clearTimeout(settle.current);
     try {
       await navigator.clipboard.writeText(code);
       if (current === request.value) {
         setFeedback({ code, result: "copied" });
         setHeard((now) => ({ ...now, copyLast: true }));
+        settle.current = setTimeout(() => {
+          if (current === request.value) setFeedback(null);
+        }, 2000);
       }
     } catch {
       if (current === request.value) {
@@ -143,6 +164,7 @@ export function DemoFrame({
     onViewChange?.(next);
   }
   const showCode = code !== undefined && view === "code";
+  const hasStates = states !== undefined && states.length > 0;
   return (
     <div
       className={`tz-demo-frame ${className}`.trim()}
@@ -150,83 +172,68 @@ export function DemoFrame({
       aria-label={label}
       data-view={code === undefined ? undefined : view}
     >
-      <div className="tz-demo-bar">
-        {name && <DemoName name={name} ar={ar} />}
-        {states && states.length > 0 && (
-          <div
-            className="tz-demo-states"
-            role="group"
-            aria-label={ar ? "حالات المثال" : "Example states"}
-          >
-            {states.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className="tz-demo-state"
-                aria-pressed={state === item.id}
-                onClick={() => onStateChange?.(item.id)}
-              >
-                {item.label[language]}
-              </button>
-            ))}
-          </div>
-        )}
-        <header className="tz-demo-header">
-          {code === undefined && title && (
-            <span className="tz-demo-title" lang={language}>
-              {title}
-            </span>
-          )}
-          {onReplay && !showCode && (
-            <button
-              type="button"
-              className="tz-demo-replay"
-              aria-label={playName}
-              title={replayLabel ? playName : undefined}
-              data-icon-only={replayLabel ? true : undefined}
-              onClick={onReplay}
-            >
-              <Play
-                className="tz-demo-play-icon"
-                size={14}
-                aria-hidden="true"
-              />
-              {!replayLabel && <span>{ar ? "إعادة تشغيل" : "Replay"}</span>}
-            </button>
-          )}
+      <span role="status" className="tz-visually-hidden">
+        {heard.copyLast ? message : stateMessage}
+      </span>
+      {(code !== undefined || hasStates || openHref) && (
+        <div className="tz-demo-bar">
           {code !== undefined && (
-            <>
-              <ViewSwitch
-                id={id}
-                view={view}
-                onViewChange={changeView}
-                ar={ar}
-              />
-              <Button
-                variant="ghost"
-                size="sm"
-                iconOnly
-                aria-label={copyName}
-                title={result === "failed" ? message : copyName}
-                data-copy-state={result}
-                onClick={copy}
-              >
-                {result === "copied" ? (
-                  <Check size={16} aria-hidden="true" />
-                ) : result === "failed" ? (
-                  <AlertCircle size={16} aria-hidden="true" />
-                ) : (
-                  <Copy size={16} aria-hidden="true" />
-                )}
-              </Button>
-            </>
+            <ViewSwitch id={id} view={view} onViewChange={changeView} ar={ar} />
           )}
-          <span role="status" className="tz-visually-hidden">
-            {heard.copyLast ? message : stateMessage}
-          </span>
-        </header>
-      </div>
+          {(hasStates || openHref) && (
+            <div className="tz-demo-bar-end">
+              {hasStates && (
+                <div
+                  className="tz-demo-states"
+                  role="group"
+                  aria-label={ar ? "حالات المثال" : "Example states"}
+                >
+                  {states.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className="tz-demo-state"
+                      aria-pressed={state === item.id}
+                      onClick={() => onStateChange?.(item.id)}
+                    >
+                      {item.label[language]}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {openHref && (
+                <a
+                  className="tz-demo-icon"
+                  href={openHref}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={openName}
+                  title={openName}
+                >
+                  {/* Out and forward: the arrow follows the reading direction. */}
+                  <ArrowUpRight
+                    className="tz-mirror-rtl"
+                    size={18}
+                    aria-hidden="true"
+                  />
+                </a>
+              )}
+            </div>
+          )}
+        </div>
+      )}
       <div className="tz-demo-stage">
+        {onReplay && !showCode && (
+          <button
+            type="button"
+            className="tz-demo-icon tz-demo-replay"
+            aria-label={playName}
+            title={playName}
+            onClick={onReplay}
+          >
+            <RotateCcw size={18} aria-hidden="true" />
+          </button>
+        )}
         {code === undefined ? (
           children
         ) : (
@@ -250,38 +257,39 @@ export function DemoFrame({
               hidden={view !== "code"}
             >
               {view === "code" && (
-                <SourceView code={code} fileName={fileName} ar={ar} />
+                <SourceView code={code} fileName={fileName} ar={ar}>
+                  <button
+                    type="button"
+                    className="tz-demo-icon"
+                    aria-label={copyName}
+                    title={result === "failed" ? message : copyName}
+                    data-copy-state={result}
+                    onClick={copy}
+                  >
+                    {result === "copied" ? (
+                      <Check size={18} aria-hidden="true" />
+                    ) : result === "failed" ? (
+                      <AlertCircle size={18} aria-hidden="true" />
+                    ) : (
+                      <Copy size={18} aria-hidden="true" />
+                    )}
+                  </button>
+                </SourceView>
               )}
             </div>
           </>
         )}
       </div>
-      {notes && <DemoNotes notes={notes} language={language} />}
     </div>
   );
 }
 
-/** Both names, each in its own language and direction, the interface's first. */
-function DemoName({
-  name,
-  ar,
-}: {
-  name: { ar: string; en: string };
-  ar: boolean;
-}) {
-  const order = ar ? (["ar", "en"] as const) : (["en", "ar"] as const);
-  return (
-    <div className="tz-demo-name">
-      {order.map((lang) => (
-        <span key={lang} lang={lang} dir={lang === "ar" ? "rtl" : "ltr"}>
-          {name[lang]}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function DemoNotes({
+/**
+ * A page's usage guidelines: one column each for when to use the example,
+ * when to use something else (or, on a pattern page, what it replaces) and
+ * what to notice. The page gives them their own section and heading.
+ */
+export function DemoNotes({
   notes,
   language,
 }: {
@@ -407,15 +415,21 @@ function ViewSwitch({
   );
 }
 
-/** Read-only source with a line gutter; the clipboard gets the exact string. */
+/**
+ * Read-only source with a line gutter; the clipboard gets the exact string.
+ * Its header row follows the page's direction, the file name at the start and
+ * the action (Copy) at the end; the code itself stays left to right.
+ */
 function SourceView({
   code,
   fileName,
   ar,
+  children,
 }: {
   code: string;
   fileName: string;
   ar: boolean;
+  children: ReactNode;
 }) {
   const highlighted = useMemo(() => highlightCode(code, "tsx"), [code]);
   const lines = useMemo(
@@ -427,10 +441,16 @@ function SourceView({
     [code],
   );
   return (
-    <div className="tz-demo-source" dir="ltr">
-      <div className="tz-demo-source-file">{fileName}</div>
+    <div className="tz-demo-source">
+      <div className="tz-demo-source-head">
+        <span className="tz-demo-source-file" dir="ltr">
+          {fileName}
+        </span>
+        {children}
+      </div>
       <div
         className="tz-demo-source-scroll"
+        dir="ltr"
         tabIndex={0}
         role="region"
         aria-label={`${ar ? "الكود" : "Code"}: ${fileName}`}

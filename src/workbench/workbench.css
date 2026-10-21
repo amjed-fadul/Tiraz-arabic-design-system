@@ -220,18 +220,6 @@ bdi {
 .component-heading {
   margin-block-end: 32px;
 }
-.component-kicker {
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-  margin: 0 0 5px;
-}
-/* An English eyebrow is mono, upper case and tracked; Arabic never is. */
-.component-kicker:lang(en) {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
 .component-heading h1 {
   font-size: var(--text-display);
   line-height: var(--leading-display);
@@ -303,8 +291,34 @@ bdi {
 .playground-section {
   margin-block-end: 36px;
 }
+/* A page's example alone in its own tab, at the window's full width, with a
+   small way back to its page. */
+.standalone-playground {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-items: start;
+  gap: var(--space-4);
+  min-block-size: 100dvh;
+  padding: var(--space-4) var(--space-6) var(--space-8);
+  background: var(--surface);
+  color: var(--text);
+}
+.standalone-playground > .playground-canvas {
+  justify-self: stretch;
+}
+/* The usage guidelines follow the playground, under a hairline. */
+.guidelines-section {
+  margin-block-end: 36px;
+  padding-block-start: var(--space-8);
+  border-block-start: 0.5px solid var(--hairline);
+}
 .playground-region {
   overflow: visible;
+}
+/* The toolbar sits on the page, so the playground's own system root paints
+   nothing behind it. */
+.playground-region > .tiraz-system {
+  background: transparent;
 }
 /* A page the notes row suggests instead; activating it opens that page. */
 .note-link {
@@ -421,25 +435,22 @@ bdi {
   font-family: var(--font-mono);
   font-size: var(--text-meta);
 }
-.api-reference {
-  margin-block-start: 0;
-  font-size: var(--text-meta);
-}
-.api-reference summary {
-  font-size: var(--text-label);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: list-item;
-}
-.api-reference > p {
+/* The API reference: always open, one table per group. */
+.reference-section > p {
   font-size: var(--text-meta);
   color: var(--text-secondary);
   line-height: 1.8;
 }
-/* Paper with hairline rows. Forced colors drop the ring; the border becomes
-   its edge. */
+.reference-section > h3 {
+  margin: var(--space-6) 0 0;
+  font-size: var(--text-label);
+  font-weight: 600;
+}
+/* Paper with hairline rows and the header row on the tray. On a narrow
+   screen the table scrolls inside its box, never the page. Forced colors
+   drop the ring; the border becomes its edge. */
 .api-scroll {
-  overflow: auto;
+  overflow-x: auto;
   margin-block: var(--space-3);
   border: 1px solid transparent;
   border-radius: var(--radius-paper);
@@ -448,35 +459,43 @@ bdi {
 }
 .api-scroll table {
   inline-size: 100%;
+  min-inline-size: 600px;
   border-collapse: collapse;
-  text-align: start;
+  font-size: var(--text-meta);
 }
 .api-scroll th,
 .api-scroll td {
   padding: 12px 10px;
+  text-align: start;
   vertical-align: top;
   border-block-end: 0.5px solid var(--hairline);
 }
-.api-scroll th {
-  text-align: start;
-  font-size: var(--text-meta);
+.api-scroll thead th {
+  background: var(--surface-tray);
   font-weight: 500;
+  white-space: nowrap;
 }
-.api-scroll td:first-child {
-  inline-size: 35%;
+.api-scroll tbody th {
+  inline-size: 24%;
+  font-weight: 400;
+}
+.api-scroll td {
+  color: var(--text-secondary);
 }
 .api-scroll code {
   display: inline-block;
+  color: var(--text);
   font: var(--text-micro) / 1.7 var(--font-mono);
   overflow-wrap: anywhere;
   unicode-bidi: isolate;
 }
-.api-scroll td p {
-  margin: 6px 0 0;
+.api-required {
+  display: block;
+  margin-block-start: var(--space-1);
   color: var(--text-secondary);
-  font-size: var(--text-meta);
+  font-size: var(--text-micro);
 }
-.api-scroll tr:last-child td {
+.api-scroll tbody tr:last-child > * {
   border: 0;
 }
 .system-rail {
@@ -861,12 +880,6 @@ bdi {
   .event-feedback {
     font-size: var(--text-micro);
   }
-  .api-scroll td:first-child {
-    inline-size: 35%;
-  }
-  .api-scroll code {
-    font-size: var(--text-micro);
-  }
 }
 @media (max-width: 360px) {
   .docs-header {
@@ -916,9 +929,14 @@ bdi {
   max-inline-size: none;
   margin: 0;
 }
+/* The playground takes the column, up to 1,160px; the header, the guidelines
+   and the sections after them keep a readable measure on its start edge. */
 .component-page {
-  max-inline-size: 730px;
+  max-inline-size: 1160px;
   margin-inline: auto;
+}
+.component-page > :not(.playground-section) {
+  max-inline-size: 760px;
 }
 .customization-rail {
   position: sticky;
@@ -1311,145 +1329,4 @@ bdi {
 .playground-suggested-edits {
   align-items: flex-start;
   min-block-size: 22rem;
-}
-
-/* Pattern pages: Anatomy, Placements and Copy sit between the demo and the
-   code. Each still is paper, like the demo frame, holding an inert copy of
-   the example at rest. */
-.pattern-section {
-  margin-block-end: 36px;
-}
-.pattern-anatomy,
-.pattern-placement > .pattern-still {
-  border: 1px solid transparent;
-  border-radius: var(--radius-paper);
-  background: var(--surface);
-  box-shadow: var(--shadow-paper);
-}
-.pattern-anatomy {
-  position: relative;
-  padding: 30px var(--space-6);
-}
-/* A still paints as one layer, popovers included, so the pins sit above. */
-.pattern-still {
-  isolation: isolate;
-}
-.pattern-still > .tiraz-system {
-  display: grid;
-  justify-items: center;
-  background: transparent;
-  /* A still is a picture; text in it is not selected with the page's. */
-  user-select: none;
-}
-.pattern-still .tz-chat-thread {
-  justify-self: stretch;
-}
-.pattern-pins {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  pointer-events: none;
-}
-.pattern-pin,
-.pattern-legend-number {
-  display: inline-grid;
-  place-items: center;
-  flex: none;
-  inline-size: 20px;
-  block-size: 20px;
-  /* Forced colors drop the fill; the border keeps the disc. */
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
-  background: var(--text);
-  color: var(--surface);
-  font-size: var(--text-micro);
-  font-weight: 600;
-  line-height: 1;
-}
-/* Beside the zone's inline-start edge, level with its first line, so it
-   covers none of the zone; ringed off the card. */
-.pattern-pin {
-  position: absolute;
-  margin-block-start: -10px;
-  margin-inline-start: -24px;
-  box-shadow: 0 0 0 2px var(--surface);
-}
-.pattern-legend {
-  display: grid;
-  gap: var(--space-2);
-  margin: var(--space-4) 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: var(--text-body);
-}
-.pattern-legend li {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 10px;
-}
-.pattern-legend-zone {
-  min-inline-size: 5.5rem;
-  font-weight: 600;
-}
-.pattern-legend-parts {
-  color: var(--text-secondary);
-}
-.pattern-placements {
-  display: grid;
-  gap: var(--space-6);
-}
-.pattern-placement {
-  display: grid;
-  gap: var(--space-2);
-  margin: 0;
-}
-.pattern-placement figcaption {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 4px 8px;
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-}
-.pattern-placement figcaption code {
-  font: var(--text-micro) var(--font-mono);
-  color: var(--text-muted);
-}
-.pattern-placement > .pattern-still {
-  padding: var(--space-4);
-}
-/* A side panel's width, on the tray. It sits in the middle, so a card the
-   pattern opens over it stays inside the picture. */
-.pattern-panel {
-  inline-size: min(360px, 100%);
-  padding: var(--space-3);
-  border-radius: var(--radius-tray);
-  background: var(--surface-tray);
-}
-.pattern-copy th[scope="row"] {
-  font-weight: 400;
-}
-/* A key never breaks; a narrow page scrolls the table instead. */
-.pattern-copy th[scope="row"] code {
-  overflow-wrap: normal;
-  white-space: nowrap;
-}
-.pattern-copy td {
-  font-size: var(--text-meta);
-}
-@media (max-width: 620px) {
-  /* Room for the pins at the inline start, and little at the end. */
-  .pattern-anatomy {
-    padding-block: var(--space-4);
-    padding-inline: 28px var(--space-2);
-  }
-  .pattern-placement > .pattern-still {
-    padding: var(--space-3) var(--space-2);
-  }
-}
-.api-part > h3 {
-  margin: var(--space-4) 0 0;
-  font-size: var(--text-label);
-  font-weight: 600;
 }

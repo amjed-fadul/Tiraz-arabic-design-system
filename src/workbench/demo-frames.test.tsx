@@ -8,9 +8,11 @@ import { demoStates } from "./demo-states";
 import { defaultPlaygrounds } from "./model";
 import {
   DemoFrame,
+  DemoNotes,
   type DemoFrameState,
 } from "../system/ai/examples/DemoFrame";
 import { SystemProvider, defaultConfig } from "../system";
+import { persist, storageKeys } from "./storage";
 afterEach(() => vi.useRealTimers());
 const source = 'import { Button } from "./system";\n  <Button />\n';
 const stateList: DemoFrameState[] = [
@@ -28,33 +30,38 @@ function Draft() {
     />
   );
 }
-it("gives static previews a matching frame with view tabs and only a copy-code header action", async () => {
+it("gives static previews a matching frame with view tabs and a copy action only in the code's header", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "حقل النسخ" }));
   const frames = document.querySelectorAll(".tz-demo-frame");
   expect(frames).toHaveLength(1);
+  const frame = frames[0] as HTMLElement;
   const write = vi.spyOn(navigator.clipboard, "writeText");
-  const header = frames[0].querySelector(".tz-demo-header") as HTMLElement;
+  const views = within(frame).getByRole("tablist", { name: "طريقة العرض" });
+  expect(views).toBeVisible();
+  // A static stage has nothing to replay, and Copy waits in the Code view.
   expect(
-    within(header).getByRole("tablist", { name: "طريقة العرض" }),
-  ).toBeVisible();
-  expect(within(header).getAllByRole("button")).toHaveLength(1);
-  const copy = within(header).getByRole("button", { name: "نسخ الكود" });
+    within(frame).queryByRole("button", { name: "إعادة تشغيل المثال" }),
+  ).toBeNull();
+  expect(within(frame).queryByRole("button", { name: "نسخ الكود" })).toBeNull();
+  await user.click(within(views).getByRole("tab", { name: "الكود" }));
+  const copy = within(frame).getByRole("button", { name: "نسخ الكود" });
   await user.click(copy);
   expect(copy).toHaveAttribute("data-copy-state", "copied");
-  expect(within(header).getByRole("status")).toHaveTextContent("نُسخ الكود");
+  expect(frame.querySelector(":scope > [role='status']")).toHaveTextContent(
+    "نُسخ الكود",
+  );
   const copied = String(write.mock.calls.at(-1)?.[0]);
   expect(copied).toContain("InputCopyExample");
   // The clipboard gets exactly the source the Code view shows.
-  await user.click(within(header).getByRole("tab", { name: "الكود" }));
   expect(
     screen
       .getByRole("region", { name: "الكود: src/Example.tsx" })
       .querySelector("pre")!.textContent,
   ).toBe(copied);
 });
-it("replays streaming text from the page's own frame, replacing stop with copy and keeping header focus", async () => {
+it("replays streaming text from the stage's corner, without a stop, keeping Replay's focus", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
   // StreamingText is one of the AI parts, folded until their disclosure opens.
@@ -76,16 +83,12 @@ it("replays streaming text from the page's own frame, replacing stop with copy a
   expect(text()).toHaveAttribute("data-state", "completed");
   expect(content()).toContain("INV-1043");
   expect(pressed()).toEqual(["اكتمل"]);
-  const header = frame.querySelector(".tz-demo-header") as HTMLElement;
-  expect(within(header).getByRole("tablist")).toBeVisible();
-  expect(within(header).getAllByRole("button")).toHaveLength(2);
-  expect(within(header).queryByRole("button", { name: /إلغاء/ })).toBeNull();
-  expect(
-    within(header).getByRole("button", { name: "نسخ الكود" }),
-  ).toBeVisible();
-  const replay = within(header).getByRole("button", {
-    name: "إعادة تشغيل المثال",
-  });
+  expect(within(frame).getByRole("tablist")).toBeVisible();
+  expect(within(frame).queryByRole("button", { name: /إلغاء/ })).toBeNull();
+  // Replay is the stage's first stop, ahead of the example.
+  const stage = frame.querySelector(".tz-demo-stage") as HTMLElement;
+  const replay = within(stage).getAllByRole("button")[0];
+  expect(replay).toHaveAccessibleName("إعادة تشغيل المثال");
   replay.focus();
   fireEvent.click(replay);
   expect(replay).toHaveFocus();
@@ -102,7 +105,7 @@ it("replays streaming text from the page's own frame, replacing stop with copy a
   expect(text()).toHaveAttribute("data-state", "completed");
   expect(content()).toContain("INV-1043");
   await act(async () => vi.advanceTimersByTime(800));
-  expect(header.querySelector(":scope > [role='status']")).toHaveTextContent(
+  expect(frame.querySelector(":scope > [role='status']")).toHaveTextContent(
     "الحالة: اكتمل",
   );
   expect(vi.getTimerCount()).toBe(0);
@@ -115,14 +118,14 @@ it("resets an interactive playground from the inspector without remounting the f
   const frame = document.querySelector(
     ".playground-region .tz-demo-frame",
   ) as HTMLElement;
-  const header = frame.querySelector("header") as HTMLElement;
+  const bar = frame.querySelector(".tz-demo-bar") as HTMLElement;
   const filled = defaultPlaygrounds("ar").textarea.value;
   const notes = within(frame).getByRole("textbox", { name: "ملاحظات" });
   await user.type(notes, " وتفاصيل الطلب");
   expect(notes).toHaveValue(`${filled} وتفاصيل الطلب`);
   // Replay no longer resets a page; the inspector does.
   expect(
-    within(header).queryByRole("button", { name: "إعادة تشغيل المثال" }),
+    within(frame).queryByRole("button", { name: "إعادة تشغيل المثال" }),
   ).toBeNull();
   await user.click(
     within(screen.getByRole("complementary", { name: "التخصيص" })).getByRole(
@@ -133,7 +136,7 @@ it("resets an interactive playground from the inspector without remounting the f
   expect(within(frame).getByRole("textbox", { name: "ملاحظات" })).toHaveValue(
     filled,
   );
-  expect(frame.querySelector("header")).toBe(header);
+  expect(frame.querySelector(".tz-demo-bar")).toBe(bar);
 });
 
 it("shows Replay only where a sequence exists", () => {
@@ -267,15 +270,14 @@ it("hides replay while the code is shown and replays from the preview", async ()
   await user.click(screen.getByRole("button", { name: "Replay example" }));
   expect(replay).toHaveBeenCalledTimes(1);
 });
-it("shows only its title, without tabs or copy, when there is no code", () => {
+it("shows only the example, without tabs or copy, when there is no code", () => {
   render(
     <SystemProvider config={defaultConfig}>
-      <DemoFrame title="Default" language="en">
+      <DemoFrame language="en">
         <p>Example</p>
       </DemoFrame>
     </SystemProvider>,
   );
-  expect(screen.getByText("Default")).toBeVisible();
   expect(screen.getByText("Example")).toBeVisible();
   expect(screen.queryByRole("tablist")).toBeNull();
   expect(screen.queryByRole("tabpanel")).toBeNull();
@@ -294,6 +296,7 @@ it("announces copy failure honestly, supports retry, and ignores stale clipboard
     </SystemProvider>
   );
   const view = render(wrap("source\n  with whitespace\n"));
+  await user.click(screen.getByRole("tab", { name: "Code" }));
   const copy = screen.getByRole("button", { name: "Copy code" });
   expect(copy).toHaveAttribute("data-copy-state", "idle");
   await user.click(copy);
@@ -339,9 +342,7 @@ it("records the EmptyState playground action without offering a replay", async (
   );
   // A static stage has nothing to restart.
   expect(
-    within(frame.querySelector("header")!).queryByRole("button", {
-      name: "إعادة تشغيل المثال",
-    }),
+    within(frame).queryByRole("button", { name: "إعادة تشغيل المثال" }),
   ).toBeNull();
   await user.clear(
     within(screen.getByRole("complementary", { name: "التخصيص" })).getByRole(
@@ -381,10 +382,8 @@ it("renders the states group and reports a press", async () => {
   const pressed = () =>
     buttons.map((button) => button.getAttribute("aria-pressed"));
   expect(pressed()).toEqual(["true", "false", "false"]);
-  // The group sits beside the header's buttons, not among them.
-  const header = document.querySelector(".tz-demo-header") as HTMLElement;
-  expect(group.closest(".tz-demo-header")).toBeNull();
-  expect(within(header).getAllByRole("button")).toHaveLength(1);
+  // The group sits in the toolbar above the stage, not in it.
+  expect(group.closest(".tz-demo-stage")).toBeNull();
   await user.click(buttons[1]);
   expect(onStateChange).toHaveBeenCalledTimes(1);
   expect(onStateChange).toHaveBeenCalledWith("b");
@@ -444,6 +443,7 @@ it("keeps one status for a copy and a state change, saying the latest", async ()
   );
   const view = render(frame("a"));
   const status = screen.getByRole("status");
+  await user.click(screen.getByRole("tab", { name: "Code" }));
   const copy = screen.getByRole("button", { name: "Copy code" });
   await user.click(copy);
   expect(status).toHaveTextContent("Code copied");
@@ -475,7 +475,7 @@ it("reports view changes", async () => {
   expect(onViewChange).toHaveBeenLastCalledWith("preview");
 });
 
-it("keeps the visible Replay word inside its name", () => {
+it("names the corner Replay icon and gives it a tooltip", () => {
   const frame = (language: "ar" | "en", replayLabel?: string) => (
     <SystemProvider config={defaultConfig}>
       <DemoFrame
@@ -488,25 +488,26 @@ it("keeps the visible Replay word inside its name", () => {
       </DemoFrame>
     </SystemProvider>
   );
-  for (const [language, word, name] of [
-    ["ar", "إعادة تشغيل", "إعادة تشغيل المثال"],
-    ["en", "Replay", "Replay example"],
+  for (const [language, name] of [
+    ["ar", "إعادة تشغيل المثال"],
+    ["en", "Replay example"],
   ] as const) {
     const view = render(frame(language));
-    const pill = screen.getByRole("button", { name });
-    expect(pill).toHaveTextContent(word);
-    // WCAG 2.5.3: the name holds the word that is on the button.
-    expect(name).toContain(pill.textContent);
+    const icon = screen.getByRole("button", { name });
+    expect(icon).toHaveAttribute("title", name);
+    expect(icon.textContent).toBe("");
+    expect(icon.querySelector("svg")).not.toBeNull();
     view.unmount();
   }
-  // A caller's own label names the pill, and then it shows only its icon.
+  // A caller's own label names it instead.
   render(frame("ar", "تشغيل المثال"));
-  const icon = screen.getByRole("button", { name: "تشغيل المثال" });
-  expect(icon.textContent).toBe("");
-  expect(icon.querySelector("svg")).not.toBeNull();
+  expect(screen.getByRole("button", { name: "تشغيل المثال" })).toHaveAttribute(
+    "title",
+    "تشغيل المثال",
+  );
 });
 
-it("renders the notes row with its three labels", () => {
+it("renders the usage guidelines with their three labels", () => {
   const notes = {
     useWhen: ["أولًا"],
     instead: ["ثانيًا"],
@@ -514,9 +515,7 @@ it("renders the notes row with its three labels", () => {
   };
   const frame = (language: "ar" | "en", extra = {}) => (
     <SystemProvider config={defaultConfig}>
-      <DemoFrame language={language} notes={{ ...notes, ...extra }}>
-        <p>Example</p>
-      </DemoFrame>
+      <DemoNotes language={language} notes={{ ...notes, ...extra }} />
     </SystemProvider>
   );
   const labels = {
@@ -552,24 +551,23 @@ it("renders the notes row with its three labels", () => {
   expect(within(row).queryByText("ثانيًا")).toBeNull();
 });
 
-it("shows both names, interface language first", () => {
-  const name = { ar: "الزر", en: "Button" };
+it("reads the switch, the states and the new-tab link, then Replay and the example", () => {
   const after = (before: Node, next: Node) =>
     Boolean(
       before.compareDocumentPosition(next) & Node.DOCUMENT_POSITION_FOLLOWING,
     );
   const names = {
     ar: {
-      states: "حالات المثال",
-      replay: "إعادة تشغيل المثال",
       views: "طريقة العرض",
-      copy: "نسخ الكود",
+      states: "حالات المثال",
+      open: "فتح المعاينة في تبويب جديد",
+      replay: "إعادة تشغيل المثال",
     },
     en: {
-      states: "Example states",
-      replay: "Replay example",
       views: "View",
-      copy: "Copy code",
+      states: "Example states",
+      open: "Open the playground in a new tab",
+      replay: "Replay example",
     },
   };
   for (const language of ["ar", "en"] as const) {
@@ -578,32 +576,149 @@ it("shows both names, interface language first", () => {
         <DemoFrame
           language={language}
           code={source}
-          name={name}
           states={stateList}
           onReplay={() => {}}
+          openHref="/examples/playground/button"
         >
-          <p>Example</p>
+          <button type="button">Example</button>
         </DemoFrame>
       </SystemProvider>,
     );
-    const arabic = screen.getByText("الزر");
-    const english = screen.getByText("Button");
-    expect(arabic).toHaveAttribute("lang", "ar");
-    expect(english).toHaveAttribute("lang", "en");
-    const [first, second] =
-      language === "ar" ? [arabic, english] : [english, arabic];
-    // The header reads: the names, the states, Replay, the View tablist, Copy.
+    // Tab order: the toolbar above the stage, then Replay, then the example.
     const order = [
-      first,
-      second,
-      screen.getByRole("group", { name: names[language].states }),
-      screen.getByRole("button", { name: names[language].replay }),
       screen.getByRole("tablist", { name: names[language].views }),
-      screen.getByRole("button", { name: names[language].copy }),
+      screen.getByRole("group", { name: names[language].states }),
+      screen.getByRole("link", { name: names[language].open }),
+      screen.getByRole("button", { name: names[language].replay }),
+      screen.getByRole("button", { name: "Example" }),
     ];
     order.slice(1).forEach((node, index) => {
       expect(after(order[index], node)).toBe(true);
     });
     view.unmount();
   }
+});
+
+it("names the page once, in its h1, with no kicker above it", () => {
+  persist(storageKeys.documentation, { language: "ar", active: "agent-task" });
+  render(<Workbench />);
+  const title = screen.getByRole("heading", { level: 1 });
+  expect(title).toHaveTextContent("مهمة الوكيل");
+  // The header is the title and its description, nothing above them.
+  expect(
+    Array.from(title.parentElement!.children, (child) => child.tagName),
+  ).toEqual(["H1", "P"]);
+  // The frame names nothing: the h1 is the one place the name appears.
+  expect(within(screen.getByRole("main")).getAllByText("مهمة الوكيل")).toEqual([
+    title,
+  ]);
+  const frame = document.querySelector(".tz-demo-frame") as HTMLElement;
+  expect(within(frame).queryByText("Agent task")).toBeNull();
+});
+
+it("copies from the Code view's header, shows a check for 2 s and says so once", async () => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+  render(
+    <SystemProvider config={defaultConfig}>
+      <DemoFrame language="en" code={source}>
+        <p>Example</p>
+      </DemoFrame>
+    </SystemProvider>,
+  );
+  // The preview shows the example alone.
+  expect(screen.queryByRole("button", { name: "Copy code" })).toBeNull();
+  await user.click(screen.getByRole("tab", { name: "Code" }));
+  const copy = within(screen.getByRole("tabpanel")).getByRole("button", {
+    name: "Copy code",
+  });
+  // It shares the code's header row with the file name, and has a tooltip.
+  expect(copy.parentElement).toHaveTextContent("src/Example.tsx");
+  expect(copy).toHaveAttribute("title", "Copy code");
+  await user.click(copy);
+  expect(copy).toHaveAttribute("data-copy-state", "copied");
+  expect(
+    screen
+      .getAllByRole("status")
+      .filter((status) => status.textContent === "Code copied"),
+  ).toHaveLength(1);
+  await act(async () => vi.advanceTimersByTime(2000));
+  expect(copy).toHaveAttribute("data-copy-state", "idle");
+  expect(copy).toHaveAccessibleName("Copy code");
+});
+
+it("puts the usage guidelines under their own heading, after the playground", () => {
+  persist(storageKeys.documentation, { language: "en", active: "button" });
+  render(<Workbench />);
+  const guidelines = screen.getByRole("region", { name: "Usage guidelines" });
+  expect(
+    within(guidelines)
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent),
+  ).toEqual(["Use it when", "Use something else when", "What to notice"]);
+  // Outside the frame, straight after the playground's section.
+  const frame = document.querySelector(".tz-demo-frame") as HTMLElement;
+  expect(within(frame).queryByRole("heading", { level: 3 })).toBeNull();
+  expect(
+    document.querySelector(".playground-section")?.nextElementSibling,
+  ).toBe(guidelines);
+});
+
+it("mirrors the new-tab arrow in RTL, never Replay or Copy", async () => {
+  const user = userEvent.setup();
+  render(
+    <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+      <DemoFrame
+        language="ar"
+        code={source}
+        onReplay={() => {}}
+        openHref="/examples/playground/button"
+      >
+        <p>مثال</p>
+      </DemoFrame>
+    </SystemProvider>,
+  );
+  const icon = (control: HTMLElement) => control.querySelector("svg");
+  expect(
+    icon(screen.getByRole("link", { name: "فتح المعاينة في تبويب جديد" })),
+  ).toHaveClass("tz-mirror-rtl");
+  expect(
+    icon(screen.getByRole("button", { name: "إعادة تشغيل المثال" })),
+  ).not.toHaveClass("tz-mirror-rtl");
+  await user.click(screen.getByRole("tab", { name: "الكود" }));
+  expect(
+    icon(screen.getByRole("button", { name: "نسخ الكود" })),
+  ).not.toHaveClass("tz-mirror-rtl");
+});
+
+it("shows the API reference open, as a table with column headers and LTR code", () => {
+  persist(storageKeys.documentation, { language: "ar", active: "button" });
+  render(<Workbench />);
+  const reference = screen
+    .getByRole("heading", { level: 2, name: "دليل الخصائص" })
+    .closest("section") as HTMLElement;
+  // Always open: nothing to expand.
+  expect(reference.querySelector("details, summary")).toBeNull();
+  const table = within(reference).getByRole("table", { name: "دليل الخصائص" });
+  expect(table).toBeVisible();
+  expect(
+    within(table)
+      .getAllByRole("columnheader")
+      .map((header) => header.textContent),
+  ).toEqual(["الخاصية", "النوع", "الافتراضي", "الوصف"]);
+  for (const code of table.querySelectorAll("code"))
+    expect(code).toHaveAttribute("dir", "ltr");
+  // A row: the props, their types, their defaults and what they do.
+  const row = within(table)
+    .getByRole("rowheader", { name: "variant / state / size" })
+    .closest("tr") as HTMLElement;
+  expect(
+    within(row)
+      .getAllByRole("cell")
+      .map((cell) => cell.textContent),
+  ).toEqual([
+    "ButtonVariant / ButtonState / sm | md",
+    '"primary" / "idle" / "sm"',
+    "الحجم الافتراضي sm. تمنع حالة loading الضغط وتضبط aria-busy.",
+  ]);
 });

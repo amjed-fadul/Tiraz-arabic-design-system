@@ -36,6 +36,7 @@ it.each([
     expect(
       screen.getByRole("heading", { level: 1, name: en }),
     ).toBeInTheDocument();
+    await user.click(screen.getByRole("tab", { name: "Code" }));
     await user.click(screen.getByRole("button", { name: "Copy code" }));
     const copiedCode = String(copy.mock.calls.at(-1)?.[0]);
     expect(copiedCode).toContain(

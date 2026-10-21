@@ -121,7 +121,7 @@ it.each([
     await act(async () => vi.advanceTimersByTime(700));
     expect(pressed()).toEqual([after]);
     expect(
-      document.querySelector(".tz-demo-header > [role='status']"),
+      document.querySelector(".tz-demo-frame > [role='status']"),
     ).toHaveTextContent(`State: ${after}`);
     // The decision made stays as it was made.
     if (active === "approval-flow")

@@ -305,14 +305,12 @@ it("puts the demo before the prompt", () => {
       container.querySelectorAll(".component-page > section"),
       (section) => section.className,
     ),
-  ).toEqual(["playground-section", "agent-section", "reference-section"]);
-  // The kicker names the page's group; the frame carries both names.
-  expect(container.querySelector(".component-kicker")?.textContent).toBe(
-    "النماذج",
-  );
-  const frame = container.querySelector(".tz-demo-frame") as HTMLElement;
-  expect(within(frame).getByText("الأزرار")).toHaveAttribute("lang", "ar");
-  expect(within(frame).getByText("Button")).toHaveAttribute("lang", "en");
+  ).toEqual([
+    "playground-section",
+    "guidelines-section",
+    "agent-section",
+    "reference-section",
+  ]);
 });
 
 // The states by DOM rather than role: an open dialog hides the page from

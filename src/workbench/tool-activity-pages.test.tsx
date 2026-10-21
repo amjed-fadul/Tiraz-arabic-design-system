@@ -36,6 +36,7 @@ it.each([
       screen.getByRole("complementary", { name: "Customization" }),
     );
     await user.click(inspector.getByRole("switch", { name: control }));
+    await user.click(screen.getByRole("tab", { name: "Code" }));
     await user.click(screen.getByRole("button", { name: "Copy code" }));
     const code = String(copy.mock.calls.at(-1)?.[0]);
     expect(code).toContain(en + "Example");

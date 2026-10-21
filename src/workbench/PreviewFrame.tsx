@@ -16,11 +16,10 @@ export function PreviewFrame({
   children: ReactNode;
 } & Pick<
   ComponentProps<typeof DemoFrame>,
-  | "name"
   | "states"
   | "state"
   | "onStateChange"
-  | "notes"
+  | "openHref"
   | "onViewChange"
   | "replaying"
 >) {

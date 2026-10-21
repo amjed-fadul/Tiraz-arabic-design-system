@@ -30,6 +30,7 @@ it("adds five focused continuous pages with complete generated prompts", async (
     expect(
       generatePrompt(id, defaultPlaygrounds("ar")[id], defaultConfig, "ar"),
     ).toContain(code);
+    await user.click(screen.getByRole("tab", { name: "الكود" }));
     await user.click(screen.getByRole("button", { name: "نسخ الكود" }));
     const copiedCode = write.mock.calls.at(-1)![0];
     expect(copiedCode).toContain("SystemProvider");

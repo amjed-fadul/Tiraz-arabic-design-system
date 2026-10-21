@@ -289,9 +289,6 @@ export function StreamingDemo({
       className="tz-stream-demo"
       language={language}
       label={ar ? "مثال محلي لنص يظهر تباعًا" : "Local text demo"}
-      title={
-        markdown ? (ar ? "ماركداون" : "Markdown") : ar ? "الافتراضي" : "Default"
-      }
       code={code}
       replayLabel={playLabel}
       onReplay={start}

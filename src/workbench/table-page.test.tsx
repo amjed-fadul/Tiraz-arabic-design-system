@@ -28,6 +28,7 @@ it("opens a saved Table page, edits content, and copies the complete current exa
     within(canvas).getByRole("table", { name: "Team records" }),
   ).toHaveTextContent("No customers yet.");
   expect(within(canvas).queryByText("Madar Technology")).toBeNull();
+  await user.click(screen.getByRole("tab", { name: "Code" }));
   await user.click(screen.getByRole("button", { name: "Copy code" }));
   const code = write.mock.calls.at(-1)![0];
   expect(code).toContain('<Table caption={"Team records"}');

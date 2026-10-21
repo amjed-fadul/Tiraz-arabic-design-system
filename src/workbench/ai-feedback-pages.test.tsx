@@ -38,6 +38,7 @@ it.each([
       await user.clear(rail.getByRole("textbox", { name: control }));
       await user.type(rail.getByRole("textbox", { name: control }), value!);
     } else await user.click(rail.getByRole("switch", { name: control }));
+    await user.click(screen.getByRole("tab", { name: "Code" }));
     await user.click(screen.getByRole("button", { name: "Copy code" }));
     const code = String(copy.mock.calls.at(-1)?.[0]);
     expect(code).toContain(en + "Example");

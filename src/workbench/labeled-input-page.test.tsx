@@ -90,6 +90,7 @@ it("copies complete direct Input code and guidance despite the collapsed prompt 
   );
   expect(code).toContain('<Input label={"Invoice name"}');
   expect(code).not.toContain("<Field");
+  await user.click(screen.getByRole("tab", { name: "Code" }));
   await user.click(screen.getByRole("button", { name: "Copy code" }));
   expect(write).toHaveBeenLastCalledWith(code);
   await user.click(screen.getByRole("button", { name: "Copy agent prompt" }));

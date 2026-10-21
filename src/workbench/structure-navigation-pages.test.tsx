@@ -17,6 +17,7 @@ it("documents four structure/navigation pages with working previews and complete
     expect(
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),
     ).not.toBeEmptyDOMElement();
+    await user.click(screen.getByRole("tab", { name: "الكود" }));
     await user.click(screen.getByRole("button", { name: "نسخ الكود" }));
     const code = write.mock.calls.at(-1)![0];
     await user.click(screen.getByRole("button", { name: "نسخ الطلب" }));

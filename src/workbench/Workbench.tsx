@@ -16,14 +16,7 @@ import {
 } from "lucide-react";
 import { SystemProvider, defaultConfig } from "../system";
 import type { ButtonState, SystemConfig } from "../system";
-import {
-  aiParts,
-  catalog,
-  groupOf,
-  jobNames,
-  navigationGroups,
-  patternJobs,
-} from "./catalog";
+import { aiParts, catalog, navigationGroups } from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
 import type { Language } from "./i18n";
@@ -50,16 +43,12 @@ import { PreviewFrame } from "./PreviewFrame";
 import { canReplayPlayground } from "./demo-capabilities";
 import { demoStates, propsOf, stateOf, translateStates } from "./demo-states";
 import { docsNotes } from "./docs-notes";
+import { DemoNotes } from "../system/ai/examples/DemoFrame";
 import type { DemoFrameNotes } from "../system/ai/examples/DemoFrame";
 import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
 import { generateCode, generatePrompt } from "./generate";
 import { DocsDrawer } from "./DocsDrawer";
-import {
-  PatternAnatomy,
-  PatternCopy,
-  PatternPlacements,
-} from "./pattern-pages";
 interface EventRecord {
   name: string;
   value?: unknown;
@@ -511,7 +500,6 @@ export function Workbench() {
     return true;
   }
   const pageNotes = docsNotes[active];
-  const job = patternJobs[active];
   const notes: DemoFrameNotes | undefined = pageNotes && {
     useWhen: pageNotes.useWhen.map((item) => localize(item, language)),
     instead: pageNotes.instead?.map(({ text, page }) => (
@@ -684,10 +672,6 @@ export function Workbench() {
               tabIndex={-1}
             >
               <header className="component-heading">
-                <p className="component-kicker">
-                  {localize(groupOf(active), language)}
-                  {job && ` · ${localize(jobNames[job], language)}`}
-                </p>
                 <h1>{localize(current.name, language)}</h1>
                 <p>{localize(current.description, language)}</p>
               </header>
@@ -707,14 +691,15 @@ export function Workbench() {
                       code={code}
                       replayable={canReplayPlayground(active)}
                       onReplay={playReplay}
-                      name={{ ar: current.name[0], en: current.name[1] }}
                       states={pageStates?.states.map((state) => ({
                         id: state.id,
                         label: { ar: state.label[0], en: state.label[1] },
                       }))}
                       state={stateOf(active, model, phase, language)}
                       onStateChange={pressState}
-                      notes={notes}
+                      // The stored props and settings open with it; the
+                      // phase, which is not stored, rides along.
+                      openHref={`/examples/playground/${active}${phase ? `?phase=${encodeURIComponent(phase)}` : ""}`}
                       onViewChange={(view) => {
                         if (view === "code") stopReplay();
                       }}
@@ -723,7 +708,7 @@ export function Workbench() {
                       <div
                         className={`playground-canvas playground-${active}`}
                         role="region"
-                        aria-label={label("playground", language)}
+                        aria-labelledby="playground-heading"
                       >
                         <Playground
                           key={`${active}-${revisions[active] ?? 0}`}
@@ -789,32 +774,18 @@ export function Workbench() {
                   </div>
                 )}
               </section>
-              {job && (
-                <>
-                  <PatternAnatomy
-                    key={`anatomy-${active}`}
-                    component={active}
-                    model={model}
-                    config={effectiveConfig}
-                    language={language}
-                    onOpenPage={(id) => {
-                      openPage(id);
-                      mainRef.current?.focus();
-                    }}
-                  />
-                  <PatternPlacements
-                    key={`placements-${active}`}
-                    component={active}
-                    model={model}
-                    config={effectiveConfig}
-                    language={language}
-                  />
-                  <PatternCopy
-                    component={active}
-                    config={effectiveConfig}
-                    language={language}
-                  />
-                </>
+              {notes && (
+                <section
+                  className="guidelines-section"
+                  aria-labelledby="guidelines-heading"
+                >
+                  <div className="section-title-row">
+                    <h2 id="guidelines-heading">
+                      {label("guidelines", language)}
+                    </h2>
+                  </div>
+                  <DemoNotes notes={notes} language={language} />
+                </section>
               )}
               <section className="agent-section">
                 <h2 id="agent-heading">{label("useInApp", language)}</h2>
@@ -843,9 +814,7 @@ export function Workbench() {
                   />
                 </div>
               </section>
-              <section className="reference-section">
-                <ApiReference component={active} language={language} />
-              </section>
+              <ApiReference component={active} language={language} />
             </main>
           </div>
           <aside

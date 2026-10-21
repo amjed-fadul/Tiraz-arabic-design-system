@@ -61,6 +61,7 @@ it("keeps chart inspectors compact and copied prompts consistent with the curren
     expect(rail.queryByText("خطوط الشبكة") !== null).toBe(
       name !== "الرسم الحلقي",
     );
+    await user.click(screen.getByRole("tab", { name: "الكود" }));
     await user.click(screen.getByRole("button", { name: "نسخ الكود" }));
     const code = write.mock.calls.at(-1)![0];
     await user.click(screen.getByRole("button", { name: "نسخ الطلب" }));

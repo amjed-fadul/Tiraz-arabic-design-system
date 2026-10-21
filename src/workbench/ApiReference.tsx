@@ -1,24 +1,32 @@
+import { useId } from "react";
 import registrySource from "../system/ai/registry.json?raw";
 import type { ComponentId } from "./catalog";
-import { catalog, patternJobs } from "./catalog";
+import { catalog } from "./catalog";
 import { fields } from "./fields";
 import { label, words } from "./i18n";
 import type { Language } from "./i18n";
-// The registry's own record of each part. Its prose is English-only, so the
-// part tables show the facts and the page's rows keep the bilingual prose.
+type Prop = { name: string; required: boolean; default?: unknown };
+// The registry's own record of each prop. Its prose is English-only, so the
+// tables take only its facts from it, whether a prop is required and its
+// default, and keep the page's bilingual rows for the rest.
 const registry = JSON.parse(registrySource) as {
-  components: readonly { id: string; parts?: readonly string[] }[];
-  support: readonly {
-    id: string;
-    exports: readonly string[];
-    props?: readonly {
-      name: string;
-      type: string;
-      required: boolean;
-      default: unknown;
-    }[];
-  }[];
+  components: readonly { id: string; props?: readonly Prop[] }[];
 };
+const propsOf = (id: string) =>
+  registry.components.find((item) => item.id === id)?.props ?? [];
+/** A default the table can show as code: a literal, never a description. */
+function literal(value: unknown) {
+  if (typeof value === "string")
+    return value === "undefined" || /\s/.test(value)
+      ? undefined
+      : JSON.stringify(value);
+  return typeof value === "boolean" ||
+    typeof value === "number" ||
+    value === null ||
+    (Array.isArray(value) && value.length === 0)
+    ? JSON.stringify(value)
+    : undefined;
+}
 export function ApiReference({
   component,
   language,
@@ -27,16 +35,8 @@ export function ApiReference({
   language: Language;
 }) {
   const t = words(language);
+  const id = useId();
   const file = catalog.find((item) => item.id === component)!.file;
-  // A pattern page also documents each public shared part it uses.
-  const parts = patternJobs[component]
-    ? (
-        registry.components.find((item) => item.id === component)?.parts ?? []
-      ).flatMap((id) => {
-        const part = registry.support.find((item) => item.id === id);
-        return part?.props ? [{ ...part, props: part.props }] : [];
-      })
-    : [];
   const chartRows: Array<[string, string, string]> = [
     [
       "label / summary",
@@ -3165,117 +3165,101 @@ export function ApiReference({
       ],
     ],
   };
-  return (
-    <details className="api-reference">
-      <summary>{label("api", language)}</summary>
-      <p>
-        {t("تجد الواجهة الفعلية في", "Actual interface in")}{" "}
-        <bdi dir="ltr">src/system/{file}</bdi>.
-      </p>
+  // One table per group: the page's own props, then a group the reference
+  // names under a heading of its own (Input's Field).
+  function table(
+    list: Array<[string, string, string]>,
+    props: readonly Prop[],
+    labelledBy: string,
+  ) {
+    return (
       <div
         className="api-scroll"
         tabIndex={0}
         role="region"
-        aria-label={label("api", language)}
+        aria-labelledby={labelledBy}
       >
-        <table>
+        <table aria-labelledby={labelledBy}>
           <thead>
             <tr>
-              <th>{t("الخاصية", "Property")}</th>
-              <th>{t("النوع والسلوك", "Type and behavior")}</th>
+              <th scope="col">{t("الخاصية", "Prop")}</th>
+              <th scope="col">{t("النوع", "Type")}</th>
+              <th scope="col">{t("الافتراضي", "Default")}</th>
+              <th scope="col">{t("الوصف", "Description")}</th>
             </tr>
           </thead>
           <tbody>
-            {rows[component].map(([name, type, note]) => (
-              <tr key={name}>
-                <td>
-                  <code dir="ltr">{name}</code>
-                </td>
-                <td>
-                  <code dir="ltr">{type}</code>
-                  <p>{note}</p>
-                </td>
-              </tr>
-            ))}
-            {component === "input" && (
-              <>
-                <tr>
-                  <td colSpan={2}>
-                    <h3>
-                      {t("Field · مساعد تركيب", "Field · composition helper")}
-                    </h3>
-                    <p>
-                      {t(
-                        "واجهة منخفضة المستوى لتركيب Input وSelect. يبقى تصديرها وطريقة تركيبها الحالية متاحين.",
-                        "Lower-level composition for Input and Select. Its public export and existing composition remain available.",
-                      )}
-                    </p>
+            {list.map(([name, type, note]) => {
+              // A row may name several props, «a / b»; its facts follow them.
+              const named = name.split(" / ");
+              const facts = named.map((part) =>
+                props.find((prop) => prop.name === part),
+              );
+              const required = named.filter((_, at) => facts[at]?.required);
+              const defaults = facts.map((fact) => literal(fact?.default));
+              return (
+                <tr key={name}>
+                  <th scope="row">
+                    <code dir="ltr">{name}</code>
+                    {required.length > 0 && (
+                      <span className="api-required">
+                        {t("مطلوبة", "Required")}
+                        {required.length < named.length && (
+                          <>
+                            {": "}
+                            <code dir="ltr">{required.join(" / ")}</code>
+                          </>
+                        )}
+                      </span>
+                    )}
+                  </th>
+                  <td>
+                    <code dir="ltr">{type}</code>
                   </td>
+                  <td>
+                    {defaults.some(Boolean) ? (
+                      <code dir="ltr">
+                        {defaults.map((value) => value ?? "—").join(" / ")}
+                      </code>
+                    ) : (
+                      "—"
+                    )}
+                  </td>
+                  <td>{note}</td>
                 </tr>
-                {rows.field.map(([name, type, note]) => (
-                  <tr key={`field-${name}`}>
-                    <td>
-                      <code dir="ltr">Field: {name}</code>
-                    </td>
-                    <td>
-                      <code dir="ltr">{type}</code>
-                      <p>{note}</p>
-                    </td>
-                  </tr>
-                ))}
-              </>
-            )}
+              );
+            })}
           </tbody>
         </table>
       </div>
-      {parts.length > 0 && (
-        <p>
-          {t(
-            "الأجزاء المشتركة التي يستخدمها هذا النمط:",
-            "Shared parts this pattern uses:",
-          )}
-        </p>
-      )}
-      {parts.map((part) => (
-        <div key={part.id} className="api-part">
-          <h3 id={`api-part-${part.id}`} tabIndex={-1}>
-            <bdi dir="ltr">{part.exports[0]}</bdi>
+    );
+  }
+  // Always open: the page's last section, under its own heading, which also
+  // names the table's scrolling box.
+  return (
+    <section className="reference-section">
+      <div className="section-title-row">
+        <h2 id={`${id}-api`}>{label("api", language)}</h2>
+      </div>
+      <p>
+        {t("تجد الواجهة الفعلية في", "Actual interface in")}{" "}
+        <bdi dir="ltr">src/system/{file}</bdi>.
+      </p>
+      {table(rows[component], propsOf(component), `${id}-api`)}
+      {component === "input" && (
+        <>
+          <h3 id={`${id}-field`}>
+            {t("Field · مساعد تركيب", "Field · composition helper")}
           </h3>
-          <div
-            className="api-scroll"
-            tabIndex={0}
-            role="region"
-            aria-labelledby={`api-part-${part.id}`}
-          >
-            <table>
-              <thead>
-                <tr>
-                  <th>{t("الخاصية", "Property")}</th>
-                  <th>{t("النوع", "Type")}</th>
-                  <th>{t("مطلوبة", "Required")}</th>
-                  <th>{t("القيمة الافتراضية", "Default")}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {part.props.map((prop) => (
-                  <tr key={prop.name}>
-                    <td>
-                      <code dir="ltr">{prop.name}</code>
-                    </td>
-                    <td>
-                      <code dir="ltr">{prop.type}</code>
-                    </td>
-                    <td>{prop.required ? t("نعم", "Yes") : t("لا", "No")}</td>
-                    <td>
-                      <code dir="ltr">{String(prop.default)}</code>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      ))}
+          <p>
+            {t(
+              "واجهة منخفضة المستوى لتركيب Input وSelect. يبقى تصديرها وطريقة تركيبها الحالية متاحين.",
+              "Lower-level composition for Input and Select. Its public export and existing composition remain available.",
+            )}
+          </p>
+          {table(rows.field, propsOf("field"), `${id}-field`)}
+        </>
+      )}
       <p className="api-note">
         {t(
           "يشارك SystemProvider إعدادات المظهر بين المكوّنات. الخصائص التي لا تظهر في المعاينة متاحة في API، فاربط الدوال وrefs في كود تطبيقك.",
@@ -3285,6 +3269,6 @@ export function ApiReference({
       <p className="sr-only">
         {fields[component].map((f) => f.api).join(", ")}
       </p>
-    </details>
+    </section>
   );
 }

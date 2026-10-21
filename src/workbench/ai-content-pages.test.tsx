@@ -36,11 +36,17 @@ it.each([
     for (const name of ["Examples", "Usage example"])
       expect(screen.queryByRole("heading", { name })).toBeNull();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
-    // Code blocks in the preview have their own Copy code; use the frame's.
+    // Code blocks in the preview have their own Copy code; use the frame's,
+    // in its Code view's header.
+    await user.click(
+      within(screen.getByRole("tablist", { name: "View" })).getByRole("tab", {
+        name: "Code",
+      }),
+    );
     await user.click(
       within(
         document.querySelector(
-          ".playground-region .tz-demo-header",
+          ".playground-region .tz-demo-source",
         ) as HTMLElement,
       ).getByRole("button", { name: "Copy code" }),
     );
@@ -184,7 +190,7 @@ it.each(["ar", "en"] as const)(
   },
 );
 
-it("uses the page's frame header for the streaming demo, with view tabs, Replay and an icon-only copy control", async () => {
+it("uses the page's frame for the streaming demo: view tabs above, an icon Replay in the stage and an icon Copy in the code's header", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "الأجزاء" }));
@@ -197,33 +203,32 @@ it("uses the page's frame header for the streaming demo, with view tabs, Replay 
     ".playground-region",
   ) as HTMLElement;
   expect(document.querySelector(".examples-canvas")).toBeNull();
-  const header = playground.querySelector(".tz-demo-header") as HTMLElement;
-  expect(header).not.toBeNull();
-  // With code, the view switch takes the title's place.
-  expect(within(header).queryByText("Default")).toBeNull();
+  // No title beside the view switch: the page's h1 names the example.
+  expect(within(playground).queryByText("Default")).toBeNull();
+  const views = within(playground).getByRole("tablist", { name: "View" });
   expect(
-    within(within(header).getByRole("tablist", { name: "View" }))
+    within(views)
       .getAllByRole("tab")
       .map((tab) => tab.textContent),
   ).toEqual(["Preview", "Code"]);
-  const controls = within(header).getAllByRole("button");
-  expect(controls).toHaveLength(2);
-  for (const control of controls) {
-    expect(control).toHaveAccessibleName();
-    expect(control.querySelector("svg")).not.toBeNull();
-  }
-  // Replay says its word inside its name; Copy is an icon alone.
-  const play = within(header).getByRole("button", { name: "Replay example" });
-  expect(play).toHaveTextContent("Replay");
-  const copy = within(header).getByRole("button", { name: "Copy code" });
-  expect(copy.textContent).toBe("");
+  // Replay and Copy are icons alone, each with a name and a tooltip.
+  const play = within(playground).getByRole("button", {
+    name: "Replay example",
+  });
+  expect(play.textContent).toBe("");
+  expect(play).toHaveAttribute("title", "Replay example");
+  expect(play.querySelector("svg")).not.toBeNull();
   play.focus();
   await user.keyboard("{Enter}");
   expect(play).toHaveFocus();
-  expect(copy).toBeVisible();
   expect(
     within(playground).queryByRole("button", { name: "Cancel demo" }),
   ).toBeNull();
+  await user.click(within(views).getByRole("tab", { name: "Code" }));
+  const copy = within(playground).getByRole("button", { name: "Copy code" });
+  expect(copy.textContent).toBe("");
+  expect(copy).toHaveAttribute("title", "Copy code");
+  expect(copy.querySelector("svg")).not.toBeNull();
 });
 
 it("opens the documentation demo complete, without autoplay, local footer or empty event scaffolding", async () => {

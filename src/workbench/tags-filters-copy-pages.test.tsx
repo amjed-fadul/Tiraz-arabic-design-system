@@ -41,6 +41,7 @@ for (const component of ["tag-input", "filter-bar", "input-copy"] as const) {
       direction: "ltr" as const,
       theme: defaultConfig.theme,
     };
+    await user.click(screen.getByRole("tab", { name: "Code" }));
     await user.click(screen.getByRole("button", { name: "Copy code" }));
     expect(write).toHaveBeenLastCalledWith(
       generateCode(component, model, config, "en"),
@@ -49,6 +50,7 @@ for (const component of ["tag-input", "filter-bar", "input-copy"] as const) {
     expect(write).toHaveBeenLastCalledWith(
       generatePrompt(component, model, config, "en"),
     );
+    await user.click(screen.getByRole("tab", { name: "Preview" }));
     const preview = within(
       screen.getByRole("region", { name: "Interactive playground" }),
     );

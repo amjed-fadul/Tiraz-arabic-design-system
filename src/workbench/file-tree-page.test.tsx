@@ -32,6 +32,7 @@ it("documents FileTree in Files with a minimal inspector and portable copied act
   expect(
     preview.getByRole("region", { name: "File preview" }),
   ).toHaveTextContent("--space: 8px");
+  await user.click(screen.getByRole("tab", { name: "Code" }));
   await user.click(screen.getByRole("button", { name: "Copy code" }));
   const code = String(copy.mock.calls.at(-1)?.[0]);
   expect(code).toContain("FileTreeExample");
@@ -41,5 +42,6 @@ it("documents FileTree in Files with a minimal inspector and portable copied act
   await user.click(screen.getByRole("button", { name: "Copy agent prompt" }));
   expect(String(copy.mock.calls.at(-1)?.[0])).toContain(code);
   await user.click(screen.getByRole("switch", { name: "Empty state" }));
+  await user.click(screen.getByRole("tab", { name: "Preview" }));
   expect(preview.getByRole("heading", { name: "No files" })).toBeVisible();
 });

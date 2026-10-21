@@ -26,6 +26,7 @@ it("documents DataTable with minimal controls and copies the connected portable 
   expect(
     within(canvas).getByRole("button", { name: "Retry" }),
   ).toBeInTheDocument();
+  await user.click(screen.getByRole("tab", { name: "Code" }));
   await user.click(screen.getByRole("button", { name: "Copy code" }));
   const code = write.mock.calls.at(-1)![0];
   expect(code).toContain('caption={"Team records"}');

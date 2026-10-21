@@ -216,6 +216,9 @@ it("retains continuous documentation, synchronized prompt content and API inform
         .getAllByRole("tab")
         .map((tab) => tab.textContent),
     ).toEqual(["معاينة", "الكود"]);
+    // Copy sits in the Code view's header.
+    expect(screen.queryByRole("button", { name: "نسخ الكود" })).toBeNull();
+    await userEvent.click(within(views).getByRole("tab", { name: "الكود" }));
     expect(screen.getByRole("button", { name: "نسخ الكود" })).toBeVisible();
     expect(screen.queryByText("عرض الطلب كاملًا")).not.toBeInTheDocument();
     expect(

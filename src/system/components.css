@@ -6959,70 +6959,32 @@ button.tz-tool-chip[aria-expanded="true"] {
   }
 }
 
-/* Shared documentation and portable example frame (docs spec section 7). Paper
-   in three parts: a bar that names the example and holds its controls, a stage
-   with faint warp lines, and a tray of notes under it. The bar is one row while
-   it fits and wraps when it does not; below 620px the name always takes its
-   own row. The states never wrap their chips: they scroll sideways. */
+/* Shared documentation and portable example frame (docs spec section 7, and
+   the playground page layout spec). A toolbar on the page, then the stage:
+   paper with faint warp lines. The toolbar is one row while it fits and wraps
+   when it does not, with the View switch at its start and the states and the
+   new-tab link at its end. The states never wrap their chips: they scroll
+   sideways. */
 .tz-demo-frame {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
   inline-size: 100%;
   min-inline-size: 0;
-  /* Forced colors drop the ring shadow; this border becomes the card's edge. */
-  border: 1px solid transparent;
-  border-radius: var(--radius-paper);
-  background: var(--surface);
-  box-shadow: var(--shadow-paper);
 }
 .tz-demo-bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-block-end: 0.5px solid var(--hairline);
 }
-/* The interface language's name comes first and is the louder one. */
-.tz-demo-name {
+.tz-demo-bar-end {
   display: flex;
-  flex: 1 0 100%;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0 var(--space-3);
-  min-inline-size: 0;
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-heading);
-}
-.tz-demo-name > [lang="ar"] {
-  font-size: var(--text-heading);
-}
-.tz-demo-name > [lang="en"] {
-  font-size: var(--text-subheading);
-}
-.tz-demo-name > :nth-child(2) {
-  color: var(--text-secondary);
-}
-/* Replay, the View tablist and Copy, at the end of the bar. */
-.tz-demo-header {
-  display: flex;
-  flex: 1 1 auto;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
   gap: var(--space-2);
-}
-.tz-demo-title {
-  margin-inline-end: auto;
-  color: var(--text-muted);
-  font-size: var(--text-meta);
-  font-weight: var(--weight-medium);
-}
-.tz-demo-title:lang(en) {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 /* The states: a pill tray of buttons, the pressed one a paper chip. A scroll
    container, so the focus ring sits inside the chip. */
@@ -7077,38 +7039,44 @@ button.tz-tool-chip[aria-expanded="true"] {
   outline: 2px solid var(--focus);
   outline-offset: -2px;
 }
-/* Replay: a dark pill, the word beside the icon; with a caller's own label it
-   is the icon alone. */
-.tz-demo-replay {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  block-size: var(--control-small);
-  padding-inline: var(--space-3) var(--space-4);
+/* Replay, Copy and the new-tab link: an icon on a round paper chip, 36px for
+   a fine pointer and 44px for a coarse one. */
+.tz-demo-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 36px;
+  block-size: 36px;
+  padding: 0;
+  /* Forced colors drop the ring shadow; this border draws the chip. */
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
-  background: var(--text);
-  color: var(--surface);
-  font-size: var(--text-label);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-meta);
-  white-space: nowrap;
+  background: var(--surface);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-chip);
   touch-action: manipulation;
   transition:
     background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
     transform var(--motion-release) var(--ease-out);
 }
-.tz-demo-replay[data-icon-only] {
-  inline-size: var(--control-small);
-  padding-inline: 0;
-}
-.tz-demo-replay:active {
+.tz-demo-icon:active {
   transform: scale(var(--press-scale));
-  transition-duration: var(--motion-fast), var(--motion-press);
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
 }
-.tz-demo-play-icon:dir(rtl) {
-  transform: scaleX(-1);
+/* Replay: the stage's top-end corner, above the example. */
+.tz-demo-replay {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-3);
+  z-index: 1;
+}
+@media (pointer: coarse) {
+  .tz-demo-icon {
+    inline-size: 44px;
+    block-size: 44px;
+  }
 }
 /* Preview / Code: the same tray, with a paper thumb that glides between the
    two views and jumps under keyboard modality (its time is --motion-state).
@@ -7182,8 +7150,9 @@ button.tz-tool-chip[aria-expanded="true"] {
     background: var(--wash);
     color: var(--text);
   }
-  .tz-demo-replay:hover {
-    background: color-mix(in srgb, var(--text) 85%, var(--surface));
+  .tz-demo-icon:hover {
+    background: color-mix(in srgb, var(--text) 4%, var(--surface));
+    color: var(--text);
   }
   .tz-demo-view:hover {
     color: var(--text);
@@ -7209,6 +7178,9 @@ button.tz-tool-chip[aria-expanded="true"] {
     outline-color: CanvasText;
     outline-offset: 2px;
   }
+  .tz-demo-icon:focus-visible {
+    outline-color: CanvasText;
+  }
 }
 /* The stage: paper with vertical warp lines, 1px every 14px in --warp, under a
    radial mask that fades them toward the edges. The panels sit above them. */
@@ -7221,13 +7193,21 @@ button.tz-tool-chip[aria-expanded="true"] {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: center;
-  padding: 30px var(--space-3);
+  min-block-size: 280px;
+  /* The example starts below Replay's corner at either target size. */
+  padding: 64px var(--space-3);
+  /* Forced colors drop the ring shadow; this border becomes the card's edge. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
 }
 .tz-demo-stage::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
+  border-radius: inherit;
   /* The mask reads only alpha, so an opaque token stands in for black. */
   color: var(--text);
   background: repeating-linear-gradient(
@@ -7257,9 +7237,14 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-demo-frame[data-view="code"] .tz-demo-panel:not([hidden]) {
   animation: tz-panel-in var(--motion-state) var(--ease-out);
 }
-/* The code sits at the top of a plain paper stage, in a well cut into it. */
+/* In Code view the code's well is the card, in the stage's place. */
 .tz-demo-frame[data-view="code"] .tz-demo-stage {
   align-content: start;
+  min-block-size: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
 }
 .tz-demo-frame[data-view="code"] .tz-demo-stage::before {
   content: none;
@@ -7271,9 +7256,20 @@ button.tz-tool-chip[aria-expanded="true"] {
   background: var(--surface-well);
   overflow: hidden;
 }
-.tz-demo-source-file {
-  padding: var(--space-2) var(--space-4);
+/* The file name at the start and Copy at the end, in the corner Replay takes
+   in Preview. */
+.tz-demo-source-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  padding-inline-start: var(--space-4);
   border-block-end: 0.5px solid var(--hairline);
+}
+.tz-demo-source-file {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
   color: var(--text-muted);
   font: var(--text-meta) / var(--leading-meta) var(--font-mono);
 }
@@ -7314,65 +7310,39 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-demo-source-scroll code {
   font: inherit;
 }
-/* The notes: a tray band under the stage, one column each for when to use the
-   example, when to use something else and what to notice. It runs out over the
-   frame's transparent border and carries one of its own, so the tray reaches
-   the card's edge and forced colors still draw that edge. */
+/* The usage guidelines, a page section of their own: one column each for
+   when to use the example, when to use something else and what to notice.
+   The columns stack once they no longer fit side by side; 220px keeps all
+   three side by side in the docs column at 1280px, which is 742px wide. */
 .tz-demo-notes {
   display: grid;
-  gap: var(--space-4);
-  margin: 0 -1px -1px;
-  padding: var(--space-4);
-  border: 1px solid transparent;
-  border-block-start: 0;
-  border-end-start-radius: var(--radius-paper);
-  border-end-end-radius: var(--radius-paper);
-  background: var(--surface-tray);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-5) var(--space-6);
 }
 .tz-demo-notes h3 {
-  margin: 0 0 var(--space-1);
-  color: var(--text-secondary);
-  font-size: var(--text-label);
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-reading);
   font-weight: var(--weight-semibold);
-  line-height: var(--leading-meta);
-}
-.tz-demo-notes h3:lang(en) {
-  font-family: var(--font-mono);
-  font-size: var(--text-micro);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  line-height: var(--leading-heading);
 }
 /* Markers are set here, since a host's reset may remove them; they sit in the
    start padding in either direction. */
 .tz-demo-notes ul {
   display: grid;
-  gap: var(--space-1);
+  gap: var(--space-2);
   margin: 0;
-  padding-inline-start: var(--space-4);
+  padding-inline-start: var(--space-5);
   list-style: disc outside;
   color: var(--text-secondary);
   font-size: var(--text-body);
 }
 @media (min-width: 620px) {
-  .tz-demo-bar {
-    gap: var(--space-3) var(--space-4);
-    padding-inline: var(--space-6);
-  }
-  .tz-demo-name {
-    flex: none;
-  }
   .tz-demo-view > svg {
     display: block;
   }
   .tz-demo-stage {
-    min-block-size: 380px;
-    padding: 48px var(--space-6);
-  }
-  .tz-demo-notes {
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
-    gap: var(--space-6);
-    padding: var(--space-5) var(--space-6) var(--space-6);
+    min-block-size: 440px;
+    padding-inline: var(--space-6);
   }
 }
 
