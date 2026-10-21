@@ -17,8 +17,8 @@ it("keeps a page-specific state chosen in the inspector", async () => {
       screen.getByRole("complementary", { name: "تخصيص المعاينة" }),
     ).getByRole("group", { name: "الحالة" }),
   );
-  await user.click(state.getByRole("button", { name: "running" }));
-  expect(state.getByRole("button", { name: "running" })).toHaveAttribute(
+  await user.click(state.getByRole("button", { name: "يعمل" }));
+  expect(state.getByRole("button", { name: "يعمل" })).toHaveAttribute(
     "aria-pressed",
     "true",
   );

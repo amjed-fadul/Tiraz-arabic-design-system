@@ -5,7 +5,7 @@ import { Workbench } from "./Workbench";
 import { persist, storageKeys } from "./storage";
 afterEach(() => vi.useRealTimers());
 it.each([
-  ["حالة التحميل", "LoadingState", "Variant", "orbit"],
+  ["حالة التحميل", "LoadingState", "Variant", "Orbit"],
   ["مؤشر النشاط", "ThinkingIndicator", "Label", "Preparing sample"],
   ["حالة النشاط", "ThinkingState", "Active", null],
 ])(

@@ -80,6 +80,22 @@ it("opens as a modal Sheet below 1,024px", async () => {
   }
 });
 
+it("never opens the Sheet on load below 1,024px, even when remembered open", () => {
+  const matchMedia = window.matchMedia;
+  window.matchMedia = (query: string) => ({
+    ...matchMedia(query),
+    matches: query === "(width < 1024px)",
+  });
+  try {
+    persist(storageKeys.documentation, { language: "ar", settingsOpen: true });
+    render(<Workbench />);
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(customize()).toHaveAttribute("aria-expanded", "false");
+  } finally {
+    window.matchMedia = matchMedia;
+  }
+});
+
 it("makes the accent swatches a named radiogroup", async () => {
   const user = userEvent.setup();
   render(<Workbench />);

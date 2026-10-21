@@ -12,16 +12,24 @@ helper and is documented under Input rather than a standalone navigation page.
    checkout it is usually `src/system`; a copied library may live anywhere.
    If it is missing, report the gap and request its location instead of
    inventing an import or installing a different library.
-2. Read [registry.json](registry.json) for the relevant family and support
-   APIs, then inspect the named source and exported types. Every registry path
-   is relative to the source root, **not** the application or checkout root.
-   The minimal workbench inspector is not a complete API reference.
+2. Query [registry.json](registry.json) for the relevant family and support
+   APIs; do not read it whole, since at about 360 KB it is past common
+   file-reader limits. Use `jq`, for example
+   `jq '.components[] | select(.id == "agent-task")' registry.json` for a
+   family and `jq '.records[] | select(.type == "AgentStep")' registry.json`
+   for a shape. Its `records` section holds the record and `labels` shapes
+   that props take, such as `AgentStep`, `ApprovalRecord` and
+   `AgentTaskLabels`. Then inspect the named source and exported types. Every
+   registry path is relative to the source root, **not** the application or
+   checkout root. The minimal workbench inspector is not a complete API
+   reference.
 3. Follow [composition.md](composition.md), map the user's task to a pattern
    (next section) or else to available components, and connect events to
    application behavior. Preserve the supplied component props and shared
    settings unless the task requires changing them.
-4. Adapt [the compiling usage example](examples/usage.tsx) to the host app.
-   Its imports are relative to this bundle; generated workbench snippets use
+4. For a pattern's job, adapt that pattern's example, linked from its section
+   below; otherwise adapt [the compiling usage example](examples/usage.tsx).
+   Example imports are relative to this bundle; generated workbench snippets use
    `./system` only as an example. Adjust all imports/CSS paths to the located
    source root. Validate the actual rendered result with the checklist below.
 
@@ -1100,10 +1108,18 @@ flight, so a late answer records nothing; a card already decided stays decided. 
 acknowledgement keeps the full proposal visible. A failed acknowledgement restores the
 initiating button when focus has
 not intentionally moved elsewhere. Buttons are guarded while submitting and
-after acceptance. A controlled `value` is an `ApprovalRecord` (or null), bound to
-both `requestId` and `approvalRequestKey(request)`; stale records are ignored.
+after acceptance. A controlled `value` is an `ApprovalRecord` (or null),
+`{ requestId, requestKey, decision }`, bound to both `requestId` and
+`requestKey: approvalRequestKey(request)`; stale records are ignored.
 For controlled cards publish an accepted record explicitly; null continues to
 show the pending proposal and cannot trigger a duplicate callback.
+
+`approvalRequestKey` covers the request's words, so switching language is a
+content change. When only the language changed, keep the decision in host state
+by `requestId` and publish it again as
+`{ requestId, requestKey: approvalRequestKey(request), decision }` for the
+request as it is now worded. A decision that the switch aborted recorded
+nothing: ask again.
 
 [ApprovalFlow](../ApprovalFlow.tsx) (Approval sequence) composes a short
 application-owned sequence.

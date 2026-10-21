@@ -311,6 +311,7 @@ export function AgentTaskExample({
         }));
       }}
       onStop={() => move("stopped")}
+      // Records the decision only. This demo then jumps to its Done phase; a real host sets the step running and shows «أُرسلت» only when its job reports the sends.
       onDecision={async (_request, chosen, { signal }) => {
         await recorded(signal);
         setDecision(chosen);

@@ -200,8 +200,10 @@ export function Workbench() {
     Partial<Record<ComponentId, EventRecord[]>>
   >({});
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const settingsOpen = documentation.settingsOpen;
   const narrow = useSyncExternalStore(watchNarrow, isNarrow, () => false);
+  // The narrow Sheet's open state lasts the session: it never opens on load.
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const settingsOpen = narrow ? sheetOpen : documentation.settingsOpen;
   // The docs' own root, where the settings Sheet portals.
   const [shell, setShell] = useState<HTMLDivElement | null>(null);
   const customizeButton = useRef<HTMLButtonElement>(null);
@@ -508,6 +510,7 @@ export function Workbench() {
     }
   }
   function setSettingsOpen(open: boolean) {
+    if (narrow) return setSheetOpen(open);
     setDocumentation((prev) =>
       prev.settingsOpen === open ? prev : { ...prev, settingsOpen: open },
     );
