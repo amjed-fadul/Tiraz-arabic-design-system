@@ -45,19 +45,15 @@ for (const language of ["ar", "en"] as const) {
       expect(prompt).not.toMatch(/[A-Za-z]:\\/);
       expect(prompt).not.toContain(projectRoot.replace(/\/$/, ""));
       expect(prompt).not.toContain("Create src/Example.tsx under that root");
-      expect(prompt).toContain(
-        language === "ar" ? "نسخة المصدر" : "source copy",
-      );
-      expect(prompt).toContain(language === "ar" ? "عدّل" : "Adjust");
+      // The instructions are English on every page; the example code keeps
+      // the page's language.
+      expect(prompt).toContain("source copy");
+      expect(prompt).toContain("Adjust");
       expect(prompt).not.toContain("npx");
       expect(prompt).toContain(generateCode(entry.id, model, config, language));
       expect(prompt).toContain(JSON.stringify(config));
-      expect(prompt).toContain(
-        language === "ar" ? "اعثر أولًا" : "First locate Tiraz",
-      );
-      expect(prompt).toContain(
-        language === "ar" ? "إذا لم تتمكن" : "If you cannot locate the system",
-      );
+      expect(prompt.startsWith("First locate Tiraz")).toBe(true);
+      expect(prompt).toContain("If you cannot locate the system");
     });
   }
 }

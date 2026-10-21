@@ -929,14 +929,10 @@ bdi {
   max-inline-size: none;
   margin: 0;
 }
-/* The playground takes the column, up to 1,160px; the header, the guidelines
-   and the sections after them keep a readable measure on its start edge. */
+/* Every section shares one width: the column, up to 1,160px. */
 .component-page {
   max-inline-size: 1160px;
   margin-inline: auto;
-}
-.component-page > :not(.playground-section) {
-  max-inline-size: 760px;
 }
 .customization-rail {
   position: sticky;
@@ -1107,7 +1103,6 @@ bdi {
   overflow: hidden;
   text-overflow: ellipsis;
   font: var(--text-meta) / 1.8 var(--font);
-  unicode-bidi: plaintext;
   color: var(--text-secondary);
 }
 .prompt-row .copy-control {

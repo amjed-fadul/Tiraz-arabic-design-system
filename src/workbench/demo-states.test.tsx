@@ -298,7 +298,7 @@ it("runs as before without a phase", async () => {
   expect(vi.getTimerCount()).toBe(0);
 });
 
-it("puts the demo before the prompt", () => {
+it("puts the prompt before the demo", () => {
   const { container } = open("button");
   expect(
     Array.from(
@@ -306,9 +306,9 @@ it("puts the demo before the prompt", () => {
       (section) => section.className,
     ),
   ).toEqual([
+    "agent-section",
     "playground-section",
     "guidelines-section",
-    "agent-section",
     "reference-section",
   ]);
 });

@@ -675,6 +675,35 @@ export function Workbench() {
                 <h1>{localize(current.name, language)}</h1>
                 <p>{localize(current.description, language)}</p>
               </header>
+              <section className="agent-section">
+                <h2 id="agent-heading">{label("useInApp", language)}</h2>
+                <div className="prompt-row">
+                  {/* The prompt is English on every page; its heading and
+                      copy control follow the page. */}
+                  <p className="prompt-preview" lang="en" dir="ltr">
+                    {prompt
+                      .replace(/\s+/g, " ")
+                      .split(
+                        /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
+                      )
+                      .map((part, index) =>
+                        index % 2 === 1 ? (
+                          <bdi dir="ltr" key={index}>
+                            {part}
+                          </bdi>
+                        ) : (
+                          part
+                        ),
+                      )}
+                  </p>
+                  <CopyControl
+                    text={prompt}
+                    caption={label("copyPrompt", language)}
+                    language={language}
+                    iconOnly
+                  />
+                </div>
+              </section>
               <section className="playground-section">
                 <div className="section-title-row">
                   <h2 id="playground-heading">
@@ -787,33 +816,6 @@ export function Workbench() {
                   <DemoNotes notes={notes} language={language} />
                 </section>
               )}
-              <section className="agent-section">
-                <h2 id="agent-heading">{label("useInApp", language)}</h2>
-                <div className="prompt-row">
-                  <p className="prompt-preview" dir="auto">
-                    {prompt
-                      .replace(/\s+/g, " ")
-                      .split(
-                        /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
-                      )
-                      .map((part, index) =>
-                        index % 2 === 1 ? (
-                          <bdi dir="ltr" key={index}>
-                            {part}
-                          </bdi>
-                        ) : (
-                          part
-                        ),
-                      )}
-                  </p>
-                  <CopyControl
-                    text={prompt}
-                    caption={label("copyPrompt", language)}
-                    language={language}
-                    iconOnly
-                  />
-                </div>
-              </section>
               <ApiReference component={active} language={language} />
             </main>
           </div>

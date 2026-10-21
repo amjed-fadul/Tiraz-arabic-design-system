@@ -722,3 +722,39 @@ it("shows the API reference open, as a table with column headers and LTR code", 
     "الحجم الافتراضي sm. تمنع حالة loading الضغط وتضبط aria-busy.",
   ]);
 });
+
+it("puts the prompt first below the header, then the playground, the guidelines and the API reference", () => {
+  persist(storageKeys.documentation, { language: "ar", active: "button" });
+  render(<Workbench />);
+  const main = screen.getByRole("main");
+  expect(main.firstElementChild).toHaveClass("component-heading");
+  expect(
+    within(main)
+      .getAllByRole("heading", { level: 2 })
+      .map((heading) => heading.textContent),
+  ).toEqual([
+    "استخدمه في تطبيقك",
+    "المعاينة التفاعلية",
+    "إرشادات الاستخدام",
+    "دليل الخصائص",
+  ]);
+});
+
+it("keeps the prompt English on an Arabic page, under an Arabic heading", async () => {
+  const user = userEvent.setup();
+  persist(storageKeys.documentation, { language: "ar", active: "button" });
+  render(<Workbench />);
+  const section = screen
+    .getByRole("heading", { level: 2, name: "استخدمه في تطبيقك" })
+    .closest("section") as HTMLElement;
+  const preview = section.querySelector(".prompt-preview") as HTMLElement;
+  expect(preview).toHaveAttribute("lang", "en");
+  expect(preview).toHaveAttribute("dir", "ltr");
+  expect(preview.textContent).toMatch(/^First locate Tiraz/);
+  await user.click(within(section).getByRole("button", { name: "نسخ الطلب" }));
+  const copied = await navigator.clipboard.readText();
+  expect(copied).toMatch(/^First locate Tiraz/);
+  expect(copied).not.toContain("اعثر أولًا");
+  // The example code in it keeps the page's own content.
+  expect(copied).toContain("حفظ الفاتورة");
+});
