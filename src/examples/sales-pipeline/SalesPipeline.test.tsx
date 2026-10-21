@@ -1,6 +1,7 @@
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
+import { StrictMode } from "react";
 import { SalesPipeline } from "./SalesPipeline";
 
 type User = ReturnType<typeof userEvent.setup>;
@@ -103,13 +104,18 @@ it("cancels a sending follow-up when resizing removes its stage's Sheet", async 
   };
   try {
     const user = userEvent.setup();
-    render(<SalesPipeline />);
-    await user.click(screen.getByRole("button", { name: "شركة مدار" }));
-    await user.click(
-      within(screen.getByRole("dialog")).getByRole("button", {
-        name: /^إرسال/,
-      }),
+    render(
+      <StrictMode>
+        <SalesPipeline />
+      </StrictMode>,
     );
+    await user.click(screen.getByRole("button", { name: "شركة مدار" }));
+    within(screen.getByRole("dialog"))
+      .getByRole("button", {
+        name: /^إرسال/,
+      })
+      .focus();
+    await user.keyboard("{Enter}");
     act(() => resizeMain!(500));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     // The host's recording moment must expire without sending the hidden draft.

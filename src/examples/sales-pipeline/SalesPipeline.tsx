@@ -77,18 +77,19 @@ function FollowUp({
   draft,
   onBodyChange,
   onSend,
-  onClose,
+  onUnmount,
 }: {
   deal: Deal;
   draft: Draft;
   onBodyChange: (body: string) => void;
   onSend: (text: string) => void;
-  onClose: (id: string) => void;
+  onUnmount: (id: string) => void;
 }) {
   const { language, money } = useScreen();
   // A responsive branch or a filter can remove the Sheet without asking
   // Radix to close it. The content owns cancellation for every unmount path.
-  useEffect(() => () => onClose(deal.id), [deal.id, onClose]);
+  // StrictMode replays cleanup on mount, so cancellation must not close it.
+  useEffect(() => () => onUnmount(deal.id), [deal.id, onUnmount]);
   const owner = owners.find((item) => item.id === deal.owner)!.name[language];
   return (
     <DraftReview
@@ -126,7 +127,7 @@ function PipelineScreen() {
   const [announcement, setAnnouncement] = useState({ text: "", count: 0 });
   const announce = (text: string) =>
     setAnnouncement(({ count }) => ({ text, count: count + 1 }));
-  const closeFollowUp = useCallback((id: string) => {
+  const cancelSend = useCallback((id: string) => {
     const request = sending.current.get(id);
     if (request) {
       sending.current.delete(id);
@@ -136,8 +137,14 @@ function PipelineScreen() {
         [id]: { ...current[id], status: "ready" },
       }));
     }
-    setOpenId((current) => (current === id ? null : current));
   }, []);
+  const closeFollowUp = useCallback(
+    (id: string) => {
+      cancelSend(id);
+      setOpenId((current) => (current === id ? null : current));
+    },
+    [cancelSend],
+  );
   // Whatever is still being sent when the screen goes records nothing.
   useEffect(() => {
     const requests = sending.current;
@@ -295,7 +302,7 @@ function PipelineScreen() {
                     draft={draft}
                     onBodyChange={(body) => edit(deal.id, body)}
                     onSend={(text) => send(deal.id, text)}
-                    onClose={closeFollowUp}
+                    onUnmount={cancelSend}
                   />
                 </div>
               </Sheet>
