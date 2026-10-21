@@ -1085,6 +1085,22 @@
       "source": "ImageGeneration.tsx"
     },
     {
+      "name": "DraftReview",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftReviewProps",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftReviewLabels",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftTone",
+      "source": "DraftReview.tsx"
+    },
+    {
       "name": "TaskStarter",
       "source": "TaskStarter.tsx"
     },
@@ -2456,6 +2472,166 @@
       "alternative": "Use ImageResult to show an image the host already has, and Agent task when the image is one step of larger work.",
       "dependencies": [],
       "examples": ["ai/examples/ImageGenerationExamples.tsx"]
+    },
+    {
+      "id": "draft-review",
+      "api": "DraftReview",
+      "source": "DraftReview.tsx",
+      "kind": "pattern",
+      "parts": [
+        "ai-mark",
+        "status-pill",
+        "badge",
+        "inline-diff",
+        "tray",
+        "button",
+        "countdown"
+      ],
+      "states": ["writing", "ready", "sending", "sent", "discarded"],
+      "events": [
+        "onBodyChange",
+        "onToneChange",
+        "onSend",
+        "onDiscard",
+        "onUndo"
+      ],
+      "exports": [
+        "DraftReview",
+        "DraftReviewProps",
+        "DraftReviewLabels",
+        "DraftTone"
+      ],
+      "purpose": "The assistant writes a message for a record; the person reviews, edits and sends it. The record (invoice number, customer, amount in figure type, overdue tag) frames the draft on the tray. The paper holds the recipient and attachment chips, the message with an optional suggested edit as tracked changes, and the tone (ودّي، مختصر، رسمي). Discard and Send, with Ctrl or Cmd+Enter, decide it. Sending leaves a receipt, with Undo only while the host holds the message.",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"writing\" | \"ready\" | \"sending\" | \"sent\" | \"discarded\"",
+          "required": true,
+          "values": ["writing", "ready", "sending", "sent", "discarded"],
+          "note": "Host-owned; the pattern never advances it. The pill reads يكتب (running), بانتظار مراجعتك (needs-you), تُرسَل (running), أُرسلت (completed) or تم التجاهل (stopped). Discard and Send show only while ready; the hold while sending; the receipt once sent or discarded."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The section's heading; «مسودة للمراجعة» / Draft for review by default."
+        },
+        {
+          "name": "record",
+          "type": "{ id: string; customer: ReactNode; amount: ReactNode; overdue?: ReactNode }",
+          "required": false,
+          "note": "The record the draft is about, on the tray under the header: the id in <bdi dir=\"ltr\">, the customer, the amount at --text-figure-small with tabular figures, and overdue in an error Badge. Format the amount and the days with numberLocale."
+        },
+        {
+          "name": "recipients",
+          "type": "readonly { id: string; label: ReactNode }[]",
+          "required": true,
+          "note": "The «إلى» chips, each label in its own direction. Their ids are part of what Ctrl or Cmd+Enter waits on, so a new recipient makes it wait 500 ms again."
+        },
+        {
+          "name": "attachments",
+          "type": "readonly { id: string; label: ReactNode }[]",
+          "required": false,
+          "default": [],
+          "note": "The «المرفقات» chips, such as a file name, each in its own direction. Their ids are part of what Ctrl or Cmd+Enter waits on."
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": true,
+          "note": "The message. While writing it is the host's growing text, read-only under a running Thread; ready without a suggestion, a «نص الرسالة» Textarea when onBodyChange is given, else text. Send hands it over when no suggestion shows."
+        },
+        {
+          "name": "onBodyChange",
+          "type": "(body: string) => void",
+          "required": false,
+          "note": "Makes the body a text area while ready without a suggestion."
+        },
+        {
+          "name": "suggestion",
+          "type": "{ title?: ReactNode; segments: readonly DiffSegment[]; decisions: Readonly<Record<string, \"accepted\" | \"rejected\">>; onDecisionsChange: (next: Record<string, \"accepted\" | \"rejected\">) => void }",
+          "required": false,
+          "note": "A suggested edit, shown while ready as «اقتراح المساعد · title» over InlineDiff, with decisions keyed by each change's first segment id. While it shows, Send hands over the text as decided: each accepted change's new text, and the original text for the rest."
+        },
+        {
+          "name": "tone",
+          "type": "\"friendly\" | \"brief\" | \"formal\"",
+          "required": false,
+          "values": ["friendly", "brief", "formal"],
+          "note": "The checked tone."
+        },
+        {
+          "name": "onToneChange",
+          "type": "(tone: DraftTone) => void",
+          "required": false,
+          "note": "The «النبرة» group of native radios (ودّي، مختصر، رسمي) shows only with it, and a choice only calls it. The radios are disabled from sending on. A new tone makes Ctrl or Cmd+Enter wait 500 ms again."
+        },
+        {
+          "name": "onSend",
+          "type": "(text: string) => void",
+          "required": false,
+          "note": "Send («إرسال», the primary button, with Mod+Enter) while ready. Called once per ready status with the text on screen; further clicks, chords and held keys do nothing until the status changes. The chord waits 500 ms after mount and after the text, the tone, the recipients or the attachments change."
+        },
+        {
+          "name": "onDiscard",
+          "type": "() => void",
+          "required": false,
+          "note": "Discard («تجاهل») while ready. It never sends, and once Send or Discard has acted neither acts again until the status changes."
+        },
+        {
+          "name": "undoWindow",
+          "type": "number",
+          "required": false,
+          "note": "The whole seconds left in the host's hold when the countdown mounts, not the hold's full length, so a remount never offers Undo after the hold ends. Above zero and with onUndo, sending shows «تُرسَل خلال {t}» with a Countdown that never pauses (announcement off) and «تراجع»; when it ends, Undo goes and the line reads «تُرسَل الآن…». Undo shows only while the host holds the message, and the host takes the window from a setting the person controls before meeting it: off, or adjustable to at least ten times the default (WCAG 2.2.1). A receipt records the sending, never a recall."
+        },
+        {
+          "name": "onUndo",
+          "type": "() => void",
+          "required": false,
+          "note": "Called once; Undo then shows loading. Cancel the hold and return to ready if it arrives in time; otherwise send and mark it sent, and the region says it was sent before it could be cancelled. A receipt records the sending, never a recall."
+        },
+        {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The agent that wrote the draft, under the title."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "The title's level."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<DraftReviewLabels>",
+          "required": false,
+          "note": "Replaces any built-in text; inlineDiff carries the tracked changes' words."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card sits on a tray with the message on paper; plain lives on its host's paper, as in a conversation or a side panel."
+        }
+      ],
+      "state": "The host owns the status, the text, the suggestion and its decisions, the tone, the recipients, the attachments and the sending: it holds the message for its undo window, sends it once the window ends, cancels it on onUndo, and marks it sent. The pattern sends and cancels nothing itself. It holds only UI state: whether Send, Discard or Undo has acted in this status, and whether its countdown has ended.",
+      "accessibility": [
+        "A section labelled by its title. One polite region, empty at mount, says each change of status once: يكتب المسودة; المسودة بانتظار مراجعتك; تُرسَل الرسالة, or with an undo window تُرسَل الرسالة خلال ١٠ث. يمكنك التراجع.; أُلغي الإرسال، والمسودة محفوظة when sending goes back to ready; أُرسلت الرسالة, or after an Undo أُرسلت الرسالة قبل أن يُلغى الإرسال; تم تجاهل المسودة. The countdown never speaks, and neither its ticks nor a new undoWindow reach the region.",
+        "Send, Discard and Undo go away with their status, and focus then moves to the section, as it does from a text area, a tracked change or a tone that a change removes or disables.",
+        "The record's id is isolated left to right, each chip in its own direction, and the overdue tag is an error Badge with words. The tone is a native radio group named «النبرة». Each button is named by its visible word, and Send's shortcut is its description."
+      ],
+      "limitations": [
+        "No sending, no recall and no clock but the countdown, which shows the host's window and never pauses. A receipt records the sending, never a recall. Undo shows only while the host holds the message (undoWindow with onUndo); the host takes the window from a setting the person controls before meeting it, either off or adjustable to at least ten times the default (WCAG 2.2.1), and undoWindow is the seconds left in that hold, not its full length.",
+        "The suggestion is plain text, and its segments cover the whole message. A draft waiting in the Decision inbox opens here through the inbox's onOpen."
+      ],
+      "alternative": "Use Suggested edits to rewrite the person's own text, and Approval request for a one-time decision about an action rather than a message to review.",
+      "dependencies": [],
+      "examples": ["ai/examples/DraftReviewExamples.tsx"]
     },
     {
       "id": "change-summary",
@@ -5544,7 +5720,7 @@
       "id": "button",
       "api": "Button",
       "source": "Button.tsx",
-      "usedBy": ["decision-inbox"],
+      "usedBy": ["decision-inbox", "draft-review"],
       "exports": ["Button", "ButtonProps", "ButtonState", "ButtonVariant"],
       "purpose": "Perform an explicit action.",
       "useWhen": "Save, submit, create, or open an overlay.",
@@ -6497,6 +6673,7 @@
       "id": "badge",
       "api": "Badge",
       "source": "Badge.tsx",
+      "usedBy": ["draft-review"],
       "exports": ["Badge", "BadgeProps", "BadgeTone"],
       "purpose": "Show static status text.",
       "useWhen": "Show static status text.",
@@ -10490,6 +10667,134 @@
           "required": true
         }
       ]
+    },
+    {
+      "type": "DraftReviewLabels",
+      "source": "DraftReview.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "note": "The heading when the host gives no title: «مسودة للمراجعة»."
+        },
+        {
+          "name": "pills",
+          "type": "Record<\"writing\" | \"ready\" | \"sending\" | \"sent\" | \"discarded\", string>",
+          "required": true,
+          "note": "The pill's word for each status, agreeing with الرسالة: يكتب، بانتظار مراجعتك، تُرسَل، أُرسلت، تم التجاهل."
+        },
+        {
+          "name": "to",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attachments",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "suggestion",
+          "type": "string",
+          "required": true,
+          "note": "Heads a suggested edit, before its own title: «اقتراح المساعد»."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "note": "Names the text area: «نص الرسالة»."
+        },
+        {
+          "name": "tone",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tones",
+          "type": "Record<DraftTone, string>",
+          "required": true,
+          "note": "ودّي، مختصر، رسمي."
+        },
+        {
+          "name": "discard",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "send",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "undo",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "sendingIn",
+          "type": "(time: string) => string",
+          "required": true,
+          "note": "The line while the host holds the message: «تُرسَل خلال {time}», with time from the countdown."
+        },
+        {
+          "name": "sendingNow",
+          "type": "string",
+          "required": true,
+          "note": "The line once the hold is over, or without one: «تُرسَل الآن…»."
+        },
+        {
+          "name": "sent",
+          "type": "string",
+          "required": true,
+          "note": "The sent receipt, which the region also says: «أُرسلت الرسالة»."
+        },
+        {
+          "name": "discarded",
+          "type": "string",
+          "required": true,
+          "note": "The discarded receipt, which the region also says: «تم تجاهل المسودة»."
+        },
+        {
+          "name": "saysWriting",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "saysReady",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "saysSending",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "saysSendingIn",
+          "type": "(time: string) => string",
+          "required": true,
+          "note": "«تُرسَل الرسالة خلال {time}. يمكنك التراجع.», said once when sending starts with an undo window."
+        },
+        {
+          "name": "saysCancelled",
+          "type": "string",
+          "required": true,
+          "note": "Said when sending goes back to ready: «أُلغي الإرسال، والمسودة محفوظة»."
+        },
+        {
+          "name": "saysSentAfterUndo",
+          "type": "string",
+          "required": true,
+          "note": "Said when the message was sent after an Undo: «أُرسلت الرسالة قبل أن يُلغى الإرسال»."
+        },
+        {
+          "name": "inlineDiff",
+          "type": "Partial<InlineDiffLabels>",
+          "required": false
+        }
+      ]
     }
   ],
   "support": [
@@ -10620,7 +10925,8 @@
         "change-summary",
         "ask-user-questions",
         "approval-card",
-        "decision-inbox"
+        "decision-inbox",
+        "draft-review"
       ],
       "props": [
         {
@@ -10665,7 +10971,8 @@
         "change-summary",
         "ask-user-questions",
         "approval-card",
-        "decision-inbox"
+        "decision-inbox",
+        "draft-review"
       ],
       "props": [
         {
@@ -10713,7 +11020,8 @@
         "ask-user-questions",
         "approval-card",
         "approval-flow",
-        "decision-inbox"
+        "decision-inbox",
+        "draft-review"
       ],
       "props": [
         {
@@ -10751,7 +11059,7 @@
       "id": "countdown",
       "exports": ["Countdown", "CountdownProps"],
       "source": "Countdown.tsx",
-      "usedBy": ["agent-task"],
+      "usedBy": ["agent-task", "draft-review"],
       "props": [
         {
           "name": "seconds",
@@ -10957,7 +11265,7 @@
       "id": "inline-diff",
       "exports": ["InlineDiff", "InlineDiffProps", "DiffSegment"],
       "source": "InlineDiff.tsx",
-      "usedBy": ["suggested-edits"],
+      "usedBy": ["suggested-edits", "draft-review"],
       "props": [
         {
           "name": "segments",

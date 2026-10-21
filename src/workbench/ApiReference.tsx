@@ -671,6 +671,80 @@ export function ApiReference({
         ),
       ],
     ],
+    "draft-review": [
+      [
+        "status / title / agent",
+        "writing | ready | sending | sent | discarded · required / ReactNode / ReactNode",
+        t(
+          "يقرّر تطبيقك الحالة ولا يتقدّم النمط بنفسه. تقول كلمة الحالة «يكتب» أو «بانتظار مراجعتك» أو «تُرسَل» أو «أُرسلت» أو «تم التجاهل»، ويقول الإيصال «أُرسلت الرسالة» أو «تم تجاهل المسودة». العنوان «مسودة للمراجعة» افتراضيًا، وagent الوكيل الذي كتبها، ويُعلَن كل تغيير في الحالة مرة واحدة.",
+          "Your app owns the status; the pattern never moves on by itself. The pill reads Writing, Waiting for your review, Sending, Sent or Discarded, and the receipt Message sent or Draft discarded. The title is Draft for review by default, agent names who wrote it, and each change of status is announced once.",
+        ),
+      ],
+      [
+        "record",
+        "{ id: string; customer: ReactNode; amount: ReactNode; overdue?: ReactNode }",
+        t(
+          "السجل الذي تخصّه المسودة، على الدرج تحت العنوان: المعرّف معزولًا من اليسار إلى اليمين، ثم العميل، ثم المبلغ بخط الأرقام، ثم overdue في شارة خطأ. نسّق المبلغ وعدد الأيام بنفسك عبر numberLocale.",
+          "The record the draft is about, on the tray under the title: the id isolated left to right, the customer, the amount in figure type, and overdue in an error badge. Format the amount and the days yourself with numberLocale.",
+        ),
+      ],
+      [
+        "recipients / attachments",
+        "readonly { id: string; label: ReactNode }[] · required / readonly { id: string; label: ReactNode }[]",
+        t(
+          "شرائح «إلى» و«المرفقات»، كلٌّ في اتجاهه. وإضافة مستلم أو مرفق تجعل Ctrl أو Cmd+Enter ينتظر نصف ثانية من جديد.",
+          "The To and Attachments chips, each in its own direction. Adding a recipient or an attachment makes Ctrl or Cmd+Enter wait half a second again.",
+        ),
+      ],
+      [
+        "body / onBodyChange",
+        "string · required / (body: string) => void",
+        t(
+          "نص الرسالة: يكبر أثناء الكتابة ويُعرض للقراءة تحت خيط يعمل. وفي المراجعة دون اقتراح يصير حقل «نص الرسالة» إذا مرّرت onBodyChange، وإلا بقي نصًا.",
+          "The message: it grows while writing, read-only under a working thread. Ready without a suggestion, it is a «Message» text area when you pass onBodyChange, and text otherwise.",
+        ),
+      ],
+      [
+        "suggestion",
+        "{ title?: ReactNode; segments: readonly DiffSegment[]; decisions; onDecisionsChange }",
+        t(
+          "تعديل مقترح يظهر في المراجعة تحت «اقتراح المساعد · title» تغييراتٍ متعقَّبة يقبلها المستخدم أو يرفضها (InlineDiff)، ومفتاح كل قرار معرّف أول مقطع في تغييره. وما دام ظاهرًا يرسل «إرسال» النص بعد القرارات: الجديد لما قُبل، والأصلي لما رُفض أو لم يُقرَّر.",
+          "A suggested edit shown while ready under «Assistant suggestion · title», as tracked changes the person accepts or rejects (InlineDiff); each decision is keyed by its change's first segment id. While it shows, Send hands over the text as decided: the new text where a change was accepted, the original where it was rejected or left undecided.",
+        ),
+      ],
+      [
+        "tone / onToneChange",
+        '"friendly" | "brief" | "formal" / (tone: DraftTone) => void',
+        t(
+          "مجموعة «النبرة» بأزرار اختيار أصلية: «ودّي» و«مختصر» و«رسمي». الاختيار يستدعي onToneChange فقط، وتتعطّل من الإرسال فصاعدًا، ولا تظهر دون onToneChange.",
+          "The Tone group of native radios: Friendly, Brief and Formal. A choice only calls onToneChange; from sending on they are disabled, and without onToneChange there is no group.",
+        ),
+      ],
+      [
+        "onSend / onDiscard",
+        "(text: string) => void / () => void",
+        t(
+          "«إرسال» (الزر الأساسي، ومعه Ctrl أو Cmd+Enter) و«تجاهل» في المراجعة فقط، كلٌّ إذا وُجد معالجه. يستلم onSend النص الظاهر مرة واحدة لكل حالة مراجعة، فلا يفعل ضغط ثانٍ ولا اختصار ولا مفتاح مضغوط شيئًا حتى تتغيّر الحالة، ولا يرسل «تجاهل» شيئًا. وينتظر الاختصار نصف ثانية بعد أي تغيير في النص أو النبرة أو المستلمين أو المرفقات.",
+          "Send (the primary button, with Ctrl or Cmd+Enter) and Discard show while ready, each only with its handler. onSend receives the text on screen once per ready status: a second press, chord or held key does nothing until the status changes, and Discard never sends. The chord waits half a second after any change to the text, the tone, the recipients or the attachments.",
+        ),
+      ],
+      [
+        "undoWindow / onUndo",
+        "number · seconds / () => void",
+        t(
+          "أثناء الإرسال، مع undoWindow أكبر من صفر ومع onUndo، يظهر «تُرسَل خلال ١٠ث» بعدّاد لا يتوقف، ومعه «تراجع» الذي يستدعي onUndo مرة واحدة ثم ينتظر. undoWindow هو الثواني الباقية من احتجاز تطبيقك للرسالة حين يظهر العدّاد، لا طول المهلة كلها، فلا يظهر «تراجع» بعد انتهائها. أرسل الرسالة بعد انتهاء المهلة، وألغها إذا وصلك onUndo قبلها. وخذ المهلة من إعداد يتحكّم فيه المستخدم قبل أن يبلغها: إيقافها، أو إطالتها إلى عشرة أضعاف الافتراضي على الأقل (WCAG 2.2.1).",
+          "While sending, with undoWindow above zero and onUndo, «Sending in 10s» shows with a countdown that never pauses, beside Undo, which calls onUndo once and then waits. undoWindow is the seconds left in your hold when the countdown appears, not its full length, so Undo never shows after the hold ends. Send the message once the window ends, and cancel it if onUndo arrives first. Take the window from a setting the person controls before they meet it: off, or adjustable to at least ten times the default (WCAG 2.2.1).",
+        ),
+      ],
+      [
+        "headingLevel / labels / appearance",
+        '2 | 3 | 4 | 5 | 6 · 3 / Partial<DraftReviewLabels> / "card" | "plain" · card',
+        t(
+          "headingLevel مستوى العنوان. وتستبدل labels أي نص مدمج، وتحمل inlineDiff كلمات التغييرات المتعقَّبة. واستخدم plain داخل محادثة أو لوحة جانبية.",
+          "headingLevel is the title's level. labels replaces any built-in text; inlineDiff carries the tracked changes' words. Use plain inside a conversation or a side panel.",
+        ),
+      ],
+    ],
     terminal: [
       [
         "command / output",

@@ -64,6 +64,15 @@ export const catalog = [
     file: "ImageGeneration.tsx",
   },
   {
+    id: "draft-review",
+    name: ["مسودة للمراجعة", "Draft for review"],
+    description: [
+      "يكتب المساعد رسالة لسجل، ويراجعها المستخدم ويعدّلها ثم يرسلها.",
+      "The assistant writes a message for a record; the person reviews, edits and sends it.",
+    ],
+    file: "DraftReview.tsx",
+  },
+  {
     id: "change-summary",
     name: ["ما الذي تغيّر", "What changed"],
     description: [
@@ -729,6 +738,7 @@ export const patternJobs: Partial<Record<ComponentId, Job>> = {
   "decision-inbox": "delegate",
   "suggested-edits": "create",
   "image-generation": "create",
+  "draft-review": "create",
   "change-summary": "understand",
 };
 /** The fifteen parts the patterns are built from (spec §16), folded. */
@@ -776,7 +786,7 @@ const aiSections: readonly DocumentationSection[] = [
   {
     id: "create",
     name: jobNames.create,
-    ids: ["suggested-edits", "image-generation"],
+    ids: ["suggested-edits", "image-generation", "draft-review"],
   },
   { id: "understand", name: jobNames.understand, ids: ["change-summary"] },
   {

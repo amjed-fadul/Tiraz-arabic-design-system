@@ -2,6 +2,7 @@ import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
 import { TaskStarterExample } from "../system/ai/examples/TaskStarterExamples";
 import { SuggestedEditsExample } from "../system/ai/examples/SuggestedEditsExamples";
 import { ImageGenerationExample } from "../system/ai/examples/ImageGenerationExamples";
+import { DraftReviewExample } from "../system/ai/examples/DraftReviewExamples";
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
 import { DataAnswerExample } from "../system/ai/examples/DataAnswerExamples";
@@ -364,6 +365,15 @@ export function Playground({
       <ImageGenerationExample
         language={language}
         {...(model as Playgrounds["image-generation"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "draft-review")
+    return (
+      <DraftReviewExample
+        language={language}
+        {...(model as Playgrounds["draft-review"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
       />

@@ -310,6 +310,7 @@ export function Workbench() {
       active === "approval-card" ||
       active === "approval-flow" ||
       active === "decision-inbox" ||
+      active === "draft-review" ||
       active === "toast"
     )
       setPhases((prev) => ({ ...prev, [active]: undefined }));

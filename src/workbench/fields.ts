@@ -117,6 +117,10 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
       "progress",
     ),
   ],
+  "draft-review": [
+    appearance,
+    field("undo", "boolean", "مهلة للتراجع", "Undo window", "undoWindow"),
+  ],
   "agent-task": [
     appearance,
     field(
@@ -1040,6 +1044,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   "decision-inbox": ["appearance"],
   "suggested-edits": ["undo"],
   "image-generation": ["appearance", "knownProgress"],
+  "draft-review": ["appearance", "undo"],
   "change-summary": ["appearance"],
   terminal: ["state", "longContent", "followOutput"],
   "chat-app": ["longContent"],

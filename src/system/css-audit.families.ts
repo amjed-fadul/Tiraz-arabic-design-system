@@ -130,4 +130,6 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   // holds .tz-image-generation to the image-result family's audit.
   "weave-canvas": [".tz-weave"],
   "image-generation": [".tz-image-generation"],
+  // Draft for review, of Plan 5 Task 5.
+  "draft-review": [".tz-draft-review"],
 };

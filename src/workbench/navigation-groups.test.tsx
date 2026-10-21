@@ -112,6 +112,7 @@ it("groups AI patterns by job, folds the parts and ends Display with content blo
       "صندوق القرارات",
       "تعديلات مقترحة",
       "توليد صورة",
+      "مسودة للمراجعة",
       "ما الذي تغيّر",
       "مساحة عمل المساعد",
       "الأجزاء",

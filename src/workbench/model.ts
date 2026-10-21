@@ -291,6 +291,7 @@ export interface Playgrounds {
     appearance: "card" | "plain";
     knownProgress: boolean;
   };
+  "draft-review": { appearance: "card" | "plain"; undo: boolean };
   "change-summary": { appearance: "card" | "plain" };
   "ask-user-questions": { appearance: "card" | "plain"; longContent: boolean };
   terminal: {
@@ -440,6 +441,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "decision-inbox": { appearance: "card" },
     "suggested-edits": { undo: true },
     "image-generation": { appearance: "card", knownProgress: true },
+    "draft-review": { appearance: "card", undo: true },
     "change-summary": { appearance: "card" },
     "ask-user-questions": { appearance: "card", longContent: false },
     terminal: { state: "completed", longContent: false, followOutput: false },

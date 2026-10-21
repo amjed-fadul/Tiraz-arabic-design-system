@@ -8811,6 +8811,276 @@ button.tz-tool-chip[aria-expanded="true"] {
   }
 }
 
+/* Draft for review (spec section 13.3): a message the assistant wrote for a
+   record, which the person reviews, edits and sends. The header holds the AI
+   mark, the title with its agent and one status pill, and under them the
+   record the draft is about, its amount in figure type. The paper holds the
+   recipients and attachments as chips, the message and its tone. The tray's
+   footer holds Discard and Send, then the host's hold with Undo, then the
+   receipt. Plain drops the tray and lives on its host's paper. Nothing moves
+   on mount. */
+.tz-draft-review {
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-draft-review[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-draft-review[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tz-draft-review:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+/* The mark, the title and the pill share a row; the record sits under the
+   title, level with it. */
+.tz-draft-review-header {
+  display: grid;
+  flex: 1;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+}
+.tz-draft-review-heading {
+  display: grid;
+  min-inline-size: 0;
+}
+.tz-draft-review-title {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-draft-review-agent {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+/* The record's parts run in a row with a dot before each but the first. The
+   row starts a dot's width early and the record clips that edge, so a part
+   that wraps to the start of a line leaves its dot out of view. */
+.tz-draft-review-record {
+  grid-column: 2 / -1;
+  min-inline-size: 0;
+  margin: 0;
+  clip-path: inset(-0.5em 0);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-draft-review-record-parts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  row-gap: var(--space-1);
+  margin-inline-start: -1.25em;
+}
+.tz-draft-review-record-parts > :first-child {
+  margin-inline-start: 1.25em;
+}
+.tz-draft-review-record-parts > * + *::before {
+  content: "·";
+  content: "·" / "";
+  display: inline-block;
+  inline-size: 1.25em;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-meta);
+  text-align: center;
+}
+/* The amount is the record's figure. Tabular figures hold only for Western
+   digits; Arabic-Indic ones stay proportional (spec section 15). */
+.tz-draft-review-amount {
+  color: var(--text);
+  font-size: var(--text-figure-small);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-figure);
+  font-variant-numeric: tabular-nums;
+}
+.tz-draft-review-paper {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+/* Who the message goes to and what goes with it, as chips, above a hairline
+   that sets them off from the message. */
+.tz-draft-review-fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+  padding-block-end: var(--space-3);
+  border-block-end: 0.5px solid var(--hairline);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-draft-review-fields > div {
+  display: contents;
+}
+.tz-draft-review-fields dt {
+  color: var(--text-secondary);
+}
+.tz-draft-review-fields dd {
+  min-inline-size: 0;
+  margin: 0;
+}
+.tz-draft-review-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-draft-review-chips > li {
+  min-inline-size: 0;
+  padding: 1px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+  color: var(--text);
+}
+.tz-draft-review-body {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-draft-review-label {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+/* The message keeps its own line breaks. */
+.tz-draft-review-text {
+  margin: 0;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
+/* The tone is a native radio group laid over a pill control, as Ask your
+   data's chart types are: the chosen tone is the raised paper chip. From
+   sending on it stays to say what was sent, dimmed. */
+.tz-draft-review-tone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+}
+.tz-draft-review-tones {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+}
+.tz-draft-review-tones:has(:disabled) {
+  opacity: var(--disabled-opacity);
+}
+.tz-draft-review-tone-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 28px;
+  padding-inline: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-draft-review-tone-option > input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.tz-draft-review-tone-option:has(:disabled) {
+  cursor: not-allowed;
+}
+.tz-draft-review-tone-option:has(:enabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-draft-review-tone-option:has(:enabled):hover {
+    color: var(--text);
+  }
+}
+.tz-draft-review-tone-option:has(:checked) {
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text);
+}
+.tz-draft-review-tone-option:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+/* Discard and Send at the footer's end; while the host holds the message, its
+   countdown at the start and Undo at the end. */
+.tz-draft-review-decision {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  min-inline-size: 0;
+}
+.tz-draft-review-decision > .tz-decision-bar {
+  margin-inline-start: auto;
+}
+.tz-draft-review-line,
+.tz-draft-review-receipt {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.tz-draft-review-receipt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tz-draft-review-receipt[data-outcome="sent"] > svg {
+  color: var(--success);
+}
+.tz-draft-review-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+@media (forced-colors: active) {
+  .tz-draft-review-tone-option:has(:checked) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
 .tz-sources {
   min-inline-size: 0;
   font-size: var(--text-meta);

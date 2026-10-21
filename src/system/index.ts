@@ -213,6 +213,12 @@ export type {
   ImageGenerationProps,
   ImageGenerationLabels,
 } from "./ImageGeneration";
+export { DraftReview } from "./DraftReview";
+export type {
+  DraftReviewProps,
+  DraftReviewLabels,
+  DraftTone,
+} from "./DraftReview";
 export { TaskStarter } from "./TaskStarter";
 export type {
   TaskStarterProps,

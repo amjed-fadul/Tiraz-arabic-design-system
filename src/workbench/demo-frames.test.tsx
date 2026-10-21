@@ -158,6 +158,7 @@ it("shows Replay only where a sequence exists", () => {
     "chat-thread",
     "cited-answer",
     "data-answer",
+    "draft-review",
     "image-generation",
     "progress",
     "skeleton",

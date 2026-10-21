@@ -978,6 +978,53 @@ const phaseFamilies: PhaseFamily[] = [
     replay: ["weaving", "done"],
   },
   {
+    id: "draft-review",
+    resting: "forReview",
+    list: [
+      [
+        "writing",
+        () => {
+          // The draft arrives as text under a working thread; nothing to send.
+          expect(
+            stageNode().querySelector(".tz-draft-review .tz-thread"),
+          ).toHaveAttribute("data-state", "running");
+          expect(stage().queryByRole("button", { name: "إرسال" })).toBeNull();
+        },
+      ],
+      [
+        "forReview",
+        () => {
+          expect(stageNode()).toHaveTextContent("اقتراح المساعد · أوضح");
+          expect(stage().getByRole("radio", { name: "ودّي" })).toBeChecked();
+          expect(stage().getByRole("button", { name: "إرسال" })).toBeEnabled();
+        },
+      ],
+      [
+        "sending",
+        () => {
+          // The host holds the message for its undo window.
+          expect(stageNode()).toHaveTextContent("تُرسَل خلال");
+          expect(stage().getByRole("button", { name: "تراجع" })).toBeEnabled();
+        },
+      ],
+      [
+        "sent",
+        () => {
+          expect(stageNode()).toHaveTextContent("أُرسلت الرسالة");
+          expect(stage().queryByRole("button", { name: "تراجع" })).toBeNull();
+        },
+      ],
+      [
+        "discarded",
+        () => {
+          expect(stageNode()).toHaveTextContent("تم تجاهل المسودة");
+          expect(stage().queryByRole("button", { name: "إرسال" })).toBeNull();
+        },
+      ],
+    ],
+    replay: ["writing", "forReview", "sending", "sent"],
+  },
+  {
     id: "chat-thread",
     resting: "newMessage",
     list: [

@@ -232,6 +232,33 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  "draft-review": {
+    useWhen: [
+      [
+        "يكتب المساعد رسالة لسجل بعينه، كتذكير بفاتورة متأخرة، ويوافق عليها المستخدم قبل أن تخرج.",
+        "The assistant drafts a message for a record, such as a reminder about a late invoice, and a person approves it before it leaves.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "يعيد المساعد صياغة نص كتبه المستخدم بنفسه، فاستخدم",
+          "The assistant rewrites the person's own text, so use",
+        ],
+        page: "suggested-edits",
+      },
+    ],
+    notice: [
+      [
+        "يرسل «إرسال» النص الظاهر كما هو، مرة واحدة. ويفعل Ctrl أو Cmd+Enter مثله بعد نصف ثانية من آخر تغيير في النص أو النبرة أو المستلمين أو المرفقات.",
+        "Send hands over exactly the text on screen, once. Ctrl or Cmd+Enter does the same, half a second after the text, the tone, the recipients or the attachments last changed.",
+      ],
+      [
+        "لا يظهر «تراجع» إلا ما دام تطبيقك يحتجز الرسالة، مع undoWindow وonUndo، فاجعل المهلة إعدادًا يتحكّم فيه المستخدم. ويقول الإيصال ما حدث للرسالة، ولا يقول أبدًا إن رسالة أُرسلت قد عادت.",
+        "Undo shows only while your app holds the message, with undoWindow and onUndo, so make the window a setting the person controls. The receipt says what happened to the message, and never that a sent one came back.",
+      ],
+    ],
+  },
   terminal: {
     useWhen: [
       [
