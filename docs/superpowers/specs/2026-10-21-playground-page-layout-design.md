@@ -118,7 +118,7 @@ The page says the component's name in its h1 only.
 - The header has no kicker, and the name appears only in the h1.
 - The copy button exists only in Code view, in the code header, and it announces once.
 - The notes render outside the frame region, under the "Usage guidelines" h2.
-- A pattern page has no Anatomy, Placements, Copy or part-table sections. Its h2s are exactly: the playground, the usage guidelines and the API reference.
+- A pattern page has no Anatomy, Placements, Copy or part-table sections. Its h2s are exactly: Use it in your app, the playground, the usage guidelines and the API reference.
 - The API reference is open with no toggle. It is a `<table>` with column headers, and the code cells are `dir="ltr"`.
 - Below the header the sections come in this order: Use it in your app, the playground, the usage guidelines, the API reference.
 - On an Arabic page, the prompt preview and the copied prompt are English (`lang="en"`, `dir="ltr"`), and the heading is Arabic.
