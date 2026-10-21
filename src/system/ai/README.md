@@ -13,7 +13,7 @@ helper and is documented under Input rather than a standalone navigation page.
    If it is missing, report the gap and request its location instead of
    inventing an import or installing a different library.
 2. Query [registry.json](registry.json) for the relevant family and support
-   APIs; do not read it whole, since at about 360 KB it is past common
+   APIs; do not read it whole, since at about 380 KB it is past common
    file-reader limits. Use `jq`, for example
    `jq '.components[] | select(.id == "agent-task")' registry.json` for a
    family and `jq '.records[] | select(.type == "AgentStep")' registry.json`
