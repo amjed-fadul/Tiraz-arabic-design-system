@@ -10,10 +10,38 @@ const nav = () =>
 const heading = () => screen.getByRole("heading", { level: 1 });
 const frame = () => document.querySelector("iframe")!;
 const stage = () => frame().parentElement!;
+/** The names of the pressed width chips. */
+const pressed = () =>
+  within(screen.getByRole("group", { name: "عرض المعاينة" }))
+    .getAllByRole("button")
+    .filter((chip) => chip.getAttribute("aria-pressed") === "true")
+    .map((chip) => chip.textContent);
+const post = (data: unknown, origin = window.location.origin) =>
+  act(() => {
+    window.dispatchEvent(new MessageEvent("message", { data, origin }));
+  });
 const realResizeObserver = globalThis.ResizeObserver;
 afterEach(() => {
   globalThis.ResizeObserver = realResizeObserver;
 });
+/** The stage reports this size as soon as it is observed; jsdom lays nothing out. */
+function stubStage(width: number, height: number) {
+  globalThis.ResizeObserver = class {
+    callback: ResizeObserverCallback;
+    constructor(callback: ResizeObserverCallback) {
+      this.callback = callback;
+    }
+    observe(target: Element) {
+      const entry = { target, contentRect: { width, height } };
+      this.callback(
+        [entry as unknown as ResizeObserverEntry],
+        this as unknown as ResizeObserver,
+      );
+    }
+    unobserve() {}
+    disconnect() {}
+  };
+}
 
 it("lists the screens as buttons, with no new-tab links", () => {
   render(<Workbench />);
@@ -62,32 +90,55 @@ it("opens a screen's page with the screen in an iframe", async () => {
   expect(document.querySelector("iframe")).toBeNull();
 });
 
-it("scales the Desktop screen's 1,280px window to the stage", async () => {
-  // The stage reports 1,000px, its width at a 1,280px window.
-  globalThis.ResizeObserver = class {
-    callback: ResizeObserverCallback;
-    constructor(callback: ResizeObserverCallback) {
-      this.callback = callback;
-    }
-    observe(target: Element) {
-      const entry = { target, contentRect: { width: 1000 } };
-      this.callback(
-        [entry as unknown as ResizeObserverEntry],
-        this as unknown as ResizeObserver,
-      );
-    }
-    unobserve() {}
-    disconnect() {}
-  };
+it("scales the Desktop screen's 1,280px window to the stage and fills its height", async () => {
+  // The stage is 1,000px wide, as at a 1,280px window, and 600px tall: the
+  // height CSS gives it, clamp(560px, 100dvh - 260px, 900px), whatever its width.
+  stubStage(1000, 600);
   const user = userEvent.setup();
   persist(storageKeys.documentation, { active: "button", screen: "invoices" });
   render(<Workbench />);
   expect(stage()).toHaveAttribute("data-width", "desktop");
   expect(stage().style.getPropertyValue("--screen-scale")).toBe("0.78125");
+  // The window is the stage's height divided by the scale, so the scaled box
+  // fills the stage exactly: the screen gets a taller viewport, not a shorter stage.
+  const windowHeight = stage().style.getPropertyValue("--screen-window-height");
+  expect(windowHeight).toBe("768px");
+  expect(parseFloat(windowHeight) * 0.78125).toBe(600);
   // Tablet and Phone are never scaled.
   await user.click(screen.getByRole("button", { name: "جهاز لوحي" }));
   expect(stage()).toHaveAttribute("data-width", "tablet");
   expect(stage().style.getPropertyValue("--screen-scale")).toBe("");
+  expect(stage().style.getPropertyValue("--screen-window-height")).toBe("");
+});
+
+it("starts on Desktop when the stage is at least a tablet wide, and keeps the person's choice", async () => {
+  stubStage(768, 560);
+  const user = userEvent.setup();
+  persist(storageKeys.documentation, { active: "button", screen: "invoices" });
+  render(<Workbench />);
+  expect(pressed()).toEqual(["سطح المكتب"]);
+  expect(stage()).toHaveAttribute("data-width", "desktop");
+  await user.click(screen.getByRole("button", { name: "هاتف" }));
+  expect(pressed()).toEqual(["هاتف"]);
+  expect(stage()).toHaveAttribute("data-width", "phone");
+});
+
+it("starts on Phone when the stage is narrower than a tablet, and keeps the person's choice", async () => {
+  stubStage(767, 560);
+  const user = userEvent.setup();
+  persist(storageKeys.documentation, { active: "button", screen: "invoices" });
+  render(<Workbench />);
+  expect(pressed()).toEqual(["هاتف"]);
+  expect(stage()).toHaveAttribute("data-width", "phone");
+  expect(stage().style.getPropertyValue("--screen-scale")).toBe("");
+  // Desktop, picked on purpose, stays: the narrow stage doesn't send it back.
+  await user.click(screen.getByRole("button", { name: "سطح المكتب" }));
+  expect(pressed()).toEqual(["سطح المكتب"]);
+  expect(stage()).toHaveAttribute("data-width", "desktop");
+  // It also lasts a visit to another page and back to a screen.
+  await user.click(nav().getByRole("button", { name: "الأزرار" }));
+  await user.click(nav().getByRole("button", { name: "خط المبيعات" }));
+  expect(pressed()).toEqual(["سطح المكتب"]);
 });
 
 it("reloads the screen in the docs' language and theme", async () => {
@@ -131,16 +182,30 @@ it("opens the screen on its own in a new tab", async () => {
 
 it("opens a screen from a same-origin message only", () => {
   render(<Workbench />);
-  const post = (data: unknown, origin = window.location.origin) =>
-    act(() => {
-      window.dispatchEvent(new MessageEvent("message", { data, origin }));
-    });
   post({ type: "tiraz:open-screen", slug: "invoices" }, "https://example.com");
   post({ type: "tiraz:open-screen", slug: "nowhere" });
   post({ type: "tiraz:open", slug: "invoices" });
   expect(heading()).toHaveTextContent("الأزرار");
   post({ type: "tiraz:open-screen", slug: "invoices" });
   expect(heading()).toHaveTextContent("الفواتير والتحصيل");
+});
+
+it("keeps focus on main when a screen in the iframe opens another", () => {
+  persist(storageKeys.documentation, { active: "button", screen: "invoices" });
+  render(<Workbench />);
+  // The person tabbed into the screen, so the iframe holds focus; opening
+  // another screen replaces that iframe.
+  act(() => frame().focus());
+  // A message that is turned away leaves focus where it is.
+  post(
+    { type: "tiraz:open-screen", slug: "sales-pipeline" },
+    "https://example.com",
+  );
+  expect(document.activeElement).toBe(frame());
+  post({ type: "tiraz:open-screen", slug: "sales-pipeline" });
+  expect(frame()).toHaveAttribute("src", "/examples/sales-pipeline?embed=1");
+  expect(document.activeElement).toBe(screen.getByRole("main"));
+  expect(document.activeElement).not.toBe(document.body);
 });
 
 it("restores a saved screen, and forgets an unknown one", async () => {

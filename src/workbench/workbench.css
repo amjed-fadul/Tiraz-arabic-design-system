@@ -360,19 +360,19 @@ bdi {
   border: 0;
 }
 /* Desktop: a 1,280px window, scaled from the top to the stage's width
-   (--screen-scale, which Workbench measures), and the stage's height with it,
-   so nothing overflows or leaves a gap. The origin is the top-left corner,
-   physical like the transform, so the scaled screen lines up with the stage
-   in either direction. */
-.docs-screen-preview > .docs-screen-stage[data-width="desktop"] {
-  block-size: calc(var(--screen-height) * var(--screen-scale, 1));
-}
+   (--screen-scale) and as tall as the stage is once scaled back up
+   (--screen-window-height, the stage's height divided by the scale). Workbench
+   measures both. The stage keeps its height at every width, so a narrower
+   stage gives the screen a taller viewport, not a shorter box, and the scaled
+   window fills the stage with nothing overflowing or left over. The origin is
+   the top-left corner, physical like the transform, so the scaled screen lines
+   up with the stage in either direction. */
 .docs-screen-stage[data-width="desktop"] > iframe {
   position: absolute;
   top: 0;
   left: 0;
   inline-size: 1280px;
-  block-size: var(--screen-height);
+  block-size: var(--screen-window-height, 100%);
   transform: scale(var(--screen-scale, 1));
   transform-origin: 0 0;
 }

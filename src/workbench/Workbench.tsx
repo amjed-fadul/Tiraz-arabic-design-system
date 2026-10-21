@@ -194,6 +194,8 @@ const screenWidths: readonly { id: ScreenWidth; name: Localized }[] = [
 ];
 /** The window a screen gets on Desktop, scaled down to the stage's width. */
 const desktopWidth = 1280;
+/** A stage narrower than this can't hold a tablet, so a page starts on Phone. */
+const tabletWidth = 768;
 /**
  * An example screen's page in the docs: its name and description, the width
  * chips and the new-tab link, the screen itself in an iframe that follows the
@@ -210,7 +212,7 @@ function ScreenPage({
   slug: ScreenSlug;
   language: Language;
   theme: SystemConfig["theme"];
-  width: ScreenWidth;
+  width: ScreenWidth | null;
   onWidthChange: (width: ScreenWidth) => void;
   onOpenPage: (id: ComponentId) => void;
 }) {
@@ -226,24 +228,38 @@ function ScreenPage({
     : screenPath(slug);
   const src = `${screenPath(slug)}?${["embed=1", ...query].join("&")}`;
   const openName = t("افتح في نافذة جديدة", "Open in a new tab");
+  // Until a chip is picked the page shows Desktop, and the stage's first
+  // measure below decides whether it starts there.
+  const shown = width ?? "desktop";
   // On Desktop the screen gets a 1,280px window, which the stage is narrower
-  // than, so it is scaled to the stage's width. The scale follows the stage
-  // as it resizes; Tablet and Phone are never scaled.
+  // than, so it is scaled to the stage's width. The stage keeps its height, so
+  // the window is that height divided by the scale: scaled, it fills the stage
+  // exactly, and the screen gets a taller viewport instead of a shorter stage.
+  // Both follow the stage as it resizes; Tablet and Phone are never scaled.
   const stage = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+  const [windowHeight, setWindowHeight] = useState<number>();
   useLayoutEffect(() => {
     const element = stage.current;
-    if (!element || width !== "desktop") return;
-    const fit = (stageWidth: number) => {
-      if (stageWidth > 0) setScale(Math.min(1, stageWidth / desktopWidth));
+    if (!element || shown !== "desktop") return;
+    const measure = (size: { width: number; height: number }) => {
+      if (size.width <= 0 || size.height <= 0) return;
+      // The first measure of a page with no chip picked decides where it
+      // starts: Desktop in a stage narrower than a tablet would be a
+      // thumbnail, so it starts on Phone. After that only a click changes it.
+      if (width === null)
+        onWidthChange(size.width < tabletWidth ? "phone" : "desktop");
+      const fit = Math.min(1, size.width / desktopWidth);
+      setScale(fit);
+      setWindowHeight(size.height / fit);
     };
-    fit(element.clientWidth);
+    measure({ width: element.clientWidth, height: element.clientHeight });
     const observer = new ResizeObserver(([entry]) => {
-      if (entry) fit(entry.contentRect.width);
+      if (entry) measure(entry.contentRect);
     });
     observer.observe(element);
     return () => observer.disconnect();
-  }, [width]);
+  }, [shown, width, onWidthChange]);
   return (
     <>
       <header className="component-heading">
@@ -262,7 +278,7 @@ function ScreenPage({
                 key={option.id}
                 type="button"
                 className="tz-demo-state"
-                aria-pressed={width === option.id}
+                aria-pressed={shown === option.id}
                 onClick={() => onWidthChange(option.id)}
               >
                 {localize(option.name, language)}
@@ -288,10 +304,16 @@ function ScreenPage({
         <div
           ref={stage}
           className="docs-screen-stage"
-          data-width={width}
+          data-width={shown}
           style={
-            width === "desktop"
-              ? ({ "--screen-scale": scale } as CSSProperties)
+            shown === "desktop"
+              ? ({
+                  "--screen-scale": scale,
+                  "--screen-window-height":
+                    windowHeight === undefined
+                      ? undefined
+                      : `${windowHeight}px`,
+                } as CSSProperties)
               : undefined
           }
         >
@@ -349,8 +371,9 @@ export function Workbench() {
     Partial<Record<ComponentId, EventRecord[]>>
   >({});
   const [navigationOpen, setNavigationOpen] = useState(false);
-  // The screen pages' width chip lasts the session.
-  const [screenWidth, setScreenWidth] = useState<ScreenWidth>("desktop");
+  // The screen pages' width chip lasts the session. It is unset until the
+  // first screen page measures its stage (or the person picks a chip).
+  const [screenWidth, setScreenWidth] = useState<ScreenWidth | null>(null);
   const narrow = useSyncExternalStore(watchNarrow, isNarrow, () => false);
   // The narrow Sheet's open state lasts the session: it never opens on load.
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -579,7 +602,9 @@ export function Workbench() {
     [cancelButtonAction, stopReplay],
   );
   // A screen in the iframe asks for another screen's page; anything else, or
-  // from anywhere else, is ignored.
+  // from anywhere else, is ignored. The iframe holds focus and the new page
+  // replaces it, so focus moves to main first, as «على هذه الشاشة» does, and
+  // doesn't drop to the page.
   useEffect(() => {
     function onMessage(event: MessageEvent) {
       const data: unknown = event.data;
@@ -587,7 +612,10 @@ export function Workbench() {
       if (typeof data !== "object" || data === null) return;
       const { type, slug } = data as { type?: unknown; slug?: unknown };
       const target = screens.find((item) => item.slug === slug);
-      if (type === "tiraz:open-screen" && target) openScreen(target.slug);
+      if (type === "tiraz:open-screen" && target) {
+        openScreen(target.slug);
+        mainRef.current?.focus();
+      }
     }
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
