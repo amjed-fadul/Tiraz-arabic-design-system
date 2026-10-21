@@ -1,1 +1,73 @@
 /* Agent control room (example-screens spec §3.8). Every rule names .agent-control-room. */
+
+/* The inbox beside the picked agent's panel. The panel is 20rem at the inline
+   end, one card at its content's height, and sticks while the page scrolls.
+   Below 960px it leaves the page: the picked agent adds a button to the header
+   that opens it in a Sheet. */
+.agent-control-room {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: var(--space-6);
+  align-items: start;
+}
+/* The inbox fills its column instead of stopping at the pattern's 38rem. */
+.agent-control-room .tz-decision-inbox[data-appearance="card"] {
+  max-inline-size: none;
+}
+.agent-control-room-panel {
+  position: sticky;
+  inset-block-start: var(--space-6);
+}
+
+/* The agent's name and its context ring, on one line. The panel and the Sheet
+   share these classes, so none of them leans on the grid above. */
+.agent-control-room-agent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.agent-control-room-title,
+.agent-control-room-heading {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.agent-control-room-title {
+  font-size: var(--text-subheading);
+}
+.agent-control-room-heading {
+  margin-block-end: var(--space-2);
+  font-size: var(--text-body);
+}
+.agent-control-room-section {
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-4);
+  border-block-start: 0.5px solid var(--hairline);
+}
+.agent-control-room-note {
+  margin: 0;
+  color: var(--text-secondary);
+}
+/* The tool call is as wide as the panel, 20rem, which its own rules treat as a
+   phone: they key the narrow layout to the window, so here the name drops
+   under the label and the label keeps its line. */
+.agent-control-room-step .tz-tool-call-trigger {
+  flex-wrap: wrap;
+}
+.agent-control-room-step .tz-tool-call-label {
+  flex-basis: calc(100% - var(--status-size) - var(--space-3));
+}
+.agent-control-room-step .tz-tool-name {
+  max-inline-size: 65%;
+  margin-inline-start: calc(var(--status-size) + var(--space-1));
+}
+.agent-control-room-step .tz-tool-chevron {
+  margin-inline-start: auto;
+}
+
+@container screen (width < 960px) {
+  .agent-control-room {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
