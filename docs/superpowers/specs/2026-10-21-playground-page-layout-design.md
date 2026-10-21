@@ -13,7 +13,9 @@ Each page should name its component once, give the example more room, and keep t
 1. **Header:** the h1 title, then the description. The kicker above the title (`.component-kicker`, group · job) is removed.
 2. **Playground:** the h2 «المعاينة التفاعلية» / "Interactive playground", the toolbar (§3), then the stage (§4) in Preview or the code block (§5) in Code.
 3. **Usage guidelines** (§6).
-4. **The page's other sections, unchanged and in their current order:** pattern pages' Anatomy, Placements, Copy and part tables, then the API reference.
+4. **API reference** (§6b).
+
+**Nothing else.** Amjed decided on 21 Oct that a page has exactly these three parts: the playground, the usage guidelines and the API reference. The pattern-page sections Plan 4 Task 8 added are removed: Anatomy, Placements, Copy and the part tables (`src/workbench/pattern-pages.tsx`). This supersedes the workbench docs spec's pattern-page sections (Docs §6, §7 and §9) and the AI patterns spec's matching page sections. The «يحل محل» / "Replaces" column stays, because it is one of the usage-guidelines columns on pattern pages. The registry `?raw` import goes too if nothing else uses it.
 
 **Removed from the frame:**
 - the Arabic + English name strip (`.tz-demo-title`, `.tz-demo-name`)
@@ -57,6 +59,19 @@ The page says the component's name in its h1 only.
 - **Grid:** `repeat(auto-fit, minmax(240px, 1fr))`, so the columns stack on phones.
 - **Content:** the text and the links to other pages don't change.
 
+## 6b. API reference
+
+- **Always visible.** It is no longer a collapsible `<details>`; it is a section with an h2 that uses the existing `api` label.
+- **A real table.** Use `<table>` with a caption or `aria-labelledby` pointing at the h2, `<thead>`, and `<th scope="col">`:
+  - «الخاصية» / "Prop": the prop name, in `<code dir="ltr">`; a required prop is marked in words, not only with an asterisk;
+  - «النوع» / "Type": `<code dir="ltr">`;
+  - «الافتراضي» / "Default": `<code dir="ltr">`, or «—» when there is none;
+  - «الوصف» / "Description": the existing text, in the page language.
+- **Rows.** Hairline rows. The header row sits on the tray.
+- **Groups.** Where the reference today groups props under a part name or a heading, keep the groups. Use one table per group, each with its own small heading.
+- **Width.** It keeps the readable measure. Inside an `overflow-x: auto` box it scrolls inline on phones and never makes the page scroll sideways.
+- **Direction.** RTL by default: the columns run from the right in Arabic, and the code cells stay LTR.
+
 ## 7. Open in new tab
 
 - **Element:** a link (`<a>`, not a button) with `target="_blank"` and `rel="noopener"`. It is styled as a 36 px round chip like the other icon buttons.
@@ -95,6 +110,8 @@ The page says the component's name in its h1 only.
 - The header has no kicker, and the name appears only in the h1.
 - The copy button exists only in Code view, in the code header, and it announces once.
 - The notes render outside the frame region, under the "Usage guidelines" h2.
+- A pattern page has no Anatomy, Placements, Copy or part-table sections. Its h2s are exactly: the playground, the usage guidelines and the API reference.
+- The API reference is open with no toggle. It is a `<table>` with column headers, and the code cells are `dir="ltr"`.
 - The new-tab link has `target="_blank"`, `rel="noopener"` and its name. The standalone route renders the page's example with the stored props and settings.
 - In RTL, the new-tab icon carries the mirror rule, and the Replay and copy icons don't.
 - Existing tests that assert the moved parts are updated, and the commit names them.
