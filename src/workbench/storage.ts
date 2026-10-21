@@ -27,7 +27,7 @@ export interface DocumentationPreferences {
   active: ComponentId;
   /** The settings panel: closed until «تخصيص» opens it, then remembered. */
   settingsOpen: boolean;
-  /** The AI group's Parts disclosure; stored optionally, closed when absent. */
+  /** The Parts disclosure; stored optionally, closed when absent. */
   aiPartsOpen: boolean;
   /** The screen page open in place of the docs page `active`, if any. */
   screen: ScreenSlug | null;

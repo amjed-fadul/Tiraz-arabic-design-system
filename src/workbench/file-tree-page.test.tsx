@@ -17,10 +17,7 @@ it("documents FileTree in Files with a minimal inspector and portable copied act
   expect(
     screen.getByRole("heading", { name: "شجرة الملفات", level: 1 }),
   ).toBeVisible();
-  await user.selectOptions(
-    screen.getByRole("combobox", { name: "لغة التوثيق" }),
-    "en",
-  );
+  await user.click(screen.getByRole("button", { name: "English" }));
   await user.click(screen.getByRole("button", { name: "Customize" }));
   await user.click(
     within(screen.getByRole("group", { name: "State mode" })).getByRole(

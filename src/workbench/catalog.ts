@@ -728,7 +728,7 @@ export const chartIds = [
 // Field remains a public family; its composition reference lives under Input.
 export const navigationCatalog = catalog.filter((item) => item.id !== "field");
 
-/** The job an AI pattern finishes; its section in the AI group (Docs §9). */
+/** The job a pattern finishes; its section in component navigation. */
 export type Job = "ask" | "delegate" | "create" | "understand";
 export const jobNames: Record<Job, Localized> = {
   ask: ["اسأل", "Ask"],
@@ -776,7 +776,8 @@ interface DocumentationSection {
   ids: readonly ComponentId[];
   collapsible?: boolean;
 }
-const aiSections: readonly DocumentationSection[] = [
+const primaryGroups: readonly DocumentationSection[] = [
+  { id: "screens", name: ["شاشات", "Screens"], ids: ["chat-app"] },
   {
     id: "ask",
     name: jobNames.ask,
@@ -803,28 +804,13 @@ const aiSections: readonly DocumentationSection[] = [
     name: jobNames.understand,
     ids: ["change-summary", "assistant-controls"],
   },
-  // The chat app's page, then a button for each example screen, which opens
-  // its screen page (Workbench, src/examples/frame/screen.ts).
-  { id: "screens", name: ["شاشات", "Screens"], ids: ["chat-app"] },
   { id: "parts", name: ["الأجزاء", "Parts"], ids: aiParts, collapsible: true },
 ];
 
 // Documentation-only groups. Keep page IDs, metadata and source APIs unchanged:
 // pages only move between groups, so saved pages, props and links keep working.
-const documentationGroups: ReadonlyArray<{
-  id: string;
-  name: Localized;
-  ids: readonly Exclude<ComponentId, "field">[];
-  sections?: readonly DocumentationSection[];
-}> = [
-  {
-    id: "ai",
-    name: ["أنماط الذكاء الاصطناعي", "AI patterns"],
-    ids: aiSections.flatMap(
-      (section) => section.ids as readonly Exclude<ComponentId, "field">[],
-    ),
-    sections: aiSections,
-  },
+const documentationGroups: readonly DocumentationSection[] = [
+  ...primaryGroups,
   {
     id: "forms",
     name: ["النماذج", "Forms"],
@@ -903,9 +889,6 @@ export const navigationGroups = documentationGroups
   .map((group) => ({
     ...group,
     items: pagesOf(group.ids),
-    sections: group.sections
-      ?.map((section) => ({ ...section, items: pagesOf(section.ids) }))
-      .filter((section) => section.items.length > 0),
   }))
   .filter((group) => group.items.length > 0);
 

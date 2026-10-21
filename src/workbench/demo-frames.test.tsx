@@ -658,12 +658,12 @@ it("puts the usage guidelines under their own heading, after the playground", ()
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent),
   ).toEqual(["Use it when", "Use something else when", "What to notice"]);
-  // Outside the frame, straight after the playground's section.
+  // Outside the frame, after the prompt that follows the playground.
   const frame = document.querySelector(".tz-demo-frame") as HTMLElement;
   expect(within(frame).queryByRole("heading", { level: 3 })).toBeNull();
-  expect(
-    document.querySelector(".playground-section")?.nextElementSibling,
-  ).toBe(guidelines);
+  expect(document.querySelector(".agent-section")?.nextElementSibling).toBe(
+    guidelines,
+  );
 });
 
 it("mirrors the new-tab arrow in RTL, never Replay or Copy", async () => {
@@ -748,21 +748,23 @@ it("shows only real literals in the API table's defaults", () => {
   );
 });
 
-it("puts the prompt first below the header, then the playground, the guidelines and the API reference", () => {
+it("leads with the playground, then the prompt, guidelines and a table-only API reference", () => {
   persist(storageKeys.documentation, { language: "ar", active: "button" });
   render(<Workbench />);
   const main = screen.getByRole("main");
   expect(main.firstElementChild).toHaveClass("component-heading");
+  const playground = main.children[1];
+  expect(playground).toHaveClass("playground-section");
+  expect(playground.nextElementSibling).toHaveClass("agent-section");
+  expect(within(playground as HTMLElement).queryByRole("heading")).toBeNull();
+  const reference = main.querySelector(".reference-section")!;
+  expect(reference.querySelector("p")).toBeNull();
+  expect(within(reference as HTMLElement).getByRole("table")).toBeVisible();
   expect(
     within(main)
       .getAllByRole("heading", { level: 2 })
       .map((heading) => heading.textContent),
-  ).toEqual([
-    "استخدمه في تطبيقك",
-    "المعاينة التفاعلية",
-    "إرشادات الاستخدام",
-    "دليل الخصائص",
-  ]);
+  ).toEqual(["استخدمه في تطبيقك", "إرشادات الاستخدام", "دليل الخصائص"]);
 });
 
 it("keeps the prompt English on an Arabic page, under an Arabic heading", async () => {

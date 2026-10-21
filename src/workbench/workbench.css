@@ -43,16 +43,19 @@ bdi {
   inset-block-start: 12px;
 }
 .docs-shell {
+  --docs-header-height: 58px;
   min-block-size: 100dvh;
   background: var(--surface);
   color: var(--text);
 }
 .docs-header {
-  position: relative;
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 30;
   display: flex;
   align-items: center;
   gap: 24px;
-  block-size: 58px;
+  block-size: var(--docs-header-height);
   padding-inline: 24px;
   /* The band draws the edge; forced colors draw this border instead. */
   border-block-end: 1px solid transparent;
@@ -89,10 +92,6 @@ bdi {
   block-size: 23px;
   color: var(--action);
 }
-.header-description {
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-}
 .header-actions {
   display: flex;
   align-items: center;
@@ -116,10 +115,12 @@ bdi {
   font-weight: 400;
   cursor: pointer;
 }
-.doc-button:hover,
-.doc-icon-button:hover {
-  background: var(--wash);
-  color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+  .doc-button:hover,
+  .doc-icon-button:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
 }
 .doc-icon-button {
   inline-size: 32px;
@@ -127,13 +128,7 @@ bdi {
   flex-shrink: 0;
 }
 .language-control {
-  background: transparent;
-  border: 0;
-  color: var(--text-secondary);
-  font-size: var(--text-meta) !important;
-  padding: 6px;
-  min-block-size: 32px;
-  cursor: pointer;
+  min-inline-size: 64px;
 }
 .mobile-navigation {
   display: none;
@@ -144,8 +139,8 @@ bdi {
 }
 .docs-sidebar {
   position: sticky;
-  inset-block-start: 0;
-  block-size: calc(100dvh - 58px);
+  inset-block-start: var(--docs-header-height);
+  block-size: calc(100dvh - var(--docs-header-height));
   padding: 28px 16px 20px;
   display: flex;
   flex-direction: column;
@@ -153,16 +148,7 @@ bdi {
   /* The tray draws the edge; forced colors draw this border instead. */
   border-inline-end: 1px solid transparent;
   background: var(--surface-tray);
-  /* Once stuck, the sidebar ends a header's height above the viewport's
-     bottom; the tray carries on under it. */
-  box-shadow: 0 58px 0 var(--surface-tray);
   min-inline-size: 0;
-}
-.navigation-label {
-  color: var(--text-secondary);
-  font-size: var(--text-meta);
-  padding-inline: 9px;
-  margin-block-end: 12px;
 }
 .component-nav {
   display: flex;
@@ -188,9 +174,11 @@ bdi {
   box-shadow: var(--shadow-chip);
   font-weight: 500;
 }
-.component-nav button:not([aria-current="page"]):hover {
-  color: var(--text);
-  background: var(--wash);
+@media (hover: hover) and (pointer: fine) {
+  .component-nav button:not([aria-current="page"]):hover {
+    color: var(--text);
+    background: var(--wash);
+  }
 }
 @media (forced-colors: active) {
   /* Forced colors drop the chip's fill and ring. The Highlight pair stays as
@@ -215,13 +203,14 @@ bdi {
 }
 .component-page {
   min-inline-size: 0;
+  scroll-margin-block-start: calc(var(--docs-header-height) + var(--space-4));
 }
 .component-heading {
-  margin-block-end: 32px;
+  margin-block-end: var(--space-5);
 }
 .component-heading h1 {
-  font-size: var(--text-display);
-  line-height: var(--leading-display);
+  font-size: var(--text-title);
+  line-height: var(--leading-title);
   font-weight: 600;
   margin: 0 0 7px;
 }
@@ -233,10 +222,10 @@ bdi {
 }
 /* The page's own section headings; an example's dialog title keeps its own. */
 :is(.section-title-row, .agent-section) > h2 {
-  font-size: var(--text-title);
-  font-weight: 600;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-medium);
   margin: 0;
-  line-height: var(--leading-title);
+  line-height: var(--leading-heading);
 }
 .section-title-row {
   display: flex;
@@ -246,7 +235,7 @@ bdi {
   margin-block-end: 12px;
 }
 .agent-section {
-  margin-block-end: 34px;
+  margin-block-end: var(--space-8);
 }
 .agent-section > p {
   font-size: var(--text-meta);
@@ -288,7 +277,7 @@ bdi {
   color: var(--danger);
 }
 .playground-section {
-  margin-block-end: 36px;
+  margin-block-end: var(--space-6);
 }
 /* A page's example alone in its own tab, at the window's full width, with a
    small way back to its page. */
@@ -305,13 +294,42 @@ bdi {
 .standalone-playground > .playground-canvas {
   justify-self: stretch;
 }
-/* The usage guidelines follow the playground, under a hairline, as a screen
-   page's list of the pages it uses follows the screen. */
-.guidelines-section,
+/* Screen composition keeps its separator; component guidance is continuous. */
 .docs-screen-uses {
   margin-block-end: 36px;
   padding-block-start: var(--space-8);
   border-block-start: 0.5px solid var(--hairline);
+}
+.guidelines-section {
+  margin-block-end: var(--space-8);
+  container: workbench-guidance / inline-size;
+}
+.guidelines-section .tz-demo-notes {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+@container workbench-guidance (min-width: 41rem) {
+  .guidelines-section .tz-demo-notes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.guidelines-section .tz-demo-notes > div {
+  min-inline-size: 0;
+  padding: var(--space-5);
+  border-radius: var(--radius-tray);
+  background: var(--surface-tray);
+}
+.guidelines-section .tz-demo-notes > div:nth-child(3) {
+  grid-column: 1 / -1;
+}
+.guidelines-section .tz-demo-notes h3 {
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  margin-block-end: var(--space-3);
+}
+.guidelines-section .tz-demo-notes ul {
+  line-height: var(--line-height);
+  gap: var(--space-3);
 }
 .playground-region {
   overflow: visible;
@@ -535,11 +553,6 @@ bdi {
   font-size: var(--text-meta);
 }
 /* The API reference: always open, one table per group. */
-.reference-section > p {
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-  line-height: 1.8;
-}
 .reference-section > h3 {
   margin: var(--space-6) 0 0;
   font-size: var(--text-label);
@@ -663,17 +676,11 @@ bdi {
   .docs-header {
     padding-inline: 16px;
     gap: 8px;
-    flex-wrap: wrap;
-    min-block-size: 58px;
-    block-size: auto;
-    padding-block: 10px;
+    flex-wrap: nowrap;
   }
   .docs-brand {
     inline-size: auto;
     margin-inline-end: auto;
-  }
-  .header-description {
-    display: none;
   }
   .header-actions {
     gap: 5px;
@@ -683,13 +690,8 @@ bdi {
     font-size: var(--text-micro) !important;
     padding-inline: 6px;
   }
-  .language-control {
-    inline-size: 76px;
-    padding-inline: 3px;
-    font-size: var(--text-micro) !important;
-  }
   .component-heading {
-    margin-block-end: 28px;
+    margin-block-end: var(--space-5);
   }
   .section-title-row {
     gap: 8px;
@@ -735,9 +737,6 @@ bdi {
   }
   .header-actions .doc-button {
     padding-inline: 4px;
-  }
-  .language-control {
-    inline-size: 69px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -816,17 +815,17 @@ bdi {
     var(--motion-press);
 }
 /* The settings card: paper in its own column, 16px clear of its edges,
-   sticky 16px from the top and never taller than the window, with its body
+   sticky below the header and never taller than the window, with its body
    scrolling inside. Closed, it stays in place while the column shuts, and
    only then leaves. */
 .settings-panel {
   position: sticky;
-  inset-block-start: var(--space-4);
+  inset-block-start: calc(var(--docs-header-height) + var(--space-4));
   align-self: start;
   display: flex;
   flex-direction: column;
   inline-size: 320px;
-  max-block-size: calc(100dvh - 58px - 2 * var(--space-4));
+  max-block-size: calc(100dvh - var(--docs-header-height) - 2 * var(--space-4));
   margin: var(--space-4);
   overflow: hidden;
   /* Forced colors drop the paper's ring; this border draws its edge. */
@@ -1218,21 +1217,20 @@ bdi {
   gap: 2px;
 }
 .component-nav-group + .component-nav-group {
-  margin-block-start: 12px;
+  margin-block-start: var(--space-6);
 }
 .component-nav-heading {
   margin: 0;
-  padding: 4px 10px;
+  padding: var(--space-2) 10px;
   font-size: var(--text-meta);
-  font-weight: 500;
-  color: var(--text-muted);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
 }
 .component-nav button {
   min-block-size: 32px;
   padding-block: 4px;
 }
-/* AI patterns: a section for each job, the screens, then the parts, folded. */
-.component-nav-section,
+/* Screens first, then jobs and standalone components; Parts stays folded. */
 .component-nav-items {
   display: flex;
   flex-direction: column;
@@ -1240,13 +1238,6 @@ bdi {
 }
 .component-nav-items[hidden] {
   display: none;
-}
-.component-nav-subheading {
-  margin: 6px 0 0;
-  padding: 4px 10px;
-  font-size: var(--text-meta);
-  font-weight: 500;
-  color: var(--text-secondary);
 }
 .component-nav-toggle {
   padding: 0;
@@ -1259,11 +1250,11 @@ bdi {
   min-block-size: 32px;
   padding: 4px 10px;
   border-radius: var(--radius-item);
-  color: var(--text-secondary);
+  color: var(--text);
 }
 .component-nav .component-nav-disclosure {
   font-size: var(--text-meta);
-  font-weight: 500;
+  font-weight: var(--weight-semibold);
 }
 .component-nav-disclosure > svg {
   flex: none;

@@ -15,17 +15,12 @@ it.each([
     const user = userEvent.setup();
     render(<Workbench />);
     const copy = vi.spyOn(navigator.clipboard, "writeText");
-    const ai = within(
-      screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-    );
+    const ai = within(screen.getByRole("group", { name: "الأجزاء" }));
     // The parts are folded until their disclosure opens.
     await user.click(ai.getByRole("button", { name: "الأجزاء" }));
     await user.click(ai.getByRole("button", { name: ar }));
     expect(screen.getByRole("heading", { level: 1, name: ar })).toBeVisible();
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { level: 1, name: en })).toBeVisible();
     // The playground frame is the only stage; its run replaces the old demo.
     for (const name of ["Examples", "Usage example"])

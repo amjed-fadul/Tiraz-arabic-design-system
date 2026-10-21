@@ -85,10 +85,9 @@ function BrandMark() {
 }
 /**
  * The component navigation, which the sidebar and the mobile drawer share.
- * A group with sections shows each under its heading; the collapsible one
- * (the AI parts) is a disclosure, and its pages are not rendered while it
- * is closed. The Screens section ends with a button for each example screen,
- * which opens its screen page; while one is open, no docs page is current.
+ * Each section has one heading. Parts is a disclosure, and its pages are
+ * not rendered while it is closed. Screens comes first; each example opens
+ * its screen page, and while one is open, no component page is current.
  */
 function ComponentNavigation({
   language,
@@ -119,71 +118,57 @@ function ComponentNavigation({
     </button>
   );
   return (
-    <>
-      <div className="navigation-label">{label("components", language)}</div>
-      <nav className="component-nav" aria-label={label("components", language)}>
-        {navigationGroups.map((group) => (
+    <nav className="component-nav" aria-label={label("components", language)}>
+      {navigationGroups.map((group) => {
+        const open = !group.collapsible || partsOpen;
+        return (
           <div
             key={group.id}
             className="component-nav-group"
             role="group"
             aria-label={localize(group.name, language)}
           >
-            <h2 className="component-nav-heading">
-              {localize(group.name, language)}
+            <h2
+              className={`component-nav-heading${group.collapsible ? " component-nav-toggle" : ""}`}
+            >
+              {group.collapsible ? (
+                <button
+                  type="button"
+                  className="component-nav-disclosure"
+                  aria-expanded={partsOpen}
+                  aria-controls={`${id}-${group.id}`}
+                  onClick={() => onPartsOpenChange(!partsOpen)}
+                >
+                  {localize(group.name, language)}
+                  <ChevronDown size={14} aria-hidden="true" />
+                </button>
+              ) : (
+                localize(group.name, language)
+              )}
             </h2>
-            {group.sections
-              ? group.sections.map((section) => {
-                  const open = !section.collapsible || partsOpen;
-                  return (
-                    <div key={section.id} className="component-nav-section">
-                      <h3
-                        className={`component-nav-subheading${section.collapsible ? " component-nav-toggle" : ""}`}
-                      >
-                        {section.collapsible ? (
-                          <button
-                            type="button"
-                            className="component-nav-disclosure"
-                            aria-expanded={partsOpen}
-                            aria-controls={`${id}-${section.id}`}
-                            onClick={() => onPartsOpenChange(!partsOpen)}
-                          >
-                            {localize(section.name, language)}
-                            <ChevronDown size={14} aria-hidden="true" />
-                          </button>
-                        ) : (
-                          localize(section.name, language)
-                        )}
-                      </h3>
-                      <div
-                        id={`${id}-${section.id}`}
-                        className="component-nav-items"
-                        hidden={!open}
-                      >
-                        {open && section.items.map(page)}
-                        {open &&
-                          section.id === "screens" &&
-                          screens.map((item) => (
-                            <button
-                              type="button"
-                              key={item.slug}
-                              aria-current={
-                                screen === item.slug ? "page" : undefined
-                              }
-                              onClick={() => onOpenScreen(item.slug)}
-                            >
-                              {localize(item.name, language)}
-                            </button>
-                          ))}
-                      </div>
-                    </div>
-                  );
-                })
-              : group.items.map(page)}
+            <div
+              id={`${id}-${group.id}`}
+              className="component-nav-items"
+              hidden={!open}
+            >
+              {open && group.items.map(page)}
+              {open &&
+                group.id === "screens" &&
+                screens.map((item) => (
+                  <button
+                    type="button"
+                    key={item.slug}
+                    aria-current={screen === item.slug ? "page" : undefined}
+                    onClick={() => onOpenScreen(item.slug)}
+                  >
+                    {localize(item.name, language)}
+                  </button>
+                ))}
+            </div>
           </div>
-        ))}
-      </nav>
-    </>
+        );
+      })}
+    </nav>
   );
 }
 type ScreenWidth = "desktop" | "tablet" | "phone";
@@ -888,17 +873,7 @@ export function Workbench() {
             <BrandMark />
             <span>{t("طِراز", "Tiraz")}</span>
           </a>
-          <span className="header-description">
-            {t("توثيق المكوّنات", "Component documentation")}
-          </span>
           <div className="header-actions">
-            <button
-              type="button"
-              className="doc-button"
-              onClick={() => openScreen("dashboard")}
-            >
-              {t("مثال لوحة العملاء", "Dashboard example")}
-            </button>
             <div className="mobile-navigation">
               <DocsDrawer
                 title={label("components", language)}
@@ -915,15 +890,16 @@ export function Workbench() {
                 {navigation}
               </DocsDrawer>
             </div>
-            <select
-              className="language-control"
-              aria-label={t("لغة التوثيق", "Documentation language")}
-              value={language}
-              onChange={(e) => changeLanguage(e.target.value as Language)}
+            <button
+              type="button"
+              className="doc-button language-control"
+              title={t("التبديل إلى الإنجليزية", "Switch to Arabic")}
+              onClick={() => changeLanguage(language === "ar" ? "en" : "ar")}
             >
-              <option value="ar">العربية</option>
-              <option value="en">English</option>
-            </select>
+              <span lang={language === "ar" ? "en" : "ar"}>
+                {language === "ar" ? "English" : "العربية"}
+              </span>
+            </button>
             <button
               type="button"
               className="doc-icon-button"
@@ -975,41 +951,7 @@ export function Workbench() {
                     <h1>{localize(current.name, language)}</h1>
                     <p>{localize(current.description, language)}</p>
                   </header>
-                  <section className="agent-section">
-                    <h2 id="agent-heading">{label("useInApp", language)}</h2>
-                    <div className="prompt-row">
-                      {/* The prompt is English on every page; its heading and
-                          copy control follow the page. */}
-                      <p className="prompt-preview" lang="en" dir="ltr">
-                        {prompt
-                          .replace(/\s+/g, " ")
-                          .split(
-                            /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
-                          )
-                          .map((part, index) =>
-                            index % 2 === 1 ? (
-                              <bdi dir="ltr" key={index}>
-                                {part}
-                              </bdi>
-                            ) : (
-                              part
-                            ),
-                          )}
-                      </p>
-                      <CopyControl
-                        text={prompt}
-                        caption={label("copyPrompt", language)}
-                        language={language}
-                        iconOnly
-                      />
-                    </div>
-                  </section>
                   <section className="playground-section">
-                    <div className="section-title-row">
-                      <h2 id="playground-heading">
-                        {label("playground", language)}
-                      </h2>
-                    </div>
                     <div className="playground-region" ref={playgroundRegion}>
                       <SystemProvider config={effectiveConfig}>
                         <PreviewFrame
@@ -1038,7 +980,7 @@ export function Workbench() {
                           <div
                             className={`playground-canvas playground-${active}`}
                             role="region"
-                            aria-labelledby="playground-heading"
+                            aria-label={label("playground", language)}
                           >
                             <Playground
                               key={`${active}-${revisions[active] ?? 0}`}
@@ -1108,6 +1050,35 @@ export function Workbench() {
                         )}
                       </div>
                     )}
+                  </section>
+                  <section className="agent-section">
+                    <h2 id="agent-heading">{label("useInApp", language)}</h2>
+                    <div className="prompt-row">
+                      {/* The prompt is English on every page; its heading and
+                          copy control follow the page. */}
+                      <p className="prompt-preview" lang="en" dir="ltr">
+                        {prompt
+                          .replace(/\s+/g, " ")
+                          .split(
+                            /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
+                          )
+                          .map((part, index) =>
+                            index % 2 === 1 ? (
+                              <bdi dir="ltr" key={index}>
+                                {part}
+                              </bdi>
+                            ) : (
+                              part
+                            ),
+                          )}
+                      </p>
+                      <CopyControl
+                        text={prompt}
+                        caption={label("copyPrompt", language)}
+                        language={language}
+                        iconOnly
+                      />
+                    </div>
                   </section>
                   {notes && (
                     <section

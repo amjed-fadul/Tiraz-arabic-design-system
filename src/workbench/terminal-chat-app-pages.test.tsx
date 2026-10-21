@@ -17,7 +17,7 @@ it.each([
   // Terminal is a content block, which moved to Display; the chat-app page is
   // the Assistant workspace screen.
   ["الطرفية", "Terminal", "العرض والتنبيهات"],
-  ["مساحة عمل المساعد", "Assistant workspace", "أنماط الذكاء الاصطناعي"],
+  ["مساحة عمل المساعد", "Assistant workspace", "شاشات"],
 ])(
   "documents %s in its group with continuous shared frames",
   async (ar, en, group) => {
@@ -28,13 +28,10 @@ it.each([
         name: ar,
       }),
     );
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     expect(
-      screen.getByRole("heading", { name: "Interactive playground" }),
+      screen.getByRole("region", { name: "Interactive playground" }),
     ).toBeVisible();
     // The playground frame carries the code; there is no usage section.
     for (const name of ["Usage example", "Examples"])

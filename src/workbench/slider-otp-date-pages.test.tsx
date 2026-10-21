@@ -31,10 +31,7 @@ it.each([
     expect(
       screen.getByRole("tablist", { name: "طريقة العرض" }),
     ).toBeInTheDocument();
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(
       screen.getByRole("heading", { name: en, level: 1 }),
     ).toBeInTheDocument();

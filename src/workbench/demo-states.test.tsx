@@ -316,7 +316,7 @@ it("runs as before without a phase", async () => {
   expect(vi.getTimerCount()).toBe(0);
 });
 
-it("puts the prompt before the demo", () => {
+it("puts the prompt after the demo", () => {
   const { container } = open("button");
   expect(
     Array.from(
@@ -324,8 +324,8 @@ it("puts the prompt before the demo", () => {
       (section) => section.className,
     ),
   ).toEqual([
-    "agent-section",
     "playground-section",
+    "agent-section",
     "guidelines-section",
     "reference-section",
   ]);
@@ -1978,10 +1978,8 @@ it("translates a state's text when the language changes", async () => {
   press("invalid");
   expect(screen.getByText("أدخل اسم العميل للمتابعة.")).toBeInTheDocument();
   const language = () =>
-    screen.getByRole("combobox", {
-      name: /^(لغة التوثيق|Documentation language)$/,
-    });
-  await user.selectOptions(language(), "en");
+    screen.getByRole("button", { name: /^(English|العربية)$/ });
+  await user.click(language());
   // The message follows the language, on the stage and in the saved props
   // (the code and the prompt are built from them); the state stays pressed.
   expect(
@@ -1991,7 +1989,7 @@ it("translates a state's text when the language changes", async () => {
     "Enter the customer name to continue.",
   );
   expect(pressedWords()).toEqual([stateWords.invalid[1]]);
-  await user.selectOptions(language(), "ar");
+  await user.click(language());
   expect(screen.getByText("أدخل اسم العميل للمتابعة.")).toBeInTheDocument();
   expect(savedProps("input").error).toBe("أدخل اسم العميل للمتابعة.");
 });
@@ -2024,12 +2022,7 @@ it.each([
     open(id);
     press("invalid");
     expect(screen.getByText(ar)).toBeInTheDocument();
-    await user.selectOptions(
-      screen.getByRole("combobox", {
-        name: /^(لغة التوثيق|Documentation language)$/,
-      }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByText(en)).toBeInTheDocument();
     expect(savedProps(id).error).toBe(en);
     expect(pressedWords()).toEqual([stateWords.invalid[1]]);

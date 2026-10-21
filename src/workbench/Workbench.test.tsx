@@ -210,10 +210,16 @@ it("retains continuous documentation, synchronized prompt content and API inform
   ]) {
     await userEvent.click(navigation().getByRole("button", { name }));
     expect(screen.getByRole("heading", { name, level: 1 })).toBeInTheDocument();
-    for (const title of ["استخدمه في تطبيقك", "المعاينة التفاعلية"])
+    for (const title of ["استخدمه في تطبيقك", "إرشادات الاستخدام"])
       expect(
         screen.getByRole("heading", { name: title, level: 2 }),
       ).toBeInTheDocument();
+    expect(
+      screen.getByRole("region", { name: "المعاينة التفاعلية" }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole("heading", { name: "المعاينة التفاعلية" }),
+    ).toBeNull();
     for (const title of ["مثال الاستخدام", "أمثلة"])
       expect(screen.queryByRole("heading", { name: title })).toBeNull();
     expect(
@@ -292,7 +298,7 @@ it("changes language and direction together without losing custom labels", async
   render(<Workbench />);
   await userEvent.clear(controls().getByLabelText("التسمية"));
   await userEvent.type(controls().getByLabelText("التسمية"), "حفظ خاص");
-  await userEvent.selectOptions(screen.getByLabelText("لغة التوثيق"), "en");
+  await userEvent.click(screen.getByRole("button", { name: "English" }));
   expect(document.documentElement.dir).toBe("ltr");
   expect(document.documentElement.lang).toBe("en");
   expect(

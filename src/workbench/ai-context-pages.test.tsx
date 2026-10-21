@@ -26,19 +26,14 @@ it.each([
   async (ar, en) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    const ai = within(
-      screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-    );
+    const ai = within(screen.getByRole("group", { name: "الأجزاء" }));
     // The parts are folded until their disclosure opens.
     await user.click(ai.getByRole("button", { name: "الأجزاء" }));
     await user.click(ai.getByRole("button", { name: ar }));
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     expect(
-      screen.getByRole("heading", { name: "Interactive playground" }),
+      screen.getByRole("region", { name: "Interactive playground" }),
     ).toBeVisible();
     // The playground frame is the only stage; its Code view holds the source.
     for (const name of ["Usage example", "Examples"])

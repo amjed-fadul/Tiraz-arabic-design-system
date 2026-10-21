@@ -15,7 +15,7 @@ it.each([
   // Content blocks moved to Display; StreamingText is one of the AI parts.
   ["كتلة الكود", "CodeBlock", "العرض والتنبيهات"],
   ["ماركداون", "Markdown", "العرض والتنبيهات"],
-  ["النص المتتابع", "StreamingText", "أنماط الذكاء الاصطناعي"],
+  ["النص المتتابع", "StreamingText", "الأجزاء"],
 ] as const)(
   "keeps %s in its group and copies portable examples and dependency guidance",
   async (ar, en, group) => {
@@ -28,10 +28,7 @@ it.each([
       }),
     );
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     for (const name of ["Examples", "Usage example"])
       expect(screen.queryByRole("heading", { name })).toBeNull();
@@ -195,10 +192,7 @@ it("uses the page's frame for the streaming demo: view tabs above, an icon Repla
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "الأجزاء" }));
   await user.click(screen.getByRole("button", { name: "النص المتتابع" }));
-  await user.selectOptions(
-    screen.getByRole("combobox", { name: "لغة التوثيق" }),
-    "en",
-  );
+  await user.click(screen.getByRole("button", { name: "English" }));
   const playground = document.querySelector(
     ".playground-region",
   ) as HTMLElement;

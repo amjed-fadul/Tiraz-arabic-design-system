@@ -12,7 +12,12 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
   const nav = screen.getByRole("navigation", { name: "المكوّنات" });
   const groups = within(nav).getAllByRole("group");
   expect(groups.map((group) => group.getAttribute("aria-label"))).toEqual([
-    "أنماط الذكاء الاصطناعي",
+    "شاشات",
+    "اسأل",
+    "فوّض",
+    "أنشئ",
+    "افهم وتحكّم",
+    "الأجزاء",
     "النماذج",
     "الملفات",
     "التنقّل",
@@ -38,8 +43,8 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
     within(nav).queryByRole("group", { name: "الملفات" }),
   ).toBeInTheDocument();
   expect(
-    within(nav).getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-  ).toBeInTheDocument();
+    within(nav).queryByText("أنماط الذكاء الاصطناعي"),
+  ).not.toBeInTheDocument();
   await user.click(within(nav).getByRole("button", { name: "شريط التنقّل" }));
   expect(
     within(nav).getByRole("button", { name: "شريط التنقّل" }),
@@ -59,17 +64,19 @@ it("translates groups and preserves the selected documentation page and URL", as
       { name: "الأزرار" },
     ),
   );
-  await user.selectOptions(
-    screen.getByRole("combobox", { name: "لغة التوثيق" }),
-    "en",
-  );
+  await user.click(screen.getByRole("button", { name: "English" }));
   const nav = screen.getByRole("navigation", { name: "Components" });
   expect(
     within(nav)
       .getAllByRole("group")
       .map((group) => group.getAttribute("aria-label")),
   ).toEqual([
-    "AI patterns",
+    "Screens",
+    "Ask",
+    "Delegate",
+    "Create",
+    "Understand and control",
+    "Parts",
     "Forms",
     "Files",
     "Navigation",
@@ -86,45 +93,64 @@ it("translates groups and preserves the selected documentation page and URL", as
   expect(
     within(nav).queryByRole("group", { name: "Files" }),
   ).toBeInTheDocument();
+  expect(within(nav).queryByText("AI patterns")).not.toBeInTheDocument();
+  const toggle = screen.getByRole("button", { name: "العربية" });
+  expect(within(toggle).getByText("العربية")).toHaveAttribute("lang", "ar");
+  expect(toggle).toHaveFocus();
   expect(
-    within(nav).getByRole("group", { name: "AI patterns" }),
-  ).toBeInTheDocument();
+    screen.queryByRole("combobox", { name: "Documentation language" }),
+  ).toBeNull();
+  const header = document.querySelector(".docs-header")!;
+  expect(header).not.toHaveTextContent("Component documentation");
+  expect(header).not.toHaveTextContent("Dashboard example");
+  await user.keyboard("{Enter}");
+  expect(screen.getByRole("button", { name: "English" })).toHaveFocus();
+  expect(document.documentElement).toHaveAttribute("lang", "ar");
+  expect(
+    JSON.parse(localStorage.getItem(storageKeys.documentation)!).language,
+  ).toBe("ar");
+  expect(
+    screen.getByRole("heading", { level: 1, name: "الأزرار" }),
+  ).toBeVisible();
 });
 
-it("groups AI patterns by job, folds the parts and ends Display with content blocks", async () => {
+it("starts with Screens, groups jobs without an umbrella label, and folds Parts", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  const ai = within(nav.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }));
   expect(
-    ai
-      .getAllByRole("heading", { level: 3 })
+    nav
+      .getAllByRole("heading", { level: 2 })
+      .slice(0, 6)
       .map((heading) => heading.textContent),
-  ).toEqual(["اسأل", "فوّض", "أنشئ", "افهم وتحكّم", "شاشات", "الأجزاء"]);
-  expect(ai.getAllByRole("button").map((button) => button.textContent)).toEqual(
-    [
-      "ابدأ مهمة",
-      "إجابة موثّقة",
-      "اسأل بياناتك",
-      "مهمة الوكيل",
-      "أسئلة قبل البدء",
-      "طلب موافقة",
-      "سلسلة موافقات",
-      "صندوق القرارات",
-      "تعديلات مقترحة",
-      "توليد صورة",
-      "مسودة للمراجعة",
-      "ما الذي تغيّر",
-      "إعدادات المساعد",
-      "مساحة عمل المساعد",
-      ...screens.map((item) => item.name[0]),
-      "الأجزاء",
-    ],
-  );
+  ).toEqual(["شاشات", "اسأل", "فوّض", "أنشئ", "افهم وتحكّم", "الأجزاء"]);
+  expect(
+    nav
+      .getAllByRole("button")
+      .slice(0, screens.length + 15)
+      .map((button) => button.textContent),
+  ).toEqual([
+    "مساحة عمل المساعد",
+    ...screens.map((item) => item.name[0]),
+    "ابدأ مهمة",
+    "إجابة موثّقة",
+    "اسأل بياناتك",
+    "مهمة الوكيل",
+    "أسئلة قبل البدء",
+    "طلب موافقة",
+    "سلسلة موافقات",
+    "صندوق القرارات",
+    "تعديلات مقترحة",
+    "توليد صورة",
+    "مسودة للمراجعة",
+    "ما الذي تغيّر",
+    "إعدادات المساعد",
+    "الأجزاء",
+  ]);
   // The screens open as pages of the docs, never in a new tab.
-  expect(ai.queryAllByRole("link")).toEqual([]);
+  expect(nav.queryAllByRole("link")).toEqual([]);
   // The parts are folded, and not rendered until they open.
-  const parts = ai.getByRole("button", { name: "الأجزاء" });
+  const parts = nav.getByRole("button", { name: "الأجزاء" });
   expect(parts).toHaveAttribute("aria-expanded", "false");
   const region = document.getElementById(parts.getAttribute("aria-controls")!)!;
   expect(region).toBeEmptyDOMElement();

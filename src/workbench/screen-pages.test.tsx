@@ -46,7 +46,7 @@ function stubStage(width: number, height: number) {
 it("lists the screens as buttons, with no new-tab links", () => {
   render(<Workbench />);
   const section = within(
-    nav().getByRole("heading", { level: 3, name: "شاشات" }).parentElement!,
+    nav().getByRole("heading", { level: 2, name: "شاشات" }).parentElement!,
   );
   expect(
     section.getAllByRole("button").map((item) => item.textContent),
@@ -146,10 +146,7 @@ it("reloads the screen in the docs' language and theme", async () => {
   persist(storageKeys.documentation, { active: "button", screen: "invoices" });
   render(<Workbench />);
   expect(frame()).toHaveAttribute("src", "/examples/invoices?embed=1");
-  await user.selectOptions(
-    screen.getByRole("combobox", { name: "لغة التوثيق" }),
-    "en",
-  );
+  await user.click(screen.getByRole("button", { name: "English" }));
   expect(frame()).toHaveAttribute("title", "Invoices and collections");
   expect(frame()).toHaveAttribute("src", "/examples/invoices?embed=1&lang=en");
   await user.click(screen.getByRole("button", { name: "Toggle theme" }));
@@ -169,10 +166,7 @@ it("opens the screen on its own in a new tab", async () => {
   expect(link()).toHaveAttribute("target", "_blank");
   expect(link()).toHaveAttribute("rel", "noopener");
   expect(link().querySelector("svg")).toHaveClass("tz-mirror-rtl");
-  await user.selectOptions(
-    screen.getByRole("combobox", { name: "لغة التوثيق" }),
-    "en",
-  );
+  await user.click(screen.getByRole("button", { name: "English" }));
   await user.click(screen.getByRole("button", { name: "Toggle theme" }));
   expect(link()).toHaveAttribute(
     "href",

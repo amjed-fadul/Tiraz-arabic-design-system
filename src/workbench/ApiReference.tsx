@@ -1,8 +1,6 @@
 import { useId } from "react";
 import registrySource from "../system/ai/registry.json?raw";
 import type { ComponentId } from "./catalog";
-import { catalog } from "./catalog";
-import { fields } from "./fields";
 import { label, words } from "./i18n";
 import type { Language } from "./i18n";
 type Prop = {
@@ -51,7 +49,6 @@ export function ApiReference({
 }) {
   const t = words(language);
   const id = useId();
-  const file = catalog.find((item) => item.id === component)!.file;
   const chartRows: Array<[string, string, string]> = [
     [
       "label / summary",
@@ -3554,34 +3551,15 @@ export function ApiReference({
       <div className="section-title-row">
         <h2 id={`${id}-api`}>{label("api", language)}</h2>
       </div>
-      <p>
-        {t("تجد الواجهة الفعلية في", "Actual interface in")}{" "}
-        <bdi dir="ltr">src/system/{file}</bdi>.
-      </p>
       {table(rows[component], propsOf(component), `${id}-api`)}
       {component === "input" && (
         <>
           <h3 id={`${id}-field`}>
             {t("Field · مساعد تركيب", "Field · composition helper")}
           </h3>
-          <p>
-            {t(
-              "واجهة منخفضة المستوى لتركيب Input وSelect. يبقى تصديرها وطريقة تركيبها الحالية متاحين.",
-              "Lower-level composition for Input and Select. Its public export and existing composition remain available.",
-            )}
-          </p>
           {table(rows.field, propsOf("field"), `${id}-field`)}
         </>
       )}
-      <p className="api-note">
-        {t(
-          "يشارك SystemProvider إعدادات المظهر بين المكوّنات. الخصائص التي لا تظهر في المعاينة متاحة في API، فاربط الدوال وrefs في كود تطبيقك.",
-          "Appearance is shared through SystemProvider. Properties omitted from the compact inspector remain available in the API; supply functions and refs in application code.",
-        )}
-      </p>
-      <p className="sr-only">
-        {fields[component].map((f) => f.api).join(", ")}
-      </p>
     </section>
   );
 }

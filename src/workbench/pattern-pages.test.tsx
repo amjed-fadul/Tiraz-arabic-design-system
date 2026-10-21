@@ -15,13 +15,12 @@ const sections = () =>
     .getAllByRole("heading", { level: 2 })
     .map((heading) => heading.textContent);
 
-it("shows a pattern page as its prompt, playground, usage guidelines and API reference, and nothing else", async () => {
+it("shows a pattern page as its playground, prompt, usage guidelines and API reference", async () => {
   open("agent-task");
-  // No Anatomy, Placements or Copy: the prompt, the demo and its guidelines,
-  // and the API reference last.
+  // Only supporting documentation needs section headings; the playground
+  // leads the page and keeps its accessible region name.
   expect(sections()).toEqual([
     "استخدمه في تطبيقك",
-    "المعاينة التفاعلية",
     "إرشادات الاستخدام",
     "دليل الخصائص",
   ]);
@@ -35,7 +34,6 @@ it("shows a pattern page as its prompt, playground, usage guidelines and API ref
   await userEvent.click(nav().getByRole("button", { name: "صفوف المهام" }));
   expect(sections()).toEqual([
     "استخدمه في تطبيقك",
-    "المعاينة التفاعلية",
     "إرشادات الاستخدام",
     "دليل الخصائص",
   ]);

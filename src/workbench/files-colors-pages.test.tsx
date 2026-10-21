@@ -29,10 +29,7 @@ it.each([
       expect(
         within(nav).getByRole("group", { name: "الملفات" }),
       ).toBeInTheDocument();
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(
       screen.getByRole("heading", { level: 1, name: en }),
     ).toBeInTheDocument();

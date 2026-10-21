@@ -28,17 +28,14 @@ it.each([
     const user = userEvent.setup();
     render(<Workbench />);
     await user.click(
-      within(
-        screen.getByRole("group", { name: "أنماط الذكاء الاصطناعي" }),
-      ).getByRole("button", { name: ar }),
+      within(screen.getByRole("group", { name: "فوّض" })).getByRole("button", {
+        name: ar,
+      }),
     );
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     expect(
-      screen.getByRole("heading", { name: "Interactive playground" }),
+      screen.getByRole("region", { name: "Interactive playground" }),
     ).toBeVisible();
     for (const name of ["Examples", "Usage example"])
       expect(screen.queryByRole("heading", { name })).toBeNull();

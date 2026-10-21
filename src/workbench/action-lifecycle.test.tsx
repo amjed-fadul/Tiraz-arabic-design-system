@@ -164,9 +164,7 @@ it("cancels simulation for icon-only edits and language transitions", () => {
   tick(3000);
   expect(preview()).toHaveAttribute("data-state", "idle");
   fireEvent.click(preview());
-  fireEvent.change(screen.getByLabelText("لغة التوثيق"), {
-    target: { value: "en" },
-  });
+  fireEvent.click(screen.getByRole("button", { name: "English" }));
   tick(3000);
   expect(
     within(

@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 it.each([
-  ["صفوف المهام", "TaskRows", "أنماط الذكاء الاصطناعي", "Appearance"],
+  ["صفوف المهام", "TaskRows", "الأجزاء", "Appearance"],
   ["قائمة الإشعارات", "NotificationList", "العرض والتنبيهات", "Read controls"],
 ])(
   "documents %s with continuous examples, inspector and complete copied source",
@@ -24,10 +24,7 @@ it.each([
     for (const name of ["مثال الاستخدام", "أمثلة"])
       expect(screen.queryByRole("heading", { name })).toBeNull();
     expect(screen.getByRole("tablist", { name: "طريقة العرض" })).toBeVisible();
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Customize" }));
     if (en === "TaskRows")

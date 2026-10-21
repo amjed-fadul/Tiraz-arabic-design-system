@@ -21,10 +21,7 @@ it.each([
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
     // The playground is the only stage; the step-by-step run plays there.
     expect(screen.queryByRole("heading", { name: "أمثلة" })).toBeNull();
-    await user.selectOptions(
-      screen.getByRole("combobox", { name: "لغة التوثيق" }),
-      "en",
-    );
+    await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     await user.click(screen.getByRole("button", { name: "Customize" }));
     const rail = within(
