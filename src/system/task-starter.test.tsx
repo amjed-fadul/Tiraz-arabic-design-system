@@ -343,7 +343,9 @@ it("lets a host announce context changes without replaying muted additions", () 
   const view = render(start([], "off"));
   view.rerender(start([options[0]], "off"));
   expect(
-    document.querySelector('.tz-task-starter > [role="status"]'),
+    document.querySelector(
+      '.tz-task-starter [role="status"], .tz-task-starter [aria-live="polite"]',
+    ),
   ).toBeNull();
   view.rerender(start([options[0]], "polite"));
   expect(
@@ -353,4 +355,29 @@ it("lets a host announce context changes without replaying muted additions", () 
   expect(
     document.querySelector('.tz-task-starter > [role="status"]'),
   ).toHaveTextContent(options[1].label);
+});
+
+it("keeps submission errors accessible without live announcements when the host owns them", async () => {
+  const user = userEvent.setup();
+  render(
+    wrap(
+      <Host
+        initial="Prepare the launch plan."
+        announcement="off"
+        onSubmit={async () => {
+          throw new Error("offline");
+        }}
+      />,
+    ),
+  );
+  const field = screen.getByRole("textbox", { name: "طلبك" });
+  await user.click(field);
+  await user.keyboard("{Enter}");
+  const error = await screen.findByText(
+    "تعذّر الإرسال. مسودتك محفوظة، حاول مرة أخرى.",
+  );
+  expect(error).toBeVisible();
+  expect(field).toHaveAccessibleDescription(error.textContent!);
+  expect(field).toHaveFocus();
+  expect(screen.queryByRole("status")).toBeNull();
 });

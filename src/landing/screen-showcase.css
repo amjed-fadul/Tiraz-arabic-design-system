@@ -1,0 +1,84 @@
+.lp-screen-showcase {
+  --font: "IBM Plex Sans Arabic", sans-serif;
+  font-family: var(--font);
+}
+.lp-screen-showcase > .tz-tab-list {
+  margin-block-end: var(--space-3);
+  padding-inline: var(--space-2);
+}
+.lp-screen-showcase > .tz-tab-list .tz-tab {
+  min-inline-size: 0;
+  white-space: normal;
+  text-align: center;
+}
+.lp-screen-showcase > .tz-tab-panel {
+  padding: 0;
+}
+.lp-screen-example {
+  position: relative;
+}
+.lp-screen-stage {
+  position: relative;
+  block-size: clamp(560px, 72vh, 720px);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+.lp-screen-stage > iframe {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: block;
+  inline-size: var(--lp-screen-width);
+  block-size: var(--lp-screen-height);
+  border: 0;
+  transform: scale(var(--lp-screen-scale));
+  transform-origin: top left;
+}
+.lp-screen-stage > iframe:dir(rtl) {
+  transform-origin: top right;
+}
+.lp-screen-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  padding: var(--space-4) var(--space-3) var(--space-2);
+  color: var(--lp-text-2);
+  font-size: var(--text-body);
+}
+.lp-screen-caption > p {
+  flex: 1 1 24rem;
+}
+.lp-screen-caption > a {
+  flex: none;
+}
+.lp-screen-skip {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: var(--space-2);
+  inset-inline-start: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-small);
+}
+.lp-screen-skip:not(:focus) {
+  clip-path: inset(50%);
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .lp-screen-showcase > .tz-tab-list .tz-tab {
+    flex: 1;
+    padding-inline: var(--space-2);
+    font-size: var(--text-meta);
+  }
+  .lp-screen-stage {
+    block-size: 640px;
+  }
+}

@@ -16,7 +16,7 @@ import { QuickStart } from "../workbench/QuickStart";
 import { persist, readDocumentation, storageKeys } from "../workbench/storage";
 import { AccentPicker } from "./AccentPicker";
 import { ComponentMarquee, WarpMark } from "./ComponentMarquee";
-import { LiveExample } from "./LiveExample";
+import { ScreenShowcase } from "./ScreenShowcase";
 import { Showcase } from "./Showcase";
 import { WhyTiraz } from "./WhyTiraz";
 import { Loom } from "./loom/Loom";
@@ -95,7 +95,7 @@ export function Landing() {
               className="lp-main-nav"
               aria-label={ar ? "التنقل الرئيسي" : "Main navigation"}
             >
-              <a href="#in-action">{ar ? "جرّب طِراز" : "In action"}</a>
+              <a href="#in-action">{ar ? "الشاشات" : "Screens"}</a>
               <a href="#why">{ar ? "لماذا طِراز؟" : "Why Tiraz"}</a>
               <a href="#explore">{ar ? "المكوّنات" : "Components"}</a>
               <a href="#start">{ar ? "دليل البدء" : "Get started"}</a>
@@ -209,12 +209,14 @@ export function Landing() {
                 {ar ? "جرّب طِراز" : "Try Tiraz"}
               </p>
               <h2 id="in-action-title">
-                {ar ? "جرّب طِراز في لوحة تحكم" : "Try Tiraz in a dashboard"}
+                {ar
+                  ? "من المكوّنات إلى شاشات متكاملة"
+                  : "From components to complete screens"}
               </h2>
               <p>
                 {ar
-                  ? "لوحة تحكم مبنية بمكوّنات طِراز. جرّب تغيير الفترة أو اللون."
-                  : "A dashboard built with Tiraz components. Try changing the date range or accent color."}
+                  ? "استكشف لوحة العملاء، ثم راجع الفواتير مع وكيل التحصيل. شاشات حقيقية يمكنك تجربتها هنا."
+                  : "Explore the customer dashboard, then review invoices with the collections agent. Real screens you can try right here."}
               </p>
             </div>
             <div className="lp-container lp-stage">
@@ -223,7 +225,7 @@ export function Landing() {
                   className="lp-live-example"
                   aria-label={ar ? "مثال منتج تفاعلي" : "Live product example"}
                 >
-                  <LiveExample ar={ar} />
+                  <ScreenShowcase ar={ar} />
                 </section>
               </div>
             </div>
@@ -246,19 +248,19 @@ export function Landing() {
                     {ar ? "استكشف النظام" : "Explore the system"}
                   </p>
                   <h2 id="explore-title">
-                    {ar ? "مكوّنات لواجهات تطبيقك" : "Components for your app"}
+                    {ar ? "مكوّنات تعمل معك" : "Components that work with you"}
                   </h2>
                 </div>
-                <a className="lp-text-link" href="/library?category=screens">
-                  {ar ? "تصفّح الأمثلة" : "Browse examples"}
+                <a className="lp-text-link" href="/library">
+                  {ar ? "كل المكوّنات" : "All components"}
                   <Arrow size={16} aria-hidden="true" />
                 </a>
               </div>
               <Showcase ar={ar} />
               <p className="lp-source-note">
                 {ar
-                  ? "المعاينات مبنية بمكوّنات طِراز."
-                  : "These previews use Tiraz components."}
+                  ? "هذه مكوّنات طِراز نفسها. جرّب الطلبات والقرارات وتوليد الصور، ثم افتح أي مكوّن لاستخدامه في تطبيقك."
+                  : "These are the Tiraz components themselves. Try requests, decisions and image generation, then open any component to use it in your app."}
               </p>
             </div>
           </section>

@@ -74,19 +74,25 @@ describe("landing behavior", () => {
     );
     expect(
       screen.getByRole("region", { name: "Live product example" }),
-    ).toHaveTextContent("Sample data");
+    ).toHaveTextContent("Customer dashboard");
     await user.click(screen.getByRole("button", { name: "العربية" }));
     expect(document.documentElement.dir).toBe("rtl");
   });
 
-  it("updates period totals from sample rows and changes the single theme", async () => {
+  it("switches real screen previews and keeps the selected screen through theme changes", async () => {
     const user = userEvent.setup();
     const { container } = render(<Landing />);
     await user.click(screen.getByRole("button", { name: "English" }));
     const demo = screen.getByRole("region", { name: "Live product example" });
-    expect(within(demo).getByTestId("order-total")).toHaveTextContent("1,124");
-    await user.click(within(demo).getByRole("tab", { name: "Last 3 days" }));
-    expect(within(demo).getByTestId("order-total")).toHaveTextContent("672");
+    await user.click(
+      within(demo).getByRole("tab", { name: "Invoices and collections" }),
+    );
+    expect(
+      within(demo).getByRole("link", { name: /Open full screen/ }),
+    ).toHaveAttribute(
+      "href",
+      "/examples/invoices?lang=en&theme=dark&accent=sage",
+    );
     // The night loom is the default; one control switches the whole page.
     expect(container.querySelector(".tiraz-system")).toHaveAttribute(
       "data-theme",
@@ -101,7 +107,15 @@ describe("landing behavior", () => {
     expect(
       screen.getAllByRole("button", { name: "Use dark theme" }),
     ).toHaveLength(1);
-    expect(within(demo).getByTestId("order-total")).toHaveTextContent("672");
+    expect(
+      within(demo).getByRole("tab", { name: "Invoices and collections" }),
+    ).toHaveAttribute("aria-selected", "true");
+    expect(
+      within(demo).getByRole("link", { name: /Open full screen/ }),
+    ).toHaveAttribute(
+      "href",
+      "/examples/invoices?lang=en&theme=light&accent=sage",
+    );
   });
 
   it("uses the real documentation entry and keeps mixed source paths isolated", () => {
@@ -131,28 +145,28 @@ describe("hero accent customization", () => {
       screen.queryByText(/Hero swatches customize this example/),
     ).not.toBeInTheDocument();
     expect(screen.getByRole("radio", { name: "Blue" })).toBeEnabled();
-    expect(screen.getByRole("tab", { name: "Last 3 days" })).toBeEnabled();
+    expect(
+      screen.getByRole("tab", { name: "Invoices and collections" }),
+    ).toBeEnabled();
   });
 
   it("uses one shared accent and preserves the working example state", async () => {
     const user = userEvent.setup();
     const { container } = render(<Landing />);
     await user.click(screen.getByRole("button", { name: "English" }));
-    await user.click(screen.getByRole("tab", { name: "Last 3 days" }));
-    await user.type(
-      screen.getByRole("textbox", { name: "Project name" }),
-      "Nawa",
+    await user.click(
+      screen.getByRole("tab", { name: "Invoices and collections" }),
     );
+    const request = screen.getByLabelText("Your request");
+    await user.clear(request);
+    await user.type(request, "Summarize Nawa's invoices");
     await user.click(screen.getByRole("radio", { name: "Blue" }));
     expect(container.querySelectorAll(".tiraz-system")).toHaveLength(1);
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
       "--action": "#A8C6EF",
     });
     expect(screen.getByRole("radio", { name: "Blue" })).toBeChecked();
-    expect(screen.getByTestId("order-total")).toHaveTextContent("672");
-    expect(screen.getByRole("textbox", { name: "Project name" })).toHaveValue(
-      "Nawa",
-    );
+    expect(request).toHaveValue("Summarize Nawa's invoices");
     expect(
       screen.queryByRole("button", { name: "Try an accent" }),
     ).not.toBeInTheDocument();
@@ -161,15 +175,14 @@ describe("hero accent customization", () => {
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
       "--action": "#D6B6E5",
     });
-    expect(screen.getByTestId("order-total")).toHaveTextContent("672");
+    expect(request).toHaveValue("Summarize Nawa's invoices");
     await user.click(screen.getByRole("button", { name: "Use light theme" }));
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
       "--action": "#6B487A",
     });
-    expect(screen.getByRole("tab", { name: "Last 3 days" })).toHaveAttribute(
-      "data-state",
-      "active",
-    );
+    expect(
+      screen.getByRole("tab", { name: "Invoices and collections" }),
+    ).toHaveAttribute("data-state", "active");
   });
 });
 
@@ -189,32 +202,22 @@ describe("night loom page", () => {
     render(<Landing />);
     await user.click(screen.getByRole("button", { name: "English" }));
     const gallery = screen.getByRole("region", {
-      name: "Components for your app",
+      name: "Components that work with you",
     });
-    expect(
-      within(gallery).getByRole("switch", { name: "Instant notifications" }),
-    ).toBeChecked();
-    expect(
-      within(gallery).getByRole("slider", { name: "Display density" }),
-    ).toHaveValue("60");
-    expect(
-      within(gallery).getByRole("progressbar", {
-        name: "Sample project progress",
-      }),
-    ).toHaveAttribute("aria-valuenow", "72");
-    const code = within(gallery).getByRole("textbox", {
-      name: "Verification code",
-    });
-    expect(code).toHaveValue("4271");
-    await user.click(
-      within(gallery).getByRole("switch", { name: "Instant notifications" }),
-    );
-    expect(
-      within(gallery).getByRole("switch", { name: "Instant notifications" }),
-    ).not.toBeChecked();
-    expect(
-      within(gallery).getByRole("button", { name: /Delivery date/ }),
-    ).toBeInTheDocument();
+    for (const component of [
+      "task-starter",
+      "agent-task",
+      "approval-card",
+      "image-generation",
+    ])
+      expect(
+        gallery.querySelector(`a[href="/library/components/${component}"]`),
+      ).toBeInTheDocument();
+    const request = within(gallery).getByLabelText("Your request");
+    await user.clear(request);
+    await user.type(request, "Review this week's collections");
+    expect(request).toHaveValue("Review this week's collections");
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
   });
 
   it("sends every Get started action to the setup steps and Browse components to the gallery", async () => {
@@ -227,9 +230,6 @@ describe("night loom page", () => {
     const browse = screen.getAllByRole("link", { name: "Browse components" });
     expect(browse).toHaveLength(2);
     browse.forEach((link) => expect(link).toHaveAttribute("href", "#explore"));
-    expect(
-      screen.getByRole("button", { name: "Get started" }),
-    ).toBeInTheDocument();
     expect(document.title).toBe(
       "Tiraz · A design system for Arabic interfaces",
     );
@@ -239,7 +239,7 @@ describe("night loom page", () => {
     const user = userEvent.setup();
     render(<Landing />);
     const names = screen.getByRole("region", { name: "مكوّنات طِراز" });
-    expect(within(names).getAllByRole("listitem")).toHaveLength(41);
+    expect(within(names).getAllByRole("listitem")).toHaveLength(45);
     await user.click(screen.getByRole("button", { name: "English" }));
     const list = screen.getByRole("region", { name: "Tiraz components" });
     expect(

@@ -15,8 +15,11 @@ Approved on 2026-10-15 from a standalone preview; built on
   inscriptions. The cloth ripples gently, warp threads part around the pointer and
   the accent picker recolors the border and shuttle. Light theme is a "day loom":
   ivory band, ink inscription.
-- **From thread to interface.** The real live example rises out of a tilt as the
-  page scrolls and the hero recedes.
+- **From thread to interface.** Two real screens, Customer dashboard and Invoices
+  and collections, share one tabbed stage. Their standalone routes load as the
+  stage enters view, use real phone/tablet/desktop layouts, and follow the landing
+  language, theme and accent. Keyboard users can skip the iframe; each screen also
+  has a full-screen link. The stage rises out of a tilt as the hero recedes.
 - **Component strip.** A selection of foundational component families drifts in
   two rows; one accessible list carries the names once. The complete library now
   contains 78 families; see [the source guide](../system/ai/README.md).
@@ -24,9 +27,11 @@ Approved on 2026-10-15 from a standalone preview; built on
   are woven in: rows enter from the right edge, bottom row first (`weft-clip.ts`).
   Images and their meaning are documented in
   [assets/loom/README.md](assets/loom/README.md).
-- **Component gallery.** Real Tiraz components (Input, Button, OTPInput, Badge,
-  Progress, DatePicker, Switch, Slider, BarChart, Alert) in one SystemProvider,
-  with a pointer-following border light.
+- **Component gallery.** Real TaskStarter, AgentTask, ApprovalCard and
+  ImageGeneration patterns share the landing SystemProvider. Requests can be
+  edited, tasks started/stopped/replayed, decisions reset, and local woven images
+  generated and selected in a preview. One initially empty region announces
+  gallery actions. Nothing is sent to an external service.
 - **Start and closing.** The shared quick-start guide with copyable setup, then the
   finished-band image under a giant طِراز wordmark.
 
@@ -49,10 +54,9 @@ timeline, which helps when inspecting the finished weave; production builds stri
 
 ## Typography: Thmanyah
 
-Headlines use Thmanyah Serif Display and body text Thmanyah Sans. The page sets
-the system `--font` token, so the showcased components render in it too; Tiraz
-itself still ships with IBM Plex Sans Arabic. The page no longer states this
-next to the gallery, so this README is the reference for the font setup.
+Headlines use Thmanyah Serif Display and body text Thmanyah Sans. The landing sets
+its own `--font` token. Component examples and live screens retain IBM Plex Sans
+Arabic, matching the library and its workbench.
 
 The Thmanyah license permits use in websites, but forbids hosting the font files,
 making them downloadable or letting visitors extract them, including through web
@@ -91,9 +95,9 @@ not deploy the site or change provider/domain settings.
 
 ## Verification
 
-Focused coverage lives in `loom/*.test.ts(x)`, `Landing.test.tsx` and
-`WhyTiraz.test.tsx`. Run `npm test -- src/landing` and `npx tsc -b`, then the
-repository checks and browser review for a complete integration verification.
+Focused coverage lives in `loom/*.test.ts(x)`, `Landing.test.tsx`,
+`WhyTiraz.test.tsx`, `Showcase.test.tsx` and `ScreenShowcase.test.tsx`. Run
+`npm test -- src/landing` and `npx tsc -b`, then the repository checks and browser review for a complete integration verification.
 The source worktree retains its earlier screenshots, recordings and verification
 history; those large evidence files are not copied into the integrated site.
 
@@ -102,7 +106,8 @@ history; those large evidence files are not copied into the integrated site.
 This subtree was copied from the current working source in
 `claude/landing-night-loom`, including its uncommitted visual refinements. The
 original worktree remains untouched. Component gallery links open actual library
-pages, the dashboard opens `/examples/dashboard`, and the setup section uses
-`../workbench/QuickStart` so its guidance stays shared with `/start`.
+pages, screen previews use `/examples/dashboard` and `/examples/invoices`, and
+the setup section uses `../workbench/QuickStart` so its guidance stays shared
+with `/start`.
 Original image provenance and prompts remain in
 [assets/loom/README.md](assets/loom/README.md); assets use this project's license.

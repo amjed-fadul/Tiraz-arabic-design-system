@@ -1528,7 +1528,7 @@
           "required": false,
           "values": ["polite", "off"],
           "default": "polite",
-          "note": "Speak context additions, removals and threshold crossings by default. Set off when the host owns announcements; muted context changes are not replayed when announcements resume."
+          "note": "Speak context additions, removals and threshold crossings by default. Set off when the host owns announcements, including submission errors; muted context changes are not replayed when announcements resume."
         },
         {
           "name": "appearance",
@@ -1541,7 +1541,7 @@
       ],
       "state": "The host owns the draft, the attached records, the mode and the model. The pattern keeps only what the moment needs: the @ word at the caret, which option is active and whether a submission is pending. It never runs a request: onSubmit hands the draft and the records to the host.",
       "accessibility": [
-        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. It also says «السياق: يقترب من الامتلاء» once each time the ring's status word changes, as ContextMeter's region does, never at mount. A failed send is announced and shown by the entry's own status. Set announcement=\"off\" when the host owns context announcements; muted changes are not replayed.",
+        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. It also says «السياق: يقترب من الامتلاء» once each time the ring's status word changes, as ContextMeter's region does, never at mount. A failed send is announced and shown by the entry's own status. Set announcement=\"off\" when the host owns announcements; it also silences the entry status while retaining visible errors and input descriptions. Muted changes are not replayed.",
         "The @ picker is a standard combobox on the text area: focus never leaves it, aria-activedescendant names the active option, and Escape closes the picker, not the page. A held Enter acts once. Keys from an input method (composition events, isComposing and keyCode 229) never choose, move or send.",
         "The mode menu is a Radix menu of radio items: arrows move, Escape closes it and returns focus to the button, Tab closes it. The button's name is «الوضع: تلقائي» and it is described by «السياق المستخدم ٣٢٪».",
         "When a change removes the focused control (a chip's remove button), focus moves to the section."

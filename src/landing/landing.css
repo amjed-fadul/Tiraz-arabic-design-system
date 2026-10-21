@@ -15,7 +15,7 @@ body {
   overflow-x: clip;
 }
 
-/* The page sets the system font token, so real components render in it too. */
+/* Brand copy uses the landing font; component stages restore IBM Plex. */
 body .tiraz-system {
   --font: "Thmanyah Sans", "IBM Plex Sans Arabic", sans-serif;
 }
@@ -81,7 +81,7 @@ body .tiraz-system {
 .lp-page svg {
   flex-shrink: 0;
 }
-.lp-page .tz-button-label {
+.lp-header-actions .tz-button-label {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -711,119 +711,6 @@ body .tiraz-system {
   opacity: calc(0.35 + var(--rise, 1) * 0.65);
   will-change: transform;
 }
-.lp-demo {
-  overflow: hidden;
-  color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius-panel) + 2px);
-}
-.lp-demo-toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 22px;
-  background: var(--surface-subtle);
-  border-bottom: 1px solid var(--border);
-}
-.lp-demo-brand {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  color: var(--text-secondary);
-  font-size: var(--text-meta);
-}
-.lp-demo-brand strong {
-  font-weight: 500;
-  color: var(--text);
-}
-.lp-demo-slash {
-  color: var(--border-strong);
-}
-.lp-demo-body {
-  padding: 26px;
-}
-.lp-demo-grid {
-  display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 30px;
-}
-.lp-demo-grid > * {
-  min-width: 0;
-}
-.lp-demo .lp-eyebrow {
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-}
-.lp-order-value {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-block: 4px 16px;
-}
-.lp-order-value strong {
-  font-family: var(--lp-display);
-  font-size: 36px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-.lp-order-value svg {
-  color: var(--action);
-}
-.lp-demo-activity {
-  border-inline-start: 1px solid var(--border);
-  padding-inline-start: 28px;
-}
-.lp-demo-activity h3 {
-  margin: 0;
-  font-size: var(--text-heading);
-  font-weight: 500;
-}
-.lp-demo-activity .tz-table-container {
-  margin-block: 10px 18px;
-}
-.lp-demo-activity table {
-  width: 100%;
-}
-.lp-demo-activity td {
-  padding-block: 14px;
-}
-.lp-demo-activity td strong {
-  display: block;
-  font-size: var(--text-body);
-  font-weight: 400;
-}
-.lp-demo-activity td small {
-  display: block;
-  color: var(--text-secondary);
-  font-size: var(--text-meta);
-}
-.lp-demo-activity > a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding-inline: 16px;
-  border-radius: var(--radius);
-  font-size: var(--text-meta);
-  color: var(--action-text);
-  background: var(--action);
-}
-.lp-chart {
-  padding-block-start: 16px;
-}
-.lp-chart .tz-chart,
-.lp-tile .tz-chart {
-  border: 0;
-  padding: 0;
-  background: transparent;
-}
-.lp-page .lp-demo .tz-table,
-.lp-page .lp-tile .tz-table {
-  min-inline-size: 0;
-}
-
 /* ---------- Component names ---------- */
 .lp-marquee {
   padding-block: 34px;
@@ -884,134 +771,6 @@ body .tiraz-system {
 }
 
 /* ---------- Component gallery ---------- */
-.lp-bento {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 48px;
-}
-.lp-tile {
-  --mx: 50%;
-  --my: 50%;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 28px;
-  min-width: 0;
-  min-height: 300px;
-  padding: 26px;
-  color: var(--text);
-  border: 1px solid var(--lp-line);
-  border-radius: 22px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--surface) 86%, var(--lp-bg)),
-    color-mix(in srgb, var(--surface) 55%, var(--lp-bg))
-  );
-}
-.lp-tile[data-span="2"] {
-  grid-column: span 2;
-}
-.lp-tile[data-span="3"] {
-  grid-column: span 3;
-}
-.lp-tile[data-span="4"] {
-  grid-column: span 4;
-}
-.lp-tile::before,
-.lp-tile::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-.lp-tile::before {
-  padding: 1px;
-  background: radial-gradient(
-    360px circle at var(--mx) var(--my),
-    color-mix(in srgb, var(--action) 85%, transparent),
-    transparent 45%
-  );
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-}
-.lp-tile::after {
-  background: radial-gradient(
-    500px circle at var(--mx) var(--my),
-    color-mix(in srgb, var(--lp-text) 5%, transparent),
-    transparent 40%
-  );
-}
-.lp-tile:hover::before,
-.lp-tile:hover::after {
-  opacity: 1;
-}
-.lp-tile-demo {
-  position: relative;
-  z-index: 1;
-}
-.lp-tile-meta {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 12px;
-}
-.lp-tile h3 {
-  font-family: var(--lp-display);
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.6;
-  color: var(--lp-text);
-}
-.lp-tile-meta p {
-  font-size: 14px;
-  color: var(--lp-muted);
-}
-.lp-tile-source {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: none;
-  padding: 3px 8px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--lp-muted);
-  border: 1px solid var(--lp-line-strong);
-  border-radius: 6px;
-  transition:
-    color 0.3s,
-    border-color 0.3s;
-}
-.lp-tile-source:hover {
-  color: var(--lp-text);
-  border-color: var(--action);
-}
-.lp-form-demo {
-  display: grid;
-  gap: 14px;
-  justify-items: start;
-}
-.lp-form-demo .tz-field {
-  width: 100%;
-}
-.lp-status-demo,
-.lp-controls-demo {
-  display: grid;
-  gap: 22px;
-}
-.lp-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
 .lp-source-note {
   max-width: 760px;
   margin-top: 28px;
@@ -1209,22 +968,6 @@ body .tiraz-system {
   }
 }
 @media (max-width: 900px) {
-  .lp-demo-grid {
-    grid-template-columns: 1fr;
-  }
-  .lp-demo-activity {
-    border-inline-start: 0;
-    padding-inline-start: 0;
-    border-top: 1px solid var(--border);
-    padding-top: 22px;
-  }
-  .lp-bento {
-    grid-template-columns: 1fr;
-  }
-  .lp-tile[data-span] {
-    grid-column: auto;
-    min-height: 0;
-  }
   .lp-closing-caption {
     display: none;
   }
@@ -1249,16 +992,6 @@ body .tiraz-system {
   }
   .lp-accent-pill > span {
     display: none;
-  }
-  .lp-demo-body {
-    padding: 18px;
-  }
-  .lp-tile {
-    padding: 20px;
-  }
-  .lp-tile-meta {
-    flex-direction: column;
-    align-items: flex-start;
   }
   .lp-closing-frame {
     min-height: 560px;

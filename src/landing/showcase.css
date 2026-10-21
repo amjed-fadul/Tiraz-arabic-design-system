@@ -1,0 +1,123 @@
+/* The stage belongs to the landing page; the patterns keep their own styling. */
+.lp-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8);
+  align-items: stretch;
+}
+.lp-showcase-tile {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  border: 1px solid var(--lp-line-strong);
+  border-radius: var(--radius-tray);
+  background: color-mix(in srgb, var(--lp-raise) 55%, var(--lp-bg));
+}
+.lp-showcase-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-6);
+}
+.lp-showcase-heading > div {
+  flex: 1 1 220px;
+  min-inline-size: 0;
+}
+.lp-showcase-heading h3 {
+  margin: 0;
+  color: var(--lp-text);
+  font-size: var(--text-figure-small);
+  font-weight: 600;
+  line-height: var(--leading-heading);
+  text-wrap: balance;
+}
+.lp-showcase-heading p {
+  margin-block: var(--space-2) 0;
+  color: var(--lp-text-2);
+  font-size: var(--text-body);
+  line-height: var(--leading-reading);
+  max-inline-size: 38ch;
+}
+.lp-showcase-source {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 32px;
+  color: var(--lp-muted);
+  font-family: "IBM Plex Sans Arabic", sans-serif;
+  font-size: var(--text-meta);
+  line-height: var(--leading-heading);
+  white-space: nowrap;
+}
+.lp-showcase-stage {
+  display: grid;
+  flex: 1;
+  align-items: start;
+  justify-items: center;
+  min-inline-size: 0;
+  min-block-size: 380px;
+  padding: var(--space-4) var(--space-6) var(--space-8);
+}
+.lp-showcase-demo {
+  --font: "IBM Plex Sans Arabic", sans-serif;
+  inline-size: 100%;
+  max-inline-size: 480px;
+  min-inline-size: 0;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+}
+.lp-showcase-demo-image {
+  max-inline-size: 360px;
+}
+.lp-showcase-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-block-start: var(--space-3);
+}
+.lp-showcase-receipt {
+  margin-block: var(--space-4) 0;
+  padding-inline: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-reading);
+  overflow-wrap: anywhere;
+}
+.lp-showcase-receipt strong {
+  font-weight: 500;
+}
+.lp-showcase-receipt p {
+  margin-block: var(--space-1) 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lp-showcase-source:hover {
+    color: var(--lp-text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+@media (max-width: 900px) {
+  .lp-showcase {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .lp-showcase-stage {
+    min-block-size: 0;
+    padding-block-start: var(--space-6);
+  }
+}
+@media (max-width: 520px) {
+  .lp-showcase-heading {
+    padding: var(--space-5);
+  }
+  .lp-showcase-heading > div {
+    flex-basis: 100%;
+  }
+  .lp-showcase-stage {
+    padding: var(--space-2) var(--space-3) var(--space-5);
+  }
+}

@@ -22,6 +22,7 @@ import {
   numberLocale,
 } from "../../system";
 import type { SystemConfig } from "../../system";
+import { accentColors } from "../../system/config";
 import { money } from "../../system/ai/examples/finance-story";
 import { ScreenContext, screenPath, screens, useScreen } from "./screen";
 import type { Screen, ScreenSlug } from "./screen";
@@ -77,10 +78,14 @@ export function ScreenFrame({
     start.get("theme") === "dark" ? "dark" : "light",
   );
   const embedded = start.get("embed") === "1";
+  const requestedAccent = start.get("accent") ?? "";
+  const accent = Object.hasOwn(accentColors, requestedAccent)
+    ? (requestedAccent as SystemConfig["accent"])
+    : defaultConfig.accent;
   const direction = language === "ar" ? "rtl" : "ltr";
   const config = useMemo<SystemConfig>(
-    () => ({ ...defaultConfig, direction, theme }),
-    [direction, theme],
+    () => ({ ...defaultConfig, direction, theme, accent }),
+    [direction, theme, accent],
   );
   const [navigationHidden, setNavigationHidden] = useState(false);
   const navigationId = useId();
@@ -163,6 +168,7 @@ export function ScreenFrame({
       const query = [
         language === "en" && "lang=en",
         theme === "dark" && "theme=dark",
+        accent !== defaultConfig.accent && `accent=${accent}`,
       ].filter(Boolean);
       return query.length
         ? `${screenPath(target)}?${query.join("&")}`
@@ -193,7 +199,7 @@ export function ScreenFrame({
       size,
       endSide: language === "ar" ? "left" : "right",
     };
-  }, [slug, language, theme, config, embedded, size]);
+  }, [slug, language, theme, accent, config, embedded, size]);
   const { t } = screen;
   // Keep the list at its full width while the desktop shell folds away.
   // The phone drawer shares the same destinations and active-page marker.

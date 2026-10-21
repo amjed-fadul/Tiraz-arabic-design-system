@@ -124,7 +124,7 @@ export interface TaskStarterProps {
   /** The question's level; the recent list's is one lower. 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<TaskStarterLabels>;
-  /** Speak context changes politely, or leave announcements to the host. */
+  /** Speak context changes and submission errors, or leave them to the host. */
   announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
@@ -632,7 +632,9 @@ export function TaskStarter({
     >
       {chips}
       <PromptEntry
+        announcement={announcement}
         ref={field}
+        dir="auto"
         value={value}
         onValueChange={(next) => {
           onValueChange(next);

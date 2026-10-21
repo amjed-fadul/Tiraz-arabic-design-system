@@ -61,9 +61,11 @@ export function PromptEntry({
   appearance = "card",
   tools,
   renderSuggestions,
+  announcement = "polite",
   ...props
 }: ChatComposerProps & {
   renderSuggestions?: (busy: boolean) => ReactNode;
+  announcement?: "polite" | "off";
 }) {
   const ar = useSystem().config.direction === "rtl";
   const input = useRef<HTMLTextAreaElement>(null);
@@ -231,7 +233,7 @@ export function PromptEntry({
       </div>
       <span
         id={statusId}
-        role="status"
+        role={announcement === "polite" ? "status" : undefined}
         className={failed ? "tz-chat-entry-error" : "tz-visually-hidden"}
       >
         {failed

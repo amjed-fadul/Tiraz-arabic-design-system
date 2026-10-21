@@ -23,6 +23,38 @@ const sidebar = () =>
   within(screen.getByRole("navigation", { name: /الشاشات|Screens/ }));
 afterEach(() => window.history.replaceState(null, "", "/"));
 
+it("carries a valid preview accent through screen navigation and ignores unknown accents", () => {
+  window.history.replaceState(
+    null,
+    "",
+    "/examples/invoices?lang=en&theme=dark&accent=plum",
+  );
+  const view = render(
+    <ScreenFrame slug="invoices">
+      <Probe />
+    </ScreenFrame>,
+  );
+  expect(view.container.querySelector(".tiraz-system")).toHaveStyle({
+    "--action": "#D6B6E5",
+  });
+  expect(
+    sidebar().getByRole("link", { name: "Sales pipeline" }),
+  ).toHaveAttribute(
+    "href",
+    "/examples/sales-pipeline?lang=en&theme=dark&accent=plum",
+  );
+  view.unmount();
+  window.history.replaceState(null, "", "/examples/invoices?accent=unknown");
+  const fallback = render(
+    <ScreenFrame slug="invoices">
+      <Probe />
+    </ScreenFrame>,
+  );
+  expect(fallback.container.querySelector(".tiraz-system")).toHaveStyle({
+    "--action": "#355E4C",
+  });
+});
+
 it("opens in Arabic and switches everything to English", async () => {
   const user = userEvent.setup();
   render(

@@ -1,5 +1,9 @@
-/** Foundational families; the complete library is listed in system/ai/README.md. */
+/** Selected families; the complete library is listed in system/ai/README.md. */
 const families: readonly (readonly [string, string])[] = [
+  ["بدء مهمة", "TaskStarter"],
+  ["مهمة الوكيل", "AgentTask"],
+  ["طلب موافقة", "ApprovalCard"],
+  ["توليد صورة", "ImageGeneration"],
   ["زر", "Button"],
   ["تبويبات", "Tabs"],
   ["مفتاح تبديل", "Switch"],
