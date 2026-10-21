@@ -2213,6 +2213,11 @@ textarea.tz-textarea:read-only {
 .tiraz-system[dir="ltr"] .tz-chart .recharts-cartesian-axis-tick-value {
   direction: ltr;
 }
+/* In RTL, text-anchor="end" would start each y-axis label at its tick and run
+   it into the plot; plaintext above keeps the Arabic in order. */
+.tz-chart .recharts-yAxis-tick-labels .recharts-cartesian-axis-tick-value {
+  direction: ltr;
+}
 .tz-chart .recharts-surface:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: -2px;
