@@ -8,8 +8,24 @@ function preview() {
     screen.getByRole("region", { name: "المعاينة التفاعلية" }),
   ).getByRole("button");
 }
+/** The settings panel, opened from «تخصيص» in the toolbar when it is closed. */
 function controls() {
-  return within(screen.getByRole("complementary", { name: "التخصيص" }));
+  if (!screen.queryByRole("complementary", { name: "تخصيص المعاينة" }))
+    fireEvent.click(screen.getByRole("button", { name: "تخصيص" }));
+  return within(screen.getByRole("complementary", { name: "تخصيص المعاينة" }));
+}
+/** Sets an inspector field through its control: a text field, a segmented
+    control or a Select. */
+function edit(field: string, value: string) {
+  const control = controls().getByLabelText(field);
+  if (control.tagName === "INPUT")
+    fireEvent.change(control, { target: { value } });
+  else if (control.getAttribute("role") === "group")
+    fireEvent.click(within(control).getByRole("button", { name: value }));
+  else {
+    fireEvent.keyDown(control, { key: "Enter" });
+    fireEvent.click(screen.getByRole("option", { name: value }));
+  }
 }
 function tick(ms: number) {
   act(() => vi.advanceTimersByTime(ms));
@@ -29,7 +45,9 @@ it.each(["success", "error"] as const)(
     expect(
       JSON.parse(localStorage.getItem(storageKeys.playgrounds)!).button.state,
     ).toBe("idle");
-    expect(controls().getByLabelText("الحالة")).toHaveValue("idle");
+    expect(
+      controls().getByRole("combobox", { name: "الحالة" }),
+    ).toHaveTextContent("جاهز");
     // The Code view keeps the persisted state while the preview is busy.
     fireEvent.click(screen.getByRole("tab", { name: "الكود" }));
     expect(
@@ -57,14 +75,12 @@ it.each(["التسمية", "النوع", "الحجم", "الأيقونة", "ال
     fireEvent.click(preview());
     const values: Record<string, string> = {
       التسمية: "اختيار جديد",
-      النوع: "ghost",
-      الحجم: "md",
-      الأيقونة: "plus",
-      الحالة: "error",
+      النوع: "خفيف",
+      الحجم: "عادي · md",
+      الأيقونة: "إضافة",
+      الحالة: "خطأ",
     };
-    fireEvent.change(controls().getByLabelText(field), {
-      target: { value: values[field] },
-    });
+    edit(field, values[field]);
     expect(preview()).toHaveAttribute(
       "data-state",
       field === "الحالة" ? "error" : "idle",
@@ -79,9 +95,7 @@ it.each(["التسمية", "النوع", "الحجم", "الأيقونة", "ال
 it("preserves an intentional inspector feedback state after simulation", () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  fireEvent.change(controls().getByLabelText("الحالة"), {
-    target: { value: "error" },
-  });
+  edit("الحالة", "خطأ");
   fireEvent.click(preview());
   tick(1200);
   expect(preview()).toHaveAttribute("data-state", "success");
@@ -95,10 +109,7 @@ it("propagates global settings during feedback and cancels timers on both resets
   vi.useFakeTimers();
   const { container } = render(<Workbench />);
   fireEvent.click(preview());
-  fireEvent.keyDown(controls().getByLabelText("اللون الأساسي"), {
-    key: "Enter",
-  });
-  fireEvent.click(screen.getByRole("option", { name: "أزرق" }));
+  fireEvent.click(controls().getByRole("radio", { name: "أزرق" }));
   expect(preview()).toHaveAttribute("data-state", "loading");
   expect(
     (

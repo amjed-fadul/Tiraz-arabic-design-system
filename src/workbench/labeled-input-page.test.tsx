@@ -35,7 +35,11 @@ it("redirects the saved Field page without losing Input customization", () => {
   });
 });
 it("makes Input the complete entry page while retaining Field in its API disclosure", async () => {
-  persist(storageKeys.documentation, { language: "en", active: "input" });
+  persist(storageKeys.documentation, {
+    language: "en",
+    active: "input",
+    settingsOpen: true,
+  });
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
@@ -46,7 +50,7 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   await userEvent.click(nav.getByRole("button", { name: "Parts" }));
   expect(nav.getAllByRole("button")).toHaveLength(navigationCatalog.length + 1);
   const rail = within(
-    screen.getByRole("complementary", { name: "Customization" }),
+    screen.getByRole("complementary", { name: "Customize the preview" }),
   );
   for (const name of [
     "Label",
@@ -124,7 +128,11 @@ it("redirects legacy saved Field preferences and carries the old invalid preset 
 });
 for (const mode of ["controlled", "uncontrolled"] as const)
   it(`keeps ${mode} Input node, associations and value while inspector errors change`, async () => {
-    persist(storageKeys.documentation, { language: "en", active: "input" });
+    persist(storageKeys.documentation, {
+      language: "en",
+      active: "input",
+      settingsOpen: true,
+    });
     persist(storageKeys.playgrounds, {
       input: { ...defaultPlaygrounds("en").input, mode, value: "Draft" },
     });
@@ -135,7 +143,7 @@ for (const mode of ["controlled", "uncontrolled"] as const)
     const input = preview.getByRole("textbox");
     const id = input.id;
     const rail = within(
-      screen.getByRole("complementary", { name: "Customization" }),
+      screen.getByRole("complementary", { name: "Customize the preview" }),
     );
     await userEvent.type(input, " updated");
     await userEvent.type(rail.getByLabelText("Error message"), "Correct this");

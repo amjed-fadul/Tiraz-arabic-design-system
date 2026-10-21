@@ -13,19 +13,31 @@ import { generatePrompt } from "./generate";
 import { storageKeys, persist, readSystem } from "./storage";
 import { defaultPlaygrounds } from "./model";
 import { accentColors, defaultConfig } from "../system";
-function controls() {
-  return within(screen.getByRole("complementary", { name: "التخصيص" }));
+/** The settings panel, opened from «تخصيص» in the toolbar when it is closed. */
+function controls(language: "ar" | "en" = "ar") {
+  const name = language === "ar" ? "تخصيص المعاينة" : "Customize the preview";
+  if (!screen.queryByRole("complementary", { name }))
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: language === "ar" ? "تخصيص" : "Customize",
+      }),
+    );
+  return within(screen.getByRole("complementary", { name }));
 }
 function navigation() {
   return within(screen.getByRole("navigation", { name: "المكوّنات" }));
 }
 async function chooseAccent(accent: "blue" | "plum" | "clay") {
-  await userEvent.click(controls().getByLabelText("اللون الأساسي"));
   await userEvent.click(
-    screen.getByRole("option", {
+    controls().getByRole("radio", {
       name: { blue: "أزرق", plum: "بنفسجي", clay: "بني" }[accent],
     }),
   );
+}
+/** Picks an option from one of the panel's Selects. */
+async function choose(select: string, option: string) {
+  await userEvent.click(controls().getByRole("combobox", { name: select }));
+  await userEvent.click(screen.getByRole("option", { name: option }));
 }
 function preview() {
   return within(screen.getByRole("region", { name: "المعاينة التفاعلية" }));
@@ -57,7 +69,7 @@ it("isolates portable library paths as complete LTR runs inside the Arabic promp
       path,
     ).toBe(true);
 });
-it("places only navigation in its sidebar and both customization sections in the separate rail", () => {
+it("places only navigation in its sidebar and both settings sections in the panel", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
   // Every page, less the fifteen folded AI parts, and their disclosure.
@@ -68,14 +80,15 @@ it("places only navigation in its sidebar and both customization sections in the
   expect(within(nav).getAllByRole("button")).toHaveLength(
     navigationCatalog.length + 1,
   );
-  expect(within(nav).queryByText("خصائص المكوّن")).not.toBeInTheDocument();
+  expect(within(nav).queryByText("خصائص الأزرار")).not.toBeInTheDocument();
   expect(
-    controls().getByRole("heading", { name: "تخصيص المكوّنات" }),
-  ).toBeInTheDocument();
-  expect(controls().getByText("خصائص المكوّن")).toBeInTheDocument();
-  expect(
-    container.querySelector(".customization-rail")?.parentElement,
-  ).toHaveClass("docs-layout");
+    controls()
+      .getAllByRole("heading", { level: 3 })
+      .map((heading) => heading.textContent),
+  ).toEqual(["خصائص الأزرار", "إعدادات النظام"]);
+  expect(container.querySelector(".settings-panel")?.parentElement).toHaveClass(
+    "docs-layout",
+  );
   expect(controls().queryByText("خصائص متقدمة")).not.toBeInTheDocument();
   expect(controls().queryByLabelText("مظهر المكوّنات")).not.toBeInTheDocument();
 });
@@ -144,11 +157,8 @@ it("preserves per-component labels and properties while keeping resets separate"
   render(<Workbench />);
   await userEvent.clear(controls().getByLabelText("التسمية"));
   await userEvent.type(controls().getByLabelText("التسمية"), "اعتماد الطلب");
-  await userEvent.selectOptions(controls().getByLabelText("الحجم"), "md");
-  await userEvent.selectOptions(
-    controls().getByLabelText("النوع"),
-    "secondary",
-  );
+  await userEvent.click(controls().getByRole("button", { name: "عادي · md" }));
+  await choose("النوع", "ثانوي");
   await userEvent.click(
     navigation().getByRole("button", { name: "مفتاح التبديل" }),
   );
@@ -177,14 +187,11 @@ it("uses one state selector for Button disabled/loading demonstrations", async (
   expect(
     controls().queryByRole("switch", { name: "معطّل" }),
   ).not.toBeInTheDocument();
-  await userEvent.selectOptions(
-    controls().getByLabelText("الحالة"),
-    "disabled",
-  );
+  await choose("الحالة", "معطّل");
   expect(preview().getByRole("button")).toBeDisabled();
-  await userEvent.selectOptions(controls().getByLabelText("الحالة"), "loading");
+  await choose("الحالة", "تحميل");
   expect(preview().getByRole("button")).toHaveAttribute("aria-busy", "true");
-  await userEvent.selectOptions(controls().getByLabelText("الحالة"), "idle");
+  await choose("الحالة", "جاهز");
   expect(preview().getByRole("button")).toBeEnabled();
 });
 it("retains continuous documentation, synchronized prompt content and API information on every page", async () => {
@@ -357,9 +364,7 @@ it.each(["select", "radio-group"] as const)(
     persist(storageKeys.documentation, { language: "en", active });
     render(<Workbench />);
     const user = userEvent.setup();
-    const rail = within(
-      screen.getByRole("complementary", { name: "Customization" }),
-    );
+    const rail = controls("en");
     const original = (
       rail.getByRole("textbox", { name: "Options" }) as HTMLTextAreaElement
     ).value;
@@ -396,14 +401,10 @@ it.each([
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     const { container } = render(<Workbench />);
     const ar = language === "ar";
-    const rail = within(
-      screen.getByRole("complementary", {
-        name: ar ? "التخصيص" : "Customization",
-      }),
+    const rail = controls(language);
+    const accents = within(
+      rail.getByRole("radiogroup", { name: ar ? "اللون الأساسي" : "Accent" }),
     );
-    const accentControl = rail.getByRole("combobox", {
-      name: ar ? "اللون الأساسي" : "Accent",
-    });
     for (const [accent, arabic, english] of [
       ["lime", "ليموني", "Lime"],
       ["amber", "كهرماني", "Amber"],
@@ -413,23 +414,16 @@ it.each([
       ["rose", "وردي", "Rose"],
       ["slate", "رمادي", "Slate"],
     ] as const) {
-      await user.click(accentControl);
-      const option = screen.getByRole("option", {
+      const swatch = accents.getByRole("radio", {
         name: ar ? arabic : english,
       });
-      expect(option).toHaveAccessibleName(ar ? arabic : english);
-      expect(option.querySelector(".accent-swatch")).toHaveAttribute(
-        "aria-hidden",
-        "true",
+      expect(swatch.style.getPropertyValue("--swatch")).toBe(
+        accentColors[accent][theme],
       );
-      expect(option.querySelector(".accent-swatch")).toHaveStyle({
-        backgroundColor: accentColors[accent][theme],
-      });
-      await user.click(option);
-      expect(accentControl).toHaveTextContent(ar ? arabic : english);
-      expect(accentControl.querySelector(".accent-swatch")).toHaveStyle({
-        backgroundColor: accentColors[accent][theme],
-      });
+      await user.click(swatch);
+      expect(swatch).toHaveAttribute("aria-checked", "true");
+      // The chosen accent's name shows beside the label.
+      expect(rail.getByText(ar ? arabic : english)).toBeInTheDocument();
       for (const provider of container.querySelectorAll<HTMLElement>(
         ".playground-region .tiraz-system",
       ))
@@ -451,49 +445,70 @@ it.each([
         name: ar ? "إعادة ضبط النظام" : "Reset system",
       }),
     );
-    expect(accentControl).toHaveTextContent(ar ? "أخضر" : "Green");
+    expect(
+      accents.getByRole("radio", { name: ar ? "أخضر" : "Green" }),
+    ).toHaveAttribute("aria-checked", "true");
   },
 );
 
-it("selects an accent by keyboard, restores focus and preserves the choice on Escape", async () => {
+it("selects an accent by keyboard, left to right in English and wrapping at the ends", async () => {
   persist(storageKeys.documentation, { language: "en", active: "button" });
   const user = userEvent.setup();
   render(<Workbench />);
-  const control = within(
-    screen.getByRole("complementary", { name: "Customization" }),
-  ).getByRole("combobox", { name: "Accent" });
-  control.focus();
-  await user.keyboard("{ArrowDown}{End}{Enter}");
-  expect(control).toHaveTextContent("Ink");
-  await waitFor(() => expect(control).toHaveFocus());
+  const accents = within(
+    controls("en").getByRole("radiogroup", { name: "Accent" }),
+  );
+  accents.getByRole("radio", { name: "Green" }).focus();
+  await user.keyboard("{ArrowRight}");
+  expect(accents.getByRole("radio", { name: "Blue" })).toHaveFocus();
+  expect(readSystem().accent).toBe("blue");
+  await user.keyboard("{ArrowLeft}{ArrowUp}");
+  const ink = accents.getByRole("radio", { name: "Ink" });
+  expect(ink).toHaveFocus();
+  expect(ink).toHaveAttribute("aria-checked", "true");
+  // Only the chosen swatch is in the tab order.
+  expect(
+    accents.getAllByRole("radio").filter((radio) => radio.tabIndex === 0),
+  ).toEqual([ink]);
   expect(readSystem().accent).toBe("ink");
-  await user.keyboard("{ArrowDown}{Home}{Escape}");
-  expect(control).toHaveTextContent("Ink");
-  expect(control).toHaveFocus();
 });
-it("keeps the accent popup inside the mobile settings dialog", async () => {
-  persist(storageKeys.documentation, { language: "en", active: "button" });
-  const user = userEvent.setup();
-  render(<Workbench />);
-  await user.click(screen.getByRole("button", { name: "System settings" }));
-  const dialog = screen.getByRole("dialog", { name: "Customization" });
-  const control = within(dialog).getByRole("combobox", { name: "Accent" });
-  await user.click(control);
-  expect(dialog).toContainElement(screen.getByRole("listbox"));
-  await user.click(screen.getByRole("option", { name: "Lime" }));
-  expect(control).toHaveTextContent("Lime");
-  expect(dialog).toBeVisible();
-  await user.keyboard("{Escape}");
-  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+it("keeps a Select's popup inside the settings Sheet on a narrow screen", async () => {
+  const matchMedia = window.matchMedia;
+  window.matchMedia = (query: string) => ({
+    ...matchMedia(query),
+    matches: query === "(width < 1024px)",
+  });
+  try {
+    persist(storageKeys.documentation, { language: "en", active: "button" });
+    const user = userEvent.setup();
+    render(<Workbench />);
+    await user.click(screen.getByRole("button", { name: "Customize" }));
+    const dialog = screen.getByRole("dialog", {
+      name: "Customize the preview",
+    });
+    const control = within(dialog).getByRole("combobox", { name: "Variant" });
+    await user.click(control);
+    expect(dialog).toContainElement(screen.getByRole("listbox"));
+    await user.click(screen.getByRole("option", { name: "Ghost" }));
+    expect(control).toHaveTextContent("Ghost");
+    expect(dialog).toBeVisible();
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  } finally {
+    window.matchMedia = matchMedia;
+  }
 });
 it("switches playground digits with the numerals setting and emits it in copied code", async () => {
   persist(storageKeys.documentation, { language: "ar", active: "progress" });
   render(<Workbench />);
   const value = () =>
     preview().getByRole("progressbar").getAttribute("aria-valuetext");
-  expect(controls().getByLabelText("الأرقام")).toHaveValue("arab");
+  const arabic = () => controls().getByRole("button", { name: "مشرقية · ١٢٣" });
+  expect(arabic()).toHaveAttribute("aria-pressed", "true");
   expect(value()).toContain("٦٤");
-  await userEvent.selectOptions(controls().getByLabelText("الأرقام"), "latn");
+  await userEvent.click(
+    controls().getByRole("button", { name: "غربية · 123" }),
+  );
   expect(value()).toContain("64");
   expect(value()).not.toMatch(/[٠-٩]/);
   expect(readSystem().numerals).toBe("latn");
@@ -502,6 +517,6 @@ it("switches playground digits with the numerals setting and emits it in copied 
   await userEvent.click(
     controls().getByRole("button", { name: "إعادة ضبط النظام" }),
   );
-  expect(controls().getByLabelText("الأرقام")).toHaveValue("arab");
+  expect(arabic()).toHaveAttribute("aria-pressed", "true");
   expect(value()).toContain("٦٤");
 });

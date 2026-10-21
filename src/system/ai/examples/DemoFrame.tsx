@@ -37,9 +37,9 @@ export type DemoFrameNotes = {
 
 /**
  * Documentation/example chrome only; not a public component family. A toolbar
- * above the stage holds the View switch (with `code`), the states and the
- * new-tab link (`openHref`); Replay sits in the stage's corner and Copy in the
- * code's header. The frame shows the state it is given, reports a press
+ * above the stage holds the View switch (with `code`), the states, the page's
+ * own control (`customize`) and the new-tab link (`openHref`); Replay sits in
+ * the stage's corner and Copy in the code's header. The frame shows the state it is given, reports a press
  * through `onStateChange` and leaves what a state means to its caller.
  */
 export function DemoFrame({
@@ -54,6 +54,7 @@ export function DemoFrame({
   states,
   state,
   onStateChange,
+  customize,
   openHref,
   onViewChange,
   replaying,
@@ -71,6 +72,8 @@ export function DemoFrame({
   /** The id of the state the example is in. */
   state?: string;
   onStateChange?: (id: string) => void;
+  /** Sits between the states and the new-tab link: the workbench's «تخصيص». */
+  customize?: ReactNode;
   /** Where the new-tab link opens the example on its own. */
   openHref?: string;
   /** Called when the View tablist moves to the other view. */
@@ -175,12 +178,12 @@ export function DemoFrame({
       <span role="status" className="tz-visually-hidden">
         {heard.copyLast ? message : stateMessage}
       </span>
-      {(code !== undefined || hasStates || openHref) && (
+      {(code !== undefined || hasStates || customize || openHref) && (
         <div className="tz-demo-bar">
           {code !== undefined && (
             <ViewSwitch id={id} view={view} onViewChange={changeView} ar={ar} />
           )}
-          {(hasStates || openHref) && (
+          {(hasStates || customize || openHref) && (
             <div className="tz-demo-bar-end">
               {hasStates && (
                 <div
@@ -201,6 +204,7 @@ export function DemoFrame({
                   ))}
                 </div>
               )}
+              {customize}
               {openHref && (
                 <a
                   className="tz-demo-icon"

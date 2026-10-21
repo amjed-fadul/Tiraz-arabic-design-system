@@ -56,7 +56,12 @@ it("keeps chart inspectors compact and copied prompts consistent with the curren
     "الرسم الحلقي",
   ]) {
     await user.click(nav.getByRole("button", { name }));
-    const rail = within(screen.getByRole("complementary", { name: "التخصيص" }));
+    // The settings stay open from page to page once «تخصيص» opens them.
+    if (!screen.queryByRole("complementary", { name: "تخصيص المعاينة" }))
+      await user.click(screen.getByRole("button", { name: "تخصيص" }));
+    const rail = within(
+      screen.getByRole("complementary", { name: "تخصيص المعاينة" }),
+    );
     expect(rail.getByLabelText("بيانات المثال")).toBeVisible();
     expect(rail.queryByText("خطوط الشبكة") !== null).toBe(
       name !== "الرسم الحلقي",

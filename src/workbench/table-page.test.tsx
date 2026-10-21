@@ -6,7 +6,11 @@ import { persist, storageKeys } from "./storage";
 it("opens a saved Table page, edits content, and copies the complete current example and prompt", async () => {
   const user = userEvent.setup();
   const write = vi.spyOn(navigator.clipboard, "writeText");
-  persist(storageKeys.documentation, { language: "en", active: "table" });
+  persist(storageKeys.documentation, {
+    language: "en",
+    active: "table",
+    settingsOpen: true,
+  });
   render(<Workbench />);
   expect(
     screen.getByRole("heading", { level: 1, name: "Table" }),
@@ -20,9 +24,10 @@ it("opens a saved Table page, edits content, and copies the complete current exa
     screen.getByLabelText("Caption", { exact: true }),
     "Team records",
   );
-  await user.selectOptions(
-    screen.getByLabelText("Content", { exact: true }),
-    "empty",
+  await user.click(
+    within(screen.getByRole("group", { name: "Content" })).getByRole("button", {
+      name: "Empty",
+    }),
   );
   expect(
     within(canvas).getByRole("table", { name: "Team records" }),

@@ -61,11 +61,11 @@ it("records the Alert playground action and drops it when its label is cleared",
   expect(screen.getByRole("status", { name: "آخر حدث" })).toHaveTextContent(
     "onClick",
   );
+  await user.click(screen.getByRole("button", { name: "تخصيص" }));
   await user.clear(
-    within(screen.getByRole("complementary", { name: "التخصيص" })).getByRole(
-      "textbox",
-      { name: "زر الإجراء" },
-    ),
+    within(
+      screen.getByRole("complementary", { name: "تخصيص المعاينة" }),
+    ).getByRole("textbox", { name: "زر الإجراء" }),
   );
   expect(stage.queryByRole("button")).toBeNull();
   await user.click(screen.getByRole("tab", { name: "الكود" }));
@@ -168,8 +168,7 @@ it("exposes existing src with a minimal photo choice and accurate imports", asyn
     JSON.stringify({
       language: "en",
       active: "avatar",
-      systemPanelOpen: true,
-      inspectorOpen: true,
+      settingsOpen: true,
     }),
   );
   render(<Workbench />);
@@ -191,7 +190,12 @@ it("exposes existing src with a minimal photo choice and accurate imports", asyn
   );
   await user.click(screen.getByRole("button", { name: "Copy code" }));
   expect(write.mock.calls.at(-1)![0]).toContain('src={"/personal.jpg"}');
-  await user.selectOptions(screen.getByLabelText("Appearance"), "initials");
+  await user.click(
+    within(screen.getByRole("group", { name: "Appearance" })).getByRole(
+      "button",
+      { name: "Initials" },
+    ),
+  );
   await user.click(screen.getByRole("tab", { name: "Preview" }));
   expect(
     preview.getByRole("img", { name: "Sara Ali" }).querySelector("img"),

@@ -44,7 +44,7 @@ it("validates persisted enum, numeric and collection values", () => {
     theme: "invalid",
     language: "unknown",
     active: "unknown",
-    inspectorOpen: "no",
+    settingsOpen: "no",
   });
   persist(storageKeys.system, {
     radius: -1,

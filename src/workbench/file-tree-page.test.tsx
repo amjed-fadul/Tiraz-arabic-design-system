@@ -21,9 +21,12 @@ it("documents FileTree in Files with a minimal inspector and portable copied act
     screen.getByRole("combobox", { name: "لغة التوثيق" }),
     "en",
   );
-  await user.selectOptions(
-    screen.getByRole("combobox", { name: "State mode" }),
-    "controlled",
+  await user.click(screen.getByRole("button", { name: "Customize" }));
+  await user.click(
+    within(screen.getByRole("group", { name: "State mode" })).getByRole(
+      "button",
+      { name: "Controlled" },
+    ),
   );
   const preview = within(
     screen.getByRole("region", { name: "Interactive playground" }),

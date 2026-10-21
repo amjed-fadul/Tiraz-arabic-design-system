@@ -23,16 +23,15 @@ export const defaultSettings: AppearanceSettings = {
 export interface DocumentationPreferences {
   language: Language;
   active: ComponentId;
-  systemPanelOpen: boolean;
-  inspectorOpen: boolean;
+  /** The settings panel: closed until «تخصيص» opens it, then remembered. */
+  settingsOpen: boolean;
   /** The AI group's Parts disclosure; stored optionally, closed when absent. */
   aiPartsOpen: boolean;
 }
 export const defaultDocumentation: DocumentationPreferences = {
   language: "ar",
   active: "button",
-  systemPanelOpen: true,
-  inspectorOpen: true,
+  settingsOpen: false,
   aiPartsOpen: false,
 };
 function read(key: string): unknown {
@@ -82,10 +81,7 @@ export function readDocumentation(): DocumentationPreferences {
         : navigationCatalog.some((item) => item.id === p.active)
           ? (p.active as ComponentId)
           : "button",
-    systemPanelOpen:
-      typeof p.systemPanelOpen === "boolean" ? p.systemPanelOpen : true,
-    inspectorOpen:
-      typeof p.inspectorOpen === "boolean" ? p.inspectorOpen : true,
+    settingsOpen: p.settingsOpen === true,
     aiPartsOpen: p.aiPartsOpen === true,
   };
 }

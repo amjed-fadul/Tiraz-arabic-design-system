@@ -19,6 +19,7 @@ export function PreviewFrame({
   | "states"
   | "state"
   | "onStateChange"
+  | "customize"
   | "openHref"
   | "onViewChange"
   | "replaying"

@@ -29,10 +29,13 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Customize" }));
     if (en === "TaskRows")
-      await user.selectOptions(
-        screen.getByRole("combobox", { name: inspector }),
-        "list",
+      await user.click(
+        within(screen.getByRole("group", { name: inspector })).getByRole(
+          "button",
+          { name: "Connected list" },
+        ),
       );
     else await user.click(screen.getByRole("switch", { name: inspector }));
     await user.click(screen.getByRole("tab", { name: "Code" }));

@@ -44,6 +44,7 @@ it.each([
       expect(screen.queryByRole("heading", { name })).toBeNull();
     expect(document.querySelectorAll(".tz-demo-frame")).toHaveLength(1);
     expect(screen.getByRole("tablist", { name: "View" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Customize" }));
     expect(screen.getByRole("switch", { name: "Long content" })).toBeVisible();
   },
 );
@@ -105,7 +106,11 @@ it.each([
   "follows an interactive flow on %s",
   async (active, before, decide, after) => {
     vi.useFakeTimers();
-    persist(storageKeys.documentation, { language: "en", active });
+    persist(storageKeys.documentation, {
+      language: "en",
+      active,
+      settingsOpen: true,
+    });
     render(<Workbench />);
     const pressed = () =>
       within(screen.getByRole("group", { name: "Example states" }))
