@@ -89,6 +89,41 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  "data-answer": {
+    useWhen: [
+      [
+        "تكون الإجابة رقمًا أو مقارنة أو اتجاهًا في بيانات المستخدم نفسها، ويكفيها رسم وجملتان.",
+        "The answer is a figure, a comparison or a trend in the person's own data, and a chart and two sentences will do.",
+      ],
+      [
+        "يريد المستخدم أن يعرف من أين جاء الرقم: أي فترة وأي تصفية وأي جداول.",
+        "People want to know where the number came from: which period, which filters and which tables.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "تأتي الإجابة من مستندات لا من أرقام، فاستخدم",
+          "The answer comes from documents rather than figures, so use",
+        ],
+        page: "cited-answer",
+      },
+    ],
+    notice: [
+      [
+        "يقرّر تطبيقك الحالة والرسم وكل رقم، ولا يجلب النمط بيانات ولا يحسب شيئًا. ويعلن كل حالة مرة واحدة في جملة، ولا يعلن الأرقام.",
+        "Your app owns the status, the chart and every figure; the pattern never fetches or computes anything. Each status is announced once, in one sentence, and the figures never are.",
+      ],
+      [
+        "اختيار نوع الرسم يستدعي onChartTypeChange فقط، ويبقى الرسم كما هو حتى يمرّر تطبيقك رسمًا جديدًا. اعرض الأنواع التي تناسب البيانات وحدها.",
+        "Choosing a chart type only calls onChartTypeChange, and the chart stays until your app passes a new one. Offer only the types that fit the data.",
+      ],
+      [
+        "تبقى «كيف حُسب هذا؟» مطويّة حتى يفتحها المستخدم، وينسخ زر النسخ الشرح ومعه الفترة والتصفية والجداول مرقَّمة.",
+        "How it was calculated stays folded until opened, and Copy takes the explanation with the range, the filters and the numbered tables.",
+      ],
+    ],
+  },
   "change-summary": {
     useWhen: [
       [

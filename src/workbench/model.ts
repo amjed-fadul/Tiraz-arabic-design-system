@@ -283,6 +283,7 @@ export interface FilterBarModel {
 export interface Playgrounds {
   "task-starter": { appearance: "card" | "plain"; disabled: boolean };
   "cited-answer": { appearance: "card" | "plain"; question: boolean };
+  "data-answer": { appearance: "card" | "plain" };
   "agent-task": { appearance: "card" | "plain"; autoStart: boolean };
   "suggested-edits": { undo: boolean };
   "image-generation": {
@@ -433,6 +434,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "streaming-text": { markdown: false },
     "task-starter": { appearance: "card", disabled: false },
     "cited-answer": { appearance: "card", question: true },
+    "data-answer": { appearance: "card" },
     "agent-task": { appearance: "card", autoStart: true },
     "suggested-edits": { undo: true },
     "image-generation": { appearance: "card", knownProgress: true },

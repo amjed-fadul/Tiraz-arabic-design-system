@@ -607,6 +607,19 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "done", ms: 800 },
     ],
   },
+  "data-answer": {
+    states: [
+      phased("thinking"),
+      phased("done", "completed"),
+      phased("failed"),
+      phased("empty"),
+    ],
+    resting: "done",
+    replay: [
+      { state: "thinking", ms: 2200 },
+      { state: "done", ms: 800 },
+    ],
+  },
   "suggested-edits": {
     states: [
       phased("selecting"),

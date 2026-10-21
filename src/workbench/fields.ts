@@ -102,6 +102,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     appearance,
     field("question", "boolean", "عرض السؤال", "Show the question", "question"),
   ],
+  "data-answer": [appearance],
   "change-summary": [appearance],
   "suggested-edits": [
     field("undo", "boolean", "إتاحة التراجع", "Offer undo", "onUndo"),
@@ -1019,6 +1020,7 @@ export const optionNames: Record<string, Localized> = {
 const commonKeys: Record<ComponentId, string[]> = {
   "task-starter": ["appearance", "disabled"],
   "cited-answer": ["appearance", "question"],
+  "data-answer": ["appearance"],
   "agent-task": ["appearance", "autoStart"],
   "suggested-edits": ["undo"],
   "image-generation": ["appearance", "knownProgress"],

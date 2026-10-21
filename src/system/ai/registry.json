@@ -1097,6 +1097,22 @@
       "source": "CitedAnswer.tsx"
     },
     {
+      "name": "DataAnswer",
+      "source": "DataAnswer.tsx"
+    },
+    {
+      "name": "DataAnswerProps",
+      "source": "DataAnswer.tsx"
+    },
+    {
+      "name": "DataAnswerLabels",
+      "source": "DataAnswer.tsx"
+    },
+    {
+      "name": "DataAnswerChart",
+      "source": "DataAnswer.tsx"
+    },
+    {
       "name": "ChangeSummary",
       "source": "ChangeSummary.tsx"
     },
@@ -1648,6 +1664,168 @@
         "@radix-ui/react-popover@1.3.1 (via InlineCitation)"
       ],
       "examples": ["ai/examples/CitedAnswerExamples.tsx"]
+    },
+    {
+      "id": "data-answer",
+      "api": "DataAnswer",
+      "source": "DataAnswer.tsx",
+      "kind": "pattern",
+      "parts": [
+        "ai-mark",
+        "status-pill",
+        "tray",
+        "thinking-panel",
+        "feedback-bar",
+        "markdown",
+        "sources",
+        "line-chart",
+        "area-chart",
+        "bar-chart",
+        "donut-chart"
+      ],
+      "states": ["thinking", "completed", "failed", "empty"],
+      "events": [
+        "onChartTypeChange",
+        "onPin",
+        "onOpenTable",
+        "onCopy",
+        "onRetry"
+      ],
+      "exports": [
+        "DataAnswer",
+        "DataAnswerProps",
+        "DataAnswerLabels",
+        "DataAnswerChart"
+      ],
+      "purpose": "Turn a question about the person's data into a chart from the existing chart families, a two-sentence explanation that cites its tables by number, and a folded «كيف حُسب هذا؟» (date range, filters and source tables). The person can pin the chart, open it in a table and change its type; the states are thinking, completed, failed and empty.",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"thinking\" | \"completed\" | \"failed\" | \"empty\"",
+          "required": true,
+          "values": ["thinking", "completed", "failed", "empty"],
+          "note": "Host-owned. Thinking opens the thinking panel on the tables found so far; completed shows the chart, the explanation, «كيف حُسب هذا؟» and the person's options; failed shows «تعذّر إكمال الإجابة» with `error` and Try again; empty shows «لا توجد بيانات لهذه الفترة» with «كيف حُسب هذا؟». The pill reads «يفكّر», «اكتملت» (completed and empty) or «تعثّرت»."
+        },
+        {
+          "name": "question",
+          "type": "ReactNode",
+          "required": true,
+          "note": "The question, as the section's heading, beside the AI mark (turning while thinking) and the status pill."
+        },
+        {
+          "name": "chart",
+          "type": "DataAnswerChart",
+          "required": false,
+          "note": "The chart family and its own props: { type: \"line\" | \"area\" | \"bar\", props: CartesianChartProps } or { type: \"donut\", props: DonutChartProps }. Drawn as given, once completed. The pattern never reshapes data: the host passes the data that fits the type it shows."
+        },
+        {
+          "name": "explanation",
+          "type": "string",
+          "required": false,
+          "note": "Markdown, two sentences, under the chart. A [n] marker names a source's number in `sources` and becomes a preview citation chip, written in ASCII, Arabic-Indic or Persian digits; a marker with no source stays text. Links in it pass through sourceHref."
+        },
+        {
+          "name": "sources",
+          "type": "readonly SourceReference[]",
+          "required": false,
+          "note": "The tables the answer rests on, cited by number and listed in the method as «الجداول». Their titles are also the numbered lines of a copied answer."
+        },
+        {
+          "name": "method",
+          "type": "{ range: string; filters?: string }",
+          "required": false,
+          "note": "How the answer was worked out: «الفترة» is `range`, «التصفية» is `filters` or «بلا تصفية», and «الجداول» lists `sources` as chips. Folded by default behind «كيف حُسب هذا؟», and shown when completed or empty. Without `method` there is no disclosure."
+        },
+        {
+          "name": "thinking",
+          "type": "{ elapsed: number; searched: readonly SourceReference[]; steps?: readonly { id: string; label: string; state: \"pending\" | \"running\" | \"completed\" }[] }",
+          "required": false,
+          "note": "What the search covered, for the thinking panel: seconds, the tables found so far and the steps. The panel is open while thinking and folds after. When the answer failed it reads «تعثّر بعد ٦ث» with its thread still, so pass only what had arrived and mark no unfinished step completed. Update `elapsed` at most once a second. Without it there is no panel."
+        },
+        {
+          "name": "chartTypes",
+          "type": "readonly (\"line\" | \"area\" | \"bar\" | \"donut\")[]",
+          "required": false,
+          "note": "The types the person can switch between. With two or more, an `onChartTypeChange` and a completed answer, a native radio group «نوع الرسم» offers «خطوط», «مساحة», «أعمدة» and «حلقي». List the type `chart` shows. Offer only the families that fit the data."
+        },
+        {
+          "name": "onChartTypeChange",
+          "type": "(type: \"line\" | \"area\" | \"bar\" | \"donut\") => void",
+          "required": false,
+          "note": "Called with the type the person chose. The pattern changes nothing itself: the radio and the chart stay as they are until the host passes a new `chart`."
+        },
+        {
+          "name": "onPin",
+          "type": "() => void",
+          "required": false,
+          "note": "«ثبّت في اللوحة», the primary button of a completed answer. It shows only with the handler; the host pins the chart."
+        },
+        {
+          "name": "onOpenTable",
+          "type": "() => void",
+          "required": false,
+          "note": "«افتح في جدول» on a completed answer. It shows only with the handler; the host opens the rows behind the chart."
+        },
+        {
+          "name": "onCopy",
+          "type": "(text: string) => void | Promise<void>",
+          "required": false,
+          "note": "The host copies the text it is given: the explanation as written, a blank line, «كيف حُسب هذا؟» with «الفترة: …» and «التصفية: …», a blank line, then «المصادر» and one line per table, \"{number}. {title}\" in the reader's digits, with \" — {link}\" when its link is http or https. «نُسخت» shows for two seconds once the promise resolves. The copy button shows only with the handler, on a completed answer."
+        },
+        {
+          "name": "onRetry",
+          "type": "() => void",
+          "required": false,
+          "note": "The primary button when the answer failed."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "note": "What went wrong, as persistent text beside «تعذّر إكمال الإجابة» when the answer failed."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The question's level."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<DataAnswerLabels>",
+          "required": false,
+          "note": "Replaces any built-in text; thinkingPanel and feedbackBar carry the nested parts' words."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "card sits on a tray with the chart and the explanation on paper; plain lives on its host's paper."
+        }
+      ],
+      "state": "The host owns the status, the chart and its data for every type, the text, the tables and every time. The pattern never fetches, computes or reshapes anything and never advances by itself: it shows the thinking, draws the chart it is given, and reports what the person asks for, including the chart type to show next.",
+      "accessibility": [
+        "A section labelled by the question. One polite region says each change of status in one sentence: يفكّر, اكتملت الإجابة, تعذّر إكمال الإجابة or لا توجد بيانات لهذه الفترة. The status the answer mounts in is not announced, and an unchanged status is not announced again. The chart, the thinking panel and the copy confirmation never reach a live region.",
+        "The status pill names the state once, in words: يفكّر, اكتملت or تعثّرت. The chart is a named region with its visible summary. «كيف حُسب هذا؟» is a button with aria-expanded over a definition list, which is hidden and inert while folded. The chart type is a native radio group named «نوع الرسم», so the arrow keys move and change it; each option is named by its visible word.",
+        "A failure stays as text with Try again. When a change removes the focused control (Try again, Pin, a chart type), focus moves to the section. Moving to a status never moves focus."
+      ],
+      "limitations": [
+        "No data fetching, computing or charting logic: the host supplies the chart's data, every figure in the text and the times, and reshapes its data when the chart type changes. Update the thinking time at most once a second.",
+        "The explanation is Markdown with [n] markers, and a group such as [1, 3] is one marker; a number with no source leaves its whole marker as written, so supply every table the text cites. Digits in the text and the method are the host's: format them with numberLocale(config).",
+        "Use the families that fit the data: line and area for a trend over time, bar for a comparison, donut for the parts of a whole (it draws positive values only)."
+      ],
+      "alternative": "Use Cited answer for an answer from documents, a chart family alone for a figure that needs no explanation, DataTable for many records, and What changed for what moved this week.",
+      "dependencies": [
+        "recharts (via the chart families)",
+        "react-markdown@10.1.0",
+        "remark-gfm@4.0.1 (via Markdown)",
+        "@radix-ui/react-popover@1.3.1 (via InlineCitation)"
+      ],
+      "examples": ["ai/examples/DataAnswerExamples.tsx"]
     },
     {
       "id": "agent-task",
@@ -3033,7 +3211,7 @@
       "api": "Sources",
       "source": "Sources.tsx",
       "kind": "part",
-      "usedBy": ["cited-answer", "change-summary"],
+      "usedBy": ["cited-answer", "data-answer", "change-summary"],
       "exports": [
         "Sources",
         "InlineCitation",
@@ -3398,7 +3576,7 @@
       "api": "Markdown",
       "source": "Markdown.tsx",
       "kind": "content",
-      "usedBy": ["cited-answer"],
+      "usedBy": ["cited-answer", "data-answer"],
       "exports": ["Markdown", "MarkdownProps"],
       "props": [
         {
@@ -7154,6 +7332,7 @@
       "id": "line-chart",
       "api": "LineChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "LineChart",
         "CartesianChartProps",
@@ -7269,6 +7448,7 @@
       "id": "area-chart",
       "api": "AreaChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "AreaChart",
         "CartesianChartProps",
@@ -7384,6 +7564,7 @@
       "id": "bar-chart",
       "api": "BarChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "BarChart",
         "CartesianChartProps",
@@ -7499,6 +7680,7 @@
       "id": "donut-chart",
       "api": "DonutChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "DonutChart",
         "DonutChartProps",
@@ -9501,6 +9683,107 @@
       ]
     },
     {
+      "type": "DataAnswerLabels",
+      "source": "DataAnswer.tsx",
+      "props": [
+        {
+          "name": "thinking",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "completed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "empty",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "thinkingPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "completedPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failedPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "method",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "range",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "filters",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "noFilters",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tables",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "chartType",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "chartTypes",
+          "type": "Record<\"line\" | \"area\" | \"bar\" | \"donut\", string>",
+          "required": true
+        },
+        {
+          "name": "openTable",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "pin",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "thinkingPanel",
+          "type": "Partial<ThinkingPanelLabels>",
+          "required": false
+        },
+        {
+          "name": "feedbackBar",
+          "type": "Partial<FeedbackBarLabels>",
+          "required": false
+        }
+      ]
+    },
+    {
       "type": "ChangeSummaryLabels",
       "source": "ChangeSummary.tsx",
       "props": [
@@ -9908,6 +10191,7 @@
       "exports": ["AIMark", "AIMarkProps"],
       "source": "AIMark.tsx",
       "usedBy": [
+        "data-answer",
         "agent-task",
         "suggested-edits",
         "image-generation",
@@ -9952,6 +10236,7 @@
       "source": "StatusPill.tsx",
       "usedBy": [
         "task-starter",
+        "data-answer",
         "agent-task",
         "image-generation",
         "change-summary",
@@ -9996,6 +10281,7 @@
       "usedBy": [
         "task-starter",
         "cited-answer",
+        "data-answer",
         "agent-task",
         "suggested-edits",
         "image-generation",
@@ -10096,7 +10382,7 @@
       "id": "thinking-panel",
       "exports": ["ThinkingPanel", "ThinkingPanelProps", "ThinkingPanelLabels"],
       "source": "ThinkingPanel.tsx",
-      "usedBy": ["cited-answer"],
+      "usedBy": ["cited-answer", "data-answer"],
       "props": [
         {
           "name": "status",
@@ -10166,7 +10452,7 @@
         "FeedbackReason"
       ],
       "source": "FeedbackBar.tsx",
-      "usedBy": ["cited-answer"],
+      "usedBy": ["cited-answer", "data-answer"],
       "props": [
         {
           "name": "feedback",

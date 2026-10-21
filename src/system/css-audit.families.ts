@@ -115,6 +115,8 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "follow-ups": [".tz-follow-ups"],
   "cited-answer": [".tz-cited-answer"],
   "change-summary": [".tz-change-summary"],
+  // Ask your data, of Plan 5 Task 3.
+  "data-answer": [".tz-data-answer"],
   // Start a task of Plan 4 Task 5.
   "task-starter": [".tz-task-starter"],
   // Suggested edits and its InlineDiff, of Plan 4 Task 6. .tz-inline also

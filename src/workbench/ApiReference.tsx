@@ -299,6 +299,72 @@ export function ApiReference({
         ),
       ],
     ],
+    "data-answer": [
+      [
+        "status / question",
+        "thinking | completed | failed | empty · required / ReactNode · required",
+        t(
+          "يقرّر تطبيقك الحالة ولا يتقدّم النمط بنفسه. السؤال هو عنوان القسم، وبجانبه علامة الذكاء الاصطناعي وكلمة الحالة: «يفكّر» أو «اكتملت» (للمكتملة وللفارغة) أو «تعثّرت».",
+          "Your app owns the status; the pattern never moves on by itself. The question is the section's heading, with the AI mark and one status word beside it: «Thinking», «Done» (for completed and empty) or «Failed».",
+        ),
+      ],
+      [
+        "chart / chartTypes / onChartTypeChange",
+        '{ type: "line" | "area" | "bar", props: CartesianChartProps } | { type: "donut", props: DonutChartProps } / readonly ("line" | "area" | "bar" | "donut")[] / (type) => void',
+        t(
+          "يُرسم chart.type في عائلته من العائلات الأربع، وتصلها chart.props كما هي. مع نوعين أو أكثر في chartTypes ومع onChartTypeChange تظهر مجموعة «نوع الرسم» بأزرار اختيار أصلية. الاختيار يستدعي onChartTypeChange فقط، ويبقى الرسم الحالي حتى يمرّر تطبيقك رسمًا جديدًا شكّل بياناته للنوع الجديد. اعرض الأنواع التي تناسب البيانات وحدها: خطوط ومساحة لاتجاه عبر الزمن، وأعمدة لمقارنة، وحلقي لحصص من كل.",
+          "chart.type picks the chart family and chart.props go to it as given. With two or more chartTypes and an onChartTypeChange, a «Chart type» group of native radios appears. A choice only calls onChartTypeChange; the chart stays until your app passes a new one, with its data reshaped for the new type. Offer only the types that fit the data: lines and area for a trend over time, bars for a comparison, donut for parts of a whole.",
+        ),
+      ],
+      [
+        "explanation / sources",
+        "string (Markdown) / readonly SourceReference[]",
+        t(
+          "شرح من جملتين بصيغة Markdown. كل [n] فيه يسمّي number مصدرٍ في sources، وهي الجداول التي تقوم عليها الإجابة، فيصير رقم استشهاد يعرض الجدول عند المرور أو التركيز وتفتح لمسةٌ على شاشة لمس بطاقته. تبقى العلامة نصًا إذا لم يوجد مصدرها. وتمرّ الروابط عبر sourceHref.",
+          "A two-sentence explanation in Markdown. Each [n] names the number of a source in sources, the tables the answer rests on, and becomes a citation chip that previews the table on hover or focus; a tap on a touch screen opens its card. A marker with no source stays text. Links pass through sourceHref.",
+        ),
+      ],
+      [
+        "method",
+        "{ range: string; filters?: string }",
+        t(
+          "يملأ «كيف حُسب هذا؟»: range هو «الفترة»، وfilters هو «التصفية» أو «بلا تصفية» إذا غاب، وتُسرد sources في «الجداول». تبقى مطويّة حتى يفتحها المستخدم، وتظهر مع الإجابة المكتملة ومع الفترة الفارغة فقط، ولا تظهر دون method.",
+          "Fills «How was this calculated?»: range is the date range, filters the filters or «None» when absent, and sources are listed as the source tables. It stays folded until opened, shows with a completed answer or an empty period only, and not at all without method.",
+        ),
+      ],
+      [
+        "thinking",
+        "{ elapsed: number; searched: readonly SourceReference[]; steps? }",
+        t(
+          "ما غطّاه البحث: elapsed بالثواني وsearched الجداول التي وُجدت حتى الآن وsteps الخطوات. تنفتح اللوحة أثناء التفكير وتنطوي بعده، وإذا تعثّرت الإجابة قرأت «تعثّر بعد ٦ث» وبقي خيطها ساكنًا، فمرّر ما وصل فقط. حدّث elapsed مرة في الثانية على الأكثر.",
+          "What the search covered: elapsed in seconds, searched for the tables found so far and steps. The panel is open while thinking and folds after; if the answer failed it reads «Failed after 6s» with its thread still, so pass only what had arrived. Update elapsed at most once a second.",
+        ),
+      ],
+      [
+        "onPin / onOpenTable / onCopy",
+        "() => void / () => void / (text: string) => void | Promise<void>",
+        t(
+          "يظهر «ثبّت في اللوحة» (الزر الأساسي) و«افتح في جدول» مع الإجابة المكتملة، كلٌّ إذا وُجد معالجه، وهما نيّتان يعالجهما تطبيقك. يستلم onCopy النص المنسوخ: الشرح كما كُتب، ثم «كيف حُسب هذا؟» ومعه الفترة والتصفية، ثم «المصادر» وسطر مرقَّم لكل جدول. انسخ هذا النص لا explanation وحده. يظهر «نُسخت» ثانيتين بعد أن يكتمل نسخ تطبيقك.",
+          "Pin to dashboard (the primary button) and Open in a table show with a completed answer, each only when its handler exists; both are intents your app handles. onCopy receives the text to copy: the explanation as written, then «How was this calculated?» with the range and the filters, then «Sources» and a numbered line per table. Copy that text, not explanation alone. «Copied» shows for two seconds once your copy resolves.",
+        ),
+      ],
+      [
+        "onRetry / error",
+        "() => void / ReactNode",
+        t(
+          "عند التعثّر يبقى error نصًا ثابتًا تحت «تعذّر إكمال الإجابة» ومعه «أعد المحاولة» زرًّا أساسيًا. إذا اختفى الزر الذي عليه التركيز انتقل التركيز إلى القسم. وللفترة الفارغة جملتها على الورقة: «لا توجد بيانات لهذه الفترة».",
+          "When it fails, error stays as text under «Couldn't finish the answer», with Try again as the primary button. If the focused button goes away, focus moves to the section. An empty period says «No data for this period» on the paper.",
+        ),
+      ],
+      [
+        "appearance / headingLevel / labels",
+        '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3 / Partial<DataAnswerLabels>',
+        t(
+          "استخدم plain داخل لوحة أو نمط آخر. headingLevel مستوى السؤال. وتستبدل labels أي نص مدمج، وتحمل thinkingPanel وfeedbackBar كلمات الجزأين داخله.",
+          "Use plain inside a dashboard or another pattern. headingLevel is the question's level. labels replaces any built-in text; thinkingPanel and feedbackBar carry the nested parts' words.",
+        ),
+      ],
+    ],
     "change-summary": [
       [
         "status / title",

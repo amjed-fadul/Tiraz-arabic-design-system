@@ -8175,6 +8175,299 @@ button.tz-tool-chip[aria-expanded="true"] {
   }
 }
 
+/* Ask your data (spec section 13.1): a question answered as a chart, a short
+   explanation and «كيف حُسب هذا؟». The header holds the AI mark, the question
+   and one status pill; the paper holds the chart and the explanation. The
+   thinking panel and the method are evidence on the tray around the paper, and
+   the tray's footer holds the person's options: the chart type, then what to
+   do with the answer. Plain drops the tray and lives on its host's paper.
+   Nothing moves on mount. */
+.tz-data-answer {
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-data-answer[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-data-answer[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tz-data-answer:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-data-answer-header {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-data-answer-title {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+/* The thinking panel and the method sit on the tray, level with its header and
+   footer text. */
+.tz-data-answer-evidence {
+  padding-inline: var(--space-2);
+  padding-block-end: var(--space-2);
+}
+.tz-data-answer-paper {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.tz-data-answer-chart,
+.tz-data-answer-explanation {
+  min-inline-size: 0;
+}
+.tz-data-answer-explanation {
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-data-answer-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-data-answer-note[data-tone="empty"] {
+  padding-block: var(--space-6);
+  text-align: center;
+}
+/* What went wrong stays as text, in the danger color's soft fill; a transparent
+   border keeps the edge in forced colors. */
+.tz-data-answer-note[data-tone="danger"] {
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--danger-soft);
+  color: var(--text);
+}
+.tz-data-answer-note strong {
+  font-weight: var(--weight-semibold);
+}
+.tz-data-answer-note[data-tone="danger"] strong {
+  color: var(--danger);
+}
+/* «كيف حُسب هذا؟» folds under the paper: the range, the filters and the tables
+   as a definition list. A long list scrolls in its own region, never pushing the
+   decision out of view. */
+.tz-data-answer-method {
+  padding-inline: var(--space-2);
+  padding-block-start: var(--space-2);
+  color: var(--text-secondary);
+}
+.tz-data-answer-method-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-inline-size: 100%;
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  text-align: start;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-data-answer-method-trigger:hover {
+    background: var(--wash);
+  }
+}
+.tz-data-answer-method-trigger > svg {
+  inline-size: 14px;
+  block-size: 14px;
+  color: var(--text-muted);
+  transition: transform var(--motion-state) var(--ease-out);
+}
+.tz-data-answer-method[data-expanded="true"]
+  .tz-data-answer-method-trigger
+  > svg {
+  transform: rotate(180deg);
+}
+.tz-data-answer-method-panel,
+.tz-data-answer-method-panel[hidden] {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  min-inline-size: 0;
+  transition:
+    grid-template-rows var(--motion-collapse-exit) var(--ease-out),
+    opacity var(--motion-collapse-exit) var(--ease-out),
+    visibility 0s var(--motion-collapse-exit);
+}
+.tz-data-answer-method[data-expanded="true"] > .tz-data-answer-method-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--motion-collapse) var(--ease-out),
+    opacity var(--motion-collapse) var(--ease-out),
+    visibility 0s;
+}
+.tz-data-answer-method-clip {
+  min-block-size: 0;
+  overflow: hidden;
+}
+.tz-data-answer-method-list {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  max-block-size: 18rem;
+  margin: 0;
+  padding: var(--space-2) var(--space-1) var(--space-1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-data-answer-method-list > div {
+  display: contents;
+}
+.tz-data-answer-method-list dt {
+  color: var(--text-muted);
+}
+.tz-data-answer-method-list dd {
+  min-inline-size: 0;
+  margin: 0;
+  color: var(--text);
+}
+.tz-data-answer-tables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-data-answer-tables > li {
+  display: flex;
+  min-inline-size: 0;
+}
+/* The person's options. The chart type is a native radio group laid over a pill
+   control: a click, the arrow keys and the group work as the browser does them,
+   and the chosen type is the raised paper chip. */
+.tz-data-answer-decision {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  min-inline-size: 0;
+}
+.tz-data-answer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  margin-inline-start: auto;
+}
+.tz-data-answer-types {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+}
+.tz-data-answer-types-label {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-data-answer-types-options {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+}
+.tz-data-answer-type {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 28px;
+  padding-inline: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-data-answer-type > input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.tz-data-answer-type:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-data-answer-type:hover {
+    color: var(--text);
+  }
+}
+.tz-data-answer-type:has(:checked) {
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text);
+}
+.tz-data-answer-type:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+/* Plain draws the hairline that the tray's edge draws in a card. */
+.tz-data-answer[data-appearance="plain"]
+  :is(.tz-data-answer-evidence, .tz-data-answer-method) {
+  padding-inline: 0;
+}
+.tz-data-answer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+@media (forced-colors: active) {
+  .tz-data-answer-type:has(:checked) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
 .tz-sources {
   min-inline-size: 0;
   font-size: var(--text-meta);

@@ -785,6 +785,55 @@ const phaseFamilies: PhaseFamily[] = [
     replay: ["thinking", "writing", "done"],
   },
   {
+    id: "data-answer",
+    resting: "done",
+    list: [
+      [
+        "thinking",
+        () => {
+          // The panel is open on the tables found so far.
+          expect(
+            stage().getByRole("button", { name: "يفكّر" }),
+          ).toHaveAttribute("aria-expanded", "true");
+          expect(
+            stage().queryByRole("button", { name: "ثبّت في اللوحة" }),
+          ).toBeNull();
+        },
+      ],
+      [
+        "done",
+        () => {
+          expect(stage().getByRole("radio", { name: "أعمدة" })).toBeChecked();
+          expect(
+            stage().getByRole("button", { name: "ثبّت في اللوحة" }),
+          ).toBeEnabled();
+          expect(
+            stage().getByRole("button", { name: "كيف حُسب هذا؟" }),
+          ).toHaveAttribute("aria-expanded", "false");
+        },
+      ],
+      [
+        "failed",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "أعد المحاولة" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent(
+            "انقطع الاتصال بتوقعات التدفق النقدي",
+          );
+        },
+      ],
+      [
+        "empty",
+        () => {
+          expect(stageNode()).toHaveTextContent("لا توجد بيانات لهذه الفترة");
+          expect(stageNode()).toHaveTextContent("نوفمبر");
+        },
+      ],
+    ],
+    replay: ["thinking", "done"],
+  },
+  {
     id: "change-summary",
     resting: "ready",
     list: [

@@ -4,6 +4,7 @@ import { SuggestedEditsExample } from "../system/ai/examples/SuggestedEditsExamp
 import { ImageGenerationExample } from "../system/ai/examples/ImageGenerationExamples";
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
+import { DataAnswerExample } from "../system/ai/examples/DataAnswerExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
 import { ChatAppExample } from "../system/ai/examples/ChatAppExample";
 import {
@@ -326,6 +327,15 @@ export function Playground({
       <CitedAnswerExample
         language={language}
         {...(model as Playgrounds["cited-answer"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "data-answer")
+    return (
+      <DataAnswerExample
+        language={language}
+        {...(model as Playgrounds["data-answer"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
       />

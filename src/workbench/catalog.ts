@@ -19,6 +19,15 @@ export const catalog = [
     file: "CitedAnswer.tsx",
   },
   {
+    id: "data-answer",
+    name: ["اسأل بياناتك", "Ask your data"],
+    description: [
+      "يحوّل سؤالًا عن بياناتك إلى رسم وشرح قصير، ويبيّن كيف حُسب.",
+      "Turn a question about your data into a chart and a short explanation, and show how it was worked out.",
+    ],
+    file: "DataAnswer.tsx",
+  },
+  {
     id: "agent-task",
     name: ["مهمة الوكيل", "Agent task"],
     description: [
@@ -699,10 +708,11 @@ export const jobNames: Record<Job, Localized> = {
   create: ["أنشئ", "Create"],
   understand: ["افهم وتحكّم", "Understand and control"],
 };
-/** The nine pattern pages and their jobs; a page here is a pattern page. */
+/** The pattern pages and their jobs; a page here is a pattern page. */
 export const patternJobs: Partial<Record<ComponentId, Job>> = {
   "task-starter": "ask",
   "cited-answer": "ask",
+  "data-answer": "ask",
   "agent-task": "delegate",
   "ask-user-questions": "delegate",
   "approval-card": "delegate",
@@ -740,7 +750,7 @@ const aiSections: readonly DocumentationSection[] = [
   {
     id: "ask",
     name: jobNames.ask,
-    ids: ["task-starter", "cited-answer"],
+    ids: ["task-starter", "cited-answer", "data-answer"],
   },
   {
     id: "delegate",

@@ -104,6 +104,7 @@ it("groups AI patterns by job, folds the parts and ends Display with content blo
     [
       "ابدأ مهمة",
       "إجابة موثّقة",
+      "اسأل بياناتك",
       "مهمة الوكيل",
       "أسئلة قبل البدء",
       "طلب موافقة",

@@ -5,6 +5,7 @@ import suggestedEditsSource from "../system/ai/examples/SuggestedEditsExamples.t
 import imageGenerationSource from "../system/ai/examples/ImageGenerationExamples.tsx?raw";
 import changeSummarySource from "../system/ai/examples/ChangeSummaryExamples.tsx?raw";
 import citedAnswerSource from "../system/ai/examples/CitedAnswerExamples.tsx?raw";
+import dataAnswerSource from "../system/ai/examples/DataAnswerExamples.tsx?raw";
 import terminalSource from "../system/ai/examples/TerminalExamples.tsx?raw";
 import chatAppSource from "../system/ai/examples/ChatAppExample.tsx?raw";
 import aiDecisionsSource from "../system/ai/examples/AIDecisionsExamples.tsx?raw";
@@ -109,6 +110,7 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
     isOneOf(component, [
       "task-starter",
       "cited-answer",
+      "data-answer",
       "agent-task",
       "suggested-edits",
       "image-generation",
@@ -123,15 +125,17 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
         ? taskStarterSource
         : component === "cited-answer"
           ? citedAnswerSource
-          : component === "agent-task"
-            ? agentTaskSource
-            : component === "suggested-edits"
-              ? suggestedEditsSource
-              : component === "image-generation"
-                ? imageGenerationSource
-                : component === "change-summary"
-                  ? changeSummarySource
-                  : aiDecisionsSource
+          : component === "data-answer"
+            ? dataAnswerSource
+            : component === "agent-task"
+              ? agentTaskSource
+              : component === "suggested-edits"
+                ? suggestedEditsSource
+                : component === "image-generation"
+                  ? imageGenerationSource
+                  : component === "change-summary"
+                    ? changeSummarySource
+                    : aiDecisionsSource
     )
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replace(
@@ -143,19 +147,21 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
         ? "TaskStarterExample"
         : component === "cited-answer"
           ? "CitedAnswerExample"
-          : component === "agent-task"
-            ? "AgentTaskExample"
-            : component === "suggested-edits"
-              ? "SuggestedEditsExample"
-              : component === "image-generation"
-                ? "ImageGenerationExample"
-                : component === "change-summary"
-                  ? "ChangeSummaryExample"
-                  : component === "ask-user-questions"
-                    ? "AskUserQuestionsExample"
-                    : component === "approval-card"
-                      ? "ApprovalCardExample"
-                      : "ApprovalFlowExample";
+          : component === "data-answer"
+            ? "DataAnswerExample"
+            : component === "agent-task"
+              ? "AgentTaskExample"
+              : component === "suggested-edits"
+                ? "SuggestedEditsExample"
+                : component === "image-generation"
+                  ? "ImageGenerationExample"
+                  : component === "change-summary"
+                    ? "ChangeSummaryExample"
+                    : component === "ask-user-questions"
+                      ? "AskUserQuestionsExample"
+                      : component === "approval-card"
+                        ? "ApprovalCardExample"
+                        : "ApprovalFlowExample";
     return `${source}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";

@@ -215,6 +215,12 @@ export type {
 } from "./TaskStarter";
 export { CitedAnswer } from "./CitedAnswer";
 export type { CitedAnswerProps, CitedAnswerLabels } from "./CitedAnswer";
+export { DataAnswer } from "./DataAnswer";
+export type {
+  DataAnswerProps,
+  DataAnswerLabels,
+  DataAnswerChart,
+} from "./DataAnswer";
 export { ChangeSummary } from "./ChangeSummary";
 export type { ChangeSummaryProps, ChangeSummaryLabels } from "./ChangeSummary";
 export { ApprovalFlow } from "./ApprovalFlow";
