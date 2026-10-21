@@ -168,6 +168,27 @@ it("asks about the name once, folds the answer into a receipt and finishes", asy
   }
 }, 15000);
 
+it("records nothing when Back leaves the review while the answer is being recorded", async () => {
+  const user = userEvent.setup();
+  render(<Onboarding />);
+  await company(user);
+  await mobile(user);
+  await attach(user);
+  await user.click(screen.getByRole("radio", { name: "النخيل" }));
+  await user.click(next());
+  expect(next()).toHaveAttribute("aria-busy", "true");
+  // Leaving the step aborts the host's moment, and nothing settles after it.
+  await user.click(back());
+  expect(title("المستندات")).toHaveFocus();
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  expect(screen.queryByText("إجاباتك")).toBeNull();
+  await user.click(next());
+  // The draft is kept, but nothing was accepted: the question is open again.
+  expect(screen.getByRole("radio", { name: "النخيل" })).toBeChecked();
+  expect(screen.queryByText("إجاباتك")).toBeNull();
+  expect(next()).not.toHaveAttribute("aria-busy");
+}, 15000);
+
 it("asks nothing when the name matches the documents", async () => {
   const user = userEvent.setup();
   render(<Onboarding />);

@@ -119,6 +119,9 @@
   background: var(--success-soft);
   color: var(--success);
 }
+.onboarding .onboarding-done .onboarding-title {
+  justify-self: center;
+}
 .onboarding .onboarding-done .tz-card-description {
   max-inline-size: 28rem;
 }
@@ -158,4 +161,14 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
   }
+}
+
+/* The stepper runs edge to edge: the last step has no connector after it, so it
+   takes only what its mark and label need, and the steps before it share the
+   rest. */
+.onboarding .tz-step:last-child {
+  flex: 0 0 auto;
+}
+.onboarding .tz-step:last-child .tz-step-body {
+  padding-inline-end: 0;
 }
