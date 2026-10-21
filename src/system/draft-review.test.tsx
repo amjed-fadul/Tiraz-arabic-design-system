@@ -111,6 +111,32 @@ it("sends what it shows, once, with Ctrl or Cmd+Enter after 500 ms", () => {
   }
 });
 
+it("resets Send on a new ready status when announcements are off", () => {
+  const onSend = vi.fn();
+  const props = { announcement: "off" as const, onSend };
+  const view = render(draft("ready", props));
+  fireEvent.click(screen.getByRole("button", { name: "إرسال" }));
+  expect(onSend).toHaveBeenCalledTimes(1);
+
+  view.rerender(draft("sending", props));
+  view.rerender(draft("ready", props));
+  fireEvent.click(screen.getByRole("button", { name: "إرسال" }));
+  expect(onSend).toHaveBeenCalledTimes(2);
+});
+
+it("resets Undo on a new sending status when announcements are off", () => {
+  const onUndo = vi.fn();
+  const props = { announcement: "off" as const, onUndo, undoWindow: 10 };
+  const view = render(draft("sending", props));
+  fireEvent.click(undoButton()!);
+  expect(onUndo).toHaveBeenCalledTimes(1);
+
+  view.rerender(draft("ready", props));
+  view.rerender(draft("sending", props));
+  fireEvent.click(undoButton()!);
+  expect(onUndo).toHaveBeenCalledTimes(2);
+});
+
 it("offers Undo only inside the host's window and never claims a recall", () => {
   vi.useFakeTimers();
   const onUndo = vi.fn(),

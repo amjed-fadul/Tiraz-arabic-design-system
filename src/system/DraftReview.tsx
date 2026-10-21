@@ -221,17 +221,13 @@ export function DraftReview({
   // the status it mounts in is not news. Only the host's next status says
   // what became of an Undo.
   useEffect(() => {
-    if (announcement === "off") {
-      heard.current = status;
-      return;
-    }
     const was = heard.current;
     if (was === status) return;
     heard.current = status;
     const undid = undone.current;
     decided.current = false;
     undone.current = false;
-    if (was === null || !live.current) return;
+    if (announcement === "off" || was === null || !live.current) return;
     live.current.textContent =
       status === "writing"
         ? copy.saysWriting
