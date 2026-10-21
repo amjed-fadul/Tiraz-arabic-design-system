@@ -68,6 +68,8 @@ export interface SuggestedEditsProps {
   suggestion?: { title: ReactNode; segments: readonly DiffSegment[] };
   /** The range the suggestion is for, as onAction reported it. Without it, the last action's range. */
   selection?: Offsets;
+  /** Floating by default; inline keeps the review below the text in document flow. */
+  reviewPlacement?: "floating" | "inline";
   /** Keyed by each change's first segment id. Without it the pattern keeps its own. */
   decisions?: Readonly<Record<string, Decision>>;
   /** Speak status changes politely, or leave announcements to the host. */
@@ -127,6 +129,7 @@ export function SuggestedEdits({
   announcement = "polite",
   suggestion,
   selection,
+  reviewPlacement = "floating",
   decisions,
   onDecisionsChange,
   onApply,
@@ -288,6 +291,39 @@ export function SuggestedEdits({
         }))
       : [];
 
+  const restoreReviewFocus = useCallback(
+    () => !!lastFocus.current && !lastFocus.current.isConnected,
+    [],
+  );
+
+  const review =
+    status === "reviewing" && suggestion ? (
+      <ReviewCard
+        placement={reviewPlacement}
+        restoreFocus={restoreReviewFocus}
+        copy={copy}
+        title={suggestion.title}
+        segments={suggestion.segments}
+        ids={ids}
+        decisions={decided}
+        onDecisionsChange={decide}
+        onApply={
+          onApply && start !== undefined && end !== undefined
+            ? () =>
+                onApply(diffText(suggestion.segments, decided), {
+                  start,
+                  end,
+                })
+            : undefined
+        }
+        onDismiss={onDismiss ? dismiss : undefined}
+        scope={scope}
+        start={start}
+        end={end}
+        opened={changed}
+      />
+    ) : null;
+
   return (
     <div
       ref={root}
@@ -360,35 +396,12 @@ export function SuggestedEdits({
             </Popper.Content>,
             container,
           )}
-        {container &&
-          status === "reviewing" &&
-          suggestion &&
-          createPortal(
-            <ReviewCard
-              copy={copy}
-              title={suggestion.title}
-              segments={suggestion.segments}
-              ids={ids}
-              decisions={decided}
-              onDecisionsChange={decide}
-              onApply={
-                onApply && start !== undefined && end !== undefined
-                  ? () =>
-                      onApply(diffText(suggestion.segments, decided), {
-                        start,
-                        end,
-                      })
-                  : undefined
-              }
-              onDismiss={onDismiss ? dismiss : undefined}
-              scope={scope}
-              start={start}
-              end={end}
-              opened={changed}
-            />,
-            container,
-          )}
+        {reviewPlacement === "floating" &&
+          container &&
+          review &&
+          createPortal(review, container)}
       </Popper.Root>
+      {reviewPlacement === "inline" && review}
     </div>
   );
 }
@@ -399,6 +412,8 @@ export function SuggestedEdits({
  * it, and Apply below. A non-modal popover; Escape reaches the pattern.
  */
 function ReviewCard({
+  placement,
+  restoreFocus,
   copy,
   title,
   segments,
@@ -412,6 +427,8 @@ function ReviewCard({
   end,
   opened,
 }: {
+  placement: "floating" | "inline";
+  restoreFocus: () => boolean;
   copy: SuggestedEditsLabels;
   title: ReactNode;
   segments: readonly DiffSegment[];
@@ -442,7 +459,7 @@ function ReviewCard({
     const doc = heading.current?.ownerDocument,
       active = doc?.activeElement;
     if (
-      !opened ||
+      (!opened && !restoreFocus()) ||
       !doc ||
       (active &&
         active !== doc.body &&
@@ -450,7 +467,7 @@ function ReviewCard({
     )
       return;
     heading.current?.focus({ preventScroll: true });
-  }, [opened]);
+  }, [opened, restoreFocus]);
   // The diff is plain text, so a range across formatting is applied without
   // it, and the card says so.
   useLayoutEffect(() => {
@@ -551,18 +568,24 @@ function ReviewCard({
     </div>
   );
 
+  const Surface = placement === "inline" ? "div" : Popper.Content;
   return (
-    <Popper.Content
+    <Surface
       ref={card}
       className="tz-suggested-edits-card"
       role="dialog"
       aria-labelledby={`${uid}-title`}
       data-changed={opened || undefined}
       dir={config.direction}
-      side="bottom"
-      align="center"
-      sideOffset={8}
-      collisionPadding={8}
+      data-placement={placement}
+      {...(placement === "floating"
+        ? {
+            side: "bottom" as const,
+            align: "center" as const,
+            sideOffset: 8,
+            collisionPadding: 8,
+          }
+        : {})}
     >
       <Tray
         paper={false}
@@ -601,6 +624,6 @@ function ReviewCard({
           </p>
         </div>
       </Tray>
-    </Popper.Content>
+    </Surface>
   );
 }

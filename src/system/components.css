@@ -5887,6 +5887,14 @@ button.tz-source-chip {
   font-size: var(--text-body);
   overflow-wrap: anywhere;
 }
+.tz-suggested-edits-card[data-placement="inline"] {
+  inline-size: 100%;
+  min-inline-size: 0;
+  margin-block-start: var(--space-2);
+}
+.tz-suggested-edits-card[data-placement="inline"] > .tz-tray {
+  max-block-size: none;
+}
 .tz-suggested-edits-card > .tz-tray {
   max-block-size: var(--radix-popper-available-height);
   overflow-y: auto;

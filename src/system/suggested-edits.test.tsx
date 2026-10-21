@@ -293,3 +293,46 @@ it("says plain text when the selection spans formatting", () => {
   view.rerender(formatted(0, 3));
   expect(screen.getByText("يُطبَّق كنص عادي")).not.toBeVisible();
 });
+
+it("keeps an inline review in the text flow and preserves decisions and keyboard dismissal", () => {
+  const dismiss = vi.fn();
+  render(
+    edits({
+      status: "reviewing",
+      suggestion,
+      selection: at,
+      reviewPlacement: "inline",
+      onDismiss: dismiss,
+    }),
+  );
+  const dialog = screen.getByRole("dialog", { name: title });
+  expect(
+    screen.getByTestId("text").closest(".tz-suggested-edits"),
+  ).toContainElement(dialog);
+  expect(dialog).not.toHaveAttribute("data-side");
+  const first = within(dialog).getAllByRole("group")[0];
+  first.focus();
+  fireEvent.keyDown(first, { code: "KeyY", key: "غ" });
+  expect(within(first).getByRole("button", { name: /^قبول/ })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  fireEvent.keyDown(first, { key: "Escape" });
+  expect(dismiss).toHaveBeenCalledOnce();
+  expect(screen.getByRole("region")).toHaveFocus();
+});
+
+it("returns focus to the review heading when changing placement removes a focused control", () => {
+  const props = { status: "reviewing" as const, suggestion, selection: at };
+  const view = render(edits(props));
+  within(screen.getByRole("dialog", { name: title }))
+    .getByRole("button", { name: "قبول الكل" })
+    .focus();
+  view.rerender(edits({ ...props, reviewPlacement: "inline" }));
+  expect(screen.getByRole("heading", { name: title })).toHaveFocus();
+  within(screen.getByRole("dialog", { name: title }))
+    .getByRole("button", { name: "رفض الكل" })
+    .focus();
+  view.rerender(edits(props));
+  expect(screen.getByRole("heading", { name: title })).toHaveFocus();
+});

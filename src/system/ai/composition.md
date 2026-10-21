@@ -510,6 +510,8 @@ controlled draft, or copies it with explicit success/failure feedback. Preserve
 native text selection and copying. Alt+Enter enters actions; Escape leaves them.
 Exclude code/editor/control descendants and never silently replace selected text.
 `onSelect(text, { start, end })` also reports offsets into the scope's text content.
+Use Suggested edits with `reviewPlacement="inline"` when a narrow document needs the review to occupy space after its text; keep the default `"floating"` for a selection-anchored popover that may flip to remain in the viewport. Inline review needs no reserved height.
+
 When the assistant rewrites the selection, use Suggested edits, which builds on them:
 the host replaces its own text only on Apply, and should dismiss a suggestion whose
 text changed meanwhile. Editable drafts use InlineDiff directly.

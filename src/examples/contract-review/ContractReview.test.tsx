@@ -288,48 +288,67 @@ it("settles the clause on Apply and Dismiss, and gives the edits back on Undo", 
   );
 });
 
-it("moves the files into a Sheet below 960 px and keeps the send after the page", async () => {
-  const wide = globalThis.ResizeObserver;
-  globalThis.ResizeObserver = class {
-    report: ResizeObserverCallback;
-    constructor(report: ResizeObserverCallback) {
-      this.report = report;
-    }
-    observe() {
-      this.report(
-        [{ contentRect: { width: 700, height: 0 } } as ResizeObserverEntry],
-        this as unknown as ResizeObserver,
+it.each([700, 390])(
+  "moves files into a Sheet at %i px and keeps the review and send in order",
+  async (width) => {
+    const wide = globalThis.ResizeObserver;
+    globalThis.ResizeObserver = class {
+      report: ResizeObserverCallback;
+      constructor(report: ResizeObserverCallback) {
+        this.report = report;
+      }
+      observe() {
+        this.report(
+          [{ contentRect: { width, height: 0 } } as ResizeObserverEntry],
+          this as unknown as ResizeObserver,
+        );
+      }
+      unobserve() {}
+      disconnect() {}
+    };
+    try {
+      const user = setup();
+      expect(review()).toHaveAttribute(
+        "data-placement",
+        width < 640 ? "inline" : "floating",
       );
-    }
-    unobserve() {}
-    disconnect() {}
-  };
-  try {
-    const user = setup();
-    // One variant renders: no panel, and the files wait behind their button.
-    expect(screen.queryByRole("tree")).toBeNull();
-    const trigger = screen.getByRole("button", { name: "الملفات" });
-    await user.click(trigger);
-    const sheet = screen.getByRole("dialog", { name: "الملفات" });
-    expect(sheet).toHaveAttribute("data-edge", "end");
-    // Escape closes it, returns focus to its button, and changes nothing.
-    await user.keyboard("{Escape}");
-    expect(screen.queryByRole("dialog", { name: "الملفات" })).toBeNull();
-    expect(trigger).toHaveFocus();
-    expect(
-      screen.getByRole("heading", { level: 2, name: "ملحق شروط الدفع" }),
-    ).toBeInTheDocument();
+      if (width < 640) {
+        const document = screen
+          .getByRole("heading", { level: 2, name: "ملحق شروط الدفع" })
+          .closest(".contract-review-document")!;
+        expect(document).toContainElement(review());
+        expect(document.querySelector(".tz-card-content")).not.toHaveAttribute(
+          "style",
+        );
+      }
+      // One variant renders: no panel, and the files wait behind their button.
+      expect(screen.queryByRole("tree")).toBeNull();
+      const trigger = screen.getByRole("button", { name: "الملفات" });
+      await user.click(trigger);
+      const sheet = screen.getByRole("dialog", { name: "الملفات" });
+      expect(sheet).toHaveAttribute("data-edge", "end");
+      // Escape closes it, returns focus to its button, and changes nothing.
+      await user.keyboard("{Escape}");
+      expect(screen.queryByRole("dialog", { name: "الملفات" })).toBeNull();
+      expect(trigger).toHaveFocus();
+      expect(
+        screen.getByRole("heading", { level: 2, name: "ملحق شروط الدفع" }),
+      ).toBeInTheDocument();
 
-    // Choosing a file opens it and closes the Sheet. The send follows the page.
-    await user.click(trigger);
-    await user.click(screen.getByRole("treeitem", { name: "المراسلات" }));
-    expect(screen.queryByRole("dialog", { name: "الملفات" })).toBeNull();
-    const page = screen.getByRole("heading", { level: 2, name: "المراسلات" });
-    const send = screen.getByRole("heading", { level: 2, name: "إرسال العقد" });
-    expect(
-      page.compareDocumentPosition(send) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy();
-  } finally {
-    globalThis.ResizeObserver = wide;
-  }
-});
+      // Choosing a file opens it and closes the Sheet. The send follows the page.
+      await user.click(trigger);
+      await user.click(screen.getByRole("treeitem", { name: "المراسلات" }));
+      expect(screen.queryByRole("dialog", { name: "الملفات" })).toBeNull();
+      const page = screen.getByRole("heading", { level: 2, name: "المراسلات" });
+      const send = screen.getByRole("heading", {
+        level: 2,
+        name: "إرسال العقد",
+      });
+      expect(
+        page.compareDocumentPosition(send) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
+    } finally {
+      globalThis.ResizeObserver = wide;
+    }
+  },
+);

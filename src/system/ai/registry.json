@@ -2294,6 +2294,13 @@
           "note": "The range the suggestion is for, as onAction reported it, for a host that restores a saved suggestion. Without it, the last action's range."
         },
         {
+          "name": "reviewPlacement",
+          "type": "\"floating\" | \"inline\"",
+          "required": false,
+          "default": "floating",
+          "note": "Floating uses a viewport-contained popover that may flip above the selection. Inline keeps the same non-modal review after the text in document flow, filling its host; use it when space should be occupied below a clause on narrow screens. Moving between placements restores focus to the review heading if a focused review control was removed."
+        },
+        {
           "name": "decisions",
           "type": "Readonly<Record<string, \"accepted\" | \"rejected\">>",
           "required": false,

@@ -314,7 +314,7 @@ function Review() {
   );
 
   const reviewing = file === "annex" && !(applied || sent);
-  const reserve = useReviewCard(annexPage, reviewing);
+  const reserve = useReviewCard(annexPage, reviewing && size !== "narrow");
   const readOnly = t("للقراءة فقط", "Read-only");
   const name = (id: FileId) => files.find((item) => item.id === id)!.name;
   const page =
@@ -322,7 +322,7 @@ function Review() {
       <Page
         title={name("annex")[language]}
         description={annex.description[language]}
-        reserve={reviewing ? reserve : 0}
+        reserve={reviewing && size !== "narrow" ? reserve : 0}
         ref={annexPage}
       >
         <ol className="contract-review-clauses">
@@ -333,6 +333,7 @@ function Review() {
                 <p>{item.text[language]}</p>
               ) : (
                 <SuggestedEdits
+                  reviewPlacement={size === "narrow" ? "inline" : "floating"}
                   announcement="off"
                   status={applied || sent ? "applied" : "reviewing"}
                   actions={[]}

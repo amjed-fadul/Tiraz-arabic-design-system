@@ -631,6 +631,14 @@ export function ApiReference({
         ),
       ],
       [
+        "reviewPlacement",
+        '"floating" | "inline" · floating',
+        t(
+          "يعرض floating بطاقة عائمة قد تنتقل فوق التحديد لتبقى في النافذة. ويضع inline بطاقة المراجعة نفسها بعد النص في تدفّق الصفحة، بعرض المنطقة. استخدمه للمراجعة أسفل بند في شاشة ضيّقة؛ ويعود التركيز إلى عنوان المراجعة إذا أزال تغيّر الموضع عنصرًا كان مركّزًا عليه.",
+          "floating shows a viewport-contained popover that can flip above the selection. inline places the same review after the text in document flow, filling its host. Use it below a clause on narrow screens; changing placement returns focus to the review heading if a focused control was removed.",
+        ),
+      ],
+      [
         "suggestion / decisions / onDecisionsChange",
         "{ title, segments: DiffSegment[] }? / Record<id, accepted | rejected>? / (next) => void",
         t(
