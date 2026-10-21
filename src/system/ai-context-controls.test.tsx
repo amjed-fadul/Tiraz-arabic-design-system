@@ -48,6 +48,13 @@ it.each([
     const user = userEvent.setup();
     render(wrap(<system.ContextMeter used={used} capacity={100} />));
     const trigger = screen.getByRole("button", { name: new RegExp(status) });
+    // Label in Name: the name holds all the text the trigger shows, numbers
+    // and status word, in that order.
+    const plain = (text: string | null) =>
+      (text ?? "").replace(/[:·]/g, "").replace(/\s+/g, " ").trim();
+    expect(plain(trigger.getAttribute("aria-label"))).toContain(
+      plain(trigger.textContent),
+    );
     expect(within(trigger).getByText(status)).toHaveAttribute(
       "data-tone",
       tone,
@@ -423,4 +430,34 @@ it("shows shares and an action in the detail view and announces each crossing on
   mounted.unmount();
   render(meter(120_000, { announcement: "off" }));
   expect(screen.queryByRole("status")).toBeNull();
+});
+
+it("keeps focus on the meter when its action goes with the room it made", async () => {
+  const user = userEvent.setup();
+  const meter = (used: number, inline: boolean) => (
+    <SystemProvider config={defaultConfig}>
+      <system.ContextMeter
+        inline={inline}
+        used={used}
+        capacity={128_000}
+        action={{ label: "لخّص المحادثة", onSelect() {} }}
+      />
+    </SystemProvider>
+  );
+  const action = () => screen.getByRole("button", { name: "لخّص المحادثة" });
+  // Inline: once there is room again the button is removed, and focus lands on
+  // the group rather than the page.
+  const inline = render(meter(105_000, true));
+  action().focus();
+  inline.rerender(meter(41_000, true));
+  expect(screen.queryByRole("button", { name: "لخّص المحادثة" })).toBeNull();
+  expect(screen.getByRole("group", { name: "السياق" })).toHaveFocus();
+  inline.unmount();
+  // The popover: the same, onto the details.
+  const popover = render(meter(105_000, false));
+  await user.click(screen.getByRole("button", { name: /السياق/ }));
+  action().focus();
+  popover.rerender(meter(41_000, false));
+  expect(screen.queryByRole("button", { name: "لخّص المحادثة" })).toBeNull();
+  expect(screen.getByRole("dialog")).toHaveFocus();
 });

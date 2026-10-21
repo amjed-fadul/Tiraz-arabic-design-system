@@ -2890,7 +2890,7 @@
       "accessibility": [
         "A section labelled by its title, with no AI mark and no status pill. Its three sections, «الصلاحيات», «الذاكرة» and «السياق والاستخدام», are headed one level down and show only when their data is given.",
         "Each action is a fieldset named by its legend, the action and its risk tags, and described by its description and, when locked, the lock sentence. Its levels are native radios, so arrows move and choose; a locked action's other two radios are disabled.",
-        "Each memory item's buttons are named by their word and then the item: «حذف تفضّل شركة مدار التواصل مع سارة العتيبي». When a change removes the focused control, a deleted item's buttons or the meter's action once there is room, focus moves to the section.",
+        "Each memory item's buttons are named by their word and then the item: «حذف تفضّل شركة مدار التواصل مع سارة العتيبي». When a deleted item's buttons take focus with them it moves to the section, and when the meter's action does, once there is room, it moves to the meter's group.",
         "The context meter's region is the pattern's one polite region: «السياق: يقترب من الامتلاء», once each time the status word changes, never at mount and never a number."
       ],
       "limitations": [
@@ -3589,9 +3589,9 @@
       ],
       "state": "Compact ring and counts with a keyboard-operated details popover, or the details in place with inline. Values are host supplied; estimates are explicitly labeled. With a valid capacity, each part shows its share of the capacity as a whole percent, end-aligned, over a thin aria-hidden bar whose segments are tints of the tone's color.",
       "accessibility": [
-        "Accessible trigger describes full values, unit, percentage and capacity status without relying on color. Missing/invalid values are unavailable, zero is retained, and over-capacity percentages are not clamped in the text.",
+        "Accessible trigger describes full values, unit, percentage and capacity status without relying on color, and its name holds the figures the trigger shows (Label in Name). Missing/invalid values are unavailable, zero is retained, and over-capacity percentages are not clamped in the text.",
         "Enter/Space/click opens details; Escape restores trigger focus through the existing Popover primitive. Portal inherits nearest provider/dialog configuration.",
-        "The popover opens with focus on itself, never on the action. With announcement polite, one region says each change of the status word once, never at mount and never a number; the shares and the bar are text and decoration, never announced."
+        "The popover opens with focus on itself, never on the action; when the action goes with the room it made, focus moves to the details or the inline group, never to the page. With announcement polite, one region says each change of the status word once, never at mount and never a number; the shares and the bar are text and decoration, never announced."
       ],
       "limitations": [
         "Only finite nonnegative numeric values are accepted. A zero capacity has no calculable percentage. The decorative ring clamps at capacity; text reports actual excess.",

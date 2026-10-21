@@ -124,9 +124,9 @@ export function AssistantControls({
     Section = `h${below}` as const,
     Group = `h${twoBelow}` as const;
 
-  // When a change removes the focused control (a deleted memory's buttons, or
-  // the meter's action once there is room again), focus moves to the section
-  // rather than dropping to the page.
+  // When a change removes the focused control (a deleted memory's buttons),
+  // focus moves to the section rather than dropping to the page. The meter
+  // keeps focus for its own action.
   useLayoutEffect(() => {
     const element = lastFocus.current,
       node = root.current;

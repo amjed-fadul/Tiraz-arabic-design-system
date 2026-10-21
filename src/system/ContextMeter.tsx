@@ -1,5 +1,5 @@
 import * as Popover from "@radix-ui/react-popover";
-import { useEffect, useId, useRef } from "react";
+import { useEffect, useId, useLayoutEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import { Button } from "./Button";
 import { useSystem } from "./useSystem";
@@ -69,7 +69,10 @@ export function ContextMeter({
     ar = config.direction === "rtl",
     title = useId();
   const live = useRef<HTMLSpanElement>(null),
-    heard = useRef<ContextStatusKey | null>(null);
+    heard = useRef<ContextStatusKey | null>(null),
+    // The action's button while it holds focus, and the box that holds it.
+    lastAction = useRef<HTMLElement | null>(null),
+    box = useRef<HTMLDivElement>(null);
   // A pinned "ar" still follows the system numerals; other locales are used as given.
   const numbers = numberLocale(config, locale);
   const format = new Intl.NumberFormat(numbers, {
@@ -101,6 +104,8 @@ export function ContextMeter({
   const name = label ?? (ar ? "السياق" : "Context"),
     units = unit ?? (ar ? "رمز" : "tokens");
   const estimate = estimated ? (ar ? "تقديري" : "Estimated") : "";
+  // The numbers the trigger shows, which its name must hold (Label in Name).
+  const shown = `${estimated ? "≈ " : ""}${u ? compact.format(used) : "—"} / ${c ? compact.format(capacity) : "—"}`;
   const usage = u
     ? format.format(used)
     : ar
@@ -117,6 +122,16 @@ export function ContextMeter({
         ? `${usage} من ${limit} ${units}`
         : `${usage} of ${limit} ${units}`
       : `${usage} · ${limit}${c ? ` ${units}` : ""}`;
+
+  // Once the action works, usage drops and its button is removed: focus moves
+  // to the box that holds the meter rather than dropping to the page.
+  useLayoutEffect(() => {
+    const el = lastAction.current;
+    if (!el || el.isConnected) return;
+    lastAction.current = null;
+    if (el.ownerDocument.activeElement === el.ownerDocument.body)
+      box.current?.focus({ preventScroll: true });
+  });
 
   // One polite sentence each time the status word changes: never the status
   // the meter mounts with, and never a number. Back to room empties it, so
@@ -205,6 +220,14 @@ export function ContextMeter({
             variant="secondary"
             size="sm"
             onClick={() => action.onSelect()}
+            onFocus={(event) => {
+              lastAction.current = event.currentTarget;
+            }}
+            onBlur={(event) => {
+              // Focus moved on purpose is never reclaimed; a removed button
+              // drops it with no related target.
+              if (event.relatedTarget) lastAction.current = null;
+            }}
           >
             {action.label}
           </Button>
@@ -226,7 +249,9 @@ export function ContextMeter({
     return (
       <>
         <div
+          ref={box}
           role="group"
+          tabIndex={-1}
           aria-labelledby={title}
           className={`tz-context-inline ${className}`}
           data-tone={tone}
@@ -243,7 +268,7 @@ export function ContextMeter({
           type="button"
           className={`tz-context-trigger ${className}`}
           data-tone={tone}
-          aria-label={[name, estimate, summary, percentage, status]
+          aria-label={[name, shown, status, estimate, summary, percentage]
             .filter(Boolean)
             .join(": ")}
         >
@@ -273,13 +298,17 @@ export function ContextMeter({
             </bdi>
           </span>
           {status && (
-            <span className="tz-context-status" data-tone={tone}>
-              {status}
-            </span>
+            <>
+              {/* A space, so the text it shows reads as the name does. */}{" "}
+              <span className="tz-context-status" data-tone={tone}>
+                {status}
+              </span>
+            </>
           )}
         </Popover.Trigger>
         <Popover.Portal container={container}>
           <Popover.Content
+            ref={box}
             className="tz-context-details"
             dir={config.direction}
             aria-labelledby={title}

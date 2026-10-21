@@ -665,7 +665,7 @@ The pattern's one polite region says each change of status once, not the status 
 
 «الصلاحيات»: `permissions` (`AssistantPermission[]`: `id`, `label`, `level` and optionally `description` and `risks`) render one fieldset per action. Its legend is the action with its risk tags, «حساس» (a neutral Badge) and «لا يمكن التراجع» (a warning Badge), and its levels are three native radios: «اسأل دائمًا» (`always`), «إن كان حساسًا» (`sensitive`) and «تلقائي بالكامل» (`auto`), with the host's `level` checked. A choice calls `onPermissionChange(id, level)`. An action whose `risks` include `irreversible` is locked: «اسأل دائمًا» is checked whatever `level` says, the other two are disabled, a lock and «لا يمكن التراجع عن هذا الإجراء، لذلك يسألك المساعد قبله دائمًا.» describe the fieldset, and it never calls `onPermissionChange`. Enforce the stored levels where the assistant acts; the pattern can't.
 
-«الذاكرة»: `memoryEnabled` with `onMemoryEnabledChange` is the «استخدم الذاكرة» switch, and while it is off «لا يستخدم المساعد الذاكرة الآن.» sits over the list. `memory` (`AssistantMemoryItem[]`: `id`, `text`, `category`, and optionally `source`, `date` and `paused`) sits under its category headings, in the order the categories first appear, each item with «{source} · {date}» and «متوقف مؤقتًا» when paused. Format the dates with `numberLocale(config)`. Its buttons are named by their word and then the item: «إيقاف مؤقت» or «استئناف» calls `onMemoryPauseChange(id, !paused)`, and «حذف» calls `onMemoryDelete(id)`. Delete only asks: the item stays until you remove it from `memory` (confirm first if your store can't bring it back), and the pattern never says it was deleted. When it goes, focus moves to the section.
+«الذاكرة»: `memoryEnabled` with `onMemoryEnabledChange` is the «استخدم الذاكرة» switch, and while it is off «لا يستخدم المساعد الذاكرة الآن.» sits over the list. `memory` (`AssistantMemoryItem[]`: `id`, `text`, `category`, and optionally `source`, `date` and `paused`) sits under its category headings, in the order the categories first appear, each item with «{source} · {date}» and «متوقف مؤقتًا» when paused. Format the dates with `numberLocale(config)`. Its buttons are named by their word and then the item: «إيقاف مؤقت» or «استئناف» calls `onMemoryPauseChange(id, !paused)`, and «حذف» calls `onMemoryDelete(id)`. Delete only asks: the item stays until you remove it from `memory` (confirm first if your store can't bring it back), and the pattern never says it was deleted. If you confirm in a dialog, return focus to the list yourself when it closes. When it goes, focus moves to the section.
 
 «السياق والاستخدام»: `contextUsage` (ContextMeter's props) shows the meter's detail view inline: each part's share and a bar, its `action` once the meter fills up, and its polite region, which is the pattern's one live region. `models` with `model` and `onModelChange` add a ModelSelector named «النموذج». `headingLevel`, `labels` and `appearance` complete it. Use [Start a task](#start-a-task) for the mode menu where a request begins.
 
@@ -1071,15 +1071,16 @@ this way. With a valid capacity each part shows its share of the capacity as a
 whole percent («١٦٪»), over a thin decorative bar in tints of the tone's color.
 `action` ({ label, onSelect }) adds a button to the details, popover or inline,
 once the status is high, near or over, such as «لخّص المحادثة»; the popover
-opens with focus on itself, never on the action. `announcement` ("polite" by
+opens with focus on itself, never on the action, and when the action goes with the
+room it made, focus moves to the details (or the inline group), never to the page. `announcement` ("polite" by
 default, or "off" where an owner speaks) adds a polite region that says
 «السياق: يقترب من الامتلاء» once each time the status word changes, never at mount
 and never a number. Values must be
 finite and nonnegative: missing/invalid values stay unavailable; zero remains
 zero. Zero capacity has no percentage. Over-capacity text retains the real value
 and excess percentage while the decorative ring clamps at full. The trigger's
-accessible name reports full values and statuses; visible status text supplements
-color. Estimated values are explicitly labeled. Details use the existing Popover
+accessible name reports full values and statuses and holds the figures it shows
+(Label in Name); visible status text supplements color. Estimated values are explicitly labeled. Details use the existing Popover
 (click/Enter/Space; Escape restores focus). Details are supplied independently;
 the component does not infer parts, cost, limits, truncation or host behavior.
 A supplied locale sets the Intl locale for every figure: ar digits follow
