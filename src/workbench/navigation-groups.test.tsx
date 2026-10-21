@@ -1,6 +1,6 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import { catalog, nestedParts, navigationGroups } from "./catalog";
 import { screens } from "../examples/frame/screen";
@@ -59,6 +59,11 @@ it("keeps the curated page and URL when switching languages with the keyboard", 
 });
 
 it("restores saved specialist pages and makes their parent current", async () => {
+  const media = window.matchMedia;
+  const mobile = vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+    ...media(query),
+    matches: query === "(max-width: 760px)",
+  }));
   persist(storageKeys.documentation, {
     active: "prompt-bar",
     aiPartsOpen: true,
@@ -73,11 +78,12 @@ it("restores saved specialist pages and makes their parent current", async () =>
     "aria-current",
     "page",
   );
-  await userEvent.click(screen.getByRole("button", { name: "المكوّنات" }));
+  await userEvent.click(screen.getByRole("button", { name: "فتح القائمة" }));
   const drawer = within(screen.getByRole("dialog", { name: "المكوّنات" }));
   expect(drawer.queryByText("الأجزاء")).toBeNull();
   expect(drawer.getByRole("button", { name: "محرر الرسائل" })).toHaveAttribute(
     "aria-current",
     "page",
   );
+  mobile.mockRestore();
 });

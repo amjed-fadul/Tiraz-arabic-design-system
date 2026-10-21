@@ -15,6 +15,9 @@ export const guideIds = [
 ] as const;
 export type GuideId = (typeof guideIds)[number];
 export const illustrationIds = [
+  "document-vault",
+  "agent-handoff",
+  "voice-field",
   "no-records",
   "no-search-results",
   "getting-started",

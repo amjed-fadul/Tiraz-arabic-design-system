@@ -664,9 +664,6 @@ bdi {
   .docs-layout {
     display: block;
   }
-  .docs-sidebar {
-    display: none;
-  }
   .mobile-navigation {
     display: block;
   }

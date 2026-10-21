@@ -2,20 +2,18 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useId,
   useMemo,
   useRef,
   useState,
   useSyncExternalStore,
 } from "react";
 import type { CSSProperties } from "react";
-import {
-  ArrowUpRight,
-  Moon,
-  Sun,
-  SlidersHorizontal,
-  Menu,
-  X,
-} from "lucide-react";
+import { ArrowUpRight, SlidersHorizontal, X } from "lucide-react";
+import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/csr/SidebarSimple";
+import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
+import { SunIcon } from "@phosphor-icons/react/dist/csr/Sun";
+import { NavigationIcon } from "./NavigationIcon";
 import { Sheet, SystemProvider, defaultConfig } from "../system";
 import { SystemContext } from "../system/useSystem";
 import type { ButtonState, SystemConfig } from "../system";
@@ -69,6 +67,7 @@ import { guides } from "./guides";
 import { IllustrationsPage } from "./IllustrationsPage";
 import { illustrations } from "./illustrations";
 import "./site.css";
+import "./site-sidebar.css";
 interface EventRecord {
   name: string;
   value?: unknown;
@@ -146,7 +145,8 @@ function ComponentNavigation({
                   aria-current={screen === item.slug ? "page" : undefined}
                   onClick={() => onOpenScreen(item.slug)}
                 >
-                  {localize(item.name, language)}
+                  <item.icon size={22} weight="duotone" aria-hidden="true" />
+                  <span>{localize(item.name, language)}</span>
                 </button>
               ))}
           </div>
@@ -346,6 +346,24 @@ export function Workbench() {
   >({});
   const [navigationOpen, setNavigationOpen] = useState(false);
   const navigationSelection = useRef(false);
+  const [navigationHidden, setNavigationHidden] = useState(false);
+  const [mobileNavigation, setMobileNavigation] = useState(
+    () => window.matchMedia("(max-width: 760px)").matches,
+  );
+  const navigationId = useId();
+  const navigationToggle = useRef<HTMLButtonElement>(null);
+  const navigationPanel = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 760px)");
+    const change = () => {
+      setMobileNavigation(query.matches);
+      if (!query.matches) setNavigationOpen(false);
+      else if (navigationPanel.current?.contains(document.activeElement))
+        navigationToggle.current?.focus();
+    };
+    query.addEventListener("change", change);
+    return () => query.removeEventListener("change", change);
+  }, []);
   // The screen pages' width chip lasts the session. It is unset until the
   // first screen page measures its stage (or the person picks a chip).
   const [screenWidth, setScreenWidth] = useState<ScreenWidth | null>(null);
@@ -843,57 +861,72 @@ export function Workbench() {
         className="component-nav site-secondary"
         aria-label={t("تصنيفات المكتبة", "Library categories")}
       >
-        <SiteLink
-          route={{ kind: "library" }}
-          navigate={navigate}
-          aria-current={!route.category ? "page" : undefined}
-        >
-          {t("كل المكتبة", "All items")}
-        </SiteLink>
-        {navigationGroups.map((group) => (
+        <h2 className="component-nav-heading">{t("المكتبة", "Library")}</h2>
+        <div className="component-nav-items">
           <SiteLink
-            key={group.id}
-            route={{ kind: "library", category: group.id }}
+            route={{ kind: "library" }}
             navigate={navigate}
-            aria-current={route.category === group.id ? "page" : undefined}
+            aria-current={!route.category ? "page" : undefined}
           >
-            {localize(group.name, language)}
+            <NavigationIcon id="all" />
+            <span>{t("كل المكتبة", "All items")}</span>
           </SiteLink>
-        ))}
+          {navigationGroups.map((group) => (
+            <SiteLink
+              key={group.id}
+              route={{ kind: "library", category: group.id }}
+              navigate={navigate}
+              aria-current={route.category === group.id ? "page" : undefined}
+            >
+              <NavigationIcon id={group.id} />
+              <span>{localize(group.name, language)}</span>
+            </SiteLink>
+          ))}
+        </div>
       </nav>
     ) : route.kind === "docs" ? (
       <nav className="component-nav site-secondary" aria-label={navigationName}>
         <h2 className="component-nav-heading">{t("ابدأ هنا", "Start here")}</h2>
-        {guides.map((item) => (
-          <SiteLink
-            key={item.id}
-            route={{ kind: "docs", guide: item.id }}
-            navigate={navigate}
-            aria-current={route.guide === item.id ? "page" : undefined}
-          >
-            {localize(item.name, language)}
-          </SiteLink>
-        ))}
+        <div className="component-nav-items">
+          {guides.map((item) => (
+            <SiteLink
+              key={item.id}
+              route={{ kind: "docs", guide: item.id }}
+              navigate={navigate}
+              aria-current={route.guide === item.id ? "page" : undefined}
+            >
+              <NavigationIcon id={item.id} />
+              <span>{localize(item.name, language)}</span>
+            </SiteLink>
+          ))}
+        </div>
       </nav>
     ) : route.kind === "illustrations" ? (
       <nav className="component-nav site-secondary" aria-label={navigationName}>
-        <SiteLink
-          route={{ kind: "illustrations" }}
-          navigate={navigate}
-          aria-current={!route.id ? "page" : undefined}
-        >
-          {t("كل الرسوم", "All illustrations")}
-        </SiteLink>
-        {illustrations.map((item) => (
+        <h2 className="component-nav-heading">
+          {t("الرسوم التوضيحية", "Illustrations")}
+        </h2>
+        <div className="component-nav-items">
           <SiteLink
-            key={item.id}
-            route={{ kind: "illustrations", id: item.id }}
+            route={{ kind: "illustrations" }}
             navigate={navigate}
-            aria-current={route.id === item.id ? "page" : undefined}
+            aria-current={!route.id ? "page" : undefined}
           >
-            {localize(item.name, language)}
+            <NavigationIcon id="all" />
+            <span>{t("كل الرسوم", "All illustrations")}</span>
           </SiteLink>
-        ))}
+          {illustrations.map((item) => (
+            <SiteLink
+              key={item.id}
+              route={{ kind: "illustrations", id: item.id }}
+              navigate={navigate}
+              aria-current={route.id === item.id ? "page" : undefined}
+            >
+              <NavigationIcon id={item.id} />
+              <span>{localize(item.name, language)}</span>
+            </SiteLink>
+          ))}
+        </div>
       </nav>
     ) : (
       <ComponentNavigation
@@ -967,19 +1000,74 @@ export function Workbench() {
   );
   return (
     <SystemProvider config={documentationConfig}>
-      <div className="docs-shell" ref={setShell}>
+      <div
+        className="docs-shell"
+        ref={setShell}
+        data-navigation-hidden={navigationHidden}
+        data-mobile-navigation={mobileNavigation}
+      >
         <a className="skip-link" href="#main-content">
           {t("انتقل إلى المحتوى", "Skip to content")}
         </a>
         <header className="docs-header">
-          <SiteLink
-            className="docs-brand"
-            route={{ kind: "library" }}
-            navigate={navigate}
-          >
-            <BrandMark />
-            <span>{t("طِراز", "Tiraz")}</span>
-          </SiteLink>
+          <div className="docs-header-start">
+            <DocsDrawer
+              title={navigationName}
+              language={language}
+              portalContainer={shell}
+              open={navigationOpen}
+              onOpenChange={(open) => {
+                if (mobileNavigation) {
+                  if (open) navigationSelection.current = false;
+                  setNavigationOpen(open);
+                } else setNavigationHidden((hidden) => !hidden);
+              }}
+              onClosed={() => {
+                if (!navigationSelection.current) return false;
+                navigationSelection.current = false;
+                mainRef.current?.focus();
+                return true;
+              }}
+              trigger={
+                <button
+                  ref={navigationToggle}
+                  type="button"
+                  className="doc-icon-button docs-navigation-toggle"
+                  aria-label={
+                    mobileNavigation
+                      ? t("فتح القائمة", "Open navigation")
+                      : navigationHidden
+                        ? t("إظهار القائمة الجانبية", "Show navigation")
+                        : t("إخفاء القائمة الجانبية", "Hide navigation")
+                  }
+                  aria-haspopup={mobileNavigation ? "dialog" : undefined}
+                  {...(!mobileNavigation
+                    ? {
+                        "aria-expanded": !navigationHidden,
+                        "aria-controls": navigationId,
+                      }
+                    : {})}
+                >
+                  <SidebarSimpleIcon
+                    size={22}
+                    weight="regular"
+                    className="tz-mirror-rtl"
+                    aria-hidden="true"
+                  />
+                </button>
+              }
+            >
+              {navigation}
+            </DocsDrawer>
+            <SiteLink
+              className="docs-brand"
+              route={{ kind: "library" }}
+              navigate={navigate}
+            >
+              <BrandMark />
+              <span>{t("طِراز", "Tiraz")}</span>
+            </SiteLink>
+          </div>
           <nav
             className="site-primary"
             aria-label={t("التنقّل الرئيسي", "Primary navigation")}
@@ -1009,31 +1097,6 @@ export function Workbench() {
             </SiteLink>
           </nav>
           <div className="header-actions">
-            <div className="mobile-navigation">
-              <DocsDrawer
-                title={navigationName}
-                language={language}
-                open={navigationOpen}
-                onOpenChange={(open) => {
-                  if (open) navigationSelection.current = false;
-                  setNavigationOpen(open);
-                }}
-                onClosed={() => {
-                  if (!navigationSelection.current) return false;
-                  navigationSelection.current = false;
-                  mainRef.current?.focus();
-                  return true;
-                }}
-                trigger={
-                  <button type="button" className="doc-button">
-                    <Menu size={16} aria-hidden="true" />
-                    <span>{navigationName}</span>
-                  </button>
-                }
-              >
-                {navigation}
-              </DocsDrawer>
-            </div>
             <button
               type="button"
               className="doc-button language-control"
@@ -1054,7 +1117,11 @@ export function Workbench() {
                 setTheme((prev) => (prev === "light" ? "dark" : "light"))
               }
             >
-              {theme === "light" ? <Moon size={17} /> : <Sun size={17} />}
+              {theme === "light" ? (
+                <MoonIcon size={20} weight="regular" aria-hidden="true" />
+              ) : (
+                <SunIcon size={20} weight="regular" aria-hidden="true" />
+              )}
             </button>
           </div>
         </header>
@@ -1067,6 +1134,16 @@ export function Workbench() {
           }
         >
           <aside
+            id={navigationId}
+            ref={navigationPanel}
+            inert={navigationHidden}
+            aria-hidden={navigationHidden || undefined}
+            onKeyDown={(event) => {
+              if (event.key !== "Escape" || event.defaultPrevented) return;
+              event.preventDefault();
+              navigationToggle.current?.focus();
+              setNavigationHidden(true);
+            }}
             className="docs-sidebar"
             aria-label={
               siteDestination === "library"
@@ -1074,7 +1151,7 @@ export function Workbench() {
                 : navigationName
             }
           >
-            {navigation}
+            <div className="docs-navigation-inner">{navigation}</div>
           </aside>
           <div className="docs-workspace">
             <main

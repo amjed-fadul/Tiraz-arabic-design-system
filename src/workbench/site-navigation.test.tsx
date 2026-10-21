@@ -123,6 +123,57 @@ it("opens illustration details and copies decorative source without an EmptyStat
   expect(copy).toHaveBeenLastCalledWith(expect.stringContaining("aria-hidden"));
 });
 
+it("filters the expanded illustration gallery without losing focus or starting motion on mount", async () => {
+  persist(storageKeys.documentation, { language: "en" });
+  at("/illustrations");
+  const main = within(screen.getByRole("main"));
+  expect(main.getAllByRole("article")).toHaveLength(6);
+  expect(
+    document.querySelectorAll('[data-illustration][data-animated="true"]'),
+  ).toHaveLength(0);
+  const filter = main.getByRole("button", { name: "Agents & connections" });
+  await userEvent.click(filter);
+  expect(filter).toHaveFocus();
+  expect(filter).toHaveAttribute("aria-pressed", "true");
+  expect(main.getAllByRole("article")).toHaveLength(2);
+  const preview = main.getByRole("link", { name: "Agent handoff" });
+  fireEvent.focus(preview);
+  expect(preview.querySelector("[data-illustration]")).toHaveAttribute(
+    "data-animated",
+    "true",
+  );
+  fireEvent.blur(preview);
+  expect(preview.querySelector("[data-illustration]")).toHaveAttribute(
+    "data-animated",
+    "false",
+  );
+});
+
+it("replays a product scene and copies the matching self-contained source", async () => {
+  const user = userEvent.setup();
+  const copy = vi.spyOn(navigator.clipboard, "writeText");
+  persist(storageKeys.documentation, { language: "en" });
+  at("/illustrations/agent-handoff");
+  const initial = document.querySelector("[data-illustration='agent-handoff']");
+  expect(initial).toHaveAttribute("data-animated", "true");
+  const replay = screen.getByRole("button", { name: "Replay animation" });
+  await user.click(replay);
+  expect(replay).toHaveFocus();
+  const played = document.querySelector("[data-illustration='agent-handoff']");
+  expect(played).not.toBe(initial);
+  expect(played).toHaveAttribute("data-animated", "true");
+  expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  await user.click(screen.getByRole("button", { name: "Copy example" }));
+  expect(copy).toHaveBeenLastCalledWith(
+    expect.stringContaining('from "./illustrations/AgentHandoff"'),
+  );
+  await user.click(screen.getByRole("button", { name: "Copy source file" }));
+  expect(copy).toHaveBeenLastCalledWith(
+    expect.stringContaining("export function AgentHandoff"),
+  );
+  expect(copy.mock.lastCall?.[0]).not.toContain("export function VoiceField");
+});
+
 it("renders unknown routes as a recoverable page", async () => {
   at("/library/components/missing");
   expect(
@@ -170,4 +221,55 @@ it("keeps keyboard focus on the Library filter when narrowing results", async ()
   const results = within(screen.getByRole("region", { name: "نتائج المكتبة" }));
   expect(results.getByRole("link", { name: "الأزرار" })).toBeVisible();
   expect(results.queryByRole("link", { name: "الفواتير والتحصيل" })).toBeNull();
+});
+
+it.each([
+  ["/docs", "Docs"],
+  ["/illustrations", "Illustrations"],
+  ["/library", "Library categories"],
+])(
+  "fully hides and reopens %s navigation without changing the page",
+  async (path, name) => {
+    persist(storageKeys.documentation, { language: "en" });
+    const user = userEvent.setup();
+    at(path);
+    const main = screen.getByRole("main");
+    const title = within(main).getByRole("heading", { level: 1 }).textContent;
+    const toggle = screen.getByRole("button", { name: "Hide navigation" });
+    const panel = document.getElementById(
+      toggle.getAttribute("aria-controls")!,
+    );
+    expect(screen.getByRole("navigation", { name })).toBeInTheDocument();
+    await user.click(toggle);
+    expect(toggle).toHaveFocus();
+    expect(toggle).toHaveAccessibleName("Show navigation");
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(panel).toHaveAttribute("inert");
+    expect(screen.queryByRole("navigation", { name })).toBeNull();
+    expect(screen.getByRole("main")).toBe(main);
+    expect(within(main).getByRole("heading", { level: 1 })).toHaveTextContent(
+      title!,
+    );
+    await user.click(toggle);
+    expect(screen.getByRole("navigation", { name })).toBeInTheDocument();
+    expect(panel).not.toHaveAttribute("inert");
+    expect(window.location.pathname).toBe(path);
+  },
+);
+
+it("keeps navigation hidden when moving between destinations", async () => {
+  at("/docs");
+  await userEvent.click(
+    screen.getByRole("button", { name: "إخفاء القائمة الجانبية" }),
+  );
+  await userEvent.click(
+    within(
+      screen.getByRole("navigation", { name: "التنقّل الرئيسي" }),
+    ).getByRole("link", { name: "الرسوم التوضيحية" }),
+  );
+  expect(window.location.pathname).toBe("/illustrations");
+  expect(
+    screen.getByRole("button", { name: "إظهار القائمة الجانبية" }),
+  ).toHaveAttribute("aria-expanded", "false");
+  expect(screen.getByRole("main")).toHaveFocus();
 });
