@@ -40,6 +40,8 @@ it("leaves a picked agent's own items and shows its panel", async () => {
   expect(counts()).toEqual(["الكل ٣", "بانتظارك ٣", "يعمل ٠", "اكتملت ٠"]);
   // The header still counts every agent.
   expect(summary()).toHaveTextContent("٦ طلبات بانتظارك · مهمة واحدة تعمل");
+  // The page keeps its one polite region, the inbox's: the panel adds none.
+  expect(document.querySelectorAll('[aria-live="polite"]')).toHaveLength(1);
   // Its panel: the name, its context ring, its tasks, and no running step.
   expect(
     screen.getByRole("heading", { level: 2, name: "وكيل التحصيل" }),

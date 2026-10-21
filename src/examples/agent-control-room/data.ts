@@ -69,7 +69,7 @@ export interface Tool {
 export interface PanelTask {
   id: string;
   title: Text;
-  state: "completed" | "running" | "failed";
+  state: "completed" | "running" | "pending" | "failed";
   summary: Summary;
   note: Text;
   /** The operation it is on while it runs. */
@@ -88,7 +88,6 @@ export interface Panel {
 }
 
 const [suppliers, bank, , , closeSummary] = story.closeSteps;
-const aging = story.sources.find((source) => source.id === "aging-report")!;
 
 const parts = (instructions: number, messages: number, tools: number) => [
   {
@@ -135,23 +134,11 @@ export const panels: Record<AgentId, Panel> = {
       {
         id: "summary",
         title: closeSummary.title,
-        state: "running",
+        state: "pending",
         summary: { ar: closeSummary.format, en: closeSummary.format },
         note: {
-          ar: "يجمع الوكيل أرقام الملخص من تقرير أعمار الديون.",
-          en: "The agent gathers the summary's figures from the receivables aging report.",
-        },
-        tool: {
-          label: {
-            ar: `قراءة ${aging.title.ar}`,
-            en: `Read the ${aging.title.en.toLowerCase()}`,
-          },
-          tool: "aging.read",
-          input: JSON.stringify(
-            { report: aging.id, period: "2026-10" },
-            null,
-            2,
-          ),
+          ar: "يبدأ الوكيل الملخص بعد إرسال التذكيرات.",
+          en: "The agent starts the summary once the reminders are sent.",
         },
       },
     ],

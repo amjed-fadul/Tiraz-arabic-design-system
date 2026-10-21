@@ -322,9 +322,11 @@ function AgentPanel({
     <>
       <div className="agent-control-room-agent">
         <Heading className="agent-control-room-title">{name}</Heading>
-        {/* Keyed by agent, so picking another doesn't read as a crossing. */}
+        {/* Keyed by agent, so one agent's open details don't carry over to
+            the next. Quiet: the inbox's region is the page's one. */}
         <ContextMeter
           key={id}
+          announcement="off"
           used={panel.context.used}
           capacity={panel.context.capacity}
           details={panel.context.parts.map((part) => ({
