@@ -1,7 +1,15 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { MonthEndClose } from "./MonthEndClose";
+
+afterEach(() => vi.restoreAllMocks());
 
 const waiting = (count: string) => `صندوق القرارات، بانتظارك: ${count}`;
 const step = (title: string) => screen.getByText(title).closest("li")!;
@@ -53,6 +61,8 @@ it("completes step 3 after the host's moment, then waits on step 4 and its three
   expect(screen.getByText("استدعاءات الأدوات").nextSibling).toHaveTextContent(
     "٦",
   );
+  // The run's facts: who started it is Laila, so its label is feminine.
+  expect(screen.getByText("بدأتها").nextSibling).toHaveTextContent("ليلى");
   // Arabic-Indic digits everywhere on the page.
   expect(screen.getByRole("main").textContent).not.toMatch(/[0-9]/);
   await user.click(inbox);
@@ -140,4 +150,61 @@ it("skips step 3 on Reject, and hands each draft to the invoices", async () => {
     post.mockRestore();
     window.history.replaceState(null, "", "/");
   }
+}, 15000);
+
+it("records nothing when the inbox closes while its exit animation still holds it", async () => {
+  // The Sheet stays mounted after it closes, as it does through its exit
+  // animation. jsdom computes no animations, so say that a closed element has
+  // one, and Radix waits for an animationend that nothing sends. An abort that
+  // only an unmount delivers would come after the host's moment.
+  const computed = window.getComputedStyle.bind(window);
+  vi.spyOn(window, "getComputedStyle").mockImplementation((element, pseudo) => {
+    const style = computed(element, pseudo);
+    return new Proxy(style, {
+      get(target, property) {
+        if (property === "animationName")
+          return element.getAttribute("data-state") === "closed"
+            ? "hold"
+            : "none";
+        const value = Reflect.get(target, property);
+        return typeof value === "function" ? value.bind(target) : value;
+      },
+    });
+  });
+  const user = userEvent.setup();
+  render(<MonthEndClose />);
+  const inbox = screen.getByRole("button", { name: waiting("١") });
+  const question = "هل أستثني فرع جدة؟";
+  await user.click(inbox);
+  await user.click(within(dialog()).getByRole("button", { name: question }));
+  await user.click(
+    within(dialog()).getByRole("radio", { name: /نعم، استثنِه/ }),
+  );
+  await user.click(
+    within(dialog()).getByRole("button", { name: "إرسال الإجابات" }),
+  );
+  await user.keyboard("{Escape}");
+  // Closed, yet still mounted.
+  const held = screen.getByRole("dialog", {
+    name: "صندوق القرارات",
+    hidden: true,
+  });
+  expect(held).toHaveAttribute("data-state", "closed");
+  // Past the host's moment, with the Sheet still mounted: nothing recorded.
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  expect(screen.getByRole("button", { name: waiting("١"), hidden: true })).toBe(
+    inbox,
+  );
+  // Let the animation end, and the question still waits.
+  fireEvent(
+    held,
+    Object.assign(new Event("animationend", { bubbles: true }), {
+      animationName: "hold",
+    }),
+  );
+  await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  await user.click(inbox);
+  expect(
+    within(dialog()).getByRole("button", { name: `أجب ${question}` }),
+  ).toBeInTheDocument();
 }, 15000);

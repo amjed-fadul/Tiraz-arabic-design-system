@@ -60,6 +60,8 @@ function Close() {
   const [answered, setAnswered] = useState(false);
   const [inboxOpen, setInboxOpen] = useState(false);
   const task = useRef<HTMLDivElement>(null);
+  // The answer being recorded, so closing the inbox can abort it.
+  const answering = useRef<AbortController | null>(null);
   // The one hidden polite region: empty at mount, then one sentence per change.
   const [said, setSaid] = useState("");
   // Step 3 decided hands the reminders on: step 4 waits on the person, and its
@@ -71,6 +73,14 @@ function Close() {
   // «بانتظارك» through it, so no pattern speaks: the region says what changed,
   // once, and where focus goes. The decided card takes its focused button with
   // it, so the task takes focus, unless the person moved on while it recorded.
+  // Closing the inbox aborts an answer still recording, so it records nothing,
+  // whether or not the Sheet has unmounted yet: it holds on through its exit
+  // animation, which can outlast the host's moment.
+  function openInbox(next: boolean) {
+    if (!next) answering.current?.abort();
+    setInboxOpen(next);
+  }
+
   async function decide(
     _request: unknown,
     chosen: ApprovalDecision,
@@ -285,7 +295,7 @@ function Close() {
         actions={
           <Sheet
             open={inboxOpen}
-            onOpenChange={setInboxOpen}
+            onOpenChange={openInbox}
             side={endSide}
             title={t("صندوق القرارات", "Decision inbox")}
             description={t(
@@ -320,8 +330,19 @@ function Close() {
               appearance="plain"
               headingLevel={3}
               onAnswer={async (_id, _answers, { signal }) => {
-                await recorded(signal);
-                setAnswered(true);
+                // The pattern's own abort (it unmounts) ends it as well.
+                const controller = new AbortController();
+                answering.current = controller;
+                signal.addEventListener("abort", () => controller.abort(), {
+                  once: true,
+                });
+                try {
+                  await recorded(controller.signal);
+                  setAnswered(true);
+                } finally {
+                  if (answering.current === controller)
+                    answering.current = null;
+                }
               }}
               // A draft is reviewed where the invoices are. The answered
               // question has nowhere else to open, so its row closes the inbox
@@ -329,7 +350,7 @@ function Close() {
               onOpen={(id) =>
                 reminders.some((reminder) => reminder.id === id)
                   ? open("invoices")
-                  : setInboxOpen(false)
+                  : openInbox(false)
               }
             />
           </Sheet>
@@ -365,7 +386,7 @@ function Close() {
                 <dd>{finance[language]}</dd>
               </div>
               <div>
-                <dt>{t("بدأها", "Started by")}</dt>
+                <dt>{t("بدأتها", "Started by")}</dt>
                 <dd>{laila[language]}</dd>
               </div>
               <div>
