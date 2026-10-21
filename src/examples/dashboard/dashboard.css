@@ -209,6 +209,11 @@
   flex-direction: column;
   justify-content: center;
 }
+/* A chart's data table has two columns, so it fits its card's paper instead
+   of keeping the system table's 32rem floor and hiding the values. */
+.dashboard-card .tz-table {
+  min-inline-size: 0;
+}
 /* A loading chart's skeleton fills the paper its row gives it. */
 .dashboard-card .dashboard-chart-skeleton {
   flex: 1;
