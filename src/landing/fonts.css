@@ -1,0 +1,56 @@
+/*
+ * Thmanyah typeface (thmanyah Publishing and Distribution).
+ * Its license permits website use but forbids hosting the font files or letting
+ * visitors download them, including through web embedding. These faces therefore
+ * resolve only from fonts installed on the viewer's device; nothing is served.
+ * Without them the page falls back to IBM Plex Sans Arabic. See README.md.
+ */
+@font-face {
+  font-family: "Thmanyah Sans";
+  font-weight: 300;
+  src: local("thmanyah sans Light"), local("thmanyahsans-Light");
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  font-weight: 400;
+  src: local("thmanyah sans Regular"), local("thmanyahsans-Regular");
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  font-weight: 500;
+  src: local("thmanyah sans Medium"), local("thmanyahsans-Medium");
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  font-weight: 700;
+  src: local("thmanyah sans Bold"), local("thmanyahsans-Bold");
+}
+@font-face {
+  font-family: "Thmanyah Sans";
+  font-weight: 900;
+  src: local("thmanyah sans Black"), local("thmanyahsans-Black");
+}
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  font-weight: 400;
+  src:
+    local("thmanyah serif display Regular"),
+    local("thmanyahserifdisplay-Regular");
+}
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  font-weight: 500;
+  src:
+    local("thmanyah serif display Medium"), local("thmanyahserifdisplay-Medium");
+}
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  font-weight: 700;
+  src: local("thmanyah serif display Bold"), local("thmanyahserifdisplay-Bold");
+}
+@font-face {
+  font-family: "Thmanyah Serif Display";
+  font-weight: 900;
+  src:
+    local("thmanyah serif display Black"), local("thmanyahserifdisplay-Black");
+}

@@ -2,11 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { Thread } from "./Thread";
 import { useReducedMotion } from "./useReducedMotion";
-import { useSystem } from "./useSystem";
-import { rowFronts, weaveClip, weaveRows } from "./weave";
 
 export interface WeaveCanvasProps {
-  /** Application-owned URL of the picture to weave in. Without one the loom shows its warp threads and nothing else. */
+  /** Application-owned preview URL. Without one the canvas shows soft atmospheric light. */
   src?: string;
   /** Actual host progress from 0 to 100; omit or pass null while it is unknown. */
   progress?: number | null;
@@ -16,23 +14,18 @@ export interface WeaveCanvasProps {
   className?: string;
 }
 
-// The unknown wait gives one row this long to its shuttle. A weave that is
-// following the host closes 1 − e^(−dt/easeMs) of its gap each frame, so a
-// whole weave takes about 1,180 ms (Woven spec section 15 allows the image
-// weave up to 1,200 ms).
-const passMs = 520,
-  easeMs = 190;
+// Only supplied progress changes clarity. An unknown wait has a fixed soft
+// preview; the atmospheric motion does not advance it or imply completion.
+const unknownFocus = 0.18,
+  easeMs = 130;
 
 /**
- * Image reveal that weaves rows in from the inline-start edge (Woven spec
- * section 14): faint warp threads, then the picture row by row, bottom row
- * first, with a thread-colored shuttle at each row's front and a faint weft
- * line behind it that goes when the row is done. With progress the reveal
- * follows it; without, one shuttle crosses the rows until a picture arrives,
- * and the weave then finishes in under 1.2 s. Under reduced motion nothing
- * loops: a still thread says the loom is working, and the picture fades in
- * whole. Everything but the box is decoration, so the box is one image named
- * by `alt`; progress is the owner's to expose.
+ * A whole-image preview that comes into focus as the host reports progress.
+ * Soft light moves over the working canvas, then clears with completion.
+ * Unknown progress keeps a soft preview until the host completes the job;
+ * failure holds the current frame. Reduced motion shows a still canvas and
+ * fades in the whole picture. The box alone is named by `alt`; progress and
+ * announcements remain the owner's responsibility.
  */
 export function WeaveCanvas({
   src,
@@ -41,90 +34,43 @@ export function WeaveCanvas({
   alt,
   className = "",
 }: WeaveCanvasProps) {
-  const { config } = useSystem(),
-    reduced = useReducedMotion(),
-    direction = config.direction === "rtl" ? "rtl" : "ltr";
+  const reduced = useReducedMotion();
   const share =
     typeof progress === "number" && Number.isFinite(progress)
       ? Math.min(1, Math.max(0, progress / 100))
       : undefined;
-  // How much of the picture the host's state asks to have woven.
   const goal =
     status === "completed"
       ? 1
       : status === "weaving"
-        ? (share ?? (src ? 1 : 0))
+        ? (share ?? unknownFocus)
         : 0;
-  const hold = status === "failed",
-    looping = status === "weaving" && share === undefined && !src;
-  // Under reduced motion the picture is absent or whole, and fades in.
-  const fade = reduced && !!src && goal >= 1,
-    still = reduced && status === "weaving" && !fade;
-
+  const hold = status === "failed";
+  const [first] = useState(() => (reduced ? 1 : hold ? 0 : goal));
   const box = useRef<HTMLDivElement>(null),
-    list = useRef<HTMLSpanElement>(null);
-  // What the screen shows on mount is never animated into.
-  const [first] = useState(() => {
-    const fraction = reduced ? 1 : hold ? 0 : goal;
-    return {
-      fraction,
-      clip: weaveClip(fraction, direction),
-      fronts: rowFronts(fraction),
-    };
-  });
-  const shown = useRef(first.fraction);
+    shown = useRef(first);
 
-  // The one loop. It writes the clip and the rows straight to the DOM, and
-  // runs only while something moves: an unknown wait, or a weave catching up.
+  // This loop only smooths a real change of clarity and cancels immediately
+  // on failure, reduced motion or unmount. Atmospheric motion is handled by
+  // CSS, so an unknown wait needs no JavaScript animation loop.
   useEffect(() => {
-    const node = box.current,
-      rows = list.current;
-    if (!node || !rows) return;
-    const lines = Array.from(rows.children) as HTMLElement[];
-    const paint = (fraction: number) => {
-      shown.current = fraction;
-      node.style.setProperty("--weave-clip", weaveClip(fraction, direction));
-      const fronts = rowFronts(fraction);
-      lines.forEach((line, index) =>
-        line.style.setProperty("--front", fronts[index].toFixed(3)),
-      );
+    const node = box.current;
+    if (!node) return;
+    const paint = (focus: number) => {
+      shown.current = focus;
+      node.style.setProperty("--weave-focus", String(focus));
     };
     if (reduced) {
       paint(1);
       return;
     }
-    if (hold) {
-      // A failed weave stays where it stopped, without its shuttles.
-      for (const line of lines) line.style.setProperty("--front", "1");
-      return;
-    }
-    let frame = 0;
-    const began = performance.now();
-    if (looping) {
-      paint(0);
-      const step = (now: number) => {
-        const pass = Math.max(0, now - began) / passMs,
-          row = Math.floor(pass);
-        // One shuttle crosses one row at a time, climbing from the bottom.
-        const active = weaveRows - 1 - (row % weaveRows);
-        lines.forEach((line, index) =>
-          line.style.setProperty(
-            "--front",
-            index === active ? (pass - row).toFixed(3) : "0",
-          ),
-        );
-        frame = requestAnimationFrame(step);
-      };
-      frame = requestAnimationFrame(step);
-      return () => cancelAnimationFrame(frame);
-    }
+    if (hold) return;
     if (goal <= shown.current) {
       paint(goal);
       return;
     }
-    // Ease toward the goal from wherever the front is, so a new value that
-    // arrives mid-weave keeps it moving rather than starting from rest.
-    let last = began;
+    let frame = 0,
+      last = performance.now();
     const step = (now: number) => {
       const dt = Math.max(0, now - last);
       last = now;
@@ -139,7 +85,7 @@ export function WeaveCanvas({
     };
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
-  }, [direction, goal, hold, looping, reduced]);
+  }, [goal, hold, reduced]);
 
   return (
     <div
@@ -148,11 +94,11 @@ export function WeaveCanvas({
       aria-label={alt}
       className={`tz-weave ${className}`}
       data-status={status}
-      data-fade={fade || undefined}
-      style={{ "--weave-clip": first.clip } as CSSProperties}
+      data-preview={!!src || undefined}
+      data-reduced={reduced || undefined}
+      style={{ "--weave-focus": first } as CSSProperties}
     >
-      <span className="tz-weave-warp" aria-hidden="true" />
-      {!!src && (!reduced || fade) && (
+      {!!src && status !== "queued" && (
         <img
           className="tz-weave-image"
           src={src}
@@ -161,19 +107,9 @@ export function WeaveCanvas({
           decoding="async"
         />
       )}
-      <span ref={list} className="tz-weave-rows" aria-hidden="true">
-        {first.fronts.map((front, index) => (
-          <span
-            key={index}
-            className="tz-weave-row"
-            style={{ "--front": front.toFixed(3) } as CSSProperties}
-          >
-            <span className="tz-weave-weft" />
-            <span className="tz-weave-shuttle" />
-          </span>
-        ))}
-      </span>
-      {still && (
+      <span className="tz-weave-atmosphere" aria-hidden="true" />
+      <span className="tz-weave-sheen" aria-hidden="true" />
+      {reduced && status === "weaving" && !src && (
         <span className="tz-weave-still" aria-hidden="true">
           <Thread state="running" />
         </span>

@@ -8,7 +8,6 @@ import "./system/tokens.css";
 import "./system/components.css";
 import "./workbench/workbench.css";
 import { Dashboard } from "./examples/dashboard/Dashboard";
-import { ChatAppDemo } from "./examples/chat-app/ChatApp";
 import { MonthEndClose } from "./examples/month-end-close/MonthEndClose";
 import { Invoices } from "./examples/invoices/Invoices";
 import { CustomerProfile } from "./examples/customer-profile/CustomerProfile";
@@ -23,10 +22,9 @@ import { screenPath } from "./examples/frame/screen";
 import { Workbench } from "./workbench/Workbench";
 import { StandalonePlayground } from "./workbench/StandalonePlayground";
 import { navigationCatalog } from "./workbench/catalog";
-// The standalone pages: the Dashboard, the chat app, then the ten screens.
+// Standalone example screens.
 const routes: { path: string; component: ComponentType }[] = [
   { path: screenPath("dashboard"), component: Dashboard },
-  { path: "/examples/chat-app", component: ChatAppDemo },
   { path: screenPath("month-end-close"), component: MonthEndClose },
   { path: screenPath("invoices"), component: Invoices },
   { path: screenPath("customer-profile"), component: CustomerProfile },

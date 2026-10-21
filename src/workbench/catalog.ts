@@ -726,7 +726,9 @@ export const chartIds = [
 ] as const satisfies readonly ComponentId[];
 
 // Field remains a public family; its composition reference lives under Input.
-export const navigationCatalog = catalog.filter((item) => item.id !== "field");
+export const navigationCatalog = catalog.filter(
+  (item) => item.id !== "field" && item.id !== "chat-app",
+);
 
 /** The job a pattern finishes; its section in component navigation. */
 export type Job = "ask" | "delegate" | "create" | "understand";
@@ -796,7 +798,7 @@ interface DocumentationSection {
   ids: readonly ComponentId[];
 }
 const primaryGroups: readonly DocumentationSection[] = [
-  { id: "screens", name: ["شاشات", "Screens"], ids: ["chat-app"] },
+  { id: "screens", name: ["شاشات", "Screens"], ids: [] },
   {
     id: "ask",
     name: jobNames.ask,
@@ -934,7 +936,7 @@ export const navigationGroups = documentationGroups
     ...group,
     items: pagesOf(group.ids),
   }))
-  .filter((group) => group.items.length > 0);
+  .filter((group) => group.id === "screens" || group.items.length > 0);
 
 /**
  * The docs pages each example screen is built from, in the order its screen

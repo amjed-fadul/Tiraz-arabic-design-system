@@ -25,7 +25,10 @@ it("lists each curated page once, with Screens first and no Parts section", () =
   ).toEqual(
     [
       ...catalog.filter(
-        (item) => item.id !== "field" && !(item.id in nestedParts),
+        (item) =>
+          item.id !== "field" &&
+          item.id !== "chat-app" &&
+          !(item.id in nestedParts),
       ),
       ...screens,
     ]

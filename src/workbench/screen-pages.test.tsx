@@ -50,8 +50,11 @@ it("lists the screens as buttons, with no new-tab links", () => {
   );
   expect(
     section.getAllByRole("button").map((item) => item.textContent),
-  ).toEqual(["مساحة عمل المساعد", ...screens.map((item) => item.name[0])]);
+  ).toEqual(screens.map((item) => item.name[0]));
   expect(nav().queryAllByRole("link")).toEqual([]);
+  expect(
+    screen.getByRole("group", { name: "شاشات" }).querySelector("svg"),
+  ).toBeNull();
 });
 
 it("opens a screen's page with the screen in an iframe", async () => {

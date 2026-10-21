@@ -62,8 +62,7 @@ import { destination, readSiteRoute, routePath } from "./site-routes";
 import type { SiteRoute } from "./site-routes";
 import { SiteLink } from "./SiteLink";
 import { LibraryPage } from "./LibraryPage";
-import { GuidePage } from "./GuidePage";
-import { guides } from "./guides";
+import { QuickStart } from "./QuickStart";
 import { IllustrationsPage } from "./IllustrationsPage";
 import { illustrations } from "./illustrations";
 import "./site.css";
@@ -104,7 +103,7 @@ function ComponentNavigation({
   onOpenScreen,
 }: {
   language: Language;
-  active: ComponentId;
+  active?: ComponentId;
   screen: ScreenSlug | null;
   onOpen: (id: ComponentId) => void;
   onOpenScreen: (slug: ScreenSlug) => void;
@@ -145,7 +144,6 @@ function ComponentNavigation({
                   aria-current={screen === item.slug ? "page" : undefined}
                   onClick={() => onOpenScreen(item.slug)}
                 >
-                  <item.icon size={22} weight="duotone" aria-hidden="true" />
                   <span>{localize(item.name, language)}</span>
                 </button>
               ))}
@@ -436,8 +434,8 @@ export function Workbench() {
   const pageName =
     route.kind === "library"
       ? (["المكتبة", "Library"] as const)
-      : route.kind === "docs"
-        ? guides.find((item) => item.id === route.guide)!.name
+      : route.kind === "start"
+        ? (["ابدأ هنا", "Start here"] as const)
         : route.kind === "illustrations"
           ? (illustrations.find((item) => item.id === route.id)?.name ??
             (["الرسوم التوضيحية", "Illustrations"] as const))
@@ -633,6 +631,11 @@ export function Workbench() {
         { ...window.history.state, tirazPath: routePath(initialRoute.current) },
         "",
       );
+    else if (
+      window.location.pathname.startsWith("/docs") ||
+      window.location.pathname.endsWith("/chat-app")
+    )
+      window.history.replaceState({}, "", routePath(initialRoute.current));
     const onPop = () => {
       const savedPath =
         window.location.pathname === "/" && window.history.state?.tirazPath;
@@ -850,12 +853,10 @@ export function Workbench() {
   );
   const siteDestination = destination(route);
   const navigationName =
-    siteDestination === "docs"
-      ? t("التوثيق", "Docs")
-      : siteDestination === "illustrations"
-        ? t("الرسوم التوضيحية", "Illustrations")
-        : label("components", language);
-  const navigation =
+    siteDestination === "illustrations"
+      ? t("الرسوم التوضيحية", "Illustrations")
+      : label("components", language);
+  const navigationBody =
     route.kind === "library" ? (
       <nav
         className="component-nav site-secondary"
@@ -880,23 +881,6 @@ export function Workbench() {
             >
               <NavigationIcon id={group.id} />
               <span>{localize(group.name, language)}</span>
-            </SiteLink>
-          ))}
-        </div>
-      </nav>
-    ) : route.kind === "docs" ? (
-      <nav className="component-nav site-secondary" aria-label={navigationName}>
-        <h2 className="component-nav-heading">{t("ابدأ هنا", "Start here")}</h2>
-        <div className="component-nav-items">
-          {guides.map((item) => (
-            <SiteLink
-              key={item.id}
-              route={{ kind: "docs", guide: item.id }}
-              navigate={navigate}
-              aria-current={route.guide === item.id ? "page" : undefined}
-            >
-              <NavigationIcon id={item.id} />
-              <span>{localize(item.name, language)}</span>
             </SiteLink>
           ))}
         </div>
@@ -931,12 +915,47 @@ export function Workbench() {
     ) : (
       <ComponentNavigation
         language={language}
-        active={active}
+        active={route.kind === "component" ? active : undefined}
         screen={screenSlug}
         onOpen={openPage}
         onOpenScreen={openScreen}
       />
     );
+  const navigation = (
+    <div className="docs-navigation-sections">
+      <nav
+        className="component-nav site-secondary docs-navigation-start"
+        aria-label={t("البداية", "Getting started")}
+      >
+        <div className="component-nav-items">
+          <SiteLink
+            route={{ kind: "start" }}
+            navigate={navigate}
+            aria-current={route.kind === "start" ? "page" : undefined}
+          >
+            {t("ابدأ هنا", "Start here")}
+          </SiteLink>
+        </div>
+      </nav>
+      {navigationBody}
+      <nav
+        className="component-nav site-secondary docs-navigation-resources"
+        aria-label={t("الموارد", "Resources")}
+      >
+        <div className="component-nav-items">
+          <SiteLink
+            route={{ kind: "illustrations" }}
+            navigate={navigate}
+            aria-current={
+              route.kind === "illustrations" && !route.id ? "page" : undefined
+            }
+          >
+            {t("الرسوم التوضيحية", "Illustrations")}
+          </SiteLink>
+        </div>
+      </nav>
+    </div>
+  );
   const appearance = (
     <Appearance
       config={systemConfig}
@@ -1059,14 +1078,10 @@ export function Workbench() {
             >
               {navigation}
             </DocsDrawer>
-            <SiteLink
-              className="docs-brand"
-              route={{ kind: "library" }}
-              navigate={navigate}
-            >
+            <a className="docs-brand" href="/landing.html">
               <BrandMark />
               <span>{t("طِراز", "Tiraz")}</span>
-            </SiteLink>
+            </a>
           </div>
           <nav
             className="site-primary"
@@ -1078,22 +1093,6 @@ export function Workbench() {
               aria-current={siteDestination === "library" ? "page" : undefined}
             >
               {t("المكتبة", "Library")}
-            </SiteLink>
-            <SiteLink
-              route={{ kind: "docs", guide: "introduction" }}
-              navigate={navigate}
-              aria-current={siteDestination === "docs" ? "page" : undefined}
-            >
-              {t("التوثيق", "Docs")}
-            </SiteLink>
-            <SiteLink
-              route={{ kind: "illustrations" }}
-              navigate={navigate}
-              aria-current={
-                siteDestination === "illustrations" ? "page" : undefined
-              }
-            >
-              {t("الرسوم التوضيحية", "Illustrations")}
             </SiteLink>
           </nav>
           <div className="header-actions">
@@ -1167,12 +1166,8 @@ export function Workbench() {
                   category={route.category}
                   navigate={navigate}
                 />
-              ) : route.kind === "docs" ? (
-                <GuidePage
-                  guideId={route.guide}
-                  language={language}
-                  navigate={navigate}
-                />
+              ) : route.kind === "start" ? (
+                <QuickStart language={language} />
               ) : route.kind === "illustrations" ? (
                 <IllustrationsPage
                   key={route.id ?? "gallery"}

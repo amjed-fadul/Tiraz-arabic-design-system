@@ -324,56 +324,6 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
-  "chat-app": {
-    useWhen: [
-      [
-        "تعرض محادثة يجمع فيها المساعد أكثر من نمط، كإجابة موثّقة ومهمة وأسئلة وطلب موافقة، مع قائمة محادثات للتنقّل بينها.",
-        "You show a conversation where the assistant mixes patterns, such as a cited answer, a task, questions and an approval, with a list to move between conversations.",
-      ],
-      [
-        "تحتاج لوحة جانبية بجوار المحادثة، لأدلة أو مسودة أو تفاصيل مهمة.",
-        "You need a panel beside the conversation, for evidence, a draft or a task's details.",
-      ],
-      [
-        "تريد أن تتحوّل قائمة المحادثات إلى لوحة جانبية على الجوال دون عمل إضافي منك.",
-        "You want the conversation list to become a side sheet on phones without extra work.",
-      ],
-    ],
-    instead: [
-      {
-        text: [
-          "تكفي محادثة واحدة بلا قائمة تنقّل، فاستخدم",
-          "One conversation is enough and needs no list, so use",
-        ],
-        page: "chat-thread",
-      },
-      {
-        text: [
-          "تحتاج قائمة التنقّل وحدها، فاستخدم",
-          "You only need the navigation list, so use",
-        ],
-        page: "sidebar",
-      },
-    ],
-    notice: [
-      [
-        "حين يبدّل المستخدم المحادثة، ألغِ أي رد ما زال يصل حتى لا يظهر في محادثة أخرى.",
-        "When someone switches conversations, cancel any reply that is still arriving so it never lands in another one.",
-      ],
-      [
-        "على الجوال يُغلق اختيار محادثة أو إنشاؤها اللوحة، ويعود التركيز إلى زر فتحها.",
-        "On a phone, choosing or creating a conversation closes the sheet and returns focus to the button that opened it.",
-      ],
-      [
-        "القائمة لا تحذف ولا تعيد التسمية بنفسها: كل من «إعادة التسمية» و«حذف» يستدعي دالتك فقط، ويتولّى تطبيقك حقل الاسم والتأكيد.",
-        "The list never renames or deletes: Rename and Delete only call your functions, and your app owns the name field and the confirmation.",
-      ],
-      [
-        "تنزل اللوحة الجانبية تحت المحادثة حين يقلّ عرض المساحة عن 960px، وتتمرّر وحدها.",
-        "The side panel moves under the conversation when the space is narrower than 960px, and scrolls on its own.",
-      ],
-    ],
-  },
   "ask-user-questions": {
     useWhen: [
       [
@@ -709,13 +659,6 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
           "You need a field to write the message, not to show it, so use",
         ],
         page: "chat-composer",
-      },
-      {
-        text: [
-          "تحتاج قائمة محادثات ينتقل بينها المستخدم، فاستخدم",
-          "People need to switch between conversations, so use",
-        ],
-        page: "chat-app",
       },
     ],
     notice: [

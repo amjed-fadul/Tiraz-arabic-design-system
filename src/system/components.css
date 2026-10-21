@@ -7822,14 +7822,11 @@ button.tz-tool-chip[aria-expanded="true"] {
   font-size: var(--text-meta);
 }
 
-/* WeaveCanvas (Woven spec section 14): faint warp threads, then the picture
-   woven in row by row from the inline-start edge. The one loop writes the
-   picture's clip-path as --weave-clip on the box and how far each row has come,
-   0 to 1, as --front on the row, so no CSS duration drives the weave. Each row's
-   weft line and shuttle sit at its front, measured from the inline-start edge,
-   and fade out as the row completes. */
+/* WeaveCanvas: a whole composition emerges from soft focus. Supplied progress
+   controls clarity; the slow, independent light never simulates progress. */
 .tz-weave {
   position: relative;
+  isolation: isolate;
   inline-size: 100%;
   aspect-ratio: var(--weave-ratio, 3 / 2);
   overflow: hidden;
@@ -7839,65 +7836,110 @@ button.tz-tool-chip[aria-expanded="true"] {
   background: var(--surface-tray);
   box-shadow: 0 0 0 1px var(--hairline);
 }
-.tz-weave-warp {
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--warp) 0 1px,
-    transparent 1px 14px
-  );
-}
 .tz-weave-image {
   position: absolute;
   inset: 0;
   inline-size: 100%;
   block-size: 100%;
   object-fit: contain;
-  clip-path: var(--weave-clip, none);
+  opacity: calc(0.6 + var(--weave-focus, 0) * 0.4);
+  filter: blur(calc((1 - var(--weave-focus, 0)) * 24px));
+  transform: scale(calc(1 + (1 - var(--weave-focus, 0)) * 0.06));
+  animation: tz-weave-fade var(--motion-reveal) var(--ease-out);
 }
-.tz-weave-rows {
+.tz-weave-atmosphere {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
+  inset: -25%;
+  opacity: 0.8;
   pointer-events: none;
 }
-.tz-weave-row {
-  position: relative;
-  flex: 1 1 0;
-  min-block-size: 0;
-}
-.tz-weave-weft {
+.tz-weave-atmosphere::before,
+.tz-weave-atmosphere::after {
+  content: "";
   position: absolute;
-  inset-block-start: 50%;
-  inset-inline-start: 0;
-  inline-size: calc(var(--front, 0) * 100%);
-  block-size: 1px;
-  background: color-mix(in srgb, var(--ai) 55%, transparent);
-  opacity: clamp(0, calc((1 - var(--front, 0)) * 3), 1);
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 28% 36%,
+      color-mix(in srgb, var(--ai) 28%, transparent),
+      transparent 48%
+    ),
+    radial-gradient(
+      ellipse at 72% 68%,
+      color-mix(in srgb, var(--ai) 14%, transparent),
+      transparent 44%
+    );
+  filter: blur(24px);
+  animation: tz-weave-drift calc(var(--motion-loop-shimmer) * 3)
+    var(--ease-in-out) infinite alternate paused;
 }
-.tz-weave-shuttle {
+.tz-weave-atmosphere::after {
+  background: radial-gradient(
+    ellipse at 62% 38%,
+    var(--surface),
+    transparent 56%
+  );
+  animation-direction: alternate-reverse;
+  animation-duration: calc(var(--motion-loop-shimmer) * 4);
+}
+.tz-weave-sheen {
   position: absolute;
-  inset-block: 22%;
-  inset-inline-start: calc(var(--front, 0) * 100%);
-  inline-size: 8px;
-  margin-inline-start: -4px;
-  border-radius: var(--radius-pill);
-  background: var(--ai);
-  opacity: clamp(0, calc(var(--front, 0) * (1 - var(--front, 0)) * 40), 1);
+  inset: -20%;
+  pointer-events: none;
+  opacity: 0.5;
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    color-mix(in srgb, var(--surface) 65%, transparent) 48%,
+    transparent 70%
+  );
+  animation: tz-weave-light calc(var(--motion-loop-shimmer) * 3)
+    var(--ease-in-out) infinite alternate paused;
 }
-/* Reduced motion keeps no loop: a still thread says the loom is working, and
-   the picture, when it comes, fades in whole. That fade is the one duration
-   reduced motion keeps (Woven spec section 15), so it says !important to stand
-   against the global rule that zeroes every other. */
+.tz-weave[data-preview] > .tz-weave-atmosphere {
+  opacity: calc((1 - var(--weave-focus, 0)) * 0.55);
+}
+.tz-weave[data-preview] > .tz-weave-sheen {
+  opacity: calc((1 - var(--weave-focus, 0)) * 0.45);
+}
+.tz-weave[data-status="weaving"] > .tz-weave-atmosphere::before,
+.tz-weave[data-status="weaving"] > .tz-weave-atmosphere::after,
+.tz-weave[data-status="weaving"] > .tz-weave-sheen {
+  animation-play-state: running;
+}
+@keyframes tz-weave-drift {
+  from {
+    transform: translate(-6%, 3%) rotate(-8deg) scale(0.96);
+  }
+  to {
+    transform: translate(6%, -3%) rotate(8deg) scale(1.06);
+  }
+}
+@keyframes tz-weave-light {
+  from {
+    transform: translateX(-12%) rotate(-4deg);
+  }
+  to {
+    transform: translateX(12%) rotate(4deg);
+  }
+}
+/* Both reduced-motion preferences remove all drift and blur. The one allowed
+   opacity reveal uses the existing 200ms --weave-fade token. */
+.tz-weave[data-reduced] > .tz-weave-atmosphere::before,
+.tz-weave[data-reduced] > .tz-weave-atmosphere::after,
+.tz-weave[data-reduced] > .tz-weave-sheen {
+  animation: none;
+}
+.tz-weave[data-reduced] > .tz-weave-image {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  animation: tz-weave-fade var(--weave-fade) var(--ease-out) !important;
+}
 .tz-weave-still {
   position: absolute;
   inset-inline: 12%;
   inset-block-start: 50%;
-}
-.tz-weave[data-fade] > .tz-weave-image {
-  animation: tz-weave-fade var(--weave-fade) var(--ease-out) !important;
 }
 @keyframes tz-weave-fade {
   from {

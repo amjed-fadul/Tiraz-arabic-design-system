@@ -1,4 +1,4 @@
-/* Shared by Library, Docs, Illustrations, and their detail pages. */
+/* Shared by Library, Start here, Illustrations, and their detail pages. */
 .docs-shell {
   --docs-header-height: 64px;
   --docs-navigation-width: 300px;
@@ -151,4 +151,19 @@
     padding: var(--space-6) var(--space-4) var(--space-8);
     border-radius: var(--radius-panel);
   }
+}
+
+.docs-navigation-sections {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100%;
+  gap: var(--space-6);
+}
+.docs-navigation-resources {
+  margin-block-start: auto;
+  padding-block-start: var(--space-4);
+}
+.docs-shell .docs-navigation-start .component-nav-items,
+.docs-shell .docs-navigation-resources .component-nav-items {
+  border-inline-start-color: transparent;
 }

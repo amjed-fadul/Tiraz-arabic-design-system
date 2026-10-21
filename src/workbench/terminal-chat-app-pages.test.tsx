@@ -13,12 +13,7 @@ import * as system from "../system";
 import * as financeStory from "../system/ai/examples/finance-story";
 import * as ts from "typescript";
 afterEach(() => vi.useRealTimers());
-it.each([
-  // Terminal is a content block, which moved to Display; the chat-app page is
-  // the Assistant workspace screen.
-  ["الطرفية", "Terminal", "العرض والتنبيهات"],
-  ["مساحة عمل المساعد", "Assistant workspace", "شاشات"],
-])(
+it.each([["الطرفية", "Terminal", "العرض والتنبيهات"]])(
   "documents %s in its group with continuous shared frames",
   async (ar, en, group) => {
     const user = userEvent.setup();

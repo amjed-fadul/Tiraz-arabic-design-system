@@ -4,16 +4,6 @@ import { screens } from "../examples/frame/screen";
 import type { ScreenSlug } from "../examples/frame/screen";
 import type { DocumentationPreferences } from "./storage";
 
-export const guideIds = [
-  "introduction",
-  "installation",
-  "providers",
-  "theming",
-  "rtl",
-  "accessibility",
-  "ai",
-] as const;
-export type GuideId = (typeof guideIds)[number];
 export const illustrationIds = [
   "document-vault",
   "agent-handoff",
@@ -27,7 +17,7 @@ export type SiteRoute =
   | { kind: "library"; category?: string }
   | { kind: "component"; id: ComponentId }
   | { kind: "screen"; slug: ScreenSlug }
-  | { kind: "docs"; guide: GuideId }
+  | { kind: "start" }
   | { kind: "illustrations"; id?: IllustrationId }
   | { kind: "not-found" };
 
@@ -39,8 +29,8 @@ export function routePath(route: SiteRoute): string {
       return `/library/components/${route.id}`;
     case "screen":
       return `/library/screens/${route.slug}`;
-    case "docs":
-      return route.guide === "introduction" ? "/docs" : `/docs/${route.guide}`;
+    case "start":
+      return "/start";
     case "illustrations":
       return `/illustrations${route.id ? `/${route.id}` : ""}`;
     case "not-found":
@@ -52,10 +42,20 @@ export function readSiteRoute(
   saved: DocumentationPreferences,
 ): SiteRoute {
   const path = url.pathname.replace(/\/+$/, "") || "/";
+  if (path === "/" && !saved.screen && saved.active === "chat-app")
+    return { kind: "library", category: "screens" };
   if (path === "/")
     return saved.screen
       ? { kind: "screen", slug: saved.screen }
       : { kind: "component", id: saved.active };
+  if (
+    [
+      "/library/components/chat-app",
+      "/examples/chat-app",
+      "/examples/playground/chat-app",
+    ].includes(path)
+  )
+    return { kind: "library", category: "screens" };
   if (path === "/library")
     return {
       kind: "library",
@@ -71,9 +71,8 @@ export function readSiteRoute(
     (item) => path === `/library/screens/${item.slug}`,
   );
   if (screen) return { kind: "screen", slug: screen.slug };
-  if (path === "/docs") return { kind: "docs", guide: "introduction" };
-  const guide = guideIds.find((id) => path === `/docs/${id}`);
-  if (guide) return { kind: "docs", guide };
+  if (path === "/start" || path === "/docs" || path.startsWith("/docs/"))
+    return { kind: "start" };
   if (path === "/illustrations") return { kind: "illustrations" };
   const illustration = illustrationIds.find(
     (id) => path === `/illustrations/${id}`,
@@ -82,8 +81,8 @@ export function readSiteRoute(
   return { kind: "not-found" };
 }
 export function destination(route: SiteRoute) {
-  return route.kind === "docs"
-    ? "docs"
+  return route.kind === "start"
+    ? "start"
     : route.kind === "illustrations"
       ? "illustrations"
       : "library";

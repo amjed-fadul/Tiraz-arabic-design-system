@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactNode } from "react";
 import { afterEach, expect, it, vi } from "vitest";
@@ -9,10 +9,12 @@ import {
   defaultConfig,
 } from "./index";
 import type { ImageGenerationProps, SystemConfig } from "./index";
-import { weaveClip } from "./weave";
 import { ImageGenerationExample } from "./ai/examples/ImageGenerationExamples";
 
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.useRealTimers();
+});
 
 const wrap = (children: ReactNode, config: Partial<SystemConfig> = {}) => (
   <SystemProvider config={{ ...defaultConfig, ...config }}>
@@ -65,53 +67,68 @@ const section = () => screen.getByRole("region", { name: "توليد صورة" }
 const live = () =>
   document.querySelector(".tz-image-generation > [role='status']");
 
-// A clip-path polygon as [x, y] pairs in percent.
-const points = (clip: string) =>
-  [...clip.matchAll(/(-?[\d.]+)% (-?[\d.]+)%/g)].map(([, x, y]) => [
-    Number(x),
-    Number(y),
-  ]);
+it("keeps an unknown preview soft until the host completes it", () => {
+  vi.useFakeTimers();
+  const canvas = (status: "weaving" | "completed") =>
+    wrap(<WeaveCanvas status={status} src={images[0].src} alt={alts[0]} />);
+  const view = render(canvas("weaving"));
+  const preview = screen.getByRole("img", { name: alts[0] });
+  const focus = () => Number(preview.style.getPropertyValue("--weave-focus"));
+  const waiting = focus();
+  expect(waiting).toBeGreaterThan(0);
+  expect(waiting).toBeLessThan(1);
+  act(() => vi.advanceTimersByTime(10_000));
+  expect(focus()).toBe(waiting);
+  expect(screen.queryByRole("progressbar")).toBeNull();
+  expect(
+    view.container.querySelector("[aria-live], [role='status']"),
+  ).toBeNull();
 
-it("reveals rows from the inline-start edge, bottom first", () => {
-  // Nothing shows at 0 and the whole image at 1.
-  expect(points(weaveClip(0, "rtl")).every(([x]) => x === 100)).toBe(true);
-  expect(points(weaveClip(0, "ltr")).every(([x]) => x === 0)).toBe(true);
-  expect(weaveClip(1, "rtl")).toBe("none");
-  expect(weaveClip(1, "ltr")).toBe("none");
+  view.rerender(canvas("completed"));
+  act(() => vi.advanceTimersByTime(1_200));
+  expect(focus()).toBe(1);
+  vi.useRealTimers();
+});
 
-  // After the two corners on the inline-start edge, each row adds a pair of
-  // points that share an x, the bottom row first.
-  const rtl = points(weaveClip(0.5, "rtl"));
-  expect(rtl.slice(0, 2)).toEqual([
-    [100, 0],
-    [100, 100],
-  ]);
-  const [bottom, top] = [rtl[2][0], rtl[rtl.length - 1][0]];
-  expect(rtl[2][1]).toBe(100);
-  expect(rtl[rtl.length - 1][1]).toBe(0);
-  // In RTL the edge is the right one, so a smaller x has come further.
-  expect(bottom).toBeLessThan(top);
-  expect(top).toBeLessThan(100);
+it("holds the current preview when the host stops generation", () => {
+  vi.useFakeTimers();
+  const canvas = (status: "queued" | "weaving" | "failed", progress: number) =>
+    wrap(
+      <WeaveCanvas
+        status={status}
+        progress={progress}
+        src={images[0].src}
+        alt={alts[0]}
+      />,
+    );
+  const view = render(canvas("weaving", 20));
+  const preview = screen.getByRole("img", { name: alts[0] });
+  const focus = () => Number(preview.style.getPropertyValue("--weave-focus"));
+  expect(focus()).toBe(0.2);
+  view.rerender(canvas("weaving", 80));
+  act(() => vi.advanceTimersByTime(100));
+  const interrupted = focus();
+  expect(interrupted).toBeGreaterThan(0.2);
+  expect(interrupted).toBeLessThan(0.8);
+  view.rerender(canvas("failed", 0));
+  act(() => vi.advanceTimersByTime(1_200));
+  expect(focus()).toBe(interrupted);
+  expect(preview).toHaveAttribute("data-status", "failed");
 
-  // In LTR the same reveal comes from the left edge, mirrored.
-  const ltr = points(weaveClip(0.5, "ltr"));
-  expect(ltr.slice(0, 2)).toEqual([
-    [0, 0],
-    [0, 100],
-  ]);
-  expect(ltr[2][0]).toBeCloseTo(100 - bottom, 1);
-  expect(ltr[ltr.length - 1][0]).toBeCloseTo(100 - top, 1);
+  view.rerender(canvas("queued", 0));
+  expect(focus()).toBe(0);
+  vi.useRealTimers();
 });
 
 it("names the weave as one image and follows progress", () => {
   const view = render(generation("weaving", { progress: 42 }));
-  // One image, named by the selected picture's description; the threads, the
-  // shuttles and the clipped picture are decoration.
+  // One image, named by the selected picture's description; the preview and
+  // atmospheric light are decoration.
   const weave = screen.getByRole("img", { name: alts[0] });
   expect(weave).toHaveClass("tz-weave");
   expect(screen.getAllByRole("img")).toHaveLength(1);
   for (const part of weave.querySelectorAll(
-    ".tz-weave-warp, .tz-weave-image, .tz-weave-rows",
+    ".tz-weave-image, .tz-weave-atmosphere, .tz-weave-sheen",
   ))
     expect(part).toHaveAttribute("aria-hidden", "true");
 
@@ -130,21 +147,13 @@ it("names the weave as one image and follows progress", () => {
 it("crossfades under reduced motion", () => {
   const alt = "غروب فوق الكثبان";
   const frame = vi.spyOn(window, "requestAnimationFrame");
-  // An unknown wait loops, so it asks for frames: the control.
-  const loop = render(
-    wrap(<WeaveCanvas status="weaving" progress={null} alt={alt} />),
-  );
-  expect(frame).toHaveBeenCalled();
-  loop.unmount();
-  frame.mockClear();
-
   const still = (src?: string) =>
     wrap(<WeaveCanvas status="weaving" progress={null} src={src} alt={alt} />, {
       reducedMotion: true,
     });
   const view = render(still());
   expect(frame).not.toHaveBeenCalled();
-  // No picture yet; a still thread says the loom is working.
+  // No picture yet; a still thread indicates that the job is active.
   expect(view.container.querySelector("img")).toBeNull();
   expect(view.container.querySelector(".tz-weave-still")).not.toBeNull();
 
@@ -154,7 +163,9 @@ it("crossfades under reduced motion", () => {
   expect(image).toBeVisible();
   // The picture is whole and fades in; nothing clips it, and nothing loops.
   expect(image.style.clipPath).toBe("");
-  expect(screen.getByRole("img", { name: alt })).toHaveAttribute("data-fade");
+  expect(screen.getByRole("img", { name: alt })).toHaveAttribute(
+    "data-reduced",
+  );
   expect(frame).not.toHaveBeenCalled();
 });
 

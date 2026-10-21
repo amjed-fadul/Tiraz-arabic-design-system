@@ -33,15 +33,12 @@ it("opens a component URL instead of a saved page, with curated navigation and r
 it("restores explicit routes on Back and keeps language/theme across destinations", async () => {
   persist(storageKeys.documentation, { language: "en", active: "button" });
   at("/library/components/chat-thread");
-  const primary = within(
-    screen.getByRole("navigation", { name: "Primary navigation" }),
-  );
-  await userEvent.click(primary.getByRole("link", { name: "Docs" }));
-  expect(window.location.pathname).toBe("/docs");
+  await userEvent.click(screen.getByRole("link", { name: "Start here" }));
+  expect(window.location.pathname).toBe("/start");
   expect(
     screen.getByRole("heading", {
       level: 1,
-      name: "Built for Arabic. Ready for your app.",
+      name: "Start from source",
     }),
   ).toBeVisible();
   await userEvent.click(screen.getByRole("button", { name: "العربية" }));
@@ -224,7 +221,7 @@ it("keeps keyboard focus on the Library filter when narrowing results", async ()
 });
 
 it.each([
-  ["/docs", "Docs"],
+  ["/start", "Components"],
   ["/illustrations", "Illustrations"],
   ["/library", "Library categories"],
 ])(
@@ -258,18 +255,84 @@ it.each([
 );
 
 it("keeps navigation hidden when moving between destinations", async () => {
-  at("/docs");
+  at("/start");
   await userEvent.click(
     screen.getByRole("button", { name: "إخفاء القائمة الجانبية" }),
   );
   await userEvent.click(
     within(
       screen.getByRole("navigation", { name: "التنقّل الرئيسي" }),
-    ).getByRole("link", { name: "الرسوم التوضيحية" }),
+    ).getByRole("link", { name: "المكتبة" }),
   );
-  expect(window.location.pathname).toBe("/illustrations");
+  expect(window.location.pathname).toBe("/library");
   expect(
     screen.getByRole("button", { name: "إظهار القائمة الجانبية" }),
   ).toHaveAttribute("aria-expanded", "false");
   expect(screen.getByRole("main")).toHaveFocus();
+});
+
+it("puts Start here first and Illustrations last in the sidebar, with one top destination", () => {
+  persist(storageKeys.documentation, { language: "en" });
+  at("/start");
+  const top = within(
+    screen.getByRole("navigation", { name: "Primary navigation" }),
+  );
+  expect(top.getAllByRole("link").map((link) => link.textContent)).toEqual([
+    "Library",
+  ]);
+  const side = screen.getByRole("complementary", { name: "Components" });
+  const links = within(side).getAllByRole("link");
+  expect(links[0]).toHaveTextContent("Start here");
+  expect(links.at(-1)).toHaveTextContent("Illustrations");
+  expect(
+    within(side).queryByRole("button", { name: "Assistant workspace" }),
+  ).toBeNull();
+  expect(within(side).queryByRole("button", { current: "page" })).toBeNull();
+});
+
+it.each(["/docs", "/docs/installation", "/docs/rtl"])(
+  "sends old guide URL %s to Start here",
+  (path) => {
+    at(path);
+    expect(window.location.pathname).toBe("/start");
+    expect(
+      screen.getByRole("heading", { level: 1, name: "ابدأ من المصدر" }),
+    ).toBeVisible();
+  },
+);
+
+it.each([
+  "/library/components/chat-app",
+  "/examples/chat-app",
+  "/examples/playground/chat-app",
+])("recovers removed workspace URL %s through Screens", (path) => {
+  persist(storageKeys.documentation, { language: "en" });
+  at(path);
+  expect(window.location.pathname + window.location.search).toBe(
+    "/library?category=screens",
+  );
+  const results = within(
+    screen.getByRole("region", { name: "Library results" }),
+  );
+  expect(
+    results.getByRole("link", { name: "Customer dashboard" }),
+  ).toBeVisible();
+  expect(
+    results.queryByRole("link", { name: "Assistant workspace" }),
+  ).toBeNull();
+  expect(results.queryByRole("link", { name: "Button" })).toBeNull();
+});
+
+it("recovers a saved Assistant workspace preference through the Screens catalog", () => {
+  persist(storageKeys.documentation, { language: "en", active: "chat-app" });
+  at("/");
+  expect(
+    screen.getByRole("heading", { level: 1, name: "Library" }),
+  ).toBeVisible();
+  expect(screen.getByRole("combobox", { name: "Category" })).toHaveValue(
+    "screens",
+  );
+  expect(
+    screen.queryByRole("heading", { level: 1, name: "Button" }),
+  ).toBeNull();
 });

@@ -650,7 +650,7 @@ InlineDiff (`segments`, `decisions` keyed by each change's first segment id, `on
 
 `ImageGeneration` makes an image from a description and lets the person choose the version to use; [ImageGenerationExamples](examples/ImageGenerationExamples.tsx) plays the host. The host owns `status` (`queued`, `weaving`, `completed`, `failed` or `blocked`), `progress` (0–100, or `null` when unknown; never invent one), the `images` (`id`, `src`, `alt`, `width`, `height`; `src` may arrive late) and, if it wants, `selected` with `onSelectedChange`. `prompt` and `options` (chips such as ratio and style) describe the request, `agent` and `duration` fill the footer, and `blockedReason` explains a request a policy refused. Events: `onUse(id)`, `onVariations(id)`, `onEditPrompt` (the pencil by the prompt, and the primary button when blocked) and `onRetry` (failed). The versions are a radio group named «اختر نسخة», and they and the actions stay disabled until `completed`.
 
-While it is queued and weaving the canvas is WeaveCanvas: faint warp threads, then the picture revealed row by row from the inline-start edge, with a thread-colored shuttle at each row's front. With `progress` the reveal follows it; without one a shuttle travels until `src` arrives, and the weave then finishes in under 1.2 seconds. Under reduced motion, from the application or the OS, no loop runs: a still thread shows and the picture fades in whole over 200 ms (`--weave-fade`). A finished or failed image is ImageResult, so Retry moves focus to the figure. The progress tag is the pattern's progressbar, and the polite region says each status once by default, never the progress or the time. Pass `announcement="off"` when the composed screen owns announcements; it also removes ImageResult's failed-image live role while keeping the visible error and alt text. Use ImageResult alone for an image the host already has.
+While it is queued and weaving the canvas is WeaveCanvas: a whole-image preview comes into focus as the host reports `progress`, with soft atmospheric light while work continues. Without progress, the preview stays soft until `completed`; the ambient motion never estimates a percentage or advances the status. Without a `src`, only the atmospheric canvas shows. Under reduced motion, from the application or the OS, nothing loops: a still thread shows while waiting for a picture, and the whole picture fades in over 200 ms (`--weave-fade`). A finished or failed image is ImageResult, so Retry moves focus to the figure. The progress tag is the pattern's progressbar, and the polite region says each status once by default, never the progress or the time. Pass `announcement="off"` when the composed screen owns announcements; it also removes ImageResult's failed-image live role while keeping the visible error and alt text. Use ImageResult alone for an image the host already has.
 
 ## Draft for review
 
@@ -1272,7 +1272,7 @@ limits; this is not a virtualized log viewer.
 ## Assistant workspace
 
 `ChatApp` is the composition shell for the Assistant workspace screen (page id
-`chat-app`; the repository also serves it at `/examples/chat-app`). Required props:
+`chat-app`). Required props:
 `conversations` (unique stable `{id, title, group?}` records), `activeConversationId`
 (`string | null`), `onConversationSelect(id)`, `onNewConversation()`, `children` and
 `composer`. Optional slots: `toolbar` and `actions` (the header's end, in that order),

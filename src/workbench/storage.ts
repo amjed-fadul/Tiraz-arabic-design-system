@@ -83,7 +83,10 @@ export function readDocumentation(): DocumentationPreferences {
     active:
       p.active === "field"
         ? "input"
-        : navigationCatalog.some((item) => item.id === p.active)
+        : // Keep this legacy value until routing can recover its saved root
+          // entry through the Screens catalog. It is no longer navigable.
+          p.active === "chat-app" ||
+            navigationCatalog.some((item) => item.id === p.active)
           ? (p.active as ComponentId)
           : "button",
     settingsOpen: p.settingsOpen === true,

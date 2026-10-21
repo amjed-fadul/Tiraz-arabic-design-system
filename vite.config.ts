@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vitest/config";
+import { fileURLToPath } from "node:url";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
@@ -8,6 +9,12 @@ export default defineConfig({
     // to :lang(), which follows the page language instead of its direction.
     // The other floors are Vite's baseline.
     cssTarget: ["chrome120", "edge120", "firefox114", "safari16.4", "ios16.4"],
+    rollupOptions: {
+      input: {
+        documentation: fileURLToPath(new URL("./index.html", import.meta.url)),
+        landing: fileURLToPath(new URL("./landing.html", import.meta.url)),
+      },
+    },
   },
   test: {
     environment: "jsdom",
