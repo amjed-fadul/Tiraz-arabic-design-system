@@ -1,5 +1,7 @@
 # Tiraz: handoff (21 Oct 2026)
 
+> **Current state:** the screen integration and reviews are complete. See [the Codex integration report](screens-integration-2026-10-21.md) for commits, verification, and the owner's visual-test checkpoint. The sections below preserve the original handoff snapshot.
+
 **Tiraz** is an Arabic-first, right-to-left React design system with a docs workbench. This is its "Woven" direction.
 - **Stack:** Vite, React, TypeScript, Vitest with jsdom, oxlint and Prettier.
 - **Font:** IBM Plex Sans Arabic.
