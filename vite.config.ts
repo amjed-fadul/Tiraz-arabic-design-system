@@ -13,5 +13,8 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./src/tests/setup.ts"],
     include: ["src/**/*.test.{ts,tsx}"],
+    // Several worktrees run the suite at once on one machine; under that load
+    // the 5 s default fails tests that pass alone in a second.
+    testTimeout: 15_000,
   },
 });
