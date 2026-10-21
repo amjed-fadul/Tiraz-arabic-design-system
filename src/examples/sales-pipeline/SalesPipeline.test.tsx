@@ -90,7 +90,10 @@ it("cancels a sending follow-up when resizing removes its stage's Sheet", async 
   const observer = globalThis.ResizeObserver;
   let resizeMain: ((width: number) => void) | undefined;
   globalThis.ResizeObserver = class {
-    constructor(private callback: ResizeObserverCallback) {}
+    private callback: ResizeObserverCallback;
+    constructor(callback: ResizeObserverCallback) {
+      this.callback = callback;
+    }
     observe(element: Element) {
       if (element.id === "screen-main")
         resizeMain = (width) =>
