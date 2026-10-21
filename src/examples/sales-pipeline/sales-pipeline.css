@@ -1,1 +1,180 @@
-/* Sales pipeline (example-screens spec §3.10). Every rule names .sales-pipeline. */
+/* Sales pipeline (example-screens spec §3.10). Every rule names .sales-pipeline.
+   The filters, What changed and the board each span the main column. The board
+   is five stage columns from 960px, the same five in a box that scrolls
+   sideways from 640px, and below that one stage at a time under Tabs. */
+.sales-pipeline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+.sales-pipeline-filters .tz-select .tz-select-trigger {
+  inline-size: 12rem;
+}
+
+/* What changed fills the column instead of keeping the pattern's 38rem cap,
+   and with room its three rows sit side by side, set apart by hairlines. */
+.sales-pipeline .tz-change-summary[data-appearance="card"] {
+  max-inline-size: none;
+}
+@container screen (width >= 640px) {
+  .sales-pipeline .tz-change-summary-rows {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: var(--space-4);
+  }
+  .sales-pipeline .tz-change-summary-row + .tz-change-summary-row {
+    padding-inline-start: var(--space-4);
+    border-block-start: 0;
+    border-inline-start: 0.5px solid var(--hairline);
+  }
+}
+
+/* The board: five columns of at least 11rem, which fit from 960px. Below that
+   they keep their width and the board scrolls in its own box, from the start;
+   the padding keeps the cards' focus rings inside it. */
+.sales-pipeline-scroll {
+  min-inline-size: 0;
+}
+.sales-pipeline-board {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(11rem, 1fr));
+  gap: var(--space-4);
+  align-items: stretch;
+}
+@container screen (width < 960px) {
+  .sales-pipeline-scroll {
+    overflow-x: auto;
+    padding: var(--space-1);
+  }
+  .sales-pipeline-scroll:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -2px;
+    border-radius: var(--radius-paper);
+  }
+}
+
+/* A stage is a tray, as long as the tallest, holding its cards as paper. */
+.sales-pipeline-lane {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.sales-pipeline-lane > .tz-tray {
+  flex: 1;
+}
+.sales-pipeline-lane-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 0 var(--space-2);
+  inline-size: 100%;
+}
+.sales-pipeline-lane-head h2 {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.sales-pipeline-lane-count {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.sales-pipeline-lane-total {
+  grid-column: 1 / -1;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  font-variant-numeric: tabular-nums;
+}
+.sales-pipeline-cards {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sales-pipeline-empty {
+  margin: 0;
+  padding: var(--space-3);
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* A card: the customer is its button, then the amount and the next step, the
+   owner and the days in the stage, and the menu that moves it. */
+.sales-pipeline-card .tz-card-content {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+}
+.sales-pipeline-deal {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.sales-pipeline-customer {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.sales-pipeline-customer:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sales-pipeline-customer:hover {
+    color: var(--action);
+    text-decoration: underline;
+    text-underline-offset: var(--underline-offset);
+  }
+}
+.sales-pipeline-amount {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-figure);
+  font-variant-numeric: tabular-nums;
+}
+.sales-pipeline-next {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.sales-pipeline-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.sales-pipeline-move {
+  justify-self: start;
+}
+
+/* One stage at a time: the tabs carry their counts. */
+.sales-pipeline .tz-tab {
+  padding-inline: var(--space-3);
+}
+.sales-pipeline-tab-count {
+  margin-inline-start: var(--space-1);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.sales-pipeline-panel {
+  padding-block-start: var(--space-3);
+}
+.sales-pipeline-sheet {
+  min-inline-size: 0;
+}
