@@ -447,8 +447,9 @@ HTML disabled and parser URL filtering enabled. Host text/state/transport remain
 outside the components; set StreamingText to `stopped` when the person stops the
 response and `failed` when the transport fails: both keep what arrived, end the
 cursor and announce once. `renderCitation(marker)` turns `[n]` markers into citation
-chips, and `links="strict"` keeps an AI answer's links to http, https, relative and
-fragment targets; Cited answer sets both.
+chips, once per number: in ASCII, Arabic-Indic or Persian digits, and grouped as
+`[1, 3]` or `[٢، ٣]` into adjacent chips. `links="strict"` keeps an AI answer's
+links to http, https, relative and fragment targets; Cited answer sets both.
 
 ## Controlled chat composition
 
@@ -479,13 +480,14 @@ Compose ImageResult for application-supplied media, InlineCitation beside a
 supported claim and Sources under that same response using the same stable source
 records. Keep source IDs and explicit citation numbers stable across updates.
 Use disclosure buttons for source details, `mode="preview"` for numbered chips in
-running text (hover or focus previews the source, Enter or a click opens it) and
-link mode for direct navigation.
+running text (hover or focus previews the source, Enter or a click opens it, and a
+tap on a touch screen opens its card) and link mode for direct navigation.
 HTTP(S), relative paths and fragments are accepted; missing/rejected destinations
 remain text. Popover portals use nearest provider/dialog scope and the installed
 Radix primitive; verify Escape and focus when nesting in Sheet/Modal. When an answer
 rests on sources, use Cited answer: it composes this and adds the thinking panel,
-follow-ups and rating. Those parts work alone: ThinkingPanel for the evidence while
+follow-ups and rating. Copy the text its `onCopy(text)` hands you, which ends with
+the numbered sources. Those parts work alone: ThinkingPanel for the evidence while
 an answer is prepared, FeedbackBar for copy, regenerate and rating, and FollowUps for
 next questions. SourceChip, the chip inside the panel, is internal.
 

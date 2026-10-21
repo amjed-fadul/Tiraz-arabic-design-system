@@ -1575,7 +1575,7 @@
           "name": "onCopy",
           "type": "(text: string) => void | Promise<void>",
           "required": false,
-          "note": "The host copies the text it is given: the answer as written, a blank line, then «المصادر» (Sources) and one line per source, \"{number}. {title}\" in the reader's digits, with \" — {link}\" when the source's destination is safe. «نُسخت» shows for two seconds once the promise resolves. A host that ignores the text keeps working."
+          "note": "The host copies the text it is given: the answer as written, a blank line, then «المصادر» (Sources) and one line per source, \"{number}. {title}\" in the reader's digits, with \" — {link}\" when the source's link is http or https, as URL normalises it (a direction override is percent-encoded). «نُسخت» shows for two seconds once the promise resolves. A host that ignores the text keeps working."
         },
         {
           "name": "onRegenerate",

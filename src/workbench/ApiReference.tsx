@@ -246,16 +246,16 @@ export function ApiReference({
         "content / sources",
         "string · required / readonly SourceReference[] · required",
         t(
-          "نص Markdown فيه علامات [n] يقابل كلٌّ منها number في مصدر. تصير العلامة رقم استشهاد يعرض المصدر عند المرور أو التركيز ويفتحه Enter أو النقر. تبقى العلامة بلا مصدر والعلامة داخل الكود نصًا. وتمرّ روابط الإجابة عبر sourceHref، فيُعرض mailto: وأمثاله نصًا.",
-          "Markdown with [n] markers, each naming a source's number. A marker becomes a citation chip that previews its source on hover or focus and opens it on Enter or click. A marker with no source, or inside code, stays text. Links in the answer pass through sourceHref, so mailto: and the like show as text.",
+          "نص Markdown فيه علامات [n] يقابل كلٌّ منها number في مصدر، بأرقام لاتينية أو عربية هندية أو فارسية، وتستشهد [1, 3] أو [٢، ٣] بأكثر من مصدر فتظهر أرقامًا متجاورة. تصير العلامة رقم استشهاد يعرض المصدر عند المرور أو التركيز ويفتحه Enter أو النقر، وتفتح لمسةٌ على شاشة لمس بطاقة المصدر بدل اتباع الرابط. تبقى العلامة نصًا إذا خلا أحد أرقامها من مصدر أو كانت داخل الكود. وتمرّ روابط الإجابة عبر sourceHref، فيُعرض mailto: وأمثاله نصًا.",
+          "Markdown with [n] markers, each naming a source's number, in ASCII, Arabic-Indic or Persian digits; [1, 3] or [٢، ٣] cites several, as adjacent chips. A marker becomes a citation chip that previews its source on hover or focus and opens it on Enter or click; a tap on a touch screen opens the source's card instead of following the link. A marker with no source for any of its numbers, or inside code, stays text. Links in the answer pass through sourceHref, so mailto: and the like show as text.",
         ),
       ],
       [
         "thinking / thinkingOpen / onThinkingOpenChange",
         "{ elapsed, searched, steps } / boolean? / (open: boolean) => void",
         t(
-          "elapsed بالثواني وsearched المصادر التي بُحث فيها وsteps الخطوات. تنفتح اللوحة أثناء التفكير وتنطوي إلى «فكّر لمدة ٦ث» عند بدء الكتابة، إلا إذا تحكّمت فيها بالزوج thinkingOpen وonThinkingOpenChange.",
-          "elapsed in seconds, searched for the sources covered and steps for the steps. The panel is open while thinking and folds to «Thought for 6s» when writing starts, unless you hold it with the thinkingOpen pair.",
+          "elapsed بالثواني وsearched المصادر التي بُحث فيها وsteps الخطوات. تظهر أول ثلاثة مصادر رقاقاتٍ، ويعرض زر «+٢» البقية. تنفتح اللوحة أثناء التفكير وتنطوي إلى «فكّر لمدة ٦ث» عند بدء الكتابة، إلا إذا تحكّمت فيها بالزوج thinkingOpen وonThinkingOpenChange. وإذا أُوقفت الإجابة أو تعثّرت قبل أن تُكتب كلمة صارت اللوحة «أُوقف بعد ٦ث» أو «تعثّر بعد ٦ث» وبقي خيطها ساكنًا، فمرّر ما وصل فقط.",
+          "elapsed in seconds, searched for the sources covered and steps for the steps. The first three sources show as chips, and «+2» shows the rest. The panel is open while thinking and folds to «Thought for 6s» when writing starts, unless you hold it with the thinkingOpen pair. A stop or a failure before a word was written leaves the panel at «Stopped after 6s» or «Failed after 6s», its thread still, so pass only what had arrived.",
         ),
       ],
       [
@@ -268,10 +268,10 @@ export function ApiReference({
       ],
       [
         "feedback / reason / onFeedbackChange / onCopy / onRegenerate",
-        'null | "up" | "down" / FeedbackReason? / (value, reason?) => void / () => void | Promise<void> / () => void',
+        'null | "up" | "down" / FeedbackReason? / (value, reason?) => void / (text: string) => void | Promise<void> / () => void',
         t(
-          "الإجابة المفيدة وغير المفيدة زران قابلان للتبديل، وعند «غير مفيدة» تظهر أربعة أسباب. يظهر «نُسخت» ثانيتين بعد أن يكتمل نسخ تطبيقك. يظهر كل زر إذا وُجد معالجه.",
-          "Helpful and not helpful are toggles; not helpful offers four reasons. «Copied» shows for two seconds once your copy resolves. Each button shows only when its handler exists.",
+          "الإجابة المفيدة وغير المفيدة زران قابلان للتبديل، وعند «غير مفيدة» تظهر أربعة أسباب. يستلم onCopy النص المنسوخ: الإجابة كما كُتبت، ثم «المصادر» وسطر لكل مصدر برقمه وعنوانه، ورابطه إن كان http أو https. انسخ هذا النص لا content وحده. يظهر «نُسخت» ثانيتين بعد أن يكتمل نسخ تطبيقك. يظهر كل زر إذا وُجد معالجه.",
+          "Helpful and not helpful are toggles; not helpful offers four reasons. onCopy receives the text to copy: the answer as written, then «Sources» and a line per source with its number, its title and its link when it is http or https. Copy that text, not content alone. «Copied» shows for two seconds once your copy resolves. Each button shows only when its handler exists.",
         ),
       ],
       [
@@ -995,8 +995,8 @@ export function ApiReference({
         "InlineCitation.source / mode / onOpenChange",
         "SourceReference / disclosure | link | preview / (open: boolean) => void",
         t(
-          "مرّر كائن المصدر نفسه. يعرض وضع disclosure التفاصيل بزر، وينتقل وضع link برابط أصلي. وضع preview رابط يعرض المصدر عند المرور أو التركيز: يفتحه Enter أو النقر، ويغلقه Escape أو فقدان التركيز، وتبقى المعاينة مفتوحة إذا انتقل المؤشر إليها. إذا رُفضت الوجهة صار زرًا يعرض المعاينة عند التركيز أو النقر.",
-          "Same source record; button disclosure or native link navigation. preview is a link that shows the source on hover or focus: Enter or click opens it, Escape or blur closes it, and the pointer moving onto it keeps it open. If the destination is rejected it is a button that shows the preview on focus or click.",
+          "مرّر كائن المصدر نفسه. يعرض وضع disclosure التفاصيل بزر، وينتقل وضع link برابط أصلي. وضع preview رابط يعرض المصدر عند المرور أو التركيز: يفتحه Enter أو النقر، ويغلقه Escape أو فقدان التركيز، وتبقى المعاينة مفتوحة إذا انتقل المؤشر إليها. إذا رُفضت الوجهة صار زرًا يعرض المعاينة عند التركيز أو النقر. وتفتح لمسةٌ على شاشة لمس بطاقة المصدر بدل اتباع الرابط: نافذة باسم المصدر فيها رابط «فتح المصدر» إن قُبلت الوجهة، تغلقها لمسة ثانية أو لمسة خارجها أو Escape.",
+          "Same source record; button disclosure or native link navigation. preview is a link that shows the source on hover or focus: Enter or click opens it, Escape or blur closes it, and the pointer moving onto it keeps it open. If the destination is rejected it is a button that shows the preview on focus or click. A tap on a touch screen opens the source's card instead of following the link: a dialog named by the title, with an «Open source» link when the destination is accepted, closed by a second tap, a tap outside or Escape.",
         ),
       ],
       [
@@ -1138,8 +1138,8 @@ export function ApiReference({
         "renderCitation / links",
         '(marker: number) => ReactNode / "default" | "strict" · default',
         t(
-          'يتحوّل كل [n] في النص إلى renderCitation(n)، ويبقى الكود كما هو، وتبقى العلامة نصًا إذا لم تُرجع الدالة شيئًا. يمرّر links="strict" الروابط والصور عبر sourceHref فلا يبقى إلا http وhttps والنسبي والجزء.',
-          'Each [n] in the text becomes renderCitation(n); code is left alone, and a marker stays text if the function returns nothing. links="strict" sends links and images through sourceHref, so only http, https, relative and fragment targets survive.',
+          'يتحوّل كل رقم في علامة [n] أو [n, m] أو [n، m]، بأرقام لاتينية أو عربية هندية أو فارسية، إلى renderCitation(n) مرةً لكل رقم، وتصير المجموعة عُقدًا متجاورة. يبقى الكود كما هو، وتبقى العلامة نصًا إذا لم تُرجع الدالة شيئًا لأحد أرقامها. يمرّر links="strict" الروابط والصور عبر sourceHref فلا يبقى إلا http وhttps والنسبي والجزء.',
+          'Each number in an [n], [n, m] or [n، m] marker, in ASCII, Arabic-Indic or Persian digits, becomes renderCitation(n), once per number, a group as adjacent nodes; code is left alone, and a marker stays text if the function returns nothing for any of its numbers. links="strict" sends links and images through sourceHref, so only http, https, relative and fragment targets survive.',
         ),
       ],
       [
@@ -1298,8 +1298,8 @@ export function ApiReference({
         "renderCitation / links",
         '(marker: number) => ReactNode / "default" | "strict"',
         t(
-          "في وضع markdown فقط: تعمل كما في Markdown، فيصير كل [n] استشهادًا وتُفلتر الروابط عبر sourceHref عند strict.",
-          "In markdown mode only: they work as in Markdown, so each [n] becomes a citation and links go through sourceHref when strict.",
+          "في وضع markdown فقط: تعمل كما في Markdown، فتصير كل علامة، [n] أو مجموعة بأي أرقام، استشهادات وتُفلتر الروابط عبر sourceHref عند strict.",
+          "In markdown mode only: they work as in Markdown, so each marker, [n] or a group in any digits, becomes citations and links go through sourceHref when strict.",
         ),
       ],
       [
