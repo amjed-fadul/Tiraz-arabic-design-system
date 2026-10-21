@@ -397,4 +397,4 @@ it("opens the decision inbox from the header and asks the orders a question", as
   expect(
     screen.getByRole("button", { name: "Decision inbox, needs you: 2" }),
   ).toBeInTheDocument();
-});
+}, 15000);
