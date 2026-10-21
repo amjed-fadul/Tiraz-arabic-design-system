@@ -239,19 +239,34 @@ await check(
       ),
       "Rename conversation",
     );
-    // Delete the open conversation: its row goes, the next one opens, its task
-    // details leave with it, and focus lands on the row now open.
+    // Delete the open conversation: the row only asks, and the dialog
+    // confirms. Its row goes, the next one opens, its task details leave with
+    // it, and focus goes back to the dialog's own trigger.
     const open = nav().locator('[data-conversation-id="close"]');
     await open.hover();
     await open.getByRole("button", { name: /^Options for / }).click();
     await page.getByRole("menuitem", { name: "Delete" }).click();
+    const confirm = page.getByRole("dialog", {
+      name: "Delete “October close”?",
+    });
+    await confirm.waitFor();
+    // Asking deleted nothing. The open dialog hides the page from the
+    // accessibility tree, so the row is found by its id.
+    assert.equal(
+      await page
+        .locator('.tz-chat-app-navigation [data-conversation-id="close"]')
+        .count(),
+      1,
+    );
+    await confirm.getByRole("button", { name: "Delete", exact: true }).click();
+    await confirm.waitFor({ state: "hidden" });
     await rowButton("October close").waitFor({ state: "detached" });
     assert.equal(await page.locator(".tz-chat-app-panel").count(), 0);
     assert.equal(
       await page.evaluate(() =>
         document.activeElement?.getAttribute("aria-label"),
       ),
-      "Collections",
+      "Delete conversation",
     );
   },
 );

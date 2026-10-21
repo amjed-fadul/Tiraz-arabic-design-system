@@ -2468,6 +2468,13 @@
           "note": "Folds the answers the host accepted into Your answers. Without it, the accepted form stays as it is."
         },
         {
+          "name": "answered",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "With receipt, mounts straight into the receipt, built from value: the host already holds the answers, so nothing is submitted or announced."
+        },
+        {
           "name": "onEditAnswers",
           "type": "() => void",
           "required": false,

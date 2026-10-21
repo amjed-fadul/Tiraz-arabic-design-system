@@ -82,6 +82,11 @@ export interface AskUserQuestionsProps {
   onSkip?: () => void;
   /** Folds the answers the host accepted into «إجاباتك». */
   receipt?: boolean;
+  /**
+   * With `receipt`, mounts straight into the receipt, built from `value`: the
+   * host already holds these answers, so nothing is submitted or announced.
+   */
+  answered?: boolean;
   /** Offers «تعديل الإجابات» on the receipt. */
   onEditAnswers?: () => void;
 }
@@ -108,6 +113,7 @@ function QuestionsInstance({
   agent,
   onSkip,
   receipt = false,
+  answered: answeredProp = false,
   onEditAnswers,
 }: AskUserQuestionsProps) {
   const { config } = useSystem(),
@@ -121,8 +127,7 @@ function QuestionsInstance({
     id = useId();
   const [index, setIndex] = useState(0),
     [attempted, setAttempted] = useState(false),
-    [focusVersion, setFocusVersion] = useState(0),
-    [sent, setSent] = useState<QuestionAnswers>({});
+    [focusVersion, setFocusVersion] = useState(0);
   const root = useRef<HTMLFormElement>(null),
     heading = useRef<HTMLHeadingElement>(null),
     focusTarget = useRef<"input" | "heading" | null>(null),
@@ -141,8 +146,9 @@ function QuestionsInstance({
     )
       root.current?.focus();
   }, [task.state]);
-  const busy = task.state === "submitting" || task.state === "accepted";
-  const answered = receipt && task.state === "accepted";
+  const answered = receipt && (answeredProp || task.state === "accepted");
+  const busy =
+    task.state === "submitting" || task.state === "accepted" || answered;
   function incomplete(q: UserQuestion) {
     const a = value[q.id];
     if (q.required === false && !a?.choice && !a?.text?.trim()) return false;
@@ -152,7 +158,7 @@ function QuestionsInstance({
   }
   // The receipt shows what the host accepted, in the person's words.
   function accepted(q: UserQuestion) {
-    const a = sent[q.id];
+    const a = value[q.id];
     return q.type === "text" || a?.choice === "other"
       ? a?.text?.trim()
       : q.choices?.find((choice) => choice.value === a?.choice)?.label;
@@ -185,7 +191,7 @@ function QuestionsInstance({
     <div className="tz-question-header" data-zone="header">
       <AIMark />
       {agent != null && <span className="tz-question-agent">{agent}</span>}
-      {task.state !== "accepted" && (
+      {!answered && task.state !== "accepted" && (
         <StatusPill state="needs-you" label={copy.needsYou} />
       )}
     </div>
@@ -426,7 +432,6 @@ function QuestionsInstance({
                   ? { choice: a.choice }
                   : {};
         }
-        setSent(answers);
         void task.run((signal) => onSubmit(answers, { signal }));
       }}
       onKeyDown={(event) => {

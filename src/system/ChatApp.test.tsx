@@ -198,6 +198,37 @@ it("groups conversations and offers rename and delete as intents", async () => {
   view.rerender(app());
   expect(screen.queryByRole("button", { name: /menu|Options for/ })).toBeNull();
 });
+it("deletes a conversation from the example only once «حذف» is confirmed", async () => {
+  const user = userEvent.setup();
+  const rtl = ({ children }: { children: React.ReactNode }) => (
+    <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+      {children}
+    </SystemProvider>
+  );
+  render(<ChatAppExample language="ar" />, { wrapper: rtl });
+  const nav = () => screen.getAllByRole("navigation", { name: "المحادثات" })[0];
+  // By its id: an open dialog hides the page from assistive technology.
+  const row = () => document.querySelector('[data-conversation-id="late"]');
+  const ask = async () => {
+    await user.click(
+      within(nav()).getByRole("button", { name: "خيارات العملاء المتأخرون" }),
+    );
+    await user.click(screen.getByRole("menuitem", { name: "حذف" }));
+  };
+  // The row only asks; the row stays until «حذف» is confirmed.
+  await ask();
+  const dialog = screen.getByRole("dialog", {
+    name: "حذف «العملاء المتأخرون»؟",
+  });
+  expect(row()).not.toBeNull();
+  await user.click(within(dialog).getByRole("button", { name: "إلغاء" }));
+  expect(row()).not.toBeNull();
+  await ask();
+  await user.click(
+    within(screen.getByRole("dialog")).getByRole("button", { name: "حذف" }),
+  );
+  expect(row()).toBeNull();
+});
 it("shows a side panel and header actions, and no brand unless given", () => {
   const app = (props: Partial<React.ComponentProps<typeof ChatApp>> = {}) => (
     <ChatApp
@@ -246,10 +277,6 @@ it("tells the October close with patterns in plain appearance", async () => {
     </SystemProvider>
   );
   const view = render(<ChatAppExample language="ar" />, { wrapper: rtl });
-  // The questions are answered from a timer, which settles at once.
-  await act(async () => {
-    await vi.advanceTimersByTimeAsync(50);
-  });
   const thread = screen.getByRole("region", { name: "الرسائل" });
   // Laila asks twice, and a pattern answers each time.
   expect(
@@ -264,7 +291,7 @@ it("tells the October close with patterns in plain appearance", async () => {
     'form.tz-ask-questions[data-appearance="plain"]',
   )!;
   expect(questions).not.toBeNull();
-  // They are answered, and the receipt says so.
+  // They are answered already: they mount as their receipt.
   expect(within(questions as HTMLElement).getByText("إجاباتك")).toBeVisible();
   const task = thread.querySelector(
     '.tz-agent-run[data-appearance="plain"]',

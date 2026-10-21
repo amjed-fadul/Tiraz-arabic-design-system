@@ -650,6 +650,14 @@ export function ApiReference({
         ),
       ],
       [
+        "answered",
+        "boolean",
+        t(
+          "مع receipt تظهر الأسئلة من البداية على هيئة «إجاباتك» مبنيّة من value، لأن تطبيقك يملك الإجابات أصلًا، فلا يُرسل شيء ولا يُعلَن شيء.",
+          "With receipt, the questions mount straight into Your answers, built from value: your app already holds the answers, so nothing is submitted or announced.",
+        ),
+      ],
+      [
         "keyboard",
         "native radios / Tab / Enter / Ctrl+Enter",
         t(

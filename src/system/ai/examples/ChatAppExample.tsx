@@ -1,5 +1,5 @@
-import { Pencil } from "lucide-react";
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import { useId, useRef, useState } from "react";
 import {
   AgentTask,
   AskUserQuestions,
@@ -152,38 +152,29 @@ function closeQuestions(ar: boolean): UserQuestion[] {
     },
   ];
 }
+/** Laila's answers, which her conversation already holds. */
+const closeAnswers: QuestionAnswers = {
+  scope: { choice: "suppliers" },
+  jeddah: { choice: "exclude" },
+};
 /**
  * The agent's questions with Laila's answers, as her conversation keeps them:
- * the answers are sent once the thread shows, and the questions fold into
- * their receipt.
+ * the host already holds the answers, so the questions mount as their receipt.
  */
 function AnsweredQuestions({ language }: { language: Language }) {
-  const [answers, setAnswers] = useState<QuestionAnswers>({
-    scope: { choice: "suppliers" },
-    jeddah: { choice: "exclude" },
-  });
-  const root = useRef<HTMLDivElement>(null);
-  // Sent from a timer, so only the mount that stays sends them.
-  useEffect(() => {
-    const timer = setTimeout(() =>
-      root.current?.querySelector("form")?.requestSubmit(),
-    );
-    return () => clearTimeout(timer);
-  }, []);
   return (
-    <div ref={root} style={{ display: "contents" }}>
-      <AskUserQuestions
-        appearance="plain"
-        headingLevel={2}
-        agent={story.agents.finance[language]}
-        questions={closeQuestions(language === "ar")}
-        value={answers}
-        onValueChange={setAnswers}
-        receipt
-        // The host takes the answers; there is nothing to wait for.
-        onSubmit={() => {}}
-      />
-    </div>
+    <AskUserQuestions
+      appearance="plain"
+      headingLevel={2}
+      agent={story.agents.finance[language]}
+      questions={closeQuestions(language === "ar")}
+      value={closeAnswers}
+      onValueChange={() => {}}
+      receipt
+      answered
+      // Answered already: nothing is sent again.
+      onSubmit={() => {}}
+    />
   );
 }
 
@@ -337,10 +328,12 @@ function ChatAppHost({
   // The rename dialog: which conversation, and the name in the field.
   const [renaming, setRenaming] = useState<string | null>(null),
     [name, setName] = useState("");
+  // The delete dialog: which conversation, and its title, which stays put
+  // while the dialog closes.
+  const [deleting, setDeleting] = useState<string | null>(null),
+    [doomed, setDoomed] = useState("");
   const sequence = useRef(0),
-    root = useRef<HTMLDivElement>(null),
     field = useRef<HTMLInputElement>(null),
-    refocus = useRef(false),
     formId = useId();
   const current = conversations.find((item) => item.id === activeId)!;
   function patch(id: string, update: (item: Conversation) => Conversation) {
@@ -361,24 +354,17 @@ function ChatAppHost({
     setName(conversations.find((item) => item.id === id)!.title);
     setRenaming(id);
   }
+  function startDelete(id: string) {
+    setDoomed(conversations.find((item) => item.id === id)!.title);
+    setDeleting(id);
+  }
   function remove(id: string) {
     const rest = conversations.filter((item) => item.id !== id);
     // The list is never empty: deleting the last conversation opens a new one.
     const next = rest.length ? rest : [blank(0)];
     setConversations(next);
     if (id === activeId) setActiveId(next[0].id);
-    // The deleted row held focus; the open conversation's row takes it.
-    refocus.current = true;
   }
-  useLayoutEffect(() => {
-    if (!refocus.current) return;
-    refocus.current = false;
-    root.current
-      ?.querySelector<HTMLElement>(
-        '.tz-chat-app-navigation [aria-current="true"]',
-      )
-      ?.focus();
-  });
   function submit(text: string) {
     const id = ++sequence.current;
     patch(activeId, (item) => ({
@@ -709,7 +695,7 @@ function ChatAppHost({
   );
 
   return (
-    <div ref={root} className="tz-chat-app-example">
+    <div className="tz-chat-app-example">
       <ChatApp
         conversations={conversations}
         activeConversationId={activeId}
@@ -720,61 +706,109 @@ function ChatAppHost({
           setActiveId(created.id);
         }}
         onConversationRename={startRename}
-        onConversationDelete={remove}
+        // Your app owns the confirmation: the row only asks.
+        onConversationDelete={startDelete}
         brand={story.team[language]}
         actions={
-          // Renames the open conversation. The row menus open the same dialog,
-          // and it hands focus back to this button, which is its trigger.
-          <Modal
-            trigger={
-              <Button
-                variant="ghost"
-                iconOnly
-                aria-label={t("إعادة تسمية المحادثة", "Rename conversation")}
-              >
-                <Pencil size={16} aria-hidden="true" />
-              </Button>
-            }
-            title={t("إعادة تسمية المحادثة", "Rename conversation")}
-            description={t(
-              "اختر اسمًا يسهل التعرّف عليه في القائمة.",
-              "Choose a name that is easy to spot in the list.",
-            )}
-            closeLabel={t("إغلاق", "Close")}
-            open={renaming !== null}
-            onOpenChange={(next) => {
-              if (next) startRename(activeId);
-              else setRenaming(null);
-            }}
-            initialFocusRef={field}
-            footer={
-              <>
-                <Button variant="ghost" onClick={() => setRenaming(null)}>
-                  {t("إلغاء", "Cancel")}
+          <>
+            {/* Renames the open conversation. The row menus open the same
+                dialog, and it hands focus back to this button, its trigger. */}
+            <Modal
+              trigger={
+                <Button
+                  variant="ghost"
+                  iconOnly
+                  aria-label={t("إعادة تسمية المحادثة", "Rename conversation")}
+                >
+                  <Pencil size={16} aria-hidden="true" />
                 </Button>
-                <Button type="submit" form={formId} disabled={!name.trim()}>
-                  {t("حفظ", "Save")}
-                </Button>
-              </>
-            }
-          >
-            <form
-              id={formId}
-              onSubmit={(event) => {
-                event.preventDefault();
-                if (renaming === null || !name.trim()) return;
-                patch(renaming, (item) => ({ ...item, title: name.trim() }));
-                setRenaming(null);
+              }
+              title={t("إعادة تسمية المحادثة", "Rename conversation")}
+              description={t(
+                "اختر اسمًا يسهل التعرّف عليه في القائمة.",
+                "Choose a name that is easy to spot in the list.",
+              )}
+              closeLabel={t("إغلاق", "Close")}
+              open={renaming !== null}
+              onOpenChange={(next) => {
+                if (next) startRename(activeId);
+                else setRenaming(null);
               }}
+              initialFocusRef={field}
+              footer={
+                <>
+                  <Button variant="ghost" onClick={() => setRenaming(null)}>
+                    {t("إلغاء", "Cancel")}
+                  </Button>
+                  <Button type="submit" form={formId} disabled={!name.trim()}>
+                    {t("حفظ", "Save")}
+                  </Button>
+                </>
+              }
             >
-              <Input
-                ref={field}
-                label={t("اسم المحادثة", "Conversation name")}
-                value={name}
-                onChange={(event) => setName(event.currentTarget.value)}
-              />
-            </form>
-          </Modal>
+              <form
+                id={formId}
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  if (renaming === null || !name.trim()) return;
+                  patch(renaming, (item) => ({ ...item, title: name.trim() }));
+                  setRenaming(null);
+                }}
+              >
+                <Input
+                  ref={field}
+                  label={t("اسم المحادثة", "Conversation name")}
+                  value={name}
+                  onChange={(event) => setName(event.currentTarget.value)}
+                />
+              </form>
+            </Modal>
+            {/* Deletes a conversation only once it is confirmed here. The row
+                menus open this dialog too, and focus comes back to this
+                button, its trigger. */}
+            <Modal
+              trigger={
+                <Button
+                  variant="ghost"
+                  iconOnly
+                  aria-label={t("حذف المحادثة", "Delete conversation")}
+                >
+                  <Trash2 size={16} aria-hidden="true" />
+                </Button>
+              }
+              title={t(`حذف «${doomed}»؟`, `Delete “${doomed}”?`)}
+              description={t(
+                "تُحذف المحادثة بكل رسائلها.",
+                "The conversation and all its messages are deleted.",
+              )}
+              closeLabel={t("إغلاق", "Close")}
+              open={deleting !== null}
+              onOpenChange={(next) => {
+                if (next) startDelete(activeId);
+                else setDeleting(null);
+              }}
+              footer={
+                <>
+                  <Button variant="ghost" onClick={() => setDeleting(null)}>
+                    {t("إلغاء", "Cancel")}
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    onClick={() => {
+                      if (deleting !== null) remove(deleting);
+                      setDeleting(null);
+                    }}
+                  >
+                    {t("حذف", "Delete")}
+                  </Button>
+                </>
+              }
+            >
+              <p style={{ margin: 0 }}>
+                {t("لا يمكن التراجع عن ذلك.", "This can't be undone.")}
+              </p>
+            </Modal>
+          </>
         }
         sidePanel={panel || undefined}
         labels={{ sidePanel: t("تفاصيل المهمة", "Task details") }}

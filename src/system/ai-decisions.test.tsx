@@ -868,6 +868,31 @@ it("folds accepted answers into a receipt and offers to edit them", async () => 
   expect(screen.queryByRole("heading", { name: "إجاباتك" })).toBeNull();
   expect(screen.getByRole("radio", { name: /فواتير الموردين/ })).toBeChecked();
 });
+it("mounts straight into the receipt when the host already holds the answers", () => {
+  const onSubmit = vi.fn();
+  render(
+    <SystemProvider config={defaultConfig}>
+      <AskUserQuestions
+        questions={[closeQuestion]}
+        value={{ scope: { choice: "suppliers" } }}
+        onValueChange={() => {}}
+        onSubmit={onSubmit}
+        receipt
+        answered
+      />
+    </SystemProvider>,
+  );
+  expect(screen.getByRole("heading", { name: "إجاباتك" })).toBeVisible();
+  expect(
+    within(document.querySelector(".tz-question-receipt")!).getByText(
+      "فواتير الموردين",
+    ),
+  ).toBeVisible();
+  expect(screen.queryByRole("radio")).toBeNull();
+  // Nothing is sent, and the past is not announced.
+  expect(onSubmit).not.toHaveBeenCalled();
+  expect(document.querySelector(".tz-decision-status")).toBeEmptyDOMElement();
+});
 it("skips the questions through onSkip", async () => {
   const user = userEvent.setup(),
     onSkip = vi.fn(),
