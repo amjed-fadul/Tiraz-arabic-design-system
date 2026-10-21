@@ -74,6 +74,8 @@ export interface ApprovalCardProps {
   secondaryAction?: { label: ReactNode; onSelect(): void };
   /** Host-formatted time after the approved receipt, such as «قبل دقيقة». */
   receiptTime?: ReactNode;
+  /** Names the agent that asks, under the title. */
+  agent?: ReactNode;
   /** The title's level; 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<ApprovalCardLabels>;
@@ -112,6 +114,7 @@ function ApprovalCardInstance({
   expired = false,
   secondaryAction,
   receiptTime,
+  agent,
   headingLevel = 3,
   labels,
   appearance = "card",
@@ -226,6 +229,11 @@ function ApprovalCardInstance({
     impact?.map((row) => [row.id, prim(row.label), prim(row.value)]),
   ]);
   const Heading = `h${headingLevel}` as const;
+  const title = (
+    <Heading id={`${id}-title`} className="tz-approval-title" dir="auto">
+      {request.action}
+    </Heading>
+  );
   const header = (
     <div className="tz-approval-header" data-zone="header">
       {closed ? (
@@ -241,9 +249,15 @@ function ApprovalCardInstance({
       ) : (
         <AIMark />
       )}
-      <Heading id={`${id}-title`} className="tz-approval-title" dir="auto">
-        {request.action}
-      </Heading>
+      {agent != null ? (
+        // Who asks, under what it asks for, so the title keeps its width.
+        <div className="tz-approval-heading">
+          {title}
+          <span className="tz-question-agent">{agent}</span>
+        </div>
+      ) : (
+        title
+      )}
       {!closed && <StatusPill state="needs-you" label={copy.needsYou} />}
     </div>
   );

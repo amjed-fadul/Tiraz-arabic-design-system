@@ -1675,6 +1675,8 @@
         "onStart",
         "onEditPlan",
         "onSteer",
+        "onApplyNoteNow",
+        "onRemoveNote",
         "onStop",
         "onDecision",
         "onRetryStep",
@@ -1699,7 +1701,7 @@
           "name": "agent",
           "type": "ReactNode",
           "required": false,
-          "note": "Shown before the step count: وكيل المالية · ٥ خطوات."
+          "note": "Shown before the step count: وكيل المالية · ٥ خطوات. A needs-you step's approval names it as who asks, unless the step was handed to another agent."
         },
         {
           "name": "status",
@@ -1754,7 +1756,19 @@
           "name": "onSteer",
           "type": "(text: string, when: \"next\" | \"now\") => void",
           "required": false,
-          "note": "The running footer's field: Enter steers at the next step, Ctrl or Cmd+Enter now; the field then clears. Empty text and input-method composition never steer."
+          "note": "The running footer's field: Enter steers at the next step, Ctrl or Cmd+Enter now; the field then clears and the region says سيُطبَّق مع الخطوة التالية: {text} or يُطبَّق الآن: {text}. Empty text and input-method composition never steer."
+        },
+        {
+          "name": "onApplyNoteNow",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "While running, a note not yet applied offers طبّق الآن, named طبّق الآن: {text}, for that note only. Mark it applied on the running step."
+        },
+        {
+          "name": "onRemoveNote",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "While running, a note not yet applied offers إزالة, named إزالة التوجيه: {text}, for that note only. Drop the note; focus then moves to the section."
         },
         {
           "name": "onStop",
@@ -1814,7 +1828,7 @@
       ],
       "state": "The host owns the status, the steps, the times and the outputs; the pattern never advances by itself. The countdown is a UI affordance the host opts into, and it calls onStart. The inline approval keeps ApprovalCard's decision integrity: a decision counts only after the host's promise resolves.",
       "accessibility": [
-        "A section labelled by its title. One polite region says each status once in one sentence: خطة مقترحة (with the countdown's sentence), يعمل, {title}: يحتاج قرارك, تعثّرت: {error title}, أُوقفت and اكتملت المهمة. Elapsed time, step durations and countdown ticks never reach it; the countdown and the tool calls run with announcement off, and the inline approval keeps its own region.",
+        "A section labelled by its title. One polite region says each status once in one sentence: خطة مقترحة (with the countdown's sentence), يعمل, {title}: يحتاج قرارك, تعثّرت: {error title}, أُوقفت and اكتملت المهمة. It also says each note once: where a sent note goes, and أخذ الوكيل بتوجيهك: {text} when a note's applied turns true; notes applied at mount are not news. Elapsed time, step durations and countdown ticks never reach it; the countdown and the tool calls run with announcement off, and the inline approval keeps its own region.",
         "Each step's icon has a hidden state word (لم تبدأ، قيد التنفيذ، بانتظارك، مكتملة، تعثّرت، تُخطّيت); a failure stays as text beside its step. Details are a disclosure whose closed panel is hidden and inert at once; collapsing returns focus to Details unless the person moved it elsewhere. When a change removes the focused control, focus moves to the section. Moving to needs-you never moves focus."
       ],
       "limitations": [
@@ -2591,6 +2605,12 @@
           "type": "ReactNode",
           "required": false,
           "note": "Host-formatted time after the approved receipt, such as قبل دقيقة."
+        },
+        {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Names the agent that asks, under the title. Agent task passes the agent a needs-you step was handed to, else its own."
         },
         {
           "name": "headingLevel",
@@ -8847,6 +8867,12 @@
           "required": false
         },
         {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The agent the step was handed to: فُوّضت إلى {agent} under the title. Its inline approval names it as who asks; without it, the task's agent asks."
+        },
+        {
           "name": "state",
           "type": "\"planned\" | \"pending\" | \"running\" | \"completed\" | \"needs-you\" | \"failed\" | \"skipped\"",
           "required": true,
@@ -8875,7 +8901,8 @@
         {
           "name": "notes",
           "type": "readonly { id: string; text: string; applied: boolean }[]",
-          "required": false
+          "required": false,
+          "note": "Steering notes under the step they change. An applied note reads أُخذ به; one not yet applied reads بانتظار الخطوة التالية, and لم يُؤخذ به once the task completes, fails or stops."
         },
         {
           "name": "request",
@@ -8987,6 +9014,56 @@
         },
         {
           "name": "pickedUp",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "waitingNote",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "notUsed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "applyNow",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "remove",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "applyNoteNow",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "removeNote",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "queuedNext",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "queuedNow",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "pickedUpNote",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "handedTo",
           "type": "string",
           "required": true
         },

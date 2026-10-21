@@ -411,6 +411,169 @@ it("moves focus to the section when its focused control goes away", async () => 
   expect(section()).toHaveFocus();
 });
 
+it("takes back or applies a queued note, and marks unused notes when the task ends", async () => {
+  const user = userEvent.setup(),
+    onApplyNoteNow = vi.fn(),
+    onRemoveNote = vi.fn();
+  const queued = { id: "n1", text: "استثنِ فرع جدة", applied: false };
+  const task = (
+    status: "running" | "failed" | "stopped" | "completed",
+    notes: AgentStep["notes"] = [queued],
+    handlers: {
+      onApplyNoteNow?: (id: string) => void;
+      onRemoveNote?: (id: string) => void;
+    } = { onApplyNoteNow, onRemoveNote },
+  ) => (
+    <AgentTask
+      title={title}
+      status={status}
+      steps={close(
+        ["completed", "completed", "running", "pending", "pending"],
+        {
+          3: { notes },
+        },
+      )}
+      {...handlers}
+    />
+  );
+  const note = () =>
+    document.querySelector(".tz-agent-run-notes > li") as HTMLElement;
+  const view = render(task("running"));
+  expect(note()).toHaveTextContent("استثنِ فرع جدة · بانتظار الخطوة التالية");
+  // Each button's name starts with its visible word and names its note.
+  await user.click(
+    within(note()).getByRole("button", { name: "طبّق الآن: استثنِ فرع جدة" }),
+  );
+  expect(onApplyNoteNow).toHaveBeenCalledWith("n1");
+  await user.click(
+    within(note()).getByRole("button", {
+      name: "إزالة التوجيه: استثنِ فرع جدة",
+    }),
+  );
+  expect(onRemoveNote).toHaveBeenCalledWith("n1");
+  // The host drops the note, and focus that was on Remove moves to the task.
+  view.rerender(task("running", []));
+  expect(section()).toHaveFocus();
+  // No handler, no button.
+  view.rerender(task("running", [queued], {}));
+  expect(within(note()).queryByRole("button")).toBeNull();
+  // Once the task ends, a note never applied says so, with nothing to press.
+  for (const status of ["completed", "failed", "stopped"] as const) {
+    view.rerender(task(status));
+    expect(note()).toHaveTextContent("استثنِ فرع جدة · لم يُؤخذ به");
+    expect(note()).not.toHaveTextContent("أُخذ به");
+    expect(within(note()).queryByRole("button")).toBeNull();
+  }
+});
+
+it("announces each note once", () => {
+  const task = (status: "running" | "needs-you", applied: boolean) => (
+    <AgentTask
+      title={title}
+      status={status}
+      steps={close(
+        ["completed", "completed", "running", "pending", "pending"],
+        {
+          3: { notes: [{ id: "n1", text: "استثنِ فرع جدة", applied }] },
+        },
+      )}
+      onSteer={() => {}}
+    />
+  );
+  const view = render(task("running", false));
+  const field = screen.getByRole("textbox", { name: /^وجّه الوكيل/ });
+  fireEvent.change(field, { target: { value: "استثنِ فرع جدة" } });
+  fireEvent.keyDown(field, { key: "Enter" });
+  expect(region().textContent).toBe(
+    "سيُطبَّق مع الخطوة التالية: استثنِ فرع جدة",
+  );
+  fireEvent.change(field, { target: { value: "استثنِ فرع جدة" } });
+  fireEvent.keyDown(field, { key: "Enter", ctrlKey: true });
+  expect(region().textContent).toBe("يُطبَّق الآن: استثنِ فرع جدة");
+  view.rerender(task("running", true));
+  expect(region().textContent).toBe("أخذ الوكيل بتوجيهك: استثنِ فرع جدة");
+  // Once: the next change says only its own sentence.
+  view.rerender(task("needs-you", true));
+  expect(region().textContent).toBe(`${title}: يحتاج قرارك`);
+  view.unmount();
+  // A note applied at mount is not news, nor is the status; a later status is.
+  const mounted = render(task("running", true));
+  expect(region()).toBeEmptyDOMElement();
+  mounted.rerender(task("needs-you", true));
+  expect(region().textContent).toBe(`${title}: يحتاج قرارك`);
+});
+
+it("names the agent a step was handed to, and who asks in its request", () => {
+  const task = (handedTo?: string) => (
+    <AgentTask
+      title={title}
+      agent="وكيل المالية"
+      status="needs-you"
+      steps={close(
+        ["completed", "completed", "completed", "needs-you", "pending"],
+        { 3: { agent: handedTo, request } },
+      )}
+      onDecision={vi.fn()}
+    />
+  );
+  const step = () =>
+    document.querySelectorAll(".tz-agent-run-step")[3] as HTMLElement;
+  const header = () =>
+    within(step())
+      .getByRole("group", { name: request.action })
+      .querySelector(".tz-approval-header");
+  const view = render(task("وكيل التحصيل"));
+  expect(
+    step().querySelector(".tz-agent-run-step-title")?.nextElementSibling,
+  ).toHaveTextContent("فُوّضت إلى وكيل التحصيل");
+  expect(header()).toHaveTextContent("وكيل التحصيل");
+  // Not handed off: the task's own agent asks.
+  view.rerender(task());
+  expect(step()).not.toHaveTextContent("فُوّضت إلى");
+  expect(header()).toHaveTextContent("وكيل المالية");
+});
+
+it("keeps focus off Approve when a step turns needs-you", () => {
+  const task = (
+    status: "running" | "needs-you",
+    states: AgentStep["state"][],
+  ) => (
+    <AgentTask
+      title={title}
+      status={status}
+      steps={close(states, {
+        3: { request, approval: { reversible: true } },
+      })}
+      onSteer={() => {}}
+      onStop={() => {}}
+      onDecision={vi.fn()}
+    />
+  );
+  const view = render(
+    task("running", [
+      "completed",
+      "completed",
+      "running",
+      "pending",
+      "pending",
+    ]),
+  );
+  act(() => screen.getByRole("textbox", { name: /^وجّه الوكيل/ }).focus());
+  view.rerender(
+    task("needs-you", [
+      "completed",
+      "completed",
+      "completed",
+      "needs-you",
+      "pending",
+    ]),
+  );
+  expect(section()).toHaveFocus();
+  expect(
+    screen.getByRole("group", { name: request.action }),
+  ).not.toContainElement(document.activeElement as HTMLElement);
+});
+
 it("counts steps and operations with Arabic agreement", () => {
   const operations = [3, 3, 2, 2, 2];
   const task = (numerals: "arab" | "latn"): ReactNode => (

@@ -4689,6 +4689,7 @@ textarea.tz-textarea:read-only {
   color: var(--text-secondary);
 }
 .tz-agent-run-step-detail,
+.tz-agent-run-step-agent,
 .tz-agent-run-notes {
   margin: 0;
   color: var(--text-muted);
@@ -4722,8 +4723,16 @@ textarea.tz-textarea:read-only {
   display: inline-block;
   margin-inline-end: var(--space-1);
 }
-/* Details: a quiet link-like button and the tool calls it folds. */
-.tz-agent-run-details {
+/* A queued note's Apply now and Remove follow its word on the same line. */
+.tz-agent-run-note-actions {
+  display: inline-flex;
+  gap: var(--space-2);
+  margin-inline-start: var(--space-2);
+}
+/* Details and a note's actions: quiet link-like buttons. Details folds the
+   tool calls below it. */
+.tz-agent-run-details,
+.tz-agent-run-note-action {
   justify-self: start;
   display: inline-flex;
   align-items: center;
@@ -4741,11 +4750,13 @@ textarea.tz-textarea:read-only {
   cursor: pointer;
 }
 @media (hover: hover) and (pointer: fine) {
-  .tz-agent-run-details:hover {
+  .tz-agent-run-details:hover,
+  .tz-agent-run-note-action:hover {
     color: var(--text);
   }
 }
 .tz-agent-run-details:focus-visible,
+.tz-agent-run-note-action:focus-visible,
 .tz-agent-run-output:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
@@ -8975,9 +8986,19 @@ a.tz-inline-citation {
   font-weight: var(--weight-semibold);
   line-height: var(--leading-heading);
 }
-.tz-approval-title {
+.tz-approval-title,
+.tz-approval-heading {
   flex: 1;
   min-inline-size: 0;
+}
+/* The agent that asks sits under the title, and the mark and the pill keep to
+   the title's line, as in Agent task's header. */
+.tz-approval-heading {
+  display: grid;
+  gap: 2px;
+}
+.tz-approval-header:has(> .tz-approval-heading) {
+  align-items: flex-start;
 }
 /* Plain stacks the zones with margins rather than a gap, so the empty live
    region between the paper and the footer takes no room. */
