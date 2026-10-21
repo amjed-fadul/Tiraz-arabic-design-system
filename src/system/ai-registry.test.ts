@@ -12,7 +12,7 @@ import { tmpdir } from "node:os";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import * as ts from "typescript";
 import { expect, it } from "vitest";
-import { catalog } from "../workbench/catalog";
+import { aiParts, catalog, patternJobs } from "../workbench/catalog";
 import { defaultConfig } from "./config";
 import { generateCode } from "../workbench/generate";
 import { defaultPlaygrounds } from "../workbench/model";
@@ -269,6 +269,60 @@ it("resolves every registry source and example from a movable library root", () 
     expect(existsSync(resolve(root, path)), path).toBe(true);
   }
   expect(registry.configuration.defaults).toEqual(defaultConfig);
+});
+
+it("classifies AI families and links patterns and parts both ways", () => {
+  type Entry = {
+    id: string;
+    kind?: string;
+    parts?: string[];
+    usedBy?: string[];
+  };
+  const registry = readRegistry();
+  const components: Entry[] = registry.components;
+  const entries = new Map<string, Entry>(
+    [...components, ...registry.support].map((entry: Entry) => [
+      entry.id,
+      entry,
+    ]),
+  );
+  // Only AI families carry a kind (Decision 22); the other families stay bare.
+  const kinds: Record<string, readonly string[]> = {
+    pattern: Object.keys(patternJobs),
+    screen: ["chat-app"],
+    part: aiParts,
+    content: ["loading-state", "code-block", "markdown", "terminal"],
+  };
+  const expected = new Map(
+    Object.entries(kinds).flatMap(([kind, ids]) =>
+      ids.map((id) => [id, kind] as const),
+    ),
+  );
+  for (const id of expected.keys())
+    expect(
+      components.some((component) => component.id === id),
+      `${id} is a registry family`,
+    ).toBe(true);
+  for (const component of components)
+    expect(component.kind, `${component.id}.kind`).toBe(
+      expected.get(component.id),
+    );
+  // A pattern names its parts, and each part names the pattern back.
+  for (const pattern of components.filter((c) => c.kind === "pattern"))
+    for (const part of pattern.parts ?? [])
+      expect(
+        entries.get(part)?.usedBy,
+        `${part} is used by ${pattern.id}`,
+      ).toContain(pattern.id);
+  for (const entry of entries.values())
+    for (const id of entry.usedBy ?? []) {
+      const pattern = components.find((component) => component.id === id);
+      expect(pattern?.kind, `${entry.id} is used by ${id}`).toBe("pattern");
+      expect(pattern?.parts, `${id} names ${entry.id}`).toContain(entry.id);
+    }
+  // Every part lists its patterns, even when no pattern builds on it.
+  for (const part of components.filter((c) => c.kind === "part"))
+    expect(Array.isArray(part.usedBy), `${part.id}.usedBy`).toBe(true);
 });
 
 it("documents real public exports and supported prop values and compiles the linked examples", () => {

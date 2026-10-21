@@ -1,9 +1,22 @@
 # Compose and validate
 
+## Patterns
+
+Start from the pattern that finishes the user's job ([Start with a pattern](README.md#start-with-a-pattern)), and compose parts only when no pattern fits. Say so when none does. Every pattern follows these rules.
+
+- **The host owns state; the pattern emits intents.** A pattern renders the `status` and data you pass and reports what the person asks for through `on…` callbacks (`onStop`, `onSteer`, `onDecision`, `onRetry`, `onApply`…). It never advances its own lifecycle, runs a request or simulates progress. A timer exists only for a real UI affordance, such as Agent task's auto-start countdown, which you opt into and which calls back to you. Change the status in your callbacks, after the real work. Every pattern has Arabic and English words and takes `labels` to replace them.
+- **One live region per pattern.** A polite `role="status"` says each change of status once, in one sentence, and not the status the pattern mounts in. Streamed words, elapsed time, step durations, progress and countdown ticks never reach it. Parts inside run with `announcement="off"`, and a nested pattern, such as the approval inside Agent task, keeps its own region. A failure also stays as text beside the failed item, and moving to "needs you" never moves focus.
+- **Shortcuts are scoped and safe.** They work only while focus is inside the pattern and no menu, list or dialog inside it is open. Plain Enter is never a shortcut that acts from elsewhere in the pattern: it activates the focused button, and in a text entry it does what that entry says (a draft sends on Enter and Shift+Enter adds a line; Agent task's steering field applies the note at the next step). The shortcuts are Escape (reject, inside an approval), Ctrl or Cmd+Enter (steer now, start a plan, approve a request marked `reversible`) and, while focus is in a tracked change, Y and N. Key hints show only on real shortcuts. An approval the host marks `irreversible`, or does not mark `reversible`, has no shortcut: it needs a click, or Enter or Space on the focused button. Held keys are ignored: a repeat does nothing, and Ctrl or Cmd+Enter waits 500 ms after the content it acts on appears or changes, so a held key never approves the next request unread. Inside a Sheet or Modal, Escape closes the dialog and records nothing.
+- **Plain inside, card outside.** `appearance="card"` (the default) draws a tray around the paper. Use `appearance="plain"` when the pattern sits inside another pattern or a conversation: Agent task's inline approval, or the messages of the Assistant workspace. Never put a tray inside a tray or a card inside a card, and keep one primary button per pattern.
+- **Amber means "needs you".** The attention color, the `warning` tone and the needs-you pill belong to something that waits on the person; AI work is never amber. The AI color, the AI mark and the thread belong only to what the assistant produced or is doing, never to the person's own content, code or tool output. Color is never the only signal: every state has a word.
+- **Decisions are about specific content.** There is no approve-all, no preselected decision and no standing access. A receipt records the decision, never the outcome: show whether the work ran where it happens, as an Agent task step does. The host validates and executes after an intent, and owns what needs a second look. The Assistant workspace's rename and delete are intents, so the host opens the rename field and the delete confirmation and never deletes on the intent alone.
+
+Compose patterns the way the examples do. Put them in a ChatThread as messages in `plain` appearance with TaskStarter in plain appearance as the composer. Let Agent task show its own approval rather than wrapping an ApprovalCard around it. Cite a Cited answer with the same `SourceReference` records its chips use. Keep What changed's `tone` as the host's judgement of good or bad, since the arrow shows direction and the color shows meaning. [ai/README.md](README.md) has each pattern's contract.
+
 ## Before JSX
 
 - Identify the user's task, information to show, primary action and outcome.
-  Map each need to the available registry families. Prefer an inline task and a
+  Map each need to a pattern, or else to the available registry families. Prefer an inline task and a
   clear primary Button; reserve Sheets for focused modal detail/editing.
 - Use Tabs for related views, Switch for a boolean preference, DropdownMenu
   for contextual commands, and Toast for transient outcomes. Use Table for native
@@ -37,7 +50,12 @@
   contain long tables/code in scrolling wrappers rather than overflowing the page.
 - Keep success/error/destructive meanings distinct from accent colors. Honor
   both the application reduced-motion setting and OS preference; false in
-  config cannot force motion when the OS asks for reduction.
+  config cannot force motion when the OS asks for reduction. Reduced motion
+  zeroes every duration token. The one exception is Image generation's 200ms
+  fade, `--weave-fade`, an opacity change that replaces the weave; the rule that
+  applies it (`.tz-weave[data-fade] > .tz-weave-image`) says `!important` to
+  stand against the global rule that zeroes the rest, so keep both when you
+  restyle it.
 - Keep persistent configuration separate from transient action state. Button
   `state` is supplied by the application: await the real operation, show its
   result and return to the intended state. Clear any application timers on
@@ -147,7 +165,7 @@ column API. No extra dependency is required.
 
 ## Small native controls
 
-Badge displays meaningful status text using neutral (default), success, error or info; meaning must remain readable without color. Keep it noninteractive. It has no automatic announcement, dismissal, size or variant API.
+Badge displays meaningful status text using neutral (default), success, error, info, warning or ai; meaning must remain readable without color. Keep `warning` (the attention color) for something that needs the person and `ai` for what the assistant produced. Keep it noninteractive. It has no automatic announcement, dismissal, size or variant API.
 
 Checkbox requires label and supports helper/error, invalid and native checked/defaultChecked, onChange, required, disabled, name/value, form and HTMLInputElement ref. Read event.currentTarget.checked in onChange. It reuses Field associations internally; className/style/ref stay on input. Error marks invalid without validating. No indeterminate or DataTable selection capability.
 
@@ -171,7 +189,7 @@ For nested Select/Menu in Sheet/Modal, use a single resolved Radix dismissable-l
 
 ## Persistent feedback and loading
 
-Use Alert for inline persistent feedback; Toast for transient event feedback. Tone conveys meaning independently of accent. Static examples use announcement=off. Choose polite for routine live updates and assertive only for urgency; do not announce all error-colored content as urgent. Supply action ReactNode and own any dismissal in application state.
+Use Alert for inline persistent feedback; Toast for transient event feedback. Tone conveys meaning independently of accent: Alert takes the Badge tones, Toast takes success, error, info or warning, and Spinner takes `neutral` or `ai` (the arc in the AI color, for work the assistant is doing). Static examples use announcement=off. Choose polite for routine live updates and assertive only for urgency; do not announce all error-colored content as urgent. Supply action ReactNode and own any dismissal in application state.
 
 Use Skeleton to reserve simple text/rectangle/circle space, always hidden from assistive technology. The host sets aria-busy and provides a single loading status. Use Spinner with label for a standalone status; use decorative beside equivalent announced text. Reduced motion stops shimmer/pulse/rotation; text and static shapes keep loading understandable.
 
@@ -342,22 +360,24 @@ No fetching, grouping engine, virtualization or automatic relative-time timers.
 
 ## Task and notification lists
 
-Use TaskRows for agent-task execution, with stable IDs, title, optional short
-summary, pending/running/completed/failed state and detail content. The application
-owns every execution state; opening a disclosure never changes it. Choose capsules
-or list. Keep content and actions inside the associated panel, outside the header
-button. Translate stateLabels when direction differs from language. Never add
-completion checkboxes, assignees or manual checklist behavior.
+Use TaskRows for a list of agent tasks, with stable IDs, title, optional short
+summary, pending/running/needs-you/completed/failed state and detail content. The
+application owns every execution state, needs-you included (the run waits for the
+person); opening a disclosure never changes it. Choose capsules, list or plain (no
+surface of its own, for a host's paper). Keep content and actions inside the
+associated panel, outside the header button. Translate stateLabels when direction
+differs from language. Never add completion checkboxes, assignees or manual checklist
+behavior. For one task's steps, tool details and approvals use Agent task.
 
 Control expansion with expandedIds/onExpandedChange or initialize internal
 expansion with defaultExpandedIds. Use existing Badge for state text. Height/opacity
 transition on disclosure only and respect system/OS reduced motion; hover covers
 the complete task. Closing panels become aria-hidden/inert immediately during exit;
 external collapse recovers panel focus to the trigger. State updates must preserve
-focus, IDs and supplied order. The local example alone owns Run/Replay/retry timers,
-cancels on replay/unmount and guards stale callbacks; its copy explicitly denies
-processing real files, emails or backend tasks. Do not transplant example timers
-into the library or invent an execution engine. See TaskRowsExamples.
+focus, IDs and supplied order. The local example alone owns its run timer, which
+clears on unmount; its copy explicitly denies processing real files, emails or
+backend tasks. Do not transplant example timers into the library or invent an
+execution engine. See TaskRowsExamples.
 
 NotificationList displays supplied order and derives unread count from those
 items. Optional onMarkRead/onMarkAllRead request application updates. Actions
@@ -380,11 +400,12 @@ Use FileTree for a compact read-only hierarchy of supplied data. Keep IDs stable
 LoadingState offers Drive/Dots/Orbit pixel-grid motion, a shimmer label and optional
 host-supplied elapsedMs. The host owns elapsed time and aria-busy on real content.
 Spinner remains the general-purpose loader; Skeleton represents future content shape.
-ThinkingIndicator provides a circle/infinity morph and optional whole-word rotation
+ThinkingIndicator pairs the turning AI mark with optional whole-word rotation
 or textOnly. Its label stays accessible and stable while words change decoratively.
-Never split Arabic words into letters. Reduced motion shows a still glyph/first word.
+Never split Arabic words into letters. Reduced motion holds the mark still and shows
+the first word.
 
-ThinkingState pairs a four-point activity glyph, current summary and chevron with
+ThinkingState pairs the AI mark, current summary and chevron with
 smooth disclosure of host-supplied user-facing steps. Set active=false and update
 label for a completed summary. Keep private model reasoning out of details. TaskRows
 fits several independently tracked tasks. Execution, elapsed clocks and steps
@@ -400,9 +421,13 @@ started local demo with replay/cancel/unmount cleanup.
 
 ## Tool activity
 
-Use ToolCall for one operation's supplied input/output/error. Wrap consecutive
+Use ToolCall for one operation's supplied input/output/error; its state is
+pending, running, needs-you, completed or failed, and needs-you means the operation
+waits for the person. Wrap consecutive
 calls in `<div className="tz-tool-calls">` to join them into one trace; a plain
-div/list with a gap keeps them as separate cards. `icon` adds an optional
+div/list with a gap keeps them as separate cards. `appearance="plain"` drops the
+card for a host's own surface, as Agent task's details do, and `labels` and
+`headingLevel` replace the words and set the heading level. `icon` adds an optional
 decorative tool glyph. Use ToolChips for concise activity
 labels, states and counts. onActivate is host-owned; informational items stay
 noninteractive. controls/expanded must reference the actual connected detail.
@@ -414,19 +439,28 @@ reasoning. Keep one announcement owner and exclude duration/output from it.
 ## AI content
 
 Compose CodeBlock for source, Markdown for static response prose and StreamingText
-for updates arriving from the host. All three documentation pages belong to AI
-patterns. See [the portable contract and dependency setup](README.md#ai-response-content)
+for updates arriving from the host. CodeBlock and Markdown are content blocks;
+StreamingText is a part. See [the portable contract and dependency setup](README.md#ai-response-content)
 and [the compiling examples](examples/AIContentExamples.tsx). Install
 `react-markdown@10.1.0 remark-gfm@4.0.1` when copying the source bundle. Keep raw
 HTML disabled and parser URL filtering enabled. Host text/state/transport remain
-outside the components; cancellation preserves received text and removes activity.
+outside the components; set StreamingText to `stopped` when the person stops the
+response and `failed` when the transport fails: both keep what arrived, end the
+cursor and announce once. `renderCitation(marker)` turns `[n]` markers into citation
+chips, and `links="strict"` keeps an AI answer's links to http, https, relative and
+fragment targets; Cited answer sets both.
 
 ## Controlled chat composition
 
 Use ChatThread for host-supplied stable IDs and message slots; compose Markdown,
-StreamingText and ThinkingIndicator rather than a ChatApp shell. Use ChatComposer
+StreamingText, ThinkingIndicator and patterns in `plain` appearance, and use the
+Assistant workspace below when the conversation needs navigation. A message's
+`status` (stopped or failed), `error` and `onRetry` show a stopped or failed reply as
+text with Retry, and ChatThreadMessage draws one message alone. Use ChatComposer
 for multiline conversation replies and PromptBar for compact task entry. Both
-share controlled entry/submission behavior. Follow [the chat guidance](README.md#chat-foundations)
+share controlled entry/submission behavior; `tools` adds the host's own controls
+under the text area, and Start a task is the pattern that begins a request with
+records, a mode and suggestions. Follow [the chat guidance](README.md#chat-foundations)
 and [portable host example](examples/ChatExamples.tsx).
 
 Keep messages, draft, acceptance/clearing, execution, cancellation and errors in
@@ -444,10 +478,16 @@ Do not infer uploads, models, transport, storage, virtualization or orchestratio
 Compose ImageResult for application-supplied media, InlineCitation beside a
 supported claim and Sources under that same response using the same stable source
 records. Keep source IDs and explicit citation numbers stable across updates.
-Use disclosure buttons for source details and link mode for direct navigation.
+Use disclosure buttons for source details, `mode="preview"` for numbered chips in
+running text (hover or focus previews the source, Enter or a click opens it) and
+link mode for direct navigation.
 HTTP(S), relative paths and fragments are accepted; missing/rejected destinations
 remain text. Popover portals use nearest provider/dialog scope and the installed
-Radix primitive; verify Escape and focus when nesting in Sheet/Modal.
+Radix primitive; verify Escape and focus when nesting in Sheet/Modal. When an answer
+rests on sources, use Cited answer: it composes this and adds the thinking panel,
+follow-ups and rating. Those parts work alone: ThinkingPanel for the evidence while
+an answer is prepared, FeedbackBar for copy, regenerate and rating, and FollowUps for
+next questions. SourceChip, the chip inside the panel, is internal.
 
 Use InsightCards for concise host-supplied findings, one at a time, with evidence
 in the supporting Card and a connected follow-up action. Prefer neutral meaning;
@@ -455,6 +495,8 @@ never synthesize credibility, evidence, retrieval results or generation. Host ow
 image rights/URL trust, meaningful alt, source records and action execution. Reuse
 [AIResultsExamples](examples/AIResultsExamples.tsx) and copy all
 `ai/assets/results/` (SVG and sample text documents) with their local URL imports.
+To tell a manager what moved and why, use What changed: the host supplies each row's
+`tone`, because the arrow shows direction and the color shows meaning.
 
 ### Context controls in a chat
 
@@ -463,26 +505,39 @@ ChatComposer outside that scope. The host appends callback text into its own
 controlled draft, or copies it with explicit success/failure feedback. Preserve
 native text selection and copying. Alt+Enter enters actions; Escape leaves them.
 Exclude code/editor/control descendants and never silently replace selected text.
+`onSelect(text, { start, end })` also reports offsets into the scope's text content.
+When the assistant rewrites the selection, use Suggested edits, which builds on them:
+the host replaces its own text only on Apply, and should dismiss a suggestion whose
+text changed meanwhile. Editable drafts use InlineDiff directly.
 
 Compose ModelSelector and ContextMeter in a wrapping header/toolbar above the
 existing ChatThread. Keep model IDs stable and update the controlled value in
 onValueChange. Supply all descriptions, availability, context limits and prices;
 label sample data. ContextMeter shows supplied usage/capacity and flags estimates,
 missing/invalid values and excess honestly. Do not add token estimation, model
-lookup, provider authentication or implied execution. See AIContextExamples.tsx
-for the compiling local composition; it remains portable with the source root.
+lookup, provider authentication or implied execution. ContextMeter's `thresholds`
+move its status and `open` with `onOpenChange` controls its details; ModelSelector's
+`labels.unavailable` replaces its unavailable word. Start a task is where a request
+begins with both: its mode menu holds the `models` and its ring shows `contextUsage`.
+See AIContextExamples.tsx for the compiling local composition; it remains portable
+with the source root.
 
 ## Local assistant: ask, preview, decide
 
-Use AskUserQuestions for single-choice/Other and optional text questions. Keep
-application-supplied IDs stable and drafts controlled. Submit actual answers to
-the host; required errors focus the first incomplete question and rejected
-promises retain drafts. Do not generate questions or add branching behavior.
+Use AskUserQuestions (Clarifying questions) for single-choice/Other and optional text
+questions. Keep application-supplied IDs stable and drafts controlled. Submit actual
+answers to the host; required errors focus the first incomplete question and rejected
+promises retain drafts. Do not generate questions or add branching behavior. A
+receipt (`receipt`, or `answered` when the host already holds the answers) shows what
+the host accepted, never what the agent did with it.
 
-Then use ApprovalCard, or ApprovalFlow for a short sequence of independent
-requests. Present exact action, target, consequences and specific approve/reject
-labels. One-time approval reports a decision, never execution success or ongoing
-permission. Do not add standing access, automatic approval or approve-all.
+Then use ApprovalCard (Approval request), or ApprovalFlow (Approval sequence) for a
+short sequence of independent requests. Present exact action, target, consequences and
+specific approve/reject labels; add `impact` for who or what is affected, and mark
+`irreversible` and `reversible` honestly, because they decide the shortcut. One-time
+approval reports a decision, never execution success or ongoing
+permission, and its receipt has no Undo. Do not add standing access, automatic
+approval or approve-all.
 ApprovalFlow advances only after host acceptance and exposes prior decisions.
 Changed request content invalidates old records and pending callbacks; unchanged
 requests retain their identity across reorder/append. Controlled records bind
@@ -494,11 +549,14 @@ The host must validate request identity, authorization and execution independent
 Adapt AIDecisionsExamples.tsx from this directory's examples/ bundle: all sample
 data is harmless and in memory, the first decision can fail/retry, rejection is
 recorded, and the second request has a separate decision. There is no execution.
-Inline groups never steal initial focus; Escape rejects from within the card.
+Inline groups never steal initial focus. Escape rejects inside an inline card;
+inside a Sheet or Modal it closes the dialog and records nothing, because the dialog
+owns Escape. Ctrl or Cmd+Enter approves only a `reversible` request that is not
+`irreversible`, and waits 500 ms after the card appears or its content changes.
 Keep modal focus policy in the host Modal. Keep a single status announcement per
 transition and do not move focus if the user has left the surface.
 
-### Read-only terminal and chat application composition
+### Read-only terminal and the Assistant workspace
 
 Prefer Terminal for supplied command logs and CodeBlock for source. Supply output
 as text, plus optional command/state/exitCode/duration. Never execute commands or
@@ -507,19 +565,26 @@ keyboard scroll region and opt-in near-bottom following; preserve selections and
 older reading. Append text immutably without changing component identity.
 
 ChatApp owns layout and mobile disclosure only. Compose Sidebar/Sheet navigation,
-ChatThread children and ChatComposer or PromptBar in the composer slot, with a
-controlled ModelSelector. Use unique stable conversation/message IDs; the host owns
-active conversation, drafts, model, execution and cancellation. Key thread and entry
-by conversation identity. Bound the shell and let native internal regions scroll.
-Do not fork message rendering, IME submission, streaming presentation or approved
-composer/caret styling. The reference hierarchy is a quiet rail, small title bar,
-flat assistant replies/user bubbles and a composer below.
+ChatThread children and TaskStarter in plain appearance in the composer slot (a
+ChatComposer or PromptBar still fits a simpler shell). Group conversations with
+`group`, and put a task's evidence or details in `sidePanel`. Use unique stable
+conversation/message IDs; the host owns active conversation, drafts, execution and
+cancellation. Key thread and entry by conversation identity. Bound the shell and let
+native internal regions scroll. Do not fork message rendering, IME submission,
+streaming presentation or approved composer/caret styling. The reference hierarchy is
+a quiet rail, small title bar, flat assistant replies and user bubbles, and a
+composer below.
 
-Use `ai/examples/ChatAppExample.tsx` as an in-memory example only. A fixed scheduler
-shared with ChatExamples updates one assistant message. Stop/switch/new cancel and
-retain received text. Switching preserves per-conversation drafts/models; locale
-change resets the example. Assistant replies show no identity or avatar. Unmount clears timers.
-Capture conversation and message IDs, invalidate run generations, and never let an
-old callback update the active conversation by accident. Models are controlled
-local choices, not connected services. Supplied Terminal tool output is fixed;
-do not invent real execution, auth, backend, persistence or navigation.
+Rename and delete are intents (`onConversationRename`, `onConversationDelete`). The
+host owns the rename field and the delete confirmation: open a Modal from the intent,
+delete only when the person confirms it, and choose where focus goes, because a deleted
+row's menu goes with the row. Never delete on the intent alone.
+
+Use `ai/examples/ChatAppExample.tsx` as an in-memory example only. It tells the
+October close: patterns in `plain` appearance as messages (a cited answer, the
+agent's questions with their receipt, an agent task waiting on an approval), TaskStarter
+as the composer and the task's details in the side panel. Approving finishes the task;
+each conversation keeps its own draft; unmount clears timers. Capture conversation
+and message IDs, invalidate run generations, and never let an old callback update the
+active conversation by accident. Do not invent real execution, auth, backend,
+persistence or navigation.

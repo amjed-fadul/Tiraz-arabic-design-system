@@ -1,7 +1,7 @@
 # Use Tiraz in an application
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **sixty-eight**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, Terminal and ChatApp.
+Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-four**
+component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, AgentTask, SuggestedEdits, ImageGeneration, ChangeSummary, Terminal and ChatApp.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -16,13 +16,33 @@ helper and is documented under Input rather than a standalone navigation page.
    APIs, then inspect the named source and exported types. Every registry path
    is relative to the source root, **not** the application or checkout root.
    The minimal workbench inspector is not a complete API reference.
-3. Follow [composition.md](composition.md), map the user's task to available
-   components, and connect events to application behavior. Preserve the supplied
-   component props and shared settings unless the task requires changing them.
+3. Follow [composition.md](composition.md), map the user's task to a pattern
+   (next section) or else to available components, and connect events to
+   application behavior. Preserve the supplied component props and shared
+   settings unless the task requires changing them.
 4. Adapt [the compiling usage example](examples/usage.tsx) to the host app.
    Its imports are relative to this bundle; generated workbench snippets use
    `./system` only as an example. Adjust all imports/CSS paths to the located
    source root. Validate the actual rendered result with the checklist below.
+
+## Start with a pattern
+
+A pattern finishes one job, from its first state to the person's decision and the result. Patterns share one anatomy of up to five zones: a header that names the state once, what the assistant produced on paper, the evidence folded away, the person's options and the meta. Each uses the zones its job needs. Find the job below and use its pattern before composing parts. The host owns the state: pass the pattern's `status` and data, and handle the `on…` intents it reports. [composition.md](composition.md#patterns) holds the rules every pattern follows, and each pattern has Arabic and English words that `labels` overrides.
+
+| The person needs to…                                             | Pattern · page id                                                                | Component          | Parts                                                                                           |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------- |
+| Start a request from the page they are on, with records attached | [Start a task](#start-a-task) · `task-starter`                                   | `TaskStarter`      | `chat-composer`, `prompt-bar`, `model-selector`, `context-meter`, `status-pill`, `tray`         |
+| Get an answer and see where each claim came from                 | [Cited answer](#cited-answer) · `cited-answer`                                   | `CitedAnswer`      | `thinking-panel`, `streaming-text`, `markdown`, `sources`, `feedback-bar`, `follow-ups`, `tray` |
+| Let an agent run a multi-step job and stay in control            | [Agent task](#agent-task) · `agent-task`                                         | `AgentTask`        | `ai-mark`, `status-pill`, `tray`, `countdown`, `status-icon`, `tool-call`, `approval-card`      |
+| Answer the one to three things the agent cannot guess            | [Clarifying questions](#questions-and-one-time-decisions) · `ask-user-questions` | `AskUserQuestions` | `ai-mark`, `status-pill`, `tray`                                                                |
+| Approve, reject or edit one specific action                      | [Approval request](#questions-and-one-time-decisions) · `approval-card`          | `ApprovalCard`     | `ai-mark`, `status-pill`, `tray`                                                                |
+| Decide a short run of requests, one at a time                    | [Approval sequence](#questions-and-one-time-decisions) · `approval-flow`         | `ApprovalFlow`     | `approval-card`, `tray`                                                                         |
+| Improve selected text with changes they accept or reject         | [Suggested edits](#suggested-edits) · `suggested-edits`                          | `SuggestedEdits`   | `selection-actions`, `inline-diff`, `ai-mark`, `tray`                                           |
+| Make an image from a description and choose a version            | [Image generation](#image-generation) · `image-generation`                       | `ImageGeneration`  | `weave-canvas`, `image-result`, `ai-mark`, `status-pill`, `tray`                                |
+| See what moved, why, and what to do next                         | [What changed](#what-changed) · `change-summary`                                 | `ChangeSummary`    | `ai-mark`, `status-pill`, `tray`, `sources`                                                     |
+| Work through a whole conversation with the assistant (a screen)  | [Assistant workspace](#assistant-workspace) · `chat-app`                         | `ChatApp`          | `chat-thread`, with the patterns above as its messages                                          |
+
+Parts are what patterns are built on. The registry gives every AI family a `kind`: `pattern` (the nine above), `screen` (ChatApp), `part` (the fifteen pieces that also work alone, such as SelectionActions, ChatComposer, ToolCall and Sources) or `content` (Terminal, CodeBlock, Markdown and LoadingState, which show supplied text). The pieces added with the patterns (AIMark, StatusPill, Tray, Countdown, StatusIcon, ThinkingPanel, FeedbackBar, FollowUps, InlineDiff and WeaveCanvas) are exported and listed under `support`. A pattern's `parts` names, by registry id, what it is built on: Start a task renders StatusPill and Tray, and builds on the entry that ChatComposer and PromptBar share, ModelSelector's options and ContextMeter's ring. A part's `usedBy` names the patterns that list it, so the two link both ways, and an empty `usedBy` means no pattern is built on that part. Use a part alone when the job is smaller than a pattern. When no pattern fits the job, compose parts, say so, and do not invent a pattern or an export.
 
 ## Copy and setup
 
@@ -93,7 +113,7 @@ status filtering, create/Toast and row-specific details Sheets. These are
 application behaviors, not a general grid API. Explicit populated/loading/empty/
 no-results/error presets demonstrate states without fake services.
 
-Badge is static status text, not an action or live region; neutral is the default and success/error/info reuse semantic tokens. CustomerDataTable uses Badge for readable customer statuses.
+Badge is static status text, not an action or live region; neutral is the default, success/error/info reuse semantic tokens, `warning` takes the attention color and `ai` the AI color. Use `warning` only for something that needs the person, and `ai` only for what the assistant produced. CustomerDataTable uses Badge for readable customer statuses.
 
 Use Checkbox for an independent form value, RadioGroup for one choice with native fieldset/legend and a stable shared name, and Textarea for multiline text. [The small preferences form](examples/FeedbackForm.tsx) combines all three with application-owned validation. Its Check form action checks required notes and reports the validation result; native reset restores the controls. These examples are host application code, not barrel exports.
 
@@ -124,9 +144,9 @@ These patches are already used by Select. Without a single resolved copy of each
 
 ## Inline feedback and loading
 
-Use [FeedbackExamples](examples/FeedbackExamples.tsx) for explicit local states and application-owned actions. Alert requires title; optional description, action and neutral/success/error/info tone. `announcement="off"` is the static default; `polite` uses status for routine updates and `assertive` uses alert for urgent updates only. Semantic tones do not follow accent. The application owns dismissal; do not invent an internal queue or dismissal API.
+Use [FeedbackExamples](examples/FeedbackExamples.tsx) for explicit local states and application-owned actions. Alert requires title; optional description, action and a tone: neutral, success, error, info (the default), warning or ai, the Badge tones. `announcement="off"` is the static default; `polite` uses status for routine updates and `assertive` uses alert for urgent updates only. Semantic tones do not follow accent. Toast tones are success, error, info (the default) and warning. The application owns dismissal; do not invent an internal queue or dismissal API.
 
-Skeleton is always decorative/aria-hidden. Its shape is text (default), rectangle or circle; style/className provide native sizing. The host supplies aria-busy and one loading announcement. Spinner requires label unless decorative=true; adjacent text owns the announcement in decorative mode. It has sm/md sizes and no Button integration API. Both loading animations stop for application or OS reduced motion, with a static indicator retained.
+Skeleton is always decorative/aria-hidden. Its shape is text (default), rectangle or circle; style/className provide native sizing. The host supplies aria-busy and one loading announcement. Spinner requires label unless decorative=true; adjacent text owns the announcement in decorative mode. It has sm/md sizes, a `tone` of `neutral` (default) or `ai` (the arc in the AI color, for work the assistant is doing) and no Button integration API. Both loading animations stop for application or OS reduced motion, with a static indicator retained.
 
 Progress requires a visible accessible label. Finite value clamps to 0–100; missing, null, NaN and infinity select indeterminate mode with no aria-valuenow or value text. showValue defaults false. locale defaults from provider direction (rtl=ar/ltr=en); explicitly set locale if language differs from direction. Arabic digits follow config.numerals. Visible/accessible percentage rounds to an integer while aria-valuenow retains the clamped numeric value. Do not invent totals, steps or completion callbacks.
 
@@ -488,12 +508,18 @@ execution** rows, and [NotificationListExamples](examples/NotificationListExampl
 for local notifications. Both preserve supplied order and stable unique IDs.
 
 TaskRows takes items and label. Each item requires id, string title, state
-(pending/running/completed/failed) and content; summary is an optional short
+(pending/running/needs-you/completed/failed) and content; summary is an optional short
 string. Each indicator is the shared StatusIcon: pending shows its supplied-order
-number in a dashed ring, running a decorative arc in the AI color, completed a check
-on a success disc and failed a cross on a danger disc. State text uses the existing
-Badge: neutral pending, info running, success completed and error failed. stateLabels translates all four states; defaults and number digits follow
-direction and config.numerals. appearance defaults to capsules; list connects rows with subtle separators.
+number in a dashed ring, running a decorative arc in the AI color, needs-you a "!" on
+an attention disc, completed a check on a success disc and failed a cross on a danger
+disc. State text uses the existing Badge in the shared step words (لم تبدأ، قيد التنفيذ،
+بانتظارك، مكتملة، تعثّرت / Not started, Running, Needs you, Done, Failed): neutral
+pending, ai running, warning needs-you, success completed and error failed. The host
+sets needs-you when the run waits for the person; opening a row never changes a state.
+stateLabels (partial) replaces any of the five words and labels.empty the default empty
+state's title; defaults and number digits follow direction and config.numerals.
+appearance defaults to capsules; list connects rows with subtle separators; plain draws
+no surface of its own, for a host's paper.
 
 Disclosure buttons use native Enter/Space, aria-expanded and associated panels.
 Content/actions belong inside the panel, outside the noninteractive title/summary
@@ -513,15 +539,18 @@ are forwarded. Supply stable unique nonempty IDs; no automatic sorting or state
 progression. This corrects the earlier checklist interpretation: there are no
 completion callbacks/checkboxes, assignees or manual task controls.
 
-The compiling example starts pending and has Run/Replay, an intentional local
-failure, then an explicit local retry to completion. Its timers cancel on replay
-and unmount; generation guards prevent earlier runs overwriting later ones. It
-never claims real files, emails or backend tasks were processed. Another completed
-sample shows illustrative contact/tax-ID matches and stale-record counts directly,
-without a note-reveal button. A separate static example shows all four
-application-supplied states in either appearance. No agent runtime, networking or
-library timer is provided. The TaskRows documentation lives under AI patterns;
-ToolCall details individual tool operations; ToolChips summarizes supplied activity.
+The compiling example plays its own run once: the drafting task fails once on a
+timed-out CRM call, retries and completes, while the handoff stays pending. With a
+`phase` ("running", "needs-you" or "completed") it holds that state instead, as the
+documentation's state switcher and Replay do (in needs-you the handoff waits for
+approval); reduced motion starts at the final state. Its timer clears on unmount,
+and it never claims real files, emails or backend tasks were processed. Another completed sample shows
+illustrative contact/tax-ID matches and stale-record counts directly. A separate
+static example shows all five application-supplied states in either appearance. No
+agent runtime, networking or library timer is provided. TaskRows lists tasks; for one
+task's steps, tool details and approvals use [Agent task](#agent-task). The TaskRows
+page is in the Parts section of the documentation navigation; ToolCall details
+individual tool operations; ToolChips summarizes supplied activity.
 
 NotificationList takes items and label, optional onMarkRead(id), onMarkAllRead(),
 labels and emptyState. Items require id, string title, timestamp and read;
@@ -546,29 +575,72 @@ push permissions, backend or persistence is supplied. No new dependency is neede
 
 FileTree displays application-supplied files and folders with stable unique IDs; it never reads the filesystem. Use `ai/examples/FileTreeExamples.tsx` (relative to the source root) for a nested project and application-owned sample-string preview. Controlled or internal expansion and single selection are separate from roving keyboard focus. File click/Enter calls `onActivate(file)`; the host decides what opening means. The example preview follows file selection, including Space; arrow focus does not change it. Empty folders are end nodes. Horizontal arrows mirror in RTL; arrows, Home/End, typeahead and * navigate visible nodes. On removal, focus recovers to the nearest visible ancestor or same visible position, then the empty root, without reclaiming outside focus. Supply nonempty names, globally unique stable IDs, and noninteractive metadata/empty content. No upload, editing, search, drag/drop, virtualization, multi-selection or context menu is supplied.
 
+## Start a task
+
+`TaskStarter` starts any request from the page the person is on; [TaskStarterExamples](examples/TaskStarterExamples.tsx) plays the host. Required: `value`, `onValueChange` and `onSubmit(value, context)`, which may return a promise; a rejected one keeps the draft and shows the entry's failure line. The entry behaves like ChatComposer's: Enter submits, Shift+Enter adds a line, input-method composition never submits, a pending send blocks a second, and Backspace in an empty text area leaves the chips alone.
+
+The host passes `context` (`ContextItem[]`: `id`, `label`, optional `kind` and `icon`), shown as chips that `onRemoveContext` removes. Attach and dictate buttons appear with `onAttach` and `onVoice`; both are intents, and nothing uploads or listens. With `mentionOptions` and `onAddContext(id)`, typing "@" at the start of the text or after a space, or pressing the @ button, opens a list of the records not yet attached whose names hold what follows the "@", matched the way Arabic is typed (so «@اكتوبر» finds «أكتوبر»). The text area stays focused as a combobox: arrow keys move, Enter chooses and Escape closes only the list. Without options, `onMention(query)` lets the host open its own picker. `modes` with `mode` and `onModeChange`, and `models` with `model` and `onModelChange`, fill the mode menu (radio items; `modeMenuOpen` with `onModeMenuOpenChange` controls it), and `contextUsage` (ContextMeter's props) adds a ring and a "context used" line. `suggestions` with `onSuggestion(id)` stay visible while the person types, and the host fills the draft; `recent` with `onOpenRecent` lists earlier tasks with a status pill and time. `greeting`, `title`, `disabled` with `disabledReason`, `headingLevel`, `labels` and `appearance` complete it.
+
+States: empty, writing, choosing a mode, submitting (the text area is read-only and Send shows progress) and disabled. The pattern's one polite region speaks a record joining or leaving `context`, never the context it mounts with. Counts agree in Arabic («سجلّان مرفقان») and digits follow config.numerals. `appearance="plain"` is the composer inside a conversation. Its entry, ModelSelector and ContextMeter gained props for it; see Chat foundations and Selection, context and model controls.
+
+## Cited answer
+
+`CitedAnswer` answers a question and shows where each claim came from; [CitedAnswerExamples](examples/CitedAnswerExamples.tsx) plays the host. The host owns `status` (`thinking`, `writing`, `completed`, `failed` or `stopped`), the growing `content` (Markdown with `[n]` markers), the `sources` it cites and every time. `sources` are `SourceReference`s whose `number` matches the markers; a marker with no source stays as written, so supply every source the text cites. `thinking={{ elapsed, searched, steps }}` adds the thinking panel (`elapsed` in seconds, the sources found so far, and steps that are `pending`, `running` or `completed`). It is open while thinking and folds when writing starts, unless the host controls it with `thinkingOpen` and `onThinkingOpenChange`. Update `elapsed` at most once a second.
+
+Each marker becomes a numbered InlineCitation chip in `mode="preview"`: hover or focus shows the source's title and description in a tooltip that carries no link, and Enter or a click opens the source when its destination is safe. Links in the answer follow the same rule (`links="strict"`: http, https, relative and fragment targets only). Words that arrive settle in whole, never per letter, and a stopped or failed answer keeps what arrived. The footer shows the sources' count and the `duration`, which open the full source list, and the person's options by status: Stop (`onStop`) while thinking or writing, Try again (`onRetry`) when failed, Regenerate (`onRegenerate`) when stopped, and when completed the follow-ups (`followUps` with `onFollowUp(id)`) and the rating bar (copy through `onCopy`, regenerate, and helpful or not helpful through `feedback` and `onFeedbackChange(value, reason?)`; a not-helpful rating asks for one of four reasons). `error` is the text beside a failed answer. Each button appears only when its handler exists.
+
+The panel, the streamed words and the bar are silent; the pattern's one polite region says each change of status once, and not the status it mounts in. Use a ChatThread message for casual chat without sources, [Agent task](#agent-task) for multi-step work, and Sources with InlineCitation alone to cite inside your own content. The parts work alone: ThinkingPanel (`status` running or completed, `elapsed`, `sources`, `steps`, `open` with `onOpenChange`, `labels`), FeedbackBar (`feedback`, `reason`, `onFeedbackChange`, `onCopy`, `onRegenerate`) and FollowUps (`items`, `onSelect`). SourceChip, the chip for a source inside the thinking panel, is internal and not exported.
+
+## Agent task
+
+`AgentTask` lets an agent run a multi-step job while the person stays in control; [AgentTaskExamples](examples/AgentTaskExamples.tsx) plays the host. The host owns `status` (`plan`, `running`, `needs-you`, `failed`, `stopped` or `completed`), the `steps` and every time (`elapsed` and each step's `duration`, updated at most once a second); the pattern never advances. Each `AgentStep` has a unique stable `id`, a `title`, a `state` (`planned`, `pending`, `running`, `completed`, `needs-you`, `failed` or `skipped`) and optionally `detail`, `duration`, `tools` (a finished step's operations, listed under "Details" as plain ToolCalls), `notes` (steering notes, `applied` once the agent picked one up), `request` with `approval` (an `ApprovalDetails`), and `error` with the `actions` (`retry`, `skip`, `reconnect`) it offers.
+
+The footer follows the status. A plan has "Edit plan" (`onEditPlan`) and "Start now" (`onStart`); a countdown runs only when the host gives `autoStartAfter` seconds and `onStart`, pauses while the pointer or focus is inside the pattern, and calls `onStart` when it ends. A running task has a steering field and Stop: Enter steers at the next step and Ctrl or Cmd+Enter steers now (`onSteer(text, "next" | "now")`), never while an input method is composing and never on a held key; `onStop` stops it. A task that needs the person names the waiting step and the request's expiry; a failed or stopped task names the step and the time; a completed task shows the time and operation count, the `outputs` chips (`onOpen`) and `primaryAction`. A failed step offers only the ways forward the host handles (`onRetryStep`, `onSkipStep`, `onReconnect`; Reconnect, else Retry, is the primary one).
+
+A step that needs the person renders ApprovalCard in `appearance="plain"` from `request`, `approval` and `onDecision`; without `onDecision` it shows the action and target as text, with no actions. The inline approval keeps ApprovalCard's rules (see Questions and one-time decisions): a decision counts only after the host's promise resolves, and its Ctrl or Cmd+Enter follows `reversible` and `irreversible`. Start now has the same chord and waits 500 ms after the steps change, so a re-planned task is never started by a held key. The pattern's one polite region says each status once and never a time or a countdown tick; the countdown and the tool calls run with `announcement="off"`, and the inline approval keeps its own region. Moving to needs-you never moves focus; when a change removes the focused control (Stop, a failed step's button, the steering field), focus moves to the section. Use ApprovalCard for a single yes or no, and TaskRows for tasks without a run.
+
+## Suggested edits
+
+`SuggestedEdits` wraps the host's read-only text (`children`) and improves a selection with tracked changes the person accepts or rejects; [SuggestedEditsExamples](examples/SuggestedEditsExamples.tsx) plays the host. `actions` (`{ id, label, icon? }`) appear on a selection, through SelectionActions, and `onAction(id, { text, start, end })` reports the choice with offsets into the region's text content. The host rewrites the text and moves `status`: `idle`, `rewriting` (a note below the selection), `reviewing` (with a `suggestion`: a `title` and `segments`, `DiffSegment`s of kind `same`, `insert` or `delete`) and `applied`. The pattern keeps the person's decisions unless the host passes `decisions` with `onDecisionsChange`, and `selection` restores the range for a suggestion that arrives without an action. `onApply(text, { start, end })` hands the host the accepted text and the range it replaces. Nothing touches the host's content before that: the host replaces its own text, then shows `applied`, whose receipt («طُبّق تعديلان من ٣») offers Undo only with `onUndo`. `onDismiss` closes the suggestion, from the Dismiss button and from Escape. Offsets count every text node in the region, so a host that changes its text before Apply should dismiss the suggestion.
+
+The review card is a non-modal dialog below the selection: a counter («١ من ٣») with previous and next, Reject all and Accept all, and the passage with deletions struck through and insertions underlined. The diff works on the plain text of the selection, so when the range spans formatting the card says «يُطبَّق كنص عادي». Each change is a focusable group with accept and reject toggles; Y accepts and N rejects while focus is in a change, matched by key position (`KeyY`, `KeyN`) so an Arabic layout works, and never on a repeat, with Ctrl, Meta or Alt, or in a text field. The selection stays underlined through the CSS Custom Highlight API (`::highlight(tz-suggestion)`); where the browser lacks it the range is not marked. The pattern's one polite region says each status once, not the one it mounts in.
+
+InlineDiff (`segments`, `decisions` keyed by each change's first segment id, `onDecisionsChange`) is the part to use directly for an editable draft. A change is a run of consecutive `insert` and `delete` segments, and the passage once decided is the `same` text plus, for each change, its inserted text when accepted or its deleted text when rejected or undecided. SuggestedEdits computes that with `diffText` (diff-text.ts), which is internal and not exported, so compute it yourself when you use InlineDiff alone. Use SelectionActions alone to copy or quote a selection, and show the new version beside the old when nearly every word changes.
+
+## Image generation
+
+`ImageGeneration` makes an image from a description and lets the person choose the version to use; [ImageGenerationExamples](examples/ImageGenerationExamples.tsx) plays the host. The host owns `status` (`queued`, `weaving`, `completed`, `failed` or `blocked`), `progress` (0–100, or `null` when unknown; never invent one), the `images` (`id`, `src`, `alt`, `width`, `height`; `src` may arrive late) and, if it wants, `selected` with `onSelectedChange`. `prompt` and `options` (chips such as ratio and style) describe the request, `agent` and `duration` fill the footer, and `blockedReason` explains a request a policy refused. Events: `onUse(id)`, `onVariations(id)`, `onEditPrompt` (the pencil by the prompt, and the primary button when blocked) and `onRetry` (failed). The versions are a radio group named «اختر نسخة», and they and the actions stay disabled until `completed`.
+
+While it is queued and weaving the canvas is WeaveCanvas: faint warp threads, then the picture revealed row by row from the inline-start edge, with a thread-colored shuttle at each row's front. With `progress` the reveal follows it; without one a shuttle travels until `src` arrives, and the weave then finishes in under 1.2 seconds. Under reduced motion, from the application or the OS, no loop runs: a still thread shows and the picture fades in whole over 200 ms (`--weave-fade`). A finished or failed image is ImageResult, so Retry moves focus to the figure. The progress tag is the pattern's progressbar, and the polite region says each status once, never the progress or the time. Use ImageResult alone for an image the host already has.
+
+## What changed
+
+`ChangeSummary` tells a manager what moved, why it moved and what to do next; [ChangeSummaryExamples](examples/ChangeSummaryExamples.tsx) plays the host. The host owns `status` (`updating`, `ready`, `stale` or `failed`) and every row: `{ id, metric, change, direction, tone, series? }`, of which the first six show. `change` is the host's sentence, `direction` (`up`, `down` or `flat`) draws the arrow and `tone` (`good`, `bad` or `neutral`) is the host's judgement and sets the color, so more late invoices is `bad` although it rises. Arrows show direction, color shows meaning, and sparklines run left to right in both directions. `reason` with `sources` (cited), `basedOn` and `updated` fill the rest. `actions` (`{ id, label, primary?, onSelect }`) show only while `ready`; a `stale` summary offers Refresh and a `failed` one Try again (`onRefresh`), so no step rests on numbers that may be old. Format digits in the row text with `numberLocale(config)`. The polite region says each status once, not the one it mounts in. Use a chart for one measure over time, and [InsightCards](#images-sources-and-findings) for findings read one at a time.
+
 ## AI activity feedback
 
 LoadingState uses a compact 3×3 pixel grid with `variant="drive" | "dots" | "orbit"`
 (default drive), a shimmering label and optional description. Drive/Dots use a
 brightness wave; Orbit travels around the perimeter with a dim center. Optional
 `elapsedMs` is a finite host-supplied duration, not a library clock. Negative values
-clamp to zero; nonfinite values hide the timer. Digits follow provider direction.
+clamp to zero; nonfinite values hide the timer. It reads ٦٫٢ث / 6.2s under a minute
+and ١د ١٢ث / 1m 12s from a minute; digits follow provider direction and config.numerals.
 Elapsed text and all decorative animation are excluded from announcements.
 `indicator="spinner"` remains the compatibility value for the pixel grid;
 `indicator="skeleton"` retains the placeholder.
 Use Spinner alone for general loading beside existing text, or Skeleton for the
 shape of future content. The host owns aria-busy on its actual loading region.
 
-ThinkingIndicator pairs an 18px circle/infinity morph with a shimmering whole word.
+ThinkingIndicator pairs the turning AI mark (AIMark, size xs) with a shimmering whole word.
 `label` is the stable accessible activity summary. Supply optional `words` for
 cosmetic whole-word rotation, or omit it for a single label. Blank/empty arrays
-fall back to label. `textOnly` removes the glyph. All words share one measured
+fall back to label. `textOnly` removes the mark. All words share one measured
 layout width; Arabic strings remain connected and are never split into letters.
 Equivalent arrays on parent updates do not restart rotation. Changed words start
 at the first word; the interval clears on change, reduced motion and unmount.
 Word transitions do not announce or represent execution progress.
 
-ThinkingState uses a compact four-point activity glyph, the supplied current
+ThinkingState uses the AI mark (turning while `active`), the supplied current
 summary and a chevron. While `active`, the summary shimmers; when the host sets
 active=false, the supplied `label` becomes the plain completed summary. Children
 hold brief user-facing activity steps, never private model reasoning. Use native
@@ -590,7 +662,7 @@ outside focus stays outside. Detail actions belong inside children.
 Native attributes/ref/className/style target div (LoadingState/ThinkingState) or
 span (ThinkingIndicator). Shared tokens, direction, typography and themes apply.
 Provider AND OS reduced motion stop CSS shimmer, word transitions/rotation and
-SVG morphing, leaving a still glyph and stable first word. Disclosure is immediate.
+the mark's turn, leaving a still mark and stable first word. Disclosure is immediate.
 The general-purpose Spinner is unchanged. No animation dependency is added.
 
 See [standalone examples and a live trace](examples/AIFeedbackExamples.tsx).
@@ -601,17 +673,22 @@ execution. No real AI/network activity is implied.
 
 ## Tool activity
 
-ToolCall records one host-supplied operation: pending, running, completed or failed,
-with a readable label, monospace tool name and optional formatted duration. Pass
-strings for preformatted input/output/error or React nodes for application-rendered
-results. JSON.stringify belongs to the host; never pass a plain object as a node.
-ToolCall owns only optional disclosure state (expanded/defaultExpanded and
-onExpandedChange). onRetry is a host callback, outside the disclosure button,
-shown on failure; focus moves to disclosure before retry.
+ToolCall records one host-supplied operation: pending, running, needs-you, completed
+or failed, with a readable label, monospace tool name and optional formatted duration.
+Pass strings for preformatted input/output/error or React nodes for
+application-rendered results. JSON.stringify belongs to the host; never pass a plain
+object as a node. ToolCall owns only optional disclosure state (expanded/defaultExpanded
+and onExpandedChange). onRetry is a host callback, outside the disclosure button,
+shown on failure; focus moves to disclosure before retry. `appearance="plain"` drops
+the card for a host's own surface (Agent task's details use it), `labels` replaces any
+of the five state words (the shared step words) or the input, output, error and retry
+words, and `headingLevel` (2–6, default 4) sets the section headings. needs-you means
+the operation waits for the person; the host sets it.
 
-ToolChips takes a named list of items (stable id, label, state, optional count).
-Informational items are spans. onActivate creates a button; connect it to real
-behavior before supplying controls/expanded. No built-in details are implied.
+ToolChips takes a named list of items (stable id, label, state, optional count) and
+the same partial `labels`. Informational items are spans. onActivate creates a button;
+connect it to real behavior before supplying controls/expanded. No built-in details
+are implied.
 ToolCall, ToolChips and TaskRows draw their status with StatusIcon, which is also
 exported: state is pending, running, needs-you, completed, failed, stopped or
 skipped; number gives a pending ring its position (digits follow config.numerals),
@@ -634,7 +711,8 @@ fictional data contains no secrets and performs no tool operation.
 
 ## AI response content
 
-CodeBlock, Markdown and StreamingText live under **AI patterns**. Use the
+CodeBlock and Markdown are content blocks (Display & feedback in the documentation
+navigation) and StreamingText is a part (Parts). Use the
 [portable content examples](examples/AIContentExamples.tsx), and install the two
 runtime dependencies in the consuming application (a source-only copy has no
 repository package.json):
@@ -670,12 +748,21 @@ rejected links become text and images retain alt text. The parser allows http,
 https, irc, ircs, mailto, xmpp and relative URLs. Safe-protocol destinations can
 still be untrusted: the host owns origin policy, content/size limits, image
 resource loading and destination trust. This is presentation, with no embeds,
-execution or application-specific rendering framework.
+execution or application-specific rendering framework. `renderCitation(marker)`
+turns each `[n]` marker in the text into the node you return (code and link text
+are left alone, and a marker stays text when the function returns nothing); Cited
+answer uses it for its citation chips. `links="strict"` sends link and image
+targets through `sourceHref`, so only http, https, relative and fragment targets
+survive and a rejected link shows as text (a `mailto:` link included); `default`
+keeps the parser policy above.
 
-StreamingText takes `text` and explicit `state="streaming" | "completed"`.
+StreamingText takes `text` and explicit `state="streaming" | "completed" | "stopped" | "failed"`.
 It renders the host's current text immediately. Plain words briefly resolve from
-blur with stable word spans and a trailing cursor; completion stops decoration
-and removes the cursor. Optional `markdown` composes the same Markdown renderer.
+blur with stable word spans and a trailing cursor; completing, stopping or failing
+stops decoration and removes the cursor, and stopped and failed keep the text that
+arrived and announce «أُوقف الرد» / "Response stopped" or «تعذّر إكمال الرد» /
+"Couldn't finish the response". Optional `markdown` composes the same Markdown
+renderer and passes `renderCitation` and `links` through to it.
 Unfinished fences and partial syntax are provisional and reparse each host update;
 there is no cached final parse or second typing queue. Stable renderer identities
 retain settled nodes and code copy focus. Selection inside syntax that changes
@@ -685,15 +772,18 @@ System and OS reduced motion disable decoration and show all updates immediately
 The response body is not a live region. `statusLabel` overrides one concise
 localized state announcement; `announcement="off"` delegates announcements to the
 host. Never announce every character. The host owns transport, buffering, errors,
-limits and cancellation. On cancellation keep received text, set completed and
-supply a cancelled statusLabel. No model connection, execution timer, token count
+limits and cancellation. On cancellation keep received text and set stopped; when
+the transport fails keep it and set failed; statusLabel overrides the announced
+sentence. No model connection, execution timer, token count
 or transport belongs in the component. The bundled demo alone uses fixed chunks
 and timers. In the workbench the StreamingText page opens complete, and nothing
-starts on its own. Its frame offers the Streaming and Done states, and Replay
-streams the local sample again from its first word. Every documentation page
-shares that frame: the page name in both languages, a state switcher where the
-component has meaningful states, Replay only where it has a lifecycle, the
-Preview/Code switch and Copy code. Replay steps through states and never resets
+starts on its own. Its frame offers the Streaming, Done, Stopped and Failed states,
+and Replay streams the local sample again from its first word. Every documentation
+page shows its example in that one frame: a toolbar above the stage holds the
+Preview/Code switch, a state switcher where the component has meaningful states and
+a link that opens the playground in a new tab; a round Replay button in the stage's
+corner appears only where the component has a lifecycle; Copy code sits in the Code
+view's header. Replay steps through states and never resets
 props; the inspector's "Reset playground" does that. Workbench copies include
 current settings, source examples and dependency instructions. Copied into an
 app, StreamingTextExample passes autoStart, so it plays once on mount inside
@@ -713,9 +803,15 @@ is applied to Arabic glyphs or existing content. The component still owns no tim
 application-owned conversation, using fixed local chunks only after explicit
 submission. No model, service, upload, permission system, history or persistence.
 ChatThread renders messages with unique stable `id`, `role` (user/assistant),
-`content` (ReactNode), optional `identity`, `avatar` and `actions`. Compose Markdown
-for static rich content, StreamingText for host-updated text and ThinkingIndicator
-for activity. Supply decorative Avatar when identity is already adjacent. Keep
+`content` (ReactNode), optional `identity`, `avatar` and `actions`, and an optional
+`status` (streaming, completed, stopped or failed), `error` and `onRetry`. A stopped
+message notes «أُوقف الرد»; a failed one keeps «تعذّر إكمال الرد» and your `error` as
+persistent text, not a live region, with «أعد المحاولة» calling `onRetry`, after which
+focus moves to the message. `ChatThreadMessage({ message })` draws one message on its
+own, and ChatThread draws each of its messages through it. Compose Markdown
+for static rich content, StreamingText for host-updated text, ThinkingIndicator
+for activity and, as one message, any pattern in `appearance="plain"`. Supply
+decorative Avatar when identity is already adjacent. Keep
 received text and keyed action controls mounted. Partial Markdown reinterpretation
 can replace affected nodes; selection within changing syntax is not guaranteed.
 
@@ -750,15 +846,27 @@ this, including opting into `auto`. Message content retains auto direction and
 Arabic shaping. No per-letter animation is introduced by entry components.
 
 ChatComposer is multiline conversation entry, bounded to 160px before internal
-scrolling. PromptBar is compact task/start entry, bounded to 80px, reusing the same
-engine. PromptBar optionally takes `suggestions` with required
-`onSuggestionSelect(text)`; the host must explicitly populate or submit. No implicit
-suggestion send, queue, ArrowUp history or Tab completion is implemented. Do not
-invent decorative model, tool, attachment or microphone controls.
+scrolling; `compact` draws the bounded one-line entry that PromptBar uses.
+`tools={{ start, end }}` adds a row under the text area (start controls, a flexible
+space, end controls, then Send) for the host's own controls; Start a task puts attach,
+@, the mode menu and dictate there, and any such control is the host's intent, so do
+not invent one the host does not wire. `appearance="plain"` drops the floating shadow
+for an entry inside another surface, and a hairline keeps the field's edge. A host that
+sets `state="submitting"` sees Send show progress. PromptBar is compact task/start
+entry, bounded to 80px, reusing the same engine. PromptBar optionally takes
+`suggestions` (strings, or `{ id, label, prompt?, icon? }`) with required
+`onSuggestionSelect(text)`, which receives a suggestion's `prompt`, or its label when
+it has none; the host must explicitly populate or submit. Suggestions show only for an
+empty draft and are disabled while busy. No implicit suggestion send, queue, ArrowUp
+history or Tab completion is implemented.
 
 The example app appends one user and one stable assistant message, updates that
 assistant in place, guards duplicate sends, keeps composer focus, and invalidates
-its timer generation on stop/locale change/unmount. Stop retains received text.
+its timer generation on stop/locale change/unmount. Stop retains received text; an
+assistant message that is still empty is removed. Its Failed state sends the seeded
+draft once to an offline host that rejects it, so the entry shows its failure line and
+keeps the draft. Its fixed scheduler is `useLocalResponse.ts`, example-only support
+and not a public execution API; generated examples inline it.
 The thread plays one opening exchange on mount, then stays interactive.
 Documentation Replay remounts and invalidates the old example. StreamingText
 announcements are off. These are in-memory checks, not physical mobile/OS IME or
@@ -766,8 +874,9 @@ screen-reader validation.
 
 ## Images, sources and findings
 
-ImageResult, Sources / InlineCitation and InsightCards live under **AI patterns**.
-Use [the connected bilingual examples](examples/AIResultsExamples.tsx). Their
+ImageResult, Sources / InlineCitation and InsightCards are parts (Parts in the
+documentation navigation); Image generation, Cited answer and What changed are built
+on them. Use [the connected bilingual examples](examples/AIResultsExamples.tsx). Their
 content is fictional (see [assets/results](assets/results/README.md)); no
 retrieval or image generation occurs.
 
@@ -792,7 +901,9 @@ positive unique integers within an answer. Assign them once in the host; never
 use current array positions to renumber after reorder/filter. Pass the same
 source records into `Sources items` and `InlineCitation source`, so every citation
 has actual supplied evidence. Sources starts collapsed (`defaultExpanded=false`),
-with one compact summary and expandable rows. Empty input is honest text. Summary,
+with one compact summary and expandable rows; `expanded` with `onExpandedChange`
+controls it, and `highlightedId` marks (`data-highlighted`) the row of the source
+whose citation is being previewed. Empty input is honest text. Summary,
 empty and unavailable wording can be translated with `SourcesLabels`.
 
 `InlineCitation` defaults to `mode="disclosure"`: a superscript button activated
@@ -802,7 +913,13 @@ on hover/focus. Escape closes the popup and restores the trigger; Tab follows
 normal popup focus order. `mode="link"` uses a native link, preserving middle click,
 modifier click, context menu and keyboard navigation. Without an accepted
 `href`, link mode is static text with an unavailable accessible description;
-disclosure still shows the supplied reference honestly. Labels support source
+disclosure still shows the supplied reference honestly. `mode="preview"` suits
+numbered chips in running text, as in Cited answer: hover or focus shows the source's
+domain, number, title, description and metadata in a tooltip that takes no focus and
+carries no link, Escape or blur closes it, and the pointer moving onto it keeps it
+open. Enter or a click then opens the source through a native link; a chip whose
+destination is rejected is a button that only previews. `onOpenChange(open)` reports
+opening and closing in every mode. Labels support source
 number/title, open and unavailable wording. Popovers use the **installed**
 `@radix-ui/react-popover@1.3.1`; source consumers must install it and preserve the
 Radix overrides above. Portals stay within the nearest provider, Sheet or Modal.
@@ -822,11 +939,13 @@ position preserve selection by ID through reorder, and select the first remainin
 item if the selected finding is removed. Empty/single sets have no paging buttons.
 Boundary controls use aria-disabled and ignore unavailable activation, retaining
 keyboard focus when the first/last finding is reached.
-`labels` translates title, previous, next, position and empty text. A Card groups
+`labels` translates title, previous, next, position and empty text, and
+`headingLevel` (2–6, default 3) sets the finding's title. A Card groups
 supporting detail, which may compose an existing chart. Keep supporting content
 brief. Tones default neutral; use semantic colors only when actual supplied data
 justifies the label. Host owns findings, evidence and action execution; no insight
-generation or generic card-builder API.
+generation or generic card-builder API. InsightCards reads one finding at a time; to
+tell a manager what moved and why, use [What changed](#what-changed).
 
 **Asset copying:** preserve the whole `ai/assets/results/` directory: three original
 SVG illustrations, `menu-audit.txt`, `menu-brief.txt` and provenance README. Keep
@@ -863,8 +982,12 @@ ordinary textarea editing; Use in draft appends selected reply text to the
 existing draft. Copy reports success or failure; Quote appends a local quotation.
 
 SelectionActions wraps one explicitly named content region with `children`,
-`label` and `actions` ({id, label, onSelect(text), optional icon/disabled}). Only
-text wholly inside that region qualifies, including mixed Arabic/English text.
+`label` and `actions` ({id, label, onSelect(text, { start, end }), optional
+icon/disabled}). `start` and `end` are offsets into the region's text content (every
+text node in it, hidden ones included), so the host can find the selection again to
+anchor a suggestion or replace it; a host whose text model differs from its DOM text
+must map them. Only text wholly inside that region qualifies, including mixed
+Arabic/English text.
 The region is keyboard focusable; select with the browser and press Alt+Enter to
 focus the action row. Arrow keys and Tab navigate; Escape dismisses and returns
 focus to the region when invoked from the row. No selection or focus is captured
@@ -882,7 +1005,10 @@ are unsupported. It never executes AI, replaces text, estimates tokens or create
 a global selection manager. Host action callbacks own asynchronous errors.
 
 ContextMeter accepts optional used/capacity numbers, estimated, details
-({id,label,value}), metadata, label, unit, locale and className. Values must be
+({id,label,value}), metadata, label, unit, locale, className, `thresholds` and a
+controlled `open` with `onOpenChange`. `thresholds` ({ high?, near? }, defaults 0.8
+and 0.95 of capacity) moves where the status reads Filling up and Near capacity; over
+capacity stays above 1. Values must be
 finite and nonnegative: missing/invalid values stay unavailable; zero remains
 zero. Zero capacity has no percentage. Over-capacity text retains the real value
 and excess percentage while the decorative ring clamps at full. The trigger's
@@ -901,7 +1027,8 @@ the callback. Removing a selected ID shows the placeholder without selecting a
 replacement or calling the host. A supplied selected disabled model remains the
 current choice; disabled options remain visible and cannot be chosen. An empty
 list disables the trigger. size defaults sm; md follows shared control tokens.
-Radix Select provides grouping, typeahead, arrows, Home/End, disabled skipping,
+`labels.unavailable` replaces the word beside a model that cannot be chosen («غير متاح»
+/ Unavailable). Radix Select provides grouping, typeahead, arrows, Home/End, disabled skipping,
 selected state, viewport collision handling and Escape restoration. No connection,
 API keys or current provider claims are embedded in this family. Reuse the Radix
 layer overrides above and preserve @radix-ui/react-select, react-popover and
@@ -909,8 +1036,8 @@ react-popper dependencies when relocating the whole source bundle.
 
 ## Questions and one-time decisions
 
-Use [AskUserQuestions](../AskUserQuestions.tsx) for application-supplied questions
-with stable unique IDs. Supported types are single choice (`type: "choice"`, the
+Use [AskUserQuestions](../AskUserQuestions.tsx) (Clarifying questions) for
+application-supplied questions with stable unique IDs. Supported types are single choice (`type: "choice"`, the
 default), optional `allowOther` text, and `type: "text"` textarea questions. Choices
 need unique stable `value`s; `other` is reserved. There is no multi-select,
 branching, generated questionnaire or form engine. `required` defaults to true;
@@ -923,36 +1050,75 @@ submits, Ctrl/Command+Enter submits from a textarea. It never auto-advances.
 `onSubmit(answers, {signal})` receives actual choice IDs and text, excludes stale
 question IDs, and guards duplicate submissions. Failure preserves the draft.
 
-Use [ApprovalCard](../ApprovalCard.tsx) for a concrete proposed action. Supply
-`request: {id, action, target, consequences, details?, approveLabel, rejectLabel}`.
-Write specific labels, such as “Approve rename” and “Keep current title”.
-Show critical parameters verbatim. Use a deliberate consequence-appropriate
-confirmation in the host for irreversible actions; these compact inline cards
-are suitable for reversible proposals. Rejection is safe and equally available;
-there is no preselected decision, countdown, automatic approval or standing access.
-Inline cards never steal initial focus; Escape inside an undecided card reports
-rejection. They are named groups, not modal dialogs. Use the existing Modal if a
-host requires a trapped dialog and place initial focus on its safe action.
+AskUserQuestions also takes `agent` (names the asking agent in the header), `onSkip`
+(a button for questions the agent can do without), `headingLevel` (default 3),
+`appearance` (`card` on a tray, at most 38rem wide, or `plain` on its host's paper) and
+`labels`. With `receipt`, an accepted submission folds the questions into «إجاباتك»,
+the answers the host accepted and never what the agent did with them; `onEditAnswers`
+adds «تعديل الإجابات», and `answered` mounts straight into the receipt from `value`
+when the host already holds the answers, submitting and announcing nothing. States:
+asking, submitting, answered and failed. A status pill reads needs-you while the
+questions wait.
+
+Use [ApprovalCard](../ApprovalCard.tsx) (Approval request) for a concrete proposed
+action. Supply `request: {id, action, target, consequences, details?, approveLabel,
+rejectLabel}`. Write specific labels, such as “Approve rename” and “Keep current
+title”. Show critical parameters verbatim. Optional: `impact` (who or what is
+affected, with amounts, as a compact table), `irreversible` (true shows a note in the
+attention color and a node replaces it; set it whenever the action cannot be undone),
+`reversible`, `expiryLabel` and `expired` (the host's expiry text and its word that
+the request lapsed: the card runs no clock), `secondaryAction` (a middle button, such as
+“View the messages”), `receiptTime` (host-formatted text after the approved receipt),
+`headingLevel` and `labels`, and `appearance` (`plain` inside Agent task or a
+conversation). Rejection is safe and equally available; there is no preselected
+decision, countdown, automatic approval or standing access. Approve never takes default
+focus, and an inline card never steals focus on mount. They are named groups, not modal
+dialogs. Use the existing Modal if a host requires a trapped dialog and place initial
+focus on its safe action.
+
+The card's shortcuts are scoped and safe. They work only while focus is inside the card.
+Escape rejects an undecided card; inside a Sheet or Modal the dialog takes Escape and
+closes, and nothing is recorded. Ctrl or Cmd+Enter approves only when `reversible` is
+true and `irreversible` is not: an irreversible request, or one not marked reversible,
+has no shortcut and needs a click, or Enter or Space on the focused button. The chord
+waits 500 ms after the card mounts and again whenever what it approves changes (the
+request, the impact figures, `reversible`, `irreversible` or `expired`), uses exactly one
+of Ctrl or Cmd, and ignores key repeat and input-method composition, so a held key can
+never approve the next request unread. Plain Enter is never a shortcut on the card: it
+only activates the focused button. Key hints show only on real shortcuts.
 
 `onDecision(request, "approved" | "rejected", {signal})` acknowledges the
 **decision only**. Resolving it records approved/rejected; it does not mean that
 an action executed or completed. Once decided, the card condenses to a one-line
-receipt that keeps the action, its target and the outcome; a failed
-acknowledgement keeps the full proposal visible. A failed acknowledgement restores the initiating button when focus has
+receipt that keeps the action, its target and the outcome: «تمت الموافقة · {receiptTime}»,
+«رُفض الطلب» or, when the host set `expired`, «انتهت مهلة الطلب». There is no Undo, and
+the host shows whether the work ran where it happens. Expiry aborts a decision still in
+flight, so a late answer records nothing; a card already decided stays decided. A failed
+acknowledgement keeps the full proposal visible. A failed acknowledgement restores the
+initiating button when focus has
 not intentionally moved elsewhere. Buttons are guarded while submitting and
 after acceptance. A controlled `value` is an `ApprovalRecord` (or null), bound to
 both `requestId` and `approvalRequestKey(request)`; stale records are ignored.
 For controlled cards publish an accepted record explicitly; null continues to
 show the pending proposal and cannot trigger a duplicate callback.
 
-[ApprovalFlow](../ApprovalFlow.tsx) composes a short application-owned sequence.
+[ApprovalFlow](../ApprovalFlow.tsx) (Approval sequence) composes a short
+application-owned sequence.
 It shows position and accepted prior decisions, advances only after the host
 accepts, and requires a fresh decision for every request. IDs must be unique and
 stable across updates. Unchanged decisions survive append/reorder; changes to
 ID, action, target, details, consequences or action labels invalidate the previous
 record. Use optional `value` and `onValueChange` for controlled records; publish
 the returned array in `onValueChange`. This is a UI composition, not a workflow
-or authorization engine. Keep requests immutable.
+or authorization engine. Keep requests immutable. `approval(request)` returns an
+`ApprovalDetails` for each request (`impact`, `irreversible`, `reversible`,
+`expiryLabel`, `expired`, `secondaryAction`, `receiptTime`, `labels`), so each card
+carries its own impact, shortcut rule and words; the flow's own `labels` (position,
+history, allDecided, none), `headingLevel` and `appearance` (`card` puts the whole flow
+in one tray around a plain card) work as on the card. After each accepted decision focus
+moves to the next card, only when focus was inside the flow, and that card's chord waits
+500 ms before it acts. The flow's polite region announces the decision with the next
+position, in config.numerals digits, and its last announcement is `labels.allDecided`.
 
 All three cancel pending UI callbacks with AbortSignal on reset, replacement and
 unmount, and ignore stale completions. `resetKey` starts a fresh local UI instance;
@@ -967,20 +1133,25 @@ parameters/version, current user authority and current resource state. Do not
 execute consequential actions in an acknowledgement callback. Respect the signal
 before changing host state; cancel underlying work and reject aborted promises.
 Never treat a UI record as proof of authorization. One-time approval grants no
-ongoing permissions. This batch has no approve-all or permission management.
+ongoing permissions. There is no approve-all and no permission management: every
+approval is a decision about specific content.
 
 [Compiling examples](examples/AIDecisionsExamples.tsx) include independent basic
-examples and `AIDecisionsExample`: a question whose answer hands off to a
-two-request ApprovalFlow. Host acknowledgements resolve after a short delay, and
-unmount/replacement cancels their signal listeners. No data leaves memory, no
-action executes, and approved is never labeled completed. Failure and retry are
-covered by the component tests rather than a visible demo switch.
+examples, which tell the October close from the shared story in
+[finance-story.ts](examples/finance-story.ts), and `AIDecisionsExample`: a question
+whose answer hands off to a two-request ApprovalFlow. Host acknowledgements resolve
+after a short delay, and unmount/replacement cancels their signal listeners. No data
+leaves memory, no action executes, and approved is never labeled completed. The
+documentation's states show each outcome, including a failed acknowledgement and an
+expired request.
 Use `SystemProvider` for Arabic/English direction, theme, accent, typography,
-density and reduced motion. These patterns do not animate. Screen-reader speech
+density and reduced motion. Motion here (a receipt folding in, its mark drawing, a
+decided request rising into the flow's history) runs only after a change, never when
+a card mounts, and honors both reduced-motion settings. Screen-reader speech
 and physical-device behavior require host testing; automated checks alone do not
 establish them.
 
-## Terminal and ChatApp
+## Terminal
 
 `Terminal` is a read-only presentation of application-supplied `output` and an
 optional `command`. `state` is `running`, `completed` (default), or `failed`;
@@ -1002,39 +1173,48 @@ on every update. Selection preservation applies to append-only updates: replacin
 selected text cannot preserve removed characters. Application chooses retention
 limits; this is not a virtualized log viewer.
 
-`ChatApp` is a composition shell. Required props: `conversations` (unique stable
-`{id, title}` records), `activeConversationId` (`string | null`),
-`onConversationSelect(id)`, `onNewConversation()`, `children`, and `composer`.
-Optional `toolbar`, `brand`, `title`, `labels: ChatAppLabels`, and `className`
-provide small explicit slots and labels. Pass ChatThread as children, ChatComposer
-or PromptBar as composer and ModelSelector where appropriate. The host owns
-messages, drafts, active conversation, model and execution state. ChatApp only
-owns mobile navigation disclosure. It uses existing Sidebar and Sheet: at a
-container width up to 640px, the rail becomes a menu trigger and Sheet. Selection
-and new-conversation dismiss it; Escape/outside click/close restore trigger focus.
-The shell has a bounded height; navigation and thread scroll independently. Set
-its block-size in host CSS if embedding in a different viewport. Keep the existing
-composer styling and provider-driven RTL caret direction.
+## Assistant workspace
 
-`ai/examples/ChatAppExample.tsx` is an in-memory app with fictional content and
-no real AI or tools. Assistant replies carry no name or avatar; only the user
-speaks in bubbles. It reuses existing renderers/entries and the fixed local response
-scheduler shared with `ChatExamples.tsx`. Sending clears only the accepted draft,
-adds a user message and one stable assistant message, then updates that assistant
-with fixed chunks. Each conversation keeps its own draft and model. Stop cancels
-future chunks and keeps received text. Switching to a different conversation or
-creating a new one cancels the previous response, retains its content and drafts,
-and shows the selected/new conversation; selecting the current one keeps its run.
-Locale change remounts the example and restores that locale's samples. Theme
-changes preserve state. Unmount cancels timers. Generation guards and captured
-conversation/message IDs prevent stale callbacks from crossing conversations.
-Key entries and threads by conversation ID to isolate submission feedback and
-scroll position. New conversation copies the selected model; model choice is
-real local state, but every response is fixed.
+`ChatApp` is the composition shell for the Assistant workspace screen (page id
+`chat-app`; the repository also serves it at `/examples/chat-app`). Required props:
+`conversations` (unique stable `{id, title, group?}` records), `activeConversationId`
+(`string | null`), `onConversationSelect(id)`, `onNewConversation()`, `children` and
+`composer`. Optional slots: `toolbar` and `actions` (the header's end, in that order),
+`sidePanel` (an aside at the inline end for evidence, a draft or a task's details;
+below 960px of container width it sits under the conversation), `brand` (nothing shows
+without it), `title`, `labels: ChatAppLabels` (the navigation words plus
+`conversationActions(title)`, `rename`, `delete` and `sidePanel`) and `className`.
+Conversations that share a `group` sit under its heading, in the order their first
+conversation appears; ungrouped ones sit under the list's own heading.
 
-The supplied build log in one assistant message demonstrates Terminal as tool
-output without implying execution. No authentication, backend, persistent history,
-model connection, application framework, uploads or additional families are added.
-Copy all source and `ai/` together; `useLocalResponse.ts` is example-only support,
-not a public execution API. Generated examples inline the same scheduler source; adjust CSS and `./system`
-imports to the relocated library root.
+With `onConversationRename(id)` or `onConversationDelete(id)` each row gets a menu
+button («خيارات {title}», shown on hover and focus and always on touch). They are
+intents: the host owns the rename field and the delete confirmation. Open your own
+Modal from the intent and delete only when the person confirms it, never on the
+intent alone. A deleted row's menu goes with the row, so the host chooses where focus
+goes next; the example's Modal returns it to its own trigger.
+
+The host owns messages, drafts, the active conversation and execution state. ChatApp
+owns only the mobile navigation disclosure. It uses the existing Sidebar and Sheet: at
+a container width up to 640px the rail becomes a menu trigger and Sheet. Selecting a
+row, a new conversation, rename and delete dismiss it; Escape, outside click and close
+restore trigger focus. The shell has a bounded height; navigation, thread and side
+panel scroll independently. Set its block-size in host CSS if embedding in a different
+viewport.
+
+Compose the conversation from patterns: a ChatThread whose messages hold CitedAnswer,
+AskUserQuestions and AgentTask in `appearance="plain"` (or `ChatThreadMessage` for one
+message), and TaskStarter in plain appearance as the `composer`. Key the thread and
+the entry by conversation ID, invalidate delayed work on switch, new, delete and
+unmount, and bind callbacks to both the run and the conversation identity, so stale
+work never updates another conversation.
+
+`ai/examples/ChatAppExample.tsx` tells the October close in memory, with fictional
+content and no real AI or tools: a cited answer, the agent's questions with their
+receipt and a task waiting on the reminders' approval, with the task's details in the
+side panel. Approving finishes the task; rename opens a Modal and delete a
+confirmation Modal; each conversation keeps its own draft, and a new request gets one
+neutral canned reply. Unmount clears its timers. No authentication, backend,
+persistent history, model connection, application framework or uploads are added.
+Copy all source and `ai/` together; adjust CSS and `./system` imports to the
+relocated library root.

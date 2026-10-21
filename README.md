@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed design system for business dashboards, with sixty-eight source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
+An Arabic-first, MIT-licensed design system for business dashboards, with seventy-four source-owned component families and a local documentation workbench. Arabic + RTL are the defaults. The landing-page work remains paused.
 
 ## Run locally
 
@@ -22,17 +22,20 @@ npm run format:check
 
 ## Customer dashboard example
 
-Open **Dashboard example** in the documentation header, or visit
+Open **Dashboard example** in the documentation header (it is also **Dashboard with
+AI** under Screens in the AI patterns navigation), or visit
 `/examples/dashboard` on the local server. This full-page Arabic-first customer
 dashboard connects metrics, period-filtered charts, searchable/filterable
-DataTable and validated customer creation using existing Tiraz components.
+DataTable and validated customer creation using existing Tiraz components. Its
+overview opens with What changed (`ChangeSummary`): orders, revenue and the average
+order, the last seven days against the seven before, computed from the sample orders.
 Records and preferences live in memory; reload restores the deterministic sample.
 Secondary preview controls demonstrate loading, empty and error states.
 See [run/reuse and behavior notes](docs/dashboard-example/README.md).
 
 ## Documentation workbench
 
-Each component has one continuous page: title and description → a single-line agent prompt with its copy button → playground → useful examples → generated usage code and an API disclosure. The visible prompt truncates with an ellipsis; copying includes the entire prompt, current configuration and compiling usage module. Latin paths are isolated within Arabic text. Prompts first ask the agent to locate Tiraz within the current project and clearly report if the system cannot be found. Source, export, configuration, font-entry and README guidance paths are relative to the located Tiraz root; prompts contain no machine-specific project root, installer or invented instruction file.
+Each component has one continuous page: its name once, as the heading, with the description → "Use it in your app", a single-line agent prompt with its copy button → the interactive playground (Preview and Code views) → usage guidelines → the API reference, an open table of props, types, defaults and descriptions. The prompt is always English, on Arabic and English pages alike. The visible prompt truncates with an ellipsis; copying includes the entire prompt, current configuration and compiling usage module. Paths are isolated as left-to-right runs. Prompts first ask the agent to locate Tiraz within the current project and clearly report if the system cannot be found. Source, export, configuration, font-entry and README guidance paths are relative to the located Tiraz root; prompts contain no machine-specific project root, installer or invented instruction file.
 
 Arabic mode has navigation only in the compact 190px right sidebar. A separate 240px rail sits 10px from the viewport's left edge, with compact system settings above the contextual component inspector, each on its own rounded surface with a 16px gap. Its bounded scroll region supports keyboard access and shorter windows. English mode mirrors both rails through logical layout. They reserve their own grid space outside the centered article. Navigation scrolls independently for a growing library.
 
@@ -120,7 +123,7 @@ Keep `:dir()` as written in your CSS pipeline. Tiraz sets every direction-bearin
 
 `DropdownMenu` supports typed items with callbacks, icons, shortcuts, disabled/destructive states, and separators. Arrow keys, Home/End, typeahead, Escape and Tab dismissal retain their behavior. `Sheet` accepts caller-supplied content/footer and defaults to right in RTL / left in LTR. Escape, backdrop and close controls dismiss and restore focus. Its editable example saves local changes and discards cancelled drafts.
 
-Use `useToast()` inside `ToastProvider` for success/error/info feedback. At most three entries are shown; expiry pauses on hover/focus, and manual/swipe dismissal and F8 viewport navigation remain available.
+Use `useToast()` inside `ToastProvider` for success/error/info/warning feedback. At most three entries are shown; expiry pauses on hover/focus, and manual/swipe dismissal and F8 viewport navigation remain available.
 
 ## Configuration
 
@@ -244,7 +247,7 @@ Decorative loops: `--motion-loop-stitch` 800ms, `--motion-loop-shimmer` 1900ms, 
 | `--ease-drawer`             | cubic-bezier(0.32, 0.72, 0, 1)    | sheets and toasts                           |
 | `--ease-spring`             | cubic-bezier(0.22, 1.32, 0.36, 1) | defined; everyday controls do not use it    |
 
-Reduced motion, from the OS or `reducedMotion`, sets every motion token to 0ms and stops the loops. Under keyboard modality (`data-modality="keyboard"`, which the provider sets) interaction motion is 0ms and presses do not scale; status glyphs, the progress fill, image reveals, streamed words and the loops follow the system rather than a key, so they keep their timing.
+Reduced motion, from the OS or `reducedMotion`, sets every motion token to 0ms and stops the loops. The one duration it keeps is `--weave-fade` (200ms), the opacity fade that replaces the Image generation weave, so a picture still arrives whole. Under keyboard modality (`data-modality="keyboard"`, which the provider sets) interaction motion is 0ms and presses do not scale; status glyphs, the progress fill, image reveals, streamed words and the loops follow the system rather than a key, so they keep their timing.
 
 ## Verification and screenshots
 
@@ -302,7 +305,7 @@ columns, backend, persistence or server grid framework is included.
 
 ### Badge and native form controls
 
-Badge renders static status text with neutral/success/error/info tones; the customer DataTable uses it for statuses. Checkbox preserves native input state/form/ref behavior with label/helper/error. RadioGroup uses native radios in fieldset/legend with stable names and values. Textarea mirrors Input associations and preserves native editing/selection, rows and vertical resizing. All consume shared configuration.
+Badge renders static status text with neutral/success/error/info/warning/ai tones (`warning` takes the attention color, for something that needs the person, and `ai` the AI color, for what the assistant produced); Alert takes the same tones, and Spinner has a `neutral` or `ai` tone. The customer DataTable uses Badge for statuses. Checkbox preserves native input state/form/ref behavior with label/helper/error. RadioGroup uses native radios in fieldset/legend with stable names and values. Textarea mirrors Input associations and preserves native editing/selection, rows and vertical resizing. All consume shared configuration.
 
 The focused documentation pages retain the continuous layout and complete copied prompts. `src/system/ai/examples/FeedbackForm.tsx` demonstrates all three form controls with application-owned validation and native reset. Field remains documented under Input. No indeterminate state, table selection, selection cards, automatic textarea growth or new dependencies are included.
 
@@ -334,10 +337,14 @@ buttons and header/footer slots. See its continuous documentation page and
 The connected dashboard uses Sidebar on desktop and the same content in Sheet
 on mobile, keeping Overview, Orders and Customers as real section destinations.
 
-The documentation component menu groups implemented pages under Forms,
-Files, Navigation, Data, Display & feedback, Overlays and Charts, with compact Arabic
-and English labels. Groups stay expanded; the empty AI patterns section is
-not shown. Existing page selection and documentation layout remain intact.
+The documentation component menu leads with AI patterns, grouped by job (Ask,
+Delegate, Create, Understand and control), then Screens (the Assistant workspace,
+with a link to the Dashboard with AI) and Parts, a collapsible section that is closed
+by default and remembers its state. Forms, Files, Navigation, Data, Display & feedback
+(which holds the content blocks LoadingState, CodeBlock, Markdown and Terminal),
+Overlays and Charts follow, with compact Arabic and English labels. Groups stay
+expanded, and a job section appears once it has a page. Existing page selection and
+documentation layout remain intact.
 
 TagInput, FilterBar and InputCopy extend the existing native Field and control
 patterns. TagInput submits committed repeated form values and respects IME/reset;
@@ -373,11 +380,12 @@ activity list with real local append. See `src/system/ai/README.md` for contract
 ### TaskRows and NotificationList
 
 TaskRows renders compact, expandable agent-task rows with application-supplied
-pending/running/completed/failed states. Choose individual capsules or a connected
-list; details/actions remain outside disclosure buttons. Its AI patterns page has
-a clearly labeled local simulation with Run/Replay, intentional failure and explicit
-retry, with canceled/stale-run-safe timers only in example code. It replaces the
-earlier checklist interpretation without adding a component family.
+pending/running/needs-you/completed/failed states. Choose individual capsules, a
+connected list or plain rows on a host's surface; details/actions remain outside
+disclosure buttons. Its page, in Parts, has a clearly labeled local simulation (a task
+that fails once, retries and completes, or a state held by the state switcher and
+Replay), with its timer only in example code. It replaces the earlier checklist
+interpretation without adding a component family.
 
 NotificationList retains application-owned notifications, explicit read controls,
 derived unread count, All/Unread filtering and focus recovery. Source contracts
@@ -388,12 +396,16 @@ backend or persistence.
 
 FileTree displays application-supplied files and folders with stable unique IDs; it never reads the filesystem. Use `ai/examples/FileTreeExamples.tsx` (relative to the source root) for a nested project and application-owned sample-string preview. Controlled or internal expansion and single selection are separate from roving keyboard focus. File click/Enter calls `onActivate(file)`; the host decides what opening means. The example preview follows file selection, including Space; arrow focus does not change it. Empty folders are end nodes. Horizontal arrows mirror in RTL; arrows, Home/End, typeahead and * navigate visible nodes. On removal, focus recovers to the nearest visible ancestor or same visible position, then the empty root, without reclaiming outside focus. Supply nonempty names, globally unique stable IDs, and noninteractive metadata/empty content. No upload, editing, search, drag/drop, virtualization, multi-selection or context menu is supplied.
 
+## AI task patterns
+
+Each AI pattern finishes one job in one anatomy (a header that names the state once, what the assistant produced on paper, the evidence folded away, the person's options and the meta), using the zones its job needs. The host owns the state. A pattern renders the `status` and data it is given and reports what the person asks for; it never runs a request or simulates progress. There are nine pattern pages: Start a task (`TaskStarter`), Cited answer (`CitedAnswer`), Agent task (`AgentTask`), Clarifying questions (`AskUserQuestions`), Approval request and Approval sequence (`ApprovalCard`, `ApprovalFlow`), Suggested edits (`SuggestedEdits`), Image generation (`ImageGeneration`) and What changed (`ChangeSummary`). Two screens compose them: the Assistant workspace (`ChatApp`, at `/examples/chat-app`) and the Dashboard with AI (`/examples/dashboard`). The shared parts they are built on (AIMark, StatusPill, Tray, Countdown, StatusIcon, ThinkingPanel, FeedbackBar, FollowUps, InlineDiff and WeaveCanvas) are exported and described under `support` in the registry; the fifteen older pieces, such as ChatComposer and ToolCall, keep their pages in Parts. Agents start at [Start with a pattern](src/system/ai/README.md#start-with-a-pattern). The rules every pattern follows are in [composition.md](src/system/ai/composition.md#patterns): one live region, scoped and safe shortcuts, plain appearance inside other patterns, amber only for "needs you", and no approve-all.
+
 ## AI feedback
 
 LoadingState uses a compact pixel grid with Drive/Dots/Orbit variants, a shimmering
-label and optional host-supplied elapsedMs. ThinkingIndicator morphs a circle into
-an infinity loop beside optional cosmetic whole-word rotation, including textOnly.
-ThinkingState uses a small activity glyph, shimmering current summary and smooth
+label and optional host-supplied elapsedMs. ThinkingIndicator pairs the turning AI
+mark with optional cosmetic whole-word rotation, including textOnly.
+ThinkingState uses the AI mark, a shimmering current summary and smooth
 disclosure of application-supplied activity steps; the host supplies completion.
 
 Only meaningful label changes announce. Decorative frames, elapsed ticks and word
@@ -405,8 +417,10 @@ See [portable guidance](src/system/ai/README.md) and
 
 ## Tool activity
 
-ToolCall records one host-supplied operation: pending, running, completed or failed,
-with a readable label, monospace tool name and optional formatted duration. Pass
+ToolCall records one host-supplied operation: pending, running, needs-you, completed
+or failed, with a readable label, monospace tool name and optional formatted duration.
+`appearance="plain"` drops the card for a host's surface, and `labels` and
+`headingLevel` replace its words and set its headings. Pass
 strings for preformatted input/output/error or React nodes for application-rendered
 results. JSON.stringify belongs to the host; never pass a plain object as a node.
 ToolCall owns only optional disclosure state (expanded/defaultExpanded and
@@ -417,7 +431,8 @@ ToolChips takes a named list of items (stable id, label, state, optional count).
 Informational items are spans. onActivate creates a button; connect it to real
 behavior before supplying controls/expanded. No built-in details are implied.
 Use ToolCall for operation details, ToolChips for compact summaries, TaskRows for
-broader tasks, and ThinkingState for a brief application-owned activity summary.
+broader tasks, Agent task for one task's steps with their tool details, and
+ThinkingState for a brief application-owned activity summary.
 No tool execution, network, permissions, orchestration, execution timers or
 private model reasoning is supplied. Only meaningful ToolCall label/state changes
 are announced; use announcement="off" when another host region owns announcements.
@@ -427,36 +442,49 @@ output and an explicitly started local simulation: running → success, failure 
 host retry, and a chip that opens and focuses its call. Replay/reset/unmount cancel
 stale timers. Sample data contains no secrets and performs no tool operation.
 
-CodeBlock, Markdown and StreamingText extend the existing AI patterns category.
-They cover exact source copying, safe CommonMark/GFM presentation and immediate
-host-driven streaming, with compact token-based styles. Source-copy consumers
+CodeBlock and Markdown are content blocks (Display & feedback in the navigation) and
+StreamingText is a part. They cover exact source copying, safe CommonMark/GFM
+presentation and immediate host-driven streaming, with compact token-based styles.
+Source-copy consumers
 must install `react-markdown@10.1.0 remark-gfm@4.0.1`; see
 [src/system/ai/README.md](src/system/ai/README.md#ai-response-content) for parsing,
-URL/HTML restrictions, language fallback and host responsibilities. The
-StreamingText page opens complete, with Streaming and Done states, and Replay
-streams its local fixed-chunk sample again.
+URL/HTML restrictions, language fallback and host responsibilities. StreamingText is
+streaming, completed, stopped or failed, and Markdown and StreamingText take
+`renderCitation` for `[n]` markers and `links="strict"` for an AI answer's links. The
+StreamingText page opens complete, with Streaming, Done, Stopped and Failed states,
+and Replay streams its local fixed-chunk sample again.
 
-Every documentation page shows its example in one demo frame: the page name in
-both languages, a state switcher where the component has meaningful states,
-Replay only where it has a lifecycle, a Preview/Code switch and Copy code, with
-a notes row below. Nothing autoplays, and Replay steps through the states
-without a stop control. Replay no longer resets props: the inspector's "Reset
-playground" does. The agent prompt, including source-copy dependency
-instructions, sits below the frame under "Use it in your app".
+Every documentation page shows its example in one demo frame. A toolbar above the
+stage holds the Preview/Code switch, a state switcher where the component has
+meaningful states and a link that opens the playground in a new tab
+(`/examples/playground/<page-id>`, with the stored props and settings and no
+workbench chrome). A round Replay button in the stage's corner appears only where
+the component has a lifecycle, and Copy code sits in the Code view's header. The
+page's name appears once, in its heading. Nothing autoplays, and Replay steps
+through the states without a stop control. Replay no longer resets props: the
+inspector's "Reset playground" does. The agent prompt, including source-copy
+dependency instructions, sits right after the heading under "Use it in your app".
+The notes sit under the playground as "Usage guidelines": use it when, use something
+else when (or, on a pattern page that replaces parts, what it replaces) and what to
+notice.
 
 ## Chat foundations
 
-ChatThread, ChatComposer and PromptBar live under AI patterns. Messages, draft,
-submission, acceptance, cancellation and execution state stay in the application.
-The two entries share IME-safe Enter/Shift+Enter handling and bounded growth;
-valid text is passed unchanged and the host clears the controlled draft only on
-acceptance. Thread following is opt-in and stops when the reader leaves the bottom.
-See [portable chat guidance](src/system/ai/README.md#chat-foundations) and the
+ChatThread, ChatComposer and PromptBar are parts (Parts in the navigation). Messages,
+draft, submission, acceptance, cancellation and execution state stay in the
+application. The two entries share IME-safe Enter/Shift+Enter handling and bounded
+growth; valid text is passed unchanged and the host clears the controlled draft only
+on acceptance. Thread following is opt-in and stops when the reader leaves the
+bottom. A thread message can carry a `status`, an `error` and `onRetry`, and
+ChatComposer takes a `tools` row for the host's own controls. See
+[portable chat guidance](src/system/ai/README.md#chat-foundations) and the
 [connected local example](src/system/ai/examples/ChatExamples.tsx). No backend,
-model connection, uploads, persistence or ChatApp shell is included.
+model connection, uploads or persistence is included; the Assistant workspace below
+is the shell.
 
-ImageResult, Sources / InlineCitation and InsightCards extend **AI patterns** with
-application-supplied images, real reference links and concise supported findings.
+ImageResult, Sources / InlineCitation and InsightCards are parts that provide
+application-supplied images, real reference links, which can preview their source on
+hover or focus, and concise supported findings.
 Their bilingual local examples include fixed-frame loading/failure recovery,
 connected citations, stable numbering on reorder and finding details. Copy the
 whole `src/system/ai/assets/results/` directory with source-only examples; preserve
@@ -464,7 +492,9 @@ local SVG/text `?url&no-inline` imports and the bundled license. Source copies a
 already installed `@radix-ui/react-popover@1.3.1` and documented Radix overrides.
 See `src/system/ai/README.md` for URL restrictions and host responsibilities.
 
-SelectionActions, ContextMeter and ModelSelector are documented under AI patterns.
+SelectionActions, ContextMeter and ModelSelector are parts. SelectionActions reports
+the selection's offsets (Suggested edits builds on them), ContextMeter takes
+`thresholds` and a controlled `open`, and ModelSelector takes `labels`.
 Their connected chat example uses scoped selection, controlled model IDs and
 explicit sample context values. See `src/system/ai/README.md` for ownership,
 keyboard focus, selection exclusions and source-copy requirements. Local browser
@@ -472,18 +502,27 @@ verification and captures are in `docs/ai-context-controls/`.
 
 ### AI questions and decisions
 
-AskUserQuestions, ApprovalCard and ApprovalFlow live under AI patterns. The
+AskUserQuestions, ApprovalCard and ApprovalFlow are the Clarifying questions,
+Approval request and Approval sequence patterns. The
 [portable guidance](src/system/ai/README.md#questions-and-one-time-decisions)
-explains supported question types, controlled drafts/records, host responsibilities,
-request replacement and decision versus execution. The connected Studio Assistant
+explains supported question types, controlled drafts/records, receipts, host
+responsibilities, request replacement and decision versus execution. A receipt
+records the decision, never the outcome, and there is no approve-all. Ctrl or
+Cmd+Enter approves only a request the host marks reversible and not irreversible,
+after a 500 ms wait; Escape rejects inside an inline card, but inside a Sheet or Modal
+it closes the dialog and records nothing. The connected Studio Assistant
 example uses harmless in-memory data with rejection, acknowledgement failure/retry
 and a second independent request. No action executes and no standing access is
 introduced. Local verification evidence is in `docs/ai-decisions/`.
 
-Terminal and ChatApp complete the requested AI patterns. Terminal presents supplied
-command/output text without execution; ChatApp composes existing navigation, chat
-and entry components with host-owned state. The in-memory example runs at
-`/examples/chat-app`; it uses fixed local responses and supplied Terminal output.
-Switch/new cancels and retains received content and per-conversation drafts/models;
-reset restores samples. Portable contracts and examples live in `src/system/ai/`.
-Verification and screenshots: `docs/terminal-and-chat-app/README.md`.
+Terminal is a content block: it presents supplied command/output text without
+execution. ChatApp is the Assistant workspace screen: it composes existing
+navigation with the host's conversation, whose messages are patterns in plain
+appearance and whose composer is Start a task. Conversations can be grouped, a side
+panel holds a task's details, and rename and delete are intents: the host owns the
+rename field and the delete confirmation. The in-memory example runs at
+`/examples/chat-app` and tells the October close (a cited answer, the agent's
+questions and a task waiting on an approval), with a draft per conversation and no
+real AI or tool. Portable contracts and examples live in `src/system/ai/`.
+Verification and screenshots of the earlier build-log version:
+`docs/terminal-and-chat-app/README.md`.

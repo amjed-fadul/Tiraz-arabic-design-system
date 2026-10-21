@@ -2194,6 +2194,7 @@
       "id": "terminal",
       "api": "Terminal",
       "source": "Terminal.tsx",
+      "kind": "content",
       "exports": ["Terminal", "TerminalProps"],
       "props": [
         {
@@ -2261,6 +2262,7 @@
       "id": "chat-app",
       "api": "ChatApp",
       "source": "ChatApp.tsx",
+      "kind": "screen",
       "exports": [
         "ChatApp",
         "ChatAppProps",
@@ -2501,6 +2503,7 @@
       "source": "ApprovalCard.tsx",
       "kind": "pattern",
       "parts": ["ai-mark", "status-pill", "tray"],
+      "usedBy": ["agent-task", "approval-flow"],
       "states": [
         "pending",
         "submitting",
@@ -2723,6 +2726,8 @@
       "id": "selection-actions",
       "api": "SelectionActions",
       "source": "SelectionActions.tsx",
+      "kind": "part",
+      "usedBy": ["suggested-edits"],
       "exports": [
         "SelectionActions",
         "SelectionAction",
@@ -2773,6 +2778,8 @@
       "id": "context-meter",
       "api": "ContextMeter",
       "source": "ContextMeter.tsx",
+      "kind": "part",
+      "usedBy": ["task-starter"],
       "exports": ["ContextMeter", "ContextMeterProps", "ContextMeterPart"],
       "props": [
         {
@@ -2857,6 +2864,8 @@
       "id": "model-selector",
       "api": "ModelSelector",
       "source": "ModelSelector.tsx",
+      "kind": "part",
+      "usedBy": ["task-starter"],
       "exports": ["ModelSelector", "ModelSelectorProps", "ModelOption"],
       "props": [
         {
@@ -2925,6 +2934,8 @@
       "id": "image-result",
       "api": "ImageResult",
       "source": "ImageResult.tsx",
+      "kind": "part",
+      "usedBy": ["image-generation"],
       "exports": ["ImageResult", "ImageResultProps", "ImageResultLabels"],
       "props": [
         {
@@ -3001,6 +3012,8 @@
       "id": "sources",
       "api": "Sources",
       "source": "Sources.tsx",
+      "kind": "part",
+      "usedBy": ["cited-answer", "change-summary"],
       "exports": [
         "Sources",
         "InlineCitation",
@@ -3068,6 +3081,8 @@
       "id": "insight-cards",
       "api": "InsightCards",
       "source": "InsightCards.tsx",
+      "kind": "part",
+      "usedBy": [],
       "exports": [
         "InsightCards",
         "InsightCardsProps",
@@ -3115,6 +3130,8 @@
       "id": "chat-thread",
       "api": "ChatThread",
       "source": "ChatThread.tsx",
+      "kind": "part",
+      "usedBy": [],
       "exports": [
         "ChatThread",
         "ChatThreadProps",
@@ -3158,6 +3175,8 @@
       "id": "chat-composer",
       "api": "ChatComposer",
       "source": "ChatComposer.tsx",
+      "kind": "part",
+      "usedBy": ["task-starter"],
       "exports": [
         "ChatComposer",
         "ChatComposerProps",
@@ -3243,6 +3262,8 @@
       "id": "prompt-bar",
       "api": "PromptBar",
       "source": "PromptBar.tsx",
+      "kind": "part",
+      "usedBy": ["task-starter"],
       "exports": ["PromptBar", "PromptBarProps"],
       "props": [
         {
@@ -3314,6 +3335,7 @@
       "id": "code-block",
       "api": "CodeBlock",
       "source": "CodeBlock.tsx",
+      "kind": "content",
       "exports": ["CodeBlock", "CodeBlockProps"],
       "props": [
         {
@@ -3355,6 +3377,8 @@
       "id": "markdown",
       "api": "Markdown",
       "source": "Markdown.tsx",
+      "kind": "content",
+      "usedBy": ["cited-answer"],
       "exports": ["Markdown", "MarkdownProps"],
       "props": [
         {
@@ -3396,6 +3420,8 @@
       "id": "streaming-text",
       "api": "StreamingText",
       "source": "StreamingText.tsx",
+      "kind": "part",
+      "usedBy": ["cited-answer"],
       "exports": ["StreamingText", "StreamingTextProps"],
       "props": [
         {
@@ -3466,6 +3492,8 @@
       "id": "tool-call",
       "api": "ToolCall",
       "source": "ToolCall.tsx",
+      "kind": "part",
+      "usedBy": ["agent-task"],
       "exports": ["ToolCall", "ToolCallProps", "ToolCallState", "ToolLabels"],
       "props": [
         {
@@ -3583,6 +3611,8 @@
       "id": "tool-chips",
       "api": "ToolChips",
       "source": "ToolChips.tsx",
+      "kind": "part",
+      "usedBy": [],
       "exports": ["ToolChips", "ToolChipsProps", "ToolChipItem"],
       "props": [
         {
@@ -3620,6 +3650,7 @@
       "id": "loading-state",
       "api": "LoadingState",
       "source": "LoadingState.tsx",
+      "kind": "content",
       "exports": ["LoadingState", "LoadingStateProps"],
       "purpose": "Compact labeled loading presentation with an optional description.",
       "props": [
@@ -3679,6 +3710,8 @@
       "id": "thinking-indicator",
       "api": "ThinkingIndicator",
       "source": "ThinkingIndicator.tsx",
+      "kind": "part",
+      "usedBy": [],
       "exports": ["ThinkingIndicator", "ThinkingIndicatorProps"],
       "purpose": "The turning AI mark beside a shimmering whole-word display, with optional cosmetic word rotation or text-only presentation.",
       "props": [
@@ -3724,6 +3757,8 @@
       "id": "thinking-state",
       "api": "ThinkingState",
       "source": "ThinkingState.tsx",
+      "kind": "part",
+      "usedBy": [],
       "exports": ["ThinkingState", "ThinkingStateProps"],
       "purpose": "Expandable application-supplied progress summaries and user-facing details, never private model reasoning.",
       "props": [
@@ -3886,6 +3921,8 @@
       "id": "task-rows",
       "api": "TaskRows",
       "source": "TaskRows.tsx",
+      "kind": "part",
+      "usedBy": [],
       "exports": ["TaskRows", "TaskRowsProps", "TaskRowItem", "TaskState"],
       "purpose": "Expandable agent-task execution rows with application-supplied states, as capsules, a connected list or plain rows on a host's paper.",
       "props": [
@@ -9724,6 +9761,7 @@
       "id": "status-icon",
       "exports": ["StatusIcon", "StatusIconProps", "StatusIconState"],
       "source": "StatusIcon.tsx",
+      "usedBy": ["agent-task"],
       "props": [
         {
           "name": "state",
@@ -9766,6 +9804,14 @@
       "id": "ai-mark",
       "exports": ["AIMark", "AIMarkProps"],
       "source": "AIMark.tsx",
+      "usedBy": [
+        "agent-task",
+        "suggested-edits",
+        "image-generation",
+        "change-summary",
+        "ask-user-questions",
+        "approval-card"
+      ],
       "props": [
         {
           "name": "size",
@@ -9801,6 +9847,14 @@
       "id": "status-pill",
       "exports": ["StatusPill", "StatusPillProps", "StatusPillState"],
       "source": "StatusPill.tsx",
+      "usedBy": [
+        "task-starter",
+        "agent-task",
+        "image-generation",
+        "change-summary",
+        "ask-user-questions",
+        "approval-card"
+      ],
       "props": [
         {
           "name": "state",
@@ -9836,6 +9890,17 @@
       "id": "tray",
       "exports": ["Tray", "TrayProps"],
       "source": "Tray.tsx",
+      "usedBy": [
+        "task-starter",
+        "cited-answer",
+        "agent-task",
+        "suggested-edits",
+        "image-generation",
+        "change-summary",
+        "ask-user-questions",
+        "approval-card",
+        "approval-flow"
+      ],
       "props": [
         {
           "name": "children",
@@ -9872,6 +9937,7 @@
       "id": "countdown",
       "exports": ["Countdown", "CountdownProps"],
       "source": "Countdown.tsx",
+      "usedBy": ["agent-task"],
       "props": [
         {
           "name": "seconds",
@@ -9927,6 +9993,7 @@
       "id": "thinking-panel",
       "exports": ["ThinkingPanel", "ThinkingPanelProps", "ThinkingPanelLabels"],
       "source": "ThinkingPanel.tsx",
+      "usedBy": ["cited-answer"],
       "props": [
         {
           "name": "status",
@@ -9996,6 +10063,7 @@
         "FeedbackReason"
       ],
       "source": "FeedbackBar.tsx",
+      "usedBy": ["cited-answer"],
       "props": [
         {
           "name": "feedback",
@@ -10045,6 +10113,7 @@
       "id": "follow-ups",
       "exports": ["FollowUps", "FollowUpsProps"],
       "source": "FollowUps.tsx",
+      "usedBy": ["cited-answer"],
       "props": [
         {
           "name": "items",
@@ -10074,6 +10143,7 @@
       "id": "inline-diff",
       "exports": ["InlineDiff", "InlineDiffProps", "DiffSegment"],
       "source": "InlineDiff.tsx",
+      "usedBy": ["suggested-edits"],
       "props": [
         {
           "name": "segments",
@@ -10110,6 +10180,7 @@
       "id": "weave-canvas",
       "exports": ["WeaveCanvas", "WeaveCanvasProps"],
       "source": "WeaveCanvas.tsx",
+      "usedBy": ["image-generation"],
       "props": [
         {
           "name": "status",
@@ -10152,6 +10223,7 @@
   "conventions": {
     "defaults": "Default fields contain literal JSON scalars or descriptive expressions. The string undefined means omitted/no default, not a string value to pass. configuration.defaults contains the actual literal defaultConfig.",
     "authority": "Public source/types win; inherited prop details depend on the installed React/Radix versions. Workbench editing limits are not public API limits.",
+    "kinds": "AI families carry a kind. pattern: a complete job with its states, events and parts. screen: a composition shell that arranges patterns. part: a piece patterns are built on, also usable alone. content: a block that shows supplied text. A pattern's parts lists registry ids (components or support entries) and a part's usedBy lists the patterns that name it; an empty usedBy means no pattern is built on it. Other families have no kind.",
     "overlayDependencies": "Use one resolved @radix-ui/react-dismissable-layer 1.2.1 and @radix-ui/react-focus-scope 1.3.1; source-copy hosts preserve overrides from ai/README.md. @radix-ui/react-popper 1.4.0 supplies Tooltip positioning.",
     "chartDependencies": "Verified Recharts 3.10.1, React/React DOM 19.3.0 and react-is 19.3.0. Use a matching react-is version in source-copy hosts.",
     "datePickerDependencies": "Verified @daypicker/react 10.0.2 (React >=16.8, Gregorian Arabic/English locale labels) and @radix-ui/react-popover 1.3.1 (React 19 compatible); one shared focus-scope 1.3.1 and dismissable-layer 1.2.1. No upstream CSS required; Tiraz styles scoped .rdp-* in components.css."
