@@ -428,8 +428,8 @@ export function ApiReference({
         "steps",
         "readonly AgentStep[] · required",
         t(
-          "لكل خطوة id ثابت وtitle وstate، ومعها اختياريًا detail وduration بالثواني وtools وnotes وrequest وapproval وerror.",
-          "Each step has a stable id, a title and a state, with an optional detail, duration in seconds, tools, notes, request, approval and error.",
+          "لكل خطوة id ثابت وtitle وstate، ومعها اختياريًا detail وagent (من فُوّضت إليه الخطوة، ويظهر تحت العنوان، وهو من يطلب في موافقتها المدمجة) وduration بالثواني وtools وnotes وrequest وapproval وerror.",
+          "Each step has a stable id, a title and a state, with an optional detail, agent (who the step was handed to, shown under the title and named as who asks in its inline approval), duration in seconds, tools, notes, request, approval and error.",
         ),
       ],
       [
@@ -454,6 +454,14 @@ export function ApiReference({
         t(
           "أثناء العمل يوجّه Enter الوكيل مع الخطوة التالية، وCtrl أو Cmd+Enter فورًا، ثم يُفرَّغ الحقل. لا توجيه أثناء الكتابة بلوحة إدخال.",
           "While running, Enter steers at the next step and Ctrl or Cmd+Enter steers now; the field then clears. Nothing steers while an input method is composing.",
+        ),
+      ],
+      [
+        "onApplyNoteNow / onRemoveNote",
+        "(id: string) => void",
+        t(
+          "أثناء العمل يظهر لكل توجيه لم يُطبَّق بعد زرّان: «طبّق الآن» يستدعي onApplyNoteNow(id)، و«إزالة» يستدعي onRemoveNote(id)، ويظهر كلٌّ منهما إذا مرّرت معالجه فقط. ويعلن النمط كل توجيه مرة واحدة: حين يُرسَل وحين يصير applied، ولا يعلنه عند الظهور.",
+          "While running, a note not yet applied has two buttons: «Apply now» calls onApplyNoteNow(id) and «Remove» calls onRemoveNote(id), each shown only when its handler is passed. The pattern announces each note once, when it is sent and when it becomes applied, and never at mount.",
         ),
       ],
       [
@@ -810,6 +818,14 @@ export function ApiReference({
         t(
           "إجراء أوسط اختياري بين الرفض والموافقة، مثل عرض الرسائل، ووقت يكتبه تطبيقك بعد «تمت الموافقة».",
           "An optional middle action between reject and approve, such as viewing the messages, and host-formatted time after Approved.",
+        ),
+      ],
+      [
+        "agent",
+        "ReactNode",
+        t(
+          "من يطلب الموافقة، ويظهر تحت العنوان. تمرّره مهمة الوكيل إلى بطاقة الخطوة التي فُوّضت إلى وكيل آخر.",
+          "Who is asking, shown under the title. Agent task passes it to the card of a step handed to another agent.",
         ),
       ],
       [
