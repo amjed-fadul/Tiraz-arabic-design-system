@@ -18,10 +18,10 @@
 
 **Layout.**
 - **Headings.** `ScreenHeader` gives the only h1, and regions are h2. Patterns placed as regions take `headingLevel={2}`, or `{3}` inside a Sheet.
-- **Appearance.** Patterns in Sheets and end panels use `appearance="plain"`; elsewhere, the default card.
+- **Appearance.** Patterns and parts inside a Card, a Sheet or an end panel use `appearance="plain"`; elsewhere, the default card.
 - **Balance.** Amjed found the Dashboard's cards off balance, hugging the start of its column. On every screen:
-  - every row spans the main column;
-  - cards side by side share one height;
+  - every row spans the main column. A centred column is the main column its rows span;
+  - one height applies to cards in the same grid row. An end panel is one card at its content's height, sticky at the top when `wide`;
   - a pattern card never hugs one edge with empty space beside it. It either fills its grid cell, lifting the 38rem cap inside its own scope (`.<slug> .tz-change-summary[data-appearance="card"] { max-inline-size: none }`), or it sits beside another card;
   - all cards share one surface, border, radius and padding scale.
 
@@ -33,16 +33,16 @@
 - **Small screens.** Screens work down to 390 px with no sideways page scroll. Tables and the board scroll in their own boxes.
 
 **Decision safety.** The patterns carry it, and screens must not weaken it.
-- **Recording.** Decisions and answers go through `recorded(signal)`. So Escape, closing a Sheet or unmounting records nothing.
+- **Recording.** Decisions and answers go through `recorded(signal)`. Closing a Sheet, Escape in an inbox row, and unmounting abort and record nothing. Elsewhere Escape is the focused pattern's own key (Reject, Dismiss) and records like a click; never suppress it.
 - **Inbox Sheets.** Escape closes the Sheet, returns focus to its trigger and records nothing. Screens with one test this.
 - **Edits first.** An approval comes only after every suggested edit has a decision (§3.6).
-- **One at a time.** There is no approve-all, bulk send or select-all.
+- **One at a time.** There is no approve-all, bulk send or select-all. Suggested edits' Accept all and Reject all stay: they settle one suggestion, not several requests.
 - **Messages.** A customer message is one Draft for review per record. So the three reminders are three drafts, never the docs example's «أرسل الرسائل» request.
 - **Irreversible actions ask.** The contract send is `irreversible`, and removing a member confirms in a Modal. Only reversible requests get quick decisions.
 - **Receipts** say only what was recorded.
 - **Nothing runs on its own.** Every change follows a person's action and the host's moment. Host timers clear when superseded and on unmount.
 
-**Accessibility.** Icon-only buttons are named in the page language, and row buttons name their row («إزالة سارة علي»), with any visible label first. Only transitions are announced: a screen has at most one hidden polite region, empty at mount, which says each change once and never announces timers, progress, filtering or tabs. When an action removes the focused element, the screen says where focus goes. CSS uses tokens only, keeps `:hover` inside `@media (hover: hover) and (pointer: fine)`, and names `.<slug>` in every rule; `screens-css.test.ts` keeps this at `[]`.
+**Accessibility.** Icon-only buttons are named in the page language, and row buttons name their row («إزالة سارة علي»), with any visible label first. Only transitions are announced: a screen has at most one hidden polite region, empty at mount, which says each change once and never announces timers, progress, filtering or tabs. When an action removes the focused element, the screen says where focus goes. CSS uses tokens only, keeps `:hover` inside `@media (hover: hover) and (pointer: fine)`, and names `.<slug>` in every rule. `screens-css.test.ts` checks both (§2.4).
 
 ## 2. Prep commit
 
@@ -119,9 +119,9 @@ export function useScreen(): Screen; // throws outside ScreenFrame
 
 **Phones** (`@media (max-width: 640px)`). The Sidebar hides, and the bar shows the menu and the brand. The menu Sheet («الشاشات», «انتقل إلى شاشة أخرى.», «إغلاق القائمة») keeps the default start side and holds the same list, without the toggle.
 
-**Embed mode** (`?embed=1`) hides the language and theme buttons and «توثيق طِراز». A plain click on any link to a screen route doesn't navigate, whether it's a Sidebar item, a breadcrumb or a link in content. Instead, one capture-phase click listener on `.screen-host` calls `window.parent.postMessage({ type: "tiraz:open-screen", slug }, location.origin)`, and the workbench opens that screen page. `href(slug)` stays the standalone URL, so a middle or modified click still opens it.
+**Embed mode** (`?embed=1`) hides the language and theme buttons and «توثيق طِراز». A plain click on any link to a screen route doesn't navigate, whether it's a Sidebar item, a breadcrumb or a link in content. Instead, one capture-phase click listener on `.screen-host` calls `window.parent.postMessage({ type: "tiraz:open-screen", slug }, location.origin)`, and the workbench opens that screen page. `href(slug)` stays the standalone URL, so a middle or modified click still opens it. Embedded, the bar renders only on phones (`max-width: 640px`), with the menu and the brand.
 
-**`ScreenHeader({ title?, description?, actions? })`** renders `header.screen-header`. It holds the h1 (the screen's name by default), `p.screen-description`, and the actions at the inline end, which wrap under the title below 640 px. `screen-frame.css` uses only `.screen`.
+**`ScreenHeader({ title?: ReactNode; description?: ReactNode; actions?: ReactNode })`** renders `header.screen-header`; §3.3 passes the Avatar and name as `title` and the facts as `description`. It holds the h1 (the screen's name by default), `p.screen-description`, and the actions at the inline end, which wrap under the title below 640 px. `screen-frame.css` uses only `.screen`.
 
 **`ScreenFrame.test.tsx`**
 1. **Arabic by default.** `lang`, `dir` and the title are Arabic, the current link has `aria-current="page"`, and a probe child shows «٤٨٬٣٠٠» and «٩٬٤٠٠ ر.س». «English» switches them all, and the links gain `?lang=en`.
@@ -137,12 +137,12 @@ export function useScreen(): Screen; // throws outside ScreenFrame
 **Layout,** in `main.component-page` at the docs sections' width:
 1. **Heading.** `header.component-heading` holds the screen's name as the h1, then its description.
 2. **Toolbar** (`.tz-demo-bar`).
-   - **At the start:** width chips «سطح المكتب» / «جهاز لوحي» / «هاتف» (Desktop / Tablet / Phone) for full stage width, 768 px or 390 px. They are the playground's state chips: a `.tz-demo-states` group named «عرض المعاينة» / "Preview width", of `.tz-demo-state` buttons with `aria-pressed`. The choice lasts the session.
+   - **At the start:** width chips «سطح المكتب» / «جهاز لوحي» / «هاتف» (Desktop / Tablet / Phone). Desktop renders the iframe 1,280 px wide and scales it to the stage with `transform: scale(stage ÷ 1,280)` from the top, scaling its box height the same way; Tablet and Phone stay 768 and 390 px, unscaled. A ResizeObserver on the stage recomputes the scale. So Desktop shows each screen's `wide` layout. The chips are the playground's state chips: a `.tz-demo-states` group named «عرض المعاينة» / "Preview width", of `.tz-demo-state` buttons with `aria-pressed`. The choice lasts the session.
    - **At the end:** the new-tab link, a `.tz-demo-icon` with lucide `ArrowUpRight` and `.tz-mirror-rtl`. It is named «افتح في نافذة جديدة» / "Open in a new tab", has `target="_blank" rel="noopener"`, and points to `screenPath(slug)` with the current `lang` and `theme`.
 3. **Stage:** `<iframe title={name} src={`${screenPath(slug)}?embed=1[&lang=en][&theme=dark]`}>`.
    - It follows the workbench's language and theme, so a change reloads it.
-   - The chip sets its width, centered and capped at 100%.
-   - Its height is `clamp(560px, 100dvh - 260px, 900px)`; 260 px covers the header, padding, heading and toolbar above it.
+   - Its width comes from the chip, centered in the stage.
+   - Its height is `clamp(560px, 100dvh - 260px, 900px)`, which Desktop scales with the width. The 260 px covers the header, padding, heading and toolbar above it.
    - It uses the playground stage's border, radius and surface.
 4. **«على هذه الشاشة» / "On this screen"** (h2): one button per `screenUses[slug]` page, named after it, which opens it.
 
@@ -164,7 +164,7 @@ A screen page has no prompt, Code view, guidelines, API table or settings panel.
 
 **Placeholders.** Each `<Component>.tsx` is `<ScreenFrame slug="<slug>"><ScreenHeader /></ScreenFrame>`, and it imports `./<slug>.css`, which holds one comment.
 
-**Audit.** `src/examples/screens-css.test.ts` expects `auditFamily(css, [prefix])` from `src/system/css-audit.ts` to return `[]`. It checks `frame/screen-frame.css` with `.screen`, and each `<slug>/<slug>.css` with `.<slug>`.
+**Audit.** `src/examples/screens-css.test.ts` expects `auditFamily(css, [prefix])` from `src/system/css-audit.ts` to return `[]`. It checks `frame/screen-frame.css` with `.screen`, and each `<slug>/<slug>.css` with `.<slug>`. `screens-css.test.ts` also expects `familyRuleCount(css, [prefix])` to equal the file's rule count (postcss `walkRules`). `auditFamily` reads only rules that name the prefix, and `main.tsx` loads every screen's CSS on every page, the docs included, so no rule may lack it.
 
 ## 3. The screens
 
@@ -184,11 +184,11 @@ Each screen starts with `ScreenHeader` and gets its helpers from `useScreen()`. 
 
 **Job.** Find late invoices, and send reviewed reminders one invoice at a time.
 
-**Build.** **ScreenHeader:** with a computed description, «١٢ فاتورة متأخرة · ٤٨٬٣٠٠ ر.س». **FilterBar:** search, and a status Select that defaults to متأخرة. **DataTable** (`pageSize={8}`): the invoice id is the row header, in `<bdi dir="ltr">`; days late and status are Badges; each row's «اكتب تذكيرًا» is named «اكتب تذكيرًا · INV-1043»; `sortValue` returns `String(amount)` and ISO dates. The collator is numeric, so nothing is padded. **End panel:** DraftReview by وكيل التحصيل, with no undo. In `medium` and `narrow` there is no panel; each row's button triggers its own Sheet instead.
+**Build.** **ScreenHeader:** with a computed description, «١٢ فاتورة متأخرة · ٤٨٬٣٠٠ ر.س». **FilterBar:** search, and a status Select that defaults to متأخرة. **DataTable** (`pageSize={8}`): the invoice id is the row header, in `<bdi dir="ltr">`; days late and status are Badges; each late row's button is named with its invoice, as «راجع التذكير · INV-1043»; `sortValue` returns `String(amount)` and ISO dates. The collator is numeric, so nothing is padded. **End panel:** DraftReview by وكيل التحصيل, with no undo. In `medium` and `narrow` there is no panel; each row's button triggers its own Sheet instead.
 
-**Data.** Sixteen invoices: the story's four; eight more late ones, each under ٨٬٠٠٠ and ١٣٬٥٠٠ together, so the twelve late ones make ٤٨٬٣٠٠; two paid; two due later. INV-1043's draft is `story.draft`.
+**Data.** Sixteen invoices: the story's four; eight more late ones, each under ٨٬٠٠٠ and ١٣٬٥٠٠ together, so the twelve late ones make ٤٨٬٣٠٠; two paid; two due later.
 
-**Flows.** A draft goes from writing to ready, and Send takes it through sending to sent. The row then reads «أُرسل التذكير». Its button becomes «عرض التذكير», so the Sheet keeps its trigger.
+**Flows.** Invoices opens with the story's three reminders `ready` (INV-1043's is `story.draft`, then INV-1039 and INV-1041); their buttons read «راجع التذكير», the panel starts on INV-1043's, and the other late rows offer «اكتب تذكيرًا». A new draft goes from writing to ready, and Send takes a draft through sending to sent. The row then reads «أُرسل التذكير». Its button becomes «عرض التذكير», so the Sheet keeps its trigger.
 
 **Tests.** (1) «مدار» leaves INV-1043 and INV-1046. Under the default filter, sorting by amount descending puts INV-1039 first. Removing the status chip gives sixteen results. (2) INV-1043's draft names سارة العتيبي and ٩٬٤٠٠ ر.س, and Send marks the row.
 
@@ -196,7 +196,7 @@ Each screen starts with `ScreenHeader` and gets its helpers from `useScreen()`. 
 
 **Job.** شركة مدار at a glance, and a question about it with the customer attached.
 
-**Build.** **Breadcrumbs:** «العملاء» (`href("dashboard")`), then «شركة مدار». **ScreenHeader:** a decorative Avatar and the name, with three facts: ١٥٬٦٠٠ ر.س owed, two invoices late, and سارة العتيبي. **Tabs:** «نظرة عامة»: the facts, and a Timeline of the two invoices issued, the first reminder, and سارة العتيبي's promise to pay before 25 Oct; «الفواتير»: the two invoices. **End panel:** TaskStarter, with `context` `[{ id: "madar", label: "شركة مدار", kind: "عميل" }]` and the suggestion «كم تأخّرت مدار في السداد كل شهر هذا العام؟»; DataAnswer under it: days late per month from January to October, as bars (`chartTypes` bar and line), with an explanation citing [2] and [4].
+**Build.** **Breadcrumbs:** «الفواتير والتحصيل» (`href("invoices")`), then «شركة مدار». **ScreenHeader:** `title` is a decorative Avatar and the name, and `description` is three facts: ١٥٬٦٠٠ ر.س owed, two invoices late, and سارة العتيبي. **Tabs:** «نظرة عامة»: the facts, and a Timeline of the two invoices issued, the first reminder, and سارة العتيبي's promise to pay before 25 Oct; «الفواتير»: the two invoices. **End panel:** TaskStarter, with `context` `[{ id: "madar", label: "شركة مدار", kind: "عميل" }]` and the suggestion «كم تأخّرت مدار في السداد كل شهر هذا العام؟»; DataAnswer under it: days late per month from January to October, as bars (`chartTypes` bar and line), with an explanation citing [2] and [4].
 
 **Change.** No Cited answer: Start a task is how a question starts.
 
@@ -232,9 +232,9 @@ Each screen starts with `ScreenHeader` and gets its helpers from `useScreen()`. 
 
 **Job.** Review the assistant's edits to the payment terms, then send the revised contract, never before.
 
-**Build.** **Start column (16rem):** FileTree, with a folder «النخبة للتغليف» holding «ملحق شروط الدفع» (selected) and the read-only «اتفاقية التوريد» and «المراسلات». **Main:** the document, with Suggested edits on the payment-terms clause. It starts `reviewing` with `selection` on the clause, holds three changes from `story.earlyPayment`, and has controlled `decisions`. **End panel:** an Approval request (ApprovalCard), «إرسال العقد المعدّل إلى النخبة للتغليف». It is `irreversible`, its `details` hold the clause as decided, and its `impact` holds the amount, discount and due date. **In `medium` and `narrow`:** the FileTree moves into a Sheet behind «الملفات» in ScreenHeader, and the approval follows the document.
+**Build.** **Main:** the document, with Suggested edits on the payment-terms clause. It starts `reviewing` with `selection` on the clause, holds three changes from `story.earlyPayment`, and has controlled `decisions`. **End panel:** the FileTree, then an Approval request. In `wide`, the FileTree heads the end panel above the approval; there is no start column. The tree is a folder «النخبة للتغليف» holding «ملحق شروط الدفع» (selected) and the read-only «اتفاقية التوريد» and «المراسلات». The approval (ApprovalCard) is «إرسال العقد المعدّل إلى النخبة للتغليف», `irreversible`, with `details` holding the clause as decided and `impact` the amount, discount and due date. **In `medium` and `narrow`:** the FileTree moves into a Sheet behind «الملفات» in ScreenHeader, and the approval follows the document.
 
-**The gate.** ApprovalCard can't be disabled, so it mounts only once every change has a decision. Apply decides any undecided change as rejected, and Dismiss rejects them all. Until then, the panel says how many changes wait. A changed decision changes `details`, which remounts the card.
+**The gate.** ApprovalCard can't be disabled, so it mounts only once every change has a decision. Apply decides any undecided change as rejected, and Dismiss rejects them all. Until then, the panel says how many changes wait. Before approval, a changed decision changes `details`, which remounts the card. Once the send is approved, the host keeps the record and passes it as the card's `value`, and moves Suggested edits to `applied` with no `onUndo`, so `details` can't change and the card stays its receipt.
 
 **Tests.** (1) While a change is undecided, there's no approval. After two accepts and a reject, it shows, irreversible, with the decided clause. (2) Opening «المراسلات» and coming back keeps the decisions and the card.
 
@@ -253,15 +253,15 @@ Each screen starts with `ScreenHeader` and gets its helpers from `useScreen()`. 
 
 **Change.** Suggested edits replaces Draft for review for the caption. The brief is the only input.
 
-**Flows.** (1) The screen starts with four completed versions. (2) Generate goes `queued`, then `weaving` (+20 every 300 ms), then `completed`. (3) Use image marks the version «مختارة للحملة» and shows the caption.
+**Flows.** (1) The screen starts with four completed versions. (2) Generate goes `queued`, then `weaving` (+20 every 300 ms), then `completed`. (3) Use image puts «مختارة للحملة · النسخة {n}» above the caption.
 
-**Tests.** (1) **Weaving.** While weaving, the button is loading and the versions are inert. When done, they're a radio group, and using the third shows the caption. (2) **The caption.** Selecting the caption and choosing «أقصر» opens the review. Accept all, then Apply, replaces it.
+**Tests.** (1) **Weaving.** While weaving, the button is loading and the version radios are disabled. When done, they're a radio group, and using the third shows the caption. (2) **The caption.** Selecting the caption and choosing «أقصر» opens the review. Accept all, then Apply, replaces it.
 
 ### 3.8 Agent control room · `AgentControlRoom`
 
 **Job.** Every agent at once: what waits on ليلى, what runs, and what failed.
 
-**Build.** **Main:** DecisionInbox, with an agents strip of the story's three agents. Each agent's state comes from its items, and `agent` is controlled. **Inbox items,** most urgent first: the accruals request, which is reversible, so it gets quick decisions; the Jeddah question; three reminder drafts, whose «راجع» calls `open("invoices")`; «غلاف حملة رمضان», which failed (`onRetry` sets it running); the running close and the completed supplier match, whose «افتح» calls `open("month-end-close")`. **End panel,** for the picked agent: its name and its ContextMeter, in the default ring; TaskRows (`appearance="list"`); ToolCall cards (`announcement="off"`) for its running step. **In `medium` and `narrow`:** picking an agent adds «مهام {الوكيل}» to ScreenHeader, and that button opens the panel in a Sheet.
+**Build.** **Main:** DecisionInbox, with an agents strip of the story's three agents. Each agent's state comes from its items, and `agent` is controlled. **Inbox items,** most urgent first: the accruals request, which is reversible, so it gets quick decisions; the Jeddah question; three reminder drafts, whose «راجع» calls `open("invoices")`; «غلاف حملة رمضان», which failed (`onRetry` sets it running); the running close and the completed supplier match, whose «افتح» calls `open("month-end-close")`. **End panel,** for the picked agent: its name and its ContextMeter, in the default ring; TaskRows; ToolCall (`announcement="off"`) for its running step. Both are `appearance="plain"` inside the panel. **In `medium` and `narrow`:** picking an agent adds «مهام {الوكيل}» to ScreenHeader, and that button opens the panel in a Sheet.
 
 **Change.** ContextMeter's `inline` shows the details, not the ring, so it isn't passed. The strip's toggles belong to the inbox and can't trigger a Sheet, so the button does it.
 
@@ -283,11 +283,11 @@ Each screen starts with `ScreenHeader` and gets its helpers from `useScreen()`. 
 
 **Job.** October's deals by stage: move one on from the keyboard, and follow up.
 
-**Build.** **ScreenHeader:** «أكتوبر ٢٠٢٦ · ١٠ صفقات · {total}». **FilterBar:** the owner Select. **What changed:** the deals that moved, the value in negotiation, and one stalled deal. **The board:** five sections from the inline start (جديد، مؤهَّل، عرض سعر، تفاوض، مكسوبة), each with an h2, a count and a total. `wide`: `minmax(12rem, 1fr)` columns; `medium`: the board scrolls sideways in its own box, from the start; `narrow`: Tabs with counts show one stage at a time. **Each Card:** an h3 holding the customer button, which opens a Sheet with DraftReview; the amount and the next step; the owner's named Avatar and the days in this stage; the «نقل إلى» DropdownMenu, triggered by «نقل إلى · {customer}», with the other four stages as its items.
+**Build.** **ScreenHeader:** «أكتوبر ٢٠٢٦ · ١٠ صفقات · {total}». **FilterBar:** the owner Select. **What changed:** the deals that moved, the value in negotiation, and one stalled deal. **The board:** five sections from the inline start (جديد، مؤهَّل، عرض سعر، تفاوض، مكسوبة), each with an h2, a count and a total. `wide`: `repeat(5, minmax(11rem, 1fr))` with a `--space-4` gap (944 px), which fits because Desktop now shows a 1,280 px frame (§2.3), whose main column is about 990 px; `medium`: the board scrolls sideways in its own box, from the start; `narrow`: Tabs with counts show one stage at a time. **Each Card:** an h3 holding the customer button, which opens a Sheet with DraftReview; the amount and the next step; the owner's named Avatar and the days in this stage; the «نقل إلى» DropdownMenu, triggered by «نقل إلى · {customer}», with the other four stages as its items.
 
 **Data.** Ten deals: the story's three customers and seven more.
 
-**Flows.** A move updates both columns and puts focus on the moved card's button. The screen's region says «نُقلت صفقة {customer} إلى {stage}» once.
+**Flows.** A move updates both columns, and the screen's region says «نُقلت صفقة {customer} إلى {stage}» once. In `wide` and `medium`, focus goes to the moved card's button. In `narrow`, focus goes to the next card in the shown stage, else the previous one, else that stage's tab; the region still says the move.
 
 **Tests.** (1) Moving شركة مدار to تفاوض updates both columns, focuses its button, and announces the move once. (2) The customer button opens a Sheet with `data-edge="end"`. Escape returns focus to the button, and nothing is sent.
 
@@ -297,7 +297,7 @@ Each screen starts with `ScreenHeader` and gets its helpers from `useScreen()`. 
 
 **Commits.** One commit per screen, `feat(examples): add the <English name> screen`, staged by path (`git add src/examples/<slug>`), with no Co-Authored-By trailer.
 
-**Gate.** Before each commit, run `npm test && npm run lint && npm run build && npm run format:check`, allowing 5 minutes. Lint stays at 0 warnings, and the CSS audit stays at `[]`. To test a narrow path, a test may swap in a `ResizeObserver` that reports a width, then restore it.
+**Gate.** Before each commit, run `npm test && npm run lint && npm run build && npm run format:check`, allowing 5 minutes. Lint stays at 0 warnings, and the CSS audit stays at `[]`. To test a narrow path, a test may swap in a `ResizeObserver` that reports a width, then restore it. A test that waits on host moments passes a 15 s timeout, as `Dashboard.test.tsx` does.
 
 **Browser.** Each stream runs its own dev server: `npm run dev -- --port 5181` for A, then 5182, 5183 and 5184. Check each screen standalone at 1280, 900 and 390 px, and on its workbench screen page at each width chip. Check in Arabic and English, light and dark, and by keyboard alone, with no sideways scroll at 390 px. Check Balance (§1) in screenshots at 1,280 and 1,024 px.
 
