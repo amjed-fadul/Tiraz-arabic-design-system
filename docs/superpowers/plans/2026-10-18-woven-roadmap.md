@@ -19,8 +19,8 @@
 | 1 | `2026-10-18-woven-1-foundations.md` | Before evidence; in-flight work brought in (numerals setting, browser-test repairs); the remaining Arabic digit fixes and the two missing Arabic tests; workbench enum and fallback bugs; Woven tokens with contrast tests; input modality; CSS audit harness; StatusIcon; shared remove button | done (0fb781a) |
 | 2 | `2026-10-19-woven-2-demo-frame.md` | Docs spec §6–9, §11–14: DemoFrame states, notes and Replay; `demo-states.ts`; `phase` / `onPhaseChange` on lifecycle examples; notes for all 67 pages; page order | done |
 | 3 | `2026-10-20-woven-3-restyle.md` | Woven spec §12–18: every family's restyle (forms, files, navigation, data, display, overlays, charts, AI parts at CSS level) and the docs chrome; each family joins the CSS audit | done (ad0683f) |
-| 4 | `2026-10-20-woven-4-ai-patterns.md` | AI patterns spec: part API additions, new shared parts, Wave 1 patterns with their pages, navigation regroup, screens, agent-facing docs, consumer exercise | in progress (plan d3c6dd9) |
-| 5 | `…-woven-5-wave-2.md` | Spec §13 Wave 2 patterns (Ask your data, Decision inbox, Draft for review, Assistant controls) and the rest of §13a's Dashboard. **Changed by Amjed on 21 Oct:** runs right after Plan 4, without waiting for his review of Wave 1 | written when Plan 4 Task 8 lands |
+| 4 | `2026-10-20-woven-4-ai-patterns.md` | AI patterns spec: part API additions, new shared parts, Wave 1 patterns with their pages, navigation regroup, screens, agent-facing docs, consumer exercise | done (996e112) |
+| 5 | `2026-10-21-woven-5-wave-2.md` | Spec §13 Wave 2 patterns (Ask your data, Decision inbox, Draft for review, Assistant controls) and the rest of §13a's Dashboard. **Changed by Amjed on 21 Oct:** runs right after Plan 4, without waiting for his review of Wave 1 | in progress on `claude/woven-p5` (worktree woven-p5) |
 
 Each later plan is written just before it runs, from the code the previous plan produced. That way it names real files, exports and line numbers instead of guesses. Each plan is reviewed by Opus against its spec before execution starts.
 
