@@ -5,6 +5,20 @@
 - **Font:** IBM Plex Sans Arabic.
 - **This file:** it continues work that Claude ran as parallel agents, and it lists what is done, what was in flight, and what is left.
 
+## 0. Final state when Claude stopped (read this first)
+
+Every Claude agent is stopped, and only the woven dev server (5411) is running.
+
+| Worktree | Last commit | Uncommitted work | Next step |
+| --- | --- | --- | --- |
+| `woven` (`claude/woven`) | `5087110`, this file | none | Merge the rows below once each is ready. The gate on the merged tree was stopped before it finished, so run it. |
+| `woven-p5` | `1a34769` | none | System fixes `5d4e19c` and `1a34769` are done but not yet in `claude/woven`. Merge `claude/woven-p5`. |
+| `woven-s2` | `82f9744`, Sales pipeline | none | Built but **not reviewed** and not merged. Review it, fix, then merge `claude/woven-s2`. |
+| `woven-s3` | `8bf7d5f`, Contract review | Content studio, half built: `ContentStudio.tsx`, `content-studio.css`, a new `ContentStudio.test.tsx` and `data.ts` | Finish Content studio (spec §3.7), then commit. Contract review's review was stopped, so review it too. Contract review is already in `claude/woven`. |
+| `woven-s4` | `08fc314` | The Team settings digits fix (§3 item 3) in `TeamSettings.tsx`, `TeamSettings.test.tsx` and `data.ts` | Two long Team tests failed in the last gate, probably from machine load. Re-run that file alone, then commit and merge `claude/woven-s4`. |
+
+`claude/woven` holds eight screens. Sales pipeline and Content studio still show as placeholders there.
+
 ## 1. Where things are
 
 - **Main checkout:** `/Users/amjedfadul/Tiraz`, on branch `main`. Leave it alone; it holds the owner's own edits.
