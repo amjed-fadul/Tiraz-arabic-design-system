@@ -1743,7 +1743,7 @@
           "name": "onStart",
           "type": "() => void",
           "required": false,
-          "note": "Start now, Ctrl or Cmd+Enter (500 ms after the plan appears or changes, never on key repeat), or the countdown."
+          "note": "Start now, Ctrl or Cmd+Enter (waits 500 ms after the plan appears and whenever a step is added, removed, reordered or retitled; a change to a step's `detail` alone does not restart it, so retitle a step whose substance changes; never on key repeat), or the countdown."
         },
         {
           "name": "onEditPlan",

@@ -438,9 +438,10 @@ private model reasoning is supplied. Only meaningful ToolCall label/state change
 are announced; use announcement="off" when another host region owns announcements.
 
 The portable ai/examples/ToolActivityExamples.tsx includes static states, rendered
-output and an explicitly started local simulation: running → success, failure →
-host retry, and a chip that opens and focuses its call. Replay/reset/unmount cancel
-stale timers. Sample data contains no secrets and performs no tool operation.
+output and a run that plays once on mount: read → save → failed, which the user
+retries with ToolCall's own Try again; a chip opens and focuses its call. Replay and
+unmount cancel stale timers; reduced motion starts at the final state. Sample data
+contains no secrets and performs no tool operation.
 
 CodeBlock and Markdown are content blocks (Display & feedback in the navigation) and
 StreamingText is a part. They cover exact source copying, safe CommonMark/GFM
