@@ -56,6 +56,32 @@ it("restores explicit routes on Back and keeps language/theme across destination
   expect(screen.getByRole("main")).toHaveFocus();
 });
 
+it("restores the original root history entry without changing a fresh visit's saved page", async () => {
+  const view = at("/");
+  const initialEntry = window.history.state;
+  await userEvent.click(
+    within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
+      "button",
+      { name: "مربع الاختيار" },
+    ),
+  );
+  act(() => {
+    window.history.replaceState(initialEntry, "", "/");
+    window.dispatchEvent(
+      new PopStateEvent("popstate", { state: initialEntry }),
+    );
+  });
+  expect(
+    screen.getByRole("heading", { level: 1, name: "الأزرار" }),
+  ).toBeVisible();
+  view.unmount();
+  persist(storageKeys.documentation, { active: "checkbox" });
+  at("/");
+  expect(
+    screen.getByRole("heading", { level: 1, name: "مربع الاختيار" }),
+  ).toBeVisible();
+});
+
 it("searches the Library in both languages without mounting live examples", async () => {
   at("/library");
   expect(

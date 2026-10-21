@@ -175,11 +175,12 @@ it("opens the screen on its own in a new tab", async () => {
 });
 
 it("opens a screen from a same-origin message only", () => {
+  persist(storageKeys.documentation, { active: "button", screen: "dashboard" });
   render(<Workbench />);
   post({ type: "tiraz:open-screen", slug: "invoices" }, "https://example.com");
   post({ type: "tiraz:open-screen", slug: "nowhere" });
   post({ type: "tiraz:open", slug: "invoices" });
-  expect(heading()).toHaveTextContent("الأزرار");
+  expect(heading()).toHaveTextContent("لوحة العملاء");
   post({ type: "tiraz:open-screen", slug: "invoices" });
   expect(heading()).toHaveTextContent("الفواتير والتحصيل");
 });
@@ -195,6 +196,8 @@ it("keeps focus on main when a screen in the iframe opens another", () => {
     { type: "tiraz:open-screen", slug: "sales-pipeline" },
     "https://example.com",
   );
+  expect(document.activeElement).toBe(frame());
+  post({ type: "tiraz:open-screen", slug: "invoices" });
   expect(document.activeElement).toBe(frame());
   post({ type: "tiraz:open-screen", slug: "sales-pipeline" });
   expect(frame()).toHaveAttribute("src", "/examples/sales-pipeline?embed=1");

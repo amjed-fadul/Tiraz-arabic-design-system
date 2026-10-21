@@ -1,6 +1,6 @@
 # Library, Docs, and Illustrations structure
 
-Status: first implementation complete; final verification and review in progress. Approved by the owner on 21 Oct 2026.
+Status: first implementation complete, reviewed, and verified on 21 Oct 2026. Approved by the owner on 21 Oct 2026. See the [implementation review and verification](../../woven/library-docs-illustrations-review.md).
 
 ## Intent
 

@@ -150,7 +150,8 @@ it("holds a phase until it is changed", async () => {
   fireEvent.click(states().getByRole("button", { name: word("running") }));
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
-  fireEvent.click(nav.getByRole("button", { name: "ملخص الأدوات" }));
+  fireEvent.click(nav.getByRole("button", { name: "استدعاء الأداة" }));
+  fireEvent.click(screen.getByRole("link", { name: "ملخص الأدوات" }));
   expect(pressed()).toEqual([word("done")]);
   expect(chips()).toEqual(chipsDone);
 });
@@ -251,6 +252,8 @@ it("cancels replay on state press, Code view, page change and unmount", async ()
   replay();
   await wait(800);
   fireEvent.click(nav.getByRole("button", { name: "الطرفية" }));
+  // jsdom queues a selectionchange task when route focus moves to main.
+  await wait(0);
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
   fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));

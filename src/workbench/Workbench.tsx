@@ -329,6 +329,7 @@ export function Workbench() {
   const [route, setRoute] = useState(() =>
     readSiteRoute(new URL(window.location.href), readDocumentation()),
   );
+  const initialRoute = useRef(route);
   const language = documentation.language,
     active = route.kind === "component" ? route.id : documentation.active,
     screenSlug = route.kind === "screen" ? route.slug : null,
@@ -344,6 +345,7 @@ export function Workbench() {
     Partial<Record<ComponentId, EventRecord[]>>
   >({});
   const [navigationOpen, setNavigationOpen] = useState(false);
+  const navigationSelection = useRef(false);
   // The screen pages' width chip lasts the session. It is unset until the
   // first screen page measures its stage (or the person picks a chip).
   const [screenWidth, setScreenWidth] = useState<ScreenWidth | null>(null);
@@ -569,11 +571,8 @@ export function Workbench() {
   }
   const navigate = useCallback(
     (next: SiteRoute, history = true) => {
-      if (
-        history &&
-        window.location.pathname + window.location.search === routePath(next)
-      )
-        return;
+      const samePath =
+        window.location.pathname + window.location.search === routePath(next);
       const keepFilterFocus =
         history &&
         next.kind === "library" &&
@@ -584,6 +583,7 @@ export function Workbench() {
       stopFocusReturn.current?.();
       setPhases({});
       setSheetOpen(false);
+      navigationSelection.current = true;
       setNavigationOpen(false);
       setDocumentation((prev) =>
         next.kind === "component"
@@ -592,7 +592,8 @@ export function Workbench() {
             ? { ...prev, screen: next.slug }
             : prev,
       );
-      if (history) window.history.pushState({}, "", routePath(next));
+      if (history && !samePath)
+        window.history.pushState({}, "", routePath(next));
       focusRoute.current = !keepFilterFocus;
       setRoute(next);
       if (!keepFilterFocus) window.scrollTo(0, 0);
@@ -607,11 +608,22 @@ export function Workbench() {
     [navigate],
   );
   useEffect(() => {
-    const onPop = () =>
-      navigate(
-        readSiteRoute(new URL(window.location.href), readDocumentation()),
-        false,
+    // A fresh / visit uses preferences; returning to that history entry must
+    // restore the page it originally showed, even after preferences change.
+    if (window.location.pathname === "/")
+      window.history.replaceState(
+        { ...window.history.state, tirazPath: routePath(initialRoute.current) },
+        "",
       );
+    const onPop = () => {
+      const savedPath =
+        window.location.pathname === "/" && window.history.state?.tirazPath;
+      const url = new URL(
+        typeof savedPath === "string" ? savedPath : window.location.href,
+        window.location.origin,
+      );
+      navigate(readSiteRoute(url, readDocumentation()), false);
+    };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, [navigate]);
@@ -1002,7 +1014,16 @@ export function Workbench() {
                 title={navigationName}
                 language={language}
                 open={navigationOpen}
-                onOpenChange={setNavigationOpen}
+                onOpenChange={(open) => {
+                  if (open) navigationSelection.current = false;
+                  setNavigationOpen(open);
+                }}
+                onClosed={() => {
+                  if (!navigationSelection.current) return false;
+                  navigationSelection.current = false;
+                  mainRef.current?.focus();
+                  return true;
+                }}
                 trigger={
                   <button type="button" className="doc-button">
                     <Menu size={16} aria-hidden="true" />

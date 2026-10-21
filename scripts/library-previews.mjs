@@ -67,6 +67,13 @@ const baseUrl = process.env.TIRAZ_URL || "http://127.0.0.1:5411";
               : `/examples/playground/${entry.key}`;
             await page.goto(`${baseUrl}${path}`);
             await page.locator("h1").first().waitFor();
+            // Charts are lazy loaded: the page heading precedes their module.
+            if (
+              ["line-chart", "area-chart", "bar-chart", "donut-chart"].includes(
+                entry.key,
+              )
+            )
+              await page.locator(".recharts-surface").first().waitFor();
             await page.evaluate(() => document.fonts.ready);
             if (!isScreen)
               await page.addStyleTag({
