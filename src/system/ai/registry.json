@@ -1021,6 +1021,26 @@
       "source": "AgentTask.tsx"
     },
     {
+      "name": "DecisionInbox",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxProps",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxLabels",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxItem",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxTab",
+      "source": "DecisionInbox.tsx"
+    },
+    {
       "name": "SuggestedEdits",
       "source": "SuggestedEdits.tsx"
     },
@@ -1065,6 +1085,22 @@
       "source": "ImageGeneration.tsx"
     },
     {
+      "name": "DraftReview",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftReviewProps",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftReviewLabels",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftTone",
+      "source": "DraftReview.tsx"
+    },
+    {
       "name": "TaskStarter",
       "source": "TaskStarter.tsx"
     },
@@ -1097,6 +1133,22 @@
       "source": "CitedAnswer.tsx"
     },
     {
+      "name": "DataAnswer",
+      "source": "DataAnswer.tsx"
+    },
+    {
+      "name": "DataAnswerProps",
+      "source": "DataAnswer.tsx"
+    },
+    {
+      "name": "DataAnswerLabels",
+      "source": "DataAnswer.tsx"
+    },
+    {
+      "name": "DataAnswerChart",
+      "source": "DataAnswer.tsx"
+    },
+    {
       "name": "ChangeSummary",
       "source": "ChangeSummary.tsx"
     },
@@ -1107,6 +1159,30 @@
     {
       "name": "ChangeSummaryLabels",
       "source": "ChangeSummary.tsx"
+    },
+    {
+      "name": "AssistantControls",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantControlsProps",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantControlsLabels",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantPermission",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantMemoryItem",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "PermissionLevel",
+      "source": "AssistantControls.tsx"
     },
     {
       "name": "ApprovalFlow",
@@ -1444,7 +1520,7 @@
           "name": "labels",
           "type": "Partial<TaskStarterLabels>",
           "required": false,
-          "note": "Replaces any built-in text."
+          "note": "Replaces any built-in text; contextStatus(status) is the region's sentence when the ring crosses a threshold."
         },
         {
           "name": "appearance",
@@ -1457,7 +1533,7 @@
       ],
       "state": "The host owns the draft, the attached records, the mode and the model. The pattern keeps only what the moment needs: the @ word at the caret, which option is active and whether a submission is pending. It never runs a request: onSubmit hands the draft and the records to the host.",
       "accessibility": [
-        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. A failed send is announced and shown by the entry's own status.",
+        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. It also says «السياق: يقترب من الامتلاء» once each time the ring's status word changes, as ContextMeter's region does, never at mount. A failed send is announced and shown by the entry's own status.",
         "The @ picker is a standard combobox on the text area: focus never leaves it, aria-activedescendant names the active option, and Escape closes the picker, not the page. A held Enter acts once. Keys from an input method (composition events, isComposing and keyCode 229) never choose, move or send.",
         "The mode menu is a Radix menu of radio items: arrows move, Escape closes it and returns focus to the button, Tab closes it. The button's name is «الوضع: تلقائي» and it is described by «السياق المستخدم ٣٢٪».",
         "When a change removes the focused control (a chip's remove button), focus moves to the section."
@@ -1505,7 +1581,7 @@
           "type": "\"thinking\" | \"writing\" | \"completed\" | \"failed\" | \"stopped\"",
           "required": true,
           "values": ["thinking", "writing", "completed", "failed", "stopped"],
-          "note": "Host-owned. Thinking opens the panel and offers Stop; writing folds the panel to «فكّر لمدة ٦ث» and streams the words; completed adds the follow-ups, the rating and the meta; failed keeps the partial answer with the error and Try again; stopped keeps it with «أُوقفت الإجابة» and Regenerate."
+          "note": "Host-owned. Thinking opens the panel and offers Stop; writing folds the panel to «فكّر لمدة ٦ث» and streams the words; completed adds the follow-ups, the rating and the meta; failed keeps the partial answer with the error and Try again; stopped keeps it with «أُوقفت الإجابة» and Regenerate. A stop or a failure before a word was written also stops the thinking panel, which reads «أُوقف بعد ٦ث» or «تعثّر بعد ٦ث» with its thread still instead of closed; once words were written it reads «فكّر لمدة ٦ث»."
         },
         {
           "name": "question",
@@ -1517,7 +1593,7 @@
           "name": "content",
           "type": "string",
           "required": true,
-          "note": "Markdown, the whole text so far. A [n] marker names a source's number and becomes a citation chip; a marker with no source, or inside code, stays text. Links in it pass through sourceHref."
+          "note": "Markdown, the whole text so far. A [n] marker names a source's number and becomes a citation chip, written in ASCII, Arabic-Indic or Persian digits; [n, m] or [n، m] cites several, as adjacent chips. A marker with no source for any of its numbers, or inside code, stays text. Links in it pass through sourceHref."
         },
         {
           "name": "sources",
@@ -1529,7 +1605,7 @@
           "name": "thinking",
           "type": "{ elapsed: number; searched: readonly SourceReference[]; steps?: readonly { id: string; label: string; state: \"pending\" | \"running\" | \"completed\" }[] }",
           "required": false,
-          "note": "What the search covered, for the thinking panel. Seconds, the sources found so far (the first three show as chips) and the steps. Without it there is no panel."
+          "note": "What the search covered, for the thinking panel. Seconds, the sources found so far (the first three show as chips, and a button shows the rest) and the steps. Without it there is no panel."
         },
         {
           "name": "thinkingOpen",
@@ -1573,9 +1649,9 @@
         },
         {
           "name": "onCopy",
-          "type": "() => void | Promise<void>",
+          "type": "(text: string) => void | Promise<void>",
           "required": false,
-          "note": "The host copies the answer; «نُسخت» shows for two seconds once the promise resolves."
+          "note": "The host copies the text it is given: the answer as written, a blank line, then «المصادر» (Sources) and one line per source, \"{number}. {title}\" in the reader's digits, with \" — {link}\" when the source's link is http or https, as URL normalises it (a direction override is percent-encoded). «نُسخت» shows for two seconds once the promise resolves. A host that ignores the text keeps working."
         },
         {
           "name": "onRegenerate",
@@ -1633,12 +1709,12 @@
       "state": "The host owns the status, the text, the sources, the rating and every time. The pattern never advances by itself: it shows the thinking panel, streams the words it is given and reports what the person asks for. The panel folds when writing starts unless the host controls it.",
       "accessibility": [
         "A section labelled by the question (or «إجابة موثّقة»). One polite region says each change of status in one sentence: يفكّر, يكتب الإجابة, اكتملت الإجابة, تعذّر إكمال الإجابة or أُوقفت الإجابة. The status the answer mounts in is not announced. The answer's words, the elapsed time and the copy confirmation never reach a live region: the thinking panel and the streamed text run with announcement off, and the bar has none.",
-        "A citation chip is a link when its source has a safe destination, so Enter and a click open it; otherwise it is a button that Tab reaches, and a click or focus previews it. Hover or focus shows the source's title and description in a tooltip that carries no link, Escape or blur closes it, and the pointer moving onto it keeps it open (WCAG 1.4.13). The chip's name is «المصدر ١: العنوان» in the provider's digits.",
+        "A citation chip is a link when its source has a safe destination, so Enter and a click open it; otherwise it is a button that Tab reaches, and a click or focus previews it. Hover or focus shows the source's title and description in a tooltip that carries no link, Escape or blur closes it, and the pointer moving onto it keeps it open (WCAG 1.4.13). The chip's name is «المصدر ١: العنوان» in the provider's digits. A tap on a touch screen opens the source's card instead of following the link: a dialog named by the source's title, holding «فتح المصدر», which a second tap, a tap outside or Escape closes.",
         "A failure stays as text beside the partial answer, with Try again. When a change removes the focused control (Stop, Try again, Regenerate), focus moves to the section. Moving to a status never moves focus."
       ],
       "limitations": [
         "No model call, retrieval, streaming transport or timer. Supply the sources, the numbers in the text and the times; update the time at most once a second.",
-        "The answer is Markdown with [n] markers; a number with no source stays as written, so supply every source the text cites.",
+        "The answer is Markdown with [n] markers, and a group such as [1, 3] is one marker; a number with no source leaves its whole marker as written, so supply every source the text cites.",
         "Links in the answer are limited to http, https, relative and fragment destinations."
       ],
       "alternative": "Use a ChatThread message for casual chat without sources, Agent task for multi-step work, and Sources with InlineCitation alone to cite inside your own content.",
@@ -1648,6 +1724,168 @@
         "@radix-ui/react-popover@1.3.1 (via InlineCitation)"
       ],
       "examples": ["ai/examples/CitedAnswerExamples.tsx"]
+    },
+    {
+      "id": "data-answer",
+      "api": "DataAnswer",
+      "source": "DataAnswer.tsx",
+      "kind": "pattern",
+      "parts": [
+        "ai-mark",
+        "status-pill",
+        "tray",
+        "thinking-panel",
+        "feedback-bar",
+        "markdown",
+        "sources",
+        "line-chart",
+        "area-chart",
+        "bar-chart",
+        "donut-chart"
+      ],
+      "states": ["thinking", "completed", "failed", "empty"],
+      "events": [
+        "onChartTypeChange",
+        "onPin",
+        "onOpenTable",
+        "onCopy",
+        "onRetry"
+      ],
+      "exports": [
+        "DataAnswer",
+        "DataAnswerProps",
+        "DataAnswerLabels",
+        "DataAnswerChart"
+      ],
+      "purpose": "Turn a question about the person's data into a chart from the existing chart families, a two-sentence explanation that cites its tables by number, and a folded «كيف حُسب هذا؟» (date range, filters and source tables). The person can pin the chart, open it in a table and change its type; the states are thinking, completed, failed and empty.",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"thinking\" | \"completed\" | \"failed\" | \"empty\"",
+          "required": true,
+          "values": ["thinking", "completed", "failed", "empty"],
+          "note": "Host-owned. Thinking opens the thinking panel on the tables found so far; completed shows the chart, the explanation, «كيف حُسب هذا؟» and the person's options; failed shows «تعذّر إكمال الإجابة» with `error` and Try again; empty shows «لا توجد بيانات لهذه الفترة» with «كيف حُسب هذا؟». The pill reads «يفكّر», «اكتملت» (completed and empty) or «تعثّرت»."
+        },
+        {
+          "name": "question",
+          "type": "ReactNode",
+          "required": true,
+          "note": "The question, as the section's heading, beside the AI mark (turning while thinking) and the status pill."
+        },
+        {
+          "name": "chart",
+          "type": "DataAnswerChart",
+          "required": false,
+          "note": "The chart family and its own props: { type: \"line\" | \"area\" | \"bar\", props: CartesianChartProps } or { type: \"donut\", props: DonutChartProps }. Drawn as given, once completed. The pattern never reshapes data: the host passes the data that fits the type it shows."
+        },
+        {
+          "name": "explanation",
+          "type": "string",
+          "required": false,
+          "note": "Markdown, two sentences, under the chart. A [n] marker names a source's number in `sources` and becomes a preview citation chip, written in ASCII, Arabic-Indic or Persian digits; a marker with no source stays text. Links in it pass through sourceHref."
+        },
+        {
+          "name": "sources",
+          "type": "readonly SourceReference[]",
+          "required": false,
+          "note": "The tables the answer rests on, cited by number and listed in the method as «الجداول». Their titles are also the numbered lines of a copied answer."
+        },
+        {
+          "name": "method",
+          "type": "{ range: string; filters?: string }",
+          "required": false,
+          "note": "How the answer was worked out: «الفترة» is `range`, «التصفية» is `filters` or «بلا تصفية», and «الجداول» lists `sources` as chips. Folded by default behind «كيف حُسب هذا؟», and shown when completed or empty. Without `method` there is no disclosure."
+        },
+        {
+          "name": "thinking",
+          "type": "{ elapsed: number; searched: readonly SourceReference[]; steps?: readonly { id: string; label: string; state: \"pending\" | \"running\" | \"completed\" }[] }",
+          "required": false,
+          "note": "What the search covered, for the thinking panel: seconds, the tables found so far and the steps. The panel is open while thinking and folds after. When the answer failed it reads «تعثّر بعد ٦ث» with its thread still, so pass only what had arrived and mark no unfinished step completed. Update `elapsed` at most once a second. Without it there is no panel."
+        },
+        {
+          "name": "chartTypes",
+          "type": "readonly (\"line\" | \"area\" | \"bar\" | \"donut\")[]",
+          "required": false,
+          "note": "The types the person can switch between. With two or more, an `onChartTypeChange` and a completed answer, a native radio group «نوع الرسم» offers «خطوط», «مساحة», «أعمدة» and «حلقي». List the type `chart` shows. Offer only the families that fit the data."
+        },
+        {
+          "name": "onChartTypeChange",
+          "type": "(type: \"line\" | \"area\" | \"bar\" | \"donut\") => void",
+          "required": false,
+          "note": "Called with the type the person chose. The pattern changes nothing itself: the radio and the chart stay as they are until the host passes a new `chart`."
+        },
+        {
+          "name": "onPin",
+          "type": "() => void",
+          "required": false,
+          "note": "«ثبّت في اللوحة», the primary button of a completed answer. It shows only with the handler; the host pins the chart."
+        },
+        {
+          "name": "onOpenTable",
+          "type": "() => void",
+          "required": false,
+          "note": "«افتح في جدول» on a completed answer. It shows only with the handler; the host opens the rows behind the chart."
+        },
+        {
+          "name": "onCopy",
+          "type": "(text: string) => void | Promise<void>",
+          "required": false,
+          "note": "The host copies the text it is given: the explanation as written, a blank line, «كيف حُسب هذا؟» with «الفترة: …» and «التصفية: …», a blank line, then «المصادر» and one line per table, \"{number}. {title}\" in the reader's digits, with \" — {link}\" when its link is http or https. «نُسخت» shows for two seconds once the promise resolves. The copy button shows only with the handler, on a completed answer."
+        },
+        {
+          "name": "onRetry",
+          "type": "() => void",
+          "required": false,
+          "note": "The primary button when the answer failed."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "note": "What went wrong, as persistent text beside «تعذّر إكمال الإجابة» when the answer failed."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The question's level."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<DataAnswerLabels>",
+          "required": false,
+          "note": "Replaces any built-in text; thinkingPanel and feedbackBar carry the nested parts' words."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "card sits on a tray with the chart and the explanation on paper; plain lives on its host's paper."
+        }
+      ],
+      "state": "The host owns the status, the chart and its data for every type, the text, the tables and every time. The pattern never fetches, computes or reshapes anything and never advances by itself: it shows the thinking, draws the chart it is given, and reports what the person asks for, including the chart type to show next.",
+      "accessibility": [
+        "A section labelled by the question. One polite region says each change of status in one sentence: يفكّر, اكتملت الإجابة, تعذّر إكمال الإجابة or لا توجد بيانات لهذه الفترة. The status the answer mounts in is not announced, and an unchanged status is not announced again. The chart, the thinking panel and the copy confirmation never reach a live region.",
+        "The status pill names the state once, in words: يفكّر, اكتملت or تعثّرت. The chart is a named region with its visible summary. «كيف حُسب هذا؟» is a button with aria-expanded over a definition list, which is hidden and inert while folded. The chart type is a native radio group named «نوع الرسم», so the arrow keys move and change it; each option is named by its visible word.",
+        "A failure stays as text with Try again. When a change removes the focused control (Try again, Pin, a chart type), focus moves to the section. Moving to a status never moves focus."
+      ],
+      "limitations": [
+        "No data fetching, computing or charting logic: the host supplies the chart's data, every figure in the text and the times, and reshapes its data when the chart type changes. Update the thinking time at most once a second.",
+        "The explanation is Markdown with [n] markers, and a group such as [1, 3] is one marker; a number with no source leaves its whole marker as written, so supply every table the text cites. Digits in the text and the method are the host's: format them with numberLocale(config).",
+        "Use the families that fit the data: line and area for a trend over time, bar for a comparison, donut for the parts of a whole (it draws positive values only)."
+      ],
+      "alternative": "Use Cited answer for an answer from documents, a chart family alone for a figure that needs no explanation, DataTable for many records, and What changed for what moved this week.",
+      "dependencies": [
+        "recharts (via the chart families)",
+        "react-markdown@10.1.0",
+        "remark-gfm@4.0.1 (via Markdown)",
+        "@radix-ui/react-popover@1.3.1 (via InlineCitation)"
+      ],
+      "examples": ["ai/examples/DataAnswerExamples.tsx"]
     },
     {
       "id": "agent-task",
@@ -1675,6 +1913,8 @@
         "onStart",
         "onEditPlan",
         "onSteer",
+        "onApplyNoteNow",
+        "onRemoveNote",
         "onStop",
         "onDecision",
         "onRetryStep",
@@ -1699,7 +1939,7 @@
           "name": "agent",
           "type": "ReactNode",
           "required": false,
-          "note": "Shown before the step count: وكيل المالية · ٥ خطوات."
+          "note": "Shown before the step count: وكيل المالية · ٥ خطوات. A needs-you step's approval names it as who asks, unless the step was handed to another agent."
         },
         {
           "name": "status",
@@ -1754,7 +1994,19 @@
           "name": "onSteer",
           "type": "(text: string, when: \"next\" | \"now\") => void",
           "required": false,
-          "note": "The running footer's field: Enter steers at the next step, Ctrl or Cmd+Enter now; the field then clears. Empty text and input-method composition never steer."
+          "note": "The running footer's field: Enter steers at the next step, Ctrl or Cmd+Enter now; the field then clears and the region says سيُطبَّق مع الخطوة التالية: {text} or يُطبَّق الآن: {text}. Empty text and input-method composition never steer."
+        },
+        {
+          "name": "onApplyNoteNow",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "While running, a note not yet applied offers طبّق الآن, named طبّق الآن: {text}, for that note only. Mark it applied on the running step."
+        },
+        {
+          "name": "onRemoveNote",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "While running, a note not yet applied offers إزالة, named إزالة التوجيه: {text}, for that note only. Drop the note; focus then moves to the section."
         },
         {
           "name": "onStop",
@@ -1814,7 +2066,7 @@
       ],
       "state": "The host owns the status, the steps, the times and the outputs; the pattern never advances by itself. The countdown is a UI affordance the host opts into, and it calls onStart. The inline approval keeps ApprovalCard's decision integrity: a decision counts only after the host's promise resolves.",
       "accessibility": [
-        "A section labelled by its title. One polite region says each status once in one sentence: خطة مقترحة (with the countdown's sentence), يعمل, {title}: يحتاج قرارك, تعثّرت: {error title}, أُوقفت and اكتملت المهمة. Elapsed time, step durations and countdown ticks never reach it; the countdown and the tool calls run with announcement off, and the inline approval keeps its own region.",
+        "A section labelled by its title. One polite region says each status once in one sentence: خطة مقترحة (with the countdown's sentence), يعمل, {title}: يحتاج قرارك, تعثّرت: {error title}, أُوقفت and اكتملت المهمة. It also says each note once: where a sent note goes, and أخذ الوكيل بتوجيهك: {text} when a note's applied turns true; notes applied at mount are not news. Elapsed time, step durations and countdown ticks never reach it; the countdown and the tool calls run with announcement off, and the inline approval keeps its own region.",
         "Each step's icon has a hidden state word (لم تبدأ، قيد التنفيذ، بانتظارك، مكتملة، تعثّرت، تُخطّيت); a failure stays as text beside its step. Details are a disclosure whose closed panel is hidden and inert at once; collapsing returns focus to Details unless the person moved it elsewhere. When a change removes the focused control, focus moves to the section. Moving to needs-you never moves focus."
       ],
       "limitations": [
@@ -1824,6 +2076,164 @@
       "alternative": "Use ApprovalCard for a single yes or no, TaskRows for a list of tasks without a run, or a table for many tasks at a glance.",
       "dependencies": [],
       "examples": ["ai/examples/AgentTaskExamples.tsx"]
+    },
+    {
+      "id": "decision-inbox",
+      "api": "DecisionInbox",
+      "source": "DecisionInbox.tsx",
+      "kind": "pattern",
+      "parts": [
+        "ai-mark",
+        "tabs",
+        "status-pill",
+        "tray",
+        "status-icon",
+        "approval-card",
+        "ask-user-questions",
+        "button"
+      ],
+      "states": ["needs-you", "running", "failed", "completed"],
+      "events": [
+        "onTabChange",
+        "onExpandedChange",
+        "onAgentChange",
+        "onDecision",
+        "onAnswer",
+        "onRetry",
+        "onOpen"
+      ],
+      "exports": [
+        "DecisionInbox",
+        "DecisionInboxProps",
+        "DecisionInboxLabels",
+        "DecisionInboxItem",
+        "DecisionInboxTab"
+      ],
+      "purpose": "Collect what waits on the person from every agent in one place, most urgent first: tabs with counts (الكل، بانتظارك، يعمل، اكتملت), rows that open into the full Approval request or Clarifying questions, quick decisions for reversible requests only, receipts, and an optional agents strip. There is no approve-all.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly DecisionInboxItem[]",
+          "required": true,
+          "note": "In the host's order, most urgent first; the inbox keeps it. Each item is an approval (request with approval), questions, a draft (draft: true) or a task, with a status of needs-you, running, failed or completed. «بانتظارك» holds needs-you and failed items, «يعمل» running ones, «اكتملت» completed ones and «الكل» every item."
+        },
+        {
+          "name": "tab",
+          "type": "\"all\" | \"needs-you\" | \"running\" | \"completed\"",
+          "required": false,
+          "default": "needs-you",
+          "values": ["all", "needs-you", "running", "completed"],
+          "note": "The shown tab; controlled with onTabChange. Each tab shows its count in the reader's digits. Changing the tab announces nothing."
+        },
+        {
+          "name": "onTabChange",
+          "type": "(tab: DecisionInboxTab) => void",
+          "required": false
+        },
+        {
+          "name": "expanded",
+          "type": "readonly string[]",
+          "required": false,
+          "default": [],
+          "note": "The open rows' ids; controlled with onExpandedChange. A row opens from its title, a disclosure button with aria-expanded, or from «راجع» / «أجب»; focus stays on the trigger and nothing in the row takes it. A row whose quick decision is in flight stays closed even when expanded names it, and an open row whose card is recording a decision stays open: its title and Escape leave it be until the host answers. A row with no steps, request or questions has nothing to open, and its title is a heading that takes focus only when a moving row hands it on."
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(ids: string[]) => void",
+          "required": false
+        },
+        {
+          "name": "agents",
+          "type": "readonly { id: string; name: ReactNode; state: StatusPillState }[]",
+          "required": false,
+          "note": "The agents strip, a group named «الوكلاء» of aria-pressed toggles, each naming its agent and its StatusPill word."
+        },
+        {
+          "name": "agent",
+          "type": "string | null",
+          "required": false,
+          "default": null,
+          "note": "The picked agent, which filters the rows and the counts. Uncontrolled, none is picked."
+        },
+        {
+          "name": "onAgentChange",
+          "type": "(id: string | null) => void",
+          "required": false,
+          "note": "A press calls it with the agent's id, and a press on the picked one with null."
+        },
+        {
+          "name": "onDecision",
+          "type": "(request: ApprovalRequest, decision: ApprovalDecision, context: { signal: AbortSignal }) => void | Promise<void>",
+          "required": false,
+          "note": "Records the decision of an open row's ApprovalCard (plain, a heading deeper, with Mod+Enter only for reversible and not irreversible, and its 500 ms guard), or a quick one. Quick decisions show only for a needs-you request whose approval is reversible, neither irreversible nor expired, while its row is closed: secondary Reject and Approve, with no shortcut, named with the row's title. One runs at a time and counts only once the promise resolves; a change to the request, its expiry or its reversibility aborts it, so a late resolve records nothing, and remounts the quick buttons, so focus on one moves to the row's title. Without onDecision a request shows its action and target as text, with no actions."
+        },
+        {
+          "name": "onAnswer",
+          "type": "(id: string, answers: QuestionAnswers, context: { signal: AbortSignal }) => void | Promise<void>",
+          "required": false,
+          "note": "Submits a question row's answers from its plain AskUserQuestions. The inbox keeps each row's draft answers. Without it the questions show as text."
+        },
+        {
+          "name": "onRetry",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "«أعد المحاولة» on a failed row, beside its error."
+        },
+        {
+          "name": "onOpen",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "«افتح» on running and completed rows, and «راجع» on a draft: the host opens it in its own view, never inside the row."
+        },
+        {
+          "name": "receiptFor",
+          "type": "number",
+          "required": false,
+          "default": 5,
+          "note": "Seconds a row the host moved out of the shown tab stays in place with its receipt (item.receipt, else the quick decision's receipt, else the new status's pill word) before it leaves without a glide. A UI timer: 0 moves a resolved row at once."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The section's heading; «صندوق القرارات» / Decision inbox by default."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The title's level; rows sit one deeper and an open row's card or questions one deeper again."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<DecisionInboxLabels>",
+          "required": false,
+          "note": "Replaces any built-in text; waiting(count, requests) and running(count, tasks) build the region's sentence from the count helper's words."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "card sits on a tray with the tabs and rows on paper; plain lives on its host's paper, as in a Sheet."
+        }
+      ],
+      "state": "The host owns every item, its status, its request and its times; the inbox never resolves, moves or removes an item by itself. It holds only UI state: the uncontrolled tab, open rows and agent, each question row's draft answers, a quick decision in flight, and the receipt timer for a row the host moved out of the shown tab.",
+      "accessibility": [
+        "A section labelled by its title. One polite region, empty at mount, speaks only when the counts change, joining its non-zero parts with « · »: «طلبان بانتظارك · ٣ مهام تعمل», or «لا شيء بانتظارك». Changing the tab says nothing; the open card keeps its own region.",
+        "Opening a row never moves focus, and nothing inside takes it; a new or changed item never moves focus. Escape anywhere in an open row, the card included, folds it, returns focus to its title and records nothing: the row takes the key in its capture phase, and the card's DecisionBar drops its Esc hint there. While a decision in the open row is being recorded, Escape and the title leave the row open. When a row's own action goes away, such as an accepted quick decision or Try again, focus moves to that row's title, which the receipt then describes (aria-describedby). When a row leaves, or the host deletes it, while focus is in it, focus goes to the next row's title, else the previous row's, else the tab panel.",
+        "Each row action is named by its own word and then the row's title through aria-labelledby, so «رفض» reads «رفض ترحيل قيود الاستحقاق الأربعة». Each row's pill names its status in words (بانتظارك، بانتظار مراجعتك، يعمل، تعثّرت، اكتملت), a failed row's error stays as text, and each step's icon has a hidden state word."
+      ],
+      "limitations": [
+        "No approve-all, ever: every decision is about one request. Mark reversible, irreversible and expired honestly, because they decide whether a row decides without opening. A receipt says what was recorded, never what the agent then did.",
+        "The receipt timer is the only clock; the host formats every time. Drafts are reviewed where the host opens them (onOpen), not inside the inbox."
+      ],
+      "alternative": "Use ApprovalCard for a single request, ApprovalFlow for a short run of requests decided one at a time, and Agent task for one agent's run.",
+      "dependencies": ["@radix-ui/react-tabs@1.2.0 (via Tabs)"],
+      "examples": ["ai/examples/DecisionInboxExamples.tsx"]
     },
     {
       "id": "suggested-edits",
@@ -2088,6 +2498,166 @@
       "examples": ["ai/examples/ImageGenerationExamples.tsx"]
     },
     {
+      "id": "draft-review",
+      "api": "DraftReview",
+      "source": "DraftReview.tsx",
+      "kind": "pattern",
+      "parts": [
+        "ai-mark",
+        "status-pill",
+        "badge",
+        "inline-diff",
+        "tray",
+        "button",
+        "countdown"
+      ],
+      "states": ["writing", "ready", "sending", "sent", "discarded"],
+      "events": [
+        "onBodyChange",
+        "onToneChange",
+        "onSend",
+        "onDiscard",
+        "onUndo"
+      ],
+      "exports": [
+        "DraftReview",
+        "DraftReviewProps",
+        "DraftReviewLabels",
+        "DraftTone"
+      ],
+      "purpose": "The assistant writes a message for a record; the person reviews, edits and sends it. The record (invoice number, customer, amount in figure type, overdue tag) frames the draft on the tray. The paper holds the recipient and attachment chips, the message with an optional suggested edit as tracked changes, and the tone (ودّي، مختصر، رسمي). Discard and Send, with Ctrl or Cmd+Enter, decide it. Sending leaves a receipt, with Undo only while the host holds the message.",
+      "props": [
+        {
+          "name": "status",
+          "type": "\"writing\" | \"ready\" | \"sending\" | \"sent\" | \"discarded\"",
+          "required": true,
+          "values": ["writing", "ready", "sending", "sent", "discarded"],
+          "note": "Host-owned; the pattern never advances it. The pill reads يكتب (running), بانتظار مراجعتك (needs-you), تُرسَل (running), أُرسلت (completed) or تم التجاهل (stopped). Discard and Send show only while ready; the hold while sending; the receipt once sent or discarded."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The section's heading; «مسودة للمراجعة» / Draft for review by default."
+        },
+        {
+          "name": "record",
+          "type": "{ id: string; customer: ReactNode; amount: ReactNode; overdue?: ReactNode }",
+          "required": false,
+          "note": "The record the draft is about, on the tray under the header: the id in <bdi dir=\"ltr\">, the customer, the amount at --text-figure-small with tabular figures, and overdue in an error Badge. Format the amount and the days with numberLocale."
+        },
+        {
+          "name": "recipients",
+          "type": "readonly { id: string; label: ReactNode }[]",
+          "required": true,
+          "note": "The «إلى» chips, each label in its own direction. Their ids are part of what Ctrl or Cmd+Enter waits on, so a new recipient makes it wait 500 ms again."
+        },
+        {
+          "name": "attachments",
+          "type": "readonly { id: string; label: ReactNode }[]",
+          "required": false,
+          "default": [],
+          "note": "The «المرفقات» chips, such as a file name, each in its own direction. Their ids are part of what Ctrl or Cmd+Enter waits on."
+        },
+        {
+          "name": "body",
+          "type": "string",
+          "required": true,
+          "note": "The message. While writing it is the host's growing text, read-only under a running Thread; ready without a suggestion, a «نص الرسالة» Textarea when onBodyChange is given, else text. Send hands it over when no suggestion shows."
+        },
+        {
+          "name": "onBodyChange",
+          "type": "(body: string) => void",
+          "required": false,
+          "note": "Makes the body a text area while ready without a suggestion."
+        },
+        {
+          "name": "suggestion",
+          "type": "{ title?: ReactNode; segments: readonly DiffSegment[]; decisions: Readonly<Record<string, \"accepted\" | \"rejected\">>; onDecisionsChange: (next: Record<string, \"accepted\" | \"rejected\">) => void }",
+          "required": false,
+          "note": "A suggested edit, shown while ready as «اقتراح المساعد · title» over InlineDiff, with decisions keyed by each change's first segment id. While it shows, Send hands over the text as decided: each accepted change's new text, and the original text for the rest."
+        },
+        {
+          "name": "tone",
+          "type": "\"friendly\" | \"brief\" | \"formal\"",
+          "required": false,
+          "values": ["friendly", "brief", "formal"],
+          "note": "The checked tone."
+        },
+        {
+          "name": "onToneChange",
+          "type": "(tone: DraftTone) => void",
+          "required": false,
+          "note": "The «النبرة» group of native radios (ودّي، مختصر، رسمي) shows only with it, and a choice only calls it. The radios are disabled from sending on. A new tone makes Ctrl or Cmd+Enter wait 500 ms again."
+        },
+        {
+          "name": "onSend",
+          "type": "(text: string) => void",
+          "required": false,
+          "note": "Send («إرسال», the primary button, with Mod+Enter) while ready. Called once per ready status with the text on screen; further clicks, chords and held keys do nothing until the status changes. The chord waits 500 ms after mount and after the text, the tone, the recipients or the attachments change. Move to sending in the same update, because Send and Discard stay locked until the status changes; if sending fails, return to ready, and the region says «تعذّر إرسال الرسالة، والمسودة محفوظة», which also shows as an error above Send."
+        },
+        {
+          "name": "onDiscard",
+          "type": "() => void",
+          "required": false,
+          "note": "Discard («تجاهل») while ready. It never sends, and once Send or Discard has acted neither acts again until the status changes."
+        },
+        {
+          "name": "undoWindow",
+          "type": "number",
+          "required": false,
+          "note": "The whole seconds left in the host's hold when the countdown mounts, not the hold's full length, so a remount never offers Undo after the hold ends. Above zero and with onUndo, sending shows «تُرسَل خلال {t}» with a Countdown that never pauses (announcement off) and «تراجع»; when it ends, Undo goes and the line reads «تُرسَل الآن…». Undo shows only while the host holds the message, and the host takes the window from a setting the person controls before meeting it: off, or adjustable to at least ten times the default (WCAG 2.2.1). A receipt records the sending, never a recall."
+        },
+        {
+          "name": "onUndo",
+          "type": "() => void",
+          "required": false,
+          "note": "Called once; Undo then shows loading. Cancel the hold and return to ready if it arrives in time; otherwise send and mark it sent, and the region says it was sent before it could be cancelled. A receipt records the sending, never a recall."
+        },
+        {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The agent that wrote the draft, under the title."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "The title's level."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<DraftReviewLabels>",
+          "required": false,
+          "note": "Replaces any built-in text; inlineDiff carries the tracked changes' words."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card sits on a tray with the message on paper; plain lives on its host's paper, as in a conversation or a side panel."
+        }
+      ],
+      "state": "The host owns the status, the text, the suggestion and its decisions, the tone, the recipients, the attachments and the sending: it holds the message for its undo window, sends it once the window ends, cancels it on onUndo, and marks it sent. The pattern sends and cancels nothing itself. It holds only UI state: whether Send, Discard or Undo has acted in this status, and whether its countdown has ended.",
+      "accessibility": [
+        "A section labelled by its title. One polite region, empty at mount, says each change of status once: يكتب المسودة; المسودة بانتظار مراجعتك; تُرسَل الرسالة, or with an undo window تُرسَل الرسالة خلال ١٠ث. يمكنك التراجع.; أُلغي الإرسال، والمسودة محفوظة when an Undo takes sending back to ready, and otherwise تعذّر إرسال الرسالة، والمسودة محفوظة, also shown as an error Alert above Send; أُرسلت الرسالة, or after an Undo أُرسلت الرسالة قبل أن يُلغى الإرسال; تم تجاهل المسودة. The countdown never speaks, and neither its ticks nor a new undoWindow reach the region.",
+        "Send, Discard and Undo go away with their status, and focus then moves to the section, as it does from a text area, a tracked change or a tone that a change removes or disables.",
+        "The record's id is isolated left to right, each chip in its own direction, and the overdue tag is an error Badge with words. The tone is a native radio group named «النبرة». Each button is named by its visible word, and Send's shortcut is its description."
+      ],
+      "limitations": [
+        "No sending, no recall and no clock but the countdown, which shows the host's window and never pauses. A receipt records the sending, never a recall. Undo shows only while the host holds the message (undoWindow with onUndo); the host takes the window from a setting the person controls before meeting it, either off or adjustable to at least ten times the default (WCAG 2.2.1), and undoWindow is the seconds left in that hold, not its full length.",
+        "The suggestion is plain text, and its segments cover the whole message. A draft waiting in the Decision inbox opens here through the inbox's onOpen."
+      ],
+      "alternative": "Use Suggested edits to rewrite the person's own text, and Approval request for a one-time decision about an action rather than a message to review.",
+      "dependencies": [],
+      "examples": ["ai/examples/DraftReviewExamples.tsx"]
+    },
+    {
       "id": "change-summary",
       "api": "ChangeSummary",
       "source": "ChangeSummary.tsx",
@@ -2189,6 +2759,147 @@
       "alternative": "Use a chart for one measure over time, a DataTable for many records, and InsightCards for findings read one at a time.",
       "dependencies": ["@radix-ui/react-popover@1.3.1 (via InlineCitation)"],
       "examples": ["ai/examples/ChangeSummaryExamples.tsx"]
+    },
+    {
+      "id": "assistant-controls",
+      "api": "AssistantControls",
+      "source": "AssistantControls.tsx",
+      "kind": "pattern",
+      "parts": [
+        "switch",
+        "badge",
+        "button",
+        "context-meter",
+        "model-selector",
+        "tray"
+      ],
+      "states": [],
+      "events": [
+        "onPermissionChange",
+        "onMemoryEnabledChange",
+        "onMemoryPauseChange",
+        "onMemoryDelete",
+        "onModelChange"
+      ],
+      "exports": [
+        "AssistantControls",
+        "AssistantControlsProps",
+        "AssistantControlsLabels",
+        "AssistantPermission",
+        "AssistantMemoryItem",
+        "PermissionLevel"
+      ],
+      "purpose": "Decide what the assistant may do without asking, what it remembers and how much context it uses: a level for each action, locked to «اسأل دائمًا» for an action that can't be undone; a memory switch with the remembered items under their categories, each paused or deleted by name; and the context meter's detail view with an optional model selector. These are the person's settings, so the pattern has no AI mark, no status pill and no states of its own.",
+      "props": [
+        {
+          "name": "permissions",
+          "type": "readonly AssistantPermission[]",
+          "required": false,
+          "note": "One fieldset per action, shown when given: the legend names the action with its risk tags (حساس, a neutral Badge; لا يمكن التراجع, a warning Badge), its description describes it, and three native radios read اسأل دائمًا، إن كان حساسًا، تلقائي بالكامل with the host's level checked. An action whose risks include irreversible is locked: اسأل دائمًا is checked whatever level says, the other two are disabled, and a lock with «لا يمكن التراجع عن هذا الإجراء، لذلك يسألك المساعد قبله دائمًا.» describes the fieldset."
+        },
+        {
+          "name": "onPermissionChange",
+          "type": "(id: string, level: PermissionLevel) => void",
+          "required": false,
+          "note": "The person's choice for an action. Never called for a locked one. Store the level and enforce it when the assistant acts; the pattern only shows and reports it. Without it the radios are disabled."
+        },
+        {
+          "name": "memoryEnabled",
+          "type": "boolean",
+          "required": false,
+          "note": "The «استخدم الذاكرة» switch. While it is false, «لا يستخدم المساعد الذاكرة الآن.» sits over the list."
+        },
+        {
+          "name": "onMemoryEnabledChange",
+          "type": "(enabled: boolean) => void",
+          "required": false,
+          "note": "The switch's change; without it the switch is disabled."
+        },
+        {
+          "name": "memory",
+          "type": "readonly AssistantMemoryItem[]",
+          "required": false,
+          "note": "The remembered items, grouped under their category headings (two levels below the title) in the order the categories first appear. Each shows its text, «{source} · {date}» and, when paused, «متوقف مؤقتًا»."
+        },
+        {
+          "name": "onMemoryPauseChange",
+          "type": "(id: string, paused: boolean) => void",
+          "required": false,
+          "note": "«إيقاف مؤقت» or «استئناف» on each item, named with the item through aria-labelledby, called with the opposite of paused."
+        },
+        {
+          "name": "onMemoryDelete",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "«حذف» on each item, named with the item. It only asks: the item stays until the host removes it from memory (after a confirmation where it can't be restored), and the pattern never says it was deleted. When it goes, focus moves to the section."
+        },
+        {
+          "name": "contextUsage",
+          "type": "ContextMeterProps",
+          "required": false,
+          "note": "The «السياق والاستخدام» section's ContextMeter, shown inline: each part's share and a bar, its action once the meter fills up, and its polite region, which is the pattern's one live region."
+        },
+        {
+          "name": "models",
+          "type": "readonly ModelOption[]",
+          "required": false,
+          "note": "For hosts that expose models: a ModelSelector named «النموذج», as the visible label beside it."
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "required": false,
+          "note": "The selected model's id."
+        },
+        {
+          "name": "onModelChange",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "The selector's change; without it the selector is disabled."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The section's heading; «إعدادات المساعد» / Assistant controls by default."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "The title's level; the three sections sit one lower and the memory categories two."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<AssistantControlsLabels>",
+          "required": false,
+          "note": "Replaces any built-in text."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card sits on a tray with the sections on paper; plain lives on its host's paper, as in a side panel or a settings page."
+        }
+      ],
+      "state": "The host owns every setting: each action's level, whether memory is on, the remembered items and whether each is paused, the context usage and the model. It stores and enforces them. The pattern shows them and reports the person's choices, and keeps only where focus was. A locked action shows «اسأل دائمًا» whatever level the host passes, and an item the person asks to delete stays until the host removes it.",
+      "accessibility": [
+        "A section labelled by its title, with no AI mark and no status pill. Its three sections, «الصلاحيات», «الذاكرة» and «السياق والاستخدام», are headed one level down and show only when their data is given.",
+        "Each action is a fieldset named by its legend, the action and its risk tags, and described by its description and, when locked, the lock sentence. Its levels are native radios, so arrows move and choose; a locked action's other two radios are disabled.",
+        "Each memory item's buttons are named by their word and then the item: «حذف تفضّل شركة مدار التواصل مع سارة العتيبي». When a deleted item's buttons take focus with them it moves to the section, and when the meter's action does, once there is room, it moves to the meter's group.",
+        "The context meter's region is the pattern's one polite region: «السياق: يقترب من الامتلاء», once each time the status word changes, never at mount and never a number."
+      ],
+      "limitations": [
+        "No storage, enforcement or deletion: the host saves each level and applies it when the assistant acts, deletes memories and summarizes the conversation. Only irreversible locks a level, and only to اسأل دائمًا; sensitive is a tag, and the host decides what إن كان حساسًا covers.",
+        "Item buttons show only with their handlers. A deletion is confirmed by the item leaving the host's list; the pattern announces no deletion of its own."
+      ],
+      "alternative": "Use ContextMeter alone for a context ring in a toolbar, Start a task for the mode menu with models, and Switch or RadioGroup for settings that aren't about the assistant.",
+      "dependencies": [],
+      "examples": ["ai/examples/AssistantControlsExamples.tsx"]
     },
     {
       "id": "terminal",
@@ -2377,6 +3088,7 @@
       "source": "AskUserQuestions.tsx",
       "kind": "pattern",
       "parts": ["ai-mark", "status-pill", "tray"],
+      "usedBy": ["decision-inbox"],
       "states": ["asking", "submitting", "answered", "failed"],
       "events": ["onValueChange", "onSubmit", "onSkip", "onEditAnswers"],
       "exports": [
@@ -2503,7 +3215,7 @@
       "source": "ApprovalCard.tsx",
       "kind": "pattern",
       "parts": ["ai-mark", "status-pill", "tray"],
-      "usedBy": ["agent-task", "approval-flow"],
+      "usedBy": ["agent-task", "approval-flow", "decision-inbox"],
       "states": [
         "pending",
         "submitting",
@@ -2592,6 +3304,12 @@
           "type": "ReactNode",
           "required": false,
           "note": "Host-formatted time after the approved receipt, such as قبل دقيقة."
+        },
+        {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Names the agent that asks, under the title. Agent task passes the agent a needs-you step was handed to, else its own."
         },
         {
           "name": "headingLevel",
@@ -2780,7 +3498,7 @@
       "api": "ContextMeter",
       "source": "ContextMeter.tsx",
       "kind": "part",
-      "usedBy": ["task-starter"],
+      "usedBy": ["task-starter", "assistant-controls"],
       "exports": ["ContextMeter", "ContextMeterProps", "ContextMeterPart"],
       "props": [
         {
@@ -2846,12 +3564,34 @@
           "name": "onOpenChange",
           "type": "(open: boolean) => void",
           "required": false
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Shows the details in place of the ring and its popover: a group labelled by the meter's name, on paper with hairline dividers. Assistant controls shows it this way. open and onOpenChange do nothing inline."
+        },
+        {
+          "name": "action",
+          "type": "{ label: ReactNode; onSelect(): void }",
+          "required": false,
+          "note": "A way out once the meter fills up, such as «لخّص المحادثة»: a secondary Button in the details, popover or inline, while the status is high, near or over. The host does the work and passes the smaller usage."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "polite adds a visually hidden polite region, empty at mount, that says «{label}: {status}», such as «السياق: يقترب من الامتلاء», once each time the status word changes, and empties when there is room again. It never holds a number. Use off where an owner speaks for the meter."
         }
       ],
-      "state": "Compact ring and counts with a keyboard-operated details popover. Values are host supplied; estimates are explicitly labeled.",
+      "state": "Compact ring and counts with a keyboard-operated details popover, or the details in place with inline. Values are host supplied; estimates are explicitly labeled. With a valid capacity, each part shows its share of the capacity as a whole percent, end-aligned, over a thin aria-hidden bar whose segments are tints of the tone's color.",
       "accessibility": [
-        "Accessible trigger describes full values, unit, percentage and capacity status without relying on color. Missing/invalid values are unavailable, zero is retained, and over-capacity percentages are not clamped in the text.",
-        "Enter/Space/click opens details; Escape restores trigger focus through the existing Popover primitive. Portal inherits nearest provider/dialog configuration."
+        "Accessible trigger describes full values, unit, percentage and capacity status without relying on color, and its name holds the figures the trigger shows (Label in Name). Missing/invalid values are unavailable, zero is retained, and over-capacity percentages are not clamped in the text.",
+        "Enter/Space/click opens details; Escape restores trigger focus through the existing Popover primitive. Portal inherits nearest provider/dialog configuration.",
+        "The popover opens with focus on itself, never on the action; when the action goes with the room it made, focus moves to the details or the inline group, never to the page. With announcement polite, one region says each change of the status word once, never at mount and never a number; the shares and the bar are text and decoration, never announced."
       ],
       "limitations": [
         "Only finite nonnegative numeric values are accepted. A zero capacity has no calculable percentage. The decorative ring clamps at capacity; text reports actual excess.",
@@ -2866,7 +3606,7 @@
       "api": "ModelSelector",
       "source": "ModelSelector.tsx",
       "kind": "part",
-      "usedBy": ["task-starter"],
+      "usedBy": ["task-starter", "assistant-controls"],
       "exports": ["ModelSelector", "ModelSelectorProps", "ModelOption"],
       "props": [
         {
@@ -3014,7 +3754,7 @@
       "api": "Sources",
       "source": "Sources.tsx",
       "kind": "part",
-      "usedBy": ["cited-answer", "change-summary"],
+      "usedBy": ["cited-answer", "data-answer", "change-summary"],
       "exports": [
         "Sources",
         "InlineCitation",
@@ -3068,13 +3808,13 @@
       "accessibility": [
         "Stable application IDs and explicit citation numbers; never renumber on reorder/filter. Pass the same source records to Sources and InlineCitation.",
         "List is numbered through supplied number fields; visible numbers and the default summary count follow config.numerals, while labels callbacks receive raw numbers. Summary is a real button; rows with accepted destinations are native links. Missing/rejected destinations remain static text.",
-        "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog. Preview mode is a link (or, when the destination is rejected, a button) that shows the source's domain, number, title, description and metadata in a tooltip while the pointer is on it or it has focus: it takes no focus, carries no link, closes on Escape or blur, and stays open while the pointer is on it. onOpenChange reports opening and closing in both modes."
+        "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog. Preview mode is a link (or, when the destination is rejected, a button) that shows the source's domain, number, title, description and metadata in a tooltip while the pointer is on it or it has focus: it takes no focus, carries no link, closes on Escape or blur, and stays open while the pointer is on it. A tap (a touch pointer) opens the source's card instead of following the link: the disclosure's popup, a dialog named by the title, with the «فتح المصدر» link; a second tap, a tap outside or Escape closes it. onOpenChange reports opening and closing in both modes."
       ],
       "limitations": [
         "Allowed destinations: HTTP(S), relative paths and fragments. Reject controls/embedded whitespace, backslashes, protocol-relative URLs, credentials, malformed URLs and other schemes including javascript/data/file/mailto.",
         "Host owns references, evidence, title, ID, number and destination trust. No credibility scores, fabricated citations or retrieval."
       ],
-      "alternative": "Use InlineCitation mode=\"link\" for direct navigation; default disclosure presents source details and an optional native Open link; preview shows the details on hover or focus and opens the source on Enter or click.",
+      "alternative": "Use InlineCitation mode=\"link\" for direct navigation; default disclosure presents source details and an optional native Open link; preview shows the details on hover or focus, opens the source on Enter or click, and opens the details with an Open source link on a tap.",
       "dependencies": ["@radix-ui/react-popover@1.3.1"],
       "examples": ["ai/examples/AIResultsExamples.tsx"]
     },
@@ -3379,7 +4119,7 @@
       "api": "Markdown",
       "source": "Markdown.tsx",
       "kind": "content",
-      "usedBy": ["cited-answer"],
+      "usedBy": ["cited-answer", "data-answer"],
       "exports": ["Markdown", "MarkdownProps"],
       "props": [
         {
@@ -3391,7 +4131,7 @@
           "name": "renderCitation",
           "type": "(marker: number) => ReactNode",
           "required": false,
-          "note": "Turns each [n] marker (n a whole number) in text into this node; code and link text are left alone, and a marker stays text if the function returns nothing. The components stay the same across updates, so a growing answer keeps its nodes."
+          "note": "Turns each number of a [n] marker in text into this node, once per number: [n], [n,m] and [n، m], written in ASCII, Arabic-Indic or Persian digits, a group as adjacent nodes. Code and link text are left alone, and a marker stays text if the function returns nothing for any of its numbers. The components stay the same across updates, so a growing answer keeps its nodes."
         },
         {
           "name": "links",
@@ -5167,6 +5907,7 @@
       "id": "button",
       "api": "Button",
       "source": "Button.tsx",
+      "usedBy": ["decision-inbox", "draft-review", "assistant-controls"],
       "exports": ["Button", "ButtonProps", "ButtonState", "ButtonVariant"],
       "purpose": "Perform an explicit action.",
       "useWhen": "Save, submit, create, or open an overlay.",
@@ -5185,7 +5926,7 @@
           "required": false,
           "default": "idle",
           "values": ["idle", "loading", "success", "error"],
-          "note": "Caller-owned state; no automatic loading/feedback lifecycle. Loading disables activation and sets aria-busy; success/error do not disable the button."
+          "note": "Caller-owned state; no automatic loading/feedback lifecycle. Loading keeps the button focusable but inert: it sets aria-disabled and aria-busy and swallows clicks, Enter and Space included, so focus never drops to the page mid-action. success/error do not disable the button."
         },
         {
           "name": "size",
@@ -5242,9 +5983,9 @@
       ],
       "inheritedProps": "ButtonHTMLAttributes<HTMLButtonElement> except aria-label, which is reintroduced conditionally. Native form attributes, id, style, event handlers, ARIA/data attributes are accepted; className is appended. No ref prop in ButtonProps.",
       "exclusions": [
-        "No asChild or href/link API. Caller aria-busy is overridden by state; internal data-state/data-variant/data-size and className are owned by the wrapper."
+        "No asChild or href/link API. Caller aria-busy is overridden by state, and caller aria-disabled and onClick while loading; internal data-state/data-variant/data-size and className are owned by the wrapper."
       ],
-      "state": "state is fully caller-controlled; disabled is also forced while loading.",
+      "state": "state is fully caller-controlled. While loading the button keeps focus but is inert (aria-disabled, clicks swallowed); disabled is the native attribute otherwise.",
       "events": [
         "onClick and native button events; connect actions to application logic."
       ],
@@ -5263,6 +6004,7 @@
       "id": "tabs",
       "api": "Tabs",
       "source": "Tabs.tsx",
+      "usedBy": ["decision-inbox"],
       "exports": ["Tabs", "TabsProps", "TabItem"],
       "purpose": "Switch between related content panels.",
       "useWhen": "Related dashboard views under one meaningful group label.",
@@ -5339,6 +6081,7 @@
       "id": "switch",
       "api": "Switch",
       "source": "Switch.tsx",
+      "usedBy": ["assistant-controls"],
       "exports": ["Switch", "SwitchProps"],
       "purpose": "Change a persistent two-state setting.",
       "useWhen": "Immediate enabled/disabled preference.",
@@ -6118,6 +6861,7 @@
       "id": "badge",
       "api": "Badge",
       "source": "Badge.tsx",
+      "usedBy": ["draft-review", "assistant-controls"],
       "exports": ["Badge", "BadgeProps", "BadgeTone"],
       "purpose": "Show static status text.",
       "useWhen": "Show static status text.",
@@ -7135,6 +7879,7 @@
       "id": "line-chart",
       "api": "LineChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "LineChart",
         "CartesianChartProps",
@@ -7250,6 +7995,7 @@
       "id": "area-chart",
       "api": "AreaChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "AreaChart",
         "CartesianChartProps",
@@ -7365,6 +8111,7 @@
       "id": "bar-chart",
       "api": "BarChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "BarChart",
         "CartesianChartProps",
@@ -7480,6 +8227,7 @@
       "id": "donut-chart",
       "api": "DonutChart",
       "source": "Charts.tsx",
+      "usedBy": ["data-answer"],
       "exports": [
         "DonutChart",
         "DonutChartProps",
@@ -8542,7 +9290,8 @@
           "name": "mode",
           "type": "\"disclosure\" | \"link\" | \"preview\"",
           "required": false,
-          "values": ["disclosure", "link", "preview"]
+          "values": ["disclosure", "link", "preview"],
+          "note": "disclosure opens a popup with an Open source link; link is a native anchor; preview shows the source on hover or focus and, on a tap, opens the disclosure's popup instead of following the link."
         },
         {
           "name": "onOpenChange",
@@ -8573,7 +9322,8 @@
         {
           "name": "open",
           "type": "string",
-          "required": false
+          "required": false,
+          "note": "The link in the disclosure's popup, and in the card a tap opens in preview mode: «فتح المصدر»."
         },
         {
           "name": "unavailable",
@@ -8910,6 +9660,12 @@
           "required": false
         },
         {
+          "name": "agent",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The agent the step was handed to: فُوّضت إلى {agent} under the title. Its inline approval names it as who asks; without it, the task's agent asks."
+        },
+        {
           "name": "state",
           "type": "\"planned\" | \"pending\" | \"running\" | \"completed\" | \"needs-you\" | \"failed\" | \"skipped\"",
           "required": true,
@@ -8938,7 +9694,8 @@
         {
           "name": "notes",
           "type": "readonly { id: string; text: string; applied: boolean }[]",
-          "required": false
+          "required": false,
+          "note": "Steering notes under the step they change. An applied note reads أُخذ به; one not yet applied reads بانتظار الخطوة التالية, and لم يُؤخذ به once the task completes, fails or stops."
         },
         {
           "name": "request",
@@ -9054,6 +9811,56 @@
           "required": true
         },
         {
+          "name": "waitingNote",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "notUsed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "applyNow",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "remove",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "applyNoteNow",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "removeNote",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "queuedNext",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "queuedNow",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "pickedUpNote",
+          "type": "(text: string) => string",
+          "required": true
+        },
+        {
+          "name": "handedTo",
+          "type": "string",
+          "required": true
+        },
+        {
           "name": "details",
           "type": "string",
           "required": true
@@ -9107,6 +9914,182 @@
           "name": "operationCount",
           "type": "(count: number) => string",
           "required": false
+        }
+      ]
+    },
+    {
+      "type": "DecisionInboxItem",
+      "source": "DecisionInbox.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "note": "Unique and stable."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "note": "The row's heading: its disclosure button when the row has steps, a request or questions."
+        },
+        {
+          "name": "agent",
+          "type": "{ id: string; name: ReactNode }",
+          "required": true,
+          "note": "The agent it comes from; the strip filters by id, and the row names it in <bdi>."
+        },
+        {
+          "name": "context",
+          "type": "ReactNode",
+          "required": false,
+          "note": "One line after the agent, such as «ضمن إقفال حسابات أكتوبر»: «{agent} · {context} · {time}»."
+        },
+        {
+          "name": "status",
+          "type": "\"needs-you\" | \"running\" | \"failed\" | \"completed\"",
+          "required": true,
+          "values": ["needs-you", "running", "failed", "completed"],
+          "note": "Host-owned. Failed items wait in «بانتظارك» with the needs-you ones."
+        },
+        {
+          "name": "time",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Host-formatted, such as «قبل ٤ د»."
+        },
+        {
+          "name": "request",
+          "type": "ApprovalRequest",
+          "required": false,
+          "note": "An approval, shown in full as a plain ApprovalCard when its row opens, while the item needs you."
+        },
+        {
+          "name": "approval",
+          "type": "ApprovalDetails",
+          "required": false,
+          "note": "Spread onto that card. reversible, without irreversible or expired, lets the closed row decide quickly."
+        },
+        {
+          "name": "questions",
+          "type": "readonly UserQuestion[]",
+          "required": false,
+          "note": "Questions answered in the open row through onAnswer."
+        },
+        {
+          "name": "draft",
+          "type": "boolean",
+          "required": false,
+          "note": "A draft waiting for review: the pill reads «بانتظار مراجعتك» and «راجع» calls onOpen(id)."
+        },
+        {
+          "name": "steps",
+          "type": "readonly { id: string; label: ReactNode; state: TaskState; time?: ReactNode }[]",
+          "required": false,
+          "note": "The last three or four steps, oldest first, above the open row's request."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "note": "A failed item's error, as persistent text in its row."
+        },
+        {
+          "name": "receipt",
+          "type": "ReactNode",
+          "required": false,
+          "note": "What happened, shown while the row leaves its tab, such as «تمت الموافقة · الآن». Say only what was recorded."
+        }
+      ]
+    },
+    {
+      "type": "DecisionInboxLabels",
+      "source": "DecisionInbox.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "byStatus",
+          "type": "string",
+          "required": true,
+          "note": "Names the tabs: «الطلبات حسب الحالة»."
+        },
+        {
+          "name": "tabs",
+          "type": "Record<DecisionInboxTab, string>",
+          "required": true
+        },
+        {
+          "name": "pills",
+          "type": "Record<\"needs-you\" | \"running\" | \"failed\" | \"completed\", string>",
+          "required": true,
+          "note": "Each row's pill; failed and completed agree with المهمة."
+        },
+        {
+          "name": "draft",
+          "type": "string",
+          "required": true,
+          "note": "A waiting draft's pill: «بانتظار مراجعتك»."
+        },
+        {
+          "name": "agents",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "steps",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "review",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "answer",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "open",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "waiting",
+          "type": "(count: number, requests: string) => string",
+          "required": true,
+          "note": "«{requests} بانتظارك»; requests is formatCount(count, \"request\")."
+        },
+        {
+          "name": "running",
+          "type": "(count: number, tasks: string) => string",
+          "required": true,
+          "note": "«{tasks} تعمل», «{tasks} تعملان» for two; tasks is formatCount(count, \"task\")."
+        },
+        {
+          "name": "nothingWaiting",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "nothingWaitingHint",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "nothingHere",
+          "type": "string",
+          "required": true
         }
       ]
     },
@@ -9268,6 +10251,12 @@
           "required": true
         },
         {
+          "name": "contextStatus",
+          "type": "(status: string) => string",
+          "required": true,
+          "note": "The region's sentence when the ring's status word changes: «السياق: {status}» / Context: {status}."
+        },
+        {
           "name": "mode",
           "type": "string",
           "required": true
@@ -9395,6 +10384,18 @@
           "required": true
         },
         {
+          "name": "stopped",
+          "type": "(elapsed: string) => string",
+          "required": true,
+          "note": "The header of a stopped search: «أُوقف بعد ٦ث». elapsed is empty when there is no time."
+        },
+        {
+          "name": "failed",
+          "type": "(elapsed: string) => string",
+          "required": true,
+          "note": "The header of a failed search: «تعثّر بعد ٦ث». elapsed is empty when there is no time."
+        },
+        {
           "name": "searched",
           "type": "string",
           "required": true
@@ -9403,6 +10404,18 @@
           "name": "more",
           "type": "(count: string) => string",
           "required": true
+        },
+        {
+          "name": "showAll",
+          "type": "string",
+          "required": true,
+          "note": "Hidden text after «+٢» in the sources button's name: «عرض كل المصادر»."
+        },
+        {
+          "name": "showFewer",
+          "type": "string",
+          "required": true,
+          "note": "The sources button once every source shows: «عرض أقل»."
         },
         {
           "name": "steps",
@@ -9459,6 +10472,107 @@
           "name": "reason",
           "type": "Record<FeedbackReason, string>",
           "required": true
+        }
+      ]
+    },
+    {
+      "type": "DataAnswerLabels",
+      "source": "DataAnswer.tsx",
+      "props": [
+        {
+          "name": "thinking",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "completed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failed",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "empty",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "thinkingPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "completedPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "failedPill",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "method",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "range",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "filters",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "noFilters",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tables",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "chartType",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "chartTypes",
+          "type": "Record<\"line\" | \"area\" | \"bar\" | \"donut\", string>",
+          "required": true
+        },
+        {
+          "name": "openTable",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "pin",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "thinkingPanel",
+          "type": "Partial<ThinkingPanelLabels>",
+          "required": false
+        },
+        {
+          "name": "feedbackBar",
+          "type": "Partial<FeedbackBarLabels>",
+          "required": false
         }
       ]
     },
@@ -9523,6 +10637,163 @@
         },
         {
           "name": "failed",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "AssistantPermission",
+      "source": "AssistantControls.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "note": "The action, in the person's words: «إرسال رسائل للعملاء»."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "level",
+          "type": "\"always\" | \"sensitive\" | \"auto\"",
+          "required": true,
+          "values": ["always", "sensitive", "auto"],
+          "note": "The stored level: اسأل دائمًا، إن كان حساسًا or تلقائي بالكامل. Ignored for an irreversible action, which always asks."
+        },
+        {
+          "name": "risks",
+          "type": "readonly (\"sensitive\" | \"irreversible\")[]",
+          "required": false,
+          "note": "Tags: sensitive (حساس, neutral) and irreversible (لا يمكن التراجع, warning), which locks the level to always."
+        }
+      ]
+    },
+    {
+      "type": "AssistantMemoryItem",
+      "source": "AssistantControls.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "ReactNode",
+          "required": true,
+          "note": "What the assistant remembers: «تفضّل شركة مدار التواصل مع سارة العتيبي». It also names the item's buttons."
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "required": true,
+          "note": "The heading it sits under; categories keep the order they first appear in."
+        },
+        {
+          "name": "source",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "date",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Formatted by the host, with numberLocale for its digits."
+        },
+        {
+          "name": "paused",
+          "type": "boolean",
+          "required": false,
+          "note": "Shows «متوقف مؤقتًا» and turns Pause into Resume."
+        }
+      ]
+    },
+    {
+      "type": "AssistantControlsLabels",
+      "source": "AssistantControls.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "note": "The heading when the host gives no title: «إعدادات المساعد»."
+        },
+        {
+          "name": "permissions",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "memory",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "context",
+          "type": "string",
+          "required": true,
+          "note": "«السياق والاستخدام»."
+        },
+        {
+          "name": "levels",
+          "type": "Record<PermissionLevel, string>",
+          "required": true,
+          "note": "اسأل دائمًا، إن كان حساسًا، تلقائي بالكامل."
+        },
+        {
+          "name": "risks",
+          "type": "Record<\"sensitive\" | \"irreversible\", string>",
+          "required": true,
+          "note": "حساس، لا يمكن التراجع."
+        },
+        {
+          "name": "locked",
+          "type": "string",
+          "required": true,
+          "note": "Describes a locked action: «لا يمكن التراجع عن هذا الإجراء، لذلك يسألك المساعد قبله دائمًا.»."
+        },
+        {
+          "name": "useMemory",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "memoryOff",
+          "type": "string",
+          "required": true,
+          "note": "«لا يستخدم المساعد الذاكرة الآن.»"
+        },
+        {
+          "name": "paused",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "pause",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "resume",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "delete",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "model",
           "type": "string",
           "required": true
         }
@@ -9747,6 +11018,140 @@
           "required": true
         }
       ]
+    },
+    {
+      "type": "DraftReviewLabels",
+      "source": "DraftReview.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "note": "The heading when the host gives no title: «مسودة للمراجعة»."
+        },
+        {
+          "name": "pills",
+          "type": "Record<\"writing\" | \"ready\" | \"sending\" | \"sent\" | \"discarded\", string>",
+          "required": true,
+          "note": "The pill's word for each status, agreeing with الرسالة: يكتب، بانتظار مراجعتك، تُرسَل، أُرسلت، تم التجاهل."
+        },
+        {
+          "name": "to",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "attachments",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "suggestion",
+          "type": "string",
+          "required": true,
+          "note": "Heads a suggested edit, before its own title: «اقتراح المساعد»."
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "required": true,
+          "note": "Names the text area: «نص الرسالة»."
+        },
+        {
+          "name": "tone",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "tones",
+          "type": "Record<DraftTone, string>",
+          "required": true,
+          "note": "ودّي، مختصر، رسمي."
+        },
+        {
+          "name": "discard",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "send",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "undo",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "sendingIn",
+          "type": "(time: string) => string",
+          "required": true,
+          "note": "The line while the host holds the message: «تُرسَل خلال {time}», with time from the countdown."
+        },
+        {
+          "name": "sendingNow",
+          "type": "string",
+          "required": true,
+          "note": "The line once the hold is over, or without one: «تُرسَل الآن…»."
+        },
+        {
+          "name": "sent",
+          "type": "string",
+          "required": true,
+          "note": "The sent receipt, which the region also says: «أُرسلت الرسالة»."
+        },
+        {
+          "name": "discarded",
+          "type": "string",
+          "required": true,
+          "note": "The discarded receipt, which the region also says: «تم تجاهل المسودة»."
+        },
+        {
+          "name": "saysWriting",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "saysReady",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "saysSending",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "saysSendingIn",
+          "type": "(time: string) => string",
+          "required": true,
+          "note": "«تُرسَل الرسالة خلال {time}. يمكنك التراجع.», said once when sending starts with an undo window."
+        },
+        {
+          "name": "saysCancelled",
+          "type": "string",
+          "required": true,
+          "note": "Said when an Undo takes sending back to ready: «أُلغي الإرسال، والمسودة محفوظة»."
+        },
+        {
+          "name": "saysSentAfterUndo",
+          "type": "string",
+          "required": true,
+          "note": "Said when the message was sent after an Undo: «أُرسلت الرسالة قبل أن يُلغى الإرسال»."
+        },
+        {
+          "name": "notSent",
+          "type": "string",
+          "required": true,
+          "note": "Said when sending goes back to ready without an Undo, and shown as an error Alert above Send until the person sends again: «تعذّر إرسال الرسالة، والمسودة محفوظة»."
+        },
+        {
+          "name": "inlineDiff",
+          "type": "Partial<InlineDiffLabels>",
+          "required": false
+        }
+      ]
     }
   ],
   "support": [
@@ -9826,7 +11231,7 @@
       "id": "status-icon",
       "exports": ["StatusIcon", "StatusIconProps", "StatusIconState"],
       "source": "StatusIcon.tsx",
-      "usedBy": ["agent-task"],
+      "usedBy": ["agent-task", "decision-inbox"],
       "props": [
         {
           "name": "state",
@@ -9870,12 +11275,15 @@
       "exports": ["AIMark", "AIMarkProps"],
       "source": "AIMark.tsx",
       "usedBy": [
+        "data-answer",
         "agent-task",
         "suggested-edits",
         "image-generation",
         "change-summary",
         "ask-user-questions",
-        "approval-card"
+        "approval-card",
+        "decision-inbox",
+        "draft-review"
       ],
       "props": [
         {
@@ -9914,11 +11322,14 @@
       "source": "StatusPill.tsx",
       "usedBy": [
         "task-starter",
+        "data-answer",
         "agent-task",
         "image-generation",
         "change-summary",
         "ask-user-questions",
-        "approval-card"
+        "approval-card",
+        "decision-inbox",
+        "draft-review"
       ],
       "props": [
         {
@@ -9958,13 +11369,17 @@
       "usedBy": [
         "task-starter",
         "cited-answer",
+        "data-answer",
         "agent-task",
         "suggested-edits",
         "image-generation",
         "change-summary",
         "ask-user-questions",
         "approval-card",
-        "approval-flow"
+        "approval-flow",
+        "decision-inbox",
+        "draft-review",
+        "assistant-controls"
       ],
       "props": [
         {
@@ -10002,7 +11417,7 @@
       "id": "countdown",
       "exports": ["Countdown", "CountdownProps"],
       "source": "Countdown.tsx",
-      "usedBy": ["agent-task"],
+      "usedBy": ["agent-task", "draft-review"],
       "props": [
         {
           "name": "seconds",
@@ -10058,14 +11473,14 @@
       "id": "thinking-panel",
       "exports": ["ThinkingPanel", "ThinkingPanelProps", "ThinkingPanelLabels"],
       "source": "ThinkingPanel.tsx",
-      "usedBy": ["cited-answer"],
+      "usedBy": ["cited-answer", "data-answer"],
       "props": [
         {
           "name": "status",
-          "type": "\"running\" | \"completed\"",
+          "type": "\"running\" | \"completed\" | \"stopped\" | \"failed\"",
           "required": true,
           "default": "undefined",
-          "note": "Running reads يفكّر and shimmers with the time in the header; completed reads «فكّر لمدة ٦ث». The label is the one sentence announced, never the time."
+          "note": "Running reads يفكّر and shimmers with the time in the header; completed reads «فكّر لمدة ٦ث». Stopped reads «أُوقف بعد ٦ث» and failed «تعثّر بعد ٦ث» (the bare word when there is no time), and their thread stays still instead of closing into the solid line that means done. The label is the one sentence announced, never the time."
         },
         {
           "name": "elapsed",
@@ -10079,7 +11494,7 @@
           "type": "readonly SourceReference[]",
           "required": false,
           "default": "[]",
-          "note": "After «بحث في», the first three as chips and then «+٢». A chip that arrives after mount fades in once."
+          "note": "After «بحث في», the first three as chips and then a button, «+٢», that carries aria-expanded and is named «+٢ عرض كل المصادر» (what it shows, then showAll as hidden text). It shows the rest and then reads «عرض أقل»; focus stays on it. A chip among the first three that arrives after mount fades in once; the revealed ones never do."
         },
         {
           "name": "steps",
@@ -10106,7 +11521,7 @@
           "type": "Partial<ThinkingPanelLabels>",
           "required": false,
           "default": "undefined",
-          "note": "Replaces any built-in text."
+          "note": "Replaces any built-in text, among it showAll and showFewer, the words of the sources button."
         },
         {
           "name": "announcement",
@@ -10128,7 +11543,7 @@
         "FeedbackReason"
       ],
       "source": "FeedbackBar.tsx",
-      "usedBy": ["cited-answer"],
+      "usedBy": ["cited-answer", "data-answer"],
       "props": [
         {
           "name": "feedback",
@@ -10208,7 +11623,7 @@
       "id": "inline-diff",
       "exports": ["InlineDiff", "InlineDiffProps", "DiffSegment"],
       "source": "InlineDiff.tsx",
-      "usedBy": ["suggested-edits"],
+      "usedBy": ["suggested-edits", "draft-review"],
       "props": [
         {
           "name": "segments",

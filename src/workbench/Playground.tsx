@@ -2,8 +2,12 @@ import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
 import { TaskStarterExample } from "../system/ai/examples/TaskStarterExamples";
 import { SuggestedEditsExample } from "../system/ai/examples/SuggestedEditsExamples";
 import { ImageGenerationExample } from "../system/ai/examples/ImageGenerationExamples";
+import { DraftReviewExample } from "../system/ai/examples/DraftReviewExamples";
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
+import { AssistantControlsExample } from "../system/ai/examples/AssistantControlsExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
+import { DataAnswerExample } from "../system/ai/examples/DataAnswerExamples";
+import { DecisionInboxExample } from "../system/ai/examples/DecisionInboxExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
 import { ChatAppExample } from "../system/ai/examples/ChatAppExample";
 import {
@@ -330,6 +334,15 @@ export function Playground({
         onPhaseChange={onPhaseChange}
       />
     );
+  if (component === "data-answer")
+    return (
+      <DataAnswerExample
+        language={language}
+        {...(model as Playgrounds["data-answer"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
   if (component === "change-summary")
     return (
       <ChangeSummaryExample
@@ -337,6 +350,13 @@ export function Playground({
         {...(model as Playgrounds["change-summary"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "assistant-controls")
+    return (
+      <AssistantControlsExample
+        language={language}
+        {...(model as Playgrounds["assistant-controls"])}
       />
     );
   if (component === "suggested-edits")
@@ -357,11 +377,29 @@ export function Playground({
         onPhaseChange={onPhaseChange}
       />
     );
+  if (component === "draft-review")
+    return (
+      <DraftReviewExample
+        language={language}
+        {...(model as Playgrounds["draft-review"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
   if (component === "agent-task")
     return (
       <AgentTaskExample
         language={language}
         {...(model as Playgrounds["agent-task"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "decision-inbox")
+    return (
+      <DecisionInboxExample
+        language={language}
+        {...(model as Playgrounds["decision-inbox"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
       />

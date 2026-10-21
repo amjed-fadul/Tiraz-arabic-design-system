@@ -648,7 +648,7 @@ function ChatAppHost({
         setFeedback(value);
         setReason(why);
       }}
-      onCopy={() => navigator.clipboard.writeText(answerText)}
+      onCopy={(text) => navigator.clipboard.writeText(text)}
     />
   );
   const agentTask = (

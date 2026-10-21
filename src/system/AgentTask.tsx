@@ -31,6 +31,8 @@ export interface AgentStep {
   title: string;
   /** One quiet line under the title, such as «٢١٧ فاتورة · ٣ فروقات». */
   detail?: ReactNode;
+  /** The agent the step was handed to; its request names it as who asks. */
+  agent?: ReactNode;
   state:
     | "planned"
     | "pending"
@@ -88,6 +90,20 @@ export interface AgentTaskLabels {
   stop: string;
   /** After a steering note the agent picked up. */
   pickedUp: string;
+  /** After a note not picked up yet, and once the task ended without it. */
+  waitingNote: string;
+  notUsed: string;
+  /** A queued note's buttons; each name is the visible word and the note. */
+  applyNow: string;
+  remove: string;
+  applyNoteNow: (text: string) => string;
+  removeNote: (text: string) => string;
+  /** Announced once a note is sent, and once the agent picks one up. */
+  queuedNext: (text: string) => string;
+  queuedNow: (text: string) => string;
+  pickedUpNote: (text: string) => string;
+  /** Before the agent a step was handed to. */
+  handedTo: string;
   details: string;
   hideDetails: string;
   retry: string;
@@ -122,6 +138,9 @@ export interface AgentTaskProps {
   onStart?(): void;
   onEditPlan?(): void;
   onSteer?(text: string, when: "next" | "now"): void;
+  /** A queued note's Apply now and Remove while running, each only when given. */
+  onApplyNoteNow?(id: string): void;
+  onRemoveNote?(id: string): void;
   onStop?(): void;
   /** The inline approval's (request, decision, { signal }) contract. */
   onDecision?: ApprovalCardProps["onDecision"];
@@ -151,6 +170,10 @@ function AgentRunStep({
   copy,
   level,
   scope,
+  agent,
+  status,
+  onApplyNoteNow,
+  onRemoveNote,
   onDecision,
   onRetryStep,
   onSkipStep,
@@ -163,13 +186,23 @@ function AgentRunStep({
   scope: RefObject<HTMLElement | null>;
 } & Pick<
   AgentTaskProps,
-  "onDecision" | "onRetryStep" | "onSkipStep" | "onReconnect"
+  | "agent"
+  | "status"
+  | "onApplyNoteNow"
+  | "onRemoveNote"
+  | "onDecision"
+  | "onRetryStep"
+  | "onSkipStep"
+  | "onReconnect"
 >) {
   const { config } = useSystem(),
     uid = useId();
   const [open, setOpen] = useState(false);
   const { triggerRef, panelProps } = useDisclosure(open);
   const tools = step.state === "completed" ? (step.tools ?? []) : [];
+  // Once the task ends, a note the agent never picked up was not used.
+  const ended =
+    status === "completed" || status === "failed" || status === "stopped";
   // The ways forward the host offers; reconnecting, else retrying, is primary.
   const handlers = {
     retry: onRetryStep,
@@ -211,6 +244,11 @@ function AgentRunStep({
         >
           {step.title}
         </bdi>
+        {step.agent != null && (
+          <p className="tz-agent-run-step-agent">
+            {copy.handedTo} <bdi>{step.agent}</bdi>
+          </p>
+        )}
         {(step.state === "skipped" || step.detail != null) && (
           <p className="tz-agent-run-step-detail">
             {step.state === "skipped" ? copy.skipped : step.detail}
@@ -224,7 +262,42 @@ function AgentRunStep({
                   ↳
                 </span>
                 <bdi>{note.text}</bdi>
-                {note.applied && <span> · {copy.pickedUp}</span>}
+                <span>
+                  {" · "}
+                  {note.applied
+                    ? copy.pickedUp
+                    : ended
+                      ? copy.notUsed
+                      : copy.waitingNote}
+                </span>
+                {/* Each acts on its own note only; when the note goes, the
+                    task's focus rule moves focus to the task. */}
+                {status === "running" &&
+                  !note.applied &&
+                  (onApplyNoteNow || onRemoveNote) && (
+                    <span className="tz-agent-run-note-actions">
+                      {onApplyNoteNow && (
+                        <button
+                          type="button"
+                          className="tz-agent-run-note-action"
+                          aria-label={copy.applyNoteNow(note.text)}
+                          onClick={() => onApplyNoteNow(note.id)}
+                        >
+                          {copy.applyNow}
+                        </button>
+                      )}
+                      {onRemoveNote && (
+                        <button
+                          type="button"
+                          className="tz-agent-run-note-action"
+                          aria-label={copy.removeNote(note.text)}
+                          onClick={() => onRemoveNote(note.id)}
+                        >
+                          {copy.remove}
+                        </button>
+                      )}
+                    </span>
+                  )}
               </li>
             ))}
           </ul>
@@ -267,6 +340,7 @@ function AgentRunStep({
               <ApprovalCard
                 request={step.request}
                 {...step.approval}
+                agent={step.agent ?? agent}
                 appearance="plain"
                 headingLevel={level}
                 onDecision={onDecision}
@@ -321,6 +395,8 @@ export function AgentTask({
   onStart,
   onEditPlan,
   onSteer,
+  onApplyNoteNow,
+  onRemoveNote,
   onStop,
   onDecision,
   onRetryStep,
@@ -342,6 +418,8 @@ export function AgentTask({
     live = useRef<HTMLSpanElement>(null),
     lastFocus = useRef<HTMLElement | null>(null),
     heard = useRef<string | null>(null),
+    // Each note's `applied` as last rendered, so a pickup is said once.
+    noted = useRef<Map<string, boolean> | null>(null),
     composing = useRef(false);
   const [hovered, setHovered] = useState(false),
     [focused, setFocused] = useState(false),
@@ -400,17 +478,27 @@ export function AgentTask({
     );
   useEffect(() => {
     const text = said.current?.textContent ?? "";
+    // A note the agent picked up since the last render. Notes applied at
+    // mount, and notes sent already applied (Steer now said so), are not news.
+    const notes = steps.flatMap((step) => step.notes ?? []);
+    const picked = notes
+      .filter((note) => note.applied && noted.current?.get(note.id) === false)
+      .map((note) => copy.pickedUpNote(note.text));
+    noted.current = new Map(notes.map((note) => [note.id, note.applied]));
     // The status the task mounts in is not news, except a proposed plan, which
     // asks to be seen (§8 and §18 announce transitions only).
     if (heard.current === null && status !== "plan") {
       heard.current = text;
       return;
     }
-    if (live.current && text !== heard.current) live.current.textContent = text;
+    const news = [...(text !== heard.current ? [text] : []), ...picked];
+    if (live.current && news.length > 0)
+      live.current.textContent = news.join(". ");
     heard.current = text;
   });
-  // When a change removes the focused control (Stop, Skip step, the steering
-  // field), focus moves to the task rather than dropping to the page.
+  // When a change removes the focused control (Stop, Skip step, a note's Apply
+  // now or Remove, the steering field), focus moves to the task rather than
+  // dropping to the page.
   useLayoutEffect(() => {
     const element = lastFocus.current,
       node = root.current;
@@ -434,8 +522,13 @@ export function AgentTask({
     if (event.repeat || (event.ctrlKey && event.metaKey)) return;
     const text = draft.trim();
     if (!text || !onSteer) return;
-    onSteer(text, event.ctrlKey || event.metaKey ? "now" : "next");
+    const when = event.ctrlKey || event.metaKey ? "now" : "next";
+    onSteer(text, when);
     setDraft("");
+    // Say where the note went, once; the field alone would just clear.
+    if (live.current)
+      live.current.textContent =
+        when === "now" ? copy.queuedNow(text) : copy.queuedNext(text);
   }
 
   const header = (
@@ -481,6 +574,10 @@ export function AgentTask({
             copy={copy}
             level={level}
             scope={root}
+            agent={agent}
+            status={status}
+            onApplyNoteNow={onApplyNoteNow}
+            onRemoveNote={onRemoveNote}
             onDecision={onDecision}
             onRetryStep={onRetryStep}
             onSkipStep={onSkipStep}

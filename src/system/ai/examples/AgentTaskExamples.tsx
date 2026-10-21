@@ -137,12 +137,14 @@ export function AgentTaskExample({
   // Without a phase the task rests on the request that waits for you.
   const [local, setLocal] = useState<Status>("needs-you");
   const status = (phase as Status | undefined) ?? local;
-  // What the visitor did: steps skipped, the decision, steering notes.
+  // What the visitor did: steps skipped, the decision, steering notes, and
+  // what became of the note the running phase holds for the next step.
   const [skipped, setSkipped] = useState<string[]>([]),
     [decision, setDecision] = useState<ApprovalDecision | null>(null),
     [notes, setNotes] = useState<
       Record<string, { id: string; text: string; applied: boolean }[]>
     >({}),
+    [held, setHeld] = useState<"queued" | "applied" | "removed">("queued"),
     noteCount = useRef(0);
   function move(next: Status) {
     setLocal(next);
@@ -231,6 +233,14 @@ export function AgentTaskExample({
     ],
   ];
   const rejected = status === "completed" && decision === "rejected";
+  // While step 3 runs, the held note waits for step 4; applied now, step 3
+  // has it.
+  const heldAt =
+    status !== "running" || held === "removed"
+      ? -1
+      : held === "applied"
+        ? 2
+        : 3;
   const steps: AgentStep[] = story.closeSteps.map((step, index) => {
     const state: AgentStep["state"] =
       (skipped.includes(step.id) && status !== "plan") ||
@@ -260,9 +270,23 @@ export function AgentTaskExample({
               duration: seconds(duration),
             }))
           : undefined,
-      notes: notes[step.id],
+      notes: [
+        ...(index === heldAt
+          ? [
+              {
+                id: "jeddah",
+                text: t("استثنِ فرع جدة", "Leave out the Jeddah branch"),
+                applied: held === "applied",
+              },
+            ]
+          : []),
+        ...(notes[step.id] ?? []),
+      ],
       ...(index === 3
         ? {
+            // The Finance agent hands the reminders to the Collections agent,
+            // which then asks for the approval.
+            agent: story.agents.collections[language],
             request: remindersRequest(language, config.numerals),
             approval: remindersDetails(language, config.numerals),
           }
@@ -284,6 +308,31 @@ export function AgentTaskExample({
         : {}),
     };
   });
+  // A note the visitor queued: Apply now moves it onto the running step,
+  // picked up; Remove drops it.
+  function take(id: string, now: boolean) {
+    const running = steps.find((step) => step.state === "running");
+    setNotes((all) => {
+      const note = Object.values(all)
+        .flat()
+        .find((item) => item.id === id);
+      const kept = Object.fromEntries(
+        Object.entries(all).map(([step, list]) => [
+          step,
+          list.filter((item) => item.id !== id),
+        ]),
+      );
+      return now && note && running
+        ? {
+            ...kept,
+            [running.id]: [
+              ...(kept[running.id] ?? []),
+              { ...note, applied: true },
+            ],
+          }
+        : kept;
+    });
+  }
   return (
     <AgentTask
       title={t("إقفال حسابات أكتوبر", "Close the October books")}
@@ -309,6 +358,15 @@ export function AgentTaskExample({
             { id: String(noteCount.current), text, applied: when === "now" },
           ],
         }));
+      }}
+      // Apply now: the running step picks the note up. Remove: it goes.
+      onApplyNoteNow={(id) => {
+        if (id === "jeddah") setHeld("applied");
+        else take(id, true);
+      }}
+      onRemoveNote={(id) => {
+        if (id === "jeddah") setHeld("removed");
+        else take(id, false);
       }}
       onStop={() => move("stopped")}
       // Records the decision only. This demo then jumps to its Done phase; a real host sets the step running and shows «أُرسلت» only when its job reports the sends.

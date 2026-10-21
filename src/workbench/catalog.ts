@@ -19,6 +19,15 @@ export const catalog = [
     file: "CitedAnswer.tsx",
   },
   {
+    id: "data-answer",
+    name: ["اسأل بياناتك", "Ask your data"],
+    description: [
+      "يحوّل سؤالًا عن بياناتك إلى رسم وشرح قصير، ويبيّن كيف حُسب.",
+      "Turn a question about your data into a chart and a short explanation, and show how it was worked out.",
+    ],
+    file: "DataAnswer.tsx",
+  },
+  {
     id: "agent-task",
     name: ["مهمة الوكيل", "Agent task"],
     description: [
@@ -26,6 +35,15 @@ export const catalog = [
       "Let an agent run a multi-step job while the person stays in control.",
     ],
     file: "AgentTask.tsx",
+  },
+  {
+    id: "decision-inbox",
+    name: ["صندوق القرارات", "Decision inbox"],
+    description: [
+      "يجمع ما ينتظر قرارك من كل الوكلاء في مكان واحد، الأكثر إلحاحًا أولًا.",
+      "Collect what waits on you from every agent in one place, most urgent first.",
+    ],
+    file: "DecisionInbox.tsx",
   },
   {
     id: "suggested-edits",
@@ -46,6 +64,15 @@ export const catalog = [
     file: "ImageGeneration.tsx",
   },
   {
+    id: "draft-review",
+    name: ["مسودة للمراجعة", "Draft for review"],
+    description: [
+      "يكتب المساعد رسالة لسجل، ويراجعها المستخدم ويعدّلها ثم يرسلها.",
+      "The assistant writes a message for a record; the person reviews, edits and sends it.",
+    ],
+    file: "DraftReview.tsx",
+  },
+  {
     id: "change-summary",
     name: ["ما الذي تغيّر", "What changed"],
     description: [
@@ -53,6 +80,15 @@ export const catalog = [
       "Tell a manager what moved, why it moved, and what to do next.",
     ],
     file: "ChangeSummary.tsx",
+  },
+  {
+    id: "assistant-controls",
+    name: ["إعدادات المساعد", "Assistant controls"],
+    description: [
+      "يقرّر المستخدم ما يفعله المساعد دون سؤال، وما يتذكّره، وكم من السياق يستخدم.",
+      "Decide what the assistant may do without asking, what it remembers and how much context it uses.",
+    ],
+    file: "AssistantControls.tsx",
   },
   {
     id: "terminal",
@@ -699,17 +735,21 @@ export const jobNames: Record<Job, Localized> = {
   create: ["أنشئ", "Create"],
   understand: ["افهم وتحكّم", "Understand and control"],
 };
-/** The nine pattern pages and their jobs; a page here is a pattern page. */
+/** The pattern pages and their jobs; a page here is a pattern page. */
 export const patternJobs: Partial<Record<ComponentId, Job>> = {
   "task-starter": "ask",
   "cited-answer": "ask",
+  "data-answer": "ask",
   "agent-task": "delegate",
   "ask-user-questions": "delegate",
   "approval-card": "delegate",
   "approval-flow": "delegate",
+  "decision-inbox": "delegate",
   "suggested-edits": "create",
   "image-generation": "create",
+  "draft-review": "create",
   "change-summary": "understand",
+  "assistant-controls": "understand",
 };
 /** The fifteen parts the patterns are built from (spec §16), folded. */
 export const aiParts: readonly ComponentId[] = [
@@ -740,19 +780,29 @@ const aiSections: readonly DocumentationSection[] = [
   {
     id: "ask",
     name: jobNames.ask,
-    ids: ["task-starter", "cited-answer"],
+    ids: ["task-starter", "cited-answer", "data-answer"],
   },
   {
     id: "delegate",
     name: jobNames.delegate,
-    ids: ["agent-task", "ask-user-questions", "approval-card", "approval-flow"],
+    ids: [
+      "agent-task",
+      "ask-user-questions",
+      "approval-card",
+      "approval-flow",
+      "decision-inbox",
+    ],
   },
   {
     id: "create",
     name: jobNames.create,
-    ids: ["suggested-edits", "image-generation"],
+    ids: ["suggested-edits", "image-generation", "draft-review"],
   },
-  { id: "understand", name: jobNames.understand, ids: ["change-summary"] },
+  {
+    id: "understand",
+    name: jobNames.understand,
+    ids: ["change-summary", "assistant-controls"],
+  },
   {
     id: "screens",
     name: ["شاشات", "Screens"],

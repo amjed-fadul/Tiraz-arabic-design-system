@@ -192,6 +192,13 @@ export type {
 } from "./ApprovalCard";
 export { AgentTask } from "./AgentTask";
 export type { AgentStep, AgentTaskProps, AgentTaskLabels } from "./AgentTask";
+export { DecisionInbox } from "./DecisionInbox";
+export type {
+  DecisionInboxProps,
+  DecisionInboxLabels,
+  DecisionInboxItem,
+  DecisionInboxTab,
+} from "./DecisionInbox";
 export { SuggestedEdits } from "./SuggestedEdits";
 export type {
   SuggestedEditsProps,
@@ -206,6 +213,12 @@ export type {
   ImageGenerationProps,
   ImageGenerationLabels,
 } from "./ImageGeneration";
+export { DraftReview } from "./DraftReview";
+export type {
+  DraftReviewProps,
+  DraftReviewLabels,
+  DraftTone,
+} from "./DraftReview";
 export { TaskStarter } from "./TaskStarter";
 export type {
   TaskStarterProps,
@@ -215,8 +228,22 @@ export type {
 } from "./TaskStarter";
 export { CitedAnswer } from "./CitedAnswer";
 export type { CitedAnswerProps, CitedAnswerLabels } from "./CitedAnswer";
+export { DataAnswer } from "./DataAnswer";
+export type {
+  DataAnswerProps,
+  DataAnswerLabels,
+  DataAnswerChart,
+} from "./DataAnswer";
 export { ChangeSummary } from "./ChangeSummary";
 export type { ChangeSummaryProps, ChangeSummaryLabels } from "./ChangeSummary";
+export { AssistantControls } from "./AssistantControls";
+export type {
+  AssistantControlsProps,
+  AssistantControlsLabels,
+  AssistantPermission,
+  AssistantMemoryItem,
+  PermissionLevel,
+} from "./AssistantControls";
 export { ApprovalFlow } from "./ApprovalFlow";
 export type {
   ApprovalFlowProps,

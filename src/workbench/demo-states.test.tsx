@@ -803,6 +803,55 @@ const phaseFamilies: PhaseFamily[] = [
     replay: ["thinking", "writing", "done"],
   },
   {
+    id: "data-answer",
+    resting: "done",
+    list: [
+      [
+        "thinking",
+        () => {
+          // The panel is open on the tables found so far.
+          expect(
+            stage().getByRole("button", { name: "يفكّر" }),
+          ).toHaveAttribute("aria-expanded", "true");
+          expect(
+            stage().queryByRole("button", { name: "ثبّت في اللوحة" }),
+          ).toBeNull();
+        },
+      ],
+      [
+        "done",
+        () => {
+          expect(stage().getByRole("radio", { name: "أعمدة" })).toBeChecked();
+          expect(
+            stage().getByRole("button", { name: "ثبّت في اللوحة" }),
+          ).toBeEnabled();
+          expect(
+            stage().getByRole("button", { name: "كيف حُسب هذا؟" }),
+          ).toHaveAttribute("aria-expanded", "false");
+        },
+      ],
+      [
+        "failed",
+        () => {
+          expect(
+            stage().getByRole("button", { name: "أعد المحاولة" }),
+          ).toBeEnabled();
+          expect(stageNode()).toHaveTextContent(
+            "انقطع الاتصال بتوقعات التدفق النقدي",
+          );
+        },
+      ],
+      [
+        "empty",
+        () => {
+          expect(stageNode()).toHaveTextContent("لا توجد بيانات لهذه الفترة");
+          expect(stageNode()).toHaveTextContent("نوفمبر");
+        },
+      ],
+    ],
+    replay: ["thinking", "done"],
+  },
+  {
     id: "change-summary",
     resting: "ready",
     list: [
@@ -927,6 +976,53 @@ const phaseFamilies: PhaseFamily[] = [
       ],
     ],
     replay: ["weaving", "done"],
+  },
+  {
+    id: "draft-review",
+    resting: "forReview",
+    list: [
+      [
+        "writing",
+        () => {
+          // The draft arrives as text under a working thread; nothing to send.
+          expect(
+            stageNode().querySelector(".tz-draft-review .tz-thread"),
+          ).toHaveAttribute("data-state", "running");
+          expect(stage().queryByRole("button", { name: "إرسال" })).toBeNull();
+        },
+      ],
+      [
+        "forReview",
+        () => {
+          expect(stageNode()).toHaveTextContent("اقتراح المساعد · أوضح");
+          expect(stage().getByRole("radio", { name: "ودّي" })).toBeChecked();
+          expect(stage().getByRole("button", { name: "إرسال" })).toBeEnabled();
+        },
+      ],
+      [
+        "sending",
+        () => {
+          // The host holds the message for its undo window.
+          expect(stageNode()).toHaveTextContent("تُرسَل خلال");
+          expect(stage().getByRole("button", { name: "تراجع" })).toBeEnabled();
+        },
+      ],
+      [
+        "sent",
+        () => {
+          expect(stageNode()).toHaveTextContent("أُرسلت الرسالة");
+          expect(stage().queryByRole("button", { name: "تراجع" })).toBeNull();
+        },
+      ],
+      [
+        "discarded",
+        () => {
+          expect(stageNode()).toHaveTextContent("تم تجاهل المسودة");
+          expect(stage().queryByRole("button", { name: "إرسال" })).toBeNull();
+        },
+      ],
+    ],
+    replay: ["writing", "forReview", "sending", "sent"],
   },
   {
     id: "chat-thread",
@@ -1150,6 +1246,53 @@ const phaseFamilies: PhaseFamily[] = [
       [
         "done",
         () => expect(stage().getByText("اكتملت مراجعة الطلبات.")).toBeVisible(),
+      ],
+    ],
+  },
+  {
+    id: "decision-inbox",
+    resting: "needsYou",
+    list: [
+      [
+        "needsYou",
+        () => {
+          expect(
+            stage().getByRole("tab", { name: /^بانتظارك/ }),
+          ).toHaveAttribute("aria-selected", "true");
+          // The reversible accruals decide inline; the reminders only open.
+          expect(
+            stage().getByRole("button", {
+              name: "ترحيل القيود ترحيل قيود الاستحقاق الأربعة",
+            }),
+          ).toBeEnabled();
+          expect(
+            stage().getByRole("button", {
+              name: "إرسال تذكيرات الدفع إلى العملاء الثلاثة",
+            }),
+          ).toHaveAttribute("aria-expanded", "false");
+        },
+      ],
+      [
+        "expanded",
+        () => {
+          expect(
+            stage().getByRole("button", {
+              name: "إرسال تذكيرات الدفع إلى العملاء الثلاثة",
+            }),
+          ).toHaveAttribute("aria-expanded", "true");
+          expect(
+            stage().getByRole("button", { name: "أرسل الرسائل" }),
+          ).toBeEnabled();
+        },
+      ],
+      [
+        "empty",
+        () => {
+          expect(stageNode()).toHaveTextContent("لا شيء بانتظارك");
+          expect(stageNode()).toHaveTextContent(
+            "سيظهر هنا كل طلب يحتاج قرارك.",
+          );
+        },
       ],
     ],
   },

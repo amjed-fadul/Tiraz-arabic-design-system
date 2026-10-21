@@ -89,6 +89,41 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  "data-answer": {
+    useWhen: [
+      [
+        "تكون الإجابة رقمًا أو مقارنة أو اتجاهًا في بيانات المستخدم نفسها، ويكفيها رسم وجملتان.",
+        "The answer is a figure, a comparison or a trend in the person's own data, and a chart and two sentences will do.",
+      ],
+      [
+        "يريد المستخدم أن يعرف من أين جاء الرقم: أي فترة وأي تصفية وأي جداول.",
+        "People want to know where the number came from: which period, which filters and which tables.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "تأتي الإجابة من مستندات لا من أرقام، فاستخدم",
+          "The answer comes from documents rather than figures, so use",
+        ],
+        page: "cited-answer",
+      },
+    ],
+    notice: [
+      [
+        "يقرّر تطبيقك الحالة والرسم وكل رقم، ولا يجلب النمط بيانات ولا يحسب شيئًا. ويعلن كل حالة مرة واحدة في جملة، ولا يعلن الأرقام.",
+        "Your app owns the status, the chart and every figure; the pattern never fetches or computes anything. Each status is announced once, in one sentence, and the figures never are.",
+      ],
+      [
+        "اختيار نوع الرسم يستدعي onChartTypeChange فقط، ويبقى الرسم كما هو حتى يمرّر تطبيقك رسمًا جديدًا. اعرض الأنواع التي تناسب البيانات وحدها.",
+        "Choosing a chart type only calls onChartTypeChange, and the chart stays until your app passes a new one. Offer only the types that fit the data.",
+      ],
+      [
+        "تبقى «كيف حُسب هذا؟» مطويّة حتى يفتحها المستخدم، وينسخ زر النسخ الشرح ومعه الفترة والتصفية والجداول مرقَّمة.",
+        "How it was calculated stays folded until opened, and Copy takes the explanation with the range, the filters and the numbered tables.",
+      ],
+    ],
+  },
   "change-summary": {
     useWhen: [
       [
@@ -113,6 +148,33 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       [
         "تجري الخطوط الصغيرة من اليسار إلى اليمين في الاتجاهين، كما تفعل رسوم Tiraz.",
         "The sparklines run left to right in both directions, as Tiraz charts do.",
+      ],
+    ],
+  },
+  "assistant-controls": {
+    useWhen: [
+      [
+        "يقرّر المستخدم ما يفعله المساعد دون أن يسأله، كقراءة الدفاتر أو تسجيل القيود أو مراسلة العملاء.",
+        "The person decides what the assistant may do without asking, such as reading the books, recording entries or messaging customers.",
+      ],
+      [
+        "يريد المستخدم أن يرى ما يتذكّره المساعد ومن أين، وأن يوقفه مؤقتًا أو يحذفه، وأن يعرف كم من السياق استُخدم.",
+        "The person wants to see what the assistant remembers and where it came from, pause or delete it, and know how much context is used.",
+      ],
+    ],
+    replaces: ["context-meter"],
+    notice: [
+      [
+        "يبقى كل إجراء لا يمكن التراجع عنه على «اسأل دائمًا» مهما كان المستوى الذي يمرّره تطبيقك، مع قفل وجملة تشرح السبب.",
+        "An action that can't be undone stays at «Always ask», whatever level your app passes, with a lock and a sentence that says why.",
+      ],
+      [
+        "يطبّق تطبيقك الصلاحيات ويحذف الذاكرة، فالنمط يعرضها ويبلّغ باختيار المستخدم فقط. ويبقى العنصر الذي يطلب المستخدم حذفه ظاهرًا حتى يزيله تطبيقك.",
+        "Your app enforces the permissions and deletes memories; the pattern only shows them and reports the person's choice. An item the person asks to delete stays until your app removes it.",
+      ],
+      [
+        "تعرض تفاصيل السياق حصة كل جزء، ويظهر إجراء مثل «لخّص المحادثة» حين يقترب السياق من الامتلاء. وتُعلَن كل عتبة مرة واحدة.",
+        "The context details show each part's share, and an action such as «Summarize the conversation» appears as the context fills up. Each threshold is announced once.",
       ],
     ],
   },
@@ -194,6 +256,33 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       [
         "قد ترفض سياسة منتجك بعض الطلبات: مرّر blocked مع سببه ليظهر نصًّا ثابتًا بجانب «تعديل بالوصف». ولا يُعدّ ذلك فشلًا.",
         "Your product's policy may refuse some requests: pass blocked with its reason, shown as persistent text beside Edit with a description. That is not a failure.",
+      ],
+    ],
+  },
+  "draft-review": {
+    useWhen: [
+      [
+        "يكتب المساعد رسالة لسجل بعينه، كتذكير بفاتورة متأخرة، ويوافق عليها المستخدم قبل أن تخرج.",
+        "The assistant drafts a message for a record, such as a reminder about a late invoice, and a person approves it before it leaves.",
+      ],
+    ],
+    instead: [
+      {
+        text: [
+          "يعيد المساعد صياغة نص كتبه المستخدم بنفسه، فاستخدم",
+          "The assistant rewrites the person's own text, so use",
+        ],
+        page: "suggested-edits",
+      },
+    ],
+    notice: [
+      [
+        "يرسل «إرسال» النص الظاهر كما هو، مرة واحدة. ويفعل Ctrl أو Cmd+Enter مثله بعد نصف ثانية من آخر تغيير في النص أو النبرة أو المستلمين أو المرفقات.",
+        "Send hands over exactly the text on screen, once. Ctrl or Cmd+Enter does the same, half a second after the text, the tone, the recipients or the attachments last changed.",
+      ],
+      [
+        "لا يظهر «تراجع» إلا ما دام تطبيقك يحتجز الرسالة، مع undoWindow وonUndo، فاجعل المهلة إعدادًا يتحكّم فيه المستخدم. ويقول الإيصال ما حدث للرسالة، ولا يقول أبدًا إن رسالة أُرسلت قد عادت.",
+        "Undo shows only while your app holds the message, with undoWindow and onUndo, so make the window a setting the person controls. The receipt says what happened to the message, and never that a sent one came back.",
       ],
     ],
   },
@@ -366,6 +455,38 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       [
         "تنهي مهلة الطلب حين يمرّر تطبيقك expired، فيُلغى أي قرار ما زال قيد التسجيل.",
         "The request lapses when your app passes expired, and a decision still being recorded is cancelled.",
+      ],
+    ],
+  },
+  "decision-inbox": {
+    useWhen: [
+      [
+        "يعمل عدة وكلاء في الخلفية، وتريد أن يجد المستخدم كل ما ينتظر قراره في مكان واحد.",
+        "Several agents work in the background, and people should find everything that waits on them in one place.",
+      ],
+      [
+        "تريد أن تُعرض الطلبات والأسئلة والمهام المتعثّرة بحسب إلحاحها، ويفتح المستخدم كلًّا منها في مكانه.",
+        "You want requests, questions and failed tasks listed by urgency, each opening where it is.",
+      ],
+    ],
+    instead: [
+      {
+        text: ["يكفي طلب واحد، فاستخدم", "There is a single request, so use"],
+        page: "approval-card",
+      },
+    ],
+    notice: [
+      [
+        "لا موافقة على الكل: كل قرار يخصّ طلبًا بعينه. ولا يقرّر الصف دون أن يُفتح إلا إذا علّم تطبيقك الطلب reversible، وبلا اختصار، ولا يضع فتحُ الصف التركيزَ على الموافقة.",
+        "There is no approve-all: every decision is about one request. A row decides without opening only when your app marks the request reversible, with no shortcut, and opening a row never puts focus on Approve.",
+      ],
+      [
+        "يطوي Escape الصف المفتوح من أي مكان فيه، البطاقة ضمنًا، ولا يسجّل شيئًا.",
+        "Escape anywhere in an open row folds it and records nothing, the card included.",
+      ],
+      [
+        "يقرّر تطبيقك حالة كل عنصر. وإذا نقله من التبويب بقي صفّه مكانه خمس ثوانٍ مع إيصاله ثم غادر، وانتقل التركيز إلى الصف التالي، ويلغي receiptFor={0} هذه المهلة. ويُعلن العدد حين يتغيّر فقط.",
+        "Your app owns each item's status. When it moves an item out of the tab, the row stays in place for five seconds with its receipt, then leaves, and focus moves to the next row; receiptFor={0} turns the wait off. The counts are announced only when they change.",
       ],
     ],
   },

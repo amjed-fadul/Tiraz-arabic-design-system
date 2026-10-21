@@ -283,13 +283,20 @@ export interface FilterBarModel {
 export interface Playgrounds {
   "task-starter": { appearance: "card" | "plain"; disabled: boolean };
   "cited-answer": { appearance: "card" | "plain"; question: boolean };
+  "data-answer": { appearance: "card" | "plain" };
   "agent-task": { appearance: "card" | "plain"; autoStart: boolean };
+  "decision-inbox": { appearance: "card" | "plain" };
   "suggested-edits": { undo: boolean };
   "image-generation": {
     appearance: "card" | "plain";
     knownProgress: boolean;
   };
+  "draft-review": { appearance: "card" | "plain"; undo: boolean };
   "change-summary": { appearance: "card" | "plain" };
+  "assistant-controls": {
+    appearance: "card" | "plain";
+    usage: "normal" | "filling";
+  };
   "ask-user-questions": { appearance: "card" | "plain"; longContent: boolean };
   terminal: {
     state: "running" | "completed" | "failed";
@@ -433,10 +440,14 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "streaming-text": { markdown: false },
     "task-starter": { appearance: "card", disabled: false },
     "cited-answer": { appearance: "card", question: true },
+    "data-answer": { appearance: "card" },
     "agent-task": { appearance: "card", autoStart: true },
+    "decision-inbox": { appearance: "card" },
     "suggested-edits": { undo: true },
     "image-generation": { appearance: "card", knownProgress: true },
+    "draft-review": { appearance: "card", undo: true },
     "change-summary": { appearance: "card" },
+    "assistant-controls": { appearance: "card", usage: "normal" },
     "ask-user-questions": { appearance: "card", longContent: false },
     terminal: { state: "completed", longContent: false, followOutput: false },
     "chat-app": { longContent: false },

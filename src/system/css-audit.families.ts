@@ -115,6 +115,11 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "follow-ups": [".tz-follow-ups"],
   "cited-answer": [".tz-cited-answer"],
   "change-summary": [".tz-change-summary"],
+  // Ask your data, of Plan 5 Task 3.
+  "data-answer": [".tz-data-answer"],
+  // Decision inbox, of Plan 5 Task 4. .tz-decision also holds it to the
+  // decision families' audits.
+  "decision-inbox": [".tz-decision-inbox"],
   // Start a task of Plan 4 Task 5.
   "task-starter": [".tz-task-starter"],
   // Suggested edits and its InlineDiff, of Plan 4 Task 6. .tz-inline also
@@ -125,4 +130,8 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   // holds .tz-image-generation to the image-result family's audit.
   "weave-canvas": [".tz-weave"],
   "image-generation": [".tz-image-generation"],
+  // Draft for review, of Plan 5 Task 5.
+  "draft-review": [".tz-draft-review"],
+  // Assistant controls, of Plan 5 Task 6.
+  "assistant-controls": [".tz-assistant-controls"],
 };

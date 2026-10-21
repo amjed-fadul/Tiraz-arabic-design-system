@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import {
   ArrowUpLeft,
   ArrowUpRight,
+  Inbox,
   Menu,
   Moon,
   Sun,
@@ -25,7 +27,9 @@ import {
   Badge,
   Button,
   ChangeSummary,
+  DataAnswer,
   DataTable,
+  DecisionInbox,
   DonutChart,
   EmptyState,
   NoRecordsIllustration,
@@ -38,11 +42,22 @@ import {
   Spinner,
   SystemProvider,
   ToastProvider,
+  Tray,
   defaultConfig,
   numberLocale,
   useSystem,
 } from "../../system";
-import type { ChangeSummaryProps, DataTableColumn } from "../../system";
+import type {
+  ApprovalDecision,
+  ApprovalDetails,
+  ApprovalRequest,
+  ChangeSummaryProps,
+  DataAnswerChart,
+  DataAnswerProps,
+  DataTableColumn,
+  DecisionInboxItem,
+  SourceReference,
+} from "../../system";
 import { CreateCustomer } from "./CreateCustomer";
 import {
   calculateOrders,
@@ -55,6 +70,30 @@ import type { Customer, CustomerStatus, Order, Period } from "./data";
 import "./dashboard.css";
 
 type Preview = "sample" | "loading" | "empty" | "error";
+// Ask your data follows the preview switch.
+const askStatus: Record<Preview, DataAnswerProps["status"]> = {
+  sample: "completed",
+  loading: "thinking",
+  empty: "empty",
+  error: "failed",
+};
+// The customer assistant's requests are about two sample customers: Madar
+// Technology, and Layla Ahmed, who is paused.
+const [madar, layla] = sampleCustomers;
+/** Stands in for your server: a decision is recorded after a moment. */
+function recorded(signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    const timer = setTimeout(resolve, 600);
+    signal.addEventListener(
+      "abort",
+      () => {
+        clearTimeout(timer);
+        reject(new DOMException("Cancelled", "AbortError"));
+      },
+      { once: true },
+    );
+  });
+}
 // The last seven days against the seven before them, for What changed: orders,
 // revenue and the average order, each with its fourteen days for the sparkline.
 function weekOverWeek(orders: readonly Order[]) {
@@ -85,9 +124,21 @@ function weekOverWeek(orders: readonly Order[]) {
     },
   };
 }
+// The docs show this page in an iframe of ?embed=1[&lang=en][&theme=dark]. The
+// language and theme start from the address, standalone too; embedded, the
+// docs page owns both buttons and is the page a link to "/" would nest.
+function readAddress() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    language: params.get("lang") === "en" ? "en" : "ar",
+    theme: params.get("theme") === "dark" ? "dark" : "light",
+    embedded: params.has("embed"),
+  } as const;
+}
 export function Dashboard() {
-  const [language, setLanguage] = useState<"ar" | "en">("ar");
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [address] = useState(readAddress);
+  const [language, setLanguage] = useState<"ar" | "en">(address.language);
+  const [theme, setTheme] = useState<"light" | "dark">(address.theme);
   const direction = language === "ar" ? "rtl" : "ltr";
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
   useEffect(() => {
@@ -107,6 +158,7 @@ export function Dashboard() {
           <DashboardContent
             language={language}
             theme={theme}
+            embedded={address.embedded}
             onLanguage={() => setLanguage(language === "ar" ? "en" : "ar")}
             onTheme={() => setTheme(theme === "light" ? "dark" : "light")}
           />
@@ -116,14 +168,35 @@ export function Dashboard() {
   );
 }
 
+/** A chart on the pattern cards' tray and paper, its title on the tray. */
+function ChartCard({
+  title,
+  busy,
+  children,
+}: {
+  title: string;
+  busy: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <article className="dashboard-card" aria-busy={busy || undefined}>
+      <Tray header={<h3 className="dashboard-card-title">{title}</h3>}>
+        {children}
+      </Tray>
+    </article>
+  );
+}
+
 function DashboardContent({
   language,
   theme,
+  embedded,
   onLanguage,
   onTheme,
 }: {
   language: "ar" | "en";
   theme: "light" | "dark";
+  embedded: boolean;
   onLanguage: () => void;
   onTheme: () => void;
 }) {
@@ -139,6 +212,11 @@ function DashboardContent({
   const [status, setStatus] = useState<CustomerStatus | "all">("all");
   const [newCustomer, setNewCustomer] = useState<Customer | null>(null);
   const [spotlightId, setSpotlightId] = useState<number | null>(null);
+  // The inbox's decisions and the chart type the person chose for the answer.
+  const [decisions, setDecisions] = useState<Record<string, ApprovalDecision>>(
+    {},
+  );
+  const [answerChart, setAnswerChart] = useState<"bar" | "donut">("bar");
   const [navOpen, setNavOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [activeSection, setActiveSection] = useState(() =>
@@ -179,6 +257,7 @@ function DashboardContent({
     clearFilters();
     if (next === "sample" || next === "empty") {
       setCustomers(next === "empty" ? [] : sampleCustomers);
+      setDecisions({});
       nextId.current = sampleCustomers.length + 1;
     }
   }
@@ -194,13 +273,16 @@ function DashboardContent({
     style: "percent",
     maximumFractionDigits: 1,
   });
+  // The money rows name their unit once, so each pill keeps to one line in a
+  // card about 360px wide, in both languages.
+  const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
   const changes: ChangeSummaryProps["rows"] = (
     [
-      ["orders", t("الطلبات", "Orders"), number],
-      ["revenue", t("إيرادات الطلبات", "Order revenue"), money],
-      ["average", t("متوسط قيمة الطلب", "Average order value"), money],
+      ["orders", t("الطلبات", "Orders")],
+      ["revenue", t("إيرادات الطلبات (د.إ.)", "Order revenue (AED)")],
+      ["average", t("متوسط قيمة الطلب (د.إ.)", "Average order value (AED)")],
     ] as const
-  ).map(([key, metric, format]) => {
+  ).map(([key, metric]) => {
     const [last, previous] = [weeks.last[key], weeks.previous[key]];
     const direction =
       last > previous ? "up" : last < previous ? "down" : "flat";
@@ -210,8 +292,8 @@ function DashboardContent({
       change: [
         previous > 0 && percent.format(Math.abs(last / previous - 1)),
         t(
-          `من ${format(previous)} إلى ${format(last)}`,
-          `from ${format(previous)} to ${format(last)}`,
+          `من ${whole.format(previous)} إلى ${whole.format(last)}`,
+          `from ${whole.format(previous)} to ${whole.format(last)}`,
         ),
       ]
         .filter(Boolean)
@@ -240,6 +322,155 @@ function DashboardContent({
       color: "var(--chart-clay)",
     },
   ];
+  // Ask your data: how much revenue each channel brought in this period, beside
+  // the donut of its orders. The chart, its caption, the two sentences and their
+  // citation all come from the same figures; the host reshapes them for the
+  // type the person picked.
+  const figures = channels.map((channel) => ({
+    ...channel,
+    value: orders.channelRevenue[channel.key],
+  }));
+  const share = (value: number) =>
+    percent.format(orders.revenue ? value / orders.revenue : 0);
+  const [leading] = [...figures].sort((a, b) => b.value - a.value);
+  const rest = orders.revenue - leading.value;
+  const explanation = t(
+    `جلب ${leading.label} ${money(leading.value)}، أي ${share(leading.value)} من إيرادات هذه الفترة. [1] أما القناتان الأخريان فجلبتا معًا ${money(rest)}، أي النسبة الباقية ${share(rest)}. [1]`,
+    `${leading.label} brought in ${money(leading.value)}, ${share(leading.value)} of this period's revenue. [1] The other two channels brought in ${money(rest)} between them, the remaining ${share(rest)}. [1]`,
+  );
+  const ordersTable: SourceReference = {
+    id: "orders",
+    number: 1,
+    title: t("الطلبات", "Orders"),
+    description: t(
+      "طلبات الفترة وقيمها، حسب القناة.",
+      "The period's orders and their amounts, by channel.",
+    ),
+  };
+  // The unit is named once, so the axis and the caption carry plain figures.
+  const revenueUnit = t("الإيرادات (د.إ.)", "Revenue (AED)");
+  const caption = `${revenueUnit}: ${figures
+    .map((channel) => `${channel.label} ${number(channel.value)}`)
+    .join(t("، ", ", "))}.`;
+  const answerCharts: Record<"bar" | "donut", DataAnswerChart> = {
+    bar: {
+      type: "bar",
+      props: {
+        label: t("إيرادات كل قناة", "Revenue per channel"),
+        summary: caption,
+        locale: language,
+        height: 220,
+        data: figures.map((channel) => ({
+          category: channel.label,
+          revenue: channel.value,
+        })),
+        series: [
+          { key: "revenue", label: revenueUnit, color: "var(--action)" },
+        ],
+      },
+    },
+    donut: {
+      type: "donut",
+      props: {
+        label: t("حصة كل قناة من الإيرادات", "Each channel's share of revenue"),
+        summary: caption,
+        locale: language,
+        height: 220,
+        data: figures,
+        legend: true,
+        interactiveLegend: false,
+      },
+    },
+  };
+  // The Decision inbox: two requests from the customer assistant. The
+  // reactivation is reversible, so its row decides without opening; a reminder
+  // can't be recalled once sent, so it opens into the full request.
+  const assistant = {
+    id: "customer-assistant",
+    name: t("مساعد العملاء", "Customer assistant"),
+  };
+  const requests: { request: ApprovalRequest; approval: ApprovalDetails }[] = [
+    {
+      request: {
+        id: "reactivate-layla",
+        action: t(
+          "إعادة تفعيل حساب ليلى أحمد",
+          "Reactivate Layla Ahmed's account",
+        ),
+        target: `${layla.name} · ${layla.email}`,
+        consequences: [
+          t(
+            "تعود ليلى أحمد إلى دليل العملاء بحالة نشطة.",
+            "Layla Ahmed is active in the customer directory again.",
+          ),
+        ],
+        approveLabel: t("أعد التفعيل", "Reactivate"),
+        rejectLabel: t("رفض", "Reject"),
+      },
+      approval: { reversible: true },
+    },
+    {
+      request: {
+        id: "remind-madar",
+        action: t(
+          "إرسال تذكير بالدفع إلى شركة مدار للتقنية",
+          "Send a payment reminder to Madar Technology",
+        ),
+        target: `${madar.name} · ${madar.email}`,
+        consequences: [
+          t(
+            "يصل إلى شركة مدار بريد تذكير واحد بالدفع.",
+            "Madar Technology receives one payment reminder email.",
+          ),
+        ],
+        approveLabel: t("أرسل التذكير", "Send the reminder"),
+        rejectLabel: t("رفض", "Reject"),
+      },
+      approval: { irreversible: true },
+    },
+  ];
+  const inboxItems = requests.map(
+    ({ request, approval }): DecisionInboxItem => {
+      const decision = decisions[request.id];
+      return {
+        id: request.id,
+        title: request.action,
+        agent: assistant,
+        status: decision ? "completed" : "needs-you",
+        // A receipt says what was decided, never more.
+        receipt:
+          decision &&
+          (decision === "approved"
+            ? t("تمت الموافقة · الآن", "Approved · just now")
+            : t("رُفض الطلب · الآن", "Request rejected · just now")),
+        request,
+        approval,
+      };
+    },
+  );
+  // Requests that wait on the person, failed tasks included.
+  const waiting = inboxItems.filter(
+    (item) => item.status === "needs-you" || item.status === "failed",
+  ).length;
+  // Record the decision after the host's moment. An aborted one (Escape, or the
+  // Sheet closing) throws first, so nothing is recorded or changed.
+  async function decide(
+    request: ApprovalRequest,
+    decision: ApprovalDecision,
+    { signal }: { signal: AbortSignal },
+  ) {
+    await recorded(signal);
+    setDecisions((current) => ({ ...current, [request.id]: decision }));
+    // Approving the reactivation makes her active in the directory, in memory.
+    if (request.id === "reactivate-layla" && decision === "approved")
+      setCustomers((current) =>
+        current.map((customer) =>
+          customer.id === layla.id
+            ? { ...customer, status: "active" }
+            : customer,
+        ),
+      );
+  }
   const navItems = [
     { id: "overview", label: t("نظرة عامة", "Overview"), icon: Home },
     { id: "orders", label: t("الطلبات", "Orders"), icon: ShoppingBag },
@@ -437,22 +668,66 @@ function DashboardContent({
               {navigation(true)}
             </Sheet>
           </div>
-          <Button variant="ghost" onClick={onLanguage}>
-            <bdi>{language === "ar" ? "English" : "العربية"}</bdi>
-          </Button>
-          <Button
-            variant="ghost"
-            iconOnly
-            aria-label={t("الوضع الداكن", "Dark mode")}
-            aria-pressed={theme === "dark"}
-            onClick={onTheme}
-          >
-            {theme === "light" ? (
-              <Moon size={17} aria-hidden="true" />
-            ) : (
-              <Sun size={17} aria-hidden="true" />
+          <Sheet
+            title={t("صندوق القرارات", "Decision inbox")}
+            description={t(
+              "طلبات مساعد العملاء التي تنتظر قرارك.",
+              "Requests from the customer assistant that wait for your decision.",
             )}
-          </Button>
+            closeLabel={t("إغلاق صندوق القرارات", "Close decision inbox")}
+            trigger={
+              <Button
+                variant="ghost"
+                className="dashboard-inbox"
+                aria-label={t(
+                  `صندوق القرارات، بانتظارك: ${number(waiting)}`,
+                  `Decision inbox, needs you: ${number(waiting)}`,
+                )}
+              >
+                <Inbox size={17} aria-hidden="true" />
+                <span className="dashboard-inbox-label">
+                  {t("صندوق القرارات", "Decision inbox")}
+                </span>{" "}
+                {/* The badge says what the name says, so the button's visible
+                    text sits inside its name; a phone keeps only the count. */}
+                <Badge tone={waiting > 0 ? "warning" : "neutral"}>
+                  <span className="dashboard-inbox-word">
+                    {t("بانتظارك: ", "Needs you: ")}
+                  </span>
+                  {number(waiting)}
+                </Badge>
+              </Button>
+            }
+          >
+            <DecisionInbox
+              items={inboxItems}
+              onDecision={decide}
+              // The Sheet already says «صندوق القرارات».
+              title={t("طلبات المساعد", "Assistant requests")}
+              appearance="plain"
+              headingLevel={3}
+            />
+          </Sheet>
+          {!embedded && (
+            <>
+              <Button variant="ghost" onClick={onLanguage}>
+                <bdi>{language === "ar" ? "English" : "العربية"}</bdi>
+              </Button>
+              <Button
+                variant="ghost"
+                iconOnly
+                aria-label={t("الوضع الداكن", "Dark mode")}
+                aria-pressed={theme === "dark"}
+                onClick={onTheme}
+              >
+                {theme === "light" ? (
+                  <Moon size={17} aria-hidden="true" />
+                ) : (
+                  <Sun size={17} aria-hidden="true" />
+                )}
+              </Button>
+            </>
+          )}
         </div>
       </header>
       <main className="dashboard-main">
@@ -494,24 +769,9 @@ function DashboardContent({
               )}
             </span>
           </div>
-          <div className="dashboard-changes">
-            <ChangeSummary
-              headingLevel={2}
-              status={
-                preview === "loading"
-                  ? "updating"
-                  : preview === "error"
-                    ? "failed"
-                    : "ready"
-              }
-              rows={changes}
-              basedOn={t(
-                `آخر ${number(7)} أيام مقابل ${number(7)} أيام قبلها`,
-                `The last ${number(7)} days against the ${number(7)} before`,
-              )}
-              onRefresh={() => changePreview("sample")}
-            />
-          </div>
+          {/* Each figure is a card like the patterns': its name on the tray,
+              the figure on paper, the note on the tray. The list keeps its
+              name–value pairs, so it takes the tray's classes, not Tray. */}
           <dl className="dashboard-metrics" aria-busy={preview === "loading"}>
             {[
               {
@@ -529,26 +789,33 @@ function DashboardContent({
               {
                 key: "revenue",
                 label: t("إيرادات الطلبات", "Order revenue"),
-                value: new Intl.NumberFormat(locale, {
-                  style: "currency",
-                  currency: "AED",
-                  maximumFractionDigits: 0,
-                }).format(orders.revenue),
+                value: money(orders.revenue),
+                note: range,
+              },
+              {
+                key: "average-order",
+                label: t("متوسط قيمة الطلب", "Average order value"),
+                value: money(orders.count ? orders.revenue / orders.count : 0),
                 note: range,
               },
             ].map((metric) => (
-              <div key={metric.key}>
-                <dt>{metric.label}</dt>
-                <dd className="dashboard-metric-value" data-testid={metric.key}>
+              <div key={metric.key} className="tz-tray dashboard-metric">
+                <dt className="tz-tray-header">{metric.label}</dt>
+                <dd
+                  className="tz-tray-paper dashboard-metric-value"
+                  data-testid={metric.key}
+                >
                   {preview === "loading" ? (
-                    <Skeleton style={{ width: "7rem", height: "2rem" }} />
+                    <Skeleton className="dashboard-metric-skeleton" />
                   ) : blocked ? (
                     "—"
                   ) : (
                     metric.value
                   )}
                 </dd>
-                <dd className="dashboard-metric-note">{metric.note}</dd>
+                <dd className="tz-tray-footer dashboard-metric-note">
+                  {metric.note}
+                </dd>
               </div>
             ))}
           </dl>
@@ -607,62 +874,141 @@ function DashboardContent({
               }
             />
           ) : null}
-          {preview === "error" ? null : preview === "loading" ? (
-            <div className="dashboard-charts" aria-busy={preview === "loading"}>
-              <Skeleton
-                shape="rectangle"
-                style={{ width: "100%", height: "16rem" }}
-              />
-              <Skeleton
-                shape="rectangle"
-                style={{ width: "100%", height: "16rem" }}
-              />
-            </div>
-          ) : (
-            <div className="dashboard-charts">
-              <article>
-                <h3>{t("حركة الطلبات", "Orders trend")}</h3>
-                <AreaChart
-                  data={orders.trend}
-                  series={[
-                    {
-                      key: "orders",
-                      label: t("الطلبات", "Orders"),
-                      color: "var(--action)",
-                    },
-                  ]}
-                  label={t("الطلبات اليومية", "Daily orders")}
-                  summary={t(
-                    `${number(orders.count)} طلبًا خلال ${range}. تمثّل كل نقطة إجمالي طلبات يوم واحد.`,
-                    `${number(orders.count)} orders during ${range}. Each point is one day's total orders.`,
-                  )}
-                  locale={language}
-                  categoryFormat="date"
-                  height={220}
-                  dataTable
-                />
-              </article>
-              <article>
-                <h3>{t("توزيع القنوات", "Channel distribution")}</h3>
-                <DonutChart
-                  data={channels.map((channel) => ({
-                    ...channel,
-                    value: orders.channels[channel.key],
-                  }))}
-                  label={t("الطلبات حسب القناة", "Orders by channel")}
-                  summary={t(
-                    `${number(orders.count)} طلبًا: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join("، ")}.`,
-                    `${number(orders.count)} orders: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join(", ")}.`,
-                  )}
-                  locale={language}
-                  height={220}
-                  legend
-                  interactiveLegend={false}
-                  dataTable
-                />
-              </article>
-            </div>
-          )}
+          {/* Two rows of cards across the column: the trend beside What
+              changed, then the channels' orders beside their revenue. The
+              error preview drops the charts, and a pattern left alone takes
+              its whole row. */}
+          <div className="dashboard-row dashboard-row-trend">
+            {preview !== "error" && (
+              <ChartCard
+                title={t("حركة الطلبات", "Orders trend")}
+                busy={preview === "loading"}
+              >
+                {preview === "loading" ? (
+                  <Skeleton
+                    shape="rectangle"
+                    className="dashboard-chart-skeleton"
+                  />
+                ) : (
+                  <AreaChart
+                    data={orders.trend}
+                    series={[
+                      {
+                        key: "orders",
+                        label: t("الطلبات", "Orders"),
+                        color: "var(--action)",
+                      },
+                    ]}
+                    label={t("الطلبات اليومية", "Daily orders")}
+                    summary={t(
+                      `${number(orders.count)} طلبًا خلال ${range}. تمثّل كل نقطة إجمالي طلبات يوم واحد.`,
+                      `${number(orders.count)} orders during ${range}. Each point is one day's total orders.`,
+                    )}
+                    locale={language}
+                    categoryFormat="date"
+                    height={220}
+                    dataTable
+                  />
+                )}
+              </ChartCard>
+            )}
+            <ChangeSummary
+              status={
+                preview === "loading"
+                  ? "updating"
+                  : preview === "error"
+                    ? "failed"
+                    : "ready"
+              }
+              rows={changes}
+              basedOn={t(
+                `آخر ${number(7)} أيام مقابل ${number(7)} أيام قبلها`,
+                `The last ${number(7)} days against the ${number(7)} before`,
+              )}
+              onRefresh={() => changePreview("sample")}
+            />
+          </div>
+          <div className="dashboard-row dashboard-row-split">
+            {preview !== "error" && (
+              <ChartCard
+                title={t("توزيع القنوات", "Channel distribution")}
+                busy={preview === "loading"}
+              >
+                {preview === "loading" ? (
+                  <Skeleton
+                    shape="rectangle"
+                    className="dashboard-chart-skeleton"
+                  />
+                ) : (
+                  <DonutChart
+                    data={channels.map((channel) => ({
+                      ...channel,
+                      value: orders.channels[channel.key],
+                    }))}
+                    label={t("الطلبات حسب القناة", "Orders by channel")}
+                    summary={t(
+                      `${number(orders.count)} طلبًا: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join("، ")}.`,
+                      `${number(orders.count)} orders: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join(", ")}.`,
+                    )}
+                    locale={language}
+                    // Taller than the trend: the ring fills its card beside
+                    // the answer instead of floating in it.
+                    height={280}
+                    legend
+                    interactiveLegend={false}
+                    dataTable
+                  />
+                )}
+              </ChartCard>
+            )}
+            <DataAnswer
+              status={askStatus[preview]}
+              question={t(
+                "كم جلبت كل قناة من الإيرادات هذه الفترة؟",
+                "How much revenue did each channel bring in this period?",
+              )}
+              chart={answerCharts[answerChart]}
+              explanation={explanation}
+              sources={[ordersTable]}
+              method={{ range, filters: t("كل القنوات", "All channels") }}
+              // The loading preview shows the answer mid-way, with its steps.
+              thinking={
+                preview === "loading"
+                  ? {
+                      elapsed: 2,
+                      searched: [ordersTable],
+                      steps: [
+                        {
+                          id: "read",
+                          label: t(
+                            "قراءة طلبات الفترة",
+                            "Read the period's orders",
+                          ),
+                          state: "completed",
+                        },
+                        {
+                          id: "add",
+                          label: t(
+                            "جمع الإيرادات حسب القناة",
+                            "Add up the revenue by channel",
+                          ),
+                          state: "running",
+                        },
+                      ],
+                    }
+                  : undefined
+              }
+              chartTypes={["bar", "donut"]}
+              onChartTypeChange={(type) =>
+                setAnswerChart(type === "donut" ? "donut" : "bar")
+              }
+              onRetry={() => changePreview("sample")}
+              error={t(
+                "هذه معاينة لحالة الخطأ، ولا يجري أي طلب فعلي.",
+                "This is an error preview; no request is running.",
+              )}
+            />
+          </div>
         </section>
         <section
           id="customers"
@@ -838,10 +1184,12 @@ function DashboardContent({
           />
         </section>
         <footer className="dashboard-footer">
-          <a href="/">
-            {t("توثيق طِراز", "Tiraz documentation")}
-            <ExitArrow size={14} aria-hidden="true" />
-          </a>
+          {!embedded && (
+            <a href="/">
+              {t("توثيق طِراز", "Tiraz documentation")}
+              <ExitArrow size={14} aria-hidden="true" />
+            </a>
+          )}
           <div className="dashboard-preview">
             <label id="preview-label">
               {t("معاينة الحالة", "Preview state")}

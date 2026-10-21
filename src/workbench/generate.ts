@@ -3,8 +3,12 @@ import agentTaskSource from "../system/ai/examples/AgentTaskExamples.tsx?raw";
 import taskStarterSource from "../system/ai/examples/TaskStarterExamples.tsx?raw";
 import suggestedEditsSource from "../system/ai/examples/SuggestedEditsExamples.tsx?raw";
 import imageGenerationSource from "../system/ai/examples/ImageGenerationExamples.tsx?raw";
+import draftReviewSource from "../system/ai/examples/DraftReviewExamples.tsx?raw";
 import changeSummarySource from "../system/ai/examples/ChangeSummaryExamples.tsx?raw";
+import assistantControlsSource from "../system/ai/examples/AssistantControlsExamples.tsx?raw";
 import citedAnswerSource from "../system/ai/examples/CitedAnswerExamples.tsx?raw";
+import dataAnswerSource from "../system/ai/examples/DataAnswerExamples.tsx?raw";
+import decisionInboxSource from "../system/ai/examples/DecisionInboxExamples.tsx?raw";
 import terminalSource from "../system/ai/examples/TerminalExamples.tsx?raw";
 import chatAppSource from "../system/ai/examples/ChatAppExample.tsx?raw";
 import aiDecisionsSource from "../system/ai/examples/AIDecisionsExamples.tsx?raw";
@@ -109,10 +113,14 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
     isOneOf(component, [
       "task-starter",
       "cited-answer",
+      "data-answer",
       "agent-task",
+      "decision-inbox",
       "suggested-edits",
       "image-generation",
+      "draft-review",
       "change-summary",
+      "assistant-controls",
       "ask-user-questions",
       "approval-card",
       "approval-flow",
@@ -123,15 +131,23 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
         ? taskStarterSource
         : component === "cited-answer"
           ? citedAnswerSource
-          : component === "agent-task"
-            ? agentTaskSource
-            : component === "suggested-edits"
-              ? suggestedEditsSource
-              : component === "image-generation"
-                ? imageGenerationSource
-                : component === "change-summary"
-                  ? changeSummarySource
-                  : aiDecisionsSource
+          : component === "data-answer"
+            ? dataAnswerSource
+            : component === "agent-task"
+              ? agentTaskSource
+              : component === "decision-inbox"
+                ? decisionInboxSource
+                : component === "suggested-edits"
+                  ? suggestedEditsSource
+                  : component === "image-generation"
+                    ? imageGenerationSource
+                    : component === "draft-review"
+                      ? draftReviewSource
+                      : component === "change-summary"
+                        ? changeSummarySource
+                        : component === "assistant-controls"
+                          ? assistantControlsSource
+                          : aiDecisionsSource
     )
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replace(
@@ -143,19 +159,27 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
         ? "TaskStarterExample"
         : component === "cited-answer"
           ? "CitedAnswerExample"
-          : component === "agent-task"
-            ? "AgentTaskExample"
-            : component === "suggested-edits"
-              ? "SuggestedEditsExample"
-              : component === "image-generation"
-                ? "ImageGenerationExample"
-                : component === "change-summary"
-                  ? "ChangeSummaryExample"
-                  : component === "ask-user-questions"
-                    ? "AskUserQuestionsExample"
-                    : component === "approval-card"
-                      ? "ApprovalCardExample"
-                      : "ApprovalFlowExample";
+          : component === "data-answer"
+            ? "DataAnswerExample"
+            : component === "agent-task"
+              ? "AgentTaskExample"
+              : component === "decision-inbox"
+                ? "DecisionInboxExample"
+                : component === "suggested-edits"
+                  ? "SuggestedEditsExample"
+                  : component === "image-generation"
+                    ? "ImageGenerationExample"
+                    : component === "draft-review"
+                      ? "DraftReviewExample"
+                      : component === "change-summary"
+                        ? "ChangeSummaryExample"
+                        : component === "assistant-controls"
+                          ? "AssistantControlsExample"
+                          : component === "ask-user-questions"
+                            ? "AskUserQuestionsExample"
+                            : component === "approval-card"
+                              ? "ApprovalCardExample"
+                              : "ApprovalFlowExample";
     return `${source}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";

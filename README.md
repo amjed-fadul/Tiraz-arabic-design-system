@@ -27,8 +27,13 @@ AI** under Screens in the AI patterns navigation), or visit
 `/examples/dashboard` on the local server. This full-page Arabic-first customer
 dashboard connects metrics, period-filtered charts, searchable/filterable
 DataTable and validated customer creation using existing Tiraz components. Its
-overview opens with What changed (`ChangeSummary`): orders, revenue and the average
-order, the last seven days against the seven before, computed from the sample orders.
+overview shows four figure cards: customers, orders, revenue and the average order.
+Order performance sets the trend beside What changed (`ChangeSummary`): orders, revenue
+and the average order, the last seven days against the seven before, computed from the
+sample orders. Beside the channels' donut, Ask your data (`DataAnswer`) answers how
+much revenue each channel brought in this period, as a bar chart or a donut. The
+header's Decision inbox button (`DecisionInbox`, in a Sheet) counts the requests that
+wait on you; approving the reversible one reactivates Layla Ahmed in memory.
 Records and preferences live in memory; reload restores the deterministic sample.
 Secondary preview controls demonstrate loading, empty and error states.
 See [run/reuse and behavior notes](docs/dashboard-example/README.md).

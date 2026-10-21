@@ -292,6 +292,14 @@ export function ContextMeterExample({
         metadata={
           ar ? "حُدّث بعد آخر رسالة" : "Updated after your last message"
         }
+        // Shown once the meter fills up.
+        action={{
+          label: ar ? "لخّص المحادثة" : "Summarize the conversation",
+          onSelect: () => {
+            // Your app summarizes the conversation here, then passes the
+            // smaller usage it reports.
+          },
+        }}
       />
     </div>
   );

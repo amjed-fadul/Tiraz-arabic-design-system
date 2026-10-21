@@ -1,8 +1,9 @@
-import { useId } from "react";
+import { useContext, useId } from "react";
 import type { ReactNode, RefObject } from "react";
 import { Button } from "./Button";
 import type { ButtonVariant } from "./Button";
 import { Kbd } from "./Kbd";
+import { EscapeFoldsContext } from "./escape-folds";
 import { applePlatform, useShortcuts } from "./useShortcuts";
 import type { Shortcut } from "./useShortcuts";
 import { useSystem } from "./useSystem";
@@ -28,9 +29,11 @@ const keys: Record<Shortcut, readonly string[]> = {
  * order with the primary last, each real shortcut hinted inside its button and
  * named in its accessible description. Shortcuts work only while focus is
  * inside `scope`, and only while their action is neither disabled nor loading.
+ * Inside a Decision inbox row Escape folds the row, so there it is no
+ * action's shortcut.
  */
 export function DecisionBar({
-  actions,
+  actions: given,
   scope,
   contentKey,
   className = "",
@@ -41,7 +44,15 @@ export function DecisionBar({
   className?: string;
 }) {
   const { config } = useSystem(),
+    folds = useContext(EscapeFoldsContext),
     uid = useId();
+  const actions = folds
+    ? given.map((action) =>
+        action.shortcut === "Escape"
+          ? { ...action, shortcut: undefined }
+          : action,
+      )
+    : given;
   const ordered = [
     ...actions.filter((action) => action.tone !== "primary"),
     ...actions.filter((action) => action.tone === "primary"),

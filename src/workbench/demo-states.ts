@@ -131,6 +131,10 @@ export const stateWords = {
   rewriting: ["يعيد الصياغة", "Rewriting"],
   reviewing: ["قيد المراجعة", "Reviewing"],
   applied: ["طُبّق", "Applied"],
+  forReview: ["بانتظار المراجعة", "For review"],
+  sending: ["يُرسَل", "Sending"],
+  sent: ["أُرسل", "Sent"],
+  discarded: ["تم التجاهل", "Discarded"],
 } satisfies Record<string, Localized>;
 
 /** A state whose id and label both come from one word in `stateWords`. */
@@ -607,6 +611,19 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       { state: "done", ms: 800 },
     ],
   },
+  "data-answer": {
+    states: [
+      phased("thinking"),
+      phased("done", "completed"),
+      phased("failed"),
+      phased("empty"),
+    ],
+    resting: "done",
+    replay: [
+      { state: "thinking", ms: 2200 },
+      { state: "done", ms: 800 },
+    ],
+  },
   "suggested-edits": {
     states: [
       phased("selecting"),
@@ -628,6 +645,22 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
     replay: [
       { state: "weaving", ms: 2600 },
       { state: "done", ms: 800 },
+    ],
+  },
+  "draft-review": {
+    states: [
+      phased("writing"),
+      phased("forReview", "ready"),
+      phased("sending"),
+      phased("sent"),
+      phased("discarded"),
+    ],
+    resting: "forReview",
+    replay: [
+      { state: "writing", ms: 1800 },
+      { state: "forReview", ms: 2400 },
+      { state: "sending", ms: 2400 },
+      { state: "sent", ms: 800 },
     ],
   },
   "change-summary": {
@@ -675,6 +708,14 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
       phased("expired"),
     ],
     resting: "waiting",
+  },
+  "decision-inbox": {
+    states: [
+      phased("needsYou", "waiting"),
+      phased("expanded"),
+      phased("empty"),
+    ],
+    resting: "needsYou",
   },
   "approval-flow": {
     states: [phased("first"), phased("second"), phased("done")],

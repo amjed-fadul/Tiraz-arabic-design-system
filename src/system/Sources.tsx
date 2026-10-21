@@ -1,7 +1,10 @@
 import * as Popover from "@radix-ui/react-popover";
 import { ChevronDown, ExternalLink, FileText, Globe } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import type { PointerEvent as ReactPointerEvent } from "react";
+import type {
+  MouseEvent as ReactMouseEvent,
+  PointerEvent as ReactPointerEvent,
+} from "react";
 import { sourceHref } from "./source-url";
 import { useSystem } from "./useSystem";
 import { useChanged } from "./useChanged";
@@ -43,7 +46,8 @@ export interface InlineCitationProps {
   source: SourceReference;
   /** Disclosure uses an interactive popup; link preserves native browser
    * behavior; preview is a link that shows the source on hover or focus (a
-   * button, when the source has no safe destination). */
+   * button, when the source has no safe destination), and a tap opens the
+   * disclosure's popup instead of following the link. */
   mode?: "disclosure" | "link" | "preview";
   /** Called when the popup or preview opens or closes. */
   onOpenChange?: (open: boolean) => void;
@@ -163,19 +167,22 @@ export function Sources({
   );
 }
 // The source's domain, number, title, description and metadata, as the
-// disclosure and the preview both show them.
+// disclosure and the preview both show them; with `openLabel`, a link to the
+// source after them.
 function CitationDetails({
   source,
   href,
   digits,
   unavailable,
   titleId,
+  openLabel,
 }: {
   source: SourceReference;
   href: string | undefined;
   digits: Intl.NumberFormat;
   unavailable: string;
   titleId?: string;
+  openLabel?: string;
 }) {
   return (
     <>
@@ -190,6 +197,12 @@ function CitationDetails({
         <blockquote dir="auto">{source.description}</blockquote>
       )}
       {source.metadata && <small dir="auto">{source.metadata}</small>}
+      {href && openLabel && (
+        <a href={href}>
+          {openLabel}
+          <ExternalLink size={13} aria-hidden="true" />
+        </a>
+      )}
     </>
   );
 }
@@ -201,7 +214,9 @@ const previewGrace = 120;
  * source with a safe destination is a link, so Enter and a click follow it; one
  * without is a button, so Tab still reaches it and a click shows the preview.
  * Escape and blur close the preview, and the pointer moving onto it keeps it
- * open.
+ * open. A finger has no hover, so a tap opens the source's card instead of
+ * following the link: the disclosure's popup, named by the title, with its
+ * «فتح المصدر» link. A second tap, a tap outside or Escape closes it.
  */
 function CitationPreview({
   source,
@@ -209,6 +224,7 @@ function CitationPreview({
   name,
   digits,
   unavailable,
+  openLabel,
   className,
   onOpenChange,
 }: {
@@ -217,32 +233,40 @@ function CitationPreview({
   name: string;
   digits: Intl.NumberFormat;
   unavailable: string;
+  openLabel: string;
   className: string;
   onOpenChange?: (open: boolean) => void;
 }) {
   const { config, container } = useSystem(),
-    previewId = useId();
-  const [open, setOpen] = useState(false);
+    previewId = useId(),
+    titleId = useId();
+  const [open, setOpen] = useState(false),
+    [tapped, setTapped] = useState(false);
   const anchor = useRef<Element | null>(null),
     shown = useRef(false),
     hovered = useRef(false),
     focused = useRef(false),
+    touched = useRef(false),
     timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   function change(next: boolean) {
     clearTimeout(timer.current);
     if (shown.current === next) return;
     shown.current = next;
     setOpen(next);
+    // The card ends with the preview that holds it.
+    if (!next) setTapped(false);
     onOpenChange?.(next);
   }
   useEffect(() => () => clearTimeout(timer.current), []);
   const enter = (event: ReactPointerEvent) => {
-    // A touch has no hover; its tap follows the link or shows the button's.
+    // A touch has no hover; its tap opens the card (see onClick).
     if (event.pointerType === "touch") return;
     hovered.current = true;
     change(true);
   };
-  const leave = () => {
+  const leave = (event: ReactPointerEvent) => {
+    // A lifted finger is no pointer leaving: the card stays until it is closed.
+    if (event.pointerType === "touch") return;
     hovered.current = false;
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
@@ -255,7 +279,7 @@ function CitationPreview({
     },
     className,
     "aria-label": name,
-    "aria-describedby": open ? previewId : undefined,
+    "aria-describedby": open && !tapped ? previewId : undefined,
     "data-source-id": source.id,
     "data-state": open ? "open" : "closed",
     onFocus: () => {
@@ -264,10 +288,29 @@ function CitationPreview({
     },
     onBlur: () => {
       focused.current = false;
-      if (!hovered.current) change(false);
+      // The card a tap opened stays when focus goes into it or away.
+      if (!hovered.current && !tapped) change(false);
     },
     onPointerEnter: enter,
     onPointerLeave: leave,
+    onPointerDown: (event: ReactPointerEvent) => {
+      touched.current = event.pointerType === "touch";
+    },
+    // A touch that became a scroll is no tap, and no click follows it.
+    onPointerCancel: () => {
+      touched.current = false;
+    },
+    onClick: (event: ReactMouseEvent) => {
+      if (touched.current) {
+        touched.current = false;
+        event.preventDefault();
+        if (tapped) change(false);
+        else {
+          setTapped(true);
+          change(true);
+        }
+      } else if (!href) change(true);
+    },
   };
   const number = <bdi>{digits.format(source.number)}</bdi>;
   return (
@@ -278,7 +321,7 @@ function CitationPreview({
             {number}
           </a>
         ) : (
-          <button {...shared} type="button" onClick={() => change(true)}>
+          <button {...shared} type="button">
             {number}
           </button>
         )}
@@ -287,7 +330,8 @@ function CitationPreview({
         <Popover.Content
           className="tz-citation-popup"
           id={previewId}
-          role="tooltip"
+          role={tapped ? "dialog" : "tooltip"}
+          aria-labelledby={tapped ? titleId : undefined}
           dir={config.direction}
           sideOffset={6}
           collisionPadding={12}
@@ -298,7 +342,8 @@ function CitationPreview({
             if (anchor.current?.contains(event.target as Node))
               event.preventDefault();
           }}
-          onPointerEnter={() => {
+          onPointerEnter={(event) => {
+            if (event.pointerType === "touch") return;
             hovered.current = true;
             clearTimeout(timer.current);
           }}
@@ -309,6 +354,8 @@ function CitationPreview({
             href={href}
             digits={digits}
             unavailable={unavailable}
+            titleId={tapped ? titleId : undefined}
+            openLabel={tapped ? openLabel : undefined}
           />
         </Popover.Content>
       </Popover.Portal>
@@ -331,7 +378,8 @@ export function InlineCitation({
   const href = sourceHref(source.href),
     unavailable =
       labels?.unavailable ??
-      (ar ? "الرابط غير متاح" : "Destination unavailable");
+      (ar ? "الرابط غير متاح" : "Destination unavailable"),
+    openLabel = labels?.open ?? (ar ? "فتح المصدر" : "Open source");
   const name =
     labels?.source?.(source.number, source.title) ??
     (ar
@@ -347,6 +395,7 @@ export function InlineCitation({
         name={name}
         digits={digits}
         unavailable={unavailable}
+        openLabel={openLabel}
         className={cls}
         onOpenChange={onOpenChange}
       />
@@ -394,13 +443,8 @@ export function InlineCitation({
             digits={digits}
             unavailable={unavailable}
             titleId={titleId}
+            openLabel={openLabel}
           />
-          {href && (
-            <a href={href}>
-              {labels?.open ?? (ar ? "فتح المصدر" : "Open source")}
-              <ExternalLink size={13} aria-hidden="true" />
-            </a>
-          )}
         </Popover.Content>
       </Popover.Portal>
     </Popover.Root>

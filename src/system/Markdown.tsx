@@ -16,8 +16,10 @@ import { sourceHref } from "./source-url";
 import { useSystem } from "./useSystem";
 export type MarkdownProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
   text: string;
-  /** Turns a `[n]` marker in the text into this node. Code is left alone, and
-   * a marker it returns nothing for stays as written. */
+  /** Turns each number of a `[n]` marker in the text into this node, one call
+   * per number: `[1]`, `[1,3]` and `[٢، ٣]` in any digits, a group as adjacent
+   * nodes. Code is left alone, and a marker is left as written when it returns
+   * nothing for any of its numbers. */
   renderCitation?: (marker: number) => ReactNode;
   /** "strict" sends link and image targets through `sourceHref`, so only http,
    * https, relative and fragment targets survive; the default keeps the
@@ -25,6 +27,21 @@ export type MarkdownProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
   links?: "default" | "strict";
 };
 const plugins = [remarkGfm];
+// A citation marker: a number in brackets, or several after commas, in the
+// digits Arabic text drifts between (ASCII, Arabic-Indic, Persian) and with
+// either comma: [1], [١], [۴], [1,3] and [٢، ٣].
+const numberSource = String.raw`[0-9\u0660-\u0669\u06F0-\u06F9]+`;
+const markerPattern = new RegExp(
+  String.raw`(\[${numberSource}(?:\s*[,،]\s*${numberSource})*\])`,
+  "u",
+);
+const numberPattern = new RegExp(numberSource, "gu");
+// Each digit block starts on a multiple of 16, so a digit's low four bits are
+// its value in all three.
+const markerNumber = (written: string) =>
+  Number(
+    Array.from(written, (digit) => String(digit.charCodeAt(0) & 15)).join(""),
+  );
 // The component map below is fixed so a growing answer never remounts its
 // nodes; the citation renderer reaches the text through this context.
 const CitationContext =
@@ -58,14 +75,23 @@ function words(
     if (!renderCitation) return wordSpans(child, "");
     // A marker may touch its word or the punctuation after it, so the text is
     // cut at each marker before it is cut into words.
-    return child.split(/(\[\d+\])/u).map((part, index) => {
-      const marker = /^\[(\d+)\]$/u.exec(part)?.[1];
-      const number = marker === undefined ? NaN : Number(marker);
-      if (!Number.isSafeInteger(number)) return wordSpans(part, `${index}-`);
-      const node = renderCitation(number);
+    return child.split(markerPattern).map((part, index) => {
+      // The odd parts are the markers the pattern caught.
+      if (index % 2 === 0) return wordSpans(part, `${index}-`);
+      const numbers = part.match(numberPattern)?.map(markerNumber) ?? [];
+      if (!numbers.every(Number.isSafeInteger))
+        return wordSpans(part, `${index}-`);
+      // Every number is asked for once; one that renders nothing leaves the
+      // whole marker as written.
+      const nodes = numbers.map((number) => renderCitation(number));
+      const rendered = nodes.every(
+        (node) => node !== null && node !== undefined && node !== false,
+      );
       return (
         <Fragment key={`${index}-citation`}>
-          {node === null || node === undefined || node === false ? part : node}
+          {rendered
+            ? nodes.map((node, at) => <Fragment key={at}>{node}</Fragment>)
+            : part}
         </Fragment>
       );
     });

@@ -55,10 +55,14 @@ export function CitedAnswerExample({
 
   const [local, setLocal] = useState<Status>("completed");
   const status = (phase as Status | undefined) ?? local;
-  // How far the run has come in its status, and the words that had arrived when
-  // the person stopped it.
+  // How far the run has come in its status, and where it was when the person
+  // stopped it: the words written, the sources found and the seconds taken.
   const [beat, setBeat] = useState({ status, n: 0 }),
-    [cut, setCut] = useState<number>();
+    [cut, setCut] = useState<{
+      words: number;
+      arrived: number;
+      seconds: number;
+    }>();
   if (beat.status !== status) {
     setBeat({ status, n: 0 });
     if (status !== "stopped") setCut(undefined);
@@ -108,8 +112,13 @@ export function CitedAnswerExample({
         : status === "failed"
           ? Math.floor(words.length * 0.4)
           : status === "stopped"
-            ? (cut ?? Math.floor(words.length * 0.65))
+            ? (cut?.words ?? Math.floor(words.length * 0.65))
             : 0;
+  // The search goes on while thinking, and was cut short when the person
+  // stopped it before a word was written: then the answer cites nothing, and
+  // the step the search was on gets no tick.
+  const searching =
+    status === "thinking" || (status === "stopped" && written === 0);
 
   // The five sources the search covered, and the three the answer cites.
   const detail: Record<string, [description: string, metadata: string]> = {
@@ -141,23 +150,33 @@ export function CitedAnswerExample({
     title: source.title[language],
     href: `#${source.id}`,
   }));
-  const cited: SourceReference[] =
-    status === "thinking"
-      ? []
-      : searched.slice(0, 3).map((source) => ({
-          ...source,
-          description: detail[source.id]?.[0],
-          metadata: detail[source.id]?.[1],
-        }));
+  const cited: SourceReference[] = searching
+    ? []
+    : searched.slice(0, 3).map((source) => ({
+        ...source,
+        description: detail[source.id]?.[0],
+        metadata: detail[source.id]?.[1],
+      }));
+  // A stopped run keeps only what had arrived when it was stopped.
   const arrived =
     status === "thinking" && !reduced
       ? Math.min(beat.n, searched.length)
-      : searched.length;
+      : status === "stopped" && cut
+        ? cut.arrived
+        : searched.length;
+  const elapsed =
+    status === "thinking"
+      ? Math.floor((beat.n * arrivalMs) / 1000)
+      : status === "stopped" && cut
+        ? cut.seconds
+        : 6;
+  const current =
+    status === "thinking" ? ("running" as const) : ("pending" as const);
   const steps = [
     {
       id: "ledger",
       label: t("قراءة دفتر الحسابات", "Read the general ledger"),
-      state: arrived >= 2 ? ("completed" as const) : ("running" as const),
+      state: arrived >= 2 ? ("completed" as const) : current,
     },
     {
       id: "invoices",
@@ -167,7 +186,7 @@ export function CitedAnswerExample({
           ? ("pending" as const)
           : arrived >= 4
             ? ("completed" as const)
-            : ("running" as const),
+            : current,
     },
     {
       id: "bank",
@@ -175,8 +194,8 @@ export function CitedAnswerExample({
       state:
         arrived < 4
           ? ("pending" as const)
-          : status === "thinking"
-            ? ("running" as const)
+          : searching
+            ? current
             : ("completed" as const),
     },
   ];
@@ -196,8 +215,7 @@ export function CitedAnswerExample({
       sources={cited}
       thinking={{
         // Seconds, updated at most once a second.
-        elapsed:
-          status === "thinking" ? Math.floor((beat.n * arrivalMs) / 1000) : 6,
+        elapsed,
         searched: searched.slice(0, arrived),
         steps,
       }}
@@ -225,14 +243,14 @@ export function CitedAnswerExample({
         setFeedback(value);
         setReason(why);
       }}
-      onCopy={() => navigator.clipboard.writeText(text)}
+      onCopy={(text) => navigator.clipboard.writeText(text)}
       onRegenerate={() => {
         setFeedback(null);
         setReason(undefined);
         move("thinking");
       }}
       onStop={() => {
-        setCut(written);
+        setCut({ words: written, arrived, seconds: elapsed });
         move("stopped");
       }}
       onRetry={() => move("thinking")}

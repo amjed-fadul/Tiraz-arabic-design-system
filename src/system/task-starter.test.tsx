@@ -318,3 +318,21 @@ it("keeps context chips on Backspace in an empty text area", async () => {
   await user.click(screen.getByRole("button", { name: "إزالة INV-1043" }));
   expect(remove).toHaveBeenCalledExactlyOnceWith("inv-1043");
 });
+
+it("says a context crossing in its own region", () => {
+  const starter = (used: number) =>
+    wrap(
+      <Host
+        modes={[{ id: "auto", label: "تلقائي" }]}
+        mode="auto"
+        contextUsage={{ used, capacity: 128_000 }}
+      />,
+    );
+  const view = render(starter(64_000));
+  const region = document.querySelector(
+    ".tz-task-starter > [role='status']",
+  ) as HTMLElement;
+  expect(region).toBeEmptyDOMElement();
+  view.rerender(starter(104_000));
+  expect(region.textContent).toBe("السياق: يقترب من الامتلاء");
+});

@@ -88,22 +88,25 @@
     background: color-mix(in srgb, var(--danger) 15%, var(--surface));
   }
 }
-.tz-button:not(:disabled):active {
+.tz-button:not(:disabled):not([data-state="loading"]):active {
   transform: scale(var(--press-scale));
   transition-duration:
     var(--motion-fast), var(--motion-fast), var(--motion-fast),
     var(--motion-state), var(--motion-press), var(--motion-press);
   transition-timing-function: var(--ease-out);
 }
-.tz-button:not([data-variant="ghost"]):not(:disabled):active {
+.tz-button:not([data-variant="ghost"]):not(:disabled):not(
+    [data-state="loading"]
+  ):active {
   box-shadow: var(--shadow-pressed);
 }
 .tz-button:disabled:not([data-state="loading"]) {
   opacity: var(--disabled-opacity);
   box-shadow: none;
 }
-/* Loading keeps full opacity: the spinner says it is busy, and the button is
-   disabled while it loads, so clicks never land. */
+/* Loading keeps full opacity: the spinner says it is busy. The button keeps
+   focus while it loads, inert (aria-disabled) and swallowing clicks, so it
+   does not press either. */
 .tz-button[data-state="loading"] {
   cursor: wait;
 }
@@ -2211,6 +2214,11 @@ textarea.tz-textarea:read-only {
   unicode-bidi: plaintext;
 }
 .tiraz-system[dir="ltr"] .tz-chart .recharts-cartesian-axis-tick-value {
+  direction: ltr;
+}
+/* In RTL, text-anchor="end" would start each y-axis label at its tick and run
+   it into the plot; plaintext above keeps the Arabic in order. */
+.tz-chart .recharts-yAxis-tick-labels .recharts-cartesian-axis-tick-value {
   direction: ltr;
 }
 .tz-chart .recharts-surface:focus-visible {
@@ -4689,6 +4697,7 @@ textarea.tz-textarea:read-only {
   color: var(--text-secondary);
 }
 .tz-agent-run-step-detail,
+.tz-agent-run-step-agent,
 .tz-agent-run-notes {
   margin: 0;
   color: var(--text-muted);
@@ -4722,8 +4731,16 @@ textarea.tz-textarea:read-only {
   display: inline-block;
   margin-inline-end: var(--space-1);
 }
-/* Details: a quiet link-like button and the tool calls it folds. */
-.tz-agent-run-details {
+/* A queued note's Apply now and Remove follow its word on the same line. */
+.tz-agent-run-note-actions {
+  display: inline-flex;
+  gap: var(--space-2);
+  margin-inline-start: var(--space-2);
+}
+/* Details and a note's actions: quiet link-like buttons. Details folds the
+   tool calls below it. */
+.tz-agent-run-details,
+.tz-agent-run-note-action {
   justify-self: start;
   display: inline-flex;
   align-items: center;
@@ -4741,11 +4758,13 @@ textarea.tz-textarea:read-only {
   cursor: pointer;
 }
 @media (hover: hover) and (pointer: fine) {
-  .tz-agent-run-details:hover {
+  .tz-agent-run-details:hover,
+  .tz-agent-run-note-action:hover {
     color: var(--text);
   }
 }
 .tz-agent-run-details:focus-visible,
+.tz-agent-run-note-action:focus-visible,
 .tz-agent-run-output:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
@@ -5083,8 +5102,45 @@ button.tz-source-chip {
 .tz-thinking-panel-chips > li[data-fresh] {
   animation: tz-fade-in var(--motion-state) var(--ease-out) both;
 }
+/* «+٤» is a quiet button: it reveals the sources past the chips, then reads
+   «عرض أقل». It presses like the chips beside it. */
 .tz-thinking-panel-more {
+  min-block-size: 24px;
+  padding-inline: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
   color: var(--text-muted);
+  font: inherit;
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-thinking-panel-more:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-thinking-panel-more:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}
+/* A search that stopped or failed leaves its thread as it was, still, rather
+   than closing it into the solid line that means done. */
+.tz-thinking-panel:is([data-status="stopped"], [data-status="failed"])
+  .tz-thread::before {
+  animation: none;
+  opacity: 0;
+}
+.tz-thinking-panel:is([data-status="stopped"], [data-status="failed"])
+  .tz-thread::after {
+  opacity: 0.45;
 }
 /* The steps share the status vocabulary; the one in progress shimmers. */
 .tz-thinking-panel-steps {
@@ -7518,7 +7574,10 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-chat-entry-surface .tz-chat-entry-send {
   border-radius: var(--radius-pill);
 }
-.tz-chat-entry-surface .tz-chat-entry-send:disabled {
+/* Disabled, or at work on a send: a loading button keeps focus rather than
+   going disabled, and looks the same. */
+.tz-chat-entry-surface
+  .tz-chat-entry-send:is(:disabled, [data-state="loading"]) {
   opacity: 1;
   background: var(--surface-tray);
   color: var(--text-muted);
@@ -8129,6 +8188,1169 @@ button.tz-tool-chip[aria-expanded="true"] {
   }
 }
 
+/* Ask your data (spec section 13.1): a question answered as a chart, a short
+   explanation and «كيف حُسب هذا؟». The header holds the AI mark, the question
+   and one status pill; the paper holds the chart and the explanation. The
+   thinking panel and the method are evidence on the tray around the paper, and
+   the tray's footer holds the person's options: the chart type, then what to
+   do with the answer. Plain drops the tray and lives on its host's paper.
+   Nothing moves on mount. */
+.tz-data-answer {
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-data-answer[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-data-answer[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tz-data-answer:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-data-answer-header {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-data-answer-title {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+/* The thinking panel and the method sit on the tray, level with its header and
+   footer text. */
+.tz-data-answer-evidence {
+  padding-inline: var(--space-2);
+  padding-block-end: var(--space-2);
+}
+.tz-data-answer-paper {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.tz-data-answer-chart,
+.tz-data-answer-explanation {
+  min-inline-size: 0;
+}
+.tz-data-answer-explanation {
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-data-answer-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-data-answer-note[data-tone="empty"] {
+  padding-block: var(--space-6);
+  text-align: center;
+}
+/* What went wrong stays as text, in the danger color's soft fill; a transparent
+   border keeps the edge in forced colors. */
+.tz-data-answer-note[data-tone="danger"] {
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--danger-soft);
+  color: var(--text);
+}
+.tz-data-answer-note strong {
+  font-weight: var(--weight-semibold);
+}
+.tz-data-answer-note[data-tone="danger"] strong {
+  color: var(--danger);
+}
+/* «كيف حُسب هذا؟» folds under the paper: the range, the filters and the tables
+   as a definition list. A long list scrolls in its own region, never pushing the
+   decision out of view. */
+.tz-data-answer-method {
+  padding-inline: var(--space-2);
+  padding-block-start: var(--space-2);
+  color: var(--text-secondary);
+}
+.tz-data-answer-method-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-inline-size: 100%;
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  text-align: start;
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-data-answer-method-trigger:hover {
+    background: var(--wash);
+  }
+}
+.tz-data-answer-method-trigger > svg {
+  inline-size: 14px;
+  block-size: 14px;
+  color: var(--text-muted);
+  transition: transform var(--motion-state) var(--ease-out);
+}
+.tz-data-answer-method[data-expanded="true"]
+  .tz-data-answer-method-trigger
+  > svg {
+  transform: rotate(180deg);
+}
+.tz-data-answer-method-panel,
+.tz-data-answer-method-panel[hidden] {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  min-inline-size: 0;
+  transition:
+    grid-template-rows var(--motion-collapse-exit) var(--ease-out),
+    opacity var(--motion-collapse-exit) var(--ease-out),
+    visibility 0s var(--motion-collapse-exit);
+}
+.tz-data-answer-method[data-expanded="true"] > .tz-data-answer-method-panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows var(--motion-collapse) var(--ease-out),
+    opacity var(--motion-collapse) var(--ease-out),
+    visibility 0s;
+}
+.tz-data-answer-method-clip {
+  min-block-size: 0;
+  overflow: hidden;
+}
+.tz-data-answer-method-list {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  max-block-size: 18rem;
+  margin: 0;
+  padding: var(--space-2) var(--space-1) var(--space-1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-data-answer-method-list > div {
+  display: contents;
+}
+.tz-data-answer-method-list dt {
+  color: var(--text-muted);
+}
+.tz-data-answer-method-list dd {
+  min-inline-size: 0;
+  margin: 0;
+  color: var(--text);
+}
+.tz-data-answer-tables {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-data-answer-tables > li {
+  display: flex;
+  min-inline-size: 0;
+}
+/* The person's options. The chart type is a native radio group laid over a pill
+   control: a click, the arrow keys and the group work as the browser does them,
+   and the chosen type is the raised paper chip. */
+.tz-data-answer-decision {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  min-inline-size: 0;
+}
+.tz-data-answer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  margin-inline-start: auto;
+}
+.tz-data-answer-types {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+}
+.tz-data-answer-types-label {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-data-answer-types-options {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+}
+.tz-data-answer-type {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 28px;
+  padding-inline: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-data-answer-type > input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.tz-data-answer-type:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-data-answer-type:hover {
+    color: var(--text);
+  }
+}
+.tz-data-answer-type:has(:checked) {
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text);
+}
+.tz-data-answer-type:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+/* Plain draws the hairline that the tray's edge draws in a card. */
+.tz-data-answer[data-appearance="plain"]
+  :is(.tz-data-answer-evidence, .tz-data-answer-method) {
+  padding-inline: 0;
+}
+.tz-data-answer-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+@media (forced-colors: active) {
+  .tz-data-answer-type:has(:checked) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* Decision inbox (spec section 13.2): what every agent waits on the person
+   for, as tabs of rows on paper. An open row shows the full request in the
+   attention color's soft fill, as Agent task's inline approval does. */
+.tz-decision-inbox {
+  container-type: inline-size;
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-decision-inbox[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-decision-inbox[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tz-decision-inbox-header {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-decision-inbox-title {
+  flex: 1;
+  min-inline-size: 0;
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+/* One track that never grows past the paper: on a phone the tab list scrolls
+   inside it rather than widening the rows. */
+.tz-decision-inbox-paper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+/* The agents strip: an outlined toggle per agent, holding its state's pill.
+   The picked one takes the action's soft fill and ring. */
+.tz-decision-inbox-agents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.tz-decision-inbox-agent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 32px;
+  padding-block: 3px;
+  padding-inline: var(--space-3) 3px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--border);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-decision-inbox-agent:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-decision-inbox-agent:not([aria-pressed="true"]):hover {
+    background: var(--wash);
+  }
+}
+.tz-decision-inbox-agent[aria-pressed="true"] {
+  background: var(--action-soft);
+  box-shadow: inset 0 0 0 1px var(--action-border);
+  color: var(--action);
+}
+.tz-decision-inbox-agent:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+/* Each tab's count sits in a quiet capsule after its word. */
+.tz-decision-inbox-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tz-decision-inbox-count {
+  justify-content: center;
+  min-inline-size: 20px;
+  padding-block: 0;
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-pill);
+}
+/* A narrow inbox, on a phone or in a side sheet, tightens its tabs so all
+   four fit; narrower still, the list scrolls as Tabs does. */
+@container (inline-size < 26rem) {
+  .tz-decision-inbox-tabs .tz-tab {
+    padding-inline: var(--space-2);
+  }
+  .tz-decision-inbox-tab {
+    gap: var(--space-1);
+  }
+}
+.tz-decision-inbox-rows {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* A row: the title with its pill at the line's end, then who asks, any
+   error, the open request and the actions, end-aligned as a decision bar. */
+.tz-decision-inbox-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2px var(--space-3);
+  padding-block: var(--space-3);
+}
+.tz-decision-inbox-row + .tz-decision-inbox-row {
+  border-block-start: 0.5px solid var(--hairline);
+}
+/* The title shares its line with the pill and wraps before pushing it down. */
+.tz-decision-inbox-heading {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  margin: 0;
+  border-radius: var(--radius-small);
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  line-height: var(--line-height);
+}
+.tz-decision-inbox-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-inline-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-small);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.tz-decision-inbox-trigger[aria-disabled="true"] {
+  cursor: default;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-decision-inbox-trigger:not([aria-disabled="true"]):hover > bdi {
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+    text-underline-offset: var(--underline-offset);
+  }
+}
+.tz-decision-inbox-trigger > svg {
+  flex: none;
+  inline-size: 16px;
+  block-size: 16px;
+  color: var(--text-muted);
+  transition: transform var(--motion-state) var(--ease-out);
+}
+.tz-decision-inbox-trigger[aria-expanded="true"] > svg {
+  transform: rotate(180deg);
+}
+.tz-decision-inbox-heading:focus-visible,
+.tz-decision-inbox-trigger:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-decision-inbox-row > :is(.tz-status-pill, .tz-decision-inbox-receipt) {
+  order: 1;
+  margin-block-start: 1px;
+}
+/* The receipt takes the pill's place: what actually happened, on a neutral
+   capsule, fading in once the decision or the host's move landed. */
+.tz-decision-inbox-receipt {
+  display: inline-flex;
+  align-items: center;
+  max-inline-size: 60%;
+  padding: 2px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  animation: tz-fade-in var(--motion-receipt) var(--ease-out);
+}
+.tz-decision-inbox-meta {
+  order: 2;
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-decision-inbox-error {
+  order: 3;
+  flex-basis: 100%;
+  margin: var(--space-1) 0 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-decision-inbox-panel {
+  order: 4;
+  flex-basis: 100%;
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  margin-block-start: var(--space-2);
+}
+.tz-decision-inbox-panel[hidden] {
+  display: none;
+}
+.tz-decision-inbox-actions {
+  order: 5;
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--control-gap);
+  margin-block-start: var(--space-2);
+}
+.tz-decision-inbox-hint {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--danger);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  text-align: end;
+}
+/* An open row's latest steps, with StatusIcon at ToolChips' size. */
+.tz-decision-inbox-steps {
+  --status-size: 18px;
+  display: grid;
+  gap: var(--space-1);
+}
+.tz-decision-inbox-steps-title {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-decision-inbox-steps > ol {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-decision-inbox-step {
+  display: grid;
+  grid-template-columns: var(--status-size) minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-2);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-decision-inbox-step-time {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  white-space: nowrap;
+}
+/* What waits on the person; a transparent border keeps its edge in forced
+   colors, which drop the fill. */
+.tz-decision-inbox-request {
+  min-inline-size: 0;
+  padding: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--attention-soft);
+}
+.tz-decision-inbox-request-text {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-decision-inbox-request-text strong {
+  font-weight: var(--weight-semibold);
+}
+.tz-decision-inbox-empty {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-8);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  text-align: center;
+}
+.tz-decision-inbox-empty > p {
+  margin: 0;
+}
+.tz-decision-inbox-empty-title {
+  color: var(--text);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+@media (forced-colors: active) {
+  /* Forced colors drop the fill and the ring that mark the picked agent, so
+     it takes the Highlight pair, its pill included. */
+  .tz-decision-inbox-agent[aria-pressed="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+  .tz-decision-inbox-agent[aria-pressed="true"] .tz-status-pill {
+    background: transparent;
+    color: HighlightText;
+  }
+  .tz-decision-inbox-agent[aria-pressed="true"]:focus-visible {
+    outline-color: CanvasText;
+  }
+}
+
+/* Draft for review (spec section 13.3): a message the assistant wrote for a
+   record, which the person reviews, edits and sends. The header holds the AI
+   mark, the title with its agent and one status pill, and under them the
+   record the draft is about, its amount in figure type. The paper holds the
+   recipients and attachments as chips, the message and its tone. The tray's
+   footer holds Discard and Send, then the host's hold with Undo, then the
+   receipt. Plain drops the tray and lives on its host's paper. Nothing moves
+   on mount. */
+.tz-draft-review {
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-draft-review[data-appearance="card"] {
+  max-inline-size: 38rem;
+}
+.tz-draft-review[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tz-draft-review:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+/* The mark, the title and the pill share a row; the record sits under the
+   title, level with it. */
+.tz-draft-review-header {
+  display: grid;
+  flex: 1;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+}
+.tz-draft-review-heading {
+  display: grid;
+  min-inline-size: 0;
+}
+.tz-draft-review-title {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-draft-review-agent {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+/* The record's parts run in a row with a dot before each but the first. The
+   row starts a dot's width early and the record clips that edge, so a part
+   that wraps to the start of a line leaves its dot out of view. */
+.tz-draft-review-record {
+  grid-column: 2 / -1;
+  min-inline-size: 0;
+  margin: 0;
+  clip-path: inset(-0.5em 0);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-draft-review-record-parts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  row-gap: var(--space-1);
+  margin-inline-start: -1.25em;
+}
+.tz-draft-review-record-parts > :first-child {
+  margin-inline-start: 1.25em;
+}
+.tz-draft-review-record-parts > * + *::before {
+  content: "·";
+  content: "·" / "";
+  display: inline-block;
+  inline-size: 1.25em;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-meta);
+  text-align: center;
+}
+/* The amount is the record's figure. Tabular figures hold only for Western
+   digits; Arabic-Indic ones stay proportional (spec section 15). */
+.tz-draft-review-amount {
+  color: var(--text);
+  font-size: var(--text-figure-small);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-figure);
+  font-variant-numeric: tabular-nums;
+}
+.tz-draft-review-paper {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+/* Who the message goes to and what goes with it, as chips, above a hairline
+   that sets them off from the message. */
+.tz-draft-review-fields {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+  padding-block-end: var(--space-3);
+  border-block-end: 0.5px solid var(--hairline);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-draft-review-fields > div {
+  display: contents;
+}
+.tz-draft-review-fields dt {
+  color: var(--text-secondary);
+}
+.tz-draft-review-fields dd {
+  min-inline-size: 0;
+  margin: 0;
+}
+.tz-draft-review-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-draft-review-chips > li {
+  min-inline-size: 0;
+  padding: 1px var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+  color: var(--text);
+}
+.tz-draft-review-body {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tz-draft-review-label {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+/* The message keeps its own line breaks. */
+.tz-draft-review-text {
+  margin: 0;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
+/* The tone is a native radio group laid over a pill control, as Ask your
+   data's chart types are: the chosen tone is the raised paper chip. From
+   sending on it stays to say what was sent, dimmed. */
+.tz-draft-review-tone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  min-inline-size: 0;
+}
+.tz-draft-review-tones {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+}
+.tz-draft-review-tones:has(:disabled) {
+  opacity: var(--disabled-opacity);
+}
+.tz-draft-review-tone-option {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 28px;
+  padding-inline: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-draft-review-tone-option > input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.tz-draft-review-tone-option:has(:disabled) {
+  cursor: not-allowed;
+}
+.tz-draft-review-tone-option:has(:enabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-draft-review-tone-option:has(:enabled):hover {
+    color: var(--text);
+  }
+}
+.tz-draft-review-tone-option:has(:checked) {
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text);
+}
+.tz-draft-review-tone-option:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+/* Discard and Send at the footer's end; while the host holds the message, its
+   countdown at the start and Undo at the end. */
+.tz-draft-review-decision {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  min-inline-size: 0;
+}
+.tz-draft-review-decision > .tz-decision-bar {
+  margin-inline-start: auto;
+}
+.tz-draft-review-line,
+.tz-draft-review-receipt {
+  margin: 0;
+  color: var(--text-secondary);
+}
+.tz-draft-review-receipt {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tz-draft-review-receipt[data-outcome="sent"] > svg {
+  color: var(--success);
+}
+.tz-draft-review-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+@media (forced-colors: active) {
+  .tz-draft-review-tone-option:has(:checked) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* Assistant controls (spec section 13.4): the person's own settings for the
+   assistant, in up to three sections on paper with hairlines between them.
+   They are not the assistant's work, so nothing here takes the AI mark, a
+   status pill or the AI color, except the context meter's own tones. Each
+   permission is a native radio group laid over a segmented control, as Draft
+   for review's tone is; a locked action keeps «اسأل دائمًا» with a lock line.
+   Memories sit under their categories with their source and date. Plain
+   drops the tray and lives on its host's paper. Nothing moves on mount. */
+.tz-assistant-controls {
+  container-type: inline-size;
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--text);
+  font-size: var(--text-body);
+  overflow-wrap: anywhere;
+}
+.tz-assistant-controls[data-appearance="card"] {
+  max-inline-size: 40rem;
+}
+.tz-assistant-controls[data-appearance="plain"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.tz-assistant-controls:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+.tz-assistant-controls-header {
+  min-inline-size: 0;
+}
+.tz-assistant-controls-title {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.tz-assistant-controls-paper {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+.tz-assistant-controls-section {
+  display: grid;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.tz-assistant-controls-section + .tz-assistant-controls-section {
+  padding-block-start: var(--space-4);
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-assistant-controls-heading {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+/* One action per row, with hairlines between rows. The legend floats, so it
+   lays out like the row's other children and no hairline runs behind it. */
+.tz-assistant-controls-permissions {
+  display: grid;
+  min-inline-size: 0;
+}
+.tz-assistant-controls-permission {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  margin: 0;
+  padding: var(--space-3) 0;
+  border: 0;
+}
+.tz-assistant-controls-permission:first-child {
+  padding-block-start: 0;
+}
+.tz-assistant-controls-permission:last-child {
+  padding-block-end: 0;
+}
+.tz-assistant-controls-permission + .tz-assistant-controls-permission {
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-assistant-controls-legend {
+  float: inline-start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  inline-size: 100%;
+  padding: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
+}
+.tz-assistant-controls-description,
+.tz-assistant-controls-lock {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-assistant-controls-lock {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.tz-assistant-controls-lock > svg {
+  flex: none;
+  margin-block-start: 3px;
+}
+/* The three levels: the chosen one is the raised paper chip on a tray. In a
+   narrow container they stack, each a full row. */
+.tz-assistant-controls-levels {
+  display: flex;
+  flex-wrap: wrap;
+  justify-self: start;
+  gap: 2px;
+  min-inline-size: 0;
+  padding: 2px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: var(--wash-strong);
+}
+.tz-assistant-controls-level {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 28px;
+  padding-inline: var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-assistant-controls-level > input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+.tz-assistant-controls-level:has(:disabled) {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+}
+.tz-assistant-controls-level:has(:enabled):active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-assistant-controls-level:has(:enabled):hover {
+    color: var(--text);
+  }
+}
+.tz-assistant-controls-level:has(:checked) {
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text);
+}
+.tz-assistant-controls-level:has(:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@container (inline-size < 24rem) {
+  .tz-assistant-controls-levels {
+    display: grid;
+    justify-self: stretch;
+  }
+}
+/* Memory: the switch, the note while it is off, then the remembered items
+   under their categories, each with its source, date and buttons. */
+.tz-assistant-controls-note {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-item);
+  background: var(--wash);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-assistant-controls-group {
+  display: grid;
+  min-inline-size: 0;
+}
+.tz-assistant-controls-category {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.tz-assistant-controls-memory {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tz-assistant-controls-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-3);
+  padding-block: var(--space-2);
+}
+.tz-assistant-controls-item + .tz-assistant-controls-item {
+  border-block-start: 0.5px solid var(--hairline);
+}
+.tz-assistant-controls-memo {
+  display: grid;
+  flex: 1 1 16rem;
+  gap: 2px;
+  min-inline-size: 0;
+}
+.tz-assistant-controls-text {
+  margin: 0;
+  line-height: var(--leading-heading);
+}
+.tz-assistant-controls-item[data-paused] .tz-assistant-controls-text {
+  color: var(--text-secondary);
+}
+.tz-assistant-controls-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-assistant-controls-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-inline-start: auto;
+}
+/* Context and usage: the meter's detail view, then the model. */
+.tz-assistant-controls-model {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.tz-context-inline ~ .tz-assistant-controls-model {
+  padding-block-start: var(--space-3);
+  border-block-start: 0.5px solid var(--hairline);
+}
+@media (forced-colors: active) {
+  .tz-assistant-controls-level:has(:checked) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
 .tz-sources {
   min-inline-size: 0;
   font-size: var(--text-meta);
@@ -8713,24 +9935,104 @@ a.tz-inline-citation {
   font-size: var(--text-meta);
   overflow-wrap: anywhere;
 }
-.tz-context-details p {
+/* In place, as Assistant controls' detail view, the same details are a
+   group on paper: no popover surface, the same hairline dividers. */
+.tz-context-inline {
+  display: flow-root;
+  min-inline-size: 0;
+  background: var(--surface);
+  font-size: var(--text-meta);
+  overflow-wrap: anywhere;
+}
+:is(.tz-context-details, .tz-context-inline) p {
   margin: 4px 0;
 }
-.tz-context-details dl {
+:is(.tz-context-details, .tz-context-inline) dl {
   margin: 10px 0;
   padding-block: 8px;
   border-block: 0.5px solid var(--hairline);
 }
-.tz-context-details dl > div {
+:is(.tz-context-details, .tz-context-inline) dl > div {
   display: flex;
   justify-content: space-between;
   gap: 12px;
 }
-.tz-context-details dd {
+:is(.tz-context-details, .tz-context-inline) dd {
   margin: 0;
 }
-.tz-context-details small {
+:is(.tz-context-details, .tz-context-inline) small {
   color: var(--text-secondary);
+}
+/* The parts' shares as one thin bar, each segment a tint of the meter's tone
+   color: the AI color while there is room, attention once it fills up and
+   danger near or over capacity. Each part's swatch in the list takes its
+   segment's tint. The bar is decorative; the list says the same in words. */
+.tz-context-bar,
+:is(.tz-context-details, .tz-context-inline) dl {
+  --context-tone: var(--ai);
+}
+.tz-context-bar[data-tone="high"],
+:is(.tz-context-details, .tz-context-inline) dl[data-tone="high"] {
+  --context-tone: var(--attention);
+}
+.tz-context-bar:is([data-tone="near"], [data-tone="over"]),
+:is(.tz-context-details, .tz-context-inline)
+  dl:is([data-tone="near"], [data-tone="over"]) {
+  --context-tone: var(--danger);
+}
+.tz-context-bar {
+  display: flex;
+  gap: 1px;
+  block-size: 6px;
+  margin: 8px 0;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--wash-strong);
+}
+.tz-context-bar > span {
+  flex-grow: 0;
+  flex-shrink: 1;
+  min-inline-size: 0;
+}
+:is(.tz-context-bar > span, .tz-context-swatch)[data-tint="0"] {
+  background: var(--context-tone);
+}
+:is(.tz-context-bar > span, .tz-context-swatch)[data-tint="1"] {
+  background: color-mix(in srgb, var(--context-tone) 72%, var(--surface));
+}
+:is(.tz-context-bar > span, .tz-context-swatch)[data-tint="2"] {
+  background: color-mix(in srgb, var(--context-tone) 50%, var(--surface));
+}
+:is(.tz-context-bar > span, .tz-context-swatch)[data-tint="3"] {
+  background: color-mix(in srgb, var(--context-tone) 32%, var(--surface));
+}
+.tz-context-swatch {
+  display: inline-block;
+  inline-size: 8px;
+  block-size: 8px;
+  margin-inline-end: 6px;
+  border-radius: var(--radius-small);
+}
+/* Each share is end-aligned in a fixed width, so the column holds when a
+   value changes; Arabic-Indic digits stay proportional (spec section 15). */
+.tz-context-share {
+  display: inline-block;
+  min-inline-size: 4ch;
+  margin-inline-start: var(--space-2);
+  color: var(--text-secondary);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.tz-context-action {
+  margin-block-start: var(--space-2);
+}
+@media (forced-colors: active) {
+  .tz-context-bar {
+    outline: 1px solid CanvasText;
+  }
+  :is(.tz-context-bar > span, .tz-context-swatch)[data-tint] {
+    background: Highlight;
+  }
 }
 /* The model trigger is paper: its ring is the paper shadow, over the
    transparent edge that forced colors draw. */
@@ -8940,9 +10242,19 @@ a.tz-inline-citation {
   font-weight: var(--weight-semibold);
   line-height: var(--leading-heading);
 }
-.tz-approval-title {
+.tz-approval-title,
+.tz-approval-heading {
   flex: 1;
   min-inline-size: 0;
+}
+/* The agent that asks sits under the title, and the mark and the pill keep to
+   the title's line, as in Agent task's header. */
+.tz-approval-heading {
+  display: grid;
+  gap: 2px;
+}
+.tz-approval-header:has(> .tz-approval-heading) {
+  align-items: flex-start;
 }
 /* Plain stacks the zones with margins rather than a gap, so the empty live
    region between the paper and the footer takes no room. */

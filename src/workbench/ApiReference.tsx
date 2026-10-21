@@ -180,8 +180,8 @@ export function ApiReference({
         "contextUsage",
         "ContextMeterProps",
         t(
-          "بيانات ContextMeter نفسها: used وcapacity وthresholds. تظهر حلقة صغيرة قرب اسم الوضع يتبع لونها العتبات، وسطر «السياق المستخدم ٣٢٪ · سجلّان مرفقان» في آخر القائمة، والعدد يتبع المعدود في العربية.",
-          "The same data as ContextMeter: used, capacity and thresholds. A small ring beside the mode takes its color from the thresholds, and the menu ends with «Context used 32% · 2 records attached», its count agreeing in Arabic.",
+          "بيانات ContextMeter نفسها: used وcapacity وthresholds. تظهر حلقة صغيرة قرب اسم الوضع يتبع لونها العتبات، وسطر «السياق المستخدم ٣٢٪ · سجلّان مرفقان» في آخر القائمة، والعدد يتبع المعدود في العربية. وتقول منطقة النمط «السياق: يقترب من الامتلاء» مرة عند كل عتبة تعبرها الحلقة.",
+          "The same data as ContextMeter: used, capacity and thresholds. A small ring beside the mode takes its color from the thresholds, and the menu ends with «Context used 32% · 2 records attached», its count agreeing in Arabic. The pattern's region says «Context: Filling up» once for each threshold the ring crosses.",
         ),
       ],
       [
@@ -246,16 +246,16 @@ export function ApiReference({
         "content / sources",
         "string · required / readonly SourceReference[] · required",
         t(
-          "نص Markdown فيه علامات [n] يقابل كلٌّ منها number في مصدر. تصير العلامة رقم استشهاد يعرض المصدر عند المرور أو التركيز ويفتحه Enter أو النقر. تبقى العلامة بلا مصدر والعلامة داخل الكود نصًا. وتمرّ روابط الإجابة عبر sourceHref، فيُعرض mailto: وأمثاله نصًا.",
-          "Markdown with [n] markers, each naming a source's number. A marker becomes a citation chip that previews its source on hover or focus and opens it on Enter or click. A marker with no source, or inside code, stays text. Links in the answer pass through sourceHref, so mailto: and the like show as text.",
+          "نص Markdown فيه علامات [n] يقابل كلٌّ منها number في مصدر، بأرقام لاتينية أو عربية هندية أو فارسية، وتستشهد [1, 3] أو [٢، ٣] بأكثر من مصدر فتظهر أرقامًا متجاورة. تصير العلامة رقم استشهاد يعرض المصدر عند المرور أو التركيز ويفتحه Enter أو النقر، وتفتح لمسةٌ على شاشة لمس بطاقة المصدر بدل اتباع الرابط. تبقى العلامة نصًا إذا خلا أحد أرقامها من مصدر أو كانت داخل الكود. وتمرّ روابط الإجابة عبر sourceHref، فيُعرض mailto: وأمثاله نصًا.",
+          "Markdown with [n] markers, each naming a source's number, in ASCII, Arabic-Indic or Persian digits; [1, 3] or [٢، ٣] cites several, as adjacent chips. A marker becomes a citation chip that previews its source on hover or focus and opens it on Enter or click; a tap on a touch screen opens the source's card instead of following the link. A marker with no source for any of its numbers, or inside code, stays text. Links in the answer pass through sourceHref, so mailto: and the like show as text.",
         ),
       ],
       [
         "thinking / thinkingOpen / onThinkingOpenChange",
         "{ elapsed, searched, steps } / boolean? / (open: boolean) => void",
         t(
-          "elapsed بالثواني وsearched المصادر التي بُحث فيها وsteps الخطوات. تنفتح اللوحة أثناء التفكير وتنطوي إلى «فكّر لمدة ٦ث» عند بدء الكتابة، إلا إذا تحكّمت فيها بالزوج thinkingOpen وonThinkingOpenChange.",
-          "elapsed in seconds, searched for the sources covered and steps for the steps. The panel is open while thinking and folds to «Thought for 6s» when writing starts, unless you hold it with the thinkingOpen pair.",
+          "elapsed بالثواني وsearched المصادر التي بُحث فيها وsteps الخطوات. تظهر أول ثلاثة مصادر رقاقاتٍ، ويعرض زر «+٢» البقية. تنفتح اللوحة أثناء التفكير وتنطوي إلى «فكّر لمدة ٦ث» عند بدء الكتابة، إلا إذا تحكّمت فيها بالزوج thinkingOpen وonThinkingOpenChange. وإذا أُوقفت الإجابة أو تعثّرت قبل أن تُكتب كلمة صارت اللوحة «أُوقف بعد ٦ث» أو «تعثّر بعد ٦ث» وبقي خيطها ساكنًا، فمرّر ما وصل فقط.",
+          "elapsed in seconds, searched for the sources covered and steps for the steps. The first three sources show as chips, and «+2» shows the rest. The panel is open while thinking and folds to «Thought for 6s» when writing starts, unless you hold it with the thinkingOpen pair. A stop or a failure before a word was written leaves the panel at «Stopped after 6s» or «Failed after 6s», its thread still, so pass only what had arrived.",
         ),
       ],
       [
@@ -268,10 +268,10 @@ export function ApiReference({
       ],
       [
         "feedback / reason / onFeedbackChange / onCopy / onRegenerate",
-        'null | "up" | "down" / FeedbackReason? / (value, reason?) => void / () => void | Promise<void> / () => void',
+        'null | "up" | "down" / FeedbackReason? / (value, reason?) => void / (text: string) => void | Promise<void> / () => void',
         t(
-          "الإجابة المفيدة وغير المفيدة زران قابلان للتبديل، وعند «غير مفيدة» تظهر أربعة أسباب. يظهر «نُسخت» ثانيتين بعد أن يكتمل نسخ تطبيقك. يظهر كل زر إذا وُجد معالجه.",
-          "Helpful and not helpful are toggles; not helpful offers four reasons. «Copied» shows for two seconds once your copy resolves. Each button shows only when its handler exists.",
+          "الإجابة المفيدة وغير المفيدة زران قابلان للتبديل، وعند «غير مفيدة» تظهر أربعة أسباب. يستلم onCopy النص المنسوخ: الإجابة كما كُتبت، ثم «المصادر» وسطر لكل مصدر برقمه وعنوانه، ورابطه إن كان http أو https. انسخ هذا النص لا content وحده. يظهر «نُسخت» ثانيتين بعد أن يكتمل نسخ تطبيقك. يظهر كل زر إذا وُجد معالجه.",
+          "Helpful and not helpful are toggles; not helpful offers four reasons. onCopy receives the text to copy: the answer as written, then «Sources» and a line per source with its number, its title and its link when it is http or https. Copy that text, not content alone. «Copied» shows for two seconds once your copy resolves. Each button shows only when its handler exists.",
         ),
       ],
       [
@@ -296,6 +296,72 @@ export function ApiReference({
         t(
           "استخدم plain داخل محادثة أو نمط آخر. وتستبدل labels أي نص مدمج، ومنها نصوص اللوحة والشريط.",
           "Use plain inside a conversation or another pattern. labels replaces any built-in text, including the panel's and the bar's.",
+        ),
+      ],
+    ],
+    "data-answer": [
+      [
+        "status / question",
+        "thinking | completed | failed | empty · required / ReactNode · required",
+        t(
+          "يقرّر تطبيقك الحالة ولا يتقدّم النمط بنفسه. السؤال هو عنوان القسم، وبجانبه علامة الذكاء الاصطناعي وكلمة الحالة: «يفكّر» أو «اكتملت» (للمكتملة وللفارغة) أو «تعثّرت».",
+          "Your app owns the status; the pattern never moves on by itself. The question is the section's heading, with the AI mark and one status word beside it: «Thinking», «Done» (for completed and empty) or «Failed».",
+        ),
+      ],
+      [
+        "chart / chartTypes / onChartTypeChange",
+        '{ type: "line" | "area" | "bar", props: CartesianChartProps } | { type: "donut", props: DonutChartProps } / readonly ("line" | "area" | "bar" | "donut")[] / (type) => void',
+        t(
+          "يُرسم chart.type في عائلته من العائلات الأربع، وتصلها chart.props كما هي. مع نوعين أو أكثر في chartTypes ومع onChartTypeChange تظهر مجموعة «نوع الرسم» بأزرار اختيار أصلية. الاختيار يستدعي onChartTypeChange فقط، ويبقى الرسم الحالي حتى يمرّر تطبيقك رسمًا جديدًا شكّل بياناته للنوع الجديد. اعرض الأنواع التي تناسب البيانات وحدها: خطوط ومساحة لاتجاه عبر الزمن، وأعمدة لمقارنة، وحلقي لحصص من كل.",
+          "chart.type picks the chart family and chart.props go to it as given. With two or more chartTypes and an onChartTypeChange, a «Chart type» group of native radios appears. A choice only calls onChartTypeChange; the chart stays until your app passes a new one, with its data reshaped for the new type. Offer only the types that fit the data: lines and area for a trend over time, bars for a comparison, donut for parts of a whole.",
+        ),
+      ],
+      [
+        "explanation / sources",
+        "string (Markdown) / readonly SourceReference[]",
+        t(
+          "شرح من جملتين بصيغة Markdown. كل [n] فيه يسمّي number مصدرٍ في sources، وهي الجداول التي تقوم عليها الإجابة، فيصير رقم استشهاد يعرض الجدول عند المرور أو التركيز وتفتح لمسةٌ على شاشة لمس بطاقته. تبقى العلامة نصًا إذا لم يوجد مصدرها. وتمرّ الروابط عبر sourceHref.",
+          "A two-sentence explanation in Markdown. Each [n] names the number of a source in sources, the tables the answer rests on, and becomes a citation chip that previews the table on hover or focus; a tap on a touch screen opens its card. A marker with no source stays text. Links pass through sourceHref.",
+        ),
+      ],
+      [
+        "method",
+        "{ range: string; filters?: string }",
+        t(
+          "يملأ «كيف حُسب هذا؟»: range هو «الفترة»، وfilters هو «التصفية» أو «بلا تصفية» إذا غاب، وتُسرد sources في «الجداول». تبقى مطويّة حتى يفتحها المستخدم، وتظهر مع الإجابة المكتملة ومع الفترة الفارغة فقط، ولا تظهر دون method.",
+          "Fills «How was this calculated?»: range is the date range, filters the filters or «None» when absent, and sources are listed as the source tables. It stays folded until opened, shows with a completed answer or an empty period only, and not at all without method.",
+        ),
+      ],
+      [
+        "thinking",
+        "{ elapsed: number; searched: readonly SourceReference[]; steps? }",
+        t(
+          "ما غطّاه البحث: elapsed بالثواني وsearched الجداول التي وُجدت حتى الآن وsteps الخطوات. تنفتح اللوحة أثناء التفكير وتنطوي بعده، وإذا تعثّرت الإجابة قرأت «تعثّر بعد ٦ث» وبقي خيطها ساكنًا، فمرّر ما وصل فقط. حدّث elapsed مرة في الثانية على الأكثر.",
+          "What the search covered: elapsed in seconds, searched for the tables found so far and steps. The panel is open while thinking and folds after; if the answer failed it reads «Failed after 6s» with its thread still, so pass only what had arrived. Update elapsed at most once a second.",
+        ),
+      ],
+      [
+        "onPin / onOpenTable / onCopy",
+        "() => void / () => void / (text: string) => void | Promise<void>",
+        t(
+          "يظهر «ثبّت في اللوحة» (الزر الأساسي) و«افتح في جدول» مع الإجابة المكتملة، كلٌّ إذا وُجد معالجه، وهما نيّتان يعالجهما تطبيقك. يستلم onCopy النص المنسوخ: الشرح كما كُتب، ثم «كيف حُسب هذا؟» ومعه الفترة والتصفية، ثم «المصادر» وسطر مرقَّم لكل جدول. انسخ هذا النص لا explanation وحده. يظهر «نُسخت» ثانيتين بعد أن يكتمل نسخ تطبيقك.",
+          "Pin to dashboard (the primary button) and Open in a table show with a completed answer, each only when its handler exists; both are intents your app handles. onCopy receives the text to copy: the explanation as written, then «How was this calculated?» with the range and the filters, then «Sources» and a numbered line per table. Copy that text, not explanation alone. «Copied» shows for two seconds once your copy resolves.",
+        ),
+      ],
+      [
+        "onRetry / error",
+        "() => void / ReactNode",
+        t(
+          "عند التعثّر يبقى error نصًا ثابتًا تحت «تعذّر إكمال الإجابة» ومعه «أعد المحاولة» زرًّا أساسيًا. إذا اختفى الزر الذي عليه التركيز انتقل التركيز إلى القسم. وللفترة الفارغة جملتها على الورقة: «لا توجد بيانات لهذه الفترة».",
+          "When it fails, error stays as text under «Couldn't finish the answer», with Try again as the primary button. If the focused button goes away, focus moves to the section. An empty period says «No data for this period» on the paper.",
+        ),
+      ],
+      [
+        "appearance / headingLevel / labels",
+        '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3 / Partial<DataAnswerLabels>',
+        t(
+          "استخدم plain داخل لوحة أو نمط آخر. headingLevel مستوى السؤال. وتستبدل labels أي نص مدمج، وتحمل thinkingPanel وfeedbackBar كلمات الجزأين داخله.",
+          "Use plain inside a dashboard or another pattern. headingLevel is the question's level. labels replaces any built-in text; thinkingPanel and feedbackBar carry the nested parts' words.",
         ),
       ],
     ],
@@ -349,6 +415,48 @@ export function ApiReference({
         ),
       ],
     ],
+    "assistant-controls": [
+      [
+        "permissions / onPermissionChange",
+        "readonly AssistantPermission[] / (id: string, level: PermissionLevel) => void",
+        t(
+          "لكل إجراء id وlabel وlevel (always | sensitive | auto)، وdescription وrisks اختياريان. يظهر كل إجراء مجموعةً من ثلاثة أزرار اختيار، ويصلك اختيار المستخدم في onPermissionChange. الإجراء الذي تضم risks فيه irreversible يبقى على «اسأل دائمًا» مهما كان level، ويتعطّل الخياران الآخران، ويظهر معه قفل وجملة تشرح السبب، ولا يستدعي onPermissionChange أبدًا. يطبّق تطبيقك الصلاحيات، والنمط يعرضها ويبلّغ بها فقط.",
+          "Each action has an id, a label and a level (always | sensitive | auto), and optionally a description and risks. Each shows as a group of three radios, and onPermissionChange reports the person's choice. An action whose risks include irreversible stays at «Always ask» whatever level says: the other two are disabled, a lock and a sentence say why, and it never calls onPermissionChange. Your app enforces the permissions; the pattern only shows and reports them.",
+        ),
+      ],
+      [
+        "memoryEnabled / onMemoryEnabledChange",
+        "boolean / (enabled: boolean) => void",
+        t(
+          "مفتاح «استخدم الذاكرة». وحين تكون الذاكرة متوقفة تظهر فوق القائمة «لا يستخدم المساعد الذاكرة الآن.».",
+          "The «Use memory» switch. While memory is off, «The assistant isn't using memory right now.» sits over the list.",
+        ),
+      ],
+      [
+        "memory / onMemoryPauseChange / onMemoryDelete",
+        "readonly AssistantMemoryItem[] / (id: string, paused: boolean) => void / (id: string) => void",
+        t(
+          "لكل عنصر id وtext وcategory، وsource وdate وpaused اختيارية. تُجمع العناصر تحت عناوين فئاتها بترتيب ظهورها الأول، ومع كلٍّ منها مصدره وتاريخه. يُسمّى «إيقاف مؤقت» أو «استئناف» و«حذف» باسم العنصر نفسه. يطلب «حذف» الحذف من تطبيقك فقط، فيبقى العنصر حتى يزيله تطبيقك، ثم ينتقل التركيز إلى النمط.",
+          "Each item has an id, a text and a category, and optionally a source, a date and paused. Items sit under their category headings, in the order the categories first appear, each with its source and date. Pause or Resume and Delete are named with their item. Delete only asks your app: the item stays until your app removes it, and focus then moves to the pattern.",
+        ),
+      ],
+      [
+        "contextUsage / models / model / onModelChange",
+        "ContextMeterProps / readonly ModelOption[] / string / (id: string) => void",
+        t(
+          "يعرض contextUsage تفاصيل ContextMeter في مكانها (inline)، ومنطقة إعلانه هي منطقة النمط الوحيدة. ومع models تظهر قائمة «النموذج».",
+          "contextUsage shows ContextMeter's details in place (inline), and its region is the pattern's one live region. With models, a «Model» selector shows.",
+        ),
+      ],
+      [
+        "title / headingLevel / labels / appearance",
+        'ReactNode / 2 | 3 | 4 | 5 | 6 · 3 / Partial<AssistantControlsLabels> / "card" | "plain" · card',
+        t(
+          "title هو «إعدادات المساعد» افتراضيًا، والأقسام أدنى منه بمستوى وفئات الذاكرة بمستويين. لا علامة للذكاء الاصطناعي ولا شارة حالة، فهذه إعدادات المستخدم. وتستبدل labels أي نص مدمج.",
+          "title is «Assistant controls» by default; the sections sit one level below it and the memory categories two. No AI mark and no status pill, since these are the person's settings. labels replaces any built-in text.",
+        ),
+      ],
+    ],
     "agent-task": [
       [
         "title / agent / status",
@@ -362,8 +470,8 @@ export function ApiReference({
         "steps",
         "readonly AgentStep[] · required",
         t(
-          "لكل خطوة id ثابت وtitle وstate، ومعها اختياريًا detail وduration بالثواني وtools وnotes وrequest وapproval وerror.",
-          "Each step has a stable id, a title and a state, with an optional detail, duration in seconds, tools, notes, request, approval and error.",
+          "لكل خطوة id ثابت وtitle وstate، ومعها اختياريًا detail وagent (من فُوّضت إليه الخطوة، ويظهر تحت العنوان، وهو من يطلب في موافقتها المدمجة) وduration بالثواني وtools وnotes وrequest وapproval وerror.",
+          "Each step has a stable id, a title and a state, with an optional detail, agent (who the step was handed to, shown under the title and named as who asks in its inline approval), duration in seconds, tools, notes, request, approval and error.",
         ),
       ],
       [
@@ -388,6 +496,14 @@ export function ApiReference({
         t(
           "أثناء العمل يوجّه Enter الوكيل مع الخطوة التالية، وCtrl أو Cmd+Enter فورًا، ثم يُفرَّغ الحقل. لا توجيه أثناء الكتابة بلوحة إدخال.",
           "While running, Enter steers at the next step and Ctrl or Cmd+Enter steers now; the field then clears. Nothing steers while an input method is composing.",
+        ),
+      ],
+      [
+        "onApplyNoteNow / onRemoveNote",
+        "(id: string) => void",
+        t(
+          "أثناء العمل يظهر لكل توجيه لم يُطبَّق بعد زرّان: «طبّق الآن» يستدعي onApplyNoteNow(id)، و«إزالة» يستدعي onRemoveNote(id)، ويظهر كلٌّ منهما إذا مرّرت معالجه فقط. ويعلن النمط كل توجيه مرة واحدة: حين يُرسَل وحين يصير applied، ولا يعلنه عند الظهور.",
+          "While running, a note not yet applied has two buttons: «Apply now» calls onApplyNoteNow(id) and «Remove» calls onRemoveNote(id), each shown only when its handler is passed. The pattern announces each note once, when it is sent and when it becomes applied, and never at mount.",
         ),
       ],
       [
@@ -420,6 +536,80 @@ export function ApiReference({
         t(
           "استخدم plain داخل محادثة أو نمط آخر. وتستبدل labels أي نص مدمج.",
           "Use plain inside a conversation or another pattern. labels replaces any built-in text.",
+        ),
+      ],
+    ],
+    "decision-inbox": [
+      [
+        "items",
+        "readonly DecisionInboxItem[] · required",
+        t(
+          "عناصر تطبيقك بترتيبه، الأكثر إلحاحًا أولًا. لكل عنصر id ثابت وtitle وagent ({ id, name }) وstatus (needs-you | running | failed | completed)، ومعه اختياريًا context سطرًا واحدًا وtime نصًا تنسّقه أنت، وrequest مع approval لطلب موافقة أو questions لأسئلة أو draft لمسودة تنتظر المراجعة، وsteps لآخر ثلاث أو أربع خطوات، وerror للمتعثّر وreceipt لما حدث.",
+          "Your app's items, in its order, most urgent first. Each has a stable id, a title, an agent ({ id, name }) and a status (needs-you | running | failed | completed), and optionally context (one line), time (text you format), request with approval for an approval, questions, or draft for a draft waiting for review, steps for the last three or four, error for a failed task and receipt for what happened.",
+        ),
+      ],
+      [
+        "tab / onTabChange",
+        '"all" | "needs-you" | "running" | "completed" / (tab) => void',
+        t(
+          "التبويب الظاهر، و«بانتظارك» افتراضيًا. يضم «بانتظارك» المنتظِر والمتعثّر، و«يعمل» ما يعمل، و«اكتملت» ما اكتمل، و«الكل» كل عنصر، ولكلٍّ عدده بأرقام القارئ. ولا يُعلَن تغيير التبويب.",
+          "The shown tab, Needs you by default. Needs you holds needs-you and failed items, Running the running ones, Done the completed ones and All every item, each with its count in the reader's digits. Changing the tab announces nothing.",
+        ),
+      ],
+      [
+        "expanded / onExpandedChange",
+        "readonly string[] / (ids: string[]) => void",
+        t(
+          "الصفوف المفتوحة. يفتح العنوانُ الصفَّ، وكذلك «راجع» أو «أجب»، ويبقى التركيز على ما ضُغط ولا يأخذه شيء داخل الصف. ولا يُفتح صفٌّ قرارُه السريع قيد التسجيل ولو مرّره تطبيقك في expanded، ويطويه Escape من أي مكان فيه ولا يسجّل شيئًا، إلا إذا كانت بطاقته تسجّل قرارًا، فيبقى مفتوحًا حتى يجيب تطبيقك.",
+          "The open rows. The title opens a row, as Review or Answer do; focus stays on what was pressed and nothing inside takes it. A row whose quick decision is being recorded can't open, even when expanded names it. Escape anywhere in an open row folds it and records nothing, except while its card is recording a decision: then the row stays open until your app answers.",
+        ),
+      ],
+      [
+        "agents / agent / onAgentChange",
+        "readonly { id, name, state: StatusPillState }[] / string | null / (id: string | null) => void",
+        t(
+          "شريط الوكلاء: زر تبديل لكل وكيل باسمه وكلمة حالته. يستدعي الضغط onAgentChange(id)، والضغط على المختار onAgentChange(null)، ويصفّي الوكيلُ المختار الصفوفَ والأعداد.",
+          "The agents strip: a toggle per agent, with its name and its state's word. A press calls onAgentChange(id), a press on the picked one onAgentChange(null), and the picked agent filters the rows and the counts.",
+        ),
+      ],
+      [
+        "onDecision",
+        "(request, decision, { signal }) => void | Promise<void>",
+        t(
+          "يسجّل قرار البطاقة في الصف المفتوح، أو القرار السريع لطلب reversible وليس irreversible ولا منتهيًا: زرّا رفض وموافقة ثانويان بلا اختصار، يظهران والصف مطوي. لا يُحتسب القرار حتى يحلّ وعد تطبيقك، ويُلغى إذا تغيّر الطلب أو انتهت مهلته أو صار لا يمكن التراجع عنه، ويُعاد بناء الزرّين عند التغيير فينتقل التركيز إلى عنوان الصف، ويصف الإيصالُ العنوانَ بعد القرار. وبلا onDecision يظهر الطلب نصًا دون إجراءات.",
+          "Records the open card's decision, or the quick one of a request that is reversible, not irreversible and not expired: secondary Reject and Approve with no shortcut, shown while the row is closed. A decision counts only once your promise resolves, and is aborted if the request changes, expires or turns irreversible; a change also rebuilds both buttons, so focus moves to the row's title, and once decided the receipt describes that title. Without onDecision the request shows as text, with no actions.",
+        ),
+      ],
+      [
+        "onAnswer",
+        "(id, answers, { signal }) => void | Promise<void>",
+        t(
+          "يرسل إجابات أسئلة الصف بعد أن يجيب المستخدم داخله. يحفظ الصندوق مسودة كل صف، فلا يحتفظ بها تطبيقك.",
+          "Sends a row's answers once the person answers in it. The inbox keeps each row's draft, so your app holds none.",
+        ),
+      ],
+      [
+        "onRetry / onOpen",
+        "(id: string) => void / (id: string) => void",
+        t(
+          "«أعد المحاولة» للمتعثّر، و«افتح» لما يعمل وما اكتمل، و«راجع» للمسودة التي يفتحها تطبيقك في مكانها. يظهر كلٌّ إذا مرّرت معالجه فقط، ويُسمّى كل زر بكلمته ثم بعنوان صفه.",
+          "Try again on a failed task, Open on running and done ones, and Review on a draft, which your app opens where it lives. Each shows only with its handler, and each button is named by its word, then its row's title.",
+        ),
+      ],
+      [
+        "receiptFor",
+        "number · seconds",
+        t(
+          "حين ينقل تطبيقك عنصرًا من التبويب الظاهر يبقى صفّه مكانه هذه الثواني مع إيصاله: receipt، وإلا قرار الصف السريع، وإلا كلمة حالته الجديدة، ثم يغادر دون انزلاق. وإن كان التركيز فيه انتقل إلى عنوان الصف التالي، وإلا السابق، وإلا لوحة التبويب. و0 ينقله فورًا.",
+          "When your app moves an item out of the shown tab, its row stays in place this many seconds with its receipt (receipt, else the row's quick decision, else its new status word), then leaves without a glide. Focus in it moves to the next row's title, else the previous one's, else the tab panel. 0 moves it at once.",
+        ),
+      ],
+      [
+        "title / headingLevel / labels / appearance",
+        'ReactNode / 2 | 3 | 4 | 5 | 6 · 3 / Partial<DecisionInboxLabels> / "card" | "plain" · card',
+        t(
+          "العنوان «صندوق القرارات» افتراضيًا، وعناوين الصفوف أعمق منه بمستوى. وتستبدل labels أي نص مدمج، ومنه waiting(count, requests) وrunning(count, tasks) لجملة العدد. واستخدم plain داخل لوحة أو نافذة جانبية.",
+          "The title is Decision inbox by default, and the rows' headings sit one level deeper. labels replaces any built-in text, including waiting(count, requests) and running(count, tasks) for the count sentence. Use plain inside a panel or a sheet.",
         ),
       ],
     ],
@@ -520,6 +710,80 @@ export function ApiReference({
         t(
           "استخدم plain داخل محادثة أو نمط آخر. وتستبدل labels أي نص مدمج.",
           "Use plain inside a conversation or another pattern. labels replaces any built-in text.",
+        ),
+      ],
+    ],
+    "draft-review": [
+      [
+        "status / title / agent",
+        "writing | ready | sending | sent | discarded · required / ReactNode / ReactNode",
+        t(
+          "يقرّر تطبيقك الحالة ولا يتقدّم النمط بنفسه. تقول كلمة الحالة «يكتب» أو «بانتظار مراجعتك» أو «تُرسَل» أو «أُرسلت» أو «تم التجاهل»، ويقول الإيصال «أُرسلت الرسالة» أو «تم تجاهل المسودة». العنوان «مسودة للمراجعة» افتراضيًا، وagent الوكيل الذي كتبها، ويُعلَن كل تغيير في الحالة مرة واحدة.",
+          "Your app owns the status; the pattern never moves on by itself. The pill reads Writing, Waiting for your review, Sending, Sent or Discarded, and the receipt Message sent or Draft discarded. The title is Draft for review by default, agent names who wrote it, and each change of status is announced once.",
+        ),
+      ],
+      [
+        "record",
+        "{ id: string; customer: ReactNode; amount: ReactNode; overdue?: ReactNode }",
+        t(
+          "السجل الذي تخصّه المسودة، على الدرج تحت العنوان: المعرّف معزولًا من اليسار إلى اليمين، ثم العميل، ثم المبلغ بخط الأرقام، ثم overdue في شارة خطأ. نسّق المبلغ وعدد الأيام بنفسك عبر numberLocale.",
+          "The record the draft is about, on the tray under the title: the id isolated left to right, the customer, the amount in figure type, and overdue in an error badge. Format the amount and the days yourself with numberLocale.",
+        ),
+      ],
+      [
+        "recipients / attachments",
+        "readonly { id: string; label: ReactNode }[] · required / readonly { id: string; label: ReactNode }[]",
+        t(
+          "شرائح «إلى» و«المرفقات»، كلٌّ في اتجاهه. وإضافة مستلم أو مرفق تجعل Ctrl أو Cmd+Enter ينتظر نصف ثانية من جديد.",
+          "The To and Attachments chips, each in its own direction. Adding a recipient or an attachment makes Ctrl or Cmd+Enter wait half a second again.",
+        ),
+      ],
+      [
+        "body / onBodyChange",
+        "string · required / (body: string) => void",
+        t(
+          "نص الرسالة: يكبر أثناء الكتابة ويُعرض للقراءة تحت خيط يعمل. وفي المراجعة دون اقتراح يصير حقل «نص الرسالة» إذا مرّرت onBodyChange، وإلا بقي نصًا.",
+          "The message: it grows while writing, read-only under a working thread. Ready without a suggestion, it is a «Message» text area when you pass onBodyChange, and text otherwise.",
+        ),
+      ],
+      [
+        "suggestion",
+        "{ title?: ReactNode; segments: readonly DiffSegment[]; decisions; onDecisionsChange }",
+        t(
+          "تعديل مقترح يظهر في المراجعة تحت «اقتراح المساعد · title» تغييراتٍ متعقَّبة يقبلها المستخدم أو يرفضها (InlineDiff)، ومفتاح كل قرار معرّف أول مقطع في تغييره. وما دام ظاهرًا يرسل «إرسال» النص بعد القرارات: الجديد لما قُبل، والأصلي لما رُفض أو لم يُقرَّر.",
+          "A suggested edit shown while ready under «Assistant suggestion · title», as tracked changes the person accepts or rejects (InlineDiff); each decision is keyed by its change's first segment id. While it shows, Send hands over the text as decided: the new text where a change was accepted, the original where it was rejected or left undecided.",
+        ),
+      ],
+      [
+        "tone / onToneChange",
+        '"friendly" | "brief" | "formal" / (tone: DraftTone) => void',
+        t(
+          "مجموعة «النبرة» بأزرار اختيار أصلية: «ودّي» و«مختصر» و«رسمي». الاختيار يستدعي onToneChange فقط، وتتعطّل من الإرسال فصاعدًا، ولا تظهر دون onToneChange.",
+          "The Tone group of native radios: Friendly, Brief and Formal. A choice only calls onToneChange; from sending on they are disabled, and without onToneChange there is no group.",
+        ),
+      ],
+      [
+        "onSend / onDiscard",
+        "(text: string) => void / () => void",
+        t(
+          "«إرسال» (الزر الأساسي، ومعه Ctrl أو Cmd+Enter) و«تجاهل» في المراجعة فقط، كلٌّ إذا وُجد معالجه. يستلم onSend النص الظاهر مرة واحدة لكل حالة مراجعة، فلا يفعل ضغط ثانٍ ولا اختصار ولا مفتاح مضغوط شيئًا حتى تتغيّر الحالة، ولا يرسل «تجاهل» شيئًا. وينتظر الاختصار نصف ثانية بعد أي تغيير في النص أو النبرة أو المستلمين أو المرفقات. انقل الحالة إلى sending في التحديث نفسه الذي يعالج onSend، لأن الزرين يبقيان مقفلين حتى تتغيّر الحالة، وإن تعذّر الإرسال فأعدها إلى ready، فيقول النمط «تعذّر إرسال الرسالة، والمسودة محفوظة» ويعرضها خطأً فوق «إرسال».",
+          "Send (the primary button, with Ctrl or Cmd+Enter) and Discard show while ready, each only with its handler. onSend receives the text on screen once per ready status: a second press, chord or held key does nothing until the status changes, and Discard never sends. The chord waits half a second after any change to the text, the tone, the recipients or the attachments. Move to sending in the same update that handles onSend, since both buttons stay locked until the status changes, and if sending fails, return to ready: the pattern says «The message couldn't be sent; the draft is kept» and shows it as an error above Send.",
+        ),
+      ],
+      [
+        "undoWindow / onUndo",
+        "number · seconds / () => void",
+        t(
+          "أثناء الإرسال، مع undoWindow أكبر من صفر ومع onUndo، يظهر «تُرسَل خلال ١٠ث» بعدّاد لا يتوقف، ومعه «تراجع» الذي يستدعي onUndo مرة واحدة ثم ينتظر. undoWindow هو الثواني الباقية من احتجاز تطبيقك للرسالة حين يظهر العدّاد، لا طول المهلة كلها، فلا يظهر «تراجع» بعد انتهائها. أرسل الرسالة بعد انتهاء المهلة، وألغها إذا وصلك onUndo قبلها. وخذ المهلة من إعداد يتحكّم فيه المستخدم قبل أن يبلغها: إيقافها، أو إطالتها إلى عشرة أضعاف الافتراضي على الأقل (WCAG 2.2.1).",
+          "While sending, with undoWindow above zero and onUndo, «Sending in 10s» shows with a countdown that never pauses, beside Undo, which calls onUndo once and then waits. undoWindow is the seconds left in your hold when the countdown appears, not its full length, so Undo never shows after the hold ends. Send the message once the window ends, and cancel it if onUndo arrives first. Take the window from a setting the person controls before they meet it: off, or adjustable to at least ten times the default (WCAG 2.2.1).",
+        ),
+      ],
+      [
+        "headingLevel / labels / appearance",
+        '2 | 3 | 4 | 5 | 6 · 3 / Partial<DraftReviewLabels> / "card" | "plain" · card',
+        t(
+          "headingLevel مستوى العنوان. وتستبدل labels أي نص مدمج، وتحمل inlineDiff كلمات التغييرات المتعقَّبة. واستخدم plain داخل محادثة أو لوحة جانبية.",
+          "headingLevel is the title's level. labels replaces any built-in text; inlineDiff carries the tracked changes' words. Use plain inside a conversation or a side panel.",
         ),
       ],
     ],
@@ -747,6 +1011,14 @@ export function ApiReference({
         ),
       ],
       [
+        "agent",
+        "ReactNode",
+        t(
+          "من يطلب الموافقة، ويظهر تحت العنوان. تمرّره مهمة الوكيل إلى بطاقة الخطوة التي فُوّضت إلى وكيل آخر.",
+          "Who is asking, shown under the title. Agent task passes it to the card of a step handed to another agent.",
+        ),
+      ],
+      [
         "appearance / headingLevel / labels",
         '"card" | "plain" · card / 2 | 3 | 4 | 5 | 6 · 3 / Partial<ApprovalCardLabels>',
         t(
@@ -881,6 +1153,14 @@ export function ApiReference({
           "thresholds sets the share of capacity where the status moves to Filling up and then Near capacity; over capacity is always above 1. Pass open with onOpenChange to hold the details from your app.",
         ),
       ],
+      [
+        "inline / action / announcement",
+        'boolean / { label: ReactNode; onSelect(): void } / "polite" | "off"',
+        t(
+          "مع inline تظهر التفاصيل في مكانها مجموعةً مسمّاة بدل الحلقة ونافذتها. تعرض التفاصيل حصة كل جزء من السعة بنسبة كاملة في نهاية سطره، وشريطًا رفيعًا يجمع الأجزاء. ويظهر action زرًّا في التفاصيل حين يقترب السياق من الامتلاء أو يتجاوز السعة. وتقول منطقة الإعلان «السياق: يقترب من الامتلاء» مرة عند كل تغيّر في كلمة الحالة، ولا تقول رقمًا ولا الحالة التي يبدأ بها؛ مرّر off حين يتكلّم عنه نمط آخر.",
+          "inline shows the details in place, as a named group, instead of the ring and its popover. The details show each part's share of the capacity as a whole percent at the end of its line, and a thin bar that sums the parts. action shows as a button in the details once the meter fills up, nears or passes capacity. The region says «Context: Filling up» once each time the status word changes, never a number and never the status it mounts with; pass off when another pattern speaks for it.",
+        ),
+      ],
     ],
     "model-selector": [
       [
@@ -995,8 +1275,8 @@ export function ApiReference({
         "InlineCitation.source / mode / onOpenChange",
         "SourceReference / disclosure | link | preview / (open: boolean) => void",
         t(
-          "مرّر كائن المصدر نفسه. يعرض وضع disclosure التفاصيل بزر، وينتقل وضع link برابط أصلي. وضع preview رابط يعرض المصدر عند المرور أو التركيز: يفتحه Enter أو النقر، ويغلقه Escape أو فقدان التركيز، وتبقى المعاينة مفتوحة إذا انتقل المؤشر إليها. إذا رُفضت الوجهة صار زرًا يعرض المعاينة عند التركيز أو النقر.",
-          "Same source record; button disclosure or native link navigation. preview is a link that shows the source on hover or focus: Enter or click opens it, Escape or blur closes it, and the pointer moving onto it keeps it open. If the destination is rejected it is a button that shows the preview on focus or click.",
+          "مرّر كائن المصدر نفسه. يعرض وضع disclosure التفاصيل بزر، وينتقل وضع link برابط أصلي. وضع preview رابط يعرض المصدر عند المرور أو التركيز: يفتحه Enter أو النقر، ويغلقه Escape أو فقدان التركيز، وتبقى المعاينة مفتوحة إذا انتقل المؤشر إليها. إذا رُفضت الوجهة صار زرًا يعرض المعاينة عند التركيز أو النقر. وتفتح لمسةٌ على شاشة لمس بطاقة المصدر بدل اتباع الرابط: نافذة باسم المصدر فيها رابط «فتح المصدر» إن قُبلت الوجهة، تغلقها لمسة ثانية أو لمسة خارجها أو Escape.",
+          "Same source record; button disclosure or native link navigation. preview is a link that shows the source on hover or focus: Enter or click opens it, Escape or blur closes it, and the pointer moving onto it keeps it open. If the destination is rejected it is a button that shows the preview on focus or click. A tap on a touch screen opens the source's card instead of following the link: a dialog named by the title, with an «Open source» link when the destination is accepted, closed by a second tap, a tap outside or Escape.",
         ),
       ],
       [
@@ -1138,8 +1418,8 @@ export function ApiReference({
         "renderCitation / links",
         '(marker: number) => ReactNode / "default" | "strict" · default',
         t(
-          'يتحوّل كل [n] في النص إلى renderCitation(n)، ويبقى الكود كما هو، وتبقى العلامة نصًا إذا لم تُرجع الدالة شيئًا. يمرّر links="strict" الروابط والصور عبر sourceHref فلا يبقى إلا http وhttps والنسبي والجزء.',
-          'Each [n] in the text becomes renderCitation(n); code is left alone, and a marker stays text if the function returns nothing. links="strict" sends links and images through sourceHref, so only http, https, relative and fragment targets survive.',
+          'يتحوّل كل رقم في علامة [n] أو [n, m] أو [n، m]، بأرقام لاتينية أو عربية هندية أو فارسية، إلى renderCitation(n) مرةً لكل رقم، وتصير المجموعة عُقدًا متجاورة. يبقى الكود كما هو، وتبقى العلامة نصًا إذا لم تُرجع الدالة شيئًا لأحد أرقامها. يمرّر links="strict" الروابط والصور عبر sourceHref فلا يبقى إلا http وhttps والنسبي والجزء.',
+          'Each number in an [n], [n, m] or [n، m] marker, in ASCII, Arabic-Indic or Persian digits, becomes renderCitation(n), once per number, a group as adjacent nodes; code is left alone, and a marker stays text if the function returns nothing for any of its numbers. links="strict" sends links and images through sourceHref, so only http, https, relative and fragment targets survive.',
         ),
       ],
       [
@@ -1298,8 +1578,8 @@ export function ApiReference({
         "renderCitation / links",
         '(marker: number) => ReactNode / "default" | "strict"',
         t(
-          "في وضع markdown فقط: تعمل كما في Markdown، فيصير كل [n] استشهادًا وتُفلتر الروابط عبر sourceHref عند strict.",
-          "In markdown mode only: they work as in Markdown, so each [n] becomes a citation and links go through sourceHref when strict.",
+          "في وضع markdown فقط: تعمل كما في Markdown، فتصير كل علامة، [n] أو مجموعة بأي أرقام، استشهادات وتُفلتر الروابط عبر sourceHref عند strict.",
+          "In markdown mode only: they work as in Markdown, so each marker, [n] or a group in any digits, becomes citations and links go through sourceHref when strict.",
         ),
       ],
       [
@@ -2924,8 +3204,8 @@ export function ApiReference({
         "variant / state / size",
         "ButtonVariant / ButtonState / sm | md",
         t(
-          "الحجم الافتراضي sm. تمنع حالة loading الضغط وتضبط aria-busy.",
-          "sm is the default. Loading blocks clicks and manages aria-busy.",
+          "الحجم الافتراضي sm. في حالة loading يبقى الزر قابلًا للتركيز لكنه لا يستجيب: يضبط aria-disabled وaria-busy ويتجاهل الضغط، فلا يسقط التركيز إلى الصفحة أثناء العملية.",
+          "sm is the default. Loading keeps the button focusable but inert: it sets aria-disabled and aria-busy and ignores clicks, so focus never drops to the page mid-action.",
         ),
       ],
       [
