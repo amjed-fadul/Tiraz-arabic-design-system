@@ -57,6 +57,21 @@ the directory. Loading and error hide data and disable create/search/status.
 Reloading resets records, language, theme, filters and period: there is no
 backend, authentication, storage or persistence.
 
+Ask your data (`DataAnswer`) closes the orders section: which channel brought the
+period's orders, from the same `orders.channels` as the charts, as a bar chart or a
+donut with a two-sentence explanation citing the Orders table, and «How was this
+calculated?» (the period and all channels). It follows the period and the preview
+state (done, thinking, empty, failed), and its Try again restores the sample. There is
+no Pin and no Open in a table: the answer already sits on the dashboard. The header's
+**Decision inbox** button (`DecisionInbox`, in a Sheet) counts the requests that
+wait on you, failed ones included, and opens two requests from the customer assistant.
+Reactivating Layla Ahmed is reversible, so its row decides without opening and
+approving it makes her active in the directory, in memory; the payment reminder to
+Madar Technology can't be recalled, so it opens into the full request, and approving
+it records the decision only. The host records each decision after 600 ms, Escape
+closes the Sheet and records nothing, and restoring the sample brings the inbox back
+with it.
+
 Chart summaries and expandable native data tables retain exact values; tables
 scroll inside keyboard-focusable containers on narrow screens. Motion uses
 existing Tiraz controls and OS reduced-motion handling. Screen-reader speech

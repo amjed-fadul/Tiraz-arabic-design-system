@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowUpLeft,
   ArrowUpRight,
+  Inbox,
   Menu,
   Moon,
   Sun,
@@ -25,7 +26,9 @@ import {
   Badge,
   Button,
   ChangeSummary,
+  DataAnswer,
   DataTable,
+  DecisionInbox,
   DonutChart,
   EmptyState,
   NoRecordsIllustration,
@@ -42,7 +45,17 @@ import {
   numberLocale,
   useSystem,
 } from "../../system";
-import type { ChangeSummaryProps, DataTableColumn } from "../../system";
+import type {
+  ApprovalDecision,
+  ApprovalDetails,
+  ApprovalRequest,
+  ChangeSummaryProps,
+  DataAnswerChart,
+  DataAnswerProps,
+  DataTableColumn,
+  DecisionInboxItem,
+  SourceReference,
+} from "../../system";
 import { CreateCustomer } from "./CreateCustomer";
 import {
   calculateOrders,
@@ -55,6 +68,30 @@ import type { Customer, CustomerStatus, Order, Period } from "./data";
 import "./dashboard.css";
 
 type Preview = "sample" | "loading" | "empty" | "error";
+// Ask your data follows the preview switch.
+const askStatus: Record<Preview, DataAnswerProps["status"]> = {
+  sample: "completed",
+  loading: "thinking",
+  empty: "empty",
+  error: "failed",
+};
+// The customer assistant's requests are about two sample customers: Madar
+// Technology, and Layla Ahmed, who is paused.
+const [madar, layla] = sampleCustomers;
+/** Stands in for your server: a decision is recorded after a moment. */
+function recorded(signal: AbortSignal) {
+  return new Promise<void>((resolve, reject) => {
+    const timer = setTimeout(resolve, 600);
+    signal.addEventListener(
+      "abort",
+      () => {
+        clearTimeout(timer);
+        reject(new DOMException("Cancelled", "AbortError"));
+      },
+      { once: true },
+    );
+  });
+}
 // The last seven days against the seven before them, for What changed: orders,
 // revenue and the average order, each with its fourteen days for the sparkline.
 function weekOverWeek(orders: readonly Order[]) {
@@ -139,6 +176,11 @@ function DashboardContent({
   const [status, setStatus] = useState<CustomerStatus | "all">("all");
   const [newCustomer, setNewCustomer] = useState<Customer | null>(null);
   const [spotlightId, setSpotlightId] = useState<number | null>(null);
+  // The inbox's decisions and the chart type the person chose for the answer.
+  const [decisions, setDecisions] = useState<Record<string, ApprovalDecision>>(
+    {},
+  );
+  const [answerChart, setAnswerChart] = useState<"bar" | "donut">("bar");
   const [navOpen, setNavOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [activeSection, setActiveSection] = useState(() =>
@@ -179,6 +221,7 @@ function DashboardContent({
     clearFilters();
     if (next === "sample" || next === "empty") {
       setCustomers(next === "empty" ? [] : sampleCustomers);
+      setDecisions({});
       nextId.current = sampleCustomers.length + 1;
     }
   }
@@ -240,6 +283,159 @@ function DashboardContent({
       color: "var(--chart-clay)",
     },
   ];
+  // Ask your data: which channel brought this period's orders. The figures are
+  // the charts' own; the host reshapes them for the type the person picked.
+  const share = (count: number) =>
+    percent.format(orders.count ? count / orders.count : 0);
+  const [leading, ...rest] = channels
+    .map((channel) => ({ ...channel, count: orders.channels[channel.key] }))
+    .sort((a, b) => b.count - a.count);
+  const others = share(
+    rest.reduce((total, channel) => total + channel.count, 0),
+  );
+  const explanation = t(
+    `جاء ${leading.label} في المقدمة بحصة ${share(leading.count)} من طلبات هذه الفترة. [1] أما القناتان الأخريان فتتقاسمان ${others} من الطلبات. [1]`,
+    `${leading.label} led with ${share(leading.count)} of this period's orders. [1] The other two channels split the remaining ${others}. [1]`,
+  );
+  const ordersTable: SourceReference = {
+    id: "orders",
+    number: 1,
+    title: t("الطلبات", "Orders"),
+    description: t(
+      "طلبات الفترة موزّعة حسب القناة.",
+      "The period's orders, split by channel.",
+    ),
+  };
+  const figures = channels.map((channel) => ({
+    ...channel,
+    value: orders.channels[channel.key],
+  }));
+  const summary = figures
+    .map((channel) => `${channel.label} ${number(channel.value)}`)
+    .join(t("، ", ", "));
+  const answerCharts: Record<"bar" | "donut", DataAnswerChart> = {
+    bar: {
+      type: "bar",
+      props: {
+        label: t("عدد الطلبات لكل قناة", "Orders per channel"),
+        summary: `${summary}.`,
+        locale: language,
+        height: 220,
+        data: figures.map((channel) => ({
+          category: channel.label,
+          orders: channel.value,
+        })),
+        series: [
+          {
+            key: "orders",
+            label: t("الطلبات", "Orders"),
+            color: "var(--action)",
+          },
+        ],
+      },
+    },
+    donut: {
+      type: "donut",
+      props: {
+        label: t("حصة كل قناة من الطلبات", "Each channel's share of orders"),
+        summary: `${summary}.`,
+        locale: language,
+        height: 220,
+        data: figures,
+        legend: true,
+        interactiveLegend: false,
+      },
+    },
+  };
+  // The Decision inbox: two requests from the customer assistant. The
+  // reactivation is reversible, so its row decides without opening; a reminder
+  // can't be recalled once sent, so it opens into the full request.
+  const assistant = {
+    id: "customer-assistant",
+    name: t("مساعد العملاء", "Customer assistant"),
+  };
+  const requests: { request: ApprovalRequest; approval: ApprovalDetails }[] = [
+    {
+      request: {
+        id: "reactivate-layla",
+        action: t(
+          "إعادة تفعيل حساب ليلى أحمد",
+          "Reactivate Layla Ahmed's account",
+        ),
+        target: `${layla.name} · ${layla.email}`,
+        consequences: [
+          t(
+            "تعود ليلى أحمد إلى دليل العملاء بحالة نشطة.",
+            "Layla Ahmed is active in the customer directory again.",
+          ),
+        ],
+        approveLabel: t("أعد التفعيل", "Reactivate"),
+        rejectLabel: t("رفض", "Reject"),
+      },
+      approval: { reversible: true },
+    },
+    {
+      request: {
+        id: "remind-madar",
+        action: t(
+          "إرسال تذكير بالدفع إلى شركة مدار للتقنية",
+          "Send a payment reminder to Madar Technology",
+        ),
+        target: `${madar.name} · ${madar.email}`,
+        consequences: [
+          t(
+            "يصل إلى شركة مدار بريد تذكير واحد بالدفع.",
+            "Madar Technology receives one payment reminder email.",
+          ),
+        ],
+        approveLabel: t("أرسل التذكير", "Send the reminder"),
+        rejectLabel: t("رفض", "Reject"),
+      },
+      approval: { irreversible: true },
+    },
+  ];
+  const inboxItems = requests.map(
+    ({ request, approval }): DecisionInboxItem => {
+      const decision = decisions[request.id];
+      return {
+        id: request.id,
+        title: request.action,
+        agent: assistant,
+        status: decision ? "completed" : "needs-you",
+        // A receipt says what was decided, never more.
+        receipt:
+          decision &&
+          (decision === "approved"
+            ? t("تمت الموافقة · الآن", "Approved · just now")
+            : t("رُفض الطلب · الآن", "Request rejected · just now")),
+        request,
+        approval,
+      };
+    },
+  );
+  // Requests that wait on the person, failed tasks included.
+  const waiting = inboxItems.filter(
+    (item) => item.status === "needs-you" || item.status === "failed",
+  ).length;
+  // Record the decision after the host's moment. An aborted one (Escape, or the
+  // Sheet closing) throws first, so nothing is recorded or changed.
+  async function decide(
+    request: ApprovalRequest,
+    decision: ApprovalDecision,
+    { signal }: { signal: AbortSignal },
+  ) {
+    await recorded(signal);
+    setDecisions((current) => ({ ...current, [request.id]: decision }));
+    // Approving the reactivation makes her active in the directory, in memory.
+    if (request.id === "reactivate-layla" && decision === "approved")
+      setCustomers((current) =>
+        current.map((customer) =>
+          customer.id === layla.id
+            ? { ...customer, status: "active" }
+            : customer,
+        ),
+      );
+  }
   const navItems = [
     { id: "overview", label: t("نظرة عامة", "Overview"), icon: Home },
     { id: "orders", label: t("الطلبات", "Orders"), icon: ShoppingBag },
@@ -437,6 +633,46 @@ function DashboardContent({
               {navigation(true)}
             </Sheet>
           </div>
+          <Sheet
+            title={t("صندوق القرارات", "Decision inbox")}
+            description={t(
+              "طلبات مساعد العملاء التي تنتظر قرارك.",
+              "Requests from the customer assistant that wait for your decision.",
+            )}
+            closeLabel={t("إغلاق صندوق القرارات", "Close decision inbox")}
+            trigger={
+              <Button
+                variant="ghost"
+                className="dashboard-inbox"
+                aria-label={t(
+                  `صندوق القرارات، بانتظارك: ${number(waiting)}`,
+                  `Decision inbox, needs you: ${number(waiting)}`,
+                )}
+              >
+                <Inbox size={17} aria-hidden="true" />
+                <span className="dashboard-inbox-label">
+                  {t("صندوق القرارات", "Decision inbox")}
+                </span>{" "}
+                {/* The badge says what the name says, so the button's visible
+                    text sits inside its name; a phone keeps only the count. */}
+                <Badge tone={waiting > 0 ? "warning" : "neutral"}>
+                  <span className="dashboard-inbox-word">
+                    {t("بانتظارك: ", "Needs you: ")}
+                  </span>
+                  {number(waiting)}
+                </Badge>
+              </Button>
+            }
+          >
+            <DecisionInbox
+              items={inboxItems}
+              onDecision={decide}
+              // The Sheet already says «صندوق القرارات».
+              title={t("طلبات المساعد", "Assistant requests")}
+              appearance="plain"
+              headingLevel={3}
+            />
+          </Sheet>
           <Button variant="ghost" onClick={onLanguage}>
             <bdi>{language === "ar" ? "English" : "العربية"}</bdi>
           </Button>
@@ -663,6 +899,28 @@ function DashboardContent({
               </article>
             </div>
           )}
+          <article className="dashboard-ask">
+            <DataAnswer
+              status={askStatus[preview]}
+              question={t(
+                "من أي قناة جاءت طلبات هذه الفترة؟",
+                "Which channel brought this period's orders?",
+              )}
+              chart={answerCharts[answerChart]}
+              explanation={explanation}
+              sources={[ordersTable]}
+              method={{ range, filters: t("كل القنوات", "All channels") }}
+              chartTypes={["bar", "donut"]}
+              onChartTypeChange={(type) =>
+                setAnswerChart(type === "donut" ? "donut" : "bar")
+              }
+              onRetry={() => changePreview("sample")}
+              error={t(
+                "هذه معاينة لحالة الخطأ، ولا يجري أي طلب فعلي.",
+                "This is an error preview; no request is running.",
+              )}
+            />
+          </article>
         </section>
         <section
           id="customers"

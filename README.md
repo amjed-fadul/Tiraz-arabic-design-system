@@ -29,6 +29,10 @@ dashboard connects metrics, period-filtered charts, searchable/filterable
 DataTable and validated customer creation using existing Tiraz components. Its
 overview opens with What changed (`ChangeSummary`): orders, revenue and the average
 order, the last seven days against the seven before, computed from the sample orders.
+The orders end with Ask your data (`DataAnswer`), which channel brought the period's
+orders as a bar chart or a donut, and the header's Decision inbox button (`DecisionInbox`,
+in a Sheet) counts the requests that wait on you; approving the reversible one
+reactivates Layla Ahmed in memory.
 Records and preferences live in memory; reload restores the deterministic sample.
 Secondary preview controls demonstrate loading, empty and error states.
 See [run/reuse and behavior notes](docs/dashboard-example/README.md).

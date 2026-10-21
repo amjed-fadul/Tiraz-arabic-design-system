@@ -71,6 +71,16 @@
 .dashboard-mobile-nav {
   display: none;
 }
+/* The count is a small capsule, so the button stays as tall as its neighbors. */
+.dashboard-inbox .tz-badge {
+  justify-content: center;
+  gap: var(--space-1);
+  min-inline-size: 20px;
+  padding-block: 0;
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-pill);
+  line-height: var(--leading-micro);
+}
 .dashboard-main {
   max-inline-size: 1184px;
   margin-inline: auto;
@@ -80,7 +90,7 @@
   scroll-margin-block-start: var(--space-6);
   min-inline-size: 0;
 }
-.dashboard section:focus {
+.dashboard-main > section:focus {
   outline: none;
 }
 .dashboard-heading,
@@ -107,7 +117,7 @@
   font-size: var(--text-heading);
   font-weight: var(--weight-semibold);
 }
-.dashboard h3 {
+.dashboard-charts h3 {
   font-size: var(--text-body);
   font-weight: var(--weight-medium);
   margin-block-end: var(--space-4);
@@ -175,6 +185,9 @@
 .dashboard-charts article + article {
   border-inline-start: 1px solid var(--border);
   padding-inline-start: var(--space-8);
+}
+.dashboard-ask {
+  margin-block-start: var(--space-8);
 }
 .dashboard-loading {
   display: flex;
@@ -281,6 +294,14 @@
   }
   .dashboard-links {
     display: none;
+  }
+  /* The icon and the count stay; the button's name says the rest. */
+  .dashboard-inbox-label,
+  .dashboard-inbox-word {
+    display: none;
+  }
+  .dashboard-inbox .tz-badge {
+    padding-inline: var(--space-1);
   }
   .dashboard-mobile-nav {
     display: block;

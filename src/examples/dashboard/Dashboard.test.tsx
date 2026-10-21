@@ -286,3 +286,115 @@ it("puts What changed at the top of the overview with rows from the orders", asy
   expect(summary()).toHaveTextContent("57.8%");
   expect(summary().textContent).not.toMatch(/[٠-٩]/);
 });
+
+it("opens the decision inbox from the header and asks the orders a question", async () => {
+  const user = userEvent.setup();
+  render(<Dashboard />);
+  const waiting = (count: string) => `صندوق القرارات، بانتظارك: ${count}`;
+  const dialog = () => screen.getByRole("dialog", { name: "صندوق القرارات" });
+  const rows = () => within(dialog()).getAllByRole("listitem");
+  const closed = () =>
+    waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+  const layla = () =>
+    within(screen.getByRole("table", { name: "دليل العملاء" })).getByRole(
+      "row",
+      { name: /ليلى أحمد/ },
+    );
+  const reminder = "إرسال تذكير بالدفع إلى شركة مدار للتقنية";
+
+  // Two requests wait on the person: the count is in the reader's digits, in a
+  // button that comes before the language button.
+  const inbox = screen.getByRole("button", { name: waiting("٢") });
+  expect(inbox).toHaveTextContent("صندوق القرارات بانتظارك: ٢");
+  expect(inbox).not.toHaveTextContent(/[0-9]/);
+  expect(
+    inbox.compareDocumentPosition(
+      screen.getByRole("button", { name: "English" }),
+    ) & Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+  expect(layla()).toHaveTextContent("متوقف");
+
+  // It opens a Sheet with both requests from the assistant, and focus does not
+  // start on a decision.
+  await user.click(inbox);
+  expect(rows()).toHaveLength(2);
+  expect(rows()[0]).toHaveTextContent("إعادة تفعيل حساب ليلى أحمد");
+  expect(rows()[1]).toHaveTextContent(reminder);
+  expect(rows()[0]).toHaveTextContent("مساعد العملاء");
+  expect(
+    within(dialog()).getByRole("button", { name: "إغلاق صندوق القرارات" }),
+  ).toHaveFocus();
+
+  // Escape while the reminder is being recorded closes the Sheet, hands focus
+  // back to the button and records nothing.
+  await user.click(within(dialog()).getByRole("button", { name: reminder }));
+  await user.click(
+    within(dialog()).getByRole("button", { name: "أرسل التذكير" }),
+  );
+  await user.keyboard("{Escape}");
+  await closed();
+  expect(inbox).toHaveFocus();
+  await new Promise((resolve) => setTimeout(resolve, 800));
+  expect(screen.getByRole("button", { name: waiting("٢") })).toBe(inbox);
+  await user.click(inbox);
+  expect(rows()).toHaveLength(2);
+
+  // Approving the reactivation records it after the host's moment: one request
+  // is left and Layla is active.
+  await user.click(
+    within(dialog()).getByRole("button", { name: /^أعد التفعيل/ }),
+  );
+  await waitFor(
+    () =>
+      expect(within(dialog()).getByRole("status")).toHaveTextContent(
+        "طلب واحد بانتظارك",
+      ),
+    { timeout: 3000 },
+  );
+  await user.keyboard("{Escape}");
+  await closed();
+  expect(screen.getByRole("button", { name: waiting("١") })).toHaveFocus();
+  expect(layla()).toHaveTextContent("نشط");
+
+  // After the charts, the orders hold the question as a region, answered in
+  // Arabic-Indic digits.
+  const orders = document.getElementById("orders")!;
+  const ask = () =>
+    within(orders).getByRole("region", {
+      name: "من أي قناة جاءت طلبات هذه الفترة؟",
+    });
+  expect(ask().closest("article")).not.toBeNull();
+  expect(ask().closest(".dashboard-charts")).toBeNull();
+  expect(
+    orders.querySelector(".dashboard-charts")!.compareDocumentPosition(ask()) &
+      Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+  const explanation = ask().querySelector(".tz-data-answer-explanation")!;
+  expect(explanation).toHaveTextContent(/[٠-٩]/);
+  expect(explanation).not.toHaveTextContent(/[0-9]/);
+
+  // The donut is the second type.
+  await user.click(within(ask()).getByRole("radio", { name: "حلقي" }));
+  expect(within(ask()).getByRole("radio", { name: "حلقي" })).toBeChecked();
+  expect(
+    within(ask()).getByRole("region", { name: "حصة كل قناة من الطلبات" }),
+  ).toBeInTheDocument();
+
+  // The error preview fails the answer, and trying again brings it back.
+  await select(user, "معاينة الحالة", "خطأ");
+  expect(ask().querySelector(".tz-data-answer-note")).toHaveTextContent(
+    "تعذّر إكمال الإجابة",
+  );
+  await user.click(within(ask()).getByRole("button", { name: "أعد المحاولة" }));
+  expect(ask().querySelector(".tz-data-answer-explanation")).not.toBeNull();
+  expect(
+    within(ask()).getByRole("region", { name: "حصة كل قناة من الطلبات" }),
+  ).toBeInTheDocument();
+
+  // The sample data is back, so the inbox is too; English has Western digits.
+  expect(layla()).toHaveTextContent("متوقف");
+  await user.click(screen.getByRole("button", { name: "English" }));
+  expect(
+    screen.getByRole("button", { name: "Decision inbox, needs you: 2" }),
+  ).toBeInTheDocument();
+});
