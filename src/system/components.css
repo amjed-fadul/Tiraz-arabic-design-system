@@ -5083,8 +5083,45 @@ button.tz-source-chip {
 .tz-thinking-panel-chips > li[data-fresh] {
   animation: tz-fade-in var(--motion-state) var(--ease-out) both;
 }
+/* «+٤» is a quiet button: it reveals the sources past the chips, then reads
+   «عرض أقل». It presses like the chips beside it. */
 .tz-thinking-panel-more {
+  min-block-size: 24px;
+  padding-inline: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
   color: var(--text-muted);
+  font: inherit;
+  line-height: var(--leading-meta);
+  cursor: pointer;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+  touch-action: manipulation;
+}
+.tz-thinking-panel-more:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-thinking-panel-more:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}
+/* A search that stopped or failed leaves its thread as it was, still, rather
+   than closing it into the solid line that means done. */
+.tz-thinking-panel:is([data-status="stopped"], [data-status="failed"])
+  .tz-thread::before {
+  animation: none;
+  opacity: 0;
+}
+.tz-thinking-panel:is([data-status="stopped"], [data-status="failed"])
+  .tz-thread::after {
+  opacity: 0.45;
 }
 /* The steps share the status vocabulary; the one in progress shimmers. */
 .tz-thinking-panel-steps {

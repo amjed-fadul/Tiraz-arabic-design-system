@@ -12,6 +12,7 @@ import { StreamingText } from "./StreamingText";
 import { ThinkingPanel } from "./ThinkingPanel";
 import type { ThinkingPanelLabels, ThinkingPanelProps } from "./ThinkingPanel";
 import { Tray } from "./Tray";
+import { answerText } from "./answer-text";
 import { citedAnswerCopy } from "./cited-answer-copy";
 import { formatCount, formatElapsed } from "./format";
 import { useSystem } from "./useSystem";
@@ -62,7 +63,10 @@ export interface CitedAnswerProps {
   feedback?: "up" | "down" | null;
   reason?: FeedbackBarProps["reason"];
   onFeedbackChange?: FeedbackBarProps["onFeedbackChange"];
-  onCopy?: () => void | Promise<void>;
+  /** The host copies `text`, the answer as written followed by «المصادر» and
+   * one numbered line per source, with its link where it is safe; «نُسخت» shows
+   * once the promise resolves. A host that ignores the text keeps working. */
+  onCopy?: (text: string) => void | Promise<void>;
   onRegenerate?: () => void;
   onStop?: () => void;
   onRetry?: () => void;
@@ -167,9 +171,15 @@ export function CitedAnswer({
       />
     );
   };
+  // A search the person stopped, or that failed, before a word was written says
+  // so; once the answer began, the search was done.
+  const cutShort =
+    (status === "stopped" || status === "failed") && !content.trim();
   const panel = thinking && (
     <ThinkingPanel
-      status={status === "thinking" ? "running" : "completed"}
+      status={
+        status === "thinking" ? "running" : cutShort ? status : "completed"
+      }
       elapsed={thinking.elapsed}
       sources={thinking.searched}
       steps={thinking.steps}
@@ -253,7 +263,10 @@ export function CitedAnswer({
                   feedback={feedback}
                   reason={reason}
                   onFeedbackChange={onFeedbackChange}
-                  onCopy={onCopy}
+                  onCopy={
+                    onCopy &&
+                    (() => onCopy(answerText(content, sources, config)))
+                  }
                   onRegenerate={onRegenerate}
                   labels={{
                     regenerate: copy.regenerate,

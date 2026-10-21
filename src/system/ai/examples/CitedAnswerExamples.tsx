@@ -225,7 +225,7 @@ export function CitedAnswerExample({
         setFeedback(value);
         setReason(why);
       }}
-      onCopy={() => navigator.clipboard.writeText(text)}
+      onCopy={(text) => navigator.clipboard.writeText(text)}
       onRegenerate={() => {
         setFeedback(null);
         setReason(undefined);

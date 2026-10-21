@@ -15,8 +15,12 @@ export const thinkingPanelCopy: {
     thinking: "يفكّر",
     thought: (elapsed) => `فكّر لمدة ${elapsed}`,
     done: "فكّر",
+    stopped: (elapsed) => (elapsed ? `أُوقف بعد ${elapsed}` : "أُوقف"),
+    failed: (elapsed) => (elapsed ? `تعثّر بعد ${elapsed}` : "تعثّر"),
     searched: "بحث في",
     more: (count) => `+${count}`,
+    showAll: "عرض كل المصادر",
+    showFewer: "عرض أقل",
     steps: "خطوات التفكير",
     // The steps are feminine (الخطوة), as everywhere else.
     stepStates: {
@@ -29,8 +33,12 @@ export const thinkingPanelCopy: {
     thinking: "Thinking",
     thought: (elapsed) => `Thought for ${elapsed}`,
     done: "Thought",
+    stopped: (elapsed) => (elapsed ? `Stopped after ${elapsed}` : "Stopped"),
+    failed: (elapsed) => (elapsed ? `Failed after ${elapsed}` : "Failed"),
     searched: "Searched",
     more: (count) => `+${count}`,
+    showAll: "Show all sources",
+    showFewer: "Show fewer",
     steps: "Thinking steps",
     stepStates: {
       pending: toolLabelsCopy.en.pending,
@@ -78,6 +86,9 @@ export const feedbackBarCopy: {
 
 /** FollowUps' default name when the host gives none. */
 export const followUpsCopy = { ar: "أسئلة تالية", en: "Next questions" };
+
+/** The heading over the sources in a copied answer (answerText). */
+export const answerSourcesCopy = { ar: "المصادر", en: "Sources" };
 
 export const citedAnswerCopy: { ar: CitedAnswerLabels; en: CitedAnswerLabels } =
   {

@@ -1505,7 +1505,7 @@
           "type": "\"thinking\" | \"writing\" | \"completed\" | \"failed\" | \"stopped\"",
           "required": true,
           "values": ["thinking", "writing", "completed", "failed", "stopped"],
-          "note": "Host-owned. Thinking opens the panel and offers Stop; writing folds the panel to «فكّر لمدة ٦ث» and streams the words; completed adds the follow-ups, the rating and the meta; failed keeps the partial answer with the error and Try again; stopped keeps it with «أُوقفت الإجابة» and Regenerate."
+          "note": "Host-owned. Thinking opens the panel and offers Stop; writing folds the panel to «فكّر لمدة ٦ث» and streams the words; completed adds the follow-ups, the rating and the meta; failed keeps the partial answer with the error and Try again; stopped keeps it with «أُوقفت الإجابة» and Regenerate. A stop or a failure before a word was written also stops the thinking panel, which reads «أُوقف بعد ٦ث» or «تعثّر بعد ٦ث» with its thread still instead of closed; once words were written it reads «فكّر لمدة ٦ث»."
         },
         {
           "name": "question",
@@ -1517,7 +1517,7 @@
           "name": "content",
           "type": "string",
           "required": true,
-          "note": "Markdown, the whole text so far. A [n] marker names a source's number and becomes a citation chip; a marker with no source, or inside code, stays text. Links in it pass through sourceHref."
+          "note": "Markdown, the whole text so far. A [n] marker names a source's number and becomes a citation chip, written in ASCII, Arabic-Indic or Persian digits; [n, m] or [n، m] cites several, as adjacent chips. A marker with no source for any of its numbers, or inside code, stays text. Links in it pass through sourceHref."
         },
         {
           "name": "sources",
@@ -1529,7 +1529,7 @@
           "name": "thinking",
           "type": "{ elapsed: number; searched: readonly SourceReference[]; steps?: readonly { id: string; label: string; state: \"pending\" | \"running\" | \"completed\" }[] }",
           "required": false,
-          "note": "What the search covered, for the thinking panel. Seconds, the sources found so far (the first three show as chips) and the steps. Without it there is no panel."
+          "note": "What the search covered, for the thinking panel. Seconds, the sources found so far (the first three show as chips, and a button shows the rest) and the steps. Without it there is no panel."
         },
         {
           "name": "thinkingOpen",
@@ -1573,9 +1573,9 @@
         },
         {
           "name": "onCopy",
-          "type": "() => void | Promise<void>",
+          "type": "(text: string) => void | Promise<void>",
           "required": false,
-          "note": "The host copies the answer; «نُسخت» shows for two seconds once the promise resolves."
+          "note": "The host copies the text it is given: the answer as written, a blank line, then «المصادر» (Sources) and one line per source, \"{number}. {title}\" in the reader's digits, with \" — {link}\" when the source's destination is safe. «نُسخت» shows for two seconds once the promise resolves. A host that ignores the text keeps working."
         },
         {
           "name": "onRegenerate",
@@ -1633,12 +1633,12 @@
       "state": "The host owns the status, the text, the sources, the rating and every time. The pattern never advances by itself: it shows the thinking panel, streams the words it is given and reports what the person asks for. The panel folds when writing starts unless the host controls it.",
       "accessibility": [
         "A section labelled by the question (or «إجابة موثّقة»). One polite region says each change of status in one sentence: يفكّر, يكتب الإجابة, اكتملت الإجابة, تعذّر إكمال الإجابة or أُوقفت الإجابة. The status the answer mounts in is not announced. The answer's words, the elapsed time and the copy confirmation never reach a live region: the thinking panel and the streamed text run with announcement off, and the bar has none.",
-        "A citation chip is a link when its source has a safe destination, so Enter and a click open it; otherwise it is a button that Tab reaches, and a click or focus previews it. Hover or focus shows the source's title and description in a tooltip that carries no link, Escape or blur closes it, and the pointer moving onto it keeps it open (WCAG 1.4.13). The chip's name is «المصدر ١: العنوان» in the provider's digits.",
+        "A citation chip is a link when its source has a safe destination, so Enter and a click open it; otherwise it is a button that Tab reaches, and a click or focus previews it. Hover or focus shows the source's title and description in a tooltip that carries no link, Escape or blur closes it, and the pointer moving onto it keeps it open (WCAG 1.4.13). The chip's name is «المصدر ١: العنوان» in the provider's digits. A tap on a touch screen opens the source's card instead of following the link: a dialog named by the source's title, holding «فتح المصدر», which a second tap, a tap outside or Escape closes.",
         "A failure stays as text beside the partial answer, with Try again. When a change removes the focused control (Stop, Try again, Regenerate), focus moves to the section. Moving to a status never moves focus."
       ],
       "limitations": [
         "No model call, retrieval, streaming transport or timer. Supply the sources, the numbers in the text and the times; update the time at most once a second.",
-        "The answer is Markdown with [n] markers; a number with no source stays as written, so supply every source the text cites.",
+        "The answer is Markdown with [n] markers, and a group such as [1, 3] is one marker; a number with no source leaves its whole marker as written, so supply every source the text cites.",
         "Links in the answer are limited to http, https, relative and fragment destinations."
       ],
       "alternative": "Use a ChatThread message for casual chat without sources, Agent task for multi-step work, and Sources with InlineCitation alone to cite inside your own content.",
@@ -3067,13 +3067,13 @@
       "accessibility": [
         "Stable application IDs and explicit citation numbers; never renumber on reorder/filter. Pass the same source records to Sources and InlineCitation.",
         "List is numbered through supplied number fields; visible numbers and the default summary count follow config.numerals, while labels callbacks receive raw numbers. Summary is a real button; rows with accepted destinations are native links. Missing/rejected destinations remain static text.",
-        "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog. Preview mode is a link (or, when the destination is rejected, a button) that shows the source's domain, number, title, description and metadata in a tooltip while the pointer is on it or it has focus: it takes no focus, carries no link, closes on Escape or blur, and stays open while the pointer is on it. onOpenChange reports opening and closing in both modes."
+        "Disclosure opens on click/Enter/Space, not hover. Installed Popover 1.3.1 portals into nearest SystemProvider/Sheet/Modal; Escape restores trigger focus before dismissing a containing dialog. Preview mode is a link (or, when the destination is rejected, a button) that shows the source's domain, number, title, description and metadata in a tooltip while the pointer is on it or it has focus: it takes no focus, carries no link, closes on Escape or blur, and stays open while the pointer is on it. A tap (a touch pointer) opens the source's card instead of following the link: the disclosure's popup, a dialog named by the title, with the «فتح المصدر» link; a second tap, a tap outside or Escape closes it. onOpenChange reports opening and closing in both modes."
       ],
       "limitations": [
         "Allowed destinations: HTTP(S), relative paths and fragments. Reject controls/embedded whitespace, backslashes, protocol-relative URLs, credentials, malformed URLs and other schemes including javascript/data/file/mailto.",
         "Host owns references, evidence, title, ID, number and destination trust. No credibility scores, fabricated citations or retrieval."
       ],
-      "alternative": "Use InlineCitation mode=\"link\" for direct navigation; default disclosure presents source details and an optional native Open link; preview shows the details on hover or focus and opens the source on Enter or click.",
+      "alternative": "Use InlineCitation mode=\"link\" for direct navigation; default disclosure presents source details and an optional native Open link; preview shows the details on hover or focus, opens the source on Enter or click, and opens the details with an Open source link on a tap.",
       "dependencies": ["@radix-ui/react-popover@1.3.1"],
       "examples": ["ai/examples/AIResultsExamples.tsx"]
     },
@@ -3390,7 +3390,7 @@
           "name": "renderCitation",
           "type": "(marker: number) => ReactNode",
           "required": false,
-          "note": "Turns each [n] marker (n a whole number) in text into this node; code and link text are left alone, and a marker stays text if the function returns nothing. The components stay the same across updates, so a growing answer keeps its nodes."
+          "note": "Turns each number of a [n] marker in text into this node, once per number: [n], [n,m] and [n، m], written in ASCII, Arabic-Indic or Persian digits, a group as adjacent nodes. Code and link text are left alone, and a marker stays text if the function returns nothing for any of its numbers. The components stay the same across updates, so a growing answer keeps its nodes."
         },
         {
           "name": "links",
@@ -8541,7 +8541,8 @@
           "name": "mode",
           "type": "\"disclosure\" | \"link\" | \"preview\"",
           "required": false,
-          "values": ["disclosure", "link", "preview"]
+          "values": ["disclosure", "link", "preview"],
+          "note": "disclosure opens a popup with an Open source link; link is a native anchor; preview shows the source on hover or focus and, on a tap, opens the disclosure's popup instead of following the link."
         },
         {
           "name": "onOpenChange",
@@ -8572,7 +8573,8 @@
         {
           "name": "open",
           "type": "string",
-          "required": false
+          "required": false,
+          "note": "The link in the disclosure's popup, and in the card a tap opens in preview mode: «فتح المصدر»."
         },
         {
           "name": "unavailable",
@@ -9330,6 +9332,18 @@
           "required": true
         },
         {
+          "name": "stopped",
+          "type": "(elapsed: string) => string",
+          "required": true,
+          "note": "The header of a stopped search: «أُوقف بعد ٦ث». elapsed is empty when there is no time."
+        },
+        {
+          "name": "failed",
+          "type": "(elapsed: string) => string",
+          "required": true,
+          "note": "The header of a failed search: «تعثّر بعد ٦ث». elapsed is empty when there is no time."
+        },
+        {
           "name": "searched",
           "type": "string",
           "required": true
@@ -9338,6 +9352,18 @@
           "name": "more",
           "type": "(count: string) => string",
           "required": true
+        },
+        {
+          "name": "showAll",
+          "type": "string",
+          "required": true,
+          "note": "Hidden text after «+٢» in the sources button's name: «عرض كل المصادر»."
+        },
+        {
+          "name": "showFewer",
+          "type": "string",
+          "required": true,
+          "note": "The sources button once every source shows: «عرض أقل»."
         },
         {
           "name": "steps",
@@ -9997,10 +10023,10 @@
       "props": [
         {
           "name": "status",
-          "type": "\"running\" | \"completed\"",
+          "type": "\"running\" | \"completed\" | \"stopped\" | \"failed\"",
           "required": true,
           "default": "undefined",
-          "note": "Running reads يفكّر and shimmers with the time in the header; completed reads «فكّر لمدة ٦ث». The label is the one sentence announced, never the time."
+          "note": "Running reads يفكّر and shimmers with the time in the header; completed reads «فكّر لمدة ٦ث». Stopped reads «أُوقف بعد ٦ث» and failed «تعثّر بعد ٦ث» (the bare word when there is no time), and their thread stays still instead of closing into the solid line that means done. The label is the one sentence announced, never the time."
         },
         {
           "name": "elapsed",
@@ -10014,7 +10040,7 @@
           "type": "readonly SourceReference[]",
           "required": false,
           "default": "[]",
-          "note": "After «بحث في», the first three as chips and then «+٢». A chip that arrives after mount fades in once."
+          "note": "After «بحث في», the first three as chips and then a button, «+٢», that carries aria-expanded and is named «+٢ عرض كل المصادر» (what it shows, then showAll as hidden text). It shows the rest and then reads «عرض أقل»; focus stays on it. A chip among the first three that arrives after mount fades in once; the revealed ones never do."
         },
         {
           "name": "steps",
@@ -10041,7 +10067,7 @@
           "type": "Partial<ThinkingPanelLabels>",
           "required": false,
           "default": "undefined",
-          "note": "Replaces any built-in text."
+          "note": "Replaces any built-in text, among it showAll and showFewer, the words of the sources button."
         },
         {
           "name": "announcement",

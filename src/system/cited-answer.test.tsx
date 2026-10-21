@@ -6,6 +6,7 @@ import {
   FeedbackBar,
   FollowUps,
   InsightCards,
+  Markdown,
   StreamingText,
   SystemProvider,
   ThinkingPanel,
@@ -269,6 +270,14 @@ it("folds thinking to «فكّر لمدة ٦ث» while writing and honors the co
     }),
   );
   expect(header("فكّر لمدة ٦ث")).toHaveAttribute("aria-expanded", "true");
+  // A search that stopped or failed before a word was written says so; once
+  // words were written, the search was done.
+  view.rerender(answer("stopped", { content: "", thinking }));
+  expect(header("أُوقف بعد ٦ث")).toBeVisible();
+  view.rerender(answer("failed", { content: "", thinking }));
+  expect(header("تعثّر بعد ٦ث")).toBeVisible();
+  view.rerender(answer("stopped", { content: partial, thinking }));
+  expect(header("فكّر لمدة ٦ث")).toBeVisible();
 });
 
 it("keeps the elapsed time out of the thinking panel's status", () => {
@@ -287,6 +296,14 @@ it("keeps the elapsed time out of the thinking panel's status", () => {
   expect(status().textContent).toBe("فكّر");
   view.rerender(panel({ status: "completed", elapsed: 7 }));
   expect(status().textContent).toBe("فكّر");
+  // Stopped and failed say so with their time in the header, without it in the
+  // sentence.
+  view.rerender(panel({ status: "stopped", elapsed: 6 }));
+  expect(screen.getByRole("button", { name: "أُوقف بعد ٦ث" })).toBeVisible();
+  expect(status().textContent).toBe("أُوقف");
+  view.rerender(panel({ status: "failed", elapsed: 6 }));
+  expect(screen.getByRole("button", { name: "تعثّر بعد ٦ث" })).toBeVisible();
+  expect(status().textContent).toBe("تعثّر");
 });
 
 it("toggles helpful and not helpful with reasons, and shows «نُسخت» after copy", async () => {
@@ -439,4 +456,126 @@ it("announces StreamingText's stopped and failed states", () => {
   expect(screen.getByRole("status")).toHaveTextContent(
     "Couldn't finish the response",
   );
+});
+
+it("reads citation markers in any digits, single or grouped", () => {
+  // The citation for 9 renders nothing, so «[2، 9]» has to stay as written.
+  const renderCitation = vi.fn((n: number) =>
+    n === 9 ? null : <sup data-n={n} />,
+  );
+  const { container } = render(
+    <Markdown
+      text="أ [1] ب [١] ج [٢، ٣] د [۴] هـ [1,3] و `[2]` ز [2، 9]"
+      renderCitation={renderCitation}
+    />,
+  );
+  expect(
+    [...container.querySelectorAll("sup")].map((sup) => sup.dataset.n),
+  ).toEqual(["1", "1", "2", "3", "4", "1", "3"]);
+  // Each number is asked for once, the rejected group's included.
+  expect(renderCitation.mock.calls.map(([n]) => n)).toEqual([
+    1, 1, 2, 3, 4, 1, 3, 2, 9,
+  ]);
+  const code = container.querySelector("code")!;
+  expect(code).toHaveTextContent("[2]");
+  expect(code.querySelector("sup")).toBeNull();
+  expect(container).toHaveTextContent("[2، 9]");
+});
+
+it("opens the preview on a tap, with a link to the source inside", () => {
+  const linked: SourceReference[] = [
+    { ...sources[0], href: "#ledger" },
+    sources[1],
+  ];
+  render(
+    answer("completed", { content: "انخفض التدفق [1].", sources: linked }),
+  );
+  const chip = screen.getByRole("link", { name: /^المصدر ١/ });
+  // A tap does not leave the page: it opens the source's card, labelled by the
+  // title, with a link to the source in it.
+  fireEvent.pointerDown(chip, { pointerType: "touch" });
+  expect(fireEvent.click(chip)).toBe(false);
+  const card = screen.getByRole("dialog", { name: sources[0].title });
+  expect(
+    within(card).getByRole("link", { name: "فتح المصدر" }),
+  ).toHaveAttribute("href", "#ledger");
+  // A second tap closes it.
+  fireEvent.pointerDown(chip, { pointerType: "touch" });
+  expect(fireEvent.click(chip)).toBe(false);
+  expect(screen.queryByRole("dialog")).toBeNull();
+  // A mouse still follows the link.
+  fireEvent.pointerDown(chip, { pointerType: "mouse" });
+  expect(fireEvent.click(chip)).toBe(true);
+});
+
+it("copies the answer with its numbered sources", async () => {
+  const user = userEvent.setup(),
+    onCopy = vi.fn();
+  const cited: SourceReference[] = [
+    { ...sources[0], href: "https://example.com/ledger" },
+    sources[1],
+  ];
+  const props = {
+    content: "انخفض صافي التدفق النقدي [1].",
+    sources: cited,
+    onCopy,
+  };
+  const view = render(answer("completed", props));
+  await user.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  // The body as written, then each source in the reader's digits; a link only
+  // where sourceHref accepts it.
+  expect(onCopy).toHaveBeenLastCalledWith(
+    "انخفض صافي التدفق النقدي [1].\n\nالمصادر\n١. دفتر الحسابات · أكتوبر — https://example.com/ledger\n٢. فواتير العملاء",
+  );
+  view.rerender(
+    <SystemProvider config={{ ...defaultConfig, numerals: "latn" }}>
+      {answer("completed", props)}
+    </SystemProvider>,
+  );
+  await user.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  expect(onCopy).toHaveBeenLastCalledWith(
+    "انخفض صافي التدفق النقدي [1].\n\nالمصادر\n1. دفتر الحسابات · أكتوبر — https://example.com/ledger\n2. فواتير العملاء",
+  );
+  view.rerender(
+    <SystemProvider config={{ ...defaultConfig, direction: "ltr" }}>
+      {answer("completed", { ...props, content: "Cash flow fell [1]." })}
+    </SystemProvider>,
+  );
+  await user.click(screen.getByRole("button", { name: "Copy answer" }));
+  expect(onCopy).toHaveBeenLastCalledWith(
+    "Cash flow fell [1].\n\nSources\n1. دفتر الحسابات · أكتوبر — https://example.com/ledger\n2. فواتير العملاء",
+  );
+});
+
+it("shows every searched source behind «+N»", async () => {
+  const user = userEvent.setup();
+  const searched = (count: number): SourceReference[] =>
+    Array.from({ length: count }, (_, index) => ({
+      id: `source-${index}`,
+      number: index + 1,
+      title: `مصدر ${index + 1}`,
+    }));
+  const chips = () =>
+    [
+      ...document.querySelectorAll(".tz-thinking-panel-chips > li"),
+    ] as HTMLElement[];
+  const view = render(<ThinkingPanel status="running" sources={searched(3)} />);
+  // The other four arrive after the panel mounted, behind the button.
+  view.rerender(<ThinkingPanel status="running" sources={searched(7)} />);
+  expect(chips()).toHaveLength(3);
+  const more = screen.getByRole("button", { name: "+٤ عرض كل المصادر" });
+  expect(more).toHaveAttribute("aria-expanded", "false");
+  await user.click(more);
+  // Revealing them is no arrival: none fades in, and focus stays on the button.
+  expect(chips()).toHaveLength(7);
+  expect(chips().some((chip) => chip.hasAttribute("data-fresh"))).toBe(false);
+  const fewer = screen.getByRole("button", { name: "عرض أقل" });
+  expect(fewer).toBe(more);
+  expect(fewer).toHaveAttribute("aria-expanded", "true");
+  expect(fewer).toHaveFocus();
+  await user.click(fewer);
+  expect(chips()).toHaveLength(3);
+  expect(
+    screen.getByRole("button", { name: "+٤ عرض كل المصادر" }),
+  ).toHaveAttribute("aria-expanded", "false");
 });
