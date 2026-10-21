@@ -1,6 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check } from "lucide-react";
 import {
+  Check,
+  ChevronDown,
+  Image,
+  Layers,
+  Palette,
+  Sparkles,
+} from "lucide-react";
+import {
+  Badge,
   Button,
   Card,
   CardContent,
@@ -20,6 +28,7 @@ import type {
 } from "../../system";
 import { story } from "../../system/ai/examples/finance-story";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
+import { useScreenDemo } from "../frame/useScreenDemo";
 import { recorded, useScreen } from "../frame/screen";
 import {
   actions,
@@ -212,7 +221,9 @@ function Caption({
 
 function Studio() {
   const { t, language, size, number } = useScreen();
+  const demo = useScreenDemo();
   const wide = size === "wide";
+  const [settingsOpen, setSettingsOpen] = useState(false);
   // The brief as the person edits it. null: untouched, so it follows the page's
   // language.
   const [prompt, setPrompt] = useState<string | null>(null);
@@ -234,8 +245,7 @@ function Studio() {
   const panel = useRef<HTMLDivElement>(null);
   const [announcement, setAnnouncement] = useState("");
 
-  // Nothing runs on its own: each beat follows the last, and a new job or
-  // leaving the screen clears the one that is waiting.
+  // Manual requests advance separately from the opening presentation.
   useEffect(() => {
     if (job.status === "completed") return;
     const timer = setTimeout(
@@ -259,6 +269,15 @@ function Studio() {
     return () => clearTimeout(timer);
   }, [job, t]);
   const busy = job.status !== "completed";
+  const shownStatus = demo.active
+    ? demo.phase === "working"
+      ? "weaving"
+      : "queued"
+    : job.status;
+  const shownProgress = demo.active
+    ? Math.round(demo.progress * 100)
+    : job.progress;
+  const introducing = demo.phase === "typing" || demo.phase === "sending";
 
   function generate() {
     if (busy) return;
@@ -323,8 +342,8 @@ function Studio() {
         headingLevel={2}
         prompt={made.prompt ?? opening.prompt.en}
         options={options}
-        status={job.status}
-        progress={job.status === "weaving" ? job.progress : null}
+        status={shownStatus}
+        progress={shownStatus === "weaving" ? shownProgress : null}
         images={images}
         selected={version}
         onSelectedChange={setVersion}
@@ -335,7 +354,7 @@ function Studio() {
         // The pencil takes the person to the brief, the only input.
         onEditPrompt={() => panel.current?.querySelector("textarea")?.focus()}
         agent={story.agents.campaigns[language]}
-        duration={job.status === "completed" ? seconds : undefined}
+        duration={shownStatus === "completed" ? seconds : undefined}
       />
       {used && (
         <Caption
@@ -349,46 +368,88 @@ function Studio() {
     </div>
   );
   const brief = (
-    <div key="brief" ref={panel} className="content-studio-panel">
-      <Card>
+    <div
+      key="brief"
+      ref={panel}
+      className="content-studio-panel"
+      data-demo-composer
+    >
+      <Card className="content-studio-brief-card">
+        <CardHeader className="content-studio-brief-header">
+          <span className="content-studio-brief-mark" aria-hidden="true">
+            <Palette size={18} />
+          </span>
+          <div>
+            <h2 className="content-studio-heading">{t("الموجز", "Brief")}</h2>
+            <CardDescription>
+              {t(
+                "امنح فكرتك اتجاهًا بصريًا.",
+                "Give your idea a visual direction.",
+              )}
+            </CardDescription>
+          </div>
+        </CardHeader>
         <CardContent className="content-studio-brief">
-          <h2 className="content-studio-heading">{t("الموجز", "Brief")}</h2>
           <Textarea
             label={t("وصف الصورة", "Describe the image")}
+            dir="auto"
             rows={4}
-            value={prompt ?? opening.prompt.en}
+            value={
+              introducing
+                ? demo.draft(opening.prompt.en)
+                : (prompt ?? opening.prompt.en)
+            }
             onChange={(event) => setPrompt(event.target.value)}
           />
-          <TagInput
-            announcement="off"
-            label={t("وسوم الأسلوب", "Style tags")}
-            helper={t("اضغط Enter لإضافة وسم.", "Press Enter to add a tag.")}
-            placeholder={t("أضف وسمًا…", "Add a tag…")}
-            maxTags={5}
-            value={tags ?? opening.tags.map((tag) => tag[language])}
-            onValueChange={setTags}
-          />
-          <ColorPicker
-            announcement="off"
-            label={t("لون الحملة", "Campaign color")}
-            value={color}
-            onValueChange={setColor}
-          />
-          <RadioGroup
-            label={t("المقاس", "Size")}
-            name="size"
-            options={shapes.map((item) => ({
-              value: item.id,
-              label: item.name[language],
-            }))}
-            value={shape}
-            onValueChange={(next) => setShape(next as ShapeId)}
-          />
+          <details
+            className="content-studio-settings"
+            open={size !== "narrow" || settingsOpen}
+            onToggle={(event) => {
+              if (size === "narrow") setSettingsOpen(event.currentTarget.open);
+            }}
+          >
+            <summary>
+              {t("الأسلوب واللون والمقاس", "Style, color & size")}
+              <ChevronDown size={16} aria-hidden="true" />
+            </summary>
+            <div className="content-studio-settings-fields">
+              <TagInput
+                announcement="off"
+                label={t("وسوم الأسلوب", "Style tags")}
+                helper={t(
+                  "اضغط Enter لإضافة وسم.",
+                  "Press Enter to add a tag.",
+                )}
+                placeholder={t("أضف وسمًا…", "Add a tag…")}
+                maxTags={5}
+                value={tags ?? opening.tags.map((tag) => tag[language])}
+                onValueChange={setTags}
+              />
+              <ColorPicker
+                announcement="off"
+                label={t("لون الحملة", "Campaign color")}
+                value={color}
+                onValueChange={setColor}
+              />
+              <RadioGroup
+                label={t("المقاس", "Size")}
+                name="size"
+                options={shapes.map((item) => ({
+                  value: item.id,
+                  label: item.name[language],
+                }))}
+                value={shape}
+                onValueChange={(next) => setShape(next as ShapeId)}
+              />
+            </div>
+          </details>
           <Button
             className="content-studio-generate"
+            data-demo-submit
             state={busy ? "loading" : "idle"}
             onClick={generate}
           >
+            <Sparkles size={16} aria-hidden="true" />
             {t(
               `ولّد ${number(4)} صور · نحو ${number(seconds)} ثانية`,
               `Generate ${number(4)} images · about ${number(seconds)} seconds`,
@@ -402,6 +463,36 @@ function Studio() {
   return (
     <>
       <ScreenHeader />
+      <section
+        className="content-studio-campaign"
+        aria-label={t("الحملة الحالية", "Current campaign")}
+      >
+        <div className="content-studio-campaign-identity">
+          <span className="content-studio-campaign-mark" aria-hidden="true">
+            <Image size={22} />
+          </span>
+          <div>
+            <p className="content-studio-eyebrow">
+              {t("حملة اجتماعية", "Social campaign")}
+            </p>
+            <h2>
+              {t(
+                "تذكير لطيف، أثر جميل",
+                "A little reminder, thoughtfully made",
+              )}
+            </h2>
+          </div>
+        </div>
+        <div className="content-studio-campaign-meta">
+          <span>
+            <Layers size={15} aria-hidden="true" />
+            {t(`${number(4)} اتجاهات بصرية`, `${number(4)} visual directions`)}
+          </span>
+          <Badge tone={used ? "success" : "neutral"}>
+            {used ? t("صورة مختارة", "Image selected") : t("مسودة", "Draft")}
+          </Badge>
+        </div>
+      </section>
       <span
         className="tz-visually-hidden"
         role="status"

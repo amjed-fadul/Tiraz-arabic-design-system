@@ -1,7 +1,11 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it } from "vitest";
 import { AgentControlRoom } from "./AgentControlRoom";
+
+// These tests exercise decisions in the settled screen; the demo clock has its own tests.
+beforeEach(() => window.history.replaceState(null, "", "?demo=off"));
+afterEach(() => window.history.replaceState(null, "", "/"));
 
 // A row of the inbox: the panel's task rows can carry the same title.
 const row = (title: string) =>
@@ -18,14 +22,25 @@ const cover = "غلاف حملة رمضان";
 it("leaves a picked agent's own items and shows its panel", async () => {
   const user = userEvent.setup();
   render(<AgentControlRoom />);
-  // Nobody picked: every agent's items, and a panel that asks.
+  // Every agent's items remain visible; Finance's workspace is useful at mount.
   expect(counts()).toEqual(["الكل ٨", "بانتظارك ٦", "يعمل ١", "اكتملت ١"]);
   expect(summary()).toHaveTextContent("٦ طلبات بانتظارك · مهمة واحدة تعمل");
   expect(
-    screen.getByRole("heading", { level: 2, name: "اختر وكيلًا" }),
+    screen.getByRole("heading", { level: 2, name: "وكيل المالية" }),
   ).toBeInTheDocument();
+  expect(
+    screen.getByRole("progressbar", { name: "٢ من ٣ مهام مكتملة" }),
+  ).toHaveAttribute("aria-valuetext", "٦٧٪؜");
+  const overview = screen.getByRole("region", {
+    name: "نشاط وكلاء الذكاء الاصطناعي",
+  });
+  expect(within(overview).getAllByRole("button")).toHaveLength(3);
+  expect(overview.textContent).not.toMatch(/[0-9]/);
+  expect(document.querySelector('[aria-live="polite"]')).toBeEmptyDOMElement();
 
-  await user.click(strip("وكيل التحصيل"));
+  await user.click(
+    within(overview).getByRole("button", { name: "عرض نشاط وكيل التحصيل" }),
+  );
   expect(strip("وكيل التحصيل")).toHaveAttribute("aria-pressed", "true");
   // Its three drafts, and nothing of the Finance agent's.
   const titles = [
@@ -57,7 +72,7 @@ it("leaves a picked agent's own items and shows its panel", async () => {
   await user.click(strip("وكيل التحصيل"));
   expect(counts()).toEqual(["الكل ٨", "بانتظارك ٦", "يعمل ١", "اكتملت ١"]);
   expect(
-    screen.getByRole("heading", { level: 2, name: "اختر وكيلًا" }),
+    screen.getByRole("heading", { level: 2, name: "وكيل المالية" }),
   ).toBeInTheDocument();
 }, 15000);
 
@@ -123,9 +138,11 @@ it("opens the picked agent's panel in a Sheet from the header when the page is n
   try {
     const user = userEvent.setup();
     render(<AgentControlRoom />);
-    // No panel beside the inbox, and no button until an agent is picked.
+    // Finance's workspace remains available before filtering the inbox.
     expect(screen.queryByRole("heading", { name: "اختر وكيلًا" })).toBeNull();
-    expect(screen.queryByRole("button", { name: /^مهام/ })).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "مهام وكيل المالية" }),
+    ).toBeInTheDocument();
     await user.click(strip("مصمّم الحملات"));
     const button = screen.getByRole("button", { name: "مهام مصمّم الحملات" });
     await user.click(button);
@@ -134,7 +151,7 @@ it("opens the picked agent's panel in a Sheet from the header when the page is n
     expect(
       within(sheet).getByRole("heading", { level: 3, name: "مصمّم الحملات" }),
     ).toBeInTheDocument();
-    expect(within(sheet).getByText(cover)).toBeInTheDocument();
+    expect(within(sheet).getAllByText(cover).length).toBeGreaterThan(0);
     await user.keyboard("{Escape}");
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     expect(button).toHaveFocus();
@@ -142,3 +159,35 @@ it("opens the picked agent's panel in a Sheet from the header when the page is n
     globalThis.ResizeObserver = original;
   }
 }, 15000);
+
+it("opens an agent workspace directly from its phone card and restores focus", async () => {
+  const original = globalThis.ResizeObserver;
+  globalThis.ResizeObserver = class {
+    callback: ResizeObserverCallback;
+    constructor(callback: ResizeObserverCallback) {
+      this.callback = callback;
+    }
+    observe() {
+      this.callback(
+        [{ contentRect: { width: 358 } } as ResizeObserverEntry],
+        this as unknown as ResizeObserver,
+      );
+    }
+    unobserve() {}
+    disconnect() {}
+  };
+  try {
+    const user = userEvent.setup();
+    render(<AgentControlRoom />);
+    const card = screen.getByRole("button", { name: "عرض نشاط وكيل التحصيل" });
+    await user.click(card);
+    expect(
+      screen.getByRole("dialog", { name: "مهام وكيل التحصيل" }),
+    ).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(card).toHaveFocus();
+  } finally {
+    globalThis.ResizeObserver = original;
+  }
+});

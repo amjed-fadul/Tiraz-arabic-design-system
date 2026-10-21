@@ -20,11 +20,18 @@ const baseUrl = process.env.TIRAZ_URL || "http://127.0.0.1:5411";
   );
   await seed.close();
   fs.mkdirSync(`${root}/public/library-previews`, { recursive: true });
-  const jobs = entries.flatMap((entry) =>
-    ["ar", "en"].flatMap((language) =>
-      ["light", "dark"].map((theme) => ({ entry, language, theme })),
-    ),
-  );
+  const jobs = entries
+    .filter(
+      (entry) =>
+        !process.argv.includes("--screens") ||
+        entry.route.kind === "screen" ||
+        entry.key === "chat-app",
+    )
+    .flatMap((entry) =>
+      ["ar", "en"].flatMap((language) =>
+        ["light", "dark"].map((theme) => ({ entry, language, theme })),
+      ),
+    );
   let next = 0,
     done = 0;
   try {
@@ -63,7 +70,7 @@ const baseUrl = process.env.TIRAZ_URL || "http://127.0.0.1:5411";
               { language, theme },
             );
             const path = isScreen
-              ? `/examples/${entry.key}?lang=${language}&theme=${theme}`
+              ? `/examples/${entry.key}?lang=${language}&theme=${theme}&demo=off`
               : `/examples/playground/${entry.key}`;
             await page.goto(`${baseUrl}${path}`);
             await page.locator("h1").first().waitFor();

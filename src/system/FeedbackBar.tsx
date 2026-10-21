@@ -33,6 +33,11 @@ export interface FeedbackBarProps {
   ) => void;
   /** The host copies the answer; «نُسخت» shows once its promise resolves. */
   onCopy?: () => void | Promise<void>;
+  /** Speak copy feedback locally, or leave it to the containing pattern. */
+  announcement?: "polite" | "off";
+  /** Reports "" when copying starts, then the localized confirmation on success.
+   * Pair with announcement="off" to reuse the owner's live region. */
+  onCopyAnnouncement?: (message: string) => void;
   onRegenerate?: () => void;
   labels?: Partial<FeedbackBarLabels>;
 }
@@ -49,7 +54,7 @@ const reasons: readonly FeedbackReason[] = [
  * ask for another, and rate it helpful or not helpful, the latter with a
  * reason. Each button shows only when its handler exists, and the ratings are
  * toggles. The bar has no status of its own, so the owner pattern keeps the one
- * live region. «نُسخت» is a polite span with no role, always rendered so the
+ * live region when announcement is off. «نُسخت» is always rendered so the
  * buttons never shift under the pointer; for two seconds after a copy it turns
  * visible, and the copy button keeps its name.
  */
@@ -58,6 +63,8 @@ export function FeedbackBar({
   reason,
   onFeedbackChange,
   onCopy,
+  announcement = "polite",
+  onCopyAnnouncement,
   onRegenerate,
   labels,
 }: FeedbackBarProps) {
@@ -93,11 +100,13 @@ export function FeedbackBar({
     const generation = ++current.generation;
     clearTimeout(current.timer);
     setCopied(false);
+    onCopyAnnouncement?.("");
     try {
       await onCopy();
       if (generation !== current.generation) return;
       current.busy = false;
       setCopied(true);
+      onCopyAnnouncement?.(copy.copied);
       current.timer = setTimeout(() => {
         if (generation === current.generation) setCopied(false);
       }, 2000);
@@ -170,7 +179,10 @@ export function FeedbackBar({
           </>
         )}
         {onCopy && (
-          <span aria-live="polite" aria-atomic="true">
+          <span
+            aria-live={announcement === "polite" ? "polite" : undefined}
+            aria-atomic={announcement === "polite" ? true : undefined}
+          >
             <span
               className="tz-feedback-bar-copied"
               style={{ visibility: copied ? "visible" : "hidden" }}

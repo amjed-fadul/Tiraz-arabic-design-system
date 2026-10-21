@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { BookOpen, Menu, Moon, Sun } from "lucide-react";
 import {
+  Avatar,
   Button,
   Sheet,
   Sidebar,
@@ -23,6 +24,12 @@ import { money } from "../../system/ai/examples/finance-story";
 import { ScreenContext, screenPath, screens, useScreen } from "./screen";
 import type { Screen, ScreenSlug } from "./screen";
 import "./screen-frame.css";
+import sara from "../../system/ai/assets/sara.jpg";
+import {
+  ScreenDemoControls,
+  ScreenDemoProvider,
+  ScreenOpeningActivity,
+} from "./ScreenDemo";
 
 /** Asks the docs around the iframe to open a screen's page. */
 function openInDocs(slug: ScreenSlug) {
@@ -206,15 +213,22 @@ export function ScreenFrame({
           ))}
         </SidebarGroup>
       </SidebarContent>
-      {!embedded && (
-        <SidebarFooter>
+      <SidebarFooter>
+        <SidebarIdentity>
+          <Avatar src={sara} name={t("سارة علي", "Sara Ali")} size="sm" />
+          <SidebarLabel className="screen-sidebar-copy">
+            <span>{t("سارة علي", "Sara Ali")}</span>
+            <small>{t("فريق المالية", "Finance team")}</small>
+          </SidebarLabel>
+        </SidebarIdentity>
+        {!embedded && (
           <SidebarItem
             href="/"
             label={t("توثيق طِراز", "Tiraz documentation")}
             icon={<BookOpen size={18} />}
           />
-        </SidebarFooter>
-      )}
+        )}
+      </SidebarFooter>
     </Sidebar>
   );
   return (
@@ -225,81 +239,84 @@ export function ScreenFrame({
           closeLabel={t("إغلاق الإشعار", "Dismiss notification")}
         >
           <ScreenContext.Provider value={screen}>
-            <div className="screen" data-embed={embedded || undefined}>
-              <a className="screen-skip" href="#screen-main">
-                {t("انتقل إلى المحتوى", "Skip to content")}
-              </a>
-              {navigation(false)}
-              <header className="screen-bar">
-                {/* Phones only: the Sidebar hides, and its list opens here. */}
-                <div className="screen-bar-start">
-                  <Sheet
-                    open={menuOpen}
-                    onOpenChange={setMenuOpen}
-                    title={t("الشاشات", "Screens")}
-                    description={t(
-                      "انتقل إلى شاشة أخرى.",
-                      "Go to another screen.",
-                    )}
-                    closeLabel={t("إغلاق القائمة", "Close navigation")}
-                    trigger={
+            <ScreenDemoProvider>
+              <div className="screen" data-embed={embedded || undefined}>
+                <a className="screen-skip" href="#screen-main">
+                  {t("انتقل إلى المحتوى", "Skip to content")}
+                </a>
+                {navigation(false)}
+                <header className="screen-bar">
+                  {/* Phones only: the Sidebar hides, and its list opens here. */}
+                  <div className="screen-bar-start">
+                    <Sheet
+                      open={menuOpen}
+                      onOpenChange={setMenuOpen}
+                      title={t("الشاشات", "Screens")}
+                      description={t(
+                        "انتقل إلى شاشة أخرى.",
+                        "Go to another screen.",
+                      )}
+                      closeLabel={t("إغلاق القائمة", "Close navigation")}
+                      trigger={
+                        <Button
+                          variant="ghost"
+                          iconOnly
+                          aria-label={t("فتح القائمة", "Open navigation")}
+                        >
+                          <Menu size={18} aria-hidden="true" />
+                        </Button>
+                      }
+                    >
+                      {navigation(true)}
+                    </Sheet>
+                    <span className="screen-brand">
+                      <span className="screen-mark" aria-hidden="true">
+                        ✳
+                      </span>
+                      {t("طِراز", "Tiraz")}
+                    </span>
+                  </div>
+                  <ScreenDemoControls />
+                  {!embedded && (
+                    <div className="screen-bar-end">
+                      <Button
+                        variant="ghost"
+                        onClick={() =>
+                          setLanguage(language === "ar" ? "en" : "ar")
+                        }
+                      >
+                        <bdi lang={language === "ar" ? "en" : "ar"}>
+                          {language === "ar" ? "English" : "العربية"}
+                        </bdi>
+                      </Button>
                       <Button
                         variant="ghost"
                         iconOnly
-                        aria-label={t("فتح القائمة", "Open navigation")}
+                        aria-label={t("الوضع الداكن", "Dark mode")}
+                        aria-pressed={theme === "dark"}
+                        onClick={() =>
+                          setTheme(theme === "light" ? "dark" : "light")
+                        }
                       >
-                        <Menu size={18} aria-hidden="true" />
+                        {theme === "light" ? (
+                          <Moon size={17} aria-hidden="true" />
+                        ) : (
+                          <Sun size={17} aria-hidden="true" />
+                        )}
                       </Button>
-                    }
-                  >
-                    {navigation(true)}
-                  </Sheet>
-                  <span className="screen-brand">
-                    <span className="screen-mark" aria-hidden="true">
-                      ✳
-                    </span>
-                    {t("طِراز", "Tiraz")}
-                  </span>
-                </div>
-                {!embedded && (
-                  <div className="screen-bar-end">
-                    <Button
-                      variant="ghost"
-                      onClick={() =>
-                        setLanguage(language === "ar" ? "en" : "ar")
-                      }
-                    >
-                      <bdi lang={language === "ar" ? "en" : "ar"}>
-                        {language === "ar" ? "English" : "العربية"}
-                      </bdi>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      iconOnly
-                      aria-label={t("الوضع الداكن", "Dark mode")}
-                      aria-pressed={theme === "dark"}
-                      onClick={() =>
-                        setTheme(theme === "light" ? "dark" : "light")
-                      }
-                    >
-                      {theme === "light" ? (
-                        <Moon size={17} aria-hidden="true" />
-                      ) : (
-                        <Sun size={17} aria-hidden="true" />
-                      )}
-                    </Button>
-                  </div>
-                )}
-              </header>
-              <main
-                ref={main}
-                id="screen-main"
-                tabIndex={-1}
-                className="screen-main"
-              >
-                {children}
-              </main>
-            </div>
+                    </div>
+                  )}
+                </header>
+                <main
+                  ref={main}
+                  id="screen-main"
+                  tabIndex={-1}
+                  className="screen-main"
+                >
+                  {children}
+                </main>
+              </div>
+            </ScreenDemoProvider>
           </ScreenContext.Provider>
         </ToastProvider>
       </SystemProvider>
@@ -330,6 +347,7 @@ export function ScreenHeader({
         {description ? (
           <p className="screen-description">{description}</p>
         ) : null}
+        <ScreenOpeningActivity />
       </div>
       {actions ? <div className="screen-actions">{actions}</div> : null}
     </header>

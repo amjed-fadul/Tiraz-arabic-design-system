@@ -6,8 +6,12 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { MonthEndClose } from "./MonthEndClose";
+
+// These tests exercise decisions in the settled screen; the demo clock has its own tests.
+beforeEach(() => window.history.replaceState(null, "", "?demo=off"));
+afterEach(() => window.history.replaceState(null, "", "/"));
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -101,7 +105,7 @@ it("skips step 3 on Reject, and hands each draft to the invoices", async () => {
   window.history.replaceState(
     null,
     "",
-    "/examples/month-end-close?lang=en&embed=1",
+    "/examples/month-end-close?lang=en&demo=off&embed=1",
   );
   const post = vi.spyOn(window, "postMessage").mockImplementation(() => {});
   try {

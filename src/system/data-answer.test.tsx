@@ -231,3 +231,23 @@ it("copies the explanation with its method and numbered tables", async () => {
     `${explanation}\n\nكيف حُسب هذا؟\nالفترة: حتى ١٨ أكتوبر ٢٠٢٦\nالتصفية: الفواتير المتأخرة فقط\n\nالمصادر\n٤. تقرير أعمار الديون\n٥. توقعات التدفق النقدي`,
   );
 });
+
+it("shares one region with copy feedback and lets the host silence both", async () => {
+  const user = userEvent.setup();
+  const onCopy = vi.fn();
+  const view = render(answer("completed", { onCopy }));
+  expect(
+    section().querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(1);
+  await user.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  expect(region()).toHaveTextContent("نُسخت");
+  view.rerender(answer("thinking", { announcement: "off", onCopy }));
+  view.rerender(answer("completed", { announcement: "off", onCopy }));
+  await user.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  expect(
+    section().querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(0);
+  expect(section().querySelector(".tz-feedback-bar-copied")).toBeVisible();
+  view.rerender(answer("completed", { announcement: "polite", onCopy }));
+  expect(region()).toBeEmptyDOMElement();
+});

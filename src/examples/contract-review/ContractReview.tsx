@@ -24,6 +24,8 @@ import type {
 import { story } from "../../system/ai/examples/finance-story";
 import { diffText } from "../../system/diff-text";
 import { formatCount } from "../../system/format";
+import { ScreenActivity } from "../frame/ScreenDemo";
+import { useScreenDemo } from "../frame/useScreenDemo";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
 import { recorded, useScreen } from "../frame/screen";
 import {
@@ -121,6 +123,7 @@ function useReviewCard(page: RefObject<HTMLElement | null>, active: boolean) {
 function Review() {
   const { t, language, size, endSide, percent, money, date } = useScreen();
   const { config } = useSystem();
+  const demo = useScreenDemo();
   const filesTitle = useId();
   const sendTitle = useId();
   const [file, setFile] = useState<FileId>("annex");
@@ -274,15 +277,16 @@ function Review() {
       .querySelector<HTMLElement>('[role="dialog"] h3[tabindex="-1"]')
       ?.focus();
   function review() {
-    if (file === "annex") return focusReview();
+    if (file === "annex" && !demo.active) return focusReview();
     toReview.current = true;
+    demo.stop();
     setFile("annex");
   }
   useEffect(() => {
-    if (file !== "annex" || !toReview.current) return;
+    if (file !== "annex" || demo.active || !toReview.current) return;
     toReview.current = false;
     focusReview();
-  }, [file]);
+  }, [file, demo.active]);
 
   function open(id: string) {
     const next = files.find((item) => item.id === id);
@@ -313,7 +317,8 @@ function Review() {
     />
   );
 
-  const reviewing = file === "annex" && !(applied || sent);
+  const preparing = demo.active && !(applied || sent);
+  const reviewing = file === "annex" && !(preparing || applied || sent);
   const reserve = useReviewCard(annexPage, reviewing && size !== "narrow");
   const readOnly = t("للقراءة فقط", "Read-only");
   const name = (id: FileId) => files.find((item) => item.id === id)!.name;
@@ -333,9 +338,18 @@ function Review() {
                 <p>{item.text[language]}</p>
               ) : (
                 <SuggestedEdits
+                  // Mount the ready review quietly: an automatic transition
+                  // must not move focus from the page into its dialog.
+                  key={preparing ? "preparing" : "review"}
                   reviewPlacement={size === "narrow" ? "inline" : "floating"}
                   announcement="off"
-                  status={applied || sent ? "applied" : "reviewing"}
+                  status={
+                    applied || sent
+                      ? "applied"
+                      : preparing
+                        ? "rewriting"
+                        : "reviewing"
+                  }
                   actions={[]}
                   onAction={() => {}}
                   suggestion={{
@@ -429,9 +443,24 @@ function Review() {
   const waits = (
     <section aria-labelledby={sendTitle} className="contract-review-wait">
       <h2 id={sendTitle}>{t("إرسال العقد", "Send the contract")}</h2>
+      <ScreenActivity
+        steps={[
+          t("يقرأ بند شروط الدفع", "Reading the payment terms"),
+          t(
+            "يقارن المبلغ والموعد بالمراسلات",
+            "Checking the amount and date against the correspondence",
+          ),
+          t("يجهّز التعديلات لمراجعتك", "Preparing edits for your review"),
+        ]}
+        ready={t("التعديلات جاهزة للمراجعة", "Edits ready for review")}
+      />
       <p>
-        {formatCount(waiting, "edit", config)}{" "}
-        {t("بانتظار قرارك", "waiting for your decision")}
+        {preparing
+          ? t(
+              "يراجع الوكيل البند والمراسلات المرتبطة به.",
+              "The agent is reviewing the clause and its correspondence.",
+            )
+          : `${formatCount(waiting, "edit", config)} ${t("بانتظار قرارك", "waiting for your decision")}`}
       </p>
       <p className="contract-review-hint">
         {t(

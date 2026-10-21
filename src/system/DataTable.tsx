@@ -41,6 +41,8 @@ export interface DataTableProps<T> {
   /** Change when application filters change, including when the result count is unchanged. */
   resetKey?: string | number;
   loading?: boolean;
+  /** Speak result counts politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
 }
 /** Native Table with client-side text sorting and pagination. Filtering belongs to the caller. */
 export function DataTable<T>({
@@ -54,6 +56,7 @@ export function DataTable<T>({
   pageSize = 10,
   resetKey,
   loading = false,
+  announcement = "polite",
 }: DataTableProps<T>) {
   const size = Number.isFinite(pageSize)
     ? Math.max(1, Math.floor(pageSize))
@@ -179,7 +182,11 @@ export function DataTable<T>({
         </TableBody>
       </Table>
       <nav className="tz-data-pagination" aria-label={labels.pagination}>
-        <span role="status" aria-live="polite" aria-atomic="true">
+        <span
+          role={announcement === "polite" ? "status" : undefined}
+          aria-live={announcement === "polite" ? "polite" : undefined}
+          aria-atomic={announcement === "polite" ? true : undefined}
+        >
           {labels.resultCount(
             data.length ? start + 1 : 0,
             Math.min(start + size, data.length),

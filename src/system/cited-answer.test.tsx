@@ -579,3 +579,73 @@ it("shows every searched source behind «+N»", async () => {
     screen.getByRole("button", { name: "+٤ عرض كل المصادر" }),
   ).toHaveAttribute("aria-expanded", "false");
 });
+
+it("owns one live region for status and successful copy feedback", async () => {
+  const user = userEvent.setup();
+  const onCopy = vi.fn().mockResolvedValue(undefined);
+  const view = render(answer("writing", { onCopy }));
+  view.rerender(answer("completed", { onCopy }));
+  expect(
+    section().querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(1);
+  expect(region()).toHaveTextContent("اكتملت الإجابة");
+  await user.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  expect(region()).toHaveTextContent("نُسخت");
+  expect(section().querySelector(".tz-feedback-bar-copied")).toBeVisible();
+  onCopy.mockRejectedValueOnce(new Error("blocked"));
+  await user.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  expect(region()).toBeEmptyDOMElement();
+  expect(section().querySelector(".tz-feedback-bar-copied")).not.toBeVisible();
+});
+
+it("lets a host own announcements without replaying muted answer changes", async () => {
+  const user = userEvent.setup();
+  const onCopy = vi.fn();
+  const view = render(answer("thinking", { announcement: "off", onCopy }));
+  view.rerender(answer("completed", { announcement: "off", onCopy }));
+  await user.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  expect(
+    section().querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(0);
+  expect(section().querySelector(".tz-feedback-bar-copied")).toBeVisible();
+  view.rerender(answer("completed", { announcement: "polite", onCopy }));
+  expect(region()).toBeEmptyDOMElement();
+});
+
+it("delegates copy feedback only after a mounted copy succeeds", async () => {
+  let finish!: () => void;
+  const onCopy = vi.fn(
+    () =>
+      new Promise<void>((resolve) => {
+        finish = resolve;
+      }),
+  );
+  const onCopyAnnouncement = vi.fn();
+  const view = render(
+    <FeedbackBar
+      announcement="off"
+      onCopy={onCopy}
+      onCopyAnnouncement={onCopyAnnouncement}
+      labels={{ copied: "Copied for the campaign" }}
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  expect(onCopyAnnouncement).toHaveBeenLastCalledWith("");
+  expect(
+    document.querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(0);
+  await act(async () => finish());
+  expect(onCopyAnnouncement.mock.calls).toEqual([
+    [""],
+    ["Copied for the campaign"],
+  ]);
+  expect(screen.getByText("Copied for the campaign")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: "نسخ الإجابة" }));
+  view.unmount();
+  await act(async () => finish());
+  expect(onCopyAnnouncement.mock.calls).toEqual([
+    [""],
+    ["Copied for the campaign"],
+    [""],
+  ]);
+});

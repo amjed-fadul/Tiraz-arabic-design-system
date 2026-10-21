@@ -8,6 +8,7 @@ import {
 } from "../../system";
 import type { CitedAnswerProps, FeedbackReason } from "../../system";
 import { story } from "../../system/ai/examples/finance-story";
+import { useScreenDemo } from "../frame/useScreenDemo";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
 import { useScreen } from "../frame/screen";
 import {
@@ -87,9 +88,10 @@ function advance(run: Run, total: number, reduced: boolean): Run {
 function Help() {
   const { t, language, number, percent, money, date } = useScreen();
   const reduced = useReducedMotion();
-  const [draft, setDraft] = useState("");
+  const demo = useScreenDemo();
+  const [draft, setDraft] = useState<string | null>(null);
   const [reply, setReply] = useState("");
-  const [run, setRun] = useState<Run | null>(null);
+  const [manualRun, setManualRun] = useState<Run | null>(null);
   const [rating, setRating] = useState<{
     value: "up" | "down" | null;
     reason?: FeedbackReason;
@@ -113,38 +115,82 @@ function Help() {
           : percent(value),
     ]),
   );
-  const text = !run
-    ? ""
-    : run.topic
-      ? run.topic.answer[language].replace(
-          /\{(\w+)\}/g,
-          (_, key: string) => facts[key] ?? "",
-        )
-      : notFound[language];
+  // The opening question is a presentation of the existing answer. Only a
+  // question the person asks starts the host's timer or moves focus.
+  const previewTopic = topics[0];
+  const previewText = previewTopic.answer[language].replace(
+    /\{(\w+)\}/g,
+    (_, key: string) => facts[key] ?? "",
+  );
+  const previewStatus: Status =
+    demo.phase === "complete"
+      ? "completed"
+      : demo.progress < 0.32
+        ? "thinking"
+        : "writing";
+  const preview: Run | null = demo.submitted
+    ? {
+        id: 0,
+        text: previewTopic.question[language],
+        topic: previewTopic,
+        fails: false,
+        status: previewStatus,
+        beat: Math.min(
+          thinkingBeats,
+          Math.floor((demo.progress / 0.32) * thinkingBeats),
+        ),
+        found: Math.min(
+          previewTopic.articles.length,
+          Math.floor((demo.progress / 0.32) * previewTopic.articles.length) + 1,
+        ),
+        words: Math.floor(
+          wordsOf(previewText).length *
+            Math.max(0, (demo.progress - 0.32) / 0.68),
+        ),
+      }
+    : null;
+  const presenting = demo.active && demo.automatic;
+  const run = presenting
+    ? preview
+    : (manualRun ?? (draft === null ? preview : null));
+  const answerText = (value: Run | null) =>
+    !value
+      ? ""
+      : value.topic
+        ? value.topic.answer[language].replace(
+            /\{(\w+)\}/g,
+            (_, key: string) => facts[key] ?? "",
+          )
+        : notFound[language];
+  const text = answerText(run);
   const parts = wordsOf(text);
+  const manualWords = wordsOf(answerText(manualRun)).length;
 
-  // Nothing runs on its own: each beat follows the last, and a stop, a new run
-  // or leaving the screen clears the one that is waiting.
+  // Only manual questions use this timer. The opening presentation follows
+  // the shared clock, including its pause and replay controls.
   useEffect(() => {
-    if (!run || !running(run)) return;
+    if (!manualRun || !running(manualRun)) return;
     const timer = setTimeout(
       () =>
-        setRun((current) =>
+        setManualRun((current) =>
           current && running(current)
-            ? advance(current, parts.length, reduced)
+            ? advance(current, manualWords, reduced)
             : current,
         ),
-      run.status === "thinking" ? thinkingMs : writingMs,
+      manualRun.status === "thinking" ? thinkingMs : writingMs,
     );
     return () => clearTimeout(timer);
-  }, [run, parts.length, reduced]);
+  }, [manualRun, manualWords, reduced]);
 
   // A new question replaces the form or the answer, so focus goes to the
   // answer's section rather than dropping to the page.
   useEffect(() => {
     if (!moveFocus.current) return;
     moveFocus.current = false;
-    answer.current?.querySelector("section")?.focus();
+    const target =
+      answer.current?.querySelector("section") ??
+      starter.current?.querySelector("textarea");
+    target?.focus();
   }, [run?.id]);
 
   // A draft that a suggestion filled follows a change of language.
@@ -153,14 +199,15 @@ function Help() {
     setSpoken(language);
     const same = (current: string) =>
       topicOf(current)?.question[language] ?? current;
-    setDraft(same);
+    setDraft((current) => (current === null ? null : same(current)));
     setReply(same);
   }
 
   function begin(from: Pick<Run, "text" | "topic" | "fails">, focus: boolean) {
+    demo.stop();
     runs.current += 1;
     moveFocus.current = focus;
-    setRun({
+    setManualRun({
       ...from,
       id: runs.current,
       status: "thinking",
@@ -185,12 +232,32 @@ function Help() {
 
   if (!run)
     return (
-      <div ref={starter}>
+      <div
+        ref={starter}
+        data-demo-composer
+        onFocus={(event) => {
+          // Replay temporarily shows the starter over the person's answer.
+          // A focus interrupt restores that answer without losing focus.
+          if (presenting && manualRun) {
+            moveFocus.current = true;
+            return;
+          }
+          // Capture the visible text before a focus interrupt ends the demo.
+          if (draft === null && event.target instanceof HTMLTextAreaElement) {
+            const visible = event.target.value;
+            setDraft((current) => current ?? visible);
+          }
+        }}
+      >
         <TaskStarter
           headingLevel={2}
           greeting={t(`مرحبًا ${story.user.ar}`, `Hello, ${story.user.en}`)}
           title={t("كيف نساعدك؟", "How can we help?")}
-          value={draft}
+          value={
+            presenting
+              ? demo.draft(previewTopic.question[language])
+              : (draft ?? "")
+          }
           onValueChange={setDraft}
           onSubmit={ask}
           suggestions={topics.map((topic) => ({
@@ -200,9 +267,15 @@ function Help() {
           // The suggestion fills the draft and hands the field its focus, so
           // Enter sends it and typing changes it.
           onSuggestion={(id) => {
-            setDraft(
-              topics.find((topic) => topic.id === id)!.question[language],
-            );
+            const question = topics.find((topic) => topic.id === id)!.question[
+              language
+            ];
+            if (presenting && manualRun) {
+              setReply(question);
+              moveFocus.current = true;
+              return;
+            }
+            setDraft(question);
             starter.current?.querySelector("textarea")?.focus();
           }}
           labels={{
@@ -240,7 +313,17 @@ function Help() {
 
   return (
     <>
-      <div ref={answer}>
+      <div
+        ref={answer}
+        onClickCapture={() => {
+          if (presenting && (manualRun || draft !== null))
+            moveFocus.current = true;
+        }}
+        onKeyDownCapture={() => {
+          if (presenting && (manualRun || draft !== null))
+            moveFocus.current = true;
+        }}
+      >
         <CitedAnswer
           headingLevel={2}
           status={run.status}
@@ -275,16 +358,19 @@ function Help() {
           onFeedbackChange={(value, reason) => setRating({ value, reason })}
           onCopy={(copied) => navigator.clipboard?.writeText(copied)}
           onRegenerate={again}
-          onStop={() =>
-            setRun((current) =>
-              current && running(current)
-                ? { ...current, status: "stopped" }
-                : current,
-            )
-          }
+          onStop={() => {
+            demo.stop();
+            if (presenting && (manualRun || draft !== null)) return;
+            setManualRun((current) => {
+              const target = current ?? run;
+              return running(target)
+                ? { ...target, status: "stopped" }
+                : target;
+            });
+          }}
           onRetry={again}
           duration={
-            run.status === "completed"
+            manualRun && run.status === "completed"
               ? (thinkingBeats * thinkingMs + beats * writingMs) / 1000
               : undefined
           }

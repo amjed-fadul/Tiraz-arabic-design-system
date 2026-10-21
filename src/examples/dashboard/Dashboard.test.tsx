@@ -6,8 +6,13 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { screens } from "../frame/screen";
 import { Dashboard } from "./Dashboard";
+
+// These tests exercise decisions in the settled screen; the demo clock has its own tests.
+beforeEach(() => window.history.replaceState(null, "", "?demo=off"));
+afterEach(() => window.history.replaceState(null, "", "/"));
 
 async function setup() {
   render(<Dashboard />);
@@ -26,7 +31,7 @@ async function select(
   await user.click(screen.getByRole("option", { name: option }));
 }
 
-it("resets pagination for combined filters and distinguishes no results from an empty dataset", async () => {
+it("resets pagination for combined filters and restores all customers when cleared", async () => {
   const user = await setup();
   await user.click(screen.getByRole("button", { name: "Next" }));
   expect(screen.getByText("7–12 of 18 customers")).toBeInTheDocument();
@@ -36,9 +41,7 @@ it("resets pagination for combined filters and distinguishes no results from an 
   expect(customerTable()).toHaveTextContent("No matching customers");
   await user.click(screen.getByRole("button", { name: "Clear filters" }));
   expect(screen.getByText("1–6 of 18 customers")).toBeInTheDocument();
-  await select(user, "Preview state", "Empty dataset");
-  expect(customerTable()).toHaveTextContent("No customers yet");
-  expect(screen.getByTestId("customer-count")).toHaveTextContent("0");
+  expect(screen.getByTestId("customer-count")).toHaveTextContent("18");
 });
 
 it("validates, saves once, updates only customers, and reveals a customer hidden by filters", async () => {
@@ -98,7 +101,7 @@ it("discards drafts and restores trigger focus after cancel, close and Escape", 
   expect(screen.getByTestId("customer-count")).toHaveTextContent("18");
 });
 
-it("changes order metrics with the shared period and restores sample data on Retry", async () => {
+it("changes the order metrics and answer together with the shared period", async () => {
   const user = await setup();
   const count = screen.getByTestId("order-count").textContent;
   // The average order is the period's revenue over its orders: 22,160 / 71.
@@ -106,30 +109,31 @@ it("changes order metrics with the shared period and restores sample data on Ret
   await select(user, "Period", "14 days");
   expect(screen.getByTestId("order-count").textContent).not.toBe(count);
   expect(screen.getByTestId("average-order")).toHaveTextContent("AED 310");
-  await select(user, "Preview state", "Loading");
-  expect(customerTable()).toHaveAttribute("aria-busy", "true");
+  expect(screen.getByTestId("order-count")).toHaveTextContent("116");
+  expect(screen.getByTestId("revenue")).toHaveTextContent("AED 35,975");
   expect(
-    screen.getByText("Loading preview — no request is running."),
-  ).toBeInTheDocument();
-  await select(user, "Preview state", "Error");
-  await user.click(screen.getByRole("button", { name: "Retry" }));
+    screen.getByRole("region", { name: "Daily orders" }),
+  ).toHaveTextContent("116 orders");
+  expect(
+    screen.getByRole("region", { name: "Revenue per channel" }),
+  ).toHaveTextContent(
+    "Revenue (AED): Website 18,125, Store 9,100, Partners 8,750.",
+  );
   expect(screen.getByTestId("customer-count")).toHaveTextContent("18");
-  expect(customerTable()).toHaveTextContent("شركة مدار");
 });
 
-it("creates in the empty dataset without orders and keeps data through live language/theme changes", async () => {
+it("keeps created customers and order data through shared language and theme changes", async () => {
   const user = await setup();
-  await select(user, "Preview state", "Empty dataset");
   await user.click(screen.getByRole("button", { name: "Create customer" }));
   await user.type(
     screen.getByRole("textbox", { name: "Customer name" }),
-    "First customer",
+    "New customer",
   );
   await user.click(screen.getByRole("button", { name: "Save customer" }));
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-  expect(screen.getByTestId("customer-count")).toHaveTextContent("1");
-  expect(screen.getByTestId("order-count")).toHaveTextContent("0");
-  expect(screen.getByTestId("revenue")).toHaveTextContent("0");
+  expect(screen.getByTestId("customer-count")).toHaveTextContent("19");
+  expect(screen.getByTestId("order-count")).toHaveTextContent("71");
+  expect(screen.getByTestId("revenue")).toHaveTextContent("AED 22,160");
   await user.click(screen.getByRole("button", { name: "Dark mode" }));
   await user.click(screen.getByRole("button", { name: "العربية" }));
   expect(document.documentElement).toHaveAttribute("lang", "ar");
@@ -139,42 +143,38 @@ it("creates in the empty dataset without orders and keeps data through live lang
     "dark",
   );
   expect(screen.getByRole("table", { name: "دليل العملاء" })).toHaveTextContent(
-    "First customer",
+    "New customer",
   );
 });
 
-it("hands mobile navigation focus to the destination after the Sheet restores its trigger", async () => {
+it("opens the shared screens menu and restores its trigger focus", async () => {
   const user = await setup();
   const trigger = screen.getByRole("button", { name: "Open navigation" });
-  for (const name of ["Customers", "Orders", "Overview"]) {
-    await user.click(trigger);
-    await user.click(
-      within(screen.getByRole("dialog")).getByRole("link", { name }),
-    );
-    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
-    await waitFor(() =>
-      expect(document.getElementById(name.toLowerCase())).toHaveFocus(),
-    );
-  }
   await user.click(trigger);
+  const menu = within(screen.getByRole("dialog", { name: "Screens" }));
+  expect(
+    menu.getByRole("link", { name: "Customer dashboard" }),
+  ).toHaveAttribute("aria-current", "page");
+  expect(
+    menu.getByRole("link", { name: "Invoices and collections" }),
+  ).toHaveAttribute("href", "/examples/invoices?lang=en");
   await user.keyboard("{Escape}");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(trigger).toHaveFocus();
 });
 
-it("uses Sidebar links for the three real sections and retains connected data through collapse", async () => {
+it("uses the shared screen navigation and retains connected data through collapse", async () => {
   const user = await setup();
-  const navigation = screen.getByRole("navigation", {
-    name: "Dashboard navigation",
-  });
-  expect(within(navigation).getAllByRole("link")).toHaveLength(3);
+  const navigation = within(
+    screen.getByRole("navigation", { name: "Screens" }),
+  );
+  expect(navigation.getAllByRole("link")).toHaveLength(screens.length);
   expect(
-    within(navigation).getByRole("link", { name: "Overview" }),
+    navigation.getByRole("link", { name: "Customer dashboard" }),
   ).toHaveAttribute("aria-current", "page");
-  await user.click(within(navigation).getByRole("link", { name: "Customers" }));
   expect(
-    within(navigation).getByRole("link", { name: "Customers" }),
-  ).toHaveAttribute("aria-current", "page");
+    navigation.getByRole("link", { name: "Sales pipeline" }),
+  ).toHaveAttribute("href", "/examples/sales-pipeline?lang=en");
   await user.type(screen.getByRole("searchbox"), "madar");
   await user.click(screen.getByRole("button", { name: "Collapse navigation" }));
   expect(
@@ -184,16 +184,32 @@ it("uses Sidebar links for the three real sections and retains connected data th
   expect(screen.getByRole("searchbox")).toHaveValue("madar");
 });
 
-it("preserves the current dashboard destination and focus on modified native links", async () => {
-  window.history.replaceState(null, "", "/");
-  await setup();
-  const nav = screen.getByRole("navigation", { name: "Dashboard navigation" });
-  const overview = within(nav).getByRole("link", { name: "Overview" });
-  const orders = within(nav).getByRole("link", { name: "Orders" });
-  orders.focus();
-  fireEvent.click(orders, { metaKey: true });
-  expect(overview).toHaveAttribute("aria-current", "page");
-  expect(orders).toHaveFocus();
+it("hands embedded screen navigation to the docs and preserves modified native links", () => {
+  window.history.replaceState(null, "", "/examples/dashboard?embed=1&lang=en");
+  const post = vi.spyOn(window, "postMessage").mockImplementation(() => {});
+  try {
+    render(<Dashboard />);
+    const navigation = within(
+      screen.getByRole("navigation", { name: "Screens" }),
+    );
+    const invoices = navigation.getByRole("link", {
+      name: "Invoices and collections",
+    });
+    invoices.focus();
+    expect(fireEvent.click(invoices, { metaKey: true })).toBe(true);
+    expect(post).not.toHaveBeenCalled();
+    expect(invoices).toHaveFocus();
+    expect(fireEvent.click(invoices)).toBe(false);
+    expect(post).toHaveBeenCalledExactlyOnceWith(
+      { type: "tiraz:open-screen", slug: "invoices" },
+      window.location.origin,
+    );
+    expect(
+      navigation.getByRole("link", { name: "Customer dashboard" }),
+    ).toHaveAttribute("aria-current", "page");
+  } finally {
+    post.mockRestore();
+  }
 });
 
 it("uses FilterBar to remove individual customer filters while preserving sorting and page reset", async () => {
@@ -250,8 +266,10 @@ it("starts from the address and, embedded in the docs, leaves language, theme an
       screen.getByRole("button", { name: "Decision inbox, needs you: 2" }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("combobox", { name: "Preview state" }),
-    ).toBeInTheDocument();
+      screen.queryByRole("combobox", { name: "Preview state" }),
+    ).toBeNull();
+    expect(screen.queryByText("Sample data")).toBeNull();
+    expect(screen.queryByText(/In memory only/)).toBeNull();
     unmount();
 
     // Standalone, the same address starts the page the same way, with both
@@ -343,7 +361,7 @@ it("sets What changed beside the orders trend with rows from the orders", async 
   expect(summary().textContent).not.toMatch(/[٠-٩]/);
 });
 
-it("opens the decision inbox from the header and asks the orders a question", async () => {
+it("opens the decision inbox beside customer creation and asks the orders a question", async () => {
   const user = userEvent.setup();
   render(<Dashboard />);
   const waiting = (count: string) => `صندوق القرارات، بانتظارك: ${count}`;
@@ -358,16 +376,15 @@ it("opens the decision inbox from the header and asks the orders a question", as
     );
   const reminder = "إرسال تذكير بالدفع إلى شركة مدار للتقنية";
 
-  // Two requests wait on the person: the count is in the reader's digits, in a
-  // button that comes before the language button.
+  // The heading groups both actions; the inbox count uses the reader's digits.
   const inbox = screen.getByRole("button", { name: waiting("٢") });
-  expect(inbox).toHaveTextContent("صندوق القرارات بانتظارك: ٢");
+  expect(inbox).toHaveTextContent("صندوق القرارات ٢");
   expect(inbox).not.toHaveTextContent(/[0-9]/);
-  expect(
-    inbox.compareDocumentPosition(
-      screen.getByRole("button", { name: "English" }),
-    ) & Node.DOCUMENT_POSITION_FOLLOWING,
-  ).toBeTruthy();
+  const heading = screen.getByRole("heading", { level: 1 }).closest("header")!;
+  expect(heading).toContainElement(inbox);
+  expect(heading).toContainElement(
+    screen.getByRole("button", { name: "إضافة عميل" }),
+  );
   expect(layla()).toHaveTextContent("متوقف");
 
   // It opens a Sheet with both requests from the assistant, and focus does not
@@ -445,21 +462,13 @@ it("opens the decision inbox from the header and asks the orders a question", as
     within(ask()).getByRole("region", { name: "حصة كل قناة من الإيرادات" }),
   ).toBeInTheDocument();
 
-  // The error preview fails the answer, and trying again brings it back.
-  await select(user, "معاينة الحالة", "خطأ");
-  expect(ask().querySelector(".tz-data-answer-note")).toHaveTextContent(
-    "تعذّر إكمال الإجابة",
-  );
-  await user.click(within(ask()).getByRole("button", { name: "أعد المحاولة" }));
-  expect(ask().querySelector(".tz-data-answer-explanation")).not.toBeNull();
-  expect(
-    within(ask()).getByRole("region", { name: "حصة كل قناة من الإيرادات" }),
-  ).toBeInTheDocument();
-
-  // The sample data is back, so the inbox is too; English has Western digits.
-  expect(layla()).toHaveTextContent("متوقف");
+  // Shared language changes preserve the approved decision and selected chart.
   await user.click(screen.getByRole("button", { name: "English" }));
   expect(
-    screen.getByRole("button", { name: "Decision inbox, needs you: 2" }),
+    screen.getByRole("button", { name: "Decision inbox, needs you: 1" }),
   ).toBeInTheDocument();
+  expect(
+    within(customerTable()).getByRole("row", { name: /ليلى أحمد/ }),
+  ).toHaveTextContent("Active");
+  expect(screen.getByRole("radio", { name: "Donut" })).toBeChecked();
 }, 15000);

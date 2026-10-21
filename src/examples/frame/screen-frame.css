@@ -181,3 +181,103 @@
     padding: var(--space-6) var(--space-4) var(--space-8);
   }
 }
+
+/* Demo controls stay available in the docs stage as well as standalone. */
+.screen-demo-host {
+  display: contents;
+}
+.screen[data-embed] > .screen-bar {
+  display: flex;
+}
+.screen-demo-controls {
+  display: flex;
+  align-items: center;
+  margin-inline-end: auto;
+  color: var(--text-secondary);
+}
+.screen-demo-controls .tz-button {
+  font-size: var(--text-meta);
+}
+.screen-agent-panel {
+  border-color: color-mix(in srgb, var(--ai) 24%, var(--border));
+  background: var(--ai-soft);
+}
+.screen-agent-heading {
+  padding: var(--space-4);
+  border-block-end: 1px solid color-mix(in srgb, var(--ai) 16%, var(--border));
+}
+.screen-agent-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.screen-agent-eyebrow {
+  display: block;
+  color: var(--ai);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+}
+.screen-agent-heading h2 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+.screen-agent-heading p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.screen-activity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--space-6);
+  margin-block-start: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.screen-activity[data-working] {
+  color: var(--ai);
+}
+.screen-activity > span:first-of-type {
+  animation: screen-activity-enter var(--motion-state) var(--ease-out);
+}
+.screen-activity-steps {
+  display: flex;
+  flex: none;
+  gap: var(--space-1);
+}
+.screen-activity-steps i {
+  inline-size: var(--space-1);
+  block-size: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  transition: background var(--motion-state) var(--ease-out);
+}
+.screen-activity-steps i[data-done] {
+  background: var(--ai);
+}
+.screen-demo-host[data-demo-paused] * {
+  animation-play-state: paused !important;
+}
+.screen-demo-host[data-demo-phase="sending"]
+  [data-demo-composer]
+  .tz-chat-entry-send {
+  transform: scale(0.94);
+  box-shadow: 0 0 0 var(--space-1) var(--ai-soft);
+}
+@keyframes screen-activity-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-1));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen-activity > span:first-of-type {
+    animation: none;
+  }
+}

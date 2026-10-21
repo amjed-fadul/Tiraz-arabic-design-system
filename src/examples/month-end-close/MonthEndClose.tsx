@@ -34,6 +34,7 @@ import {
 } from "./data";
 import type { Run, Text } from "./data";
 import "./month-end-close.css";
+import { useScreenDemo } from "../frame/useScreenDemo";
 
 export function MonthEndClose() {
   return (
@@ -48,6 +49,7 @@ const accrualsAt = 3;
 const remindersAt = 4;
 
 function Close() {
+  const demo = useScreenDemo();
   const { language, t, number, percent, money, date, href, open, endSide } =
     useScreen();
   const text = (value: Text) => t(value.ar, value.en);
@@ -359,17 +361,31 @@ function Close() {
       <div className="month-end-close">
         <div className="month-end-close-main" ref={task}>
           <AgentTask
+            announcement="off"
             title={text(taskTitle)}
             agent={finance[language]}
-            status="needs-you"
-            steps={steps}
+            status={demo.active ? "running" : "needs-you"}
+            steps={
+              demo.active
+                ? steps.map((step, index) => ({
+                    ...step,
+                    state:
+                      index < demo.step
+                        ? "completed"
+                        : index === demo.step
+                          ? "running"
+                          : "pending",
+                  }))
+                : steps
+            }
             headingLevel={2}
             onDecision={decide}
           />
         </div>
         <Tray className="month-end-close-panel">
           <ChangeSummary
-            status="ready"
+            announcement="off"
+            status={demo.active ? "updating" : "ready"}
             rows={rows}
             basedOn={`${t("الفترة: ", "Period: ")}${date(story.period.week.from)} – ${date(story.period.week.to)}`}
             headingLevel={2}

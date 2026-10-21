@@ -336,3 +336,21 @@ it("says a context crossing in its own region", () => {
   view.rerender(starter(104_000));
   expect(region.textContent).toBe("السياق: يقترب من الامتلاء");
 });
+
+it("lets a host announce context changes without replaying muted additions", () => {
+  const start = (context: ContextItem[], announcement: "off" | "polite") =>
+    wrap(<Host context={context} announcement={announcement} />);
+  const view = render(start([], "off"));
+  view.rerender(start([options[0]], "off"));
+  expect(
+    document.querySelector('.tz-task-starter > [role="status"]'),
+  ).toBeNull();
+  view.rerender(start([options[0]], "polite"));
+  expect(
+    document.querySelector('.tz-task-starter > [role="status"]'),
+  ).toBeEmptyDOMElement();
+  view.rerender(start([options[0], options[1]], "polite"));
+  expect(
+    document.querySelector('.tz-task-starter > [role="status"]'),
+  ).toHaveTextContent(options[1].label);
+});

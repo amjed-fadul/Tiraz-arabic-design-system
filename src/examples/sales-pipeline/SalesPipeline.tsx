@@ -33,6 +33,7 @@ import {
   stageName,
 } from "./words";
 import "./sales-pipeline.css";
+import { useScreenDemo } from "../frame/useScreenDemo";
 
 type Status = DraftReviewProps["status"];
 /** What the host keeps for a deal's follow-up; a deal without one is ready. */
@@ -111,6 +112,8 @@ function FollowUp({
 }
 
 function PipelineScreen() {
+  const demo = useScreenDemo();
+  const [arrived, setArrived] = useState<string | null>(null);
   const screen = useScreen();
   const { t, language, locale, number, money, date, size, endSide } = screen;
   const uid = useId();
@@ -193,6 +196,7 @@ function PipelineScreen() {
   // shows at a time, on the card that took its place, else the one before it,
   // else the stage's tab.
   function move(id: string, to: StageId) {
+    setArrived(id);
     const deal = deals.find((item) => item.id === id)!;
     const list = inStage(deal.stage);
     const at = list.findIndex((item) => item.id === id);
@@ -264,7 +268,13 @@ function PipelineScreen() {
     const move_ = t("نقل إلى", "Move to");
     return (
       <li key={deal.id}>
-        <Card className="sales-pipeline-card">
+        <Card
+          className="sales-pipeline-card"
+          data-arrived={arrived === deal.id || undefined}
+          onAnimationEnd={() => {
+            if (arrived === deal.id) setArrived(null);
+          }}
+        >
           <CardContent>
             <h3 className="sales-pipeline-deal">
               <Sheet
@@ -480,7 +490,7 @@ function PipelineScreen() {
         </FilterBar>
         <ChangeSummary
           announcement="off"
-          status="ready"
+          status={demo.active ? "updating" : "ready"}
           rows={changes}
           basedOn={t(
             `اعتمادًا على ${dealCount(screen, initialDeals.length)} حتى ${date(today)}`,
@@ -498,7 +508,10 @@ function PipelineScreen() {
               label: (
                 <>
                   {stage.name[language]}{" "}
-                  <span className="sales-pipeline-tab-count">
+                  <span
+                    key={inStage(stage.id).length}
+                    className="sales-pipeline-tab-count"
+                  >
                     {number(inStage(stage.id).length)}
                   </span>
                 </>

@@ -6,7 +6,10 @@ import { ContentStudio } from "./ContentStudio";
 // The generation and the assistant's answer run on the host's moments, so
 // these tests move a fake clock. It also ticks with real time, which Testing
 // Library's waits need to settle.
-beforeEach(() => vi.useFakeTimers({ shouldAdvanceTime: true }));
+beforeEach(() => {
+  window.history.replaceState({}, "", "/examples/content-studio?demo=off");
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+});
 afterEach(() => vi.useRealTimers());
 /** Moves the clock in steps, each in its own act: a beat re-arms the next one. */
 async function pass(ms: number) {
@@ -302,4 +305,32 @@ it("keeps the initial English prompt while controls follow the page language", a
   ).toHaveValue(
     "A friendly reminder card for an invoice due date: a calendar, a crescent and a geometric pattern, in calm colors",
   );
+});
+
+it("presents a brief and four images on opening, leaving the campaign choice to the person", async () => {
+  window.history.replaceState({}, "", "/examples/content-studio");
+  setup();
+  const field = screen.getByRole("textbox", { name: "وصف الصورة" });
+  expect(field).toHaveValue("");
+  expect(canvas()).toHaveAttribute("data-status", "queued");
+  await pass(1200);
+  expect((field as HTMLTextAreaElement).value).toMatch(/^A friendly reminder/);
+  await pass(2000);
+  expect(canvas()).toHaveAttribute("data-status", "weaving");
+  await pass(4800);
+  expect(canvas()).toHaveAttribute("data-status", "completed");
+  expect(screen.queryByRole("heading", { name: "النص المرافق" })).toBeNull();
+});
+
+it("hands the opening brief back immediately when the person starts editing", async () => {
+  window.history.replaceState({}, "", "/examples/content-studio");
+  const user = setup();
+  await pass(500);
+  const field = screen.getByRole("textbox", { name: "وصف الصورة" });
+  await user.click(field);
+  await user.clear(field);
+  await user.type(field, "A warm campaign illustration");
+  await pass(8000);
+  expect(field).toHaveValue("A warm campaign illustration");
+  expect(canvas()).toHaveAttribute("data-status", "completed");
 });

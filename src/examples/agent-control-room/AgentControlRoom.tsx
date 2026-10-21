@@ -1,9 +1,12 @@
 import { useId, useState } from "react";
 import {
+  AIMark,
   Button,
   ContextMeter,
   DecisionInbox,
+  Progress,
   Sheet,
+  StatusPill,
   TaskRows,
   ToolCall,
   Tray,
@@ -38,6 +41,7 @@ import {
 } from "./data";
 import type { AgentId, Summary } from "./data";
 import "./agent-control-room.css";
+import { useScreenDemo } from "../frame/useScreenDemo";
 
 export function AgentControlRoom() {
   return (
@@ -61,6 +65,10 @@ function Room() {
   const { config } = useSystem();
   const text = (value: Text) => t(value.ar, value.en);
   // Who is picked in the strip, and what the host recorded for each item.
+  const demo = useScreenDemo();
+  const [tab, setTab] = useState<"all" | "needs-you" | "running" | "completed">(
+    "needs-you",
+  );
   const [agent, setAgent] = useState<AgentId | null>(null);
   const [outcomes, setOutcomes] = useState<Record<string, Outcome>>({});
   const record = (id: string, outcome: Outcome) =>
@@ -159,7 +167,9 @@ function Room() {
   ).map((item): DecisionInboxItem => {
     const outcome = outcomes[item.id];
     return !outcome
-      ? item
+      ? demo.active && item.status === "needs-you"
+        ? { ...item, status: "running" }
+        : item
       : outcome === "retried"
         ? { ...item, status: "running", error: undefined }
         : { ...item, status: "completed", receipt: text(receipts[outcome]) };
@@ -202,16 +212,46 @@ function Room() {
       .filter(Boolean)
       .join(" · ") || t("لا شيء بانتظارك", "Nothing needs you");
 
-  const name = agent ? story.agents[agent][language] : "";
+  // The inbox starts with every agent; its companion workspace already shows
+  // Finance so the person can see what the team is doing before filtering.
+  const focusedAgent = agent ?? "finance";
+  const name = story.agents[focusedAgent][language];
+  const waitingFor = (id: AgentId) =>
+    items.filter((item) => item.agent.id === id && item.status === "needs-you")
+      .length;
+  const activityFor = (id: AgentId) => {
+    const count = waitingFor(id);
+    if (id === "finance")
+      return count
+        ? t(
+            "أنهى المطابقة · ينتظر قراراتك",
+            "Checks finished · awaiting your decisions",
+          )
+        : t(
+            "المطابقة مكتملة · يتابع الإقفال",
+            "Checks complete · following the close",
+          );
+    if (id === "collections")
+      return t(
+        `مسودات جاهزة للمراجعة: ${number(count)}`,
+        `${number(count)} drafts ready for review`,
+      );
+    return retried
+      ? t("يعيد توليد غلاف الحملة", "Generating the campaign cover again")
+      : t(
+          "توقّف التوليد · يحتاج إعادة المحاولة",
+          "Generation stopped · retry needed",
+        );
+  };
   return (
     <>
       <ScreenHeader
         description={summary}
         // The panel sits beside the inbox only when wide. Below that the
-        // picked agent adds this button, which opens the panel in a Sheet; the
+        // focused agent gets this button, which opens the panel in a Sheet; the
         // strip's toggles belong to the inbox and can't open one.
         actions={
-          agent && size !== "wide" ? (
+          size !== "wide" ? (
             <Sheet
               side={endSide}
               title={t(`مهام ${name}`, `${name} tasks`)}
@@ -226,13 +266,95 @@ function Room() {
                 </Button>
               }
             >
-              <AgentPanel id={agent} retried={retried} level={3} />
+              <AgentPanel
+                id={focusedAgent}
+                retried={retried}
+                state={stateOf(focusedAgent)}
+                waiting={waitingFor(focusedAgent)}
+                level={3}
+              />
             </Sheet>
           ) : undefined
         }
       />
+      <section
+        className="agent-control-room-overview"
+        aria-label={t("نشاط وكلاء الذكاء الاصطناعي", "AI agent activity")}
+      >
+        {agentIds.map((id) => {
+          const card = (
+            <button
+              key={id}
+              type="button"
+              className="agent-control-room-card"
+              aria-label={t(
+                `عرض نشاط ${story.agents[id][language]}`,
+                `View ${story.agents[id][language]} activity`,
+              )}
+              aria-pressed={agent === id}
+              onClick={() => setAgent(agent === id ? null : id)}
+            >
+              <span className="agent-control-room-card-top">
+                <AIMark
+                  size="md"
+                  working={items.some(
+                    (item) => item.agent.id === id && item.status === "running",
+                  )}
+                />
+                <span className="agent-control-room-card-identity">
+                  <span className="agent-control-room-eyebrow">
+                    {t("وكيل ذكاء اصطناعي", "AI agent")}
+                  </span>
+                  <strong>{story.agents[id][language]}</strong>
+                </span>
+                <StatusPill state={stateOf(id)} />
+              </span>
+              <span className="agent-control-room-card-activity">
+                {activityFor(id)}
+              </span>
+              <span className="agent-control-room-card-footer">
+                <span>
+                  {t(
+                    `مهام مكتملة: ${number(panels[id].tasks.filter((task) => task.state === "completed").length)}`,
+                    `Tasks completed: ${number(panels[id].tasks.filter((task) => task.state === "completed").length)}`,
+                  )}
+                </span>
+                <span>{t("عرض مساحة العمل", "View workspace")}</span>
+              </span>
+            </button>
+          );
+          return size === "wide" ? (
+            card
+          ) : (
+            <Sheet
+              key={id}
+              trigger={card}
+              side={endSide}
+              title={t(
+                `مهام ${story.agents[id][language]}`,
+                `${story.agents[id][language]} tasks`,
+              )}
+              description={t(
+                "سياق الوكيل ومهامه وخطوته الجارية.",
+                "The agent's context, tasks and current step.",
+              )}
+              closeLabel={t("إغلاق مهام الوكيل", "Close agent tasks")}
+            >
+              <AgentPanel
+                id={id}
+                retried={retried}
+                state={stateOf(id)}
+                waiting={waitingFor(id)}
+                level={3}
+              />
+            </Sheet>
+          );
+        })}
+      </section>
       <div className="agent-control-room">
         <DecisionInbox
+          tab={demo.active ? "running" : tab}
+          onTabChange={setTab}
           items={items}
           agents={agentIds.map((id) => ({
             id,
@@ -256,22 +378,14 @@ function Room() {
           headingLevel={2}
         />
         {size === "wide" && (
-          <Tray className="agent-control-room-panel">
-            {agent ? (
-              <AgentPanel id={agent} retried={retried} level={2} />
-            ) : (
-              <>
-                <h2 className="agent-control-room-title">
-                  {t("اختر وكيلًا", "Pick an agent")}
-                </h2>
-                <p className="agent-control-room-note">
-                  {t(
-                    "اختر أحد الوكلاء في الشريط لتعرض سياقه ومهامه هنا.",
-                    "Pick an agent in the strip to see its context and tasks here.",
-                  )}
-                </p>
-              </>
-            )}
+          <Tray className="agent-control-room-panel screen-agent-panel">
+            <AgentPanel
+              id={focusedAgent}
+              retried={retried}
+              state={stateOf(focusedAgent)}
+              waiting={waitingFor(focusedAgent)}
+              level={2}
+            />
           </Tray>
         )}
       </div>
@@ -287,13 +401,18 @@ function Room() {
 function AgentPanel({
   id,
   retried,
+  state,
+  waiting,
   level,
 }: {
   id: AgentId;
   retried: boolean;
+  state: StatusPillState;
+  waiting: number;
   level: 2 | 3;
 }) {
   const { language, t, number } = useScreen();
+  const demo = useScreenDemo();
   const uid = useId();
   const text = (value: Text) => t(value.ar, value.en);
   const panel = panels[id];
@@ -305,10 +424,20 @@ function AgentPanel({
       ? text(summary)
       : `${number(summary.count)} ${text(summary)}`;
   // A failed task the host retried is running again.
-  const tasks = panel.tasks.map((task) =>
-    task.state === "failed" && retried && task.retried
-      ? { ...task, ...task.retried, state: "running" as const }
-      : task,
+  const tasks = panel.tasks.map((task, index) =>
+    demo.active && id === "finance"
+      ? {
+          ...task,
+          state:
+            index < demo.step
+              ? ("completed" as const)
+              : index === demo.step
+                ? ("running" as const)
+                : ("pending" as const),
+        }
+      : task.state === "failed" && retried && task.retried
+        ? { ...task, ...task.retried, state: "running" as const }
+        : task,
   );
   const rows: TaskRowItem[] = tasks.map((task) => ({
     id: task.id,
@@ -318,10 +447,28 @@ function AgentPanel({
     content: <p className="agent-control-room-note">{text(task.note)}</p>,
   }));
   const step = tasks.find((task) => task.state === "running")?.tool;
+  const completed = tasks.filter((task) => task.state === "completed").length;
+  const currentRun =
+    id === "finance"
+      ? text(closeName)
+      : id === "collections"
+        ? t("تذكيرات الفواتير المتأخرة", "Overdue invoice reminders")
+        : text(cover.title);
   return (
     <>
       <div className="agent-control-room-agent">
-        <Heading className="agent-control-room-title">{name}</Heading>
+        <div className="agent-control-room-identity">
+          <AIMark
+            size="md"
+            working={Boolean(step) || (demo.active && !demo.paused)}
+          />
+          <div>
+            <p className="agent-control-room-eyebrow">
+              {t("وكيل ذكاء اصطناعي", "AI agent workspace")}
+            </p>
+            <Heading className="agent-control-room-title">{name}</Heading>
+          </div>
+        </div>
         {/* Keyed by agent, so one agent's open details don't carry over to
             the next. Quiet: the inbox's region is the page's one. */}
         <ContextMeter
@@ -336,6 +483,49 @@ function AgentPanel({
           }))}
         />
       </div>
+      <section
+        className="agent-control-room-run"
+        aria-labelledby={`${uid}-run`}
+      >
+        <div className="agent-control-room-run-heading">
+          <Section id={`${uid}-run`} className="agent-control-room-heading">
+            {t("العمل الحالي", "Current run")}
+          </Section>
+          <StatusPill state={state} />
+        </div>
+        <p className="agent-control-room-run-title">{currentRun}</p>
+        <Progress
+          label={t(
+            `${number(completed)} من ${number(tasks.length)} مهام مكتملة`,
+            `${number(completed)} of ${number(tasks.length)} tasks complete`,
+          )}
+          value={(completed / tasks.length) * 100}
+          locale={language}
+        />
+        <p className="agent-control-room-note">
+          {demo.active
+            ? t(
+                "يراجع الوكيل بيانات المهمة ويجهّز النتائج.",
+                "The agent is inspecting task records and preparing results.",
+              )
+            : waiting
+              ? t(
+                  `بانتظار مراجعتك في صندوق القرارات: ${number(waiting)}.`,
+                  `${number(waiting)} ${waiting === 1 ? "request awaits" : "requests await"} your review in the decision inbox.`,
+                )
+              : step
+                ? t(
+                    "ينفّذ الوكيل الخطوة التالية.",
+                    "The agent is working on the next step.",
+                  )
+                : id === "campaigns"
+                  ? text(cover.error)
+                  : t(
+                      "اكتملت المطابقة. يتابع الوكيل الخطوات المتبقية.",
+                      "Checks are complete. The agent is tracking the remaining steps.",
+                    )}
+        </p>
+      </section>
       <section
         className="agent-control-room-section"
         aria-labelledby={`${uid}-tasks`}

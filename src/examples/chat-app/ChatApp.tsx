@@ -66,7 +66,7 @@ export function ChatAppDemo() {
             </select>
           </label>
         </div>
-        <ChatAppExample language={language} />
+        <ChatAppExample language={language} autoPlay />
       </main>
     </SystemProvider>
   );

@@ -1,6 +1,6 @@
 /* Invoices and collections (example-screens spec §3.2). Every rule names .invoices.
    The main column holds the filters and the table; beside it, from 960px, an
-   end panel of 20rem holds the reminder's draft. Below that the panel is gone
+   end panel of 22rem holds the reminder's draft. Below that the panel is gone
    and each row's button opens its draft in a Sheet. */
 .invoices {
   display: grid;
@@ -18,10 +18,18 @@
 .invoices-panel {
   position: sticky;
   inset-block-start: var(--space-4);
+  min-inline-size: 0;
+  padding: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--ai) 25%, var(--border));
+  border-radius: var(--radius-panel);
+  background: var(--ai-soft);
+}
+.invoices-panel .screen-agent-heading {
+  padding: var(--space-1);
 }
 @container screen (width >= 960px) {
   .invoices {
-    grid-template-columns: minmax(0, 1fr) 20rem;
+    grid-template-columns: minmax(0, 1fr) 22rem;
   }
 }
 .invoices-filters .tz-filter-search {

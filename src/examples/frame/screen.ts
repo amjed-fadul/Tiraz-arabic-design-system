@@ -58,6 +58,15 @@ export const screens = [
     icon: UserRound,
   },
   {
+    slug: "sales-pipeline",
+    name: ["خط المبيعات", "Sales pipeline"],
+    description: [
+      "صفقات أكتوبر حسب المرحلة: انقل صفقة إلى مرحلتها التالية من لوحة المفاتيح، ثم تابِعها.",
+      "October's deals by stage: move one on from the keyboard, and follow up.",
+    ],
+    icon: SquareKanban,
+  },
+  {
     slug: "onboarding",
     name: ["التسجيل والتوثيق", "Onboarding and verification"],
     description: [
@@ -110,15 +119,6 @@ export const screens = [
       "Who is on the finance team, and what the assistant may do without asking.",
     ],
     icon: Settings,
-  },
-  {
-    slug: "sales-pipeline",
-    name: ["خط المبيعات", "Sales pipeline"],
-    description: [
-      "صفقات أكتوبر حسب المرحلة: انقل صفقة إلى مرحلتها التالية من لوحة المفاتيح، ثم تابِعها.",
-      "October's deals by stage: move one on from the keyboard, and follow up.",
-    ],
-    icon: SquareKanban,
   },
 ] as const satisfies readonly {
   slug: string;

@@ -38,6 +38,8 @@ import {
   reminder,
 } from "./data";
 import "./customer-profile.css";
+import { ScreenAgentHeading } from "../frame/ScreenDemo";
+import { useScreenDemo } from "../frame/useScreenDemo";
 
 // How long the host takes over the answer, and the screen's one question.
 const thinkingMs = 1400;
@@ -51,6 +53,7 @@ export function CustomerProfile() {
 }
 
 function CustomerProfileScreen() {
+  const demo = useScreenDemo();
   const screen = useScreen();
   const { t, language, locale, number, money, date, href } = screen;
   const name = customer.name[language];
@@ -60,7 +63,7 @@ function CustomerProfileScreen() {
   );
 
   // Start a task: the draft, and the customer attached as a record.
-  const [draft, setDraft] = useState("");
+  const [draft, setDraft] = useState<string | null>(null);
   const [attached, setAttached] = useState(true);
   const madar: ContextItem = {
     id: customer.id,
@@ -71,6 +74,7 @@ function CustomerProfileScreen() {
   // it again, so it thinks for a moment first. The host's timer clears when it
   // is superseded and when the screen goes.
   const [answer, setAnswer] = useState<"thinking" | "completed">("completed");
+  const answerStatus = demo.active ? "thinking" : answer;
   const [chartType, setChartType] = useState<"bar" | "line">("bar");
   const asking = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(asking.current), []);
@@ -337,74 +341,94 @@ function CustomerProfileScreen() {
             ]}
           />
         </div>
-        <Card className="customer-profile-panel">
+        <Card className="customer-profile-panel screen-agent-panel">
+          <ScreenAgentHeading
+            title={t("مساعد العملاء", "Customer assistant")}
+            description={t(
+              "يحلّل سجل العميل ويجيب من بياناتك.",
+              "Answers grounded in this customer’s records.",
+            )}
+          />
           <CardContent>
-            <TaskStarter
-              title={t(
-                `اسأل عن ${customer.name.ar}`,
-                `Ask about ${customer.name.en}`,
-              )}
-              value={draft}
-              onValueChange={setDraft}
-              onSubmit={() => {
-                setDraft("");
-                ask();
+            <div
+              data-demo-composer
+              onFocus={(event) => {
+                if (event.target instanceof HTMLTextAreaElement) {
+                  const visible = event.target.value;
+                  setDraft((current) => current ?? visible);
+                }
               }}
-              context={attached ? [madar] : []}
-              onRemoveContext={() => setAttached(false)}
-              mentionOptions={[madar]}
-              onAddContext={() => setAttached(true)}
-              suggestions={[{ id: "late-by-month", label: question }]}
-              onSuggestion={() => setDraft(question)}
-              headingLevel={2}
-              appearance="plain"
-            />
+            >
+              <TaskStarter
+                announcement="off"
+                title={t(
+                  `اسأل عن ${customer.name.ar}`,
+                  `Ask about ${customer.name.en}`,
+                )}
+                value={demo.active ? demo.draft(question) : (draft ?? "")}
+                onValueChange={setDraft}
+                onSubmit={() => {
+                  setDraft("");
+                  ask();
+                }}
+                context={attached ? [madar] : []}
+                onRemoveContext={() => setAttached(false)}
+                mentionOptions={[madar]}
+                onAddContext={() => setAttached(true)}
+                suggestions={[{ id: "late-by-month", label: question }]}
+                onSuggestion={() => setDraft(question)}
+                headingLevel={2}
+                appearance="plain"
+              />
+            </div>
           </CardContent>
-          <CardContent className="customer-profile-answer">
-            <DataAnswer
-              status={answer}
-              question={question}
-              chart={charts[chartType]}
-              explanation={explanation}
-              sources={[invoiceTable, agingTable]}
-              method={{
-                range: `${date("2026-01-01")} – ${date(today)}`,
-                filters: name,
-              }}
-              thinking={
-                answer === "thinking"
-                  ? {
-                      elapsed: 1,
-                      searched: [invoiceTable],
-                      steps: [
-                        {
-                          id: "read",
-                          label: t(
-                            "قراءة فواتير مدار",
-                            "Read Madar's invoices",
-                          ),
-                          state: "completed",
-                        },
-                        {
-                          id: "group",
-                          label: t(
-                            "حساب أيام التأخير لكل شهر",
-                            "Work out the days late each month",
-                          ),
-                          state: "running",
-                        },
-                      ],
-                    }
-                  : undefined
-              }
-              chartTypes={["bar", "line"]}
-              onChartTypeChange={(type) =>
-                setChartType(type === "line" ? "line" : "bar")
-              }
-              headingLevel={2}
-              appearance="plain"
-            />
-          </CardContent>
+          {(!demo.active || demo.phase === "working") && (
+            <CardContent className="customer-profile-answer">
+              <DataAnswer
+                status={answerStatus}
+                question={question}
+                chart={charts[chartType]}
+                explanation={explanation}
+                sources={[invoiceTable, agingTable]}
+                method={{
+                  range: `${date("2026-01-01")} – ${date(today)}`,
+                  filters: name,
+                }}
+                thinking={
+                  answerStatus === "thinking"
+                    ? {
+                        elapsed: 1,
+                        searched: [invoiceTable],
+                        steps: [
+                          {
+                            id: "read",
+                            label: t(
+                              "قراءة فواتير مدار",
+                              "Read Madar's invoices",
+                            ),
+                            state: "completed",
+                          },
+                          {
+                            id: "group",
+                            label: t(
+                              "حساب أيام التأخير لكل شهر",
+                              "Work out the days late each month",
+                            ),
+                            state: "running",
+                          },
+                        ],
+                      }
+                    : undefined
+                }
+                chartTypes={["bar", "line"]}
+                onChartTypeChange={(type) =>
+                  setChartType(type === "line" ? "line" : "bar")
+                }
+                headingLevel={2}
+                appearance="plain"
+              />
+            </CardContent>
+          )}
         </Card>
       </div>
     </>

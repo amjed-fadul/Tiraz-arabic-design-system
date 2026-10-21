@@ -84,7 +84,7 @@ export const versions = [
 
 // The versions are drawn here, so no image is ever fetched: a reminder
 // calendar with a glyph on a geometric lattice, as inline SVG data URIs. The
-// subject sits in the middle of a square canvas, and each shape is a window on
+// subject sits in the middle of a landscape canvas, and each shape is a window on
 // it (its viewBox), so one drawing serves the square, the landscape and the
 // portrait, and each picture has its frame's own ratio.
 const gold = "#f0b64a";
@@ -115,24 +115,24 @@ const glyphs: Record<string, (ink: string, soft: string) => string> = {
     `<path d="M300 272c-36 0-60 26-60 62v30l-20 28h160l-20-28v-30c0-36-24-62-60-62z" fill="${soft}" stroke="${ink}" stroke-width="9" stroke-linejoin="round"/><path d="M278 400a22 22 0 0 0 44 0" fill="none" stroke="${ink}" stroke-width="9" stroke-linecap="round"/><circle cx="300" cy="262" r="8" fill="${ink}"/>`,
 };
 const windows: Record<ShapeId, string> = {
-  square: "0 0 600 600",
-  landscape: "0 100 600 400",
-  portrait: "100 0 400 600",
+  square: "150 0 600 600",
+  landscape: "0 0 900 600",
+  portrait: "250 0 400 600",
 };
 function draw(version: number, brand: string, shape: ShapeId): string {
   const dark = version === 2,
     duo = version === 3,
     warm = version === 4;
   const background = dark
-    ? mix(brand, "#000000", 0.62)
+    ? mix(brand, "#15251e", 0.72)
     : warm
-      ? mix(gold, "#ffffff", 0.78)
-      : mix(brand, "#ffffff", 0.86);
+      ? "#efdfc3"
+      : mix(brand, "#f7f3e9", 0.88);
   const lattice = dark
-    ? mix(brand, "#000000", 0.42)
+    ? mix(brand, "#ffffff", 0.25)
     : warm
-      ? mix(gold, "#ffffff", 0.55)
-      : mix(brand, "#ffffff", 0.7);
+      ? "#b39971"
+      : mix(brand, "#ffffff", 0.5);
   const head = dark ? gold : warm ? mix(brand, "#000000", 0.1) : brand;
   const ink = dark
     ? mix(brand, "#000000", 0.3)
@@ -141,27 +141,44 @@ function draw(version: number, brand: string, shape: ShapeId): string {
       : brand;
   const ring = mix(brand, "#000000", 0.5);
   const moon = dark ? "#fff3d2" : gold;
+  const tiles = Array.from({ length: 15 }, (_, index) => {
+    const x = 190 + (index % 5) * 46;
+    const y = 254 + Math.floor(index / 5) * 52;
+    return `<rect x="${x}" y="${y}" width="28" height="5" rx="2.5" fill="${ink}" opacity=".10"/>`;
+  }).join("");
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${windows[shape]}">` +
-    `<defs><pattern id="p" width="60" height="60" patternUnits="userSpaceOnUse"><path d="M30 6l6 18 18 6-18 6-6 18-6-18-18-6 18-6z" fill="none" stroke="${lattice}" stroke-width="2"/></pattern>` +
-    `<radialGradient id="g" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="#ffffff" stop-opacity=".7"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs>` +
-    `<rect width="600" height="600" fill="${background}"/>` +
+    `<defs><pattern id="p" width="90" height="90" patternUnits="userSpaceOnUse"><path d="M45 10l10 25 25 10-25 10-10 25-10-25-25-10 25-10z" fill="none" stroke="${lattice}" stroke-width="1"/></pattern>` +
+    `<linearGradient id="paper" x2=".25" y2="1"><stop stop-color="#fffef9"/><stop offset="1" stop-color="#eee9da"/></linearGradient>` +
+    `<linearGradient id="header" x2="1" y2="1"><stop stop-color="${head}"/><stop offset="1" stop-color="${mix(head, "#000000", 0.2)}"/></linearGradient>` +
+    `<filter id="shadow" x="-50%" y="-40%" width="200%" height="200%"><feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#12251b" flood-opacity=".2"/></filter></defs>` +
+    `<rect width="900" height="600" fill="${background}"/>` +
+    `<rect width="900" height="600" fill="url(#p)" opacity=".45"/>` +
+    `<circle cx="100" cy="600" r="320" fill="${mix(brand, background, dark ? 0.7 : 0.77)}"/>` +
     (duo
-      ? `<path d="M0 600V0h600z" fill="${mix(brand, "#ffffff", 0.7)}" opacity=".7"/>`
+      ? `<path d="M0 600V0h900z" fill="${mix(brand, "#ffffff", 0.6)}" opacity=".55"/>`
       : "") +
-    `<rect width="600" height="600" fill="url(#p)"/>` +
-    (dark ? "" : `<circle cx="300" cy="300" r="260" fill="url(#g)"/>`) +
-    `<rect x="156" y="156" width="300" height="330" rx="28" fill="#000000" opacity=".14"/>` +
-    `<rect x="150" y="140" width="300" height="330" rx="28" fill="#ffffff"/>` +
-    `<path d="M150 230V168a28 28 0 0 1 28-28h244a28 28 0 0 1 28 28v62z" fill="${head}"/>` +
-    `<rect x="214" y="118" width="16" height="44" rx="8" fill="${ring}"/><rect x="370" y="118" width="16" height="44" rx="8" fill="${ring}"/>` +
-    `<rect x="190" y="176" width="90" height="12" rx="6" fill="#ffffff" opacity=".85"/><rect x="190" y="198" width="60" height="10" rx="5" fill="#ffffff" opacity=".55"/>` +
+    `<path d="M680 600V245a160 160 0 0 1 320 0" fill="none" stroke="${lattice}" stroke-width="1.5" opacity=".5"/>` +
+    `<path d="M700 600V245a140 140 0 0 1 280 0M720 600V245a120 120 0 0 1 240 0" fill="none" stroke="${lattice}" stroke-width="1" opacity=".35"/>` +
+    `<g transform="translate(150 -8)">` +
+    `<ellipse cx="302" cy="498" rx="175" ry="18" fill="${ring}" opacity=".08"/>` +
+    `<rect x="153" y="146" width="300" height="330" rx="18" fill="${mix(brand, "#ffffff", 0.55)}" transform="rotate(-8 300 310)"/>` +
+    `<rect x="150" y="140" width="300" height="330" rx="18" fill="url(#paper)" filter="url(#shadow)"/>` +
+    `<path d="M150 230V158a18 18 0 0 1 18-18h264a18 18 0 0 1 18 18v72z" fill="url(#header)"/>` +
+    `<path d="M150 234h300" stroke="${ring}" stroke-opacity=".12"/>` +
+    `<rect x="211" y="116" width="13" height="43" rx="6.5" fill="${ring}"/><rect x="376" y="116" width="13" height="43" rx="6.5" fill="${ring}"/>` +
+    `<path d="M215 120v27M380 120v27" stroke="#ffffff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round"/>` +
+    `<rect x="184" y="181" width="85" height="9" rx="4.5" fill="#ffffff" opacity=".8"/><rect x="184" y="200" width="51" height="5" rx="2.5" fill="#ffffff" opacity=".4"/>` +
+    `<circle cx="408" cy="190" r="15" fill="#ffffff" opacity=".14"/><path d="M403 190h10M408 185v10" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity=".8"/>` +
+    tiles +
     glyphs[["check", "clock", "coins", "bell"][version - 1]](
       ink,
-      mix(ink, "#ffffff", 0.84),
+      mix(ink, "#f5f2e8", 0.9),
     ) +
-    `<g transform="translate(470 150) rotate(-24) scale(34)"><path d="M0 -1A1 1 0 0 0 0 1A1.2 1.2 0 0 1 0 -1Z" fill="${moon}"/></g>` +
-    `<path d="M120 420l6 16 16 6-16 6-6 16-6-16-16-6 16-6z" fill="${gold}" opacity=".9"/><circle cx="486" cy="418" r="6" fill="${gold}"/><circle cx="104" cy="206" r="5" fill="${lattice}"/>` +
+    `<rect x="252" y="433" width="96" height="5" rx="2.5" fill="${ink}" opacity=".15"/>` +
+    `<g transform="translate(482 160) rotate(-24) scale(36)"><path d="M0 -1A1 1 0 0 0 0 1A1.2 1.2 0 0 1 0 -1Z" fill="${moon}"/></g>` +
+    `<path d="M118 414l6 16 16 6-16 6-6 16-6-16-16-6 16-6z" fill="${gold}"/><path d="M493 375l4 11 11 4-11 4-4 11-4-11-11-4 11-4z" fill="${gold}" opacity=".8"/>` +
+    `</g>` +
     `</svg>`
   );
 }

@@ -90,6 +90,8 @@ export interface DataAnswerProps {
   /** The question's level; 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<DataAnswerLabels>;
+  /** Speak status and copy feedback politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -130,6 +132,7 @@ export function DataAnswer({
   error,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: DataAnswerProps) {
   const { config } = useSystem(),
@@ -160,6 +163,10 @@ export function DataAnswer({
   // One polite region, one sentence per change of status. It mounts empty, and
   // the status it mounts in is not news.
   useEffect(() => {
+    if (announcement === "off") {
+      heard.current = status;
+      return;
+    }
     if (heard.current === null) {
       heard.current = status;
       return;
@@ -380,6 +387,10 @@ export function DataAnswer({
         <div className="tz-data-answer-actions">
           {copying && (
             <FeedbackBar
+              announcement="off"
+              onCopyAnnouncement={(message) => {
+                if (live.current) live.current.textContent = message;
+              }}
               onCopy={() =>
                 onCopy?.(
                   answerText(
@@ -424,13 +435,15 @@ export function DataAnswer({
         if (event.relatedTarget) lastFocus.current = null;
       }}
     >
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       {appearance === "card" ? (
         <Tray paper={false} header={header} footer={decision || undefined}>
           {panel}

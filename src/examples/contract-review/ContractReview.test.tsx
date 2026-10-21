@@ -5,8 +5,14 @@ import { ContractReview } from "./ContractReview";
 
 // The send is recorded after the host's moment, so these tests move a fake
 // clock. It also ticks with real time, which Testing Library's waits need.
-beforeEach(() => vi.useFakeTimers({ shouldAdvanceTime: true }));
-afterEach(() => vi.useRealTimers());
+beforeEach(() => {
+  window.history.replaceState({}, "", "/examples/contract-review?demo=off");
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+});
+afterEach(() => {
+  vi.useRealTimers();
+  window.history.replaceState({}, "", "/");
+});
 const pass = (ms: number) =>
   act(async () => {
     await vi.advanceTimersByTimeAsync(ms);
@@ -40,6 +46,40 @@ async function decideAll(user: User) {
   await decide(user, "c2", "قبول");
   await decide(user, "c3", "رفض");
 }
+
+it("prepares edits on opening without focusing the review or making any decision", async () => {
+  window.history.replaceState({}, "", "/examples/contract-review");
+  const user = setup();
+  expect(document.querySelector(".tz-suggested-edits")).toHaveAttribute(
+    "data-status",
+    "rewriting",
+  );
+  expect(screen.queryByRole("dialog", { name: /اقتراح المساعد/ })).toBeNull();
+  expect(document.querySelectorAll('[aria-live="polite"]')).toHaveLength(1);
+  expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  expect(document.body).toHaveFocus();
+  await pass(5000);
+  expect(review()).toBeInTheDocument();
+  expect(document.body).toHaveFocus();
+  expect(screen.getByText("٣ تعديلات بانتظار قرارك")).toBeInTheDocument();
+  expect(noApproval()).toBeNull();
+  expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  expect(review().querySelector('[aria-pressed="true"]')).toBeNull();
+
+  await decide(user, "c1", "قبول");
+  expect(screen.getByText("تعديلان بانتظار قرارك")).toBeInTheDocument();
+  expect(noApproval()).toBeNull();
+});
+
+it("opens the manual review when requested during the opening presentation", async () => {
+  window.history.replaceState({}, "", "/examples/contract-review");
+  const user = setup();
+  await pass(800);
+  await user.click(screen.getByRole("button", { name: "راجع التعديلات" }));
+  expect(review()).toBeInTheDocument();
+  expect(within(review()).getByRole("heading", { level: 3 })).toHaveFocus();
+  expect(noApproval()).toBeNull();
+});
 
 it("uses one initially empty announcement region through review and recording", async () => {
   const user = setup();

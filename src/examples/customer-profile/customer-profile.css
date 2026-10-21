@@ -1,5 +1,5 @@
 /* Customer profile (example-screens spec §3.3). Every rule names .customer-profile.
-   The tabs take the main column; beside it, from 960px, a 20rem end panel
+   The tabs take the main column; beside it, from 960px, a 22rem end panel
    holds Start a task and its answer. Below that the panel follows the tabs. */
 .customer-profile-crumbs {
   margin-block-end: var(--space-3);
@@ -37,7 +37,17 @@
   margin: 0;
   font-weight: var(--weight-medium);
 }
-/* In 20rem the pattern's question is a heading, not a banner. */
+/* An AI workspace is visually distinct from the customer's record cards. */
+.customer-profile-panel {
+  min-inline-size: 0;
+  border: 1px solid color-mix(in srgb, var(--ai) 25%, var(--border));
+  background: var(--ai-soft);
+}
+.customer-profile-panel .screen-agent-heading {
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid color-mix(in srgb, var(--ai) 20%, var(--border));
+}
+/* In the side panel the pattern's question is a heading, not a banner. */
 .customer-profile-panel .tz-task-starter-title {
   font-size: var(--text-heading);
 }
@@ -57,7 +67,7 @@
 }
 @container screen (width >= 960px) {
   .customer-profile {
-    grid-template-columns: minmax(0, 1fr) 20rem;
+    grid-template-columns: minmax(0, 1fr) 22rem;
   }
   /* One card at its content's height, in view while the tabs scroll. */
   .customer-profile-panel {

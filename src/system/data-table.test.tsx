@@ -174,3 +174,24 @@ it("uses the caller locale, preserves equal-value order, and sorts Arabic text",
     "يوسف",
   ]);
 });
+
+it("keeps counts and pagination visible when the host owns announcements", async () => {
+  const user = userEvent.setup();
+  render(
+    <DataTable
+      data={rows}
+      columns={columns}
+      getRowId={(row) => row.id}
+      caption="Customers"
+      locale="en"
+      labels={labels}
+      emptyContent="Empty"
+      announcement="off"
+    />,
+  );
+  expect(screen.queryByRole("status")).toBeNull();
+  expect(document.querySelector('[aria-live="polite"]')).toBeNull();
+  expect(screen.getByText("1–10 of 23")).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "Next" }));
+  expect(screen.getByText("11–20 of 23")).toBeVisible();
+});

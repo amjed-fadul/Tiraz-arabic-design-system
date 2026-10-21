@@ -151,6 +151,8 @@ export interface AgentTaskProps {
   /** The title's level; 3 by default. Nested headings sit one deeper. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<AgentTaskLabels>;
+  /** Speak status and steering feedback politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -172,6 +174,7 @@ function AgentRunStep({
   scope,
   agent,
   status,
+  announcement,
   onApplyNoteNow,
   onRemoveNote,
   onDecision,
@@ -188,6 +191,7 @@ function AgentRunStep({
   AgentTaskProps,
   | "agent"
   | "status"
+  | "announcement"
   | "onApplyNoteNow"
   | "onRemoveNote"
   | "onDecision"
@@ -340,6 +344,9 @@ function AgentRunStep({
               <ApprovalCard
                 request={step.request}
                 {...step.approval}
+                announcement={
+                  announcement === "off" ? "off" : step.approval?.announcement
+                }
                 agent={step.agent ?? agent}
                 appearance="plain"
                 headingLevel={level}
@@ -405,6 +412,7 @@ export function AgentTask({
   primaryAction,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: AgentTaskProps) {
   const { config } = useSystem(),
@@ -485,6 +493,10 @@ export function AgentTask({
       .filter((note) => note.applied && noted.current?.get(note.id) === false)
       .map((note) => copy.pickedUpNote(note.text));
     noted.current = new Map(notes.map((note) => [note.id, note.applied]));
+    if (announcement === "off") {
+      heard.current = text;
+      return;
+    }
     // The status the task mounts in is not news, except a proposed plan, which
     // asks to be seen (§8 and §18 announce transitions only).
     if (heard.current === null && status !== "plan") {
@@ -576,6 +588,7 @@ export function AgentTask({
             scope={root}
             agent={agent}
             status={status}
+            announcement={announcement}
             onApplyNoteNow={onApplyNoteNow}
             onRemoveNote={onRemoveNote}
             onDecision={onDecision}
@@ -785,13 +798,15 @@ export function AgentTask({
         if (event.relatedTarget) lastFocus.current = null;
       }}
     >
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       <span ref={said} hidden>
         {sentence}
       </span>

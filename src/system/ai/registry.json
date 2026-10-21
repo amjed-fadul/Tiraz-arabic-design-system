@@ -1523,6 +1523,14 @@
           "note": "Replaces any built-in text; contextStatus(status) is the region's sentence when the ring crosses a threshold."
         },
         {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "Speak context additions, removals and threshold crossings by default. Set off when the host owns announcements; muted context changes are not replayed when announcements resume."
+        },
+        {
           "name": "appearance",
           "type": "\"card\" | \"plain\"",
           "required": false,
@@ -1533,7 +1541,7 @@
       ],
       "state": "The host owns the draft, the attached records, the mode and the model. The pattern keeps only what the moment needs: the @ word at the caret, which option is active and whether a submission is pending. It never runs a request: onSubmit hands the draft and the records to the host.",
       "accessibility": [
-        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. It also says «السياق: يقترب من الامتلاء» once each time the ring's status word changes, as ContextMeter's region does, never at mount. A failed send is announced and shown by the entry's own status.",
+        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. It also says «السياق: يقترب من الامتلاء» once each time the ring's status word changes, as ContextMeter's region does, never at mount. A failed send is announced and shown by the entry's own status. Set announcement=\"off\" when the host owns context announcements; muted changes are not replayed.",
         "The @ picker is a standard combobox on the text area: focus never leaves it, aria-activedescendant names the active option, and Escape closes the picker, not the page. A held Enter acts once. Keys from an input method (composition events, isComposing and keyCode 229) never choose, move or send.",
         "The mode menu is a Radix menu of radio items: arrows move, Escape closes it and returns focus to the button, Tab closes it. The button's name is «الوضع: تلقائي» and it is described by «السياق المستخدم ٣٢٪».",
         "When a change removes the focused control (a chip's remove button), focus moves to the section."
@@ -1698,6 +1706,14 @@
           "note": "Replaces any built-in text; thinkingPanel and feedbackBar carry the nested parts' words."
         },
         {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "Speak status changes and successful copy feedback through one shared region. Set off when the host owns announcements; visible copy feedback is preserved and muted status changes are not replayed."
+        },
+        {
           "name": "appearance",
           "type": "\"card\" | \"plain\"",
           "required": false,
@@ -1708,7 +1724,7 @@
       ],
       "state": "The host owns the status, the text, the sources, the rating and every time. The pattern never advances by itself: it shows the thinking panel, streams the words it is given and reports what the person asks for. The panel folds when writing starts unless the host controls it.",
       "accessibility": [
-        "A section labelled by the question (or «إجابة موثّقة»). One polite region says each change of status in one sentence: يفكّر, يكتب الإجابة, اكتملت الإجابة, تعذّر إكمال الإجابة or أُوقفت الإجابة. The status the answer mounts in is not announced. The answer's words, the elapsed time and the copy confirmation never reach a live region: the thinking panel and the streamed text run with announcement off, and the bar has none.",
+        "A section labelled by its question. One polite region says each status change once and announces successful copy feedback. The status on mount, answer text, chart and elapsed time are not announced. The thinking panel, streamed text and FeedbackBar suppress their own regions; the bar delegates copy confirmation to this pattern. announcement=\"off\" removes the shared region so a host can own announcements, while preserving visible copy feedback.",
         "A citation chip is a link when its source has a safe destination, so Enter and a click open it; otherwise it is a button that Tab reaches, and a click or focus previews it. Hover or focus shows the source's title and description in a tooltip that carries no link, Escape or blur closes it, and the pointer moving onto it keeps it open (WCAG 1.4.13). The chip's name is «المصدر ١: العنوان» in the provider's digits. A tap on a touch screen opens the source's card instead of following the link: a dialog named by the source's title, holding «فتح المصدر», which a second tap, a tap outside or Escape closes.",
         "A failure stays as text beside the partial answer, with Try again. When a change removes the focused control (Stop, Try again, Regenerate), focus moves to the section. Moving to a status never moves focus."
       ],
@@ -1859,6 +1875,14 @@
           "note": "Replaces any built-in text; thinkingPanel and feedbackBar carry the nested parts' words."
         },
         {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "Speak status changes and successful copy feedback through one shared region. Set off when the host owns announcements; visible copy feedback is preserved and muted status changes are not replayed."
+        },
+        {
           "name": "appearance",
           "type": "\"card\" | \"plain\"",
           "required": false,
@@ -1869,7 +1893,7 @@
       ],
       "state": "The host owns the status, the chart and its data for every type, the text, the tables and every time. The pattern never fetches, computes or reshapes anything and never advances by itself: it shows the thinking, draws the chart it is given, and reports what the person asks for, including the chart type to show next.",
       "accessibility": [
-        "A section labelled by the question. One polite region says each change of status in one sentence: يفكّر, اكتملت الإجابة, تعذّر إكمال الإجابة or لا توجد بيانات لهذه الفترة. The status the answer mounts in is not announced, and an unchanged status is not announced again. The chart, the thinking panel and the copy confirmation never reach a live region.",
+        "A section labelled by its question. One polite region says each status change once and announces successful copy feedback. The status on mount, answer text, chart and elapsed time are not announced. The thinking panel, streamed text and FeedbackBar suppress their own regions; the bar delegates copy confirmation to this pattern. announcement=\"off\" removes the shared region so a host can own announcements, while preserving visible copy feedback.",
         "The status pill names the state once, in words: يفكّر, اكتملت or تعثّرت. The chart is a named region with its visible summary. «كيف حُسب هذا؟» is a button with aria-expanded over a definition list, which is hidden and inert while folded. The chart type is a native radio group named «نوع الرسم», so the arrow keys move and change it; each option is named by its visible word.",
         "A failure stays as text with Try again. When a change removes the focused control (Try again, Pin, a chart type), focus moves to the section. Moving to a status never moves focus."
       ],
@@ -2056,6 +2080,14 @@
           "note": "Replaces any built-in text, including the step and operation counts."
         },
         {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "Speak status and steering feedback politely by default. Set off when the host owns announcements; this also silences embedded approvals, even when their details request polite announcements. Muted status and note changes are not replayed when announcements resume."
+        },
+        {
           "name": "appearance",
           "type": "\"card\" | \"plain\"",
           "required": false,
@@ -2066,7 +2098,7 @@
       ],
       "state": "The host owns the status, the steps, the times and the outputs; the pattern never advances by itself. The countdown is a UI affordance the host opts into, and it calls onStart. The inline approval keeps ApprovalCard's decision integrity: a decision counts only after the host's promise resolves.",
       "accessibility": [
-        "A section labelled by its title. One polite region says each status once in one sentence: خطة مقترحة (with the countdown's sentence), يعمل, {title}: يحتاج قرارك, تعثّرت: {error title}, أُوقفت and اكتملت المهمة. It also says each note once: where a sent note goes, and أخذ الوكيل بتوجيهك: {text} when a note's applied turns true; notes applied at mount are not news. Elapsed time, step durations and countdown ticks never reach it; the countdown and the tool calls run with announcement off, and the inline approval keeps its own region.",
+        "A section labelled by its title. One polite region says each status once in one sentence: خطة مقترحة (with the countdown's sentence), يعمل, {title}: يحتاج قرارك, تعثّرت: {error title}, أُوقفت and اكتملت المهمة. It also says each note once: where a sent note goes, and أخذ الوكيل بتوجيهك: {text} when a note's applied turns true; notes applied at mount are not news. Elapsed time, step durations and countdown ticks never reach it; the countdown and the tool calls run with announcement off, and the inline approval keeps its own region. Set announcement=\"off\" to silence both the task region and embedded approval regions when the host owns announcements.",
         "Each step's icon has a hidden state word (لم تبدأ، قيد التنفيذ، بانتظارك، مكتملة، تعثّرت، تُخطّيت); a failure stays as text beside its step. Details are a disclosure whose closed panel is hidden and inert at once; collapsing returns focus to Details unless the person moved it elsewhere. When a change removes the focused control, focus moves to the section. Moving to needs-you never moves focus."
       ],
       "limitations": [
@@ -6909,6 +6941,14 @@
           "required": false,
           "default": false,
           "note": "Sets table aria-busy, shows a page of skeleton rows and disables pagination. Does not fetch data."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "Speak result counts by default. Set off when the host owns announcements; counts and pagination remain visible."
         }
       ],
       "examples": [
@@ -11634,7 +11674,14 @@
           "type": "() => void | Promise<void>",
           "required": false,
           "default": "undefined",
-          "note": "The host copies the text. «نُسخت» is a visible word for two seconds once the promise resolves; the copy button keeps its name. The word is always rendered, in a polite span with no role, with only its visibility toggled, so the buttons never shift; a rejection shows nothing, and a result that arrives after unmount is ignored."
+          "note": "The host copies the text. The copied label stays visible for two seconds once the promise resolves; the copy button keeps its name. The word stays mounted with only its visibility toggled so the buttons never shift. announcement controls its live semantics. A rejection shows nothing, and a result after unmount is ignored."
+        },
+        {
+          "name": "onCopyAnnouncement",
+          "type": "(message: string) => void",
+          "required": false,
+          "default": "undefined",
+          "note": "Receives an empty string when a copy starts, then the localized copied label only after the copy succeeds while mounted. Pair with announcement=\"off\" to reuse the owner’s live region. Rejected copies and results after unmount do not report success."
         },
         {
           "name": "onRegenerate",
@@ -11648,9 +11695,17 @@
           "required": false,
           "default": "undefined",
           "note": "Replaces any built-in text."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "Speak successful copy feedback locally by default. Set off and handle onCopyAnnouncement to reuse a containing pattern’s live region; the visible confirmation is unchanged."
         }
       ],
-      "purpose": "Copy, regenerate, helpful and not helpful (with reasons) as quiet icon buttons in a named group. Each button shows only when its handler exists. The bar has no status region, so its owner pattern keeps the one announcement; only the copy confirmation sits in a polite span with no role. A thumb that is on is filled, so color is not the only signal."
+      "purpose": "Copy, regenerate, helpful and not helpful (with reasons) as quiet icon buttons in a named group. Each button shows only when its handler exists. Standalone copy confirmation is polite by default; containing patterns set announcement=\"off\" and route onCopyAnnouncement into their one region. A thumb that is on is filled, so color is not the only signal."
     },
     {
       "id": "follow-ups",

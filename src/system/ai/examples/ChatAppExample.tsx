@@ -1,5 +1,6 @@
-import { Pencil, Trash2 } from "lucide-react";
-import { useId, useRef, useState } from "react";
+import { Pause, Pencil, Play, RotateCcw, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
+import type { SyntheticEvent } from "react";
 import {
   AgentTask,
   AskUserQuestions,
@@ -13,6 +14,7 @@ import {
   TaskStarter,
   numberLocale,
   useSystem,
+  useReducedMotion,
 } from "../../index";
 import type {
   AgentStep,
@@ -182,21 +184,31 @@ function AnsweredQuestions({ language }: { language: Language }) {
 export function ChatAppExample({
   language = "ar",
   longContent = false,
+  autoPlay = false,
 }: {
   language?: Language;
   /** Gives the task's details a long run of operations to scroll through. */
   longContent?: boolean;
+  /** Plays the standalone opening once; documentation examples stay still. */
+  autoPlay?: boolean;
 }) {
   return (
-    <ChatAppHost key={language} language={language} longContent={longContent} />
+    <ChatAppHost
+      key={language}
+      language={language}
+      longContent={longContent}
+      autoPlay={autoPlay}
+    />
   );
 }
 function ChatAppHost({
   language,
   longContent,
+  autoPlay,
 }: {
   language: Language;
   longContent: boolean;
+  autoPlay: boolean;
 }) {
   const ar = language === "ar",
     { config } = useSystem();
@@ -214,6 +226,50 @@ function ChatAppHost({
   const today = t("اليوم", "Today"),
     lastWeek = t("الأسبوع الماضي", "Last week");
 
+  const reducedMotion = useReducedMotion();
+  const demoEnabled =
+    autoPlay &&
+    !reducedMotion &&
+    new URLSearchParams(window.location.search).get("demo") !== "off";
+  const [demoElapsed, setDemoElapsed] = useState(0);
+  const [demoPaused, setDemoPaused] = useState(false);
+  const [demoInterrupted, setDemoInterrupted] = useState(false);
+  const [demoReplaying, setDemoReplaying] = useState(false);
+  const demoSent = useRef(false);
+  const replaySubmitGesture = useRef<"pointer" | "Enter" | " " | null>(null);
+  const demoActive = demoEnabled && !demoInterrupted && demoElapsed < 7400;
+  const demoPhase = !demoActive
+    ? "complete"
+    : demoElapsed < 2200
+      ? "typing"
+      : demoElapsed < 2600
+        ? "sending"
+        : "working";
+  const openingPrompt = t("جهّز إقفال أكتوبر", "Prepare the October close");
+  const demoDraft =
+    demoPhase === "typing"
+      ? Array.from(openingPrompt)
+          .slice(
+            0,
+            Math.floor(
+              Array.from(openingPrompt).length *
+                Math.min(1, demoElapsed / 2000),
+            ),
+          )
+          .join("")
+      : openingPrompt;
+  const demoPresentation = demoReplaying && demoActive;
+  const demoWorking = demoPhase === "working";
+  const demoStep = Math.floor(Math.max(0, demoElapsed - 2600) / 1600);
+  useEffect(() => {
+    if (!demoActive || demoPaused) return;
+    const timer = setInterval(() => {
+      if (document.visibilityState !== "hidden")
+        setDemoElapsed((elapsed) => Math.min(7400, elapsed + 40));
+    }, 40);
+    return () => clearInterval(timer);
+  }, [demoActive, demoPaused]);
+
   // The conversations Laila has had with the assistant. Only the October close
   // holds patterns; the others are short exchanges in plain text.
   const [conversations, setConversations] = useState<Conversation[]>(() => [
@@ -222,24 +278,26 @@ function ChatAppHost({
       title: t("إقفال أكتوبر", "October close"),
       group: today,
       draft: "",
-      turns: [
-        {
-          id: "close-1",
-          role: "user",
-          text: t(
-            "لماذا انخفض التدفق النقدي في أكتوبر؟",
-            "Why did cash flow fall in October?",
-          ),
-        },
-        { id: "close-answer", role: "assistant", kind: "answer" },
-        {
-          id: "close-2",
-          role: "user",
-          text: t("جهّز إقفال أكتوبر", "Prepare the October close"),
-        },
-        { id: "close-questions", role: "assistant", kind: "questions" },
-        { id: "close-task", role: "assistant", kind: "task" },
-      ],
+      turns: demoEnabled
+        ? []
+        : [
+            {
+              id: "close-1",
+              role: "user",
+              text: t(
+                "لماذا انخفض التدفق النقدي في أكتوبر؟",
+                "Why did cash flow fall in October?",
+              ),
+            },
+            { id: "close-answer", role: "assistant", kind: "answer" },
+            {
+              id: "close-2",
+              role: "user",
+              text: t("جهّز إقفال أكتوبر", "Prepare the October close"),
+            },
+            { id: "close-questions", role: "assistant", kind: "questions" },
+            { id: "close-task", role: "assistant", kind: "task" },
+          ],
     },
     {
       id: "late",
@@ -336,6 +394,17 @@ function ChatAppHost({
     field = useRef<HTMLInputElement>(null),
     formId = useId();
   const current = conversations.find((item) => item.id === activeId)!;
+  // Replay renders temporary turns over the selected conversation. Its real
+  // messages, draft, identity and decisions stay in their host state.
+  const visibleTurns: Turn[] = demoPresentation
+    ? demoElapsed >= 2600
+      ? [
+          { id: "demo-request", role: "user", text: openingPrompt },
+          { id: "demo-task", role: "assistant", kind: "task" },
+        ]
+      : []
+    : current.turns;
+
   function patch(id: string, update: (item: Conversation) => Conversation) {
     setConversations((previous) =>
       previous.map((item) => (item.id === id ? update(item) : item)),
@@ -365,26 +434,100 @@ function ChatAppHost({
     setConversations(next);
     if (id === activeId) setActiveId(next[0].id);
   }
-  function submit(text: string) {
-    const id = ++sequence.current;
-    patch(activeId, (item) => ({
-      ...item,
-      draft: "",
-      turns: [
-        ...item.turns,
-        { id: `user-${id}`, role: "user", text },
-        {
-          id: `reply-${id}`,
-          role: "assistant",
-          kind: "text",
-          // The example has no model; it answers every request alike.
-          text: t(
-            "استلمتُ طلبك، وسأعود إليك بالنتيجة.",
-            "I've got your request, and I'll come back with the result.",
-          ),
-        },
-      ],
-    }));
+  const submit = useCallback(
+    (text: string, opening = false) => {
+      const id = ++sequence.current;
+      setConversations((previous) =>
+        previous.map((item) =>
+          item.id === activeId
+            ? {
+                ...item,
+                draft: "",
+                turns: [
+                  ...item.turns,
+                  { id: `user-${id}`, role: "user", text },
+                  {
+                    id: `reply-${id}`,
+                    role: "assistant",
+                    kind: opening ? "task" : "text",
+                    // The opening replays the task below. Other requests get a receipt.
+                    text: ar
+                      ? "استلمتُ طلبك، وسأعود إليك بالنتيجة."
+                      : "I've got your request, and I'll come back with the result.",
+                  },
+                ],
+              }
+            : item,
+        ),
+      );
+    },
+    [activeId, ar],
+  );
+
+  // Only the first opening submits this sample request; replay is visual.
+  // Approval recording stays in the task's onDecision handler below.
+  const demoReadyToSend =
+    demoEnabled && !demoInterrupted && !demoReplaying && demoElapsed >= 2600;
+  useEffect(() => {
+    if (!demoReadyToSend || demoSent.current) return;
+    demoSent.current = true;
+    submit(openingPrompt, true);
+  }, [demoReadyToSend, openingPrompt, submit]);
+  function stopOpening() {
+    if (!demoActive) return;
+    if (!demoReplaying && !demoSent.current)
+      patch("close", (item) => ({ ...item, draft: demoDraft }));
+    setDemoInterrupted(true);
+  }
+  function interruptOpening(event: SyntheticEvent) {
+    if (
+      !(event.target instanceof Element) ||
+      event.target.closest("[data-chat-demo-control]")
+    )
+      return;
+    const sendButton = !!event.target.closest(".tz-chat-entry-send");
+    const key = "key" in event ? event.key : undefined;
+    const submitKey =
+      (key === "Enter" && (sendButton || event.target.matches("textarea"))) ||
+      (key === " " && sendButton);
+    let consume = false;
+    // Restoring a saved draft on pointerdown must not let the following click
+    // submit text the person could not see when they pressed Send. Keep held
+    // keyboard activations blocked through keyup for the same reason.
+    if (event.type === "pointerdown") {
+      replaySubmitGesture.current =
+        demoPresentation && sendButton ? "pointer" : null;
+    } else if (event.type === "keydown") {
+      if (
+        submitKey &&
+        (demoPresentation || replaySubmitGesture.current === key)
+      ) {
+        replaySubmitGesture.current = key === "Enter" ? "Enter" : " ";
+        consume = true;
+      } else replaySubmitGesture.current = null;
+    } else if (event.type === "keyup" && replaySubmitGesture.current === key) {
+      replaySubmitGesture.current = null;
+      consume = true;
+    } else if (
+      event.type === "click" &&
+      sendButton &&
+      (demoPresentation || replaySubmitGesture.current !== null)
+    ) {
+      if (replaySubmitGesture.current === "pointer")
+        replaySubmitGesture.current = null;
+      consume = true;
+    }
+    if (consume) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    stopOpening();
+  }
+  function replayOpening() {
+    setDemoReplaying(true);
+    setDemoElapsed(0);
+    setDemoInterrupted(false);
+    setDemoPaused(false);
   }
 
   // The answer to the first question, from the shared story.
@@ -436,7 +579,7 @@ function ChatAppHost({
 
   // The close task: Laila approved the first three steps' work, and the fourth
   // waits on her decision. Approving finishes it.
-  const done = task.status === "completed",
+  const done = !demoPresentation && task.status === "completed",
     rejected = done && task.decision === "rejected";
   const details = [
     t(
@@ -523,8 +666,13 @@ function ChatAppHost({
     );
   const durations = [64, 48, 22, 9, 17];
   const steps: AgentStep[] = story.closeSteps.map((step, index) => {
-    const state: AgentStep["state"] =
-      index === 3 && rejected
+    const state: AgentStep["state"] = demoWorking
+      ? index < demoStep
+        ? "completed"
+        : index === demoStep
+          ? "running"
+          : "pending"
+      : index === 3 && rejected
         ? "skipped"
         : done || index < 3
           ? "completed"
@@ -534,7 +682,7 @@ function ChatAppHost({
     return {
       id: step.id,
       title: step.title[language],
-      detail: details[index],
+      detail: demoWorking && index >= demoStep ? undefined : details[index],
       state,
       duration: state === "completed" ? durations[index] : undefined,
       tools:
@@ -556,79 +704,88 @@ function ChatAppHost({
   });
 
   const finished = steps.filter((step) => step.state === "completed");
-  const panel = current.id === "close" && (
-    <div style={{ display: "grid", gap: "var(--space-4)" }}>
-      <div style={{ display: "grid", gap: "var(--space-2)" }}>
-        <h2
-          style={{
-            margin: 0,
-            fontSize: "var(--text-subheading)",
-            fontWeight: "var(--weight-semibold)",
-          }}
-        >
-          {t("تفاصيل المهمة", "Task details")}
-        </h2>
-        <p
-          style={{
-            margin: 0,
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-2)",
-            color: "var(--text-secondary)",
-            fontSize: "var(--text-meta)",
-          }}
-        >
-          <StatusPill
-            state={done ? "completed" : "needs-you"}
-            label={done ? t("اكتملت", "Done") : t("بانتظارك", "Needs you")}
-          />
-          {story.agents.finance[language]}
-        </p>
-      </div>
-      {finished.map((step) => (
-        <div key={step.id} style={{ display: "grid", gap: "var(--space-2)" }}>
-          <h3
+  const panel = (demoPresentation || current.id === "close") &&
+    visibleTurns.some(
+      (turn) => turn.role === "assistant" && turn.kind === "task",
+    ) && (
+      <div style={{ display: "grid", gap: "var(--space-4)" }}>
+        <div style={{ display: "grid", gap: "var(--space-2)" }}>
+          <h2
             style={{
               margin: 0,
-              fontSize: "var(--text-body)",
-              fontWeight: "var(--weight-medium)",
+              fontSize: "var(--text-subheading)",
+              fontWeight: "var(--weight-semibold)",
             }}
           >
-            {step.title}
-          </h3>
-          <ul
+            {t("تفاصيل المهمة", "Task details")}
+          </h2>
+          <p
             style={{
               margin: 0,
-              padding: 0,
-              listStyle: "none",
-              display: "grid",
+              display: "flex",
+              alignItems: "center",
               gap: "var(--space-2)",
-              fontSize: "var(--text-label)",
+              color: "var(--text-secondary)",
+              fontSize: "var(--text-meta)",
             }}
           >
-            {step.tools?.map((operation) => (
-              <li key={`${operation.tool}-${operation.label}`}>
-                {operation.label}
-                <small
-                  style={{
-                    display: "block",
-                    color: "var(--text-secondary)",
-                    fontSize: "var(--text-meta)",
-                  }}
-                >
-                  <bdi dir="ltr" style={{ fontFamily: "var(--font-mono)" }}>
-                    {operation.tool}
-                  </bdi>
-                  {" · "}
-                  {operation.duration}
-                </small>
-              </li>
-            ))}
-          </ul>
+            <StatusPill
+              state={demoWorking ? "running" : done ? "completed" : "needs-you"}
+              label={
+                demoWorking
+                  ? t("يعمل", "Working")
+                  : done
+                    ? t("اكتملت", "Done")
+                    : t("بانتظارك", "Needs you")
+              }
+            />
+            {story.agents.finance[language]}
+          </p>
         </div>
-      ))}
-    </div>
-  );
+        {finished.map((step) => (
+          <div key={step.id} style={{ display: "grid", gap: "var(--space-2)" }}>
+            <h3
+              style={{
+                margin: 0,
+                fontSize: "var(--text-body)",
+                fontWeight: "var(--weight-medium)",
+              }}
+            >
+              {step.title}
+            </h3>
+            <ul
+              style={{
+                margin: 0,
+                padding: 0,
+                listStyle: "none",
+                display: "grid",
+                gap: "var(--space-2)",
+                fontSize: "var(--text-label)",
+              }}
+            >
+              {step.tools?.map((operation) => (
+                <li key={`${operation.tool}-${operation.label}`}>
+                  {operation.label}
+                  <small
+                    style={{
+                      display: "block",
+                      color: "var(--text-secondary)",
+                      fontSize: "var(--text-meta)",
+                    }}
+                  >
+                    <bdi dir="ltr" style={{ fontFamily: "var(--font-mono)" }}>
+                      {operation.tool}
+                    </bdi>
+                    {" · "}
+                    {operation.duration}
+                  </small>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    );
 
   const answer = (
     <CitedAnswer
@@ -657,9 +814,11 @@ function ChatAppHost({
       headingLevel={2}
       title={t("إقفال حسابات أكتوبر", "Close the October books")}
       agent={story.agents.finance[language]}
-      status={task.status}
+      status={demoWorking ? "running" : task.status}
       steps={steps}
-      elapsed={done ? 220 : 132}
+      elapsed={
+        demoWorking ? Math.floor((demoElapsed - 2600) / 1000) : done ? 220 : 132
+      }
       outputs={
         done
           ? [
@@ -695,8 +854,34 @@ function ChatAppHost({
   );
 
   return (
-    <div className="tz-chat-app-example">
+    <div
+      className="tz-chat-app-example"
+      data-demo-phase={demoEnabled ? demoPhase : undefined}
+      data-demo-paused={(demoActive && demoPaused) || undefined}
+      onPointerDownCapture={interruptOpening}
+      onClickCapture={interruptOpening}
+      onKeyDownCapture={interruptOpening}
+      onKeyUpCapture={interruptOpening}
+      onFocusCapture={(event) => {
+        if (event.target.matches("input, textarea, [contenteditable=true]"))
+          interruptOpening(event);
+      }}
+    >
+      {demoEnabled && (
+        <style>{`
+        .tz-chat-app-example[data-demo-phase="sending"] .tz-chat-entry-send {
+          animation: tz-chat-app-example-send calc(var(--motion-state) * 2) var(--ease-out);
+        }
+        .tz-chat-app-example[data-demo-paused] * {
+          animation-play-state: paused !important;
+        }
+        @keyframes tz-chat-app-example-send {
+          50% { transform: scale(var(--press-scale)); box-shadow: 0 0 0 var(--space-2) var(--action-soft); }
+        }
+      `}</style>
+      )}
       <ChatApp
+        title={demoPresentation ? t("معاينة العرض", "Opening demo") : undefined}
         conversations={conversations}
         activeConversationId={activeId}
         onConversationSelect={setActiveId}
@@ -711,6 +896,34 @@ function ChatAppHost({
         brand={story.team[language]}
         actions={
           <>
+            {demoEnabled && (
+              <span data-chat-demo-control>
+                {demoActive ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setDemoPaused((paused) => !paused)}
+                    aria-label={
+                      demoPaused
+                        ? t("متابعة العرض", "Resume demo")
+                        : t("إيقاف العرض مؤقتًا", "Pause demo")
+                    }
+                  >
+                    {demoPaused ? (
+                      <Play size={14} aria-hidden />
+                    ) : (
+                      <Pause size={14} aria-hidden />
+                    )}
+                    {demoPaused ? t("متابعة", "Resume") : t("إيقاف", "Pause")}
+                  </Button>
+                ) : (
+                  <Button variant="ghost" size="sm" onClick={replayOpening}>
+                    <RotateCcw size={14} aria-hidden />
+                    {t("إعادة العرض", "Replay demo")}
+                  </Button>
+                )}
+              </span>
+            )}
             {/* Renames the open conversation. The row menus open the same
                 dialog, and it hands focus back to this button, its trigger. */}
             <Modal
@@ -823,16 +1036,25 @@ function ChatAppHost({
               ),
             }}
             greeting={
-              current.turns.length === 0
+              visibleTurns.length === 0
                 ? t(`مرحبًا يا ${story.user.ar}`, `Hello, ${story.user.en}`)
                 : undefined
             }
-            value={current.draft}
-            onValueChange={(draft) =>
-              patch(activeId, (item) => ({ ...item, draft }))
+            value={
+              demoActive &&
+              (demoPresentation || activeId === "close") &&
+              demoPhase !== "working"
+                ? demoDraft
+                : demoPresentation
+                  ? ""
+                  : current.draft
             }
-            onSubmit={submit}
-            suggestions={current.turns.length === 0 ? suggestions : undefined}
+            onValueChange={(draft) => {
+              stopOpening();
+              patch(activeId, (item) => ({ ...item, draft }));
+            }}
+            onSubmit={(text) => submit(text)}
+            suggestions={visibleTurns.length === 0 ? suggestions : undefined}
             onSuggestion={(id) => ask(suggestions, id)}
           />
         }
@@ -841,7 +1063,7 @@ function ChatAppHost({
           key={activeId}
           followOutput
           label={t("الرسائل", "Messages")}
-          messages={current.turns.map((turn) => ({
+          messages={visibleTurns.map((turn) => ({
             id: turn.id,
             role: turn.role,
             content:

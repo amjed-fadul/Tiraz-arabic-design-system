@@ -26,6 +26,8 @@ import { daysLate, reminderText, statusOf } from "./invoice";
 import type { InvoiceStatus } from "./invoice";
 import { dayCount, invoiceCount, lateInvoices } from "./words";
 import "./invoices.css";
+import { ScreenAgentHeading } from "../frame/ScreenDemo";
+import { useScreenDemo } from "../frame/useScreenDemo";
 
 type Status = DraftReviewProps["status"];
 /** What the host keeps for one invoice's reminder. */
@@ -60,8 +62,10 @@ function Reminder({
   headingLevel,
   onBodyChange,
   onSend,
+  announcement = "polite",
 }: {
   invoice: Invoice;
+  announcement?: "polite" | "off";
   draft: Draft;
   headingLevel: 2 | 3;
   onBodyChange: (body: string) => void;
@@ -76,6 +80,7 @@ function Reminder({
       : (draft.edited ?? text);
   return (
     <DraftReview
+      announcement={announcement}
       status={draft.status}
       title={t("تذكير بالسداد", "Payment reminder")}
       agent={story.agents.collections[language]}
@@ -108,6 +113,7 @@ function Reminder({
 }
 
 function InvoicesScreen() {
+  const demo = useScreenDemo();
   const screen = useScreen();
   const { t, language, number, money, date, href, size, endSide } = screen;
   const reduced = useReducedMotion();
@@ -449,6 +455,7 @@ function InvoicesScreen() {
             />
           </FilterBar>
           <DataTable
+            announcement="off"
             data={shown}
             columns={columns}
             getRowId={(invoice) => invoice.id}
@@ -481,13 +488,31 @@ function InvoicesScreen() {
             }}
           />
         </div>
-        {size === "wide" && selectedDraft && (
-          <Card className="invoices-panel">
+        {selectedDraft && (
+          <Card className="invoices-panel screen-agent-panel">
+            <ScreenAgentHeading
+              title={t("وكيل التحصيل", "Collections agent")}
+              description={t(
+                "يجهّز التذكيرات. تراجعها أنت قبل الإرسال.",
+                "Drafts reminders for your review before sending.",
+              )}
+            />
             <CardContent ref={panel}>
               <Reminder
                 key={selected}
+                announcement={openId ? "off" : "polite"}
                 invoice={selectedInvoice}
-                draft={selectedDraft}
+                draft={
+                  demo.active
+                    ? {
+                        status: "writing",
+                        written: Math.floor(
+                          wordsOf(reminderText(selectedInvoice, screen))
+                            .length * demo.progress,
+                        ),
+                      }
+                    : selectedDraft
+                }
                 headingLevel={2}
                 onBodyChange={(body) => edit(selected, body)}
                 onSend={(text) => send(selected, text)}

@@ -8578,18 +8578,22 @@ button.tz-tool-chip[aria-expanded="true"] {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
-/* Each tab's count sits in a quiet capsule after its word. */
+/* Count badges use equal axes, including Arabic-Indic numerals. */
 .tz-decision-inbox-tab {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
 }
 .tz-decision-inbox-count {
-  justify-content: center;
-  min-inline-size: 20px;
-  padding-block: 0;
-  padding-inline: var(--space-1);
-  border-radius: var(--radius-pill);
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  padding: 0;
+  border-radius: 50%;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 /* A narrow inbox, on a phone or in a side sheet, tightens its tabs so all
    four fit; narrower still, the list scrolls as Tabs does. */

@@ -77,6 +77,8 @@ export interface CitedAnswerProps {
   /** The question's level; 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<CitedAnswerLabels>;
+  /** Speak status and copy feedback politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -109,6 +111,7 @@ export function CitedAnswer({
   error,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: CitedAnswerProps) {
   const { config } = useSystem(),
@@ -137,6 +140,10 @@ export function CitedAnswer({
   // One polite region, one sentence per change of status, never the answer. It
   // mounts empty, and the status it mounts in is not news.
   useEffect(() => {
+    if (announcement === "off") {
+      heard.current = status;
+      return;
+    }
     if (heard.current === null) {
       heard.current = status;
       return;
@@ -260,6 +267,10 @@ export function CitedAnswer({
           : (onCopy || onRegenerate || onFeedbackChange) && (
               <div className="tz-cited-answer-decision" data-zone="decision">
                 <FeedbackBar
+                  announcement="off"
+                  onCopyAnnouncement={(message) => {
+                    if (live.current) live.current.textContent = message;
+                  }}
                   feedback={feedback}
                   reason={reason}
                   onFeedbackChange={onFeedbackChange}
@@ -333,13 +344,15 @@ export function CitedAnswer({
         if (event.relatedTarget) lastFocus.current = null;
       }}
     >
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       {heading}
       {appearance === "card" ? (
         <Tray

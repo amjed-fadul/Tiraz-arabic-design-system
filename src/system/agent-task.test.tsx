@@ -607,3 +607,60 @@ it("counts steps and operations with Arabic agreement", () => {
   expect(screen.getByText("وكيل المالية · 5 خطوات")).toBeVisible();
   expect(screen.getByText("3د 40ث · 12 عملية")).toBeVisible();
 });
+
+it("lets the host own announcements and never replays muted task or note changes", () => {
+  const task = (
+    status: "plan" | "running" | "completed",
+    announcement: "off" | "polite",
+    applied = false,
+  ) => (
+    <AgentTask
+      title={title}
+      status={status}
+      announcement={announcement}
+      steps={[
+        {
+          id: "one",
+          title: "Read ledger",
+          state: status === "completed" ? "completed" : "running",
+          notes: [{ id: "note", text: "Check receipts", applied }],
+        },
+      ]}
+    />
+  );
+  const view = render(task("plan", "off"));
+  expect(
+    section().querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(0);
+  view.rerender(task("running", "off", true));
+  view.rerender(task("running", "polite", true));
+  expect(region()).toBeEmptyDOMElement();
+  view.rerender(task("completed", "polite", true));
+  expect(region()).toHaveTextContent("اكتملت المهمة");
+});
+
+it("silences the inline approval when its host owns task announcements", () => {
+  render(
+    <AgentTask
+      title={title}
+      status="needs-you"
+      announcement="off"
+      steps={[
+        {
+          id: "decision",
+          title: "Payment reminders",
+          state: "needs-you",
+          request,
+          approval: { announcement: "polite" },
+        },
+      ]}
+      onDecision={async () => {}}
+    />,
+  );
+  expect(
+    section().querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(0);
+  expect(
+    screen.getByRole("button", { name: request.approveLabel }),
+  ).toBeVisible();
+});

@@ -124,6 +124,8 @@ export interface TaskStarterProps {
   /** The question's level; the recent list's is one lower. 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<TaskStarterLabels>;
+  /** Speak context changes politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -215,6 +217,7 @@ export function TaskStarter({
   onModeMenuOpenChange,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: TaskStarterProps) {
   const { config, container } = useSystem(),
@@ -293,7 +296,7 @@ export function TaskStarter({
   useEffect(() => {
     const before = known.current;
     known.current = context;
-    if (before === context || !live.current) return;
+    if (announcement === "off" || before === context || !live.current) return;
     const added = context.filter(
         (item) => !before.some((b) => b.id === item.id),
       ),
@@ -310,7 +313,14 @@ export function TaskStarter({
   useEffect(() => {
     const was = heard.current;
     heard.current = statusKey;
-    if (was === null || was === statusKey || !status || !live.current) return;
+    if (
+      announcement === "off" ||
+      was === null ||
+      was === statusKey ||
+      !status ||
+      !live.current
+    )
+      return;
     live.current.textContent = copy.contextStatus(status);
   });
   useLayoutEffect(() => {
@@ -744,13 +754,15 @@ export function TaskStarter({
         if (event.relatedTarget) lastFocus.current = null;
       }}
     >
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       {ratio !== null && (
         <span id={`${uid}-used`} hidden>
           {copy.used(percent)}

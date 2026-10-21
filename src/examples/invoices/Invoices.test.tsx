@@ -1,7 +1,11 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it } from "vitest";
 import { Invoices } from "./Invoices";
+
+// These tests exercise decisions in the settled screen; the demo clock has its own tests.
+beforeEach(() => window.history.replaceState(null, "", "?demo=off"));
+afterEach(() => window.history.replaceState(null, "", "/"));
 
 const table = () => screen.getByRole("table", { name: "الفواتير" });
 const rows = () => within(table()).getAllByRole("row").slice(1);
@@ -74,7 +78,7 @@ it("shows INV-1043's draft for سارة العتيبي and marks the row once it
   expect(row("INV-1039")).not.toHaveTextContent("أُرسل التذكير");
 }, 15_000);
 
-it("has no panel below 960px: a row's button opens its own draft in a Sheet from the end edge", async () => {
+it("keeps the AI workspace below 960px and opens a row’s draft in a Sheet from the end edge", async () => {
   const observer = globalThis.ResizeObserver;
   // The frame reads main's width from its ResizeObserver: 700px is medium.
   globalThis.ResizeObserver = class {
@@ -94,7 +98,9 @@ it("has no panel below 960px: a row's button opens its own draft in a Sheet from
   try {
     const user = userEvent.setup();
     render(<Invoices />);
-    expect(screen.queryByRole("region", { name: "تذكير بالسداد" })).toBeNull();
+    expect(
+      screen.getByRole("region", { name: "تذكير بالسداد" }),
+    ).toBeInTheDocument();
     const button = screen.getByRole("button", {
       name: "اكتب تذكيرًا · INV-1033",
     });

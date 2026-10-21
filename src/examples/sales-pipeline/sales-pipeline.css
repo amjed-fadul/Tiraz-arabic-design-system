@@ -166,8 +166,15 @@
 }
 .sales-pipeline-tab-count {
   margin-inline-start: var(--space-1);
-  padding-inline: var(--space-2);
-  border-radius: var(--radius-pill);
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  padding: 0;
+  border-radius: 50%;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  animation: sales-pipeline-count var(--motion-state) var(--ease-out);
   background: var(--wash-strong);
   color: var(--text-secondary);
   font-size: var(--text-meta);
@@ -177,4 +184,49 @@
 }
 .sales-pipeline-sheet {
   min-inline-size: 0;
+}
+
+.sales-pipeline-card {
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
+}
+.sales-pipeline-card[data-arrived] {
+  animation: sales-pipeline-arrive var(--motion-panel) var(--ease-out);
+}
+.sales-pipeline-card:focus-within {
+  border-color: var(--action);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sales-pipeline-card:hover {
+    transform: translateY(calc(var(--space-1) * -0.5));
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-raised);
+  }
+}
+@keyframes sales-pipeline-arrive {
+  from {
+    opacity: 0.4;
+    transform: translateY(var(--space-3));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes sales-pipeline-count {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sales-pipeline-card,
+  .sales-pipeline-tab-count {
+    animation: none;
+    transition: none;
+  }
 }

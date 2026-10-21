@@ -1,9 +1,42 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { expect, it, vi } from "vitest";
 import { CustomerProfile } from "./CustomerProfile";
 
 const question = "كم تأخّرت مدار في السداد كل شهر هذا العام؟";
+
+it("keeps the visible opening prompt on focus and the saved draft on replay takeover", () => {
+  vi.useFakeTimers();
+  const view = render(<CustomerProfile />);
+  try {
+    act(() => vi.advanceTimersByTime(800));
+    fireEvent.click(screen.getByRole("button", { name: "إيقاف العرض مؤقتًا" }));
+    const input = screen.getByRole("combobox", { name: "طلبك" });
+    const visible = (input as HTMLTextAreaElement).value;
+    expect(visible.length).toBeGreaterThan(0);
+    fireEvent.focus(input);
+    expect(input).toHaveValue(visible);
+    fireEvent.change(input, { target: { value: "Keep my customer question" } });
+    fireEvent.click(screen.getByRole("button", { name: "إعادة العرض" }));
+    act(() => vi.advanceTimersByTime(1000));
+    fireEvent.click(screen.getByRole("button", { name: /^إرسال/ }));
+    expect(input).toHaveValue("Keep my customer question");
+    expect(screen.getByRole("region", { name: question })).toHaveAttribute(
+      "data-status",
+      "completed",
+    );
+  } finally {
+    view.unmount();
+    vi.useRealTimers();
+  }
+});
 
 it("lists Madar's two invoices and keeps the activity in the order it happened", async () => {
   const user = userEvent.setup();
