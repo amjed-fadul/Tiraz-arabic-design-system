@@ -285,6 +285,7 @@ export interface Playgrounds {
   "cited-answer": { appearance: "card" | "plain"; question: boolean };
   "data-answer": { appearance: "card" | "plain" };
   "agent-task": { appearance: "card" | "plain"; autoStart: boolean };
+  "decision-inbox": { appearance: "card" | "plain" };
   "suggested-edits": { undo: boolean };
   "image-generation": {
     appearance: "card" | "plain";
@@ -436,6 +437,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "cited-answer": { appearance: "card", question: true },
     "data-answer": { appearance: "card" },
     "agent-task": { appearance: "card", autoStart: true },
+    "decision-inbox": { appearance: "card" },
     "suggested-edits": { undo: true },
     "image-generation": { appearance: "card", knownProgress: true },
     "change-summary": { appearance: "card" },

@@ -15,7 +15,9 @@ export type CountNoun =
   | "operation"
   | "hour"
   | "day"
-  | "customer";
+  | "customer"
+  | "request"
+  | "task";
 
 // Each noun's gender, then its forms for one and two (which stand alone), and
 // for few (3–10), many (11–99) and other (100 and up), which follow the number.
@@ -35,6 +37,8 @@ const arabicForms: Record<
   hour: ["f", "ساعة واحدة", "ساعتان", "ساعات", "ساعة", "ساعة"],
   day: ["m", "يوم واحد", "يومان", "أيام", "يومًا", "يوم"],
   customer: ["m", "عميل واحد", "عميلان", "عملاء", "عميلًا", "عميل"],
+  request: ["m", "طلب واحد", "طلبان", "طلبات", "طلبًا", "طلب"],
+  task: ["f", "مهمة واحدة", "مهمتان", "مهام", "مهمة", "مهمة"],
 };
 const arabicPlural = new Intl.PluralRules("ar");
 const englishPlural = new Intl.PluralRules("en");

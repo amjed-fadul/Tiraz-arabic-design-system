@@ -1202,6 +1202,53 @@ const phaseFamilies: PhaseFamily[] = [
       ],
     ],
   },
+  {
+    id: "decision-inbox",
+    resting: "needsYou",
+    list: [
+      [
+        "needsYou",
+        () => {
+          expect(
+            stage().getByRole("tab", { name: /^بانتظارك/ }),
+          ).toHaveAttribute("aria-selected", "true");
+          // The reversible accruals decide inline; the reminders only open.
+          expect(
+            stage().getByRole("button", {
+              name: "ترحيل القيود ترحيل قيود الاستحقاق الأربعة",
+            }),
+          ).toBeEnabled();
+          expect(
+            stage().getByRole("button", {
+              name: "إرسال تذكيرات الدفع إلى العملاء الثلاثة",
+            }),
+          ).toHaveAttribute("aria-expanded", "false");
+        },
+      ],
+      [
+        "expanded",
+        () => {
+          expect(
+            stage().getByRole("button", {
+              name: "إرسال تذكيرات الدفع إلى العملاء الثلاثة",
+            }),
+          ).toHaveAttribute("aria-expanded", "true");
+          expect(
+            stage().getByRole("button", { name: "أرسل الرسائل" }),
+          ).toBeEnabled();
+        },
+      ],
+      [
+        "empty",
+        () => {
+          expect(stageNode()).toHaveTextContent("لا شيء بانتظارك");
+          expect(stageNode()).toHaveTextContent(
+            "سيظهر هنا كل طلب يحتاج قرارك.",
+          );
+        },
+      ],
+    ],
+  },
 ];
 
 it.each(phaseFamilies)(

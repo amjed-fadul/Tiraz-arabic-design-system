@@ -497,6 +497,80 @@ export function ApiReference({
         ),
       ],
     ],
+    "decision-inbox": [
+      [
+        "items",
+        "readonly DecisionInboxItem[] · required",
+        t(
+          "عناصر تطبيقك بترتيبه، الأكثر إلحاحًا أولًا. لكل عنصر id ثابت وtitle وagent ({ id, name }) وstatus (needs-you | running | failed | completed)، ومعه اختياريًا context سطرًا واحدًا وtime نصًا تنسّقه أنت، وrequest مع approval لطلب موافقة أو questions لأسئلة أو draft لمسودة تنتظر المراجعة، وsteps لآخر ثلاث أو أربع خطوات، وerror للمتعثّر وreceipt لما حدث.",
+          "Your app's items, in its order, most urgent first. Each has a stable id, a title, an agent ({ id, name }) and a status (needs-you | running | failed | completed), and optionally context (one line), time (text you format), request with approval for an approval, questions, or draft for a draft waiting for review, steps for the last three or four, error for a failed task and receipt for what happened.",
+        ),
+      ],
+      [
+        "tab / onTabChange",
+        '"all" | "needs-you" | "running" | "completed" / (tab) => void',
+        t(
+          "التبويب الظاهر، و«بانتظارك» افتراضيًا. يضم «بانتظارك» المنتظِر والمتعثّر، و«يعمل» ما يعمل، و«اكتملت» ما اكتمل، و«الكل» كل عنصر، ولكلٍّ عدده بأرقام القارئ. ولا يُعلَن تغيير التبويب.",
+          "The shown tab, Needs you by default. Needs you holds needs-you and failed items, Running the running ones, Done the completed ones and All every item, each with its count in the reader's digits. Changing the tab announces nothing.",
+        ),
+      ],
+      [
+        "expanded / onExpandedChange",
+        "readonly string[] / (ids: string[]) => void",
+        t(
+          "الصفوف المفتوحة. يفتح العنوانُ الصفَّ، وكذلك «راجع» أو «أجب»، ويبقى التركيز على ما ضُغط ولا يأخذه شيء داخل الصف. ولا يُفتح صفٌّ قرارُه السريع قيد التسجيل، ويطويه Escape من أي مكان فيه ولا يسجّل شيئًا.",
+          "The open rows. The title opens a row, as Review or Answer do; focus stays on what was pressed and nothing inside takes it. A row whose quick decision is being recorded can't open, and Escape anywhere in an open row folds it and records nothing.",
+        ),
+      ],
+      [
+        "agents / agent / onAgentChange",
+        "readonly { id, name, state: StatusPillState }[] / string | null / (id: string | null) => void",
+        t(
+          "شريط الوكلاء: زر تبديل لكل وكيل باسمه وكلمة حالته. يستدعي الضغط onAgentChange(id)، والضغط على المختار onAgentChange(null)، ويصفّي الوكيلُ المختار الصفوفَ والأعداد.",
+          "The agents strip: a toggle per agent, with its name and its state's word. A press calls onAgentChange(id), a press on the picked one onAgentChange(null), and the picked agent filters the rows and the counts.",
+        ),
+      ],
+      [
+        "onDecision",
+        "(request, decision, { signal }) => void | Promise<void>",
+        t(
+          "يسجّل قرار البطاقة في الصف المفتوح، أو القرار السريع لطلب reversible وليس irreversible ولا منتهيًا: زرّا رفض وموافقة ثانويان بلا اختصار، يظهران والصف مطوي. لا يُحتسب القرار حتى يحلّ وعد تطبيقك، ويُلغى إذا تغيّر الطلب أو انتهت مهلته أو صار لا يمكن التراجع عنه. وبلا onDecision يظهر الطلب نصًا دون إجراءات.",
+          "Records the open card's decision, or the quick one of a request that is reversible, not irreversible and not expired: secondary Reject and Approve with no shortcut, shown while the row is closed. A decision counts only once your promise resolves, and is aborted if the request changes, expires or turns irreversible. Without onDecision the request shows as text, with no actions.",
+        ),
+      ],
+      [
+        "onAnswer",
+        "(id, answers, { signal }) => void | Promise<void>",
+        t(
+          "يرسل إجابات أسئلة الصف بعد أن يجيب المستخدم داخله. يحفظ الصندوق مسودة كل صف، فلا يحتفظ بها تطبيقك.",
+          "Sends a row's answers once the person answers in it. The inbox keeps each row's draft, so your app holds none.",
+        ),
+      ],
+      [
+        "onRetry / onOpen",
+        "(id: string) => void / (id: string) => void",
+        t(
+          "«أعد المحاولة» للمتعثّر، و«افتح» لما يعمل وما اكتمل، و«راجع» للمسودة التي يفتحها تطبيقك في مكانها. يظهر كلٌّ إذا مرّرت معالجه فقط، ويُسمّى كل زر بكلمته ثم بعنوان صفه.",
+          "Try again on a failed task, Open on running and done ones, and Review on a draft, which your app opens where it lives. Each shows only with its handler, and each button is named by its word, then its row's title.",
+        ),
+      ],
+      [
+        "receiptFor",
+        "number · seconds",
+        t(
+          "حين ينقل تطبيقك عنصرًا من التبويب الظاهر يبقى صفّه مكانه هذه الثواني مع إيصاله: receipt، وإلا قرار الصف السريع، وإلا كلمة حالته الجديدة، ثم يغادر دون انزلاق. وإن كان التركيز فيه انتقل إلى عنوان الصف التالي، وإلا السابق، وإلا لوحة التبويب. و0 ينقله فورًا.",
+          "When your app moves an item out of the shown tab, its row stays in place this many seconds with its receipt (receipt, else the row's quick decision, else its new status word), then leaves without a glide. Focus in it moves to the next row's title, else the previous one's, else the tab panel. 0 moves it at once.",
+        ),
+      ],
+      [
+        "title / headingLevel / labels / appearance",
+        'ReactNode / 2 | 3 | 4 | 5 | 6 · 3 / Partial<DecisionInboxLabels> / "card" | "plain" · card',
+        t(
+          "العنوان «صندوق القرارات» افتراضيًا، وعناوين الصفوف أعمق منه بمستوى. وتستبدل labels أي نص مدمج، ومنه waiting(count, requests) وrunning(count, tasks) لجملة العدد. واستخدم plain داخل لوحة أو نافذة جانبية.",
+          "The title is Decision inbox by default, and the rows' headings sit one level deeper. labels replaces any built-in text, including waiting(count, requests) and running(count, tasks) for the count sentence. Use plain inside a panel or a sheet.",
+        ),
+      ],
+    ],
     "suggested-edits": [
       [
         "children / actions / onAction",

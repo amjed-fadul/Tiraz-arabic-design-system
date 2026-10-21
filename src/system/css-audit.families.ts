@@ -117,6 +117,9 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "change-summary": [".tz-change-summary"],
   // Ask your data, of Plan 5 Task 3.
   "data-answer": [".tz-data-answer"],
+  // Decision inbox, of Plan 5 Task 4. .tz-decision also holds it to the
+  // decision families' audits.
+  "decision-inbox": [".tz-decision-inbox"],
   // Start a task of Plan 4 Task 5.
   "task-starter": [".tz-task-starter"],
   // Suggested edits and its InlineDiff, of Plan 4 Task 6. .tz-inline also

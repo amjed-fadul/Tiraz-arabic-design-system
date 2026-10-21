@@ -1021,6 +1021,26 @@
       "source": "AgentTask.tsx"
     },
     {
+      "name": "DecisionInbox",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxProps",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxLabels",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxItem",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxTab",
+      "source": "DecisionInbox.tsx"
+    },
+    {
       "name": "SuggestedEdits",
       "source": "SuggestedEdits.tsx"
     },
@@ -2018,6 +2038,164 @@
       "examples": ["ai/examples/AgentTaskExamples.tsx"]
     },
     {
+      "id": "decision-inbox",
+      "api": "DecisionInbox",
+      "source": "DecisionInbox.tsx",
+      "kind": "pattern",
+      "parts": [
+        "ai-mark",
+        "tabs",
+        "status-pill",
+        "tray",
+        "status-icon",
+        "approval-card",
+        "ask-user-questions",
+        "button"
+      ],
+      "states": ["needs-you", "running", "failed", "completed"],
+      "events": [
+        "onTabChange",
+        "onExpandedChange",
+        "onAgentChange",
+        "onDecision",
+        "onAnswer",
+        "onRetry",
+        "onOpen"
+      ],
+      "exports": [
+        "DecisionInbox",
+        "DecisionInboxProps",
+        "DecisionInboxLabels",
+        "DecisionInboxItem",
+        "DecisionInboxTab"
+      ],
+      "purpose": "Collect what waits on the person from every agent in one place, most urgent first: tabs with counts (الكل، بانتظارك، يعمل، اكتملت), rows that open into the full Approval request or Clarifying questions, quick decisions for reversible requests only, receipts, and an optional agents strip. There is no approve-all.",
+      "props": [
+        {
+          "name": "items",
+          "type": "readonly DecisionInboxItem[]",
+          "required": true,
+          "note": "In the host's order, most urgent first; the inbox keeps it. Each item is an approval (request with approval), questions, a draft (draft: true) or a task, with a status of needs-you, running, failed or completed. «بانتظارك» holds needs-you and failed items, «يعمل» running ones, «اكتملت» completed ones and «الكل» every item."
+        },
+        {
+          "name": "tab",
+          "type": "\"all\" | \"needs-you\" | \"running\" | \"completed\"",
+          "required": false,
+          "default": "needs-you",
+          "values": ["all", "needs-you", "running", "completed"],
+          "note": "The shown tab; controlled with onTabChange. Each tab shows its count in the reader's digits. Changing the tab announces nothing."
+        },
+        {
+          "name": "onTabChange",
+          "type": "(tab: DecisionInboxTab) => void",
+          "required": false
+        },
+        {
+          "name": "expanded",
+          "type": "readonly string[]",
+          "required": false,
+          "default": [],
+          "note": "The open rows' ids; controlled with onExpandedChange. A row opens from its title, a disclosure button with aria-expanded, or from «راجع» / «أجب»; focus stays on the trigger and nothing in the row takes it. A row with no steps, request or questions has nothing to open, and its title is a heading that takes focus only when a moving row hands it on."
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "(ids: string[]) => void",
+          "required": false
+        },
+        {
+          "name": "agents",
+          "type": "readonly { id: string; name: ReactNode; state: StatusPillState }[]",
+          "required": false,
+          "note": "The agents strip, a group named «الوكلاء» of aria-pressed toggles, each naming its agent and its StatusPill word."
+        },
+        {
+          "name": "agent",
+          "type": "string | null",
+          "required": false,
+          "default": null,
+          "note": "The picked agent, which filters the rows and the counts. Uncontrolled, none is picked."
+        },
+        {
+          "name": "onAgentChange",
+          "type": "(id: string | null) => void",
+          "required": false,
+          "note": "A press calls it with the agent's id, and a press on the picked one with null."
+        },
+        {
+          "name": "onDecision",
+          "type": "(request: ApprovalRequest, decision: ApprovalDecision, context: { signal: AbortSignal }) => void | Promise<void>",
+          "required": false,
+          "note": "Records the decision of an open row's ApprovalCard (plain, a heading deeper, with Mod+Enter only for reversible and not irreversible, and its 500 ms guard), or a quick one. Quick decisions show only for a needs-you request whose approval is reversible, neither irreversible nor expired, while its row is closed: secondary Reject and Approve, with no shortcut, named with the row's title. One runs at a time and counts only once the promise resolves; a change to the request, its expiry or its reversibility aborts it, so a late resolve records nothing. Without onDecision a request shows its action and target as text, with no actions."
+        },
+        {
+          "name": "onAnswer",
+          "type": "(id: string, answers: QuestionAnswers, context: { signal: AbortSignal }) => void | Promise<void>",
+          "required": false,
+          "note": "Submits a question row's answers from its plain AskUserQuestions. The inbox keeps each row's draft answers. Without it the questions show as text."
+        },
+        {
+          "name": "onRetry",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "«أعد المحاولة» on a failed row, beside its error."
+        },
+        {
+          "name": "onOpen",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "«افتح» on running and completed rows, and «راجع» on a draft: the host opens it in its own view, never inside the row."
+        },
+        {
+          "name": "receiptFor",
+          "type": "number",
+          "required": false,
+          "default": 5,
+          "note": "Seconds a row the host moved out of the shown tab stays in place with its receipt (item.receipt, else the quick decision's receipt, else the new status's pill word) before it leaves without a glide. A UI timer: 0 moves a resolved row at once."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The section's heading; «صندوق القرارات» / Decision inbox by default."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "default": 3,
+          "values": [2, 3, 4, 5, 6],
+          "note": "The title's level; rows sit one deeper and an open row's card or questions one deeper again."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<DecisionInboxLabels>",
+          "required": false,
+          "note": "Replaces any built-in text; waiting(count, requests) and running(count, tasks) build the region's sentence from the count helper's words."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "default": "card",
+          "values": ["card", "plain"],
+          "note": "card sits on a tray with the tabs and rows on paper; plain lives on its host's paper, as in a Sheet."
+        }
+      ],
+      "state": "The host owns every item, its status, its request and its times; the inbox never resolves, moves or removes an item by itself. It holds only UI state: the uncontrolled tab, open rows and agent, each question row's draft answers, a quick decision in flight, and the receipt timer for a row the host moved out of the shown tab.",
+      "accessibility": [
+        "A section labelled by its title. One polite region, empty at mount, speaks only when the counts change, joining its non-zero parts with « · »: «طلبان بانتظارك · ٣ مهام تعمل», or «لا شيء بانتظارك». Changing the tab says nothing; the open card keeps its own region.",
+        "Opening a row never moves focus, and nothing inside takes it; a new or changed item never moves focus. Escape anywhere in an open row, the card included, folds it, returns focus to its title and records nothing: the row takes the key in its capture phase, and the card's DecisionBar drops its Esc hint there. When a row's own action goes away, such as an accepted quick decision or Try again, focus moves to that row's title. When a row leaves, or the host deletes it, while focus is in it, focus goes to the next row's title, else the previous row's, else the tab panel.",
+        "Each row action is named by its own word and then the row's title through aria-labelledby, so «رفض» reads «رفض ترحيل قيود الاستحقاق الأربعة». Each row's pill names its status in words (بانتظارك، بانتظار مراجعتك، يعمل، تعثّرت، اكتملت), a failed row's error stays as text, and each step's icon has a hidden state word."
+      ],
+      "limitations": [
+        "No approve-all, ever: every decision is about one request. Mark reversible, irreversible and expired honestly, because they decide whether a row decides without opening. A receipt says what was recorded, never what the agent then did.",
+        "The receipt timer is the only clock; the host formats every time. Drafts are reviewed where the host opens them (onOpen), not inside the inbox."
+      ],
+      "alternative": "Use ApprovalCard for a single request, ApprovalFlow for a short run of requests decided one at a time, and Agent task for one agent's run.",
+      "dependencies": ["@radix-ui/react-tabs@1.2.0 (via Tabs)"],
+      "examples": ["ai/examples/DecisionInboxExamples.tsx"]
+    },
+    {
       "id": "suggested-edits",
       "api": "SuggestedEdits",
       "source": "SuggestedEdits.tsx",
@@ -2569,6 +2747,7 @@
       "source": "AskUserQuestions.tsx",
       "kind": "pattern",
       "parts": ["ai-mark", "status-pill", "tray"],
+      "usedBy": ["decision-inbox"],
       "states": ["asking", "submitting", "answered", "failed"],
       "events": ["onValueChange", "onSubmit", "onSkip", "onEditAnswers"],
       "exports": [
@@ -2695,7 +2874,7 @@
       "source": "ApprovalCard.tsx",
       "kind": "pattern",
       "parts": ["ai-mark", "status-pill", "tray"],
-      "usedBy": ["agent-task", "approval-flow"],
+      "usedBy": ["agent-task", "approval-flow", "decision-inbox"],
       "states": [
         "pending",
         "submitting",
@@ -5365,6 +5544,7 @@
       "id": "button",
       "api": "Button",
       "source": "Button.tsx",
+      "usedBy": ["decision-inbox"],
       "exports": ["Button", "ButtonProps", "ButtonState", "ButtonVariant"],
       "purpose": "Perform an explicit action.",
       "useWhen": "Save, submit, create, or open an overlay.",
@@ -5461,6 +5641,7 @@
       "id": "tabs",
       "api": "Tabs",
       "source": "Tabs.tsx",
+      "usedBy": ["decision-inbox"],
       "exports": ["Tabs", "TabsProps", "TabItem"],
       "purpose": "Switch between related content panels.",
       "useWhen": "Related dashboard views under one meaningful group label.",
@@ -9372,6 +9553,182 @@
       ]
     },
     {
+      "type": "DecisionInboxItem",
+      "source": "DecisionInbox.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true,
+          "note": "Unique and stable."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "note": "The row's heading: its disclosure button when the row has steps, a request or questions."
+        },
+        {
+          "name": "agent",
+          "type": "{ id: string; name: ReactNode }",
+          "required": true,
+          "note": "The agent it comes from; the strip filters by id, and the row names it in <bdi>."
+        },
+        {
+          "name": "context",
+          "type": "ReactNode",
+          "required": false,
+          "note": "One line after the agent, such as «ضمن إقفال حسابات أكتوبر»: «{agent} · {context} · {time}»."
+        },
+        {
+          "name": "status",
+          "type": "\"needs-you\" | \"running\" | \"failed\" | \"completed\"",
+          "required": true,
+          "values": ["needs-you", "running", "failed", "completed"],
+          "note": "Host-owned. Failed items wait in «بانتظارك» with the needs-you ones."
+        },
+        {
+          "name": "time",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Host-formatted, such as «قبل ٤ د»."
+        },
+        {
+          "name": "request",
+          "type": "ApprovalRequest",
+          "required": false,
+          "note": "An approval, shown in full as a plain ApprovalCard when its row opens, while the item needs you."
+        },
+        {
+          "name": "approval",
+          "type": "ApprovalDetails",
+          "required": false,
+          "note": "Spread onto that card. reversible, without irreversible or expired, lets the closed row decide quickly."
+        },
+        {
+          "name": "questions",
+          "type": "readonly UserQuestion[]",
+          "required": false,
+          "note": "Questions answered in the open row through onAnswer."
+        },
+        {
+          "name": "draft",
+          "type": "boolean",
+          "required": false,
+          "note": "A draft waiting for review: the pill reads «بانتظار مراجعتك» and «راجع» calls onOpen(id)."
+        },
+        {
+          "name": "steps",
+          "type": "readonly { id: string; label: ReactNode; state: TaskState; time?: ReactNode }[]",
+          "required": false,
+          "note": "The last three or four steps, oldest first, above the open row's request."
+        },
+        {
+          "name": "error",
+          "type": "ReactNode",
+          "required": false,
+          "note": "A failed item's error, as persistent text in its row."
+        },
+        {
+          "name": "receipt",
+          "type": "ReactNode",
+          "required": false,
+          "note": "What happened, shown while the row leaves its tab, such as «تمت الموافقة · الآن». Say only what was recorded."
+        }
+      ]
+    },
+    {
+      "type": "DecisionInboxLabels",
+      "source": "DecisionInbox.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "byStatus",
+          "type": "string",
+          "required": true,
+          "note": "Names the tabs: «الطلبات حسب الحالة»."
+        },
+        {
+          "name": "tabs",
+          "type": "Record<DecisionInboxTab, string>",
+          "required": true
+        },
+        {
+          "name": "pills",
+          "type": "Record<\"needs-you\" | \"running\" | \"failed\" | \"completed\", string>",
+          "required": true,
+          "note": "Each row's pill; failed and completed agree with المهمة."
+        },
+        {
+          "name": "draft",
+          "type": "string",
+          "required": true,
+          "note": "A waiting draft's pill: «بانتظار مراجعتك»."
+        },
+        {
+          "name": "agents",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "steps",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "review",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "answer",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "retry",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "open",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "waiting",
+          "type": "(count: number, requests: string) => string",
+          "required": true,
+          "note": "«{requests} بانتظارك»; requests is formatCount(count, \"request\")."
+        },
+        {
+          "name": "running",
+          "type": "(count: number, tasks: string) => string",
+          "required": true,
+          "note": "«{tasks} تعمل», «{tasks} تعملان» for two; tasks is formatCount(count, \"task\")."
+        },
+        {
+          "name": "nothingWaiting",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "nothingWaitingHint",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "nothingHere",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
       "type": "ToolLabels",
       "source": "useToolLabels.ts",
       "props": [
@@ -10212,7 +10569,7 @@
       "id": "status-icon",
       "exports": ["StatusIcon", "StatusIconProps", "StatusIconState"],
       "source": "StatusIcon.tsx",
-      "usedBy": ["agent-task"],
+      "usedBy": ["agent-task", "decision-inbox"],
       "props": [
         {
           "name": "state",
@@ -10262,7 +10619,8 @@
         "image-generation",
         "change-summary",
         "ask-user-questions",
-        "approval-card"
+        "approval-card",
+        "decision-inbox"
       ],
       "props": [
         {
@@ -10306,7 +10664,8 @@
         "image-generation",
         "change-summary",
         "ask-user-questions",
-        "approval-card"
+        "approval-card",
+        "decision-inbox"
       ],
       "props": [
         {
@@ -10353,7 +10712,8 @@
         "change-summary",
         "ask-user-questions",
         "approval-card",
-        "approval-flow"
+        "approval-flow",
+        "decision-inbox"
       ],
       "props": [
         {

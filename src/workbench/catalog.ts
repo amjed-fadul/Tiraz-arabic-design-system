@@ -37,6 +37,15 @@ export const catalog = [
     file: "AgentTask.tsx",
   },
   {
+    id: "decision-inbox",
+    name: ["صندوق القرارات", "Decision inbox"],
+    description: [
+      "يجمع ما ينتظر قرارك من كل الوكلاء في مكان واحد، الأكثر إلحاحًا أولًا.",
+      "Collect what waits on you from every agent in one place, most urgent first.",
+    ],
+    file: "DecisionInbox.tsx",
+  },
+  {
     id: "suggested-edits",
     name: ["تعديلات مقترحة", "Suggested edits"],
     description: [
@@ -717,6 +726,7 @@ export const patternJobs: Partial<Record<ComponentId, Job>> = {
   "ask-user-questions": "delegate",
   "approval-card": "delegate",
   "approval-flow": "delegate",
+  "decision-inbox": "delegate",
   "suggested-edits": "create",
   "image-generation": "create",
   "change-summary": "understand",
@@ -755,7 +765,13 @@ const aiSections: readonly DocumentationSection[] = [
   {
     id: "delegate",
     name: jobNames.delegate,
-    ids: ["agent-task", "ask-user-questions", "approval-card", "approval-flow"],
+    ids: [
+      "agent-task",
+      "ask-user-questions",
+      "approval-card",
+      "approval-flow",
+      "decision-inbox",
+    ],
   },
   {
     id: "create",

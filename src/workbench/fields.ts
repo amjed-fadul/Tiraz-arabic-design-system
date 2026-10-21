@@ -127,6 +127,7 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
       "autoStartAfter",
     ),
   ],
+  "decision-inbox": [appearance],
   terminal: [
     field("state", "select", "الحالة", "State", "state", {
       options: ["running", "completed", "failed"],
@@ -1036,6 +1037,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   "cited-answer": ["appearance", "question"],
   "data-answer": ["appearance"],
   "agent-task": ["appearance", "autoStart"],
+  "decision-inbox": ["appearance"],
   "suggested-edits": ["undo"],
   "image-generation": ["appearance", "knownProgress"],
   "change-summary": ["appearance"],

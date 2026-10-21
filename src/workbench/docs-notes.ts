@@ -404,6 +404,38 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  "decision-inbox": {
+    useWhen: [
+      [
+        "يعمل عدة وكلاء في الخلفية، وتريد أن يجد المستخدم كل ما ينتظر قراره في مكان واحد.",
+        "Several agents work in the background, and people should find everything that waits on them in one place.",
+      ],
+      [
+        "تريد أن تُعرض الطلبات والأسئلة والمهام المتعثّرة بحسب إلحاحها، ويفتح المستخدم كلًّا منها في مكانه.",
+        "You want requests, questions and failed tasks listed by urgency, each opening where it is.",
+      ],
+    ],
+    instead: [
+      {
+        text: ["يكفي طلب واحد، فاستخدم", "There is a single request, so use"],
+        page: "approval-card",
+      },
+    ],
+    notice: [
+      [
+        "لا موافقة على الكل: كل قرار يخصّ طلبًا بعينه. ولا يقرّر الصف دون أن يُفتح إلا إذا علّم تطبيقك الطلب reversible، وبلا اختصار، ولا يضع فتحُ الصف التركيزَ على الموافقة.",
+        "There is no approve-all: every decision is about one request. A row decides without opening only when your app marks the request reversible, with no shortcut, and opening a row never puts focus on Approve.",
+      ],
+      [
+        "يطوي Escape الصف المفتوح من أي مكان فيه، البطاقة ضمنًا، ولا يسجّل شيئًا.",
+        "Escape anywhere in an open row folds it and records nothing, the card included.",
+      ],
+      [
+        "يقرّر تطبيقك حالة كل عنصر. وإذا نقله من التبويب بقي صفّه مكانه خمس ثوانٍ مع إيصاله ثم غادر، وانتقل التركيز إلى الصف التالي، ويلغي receiptFor={0} هذه المهلة. ويُعلن العدد حين يتغيّر فقط.",
+        "Your app owns each item's status. When it moves an item out of the tab, the row stays in place for five seconds with its receipt, then leaves, and focus moves to the next row; receiptFor={0} turns the wait off. The counts are announced only when they change.",
+      ],
+    ],
+  },
   "approval-flow": {
     useWhen: [
       [

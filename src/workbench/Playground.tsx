@@ -5,6 +5,7 @@ import { ImageGenerationExample } from "../system/ai/examples/ImageGenerationExa
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
 import { DataAnswerExample } from "../system/ai/examples/DataAnswerExamples";
+import { DecisionInboxExample } from "../system/ai/examples/DecisionInboxExamples";
 import { TerminalExample } from "../system/ai/examples/TerminalExamples";
 import { ChatAppExample } from "../system/ai/examples/ChatAppExample";
 import {
@@ -372,6 +373,15 @@ export function Playground({
       <AgentTaskExample
         language={language}
         {...(model as Playgrounds["agent-task"])}
+        phase={phase}
+        onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "decision-inbox")
+    return (
+      <DecisionInboxExample
+        language={language}
+        {...(model as Playgrounds["decision-inbox"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
       />

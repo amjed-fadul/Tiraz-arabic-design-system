@@ -689,6 +689,14 @@ export const demoStates: Partial<Record<ComponentId, DemoStatesDef>> = {
     ],
     resting: "waiting",
   },
+  "decision-inbox": {
+    states: [
+      phased("needsYou", "waiting"),
+      phased("expanded"),
+      phased("empty"),
+    ],
+    resting: "needsYou",
+  },
   "approval-flow": {
     states: [phased("first"), phased("second"), phased("done")],
     resting: "first",

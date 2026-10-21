@@ -192,6 +192,13 @@ export type {
 } from "./ApprovalCard";
 export { AgentTask } from "./AgentTask";
 export type { AgentStep, AgentTaskProps, AgentTaskLabels } from "./AgentTask";
+export { DecisionInbox } from "./DecisionInbox";
+export type {
+  DecisionInboxProps,
+  DecisionInboxLabels,
+  DecisionInboxItem,
+  DecisionInboxTab,
+} from "./DecisionInbox";
 export { SuggestedEdits } from "./SuggestedEdits";
 export type {
   SuggestedEditsProps,
