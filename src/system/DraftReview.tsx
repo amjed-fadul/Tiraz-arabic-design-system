@@ -104,6 +104,8 @@ export interface DraftReviewProps {
   /** The heading's level; 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<DraftReviewLabels>;
+  /** Speak status changes politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -141,7 +143,8 @@ function Chips({
  * per ready status; Ctrl or Cmd+Enter does the same, 500 ms after the text,
  * the tone, the recipients or the attachments last changed. Undo shows only
  * while the host holds the message, and a receipt says what was sent, never
- * that it came back. One polite region says each change of status once.
+ * that it came back. The polite region says each status change once unless
+ * the host owns announcements.
  */
 export function DraftReview({
   status,
@@ -161,6 +164,7 @@ export function DraftReview({
   agent,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: DraftReviewProps) {
   const { config } = useSystem(),
@@ -217,6 +221,10 @@ export function DraftReview({
   // the status it mounts in is not news. Only the host's next status says
   // what became of an Undo.
   useEffect(() => {
+    if (announcement === "off") {
+      heard.current = status;
+      return;
+    }
     const was = heard.current;
     if (was === status) return;
     heard.current = status;
@@ -488,13 +496,15 @@ export function DraftReview({
         if (event.relatedTarget) lastFocus.current = null;
       }}
     >
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       {appearance === "card" ? (
         <Tray paper={false} header={header} footer={decision || undefined}>
           <div

@@ -88,6 +88,8 @@ export interface ImageGenerationProps {
   /** The heading's level; 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<ImageGenerationLabels>;
+  /** Speak status changes politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -105,8 +107,8 @@ const pills: Record<ImageGenerationProps["status"], StatusPillState> = {
  * pick the version to use. The host owns the status, the progress and the
  * images. While it is queued or weaving the canvas is a WeaveCanvas, with the
  * versions and actions quiet; once it is done or failed the canvas is the
- * chosen image as an ImageResult. One polite region says each change of
- * status once, never the progress.
+ * chosen image as an ImageResult. Its polite region says each change of status
+ * once unless the host owns announcements, never the progress.
  */
 export function ImageGeneration({
   prompt,
@@ -125,6 +127,7 @@ export function ImageGeneration({
   duration,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: ImageGenerationProps) {
   const { config } = useSystem(),
@@ -185,6 +188,10 @@ export function ImageGeneration({
     );
   useEffect(() => {
     const text = said.current?.textContent ?? "";
+    if (announcement === "off") {
+      heard.current = text;
+      return;
+    }
     if (heard.current === null) {
       heard.current = text;
       return;
@@ -296,6 +303,7 @@ export function ImageGeneration({
           }
           onRetry={status === "failed" ? onRetry : undefined}
           labels={{ error: copy.failed, retry: copy.retry }}
+          announcement={announcement}
         />
       )}
     </>
@@ -468,13 +476,15 @@ export function ImageGeneration({
         if (event.relatedTarget) lastFocus.current = null;
       }}
     >
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       <span ref={said} hidden>
         {sentence}
       </span>

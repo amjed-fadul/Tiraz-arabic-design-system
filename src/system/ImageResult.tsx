@@ -25,6 +25,8 @@ export type ImageResultProps = Omit<
   caption?: string;
   metadata?: string;
   onRetry?: () => void;
+  /** Give the visible error a status role, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   action?: { label: string; onClick: () => void };
   labels?: ImageResultLabels;
 };
@@ -35,6 +37,7 @@ function ImageFrame({
   state,
   progress,
   onRetry,
+  announcement = "polite",
   labels,
   caption,
   metadata,
@@ -46,6 +49,7 @@ function ImageFrame({
   | "state"
   | "progress"
   | "onRetry"
+  | "announcement"
   | "caption"
   | "metadata"
   | "action"
@@ -82,7 +86,10 @@ function ImageFrame({
           </>
         )}
         {status === "error" && (
-          <div className="tz-image-result-status" role="status">
+          <div
+            className="tz-image-result-status"
+            role={announcement === "polite" ? "status" : undefined}
+          >
             <ImageOff aria-hidden="true" size={24} />
             <strong>{labels.error}</strong>
             <span dir="auto">{alt}</span>
@@ -137,6 +144,7 @@ export function ImageResult({
   caption,
   metadata,
   onRetry,
+  announcement = "polite",
   action,
   labels,
   className = "",
@@ -163,6 +171,7 @@ export function ImageResult({
         state={state}
         progress={progress}
         onRetry={onRetry}
+        announcement={announcement}
         labels={text}
         caption={caption}
         metadata={metadata}
