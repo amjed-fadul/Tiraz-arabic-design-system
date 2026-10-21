@@ -1,4 +1,4 @@
-import { aiParts, navigationCatalog } from "./catalog";
+import { nestedParts, navigationCatalog } from "./catalog";
 import { screens } from "../examples/frame/screen";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -44,14 +44,9 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
-  // Every page, less the fifteen folded AI parts, their disclosure and the
-  // screens.
+  // Curated entries and screens; specialist pages are linked from parents.
   expect(nav.getAllByRole("button")).toHaveLength(
-    navigationCatalog.length - aiParts.length + 1 + screens.length,
-  );
-  await userEvent.click(nav.getByRole("button", { name: "Parts" }));
-  expect(nav.getAllByRole("button")).toHaveLength(
-    navigationCatalog.length + 1 + screens.length,
+    navigationCatalog.length - Object.keys(nestedParts).length + screens.length,
   );
   const rail = within(
     screen.getByRole("complementary", { name: "Customize the preview" }),

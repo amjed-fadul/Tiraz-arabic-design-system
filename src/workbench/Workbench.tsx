@@ -1,7 +1,6 @@
 import {
   useCallback,
   useEffect,
-  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -11,7 +10,6 @@ import {
 import type { CSSProperties } from "react";
 import {
   ArrowUpRight,
-  ChevronDown,
   Moon,
   Sun,
   SlidersHorizontal,
@@ -23,7 +21,13 @@ import { SystemContext } from "../system/useSystem";
 import type { ButtonState, SystemConfig } from "../system";
 import { screenPath, screens } from "../examples/frame/screen";
 import type { ScreenSlug } from "../examples/frame/screen";
-import { aiParts, catalog, navigationGroups, screenUses } from "./catalog";
+import {
+  catalog,
+  navigationGroups,
+  screenUses,
+  nestedParts,
+  relatedPages,
+} from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
 import type { Language, Localized } from "./i18n";
@@ -56,6 +60,15 @@ import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
 import { generateCode, generatePrompt } from "./generate";
 import { DocsDrawer } from "./DocsDrawer";
+import { destination, readSiteRoute, routePath } from "./site-routes";
+import type { SiteRoute } from "./site-routes";
+import { SiteLink } from "./SiteLink";
+import { LibraryPage } from "./LibraryPage";
+import { GuidePage } from "./GuidePage";
+import { guides } from "./guides";
+import { IllustrationsPage } from "./IllustrationsPage";
+import { illustrations } from "./illustrations";
+import "./site.css";
 interface EventRecord {
   name: string;
   value?: unknown;
@@ -83,91 +96,62 @@ function BrandMark() {
     </svg>
   );
 }
-/**
- * The component navigation, which the sidebar and the mobile drawer share.
- * Each section has one heading. Parts is a disclosure, and its pages are
- * not rendered while it is closed. Screens comes first; each example opens
- * its screen page, and while one is open, no component page is current.
- */
+/** Curated library navigation shared by the sidebar and mobile drawer. */
 function ComponentNavigation({
   language,
   active,
   screen,
-  partsOpen,
-  onPartsOpenChange,
   onOpen,
   onOpenScreen,
 }: {
   language: Language;
   active: ComponentId;
   screen: ScreenSlug | null;
-  partsOpen: boolean;
-  onPartsOpenChange: (open: boolean) => void;
   onOpen: (id: ComponentId) => void;
   onOpenScreen: (slug: ScreenSlug) => void;
 }) {
-  const id = useId();
-  const page = (item: (typeof navigationGroups)[number]["items"][number]) => (
-    <button
-      type="button"
-      key={item.id}
-      aria-current={!screen && active === item.id ? "page" : undefined}
-      onClick={() => onOpen(item.id)}
-    >
-      {localize(item.name, language)}
-    </button>
-  );
+  const parent = nestedParts[active as keyof typeof nestedParts];
   return (
     <nav className="component-nav" aria-label={label("components", language)}>
-      {navigationGroups.map((group) => {
-        const open = !group.collapsible || partsOpen;
-        return (
-          <div
-            key={group.id}
-            className="component-nav-group"
-            role="group"
-            aria-label={localize(group.name, language)}
-          >
-            <h2
-              className={`component-nav-heading${group.collapsible ? " component-nav-toggle" : ""}`}
-            >
-              {group.collapsible ? (
+      {navigationGroups.map((group) => (
+        <div
+          key={group.id}
+          className="component-nav-group"
+          role="group"
+          aria-label={localize(group.name, language)}
+        >
+          <h2 className="component-nav-heading">
+            {localize(group.name, language)}
+          </h2>
+          <div className="component-nav-items">
+            {group.items.map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                aria-current={
+                  !screen && (active === item.id || parent === item.id)
+                    ? "page"
+                    : undefined
+                }
+                onClick={() => onOpen(item.id)}
+              >
+                {localize(item.name, language)}
+              </button>
+            ))}
+            {group.id === "screens" &&
+              screens.map((item) => (
                 <button
                   type="button"
-                  className="component-nav-disclosure"
-                  aria-expanded={partsOpen}
-                  aria-controls={`${id}-${group.id}`}
-                  onClick={() => onPartsOpenChange(!partsOpen)}
+                  key={item.slug}
+                  aria-current={screen === item.slug ? "page" : undefined}
+                  onClick={() => onOpenScreen(item.slug)}
                 >
-                  {localize(group.name, language)}
-                  <ChevronDown size={14} aria-hidden="true" />
+                  {localize(item.name, language)}
                 </button>
-              ) : (
-                localize(group.name, language)
-              )}
-            </h2>
-            <div
-              id={`${id}-${group.id}`}
-              className="component-nav-items"
-              hidden={!open}
-            >
-              {open && group.items.map(page)}
-              {open &&
-                group.id === "screens" &&
-                screens.map((item) => (
-                  <button
-                    type="button"
-                    key={item.slug}
-                    aria-current={screen === item.slug ? "page" : undefined}
-                    onClick={() => onOpenScreen(item.slug)}
-                  >
-                    {localize(item.name, language)}
-                  </button>
-                ))}
-            </div>
+              ))}
           </div>
-        );
-      })}
+        </div>
+      ))}
     </nav>
   );
 }
@@ -333,17 +317,21 @@ function ScreenPage({
   );
 }
 export function Workbench() {
-  // The Parts disclosure opens for a part's page.
   const [documentation, setDocumentation] = useState(() => {
-    const saved = readDocumentation();
-    return aiParts.includes(saved.active)
-      ? { ...saved, aiPartsOpen: true }
-      : saved;
+    const saved = readDocumentation(),
+      initial = readSiteRoute(new URL(window.location.href), saved);
+    return initial.kind === "component"
+      ? { ...saved, active: initial.id, screen: null }
+      : initial.kind === "screen"
+        ? { ...saved, screen: initial.slug }
+        : saved;
   });
+  const [route, setRoute] = useState(() =>
+    readSiteRoute(new URL(window.location.href), readDocumentation()),
+  );
   const language = documentation.language,
-    active = documentation.active,
-    // A screen page, when one is open, stands in for the docs page `active`.
-    screenSlug = documentation.screen,
+    active = route.kind === "component" ? route.id : documentation.active,
+    screenSlug = route.kind === "screen" ? route.slug : null,
     direction = language === "ar" ? "rtl" : "ltr",
     t = words(language);
   const [settings, setSettings] = useState(readSystem);
@@ -398,6 +386,7 @@ export function Workbench() {
   const stopFocusReturn = useRef<(() => void) | null>(null);
   const playgroundRegion = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
+  const focusRoute = useRef(false);
   const systemConfig = useMemo<SystemConfig>(
     () => ({ ...settings, direction, theme }),
     [settings, direction, theme],
@@ -424,16 +413,35 @@ export function Workbench() {
       : (pressedPhase ?? undefined);
   const code = generateCode(active, model, systemConfig, language),
     prompt = generatePrompt(active, model, systemConfig, language);
-  const pageName = screenSlug
-    ? screens.find((item) => item.slug === screenSlug)!.name
-    : current.name;
+  const pageName =
+    route.kind === "library"
+      ? (["المكتبة", "Library"] as const)
+      : route.kind === "docs"
+        ? guides.find((item) => item.id === route.guide)!.name
+        : route.kind === "illustrations"
+          ? (illustrations.find((item) => item.id === route.id)?.name ??
+            (["الرسوم التوضيحية", "Illustrations"] as const))
+          : route.kind === "not-found"
+            ? (["الصفحة غير موجودة", "Page not found"] as const)
+            : screenSlug
+              ? screens.find((item) => item.slug === screenSlug)!.name
+              : current.name;
+  const pageTitle = localize(pageName, language);
   useEffect(() => {
-    document.title = `${language === "ar" ? "طِراز" : "Tiraz"} · ${localize(pageName, language)}`;
+    document.title = `${language === "ar" ? "طِراز" : "Tiraz"} · ${pageTitle}`;
     persist(storageKeys.documentation, documentation);
     document.documentElement.dir = direction;
     document.documentElement.lang = language;
     document.documentElement.style.colorScheme = theme;
-  }, [documentation, direction, language, pageName, theme]);
+  }, [
+    documentation,
+    direction,
+    language,
+    pageTitle,
+    theme,
+    active,
+    screenSlug,
+  ]);
   useEffect(() => persist(storageKeys.theme, theme), [theme]);
   useEffect(() => persist(storageKeys.system, settings), [settings]);
   useEffect(() => persist(storageKeys.playgrounds, playgrounds), [playgrounds]);
@@ -559,33 +567,60 @@ export function Workbench() {
     setPhases((prev) => ({ ...prev, [active]: undefined }));
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
-  function openPage(id: ComponentId) {
-    cancelButtonAction();
-    stopReplay();
-    openedFromState.current = false;
-    stopFocusReturn.current?.();
-    setPhases({});
-    setDocumentation((prev) => ({
-      ...prev,
-      active: id,
-      aiPartsOpen: prev.aiPartsOpen || aiParts.includes(id),
-      screen: null,
-    }));
-    // The new page opens at its top, not where the old one was scrolled to.
-    window.scrollTo(0, 0);
-  }
-  const openScreen = useCallback(
-    (slug: ScreenSlug) => {
+  const navigate = useCallback(
+    (next: SiteRoute, history = true) => {
+      if (
+        history &&
+        window.location.pathname + window.location.search === routePath(next)
+      )
+        return;
+      const keepFilterFocus =
+        history &&
+        next.kind === "library" &&
+        Boolean(document.activeElement?.closest(".library-category"));
       cancelButtonAction();
       stopReplay();
       openedFromState.current = false;
       stopFocusReturn.current?.();
       setPhases({});
-      setDocumentation((prev) => ({ ...prev, screen: slug }));
-      window.scrollTo(0, 0);
+      setSheetOpen(false);
+      setNavigationOpen(false);
+      setDocumentation((prev) =>
+        next.kind === "component"
+          ? { ...prev, active: next.id, screen: null }
+          : next.kind === "screen"
+            ? { ...prev, screen: next.slug }
+            : prev,
+      );
+      if (history) window.history.pushState({}, "", routePath(next));
+      focusRoute.current = !keepFilterFocus;
+      setRoute(next);
+      if (!keepFilterFocus) window.scrollTo(0, 0);
     },
     [cancelButtonAction, stopReplay],
   );
+  function openPage(id: ComponentId) {
+    navigate({ kind: "component", id });
+  }
+  const openScreen = useCallback(
+    (slug: ScreenSlug) => navigate({ kind: "screen", slug }),
+    [navigate],
+  );
+  useEffect(() => {
+    const onPop = () =>
+      navigate(
+        readSiteRoute(new URL(window.location.href), readDocumentation()),
+        false,
+      );
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [navigate]);
+  useLayoutEffect(() => {
+    if (focusRoute.current) {
+      focusRoute.current = false;
+      mainRef.current?.focus();
+    }
+  }, [route]);
   // A screen in the iframe asks for another screen's page; anything else, or
   // from anywhere else, is ignored. The iframe holds focus and the new page
   // replaces it, so focus moves to main first, as «على هذه الشاشة» does, and
@@ -597,14 +632,19 @@ export function Workbench() {
       if (typeof data !== "object" || data === null) return;
       const { type, slug } = data as { type?: unknown; slug?: unknown };
       const target = screens.find((item) => item.slug === slug);
-      if (type === "tiraz:open-screen" && target) {
+      if (
+        type === "tiraz:open-screen" &&
+        target &&
+        screenSlug &&
+        target.slug !== screenSlug
+      ) {
         openScreen(target.slug);
         mainRef.current?.focus();
       }
     }
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
-  }, [openScreen]);
+  }, [openScreen, screenSlug]);
   // A props state takes the inspector's path, so it persists, cancels the
   // simulated click and remounts where an edit would.
   function applyState(id: string) {
@@ -778,25 +818,80 @@ export function Workbench() {
       onReset={resetPlayground}
     />
   );
-  const navigation = (
-    <ComponentNavigation
-      language={language}
-      active={active}
-      screen={screenSlug}
-      partsOpen={documentation.aiPartsOpen}
-      onPartsOpenChange={(open) =>
-        setDocumentation((prev) => ({ ...prev, aiPartsOpen: open }))
-      }
-      onOpen={(id) => {
-        openPage(id);
-        setNavigationOpen(false);
-      }}
-      onOpenScreen={(slug) => {
-        openScreen(slug);
-        setNavigationOpen(false);
-      }}
-    />
-  );
+  const siteDestination = destination(route);
+  const navigationName =
+    siteDestination === "docs"
+      ? t("التوثيق", "Docs")
+      : siteDestination === "illustrations"
+        ? t("الرسوم التوضيحية", "Illustrations")
+        : label("components", language);
+  const navigation =
+    route.kind === "library" ? (
+      <nav
+        className="component-nav site-secondary"
+        aria-label={t("تصنيفات المكتبة", "Library categories")}
+      >
+        <SiteLink
+          route={{ kind: "library" }}
+          navigate={navigate}
+          aria-current={!route.category ? "page" : undefined}
+        >
+          {t("كل المكتبة", "All items")}
+        </SiteLink>
+        {navigationGroups.map((group) => (
+          <SiteLink
+            key={group.id}
+            route={{ kind: "library", category: group.id }}
+            navigate={navigate}
+            aria-current={route.category === group.id ? "page" : undefined}
+          >
+            {localize(group.name, language)}
+          </SiteLink>
+        ))}
+      </nav>
+    ) : route.kind === "docs" ? (
+      <nav className="component-nav site-secondary" aria-label={navigationName}>
+        <h2 className="component-nav-heading">{t("ابدأ هنا", "Start here")}</h2>
+        {guides.map((item) => (
+          <SiteLink
+            key={item.id}
+            route={{ kind: "docs", guide: item.id }}
+            navigate={navigate}
+            aria-current={route.guide === item.id ? "page" : undefined}
+          >
+            {localize(item.name, language)}
+          </SiteLink>
+        ))}
+      </nav>
+    ) : route.kind === "illustrations" ? (
+      <nav className="component-nav site-secondary" aria-label={navigationName}>
+        <SiteLink
+          route={{ kind: "illustrations" }}
+          navigate={navigate}
+          aria-current={!route.id ? "page" : undefined}
+        >
+          {t("كل الرسوم", "All illustrations")}
+        </SiteLink>
+        {illustrations.map((item) => (
+          <SiteLink
+            key={item.id}
+            route={{ kind: "illustrations", id: item.id }}
+            navigate={navigate}
+            aria-current={route.id === item.id ? "page" : undefined}
+          >
+            {localize(item.name, language)}
+          </SiteLink>
+        ))}
+      </nav>
+    ) : (
+      <ComponentNavigation
+        language={language}
+        active={active}
+        screen={screenSlug}
+        onOpen={openPage}
+        onOpenScreen={openScreen}
+      />
+    );
   const appearance = (
     <Appearance
       config={systemConfig}
@@ -865,25 +960,53 @@ export function Workbench() {
           {t("انتقل إلى المحتوى", "Skip to content")}
         </a>
         <header className="docs-header">
-          <a
+          <SiteLink
             className="docs-brand"
-            href="#main-content"
-            onClick={() => openPage("button")}
+            route={{ kind: "library" }}
+            navigate={navigate}
           >
             <BrandMark />
             <span>{t("طِراز", "Tiraz")}</span>
-          </a>
+          </SiteLink>
+          <nav
+            className="site-primary"
+            aria-label={t("التنقّل الرئيسي", "Primary navigation")}
+          >
+            <SiteLink
+              route={{ kind: "library" }}
+              navigate={navigate}
+              aria-current={siteDestination === "library" ? "page" : undefined}
+            >
+              {t("المكتبة", "Library")}
+            </SiteLink>
+            <SiteLink
+              route={{ kind: "docs", guide: "introduction" }}
+              navigate={navigate}
+              aria-current={siteDestination === "docs" ? "page" : undefined}
+            >
+              {t("التوثيق", "Docs")}
+            </SiteLink>
+            <SiteLink
+              route={{ kind: "illustrations" }}
+              navigate={navigate}
+              aria-current={
+                siteDestination === "illustrations" ? "page" : undefined
+              }
+            >
+              {t("الرسوم التوضيحية", "Illustrations")}
+            </SiteLink>
+          </nav>
           <div className="header-actions">
             <div className="mobile-navigation">
               <DocsDrawer
-                title={label("components", language)}
+                title={navigationName}
                 language={language}
                 open={navigationOpen}
                 onOpenChange={setNavigationOpen}
                 trigger={
                   <button type="button" className="doc-button">
-                    <Menu size={14} />
-                    {label("components", language)}
+                    <Menu size={16} aria-hidden="true" />
+                    <span>{navigationName}</span>
                   </button>
                 }
               >
@@ -917,12 +1040,18 @@ export function Workbench() {
         <div
           className="docs-layout"
           data-settings={
-            !narrow && settingsOpen && !screenSlug ? "open" : undefined
+            !narrow && settingsOpen && route.kind === "component"
+              ? "open"
+              : undefined
           }
         >
           <aside
             className="docs-sidebar"
-            aria-label={t("تنقّل المكوّنات", "Component navigation")}
+            aria-label={
+              siteDestination === "library"
+                ? t("تنقّل المكوّنات", "Component navigation")
+                : navigationName
+            }
           >
             {navigation}
           </aside>
@@ -930,10 +1059,47 @@ export function Workbench() {
             <main
               ref={mainRef}
               id="main-content"
-              className="component-page"
+              className={`component-page site-${route.kind}`}
               tabIndex={-1}
             >
-              {screenSlug ? (
+              {route.kind === "library" ? (
+                <LibraryPage
+                  language={language}
+                  theme={theme}
+                  category={route.category}
+                  navigate={navigate}
+                />
+              ) : route.kind === "docs" ? (
+                <GuidePage
+                  guideId={route.guide}
+                  language={language}
+                  navigate={navigate}
+                />
+              ) : route.kind === "illustrations" ? (
+                <IllustrationsPage
+                  key={route.id ?? "gallery"}
+                  id={route.id}
+                  language={language}
+                  navigate={navigate}
+                />
+              ) : route.kind === "not-found" ? (
+                <div className="site-not-found">
+                  <h1>{t("الصفحة غير موجودة", "Page not found")}</h1>
+                  <p>
+                    {t(
+                      "قد يكون الرابط قديمًا. يمكنك العثور على الشاشات والمكوّنات في المكتبة.",
+                      "This link may be out of date. Find screens and components in the Library.",
+                    )}
+                  </p>
+                  <SiteLink
+                    className="site-action"
+                    route={{ kind: "library" }}
+                    navigate={navigate}
+                  >
+                    {t("العودة إلى المكتبة", "Back to the Library")}
+                  </SiteLink>
+                </div>
+              ) : screenSlug ? (
                 <ScreenPage
                   slug={screenSlug}
                   language={language}
@@ -948,6 +1114,25 @@ export function Workbench() {
               ) : (
                 <>
                   <header className="component-heading">
+                    {nestedParts[active as keyof typeof nestedParts] && (
+                      <SiteLink
+                        className="site-back"
+                        navigate={navigate}
+                        route={{
+                          kind: "component",
+                          id: nestedParts[active as keyof typeof nestedParts],
+                        }}
+                      >
+                        {localize(
+                          catalog.find(
+                            (item) =>
+                              item.id ===
+                              nestedParts[active as keyof typeof nestedParts],
+                          )!.name,
+                          language,
+                        )}
+                      </SiteLink>
+                    )}
                     <h1>{localize(current.name, language)}</h1>
                     <p>{localize(current.description, language)}</p>
                   </header>
@@ -1094,11 +1279,41 @@ export function Workbench() {
                     </section>
                   )}
                   <ApiReference component={active} language={language} />
+                  {relatedPages[active] && (
+                    <section
+                      className="related-components"
+                      role="region"
+                      aria-labelledby="related-heading"
+                    >
+                      <h2 id="related-heading">
+                        {t("مكوّنات ذات صلة", "Related components")}
+                      </h2>
+                      <div>
+                        {relatedPages[active]!.map((id) => (
+                          <SiteLink
+                            key={id}
+                            route={{ kind: "component", id }}
+                            navigate={navigate}
+                          >
+                            {localize(
+                              catalog.find((item) => item.id === id)!.name,
+                              language,
+                            )}
+                            <ArrowUpRight
+                              className="tz-mirror-rtl"
+                              size={16}
+                              aria-hidden="true"
+                            />
+                          </SiteLink>
+                        ))}
+                      </div>
+                    </section>
+                  )}
                 </>
               )}
             </main>
           </div>
-          {!narrow && !screenSlug && (
+          {!narrow && route.kind === "component" && (
             // Docked at the end side, it pushes the page narrower rather than
             // covering it. It stays mounted while closed, so it can slide out.
             // A screen page has no settings.

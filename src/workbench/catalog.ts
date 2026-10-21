@@ -752,7 +752,7 @@ export const patternJobs: Partial<Record<ComponentId, Job>> = {
   "change-summary": "understand",
   "assistant-controls": "understand",
 };
-/** The fifteen parts the patterns are built from (spec §16), folded. */
+/** Public composition parts; classification is independent of menu placement. */
 export const aiParts: readonly ComponentId[] = [
   "selection-actions",
   "context-meter",
@@ -770,18 +770,43 @@ export const aiParts: readonly ComponentId[] = [
   "tool-chips",
   "streaming-text",
 ];
+/** Specialist pages remain addressable, but discovery lives with their parent. */
+export const nestedParts = {
+  "prompt-bar": "chat-composer",
+  "thinking-indicator": "loading-state",
+  "thinking-state": "agent-task",
+  "tool-chips": "tool-call",
+  "streaming-text": "chat-thread",
+} as const satisfies Partial<Record<ComponentId, ComponentId>>;
+export const relatedPages: Partial<
+  Record<ComponentId, readonly ComponentId[]>
+> = {
+  "chat-composer": ["prompt-bar"],
+  "task-starter": ["prompt-bar"],
+  "loading-state": ["thinking-indicator"],
+  "agent-task": ["thinking-state"],
+  "cited-answer": ["thinking-state"],
+  "tool-call": ["tool-chips"],
+  "chat-thread": ["streaming-text"],
+  markdown: ["streaming-text"],
+};
 interface DocumentationSection {
   id: string;
   name: Localized;
   ids: readonly ComponentId[];
-  collapsible?: boolean;
 }
 const primaryGroups: readonly DocumentationSection[] = [
   { id: "screens", name: ["شاشات", "Screens"], ids: ["chat-app"] },
   {
     id: "ask",
     name: jobNames.ask,
-    ids: ["task-starter", "cited-answer", "data-answer"],
+    ids: [
+      "task-starter",
+      "cited-answer",
+      "data-answer",
+      "chat-composer",
+      "chat-thread",
+    ],
   },
   {
     id: "delegate",
@@ -792,19 +817,30 @@ const primaryGroups: readonly DocumentationSection[] = [
       "approval-card",
       "approval-flow",
       "decision-inbox",
+      "task-rows",
+      "tool-call",
     ],
   },
   {
     id: "create",
     name: jobNames.create,
-    ids: ["suggested-edits", "image-generation", "draft-review"],
+    ids: [
+      "suggested-edits",
+      "image-generation",
+      "draft-review",
+      "selection-actions",
+    ],
   },
   {
     id: "understand",
     name: jobNames.understand,
-    ids: ["change-summary", "assistant-controls"],
+    ids: [
+      "change-summary",
+      "assistant-controls",
+      "model-selector",
+      "context-meter",
+    ],
   },
-  { id: "parts", name: ["الأجزاء", "Parts"], ids: aiParts, collapsible: true },
 ];
 
 // Documentation-only groups. Keep page IDs, metadata and source APIs unchanged:
@@ -843,12 +879,20 @@ const documentationGroups: readonly DocumentationSection[] = [
   {
     id: "data",
     name: ["البيانات", "Data"],
-    ids: ["filter-bar", "table", "data-table", "timeline"],
+    ids: [
+      "filter-bar",
+      "table",
+      "data-table",
+      "timeline",
+      "sources",
+      "insight-cards",
+    ],
   },
   {
     id: "display",
     name: ["العرض والتنبيهات", "Display & feedback"],
     ids: [
+      "image-result",
       "notification-list",
       "card",
       "accordion",

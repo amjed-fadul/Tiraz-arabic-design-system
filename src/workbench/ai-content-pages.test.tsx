@@ -15,18 +15,19 @@ it.each([
   // Content blocks moved to Display; StreamingText is one of the AI parts.
   ["كتلة الكود", "CodeBlock", "العرض والتنبيهات"],
   ["ماركداون", "Markdown", "العرض والتنبيهات"],
-  ["النص المتتابع", "StreamingText", "الأجزاء"],
+  ["النص المتتابع", "StreamingText", "اسأل"],
 ] as const)(
   "keeps %s in its group and copies portable examples and dependency guidance",
   async (ar, en, group) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    await user.click(screen.getByRole("button", { name: "الأجزاء" }));
     await user.click(
       within(screen.getByRole("group", { name: group })).getByRole("button", {
-        name: ar,
+        name: en === "StreamingText" ? "المحادثة" : ar,
       }),
     );
+    if (en === "StreamingText")
+      await user.click(screen.getByRole("link", { name: ar }));
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
     await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
@@ -190,8 +191,8 @@ it.each(["ar", "en"] as const)(
 it("uses the page's frame for the streaming demo: view tabs above, an icon Replay in the stage and an icon Copy in the code's header", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("button", { name: "الأجزاء" }));
-  await user.click(screen.getByRole("button", { name: "النص المتتابع" }));
+  await user.click(screen.getByRole("button", { name: "المحادثة" }));
+  await user.click(screen.getByRole("link", { name: "النص المتتابع" }));
   await user.click(screen.getByRole("button", { name: "English" }));
   const playground = document.querySelector(
     ".playground-region",
@@ -228,8 +229,8 @@ it("uses the page's frame for the streaming demo: view tabs above, an icon Repla
 it("opens the documentation demo complete, without autoplay, local footer or empty event scaffolding", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  fireEvent.click(screen.getByRole("button", { name: "الأجزاء" }));
-  fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
+  fireEvent.click(screen.getByRole("button", { name: "المحادثة" }));
+  fireEvent.click(screen.getByRole("link", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(0));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
   // The page rests on Done; nothing streams until Replay.

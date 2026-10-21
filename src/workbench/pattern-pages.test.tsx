@@ -23,14 +23,14 @@ it("shows a pattern page as its playground, prompt, usage guidelines and API ref
     "استخدمه في تطبيقك",
     "إرشادات الاستخدام",
     "دليل الخصائص",
+    "مكوّنات ذات صلة",
   ]);
-  const reference = main().lastElementChild as HTMLElement;
+  const reference = main().querySelector(".reference-section") as HTMLElement;
   expect(reference).toHaveClass("reference-section");
   // The page's own table alone: no table for each shared part.
   expect(within(reference).getAllByRole("table")).toHaveLength(1);
   expect(within(reference).queryByRole("heading", { level: 3 })).toBeNull();
   // A part has the same page.
-  await userEvent.click(nav().getByRole("button", { name: "الأجزاء" }));
   await userEvent.click(nav().getByRole("button", { name: "صفوف المهام" }));
   expect(sections()).toEqual([
     "استخدمه في تطبيقك",

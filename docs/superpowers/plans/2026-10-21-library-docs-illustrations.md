@@ -1,6 +1,6 @@
-# Proposed Library, Docs, and Illustrations structure
+# Library, Docs, and Illustrations structure
 
-Status: proposal for review, not an implementation started in this feedback pass.
+Status: first implementation complete; final verification and review in progress. Approved by the owner on 21 Oct 2026.
 
 ## Intent
 
@@ -24,7 +24,7 @@ Keep the shared sticky brand/language/theme header. Add Library, Docs, and Illus
 2. **Library gallery.** Reuse `catalog`, `navigationGroups`, and the screen registry as the source of names and categories. Use a consistent preview area, a short item name, and one clear link to its page. Start with still previews; activate live examples only when opened. This avoids dozens of simultaneous iframe/demo lifecycles, accidental actions, and automatic animation. Show a useful empty-search result.
 3. **Docs.** Build readable guide pages from the authoritative `src/system/ai` bundle, with curated bilingual copy. Keep API facts in component references rather than duplicating them in a second catalog. Do not invent a package installer or CLI: Tiraz currently travels as source.
 4. **Illustrations.** Create a small token-aware gallery for the existing original SVG illustrations, with light/dark preview, intended use, sizing, accessible decorative usage, and source-copy examples. Previewing an asset must not require an EmptyState workflow. Original animated scenes can follow once their scope and motion behavior are agreed.
-5. **Navigation curation.** Apply the reviewed [Parts audit](../../woven/workbench-navigation-audit.md): retain the ten useful independent pages and fold the five specialist entries into parent documentation. Preserve the underlying APIs and old entry points.
+5. **Navigation curation.** Apply the approved [Parts audit](../../woven/workbench-navigation-audit.md): retain the ten useful independent pages and fold the five specialist entries into parent documentation. Preserve the underlying APIs and old entry points.
 
 ## Acceptance checks
 
@@ -38,3 +38,9 @@ Keep the shared sticky brand/language/theme header. Add Library, Docs, and Illus
 ## Scope boundary
 
 No accounts, payments, pricing, content-management service, new package distribution, or copied third-party assets are needed for this first version. Plan 5's existing Task 8 evidence/review/fix wave remains a separate checkpoint; this proposal does not mark it complete or silently start the next milestone.
+
+## Implementation notes
+
+- Destinations are `/library`, `/docs`, and `/illustrations`; component, screen, guide, and illustration details have stable paths beneath them. The root `/` retains the previous saved-page behavior; the brand now opens the Library.
+- The Library contains 83 entries with 332 generated still previews, covering Arabic/English and light/dark. `scripts/library-previews.mjs` regenerates these production assets without touching tracked test evidence.
+- Seven guides and the three existing original SVG illustrations make up the first Docs and Illustrations release. The five folded Parts keep their detail pages and legacy playground routes.

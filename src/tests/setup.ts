@@ -4,6 +4,7 @@ import { afterEach } from "vitest";
 afterEach(() => {
   cleanup();
   localStorage.clear();
+  window.history.replaceState({}, "", "/");
 });
 window.matchMedia = (query: string) => ({
   matches: false,

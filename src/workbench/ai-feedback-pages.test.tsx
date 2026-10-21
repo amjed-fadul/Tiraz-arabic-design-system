@@ -16,8 +16,16 @@ it.each([
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     // LoadingState sits in Display; the other two in the folded AI parts.
     const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-    await user.click(nav.getByRole("button", { name: "الأجزاء" }));
-    await user.click(nav.getByRole("button", { name: ar }));
+    if (en === "LoadingState")
+      await user.click(nav.getByRole("button", { name: ar }));
+    else {
+      await user.click(
+        nav.getByRole("button", {
+          name: en === "ThinkingIndicator" ? "حالة التحميل" : "مهمة الوكيل",
+        }),
+      );
+      await user.click(screen.getByRole("link", { name: ar }));
+    }
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
     // The playground is the only stage; the step-by-step run plays there.
     expect(screen.queryByRole("heading", { name: "أمثلة" })).toBeNull();

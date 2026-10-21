@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 it.each([
-  ["صفوف المهام", "TaskRows", "الأجزاء", "Appearance"],
+  ["صفوف المهام", "TaskRows", "فوّض", "Appearance"],
   ["قائمة الإشعارات", "NotificationList", "العرض والتنبيهات", "Read controls"],
 ])(
   "documents %s with continuous examples, inspector and complete copied source",
@@ -13,7 +13,6 @@ it.each([
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
     // TaskRows is one of the AI parts, folded until their disclosure opens.
-    await user.click(nav.getByRole("button", { name: "الأجزاء" }));
     await user.click(
       within(nav.getByRole("group", { name: group })).getByRole("button", {
         name: ar,

@@ -2,7 +2,7 @@
 
 ## Recommendation
 
-Keep ten of the fifteen Parts as independent component pages. Move five specialist entries into the documentation of their closest parent component, then retire the generic Parts section. This is a navigation recommendation for review; this feedback pass keeps all fifteen pages available.
+Keep ten of the fifteen Parts as independent component pages. Move five specialist entries into the documentation of their closest parent component, then retire the generic Parts section. Applied on 21 Oct 2026 after approval: ten pages now live in their job/category groups, and five specialist pages are linked from parent documentation. The Parts section is retired.
 
 All fifteen currently have public exports and accept application-owned data or callbacks. They do not require an enclosing AI pattern to render. The distinction is usefulness and discoverability, not whether they can technically work alone. The existing Field reference under Input is a useful precedent for documenting a helper without giving it another menu item.
 
@@ -33,7 +33,7 @@ The audit checked [the navigation catalog](../../src/workbench/catalog.ts), [pub
 | [ToolChips](../../src/system/ToolChips.tsx)                 | ToolCall → compact operation summaries                               | A compact list of tool states, best compared directly with the detailed tool-call view.                                                          |
 | [StreamingText](../../src/system/StreamingText.tsx)         | ChatThread → streaming messages; cross-link Markdown                 | Rendering supplied text and stream state is part of composing a message. The application still owns the stream.                                  |
 
-These changes would remove menu entries, not exports, source files, examples, tests, or supported APIs. Existing saved selections and direct playground URLs should continue to resolve, and parent pages should link to the detailed reference. Apply them as a separate navigation change after this recommendation is reviewed.
+These changes would remove menu entries, not exports, source files, examples, tests, or supported APIs. Existing saved selections and direct playground URLs should continue to resolve, and parent pages should link to the detailed reference. The applied change retains all five detailed pages and their standalone playground URLs.
 
 ## Already correctly hidden
 

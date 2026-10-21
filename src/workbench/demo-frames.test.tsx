@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
-import { navigationCatalog } from "./catalog";
+import { navigationCatalog, nestedParts, catalog } from "./catalog";
 import { demoStates } from "./demo-states";
 import { defaultPlaygrounds } from "./model";
 import {
@@ -65,8 +65,8 @@ it("replays streaming text from the stage's corner, without a stop, keeping Repl
   vi.useFakeTimers();
   render(<Workbench />);
   // StreamingText is one of the AI parts, folded until their disclosure opens.
-  fireEvent.click(screen.getByRole("button", { name: "الأجزاء" }));
-  fireEvent.click(screen.getByRole("button", { name: "النص المتتابع" }));
+  fireEvent.click(screen.getByRole("button", { name: "المحادثة" }));
+  fireEvent.click(screen.getByRole("link", { name: "النص المتتابع" }));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
   // The page's frame is the only one, and the text is complete at rest.
   const frames = document.querySelectorAll(".tz-demo-frame");
@@ -143,11 +143,18 @@ it("shows Replay only where a sequence exists", () => {
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   // The AI parts are folded until their disclosure opens.
-  fireEvent.click(nav.getByRole("button", { name: "الأجزاء" }));
   const replaying: string[] = [];
   // Every page of the catalog: Replay needs a sequence of states to play.
   for (const page of navigationCatalog) {
-    fireEvent.click(nav.getByRole("button", { name: page.name[0] }));
+    const parent = nestedParts[page.id as keyof typeof nestedParts];
+    if (parent) {
+      fireEvent.click(
+        nav.getByRole("button", {
+          name: catalog.find((item) => item.id === parent)!.name[0],
+        }),
+      );
+      fireEvent.click(screen.getByRole("link", { name: page.name[0] }));
+    } else fireEvent.click(nav.getByRole("button", { name: page.name[0] }));
     if (screen.queryByRole("button", { name: "إعادة تشغيل المثال" }))
       replaying.push(page.id);
   }
