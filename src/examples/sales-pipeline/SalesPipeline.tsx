@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import {
   Avatar,
@@ -42,6 +42,27 @@ interface Draft {
   edited?: string;
 }
 
+/** The host's region lives inside an open modal so it remains accessible. */
+function TransitionAnnouncement({
+  text,
+  count,
+}: {
+  text: string;
+  count: number;
+}) {
+  const [initialCount] = useState(count);
+  return (
+    <div
+      className="sales-pipeline-announcement tz-visually-hidden"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      {count !== initialCount && <span key={count}>{text}</span>}
+    </div>
+  );
+}
+
 export function SalesPipeline() {
   return (
     <ScreenFrame slug="sales-pipeline">
@@ -56,13 +77,18 @@ function FollowUp({
   draft,
   onBodyChange,
   onSend,
+  onClose,
 }: {
   deal: Deal;
   draft: Draft;
   onBodyChange: (body: string) => void;
   onSend: (text: string) => void;
+  onClose: (id: string) => void;
 }) {
   const { language, money } = useScreen();
+  // A responsive branch or a filter can remove the Sheet without asking
+  // Radix to close it. The content owns cancellation for every unmount path.
+  useEffect(() => () => onClose(deal.id), [deal.id, onClose]);
   const owner = owners.find((item) => item.id === deal.owner)!.name[language];
   return (
     <DraftReview
@@ -78,6 +104,7 @@ function FollowUp({
       onSend={onSend}
       headingLevel={3}
       appearance="plain"
+      announcement="off"
     />
   );
 }
@@ -88,18 +115,36 @@ function PipelineScreen() {
   const uid = useId();
   const root = useRef<HTMLDivElement>(null);
   const sending = useRef(new Map<string, AbortController>());
+  const focusFrame = useRef<number | null>(null);
   const [deals, setDeals] = useState(initialDeals);
   const [owner, setOwner] = useState<OwnerId | "all">("all");
   // The stage the tabs show, when the board is too narrow for five columns.
   const [shown, setShown] = useState<StageId>("new");
   const [openId, setOpenId] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<Record<string, Draft>>({});
-  // The screen's one polite region: what a move did, once.
+  // The screen's one polite region: moves and recording transitions, once.
   const [announcement, setAnnouncement] = useState({ text: "", count: 0 });
+  const announce = (text: string) =>
+    setAnnouncement(({ count }) => ({ text, count: count + 1 }));
+  const closeFollowUp = useCallback((id: string) => {
+    const request = sending.current.get(id);
+    if (request) {
+      sending.current.delete(id);
+      request.abort();
+      setDrafts((current) => ({
+        ...current,
+        [id]: { ...current[id], status: "ready" },
+      }));
+    }
+    setOpenId((current) => (current === id ? null : current));
+  }, []);
   // Whatever is still being sent when the screen goes records nothing.
   useEffect(() => {
     const requests = sending.current;
-    return () => requests.forEach((request) => request.abort());
+    return () => {
+      requests.forEach((request) => request.abort());
+      if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
+    };
   }, []);
 
   const ownerName = (id: OwnerId) =>
@@ -110,6 +155,30 @@ function PipelineScreen() {
   const inStage = (id: StageId) => visible.filter((deal) => deal.stage === id);
   const total = (list: readonly Deal[]) =>
     list.reduce((sum, deal) => sum + deal.amount, 0);
+
+  useEffect(() => {
+    if (!openId) return;
+    const deal = deals.find((item) => item.id === openId);
+    if (
+      deal &&
+      (owner === "all" || deal.owner === owner) &&
+      (size !== "narrow" || deal.stage === shown)
+    )
+      return;
+    // The vanished trigger cannot receive Radix's return focus.
+    if (focusFrame.current !== null) cancelAnimationFrame(focusFrame.current);
+    focusFrame.current = requestAnimationFrame(() => {
+      focusFrame.current = null;
+      closeFollowUp(openId);
+      root.current
+        ?.querySelector<HTMLElement>(
+          size === "narrow"
+            ? '[role="tab"][data-state="active"]'
+            : ".sales-pipeline-filters .tz-select-trigger",
+        )
+        ?.focus();
+    });
+  }, [openId, deals, owner, size, shown, closeFollowUp]);
 
   // A move updates both columns: the deal leaves its stage and heads the next
   // one, a new day in it. Then the screen says so, and puts focus where it was
@@ -125,13 +194,12 @@ function PipelineScreen() {
       { ...deal, stage: to, days: 0 },
       ...current.filter((item) => item.id !== id),
     ]);
-    setAnnouncement(({ count }) => ({
-      text: t(
+    announce(
+      t(
         `نُقلت صفقة ${deal.customer.ar} إلى ${stageName(to).ar}`,
         `${deal.customer.en}'s deal moved to ${stageName(to).en}`,
       ),
-      count: count + 1,
-    }));
+    );
     requestAnimationFrame(() => {
       const target =
         size !== "narrow"
@@ -151,14 +219,34 @@ function PipelineScreen() {
   // Stands in for your mail server: the message goes out after a moment.
   // Closing the Sheet while it records aborts it, and the draft is ready again.
   function send(id: string, text: string) {
+    sending.current.get(id)?.abort();
+    const deal = deals.find((item) => item.id === id)!;
     const settle = (status: Status) =>
       setDrafts((current) => ({ ...current, [id]: { status, edited: text } }));
     settle("sending");
     const request = new AbortController();
     sending.current.set(id, request);
+    announce(
+      t(
+        `تُرسَل رسالة متابعة ${deal.customer.ar}`,
+        `Sending the follow-up for ${deal.customer.en}`,
+      ),
+    );
     recorded(request.signal)
-      .then(() => settle("sent"))
-      .catch(() => settle("ready"))
+      .then(() => {
+        if (sending.current.get(id) !== request || request.signal.aborted)
+          return;
+        settle("sent");
+        announce(
+          t(
+            `أُرسلت رسالة متابعة ${deal.customer.ar}`,
+            `The follow-up for ${deal.customer.en} was sent`,
+          ),
+        );
+      })
+      .catch(() => {
+        if (sending.current.get(id) === request) settle("ready");
+      })
       .finally(() => {
         if (sending.current.get(id) === request) sending.current.delete(id);
       });
@@ -175,8 +263,8 @@ function PipelineScreen() {
               <Sheet
                 open={openId === deal.id}
                 onOpenChange={(open) => {
-                  if (!open) sending.current.get(deal.id)?.abort();
-                  setOpenId(open ? deal.id : null);
+                  if (open) setOpenId(deal.id);
+                  else closeFollowUp(deal.id);
                 }}
                 side={endSide}
                 title={t(
@@ -199,11 +287,15 @@ function PipelineScreen() {
                 }
               >
                 <div className="sales-pipeline-sheet">
+                  {openId === deal.id && (
+                    <TransitionAnnouncement {...announcement} />
+                  )}
                   <FollowUp
                     deal={deal}
                     draft={draft}
                     onBodyChange={(body) => edit(deal.id, body)}
                     onSend={(text) => send(deal.id, text)}
+                    onClose={closeFollowUp}
                   />
                 </div>
               </Sheet>
@@ -380,6 +472,7 @@ function PipelineScreen() {
           />
         </FilterBar>
         <ChangeSummary
+          announcement="off"
           status="ready"
           rows={changes}
           basedOn={t(
@@ -422,14 +515,7 @@ function PipelineScreen() {
             <div className="sales-pipeline-board">{stages.map(lane)}</div>
           </div>
         )}
-        <div
-          className="tz-visually-hidden"
-          role="status"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          <span key={announcement.count}>{announcement.text}</span>
-        </div>
+        {!openId && <TransitionAnnouncement {...announcement} />}
       </div>
     </>
   );
