@@ -64,6 +64,7 @@ it("says what a pattern replaces, with links", async () => {
     "page",
   );
   // A pattern that replaces nothing keeps its alternatives.
+  await userEvent.click(nav().getByRole("link", { name: "فوّض" }));
   await userEvent.click(nav().getByRole("button", { name: "طلب موافقة" }));
   expect(columns()).toEqual(["استخدمه عندما", "استخدم غيره عندما", "لاحظ"]);
 });

@@ -62,6 +62,8 @@ import type { SiteRoute } from "./site-routes";
 import { SiteLink } from "./SiteLink";
 import { LibraryPage } from "./LibraryPage";
 import { QuickStart } from "./QuickStart";
+import { CustomizeHint } from "./CustomizeHint";
+import { useCustomizeHint } from "./use-customize-hint";
 import { IllustrationsPage } from "./IllustrationsPage";
 import { illustrations } from "./illustrations";
 import "./site.css";
@@ -93,23 +95,35 @@ function BrandMark() {
     </svg>
   );
 }
-/** Curated library navigation shared by the sidebar and mobile drawer. */
+/** One section stays expanded, following the current page or gallery. */
 function ComponentNavigation({
   language,
-  active,
-  screen,
-  onOpen,
-  onOpenScreen,
+  route,
+  navigate,
 }: {
   language: Language;
-  active?: ComponentId;
-  screen: ScreenSlug | null;
-  onOpen: (id: ComponentId) => void;
-  onOpenScreen: (slug: ScreenSlug) => void;
+  route: SiteRoute;
+  navigate: (route: SiteRoute) => void;
 }) {
+  const id = useId();
+  const t = words(language);
+  const active = route.kind === "component" ? route.id : undefined;
   const parent = nestedParts[active as keyof typeof nestedParts];
+  const expanded =
+    route.kind === "screen"
+      ? "screens"
+      : route.kind === "library"
+        ? route.category
+        : route.kind === "illustrations"
+          ? "illustrations"
+          : navigationGroups.find((group) =>
+              group.items.some((item) => item.id === (parent ?? active)),
+            )?.id;
   return (
-    <nav className="component-nav" aria-label={label("components", language)}>
+    <nav
+      className="component-nav site-secondary"
+      aria-label={label("components", language)}
+    >
       {navigationGroups.map((group) => (
         <div
           key={group.id}
@@ -118,37 +132,102 @@ function ComponentNavigation({
           aria-label={localize(group.name, language)}
         >
           <h2 className="component-nav-heading">
-            {localize(group.name, language)}
+            <SiteLink
+              className="component-nav-section"
+              route={{ kind: "library", category: group.id }}
+              navigate={navigate}
+              aria-expanded={expanded === group.id}
+              aria-controls={
+                expanded === group.id ? `${id}-${group.id}` : undefined
+              }
+              aria-current={
+                route.kind === "library" && route.category === group.id
+                  ? "page"
+                  : undefined
+              }
+            >
+              {localize(group.name, language)}
+              <span className="component-nav-chevron" aria-hidden="true" />
+            </SiteLink>
           </h2>
-          <div className="component-nav-items">
-            {group.items.map((item) => (
-              <button
-                type="button"
+          {expanded === group.id && (
+            <div id={`${id}-${group.id}`} className="component-nav-items">
+              {group.items.map((item) => (
+                <button
+                  type="button"
+                  key={item.id}
+                  aria-current={
+                    active === item.id || parent === item.id
+                      ? "page"
+                      : undefined
+                  }
+                  onClick={() => navigate({ kind: "component", id: item.id })}
+                >
+                  {localize(item.name, language)}
+                </button>
+              ))}
+              {group.id === "screens" &&
+                screens.map((item) => (
+                  <button
+                    type="button"
+                    key={item.slug}
+                    aria-current={
+                      route.kind === "screen" && route.slug === item.slug
+                        ? "page"
+                        : undefined
+                    }
+                    onClick={() =>
+                      navigate({ kind: "screen", slug: item.slug })
+                    }
+                  >
+                    {localize(item.name, language)}
+                  </button>
+                ))}
+            </div>
+          )}
+        </div>
+      ))}
+      <div
+        className="component-nav-group docs-navigation-resources"
+        role="group"
+        aria-label={t("الرسوم التوضيحية", "Illustrations")}
+      >
+        <h2 className="component-nav-heading">
+          <SiteLink
+            className="component-nav-section"
+            route={{ kind: "illustrations" }}
+            navigate={navigate}
+            aria-expanded={expanded === "illustrations"}
+            aria-controls={
+              expanded === "illustrations" ? `${id}-illustrations` : undefined
+            }
+            aria-current={
+              route.kind === "illustrations" && !route.id ? "page" : undefined
+            }
+          >
+            {t("الرسوم التوضيحية", "Illustrations")}
+            <span className="component-nav-chevron" aria-hidden="true" />
+          </SiteLink>
+        </h2>
+        {expanded === "illustrations" && (
+          <div id={`${id}-illustrations`} className="component-nav-items">
+            {illustrations.map((item) => (
+              <SiteLink
                 key={item.id}
+                route={{ kind: "illustrations", id: item.id }}
+                navigate={navigate}
                 aria-current={
-                  !screen && (active === item.id || parent === item.id)
+                  route.kind === "illustrations" && route.id === item.id
                     ? "page"
                     : undefined
                 }
-                onClick={() => onOpen(item.id)}
               >
                 {localize(item.name, language)}
-              </button>
+              </SiteLink>
             ))}
-            {group.id === "screens" &&
-              screens.map((item) => (
-                <button
-                  type="button"
-                  key={item.slug}
-                  aria-current={screen === item.slug ? "page" : undefined}
-                  onClick={() => onOpenScreen(item.slug)}
-                >
-                  <span>{localize(item.name, language)}</span>
-                </button>
-              ))}
           </div>
-        </div>
-      ))}
+        )}
+      </div>
     </nav>
   );
 }
@@ -368,6 +447,11 @@ export function Workbench() {
   // The narrow Sheet's open state lasts the session: it never opens on load.
   const [sheetOpen, setSheetOpen] = useState(false);
   const settingsOpen = narrow ? sheetOpen : documentation.settingsOpen;
+  const { visible: showCustomizeHint, dismiss: dismissCustomizeHint } =
+    useCustomizeHint(route.kind === "component" && !settingsOpen);
+  useEffect(() => {
+    if (route.kind === "component" && settingsOpen) dismissCustomizeHint();
+  }, [route.kind, settingsOpen, dismissCustomizeHint]);
   // The docs' own root, where the settings Sheet portals.
   const [shell, setShell] = useState<HTMLDivElement | null>(null);
   const customizeButton = useRef<HTMLButtonElement>(null);
@@ -432,7 +516,8 @@ export function Workbench() {
     prompt = generatePrompt(active, model, systemConfig, language);
   const pageName =
     route.kind === "library"
-      ? (["المكتبة", "Library"] as const)
+      ? (navigationGroups.find((group) => group.id === route.category)?.name ??
+        (["المكتبة", "Library"] as const))
       : route.kind === "start"
         ? (["ابدأ هنا", "Start here"] as const)
         : route.kind === "illustrations"
@@ -778,6 +863,7 @@ export function Workbench() {
     }
   }
   function setSettingsOpen(open: boolean) {
+    if (open) dismissCustomizeHint();
     if (narrow) return setSheetOpen(open);
     setDocumentation((prev) =>
       prev.settingsOpen === open ? prev : { ...prev, settingsOpen: open },
@@ -855,67 +941,6 @@ export function Workbench() {
     siteDestination === "illustrations"
       ? t("الرسوم التوضيحية", "Illustrations")
       : label("components", language);
-  const navigationBody =
-    route.kind === "library" ? (
-      <nav
-        className="component-nav site-secondary"
-        aria-label={t("تصنيفات المكتبة", "Library categories")}
-      >
-        <h2 className="component-nav-heading">{t("المكتبة", "Library")}</h2>
-        <div className="component-nav-items">
-          <SiteLink
-            route={{ kind: "library" }}
-            navigate={navigate}
-            aria-current={!route.category ? "page" : undefined}
-          >
-            <span>{t("كل المكتبة", "All items")}</span>
-          </SiteLink>
-          {navigationGroups.map((group) => (
-            <SiteLink
-              key={group.id}
-              route={{ kind: "library", category: group.id }}
-              navigate={navigate}
-              aria-current={route.category === group.id ? "page" : undefined}
-            >
-              <span>{localize(group.name, language)}</span>
-            </SiteLink>
-          ))}
-        </div>
-      </nav>
-    ) : route.kind === "illustrations" ? (
-      <nav className="component-nav site-secondary" aria-label={navigationName}>
-        <h2 className="component-nav-heading">
-          {t("الرسوم التوضيحية", "Illustrations")}
-        </h2>
-        <div className="component-nav-items">
-          <SiteLink
-            route={{ kind: "illustrations" }}
-            navigate={navigate}
-            aria-current={!route.id ? "page" : undefined}
-          >
-            <span>{t("كل الرسوم", "All illustrations")}</span>
-          </SiteLink>
-          {illustrations.map((item) => (
-            <SiteLink
-              key={item.id}
-              route={{ kind: "illustrations", id: item.id }}
-              navigate={navigate}
-              aria-current={route.id === item.id ? "page" : undefined}
-            >
-              <span>{localize(item.name, language)}</span>
-            </SiteLink>
-          ))}
-        </div>
-      </nav>
-    ) : (
-      <ComponentNavigation
-        language={language}
-        active={route.kind === "component" ? active : undefined}
-        screen={screenSlug}
-        onOpen={openPage}
-        onOpenScreen={openScreen}
-      />
-    );
   const navigation = (
     <div className="docs-navigation-sections">
       <nav
@@ -930,34 +955,13 @@ export function Workbench() {
           >
             {t("ابدأ هنا", "Start here")}
           </SiteLink>
-          <SiteLink
-            route={{ kind: "library" }}
-            navigate={navigate}
-            aria-current={
-              route.kind === "library" && !route.category ? "page" : undefined
-            }
-          >
-            {t("المكتبة", "Library")}
-          </SiteLink>
         </div>
       </nav>
-      {navigationBody}
-      <nav
-        className="component-nav site-secondary docs-navigation-resources"
-        aria-label={t("الموارد", "Resources")}
-      >
-        <div className="component-nav-items">
-          <SiteLink
-            route={{ kind: "illustrations" }}
-            navigate={navigate}
-            aria-current={
-              route.kind === "illustrations" && !route.id ? "page" : undefined
-            }
-          >
-            {t("الرسوم التوضيحية", "Illustrations")}
-          </SiteLink>
-        </div>
-      </nav>
+      <ComponentNavigation
+        language={language}
+        route={route}
+        navigate={navigate}
+      />
     </div>
   );
   const appearance = (
@@ -1238,7 +1242,21 @@ export function Workbench() {
                           }))}
                           state={stateOf(active, model, phase, language)}
                           onStateChange={pressState}
-                          customize={customize}
+                          customize={
+                            <span className="customize-hint-anchor">
+                              {customize}
+                              {showCustomizeHint && (
+                                <CustomizeHint
+                                  language={language}
+                                  onOpen={() =>
+                                    customizeButton.current?.click()
+                                  }
+                                  onDismiss={dismissCustomizeHint}
+                                  triggerRef={customizeButton}
+                                />
+                              )}
+                            </span>
+                          }
                           // The stored props and settings open with it; the
                           // phase, which is not stored, rides along.
                           openHref={`/examples/playground/${active}${phase ? `?phase=${encodeURIComponent(phase)}` : ""}`}

@@ -7,6 +7,12 @@ it("documents FileTree in Files with a minimal inspector and portable copied act
   render(<Workbench />);
   const copy = vi.spyOn(navigator.clipboard, "writeText");
   await user.click(
+    within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
+      "link",
+      { name: "الملفات" },
+    ),
+  );
+  await user.click(
     within(
       within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
         "group",

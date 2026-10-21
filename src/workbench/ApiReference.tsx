@@ -673,8 +673,8 @@ export function ApiReference({
         "status / progress",
         "queued | weaving | completed | failed | blocked · required / number | null?",
         t(
-          "يقرّر تطبيقك الحالة. تتدفّق خيوط مضيئة فوق اللوحة، وتتكشّف أجزاء الصورة تدريجيًا مع التقدّم الذي يرسله تطبيقك. تظهر حركة الخيوط حتى قبل وصول الصورة. عندما تكون النسبة مجهولة يبقى الكشف ثابتًا حتى completed؛ ولا تقدّر الحركة نسبة للتقدّم. وتتوقف الحركة عند الإخفاق. ومع الحركة المخفَّضة تظهر الصورة كاملة تدريجيًا في خُمس ثانية بلا حركة مستمرة. وتبقى النسخ والإجراءات معطّلة حتى completed.",
-          "Your app owns the status. Luminous ribbons flow across the canvas while scattered image cells resolve with progress from 0 to 100. The ribbon field also moves before a preview arrives. Unknown progress holds the reveal until completed; the motion never estimates a percentage. Failure freezes the reveal and pauses the ribbons. With reduced motion the picture fades in whole over 200ms and nothing loops. The versions and actions stay inert until completed.",
+          "يقرّر تطبيقك الحالة. تتحرّك منطقتان مضيئتان عبر شبكة نقاط بيضاء على لوحة فحمية. تظهر الصورة كاملة تدريجيًا مع اقتراب التقدّم الفعلي من الاكتمال، أو عند completed، بعد تحميلها. عندما تكون النسبة مجهولة تبقى الصورة مخفية حتى completed؛ ولا تقدّر الحركة نسبة للتقدّم. وعند الإخفاق تتجمّد اللوحة والكشف. ومع الحركة المخفَّضة تبقى النقاط ساكنة، وتتغيّر شفافية الصورة مع التقدّم في خُمس ثانية. وتبقى النسخ والإجراءات معطّلة حتى completed.",
+          "Your app owns the status. Two bright regions drift through a fine grid of white dots on charcoal. A loaded image crossfades in whole as actual progress approaches completion, or at completed. Unknown progress keeps the image hidden until completed; the motion never estimates a percentage. Failure freezes the field and reveal. With reduced motion the dots stay still and progress changes use a 200ms image fade. The versions and actions stay inert until completed.",
         ),
       ],
       [

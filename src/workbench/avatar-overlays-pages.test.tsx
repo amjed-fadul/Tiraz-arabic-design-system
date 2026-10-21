@@ -17,6 +17,13 @@ it("adds five focused continuous pages with complete generated prompts", async (
     ["modal", "النافذة الحوارية"],
     ["empty-state", "الحالة الفارغة"],
   ] as const) {
+    if (!nav.queryByRole("button", { name: label }))
+      await user.click(
+        nav.getByRole("link", {
+          name:
+            id === "tooltip" || id === "modal" ? "النوافذ" : "العرض والتنبيهات",
+        }),
+      );
     await user.click(nav.getByRole("button", { name: label }));
     expect(
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),

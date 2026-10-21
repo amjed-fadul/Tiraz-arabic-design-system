@@ -15,6 +15,8 @@ it.each([
     const user = userEvent.setup();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     const nav = screen.getByRole("navigation", { name: "المكوّنات" });
+    if (id === "file-dropzone")
+      await user.click(within(nav).getByRole("link", { name: "الملفات" }));
     await user.click(within(nav).getByRole("button", { name: ar }));
     expect(
       screen.getByRole("heading", { level: 1, name: ar }),

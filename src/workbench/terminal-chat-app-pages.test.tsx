@@ -18,6 +18,7 @@ it.each([["الطرفية", "Terminal", "العرض والتنبيهات"]])(
   async (ar, en, group) => {
     const user = userEvent.setup();
     render(<Workbench />);
+    await user.click(screen.getByRole("link", { name: group }));
     await user.click(
       within(screen.getByRole("group", { name: group })).getByRole("button", {
         name: ar,

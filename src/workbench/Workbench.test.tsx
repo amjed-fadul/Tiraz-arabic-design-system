@@ -1,5 +1,4 @@
-import { nestedParts, navigationCatalog } from "./catalog";
-import { screens } from "../examples/frame/screen";
+import { navigationGroups } from "./catalog";
 import {
   fireEvent,
   render,
@@ -28,6 +27,17 @@ function controls(language: "ar" | "en" = "ar") {
 function navigation() {
   return within(screen.getByRole("navigation", { name: "المكوّنات" }));
 }
+async function openPage(name: string) {
+  if (!navigation().queryByRole("button", { name })) {
+    const group = navigationGroups.find((section) =>
+      section.items.some((item) => item.name[0] === name),
+    )!;
+    await userEvent.click(
+      navigation().getByRole("link", { name: group.name[0] }),
+    );
+  }
+  await userEvent.click(navigation().getByRole("button", { name }));
+}
 async function chooseAccent(accent: "blue" | "plum" | "clay") {
   await userEvent.click(
     controls().getByRole("radio", {
@@ -43,6 +53,49 @@ async function choose(select: string, option: string) {
 function preview() {
   return within(screen.getByRole("region", { name: "المعاينة التفاعلية" }));
 }
+
+it("dismisses the first-visit hint through the original Customize button and remembers it on reload", async () => {
+  const user = userEvent.setup();
+  const view = render(<Workbench />);
+  expect(screen.getByRole("button", { name: "خصّص من هنا" })).toBeVisible();
+  await user.click(screen.getByRole("button", { name: "تخصيص" }));
+  expect(screen.queryByRole("button", { name: "خصّص من هنا" })).toBeNull();
+  expect(screen.getByRole("heading", { name: "تخصيص المعاينة" })).toHaveFocus();
+  await user.click(screen.getByRole("button", { name: "إغلاق التخصيص" }));
+  view.unmount();
+  render(<Workbench />);
+  expect(screen.getByRole("button", { name: "تخصيص" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  expect(screen.queryByRole("button", { name: "خصّص من هنا" })).toBeNull();
+});
+
+it("waits through Start and screen pages, then opens Customize from the hint with normal panel focus", async () => {
+  persist(storageKeys.documentation, { language: "en" });
+  window.history.replaceState({}, "", "/start");
+  const user = userEvent.setup();
+  render(<Workbench />);
+  const nav = () =>
+    within(screen.getByRole("navigation", { name: "Components" }));
+  expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
+  await user.click(nav().getByRole("link", { name: "Screens" }));
+  await user.click(nav().getByRole("button", { name: "Customer dashboard" }));
+  expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
+  await user.click(nav().getByRole("link", { name: "Forms" }));
+  expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
+  await user.click(nav().getByRole("button", { name: "Button" }));
+  expect(screen.getByRole("main")).toHaveFocus();
+  await user.click(
+    screen.getByRole("button", { name: "Click me to customize the preview" }),
+  );
+  expect(
+    screen.getByRole("heading", { name: "Customize the preview" }),
+  ).toHaveFocus();
+  expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
+  await user.click(screen.getByRole("button", { name: "Close customize" }));
+  expect(screen.getByRole("button", { name: "Customize" })).toHaveFocus();
+});
 /** Opens the playground's Code view (if needed) and returns the shown source. */
 async function shownCode() {
   const tab = screen.getByRole("tab", { name: "الكود" });
@@ -73,9 +126,9 @@ it("isolates portable library paths as complete LTR runs inside the Arabic promp
 it("places only navigation in its sidebar and both settings sections in the panel", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
-  // Curated entries and screens; specialist pages are linked from parents.
+  // Only the current component's section is expanded.
   expect(within(nav).getAllByRole("button")).toHaveLength(
-    navigationCatalog.length - Object.keys(nestedParts).length + screens.length,
+    navigationGroups.find((group) => group.id === "forms")!.items.length,
   );
   expect(within(nav).queryByText("خصائص الأزرار")).not.toBeInTheDocument();
   expect(
@@ -126,9 +179,7 @@ it("updates accent through successive selections, navigation and reset despite l
       );
     expect(await shownCode()).toContain(`accent: "${accent}"`);
   }
-  await userEvent.click(
-    navigation().getByRole("button", { name: "التبويبات" }),
-  );
+  await openPage("التبويبات");
   expect(
     (
       container.querySelector(".playground-region .tiraz-system") as HTMLElement
@@ -203,7 +254,7 @@ it("retains continuous documentation, synchronized prompt content and API inform
     "اللوحة الجانبية",
     "التنبيهات",
   ]) {
-    await userEvent.click(navigation().getByRole("button", { name }));
+    await openPage(name);
     expect(screen.getByRole("heading", { name, level: 1 })).toBeInTheDocument();
     for (const title of ["استخدمه في تطبيقك", "إرشادات الاستخدام"])
       expect(
@@ -274,9 +325,7 @@ it("retains shared tokens in Sheet portals and restores trigger focus", async ()
   render(<Workbench />);
   await userEvent.click(screen.getByRole("button", { name: "تبديل المظهر" }));
   await chooseAccent("blue");
-  await userEvent.click(
-    navigation().getByRole("button", { name: "اللوحة الجانبية" }),
-  );
+  await openPage("اللوحة الجانبية");
   const trigger = preview().getByRole("button");
   await userEvent.click(trigger);
   const dialog = screen.getByRole("dialog", { name: "تفاصيل العميل" });

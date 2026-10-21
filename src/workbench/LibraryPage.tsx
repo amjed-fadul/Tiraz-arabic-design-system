@@ -21,12 +21,18 @@ export function LibraryPage({
 }) {
   const t = words(language),
     [query, setQuery] = useState("");
+  const [previousCategory, setPreviousCategory] = useState(category);
+  if (previousCategory !== category) {
+    setPreviousCategory(category);
+    setQuery("");
+  }
   const input = useRef<HTMLInputElement>(null);
   const filter =
     category === "components" ||
     navigationGroups.some((group) => group.id === category)
       ? category
       : "all";
+  const section = navigationGroups.find((group) => group.id === filter);
   const needle = query
     .trim()
     .normalize("NFKD")
@@ -68,7 +74,9 @@ export function LibraryPage({
   return (
     <div className="library-page">
       <header className="component-heading">
-        <h1>{t("المكتبة", "Library")}</h1>
+        <h1>
+          {section ? localize(section.name, language) : t("المكتبة", "Library")}
+        </h1>
         <p>
           {t(
             "اختر شاشة أو مكوّنًا لتجربته ونسخ مثاله إلى تطبيقك.",

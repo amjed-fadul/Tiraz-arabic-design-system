@@ -75,8 +75,7 @@ it("holds an unknown image reveal until the host completes it", () => {
   const preview = screen.getByRole("img", { name: alts[0] });
   const focus = () => Number(preview.style.getPropertyValue("--weave-focus"));
   const waiting = focus();
-  expect(waiting).toBeGreaterThan(0);
-  expect(waiting).toBeLessThan(1);
+  expect(waiting).toBe(0);
   act(() => vi.advanceTimersByTime(10_000));
   expect(focus()).toBe(waiting);
   expect(screen.queryByRole("progressbar")).toBeNull();
@@ -144,28 +143,54 @@ it("names the weave as one image and follows progress", () => {
   expect(waiting).not.toHaveTextContent("٪");
 });
 
-it("crossfades under reduced motion", () => {
+it("keeps the reduced-motion reveal tied to real host progress", () => {
   const alt = "غروب فوق الكثبان";
   const frame = vi.spyOn(window, "requestAnimationFrame");
-  const still = (src?: string) =>
-    wrap(<WeaveCanvas status="weaving" progress={null} src={src} alt={alt} />, {
-      reducedMotion: true,
-    });
-  const view = render(still());
+  const still = (
+    progress: number | null,
+    status: "weaving" | "completed" = "weaving",
+  ) =>
+    wrap(
+      <WeaveCanvas
+        status={status}
+        progress={progress}
+        src={images[0].src}
+        alt={alt}
+      />,
+      {
+        reducedMotion: true,
+      },
+    );
+  const view = render(still(null));
+  const preview = screen.getByRole("img", { name: alt });
+  const focus = () => Number(preview.style.getPropertyValue("--weave-focus"));
+  expect(focus()).toBe(0);
+  expect(preview).toHaveAttribute("data-reduced");
   expect(frame).not.toHaveBeenCalled();
-  // No picture yet; a still thread indicates that the job is active.
-  expect(view.container.querySelector("img")).toBeNull();
-  expect(view.container.querySelector(".tz-weave-still")).not.toBeNull();
 
-  view.rerender(still(images[0].src));
-  const image = view.container.querySelector("img")!;
-  expect(image).toHaveAttribute("src", images[0].src);
-  expect(image).toBeVisible();
-  // The picture is whole and fades in; nothing clips it, and nothing loops.
-  expect(image.style.clipPath).toBe("");
-  expect(screen.getByRole("img", { name: alt })).toHaveAttribute(
-    "data-reduced",
-  );
+  view.rerender(still(42));
+  expect(focus()).toBe(0.42);
+  view.rerender(still(null, "completed"));
+  expect(focus()).toBe(1);
+  expect(frame).not.toHaveBeenCalled();
+});
+
+it("honors the OS motion preference without inventing a reveal", () => {
+  vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+    matches: query === "(prefers-reduced-motion: reduce)",
+    media: query,
+    onchange: null,
+    addListener() {},
+    removeListener() {},
+    addEventListener() {},
+    removeEventListener() {},
+    dispatchEvent: () => false,
+  }));
+  const frame = vi.spyOn(window, "requestAnimationFrame");
+  render(wrap(<WeaveCanvas status="weaving" progress={null} alt={alts[0]} />));
+  const preview = screen.getByRole("img", { name: alts[0] });
+  expect(preview).toHaveAttribute("data-reduced");
+  expect(Number(preview.style.getPropertyValue("--weave-focus"))).toBe(0);
   expect(frame).not.toHaveBeenCalled();
 });
 

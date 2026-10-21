@@ -6,23 +6,40 @@ import { catalog, nestedParts, navigationGroups } from "./catalog";
 import { screens } from "../examples/frame/screen";
 import { persist, storageKeys } from "./storage";
 
-it("lists each curated page once, with Screens first and no Parts section", () => {
+it("keeps every section heading visible and lists each curated page once when its section opens", async () => {
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   expect(
     nav.getAllByRole("heading", { level: 2 }).map((item) => item.textContent),
-  ).toEqual(navigationGroups.map((group) => group.name[0]));
+  ).toEqual([
+    ...navigationGroups.map((group) => group.name[0]),
+    "الرسوم التوضيحية",
+  ]);
   expect(nav.getAllByRole("heading", { level: 2 })[0]).toHaveTextContent(
     "شاشات",
   );
   expect(nav.queryByText("الأجزاء")).toBeNull();
   expect(nav.queryByText("أنماط الذكاء الاصطناعي")).toBeNull();
-  expect(
-    nav
-      .getAllByRole("button")
-      .map((item) => item.textContent)
-      .sort(),
-  ).toEqual(
+  const names: (string | null)[] = [];
+  for (const group of navigationGroups) {
+    await userEvent.click(nav.getByRole("link", { name: group.name[0] }));
+    const buttons = nav.getAllByRole("button");
+    expect(buttons.map((item) => item.textContent)).toEqual(
+      (group.id === "screens" ? screens : group.items).map(
+        (item) => item.name[0],
+      ),
+    );
+    names.push(...buttons.map((item) => item.textContent));
+    expect(
+      nav
+        .getAllByRole("link")
+        .filter((link) => link.getAttribute("aria-expanded") === "true"),
+    ).toEqual([nav.getByRole("link", { name: group.name[0] })]);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      group.name[0],
+    );
+  }
+  expect(names.sort()).toEqual(
     [
       ...catalog.filter(
         (item) =>
@@ -35,6 +52,37 @@ it("lists each curated page once, with Screens first and no Parts section", () =
       .map((item) => item.name[0])
       .sort(),
   );
+});
+
+it("opens a section gallery from the keyboard and replaces its children with the next section", async () => {
+  persist(storageKeys.documentation, { language: "en" });
+  render(<Workbench />);
+  const user = userEvent.setup();
+  const nav = within(screen.getByRole("navigation", { name: "Components" }));
+  expect(nav.getByRole("button", { name: "Button" })).toBeVisible();
+  const screensLink = nav.getByRole("link", { name: "Screens" });
+  screensLink.focus();
+  await user.keyboard("{Enter}");
+  expect(window.location.pathname + window.location.search).toBe(
+    "/library?category=screens",
+  );
+  expect(screensLink).toHaveAttribute("aria-current", "page");
+  expect(screensLink).toHaveAttribute("aria-expanded", "true");
+  expect(screen.getByRole("main")).toHaveFocus();
+  expect(nav.queryByRole("button", { name: "Button" })).toBeNull();
+  expect(nav.getByRole("button", { name: "Customer dashboard" })).toBeVisible();
+  await user.click(nav.getByRole("link", { name: "Forms" }));
+  expect(nav.queryByRole("button", { name: "Customer dashboard" })).toBeNull();
+  expect(nav.getByRole("button", { name: "Button" })).toBeVisible();
+  expect(screensLink).toHaveAttribute("aria-expanded", "false");
+  expect(screensLink).not.toHaveAttribute("aria-controls");
+  const results = within(
+    screen.getByRole("region", { name: "Library results" }),
+  );
+  expect(results.getByRole("link", { name: "Button" })).toBeVisible();
+  expect(
+    results.queryByRole("link", { name: "Customer dashboard" }),
+  ).toBeNull();
 });
 
 it("keeps the curated page and URL when switching languages with the keyboard", async () => {

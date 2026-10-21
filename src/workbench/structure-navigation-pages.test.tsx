@@ -13,6 +13,15 @@ it("documents four structure/navigation pages with working previews and complete
     "مسار التنقل",
     "تقسيم الصفحات",
   ]) {
+    if (!nav.queryByRole("button", { name }))
+      await user.click(
+        nav.getByRole("link", {
+          name:
+            name === "البطاقة" || name === "الأكورديون"
+              ? "العرض والتنبيهات"
+              : "التنقّل",
+        }),
+      );
     await user.click(nav.getByRole("button", { name }));
     expect(
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),
@@ -52,6 +61,7 @@ it("connects Card reveal, Accordion disclosure, Breadcrumb destinations and Pagi
   expect(
     preview().getByRole("region", { name: "Can I change my plan?" }),
   ).toHaveTextContent("next billing cycle");
+  await user.click(nav.getByRole("link", { name: "Navigation" }));
   await user.click(nav.getByRole("button", { name: "Breadcrumbs" }));
   for (const link of preview().getAllByRole("link"))
     expect(

@@ -1,5 +1,4 @@
-import { nestedParts, navigationCatalog } from "./catalog";
-import { screens } from "../examples/frame/screen";
+import { navigationGroups } from "./catalog";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -44,9 +43,9 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
-  // Curated entries and screens; specialist pages are linked from parents.
+  // Input expands its Forms section; the other section children stay unmounted.
   expect(nav.getAllByRole("button")).toHaveLength(
-    navigationCatalog.length - Object.keys(nestedParts).length + screens.length,
+    navigationGroups.find((group) => group.id === "forms")!.items.length,
   );
   const rail = within(
     screen.getByRole("complementary", { name: "Customize the preview" }),

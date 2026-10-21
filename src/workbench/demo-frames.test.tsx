@@ -3,7 +3,12 @@ import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
-import { navigationCatalog, nestedParts, catalog } from "./catalog";
+import {
+  navigationCatalog,
+  navigationGroups,
+  nestedParts,
+  catalog,
+} from "./catalog";
 import { demoStates } from "./demo-states";
 import { defaultPlaygrounds } from "./model";
 import {
@@ -64,7 +69,8 @@ it("gives static previews a matching frame with view tabs and a copy action only
 it("replays streaming text from the stage's corner, without a stop, keeping Replay's focus", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  // StreamingText is one of the AI parts, folded until their disclosure opens.
+  // StreamingText is linked from ChatThread in the Ask section.
+  fireEvent.click(screen.getByRole("link", { name: "اسأل" }));
   fireEvent.click(screen.getByRole("button", { name: "المحادثة" }));
   fireEvent.click(screen.getByRole("link", { name: "النص المتتابع" }));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
@@ -142,11 +148,17 @@ it("resets an interactive playground from the inspector without remounting the f
 it("shows Replay only where a sequence exists", () => {
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  // The AI parts are folded until their disclosure opens.
+  // Each page opens its section; specialist pages remain linked from parents.
   const replaying: string[] = [];
   // Every page of the catalog: Replay needs a sequence of states to play.
   for (const page of navigationCatalog) {
     const parent = nestedParts[page.id as keyof typeof nestedParts];
+    const group = navigationGroups.find((section) =>
+      section.items.some((item) => item.id === (parent ?? page.id)),
+    )!;
+    const sectionLink = nav.getByRole("link", { name: group.name[0] });
+    if (sectionLink.getAttribute("aria-expanded") !== "true")
+      fireEvent.click(sectionLink);
     if (parent) {
       fireEvent.click(
         nav.getByRole("button", {
@@ -340,6 +352,7 @@ it("announces copy failure honestly, supports retry, and ignores stale clipboard
 it("records the EmptyState playground action without offering a replay", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
+  await user.click(screen.getByRole("link", { name: "العرض والتنبيهات" }));
   await user.click(screen.getByRole("button", { name: "الحالة الفارغة" }));
   const frame = document.querySelector(
     ".playground-region .tz-demo-frame",

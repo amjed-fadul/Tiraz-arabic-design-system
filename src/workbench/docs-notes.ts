@@ -246,12 +246,12 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     replaces: ["image-result"],
     notice: [
       [
-        "يقرّر تطبيقك الحالة والنسبة والصور. تتبع اللوحة النسبة التي تعلنها، أو يعبر مكّوك واحد الصفوف حتى تصل الصورة. ويعلن النمط كل حالة مرة واحدة، ولا يعلن النسبة ولا الوقت.",
-        "Your app owns the status, the progress and the images. The canvas follows the progress you report, or one shuttle crosses the rows until the picture arrives. The pattern announces each status once, never the progress or the time.",
+        "يقرّر تطبيقك الحالة والنسبة والصور. تتغيّر شبكة نقاط بيضاء فوق لوحة فحمية أثناء الانتظار، وتظهر الصورة مع اقتراب التقدّم الفعلي من الاكتمال. وإذا كانت النسبة مجهولة تبقى الصورة مخفية حتى completed. ويعلن النمط كل حالة مرة واحدة، ولا يعلن النسبة ولا الوقت.",
+        "Your app owns the status, the progress and the images. A white halftone field shifts across charcoal while waiting; the picture fades in as real progress approaches completion. With unknown progress it stays hidden until completed. The pattern announces each status once, never the progress or the time.",
       ],
       [
-        "تبقى النسخ والإجراءات معطّلة حتى تكتمل الصورة. ومع الحركة المخفَّضة لا تدور أي حلقة: يظهر خيط ساكن ثم تظهر الصورة كاملة تدريجيًا.",
-        "The versions and actions stay inert until the image is done. With reduced motion nothing loops: a still thread shows, then the picture fades in whole.",
+        "تبقى النسخ والإجراءات معطّلة حتى تكتمل الصورة. ومع الحركة المخفَّضة تبقى شبكة النقاط ساكنة، وتظهر الصورة كاملة تدريجيًا مع التقدّم الفعلي أو الاكتمال.",
+        "The versions and actions stay inert until the image is done. With reduced motion the dot field stays still, and the whole picture fades in with actual progress or completion.",
       ],
       [
         "قد ترفض سياسة منتجك بعض الطلبات: مرّر blocked مع سببه ليظهر نصًّا ثابتًا بجانب «تعديل بالوصف». ولا يُعدّ ذلك فشلًا.",

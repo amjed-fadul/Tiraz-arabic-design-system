@@ -4,7 +4,7 @@ The approved Night Loom landing comes from `claude/landing-night-loom`, includin
 
 ## What ships in this change
 
-- Start here and Library at the top of every workbench sidebar; Illustrations at the bottom. All sidebar links are text-only.
+- Start here at the top of every workbench sidebar; Illustrations at the bottom. Section titles open their filtered galleries and expand only the matching item list. The standalone Library row is removed, and item rows stay text-only.
 - The workbench top bar contains the sidebar toggle, brand, language, and theme controls. Its redundant Library link is removed. The standalone Docs area is removed; old `/docs/*` links resolve to Start here.
 - Screens have text-only sidebar rows. Assistant workspace is removed from discovery and its example route; existing links resolve to the Screens catalog. The exported `ChatApp` component remains compatible for consumers.
 - One bilingual quick-start component in the landing and Start here: new/existing-project npm previews, collapsed source setup instructions and three English screen prompts, followed by concise coding-tool and verification guidance. GitHub and source-guide download buttons are removed. Long prompts start collapsed.
@@ -39,14 +39,16 @@ Vercel Pro and the domain are useful deployment resources. They do not publish t
 
 Verified on the user's Mac in `/Users/amjedfadul/Tiraz-worktrees/woven`, branch `claude/woven`:
 
-- `npm test -- --maxWorkers=2`: 134 files, 1,737 tests passed.
+- `npm test -- --maxWorkers=2`: 135 files, 1,751 tests verified. The full run passed 131 files; four older navigation tests needed to open their section before selecting a component. After those test-only updates and a test-query type correction, a focused rerun passed all 57 tests in the five touched files. Production code did not change after the full run.
 - `npm run lint`: passed with no warnings.
 - `npm run build`: passed, producing `dist/index.html` and `dist/landing.html`. Vite retains its large-chunk advisory; bundle splitting is not part of this change.
 - `npm run format:check`: passed. The new landing HTML, Vercel configuration, and this document were also checked explicitly.
-- System/screens, shared navigation/illustrations, and QuickStart CSS audits: `[]`.
+- System/screens, shared navigation/illustrations, Customize hint, and QuickStart CSS audits: `[]`.
 - Throwaway browser checks outside the repository: Arabic/English, light/dark, widths 320–1440, sidebar order and open/close, keyboard focus, clipboard success/fallback, legacy links, language/theme continuity, landing anchor focus, and direct `#start` loading.
 - QuickStart axe checks in both page contexts and all four language/theme combinations: no violations in the checked WCAG A/AA rules. This complements the manual focus and layout inspection; it is not a claim of complete accessibility conformance.
-- Image-generation browser checks: luminous crossing ribbons and traveling light, cells resolving with actual progress, held unknown progress, frozen failure, completion, absent preview, and app/OS reduced motion. Actual Arabic desktop and English mobile routes passed retry, focus, and completion checks. No JavaScript errors or horizontal overflow in the inspected states.
+- Image-generation browser checks: a monochrome halftone field based on the publicly visible [Kobra preview](https://kobra.systems/components/image-generation), with drifting bright regions and a late whole-image reveal driven by actual host progress. Unknown progress holds the reveal; failed and reduced-motion states stay still. No paid source is used.
+- Sidebar navigation follows section titles, informed by [affectUI’s section navigation](https://www.affectui.com/blocks). Deep links select their matching group; changing sections replaces the visible item list and opens only that section’s gallery.
+- A first-visit annotation points to Customize. Opening the panel or dismissing the hint records `tiraz.customize-hint.v1` locally. It never takes focus on mount; its dismissal preserves focus. Browser checks cover Arabic/English, 320–1440 px, panel opening, Escape, reload persistence, overflow, and annotation spacing.
 - Browser verification used local Chrome. Safari and Firefox were not tested in this iteration.
 
 The updated landing is at `http://127.0.0.1:5411/landing.html#start`; the unchanged original preview remains at `http://127.0.0.1:5243/landing.html`. Both respond successfully and remain running. Hosted Vercel routing and DNS are not yet tested.

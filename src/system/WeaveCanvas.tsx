@@ -1,10 +1,9 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import { Thread } from "./Thread";
 import { useReducedMotion } from "./useReducedMotion";
 
 export interface WeaveCanvasProps {
-  /** Application-owned preview URL. Without one the canvas shows flowing contours of light. */
+  /** Application-owned preview URL. Without one the canvas shows a halftone field. */
   src?: string;
   /** Actual host progress from 0 to 100; omit or pass null while it is unknown. */
   progress?: number | null;
@@ -14,33 +13,48 @@ export interface WeaveCanvasProps {
   className?: string;
 }
 
-// Only supplied progress resolves image cells. An unknown wait holds its
-// reveal; flowing light never advances it or implies completion.
-const unknownFocus = 0.18,
-  easeMs = 130;
+const easeMs = 130;
 
-// Staggered cells have a stable, scattered reveal order. They cover one image,
-// so there are no duplicated image requests or seams in the finished picture.
-const cells = Array.from({ length: 8 }, (_, row) =>
-  Array.from({ length: 11 }, (_, column) => ({
-    x: column === 0 ? -30 : column * 60 - (row % 2 ? 30 : 0),
-    y: row === 0 ? -20 : row * 50,
-    width: column === 0 && row % 2 === 0 ? 91 : 61,
-    height: row === 0 || row === 7 ? 71 : 51,
-    order: ((row * 17 + column * 23) % 79) / 79,
-  })),
-).flat();
-const contours = Array.from({ length: 22 }, (_, index) => {
-  const spread = index - 10.5;
-  return `M-100 ${200 + spread * 9} C70 ${20 + spread * 3} 140 ${370 + spread * 7} 310 ${195 + spread * 4} S500 ${65 + spread * 9} 700 ${210 + spread * 6}`;
-});
+// The dots stay on a regular grid. Two drifting, soft regions change their
+// radius, forming a monochrome halftone wave rather than moving particles.
+function drawField(
+  context: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  elapsed: number,
+) {
+  const phase = elapsed * 0.00048 - 2.3;
+  const x = 0.5 + Math.cos(phase) * 0.43;
+  const y = 0.5 + Math.sin(phase * 1.18) * 0.43;
+  const spreadX = Math.max(44, width * 0.19);
+  const spreadY = Math.max(40, height * 0.25);
+  const spacing = 8;
+  context.clearRect(0, 0, width, height);
+  for (let top = 4; top < height; top += spacing) {
+    for (let left = 4; left < width; left += spacing) {
+      const a =
+        ((left - x * width) / spreadX) ** 2 +
+        ((top - y * height) / spreadY) ** 2;
+      const b =
+        ((left - (1 - x) * width) / spreadX) ** 2 +
+        ((top - (1 - y) * height) / spreadY) ** 2;
+      const intensity = Math.min(1, Math.exp(-a * 2) + Math.exp(-b * 2));
+      const radius = 0.12 + intensity * 1.85;
+      // Separate paths preserve circular antialiasing for subpixel dots;
+      // a large compound path can tessellate the smallest arcs unevenly.
+      context.beginPath();
+      context.arc(left, top, radius, 0, Math.PI * 2);
+      context.fill();
+    }
+  }
+}
 
 /**
- * A developing image with flowing light and spatially resolving cells. Only
- * host progress changes the reveal; an unknown wait stays partly resolved.
- * Failure freezes the current frame. Reduced motion uses a still canvas and
- * a whole-image fade. The box alone is named by `alt`; progress and
- * announcements remain the owner's responsibility.
+ * A still charcoal canvas becomes a drifting halftone field while weaving.
+ * Only actual host progress reveals the supplied image; an unknown wait
+ * never advances it. Failure freezes both the field and the reveal. Motion
+ * preferences keep the field still. The box alone is named by `alt`;
+ * progress and announcements remain the owner's responsibility.
  */
 export function WeaveCanvas({
   src,
@@ -49,39 +63,31 @@ export function WeaveCanvas({
   alt,
   className = "",
 }: WeaveCanvasProps) {
-  const reduced = useReducedMotion(),
-    uid = useId();
+  const reduced = useReducedMotion();
   const share =
     typeof progress === "number" && Number.isFinite(progress)
       ? Math.min(1, Math.max(0, progress / 100))
       : undefined;
   const goal =
-    status === "completed"
-      ? 1
-      : status === "weaving"
-        ? (share ?? unknownFocus)
-        : 0;
+    status === "completed" ? 1 : status === "weaving" ? (share ?? 0) : 0;
   const hold = status === "failed";
-  const [first] = useState(() => (reduced ? 1 : hold ? 0 : goal));
+  const [first] = useState(() => (hold ? 0 : goal));
+  const [loaded, setLoaded] = useState<string>();
   const box = useRef<HTMLDivElement>(null),
+    field = useRef<HTMLCanvasElement>(null),
+    elapsed = useRef(0),
     shown = useRef(first);
 
-  // This loop only smooths a real progress change and cancels immediately
-  // on failure, reduced motion or unmount. The light flows through CSS, so
-  // an unknown wait needs no JavaScript animation loop.
+  // This short loop smooths only real progress. The decorative field has its
+  // own clock, which cannot advance the image reveal or report a percentage.
   useEffect(() => {
     const node = box.current;
-    if (!node) return;
+    if (!node || hold) return;
     const paint = (focus: number) => {
       shown.current = focus;
       node.style.setProperty("--weave-focus", String(focus));
     };
-    if (reduced) {
-      paint(1);
-      return;
-    }
-    if (hold) return;
-    if (goal <= shown.current) {
+    if (reduced || goal <= shown.current) {
       paint(goal);
       return;
     }
@@ -103,6 +109,63 @@ export function WeaveCanvas({
     return () => cancelAnimationFrame(frame);
   }, [goal, hold, reduced]);
 
+  useEffect(() => {
+    const canvas = field.current;
+    if (!canvas) return;
+    if (status === "queued") elapsed.current = 0;
+    const moving = status === "weaving" && !reduced;
+    let frame: number | undefined;
+    let context: CanvasRenderingContext2D | null = null;
+    let width = 0,
+      height = 0,
+      last = 0,
+      painted = 0;
+    const draw = () => {
+      if (context) drawField(context, width, height, elapsed.current);
+    };
+    const step = (now: number) => {
+      frame = undefined;
+      // Thirty frames per second keeps the fine dot field smooth without
+      // painting at the display's potentially much higher refresh rate.
+      if (now - painted >= 1000 / 30) {
+        elapsed.current += Math.min(64, Math.max(0, now - last));
+        last = now;
+        draw();
+        painted = now;
+      }
+      frame = requestAnimationFrame(step);
+    };
+    const resize = () => {
+      width = canvas.clientWidth;
+      height = canvas.clientHeight;
+      if (!width || !height) {
+        if (frame !== undefined) cancelAnimationFrame(frame);
+        frame = undefined;
+        return;
+      }
+      context = canvas.getContext("2d");
+      if (!context) return;
+      const scale = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.round(width * scale);
+      canvas.height = Math.round(height * scale);
+      context.setTransform(scale, 0, 0, scale, 0, 0);
+      context.fillStyle =
+        getComputedStyle(canvas).getPropertyValue("--weave-dot");
+      draw();
+      if (moving && frame === undefined) {
+        last = performance.now();
+        frame = requestAnimationFrame(step);
+      }
+    };
+    resize();
+    const observer = new ResizeObserver(resize);
+    observer.observe(canvas);
+    return () => {
+      observer.disconnect();
+      if (frame !== undefined) cancelAnimationFrame(frame);
+    };
+  }, [status, reduced]);
+
   return (
     <div
       ref={box}
@@ -110,7 +173,7 @@ export function WeaveCanvas({
       aria-label={alt}
       className={`tz-weave ${className}`}
       data-status={status}
-      data-preview={!!src || undefined}
+      data-preview={(!!src && loaded === src) || undefined}
       data-reduced={reduced || undefined}
       style={{ "--weave-focus": first } as CSSProperties}
     >
@@ -121,81 +184,11 @@ export function WeaveCanvas({
           alt=""
           aria-hidden="true"
           decoding="async"
+          onLoad={() => setLoaded(src)}
+          onError={() => setLoaded(undefined)}
         />
       )}
-      <svg
-        className="tz-weave-development"
-        viewBox="0 0 600 400"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <defs>
-          <linearGradient id={`${uid}-light`} x1="0" y1="1" x2="1" y2="0">
-            <stop className="tz-weave-light-edge" offset="0%" />
-            <stop className="tz-weave-light-center" offset="46%" />
-            <stop className="tz-weave-light-edge" offset="100%" />
-          </linearGradient>
-          <g id={`${uid}-contours`}>
-            {contours.map((path, index) => (
-              <path
-                key={index}
-                d={path}
-                pathLength="100"
-                style={{ "--contour": index } as CSSProperties}
-              />
-            ))}
-          </g>
-        </defs>
-        <g className="tz-weave-cells">
-          {cells.map(({ x, y, width, height, order }, index) => (
-            <rect
-              key={index}
-              x={x}
-              y={y}
-              width={width}
-              height={height}
-              style={{ "--cell-order": order } as CSSProperties}
-            />
-          ))}
-        </g>
-        <g className="tz-weave-field">
-          <use
-            className="tz-weave-echo"
-            href={`#${uid}-contours`}
-            stroke={`url(#${uid}-light)`}
-          />
-          <g className="tz-weave-current">
-            <use
-              className="tz-weave-glow"
-              href={`#${uid}-contours`}
-              stroke={`url(#${uid}-light)`}
-            />
-            <use
-              className="tz-weave-contours"
-              href={`#${uid}-contours`}
-              stroke={`url(#${uid}-light)`}
-            />
-            <g className="tz-weave-tracers" stroke={`url(#${uid}-light)`}>
-              {contours
-                .filter((_, index) => index % 3 === 0)
-                .map((path, index) => (
-                  <path
-                    key={index}
-                    d={path}
-                    pathLength="100"
-                    style={{ "--contour": index } as CSSProperties}
-                  />
-                ))}
-            </g>
-          </g>
-        </g>
-      </svg>
-      {reduced && status === "weaving" && !src && (
-        <span className="tz-weave-still" aria-hidden="true">
-          <Thread state="running" />
-        </span>
-      )}
+      <canvas ref={field} className="tz-weave-development" aria-hidden="true" />
     </div>
   );
 }

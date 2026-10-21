@@ -17,6 +17,12 @@ it("adds four continuous documentation pages with complete prompt/code and prese
     ["radio-group", "مجموعة الخيارات"],
     ["textarea", "مربع النص"],
   ] as const) {
+    if (!nav.queryByRole("button", { name: label }))
+      await user.click(
+        nav.getByRole("link", {
+          name: id === "badge" ? "العرض والتنبيهات" : "النماذج",
+        }),
+      );
     await user.click(nav.getByRole("button", { name: label }));
     expect(
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),

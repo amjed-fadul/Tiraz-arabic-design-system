@@ -27,7 +27,11 @@ it.each([
     const user = userEvent.setup();
     render(<Workbench />);
     const ai = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-    // The parts are folded until their disclosure opens.
+    await user.click(
+      ai.getByRole("link", {
+        name: en === "SelectionActions" ? "أنشئ" : "افهم وتحكّم",
+      }),
+    );
     await user.click(ai.getByRole("button", { name: ar }));
     await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();

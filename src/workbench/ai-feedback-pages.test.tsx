@@ -16,6 +16,11 @@ it.each([
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     // LoadingState sits in Display; the other two in the folded AI parts.
     const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
+    await user.click(
+      nav.getByRole("link", {
+        name: en === "ThinkingState" ? "فوّض" : "العرض والتنبيهات",
+      }),
+    );
     if (en === "LoadingState")
       await user.click(nav.getByRole("button", { name: ar }));
     else {

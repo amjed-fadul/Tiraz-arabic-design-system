@@ -7822,11 +7822,9 @@ button.tz-tool-chip[aria-expanded="true"] {
   font-size: var(--text-meta);
 }
 
-/* WeaveCanvas: contours of light flow over a developing image. The scattered
-   cells resolve only with host progress; the flowing field never measures it. */
+/* WeaveCanvas: a monochrome halftone field on charcoal. Its motion signals
+   activity; only supplied progress reveals the image at the end of the job. */
 .tz-weave {
-  --weave-paper: color-mix(in srgb, var(--ai) 24%, var(--text));
-  --weave-light: color-mix(in srgb, var(--ai) 38%, var(--surface));
   position: relative;
   isolation: isolate;
   inline-size: 100%;
@@ -7838,139 +7836,30 @@ button.tz-tool-chip[aria-expanded="true"] {
   background: var(--weave-paper);
   box-shadow: 0 0 0 1px var(--hairline);
 }
-.tiraz-system[data-theme="dark"] .tz-weave {
-  --weave-paper: color-mix(in srgb, var(--ai) 18%, var(--surface-tray));
-  --weave-light: color-mix(in srgb, var(--ai) 55%, var(--text));
-}
-.tz-weave-image {
-  position: absolute;
-  inset: 0;
-  inline-size: 100%;
-  block-size: 100%;
-  object-fit: contain;
-  filter: blur(calc((1 - var(--weave-focus, 0)) * 3px));
-  animation: tz-weave-fade var(--motion-reveal) var(--ease-out);
-}
+.tz-weave-image,
 .tz-weave-development {
   position: absolute;
   inset: 0;
   inline-size: 100%;
   block-size: 100%;
+}
+.tz-weave-image {
+  object-fit: contain;
+}
+.tz-weave-development {
   pointer-events: none;
+  background: var(--weave-paper);
 }
-.tz-weave-cells {
-  fill: var(--weave-paper);
-  filter: blur(6px);
-}
-.tz-weave-cells > rect {
-  opacity: clamp(
-    0,
-    (1 - var(--weave-focus, 0) - var(--cell-order) * 0.8) * 5,
-    1
-  );
-}
-.tz-weave-field {
-  fill: none;
-  opacity: 1;
-}
-.tz-weave[data-preview] .tz-weave-field {
-  opacity: clamp(0, (1 - var(--weave-focus, 0)) * 1.5, 1);
-}
-.tz-weave-light-edge {
-  stop-color: var(--ai);
-  stop-opacity: 0.45;
-}
-.tz-weave-light-center {
-  stop-color: var(--weave-light);
-}
-.tz-weave-current {
-  transform-origin: 50% 50%;
-  animation: tz-weave-flow calc(var(--motion-loop-shimmer) * 2)
-    var(--ease-in-out) infinite alternate paused;
-}
-.tz-weave-contours {
-  stroke-width: 0.9;
-  opacity: 0.95;
-}
-.tz-weave-glow {
-  stroke-width: 8;
-  filter: blur(8px);
-  opacity: 0.3;
-}
-.tz-weave-echo {
-  stroke-width: 0.7;
-  opacity: 0.28;
-  transform-origin: 50% 50%;
-  animation: tz-weave-undertow calc(var(--motion-loop-shimmer) * 3)
-    var(--ease-in-out) infinite alternate paused;
-}
-.tz-weave-tracers {
-  stroke-width: 2.2;
-  stroke-linecap: round;
-}
-.tz-weave-tracers > path {
-  stroke-dasharray: 8 92;
-  stroke-dashoffset: calc(var(--contour) * -13);
-  animation: tz-weave-travel calc(var(--motion-loop-shimmer) * 1.5) linear
-    infinite paused;
-  animation-delay: calc(var(--motion-loop-shimmer) * var(--contour) * -0.3);
-}
-.tz-weave[data-status="weaving"] .tz-weave-current,
-.tz-weave[data-status="weaving"] .tz-weave-echo,
-.tz-weave[data-status="weaving"] .tz-weave-tracers > path {
-  animation-play-state: running;
-}
-.tz-weave[data-status="completed"] .tz-weave-field {
-  opacity: 0;
-  transition: opacity var(--motion-reveal) var(--ease-out);
-}
-@keyframes tz-weave-flow {
-  from {
-    transform: translate(-3%, -8%) rotate(-8deg) scale(1.08, 0.82);
-  }
-  to {
-    transform: translate(3%, 10%) rotate(8deg) scale(1.02, 1.2);
-  }
-}
-@keyframes tz-weave-undertow {
-  from {
-    transform: translate(5%, 10%) rotate(24deg) scale(1.15, -0.85);
-  }
-  to {
-    transform: translate(-5%, -6%) rotate(-12deg) scale(1.05, -1.25);
-  }
-}
-@keyframes tz-weave-travel {
-  to {
-    stroke-dashoffset: calc(var(--contour) * -13 - 100);
-  }
-}
-/* Both preferences replace the field with a still canvas and a whole picture.
-   The only retained reveal is the existing 200ms opacity token. */
-.tz-weave[data-reduced] {
-  background: var(--surface-tray);
+/* Keep the waiting field intact until the host reaches its finishing stage.
+   A loaded source is required: reaching 100 without an image stays a field. */
+.tz-weave[data-preview] > .tz-weave-development {
+  opacity: calc(1 - clamp(0, (var(--weave-focus, 0) - 0.72) / 0.28, 1));
 }
 .tz-weave[data-reduced] > .tz-weave-development {
-  display: none;
+  transition: opacity var(--weave-fade) var(--ease-out);
 }
-.tz-weave[data-reduced] .tz-weave-current,
-.tz-weave[data-reduced] .tz-weave-echo,
-.tz-weave[data-reduced] .tz-weave-tracers > path {
-  animation: none;
-}
-.tz-weave[data-reduced] > .tz-weave-image {
-  filter: none;
-  animation: tz-weave-fade var(--weave-fade) var(--ease-out) !important;
-}
-.tz-weave-still {
-  position: absolute;
-  inset-inline: 12%;
-  inset-block-start: 50%;
-}
-@keyframes tz-weave-fade {
-  from {
-    opacity: 0;
-  }
+.tz-weave[data-status="failed"] > .tz-weave-development {
+  transition: none;
 }
 
 /* Image generation (spec section 12.7): make an image from a description and
