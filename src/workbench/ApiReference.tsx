@@ -568,8 +568,8 @@ export function ApiReference({
         "agents / agent / onAgentChange",
         "readonly { id, name, state: StatusPillState }[] / string | null / (id: string | null) => void",
         t(
-          "شريط الوكلاء: زر تبديل لكل وكيل باسمه وكلمة حالته. يستدعي الضغط onAgentChange(id)، والضغط على المختار onAgentChange(null)، ويصفّي الوكيلُ المختار الصفوفَ والأعداد.",
-          "The agents strip: a toggle per agent, with its name and its state's word. A press calls onAgentChange(id), a press on the picked one onAgentChange(null), and the picked agent filters the rows and the counts.",
+          "شريط الوكلاء: زر تبديل لكل وكيل باسمه وكلمة حالته. يستدعي الضغط onAgentChange(id)، والضغط على المختار onAgentChange(null)، ويصفّي الوكيلُ المختار الصفوفَ والأعداد. ولا يُعلَن اختيار الوكيل.",
+          "The agents strip: a toggle per agent, with its name and its state's word. A press calls onAgentChange(id), a press on the picked one onAgentChange(null), and the picked agent filters the rows and the counts. Picking an agent announces nothing.",
         ),
       ],
       [
