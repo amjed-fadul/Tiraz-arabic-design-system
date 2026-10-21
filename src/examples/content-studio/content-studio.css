@@ -1,1 +1,77 @@
-/* Content studio (example-screens spec §3.7). Every rule names .content-studio. */
+/* Content studio (example-screens spec §3.7). Every rule names .content-studio.
+   The canvas and the caption fill the main column; the brief is the end panel,
+   20rem beside it from 960px, and above the canvas below that. */
+.content-studio-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+@container screen (width >= 960px) {
+  .content-studio-layout {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+  }
+  /* One card at its content's height, in view while the canvas scrolls. */
+  .content-studio-panel {
+    position: sticky;
+    inset-block-start: var(--space-4);
+  }
+}
+.content-studio-main {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+/* The canvas card fills its column; its own 38rem cap would leave a strip. */
+.content-studio .tz-image-generation[data-appearance="card"] {
+  max-inline-size: none;
+}
+
+.content-studio-brief {
+  display: grid;
+  gap: var(--space-4);
+}
+.content-studio-heading {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+/* The three sizes sit on one row. */
+.content-studio-brief .tz-radio-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+}
+.content-studio-generate {
+  inline-size: 100%;
+}
+/* The color the version was made in, among the request's options. */
+.content-studio-color {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.content-studio-swatch {
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+
+/* The caption follows the version chosen for the campaign. */
+.content-studio-chosen {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--success);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.content-studio-caption .tz-selection-scope p {
+  margin: 0;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
