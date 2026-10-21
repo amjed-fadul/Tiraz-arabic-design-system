@@ -218,7 +218,7 @@ export const models = [
       ar: "ردود سريعة ومسودات قصيرة",
       en: "Quick replies and short drafts",
     },
-    context: "128k",
+    context: 128_000,
   },
   {
     id: "falak-precise",
@@ -228,7 +228,7 @@ export const models = [
       ar: "للمستندات الطويلة وتحليل الجداول",
       en: "Long documents and spreadsheet analysis",
     },
-    context: "128k",
+    context: 128_000,
   },
 ] as const;
 export const defaultModel = "falak-swift";

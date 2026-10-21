@@ -101,6 +101,11 @@ it("keeps the assistant's irreversible actions at «اسأل دائمًا» and 
   expect(
     within(ledger()).getByRole("radio", { name: "اسأل دائمًا" }),
   ).toBeChecked();
+  // The open model list writes each window in Arabic digits, visible or not.
+  await user.click(screen.getByRole("combobox", { name: "النموذج" }));
+  const list = screen.getByRole("listbox");
+  expect(within(list).getAllByText("١٢٨ ألف رمز")).toHaveLength(2);
+  expect(list.textContent).not.toMatch(/[0-9]/);
 });
 
 it("invites by email, marks the new row and counts its seat, until the seats run out", async () => {
