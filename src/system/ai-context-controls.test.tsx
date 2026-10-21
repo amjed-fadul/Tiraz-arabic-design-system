@@ -370,3 +370,57 @@ it("moves the context status at the host's thresholds and honors controlled open
   expect(onOpenChange).toHaveBeenLastCalledWith(true);
   expect(screen.queryByRole("dialog")).toBeNull();
 });
+
+it("shows shares and an action in the detail view and announces each crossing once", async () => {
+  const user = userEvent.setup(),
+    onSelect = vi.fn();
+  const parts = [
+    { id: "conversation", label: "المحادثة", value: 20_480 },
+    { id: "records", label: "السجلات المرفقة", value: 12_800 },
+    { id: "memory", label: "الذاكرة", value: 5_120 },
+    { id: "instructions", label: "التعليمات", value: 2_600 },
+  ];
+  // Arabic, right to left, in the reader's digits.
+  const meter = (
+    used: number,
+    props: Partial<system.ContextMeterProps> = {},
+  ) => (
+    <SystemProvider config={defaultConfig}>
+      <system.ContextMeter
+        inline
+        used={used}
+        capacity={128_000}
+        details={parts}
+        action={{ label: "لخّص المحادثة", onSelect }}
+        {...props}
+      />
+    </SystemProvider>
+  );
+  const view = render(meter(41_000));
+  const group = screen.getByRole("group", { name: "السياق" });
+  expect(
+    within(group)
+      .getAllByText(/^[٠-٩]+٪$/)
+      .map((share) => share.textContent),
+  ).toEqual(["١٦٪", "١٠٪", "٤٪", "٢٪"]);
+  // While there is room: no action, and nothing said.
+  expect(screen.queryByRole("button", { name: "لخّص المحادثة" })).toBeNull();
+  const region = screen.getByRole("status");
+  expect(region).toBeEmptyDOMElement();
+  view.rerender(meter(105_000));
+  expect(region.textContent).toBe("السياق: يقترب من الامتلاء");
+  await user.click(screen.getByRole("button", { name: "لخّص المحادثة" }));
+  expect(onSelect).toHaveBeenCalledTimes(1);
+  // Each crossing is said once, and the number never is.
+  view.rerender(meter(110_000));
+  expect(region.textContent).toBe("السياق: يقترب من الامتلاء");
+  view.rerender(meter(125_000));
+  expect(region.textContent).toBe("السياق: شبه ممتلئ");
+  view.unmount();
+  // The status a meter mounts with is not news.
+  const mounted = render(meter(120_000));
+  expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  mounted.unmount();
+  render(meter(120_000, { announcement: "off" }));
+  expect(screen.queryByRole("status")).toBeNull();
+});

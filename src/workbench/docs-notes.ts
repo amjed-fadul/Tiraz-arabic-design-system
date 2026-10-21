@@ -151,6 +151,33 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  "assistant-controls": {
+    useWhen: [
+      [
+        "يقرّر المستخدم ما يفعله المساعد دون أن يسأله، كقراءة الدفاتر أو تسجيل القيود أو مراسلة العملاء.",
+        "The person decides what the assistant may do without asking, such as reading the books, recording entries or messaging customers.",
+      ],
+      [
+        "يريد المستخدم أن يرى ما يتذكّره المساعد ومن أين، وأن يوقفه مؤقتًا أو يحذفه، وأن يعرف كم من السياق استُخدم.",
+        "The person wants to see what the assistant remembers and where it came from, pause or delete it, and know how much context is used.",
+      ],
+    ],
+    replaces: ["context-meter"],
+    notice: [
+      [
+        "يبقى كل إجراء لا يمكن التراجع عنه على «اسأل دائمًا» مهما كان المستوى الذي يمرّره تطبيقك، مع قفل وجملة تشرح السبب.",
+        "An action that can't be undone stays at «Always ask», whatever level your app passes, with a lock and a sentence that says why.",
+      ],
+      [
+        "يطبّق تطبيقك الصلاحيات ويحذف الذاكرة، فالنمط يعرضها ويبلّغ باختيار المستخدم فقط. ويبقى العنصر الذي يطلب المستخدم حذفه ظاهرًا حتى يزيله تطبيقك.",
+        "Your app enforces the permissions and deletes memories; the pattern only shows them and reports the person's choice. An item the person asks to delete stays until your app removes it.",
+      ],
+      [
+        "تعرض تفاصيل السياق حصة كل جزء، ويظهر إجراء مثل «لخّص المحادثة» حين يقترب السياق من الامتلاء. وتُعلَن كل عتبة مرة واحدة.",
+        "The context details show each part's share, and an action such as «Summarize the conversation» appears as the context fills up. Each threshold is announced once.",
+      ],
+    ],
+  },
   "agent-task": {
     useWhen: [
       [

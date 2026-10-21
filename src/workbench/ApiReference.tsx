@@ -180,8 +180,8 @@ export function ApiReference({
         "contextUsage",
         "ContextMeterProps",
         t(
-          "بيانات ContextMeter نفسها: used وcapacity وthresholds. تظهر حلقة صغيرة قرب اسم الوضع يتبع لونها العتبات، وسطر «السياق المستخدم ٣٢٪ · سجلّان مرفقان» في آخر القائمة، والعدد يتبع المعدود في العربية.",
-          "The same data as ContextMeter: used, capacity and thresholds. A small ring beside the mode takes its color from the thresholds, and the menu ends with «Context used 32% · 2 records attached», its count agreeing in Arabic.",
+          "بيانات ContextMeter نفسها: used وcapacity وthresholds. تظهر حلقة صغيرة قرب اسم الوضع يتبع لونها العتبات، وسطر «السياق المستخدم ٣٢٪ · سجلّان مرفقان» في آخر القائمة، والعدد يتبع المعدود في العربية. وتقول منطقة النمط «السياق: يقترب من الامتلاء» مرة عند كل عتبة تعبرها الحلقة.",
+          "The same data as ContextMeter: used, capacity and thresholds. A small ring beside the mode takes its color from the thresholds, and the menu ends with «Context used 32% · 2 records attached», its count agreeing in Arabic. The pattern's region says «Context: Filling up» once for each threshold the ring crosses.",
         ),
       ],
       [
@@ -412,6 +412,48 @@ export function ApiReference({
         t(
           "استخدم plain داخل لوحة أو نمط آخر. وتستبدل labels أي نص مدمج.",
           "Use plain inside a dashboard or another pattern. labels replaces any built-in text.",
+        ),
+      ],
+    ],
+    "assistant-controls": [
+      [
+        "permissions / onPermissionChange",
+        "readonly AssistantPermission[] / (id: string, level: PermissionLevel) => void",
+        t(
+          "لكل إجراء id وlabel وlevel (always | sensitive | auto)، وdescription وrisks اختياريان. يظهر كل إجراء مجموعةً من ثلاثة أزرار اختيار، ويصلك اختيار المستخدم في onPermissionChange. الإجراء الذي تضم risks فيه irreversible يبقى على «اسأل دائمًا» مهما كان level، ويتعطّل الخياران الآخران، ويظهر معه قفل وجملة تشرح السبب، ولا يستدعي onPermissionChange أبدًا. يطبّق تطبيقك الصلاحيات، والنمط يعرضها ويبلّغ بها فقط.",
+          "Each action has an id, a label and a level (always | sensitive | auto), and optionally a description and risks. Each shows as a group of three radios, and onPermissionChange reports the person's choice. An action whose risks include irreversible stays at «Always ask» whatever level says: the other two are disabled, a lock and a sentence say why, and it never calls onPermissionChange. Your app enforces the permissions; the pattern only shows and reports them.",
+        ),
+      ],
+      [
+        "memoryEnabled / onMemoryEnabledChange",
+        "boolean / (enabled: boolean) => void",
+        t(
+          "مفتاح «استخدم الذاكرة». وحين تكون الذاكرة متوقفة تظهر فوق القائمة «لا يستخدم المساعد الذاكرة الآن.».",
+          "The «Use memory» switch. While memory is off, «The assistant isn't using memory right now.» sits over the list.",
+        ),
+      ],
+      [
+        "memory / onMemoryPauseChange / onMemoryDelete",
+        "readonly AssistantMemoryItem[] / (id: string, paused: boolean) => void / (id: string) => void",
+        t(
+          "لكل عنصر id وtext وcategory، وsource وdate وpaused اختيارية. تُجمع العناصر تحت عناوين فئاتها بترتيب ظهورها الأول، ومع كلٍّ منها مصدره وتاريخه. يُسمّى «إيقاف مؤقت» أو «استئناف» و«حذف» باسم العنصر نفسه. يطلب «حذف» الحذف من تطبيقك فقط، فيبقى العنصر حتى يزيله تطبيقك، ثم ينتقل التركيز إلى النمط.",
+          "Each item has an id, a text and a category, and optionally a source, a date and paused. Items sit under their category headings, in the order the categories first appear, each with its source and date. Pause or Resume and Delete are named with their item. Delete only asks your app: the item stays until your app removes it, and focus then moves to the pattern.",
+        ),
+      ],
+      [
+        "contextUsage / models / model / onModelChange",
+        "ContextMeterProps / readonly ModelOption[] / string / (id: string) => void",
+        t(
+          "يعرض contextUsage تفاصيل ContextMeter في مكانها (inline)، ومنطقة إعلانه هي منطقة النمط الوحيدة. ومع models تظهر قائمة «النموذج».",
+          "contextUsage shows ContextMeter's details in place (inline), and its region is the pattern's one live region. With models, a «Model» selector shows.",
+        ),
+      ],
+      [
+        "title / headingLevel / labels / appearance",
+        'ReactNode / 2 | 3 | 4 | 5 | 6 · 3 / Partial<AssistantControlsLabels> / "card" | "plain" · card',
+        t(
+          "title هو «إعدادات المساعد» افتراضيًا، والأقسام أدنى منه بمستوى وفئات الذاكرة بمستويين. لا علامة للذكاء الاصطناعي ولا شارة حالة، فهذه إعدادات المستخدم. وتستبدل labels أي نص مدمج.",
+          "title is «Assistant controls» by default; the sections sit one level below it and the memory categories two. No AI mark and no status pill, since these are the person's settings. labels replaces any built-in text.",
         ),
       ],
     ],
@@ -1109,6 +1151,14 @@ export function ApiReference({
         t(
           "تحدّد thresholds نسبة السعة التي تنتقل عندها الحالة إلى «يقترب من الامتلاء» ثم «شبه ممتلئ»، ويبقى تجاوز السعة فوق ١ دائمًا. مرّر open مع onOpenChange لتتحكم في التفاصيل من تطبيقك.",
           "thresholds sets the share of capacity where the status moves to Filling up and then Near capacity; over capacity is always above 1. Pass open with onOpenChange to hold the details from your app.",
+        ),
+      ],
+      [
+        "inline / action / announcement",
+        'boolean / { label: ReactNode; onSelect(): void } / "polite" | "off"',
+        t(
+          "مع inline تظهر التفاصيل في مكانها مجموعةً مسمّاة بدل الحلقة ونافذتها. تعرض التفاصيل حصة كل جزء من السعة بنسبة كاملة في نهاية سطره، وشريطًا رفيعًا يجمع الأجزاء. ويظهر action زرًّا في التفاصيل حين يقترب السياق من الامتلاء أو يتجاوز السعة. وتقول منطقة الإعلان «السياق: يقترب من الامتلاء» مرة عند كل تغيّر في كلمة الحالة، ولا تقول رقمًا ولا الحالة التي يبدأ بها؛ مرّر off حين يتكلّم عنه نمط آخر.",
+          "inline shows the details in place, as a named group, instead of the ring and its popover. The details show each part's share of the capacity as a whole percent at the end of its line, and a thin bar that sums the parts. action shows as a button in the details once the meter fills up, nears or passes capacity. The region says «Context: Filling up» once each time the status word changes, never a number and never the status it mounts with; pass off when another pattern speaks for it.",
         ),
       ],
     ],

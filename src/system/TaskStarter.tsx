@@ -14,6 +14,8 @@ import { createPortal } from "react-dom";
 import { Button } from "./Button";
 import { numberLocale } from "./config";
 import type { ContextMeterProps } from "./ContextMeter";
+import { contextStatus } from "./context-status";
+import type { ContextStatusKey } from "./context-status";
 import { formatCount } from "./format";
 import type { ModelOption } from "./ModelSelector";
 import { PromptEntry } from "./PromptEntry";
@@ -56,6 +58,8 @@ export interface TaskStarterLabels {
   /** The polite region's two sentences, when the host's context gains or loses a record. */
   contextAdded: (name: string) => string;
   contextRemoved: (name: string) => string;
+  /** The region's sentence when the ring's status word changes: «السياق: يقترب من الامتلاء». */
+  contextStatus: (status: string) => string;
   /** The mode button's name, the models' section and their unavailable word. */
   mode: string;
   model: string;
@@ -171,8 +175,6 @@ function ToolButton({
     </Button>
   );
 }
-const finite = (n: unknown): n is number =>
-  typeof n === "number" && Number.isFinite(n) && n >= 0;
 const none: readonly ContextItem[] = [];
 
 /**
@@ -230,7 +232,8 @@ export function TaskStarter({
     lastFocus = useRef<HTMLElement | null>(null),
     composing = useRef(false),
     caret = useRef<number | null>(null),
-    known = useRef(context);
+    known = useRef(context),
+    heard = useRef<ContextStatusKey | null>(null);
   const [submitting, setSubmitting] = useState(false),
     [token, setToken] = useState<Mention | null>(null),
     [active, setActive] = useState(0),
@@ -260,21 +263,14 @@ export function TaskStarter({
   const listId = `${uid}-mentions`,
     optionId = (position: number) => `${listId}-${position}`;
 
-  // Context usage: the ring's fill and tone, and the line in the mode menu.
-  const used = contextUsage?.used,
-    capacity = contextUsage?.capacity;
-  const ratio =
-    finite(used) && finite(capacity) && capacity > 0 ? used / capacity : null;
-  const tone =
-    ratio === null
-      ? "normal"
-      : ratio > 1
-        ? "over"
-        : ratio >= (contextUsage?.thresholds?.near ?? 0.95)
-          ? "near"
-          : ratio >= (contextUsage?.thresholds?.high ?? 0.8)
-            ? "high"
-            : "normal";
+  // Context usage: the ring's fill, its tone and status word, as the context
+  // meter reads them, and the line in the mode menu.
+  const {
+    ratio,
+    tone,
+    key: statusKey,
+    status,
+  } = contextStatus(contextUsage ?? {}, config.direction === "rtl");
   // The percent sign comes without the direction marks Intl adds around it.
   const percent =
     ratio === null
@@ -308,6 +304,14 @@ export function TaskStarter({
       live.current.textContent = copy.contextRemoved(removed[0].label);
     // A reset says nothing, and empties the sentence so the next one is heard.
     else if (added.length || removed.length) live.current.textContent = "";
+  });
+  // The same region says each crossing of the ring's thresholds once, never
+  // the status the pattern mounts with and never a number.
+  useEffect(() => {
+    const was = heard.current;
+    heard.current = statusKey;
+    if (was === null || was === statusKey || !status || !live.current) return;
+    live.current.textContent = copy.contextStatus(status);
   });
   useLayoutEffect(() => {
     // A chosen record takes its "@word" with it; the caret goes where it was.

@@ -114,6 +114,7 @@ it("groups AI patterns by job, folds the parts and ends Display with content blo
       "توليد صورة",
       "مسودة للمراجعة",
       "ما الذي تغيّر",
+      "إعدادات المساعد",
       "مساحة عمل المساعد",
       "الأجزاء",
     ],

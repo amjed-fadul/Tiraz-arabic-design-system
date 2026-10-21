@@ -236,6 +236,14 @@ export type {
 } from "./DataAnswer";
 export { ChangeSummary } from "./ChangeSummary";
 export type { ChangeSummaryProps, ChangeSummaryLabels } from "./ChangeSummary";
+export { AssistantControls } from "./AssistantControls";
+export type {
+  AssistantControlsProps,
+  AssistantControlsLabels,
+  AssistantPermission,
+  AssistantMemoryItem,
+  PermissionLevel,
+} from "./AssistantControls";
 export { ApprovalFlow } from "./ApprovalFlow";
 export type {
   ApprovalFlowProps,

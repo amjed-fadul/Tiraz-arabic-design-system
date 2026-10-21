@@ -4,6 +4,7 @@ import { SuggestedEditsExample } from "../system/ai/examples/SuggestedEditsExamp
 import { ImageGenerationExample } from "../system/ai/examples/ImageGenerationExamples";
 import { DraftReviewExample } from "../system/ai/examples/DraftReviewExamples";
 import { ChangeSummaryExample } from "../system/ai/examples/ChangeSummaryExamples";
+import { AssistantControlsExample } from "../system/ai/examples/AssistantControlsExamples";
 import { CitedAnswerExample } from "../system/ai/examples/CitedAnswerExamples";
 import { DataAnswerExample } from "../system/ai/examples/DataAnswerExamples";
 import { DecisionInboxExample } from "../system/ai/examples/DecisionInboxExamples";
@@ -349,6 +350,13 @@ export function Playground({
         {...(model as Playgrounds["change-summary"])}
         phase={phase}
         onPhaseChange={onPhaseChange}
+      />
+    );
+  if (component === "assistant-controls")
+    return (
+      <AssistantControlsExample
+        language={language}
+        {...(model as Playgrounds["assistant-controls"])}
       />
     );
   if (component === "suggested-edits")

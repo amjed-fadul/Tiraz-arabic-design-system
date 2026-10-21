@@ -293,6 +293,10 @@ export interface Playgrounds {
   };
   "draft-review": { appearance: "card" | "plain"; undo: boolean };
   "change-summary": { appearance: "card" | "plain" };
+  "assistant-controls": {
+    appearance: "card" | "plain";
+    usage: "normal" | "filling";
+  };
   "ask-user-questions": { appearance: "card" | "plain"; longContent: boolean };
   terminal: {
     state: "running" | "completed" | "failed";
@@ -443,6 +447,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "image-generation": { appearance: "card", knownProgress: true },
     "draft-review": { appearance: "card", undo: true },
     "change-summary": { appearance: "card" },
+    "assistant-controls": { appearance: "card", usage: "normal" },
     "ask-user-questions": { appearance: "card", longContent: false },
     terminal: { state: "completed", longContent: false, followOutput: false },
     "chat-app": { longContent: false },

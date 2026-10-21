@@ -104,6 +104,19 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
   ],
   "data-answer": [appearance],
   "change-summary": [appearance],
+  "assistant-controls": [
+    appearance,
+    field(
+      "usage",
+      "select",
+      "استخدام السياق",
+      "Context usage",
+      "contextUsage",
+      {
+        options: ["normal", "filling"],
+      },
+    ),
+  ],
   "suggested-edits": [
     field("undo", "boolean", "إتاحة التراجع", "Offer undo", "onUndo"),
   ],
@@ -953,6 +966,7 @@ export const optionNames: Record<string, Localized> = {
   high: ["مرتفع", "High"],
   near: ["قريب من السعة", "Near capacity"],
   over: ["تجاوز السعة", "Over capacity"],
+  filling: ["يقترب من الامتلاء", "Filling up"],
   missing: ["قيم مفقودة", "Missing values"],
   invalid: ["قيم غير صالحة", "Invalid values"],
   zero: ["قيم صفرية", "Zero values"],
@@ -1046,6 +1060,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   "image-generation": ["appearance", "knownProgress"],
   "draft-review": ["appearance", "undo"],
   "change-summary": ["appearance"],
+  "assistant-controls": ["appearance", "usage"],
   terminal: ["state", "longContent", "followOutput"],
   "chat-app": ["longContent"],
   "ask-user-questions": ["appearance", "longContent"],

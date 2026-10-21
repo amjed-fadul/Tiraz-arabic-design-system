@@ -82,6 +82,15 @@ export const catalog = [
     file: "ChangeSummary.tsx",
   },
   {
+    id: "assistant-controls",
+    name: ["إعدادات المساعد", "Assistant controls"],
+    description: [
+      "يقرّر المستخدم ما يفعله المساعد دون سؤال، وما يتذكّره، وكم من السياق يستخدم.",
+      "Decide what the assistant may do without asking, what it remembers and how much context it uses.",
+    ],
+    file: "AssistantControls.tsx",
+  },
+  {
     id: "terminal",
     name: ["الطرفية", "Terminal"],
     description: [
@@ -740,6 +749,7 @@ export const patternJobs: Partial<Record<ComponentId, Job>> = {
   "image-generation": "create",
   "draft-review": "create",
   "change-summary": "understand",
+  "assistant-controls": "understand",
 };
 /** The fifteen parts the patterns are built from (spec §16), folded. */
 export const aiParts: readonly ComponentId[] = [
@@ -788,7 +798,11 @@ const aiSections: readonly DocumentationSection[] = [
     name: jobNames.create,
     ids: ["suggested-edits", "image-generation", "draft-review"],
   },
-  { id: "understand", name: jobNames.understand, ids: ["change-summary"] },
+  {
+    id: "understand",
+    name: jobNames.understand,
+    ids: ["change-summary", "assistant-controls"],
+  },
   {
     id: "screens",
     name: ["شاشات", "Screens"],

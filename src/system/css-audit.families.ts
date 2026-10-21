@@ -132,4 +132,6 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "image-generation": [".tz-image-generation"],
   // Draft for review, of Plan 5 Task 5.
   "draft-review": [".tz-draft-review"],
+  // Assistant controls, of Plan 5 Task 6.
+  "assistant-controls": [".tz-assistant-controls"],
 };

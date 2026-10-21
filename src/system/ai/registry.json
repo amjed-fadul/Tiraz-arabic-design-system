@@ -1161,6 +1161,30 @@
       "source": "ChangeSummary.tsx"
     },
     {
+      "name": "AssistantControls",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantControlsProps",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantControlsLabels",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantPermission",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantMemoryItem",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "PermissionLevel",
+      "source": "AssistantControls.tsx"
+    },
+    {
       "name": "ApprovalFlow",
       "source": "ApprovalFlow.tsx"
     },
@@ -1496,7 +1520,7 @@
           "name": "labels",
           "type": "Partial<TaskStarterLabels>",
           "required": false,
-          "note": "Replaces any built-in text."
+          "note": "Replaces any built-in text; contextStatus(status) is the region's sentence when the ring crosses a threshold."
         },
         {
           "name": "appearance",
@@ -1509,7 +1533,7 @@
       ],
       "state": "The host owns the draft, the attached records, the mode and the model. The pattern keeps only what the moment needs: the @ word at the caret, which option is active and whether a submission is pending. It never runs a request: onSubmit hands the draft and the records to the host.",
       "accessibility": [
-        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. A failed send is announced and shown by the entry's own status.",
+        "A section labelled by the question (a hidden heading when there is no greeting). One polite region says when a record joins or leaves the host's context: «أُضيف إلى السياق: INV-1043». It speaks one record joining or leaving, never the context the pattern mounts with and never a reset of several records at once. It also says «السياق: يقترب من الامتلاء» once each time the ring's status word changes, as ContextMeter's region does, never at mount. A failed send is announced and shown by the entry's own status.",
         "The @ picker is a standard combobox on the text area: focus never leaves it, aria-activedescendant names the active option, and Escape closes the picker, not the page. A held Enter acts once. Keys from an input method (composition events, isComposing and keyCode 229) never choose, move or send.",
         "The mode menu is a Radix menu of radio items: arrows move, Escape closes it and returns focus to the button, Tab closes it. The button's name is «الوضع: تلقائي» and it is described by «السياق المستخدم ٣٢٪».",
         "When a change removes the focused control (a chip's remove button), focus moves to the section."
@@ -2737,6 +2761,147 @@
       "examples": ["ai/examples/ChangeSummaryExamples.tsx"]
     },
     {
+      "id": "assistant-controls",
+      "api": "AssistantControls",
+      "source": "AssistantControls.tsx",
+      "kind": "pattern",
+      "parts": [
+        "switch",
+        "badge",
+        "button",
+        "context-meter",
+        "model-selector",
+        "tray"
+      ],
+      "states": [],
+      "events": [
+        "onPermissionChange",
+        "onMemoryEnabledChange",
+        "onMemoryPauseChange",
+        "onMemoryDelete",
+        "onModelChange"
+      ],
+      "exports": [
+        "AssistantControls",
+        "AssistantControlsProps",
+        "AssistantControlsLabels",
+        "AssistantPermission",
+        "AssistantMemoryItem",
+        "PermissionLevel"
+      ],
+      "purpose": "Decide what the assistant may do without asking, what it remembers and how much context it uses: a level for each action, locked to «اسأل دائمًا» for an action that can't be undone; a memory switch with the remembered items under their categories, each paused or deleted by name; and the context meter's detail view with an optional model selector. These are the person's settings, so the pattern has no AI mark, no status pill and no states of its own.",
+      "props": [
+        {
+          "name": "permissions",
+          "type": "readonly AssistantPermission[]",
+          "required": false,
+          "note": "One fieldset per action, shown when given: the legend names the action with its risk tags (حساس, a neutral Badge; لا يمكن التراجع, a warning Badge), its description describes it, and three native radios read اسأل دائمًا، إن كان حساسًا، تلقائي بالكامل with the host's level checked. An action whose risks include irreversible is locked: اسأل دائمًا is checked whatever level says, the other two are disabled, and a lock with «لا يمكن التراجع عن هذا الإجراء، لذلك يسألك المساعد قبله دائمًا.» describes the fieldset."
+        },
+        {
+          "name": "onPermissionChange",
+          "type": "(id: string, level: PermissionLevel) => void",
+          "required": false,
+          "note": "The person's choice for an action. Never called for a locked one. Store the level and enforce it when the assistant acts; the pattern only shows and reports it. Without it the radios are disabled."
+        },
+        {
+          "name": "memoryEnabled",
+          "type": "boolean",
+          "required": false,
+          "note": "The «استخدم الذاكرة» switch. While it is false, «لا يستخدم المساعد الذاكرة الآن.» sits over the list."
+        },
+        {
+          "name": "onMemoryEnabledChange",
+          "type": "(enabled: boolean) => void",
+          "required": false,
+          "note": "The switch's change; without it the switch is disabled."
+        },
+        {
+          "name": "memory",
+          "type": "readonly AssistantMemoryItem[]",
+          "required": false,
+          "note": "The remembered items, grouped under their category headings (two levels below the title) in the order the categories first appear. Each shows its text, «{source} · {date}» and, when paused, «متوقف مؤقتًا»."
+        },
+        {
+          "name": "onMemoryPauseChange",
+          "type": "(id: string, paused: boolean) => void",
+          "required": false,
+          "note": "«إيقاف مؤقت» or «استئناف» on each item, named with the item through aria-labelledby, called with the opposite of paused."
+        },
+        {
+          "name": "onMemoryDelete",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "«حذف» on each item, named with the item. It only asks: the item stays until the host removes it from memory (after a confirmation where it can't be restored), and the pattern never says it was deleted. When it goes, focus moves to the section."
+        },
+        {
+          "name": "contextUsage",
+          "type": "ContextMeterProps",
+          "required": false,
+          "note": "The «السياق والاستخدام» section's ContextMeter, shown inline: each part's share and a bar, its action once the meter fills up, and its polite region, which is the pattern's one live region."
+        },
+        {
+          "name": "models",
+          "type": "readonly ModelOption[]",
+          "required": false,
+          "note": "For hosts that expose models: a ModelSelector named «النموذج», as the visible label beside it."
+        },
+        {
+          "name": "model",
+          "type": "string",
+          "required": false,
+          "note": "The selected model's id."
+        },
+        {
+          "name": "onModelChange",
+          "type": "(id: string) => void",
+          "required": false,
+          "note": "The selector's change; without it the selector is disabled."
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": false,
+          "note": "The section's heading; «إعدادات المساعد» / Assistant controls by default."
+        },
+        {
+          "name": "headingLevel",
+          "type": "2 | 3 | 4 | 5 | 6",
+          "required": false,
+          "values": [2, 3, 4, 5, 6],
+          "default": 3,
+          "note": "The title's level; the three sections sit one lower and the memory categories two."
+        },
+        {
+          "name": "labels",
+          "type": "Partial<AssistantControlsLabels>",
+          "required": false,
+          "note": "Replaces any built-in text."
+        },
+        {
+          "name": "appearance",
+          "type": "\"card\" | \"plain\"",
+          "required": false,
+          "values": ["card", "plain"],
+          "default": "card",
+          "note": "card sits on a tray with the sections on paper; plain lives on its host's paper, as in a side panel or a settings page."
+        }
+      ],
+      "state": "The host owns every setting: each action's level, whether memory is on, the remembered items and whether each is paused, the context usage and the model. It stores and enforces them. The pattern shows them and reports the person's choices, and keeps only where focus was. A locked action shows «اسأل دائمًا» whatever level the host passes, and an item the person asks to delete stays until the host removes it.",
+      "accessibility": [
+        "A section labelled by its title, with no AI mark and no status pill. Its three sections, «الصلاحيات», «الذاكرة» and «السياق والاستخدام», are headed one level down and show only when their data is given.",
+        "Each action is a fieldset named by its legend, the action and its risk tags, and described by its description and, when locked, the lock sentence. Its levels are native radios, so arrows move and choose; a locked action's other two radios are disabled.",
+        "Each memory item's buttons are named by their word and then the item: «حذف تفضّل شركة مدار التواصل مع سارة العتيبي». When a change removes the focused control, a deleted item's buttons or the meter's action once there is room, focus moves to the section.",
+        "The context meter's region is the pattern's one polite region: «السياق: يقترب من الامتلاء», once each time the status word changes, never at mount and never a number."
+      ],
+      "limitations": [
+        "No storage, enforcement or deletion: the host saves each level and applies it when the assistant acts, deletes memories and summarizes the conversation. Only irreversible locks a level, and only to اسأل دائمًا; sensitive is a tag, and the host decides what إن كان حساسًا covers.",
+        "Item buttons show only with their handlers. A deletion is confirmed by the item leaving the host's list; the pattern announces no deletion of its own."
+      ],
+      "alternative": "Use ContextMeter alone for a context ring in a toolbar, Start a task for the mode menu with models, and Switch or RadioGroup for settings that aren't about the assistant.",
+      "dependencies": [],
+      "examples": ["ai/examples/AssistantControlsExamples.tsx"]
+    },
+    {
       "id": "terminal",
       "api": "Terminal",
       "source": "Terminal.tsx",
@@ -3333,7 +3498,7 @@
       "api": "ContextMeter",
       "source": "ContextMeter.tsx",
       "kind": "part",
-      "usedBy": ["task-starter"],
+      "usedBy": ["task-starter", "assistant-controls"],
       "exports": ["ContextMeter", "ContextMeterProps", "ContextMeterPart"],
       "props": [
         {
@@ -3399,12 +3564,34 @@
           "name": "onOpenChange",
           "type": "(open: boolean) => void",
           "required": false
+        },
+        {
+          "name": "inline",
+          "type": "boolean",
+          "required": false,
+          "default": false,
+          "note": "Shows the details in place of the ring and its popover: a group labelled by the meter's name, on paper with hairline dividers. Assistant controls shows it this way. open and onOpenChange do nothing inline."
+        },
+        {
+          "name": "action",
+          "type": "{ label: ReactNode; onSelect(): void }",
+          "required": false,
+          "note": "A way out once the meter fills up, such as «لخّص المحادثة»: a secondary Button in the details, popover or inline, while the status is high, near or over. The host does the work and passes the smaller usage."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "values": ["polite", "off"],
+          "default": "polite",
+          "note": "polite adds a visually hidden polite region, empty at mount, that says «{label}: {status}», such as «السياق: يقترب من الامتلاء», once each time the status word changes, and empties when there is room again. It never holds a number. Use off where an owner speaks for the meter."
         }
       ],
-      "state": "Compact ring and counts with a keyboard-operated details popover. Values are host supplied; estimates are explicitly labeled.",
+      "state": "Compact ring and counts with a keyboard-operated details popover, or the details in place with inline. Values are host supplied; estimates are explicitly labeled. With a valid capacity, each part shows its share of the capacity as a whole percent, end-aligned, over a thin aria-hidden bar whose segments are tints of the tone's color.",
       "accessibility": [
         "Accessible trigger describes full values, unit, percentage and capacity status without relying on color. Missing/invalid values are unavailable, zero is retained, and over-capacity percentages are not clamped in the text.",
-        "Enter/Space/click opens details; Escape restores trigger focus through the existing Popover primitive. Portal inherits nearest provider/dialog configuration."
+        "Enter/Space/click opens details; Escape restores trigger focus through the existing Popover primitive. Portal inherits nearest provider/dialog configuration.",
+        "The popover opens with focus on itself, never on the action. With announcement polite, one region says each change of the status word once, never at mount and never a number; the shares and the bar are text and decoration, never announced."
       ],
       "limitations": [
         "Only finite nonnegative numeric values are accepted. A zero capacity has no calculable percentage. The decorative ring clamps at capacity; text reports actual excess.",
@@ -3419,7 +3606,7 @@
       "api": "ModelSelector",
       "source": "ModelSelector.tsx",
       "kind": "part",
-      "usedBy": ["task-starter"],
+      "usedBy": ["task-starter", "assistant-controls"],
       "exports": ["ModelSelector", "ModelSelectorProps", "ModelOption"],
       "props": [
         {
@@ -5720,7 +5907,7 @@
       "id": "button",
       "api": "Button",
       "source": "Button.tsx",
-      "usedBy": ["decision-inbox", "draft-review"],
+      "usedBy": ["decision-inbox", "draft-review", "assistant-controls"],
       "exports": ["Button", "ButtonProps", "ButtonState", "ButtonVariant"],
       "purpose": "Perform an explicit action.",
       "useWhen": "Save, submit, create, or open an overlay.",
@@ -5894,6 +6081,7 @@
       "id": "switch",
       "api": "Switch",
       "source": "Switch.tsx",
+      "usedBy": ["assistant-controls"],
       "exports": ["Switch", "SwitchProps"],
       "purpose": "Change a persistent two-state setting.",
       "useWhen": "Immediate enabled/disabled preference.",
@@ -6673,7 +6861,7 @@
       "id": "badge",
       "api": "Badge",
       "source": "Badge.tsx",
-      "usedBy": ["draft-review"],
+      "usedBy": ["draft-review", "assistant-controls"],
       "exports": ["Badge", "BadgeProps", "BadgeTone"],
       "purpose": "Show static status text.",
       "useWhen": "Show static status text.",
@@ -10063,6 +10251,12 @@
           "required": true
         },
         {
+          "name": "contextStatus",
+          "type": "(status: string) => string",
+          "required": true,
+          "note": "The region's sentence when the ring's status word changes: «السياق: {status}» / Context: {status}."
+        },
+        {
           "name": "mode",
           "type": "string",
           "required": true
@@ -10443,6 +10637,163 @@
         },
         {
           "name": "failed",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "AssistantPermission",
+      "source": "AssistantControls.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "label",
+          "type": "ReactNode",
+          "required": true,
+          "note": "The action, in the person's words: «إرسال رسائل للعملاء»."
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "level",
+          "type": "\"always\" | \"sensitive\" | \"auto\"",
+          "required": true,
+          "values": ["always", "sensitive", "auto"],
+          "note": "The stored level: اسأل دائمًا، إن كان حساسًا or تلقائي بالكامل. Ignored for an irreversible action, which always asks."
+        },
+        {
+          "name": "risks",
+          "type": "readonly (\"sensitive\" | \"irreversible\")[]",
+          "required": false,
+          "note": "Tags: sensitive (حساس, neutral) and irreversible (لا يمكن التراجع, warning), which locks the level to always."
+        }
+      ]
+    },
+    {
+      "type": "AssistantMemoryItem",
+      "source": "AssistantControls.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "text",
+          "type": "ReactNode",
+          "required": true,
+          "note": "What the assistant remembers: «تفضّل شركة مدار التواصل مع سارة العتيبي». It also names the item's buttons."
+        },
+        {
+          "name": "category",
+          "type": "string",
+          "required": true,
+          "note": "The heading it sits under; categories keep the order they first appear in."
+        },
+        {
+          "name": "source",
+          "type": "ReactNode",
+          "required": false
+        },
+        {
+          "name": "date",
+          "type": "ReactNode",
+          "required": false,
+          "note": "Formatted by the host, with numberLocale for its digits."
+        },
+        {
+          "name": "paused",
+          "type": "boolean",
+          "required": false,
+          "note": "Shows «متوقف مؤقتًا» and turns Pause into Resume."
+        }
+      ]
+    },
+    {
+      "type": "AssistantControlsLabels",
+      "source": "AssistantControls.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "note": "The heading when the host gives no title: «إعدادات المساعد»."
+        },
+        {
+          "name": "permissions",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "memory",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "context",
+          "type": "string",
+          "required": true,
+          "note": "«السياق والاستخدام»."
+        },
+        {
+          "name": "levels",
+          "type": "Record<PermissionLevel, string>",
+          "required": true,
+          "note": "اسأل دائمًا، إن كان حساسًا، تلقائي بالكامل."
+        },
+        {
+          "name": "risks",
+          "type": "Record<\"sensitive\" | \"irreversible\", string>",
+          "required": true,
+          "note": "حساس، لا يمكن التراجع."
+        },
+        {
+          "name": "locked",
+          "type": "string",
+          "required": true,
+          "note": "Describes a locked action: «لا يمكن التراجع عن هذا الإجراء، لذلك يسألك المساعد قبله دائمًا.»."
+        },
+        {
+          "name": "useMemory",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "memoryOff",
+          "type": "string",
+          "required": true,
+          "note": "«لا يستخدم المساعد الذاكرة الآن.»"
+        },
+        {
+          "name": "paused",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "pause",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "resume",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "delete",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "model",
           "type": "string",
           "required": true
         }
@@ -11021,7 +11372,8 @@
         "approval-card",
         "approval-flow",
         "decision-inbox",
-        "draft-review"
+        "draft-review",
+        "assistant-controls"
       ],
       "props": [
         {

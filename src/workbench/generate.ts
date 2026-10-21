@@ -5,6 +5,7 @@ import suggestedEditsSource from "../system/ai/examples/SuggestedEditsExamples.t
 import imageGenerationSource from "../system/ai/examples/ImageGenerationExamples.tsx?raw";
 import draftReviewSource from "../system/ai/examples/DraftReviewExamples.tsx?raw";
 import changeSummarySource from "../system/ai/examples/ChangeSummaryExamples.tsx?raw";
+import assistantControlsSource from "../system/ai/examples/AssistantControlsExamples.tsx?raw";
 import citedAnswerSource from "../system/ai/examples/CitedAnswerExamples.tsx?raw";
 import dataAnswerSource from "../system/ai/examples/DataAnswerExamples.tsx?raw";
 import decisionInboxSource from "../system/ai/examples/DecisionInboxExamples.tsx?raw";
@@ -119,6 +120,7 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
       "image-generation",
       "draft-review",
       "change-summary",
+      "assistant-controls",
       "ask-user-questions",
       "approval-card",
       "approval-flow",
@@ -143,7 +145,9 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
                       ? draftReviewSource
                       : component === "change-summary"
                         ? changeSummarySource
-                        : aiDecisionsSource
+                        : component === "assistant-controls"
+                          ? assistantControlsSource
+                          : aiDecisionsSource
     )
       .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
       .replace(
@@ -169,11 +173,13 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
                       ? "DraftReviewExample"
                       : component === "change-summary"
                         ? "ChangeSummaryExample"
-                        : component === "ask-user-questions"
-                          ? "AskUserQuestionsExample"
-                          : component === "approval-card"
-                            ? "ApprovalCardExample"
-                            : "ApprovalFlowExample";
+                        : component === "assistant-controls"
+                          ? "AssistantControlsExample"
+                          : component === "ask-user-questions"
+                            ? "AskUserQuestionsExample"
+                            : component === "approval-card"
+                              ? "ApprovalCardExample"
+                              : "ApprovalFlowExample";
     return `${source}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";

@@ -105,6 +105,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "DataAnswerExamples",
       "DecisionInboxExamples",
       "ChangeSummaryExamples",
+      "AssistantControlsExamples",
       "AIDecisionsExamples",
       "AIContextExamples",
       "AIResultsExamples",
