@@ -137,12 +137,12 @@ export function useScreen(): Screen; // throws outside ScreenFrame
 **Layout,** in `main.component-page` at the docs sections' width:
 1. **Heading.** `header.component-heading` holds the screen's name as the h1, then its description.
 2. **Toolbar** (`.tz-demo-bar`).
-   - **At the start:** width chips «سطح المكتب» / «جهاز لوحي» / «هاتف» (Desktop / Tablet / Phone). Desktop renders the iframe 1,280 px wide and scales it to the stage with `transform: scale(stage ÷ 1,280)` from the top, scaling its box height the same way; Tablet and Phone stay 768 and 390 px, unscaled. A ResizeObserver on the stage recomputes the scale. So Desktop shows each screen's `wide` layout. The chips are the playground's state chips: a `.tz-demo-states` group named «عرض المعاينة» / "Preview width", of `.tz-demo-state` buttons with `aria-pressed`. The choice lasts the session.
+   - **At the start:** width chips «سطح المكتب» / «جهاز لوحي» / «هاتف» (Desktop / Tablet / Phone). Desktop renders the iframe 1,280 px wide and scales it to the stage with `transform: scale(stage ÷ 1,280)` from the top; the stage keeps its height, so the iframe's own height is that height ÷ the scale and the scaled screen fills the stage; Tablet and Phone stay 768 and 390 px, unscaled. A ResizeObserver on the stage recomputes the scale. So Desktop shows each screen's `wide` layout. The chips are the playground's state chips: a `.tz-demo-states` group named «عرض المعاينة» / "Preview width", of `.tz-demo-state` buttons with `aria-pressed`. A stage narrower than 768 px starts on Phone, any other on Desktop; after that only the person's choice changes it, for the session.
    - **At the end:** the new-tab link, a `.tz-demo-icon` with lucide `ArrowUpRight` and `.tz-mirror-rtl`. It is named «افتح في نافذة جديدة» / "Open in a new tab", has `target="_blank" rel="noopener"`, and points to `screenPath(slug)` with the current `lang` and `theme`.
 3. **Stage:** `<iframe title={name} src={`${screenPath(slug)}?embed=1[&lang=en][&theme=dark]`}>`.
    - It follows the workbench's language and theme, so a change reloads it.
    - Its width comes from the chip, centered in the stage.
-   - Its height is `clamp(560px, 100dvh - 260px, 900px)`, which Desktop scales with the width. The 260 px covers the header, padding, heading and toolbar above it.
+   - Its height is `clamp(560px, 100dvh - 260px, 900px)` for every chip. The 260 px covers the header, padding, heading and toolbar above it.
    - It uses the playground stage's border, radius and surface.
 4. **«على هذه الشاشة» / "On this screen"** (h2): one button per `screenUses[slug]` page, named after it, which opens it.
 
@@ -164,7 +164,7 @@ A screen page has no prompt, Code view, guidelines, API table or settings panel.
 
 **Placeholders.** Each `<Component>.tsx` is `<ScreenFrame slug="<slug>"><ScreenHeader /></ScreenFrame>`, and it imports `./<slug>.css`, which holds one comment.
 
-**Audit.** `src/examples/screens-css.test.ts` expects `auditFamily(css, [prefix])` from `src/system/css-audit.ts` to return `[]`. It checks `frame/screen-frame.css` with `.screen`, and each `<slug>/<slug>.css` with `.<slug>`. `screens-css.test.ts` also expects `familyRuleCount(css, [prefix])` to equal the file's rule count (postcss `walkRules`). `auditFamily` reads only rules that name the prefix, and `main.tsx` loads every screen's CSS on every page, the docs included, so no rule may lack it.
+**Audit.** `src/examples/screens-css.test.ts` expects `auditFamily(css, [prefix])` from `src/system/css-audit.ts` to return `[]`. It checks `frame/screen-frame.css` with `.screen`, and each `<slug>/<slug>.css` with `.<slug>`. `screens-css.test.ts` also checks each selector on its own: every selector in a list must name the prefix, and every `@keyframes` name must start with it. `auditFamily` reads only rules that name the prefix, and `main.tsx` loads every screen's CSS on every page, the docs included, so no rule may lack it.
 
 ## 3. The screens
 
