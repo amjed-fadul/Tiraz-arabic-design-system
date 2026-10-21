@@ -24,6 +24,8 @@ export type TagInputProps = Omit<
   size?: "sm" | "md";
   invalid?: boolean;
   labels?: TagInputLabels;
+  /** Announce validation feedback politely, or leave it to the host. */
+  announcement?: "polite" | "off";
 } & (
     | { label: string; helper?: string; error?: string; field?: never }
     | {
@@ -40,6 +42,7 @@ export function TagInput({
   onValueChange,
   maxTags,
   labels,
+  announcement = "polite",
   label,
   helper,
   error,
@@ -236,7 +239,11 @@ export function TagInput({
               disabled={disabled}
             />
           ))}
-        <span id={statusId} role="status" className="tz-entry-feedback">
+        <span
+          id={statusId}
+          role={announcement === "polite" ? "status" : undefined}
+          className="tz-entry-feedback"
+        >
           {feedback}
         </span>
       </>

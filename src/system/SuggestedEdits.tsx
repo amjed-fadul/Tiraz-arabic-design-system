@@ -70,6 +70,8 @@ export interface SuggestedEditsProps {
   selection?: Offsets;
   /** Keyed by each change's first segment id. Without it the pattern keeps its own. */
   decisions?: Readonly<Record<string, Decision>>;
+  /** Speak status changes politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   onDecisionsChange?(next: Record<string, Decision>): void;
   /** The text with the accepted changes, and the range it replaces. */
   onApply?(text: string, selection: Offsets): void;
@@ -114,13 +116,15 @@ function rangeIn(scope: Node, start: number, end: number) {
  * then its DOM is untouched. While rewriting and reviewing, the range keeps a
  * soft underline through the CSS Custom Highlight API, where the browser has
  * it. The rewriting note and the review card float in the provider's layer,
- * anchored below the range. One polite region says each change of status.
+ * anchored below the range. The polite region says each status change unless
+ * the host owns announcements.
  */
 export function SuggestedEdits({
   children,
   actions,
   onAction,
   status,
+  announcement = "polite",
   suggestion,
   selection,
   decisions,
@@ -186,6 +190,10 @@ export function SuggestedEdits({
           ? receipt
           : "";
   useEffect(() => {
+    if (announcement === "off") {
+      heard.current = status;
+      return;
+    }
     if (heard.current === null) {
       heard.current = status;
       return;
@@ -311,13 +319,15 @@ export function SuggestedEdits({
       <SelectionActions label={copy.region} actions={offered}>
         {children}
       </SelectionActions>
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       {status === "applied" && suggestion && (
         <p className="tz-suggested-edits-receipt">
           <Check size={14} aria-hidden="true" />

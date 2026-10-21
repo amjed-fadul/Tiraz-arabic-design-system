@@ -25,6 +25,8 @@ export type ColorPickerProps = Omit<
   onValueChange?: (value: string) => void;
   swatches?: ColorSwatch[];
   labels?: ColorPickerLabels;
+  /** Announce validation feedback politely, or leave it to the host. */
+  announcement?: "polite" | "off";
   invalid?: boolean;
 } & (
     | { label: string; helper?: string; error?: string; field?: never }
@@ -55,6 +57,7 @@ export function ColorPicker({
   onValueChange,
   swatches,
   labels,
+  announcement = "polite",
   label,
   helper,
   error,
@@ -243,7 +246,7 @@ export function ColorPicker({
         )}
         <span
           id={statusId}
-          role="status"
+          role={announcement === "polite" ? "status" : undefined}
           className="tz-entry-feedback"
           data-error={!!feedback || undefined}
         >

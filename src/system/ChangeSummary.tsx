@@ -65,6 +65,8 @@ export interface ChangeSummaryProps {
   /** The title's level; 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<ChangeSummaryLabels>;
+  /** Speak status changes politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -120,8 +122,8 @@ function Sparkline({
  * What changed (spec section 12.8): what moved, why, and what to do next. The
  * host supplies the status, the rows and their tones; each row says which way
  * with an arrow and a hidden word, and what it means with color, so more late
- * invoices is red though it rises. One polite region says each change of
- * status once.
+ * invoices is red though it rises. Its polite region says each status change
+ * once unless the host owns announcements.
  */
 export function ChangeSummary({
   title,
@@ -135,6 +137,7 @@ export function ChangeSummary({
   onRefresh,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: ChangeSummaryProps) {
   const { config } = useSystem(),
@@ -153,6 +156,10 @@ export function ChangeSummary({
   // One polite region, one sentence per change of status. It mounts empty, and
   // the status it mounts in is not news.
   useEffect(() => {
+    if (announcement === "off") {
+      heard.current = status;
+      return;
+    }
     if (heard.current === null) {
       heard.current = status;
       return;
@@ -329,13 +336,15 @@ export function ChangeSummary({
         if (event.relatedTarget) lastFocus.current = null;
       }}
     >
-      <span
-        ref={live}
-        className="tz-visually-hidden"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      />
+      {announcement === "polite" && (
+        <span
+          ref={live}
+          className="tz-visually-hidden"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        />
+      )}
       {appearance === "card" ? (
         <Tray paper={false} header={header} footer={footer}>
           <div

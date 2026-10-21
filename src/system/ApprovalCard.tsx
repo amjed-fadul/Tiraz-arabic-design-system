@@ -79,6 +79,8 @@ export interface ApprovalCardProps {
   /** The title's level; 3 by default. */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
   labels?: Partial<ApprovalCardLabels>;
+  /** Speak status changes politely, or leave announcements to the host. */
+  announcement?: "polite" | "off";
   /** "card" sits on a tray; "plain" lives on its host's paper. */
   appearance?: "card" | "plain";
 }
@@ -93,6 +95,7 @@ export type ApprovalDetails = Pick<
   | "secondaryAction"
   | "receiptTime"
   | "labels"
+  | "announcement"
 >;
 export function ApprovalCard(props: ApprovalCardProps) {
   return (
@@ -117,6 +120,7 @@ function ApprovalCardInstance({
   agent,
   headingLevel = 3,
   labels,
+  announcement = "polite",
   appearance = "card",
 }: ApprovalCardProps) {
   const { config } = useSystem(),
@@ -333,9 +337,9 @@ function ApprovalCardInstance({
   );
   const statusLine = (
     <p
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
+      role={announcement === "polite" ? "status" : undefined}
+      aria-live={announcement === "polite" ? "polite" : undefined}
+      aria-atomic={announcement === "polite" ? true : undefined}
       className="tz-decision-status"
     >
       {status}

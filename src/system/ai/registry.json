@@ -2328,11 +2328,18 @@
           "type": "Partial<SuggestedEditsLabels>",
           "required": false,
           "note": "Replaces any built-in text, InlineDiff's words included."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "Speaks status changes politely by default; off removes the live region while keeping the visible rewriting note and receipt."
         }
       ],
       "state": "The host owns the status, the suggestion, the decisions (or leaves them to the pattern) and its own text, which it replaces on Apply. The pattern keeps only the last action's range and which change the counter is on. It never rewrites anything itself.",
       "accessibility": [
-        "One polite region says each change of status in one sentence: يعيد الصياغة…, اقتراح المساعد جاهز للمراجعة: ٣ تعديلات, then the receipt, such as طُبّق تعديلان من ٣. The status the pattern mounts in is not announced.",
+        "One polite region says each change of status in one sentence: يعيد الصياغة…, اقتراح المساعد جاهز للمراجعة: ٣ تعديلات, then the receipt, such as طُبّق تعديلان من ٣. The status the pattern mounts in is not announced. Pass announcement=\"off\" when the host screen owns announcements; the visible note and receipt remain.",
         "The review card is a non-modal dialog labelled by its heading. When it opens after the pattern mounted, focus moves to its heading if it was in the selection toolbar or on the page; focus the person put elsewhere stays. Escape calls onDismiss and returns focus to the text region, and a control that takes itself away (Apply, Undo) hands focus to the text region too.",
         "Each change is a focusable group named by what it does, with its own accept and reject toggle buttons. Y accepts and N rejects while focus is in a change, matched by key position so an Arabic layout works, and never on a repeat, with Ctrl, Meta or Alt, or in a text field. The counter keeps its width as it counts.",
         "A deletion is struck through and an insertion underlined, so neither rests on color alone. The range's underline uses the CSS Custom Highlight API (::highlight(tz-suggestion)); where the API is missing the range is not marked."
@@ -2479,11 +2486,18 @@
           "values": ["card", "plain"],
           "default": "card",
           "note": "card sits on a tray with the canvas on paper; plain lives on its host's paper."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "Speaks status changes politely by default; off also makes the failed ImageResult status plain while keeping its visible error and alt text."
         }
       ],
       "state": "The host owns the status, the progress, the images and, if it wants, the chosen version. The pattern never generates an image, simulates progress or advances its status; it reports the version chosen, Use image, Similar variations, Edit with a description and Try again.",
       "accessibility": [
-        "A section labelled by its title. One polite region says each change of status in one sentence: الصورة في الانتظار, تُنسج الصورة, الصورة جاهزة, تعذّر توليد الصورة, or لا يمكن توليد هذه الصورة with its reason. The status the pattern mounts in is not announced, and neither are the progress or the time.",
+        "A section labelled by its title. One polite region says each change of status in one sentence: الصورة في الانتظار, تُنسج الصورة, الصورة جاهزة, تعذّر توليد الصورة, or لا يمكن توليد هذه الصورة with its reason. The status the pattern mounts in is not announced, and neither are the progress or the time. Pass announcement=\"off\" when the host screen owns announcements; its failed ImageResult is plain text too.",
         "While it is made the canvas is one image named by the chosen image's alt; the warp threads, the picture, the shuttles and the weft lines are decoration and hidden. Once the images are done the weave stays under the result as hidden decoration. The progress tag is the pattern's progressbar: aria-valuenow only when progress is known, and a text value such as يُنسج · ٤٢٪ in a fixed width.",
         "The versions are a native radio group named اختر نسخة, each thumbnail named النسخة ١ and so on. They and the actions are disabled and dimmed until the images are done. The chosen version has a ring and a check, so color is not its only signal.",
         "When Try again takes the focused figure away, focus moves to the section instead of the page; so does focus on an action that goes quiet.",
@@ -2641,11 +2655,18 @@
           "values": ["card", "plain"],
           "default": "card",
           "note": "card sits on a tray with the message on paper; plain lives on its host's paper, as in a conversation or a side panel."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "Speaks status changes politely by default; off removes the live region while keeping the visible receipt, sending line and error text."
         }
       ],
       "state": "The host owns the status, the text, the suggestion and its decisions, the tone, the recipients, the attachments and the sending: it holds the message for its undo window, sends it once the window ends, cancels it on onUndo, and marks it sent. The pattern sends and cancels nothing itself. It holds only UI state: whether Send, Discard or Undo has acted in this status, and whether its countdown has ended.",
       "accessibility": [
-        "A section labelled by its title. One polite region, empty at mount, says each change of status once: يكتب المسودة; المسودة بانتظار مراجعتك; تُرسَل الرسالة, or with an undo window تُرسَل الرسالة خلال ١٠ث. يمكنك التراجع.; أُلغي الإرسال، والمسودة محفوظة when an Undo takes sending back to ready, and otherwise تعذّر إرسال الرسالة، والمسودة محفوظة, also shown as an error Alert above Send; أُرسلت الرسالة, or after an Undo أُرسلت الرسالة قبل أن يُلغى الإرسال; تم تجاهل المسودة. The countdown never speaks, and neither its ticks nor a new undoWindow reach the region.",
+        "A section labelled by its title. One polite region, empty at mount, says each change of status once: يكتب المسودة; المسودة بانتظار مراجعتك; تُرسَل الرسالة, or with an undo window تُرسَل الرسالة خلال ١٠ث. يمكنك التراجع.; أُلغي الإرسال، والمسودة محفوظة when an Undo takes sending back to ready, and otherwise تعذّر إرسال الرسالة، والمسودة محفوظة, also shown as an error Alert above Send; أُرسلت الرسالة, or after an Undo أُرسلت الرسالة قبل أن يُلغى الإرسال; تم تجاهل المسودة. The countdown never speaks, and neither its ticks nor a new undoWindow reach the region. Pass announcement=\"off\" when the host screen owns announcements; visible receipts and errors remain.",
         "Send, Discard and Undo go away with their status, and focus then moves to the section, as it does from a text area, a tracked change or a tone that a change removes or disables.",
         "The record's id is isolated left to right, each chip in its own direction, and the overdue tag is an error Badge with words. The tone is a native radio group named «النبرة». Each button is named by its visible word, and Send's shortcut is its description."
       ],
@@ -2744,11 +2765,18 @@
           "default": "card",
           "values": ["card", "plain"],
           "note": "card sits on a tray with the rows on paper; plain lives on its host's paper."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "Speaks status changes politely by default; off removes the live region while keeping visible status and footer text."
         }
       ],
       "state": "The host owns the status, the rows, their tones, the reason and the times. The pattern never refreshes by itself; Refresh and Try again call onRefresh and the host sets updating.",
       "accessibility": [
-        "A section labelled by its title. One polite region says each change of status in one sentence: يحدّث الملخص, الملخص جاهز, قد يكون الملخص قديمًا or تعذّر تحديث الملخص. The status the summary mounts in is not announced, and an unchanged status is not announced again.",
+        "A section labelled by its title. One polite region says each change of status in one sentence: يحدّث الملخص, الملخص جاهز, قد يكون الملخص قديمًا or تعذّر تحديث الملخص. The status the summary mounts in is not announced, and an unchanged status is not announced again. Pass announcement=\"off\" when the host screen owns announcements; visible status and footer text remain.",
         "Each row reads as its metric, a direction word and the change: the arrow is decorative, the word is hidden text and the color is never the only signal for the direction. The sparkline is decoration and hidden from assistive technology. While updating, the skeleton rows are hidden and the paper is aria-busy.",
         "When a change removes the focused control (Refresh), focus moves to the section."
       ],
@@ -3332,12 +3360,19 @@
           "values": ["card", "plain"],
           "default": "card",
           "note": "card puts the header and the decisions on a tray and the content on paper; plain lives on its host’s paper, as inside Agent task."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "The visible status line is polite by default; off removes its live semantics while keeping its text."
         }
       ],
       "state": "Optional controlled approval record bound to the exact request content. A decision counts only after the host’s promise resolves; reset, content replacement, unmount and host expiry abort it. Receipts record the decision, never the outcome: approved (with an optional receiptTime), rejected and expired. No undo.",
       "accessibility": [
         "A named group whose heading is the request’s action. Never steals focus on mount, and approve never takes default focus. Escape rejects a pending request; inside a Sheet or Modal the dialog takes Escape and nothing is recorded. Ctrl or Cmd+Enter approves only a reversible request that is not irreversible. Key hints sit inside the buttons and their shortcuts in each button’s description.",
-        "One polite live region for recording, failure and the receipt. Failure keeps the details and restores focus to the initiating button when focus has not moved elsewhere. When the card closes, focus that went with its actions moves to the card. The status pill says needs-you while the request is open."
+        "One polite live region for recording, failure and the receipt. Failure keeps the details and restores focus to the initiating button when focus has not moved elsewhere. When the card closes, focus that went with its actions moves to the card. The status pill says needs-you while the request is open. Pass announcement=\"off\" when the host screen owns announcements; the visible status line remains."
       ],
       "limitations": [
         "Single choice with optional Other or text only; no multi-select, branching, form engine or question generation. Choice values reserve other. IDs must be unique and stable.",
@@ -3402,7 +3437,7 @@
           "name": "approval",
           "type": "(request: ApprovalRequest) => ApprovalDetails | undefined",
           "required": false,
-          "note": "What each request’s card shows beyond the request: impact, irreversible, reversible, expiry, secondaryAction, receiptTime and labels."
+          "note": "What each request’s card shows beyond the request: impact, irreversible, reversible, expiry, secondaryAction, receiptTime and labels. Set announcement=\"off\" here when the flow owns announcements, leaving one region for its nested card."
         },
         {
           "name": "labels",
@@ -3733,12 +3768,19 @@
           "type": "number | null",
           "required": false,
           "note": "Actual host percentage; finite values clamp to 0–100, absent/null/nonfinite is indeterminate. Does not complete state or restart the resource."
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "The visible error has a status role by default; off keeps the error and alt text without live semantics."
         }
       ],
       "state": "Host supplies readiness; internal image load/error guards. URL or state replacement remounts the resource; stale events cannot update a replacement.",
       "inheritedProps": "Native figure attributes, className/style and React 19 ref; children managed internally.",
       "accessibility": [
-        "Required meaningful alt text. Visible loading/failure status; alt remains visible on error. Fixed landscape/square/portrait frame; contain sizing preserves the whole image.",
+        "Required meaningful alt text. Visible loading/failure status; alt remains visible on error. Fixed landscape/square/portrait frame; contain sizing preserves the whole image. Its visible error is a status by default; announcement=\"off\" keeps the text without live semantics.",
         "Only supplied retry and loaded-image actions become buttons.",
         "Loading reuses Progress with a localized visible percentage and accessible progressbar. Percentage updates are not live announcements. Shared Skeleton/progress animations honor application and OS reduced motion."
       ],
@@ -5526,6 +5568,13 @@
           "type": "Ref<HTMLInputElement>",
           "required": false,
           "default": "undefined"
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "Validation feedback is a polite status by default; off keeps the visible feedback and its aria-describedby association without live semantics."
         }
       ],
       "inheritedProps": "Native HEX text input attributes/ref/events except value/defaultValue/type/children/size/readOnly. name submits a separate hidden committed value. label/helper/error and field are mutually exclusive. Native chooser has a translated name; no separate ref API.",
@@ -5534,7 +5583,7 @@
         "onValueChange reports a changed committed color, not draft edits/reset. Native onChange reports HEX text editing. labels translates chooser/swatches/invalid."
       ],
       "accessibility": [
-        "Field associations and external descriptions merge on LTR HEX input. Named preset buttons use aria-pressed and a visible check mark; focus ring is distinct from selection. Native chooser and HEX share one focus treatment. Disabled disables every control and omits hidden value."
+        "Field associations and external descriptions merge on LTR HEX input. Named preset buttons use aria-pressed and a visible check mark; focus ring is distinct from selection. Native chooser and HEX share one focus treatment. Disabled disables every control and omits hidden value. Validation feedback is a polite status by default; announcement=\"off\" keeps it as visible, described text."
       ],
       "limitations": [
         "name/form submit the committed color, never incomplete/invalid draft. Application owns validation; local invalid feedback is not itself a submission blocker. Caller-supplied native HEX constraints such as required/pattern still apply. Uncontrolled uncanceled reset restores initial normalized defaultValue and clears draft/feedback without callback; controlled reset requires application onReset.",
@@ -5650,6 +5699,13 @@
           "type": "Ref<HTMLInputElement>",
           "required": false,
           "default": "undefined"
+        },
+        {
+          "name": "announcement",
+          "type": "\"polite\" | \"off\"",
+          "required": false,
+          "default": "polite",
+          "note": "Validation feedback is a polite status by default; off keeps the visible feedback and its aria-describedby association without live semantics."
         }
       ],
       "inheritedProps": "Native input attributes/ref/events except value/defaultValue/type/children/size/required. label/helper/error or field are mutually exclusive; helper/error require label. Draft is internal; onChange observes native draft editing. name/form associate repeated hidden committed tag entries, never the draft.",
@@ -5658,7 +5714,7 @@
         "onValueChange only for user add/remove, not reset. Native input events preserve editing and may prevent default keyboard behavior."
       ],
       "accessibility": [
-        "Field helper/error and external description IDs are merged; supply standalone native/ARIA label when omitting label.",
+        "Field helper/error and external description IDs are merged; supply standalone native/ARIA label when omitting label. Validation feedback is a polite status by default; announcement=\"off\" keeps it as visible, described text.",
         "IME composition Enter is ignored. Empty Backspace removes the last tag; remove buttons focus the text input. Disabled/readOnly prevent changes. labels can translate remove(tag), duplicate and maximum(count); defaults follow direction, and the default maximum digits follow config.numerals.",
         "Draft focus is shown once on the rounded container, matching Input outline width/offset. Only while the outer ring is present is the inner draft outline/shadow suppressed. Remove actions retain separate native keyboard rings; invalid border and focus ring coexist."
       ],
