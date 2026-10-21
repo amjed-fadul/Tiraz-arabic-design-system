@@ -121,6 +121,7 @@ function Caption({
       </CardHeader>
       <CardContent>
         <SuggestedEdits
+          announcement="off"
           status={status}
           actions={actions.map((item) => ({
             id: item.id,
@@ -318,6 +319,7 @@ function Studio() {
   const main = (
     <div key="main" className="content-studio-main">
       <ImageGeneration
+        announcement="off"
         headingLevel={2}
         prompt={made.prompt ?? opening.prompt.en}
         options={options}
@@ -358,6 +360,7 @@ function Studio() {
             onChange={(event) => setPrompt(event.target.value)}
           />
           <TagInput
+            announcement="off"
             label={t("وسوم الأسلوب", "Style tags")}
             helper={t("اضغط Enter لإضافة وسم.", "Press Enter to add a tag.")}
             placeholder={t("أضف وسمًا…", "Add a tag…")}
@@ -366,6 +369,7 @@ function Studio() {
             onValueChange={setTags}
           />
           <ColorPicker
+            announcement="off"
             label={t("لون الحملة", "Campaign color")}
             value={color}
             onValueChange={setColor}

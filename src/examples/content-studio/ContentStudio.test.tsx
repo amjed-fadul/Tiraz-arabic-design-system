@@ -206,6 +206,9 @@ it("keeps Generate focused and inert while the new images weave", async () => {
 
 it("announces host transitions once and never speaks progress", async () => {
   const user = setup();
+  expect(
+    document.querySelectorAll('[role="status"], [aria-live="polite"]'),
+  ).toHaveLength(1);
   const live = document.querySelector(".content-studio > span[role='status']")!;
   expect(live).toBeEmptyDOMElement();
   await user.click(generate());
