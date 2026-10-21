@@ -59,14 +59,24 @@ export function calculateOrders(orders: readonly Order[], period: Period) {
   const filtered = orders.filter(
     (order) => order.date >= dates[0] && order.date <= sampleEnd,
   );
+  // Orders and revenue per channel, from the same orders as the totals.
   const channels: Record<Channel, number> = { web: 0, store: 0, partner: 0 };
-  for (const order of filtered) channels[order.channel] += 1;
+  const channelRevenue: Record<Channel, number> = {
+    web: 0,
+    store: 0,
+    partner: 0,
+  };
+  for (const order of filtered) {
+    channels[order.channel] += 1;
+    channelRevenue[order.channel] += order.amount;
+  }
   return {
     start: dates[0],
     end: sampleEnd,
     count: filtered.length,
     revenue: filtered.reduce((total, order) => total + order.amount, 0),
     channels,
+    channelRevenue,
     // Every date is known in this complete sample; dates without orders are zero.
     trend: dates.map((category) => ({
       category,

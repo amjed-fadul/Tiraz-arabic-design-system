@@ -52,15 +52,10 @@
   color: var(--text-secondary);
   font-weight: var(--weight-regular);
 }
-.dashboard-links {
-  display: flex;
-  gap: var(--space-6);
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-}
-.dashboard-links a:hover,
-.dashboard-footer a:hover {
-  color: var(--action);
+@media (hover: hover) and (pointer: fine) {
+  .dashboard-footer a:hover {
+    color: var(--action);
+  }
 }
 .dashboard-header-actions {
   display: flex;
@@ -81,7 +76,13 @@
   border-radius: var(--radius-pill);
   line-height: var(--leading-micro);
 }
+/* The main column is a size container: the grids below follow its width, not
+   the window's, so the page lays out the same inside the docs' iframe. Cards
+   keep one gap within a row and one between rows. */
 .dashboard-main {
+  container: dashboard-main / inline-size;
+  --dashboard-card-gap: var(--space-4);
+  --dashboard-row-gap: var(--space-4);
   max-inline-size: 1184px;
   margin-inline: auto;
   padding: var(--space-10) var(--space-8) var(--space-6);
@@ -117,11 +118,6 @@
   font-size: var(--text-heading);
   font-weight: var(--weight-semibold);
 }
-.dashboard-charts h3 {
-  font-size: var(--text-body);
-  font-weight: var(--weight-medium);
-  margin-block-end: var(--space-4);
-}
 .dashboard-eyebrow {
   font-size: var(--text-meta);
   color: var(--action);
@@ -140,28 +136,31 @@
   color: var(--text-secondary);
   font-size: var(--text-meta);
 }
-.dashboard-changes {
-  margin-block-start: var(--space-5);
-}
+
+/* One card language: the figures and the charts are the pattern cards' tray
+   and paper, so every card on the page shares their surface, ring, radius and
+   padding. */
 .dashboard-metrics {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-8);
-  padding-block: var(--space-8);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--dashboard-row-gap) var(--dashboard-card-gap);
+  padding-block: var(--space-6) var(--space-8);
 }
-.dashboard-metrics dt {
+.dashboard-metrics .tz-tray-header {
   color: var(--text-secondary);
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
 }
 .dashboard-metrics .dashboard-metric-value {
-  font-size: var(--text-title);
+  font-size: var(--text-figure);
   font-weight: var(--weight-semibold);
-  padding-block: var(--space-1);
+  line-height: var(--leading-figure);
   font-variant-numeric: tabular-nums;
 }
-.dashboard-metrics .dashboard-metric-note {
-  font-size: var(--text-meta);
-  color: var(--text-muted);
+.dashboard-metric-skeleton {
+  inline-size: 7rem;
+  block-size: calc(var(--text-figure) * var(--leading-figure));
 }
 .dashboard-section {
   border-block-start: 1px solid var(--border);
@@ -174,20 +173,59 @@
   inline-size: 128px;
   flex-shrink: 0;
 }
-.dashboard-charts {
+/* Rows span the column. The cards in a row share one height, and the paper
+   takes what the stretch adds, so no space pools under a footer. */
+.dashboard-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr);
-  gap: var(--space-8);
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--dashboard-card-gap);
+  align-items: stretch;
 }
-.dashboard-charts article {
+.dashboard-row + .dashboard-row {
+  margin-block-start: var(--dashboard-row-gap);
+}
+.dashboard :is(.tz-change-summary, .tz-data-answer) {
+  max-inline-size: none;
+}
+.dashboard-card,
+.dashboard-row > :is(.tz-change-summary, .tz-data-answer) {
+  display: flex;
+  flex-direction: column;
   min-inline-size: 0;
 }
-.dashboard-charts article + article {
-  border-inline-start: 1px solid var(--border);
-  padding-inline-start: var(--space-8);
+.dashboard-row
+  :is(.dashboard-card, .tz-change-summary, .tz-data-answer)
+  > .tz-tray,
+.dashboard-row .tz-tray-paper {
+  flex: 1;
 }
-.dashboard-ask {
-  margin-block-start: var(--space-8);
+.dashboard-card-title {
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.dashboard-card .tz-tray-paper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* A loading chart's skeleton fills the paper its row gives it. */
+.dashboard-card .dashboard-chart-skeleton {
+  flex: 1;
+  min-block-size: 6rem;
+}
+/* Stretched, What changed spaces its rows evenly down the paper, and an
+   answer's note (empty or failed) sits in the middle of it. */
+.dashboard-row .tz-change-summary-paper {
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-row .tz-change-summary-rows {
+  flex: 1;
+  grid-auto-rows: 1fr;
+}
+.dashboard-row .tz-data-answer-paper {
+  align-content: center;
 }
 .dashboard-loading {
   display: flex;
@@ -244,10 +282,12 @@
   align-items: center;
   gap: var(--space-2);
 }
+/* At the end, with or without the docs link beside it. */
 .dashboard-preview {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  margin-inline-start: auto;
 }
 .dashboard-preview .tz-select-trigger {
   inline-size: 140px;
@@ -256,88 +296,73 @@
   display: grid;
   gap: var(--space-5);
 }
-.dashboard-mobile-links {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+/* Side by side, the two cards of a row halve it, on the figures' middle
+   gutter. Their trays share rows, so the titles, the papers' tops and the
+   footers line up across the row; a chart's paper runs down to the end of
+   its neighbour's footer. The rows stack below 800px, where half the column
+   is too narrow for What changed's English pills to keep to one line. */
+@container dashboard-main (width >= 800px) {
+  .dashboard-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 0;
+  }
+  .dashboard-row-trend {
+    grid-template-rows: auto 1fr auto;
+  }
+  .dashboard-row-split {
+    grid-template-rows: auto 1fr auto auto;
+  }
+  .dashboard-row > :is(.dashboard-card, .tz-change-summary, .tz-data-answer),
+  .dashboard-row
+    > :is(.dashboard-card, .tz-change-summary, .tz-data-answer)
+    > .tz-tray {
+    display: grid;
+    grid-row: 1 / -1;
+    grid-template-rows: subgrid;
+  }
+  .dashboard-row .tz-tray-header {
+    align-self: start;
+  }
+  .dashboard-row .dashboard-card .tz-tray-paper {
+    grid-row: 2 / -1;
+  }
+  /* The error preview drops the charts; a pattern left alone takes the row. */
+  .dashboard-row > :only-child {
+    grid-column: 1 / -1;
+  }
 }
-.dashboard-mobile-links a {
-  padding: var(--space-3);
-  border-radius: var(--radius-small);
-}
-.dashboard-mobile-links a:hover {
-  background: var(--surface-hover);
-}
-@media (max-width: 900px) {
-  .dashboard-header {
-    gap: var(--space-6);
-    padding-inline: var(--space-5);
-  }
-  .dashboard-workspace {
-    display: none;
-  }
-  .dashboard-main {
-    padding-inline: var(--space-5);
-  }
-  .dashboard-charts {
-    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-    gap: var(--space-5);
-  }
-  .dashboard-charts article + article {
-    padding-inline-start: var(--space-5);
+/* Four figures need about 200px each for «AED 22,160» on paper. */
+@container dashboard-main (width < 880px) {
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
-@media (max-width: 600px) {
-  .dashboard-header {
-    padding-inline: var(--space-4);
-    gap: var(--space-3);
-  }
-  .dashboard-links {
-    display: none;
-  }
-  /* The icon and the count stay; the button's name says the rest. */
-  .dashboard-inbox-label,
-  .dashboard-inbox-word {
-    display: none;
-  }
-  .dashboard-inbox .tz-badge {
-    padding-inline: var(--space-1);
-  }
-  .dashboard-mobile-nav {
-    display: block;
-  }
-  .dashboard-main {
-    padding: var(--space-6) var(--space-4);
-  }
+@container dashboard-main (width < 480px) {
   .dashboard-heading {
     align-items: flex-start;
     flex-direction: column;
     gap: var(--space-4);
   }
   .dashboard-metrics {
-    gap: var(--space-4);
     grid-template-columns: minmax(0, 1fr);
-    padding-block: var(--space-6);
   }
-  .dashboard-metrics > div {
+  /* On a phone each figure's card is one line: the name and the note on the
+     tray, the figure on paper at the end. */
+  .dashboard-metrics .dashboard-metric {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 50%);
     align-items: center;
-    gap: 0 var(--space-2);
   }
-  .dashboard-metrics .dashboard-metric-value {
-    grid-area: 1 / 2 / 3 / 3;
-    font-size: var(--text-heading);
+  .dashboard-metric > .dashboard-metric-value {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    font-size: var(--text-figure-small);
   }
-  .dashboard-charts {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-6);
+  .dashboard-metric > dt {
+    padding-block-end: 0;
   }
-  .dashboard-charts article + article {
-    border-inline-start: 0;
-    border-block-start: 1px solid var(--border);
-    padding-inline-start: 0;
-    padding-block-start: var(--space-6);
+  .dashboard-metric > .dashboard-metric-note {
+    padding-block-start: 0;
   }
   .dashboard-section-heading {
     align-items: flex-start;
@@ -353,7 +378,9 @@
   }
 }
 
-/* Host layout: Sidebar at inline-start, full-page content remains independent. */
+/* The window decides the frame: the Sidebar at inline-start, the header's
+   spacing, and the phone navigation. Inside the docs' iframe the window is
+   the iframe. */
 .dashboard {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -399,14 +426,15 @@
   block-size: 100%;
 }
 @media (max-width: 900px) {
-  .dashboard-charts {
-    grid-template-columns: minmax(0, 1fr);
+  .dashboard-header {
+    gap: var(--space-6);
+    padding-inline: var(--space-5);
   }
-  .dashboard-charts article + article {
-    border-inline-start: 0;
-    border-block-start: 1px solid var(--border);
-    padding-inline-start: 0;
-    padding-block-start: var(--space-5);
+  .dashboard-workspace {
+    display: none;
+  }
+  .dashboard-main {
+    padding-inline: var(--space-5);
   }
 }
 @media (max-width: 600px) {
@@ -416,7 +444,25 @@
   .dashboard-sidebar {
     display: none;
   }
+  .dashboard-header {
+    padding-inline: var(--space-4);
+    gap: var(--space-3);
+  }
   .dashboard-header > .dashboard-brand {
     display: flex;
+  }
+  /* The icon and the count stay; the button's name says the rest. */
+  .dashboard-inbox-label,
+  .dashboard-inbox-word {
+    display: none;
+  }
+  .dashboard-inbox .tz-badge {
+    padding-inline: var(--space-1);
+  }
+  .dashboard-mobile-nav {
+    display: block;
+  }
+  .dashboard-main {
+    padding: var(--space-6) var(--space-4);
   }
 }
