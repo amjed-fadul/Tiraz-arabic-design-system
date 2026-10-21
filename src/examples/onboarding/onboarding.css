@@ -1,1 +1,174 @@
 /* Onboarding and verification (example-screens spec §3.4). Every rule names .onboarding. */
+
+/* A centred 40rem column: the header, the stepper and the card all span it. */
+.onboarding {
+  max-inline-size: 40rem;
+  min-inline-size: 0;
+  margin-inline: auto;
+}
+.onboarding .tz-steps {
+  margin-block-end: var(--space-6);
+}
+
+/* A step is one card: its heading and line, the fields on paper, and the
+   footer on the tray. Programmatic focus lands on the heading, which shows a
+   ring only for the keyboard. */
+.onboarding-title {
+  justify-self: start;
+}
+.onboarding-title:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-small);
+}
+.onboarding-fields {
+  display: grid;
+  gap: var(--space-5);
+  min-inline-size: 0;
+}
+/* The registration number keeps its left-to-right digits, but in an Arabic
+   page it sits at the field's start, under its label, like the name above. */
+.onboarding:dir(rtl) .tz-input[dir="ltr"] {
+  text-align: end;
+}
+
+/* The review: what was entered, then the one question the documents leave open. */
+.onboarding-review {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+.onboarding-review > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 9rem) minmax(0, 1fr);
+  gap: var(--space-3);
+}
+.onboarding-review dt {
+  color: var(--text-secondary);
+}
+.onboarding-review dd {
+  margin: 0;
+  min-inline-size: 0;
+}
+.onboarding-files {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.onboarding-questions {
+  padding-block-start: var(--space-4);
+  border-block-start: 0.5px solid var(--hairline);
+}
+/* One question has no previous or next. «متابعة» in the footer sends the
+   answer through this form, so the pattern's own buttons would only repeat it;
+   Enter still submits the form. The receipt keeps its «تعديل الإجابات». */
+.onboarding
+  .tz-ask-questions:not(:has(.tz-question-receipt))
+  .tz-decision-actions {
+  display: none;
+}
+.onboarding-note {
+  margin: 0;
+  padding-block-start: var(--space-4);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-secondary);
+}
+
+/* The footer keeps «تخطَّ الآن» at the start, and «السابق» and «متابعة» at the
+   end, on one row at every width. */
+.onboarding .tz-card-footer {
+  flex-wrap: nowrap;
+}
+.onboarding-skip {
+  margin-inline-end: auto;
+  border-radius: var(--radius-small);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: var(--underline-offset);
+  white-space: nowrap;
+}
+.onboarding-skip:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .onboarding-skip:hover {
+    color: var(--text);
+    text-decoration-color: currentColor;
+  }
+}
+
+/* The finished state: the stepper above is all checks, and the card says so. */
+.onboarding .onboarding-done {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+  text-align: center;
+}
+.onboarding-done-mark {
+  display: grid;
+  place-items: center;
+  inline-size: 3rem;
+  block-size: 3rem;
+  border-radius: 50%;
+  background: var(--success-soft);
+  color: var(--success);
+}
+.onboarding .onboarding-done .onboarding-title {
+  justify-self: center;
+}
+.onboarding .onboarding-done .tz-card-description {
+  max-inline-size: 28rem;
+}
+
+/* Phones: the stepper is one row of marks, and only the current step keeps its
+   label, which the system's own narrow layout would stack in a column. */
+@container screen (width < 640px) {
+  .onboarding .tz-step {
+    flex: 1 1 0;
+  }
+  .onboarding .tz-step[data-current] {
+    flex-grow: 2;
+  }
+  .onboarding .tz-step-body {
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-block-end: 0;
+  }
+  .onboarding .tz-step:not(:last-child)::after {
+    inset-block-start: calc(var(--sequence-indicator) / 2);
+    inset-block-end: auto;
+    inset-inline-start: calc(var(--sequence-indicator) + var(--space-2));
+    inset-inline-end: var(--space-2);
+    border-block-start: 0.5px solid var(--hairline);
+    border-inline-start: 0;
+  }
+  .onboarding .tz-step:not([data-current]) .tz-step-label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .onboarding-review > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}
+
+/* The stepper runs edge to edge: the last step has no connector after it, so it
+   takes only what its mark and label need, and the steps before it share the
+   rest. */
+.onboarding .tz-step:last-child {
+  flex: 0 0 auto;
+}
+.onboarding .tz-step:last-child .tz-step-body {
+  padding-inline-end: 0;
+}
