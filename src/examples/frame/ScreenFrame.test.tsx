@@ -59,6 +59,11 @@ it("opens in Arabic and switches everything to English", async () => {
 });
 
 it("opens the screens menu from the start edge and returns focus", async () => {
+  const media = window.matchMedia;
+  const mobile = vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+    ...media(query),
+    matches: query === "(max-width: 767px)",
+  }));
   const user = userEvent.setup();
   render(
     <ScreenFrame slug="onboarding">
@@ -75,6 +80,7 @@ it("opens the screens menu from the start edge and returns focus", async () => {
   await user.keyboard("{Escape}");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(trigger).toHaveFocus();
+  mobile.mockRestore();
 });
 
 it("hands a screen link to the docs when embedded", () => {
@@ -100,4 +106,69 @@ it("hands a screen link to the docs when embedded", () => {
   } finally {
     post.mockRestore();
   }
+});
+
+it.each([
+  ["ar", "إخفاء القائمة الجانبية", "إظهار القائمة الجانبية"],
+  ["en", "Hide navigation", "Show navigation"],
+])(
+  "hides the whole navigation accessibly without remounting %s content",
+  async (language, hide, show) => {
+    window.history.replaceState(
+      null,
+      "",
+      `/examples/invoices?lang=${language}`,
+    );
+    const user = userEvent.setup();
+    render(
+      <ScreenFrame slug="invoices">
+        <ScreenHeader />
+        <input aria-label="Draft" defaultValue="" />
+      </ScreenFrame>,
+    );
+    const draft = screen.getByRole("textbox", { name: "Draft" });
+    await user.type(draft, "Keep this draft");
+    const trigger = screen.getByRole("button", { name: hide });
+    const panel = document.getElementById(
+      trigger.getAttribute("aria-controls")!,
+    );
+    await user.click(trigger);
+    expect(trigger).toHaveFocus();
+    expect(trigger).toHaveAccessibleName(show);
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(panel).toHaveAttribute("inert");
+    expect(panel).toHaveAttribute("aria-hidden", "true");
+    expect(
+      screen.queryByRole("navigation", { name: /الشاشات|Screens/ }),
+    ).toBeNull();
+    expect(screen.getByRole("textbox", { name: "Draft" })).toBe(draft);
+    expect(draft).toHaveValue("Keep this draft");
+    await user.click(trigger);
+    expect(trigger).toHaveFocus();
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(panel).not.toHaveAttribute("inert");
+    expect(panel).not.toHaveAttribute("aria-hidden");
+    expect(sidebar().getAllByRole("link")).toHaveLength(11);
+  },
+);
+
+it("Escape in navigation hides it and restores focus without capturing content Escape", async () => {
+  const user = userEvent.setup();
+  render(
+    <ScreenFrame slug="invoices">
+      <ScreenHeader />
+      <input aria-label="Draft" />
+    </ScreenFrame>,
+  );
+  const trigger = screen.getByRole("button", {
+    name: "إخفاء القائمة الجانبية",
+  });
+  await user.click(screen.getByRole("textbox", { name: "Draft" }));
+  await user.keyboard("{Escape}");
+  expect(trigger).toHaveAttribute("aria-expanded", "true");
+  sidebar().getByRole("link", { name: "الفواتير والتحصيل" }).focus();
+  await user.keyboard("{Escape}");
+  expect(trigger).toHaveFocus();
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+  expect(screen.queryByRole("navigation", { name: "الشاشات" })).toBeNull();
 });

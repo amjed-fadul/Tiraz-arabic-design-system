@@ -1,17 +1,24 @@
 /* The screen frame (example-screens spec §2.2): a Sidebar at the inline
    start, the bar, then main, which is the size container `screen`. Every rule
    names .screen; screens-css.test.ts audits this file. */
+.screen-host {
+  --screen-navigation-width: 300px;
+}
 .screen-host .tiraz-system {
   min-block-size: 100dvh;
 }
 .screen {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: auto 1fr;
+  grid-template-columns: var(--screen-navigation-width) minmax(0, 1fr);
   align-items: start;
   min-block-size: 100dvh;
-  background: var(--surface);
+  background: var(--surface-tray);
   color: var(--text);
+  transition: grid-template-columns var(--motion-collapse) var(--ease-out);
+}
+.screen[data-navigation-hidden="true"] {
+  grid-template-columns: 0 minmax(0, 1fr);
+  transition-duration: var(--motion-collapse-exit);
 }
 .screen-skip {
   position: fixed;
@@ -26,23 +33,120 @@
 .screen-skip:focus {
   inset-block-start: var(--space-3);
 }
-.screen-sidebar {
-  grid-column: 1;
-  grid-row: 1 / 3;
+.screen-navigation {
   position: sticky;
   inset-block-start: 0;
   block-size: 100dvh;
+  min-inline-size: 0;
+  overflow: hidden;
 }
-/* 1rem wider than the Sidebar's default, so every screen's name fits in
-   English too ("Onboarding and verification"). Main's 24px inline padding
-   gives that rem back: main is 992px wide in a 1,280px window and 736px in a
-   1,024px one, as with the default Sidebar and 32px. */
+.screen[data-mobile-navigation="true"] .screen-navigation {
+  display: none;
+}
 .screen-sidebar[data-collapsed="false"] {
-  inline-size: 15rem;
+  inline-size: var(--screen-navigation-width);
+  block-size: 100%;
+  opacity: 1;
+  transition: opacity var(--motion-collapse) var(--ease-out);
+}
+.screen[data-navigation-hidden="true"] .screen-sidebar {
+  opacity: 0;
+  transition-duration: var(--motion-fast);
+}
+.screen-sidebar,
+.screen-menu-sidebar {
+  background: transparent;
+  font-size: var(--text-reading);
+  font-weight: var(--weight-regular);
 }
 .screen-menu-sidebar {
   inline-size: 100%;
-  block-size: 100%;
+  min-block-size: 100%;
+}
+.screen-sidebar .tz-sidebar-header,
+.screen-menu-sidebar .tz-sidebar-header {
+  padding: var(--space-6);
+}
+.screen-sidebar .tz-sidebar-header .screen-sidebar-copy,
+.screen-menu-sidebar .tz-sidebar-header .screen-sidebar-copy {
+  font-size: var(--text-heading);
+}
+.screen-sidebar .tz-sidebar-content,
+.screen-menu-sidebar .tz-sidebar-content {
+  padding: 0 var(--space-4) var(--space-4);
+  scrollbar-gutter: stable;
+}
+.screen-navigation-heading {
+  display: block;
+  margin-block-end: var(--space-3);
+  padding-inline: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+}
+.screen-sidebar .tz-sidebar-group,
+.screen-menu-sidebar .tz-sidebar-group {
+  border-inline-start: 1px solid var(--border);
+  padding-inline-start: var(--space-3);
+  margin-inline-start: var(--space-2);
+}
+.screen-sidebar .tz-sidebar-item,
+.screen-menu-sidebar .tz-sidebar-item {
+  position: relative;
+  gap: var(--space-3);
+  min-block-size: calc(var(--space-6) * 2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-secondary);
+  font-weight: var(--weight-regular);
+  box-shadow: none;
+  border-radius: var(--radius-control);
+}
+.screen-sidebar .tz-sidebar-item > .tz-sidebar-label,
+.screen-menu-sidebar .tz-sidebar-item > .tz-sidebar-label {
+  white-space: normal;
+  overflow: visible;
+}
+.screen-sidebar .tz-sidebar-item[data-active="true"],
+.screen-menu-sidebar .tz-sidebar-item[data-active="true"] {
+  background: var(--wash);
+  color: var(--text);
+}
+.screen-sidebar .tz-sidebar-group .tz-sidebar-item[data-active="true"]::before,
+.screen-menu-sidebar
+  .tz-sidebar-group
+  .tz-sidebar-item[data-active="true"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(-1 * var(--space-3) - 2px);
+  inset-block: var(--space-3);
+  inline-size: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--text);
+}
+.screen-sidebar .tz-sidebar-item:not(:disabled):active,
+.screen-menu-sidebar .tz-sidebar-item:not(:disabled):active {
+  transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .screen-sidebar .tz-sidebar-item:hover,
+  .screen-menu-sidebar .tz-sidebar-item:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}
+.screen-sidebar .tz-sidebar-footer,
+.screen-menu-sidebar .tz-sidebar-footer {
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+}
+.screen-sidebar .tz-sidebar-footer > .tz-sidebar-item,
+.screen-menu-sidebar .tz-sidebar-footer > .tz-sidebar-item {
+  padding-inline: 0;
+  font-size: var(--text-label);
+}
+.screen-sidebar .tz-sidebar-identity,
+.screen-menu-sidebar .tz-sidebar-identity {
+  gap: var(--space-3);
 }
 .screen-mark {
   color: var(--action);
@@ -51,7 +155,7 @@
 }
 .screen-sidebar .screen-mark,
 .screen-menu-sidebar .screen-mark {
-  inline-size: 24px;
+  inline-size: var(--space-6);
   text-align: center;
 }
 .screen-sidebar-copy {
@@ -59,26 +163,30 @@
   flex-direction: column;
 }
 .screen-sidebar-copy > span {
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
 }
 .screen-sidebar-copy > small {
   color: var(--text-secondary);
   font-size: var(--text-meta);
 }
-/* The bar: on phones, the menu and the brand at its start; the language and
-   theme buttons at its end. */
+.screen-workspace {
+  min-inline-size: 0;
+  min-block-size: calc(100dvh - var(--space-4));
+  margin: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-tray);
+  background: var(--surface);
+}
 .screen-bar {
-  grid-column: 2;
-  grid-row: 1;
   display: flex;
   align-items: center;
   gap: var(--space-3);
   min-inline-size: 0;
-  padding: var(--space-3) var(--space-6);
-  border-block-end: 1px solid var(--border);
+  padding: var(--space-3) var(--space-5);
 }
-.screen-bar-start {
-  display: none;
+.screen-navigation-control {
+  display: flex;
+  flex-shrink: 0;
   align-items: center;
   gap: var(--space-2);
   min-inline-size: 0;
@@ -90,26 +198,39 @@
   margin-inline-start: auto;
 }
 .screen-brand {
-  display: flex;
+  display: none;
   align-items: center;
   gap: var(--space-2);
   font-size: var(--text-heading);
-  font-weight: var(--weight-semibold);
+  font-weight: var(--weight-medium);
   white-space: nowrap;
 }
 .screen-main {
-  grid-column: 2;
-  grid-row: 2;
   container: screen / inline-size;
   inline-size: 100%;
   max-inline-size: 1184px;
   min-inline-size: 0;
   margin-inline: auto;
-  padding: var(--space-8) var(--space-6) var(--space-10);
+  padding: var(--space-6) var(--space-6) var(--space-10);
 }
 /* The skip link lands here; the whole page needs no ring. */
 .screen-main:focus {
   outline: none;
+}
+/* The drawer keeps its own scroll area and the same spacious navigation. */
+.screen-host .tz-sheet:has(.screen-menu-sidebar) {
+  inline-size: min(var(--screen-navigation-width), calc(100% - var(--space-4)));
+  background: var(--surface-tray);
+}
+.screen-host .tz-sheet:has(.screen-menu-sidebar) .tz-sheet-body {
+  padding: 0;
+}
+.screen-menu-sidebar .tz-sidebar-header,
+.screen-menu-sidebar .screen-navigation-heading {
+  display: none;
+}
+.screen-menu-sidebar .tz-sidebar-content {
+  padding-block-start: var(--space-4);
 }
 /* ScreenHeader: the h1 and its description, with the actions at the inline
    end, which wrap under the title below 640px. */
@@ -156,38 +277,38 @@
     padding-inline: var(--space-5);
   }
 }
-/* Embedded in the docs, the bar has nothing to hold until phones need the
-   menu, so it leaves. */
-@media (width > 640px) {
-  .screen[data-embed] > .screen-bar {
-    display: none;
-  }
-}
-/* Phones: the Sidebar hides, and the bar shows the menu and the brand. */
-@media (max-width: 640px) {
+/* The desktop panel fully leaves; narrow screens use a modal drawer. */
+@media (max-width: 767px) {
   .screen {
     display: block;
+    padding: var(--space-1);
   }
-  .screen-sidebar {
-    display: none;
+  .screen-workspace {
+    margin: 0;
+    min-block-size: calc(100dvh - var(--space-2));
+    border-radius: var(--radius-panel);
   }
   .screen-bar {
-    padding-inline: var(--space-4);
+    gap: var(--space-1);
+    flex-wrap: wrap;
+    padding-inline: var(--space-3);
   }
-  .screen-bar-start {
+  .screen-brand {
     display: flex;
   }
   .screen-main {
-    padding: var(--space-6) var(--space-4) var(--space-8);
+    padding: var(--space-5) var(--space-4) var(--space-8);
+  }
+}
+@media (max-width: 380px) {
+  .screen-brand {
+    display: none;
   }
 }
 
 /* Demo controls stay available in the docs stage as well as standalone. */
 .screen-demo-host {
   display: contents;
-}
-.screen[data-embed] > .screen-bar {
-  display: flex;
 }
 .screen-demo-controls {
   display: flex;

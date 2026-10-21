@@ -148,6 +148,11 @@ it("keeps created customers and order data through shared language and theme cha
 });
 
 it("opens the shared screens menu and restores its trigger focus", async () => {
+  const media = window.matchMedia;
+  const mobile = vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+    ...media(query),
+    matches: query === "(max-width: 767px)",
+  }));
   const user = await setup();
   const trigger = screen.getByRole("button", { name: "Open navigation" });
   await user.click(trigger);
@@ -161,9 +166,10 @@ it("opens the shared screens menu and restores its trigger focus", async () => {
   await user.keyboard("{Escape}");
   await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   expect(trigger).toHaveFocus();
+  mobile.mockRestore();
 });
 
-it("uses the shared screen navigation and retains connected data through collapse", async () => {
+it("uses the shared screen navigation and retains connected data when the navigation is hidden", async () => {
   const user = await setup();
   const navigation = within(
     screen.getByRole("navigation", { name: "Screens" }),
@@ -176,9 +182,9 @@ it("uses the shared screen navigation and retains connected data through collaps
     navigation.getByRole("link", { name: "Sales pipeline" }),
   ).toHaveAttribute("href", "/examples/sales-pipeline?lang=en");
   await user.type(screen.getByRole("searchbox"), "madar");
-  await user.click(screen.getByRole("button", { name: "Collapse navigation" }));
+  await user.click(screen.getByRole("button", { name: "Hide navigation" }));
   expect(
-    screen.getByRole("button", { name: "Expand navigation" }),
+    screen.getByRole("button", { name: "Show navigation" }),
   ).toBeInTheDocument();
   expect(customerTable()).toHaveTextContent("شركة مدار");
   expect(screen.getByRole("searchbox")).toHaveValue("madar");

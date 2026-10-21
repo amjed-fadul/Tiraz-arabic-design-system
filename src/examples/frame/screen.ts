@@ -1,19 +1,17 @@
 import { createContext, useContext } from "react";
 import type { Context } from "react";
-import {
-  BadgeCheck,
-  Bot,
-  CalendarCheck,
-  FileSignature,
-  LayoutDashboard,
-  LifeBuoy,
-  Palette,
-  ReceiptText,
-  Settings,
-  SquareKanban,
-  UserRound,
-} from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { SquaresFourIcon } from "@phosphor-icons/react/dist/csr/SquaresFour";
+import { CalendarCheckIcon } from "@phosphor-icons/react/dist/csr/CalendarCheck";
+import { ReceiptIcon } from "@phosphor-icons/react/dist/csr/Receipt";
+import { AddressBookIcon } from "@phosphor-icons/react/dist/csr/AddressBook";
+import { KanbanIcon } from "@phosphor-icons/react/dist/csr/Kanban";
+import { SealCheckIcon } from "@phosphor-icons/react/dist/csr/SealCheck";
+import { LifebuoyIcon } from "@phosphor-icons/react/dist/csr/Lifebuoy";
+import { FileTextIcon } from "@phosphor-icons/react/dist/csr/FileText";
+import { PaletteIcon } from "@phosphor-icons/react/dist/csr/Palette";
+import { RobotIcon } from "@phosphor-icons/react/dist/csr/Robot";
+import { GearSixIcon } from "@phosphor-icons/react/dist/csr/GearSix";
+import type { Icon } from "@phosphor-icons/react";
 
 /**
  * The example screens, the Dashboard first: one place for each screen's slug,
@@ -28,7 +26,7 @@ export const screens = [
       "الطلبات والعملاء وصندوق القرارات في لوحة واحدة.",
       "Orders, customers and the decision inbox on one page.",
     ],
-    icon: LayoutDashboard,
+    icon: SquaresFourIcon,
   },
   {
     slug: "month-end-close",
@@ -37,7 +35,7 @@ export const screens = [
       "تابع إقفال وكيل المالية لشهر أكتوبر، وتدخّل حيث ينتظر ليلى.",
       "Follow the Finance agent's October close, and step in where it waits on Laila.",
     ],
-    icon: CalendarCheck,
+    icon: CalendarCheckIcon,
   },
   {
     slug: "invoices",
@@ -46,7 +44,7 @@ export const screens = [
       "اعثر على الفواتير المتأخرة، وأرسل التذكيرات بعد مراجعتها، فاتورةً تلو الأخرى.",
       "Find late invoices, and send reviewed reminders one invoice at a time.",
     ],
-    icon: ReceiptText,
+    icon: ReceiptIcon,
   },
   {
     slug: "customer-profile",
@@ -55,7 +53,7 @@ export const screens = [
       "شركة مدار في لمحة، وسؤال عنها مع إرفاق العميل.",
       "Madar Company at a glance, and a question about it with the customer attached.",
     ],
-    icon: UserRound,
+    icon: AddressBookIcon,
   },
   {
     slug: "sales-pipeline",
@@ -64,7 +62,7 @@ export const screens = [
       "صفقات أكتوبر حسب المرحلة: انقل صفقة إلى مرحلتها التالية من لوحة المفاتيح، ثم تابِعها.",
       "October's deals by stage: move one on from the keyboard, and follow up.",
     ],
-    icon: SquareKanban,
+    icon: KanbanIcon,
   },
   {
     slug: "onboarding",
@@ -73,7 +71,7 @@ export const screens = [
       "سجّل منشأتك ووثّقها في أربع خطوات قصيرة.",
       "Register a company and verify it in four short steps.",
     ],
-    icon: BadgeCheck,
+    icon: SealCheckIcon,
   },
   {
     slug: "help-center",
@@ -82,7 +80,7 @@ export const screens = [
       "اطرح سؤالًا واحدًا، ثم احصل على إجابة موثّقة أو تحدّث إلى شخص.",
       "Ask one question, then get a sourced answer or reach a person.",
     ],
-    icon: LifeBuoy,
+    icon: LifebuoyIcon,
   },
   {
     slug: "contract-review",
@@ -91,7 +89,7 @@ export const screens = [
       "راجع تعديلات المساعد على شروط الدفع، ثم أرسل العقد المعدّل، لا قبل ذلك.",
       "Review the assistant's edits to the payment terms, then send the revised contract, never before.",
     ],
-    icon: FileSignature,
+    icon: FileTextIcon,
   },
   {
     slug: "content-studio",
@@ -100,7 +98,7 @@ export const screens = [
       "صمّم صورة حملة تذكيرات الدفع من موجز، واختر نسخة منها، ثم حسّن نصّها المرافق.",
       "Make the payment-reminder campaign's visual from a brief, pick a version, and polish its caption.",
     ],
-    icon: Palette,
+    icon: PaletteIcon,
   },
   {
     slug: "agent-control-room",
@@ -109,7 +107,7 @@ export const screens = [
       "كل الوكلاء معًا: ما ينتظر ليلى، وما يعمل، وما فشل.",
       "Every agent at once: what waits on Laila, what runs, and what failed.",
     ],
-    icon: Bot,
+    icon: RobotIcon,
   },
   {
     slug: "team-settings",
@@ -118,13 +116,13 @@ export const screens = [
       "من في فريق المالية، وما يمكن للمساعد فعله دون أن يسأل.",
       "Who is on the finance team, and what the assistant may do without asking.",
     ],
-    icon: Settings,
+    icon: GearSixIcon,
   },
 ] as const satisfies readonly {
   slug: string;
   name: readonly [string, string];
   description: readonly [string, string];
-  icon: LucideIcon;
+  icon: Icon;
 }[];
 export type ScreenSlug = (typeof screens)[number]["slug"];
 /** A screen's standalone route. */

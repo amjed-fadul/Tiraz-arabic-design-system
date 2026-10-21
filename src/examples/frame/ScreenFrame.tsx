@@ -1,6 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { BookOpen, Menu, Moon, Sun } from "lucide-react";
+import { BookOpenIcon } from "@phosphor-icons/react/dist/csr/BookOpen";
+import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
+import { SunIcon } from "@phosphor-icons/react/dist/csr/Sun";
+import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/csr/SidebarSimple";
 import {
   Avatar,
   Button,
@@ -13,7 +16,6 @@ import {
   SidebarIdentity,
   SidebarItem,
   SidebarLabel,
-  SidebarToggle,
   SystemProvider,
   ToastProvider,
   defaultConfig,
@@ -80,8 +82,14 @@ export function ScreenFrame({
     () => ({ ...defaultConfig, direction, theme }),
     [direction, theme],
   );
-  const [collapsed, setCollapsed] = useState(false);
+  const [navigationHidden, setNavigationHidden] = useState(false);
+  const navigationId = useId();
+  const navigationToggle = useRef<HTMLDivElement>(null);
+  const navigationPanel = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileNavigation, setMobileNavigation] = useState(
+    () => window.matchMedia("(max-width: 767px)").matches,
+  );
   const [size, setSize] = useState<Screen["size"]>("wide");
   const host = useRef<HTMLDivElement>(null);
   const main = useRef<HTMLElement>(null);
@@ -108,6 +116,18 @@ export function ScreenFrame({
     observer.observe(element);
     return () => observer.disconnect();
   }, []);
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 767px)");
+    const onChange = () => {
+      setMobileNavigation(mobile.matches);
+      if (!mobile.matches) setMenuOpen(false);
+      // Move focus before React removes the desktop list from the layout.
+      else if (navigationPanel.current?.contains(document.activeElement))
+        navigationToggle.current?.querySelector("button")?.focus();
+    };
+    mobile.addEventListener("change", onChange);
+    return () => mobile.removeEventListener("change", onChange);
+  }, []);
   // Embedded, a plain click on a link to a screen opens that screen's page in
   // the docs instead. The link keeps its standalone href, so a middle or
   // modified click still opens the screen on its own.
@@ -131,6 +151,7 @@ export function ScreenFrame({
       const target = link ? screenOf(link) : undefined;
       if (!target) return;
       event.preventDefault();
+      setMenuOpen(false);
       openInDocs(target);
     };
     element.addEventListener("click", onClick, true);
@@ -174,14 +195,13 @@ export function ScreenFrame({
     };
   }, [slug, language, theme, config, embedded, size]);
   const { t } = screen;
-  // The Sidebar on wide screens, and the same list in the phone menu, which
-  // has no collapse toggle.
+  // Keep the list at its full width while the desktop shell folds away.
+  // The phone drawer shares the same destinations and active-page marker.
   const navigation = (menu: boolean) => (
     <Sidebar
       className={menu ? "screen-menu-sidebar" : "screen-sidebar"}
       aria-label={t("أمثلة طِراز", "Tiraz examples")}
-      collapsed={menu ? false : collapsed}
-      onCollapsedChange={setCollapsed}
+      collapsed={false}
     >
       <SidebarHeader>
         <SidebarIdentity>
@@ -190,24 +210,20 @@ export function ScreenFrame({
           </span>
           <SidebarLabel className="screen-sidebar-copy">
             <span>{t("طِراز", "Tiraz")}</span>
-            {!menu && <small>{t("أمثلة الشاشات", "Screen examples")}</small>}
           </SidebarLabel>
         </SidebarIdentity>
-        {!menu && (
-          <SidebarToggle
-            collapseLabel={t("طيّ القائمة الجانبية", "Collapse navigation")}
-            expandLabel={t("توسيع القائمة الجانبية", "Expand navigation")}
-          />
-        )}
       </SidebarHeader>
       <SidebarContent aria-label={t("الشاشات", "Screens")}>
+        <span className="screen-navigation-heading">
+          {t("الشاشات", "Screens")}
+        </span>
         <SidebarGroup>
           {screens.map((item) => (
             <SidebarItem
               key={item.slug}
               href={screen.href(item.slug)}
               label={t(item.name[0], item.name[1])}
-              icon={<item.icon size={18} />}
+              icon={<item.icon size={22} weight="duotone" />}
               active={item.slug === slug}
             />
           ))}
@@ -225,7 +241,7 @@ export function ScreenFrame({
           <SidebarItem
             href="/"
             label={t("توثيق طِراز", "Tiraz documentation")}
-            icon={<BookOpen size={18} />}
+            icon={<BookOpenIcon size={22} weight="regular" />}
           />
         )}
       </SidebarFooter>
@@ -240,81 +256,142 @@ export function ScreenFrame({
         >
           <ScreenContext.Provider value={screen}>
             <ScreenDemoProvider>
-              <div className="screen" data-embed={embedded || undefined}>
+              <div
+                className="screen"
+                data-embed={embedded || undefined}
+                data-navigation-hidden={navigationHidden}
+                data-mobile-navigation={mobileNavigation}
+              >
                 <a className="screen-skip" href="#screen-main">
                   {t("انتقل إلى المحتوى", "Skip to content")}
                 </a>
-                {navigation(false)}
-                <header className="screen-bar">
-                  {/* Phones only: the Sidebar hides, and its list opens here. */}
-                  <div className="screen-bar-start">
-                    <Sheet
-                      open={menuOpen}
-                      onOpenChange={setMenuOpen}
-                      title={t("الشاشات", "Screens")}
-                      description={t(
-                        "انتقل إلى شاشة أخرى.",
-                        "Go to another screen.",
-                      )}
-                      closeLabel={t("إغلاق القائمة", "Close navigation")}
-                      trigger={
+                <div
+                  id={navigationId}
+                  ref={navigationPanel}
+                  className="screen-navigation"
+                  inert={navigationHidden}
+                  aria-hidden={navigationHidden || undefined}
+                  onKeyDown={(event) => {
+                    if (event.key !== "Escape" || event.defaultPrevented)
+                      return;
+                    event.preventDefault();
+                    navigationToggle.current?.querySelector("button")?.focus();
+                    setNavigationHidden(true);
+                  }}
+                >
+                  {navigation(false)}
+                </div>
+                <div className="screen-workspace">
+                  <header className="screen-bar">
+                    <div
+                      className="screen-navigation-control"
+                      ref={navigationToggle}
+                    >
+                      <Sheet
+                        open={menuOpen}
+                        onOpenChange={(open) => {
+                          if (mobileNavigation) setMenuOpen(open);
+                          else setNavigationHidden((hidden) => !hidden);
+                        }}
+                        title={t("الشاشات", "Screens")}
+                        description={t(
+                          "انتقل إلى شاشة أخرى.",
+                          "Go to another screen.",
+                        )}
+                        closeLabel={t("إغلاق القائمة", "Close navigation")}
+                        trigger={
+                          <Button
+                            variant="ghost"
+                            iconOnly
+                            aria-label={
+                              mobileNavigation
+                                ? t("فتح القائمة", "Open navigation")
+                                : navigationHidden
+                                  ? t(
+                                      "إظهار القائمة الجانبية",
+                                      "Show navigation",
+                                    )
+                                  : t(
+                                      "إخفاء القائمة الجانبية",
+                                      "Hide navigation",
+                                    )
+                            }
+                            aria-haspopup={
+                              mobileNavigation ? "dialog" : undefined
+                            }
+                            {...(!mobileNavigation
+                              ? {
+                                  "aria-expanded": !navigationHidden,
+                                  "aria-controls": navigationId,
+                                }
+                              : {})}
+                          >
+                            <SidebarSimpleIcon
+                              size={22}
+                              weight="regular"
+                              className="tz-mirror-rtl"
+                              aria-hidden="true"
+                            />
+                          </Button>
+                        }
+                      >
+                        {navigation(true)}
+                      </Sheet>
+                      <span className="screen-brand">
+                        <span className="screen-mark" aria-hidden="true">
+                          ✳
+                        </span>
+                        {t("طِراز", "Tiraz")}
+                      </span>
+                    </div>
+                    <ScreenDemoControls />
+                    {!embedded && (
+                      <div className="screen-bar-end">
+                        <Button
+                          variant="ghost"
+                          onClick={() =>
+                            setLanguage(language === "ar" ? "en" : "ar")
+                          }
+                        >
+                          <bdi lang={language === "ar" ? "en" : "ar"}>
+                            {language === "ar" ? "English" : "العربية"}
+                          </bdi>
+                        </Button>
                         <Button
                           variant="ghost"
                           iconOnly
-                          aria-label={t("فتح القائمة", "Open navigation")}
+                          aria-label={t("الوضع الداكن", "Dark mode")}
+                          aria-pressed={theme === "dark"}
+                          onClick={() =>
+                            setTheme(theme === "light" ? "dark" : "light")
+                          }
                         >
-                          <Menu size={18} aria-hidden="true" />
+                          {theme === "light" ? (
+                            <MoonIcon
+                              size={20}
+                              weight="regular"
+                              aria-hidden="true"
+                            />
+                          ) : (
+                            <SunIcon
+                              size={20}
+                              weight="regular"
+                              aria-hidden="true"
+                            />
+                          )}
                         </Button>
-                      }
-                    >
-                      {navigation(true)}
-                    </Sheet>
-                    <span className="screen-brand">
-                      <span className="screen-mark" aria-hidden="true">
-                        ✳
-                      </span>
-                      {t("طِراز", "Tiraz")}
-                    </span>
-                  </div>
-                  <ScreenDemoControls />
-                  {!embedded && (
-                    <div className="screen-bar-end">
-                      <Button
-                        variant="ghost"
-                        onClick={() =>
-                          setLanguage(language === "ar" ? "en" : "ar")
-                        }
-                      >
-                        <bdi lang={language === "ar" ? "en" : "ar"}>
-                          {language === "ar" ? "English" : "العربية"}
-                        </bdi>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        iconOnly
-                        aria-label={t("الوضع الداكن", "Dark mode")}
-                        aria-pressed={theme === "dark"}
-                        onClick={() =>
-                          setTheme(theme === "light" ? "dark" : "light")
-                        }
-                      >
-                        {theme === "light" ? (
-                          <Moon size={17} aria-hidden="true" />
-                        ) : (
-                          <Sun size={17} aria-hidden="true" />
-                        )}
-                      </Button>
-                    </div>
-                  )}
-                </header>
-                <main
-                  ref={main}
-                  id="screen-main"
-                  tabIndex={-1}
-                  className="screen-main"
-                >
-                  {children}
-                </main>
+                      </div>
+                    )}
+                  </header>
+                  <main
+                    ref={main}
+                    id="screen-main"
+                    tabIndex={-1}
+                    className="screen-main"
+                  >
+                    {children}
+                  </main>
+                </div>
               </div>
             </ScreenDemoProvider>
           </ScreenContext.Provider>
