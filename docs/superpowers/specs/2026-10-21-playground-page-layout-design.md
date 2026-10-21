@@ -11,11 +11,12 @@ Each page should name its component once, give the example more room, and keep t
 ## 2. Page, top to bottom
 
 1. **Header:** the h1 title, then the description. The kicker above the title (`.component-kicker`, group · job) is removed.
-2. **Playground:** the h2 «المعاينة التفاعلية» / "Interactive playground", the toolbar (§3), then the stage (§4) in Preview or the code block (§5) in Code.
-3. **Usage guidelines** (§6).
-4. **API reference** (§6b).
+2. **Use it in your app** (§6c): the h2 «استخدمه في تطبيقك» / "Use it in your app" and its prompt row. It moved from below the guidelines to sit right after the header (Amjed, 21 Oct).
+3. **Playground:** the h2 «المعاينة التفاعلية» / "Interactive playground", the toolbar (§3), then the stage (§4) in Preview or the code block (§5) in Code.
+4. **Usage guidelines** (§6).
+5. **API reference** (§6b).
 
-**Nothing else.** Amjed decided on 21 Oct that a page has exactly these three parts: the playground, the usage guidelines and the API reference. The pattern-page sections Plan 4 Task 8 added are removed: Anatomy, Placements, Copy and the part tables (`src/workbench/pattern-pages.tsx`). This supersedes the workbench docs spec's pattern-page sections (Docs §6, §7 and §9) and the AI patterns spec's matching page sections. The «يحل محل» / "Replaces" column stays, because it is one of the usage-guidelines columns on pattern pages. The registry `?raw` import goes too if nothing else uses it.
+**Nothing else.** Amjed decided on 21 Oct that, below the header, a page has only these parts: the prompt, the playground, the usage guidelines and the API reference. The pattern-page sections Plan 4 Task 8 added are removed: Anatomy, Placements, Copy and the part tables (`src/workbench/pattern-pages.tsx`). This supersedes the workbench docs spec's pattern-page sections (Docs §6, §7 and §9) and the AI patterns spec's matching page sections. The «يحل محل» / "Replaces" column stays, because it is one of the usage-guidelines columns on pattern pages. The registry `?raw` import goes too if nothing else uses it.
 
 **Removed from the frame:**
 - the Arabic + English name strip (`.tz-demo-title`, `.tz-demo-name`)
@@ -69,8 +70,15 @@ The page says the component's name in its h1 only.
   - «الوصف» / "Description": the existing text, in the page language.
 - **Rows.** Hairline rows. The header row sits on the tray.
 - **Groups.** Where the reference today groups props under a part name or a heading, keep the groups. Use one table per group, each with its own small heading.
-- **Width.** It keeps the readable measure. Inside an `overflow-x: auto` box it scrolls inline on phones and never makes the page scroll sideways.
+- **Width.** It uses the shared page width (§8). Inside an `overflow-x: auto` box it scrolls inline on phones and never makes the page scroll sideways.
 - **Direction.** RTL by default: the columns run from the right in Arabic, and the code cells stay LTR.
+
+## 6c. Use it in your app
+
+- **Placement:** right after the header (§2), with its existing prompt row: the preview text and the icon-only copy control.
+- **Language:** the prompt is always English, on Arabic and English pages alike. `generatePrompt` uses its English text whatever the page language, and the preview paragraph is `lang="en" dir="ltr"`.
+- **What stays localized:** the section heading and the copy control's name follow the page language.
+- **The example code:** where the full prompt includes the example code, the code keeps the page's sample content and language, as the copied code does today. Only the instructions are English.
 
 ## 7. Open in new tab
 
@@ -93,8 +101,8 @@ The page says the component's name in its h1 only.
 
 ## 8. Widths
 
-- **Playground** (toolbar, stage, code): the full main column, up to about 1,160 px.
-- **Header and guidelines:** a readable measure of about 760 px, on the same start edge.
+- **One width for every section** (Amjed, 21 Oct): the header, Use it in your app, the playground, the usage guidelines and the API reference all use the full main column, up to about 1,160 px. They share one start and end edge.
+- **No narrower measure:** the earlier ~760 px reading width for the header and guidelines is dropped.
 
 ## 9. Accessibility
 
@@ -112,6 +120,8 @@ The page says the component's name in its h1 only.
 - The notes render outside the frame region, under the "Usage guidelines" h2.
 - A pattern page has no Anatomy, Placements, Copy or part-table sections. Its h2s are exactly: the playground, the usage guidelines and the API reference.
 - The API reference is open with no toggle. It is a `<table>` with column headers, and the code cells are `dir="ltr"`.
+- Below the header the sections come in this order: Use it in your app, the playground, the usage guidelines, the API reference.
+- On an Arabic page, the prompt preview and the copied prompt are English (`lang="en"`, `dir="ltr"`), and the heading is Arabic.
 - The new-tab link has `target="_blank"`, `rel="noopener"` and its name. The standalone route renders the page's example with the stored props and settings.
 - In RTL, the new-tab icon carries the mirror rule, and the Replay and copy icons don't.
 - Existing tests that assert the moved parts are updated, and the commit names them.
