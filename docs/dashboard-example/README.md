@@ -57,11 +57,12 @@ the directory. Loading and error hide data and disable create/search/status.
 Reloading resets records, language, theme, filters and period: there is no
 backend, authentication, storage or persistence.
 
-Ask your data (`DataAnswer`) closes the orders section: which channel brought the
-period's orders, from the same `orders.channels` as the charts, as a bar chart or a
-donut with a two-sentence explanation citing the Orders table, and «How was this
-calculated?» (the period and all channels). It follows the period and the preview
-state (done, thinking, empty, failed), and its Try again restores the sample. There is
+Ask your data (`DataAnswer`) sits beside the channels' donut in the orders section:
+how much revenue each channel brought in this period, from `orders.channelRevenue`
+over the same orders as the charts, as a bar chart or a donut with a two-sentence
+explanation citing the Orders table, and «How was this calculated?» (the period and
+all channels). It follows the period and the preview state (done, thinking with its
+steps, empty, failed), and its Try again restores the sample. There is
 no Pin and no Open in a table: the answer already sits on the dashboard. The header's
 **Decision inbox** button (`DecisionInbox`, in a Sheet) counts the requests that
 wait on you, failed ones included, and opens two requests from the customer assistant.

@@ -24,6 +24,27 @@ it("uses an inclusive fixed period for both charts and metrics, ignoring out-of-
   expect(calculateOrders(orders, 14).count).toBe(3);
 });
 
+it("adds up each channel's revenue from the period's orders only", () => {
+  const orders = [
+    { id: 1, date: "2026-10-07", channel: "web" as const, amount: 10 },
+    { id: 2, date: "2026-10-08", channel: "web" as const, amount: 100 },
+    { id: 3, date: "2026-10-12", channel: "web" as const, amount: 40 },
+    { id: 4, date: "2026-10-14", channel: "partner" as const, amount: 250 },
+  ];
+  const result = calculateOrders(orders, 7);
+  expect(result.channelRevenue).toEqual({ web: 140, store: 0, partner: 250 });
+  // The channels add up to the period's revenue, in the sample too.
+  const sample = calculateOrders(sampleOrders, 7);
+  expect(sample.channelRevenue).toEqual({
+    web: 11_545,
+    store: 5_060,
+    partner: 5_555,
+  });
+  expect(Object.values(sample.channelRevenue).reduce((a, b) => a + b, 0)).toBe(
+    sample.revenue,
+  );
+});
+
 it("has deterministic unique sample IDs and keeps empty order metrics zero", () => {
   expect(new Set(sampleCustomers.map((c) => c.id)).size).toBe(
     sampleCustomers.length,
@@ -33,6 +54,7 @@ it("has deterministic unique sample IDs and keeps empty order metrics zero", () 
   expect(result.count).toBe(0);
   expect(result.revenue).toBe(0);
   expect(Object.values(result.channels)).toEqual([0, 0, 0]);
+  expect(Object.values(result.channelRevenue)).toEqual([0, 0, 0]);
 });
 
 it("combines trimmed case-insensitive name/email search and status without mutating records", () => {

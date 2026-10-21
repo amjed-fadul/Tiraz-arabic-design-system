@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import {
   ArrowUpLeft,
   ArrowUpRight,
@@ -41,6 +42,7 @@ import {
   Spinner,
   SystemProvider,
   ToastProvider,
+  Tray,
   defaultConfig,
   numberLocale,
   useSystem,
@@ -122,9 +124,21 @@ function weekOverWeek(orders: readonly Order[]) {
     },
   };
 }
+// The docs show this page in an iframe of ?embed=1[&lang=en][&theme=dark]. The
+// language and theme start from the address, standalone too; embedded, the
+// docs page owns both buttons and is the page a link to "/" would nest.
+function readAddress() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    language: params.get("lang") === "en" ? "en" : "ar",
+    theme: params.get("theme") === "dark" ? "dark" : "light",
+    embedded: params.has("embed"),
+  } as const;
+}
 export function Dashboard() {
-  const [language, setLanguage] = useState<"ar" | "en">("ar");
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [address] = useState(readAddress);
+  const [language, setLanguage] = useState<"ar" | "en">(address.language);
+  const [theme, setTheme] = useState<"light" | "dark">(address.theme);
   const direction = language === "ar" ? "rtl" : "ltr";
   const t = (ar: string, en: string) => (language === "ar" ? ar : en);
   useEffect(() => {
@@ -144,6 +158,7 @@ export function Dashboard() {
           <DashboardContent
             language={language}
             theme={theme}
+            embedded={address.embedded}
             onLanguage={() => setLanguage(language === "ar" ? "en" : "ar")}
             onTheme={() => setTheme(theme === "light" ? "dark" : "light")}
           />
@@ -153,14 +168,35 @@ export function Dashboard() {
   );
 }
 
+/** A chart on the pattern cards' tray and paper, its title on the tray. */
+function ChartCard({
+  title,
+  busy,
+  children,
+}: {
+  title: string;
+  busy: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <article className="dashboard-card" aria-busy={busy || undefined}>
+      <Tray header={<h3 className="dashboard-card-title">{title}</h3>}>
+        {children}
+      </Tray>
+    </article>
+  );
+}
+
 function DashboardContent({
   language,
   theme,
+  embedded,
   onLanguage,
   onTheme,
 }: {
   language: "ar" | "en";
   theme: "light" | "dark";
+  embedded: boolean;
   onLanguage: () => void;
   onTheme: () => void;
 }) {
@@ -237,13 +273,16 @@ function DashboardContent({
     style: "percent",
     maximumFractionDigits: 1,
   });
+  // The money rows name their unit once, so each pill keeps to one line in a
+  // card about 360px wide, in both languages.
+  const whole = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
   const changes: ChangeSummaryProps["rows"] = (
     [
-      ["orders", t("الطلبات", "Orders"), number],
-      ["revenue", t("إيرادات الطلبات", "Order revenue"), money],
-      ["average", t("متوسط قيمة الطلب", "Average order value"), money],
+      ["orders", t("الطلبات", "Orders")],
+      ["revenue", t("إيرادات الطلبات (د.إ.)", "Order revenue (AED)")],
+      ["average", t("متوسط قيمة الطلب (د.إ.)", "Average order value (AED)")],
     ] as const
-  ).map(([key, metric, format]) => {
+  ).map(([key, metric]) => {
     const [last, previous] = [weeks.last[key], weeks.previous[key]];
     const direction =
       last > previous ? "up" : last < previous ? "down" : "flat";
@@ -253,8 +292,8 @@ function DashboardContent({
       change: [
         previous > 0 && percent.format(Math.abs(last / previous - 1)),
         t(
-          `من ${format(previous)} إلى ${format(last)}`,
-          `from ${format(previous)} to ${format(last)}`,
+          `من ${whole.format(previous)} إلى ${whole.format(last)}`,
+          `from ${whole.format(previous)} to ${whole.format(last)}`,
         ),
       ]
         .filter(Boolean)
@@ -283,62 +322,58 @@ function DashboardContent({
       color: "var(--chart-clay)",
     },
   ];
-  // Ask your data: which channel brought this period's orders. The figures are
-  // the charts' own; the host reshapes them for the type the person picked.
-  const share = (count: number) =>
-    percent.format(orders.count ? count / orders.count : 0);
-  const [leading, ...rest] = channels
-    .map((channel) => ({ ...channel, count: orders.channels[channel.key] }))
-    .sort((a, b) => b.count - a.count);
-  const others = share(
-    rest.reduce((total, channel) => total + channel.count, 0),
-  );
+  // Ask your data: how much revenue each channel brought in this period, beside
+  // the donut of its orders. The chart, its caption, the two sentences and their
+  // citation all come from the same figures; the host reshapes them for the
+  // type the person picked.
+  const figures = channels.map((channel) => ({
+    ...channel,
+    value: orders.channelRevenue[channel.key],
+  }));
+  const share = (value: number) =>
+    percent.format(orders.revenue ? value / orders.revenue : 0);
+  const [leading] = [...figures].sort((a, b) => b.value - a.value);
+  const rest = orders.revenue - leading.value;
   const explanation = t(
-    `جاء ${leading.label} في المقدمة بحصة ${share(leading.count)} من طلبات هذه الفترة. [1] أما القناتان الأخريان فتتقاسمان ${others} من الطلبات. [1]`,
-    `${leading.label} led with ${share(leading.count)} of this period's orders. [1] The other two channels split the remaining ${others}. [1]`,
+    `جلب ${leading.label} ${money(leading.value)}، أي ${share(leading.value)} من إيرادات هذه الفترة. [1] أما القناتان الأخريان فجلبتا معًا ${money(rest)}، أي النسبة الباقية ${share(rest)}. [1]`,
+    `${leading.label} brought in ${money(leading.value)}, ${share(leading.value)} of this period's revenue. [1] The other two channels brought in ${money(rest)} between them, the remaining ${share(rest)}. [1]`,
   );
   const ordersTable: SourceReference = {
     id: "orders",
     number: 1,
     title: t("الطلبات", "Orders"),
     description: t(
-      "طلبات الفترة موزّعة حسب القناة.",
-      "The period's orders, split by channel.",
+      "طلبات الفترة وقيمها، حسب القناة.",
+      "The period's orders and their amounts, by channel.",
     ),
   };
-  const figures = channels.map((channel) => ({
-    ...channel,
-    value: orders.channels[channel.key],
-  }));
-  const summary = figures
+  // The unit is named once, so the axis and the caption carry plain figures.
+  const revenueUnit = t("الإيرادات (د.إ.)", "Revenue (AED)");
+  const caption = `${revenueUnit}: ${figures
     .map((channel) => `${channel.label} ${number(channel.value)}`)
-    .join(t("، ", ", "));
+    .join(t("، ", ", "))}.`;
   const answerCharts: Record<"bar" | "donut", DataAnswerChart> = {
     bar: {
       type: "bar",
       props: {
-        label: t("عدد الطلبات لكل قناة", "Orders per channel"),
-        summary: `${summary}.`,
+        label: t("إيرادات كل قناة", "Revenue per channel"),
+        summary: caption,
         locale: language,
         height: 220,
         data: figures.map((channel) => ({
           category: channel.label,
-          orders: channel.value,
+          revenue: channel.value,
         })),
         series: [
-          {
-            key: "orders",
-            label: t("الطلبات", "Orders"),
-            color: "var(--action)",
-          },
+          { key: "revenue", label: revenueUnit, color: "var(--action)" },
         ],
       },
     },
     donut: {
       type: "donut",
       props: {
-        label: t("حصة كل قناة من الطلبات", "Each channel's share of orders"),
-        summary: `${summary}.`,
+        label: t("حصة كل قناة من الإيرادات", "Each channel's share of revenue"),
+        summary: caption,
         locale: language,
         height: 220,
         data: figures,
@@ -673,22 +708,26 @@ function DashboardContent({
               headingLevel={3}
             />
           </Sheet>
-          <Button variant="ghost" onClick={onLanguage}>
-            <bdi>{language === "ar" ? "English" : "العربية"}</bdi>
-          </Button>
-          <Button
-            variant="ghost"
-            iconOnly
-            aria-label={t("الوضع الداكن", "Dark mode")}
-            aria-pressed={theme === "dark"}
-            onClick={onTheme}
-          >
-            {theme === "light" ? (
-              <Moon size={17} aria-hidden="true" />
-            ) : (
-              <Sun size={17} aria-hidden="true" />
-            )}
-          </Button>
+          {!embedded && (
+            <>
+              <Button variant="ghost" onClick={onLanguage}>
+                <bdi>{language === "ar" ? "English" : "العربية"}</bdi>
+              </Button>
+              <Button
+                variant="ghost"
+                iconOnly
+                aria-label={t("الوضع الداكن", "Dark mode")}
+                aria-pressed={theme === "dark"}
+                onClick={onTheme}
+              >
+                {theme === "light" ? (
+                  <Moon size={17} aria-hidden="true" />
+                ) : (
+                  <Sun size={17} aria-hidden="true" />
+                )}
+              </Button>
+            </>
+          )}
         </div>
       </header>
       <main className="dashboard-main">
@@ -730,24 +769,9 @@ function DashboardContent({
               )}
             </span>
           </div>
-          <div className="dashboard-changes">
-            <ChangeSummary
-              headingLevel={2}
-              status={
-                preview === "loading"
-                  ? "updating"
-                  : preview === "error"
-                    ? "failed"
-                    : "ready"
-              }
-              rows={changes}
-              basedOn={t(
-                `آخر ${number(7)} أيام مقابل ${number(7)} أيام قبلها`,
-                `The last ${number(7)} days against the ${number(7)} before`,
-              )}
-              onRefresh={() => changePreview("sample")}
-            />
-          </div>
+          {/* Each figure is a card like the patterns': its name on the tray,
+              the figure on paper, the note on the tray. The list keeps its
+              name–value pairs, so it takes the tray's classes, not Tray. */}
           <dl className="dashboard-metrics" aria-busy={preview === "loading"}>
             {[
               {
@@ -765,26 +789,33 @@ function DashboardContent({
               {
                 key: "revenue",
                 label: t("إيرادات الطلبات", "Order revenue"),
-                value: new Intl.NumberFormat(locale, {
-                  style: "currency",
-                  currency: "AED",
-                  maximumFractionDigits: 0,
-                }).format(orders.revenue),
+                value: money(orders.revenue),
+                note: range,
+              },
+              {
+                key: "average-order",
+                label: t("متوسط قيمة الطلب", "Average order value"),
+                value: money(orders.count ? orders.revenue / orders.count : 0),
                 note: range,
               },
             ].map((metric) => (
-              <div key={metric.key}>
-                <dt>{metric.label}</dt>
-                <dd className="dashboard-metric-value" data-testid={metric.key}>
+              <div key={metric.key} className="tz-tray dashboard-metric">
+                <dt className="tz-tray-header">{metric.label}</dt>
+                <dd
+                  className="tz-tray-paper dashboard-metric-value"
+                  data-testid={metric.key}
+                >
                   {preview === "loading" ? (
-                    <Skeleton style={{ width: "7rem", height: "2rem" }} />
+                    <Skeleton className="dashboard-metric-skeleton" />
                   ) : blocked ? (
                     "—"
                   ) : (
                     metric.value
                   )}
                 </dd>
-                <dd className="dashboard-metric-note">{metric.note}</dd>
+                <dd className="tz-tray-footer dashboard-metric-note">
+                  {metric.note}
+                </dd>
               </div>
             ))}
           </dl>
@@ -843,73 +874,130 @@ function DashboardContent({
               }
             />
           ) : null}
-          {preview === "error" ? null : preview === "loading" ? (
-            <div className="dashboard-charts" aria-busy={preview === "loading"}>
-              <Skeleton
-                shape="rectangle"
-                style={{ width: "100%", height: "16rem" }}
-              />
-              <Skeleton
-                shape="rectangle"
-                style={{ width: "100%", height: "16rem" }}
-              />
-            </div>
-          ) : (
-            <div className="dashboard-charts">
-              <article>
-                <h3>{t("حركة الطلبات", "Orders trend")}</h3>
-                <AreaChart
-                  data={orders.trend}
-                  series={[
-                    {
-                      key: "orders",
-                      label: t("الطلبات", "Orders"),
-                      color: "var(--action)",
-                    },
-                  ]}
-                  label={t("الطلبات اليومية", "Daily orders")}
-                  summary={t(
-                    `${number(orders.count)} طلبًا خلال ${range}. تمثّل كل نقطة إجمالي طلبات يوم واحد.`,
-                    `${number(orders.count)} orders during ${range}. Each point is one day's total orders.`,
-                  )}
-                  locale={language}
-                  categoryFormat="date"
-                  height={220}
-                  dataTable
-                />
-              </article>
-              <article>
-                <h3>{t("توزيع القنوات", "Channel distribution")}</h3>
-                <DonutChart
-                  data={channels.map((channel) => ({
-                    ...channel,
-                    value: orders.channels[channel.key],
-                  }))}
-                  label={t("الطلبات حسب القناة", "Orders by channel")}
-                  summary={t(
-                    `${number(orders.count)} طلبًا: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join("، ")}.`,
-                    `${number(orders.count)} orders: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join(", ")}.`,
-                  )}
-                  locale={language}
-                  height={220}
-                  legend
-                  interactiveLegend={false}
-                  dataTable
-                />
-              </article>
-            </div>
-          )}
-          <article className="dashboard-ask">
+          {/* Two rows of cards across the column: the trend beside What
+              changed, then the channels' orders beside their revenue. The
+              error preview drops the charts, and a pattern left alone takes
+              its whole row. */}
+          <div className="dashboard-row dashboard-row-trend">
+            {preview !== "error" && (
+              <ChartCard
+                title={t("حركة الطلبات", "Orders trend")}
+                busy={preview === "loading"}
+              >
+                {preview === "loading" ? (
+                  <Skeleton
+                    shape="rectangle"
+                    className="dashboard-chart-skeleton"
+                  />
+                ) : (
+                  <AreaChart
+                    data={orders.trend}
+                    series={[
+                      {
+                        key: "orders",
+                        label: t("الطلبات", "Orders"),
+                        color: "var(--action)",
+                      },
+                    ]}
+                    label={t("الطلبات اليومية", "Daily orders")}
+                    summary={t(
+                      `${number(orders.count)} طلبًا خلال ${range}. تمثّل كل نقطة إجمالي طلبات يوم واحد.`,
+                      `${number(orders.count)} orders during ${range}. Each point is one day's total orders.`,
+                    )}
+                    locale={language}
+                    categoryFormat="date"
+                    height={220}
+                    dataTable
+                  />
+                )}
+              </ChartCard>
+            )}
+            <ChangeSummary
+              status={
+                preview === "loading"
+                  ? "updating"
+                  : preview === "error"
+                    ? "failed"
+                    : "ready"
+              }
+              rows={changes}
+              basedOn={t(
+                `آخر ${number(7)} أيام مقابل ${number(7)} أيام قبلها`,
+                `The last ${number(7)} days against the ${number(7)} before`,
+              )}
+              onRefresh={() => changePreview("sample")}
+            />
+          </div>
+          <div className="dashboard-row dashboard-row-split">
+            {preview !== "error" && (
+              <ChartCard
+                title={t("توزيع القنوات", "Channel distribution")}
+                busy={preview === "loading"}
+              >
+                {preview === "loading" ? (
+                  <Skeleton
+                    shape="rectangle"
+                    className="dashboard-chart-skeleton"
+                  />
+                ) : (
+                  <DonutChart
+                    data={channels.map((channel) => ({
+                      ...channel,
+                      value: orders.channels[channel.key],
+                    }))}
+                    label={t("الطلبات حسب القناة", "Orders by channel")}
+                    summary={t(
+                      `${number(orders.count)} طلبًا: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join("، ")}.`,
+                      `${number(orders.count)} orders: ${channels.map((channel) => `${channel.label} ${number(orders.channels[channel.key])}`).join(", ")}.`,
+                    )}
+                    locale={language}
+                    // Taller than the trend: the ring fills its card beside
+                    // the answer instead of floating in it.
+                    height={280}
+                    legend
+                    interactiveLegend={false}
+                    dataTable
+                  />
+                )}
+              </ChartCard>
+            )}
             <DataAnswer
               status={askStatus[preview]}
               question={t(
-                "من أي قناة جاءت طلبات هذه الفترة؟",
-                "Which channel brought this period's orders?",
+                "كم جلبت كل قناة من الإيرادات هذه الفترة؟",
+                "How much revenue did each channel bring in this period?",
               )}
               chart={answerCharts[answerChart]}
               explanation={explanation}
               sources={[ordersTable]}
               method={{ range, filters: t("كل القنوات", "All channels") }}
+              // The loading preview shows the answer mid-way, with its steps.
+              thinking={
+                preview === "loading"
+                  ? {
+                      elapsed: 2,
+                      searched: [ordersTable],
+                      steps: [
+                        {
+                          id: "read",
+                          label: t(
+                            "قراءة طلبات الفترة",
+                            "Read the period's orders",
+                          ),
+                          state: "completed",
+                        },
+                        {
+                          id: "add",
+                          label: t(
+                            "جمع الإيرادات حسب القناة",
+                            "Add up the revenue by channel",
+                          ),
+                          state: "running",
+                        },
+                      ],
+                    }
+                  : undefined
+              }
               chartTypes={["bar", "donut"]}
               onChartTypeChange={(type) =>
                 setAnswerChart(type === "donut" ? "donut" : "bar")
@@ -920,7 +1008,7 @@ function DashboardContent({
                 "This is an error preview; no request is running.",
               )}
             />
-          </article>
+          </div>
         </section>
         <section
           id="customers"
@@ -1096,10 +1184,12 @@ function DashboardContent({
           />
         </section>
         <footer className="dashboard-footer">
-          <a href="/">
-            {t("توثيق طِراز", "Tiraz documentation")}
-            <ExitArrow size={14} aria-hidden="true" />
-          </a>
+          {!embedded && (
+            <a href="/">
+              {t("توثيق طِراز", "Tiraz documentation")}
+              <ExitArrow size={14} aria-hidden="true" />
+            </a>
+          )}
           <div className="dashboard-preview">
             <label id="preview-label">
               {t("معاينة الحالة", "Preview state")}

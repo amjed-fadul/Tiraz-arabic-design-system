@@ -101,8 +101,11 @@ it("discards drafts and restores trigger focus after cancel, close and Escape", 
 it("changes order metrics with the shared period and restores sample data on Retry", async () => {
   const user = await setup();
   const count = screen.getByTestId("order-count").textContent;
+  // The average order is the period's revenue over its orders: 22,160 / 71.
+  expect(screen.getByTestId("average-order")).toHaveTextContent("AED 312");
   await select(user, "Period", "14 days");
   expect(screen.getByTestId("order-count").textContent).not.toBe(count);
+  expect(screen.getByTestId("average-order")).toHaveTextContent("AED 310");
   await select(user, "Preview state", "Loading");
   expect(customerTable()).toHaveAttribute("aria-busy", "true");
   expect(
@@ -221,6 +224,55 @@ it("uses FilterBar to remove individual customer filters while preserving sortin
   expect(filters.queryByRole("button", { name: "Clear filters" })).toBeNull();
 });
 
+it("starts from the address and, embedded in the docs, leaves language, theme and the docs link to them", () => {
+  try {
+    window.history.replaceState(
+      null,
+      "",
+      "/examples/dashboard?embed=1&lang=en&theme=dark",
+    );
+    const { unmount } = render(<Dashboard />);
+    expect(document.documentElement).toHaveAttribute("lang", "en");
+    expect(document.documentElement).toHaveAttribute("dir", "ltr");
+    expect(document.querySelector(".tiraz-system")).toHaveAttribute(
+      "data-theme",
+      "dark",
+    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      "Everything, in one place.",
+    );
+    // Neither button, and no link that would nest the docs in their iframe.
+    expect(screen.queryByRole("button", { name: "العربية" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Dark mode" })).toBeNull();
+    expect(document.querySelector('a[href="/"]')).toBeNull();
+    // Everything else stays.
+    expect(
+      screen.getByRole("button", { name: "Decision inbox, needs you: 2" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "Preview state" }),
+    ).toBeInTheDocument();
+    unmount();
+
+    // Standalone, the same address starts the page the same way, with both
+    // buttons and the docs link.
+    window.history.replaceState(null, "", "/examples/dashboard?theme=dark");
+    render(<Dashboard />);
+    expect(document.documentElement).toHaveAttribute("lang", "ar");
+    expect(document.querySelector(".tiraz-system")).toHaveAttribute(
+      "data-theme",
+      "dark",
+    );
+    expect(screen.getByRole("button", { name: "English" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "الوضع الداكن" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    expect(document.querySelector('a[href="/"]')).not.toBeNull();
+  } finally {
+    window.history.replaceState(null, "", "/");
+  }
+});
+
 it("shows Arabic-Indic digits in the Arabic dashboard", () => {
   render(<Dashboard />);
   const note = (id: string) =>
@@ -228,44 +280,48 @@ it("shows Arabic-Indic digits in the Arabic dashboard", () => {
       .getByTestId(id)
       .closest("div")!
       .querySelector(".dashboard-metric-note")!;
-  // The order count, the order revenue and the period note under each.
+  // The order count, the order revenue, the average order and the period note
+  // under each.
   for (const element of [
     screen.getByTestId("order-count"),
     screen.getByTestId("revenue"),
+    screen.getByTestId("average-order"),
     note("order-count"),
     note("revenue"),
+    note("average-order"),
   ]) {
     expect(element).toHaveTextContent(/[٠-٩]/);
     expect(element).not.toHaveTextContent(/[0-9]/);
   }
 });
 
-it("puts What changed at the top of the overview with rows from the orders", async () => {
+it("sets What changed beside the orders trend with rows from the orders", async () => {
   render(<Dashboard />);
-  const overview = document.getElementById("overview")!;
+  const orders = document.getElementById("orders")!;
   const summary = () =>
-    within(overview).getByRole("region", {
+    within(orders).getByRole("region", {
       name: /^(ما الذي تغيّر|What changed)$/,
     });
-  // After the heading and before the figures.
+  // The trend and What changed share the first row of cards, the trend first.
+  const trend = within(orders).getByRole("region", {
+    name: "الطلبات اليومية",
+  });
+  const row = summary().parentElement!;
+  expect(row).toHaveClass("dashboard-row");
+  expect(row).toContainElement(trend);
   expect(
-    overview.querySelector("h1")!.compareDocumentPosition(summary()) &
-      Node.DOCUMENT_POSITION_FOLLOWING,
-  ).toBeTruthy();
-  expect(
-    summary().compareDocumentPosition(
-      overview.querySelector(".dashboard-metrics")!,
-    ) & Node.DOCUMENT_POSITION_FOLLOWING,
+    trend.compareDocumentPosition(summary()) & Node.DOCUMENT_POSITION_FOLLOWING,
   ).toBeTruthy();
   // Orders, revenue and the average order: the last seven days (71 orders,
   // 22,160 AED) against the seven before (45 orders, 13,815 AED). More is good.
+  // The money rows name their unit once.
   const rows = () => [...summary().querySelectorAll(".tz-change-summary-row")];
   expect(rows()).toHaveLength(3);
   expect(
     rows().map(
       (row) => row.querySelector(".tz-change-summary-metric")!.textContent,
     ),
-  ).toEqual(["الطلبات", "إيرادات الطلبات", "متوسط قيمة الطلب"]);
+  ).toEqual(["الطلبات", "إيرادات الطلبات (د.إ.)", "متوسط قيمة الطلب (د.إ.)"]);
   for (const row of rows()) {
     const badge = row.querySelector(".tz-change-summary-badge")!;
     expect(badge).toHaveAttribute("data-direction", "up");
@@ -356,28 +412,37 @@ it("opens the decision inbox from the header and asks the orders a question", as
   expect(screen.getByRole("button", { name: waiting("١") })).toHaveFocus();
   expect(layla()).toHaveTextContent("نشط");
 
-  // After the charts, the orders hold the question as a region, answered in
-  // Arabic-Indic digits.
+  // Beside the channels' orders, the question asks what the donut doesn't:
+  // each channel's revenue. Chart, caption and sentences share the figures
+  // (web 11,545 of 22,160 AED), in Arabic-Indic digits.
   const orders = document.getElementById("orders")!;
   const ask = () =>
     within(orders).getByRole("region", {
-      name: "من أي قناة جاءت طلبات هذه الفترة؟",
+      name: "كم جلبت كل قناة من الإيرادات هذه الفترة؟",
     });
-  expect(ask().closest("article")).not.toBeNull();
-  expect(ask().closest(".dashboard-charts")).toBeNull();
+  const donut = within(orders).getByRole("region", {
+    name: "الطلبات حسب القناة",
+  });
+  expect(ask().parentElement).toHaveClass("dashboard-row");
+  expect(ask().parentElement).toContainElement(donut);
   expect(
-    orders.querySelector(".dashboard-charts")!.compareDocumentPosition(ask()) &
-      Node.DOCUMENT_POSITION_FOLLOWING,
+    donut.compareDocumentPosition(ask()) & Node.DOCUMENT_POSITION_FOLLOWING,
   ).toBeTruthy();
+  const bars = within(ask()).getByRole("region", { name: "إيرادات كل قناة" });
+  expect(bars).toHaveTextContent(
+    "الإيرادات (د.إ.): الموقع ١١٬٥٤٥، المتجر ٥٬٠٦٠، الشركاء ٥٬٥٥٥.",
+  );
   const explanation = ask().querySelector(".tz-data-answer-explanation")!;
-  expect(explanation).toHaveTextContent(/[٠-٩]/);
+  for (const words of ["جلب الموقع", "١١٬٥٤٥", "٥٢٫١٪", "١٠٬٦١٥", "٤٧٫٩٪"])
+    expect(explanation).toHaveTextContent(words);
   expect(explanation).not.toHaveTextContent(/[0-9]/);
+  expect(explanation.querySelectorAll(".tz-inline-citation")).toHaveLength(2);
 
   // The donut is the second type.
   await user.click(within(ask()).getByRole("radio", { name: "حلقي" }));
   expect(within(ask()).getByRole("radio", { name: "حلقي" })).toBeChecked();
   expect(
-    within(ask()).getByRole("region", { name: "حصة كل قناة من الطلبات" }),
+    within(ask()).getByRole("region", { name: "حصة كل قناة من الإيرادات" }),
   ).toBeInTheDocument();
 
   // The error preview fails the answer, and trying again brings it back.
@@ -388,7 +453,7 @@ it("opens the decision inbox from the header and asks the orders a question", as
   await user.click(within(ask()).getByRole("button", { name: "أعد المحاولة" }));
   expect(ask().querySelector(".tz-data-answer-explanation")).not.toBeNull();
   expect(
-    within(ask()).getByRole("region", { name: "حصة كل قناة من الطلبات" }),
+    within(ask()).getByRole("region", { name: "حصة كل قناة من الإيرادات" }),
   ).toBeInTheDocument();
 
   // The sample data is back, so the inbox is too; English has Western digits.
