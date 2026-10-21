@@ -766,8 +766,8 @@ export function ApiReference({
         "onSend / onDiscard",
         "(text: string) => void / () => void",
         t(
-          "«إرسال» (الزر الأساسي، ومعه Ctrl أو Cmd+Enter) و«تجاهل» في المراجعة فقط، كلٌّ إذا وُجد معالجه. يستلم onSend النص الظاهر مرة واحدة لكل حالة مراجعة، فلا يفعل ضغط ثانٍ ولا اختصار ولا مفتاح مضغوط شيئًا حتى تتغيّر الحالة، ولا يرسل «تجاهل» شيئًا. وينتظر الاختصار نصف ثانية بعد أي تغيير في النص أو النبرة أو المستلمين أو المرفقات.",
-          "Send (the primary button, with Ctrl or Cmd+Enter) and Discard show while ready, each only with its handler. onSend receives the text on screen once per ready status: a second press, chord or held key does nothing until the status changes, and Discard never sends. The chord waits half a second after any change to the text, the tone, the recipients or the attachments.",
+          "«إرسال» (الزر الأساسي، ومعه Ctrl أو Cmd+Enter) و«تجاهل» في المراجعة فقط، كلٌّ إذا وُجد معالجه. يستلم onSend النص الظاهر مرة واحدة لكل حالة مراجعة، فلا يفعل ضغط ثانٍ ولا اختصار ولا مفتاح مضغوط شيئًا حتى تتغيّر الحالة، ولا يرسل «تجاهل» شيئًا. وينتظر الاختصار نصف ثانية بعد أي تغيير في النص أو النبرة أو المستلمين أو المرفقات. انقل الحالة إلى sending في التحديث نفسه الذي يعالج onSend، لأن الزرين يبقيان مقفلين حتى تتغيّر الحالة، وإن تعذّر الإرسال فأعدها إلى ready، فيقول النمط «تعذّر إرسال الرسالة، والمسودة محفوظة» ويعرضها خطأً فوق «إرسال».",
+          "Send (the primary button, with Ctrl or Cmd+Enter) and Discard show while ready, each only with its handler. onSend receives the text on screen once per ready status: a second press, chord or held key does nothing until the status changes, and Discard never sends. The chord waits half a second after any change to the text, the tone, the recipients or the attachments. Move to sending in the same update that handles onSend, since both buttons stay locked until the status changes, and if sending fails, return to ready: the pattern says «The message couldn't be sent; the draft is kept» and shows it as an error above Send.",
         ),
       ],
       [

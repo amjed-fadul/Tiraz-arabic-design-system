@@ -2,6 +2,7 @@ import { Check, X } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { FocusEvent, ReactNode } from "react";
 import { AIMark } from "./AIMark";
+import { Alert } from "./Alert";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
 import { Countdown } from "./Countdown";
@@ -55,6 +56,11 @@ export interface DraftReviewLabels {
   saysSendingIn: (time: string) => string;
   saysCancelled: string;
   saysSentAfterUndo: string;
+  /**
+   * When sending goes back to ready without an Undo, the sending failed: the
+   * region says this, and it shows as an error above Send.
+   */
+  notSent: string;
   /** Words for the tracked changes inside. */
   inlineDiff?: Partial<InlineDiffLabels>;
 }
@@ -172,14 +178,20 @@ export function DraftReview({
     decided = useRef(false),
     undone = useRef(false);
   // What the person did in this status, and whether the hold ran out. A new
-  // status starts it afresh.
+  // status starts it afresh; back to ready from sending without an Undo, the
+  // sending failed.
   const [round, setRound] = useState<{
     status: Status;
     chose?: "send" | "discard";
     undid?: boolean;
     ended?: boolean;
+    failed?: boolean;
   }>({ status });
-  if (round.status !== status) setRound({ status });
+  if (round.status !== status)
+    setRound({
+      status,
+      failed: round.status === "sending" && status === "ready" && !round.undid,
+    });
   const now: typeof round = round.status === status ? round : { status };
   const Heading = `h${headingLevel}` as const;
 
@@ -217,7 +229,9 @@ export function DraftReview({
         ? copy.saysWriting
         : status === "ready"
           ? was === "sending"
-            ? copy.saysCancelled
+            ? undid
+              ? copy.saysCancelled
+              : copy.notSent
             : copy.saysReady
           : status === "sending"
             ? held
@@ -368,6 +382,9 @@ export function DraftReview({
             ))}
           </div>
         </div>
+      )}
+      {status === "ready" && now.failed && (
+        <Alert tone="error" title={copy.notSent} />
       )}
     </>
   );

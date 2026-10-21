@@ -37,6 +37,7 @@ export const draftReviewCopy: {
     saysSendingIn: (time) => `تُرسَل الرسالة خلال ${time}. يمكنك التراجع.`,
     saysCancelled: "أُلغي الإرسال، والمسودة محفوظة",
     saysSentAfterUndo: "أُرسلت الرسالة قبل أن يُلغى الإرسال",
+    notSent: "تعذّر إرسال الرسالة، والمسودة محفوظة",
   },
   en: {
     title: "Draft for review",
@@ -66,5 +67,6 @@ export const draftReviewCopy: {
     saysSendingIn: (time) => `Sending in ${time}. You can undo.`,
     saysCancelled: "Sending cancelled; the draft is kept",
     saysSentAfterUndo: "The message was sent before it could be cancelled",
+    notSent: "The message couldn't be sent; the draft is kept",
   },
 };

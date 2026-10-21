@@ -221,3 +221,23 @@ it("announces each status once and moves focus to the section when its controls 
   expect(section()).toHaveFocus();
   expect(region().textContent).toBe("تم تجاهل المسودة");
 });
+
+it("says a send that failed, never a cancellation, and unlocks the draft", async () => {
+  const user = userEvent.setup(),
+    onSend = vi.fn();
+  const view = render(draft("ready", { onSend }));
+  await user.click(screen.getByRole("button", { name: "إرسال" }));
+  expect(onSend).toHaveBeenCalledTimes(1);
+  // The host sends, the sending fails and the draft goes back to ready,
+  // with no Undo pressed.
+  view.rerender(draft("sending", { onSend }));
+  view.rerender(draft("ready", { onSend }));
+  const notSent = "تعذّر إرسال الرسالة، والمسودة محفوظة";
+  expect(region().textContent).toBe(notSent);
+  const alert = () => document.querySelector(".tz-draft-review .tz-alert");
+  expect(alert()).toHaveTextContent(notSent);
+  // Send works again, and the failure gives way to the new attempt.
+  await user.click(screen.getByRole("button", { name: "إرسال" }));
+  expect(onSend).toHaveBeenCalledTimes(2);
+  expect(alert()).toBeNull();
+});

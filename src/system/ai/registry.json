@@ -2594,7 +2594,7 @@
           "name": "onSend",
           "type": "(text: string) => void",
           "required": false,
-          "note": "Send («إرسال», the primary button, with Mod+Enter) while ready. Called once per ready status with the text on screen; further clicks, chords and held keys do nothing until the status changes. The chord waits 500 ms after mount and after the text, the tone, the recipients or the attachments change."
+          "note": "Send («إرسال», the primary button, with Mod+Enter) while ready. Called once per ready status with the text on screen; further clicks, chords and held keys do nothing until the status changes. The chord waits 500 ms after mount and after the text, the tone, the recipients or the attachments change. Move to sending in the same update, because Send and Discard stay locked until the status changes; if sending fails, return to ready, and the region says «تعذّر إرسال الرسالة، والمسودة محفوظة», which also shows as an error above Send."
         },
         {
           "name": "onDiscard",
@@ -2645,7 +2645,7 @@
       ],
       "state": "The host owns the status, the text, the suggestion and its decisions, the tone, the recipients, the attachments and the sending: it holds the message for its undo window, sends it once the window ends, cancels it on onUndo, and marks it sent. The pattern sends and cancels nothing itself. It holds only UI state: whether Send, Discard or Undo has acted in this status, and whether its countdown has ended.",
       "accessibility": [
-        "A section labelled by its title. One polite region, empty at mount, says each change of status once: يكتب المسودة; المسودة بانتظار مراجعتك; تُرسَل الرسالة, or with an undo window تُرسَل الرسالة خلال ١٠ث. يمكنك التراجع.; أُلغي الإرسال، والمسودة محفوظة when sending goes back to ready; أُرسلت الرسالة, or after an Undo أُرسلت الرسالة قبل أن يُلغى الإرسال; تم تجاهل المسودة. The countdown never speaks, and neither its ticks nor a new undoWindow reach the region.",
+        "A section labelled by its title. One polite region, empty at mount, says each change of status once: يكتب المسودة; المسودة بانتظار مراجعتك; تُرسَل الرسالة, or with an undo window تُرسَل الرسالة خلال ١٠ث. يمكنك التراجع.; أُلغي الإرسال، والمسودة محفوظة when an Undo takes sending back to ready, and otherwise تعذّر إرسال الرسالة، والمسودة محفوظة, also shown as an error Alert above Send; أُرسلت الرسالة, or after an Undo أُرسلت الرسالة قبل أن يُلغى الإرسال; تم تجاهل المسودة. The countdown never speaks, and neither its ticks nor a new undoWindow reach the region.",
         "Send, Discard and Undo go away with their status, and focus then moves to the section, as it does from a text area, a tracked change or a tone that a change removes or disables.",
         "The record's id is isolated left to right, each chip in its own direction, and the overdue tag is an error Badge with words. The tone is a native radio group named «النبرة». Each button is named by its visible word, and Send's shortcut is its description."
       ],
@@ -11132,13 +11132,19 @@
           "name": "saysCancelled",
           "type": "string",
           "required": true,
-          "note": "Said when sending goes back to ready: «أُلغي الإرسال، والمسودة محفوظة»."
+          "note": "Said when an Undo takes sending back to ready: «أُلغي الإرسال، والمسودة محفوظة»."
         },
         {
           "name": "saysSentAfterUndo",
           "type": "string",
           "required": true,
           "note": "Said when the message was sent after an Undo: «أُرسلت الرسالة قبل أن يُلغى الإرسال»."
+        },
+        {
+          "name": "notSent",
+          "type": "string",
+          "required": true,
+          "note": "Said when sending goes back to ready without an Undo, and shown as an error Alert above Send until the person sends again: «تعذّر إرسال الرسالة، والمسودة محفوظة»."
         },
         {
           "name": "inlineDiff",
