@@ -1,1 +1,49 @@
 /* Help center (example-screens spec §3.5). Every rule names .help-center. */
+
+/* One centred column that the header and every card span. The patterns' own
+   38rem cap would leave a strip beside each card, so it lifts here. */
+.help-center {
+  display: grid;
+  gap: var(--space-4);
+  inline-size: 100%;
+  max-inline-size: 42rem;
+  min-inline-size: 0;
+  margin-inline: auto;
+}
+.help-center .screen-header {
+  margin-block-end: var(--space-2);
+}
+.help-center .tz-task-starter[data-appearance="card"],
+.help-center .tz-cited-answer[data-appearance="card"] {
+  max-inline-size: none;
+}
+
+/* The way to a person, under an answer that did not help. */
+.help-center-support {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding-inline: var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.help-center-support a {
+  color: var(--action);
+  font-weight: var(--weight-medium);
+  text-decoration: underline;
+  text-underline-offset: var(--underline-offset);
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  transition: text-decoration-color var(--motion-fast) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .help-center-support a:hover {
+    text-decoration-color: currentColor;
+  }
+}
+.help-center-support a:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-small);
+}

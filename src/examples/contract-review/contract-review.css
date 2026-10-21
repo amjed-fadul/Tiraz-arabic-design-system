@@ -1,1 +1,127 @@
-/* Contract review (example-screens spec §3.6). Every rule names .contract-review. */
+/* Contract review (example-screens spec §3.6). Every rule names .contract-review.
+   The main column holds one file's page; beside it, from 960px, an end panel
+   of 20rem holds the files and the send. Below that the panel is gone: the
+   files open in a Sheet and the send follows the page. */
+.contract-review-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+@container screen (width >= 960px) {
+  .contract-review-layout {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+  }
+}
+.contract-review-main {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+/* The end panel is one card at its content's height, and it stays in view. */
+.contract-review-panel {
+  position: sticky;
+  inset-block-start: var(--space-4);
+}
+.contract-review-panel-body {
+  display: grid;
+  gap: var(--space-5);
+}
+.contract-review-subtitle,
+.contract-review-wait > h2,
+.contract-review-clauses h3 {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.contract-review-subtitle,
+.contract-review-wait > h2 {
+  margin-block-end: var(--space-2);
+}
+.contract-review-send {
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--border);
+}
+/* A card in the main column spans it, so the cap on the approval lifts. */
+.contract-review .tz-approval-card[data-appearance="card"] {
+  max-inline-size: none;
+}
+
+/* Until every edit has a decision, the send says how many wait. */
+.contract-review-wait {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-2);
+}
+.contract-review-wait > p {
+  margin: 0;
+}
+.contract-review-hint {
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+
+/* A file's page. */
+.contract-review-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+.contract-review-title > h2 {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.contract-review-clauses {
+  display: grid;
+  gap: var(--space-5);
+  margin: 0;
+  padding-inline-start: var(--space-6);
+}
+.contract-review-clauses > li::marker {
+  color: var(--text-secondary);
+  font-weight: var(--weight-medium);
+}
+.contract-review-clauses h3 {
+  margin-block-end: var(--space-1);
+}
+.contract-review-clauses p,
+.contract-review-thread p {
+  margin: 0;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
+.contract-review-thread {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contract-review-thread > li {
+  display: grid;
+  gap: var(--space-1);
+  padding-block-end: var(--space-4);
+  border-block-end: 1px solid var(--border);
+}
+.contract-review-thread > li:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+.contract-review-thread .contract-review-from {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.contract-review-from > strong {
+  color: var(--text);
+  font-weight: var(--weight-semibold);
+}
