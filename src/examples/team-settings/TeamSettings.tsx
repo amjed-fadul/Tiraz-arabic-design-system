@@ -183,7 +183,11 @@ function TeamSettingsContent() {
     name: t(item.name.ar, item.name.en),
     provider: t(item.provider.ar, item.provider.en),
     description: t(item.description.ar, item.description.en),
-    context: item.context,
+    // «١٢٨ ألف رمز»: the window's size, in the page's digits.
+    context: t(
+      `${number(item.context / 1000)} ألف رمز`,
+      `${number(item.context / 1000)}k`,
+    ),
   }));
 
   return (
