@@ -1,34 +1,23 @@
-import { useId, useRef, useState } from "react";
-import * as Select from "@radix-ui/react-select";
-import { RotateCcw, ChevronDown, ChevronUp, Check } from "lucide-react";
-import { accentColors, Switch, useSystem } from "../system";
-import type { SystemConfig } from "../system";
+import { useId } from "react";
+import type { CSSProperties, KeyboardEvent } from "react";
+import { Check, RotateCcw } from "lucide-react";
+import { accentColors, numberLocale, Slider, Switch } from "../system";
+import type { Accent, SystemConfig } from "../system";
 import type { AppearanceSettings } from "./storage";
 import type { Language } from "./i18n";
-import { label, localize, words } from "./i18n";
+import { label, localize } from "./i18n";
 import { optionNames } from "./fields";
-import { CopyControl } from "./CopyControl";
+import { Segmented } from "./Segmented";
 interface Props {
   config: SystemConfig;
   language: Language;
   onChange: (settings: AppearanceSettings) => void;
   onReset: () => void;
-  onCollapse?: () => void;
 }
-export function Appearance({
-  config,
-  language,
-  onChange,
-  onReset,
-  onCollapse,
-}: Props) {
-  const uid = useId(),
-    t = words(language);
-  const { container } = useSystem();
-  const accentTrigger = useRef<HTMLButtonElement>(null);
-  const [accentContainer, setAccentContainer] = useState<HTMLElement | null>(
-    null,
-  );
+const accents = Object.keys(accentColors) as Accent[];
+/** The system settings: the panel's second section. */
+export function Appearance({ config, language, onChange, onReset }: Props) {
+  const uid = useId();
   function set<K extends keyof AppearanceSettings>(
     key: K,
     value: AppearanceSettings[K],
@@ -36,179 +25,148 @@ export function Appearance({
     const { theme: _theme, direction: _direction, ...settings } = config;
     onChange({ ...settings, [key]: value });
   }
+  // The swatches are one radio group: the arrow keys move the choice, and in
+  // Arabic the next swatch is the one to the left.
+  function moveAccent(event: KeyboardEvent<HTMLButtonElement>) {
+    const rtl = config.direction === "rtl";
+    const step =
+      event.key === "ArrowDown" ||
+      event.key === (rtl ? "ArrowLeft" : "ArrowRight")
+        ? 1
+        : event.key === "ArrowUp" ||
+            event.key === (rtl ? "ArrowRight" : "ArrowLeft")
+          ? -1
+          : 0;
+    if (step === 0) return;
+    event.preventDefault();
+    const next =
+      accents[
+        (accents.indexOf(config.accent) + step + accents.length) %
+          accents.length
+      ];
+    set("accent", next);
+    event.currentTarget.parentElement
+      ?.querySelector<HTMLElement>(`[data-accent="${next}"]`)
+      ?.focus();
+  }
+  // In the page's digits.
+  const radius = `${new Intl.NumberFormat(numberLocale({}, language)).format(config.radius)} ${label("pixels", language)}`;
   return (
-    <section className="appearance-content">
-      <div className="settings-heading">
-        <h2>{label("customize", language)}</h2>
-        <div className="settings-actions">
-          <CopyControl
-            text={JSON.stringify(config, null, 2)}
-            caption={label("copyConfig", language)}
-            language={language}
-            iconOnly
-          />
-          <button
-            type="button"
-            className="doc-icon-button"
-            title={label("resetSystem", language)}
-            aria-label={label("resetSystem", language)}
-            onClick={onReset}
-          >
-            <RotateCcw size={13} />
-          </button>
-          {onCollapse && (
-            <button
-              type="button"
-              className="doc-icon-button"
-              aria-label={t("طيّ تخصيص المكوّنات", "Collapse system settings")}
-              aria-expanded={true}
-              onClick={onCollapse}
-            >
-              <ChevronDown size={13} />
-            </button>
-          )}
+    <section className="settings-section" aria-labelledby={`${uid}-heading`}>
+      <div className="settings-section-head">
+        <h3 id={`${uid}-heading`}>{label("systemSettings", language)}</h3>
+        <button
+          type="button"
+          className="settings-text-button"
+          aria-label={label("resetSystem", language)}
+          onClick={onReset}
+        >
+          <RotateCcw size={14} aria-hidden="true" />
+          {label("reset", language)}
+        </button>
+      </div>
+      <div className="settings-field">
+        <div className="settings-row">
+          <span id={`${uid}-accent`}>{label("accent", language)}</span>
+          <span className="settings-value">
+            {localize(optionNames[config.accent], language)}
+          </span>
+        </div>
+        <div
+          className="accent-swatches"
+          role="radiogroup"
+          aria-labelledby={`${uid}-accent`}
+        >
+          {accents.map((accent) => {
+            const name = localize(optionNames[accent], language);
+            const checked = accent === config.accent;
+            return (
+              <button
+                key={accent}
+                type="button"
+                role="radio"
+                aria-checked={checked}
+                aria-label={name}
+                title={name}
+                tabIndex={checked ? 0 : -1}
+                data-accent={accent}
+                style={
+                  {
+                    "--swatch": accentColors[accent][config.theme],
+                  } as CSSProperties
+                }
+                onClick={() => set("accent", accent)}
+                onKeyDown={moveAccent}
+              >
+                {checked && (
+                  <Check size={14} strokeWidth={3} aria-hidden="true" />
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
-      <div className="setting-field">
-        <label htmlFor={`${uid}-accent`}>{label("accent", language)}</label>
-        <Select.Root
-          dir={config.direction}
-          value={config.accent}
-          onValueChange={(value) =>
-            set("accent", value as AppearanceSettings["accent"])
-          }
-          onOpenChange={(open) => {
-            if (open)
-              setAccentContainer(
-                accentTrigger.current?.closest<HTMLElement>(".docs-drawer") ??
-                  container,
-              );
-          }}
-        >
-          <Select.Trigger
-            id={`${uid}-accent`}
-            ref={accentTrigger}
-            className="accent-trigger"
-          >
-            <Select.Value />
-            <Select.Icon asChild>
-              <ChevronDown size={12} />
-            </Select.Icon>
-          </Select.Trigger>
-          <Select.Portal container={accentContainer ?? container}>
-            <Select.Content
-              className="tz-select-popup accent-popup"
-              position="popper"
-              sideOffset={4}
-              collisionPadding={12}
-              dir={config.direction}
-            >
-              <Select.ScrollUpButton className="accent-scroll">
-                <ChevronUp size={12} />
-              </Select.ScrollUpButton>
-              <Select.Viewport className="accent-options">
-                {(
-                  Object.keys(accentColors) as AppearanceSettings["accent"][]
-                ).map((value) => (
-                  <Select.Item
-                    key={value}
-                    value={value}
-                    textValue={localize(optionNames[value], language)}
-                    className="tz-select-option accent-option"
-                  >
-                    <Select.ItemText>
-                      <span className="accent-value">
-                        <span
-                          className="accent-swatch"
-                          aria-hidden="true"
-                          style={{
-                            backgroundColor: accentColors[value][config.theme],
-                          }}
-                        />
-                        <span>{localize(optionNames[value], language)}</span>
-                      </span>
-                    </Select.ItemText>
-                    <Select.ItemIndicator>
-                      <Check size={12} aria-hidden="true" />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                ))}
-              </Select.Viewport>
-              <Select.ScrollDownButton className="accent-scroll">
-                <ChevronDown size={12} />
-              </Select.ScrollDownButton>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Root>
-      </div>
-      <div className="setting-field">
-        <label htmlFor={`${uid}-typography`}>
-          {label("typography", language)}
-        </label>
-        <select
-          id={`${uid}-typography`}
-          value={config.typography ?? "standard"}
-          onChange={(e) =>
-            set(
-              "typography",
-              e.target.value as AppearanceSettings["typography"],
-            )
-          }
-        >
-          <option value="standard">{label("normalText", language)}</option>
-          <option value="large">{label("largeText", language)}</option>
-        </select>
-      </div>
-      <div className="setting-field">
-        <label htmlFor={`${uid}-numerals`}>{label("numerals", language)}</label>
-        <select
-          id={`${uid}-numerals`}
-          value={config.numerals ?? "arab"}
-          onChange={(e) =>
-            set("numerals", e.target.value as AppearanceSettings["numerals"])
-          }
-        >
-          <option value="arab">{label("arabicNumerals", language)}</option>
-          <option value="latn">{label("westernNumerals", language)}</option>
-        </select>
-      </div>
-      <div className="setting-field">
-        <label htmlFor={`${uid}-density`}>{label("density", language)}</label>
-        <select
-          id={`${uid}-density`}
-          value={config.density}
-          onChange={(e) =>
-            set("density", e.target.value as AppearanceSettings["density"])
-          }
-        >
-          <option value="compact">{label("compact", language)}</option>
-          <option value="standard">{label("standard", language)}</option>
-        </select>
-      </div>
-      <div className="setting-field">
-        <label htmlFor={`${uid}-radius`}>{label("corners", language)}</label>
-        <div className="radius-control">
-          <input
-            id={`${uid}-radius`}
-            type="range"
-            min={0}
-            max={16}
-            step={2}
-            value={config.radius}
-            onChange={(e) => set("radius", Number(e.target.value))}
-          />
-          <output htmlFor={`${uid}-radius`} dir="ltr">
-            {config.radius}px
-          </output>
+      <Segmented
+        label={label("typography", language)}
+        value={config.typography ?? "standard"}
+        onChange={(value) =>
+          set("typography", value as AppearanceSettings["typography"])
+        }
+        options={[
+          { value: "standard", text: label("normalText", language) },
+          { value: "large", text: label("largeText", language) },
+        ]}
+      />
+      <Segmented
+        label={label("numerals", language)}
+        value={config.numerals ?? "arab"}
+        onChange={(value) =>
+          set("numerals", value as AppearanceSettings["numerals"])
+        }
+        options={[
+          {
+            value: "arab",
+            text: "١٢٣",
+            name: label("arabicNumerals", language),
+          },
+          {
+            value: "latn",
+            text: "123",
+            name: label("westernNumerals", language),
+          },
+        ]}
+      />
+      <Segmented
+        label={label("density", language)}
+        value={config.density}
+        onChange={(value) =>
+          set("density", value as AppearanceSettings["density"])
+        }
+        options={[
+          { value: "compact", text: label("compact", language) },
+          { value: "standard", text: label("standard", language) },
+        ]}
+      />
+      <div className="settings-field">
+        <div className="settings-row">
+          <label htmlFor={`${uid}-radius`}>{label("corners", language)}</label>
+          <span className="settings-value">{radius}</span>
         </div>
-      </div>
-      <div className="setting-field motion-setting">
-        <Switch
-          label={label("motion", language)}
-          checked={config.reducedMotion}
-          onCheckedChange={(value) => set("reducedMotion", value)}
+        <Slider
+          id={`${uid}-radius`}
+          min={0}
+          max={16}
+          step={2}
+          value={config.radius}
+          onValueChange={(value) => set("radius", value)}
+          aria-valuetext={radius}
         />
       </div>
+      <Switch
+        label={label("motion", language)}
+        checked={config.reducedMotion}
+        onCheckedChange={(value) => set("reducedMotion", value)}
+      />
     </section>
   );
 }

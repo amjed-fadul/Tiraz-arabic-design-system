@@ -5,7 +5,7 @@ import { Workbench } from "./Workbench";
 import { persist, storageKeys } from "./storage";
 afterEach(() => vi.useRealTimers());
 it.each([
-  ["حالة التحميل", "LoadingState", "Variant", "orbit"],
+  ["حالة التحميل", "LoadingState", "Variant", "Orbit"],
   ["مؤشر النشاط", "ThinkingIndicator", "Label", "Preparing sample"],
   ["حالة النشاط", "ThinkingState", "Active", null],
 ])(
@@ -26,13 +26,15 @@ it.each([
       "en",
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Customize" }));
     const rail = within(
-      screen.getByRole("complementary", { name: "Customization" }),
+      screen.getByRole("complementary", { name: "Customize the preview" }),
     );
     if (en === "LoadingState")
-      await user.selectOptions(
-        rail.getByRole("combobox", { name: control }),
-        value!,
+      await user.click(
+        within(rail.getByRole("group", { name: control })).getByRole("button", {
+          name: value!,
+        }),
       );
     else if (en === "ThinkingIndicator") {
       await user.clear(rail.getByRole("textbox", { name: control }));
@@ -59,6 +61,7 @@ it("reveals the thinking steps in the playground as the work moves on, and repla
   persist(storageKeys.documentation, {
     language: "en",
     active: "thinking-state",
+    settingsOpen: true,
   });
   const { container } = render(<Workbench />);
   const stage = within(
@@ -89,7 +92,7 @@ it("reveals the thinking steps in the playground as the work moves on, and repla
   // Inactive shows the finished run.
   fireEvent.click(
     within(
-      screen.getByRole("complementary", { name: "Customization" }),
+      screen.getByRole("complementary", { name: "Customize the preview" }),
     ).getByRole("switch", { name: "Active" }),
   );
   expect(stage.getByRole("button", { name: "Summary ready" })).toBeVisible();

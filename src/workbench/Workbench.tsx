@@ -5,6 +5,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 import {
   ArrowUpRight,
@@ -13,8 +14,10 @@ import {
   Sun,
   SlidersHorizontal,
   Menu,
+  X,
 } from "lucide-react";
-import { SystemProvider, defaultConfig } from "../system";
+import { Sheet, SystemProvider, defaultConfig } from "../system";
+import { SystemContext } from "../system/useSystem";
 import type { ButtonState, SystemConfig } from "../system";
 import { aiParts, catalog, navigationGroups } from "./catalog";
 import type { ComponentId } from "./catalog";
@@ -53,6 +56,14 @@ interface EventRecord {
   name: string;
   value?: unknown;
 }
+// Below 1,024px the settings open as a modal Sheet instead of docking.
+const narrowQuery = "(width < 1024px)";
+function watchNarrow(change: () => void) {
+  const query = window.matchMedia(narrowQuery);
+  query.addEventListener("change", change);
+  return () => query.removeEventListener("change", change);
+}
+const isNarrow = () => window.matchMedia(narrowQuery).matches;
 function BrandMark() {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -188,8 +199,16 @@ export function Workbench() {
   const [events, setEvents] = useState<
     Partial<Record<ComponentId, EventRecord[]>>
   >({});
-  const [navigationOpen, setNavigationOpen] = useState(false),
-    [settingsOpen, setSettingsOpen] = useState(false);
+  const [navigationOpen, setNavigationOpen] = useState(false);
+  const narrow = useSyncExternalStore(watchNarrow, isNarrow, () => false);
+  // The narrow Sheet's open state lasts the session: it never opens on load.
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const settingsOpen = narrow ? sheetOpen : documentation.settingsOpen;
+  // The docs' own root, where the settings Sheet portals.
+  const [shell, setShell] = useState<HTMLDivElement | null>(null);
+  const customizeButton = useRef<HTMLButtonElement>(null);
+  const settingsTitle = useRef<HTMLHeadingElement>(null);
+  const focusSettings = useRef(false);
   const buttonTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const actionId = useRef(0);
   const [buttonFeedback, setButtonFeedback] = useState<ButtonState | null>(
@@ -203,10 +222,6 @@ export function Workbench() {
     busy.current = false;
     setButtonFeedback(null);
   }, []);
-  const pendingOpen = useRef<{
-    component: ComponentId;
-    patch: Record<string, unknown>;
-  } | null>(null);
   // Lifecycle phases live for the session only; opening a page starts it at
   // its resting phase. `null` records a press of a state with no phase.
   const [phases, setPhases] = useState<
@@ -308,13 +323,15 @@ export function Workbench() {
   }
   function fromInspector(patch: Record<string, unknown>) {
     if (active === "button") cancelButtonAction();
+    // An example's overlay never opens over the settings: they close first,
+    // and the patch applies without a remount.
     if (
       patch.open === true &&
       settingsOpen &&
       (active === "sheet" || active === "dropdown")
     ) {
-      pendingOpen.current = { component: active, patch };
       setSettingsOpen(false);
+      patchPage(active, patch);
       return;
     }
     patchPage(active, patch);
@@ -492,13 +509,27 @@ export function Workbench() {
       }, 1200);
     }
   }
-  function navigationClosed() {
-    const pending = pendingOpen.current;
-    if (!pending) return false;
-    pendingOpen.current = null;
-    patchPage(pending.component, pending.patch);
-    return true;
+  function setSettingsOpen(open: boolean) {
+    if (narrow) return setSheetOpen(open);
+    setDocumentation((prev) =>
+      prev.settingsOpen === open ? prev : { ...prev, settingsOpen: open },
+    );
   }
+  // «تخصيص» opens the docked panel with focus on its title; closing it from
+  // inside hands focus back to «تخصيص».
+  function toggleSettings() {
+    focusSettings.current = !settingsOpen;
+    setSettingsOpen(!settingsOpen);
+  }
+  function closeSettings() {
+    setSettingsOpen(false);
+    customizeButton.current?.focus();
+  }
+  useEffect(() => {
+    if (!focusSettings.current) return;
+    focusSettings.current = false;
+    settingsTitle.current?.focus();
+  }, [settingsOpen]);
   const pageNotes = docsNotes[active];
   const notes: DemoFrameNotes | undefined = pageNotes && {
     useWhen: pageNotes.useWhen.map((item) => localize(item, language)),
@@ -544,14 +575,9 @@ export function Workbench() {
     <Inspector
       key={active}
       component={active}
+      name={localize(current.name, language)}
       model={model}
       language={language}
-      open={documentation.inspectorOpen}
-      onOpenChange={(open) =>
-        setDocumentation((prev) =>
-          prev.inspectorOpen === open ? prev : { ...prev, inspectorOpen: open },
-        )
-      }
       onPatch={fromInspector}
       onReset={resetPlayground}
     />
@@ -578,9 +604,62 @@ export function Workbench() {
       onReset={resetSystem}
     />
   );
+  const copySettings = (
+    <CopyControl
+      text={JSON.stringify(systemConfig, null, 2)}
+      caption={label("copyConfig", language)}
+      language={language}
+      iconOnly
+    />
+  );
+  // «تخصيص» sits in the playground's toolbar. From 1,024px it opens the
+  // docked panel; below, it is the trigger of a Sheet with the same content.
+  const customizePill = (
+    <button
+      ref={customizeButton}
+      type="button"
+      className="customize-pill"
+      aria-expanded={settingsOpen}
+      {...(narrow
+        ? {}
+        : { "aria-controls": "settings-panel", onClick: toggleSettings })}
+    >
+      <SlidersHorizontal size={16} aria-hidden="true" />
+      <span>{label("customize", language)}</span>
+    </button>
+  );
+  const customize = narrow ? (
+    // The docs' settings and root, not the preview's, which the toolbar has.
+    <SystemContext.Provider
+      value={{ config: documentationConfig, container: shell }}
+    >
+      <Sheet
+        trigger={customizePill}
+        title={label("customizeTitle", language)}
+        description={label("customizeHint", language)}
+        closeLabel={label("closeCustomize", language)}
+        side={direction === "rtl" ? "left" : "right"}
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+        footer={
+          <>
+            <p className="settings-saved">{label("savedHere", language)}</p>
+            {copySettings}
+          </>
+        }
+      >
+        <div className="settings-body">
+          {inspector}
+          {appearance}
+        </div>
+      </Sheet>
+    </SystemContext.Provider>
+  ) : (
+    customizePill
+  );
   return (
     <SystemProvider config={documentationConfig}>
-      <div className="docs-shell">
+      <div className="docs-shell" ref={setShell}>
         <a className="skip-link" href="#main-content">
           {t("انتقل إلى المحتوى", "Skip to content")}
         </a>
@@ -616,24 +695,6 @@ export function Workbench() {
                 {navigation}
               </DocsDrawer>
             </div>
-            <div className="mobile-settings">
-              <DocsDrawer
-                title={t("التخصيص", "Customization")}
-                language={language}
-                open={settingsOpen}
-                onOpenChange={setSettingsOpen}
-                onClosed={navigationClosed}
-                trigger={
-                  <button type="button" className="doc-button">
-                    <SlidersHorizontal size={14} />
-                    <span>{label("customize", language)}</span>
-                  </button>
-                }
-              >
-                {appearance}
-                {inspector}
-              </DocsDrawer>
-            </div>
             <select
               className="language-control"
               aria-label={t("لغة التوثيق", "Documentation language")}
@@ -657,7 +718,10 @@ export function Workbench() {
             </button>
           </div>
         </header>
-        <div className="docs-layout">
+        <div
+          className="docs-layout"
+          data-settings={!narrow && settingsOpen ? "open" : undefined}
+        >
           <aside
             className="docs-sidebar"
             aria-label={t("تنقّل المكوّنات", "Component navigation")}
@@ -726,6 +790,7 @@ export function Workbench() {
                       }))}
                       state={stateOf(active, model, phase, language)}
                       onStateChange={pressState}
+                      customize={customize}
                       // The stored props and settings open with it; the
                       // phase, which is not stored, rides along.
                       openHref={`/examples/playground/${active}${phase ? `?phase=${encodeURIComponent(phase)}` : ""}`}
@@ -819,51 +884,47 @@ export function Workbench() {
               <ApiReference component={active} language={language} />
             </main>
           </div>
-          <aside
-            className="customization-rail"
-            aria-label={t("التخصيص", "Customization")}
-          >
-            <div
-              className="customization-scroll"
-              tabIndex={0}
-              role="region"
-              aria-label={t(
-                "إعدادات وخصائص المكوّن",
-                "System settings and component properties",
-              )}
+          {!narrow && (
+            // Docked at the end side, it pushes the page narrower rather than
+            // covering it. It stays mounted while closed, so it can slide out.
+            <aside
+              id="settings-panel"
+              className="settings-panel"
+              aria-labelledby="settings-title"
+              hidden={!settingsOpen}
+              onKeyDown={(event) => {
+                if (event.key !== "Escape" || event.defaultPrevented) return;
+                event.preventDefault();
+                closeSettings();
+              }}
             >
-              {documentation.systemPanelOpen ? (
-                <Appearance
-                  config={systemConfig}
-                  language={language}
-                  onChange={setSettings}
-                  onReset={resetSystem}
-                  onCollapse={() =>
-                    setDocumentation((prev) => ({
-                      ...prev,
-                      systemPanelOpen: false,
-                    }))
-                  }
-                />
-              ) : (
-                <button
-                  type="button"
-                  className="system-collapse"
-                  aria-expanded={false}
-                  onClick={() =>
-                    setDocumentation((prev) => ({
-                      ...prev,
-                      systemPanelOpen: true,
-                    }))
-                  }
-                >
-                  <SlidersHorizontal size={14} />
-                  {label("customize", language)}
-                </button>
-              )}
-              {inspector}
-            </div>
-          </aside>
+              <header className="settings-header">
+                <div>
+                  <h2 id="settings-title" ref={settingsTitle} tabIndex={-1}>
+                    {label("customizeTitle", language)}
+                  </h2>
+                  <p>{label("customizeHint", language)}</p>
+                </div>
+                <div className="settings-actions">
+                  {copySettings}
+                  <button
+                    type="button"
+                    className="tz-icon-button settings-close"
+                    aria-label={label("closeCustomize", language)}
+                    title={label("closeCustomize", language)}
+                    onClick={closeSettings}
+                  >
+                    <X size={16} aria-hidden="true" />
+                  </button>
+                </div>
+              </header>
+              <div className="settings-body">
+                {inspector}
+                {appearance}
+              </div>
+              <p className="settings-saved">{label("savedHere", language)}</p>
+            </aside>
+          )}
         </div>
       </div>
     </SystemProvider>

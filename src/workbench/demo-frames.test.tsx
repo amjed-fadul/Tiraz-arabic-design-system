@@ -127,11 +127,11 @@ it("resets an interactive playground from the inspector without remounting the f
   expect(
     within(frame).queryByRole("button", { name: "إعادة تشغيل المثال" }),
   ).toBeNull();
+  await user.click(screen.getByRole("button", { name: "تخصيص" }));
   await user.click(
-    within(screen.getByRole("complementary", { name: "التخصيص" })).getByRole(
-      "button",
-      { name: "إعادة ضبط المعاينة" },
-    ),
+    within(
+      screen.getByRole("complementary", { name: "تخصيص المعاينة" }),
+    ).getByRole("button", { name: "إعادة ضبط المعاينة" }),
   );
   expect(within(frame).getByRole("textbox", { name: "ملاحظات" })).toHaveValue(
     filled,
@@ -345,11 +345,11 @@ it("records the EmptyState playground action without offering a replay", async (
   expect(
     within(frame).queryByRole("button", { name: "إعادة تشغيل المثال" }),
   ).toBeNull();
+  await user.click(screen.getByRole("button", { name: "تخصيص" }));
   await user.clear(
-    within(screen.getByRole("complementary", { name: "التخصيص" })).getByRole(
-      "textbox",
-      { name: "زر الإجراء" },
-    ),
+    within(
+      screen.getByRole("complementary", { name: "تخصيص المعاينة" }),
+    ).getByRole("textbox", { name: "زر الإجراء" }),
   );
   expect(within(frame).queryByRole("button", { name: "إضافة سجل" })).toBeNull();
 });

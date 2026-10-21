@@ -135,8 +135,7 @@ bdi {
   min-block-size: 32px;
   cursor: pointer;
 }
-.mobile-navigation,
-.mobile-settings {
+.mobile-navigation {
   display: none;
 }
 .docs-layout {
@@ -498,218 +497,6 @@ bdi {
 .api-scroll tbody tr:last-child > * {
   border: 0;
 }
-.system-rail {
-  position: sticky;
-  inset-block-start: 28px;
-  align-self: start;
-}
-.system-collapse {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 0;
-  background: transparent;
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-  padding: 3px 3px 13px;
-  inline-size: 100%;
-}
-.system-collapse svg:last-child {
-  margin-inline-start: auto;
-  transform: rotate(-90deg);
-}
-.system-collapse .expanded {
-  transform: none !important;
-}
-.floating-settings {
-  background: var(--surface-subtle);
-  border-radius: var(--radius-tray);
-  padding: 17px;
-  box-shadow: var(--shadow-paper);
-  max-block-size: calc(100dvh - 108px);
-  overflow-y: auto;
-}
-.settings-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-.settings-heading h2 {
-  margin: 0;
-  font-size: var(--text-label);
-  font-weight: 500;
-}
-.settings-scope {
-  font-size: var(--text-micro);
-  color: var(--text-secondary);
-  margin: 2px 0 21px;
-}
-.setting-field {
-  margin-block-end: 17px;
-}
-.setting-field > label,
-.radius-setting label {
-  display: block;
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-  margin-block-end: 6px;
-}
-.setting-field select,
-.accent-trigger,
-.inspector-field > select,
-.inspector-field > input,
-.inspector-field > textarea {
-  inline-size: 100%;
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-control);
-  min-block-size: 32px;
-  font-size: var(--text-meta);
-  color: var(--text);
-  padding: 4px 7px;
-}
-.setting-field select,
-.accent-trigger,
-.inspector-field select {
-  cursor: pointer;
-}
-.radius-setting > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.radius-setting bdi {
-  font: var(--text-micro) var(--font-mono);
-  color: var(--text-secondary);
-}
-.radius-setting input {
-  inline-size: 100%;
-  accent-color: var(--action);
-  cursor: pointer;
-}
-.motion-setting {
-  margin-block: 22px 20px;
-}
-.motion-setting .tz-switch-field {
-  gap: 8px;
-}
-.motion-setting label {
-  font-size: var(--text-meta);
-  font-weight: 400;
-}
-.settings-saved {
-  font-size: var(--text-micro);
-  color: var(--text-muted);
-  margin: 8px 0 0;
-}
-.appearance-content .copy-button {
-  padding-inline: 0;
-  font-size: var(--text-micro) !important;
-}
-.playground-inspector {
-  margin-block-start: 28px;
-  border-block-start: 1px solid var(--border);
-  padding-block-start: 14px;
-  min-block-size: 0;
-}
-.playground-inspector > summary {
-  cursor: pointer;
-  font-size: var(--text-meta);
-  color: var(--text);
-  font-weight: 500;
-  display: list-item;
-  padding-inline: 4px;
-}
-.inspector-scroll {
-  max-block-size: calc(100dvh - 378px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0 3px 16px;
-  scrollbar-width: thin;
-}
-.inspector-scope {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 5px 0 12px;
-}
-.inspector-scope p {
-  color: var(--text-secondary);
-  font-size: var(--text-micro);
-  margin: 0;
-}
-.inspector-field {
-  margin-block-end: 13px;
-  min-inline-size: 0;
-}
-.inspector-field > label {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 5px;
-  font-size: var(--text-meta);
-  margin-block-end: 5px;
-}
-.inspector-field > label code {
-  font: var(--text-micro) / 1.6 var(--font-mono);
-  color: var(--text-muted);
-  text-align: end;
-  max-inline-size: 44%;
-  overflow-wrap: anywhere;
-  unicode-bidi: isolate;
-  direction: ltr;
-}
-.boolean-field .tz-switch-field {
-  gap: 7px;
-}
-.boolean-field .tz-switch-copy label {
-  font-size: var(--text-meta);
-  font-weight: 400;
-}
-.boolean-field .tz-switch-copy p {
-  font: var(--text-micro) / 1.7 var(--font-mono);
-  unicode-bidi: isolate;
-  color: var(--text-muted);
-  overflow-wrap: anywhere;
-}
-.advanced-inspector {
-  margin-block-start: 18px;
-}
-.advanced-inspector summary {
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: list-item;
-  margin-block-end: 15px;
-}
-.field-help {
-  font-size: var(--text-micro);
-  color: var(--text-secondary);
-  line-height: 1.8;
-  margin: 7px 0 0;
-}
-.field-error {
-  color: var(--danger);
-  font-size: var(--text-micro);
-  margin: 7px 0 0;
-}
-.collection-field textarea {
-  font: var(--text-micro) / 1.8 var(--font-mono);
-  resize: vertical;
-  min-block-size: 100px;
-}
-.collection-field .doc-button {
-  font-size: var(--text-micro) !important;
-  margin-block-start: 4px;
-  padding-inline: 0;
-}
-.override-heading {
-  font-size: var(--text-meta);
-  margin-block: 20px 10px;
-  color: var(--text-secondary);
-}
 .docs-drawer-backdrop {
   position: fixed;
   inset: 0;
@@ -760,40 +547,6 @@ bdi {
   padding: 24px;
   flex: 1;
 }
-.docs-drawer .settings-heading {
-  display: none;
-}
-.docs-drawer .appearance-content::before {
-  content: none;
-}
-.docs-drawer .settings-heading .doc-icon-button {
-  display: inline-flex;
-}
-.docs-drawer .settings-heading {
-  display: flex;
-  justify-content: flex-end;
-}
-.docs-drawer .settings-heading h2 {
-  display: none;
-}
-.docs-drawer .inspector-scroll {
-  max-block-size: none;
-  overflow: visible;
-}
-@media (max-width: 1250px) {
-  .docs-workspace {
-    grid-template-columns: minmax(0, 1fr);
-    max-inline-size: 800px;
-    margin-inline: auto;
-    padding-inline: 42px;
-  }
-  .system-rail {
-    display: none;
-  }
-  .mobile-settings {
-    display: block;
-  }
-}
 @media (max-width: 760px) {
   .docs-layout {
     display: block;
@@ -829,23 +582,6 @@ bdi {
   .header-actions .doc-button {
     font-size: var(--text-micro) !important;
     padding-inline: 6px;
-  }
-  .mobile-settings .doc-button {
-    inline-size: 32px;
-    padding: 0;
-    gap: 0;
-  }
-  /* The icon alone shows; the word stays the button's name. */
-  .mobile-settings .doc-button > span {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-  }
-  .mobile-settings .doc-button svg {
-    inline-size: 16px;
   }
   .language-control {
     inline-size: 76px;
@@ -911,13 +647,20 @@ bdi {
   }
 }
 
-.settings-actions {
-  display: flex;
-  gap: 2px;
-}
-/* The viewport grid reserves both rails independently of the centered article. */
+/* The page's columns: the navigation, the page and the settings, whose
+   column takes no room until «تخصيص» opens it. The page gives way as it
+   widens, so the card slides in from the end edge; what passes the window's
+   edge meanwhile is clipped, never scrolled to. Like the sidebar's width, the
+   column animates on the expand and collapse times, which keyboard modality
+   and reduced motion zero (Woven §15, §20). */
 .docs-layout {
-  grid-template-columns: 190px minmax(0, 1fr) 260px;
+  grid-template-columns: 190px minmax(0, 1fr) 0;
+  overflow-x: clip;
+  transition: grid-template-columns var(--motion-collapse-exit) var(--ease-out);
+}
+.docs-layout[data-settings="open"] {
+  grid-template-columns: 190px minmax(0, 1fr) 352px;
+  transition-duration: var(--motion-collapse);
 }
 .docs-sidebar {
   overflow-y: auto;
@@ -934,150 +677,355 @@ bdi {
   max-inline-size: 1160px;
   margin-inline: auto;
 }
-.customization-rail {
-  position: sticky;
-  inset-block-start: 10px;
-  align-self: start;
-  padding: 10px;
-  min-inline-size: 0;
+/* «تخصيص»: a paper chip with its icon and word, between the states and the
+   new-tab link. Open, it takes the action's soft fill, its color and a 1px
+   ring. */
+.customize-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+  min-block-size: 36px;
+  padding-inline: 14px;
+  /* Forced colors drop the ring shadow; this border draws the chip. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-chip);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
 }
-.customization-scroll {
-  max-block-size: calc(100dvh - 88px);
-  overflow: auto;
-  scrollbar-width: thin;
+.customize-pill[aria-expanded="true"] {
+  background: var(--action-soft);
+  color: var(--action);
+  box-shadow: 0 0 0 1px var(--action);
+}
+.customize-pill:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-press);
+}
+/* The settings card: paper in its own column, 16px clear of its edges,
+   sticky 16px from the top and never taller than the window, with its body
+   scrolling inside. Closed, it stays in place while the column shuts, and
+   only then leaves. */
+.settings-panel {
+  position: sticky;
+  inset-block-start: var(--space-4);
+  align-self: start;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-.appearance-content,
-.playground-inspector,
-.customization-scroll > .system-collapse {
-  flex-shrink: 0;
-  background: var(--surface-tray);
+  inline-size: 320px;
+  max-block-size: calc(100dvh - 58px - 2 * var(--space-4));
+  margin: var(--space-4);
+  overflow: hidden;
+  /* Forced colors drop the paper's ring; this border draws its edge. */
+  border: 1px solid transparent;
   border-radius: var(--radius-tray);
-  padding: 12px;
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
+  transition: display var(--motion-collapse-exit) allow-discrete;
 }
-.settings-heading {
-  gap: 4px;
-  margin-block-end: 12px;
+.settings-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-4) 14px;
+  padding-inline: var(--space-5) var(--space-4);
+  border-block-end: 0.5px solid var(--hairline);
 }
-.settings-heading h2 {
-  font-size: var(--text-meta);
-  line-height: 1.7;
-}
-.settings-actions {
-  gap: 0;
-}
-.settings-actions .doc-icon-button,
-.settings-actions .copy-icon {
-  inline-size: 26px;
-  min-block-size: 30px;
-  padding: 0;
-}
-.setting-field,
-.inspector-field {
+.settings-header > div:first-child {
   display: grid;
-  grid-template-columns: 76px minmax(0, 1fr);
-  gap: 8px;
-  align-items: center;
-  margin-block-end: 8px;
+  gap: 2px;
+  min-inline-size: 0;
 }
-.setting-field > label,
-.inspector-field > label {
-  display: block;
+.settings-header h2 {
   margin: 0;
-  font-size: var(--text-meta);
-  color: var(--text-secondary);
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
 }
-.setting-field select,
-.accent-trigger,
-.inspector-field select,
-.inspector-field input {
-  min-block-size: 30px;
+.settings-header p {
+  margin: 0;
+  color: var(--text-muted);
   font-size: var(--text-meta);
-  padding: 3px 6px;
+  line-height: var(--leading-meta);
+  text-wrap: pretty;
 }
-.radius-control {
+/* Copy settings and close: 32px round icon buttons, close on the tray. */
+.settings-actions {
+  display: flex;
+  gap: var(--space-1);
+}
+.settings-actions .tz-icon-button {
+  border-radius: var(--radius-pill);
+}
+.settings-actions svg {
+  inline-size: 16px;
+  block-size: 16px;
+}
+.settings-close {
+  background: var(--surface-tray);
+}
+.tz-icon-button.settings-close {
+  color: var(--text);
+}
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  flex: 1;
+  min-block-size: 0;
+  padding: 18px var(--space-5) var(--space-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+/* In the Sheet, its body scrolls and pads the same content. */
+.tz-sheet-body > .settings-body {
+  padding: 0;
+  overflow: visible;
+}
+.settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* A hairline between the properties and the system settings. */
+.settings-section + .settings-section {
+  padding-block-start: 22px;
+  border-block-start: 0.5px solid var(--hairline);
+}
+.settings-section-head {
   display: flex;
   align-items: center;
-  gap: 5px;
-  min-inline-size: 0;
+  justify-content: space-between;
+  gap: var(--space-2);
 }
-.radius-control input {
-  min-inline-size: 0;
-  inline-size: 100%;
-  accent-color: var(--action);
+.settings-section-head h3 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
 }
-.radius-control output {
-  font: var(--text-micro) var(--font-mono);
-  flex-shrink: 0;
-  min-inline-size: 24px;
-  text-align: end;
-  color: var(--text-secondary);
-}
-.motion-setting {
-  display: block;
-  margin: 8px 0 0;
-}
-.motion-setting .tz-switch-field,
-.boolean-field .tz-switch-field {
-  gap: 8px;
+/* Reset and Apply: text in the action color. */
+.settings-text-button {
+  display: inline-flex;
   align-items: center;
-}
-.motion-setting .tz-switch-copy,
-.boolean-field .tz-switch-copy {
-  flex: 1;
-}
-.motion-setting .tz-switch-copy label,
-.boolean-field .tz-switch-copy label {
-  font-size: var(--text-meta);
-  font-weight: 400;
-  color: var(--text-secondary);
-}
-.motion-setting .tz-switch,
-.boolean-field .tz-switch {
-  order: 1;
-}
-.boolean-field {
-  display: block;
-}
-.playground-inspector {
-  border: 0;
-  margin-block-start: 0;
-}
-.playground-inspector > summary {
-  font-size: var(--text-meta);
-  padding: 0;
-}
-.inspector-scroll {
-  max-block-size: none;
-  overflow: visible;
-  padding: 0;
-}
-.inspector-scope {
-  margin: 4px 0 8px;
-}
-.inspector-scope p {
-  font-size: var(--text-micro);
-}
-.collection-field {
-  grid-template-columns: minmax(0, 1fr);
   gap: 6px;
+  flex: none;
+  padding: var(--space-1) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--action);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+}
+.settings-text-button:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+/* A row: the label at the start, its value or control at the end. */
+.settings-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  font-size: var(--text-label);
+}
+.settings-value {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+}
+/* A field: the label above, the control at full width. */
+.settings-field {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.settings-field > label {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
 }
 .collection-field textarea {
   min-block-size: 100px;
-  inline-size: 100%;
-  font: var(--text-micro) / 1.7 var(--font-mono);
+  font: var(--text-micro) / var(--leading-meta) var(--font-mono);
 }
-.collection-field .doc-button {
+.collection-field .settings-text-button {
   justify-self: start;
-  margin: 0;
-  padding: 0 3px;
-  min-block-size: 28px;
 }
-.system-collapse {
-  min-block-size: 32px;
+.field-error {
+  margin: 0;
+  color: var(--danger);
+  font-size: var(--text-micro);
+}
+.settings-section .tz-switch-field {
+  min-block-size: 0;
+  gap: var(--space-3);
+}
+.settings-section .tz-switch-copy label {
+  font-size: var(--text-label);
+  font-weight: var(--weight-regular);
+}
+/* Short choices: a tray with the chosen option as a paper chip. */
+.settings-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tray);
+}
+.settings-segmented > button {
+  min-block-size: 28px;
+  padding-inline: 10px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+}
+.settings-segmented > button[aria-pressed="true"] {
+  background: var(--surface);
   color: var(--text);
+  box-shadow: var(--shadow-chip);
+}
+.settings-segmented > button:active {
+  transform: scale(var(--press-scale));
+  transition-duration:
+    var(--motion-fast), var(--motion-fast), var(--motion-fast),
+    var(--motion-press);
+}
+.settings-segmented > button:focus-visible {
+  outline-offset: -2px;
+}
+/* The accent: twelve swatches in six columns. The chosen one has a ring of
+   paper, then a ring in its own color, and a check. */
+.accent-swatches {
+  display: grid;
+  grid-template-columns: repeat(6, 28px);
+  justify-content: space-between;
+  row-gap: 10px;
+}
+.accent-swatches > button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 28px;
+  block-size: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--swatch);
+  color: var(--action-text);
+  touch-action: manipulation;
+  transition:
+    box-shadow var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+}
+.accent-swatches > button[aria-checked="true"] {
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--swatch);
+}
+.accent-swatches > button:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+.accent-swatches > button:focus-visible {
+  outline-offset: 4px;
+}
+.settings-saved {
+  margin: 0;
+  padding: 10px var(--space-5);
+  border-block-start: 0.5px solid var(--hairline);
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+/* In the Sheet the note opens its footer, and copy settings closes it. */
+.tz-sheet-footer > .settings-saved {
+  align-self: center;
+  margin-inline-end: auto;
+  padding: 0;
+  border: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  .customize-pill[aria-expanded="false"]:hover {
+    background: color-mix(in srgb, var(--text) 4%, var(--surface));
+  }
+  .settings-close:hover {
+    background: color-mix(in srgb, var(--text) 6%, var(--surface-tray));
+  }
+  .settings-text-button:hover {
+    background: var(--wash);
+  }
+  .settings-segmented > button:not([aria-pressed="true"]):hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}
+/* Coarse pointers: targets of 44px. */
+@media (pointer: coarse) {
+  .customize-pill,
+  .settings-segmented > button,
+  .settings-text-button {
+    min-block-size: 44px;
+  }
+  .settings-actions .tz-icon-button {
+    inline-size: 44px;
+    block-size: 44px;
+  }
+  .accent-swatches {
+    row-gap: var(--space-4);
+  }
+  .accent-swatches > button::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+  }
+}
+/* Forced colors: the chips, swatches and card keep their borders above, the
+   chosen items take Highlight, written as is so the text keeps no Canvas
+   backplate, and focus rings take CanvasText. */
+@media (forced-colors: active) {
+  .customize-pill[aria-expanded="true"],
+  .settings-segmented > button[aria-pressed="true"],
+  .accent-swatches > button[aria-checked="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+  :is(.customize-pill, .settings-panel, .tz-sheet) :focus-visible,
+  .customize-pill:focus-visible {
+    outline-color: CanvasText;
+  }
 }
 .agent-section > h2 {
   margin-block-end: 10px;
@@ -1108,31 +1056,7 @@ bdi {
 .prompt-row .copy-control {
   flex-shrink: 0;
 }
-.docs-drawer .settings-heading {
-  display: flex;
-  justify-content: space-between;
-}
-.docs-drawer .settings-heading h2 {
-  display: block;
-}
-.docs-drawer .playground-inspector {
-  margin-block-start: 16px;
-}
-@media (min-width: 1101px) {
-  .mobile-settings {
-    display: none;
-  }
-}
 @media (max-width: 1100px) {
-  .docs-layout {
-    grid-template-columns: 190px minmax(0, 1fr);
-  }
-  .customization-rail {
-    display: none;
-  }
-  .mobile-settings {
-    display: block;
-  }
   .docs-workspace {
     padding-inline: 32px;
   }
@@ -1262,52 +1186,6 @@ bdi {
     color: var(--text);
     background: var(--wash);
   }
-}
-
-/* Documentation-only accent choice: keep swatches out of accessible names. */
-.accent-trigger,
-.accent-value {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-inline-size: 0;
-}
-.accent-trigger {
-  justify-content: space-between;
-  text-align: start;
-}
-.accent-trigger > svg,
-.accent-swatch {
-  flex-shrink: 0;
-}
-.accent-swatch {
-  display: inline-block;
-  inline-size: 11px;
-  block-size: 11px;
-  border-radius: var(--radius-pill);
-  border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
-}
-.accent-popup {
-  z-index: 90;
-  border-radius: var(--radius-paper);
-}
-.accent-options {
-  padding: 4px;
-  max-block-size: min(
-    330px,
-    calc(var(--radix-select-content-available-height) - 36px)
-  );
-}
-.accent-option {
-  min-block-size: 30px;
-  padding: 3px 6px;
-  font-size: var(--text-meta);
-  border-radius: var(--radius-item);
-}
-.accent-scroll {
-  display: flex;
-  justify-content: center;
-  block-size: 16px;
 }
 
 /* Every demo shares its frame; canvases only arrange the component body. */

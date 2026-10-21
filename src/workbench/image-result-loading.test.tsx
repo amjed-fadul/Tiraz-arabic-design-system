@@ -6,6 +6,7 @@ it("updates image loading percentage in the inspector without remounting the ima
   // ImageResult is one of the AI parts, folded until their disclosure opens.
   fireEvent.click(screen.getByRole("button", { name: "الأجزاء" }));
   fireEvent.click(screen.getByRole("button", { name: "نتيجة الصورة" }));
+  fireEvent.click(screen.getByRole("button", { name: "تخصيص" }));
   const frame = document.querySelector(".playground-region .tz-image-result");
   const image = frame?.querySelector("img");
   fireEvent.change(screen.getByRole("spinbutton", { name: "نسبة التقدّم" }), {

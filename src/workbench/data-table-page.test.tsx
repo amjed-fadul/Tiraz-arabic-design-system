@@ -6,7 +6,11 @@ import { persist, storageKeys } from "./storage";
 it("documents DataTable with minimal controls and copies the connected portable application", async () => {
   const user = userEvent.setup();
   const write = vi.spyOn(navigator.clipboard, "writeText");
-  persist(storageKeys.documentation, { language: "en", active: "data-table" });
+  persist(storageKeys.documentation, {
+    language: "en",
+    active: "data-table",
+    settingsOpen: true,
+  });
   render(<Workbench />);
   expect(
     screen.getByRole("heading", { level: 1, name: "DataTable" }),
@@ -19,10 +23,8 @@ it("documents DataTable with minimal controls and copies the connected portable 
     screen.getByLabelText("Caption", { exact: true }),
     "Team records",
   );
-  await user.selectOptions(
-    screen.getByLabelText("Example state", { exact: true }),
-    "error",
-  );
+  await user.click(screen.getByRole("combobox", { name: "Example state" }));
+  await user.click(screen.getByRole("option", { name: "Error" }));
   expect(
     within(canvas).getByRole("button", { name: "Retry" }),
   ).toBeInTheDocument();

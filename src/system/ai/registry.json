@@ -2711,6 +2711,7 @@
         "ApprovalCardLabels",
         "ApprovalDetails",
         "ApprovalRequest",
+        "ApprovalRecord",
         "ApprovalDecision",
         "approvalRequestKey"
       ],
@@ -8939,6 +8940,70 @@
           "name": "needsYou",
           "type": "string",
           "required": true
+        }
+      ]
+    },
+    {
+      "type": "ApprovalRequest",
+      "source": "ApprovalCard.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "action",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "consequences",
+          "type": "readonly string[]",
+          "required": true
+        },
+        {
+          "name": "details",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "approveLabel",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "rejectLabel",
+          "type": "string",
+          "required": true
+        }
+      ]
+    },
+    {
+      "type": "ApprovalRecord",
+      "source": "ApprovalCard.tsx",
+      "props": [
+        {
+          "name": "requestId",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "requestKey",
+          "type": "string",
+          "required": true,
+          "note": "approvalRequestKey(request) for the request as it is worded now."
+        },
+        {
+          "name": "decision",
+          "type": "ApprovalDecision",
+          "required": true,
+          "values": ["approved", "rejected"]
         }
       ]
     },

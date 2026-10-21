@@ -43,6 +43,7 @@ it.each([
       document.querySelectorAll(".tz-demo-frame").length,
     ).toBeGreaterThanOrEqual(1);
     expect(screen.getByRole("tablist", { name: "View" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Customize" }));
     expect(screen.getByRole("switch", { name: "Long output" })).toBeVisible();
   },
 );
@@ -82,10 +83,14 @@ it.each(["chat-composer", "prompt-bar"] as const)(
   "fails %s playground sends from the inspector while keeping the draft",
   async (active) => {
     vi.useFakeTimers();
-    persist(storageKeys.documentation, { language: "ar", active });
+    persist(storageKeys.documentation, {
+      language: "ar",
+      active,
+      settingsOpen: true,
+    });
     render(<Workbench />);
     const failSend = within(
-      screen.getByRole("complementary", { name: "التخصيص" }),
+      screen.getByRole("complementary", { name: "تخصيص المعاينة" }),
     ).getByRole("switch", { name: "تعذّر الإرسال" });
     expect(failSend).not.toBeChecked();
     fireEvent.click(failSend);
@@ -108,10 +113,14 @@ it.each(["chat-composer", "prompt-bar"] as const)(
 );
 it("opens the chat-thread playground on the new message, and replays the thinking beat without resetting the panel", async () => {
   vi.useFakeTimers();
-  persist(storageKeys.documentation, { language: "en", active: "chat-thread" });
+  persist(storageKeys.documentation, {
+    language: "en",
+    active: "chat-thread",
+    settingsOpen: true,
+  });
   render(<Workbench />);
   const longContent = within(
-    screen.getByRole("complementary", { name: "Customization" }),
+    screen.getByRole("complementary", { name: "Customize the preview" }),
   ).getByRole("switch", { name: "Long content" });
   fireEvent.click(longContent);
   const region = () =>

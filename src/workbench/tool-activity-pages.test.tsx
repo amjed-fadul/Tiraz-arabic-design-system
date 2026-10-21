@@ -32,8 +32,9 @@ it.each([
       expect(screen.queryByRole("heading", { name })).toBeNull();
     expect(document.querySelectorAll(".tz-demo-frame")).toHaveLength(1);
     expect(screen.getByRole("tablist", { name: "View" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Customize" }));
     const inspector = within(
-      screen.getByRole("complementary", { name: "Customization" }),
+      screen.getByRole("complementary", { name: "Customize the preview" }),
     );
     await user.click(inspector.getByRole("switch", { name: control }));
     await user.click(screen.getByRole("tab", { name: "Code" }));

@@ -1014,6 +1014,20 @@ export const optionNames: Record<string, Localized> = {
   button: ["زر", "Button"],
   submit: ["إرسال النموذج", "Submit"],
   reset: ["إعادة ضبط النموذج", "Reset"],
+  running: ["يعمل", "Running"],
+  failed: ["تعثّر", "Failed"],
+  loaded: ["تم التحميل", "Loaded"],
+  landscape: ["عرضي", "Landscape"],
+  square: ["مربّع", "Square"],
+  portrait: ["طولي", "Portrait"],
+  drive: ["شبكة", "Drive"],
+  dots: ["نقاط", "Dots"],
+  orbit: ["مدار", "Orbit"],
+  all: ["الكل", "All"],
+  guide: ["دليل", "Guide"],
+  note: ["ملاحظة", "Note"],
+  "no-records": ["لا توجد سجلات", "No records"],
+  "getting-started": ["البدء", "Getting started"],
 };
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.

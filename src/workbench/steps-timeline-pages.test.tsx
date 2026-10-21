@@ -37,14 +37,15 @@ it.each([
     );
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     if (id === "steps") {
-      await user.selectOptions(
-        screen.getByRole("combobox", { name: "Orientation" }),
-        "vertical",
+      await user.click(screen.getByRole("button", { name: "Customize" }));
+      await user.click(
+        within(screen.getByRole("group", { name: "Orientation" })).getByRole(
+          "button",
+          { name: "Vertical" },
+        ),
       );
-      await user.selectOptions(
-        screen.getByRole("combobox", { name: "Current state" }),
-        "error",
-      );
+      await user.click(screen.getByRole("combobox", { name: "Current state" }));
+      await user.click(screen.getByRole("option", { name: "Error" }));
     }
     await user.click(screen.getByRole("tab", { name: "Code" }));
     await user.click(screen.getByRole("button", { name: "Copy code" }));
@@ -68,20 +69,24 @@ it.each([
   },
 );
 it("moves through the steps playground with Back, Next and the stages, and replays Start to Complete", async () => {
-  persist(storageKeys.documentation, { language: "en", active: "steps" });
+  persist(storageKeys.documentation, {
+    language: "en",
+    active: "steps",
+    settingsOpen: true,
+  });
   const user = userEvent.setup();
   render(<Workbench />);
   const rail = within(
-    screen.getByRole("complementary", { name: "Customization" }),
+    screen.getByRole("complementary", { name: "Customize the preview" }),
   );
-  await user.selectOptions(
-    rail.getByRole("combobox", { name: "Orientation" }),
-    "vertical",
-  );
-  await user.selectOptions(
-    rail.getByRole("combobox", { name: "Current state" }),
-    "error",
-  );
+  const vertical = () =>
+    within(rail.getByRole("group", { name: "Orientation" })).getByRole(
+      "button",
+      { name: "Vertical" },
+    );
+  await user.click(vertical());
+  await user.click(rail.getByRole("combobox", { name: "Current state" }));
+  await user.click(screen.getByRole("option", { name: "Error" }));
   const stage = () =>
     within(screen.getByRole("region", { name: "Interactive playground" }));
   const statuses = () =>
@@ -108,18 +113,16 @@ it("moves through the steps playground with Back, Next and the stages, and repla
   vi.useFakeTimers();
   fireEvent.click(screen.getByRole("button", { name: "Replay example" }));
   expect(statuses()).toEqual(["current", "upcoming", "upcoming"]);
-  expect(rail.getByRole("combobox", { name: "Current state" })).toHaveValue(
-    "current",
-  );
+  expect(
+    rail.getByRole("combobox", { name: "Current state" }),
+  ).toHaveTextContent("Current");
   await act(async () => vi.advanceTimersByTime(1400));
   expect(statuses()).toEqual(["completed", "current", "upcoming"]);
   await act(async () => vi.advanceTimersByTime(1400));
   expect(stage().getByRole("status")).toHaveTextContent(
     "All stages are complete.",
   );
-  expect(rail.getByRole("combobox", { name: "Orientation" })).toHaveValue(
-    "vertical",
-  );
+  expect(vertical()).toHaveAttribute("aria-pressed", "true");
 });
 it("normalizes persisted sequence options against the real enums", () => {
   const p = normalizePlaygrounds(

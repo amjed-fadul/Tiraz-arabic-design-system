@@ -75,9 +75,10 @@ for (const component of ["tag-input", "filter-bar", "input-copy"] as const) {
       await user.click(preview.getByRole("button", { name: "Clear all" }));
       expect(preview.getByRole("status")).toHaveTextContent("3 documents");
     } else {
+      await user.click(screen.getByRole("button", { name: "Customize" }));
       expect(
         within(
-          screen.getByRole("complementary", { name: "Customization" }),
+          screen.getByRole("complementary", { name: "Customize the preview" }),
         ).getByLabelText("Value", { exact: true }),
       ).toHaveValue("https://madar.sa/invite/7KQ2-RX9");
       expect(preview.getByRole("textbox")).toHaveValue(

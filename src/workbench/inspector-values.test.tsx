@@ -9,13 +9,17 @@ it("keeps a page-specific state chosen in the inspector", async () => {
   persist(storageKeys.documentation, {
     language: "ar",
     active: "terminal",
-    systemPanelOpen: false,
-    inspectorOpen: true,
+    settingsOpen: true,
   });
   render(<Workbench />);
   const state = within(
-    screen.getByRole("complementary", { name: "التخصيص" }),
-  ).getByRole("combobox", { name: "الحالة" });
-  await user.selectOptions(state, "running");
-  expect(state).toHaveValue("running");
+    within(
+      screen.getByRole("complementary", { name: "تخصيص المعاينة" }),
+    ).getByRole("group", { name: "الحالة" }),
+  );
+  await user.click(state.getByRole("button", { name: "يعمل" }));
+  expect(state.getByRole("button", { name: "يعمل" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
 });

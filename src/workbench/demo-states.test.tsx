@@ -18,8 +18,13 @@ import { SystemProvider, defaultConfig } from "../system";
 afterEach(() => vi.useRealTimers());
 
 const word = (key: keyof typeof stateWords) => stateWords[key][0];
-function open(active: ComponentId) {
-  persist(storageKeys.documentation, { language: "ar", active });
+/** Opens a page; with `settings`, the settings panel starts open. */
+function open(active: ComponentId, settings = false) {
+  persist(storageKeys.documentation, {
+    language: "ar",
+    active,
+    settingsOpen: settings,
+  });
   return render(<Workbench />);
 }
 const states = () =>
@@ -30,10 +35,25 @@ const pressed = () =>
     .filter((button) => button.getAttribute("aria-pressed") === "true")
     .map((button) => button.textContent);
 const rail = () =>
-  within(screen.getByRole("complementary", { name: "التخصيص" }));
+  within(screen.getByRole("complementary", { name: "تخصيص المعاينة" }));
 const stage = () =>
   within(screen.getByRole("region", { name: "المعاينة التفاعلية" }));
 const stateSelect = () => rail().getByRole("combobox", { name: "الحالة" });
+// The Button states' names in the inspector's Select.
+const stateName = {
+  idle: "جاهز",
+  loading: "تحميل",
+  success: "نجاح",
+  error: "خطأ",
+  disabled: "معطّل",
+} as const;
+async function chooseState(
+  user: ReturnType<typeof userEvent.setup>,
+  state: keyof typeof stateName,
+) {
+  await user.click(stateSelect());
+  await user.click(screen.getByRole("option", { name: stateName[state] }));
+}
 const frameStatus = () =>
   document.querySelector(".tz-demo-frame [role='status']") as HTMLElement;
 const wait = (ms: number) => act(async () => vi.advanceTimersByTime(ms));
@@ -77,9 +97,9 @@ it.each([
 
 it("applies a props state through the inspector path", async () => {
   vi.useFakeTimers();
-  open("button");
+  open("button", true);
   fireEvent.click(states().getByRole("button", { name: word("loading") }));
-  expect(stateSelect()).toHaveValue("loading");
+  expect(stateSelect()).toHaveTextContent(stateName.loading);
   expect(pressed()).toEqual([word("loading")]);
   expect(stage().getByRole("button")).toHaveAttribute("aria-busy", "true");
   // The choice persists with the page's other props.
@@ -87,7 +107,7 @@ it("applies a props state through the inspector path", async () => {
     JSON.parse(localStorage.getItem(storageKeys.playgrounds)!).button,
   ).toMatchObject({ state: "loading", disabled: false });
   fireEvent.click(states().getByRole("button", { name: word("disabled") }));
-  expect(stateSelect()).toHaveValue("disabled");
+  expect(stateSelect()).toHaveTextContent(stateName.disabled);
   expect(stage().getByRole("button")).toBeDisabled();
   // Like an inspector edit, a press cancels the simulated click in flight.
   fireEvent.click(states().getByRole("button", { name: word("idle") }));
@@ -100,16 +120,16 @@ it("applies a props state through the inspector path", async () => {
 
 it("follows the model when the inspector edits a prop", async () => {
   const user = userEvent.setup();
-  open("button");
+  open("button", true);
   await user.click(states().getByRole("button", { name: word("loading") }));
   // Editing another prop keeps the state the model is in.
-  await user.selectOptions(rail().getByLabelText("الحجم"), "md");
+  await user.click(rail().getByRole("button", { name: "عادي · md" }));
   expect(pressed()).toEqual([word("loading")]);
-  await user.selectOptions(stateSelect(), "success");
+  await chooseState(user, "success");
   expect(pressed()).toEqual([word("success")]);
-  await user.selectOptions(stateSelect(), "disabled");
+  await chooseState(user, "disabled");
   expect(pressed()).toEqual([word("disabled")]);
-  await user.selectOptions(stateSelect(), "idle");
+  await chooseState(user, "idle");
   expect(pressed()).toEqual([word("idle")]);
 });
 
@@ -164,24 +184,24 @@ it("lets phase and props states share a page", () => {
 
 it("plays Replay in order", async () => {
   vi.useFakeTimers();
-  open("button");
+  open("button", true);
   fireEvent.click(states().getByRole("button", { name: word("error") }));
   const replay = screen.getByRole("button", { name: "إعادة تشغيل المثال" });
   replay.focus();
   fireEvent.click(replay);
   // Each step applies its state, then waits; the steps are not announced.
   expect(pressed()).toEqual([word("idle")]);
-  expect(stateSelect()).toHaveValue("idle");
+  expect(stateSelect()).toHaveTextContent(stateName.idle);
   expect(frameStatus()).toBeEmptyDOMElement();
   await wait(799);
   expect(pressed()).toEqual([word("idle")]);
   await wait(1);
   expect(pressed()).toEqual([word("loading")]);
-  expect(stateSelect()).toHaveValue("loading");
+  expect(stateSelect()).toHaveTextContent(stateName.loading);
   expect(frameStatus()).toBeEmptyDOMElement();
   await wait(1200);
   expect(pressed()).toEqual([word("success")]);
-  expect(stateSelect()).toHaveValue("success");
+  expect(stateSelect()).toHaveTextContent(stateName.success);
   expect(frameStatus()).toBeEmptyDOMElement();
   await wait(1000);
   // It ends on the last step and says it once.
@@ -206,18 +226,18 @@ it("keeps the example mounted through a Replay step, so its change plays", async
 
 it("cancels replay on state press, Code view, page change and unmount", async () => {
   vi.useFakeTimers();
-  const view = open("button");
+  const view = open("button", true);
   const replay = () =>
     fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   // A state press: the pressed state wins and nothing fires afterwards.
   replay();
   await wait(800);
-  expect(stateSelect()).toHaveValue("loading");
+  expect(stateSelect()).toHaveTextContent(stateName.loading);
   fireEvent.click(states().getByRole("button", { name: word("error") }));
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
-  expect(stateSelect()).toHaveValue("error");
+  expect(stateSelect()).toHaveTextContent(stateName.error);
   expect(pressed()).toEqual([word("error")]);
   // The Code view: it stops on the step it reached.
   replay();
@@ -225,18 +245,16 @@ it("cancels replay on state press, Code view, page change and unmount", async ()
   fireEvent.click(screen.getByRole("tab", { name: "الكود" }));
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
-  expect(stateSelect()).toHaveValue("loading");
+  expect(stateSelect()).toHaveTextContent(stateName.loading);
   fireEvent.click(screen.getByRole("tab", { name: "معاينة" }));
   // A page change.
   replay();
   await wait(800);
   fireEvent.click(nav.getByRole("button", { name: "الطرفية" }));
-  // jsdom queues a toggle task for the new page's inspector; let it run.
-  await wait(0);
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
   fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
-  expect(stateSelect()).toHaveValue("loading");
+  expect(stateSelect()).toHaveTextContent(stateName.loading);
   expect(frameStatus()).toBeEmptyDOMElement();
   // Unmounting leaves no timers behind.
   replay();
@@ -1654,9 +1672,7 @@ it.each(restFamilies)(
 
 it("returns a phase page to its resting phase when the inspector resets it", async () => {
   vi.useFakeTimers();
-  open("tool-chips");
-  // jsdom queues a toggle task for the inspector; let it run.
-  await wait(0);
+  open("tool-chips", true);
   const reset = () =>
     fireEvent.click(rail().getByRole("button", { name: "إعادة ضبط المعاينة" }));
   fireEvent.click(states().getByRole("button", { name: word("running") }));
@@ -1720,16 +1736,14 @@ it("moves the switcher to Shown when the trigger raises a toast, and raises it o
 
 it("never raises a toast from an inspector edit", async () => {
   const user = userEvent.setup();
-  open("toast");
+  open("toast", true);
   fireEvent.click(stage().getByRole("button", { name: "عرض التنبيه" }));
   expect(pressed()).toEqual([word("shown")]);
   expect(document.querySelectorAll(".tz-toast")).toHaveLength(1);
   // An edit starts the example afresh at its resting state, so it raises
   // nothing, and the switcher says Hidden.
-  await user.selectOptions(
-    rail().getByRole("combobox", { name: "النوع" }),
-    "error",
-  );
+  await user.click(rail().getByRole("combobox", { name: "النوع" }));
+  await user.click(screen.getByRole("option", { name: "خطأ" }));
   expect(pressed()).toEqual([word("hidden")]);
   expect(document.querySelectorAll(".tz-toast")).toHaveLength(0);
   // Typing raises nothing either: every key remounts the example.
