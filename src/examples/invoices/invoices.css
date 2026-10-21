@@ -1,1 +1,94 @@
-/* Invoices and collections (example-screens spec §3.2). Every rule names .invoices. */
+/* Invoices and collections (example-screens spec §3.2). Every rule names .invoices.
+   The main column holds the filters and the table; beside it, from 960px, an
+   end panel of 20rem holds the reminder's draft. Below that the panel is gone
+   and each row's button opens its draft in a Sheet. */
+.invoices {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+.invoices-main {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+/* The end panel is one card at its draft's height, and it stays in view while
+   the table scrolls. */
+.invoices-panel {
+  position: sticky;
+  inset-block-start: var(--space-4);
+}
+@container screen (width >= 960px) {
+  .invoices {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+  }
+}
+.invoices-filters .tz-filter-search {
+  max-inline-size: 20rem;
+}
+.invoices-filters .tz-select .tz-select-trigger {
+  inline-size: 10rem;
+}
+.invoices-main .tz-table caption {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+/* Seven columns share the main column: the cells keep their words whole and
+   the table takes the width the column gives it. Below 640px it keeps its own
+   width and scrolls in its box. */
+.invoices-main .tz-table {
+  min-inline-size: 46rem;
+  table-layout: auto;
+}
+@container screen (width >= 640px) {
+  .invoices-main .tz-table {
+    min-inline-size: 0;
+  }
+}
+.invoices-main .tz-table th,
+.invoices-main .tz-table td {
+  padding-inline: var(--space-2);
+  overflow-wrap: normal;
+  vertical-align: middle;
+}
+/* Figures line up by their ends. */
+.invoices-main .tz-table th:nth-child(3),
+.invoices-main .tz-table td:nth-child(3) {
+  text-align: end;
+}
+.invoices-id,
+.invoices-figure {
+  white-space: nowrap;
+}
+.invoices-customer {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: var(--underline-offset);
+}
+.invoices-status {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-1);
+}
+.invoices-main .tz-badge {
+  white-space: nowrap;
+}
+.invoices-sent {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--success);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.invoices-action {
+  white-space: nowrap;
+}
+/* The row whose draft the panel shows. */
+.invoices-main .tz-table tbody tr:has(.invoices-action[aria-current="true"]) {
+  background: var(--action-soft);
+}
+.invoices-sheet {
+  min-inline-size: 0;
+}
