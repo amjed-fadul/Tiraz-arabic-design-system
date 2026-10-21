@@ -723,6 +723,29 @@ it("shows the API reference open, as a table with column headers and LTR code", 
   ]);
 });
 
+it("shows only real literals in the API table's defaults", () => {
+  const defaultOf = (active: string, row: string) => {
+    persist(storageKeys.documentation, { language: "ar", active });
+    const { unmount } = render(<Workbench />);
+    const table = screen.getByRole("table", { name: "دليل الخصائص" });
+    const cells = within(
+      within(table).getByRole("rowheader", { name: row }).closest("tr")!,
+    ).getAllByRole("cell");
+    const text = cells[1].textContent;
+    unmount();
+    return text;
+  };
+  // A description is not a value: the registry says Slider starts at its
+  // "midpoint", which is no number.
+  expect(defaultOf("slider", "value / defaultValue / onValueChange")).toBe("—");
+  // The registry writes Tooltip's 500 as a string, but the prop is a number.
+  expect(defaultOf("tooltip", "delayDuration")).toBe("500");
+  // A real default keeps its quotes.
+  expect(defaultOf("button", "variant / state / size")).toBe(
+    '"primary" / "idle" / "sm"',
+  );
+});
+
 it("puts the prompt first below the header, then the playground, the guidelines and the API reference", () => {
   persist(storageKeys.documentation, { language: "ar", active: "button" });
   render(<Workbench />);

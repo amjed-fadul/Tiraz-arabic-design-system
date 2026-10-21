@@ -5,7 +5,12 @@ import { catalog } from "./catalog";
 import { fields } from "./fields";
 import { label, words } from "./i18n";
 import type { Language } from "./i18n";
-type Prop = { name: string; required: boolean; default?: unknown };
+type Prop = {
+  name: string;
+  type: string;
+  required: boolean;
+  default?: unknown;
+};
 // The registry's own record of each prop. Its prose is English-only, so the
 // tables take only its facts from it, whether a prop is required and its
 // default, and keep the page's bilingual rows for the rest.
@@ -14,12 +19,22 @@ const registry = JSON.parse(registrySource) as {
 };
 const propsOf = (id: string) =>
   registry.components.find((item) => item.id === id)?.props ?? [];
-/** A default the table can show as code: a literal, never a description. */
-function literal(value: unknown) {
-  if (typeof value === "string")
-    return value === "undefined" || /\s/.test(value)
+/**
+ * A default the table can show as code: a literal that fits the prop's type,
+ * never a description. The registry writes some numbers and booleans as
+ * strings, and those show without quotes. A number or boolean prop with any
+ * other string, or a union of bare words that leaves the string out, shows none.
+ */
+function literal(value: unknown, type: string) {
+  if (typeof value === "string") {
+    if (/^-?\d+(\.\d+)?$|^(true|false)$/.test(value)) return value;
+    return value === "undefined" ||
+      /\s/.test(value) ||
+      /^(number|boolean)$/.test(type) ||
+      (/^[\w-]+( \| [\w-]+)+$/.test(type) && !type.split(" | ").includes(value))
       ? undefined
       : JSON.stringify(value);
+  }
   return typeof value === "boolean" ||
     typeof value === "number" ||
     value === null ||
@@ -3204,7 +3219,9 @@ export function ApiReference({
                 props.find((prop) => prop.name === part),
               );
               const required = named.filter((_, at) => facts[at]?.required);
-              const defaults = facts.map((fact) => literal(fact?.default));
+              const defaults = facts.map((fact) =>
+                literal(fact?.default, fact?.type ?? ""),
+              );
               return (
                 <tr key={name}>
                   <th scope="row">
