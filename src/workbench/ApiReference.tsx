@@ -673,8 +673,8 @@ export function ApiReference({
         "status / progress",
         "queued | weaving | completed | failed | blocked · required / number | null?",
         t(
-          "يقرّر تطبيقك الحالة. تظهر الصورة كاملة بضبابية تخفّ مع التقدّم الذي يرسله تطبيقك، ويستمر ضوء خافت بالحركة أثناء التوليد. عندما تكون النسبة مجهولة تبقى المعاينة ضبابية حتى completed؛ ولا تقدّر الحركة نسبة للتقدّم. ومع الحركة المخفَّضة تظهر الصورة كاملة تدريجيًا في خُمس ثانية بلا حركة مستمرة. وتبقى النسخ والإجراءات معطّلة حتى completed.",
-          "Your app owns the status. A soft whole-image preview gains clarity as progress advances from 0 to 100, with subtle atmospheric light while generating. Unknown progress keeps the preview soft until completed; the motion never estimates a percentage. With reduced motion the picture fades in whole over 200ms and nothing loops. The versions and actions stay inert until completed.",
+          "يقرّر تطبيقك الحالة. تتدفّق خيوط مضيئة فوق اللوحة، وتتكشّف أجزاء الصورة تدريجيًا مع التقدّم الذي يرسله تطبيقك. تظهر حركة الخيوط حتى قبل وصول الصورة. عندما تكون النسبة مجهولة يبقى الكشف ثابتًا حتى completed؛ ولا تقدّر الحركة نسبة للتقدّم. وتتوقف الحركة عند الإخفاق. ومع الحركة المخفَّضة تظهر الصورة كاملة تدريجيًا في خُمس ثانية بلا حركة مستمرة. وتبقى النسخ والإجراءات معطّلة حتى completed.",
+          "Your app owns the status. Luminous ribbons flow across the canvas while scattered image cells resolve with progress from 0 to 100. The ribbon field also moves before a preview arrives. Unknown progress holds the reveal until completed; the motion never estimates a percentage. Failure freezes the reveal and pauses the ribbons. With reduced motion the picture fades in whole over 200ms and nothing loops. The versions and actions stay inert until completed.",
         ),
       ],
       [

@@ -2417,7 +2417,7 @@
         "ImageGenerationProps",
         "ImageGenerationLabels"
       ],
-      "purpose": "Make an image from a description and pick the version to use: the prompt and what was asked with it, a soft whole-image preview that gains clarity as it is made, a size tag and a progress tag on the canvas, the versions as a named radio group, and the person's actions once it is done. The weave stays under the finished image, so while the picture loads neither completing nor choosing another version blinks. A failed image shows its text with Try again; a refused request shows its reason with Edit with a description.",
+      "purpose": "Make an image from a description and pick the version to use: the prompt and what was asked with it, a luminous ribbon field with scattered image cells that resolve as it is made, a size tag and a progress tag on the canvas, the versions as a named radio group, and the person's actions once it is done. The weave stays under the finished image, so while the picture loads neither completing nor choosing another version blinks. A failed image shows its text with Try again; a refused request shows its reason with Edit with a description.",
       "props": [
         {
           "name": "prompt",
@@ -2537,13 +2537,13 @@
       "state": "The host owns the status, the progress, the images and, if it wants, the chosen version. The pattern never generates an image, simulates progress or advances its status; it reports the version chosen, Use image, Similar variations, Edit with a description and Try again.",
       "accessibility": [
         "A section labelled by its title. One polite region says each change of status in one sentence: الصورة في الانتظار, تُنسج الصورة, الصورة جاهزة, تعذّر توليد الصورة, or لا يمكن توليد هذه الصورة with its reason. The status the pattern mounts in is not announced, and neither are the progress or the time. Pass announcement=\"off\" when the host screen owns announcements; its failed ImageResult is plain text too.",
-        "While it is made the canvas is one image named by the chosen image's alt; the picture and the atmospheric light are decoration and hidden. Once the images are done the weave stays under the result as hidden decoration. The progress tag is the pattern's progressbar: aria-valuenow only when progress is known, and a text value such as يُنسج · ٤٢٪ in a fixed width.",
+        "While it is made the canvas is one image named by the chosen image's alt; the picture and the developing field are decoration and hidden. Once the images are done the weave stays under the result as hidden decoration. The progress tag is the pattern's progressbar: aria-valuenow only when progress is known, and a text value such as يُنسج · ٤٢٪ in a fixed width.",
         "The versions are a native radio group named اختر نسخة, each thumbnail named النسخة ١ and so on. They and the actions are disabled and dimmed until the images are done. The chosen version has a ring and a check, so color is not its only signal.",
         "When Try again takes the focused figure away, focus moves to the section instead of the page; so does focus on an action that goes quiet.",
-        "The preview smooths real progress changes with one short animation-frame loop; the atmospheric light moves through CSS only while weaving. Under reduced motion, from the application or the OS, nothing loops: a still thread shows while waiting for a picture, and the picture fades in whole over 200 ms. Keyboard modality does not stop it."
+        "The preview smooths real progress changes with one short animation-frame loop; ribbon movement and traveling light use CSS only while weaving. Failure freezes the reveal and pauses every ribbon. Under reduced motion, from the application or the OS, nothing loops: a still thread shows while waiting for a picture, and the picture fades in whole over 200 ms. Keyboard modality does not stop it."
       ],
       "limitations": [
-        "No image generation and no progress: the host supplies the status, the progress and every image. The soft-focus reveal uses the host's own picture, so it shows a picture only once a src exists. Unknown progress keeps the preview soft until completed and never advances a percentage.",
+        "No image generation and no progress: the host supplies the status, the progress and every image. The scattered-cell reveal uses the host's own picture, so it shows a picture only once a src exists. The ribbon field moves even without a picture. Unknown progress holds the reveal until completed and never advances a percentage.",
         "Image URLs are the host's: the pattern loads them as given and fetches nothing else."
       ],
       "alternative": "Use ImageResult to show an image the host already has, and Agent task when the image is one step of larger work.",
@@ -11785,7 +11785,7 @@
           "type": "\"queued\" | \"weaving\" | \"completed\" | \"failed\"",
           "required": true,
           "default": "undefined",
-          "note": "queued shows a still atmospheric canvas; weaving brings the whole picture into focus with supplied progress, or keeps it soft while progress is unknown; completed resolves the picture sharply; failed holds the frame where it stopped and pauses the light."
+          "note": "queued shows a still ribbon field; weaving flows luminous contours across the canvas and resolves scattered image cells with supplied progress, or holds the reveal while progress is unknown; completed resolves the whole picture; failed holds the frame where it stopped and pauses every ribbon."
         },
         {
           "name": "alt",
@@ -11799,7 +11799,7 @@
           "type": "string",
           "required": false,
           "default": "undefined",
-          "note": "The preview picture, as the host gives it. Without one the canvas shows soft atmospheric light."
+          "note": "The preview picture, as the host gives it. Without one the canvas still shows flowing contours of light."
         },
         {
           "name": "progress",
@@ -11815,7 +11815,7 @@
           "default": "undefined"
         }
       ],
-      "purpose": "A whole-image preview that comes into focus with actual host progress, with soft atmospheric light while weaving and a crisp completion. Unknown progress keeps the preview soft until the host completes the job; the light never implies a percentage. Failure holds the current preview and pauses the light. Under reduced motion nothing loops: a still thread shows while waiting for a picture, and the whole picture fades in over 200 ms. It is sized by its container, 3:2 unless the --weave-ratio custom property says otherwise. For the AI mark's work, never for content the assistant did not produce."
+      "purpose": "A developing image with luminous crossing ribbons and traveling light, over scattered image cells that resolve with actual host progress. The ribbon field also works without a preview. Unknown progress holds the reveal until the host completes the job; the flowing light never implies a percentage. Failure holds the current preview and pauses every ribbon. Under reduced motion nothing loops: a still thread shows while waiting for a picture, and the whole picture fades in over 200 ms. It is sized by its container, 3:2 unless the --weave-ratio custom property says otherwise. For the AI mark's work, never for content the assistant did not produce."
     }
   ],
   "conventions": {

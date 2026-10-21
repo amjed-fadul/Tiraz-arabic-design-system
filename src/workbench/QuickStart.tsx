@@ -1,7 +1,6 @@
 import { useId, useState } from "react";
-import { Check, Copy, ArrowUpRight, ChevronDown } from "lucide-react";
+import { Check, Copy, ChevronDown } from "lucide-react";
 import { numberLocale } from "../system/config";
-import sourceGuide from "../system/ai/README.md?url";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import "./quick-start.css";
@@ -72,7 +71,7 @@ export function QuickStart({
   const StepHeading = headingLevel === 1 ? "h2" : "h3";
   const [existing, setExisting] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState("");
+  const [feedback, setFeedback] = useState<"copied" | "failed" | null>(null);
   const id = useId();
   const number = new Intl.NumberFormat(
     numberLocale({ numerals: "arab" }, language),
@@ -81,20 +80,10 @@ export function QuickStart({
     try {
       await navigator.clipboard.writeText(text);
       setCopied(key);
-      setFeedback(
-        t(
-          "نُسخ النص. الصقه في أداة البرمجة التي تستخدمها.",
-          "Copied. Paste it into your coding tool.",
-        ),
-      );
+      setFeedback("copied");
     } catch {
       setCopied(null);
-      setFeedback(
-        t(
-          "تعذّر النسخ. يمكنك تحديد النص ونسخه يدويًا.",
-          "Could not copy. Select the text and copy it manually.",
-        ),
-      );
+      setFeedback("failed");
     }
   }
   const copyButton = (text: string, key: string, caption: string) => (
@@ -142,99 +131,110 @@ export function QuickStart({
             </StepHeading>
             <p>
               {t(
-                "احصل على المصدر، ثم افتح مشروعك في أداة البرمجة ووفّر لها مجلد طِراز. انسخ طلب الإعداد المناسب أدناه.",
-                "Get the source, open your project in your coding tool, and give it access to the Tiraz folder. Copy the matching setup prompt below.",
+                "اختر مشروعًا جديدًا أو أضف طِراز إلى مشروعك الحالي.",
+                "Start a new project or add Tiraz to one you already have.",
               )}
             </p>
-            <div className="quick-start-links">
-              <a
-                href="https://github.com/amjed-fadul/Tiraz-arabic-design-system"
-                target="_blank"
-                rel="noreferrer"
+            <div className="quick-start-install">
+              <div
+                className="quick-start-choice"
+                role="group"
+                aria-label={t("نوع المشروع", "Project type")}
               >
-                {t("المصدر على GitHub", "Source on GitHub")}
-                <ArrowUpRight
-                  className="tz-mirror-rtl"
-                  size={16}
-                  aria-hidden="true"
-                />
-                <span className="sr-only">
-                  {t("، يفتح في تبويب جديد", ", opens in a new tab")}
-                </span>
-              </a>
-              <a href={sourceGuide} download="tiraz-source-guide.md">
-                {t("تنزيل دليل المصدر", "Download source guide")}
-              </a>
-            </div>
-            <div
-              className="quick-start-choice"
-              role="group"
-              aria-label={t("نوع المشروع", "Project type")}
-            >
-              <button
-                type="button"
-                aria-pressed={!existing}
-                onClick={() => {
-                  setExisting(false);
-                  setCopied(null);
-                }}
-              >
-                {t("مشروع جديد", "New project")}
-              </button>
-              <button
-                type="button"
-                aria-pressed={existing}
-                onClick={() => {
-                  setExisting(true);
-                  setCopied(null);
-                }}
-              >
-                {t("مشروع قائم", "Existing project")}
-              </button>
-            </div>
-            <div className="quick-start-prompt">
-              <div className="quick-start-prompt-bar">
-                <span>{t("طلب الإعداد", "Setup prompt")}</span>
-                {copyButton(
-                  setupPrompt(existing),
-                  "setup",
-                  t("نسخ طلب الإعداد", "Copy setup prompt"),
-                )}
+                <button
+                  type="button"
+                  aria-pressed={!existing}
+                  onClick={() => {
+                    setExisting(false);
+                    setCopied(null);
+                  }}
+                >
+                  {t("مشروع جديد", "New project")}
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={existing}
+                  onClick={() => {
+                    setExisting(true);
+                    setCopied(null);
+                  }}
+                >
+                  {t("مشروع قائم", "Existing project")}
+                </button>
               </div>
-              <pre dir="ltr" lang="en" tabIndex={0}>
-                <code>{setupPrompt(existing)}</code>
-              </pre>
+              <div
+                className="quick-start-terminal"
+                aria-label={t("معاينة أمر التثبيت", "Install command preview")}
+              >
+                <div className="quick-start-terminal-bar">
+                  <span>
+                    <bdi dir="ltr">npm</bdi>
+                  </span>
+                  <span className="quick-start-coming">
+                    {t("قريبًا", "Coming soon")}
+                  </span>
+                </div>
+                <pre dir="ltr" lang="en" tabIndex={0}>
+                  <code>
+                    {existing
+                      ? "npx <tiraz-package> init"
+                      : "npx <tiraz-package> init --new my-app"}
+                  </code>
+                </pre>
+                <p className="quick-start-package-note">
+                  {t(
+                    "معاينة فقط. لم تُنشر الحزمة بعد، وسيُضاف أمر التثبيت هنا عند إطلاقها.",
+                    "Preview only. The package is not published yet; the install command will be added here at launch.",
+                  )}
+                </p>
+              </div>
             </div>
-            <p className="quick-start-note">
-              {t("المصدر مُختبَر مع", "Source verified with")}{" "}
-              <bdi dir="ltr">React {number.format(19)}</bdi> {t("و", "and")}{" "}
-              <bdi dir="ltr">TypeScript</bdi>.{" "}
-              {t("انسخ مجلد", "Copy the complete")}{" "}
-              <bdi dir="ltr">src/system</bdi>{" "}
-              {t(
-                "كاملًا، مع الإرشادات والأصول وتراخيصها.",
-                "directory, including guidance, assets, and licenses.",
-              )}
-            </p>
-            <details className="quick-start-manual">
+            <details className="quick-start-source">
               <summary>
-                {t("تُعدّ المشروع بنفسك؟", "Setting up by hand?")}
-                <ChevronDown size={16} aria-hidden="true" />
+                <span>{t("استخدم المصدر الآن", "Use the source today")}</span>
+                <ChevronDown size={18} aria-hidden="true" />
               </summary>
-              <p>
-                {t(
-                  "بعد نسخ المصدر، ثبّت الاعتماديات المطلوبة من ملفات الحزم والاستيراد. حمّل الأنماط والخط مرة واحدة، ثم أضف المزوّد. هذا مثال لنقطة الدخول؛ عدّل المسارات لتناسب مشروعك.",
-                  "After copying the source, install the dependencies listed in its package files and imports. Load styles and fonts once, then add the provider. This entry-point example assumes the system folder sits beside it; adjust paths for your app.",
-                )}
-              </p>
-              {copyButton(
-                entryCode,
-                "entry",
-                t("نسخ مثال الإعداد", "Copy setup example"),
-              )}
-              <pre dir="ltr" lang="en" tabIndex={0}>
-                <code>{entryCode}</code>
-              </pre>
+              <div className="quick-start-source-body">
+                <p>
+                  {t(
+                    "إذا كان مصدر طِراز متاحًا لديك، افتح مجلده مع مشروعك في أداة البرمجة، ثم انسخ طلب الإعداد. حافظ على الإرشادات والأصول والتراخيص عند نقل المكوّنات.",
+                    "Already have the Tiraz source? Open its folder alongside your project in your coding tool, then copy the setup prompt. Keep the guidance, assets, and licenses with the components.",
+                  )}
+                </p>
+                <div className="quick-start-prompt">
+                  <div className="quick-start-prompt-bar">
+                    <span>{t("طلب الإعداد", "Setup prompt")}</span>
+                    {copyButton(
+                      setupPrompt(existing),
+                      "setup",
+                      t("نسخ طلب الإعداد", "Copy setup prompt"),
+                    )}
+                  </div>
+                  <pre dir="ltr" lang="en" tabIndex={0}>
+                    <code>{setupPrompt(existing)}</code>
+                  </pre>
+                </div>
+                <details className="quick-start-manual">
+                  <summary>
+                    {t("تُعدّ المشروع بنفسك؟", "Setting up by hand?")}
+                    <ChevronDown size={16} aria-hidden="true" />
+                  </summary>
+                  <p>
+                    {t(
+                      "بعد نسخ المصدر، ثبّت الاعتماديات المطلوبة من ملفات الحزم والاستيراد. حمّل الأنماط والخط مرة واحدة، ثم أضف المزوّد. هذا مثال لنقطة الدخول؛ عدّل المسارات لتناسب مشروعك.",
+                      "After copying the source, install the dependencies listed in its package files and imports. Load styles and fonts once, then add the provider. This entry-point example assumes the system folder sits beside it; adjust paths for your app.",
+                    )}
+                  </p>
+                  {copyButton(
+                    entryCode,
+                    "entry",
+                    t("نسخ مثال الإعداد", "Copy setup example"),
+                  )}
+                  <pre dir="ltr" lang="en" tabIndex={0}>
+                    <code>{entryCode}</code>
+                  </pre>
+                </details>
+              </div>
             </details>
           </div>
         </section>
@@ -248,8 +248,8 @@ export function QuickStart({
             </StepHeading>
             <p>
               {t(
-                "اختر بداية، والصق الطلب في أداة البرمجة بعد إعداد المشروع. عدّل التفاصيل لتناسب تطبيقك.",
-                "Choose a starting point and paste the prompt into your coding tool after setup. Adapt the details to your app.",
+                "بعد الإعداد، افتح مشروعك في أداة البرمجة. اختر شاشة وانسخ طلبها، ثم عدّله ليناسب فكرتك.",
+                "After setup, open your project in your coding tool. Choose a screen, copy its prompt, and adapt it to your idea.",
               )}
             </p>
             <div className="quick-start-examples">
@@ -265,48 +265,68 @@ export function QuickStart({
                     <ChevronDown size={18} aria-hidden="true" />
                   </summary>
                   <div className="quick-start-example-body">
-                    <p dir="ltr" lang="en">
-                      {prompt.text}
-                    </p>
-                    {copyButton(
-                      prompt.text,
-                      `example-${index}`,
-                      `${t("نسخ طلب", "Copy prompt:")} ${prompt.name[language === "ar" ? 0 : 1]}`,
-                    )}
+                    <div className="quick-start-prompt-bar">
+                      <span>
+                        {t("طلب لأداة البرمجة", "Prompt for your coding tool")}
+                      </span>
+                      {copyButton(
+                        prompt.text,
+                        `example-${index}`,
+                        `${t("نسخ طلب", "Copy prompt:")} ${prompt.name[language === "ar" ? 0 : 1]}`,
+                      )}
+                    </div>
+                    <pre dir="ltr" lang="en" tabIndex={0}>
+                      <code>{prompt.text}</code>
+                    </pre>
                   </div>
                 </details>
               ))}
             </div>
           </div>
         </section>
-        <section className="quick-start-step" aria-labelledby={`${id}-verify`}>
-          <span className="quick-start-number" aria-hidden="true">
-            {number.format(3)}
-          </span>
-          <div className="quick-start-step-body">
-            <StepHeading id={`${id}-verify`}>
-              {t("تحقّق من التفاصيل", "Check the details")}
-            </StepHeading>
-            <p>
-              {t(
-                "افتح الشاشة بالعربية والإنجليزية، وبالمظهرين الفاتح والداكن. جرّبها على الهاتف وباستخدام لوحة المفاتيح، ثم شغّل فحوصات مشروعك وأمر البناء.",
-                "Open the screen in Arabic and English, in light and dark themes. Try it on mobile and with the keyboard, then run your project's checks and build command.",
-              )}
-            </p>
-            <p className="quick-start-note">
-              {t("أضف إلى ملف", "Add a note to")} <bdi dir="ltr">AGENTS.md</bdi>{" "}
-              {t("في مشروعك توجيهًا لقراءة", "in your project to read")}{" "}
-              <bdi dir="ltr">system/ai/README.md</bdi>{" "}
-              {t(
-                "قبل تعديل المكوّنات. تتبع الإرشادات المصدر أينما نقلته.",
-                "before changing components. The guidance travels with the source.",
-              )}
-            </p>
-          </div>
+      </div>
+      <div className="quick-start-after">
+        <section aria-labelledby={`${id}-agent`}>
+          <StepHeading id={`${id}-agent`}>
+            {t("افتح مشروعك وابدأ", "Open your project and prompt")}
+          </StepHeading>
+          <p>
+            {t(
+              "استخدم أداة البرمجة التي تفضّلها، وأضف إلى ملف",
+              "Use your preferred coding tool. Add a note to",
+            )}{" "}
+            <bdi dir="ltr">AGENTS.md</bdi> {t("توجيهًا لقراءة", "point to")}{" "}
+            <bdi dir="ltr">system/ai/README.md</bdi>
+            {t(
+              "، لتبقى إرشادات طِراز مع كل طلب.",
+              ", so Tiraz’s guidance stays with every prompt.",
+            )}
+          </p>
+        </section>
+        <section aria-labelledby={`${id}-verify`}>
+          <StepHeading id={`${id}-verify`}>
+            {t("راجع أول شاشة", "Check your first screen")}
+          </StepHeading>
+          <p>
+            {t(
+              "جرّب العربية والإنجليزية والمظهرين الفاتح والداكن. راجع الهاتف والتنقّل بلوحة المفاتيح، ثم شغّل فحوصات مشروعك وأمر البناء.",
+              "Try Arabic and English, light and dark. Check mobile layout and keyboard navigation, then run your project’s checks and build.",
+            )}
+          </p>
         </section>
       </div>
       <p className="quick-start-feedback" role="status" aria-live="polite">
-        {feedback}
+        {feedback === "copied"
+          ? t(
+              "نُسخ النص. الصقه في أداة البرمجة التي تستخدمها.",
+              "Copied. Paste it into your coding tool.",
+            )
+          : feedback === "failed"
+            ? t(
+                "تعذّر النسخ. يمكنك تحديد النص ونسخه يدويًا.",
+                "Could not copy. Select the text and copy it manually.",
+              )
+            : ""}
       </p>
     </section>
   );

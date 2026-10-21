@@ -1,6 +1,6 @@
 .quick-start {
   inline-size: 100%;
-  max-inline-size: 60rem;
+  max-inline-size: 52rem;
   margin-inline: auto;
   color: var(--text);
   font-family: var(--font);
@@ -68,30 +68,50 @@
   line-height: var(--leading-heading);
   letter-spacing: normal;
 }
-.quick-start .quick-start-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-6);
-  margin-block: var(--space-4) var(--space-6);
-}
-.quick-start a {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--text);
-  text-underline-offset: var(--space-1);
+.quick-start .quick-start-install {
+  margin-block: var(--space-5) var(--space-4);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface-well);
 }
 .quick-start .quick-start-choice {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
-  margin-block-end: var(--space-3);
+  padding: var(--space-2);
+  border-block-end: 1px solid var(--border);
+  background: var(--surface);
+}
+.quick-start .quick-start-terminal-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) 0;
+  color: var(--text-muted);
+  font-size: var(--text-label);
+}
+.quick-start .quick-start-coming {
+  padding: 0 var(--space-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+}
+.quick-start .quick-start-terminal pre {
+  padding-block: var(--space-4);
+  color: var(--text);
+}
+.quick-start .quick-start-package-note {
+  padding: 0 var(--space-5) var(--space-5);
+  font-size: var(--text-label);
 }
 .quick-start button {
   font: inherit;
   cursor: pointer;
 }
 .quick-start .quick-start-choice button {
+  flex: 1;
   padding: var(--space-2) var(--space-4);
   border: 1px solid transparent;
   border-radius: var(--radius-control);
@@ -102,6 +122,7 @@
   border-color: var(--border);
   background: var(--surface-tray);
   color: var(--text);
+  box-shadow: var(--shadow-control);
 }
 .quick-start .quick-start-prompt {
   overflow: hidden;
@@ -157,6 +178,9 @@
   color: var(--text-muted);
   font-size: var(--text-label);
 }
+.quick-start .quick-start-source-body > .quick-start-prompt {
+  margin-block-start: var(--space-4);
+}
 .quick-start .quick-start-manual {
   margin-block-start: var(--space-4);
 }
@@ -186,15 +210,34 @@
 .quick-start .quick-start-manual > p {
   margin-block: var(--space-3);
 }
-.quick-start .quick-start-examples {
-  margin-block-start: var(--space-5);
-  border-block-start: 1px solid var(--border);
-}
-.quick-start .quick-start-examples details {
+.quick-start .quick-start-source {
   border-block-end: 1px solid var(--border);
 }
+.quick-start .quick-start-source > summary {
+  min-block-size: var(--control-height);
+  padding-block: var(--space-2);
+  font-size: var(--text-body);
+  color: var(--text-secondary);
+}
+.quick-start .quick-start-source-body {
+  padding-block: var(--space-3) var(--space-5);
+}
+.quick-start .quick-start-source-body > p {
+  font-size: var(--text-body);
+}
+.quick-start .quick-start-examples {
+  display: grid;
+  gap: var(--space-3);
+  margin-block-start: var(--space-5);
+}
+.quick-start .quick-start-examples details {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
 .quick-start .quick-start-examples summary {
-  padding-block: var(--space-4);
+  padding: var(--space-4) var(--space-5);
 }
 .quick-start .quick-start-examples summary strong {
   display: block;
@@ -206,10 +249,24 @@
   font-size: var(--text-body);
 }
 .quick-start .quick-start-example-body {
-  padding-block: 0 var(--space-5);
+  border-block-start: 1px solid var(--border);
+  background: var(--surface-well);
 }
-.quick-start .quick-start-example-body > p {
-  margin-block-end: var(--space-4);
+.quick-start .quick-start-after {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin-block-start: var(--space-10);
+  margin-inline-start: calc(var(--space-10) + var(--space-5));
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--border);
+}
+.quick-start .quick-start-after :is(h2, h3) {
+  margin: 0 0 var(--space-2);
+  font: inherit;
+  font-weight: var(--weight-medium);
+}
+.quick-start .quick-start-after p {
   font-size: var(--text-body);
 }
 .quick-start .quick-start-feedback {
@@ -220,6 +277,9 @@
 .quick-start :is(button, a, summary, pre):focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: var(--space-1);
+}
+.quick-start .quick-start-examples summary:focus-visible {
+  outline-offset: calc(var(--space-1) * -1);
 }
 @media (hover: hover) and (pointer: fine) {
   .quick-start .quick-start-copy:hover,
@@ -240,6 +300,15 @@
   }
   .quick-start pre {
     padding: var(--space-4);
+  }
+  .quick-start .quick-start-after {
+    grid-template-columns: minmax(0, 1fr);
+    margin-inline-start: 0;
+  }
+  .quick-start .quick-start-terminal-bar,
+  .quick-start .quick-start-package-note,
+  .quick-start .quick-start-examples summary {
+    padding-inline: var(--space-4);
   }
 }
 @media (prefers-reduced-motion: reduce) {

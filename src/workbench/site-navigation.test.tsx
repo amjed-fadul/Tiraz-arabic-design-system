@@ -194,9 +194,10 @@ it("cancels pending demo work when navigating to a gallery", () => {
       ).getByRole("button", { name: "حفظ الفاتورة" }),
     );
     fireEvent.click(
-      within(
-        screen.getByRole("navigation", { name: "التنقّل الرئيسي" }),
-      ).getByRole("link", { name: "المكتبة" }),
+      within(screen.getByRole("navigation", { name: "البداية" })).getByRole(
+        "link",
+        { name: "المكتبة" },
+      ),
     );
     act(() => vi.runOnlyPendingTimers());
     expect(document.querySelector(".playground-canvas")).toBeNull();
@@ -255,14 +256,14 @@ it.each([
 );
 
 it("keeps navigation hidden when moving between destinations", async () => {
-  at("/start");
+  at("/library/components/missing");
   await userEvent.click(
     screen.getByRole("button", { name: "إخفاء القائمة الجانبية" }),
   );
   await userEvent.click(
-    within(
-      screen.getByRole("navigation", { name: "التنقّل الرئيسي" }),
-    ).getByRole("link", { name: "المكتبة" }),
+    within(screen.getByRole("main")).getByRole("link", {
+      name: "العودة إلى المكتبة",
+    }),
   );
   expect(window.location.pathname).toBe("/library");
   expect(
@@ -271,24 +272,59 @@ it("keeps navigation hidden when moving between destinations", async () => {
   expect(screen.getByRole("main")).toHaveFocus();
 });
 
-it("puts Start here first and Illustrations last in the sidebar, with one top destination", () => {
+it("puts Start here and Library first and Illustrations last in the sidebar, with no top navigation", async () => {
   persist(storageKeys.documentation, { language: "en" });
   at("/start");
-  const top = within(
-    screen.getByRole("navigation", { name: "Primary navigation" }),
-  );
-  expect(top.getAllByRole("link").map((link) => link.textContent)).toEqual([
-    "Library",
-  ]);
+  expect(
+    screen.queryByRole("navigation", { name: "Primary navigation" }),
+  ).toBeNull();
+  const header = screen.getByRole("link", { name: "Tiraz" }).closest("header")!;
+  expect(within(header).getAllByRole("link")).toHaveLength(1);
   const side = screen.getByRole("complementary", { name: "Components" });
   const links = within(side).getAllByRole("link");
   expect(links[0]).toHaveTextContent("Start here");
+  expect(links[1]).toHaveTextContent("Library");
   expect(links.at(-1)).toHaveTextContent("Illustrations");
   expect(
     within(side).queryByRole("button", { name: "Assistant workspace" }),
   ).toBeNull();
   expect(within(side).queryByRole("button", { current: "page" })).toBeNull();
+  await userEvent.click(links[1]);
+  expect(window.location.pathname).toBe("/library");
+  expect(screen.getByRole("main")).toHaveFocus();
 });
+
+it.each([
+  ["/library", "ar", "تصنيفات المكتبة", "المكتبة"],
+  ["/library", "en", "Library categories", "Library"],
+  ["/illustrations", "ar", "الرسوم التوضيحية", "المكتبة"],
+  ["/illustrations", "en", "Illustrations", "Library"],
+] as const)(
+  "keeps %s navigation text-only in %s with Library available in the sidebar",
+  (path, language, name, library) => {
+    persist(storageKeys.documentation, { language });
+    at(path);
+    const nav = screen.getByRole("navigation", { name });
+    expect(within(nav).getAllByRole("link").length).toBeGreaterThan(1);
+    expect(nav.querySelector("svg, img")).toBeNull();
+    const start = screen.getByRole("navigation", {
+      name: language === "ar" ? "البداية" : "Getting started",
+    });
+    expect(within(start).getByRole("link", { name: library })).toHaveAttribute(
+      "href",
+      "/library",
+    );
+    expect(start.querySelector("svg, img")).toBeNull();
+    expect(
+      screen
+        .getByRole("button", {
+          name:
+            language === "ar" ? "إخفاء القائمة الجانبية" : "Hide navigation",
+        })
+        .querySelector("svg"),
+    ).not.toBeNull();
+  },
+);
 
 it.each(["/docs", "/docs/installation", "/docs/rtl"])(
   "sends old guide URL %s to Start here",

@@ -13,7 +13,6 @@ import { ArrowUpRight, SlidersHorizontal, X } from "lucide-react";
 import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/csr/SidebarSimple";
 import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
 import { SunIcon } from "@phosphor-icons/react/dist/csr/Sun";
-import { NavigationIcon } from "./NavigationIcon";
 import { Sheet, SystemProvider, defaultConfig } from "../system";
 import { SystemContext } from "../system/useSystem";
 import type { ButtonState, SystemConfig } from "../system";
@@ -869,7 +868,6 @@ export function Workbench() {
             navigate={navigate}
             aria-current={!route.category ? "page" : undefined}
           >
-            <NavigationIcon id="all" />
             <span>{t("كل المكتبة", "All items")}</span>
           </SiteLink>
           {navigationGroups.map((group) => (
@@ -879,7 +877,6 @@ export function Workbench() {
               navigate={navigate}
               aria-current={route.category === group.id ? "page" : undefined}
             >
-              <NavigationIcon id={group.id} />
               <span>{localize(group.name, language)}</span>
             </SiteLink>
           ))}
@@ -896,7 +893,6 @@ export function Workbench() {
             navigate={navigate}
             aria-current={!route.id ? "page" : undefined}
           >
-            <NavigationIcon id="all" />
             <span>{t("كل الرسوم", "All illustrations")}</span>
           </SiteLink>
           {illustrations.map((item) => (
@@ -906,7 +902,6 @@ export function Workbench() {
               navigate={navigate}
               aria-current={route.id === item.id ? "page" : undefined}
             >
-              <NavigationIcon id={item.id} />
               <span>{localize(item.name, language)}</span>
             </SiteLink>
           ))}
@@ -934,6 +929,15 @@ export function Workbench() {
             aria-current={route.kind === "start" ? "page" : undefined}
           >
             {t("ابدأ هنا", "Start here")}
+          </SiteLink>
+          <SiteLink
+            route={{ kind: "library" }}
+            navigate={navigate}
+            aria-current={
+              route.kind === "library" && !route.category ? "page" : undefined
+            }
+          >
+            {t("المكتبة", "Library")}
           </SiteLink>
         </div>
       </nav>
@@ -1083,18 +1087,6 @@ export function Workbench() {
               <span>{t("طِراز", "Tiraz")}</span>
             </a>
           </div>
-          <nav
-            className="site-primary"
-            aria-label={t("التنقّل الرئيسي", "Primary navigation")}
-          >
-            <SiteLink
-              route={{ kind: "library" }}
-              navigate={navigate}
-              aria-current={siteDestination === "library" ? "page" : undefined}
-            >
-              {t("المكتبة", "Library")}
-            </SiteLink>
-          </nav>
           <div className="header-actions">
             <button
               type="button"

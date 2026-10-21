@@ -17,10 +17,10 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  inline-size: calc(
-    var(--docs-navigation-width) - var(--space-5) - var(--space-4)
-  );
   flex: none;
+}
+.docs-shell .header-actions {
+  margin-inline-start: auto;
 }
 .docs-shell .docs-brand {
   inline-size: auto;
@@ -96,9 +96,6 @@
   line-height: var(--leading-meta);
   box-shadow: none;
 }
-.docs-shell .component-nav svg {
-  flex: none;
-}
 .docs-shell .component-nav button[aria-current="page"],
 .docs-shell .site-secondary a[aria-current="page"] {
   color: var(--text);
@@ -134,16 +131,11 @@
   display: none;
 }
 @media (max-width: 760px) {
-  .docs-shell {
-    --docs-header-height: 104px;
-  }
   .docs-shell .docs-header {
     gap: 0;
     padding-inline: var(--space-3);
   }
   .docs-header-start {
-    grid-area: 1 / 1;
-    inline-size: auto;
     gap: var(--space-2);
   }
   .docs-shell .docs-workspace {

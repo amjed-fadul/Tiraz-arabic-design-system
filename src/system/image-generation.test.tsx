@@ -67,7 +67,7 @@ const section = () => screen.getByRole("region", { name: "توليد صورة" }
 const live = () =>
   document.querySelector(".tz-image-generation > [role='status']");
 
-it("keeps an unknown preview soft until the host completes it", () => {
+it("holds an unknown image reveal until the host completes it", () => {
   vi.useFakeTimers();
   const canvas = (status: "weaving" | "completed") =>
     wrap(<WeaveCanvas status={status} src={images[0].src} alt={alts[0]} />);
@@ -123,12 +123,12 @@ it("holds the current preview when the host stops generation", () => {
 it("names the weave as one image and follows progress", () => {
   const view = render(generation("weaving", { progress: 42 }));
   // One image, named by the selected picture's description; the preview and
-  // atmospheric light are decoration.
+  // developing field are decoration.
   const weave = screen.getByRole("img", { name: alts[0] });
   expect(weave).toHaveClass("tz-weave");
   expect(screen.getAllByRole("img")).toHaveLength(1);
   for (const part of weave.querySelectorAll(
-    ".tz-weave-image, .tz-weave-atmosphere, .tz-weave-sheen",
+    ".tz-weave-image, .tz-weave-development",
   ))
     expect(part).toHaveAttribute("aria-hidden", "true");
 

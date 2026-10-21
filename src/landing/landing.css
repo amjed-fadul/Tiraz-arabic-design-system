@@ -1022,7 +1022,7 @@ body .tiraz-system {
 /* ---------- Start ---------- */
 .lp-start > .lp-container > .lp-kicker {
   display: flex;
-  max-inline-size: 60rem;
+  max-inline-size: 52rem;
   margin-inline: auto;
   margin-block-end: 20px;
 }
