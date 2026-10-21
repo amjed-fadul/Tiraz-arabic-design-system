@@ -57,7 +57,7 @@ The page says the component's name in its h1 only.
   - «استخدمه عندما» / "Use it when"
   - «استخدم غيره عندما» / "Use something else when", or «يحل محل» / "Replaces" on pattern pages
   - «لاحظ» / "What to notice"
-- **Grid:** `repeat(auto-fit, minmax(240px, 1fr))`, so the columns stack on phones.
+- **Grid:** `repeat(auto-fit, minmax(220px, 1fr))`, so the columns stack on phones. 220 px rather than 240 keeps all three side by side in the 742 px column at a 1280 viewport (controller ruling, 21 Oct).
 - **Content:** the text and the links to other pages don't change.
 
 ## 6b. API reference
