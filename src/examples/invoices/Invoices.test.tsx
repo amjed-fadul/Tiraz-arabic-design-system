@@ -117,6 +117,25 @@ it("has no panel below 960px: a row's button opens its own draft in a Sheet from
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     expect(button).toHaveFocus();
     expect(button).toHaveAccessibleName("راجع التذكير · INV-1033");
+
+    // Closing the Sheet while Send records aborts it: past the host's moment
+    // the row still has no «أُرسل التذكير», and the draft is waiting.
+    await user.click(button);
+    await user.click(
+      within(screen.getByRole("dialog", { name: "مراجعة التذكير" })).getByRole(
+        "button",
+        { name: /^إرسال/ },
+      ),
+    );
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    await new Promise((resolve) => setTimeout(resolve, 800));
+    expect(row("INV-1033")).not.toHaveTextContent("أُرسل التذكير");
+    expect(
+      within(row("INV-1033")).getByRole("button", {
+        name: "راجع التذكير · INV-1033",
+      }),
+    ).toBeInTheDocument();
   } finally {
     globalThis.ResizeObserver = observer;
   }

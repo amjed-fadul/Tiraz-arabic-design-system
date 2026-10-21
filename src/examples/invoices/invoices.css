@@ -46,6 +46,15 @@
     min-inline-size: 0;
   }
 }
+/* Below 640px the table scrolls in its box, so a search that matches nothing
+   keeps its message at the start edge, inside what the box shows. */
+@container screen (width < 640px) {
+  .invoices-main .tz-table .tz-empty-state {
+    position: sticky;
+    inset-inline-start: 0;
+    max-inline-size: calc(100cqi - var(--space-5));
+  }
+}
 .invoices-main .tz-table th,
 .invoices-main .tz-table td {
   padding-inline: var(--space-2);
@@ -66,7 +75,8 @@
   text-decoration: underline;
   text-underline-offset: var(--underline-offset);
 }
-.invoices-status {
+/* The button and, once the reminder is sent, the line that says so. */
+.invoices-reminder {
   display: grid;
   justify-items: start;
   gap: var(--space-1);

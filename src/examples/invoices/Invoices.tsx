@@ -119,7 +119,7 @@ function InvoicesScreen() {
   const [selected, setSelected] = useState(readyReminders[0]);
   const [openId, setOpenId] = useState<string | null>(null);
   const panel = useRef<HTMLDivElement>(null);
-  const sending = useRef(new Set<AbortController>());
+  const sending = useRef(new Map<string, AbortController>());
 
   const late = invoices.filter((invoice) => statusOf(invoice) === "late");
   const owed = late.reduce((total, invoice) => total + invoice.amount, 0);
@@ -178,7 +178,9 @@ function InvoicesScreen() {
       [id]: { ...current[id], edited },
     }));
   }
-  // Stands in for your mail server: the message goes out after a moment.
+  // Stands in for your mail server: the message goes out after a moment. Each
+  // invoice has its own request, so closing its Sheet while it records aborts
+  // it, and the draft is back to ready, unsent.
   function send(id: string, text: string) {
     const settle = (next: Status) =>
       setDrafts((current) => ({
@@ -187,11 +189,13 @@ function InvoicesScreen() {
       }));
     settle("sending");
     const request = new AbortController();
-    sending.current.add(request);
+    sending.current.set(id, request);
     recorded(request.signal)
       .then(() => settle("sent"))
-      .catch(() => {})
-      .finally(() => sending.current.delete(request));
+      .catch(() => settle("ready"))
+      .finally(() => {
+        if (sending.current.get(id) === request) sending.current.delete(id);
+      });
   }
   // Beside the table, choosing a row puts its draft in the panel and hands the
   // panel focus, so the next Tab is the draft rather than the rest of the table.
@@ -277,25 +281,17 @@ function InvoicesScreen() {
       cell: (invoice) => {
         const kind = statusOf(invoice);
         return (
-          <div className="invoices-status">
-            <Badge
-              tone={
-                kind === "late"
-                  ? "error"
-                  : kind === "paid"
-                    ? "success"
-                    : "neutral"
-              }
-            >
-              {statusWords[kind]}
-            </Badge>
-            {drafts[invoice.id]?.status === "sent" && (
-              <span className="invoices-sent">
-                <Check size={14} aria-hidden="true" />
-                {t("أُرسل التذكير", "Reminder sent")}
-              </span>
-            )}
-          </div>
+          <Badge
+            tone={
+              kind === "late"
+                ? "error"
+                : kind === "paid"
+                  ? "success"
+                  : "neutral"
+            }
+          >
+            {statusWords[kind]}
+          </Badge>
         );
       },
     },
@@ -314,53 +310,68 @@ function InvoicesScreen() {
         const name = `${label} · ${invoice.id}`;
         // Beside the table the button picks the draft the panel shows; below
         // it, the button opens that draft in its own Sheet, and keeps being the
-        // Sheet's trigger once the reminder is sent.
-        return size === "wide" ? (
-          <Button
-            variant="secondary"
-            className="invoices-action"
-            aria-label={name}
-            aria-current={selected === invoice.id ? "true" : undefined}
-            onClick={() => choose(invoice.id)}
-          >
-            {label}
-          </Button>
-        ) : (
-          <Sheet
-            open={openId === invoice.id}
-            onOpenChange={(open) => {
-              if (open) startDraft(invoice.id);
-              setOpenId(open ? invoice.id : null);
-            }}
-            side={endSide}
-            title={t("مراجعة التذكير", "Review the reminder")}
-            description={t(
-              `راجع نص التذكير قبل إرساله إلى ${invoice.customer.ar}.`,
-              `Review the reminder before it goes to ${invoice.customer.en}.`,
+        // Sheet's trigger once the reminder is sent. The row says it went in
+        // this cell, whose button is already wider than the line, so sending
+        // moves no column.
+        const control =
+          size === "wide" ? (
+            <Button
+              variant="secondary"
+              className="invoices-action"
+              aria-label={name}
+              aria-current={selected === invoice.id ? "true" : undefined}
+              onClick={() => choose(invoice.id)}
+            >
+              {label}
+            </Button>
+          ) : (
+            <Sheet
+              open={openId === invoice.id}
+              onOpenChange={(open) => {
+                if (open) startDraft(invoice.id);
+                else sending.current.get(invoice.id)?.abort();
+                setOpenId(open ? invoice.id : null);
+              }}
+              side={endSide}
+              title={t("مراجعة التذكير", "Review the reminder")}
+              description={t(
+                `راجع نص التذكير قبل إرساله إلى ${invoice.customer.ar}.`,
+                `Review the reminder before it goes to ${invoice.customer.en}.`,
+              )}
+              closeLabel={t("إغلاق التذكير", "Close the reminder")}
+              trigger={
+                <Button
+                  variant="secondary"
+                  className="invoices-action"
+                  aria-label={name}
+                >
+                  {label}
+                </Button>
+              }
+            >
+              {drafts[invoice.id] && (
+                <div className="invoices-sheet">
+                  <Reminder
+                    invoice={invoice}
+                    draft={drafts[invoice.id]}
+                    headingLevel={3}
+                    onBodyChange={(body) => edit(invoice.id, body)}
+                    onSend={(text) => send(invoice.id, text)}
+                  />
+                </div>
+              )}
+            </Sheet>
+          );
+        return (
+          <div className="invoices-reminder">
+            {control}
+            {draft?.status === "sent" && (
+              <span className="invoices-sent">
+                <Check size={14} aria-hidden="true" />
+                {t("أُرسل التذكير", "Reminder sent")}
+              </span>
             )}
-            closeLabel={t("إغلاق التذكير", "Close the reminder")}
-            trigger={
-              <Button
-                variant="secondary"
-                className="invoices-action"
-                aria-label={name}
-              >
-                {label}
-              </Button>
-            }
-          >
-            {drafts[invoice.id] && (
-              <div className="invoices-sheet">
-                <Reminder
-                  invoice={invoice}
-                  draft={drafts[invoice.id]}
-                  headingLevel={3}
-                  onBodyChange={(body) => edit(invoice.id, body)}
-                  onSend={(text) => send(invoice.id, text)}
-                />
-              </div>
-            )}
-          </Sheet>
+          </div>
         );
       },
     },
