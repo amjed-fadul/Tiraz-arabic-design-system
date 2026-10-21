@@ -27,18 +27,22 @@ export function Button({
   // Labels and state glyphs animate only after the first state change, never
   // on first render.
   const changed = useChanged(state);
-  const StateIcon =
-    state === "loading"
-      ? LoaderCircle
-      : state === "success"
-        ? Check
-        : AlertCircle;
+  const loading = state === "loading";
+  const StateIcon = loading
+    ? LoaderCircle
+    : state === "success"
+      ? Check
+      : AlertCircle;
   return (
     <button
       {...props}
       type={type}
-      disabled={disabled || state === "loading"}
-      aria-busy={state === "loading" || undefined}
+      // Loading keeps the button focusable, so focus never drops to the page
+      // mid-action; it is inert instead, and its clicks are swallowed.
+      disabled={disabled && !loading}
+      aria-disabled={loading || props["aria-disabled"]}
+      aria-busy={loading || undefined}
+      onClick={loading ? (event) => event.preventDefault() : props.onClick}
       data-state={state}
       data-changed={changed || undefined}
       data-variant={variant}

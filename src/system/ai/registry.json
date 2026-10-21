@@ -2111,7 +2111,7 @@
           "type": "readonly string[]",
           "required": false,
           "default": [],
-          "note": "The open rows' ids; controlled with onExpandedChange. A row opens from its title, a disclosure button with aria-expanded, or from «راجع» / «أجب»; focus stays on the trigger and nothing in the row takes it. A row with no steps, request or questions has nothing to open, and its title is a heading that takes focus only when a moving row hands it on."
+          "note": "The open rows' ids; controlled with onExpandedChange. A row opens from its title, a disclosure button with aria-expanded, or from «راجع» / «أجب»; focus stays on the trigger and nothing in the row takes it. A row whose quick decision is in flight stays closed even when expanded names it, and an open row whose card is recording a decision stays open: its title and Escape leave it be until the host answers. A row with no steps, request or questions has nothing to open, and its title is a heading that takes focus only when a moving row hands it on."
         },
         {
           "name": "onExpandedChange",
@@ -2141,7 +2141,7 @@
           "name": "onDecision",
           "type": "(request: ApprovalRequest, decision: ApprovalDecision, context: { signal: AbortSignal }) => void | Promise<void>",
           "required": false,
-          "note": "Records the decision of an open row's ApprovalCard (plain, a heading deeper, with Mod+Enter only for reversible and not irreversible, and its 500 ms guard), or a quick one. Quick decisions show only for a needs-you request whose approval is reversible, neither irreversible nor expired, while its row is closed: secondary Reject and Approve, with no shortcut, named with the row's title. One runs at a time and counts only once the promise resolves; a change to the request, its expiry or its reversibility aborts it, so a late resolve records nothing. Without onDecision a request shows its action and target as text, with no actions."
+          "note": "Records the decision of an open row's ApprovalCard (plain, a heading deeper, with Mod+Enter only for reversible and not irreversible, and its 500 ms guard), or a quick one. Quick decisions show only for a needs-you request whose approval is reversible, neither irreversible nor expired, while its row is closed: secondary Reject and Approve, with no shortcut, named with the row's title. One runs at a time and counts only once the promise resolves; a change to the request, its expiry or its reversibility aborts it, so a late resolve records nothing, and remounts the quick buttons, so focus on one moves to the row's title. Without onDecision a request shows its action and target as text, with no actions."
         },
         {
           "name": "onAnswer",
@@ -2200,7 +2200,7 @@
       "state": "The host owns every item, its status, its request and its times; the inbox never resolves, moves or removes an item by itself. It holds only UI state: the uncontrolled tab, open rows and agent, each question row's draft answers, a quick decision in flight, and the receipt timer for a row the host moved out of the shown tab.",
       "accessibility": [
         "A section labelled by its title. One polite region, empty at mount, speaks only when the counts change, joining its non-zero parts with « · »: «طلبان بانتظارك · ٣ مهام تعمل», or «لا شيء بانتظارك». Changing the tab says nothing; the open card keeps its own region.",
-        "Opening a row never moves focus, and nothing inside takes it; a new or changed item never moves focus. Escape anywhere in an open row, the card included, folds it, returns focus to its title and records nothing: the row takes the key in its capture phase, and the card's DecisionBar drops its Esc hint there. When a row's own action goes away, such as an accepted quick decision or Try again, focus moves to that row's title. When a row leaves, or the host deletes it, while focus is in it, focus goes to the next row's title, else the previous row's, else the tab panel.",
+        "Opening a row never moves focus, and nothing inside takes it; a new or changed item never moves focus. Escape anywhere in an open row, the card included, folds it, returns focus to its title and records nothing: the row takes the key in its capture phase, and the card's DecisionBar drops its Esc hint there. While a decision in the open row is being recorded, Escape and the title leave the row open. When a row's own action goes away, such as an accepted quick decision or Try again, focus moves to that row's title, which the receipt then describes (aria-describedby). When a row leaves, or the host deletes it, while focus is in it, focus goes to the next row's title, else the previous row's, else the tab panel.",
         "Each row action is named by its own word and then the row's title through aria-labelledby, so «رفض» reads «رفض ترحيل قيود الاستحقاق الأربعة». Each row's pill names its status in words (بانتظارك، بانتظار مراجعتك، يعمل، تعثّرت، اكتملت), a failed row's error stays as text, and each step's icon has a hidden state word."
       ],
       "limitations": [
@@ -5739,7 +5739,7 @@
           "required": false,
           "default": "idle",
           "values": ["idle", "loading", "success", "error"],
-          "note": "Caller-owned state; no automatic loading/feedback lifecycle. Loading disables activation and sets aria-busy; success/error do not disable the button."
+          "note": "Caller-owned state; no automatic loading/feedback lifecycle. Loading keeps the button focusable but inert: it sets aria-disabled and aria-busy and swallows clicks, Enter and Space included, so focus never drops to the page mid-action. success/error do not disable the button."
         },
         {
           "name": "size",
@@ -5796,9 +5796,9 @@
       ],
       "inheritedProps": "ButtonHTMLAttributes<HTMLButtonElement> except aria-label, which is reintroduced conditionally. Native form attributes, id, style, event handlers, ARIA/data attributes are accepted; className is appended. No ref prop in ButtonProps.",
       "exclusions": [
-        "No asChild or href/link API. Caller aria-busy is overridden by state; internal data-state/data-variant/data-size and className are owned by the wrapper."
+        "No asChild or href/link API. Caller aria-busy is overridden by state, and caller aria-disabled and onClick while loading; internal data-state/data-variant/data-size and className are owned by the wrapper."
       ],
-      "state": "state is fully caller-controlled; disabled is also forced while loading.",
+      "state": "state is fully caller-controlled. While loading the button keeps focus but is inert (aria-disabled, clicks swallowed); disabled is the native attribute otherwise.",
       "events": [
         "onClick and native button events; connect actions to application logic."
       ],

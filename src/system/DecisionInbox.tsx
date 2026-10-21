@@ -192,9 +192,13 @@ function InboxRow({
     waits && !request && item.questions?.length ? item.questions : undefined;
   const steps = item.steps ?? [];
   const approval = item.approval ?? {};
-  // A row opens only when it has something to show.
+  // A row opens only when it has something to show, and never while its
+  // quick decision is in flight, even when the host opens it: the card would
+  // offer a second decision on the same request.
   const opens = steps.length > 0 || !!request || !!questions;
-  const open = opens && expanded;
+  const task = useDecisionTask(),
+    { cancel } = task;
+  const open = opens && expanded && task.state !== "submitting";
   const { triggerRef, panelProps } = useDisclosure(open);
   const Heading = `h${level}` as const;
   const deeper = Math.min(level + 1, 6) as 3 | 4 | 5 | 6;
@@ -210,8 +214,6 @@ function InboxRow({
         approval.expired,
       ])
     : "";
-  const task = useDecisionTask(),
-    { cancel } = task;
   const [decided, setDecided] = useState<{
     key: string;
     decision: ApprovalDecision;
@@ -238,9 +240,28 @@ function InboxRow({
       () => setDecided({ key: at, decision }),
     );
   }
+  // A decision the open card is recording keeps the row open: Escape and the
+  // title leave it be until the host answers or the decision is aborted.
+  const [deciding, setDeciding] = useState(false);
+  const decideInCard: NonNullable<DecisionInboxProps["onDecision"]> = async (
+    given,
+    decision,
+    context,
+  ) => {
+    setDeciding(true);
+    context.signal.addEventListener("abort", () => setDeciding(false), {
+      once: true,
+    });
+    try {
+      await onDecision?.(given, decision, context);
+    } finally {
+      setDeciding(false);
+    }
+  };
   const words = { ...approvalCardCopy[ar ? "ar" : "en"], ...approval.labels };
   const receipt =
     item.receipt ?? (accepted ? words[accepted] : copy.pills[item.status]);
+  const shows = leaving || !!accepted;
 
   // Focus never drops to the page: when the control that held it goes, such
   // as an accepted quick decision or Try again, the row's title takes it.
@@ -275,17 +296,22 @@ function InboxRow({
     return () => clearTimeout(timer);
   }, [leaving, receiptFor, onLeft, item.id]);
 
+  // A row opens only once its quick decision in flight is settled, and folds
+  // only once the decision its card is recording is.
+  const held = (!open && submitting) || (open && deciding);
   function toggle() {
-    // A row opens only once its quick decision in flight is settled.
-    if (!open && submitting) return;
+    if (held) return;
     onExpandedChange(!open);
   }
   // Escape anywhere in an open row folds it and records nothing, the card
-  // included: the row takes the key before the card can (Decision 5).
+  // included: the row takes the key before the card can (Decision 5). While
+  // the card records a decision, Escape is taken and does nothing, so it
+  // never cancels that decision.
   function fold(event: KeyboardEvent<HTMLLIElement>) {
     if (event.key !== "Escape" || !open || event.nativeEvent.isComposing)
       return;
     event.preventDefault();
+    if (deciding) return;
     title.current?.focus();
     onExpandedChange(false);
   }
@@ -304,6 +330,7 @@ function InboxRow({
       {...named("review")}
       aria-expanded={open}
       aria-controls={panelId}
+      aria-disabled={held || undefined}
       onClick={toggle}
     >
       {label}
@@ -316,7 +343,7 @@ function InboxRow({
         ? !open &&
           (["rejected", "approved"] as const).map((decision) => (
             <Button
-              key={decision}
+              key={`${decision}:${key}`}
               variant="secondary"
               {...named(decision)}
               aria-describedby={hint ? `${uid}-hint` : undefined}
@@ -395,7 +422,8 @@ function InboxRow({
               className="tz-decision-inbox-trigger"
               aria-expanded={open}
               aria-controls={panelId}
-              aria-disabled={(!open && submitting) || undefined}
+              aria-describedby={shows ? `${uid}-receipt` : undefined}
+              aria-disabled={held || undefined}
               onClick={toggle}
             >
               <bdi>{item.title}</bdi>
@@ -407,6 +435,7 @@ function InboxRow({
             ref={setTitle}
             id={titleId}
             tabIndex={-1}
+            aria-describedby={shows ? `${uid}-receipt` : undefined}
             className="tz-decision-inbox-heading"
           >
             <bdi>{item.title}</bdi>
@@ -417,10 +446,14 @@ function InboxRow({
           {item.context != null && <> · {item.context}</>}
           {item.time != null && <> · {item.time}</>}
         </p>
-        {leaving || accepted ? (
+        {shows ? (
           // The receipt says what actually happened: the host's, else the
-          // accepted decision's, else the status the host moved it to.
-          <span className="tz-decision-inbox-receipt">{receipt}</span>
+          // accepted decision's, else the status the host moved it to. It
+          // describes the title, which takes focus when the row's own action
+          // goes.
+          <span id={`${uid}-receipt`} className="tz-decision-inbox-receipt">
+            {receipt}
+          </span>
         ) : (
           <StatusPill
             state={item.status}
@@ -471,7 +504,7 @@ function InboxRow({
                         {...item.approval}
                         appearance="plain"
                         headingLevel={deeper}
-                        onDecision={onDecision}
+                        onDecision={decideInCard}
                         value={
                           accepted
                             ? {

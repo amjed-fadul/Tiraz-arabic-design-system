@@ -399,6 +399,102 @@ it("folds an open row on Escape, anywhere in it, and records nothing", async () 
   expect(onDecision).not.toHaveBeenCalled();
 });
 
+it("never opens a row while its quick decision is in flight", async () => {
+  const task = deferred(),
+    onDecision = vi.fn<Decide>(() => task.promise);
+  const inbox = (expanded: string[]) => (
+    <DecisionInbox
+      items={items}
+      onDecision={onDecision}
+      expanded={expanded}
+      onExpandedChange={() => {}}
+    />
+  );
+  const view = render(inbox([]));
+  fireEvent.click(
+    within(row(accruals.action)).getByRole("button", {
+      name: `رفض ${accruals.action}`,
+    }),
+  );
+  // The host opens the row while the Reject is recorded: no card to decide.
+  view.rerender(inbox(["accruals"]));
+  expect(title(accruals.action)).toHaveAttribute("aria-expanded", "false");
+  expect(within(panelOf(accruals.action)).queryAllByRole("button")).toEqual([]);
+  // Once recorded, the card opens holding that decision, and offers no other.
+  await act(async () => task.resolve());
+  expect(title(accruals.action)).toHaveAttribute("aria-expanded", "true");
+  expect(
+    within(panelOf(accruals.action)).queryByRole("button", {
+      name: "ترحيل القيود",
+    }),
+  ).toBeNull();
+  expect(onDecision).toHaveBeenCalledTimes(1);
+});
+
+it("moves focus to the title when the host revises a request under its quick Approve", async () => {
+  const user = userEvent.setup(),
+    onDecision = vi.fn<Decide>();
+  const view = render(<DecisionInbox items={items} onDecision={onDecision} />);
+  act(() =>
+    within(row(accruals.action))
+      .getByRole("button", { name: `ترحيل القيود ${accruals.action}` })
+      .focus(),
+  );
+  view.rerender(
+    <DecisionInbox
+      items={changed("accruals", {
+        request: { ...accruals, details: "الإجمالي ٦٨٬٥٠٠ ر.س" },
+      })}
+      onDecision={onDecision}
+    />,
+  );
+  // The revised request is unread, so Enter only reaches the title.
+  expect(title(accruals.action)).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(onDecision).not.toHaveBeenCalled();
+});
+
+it("describes the focused title with the receipt of a quick decision", async () => {
+  const user = userEvent.setup(),
+    task = deferred(),
+    onDecision = vi.fn<Decide>(() => task.promise);
+  render(<DecisionInbox items={items} onDecision={onDecision} />);
+  act(() =>
+    within(row(accruals.action))
+      .getByRole("button", { name: `ترحيل القيود ${accruals.action}` })
+      .focus(),
+  );
+  await user.keyboard("{Enter}");
+  await act(async () => task.resolve());
+  expect(title(accruals.action)).toHaveFocus();
+  expect(title(accruals.action)).toHaveAccessibleDescription("تمت الموافقة");
+});
+
+it("keeps an open row open while a decision in it is recorded", async () => {
+  const user = userEvent.setup(),
+    task = deferred(),
+    onDecision = vi.fn<Decide>(() => task.promise);
+  render(<DecisionInbox items={items} onDecision={onDecision} />);
+  const trigger = title(reminders.action);
+  await user.click(trigger);
+  await user.click(
+    within(panelOf(reminders.action)).getByRole("button", {
+      name: "أرسل الرسائل",
+    }),
+  );
+  expect(onDecision).toHaveBeenCalledTimes(1);
+  // Neither Escape nor the title folds the row away from its decision.
+  await user.keyboard("{Escape}");
+  expect(trigger).toHaveAttribute("aria-expanded", "true");
+  await user.click(trigger);
+  expect(trigger).toHaveAttribute("aria-expanded", "true");
+  expect(onDecision.mock.calls[0][2].signal.aborted).toBe(false);
+  await act(async () => task.resolve());
+  expect(
+    within(panelOf(reminders.action)).getByText("تمت الموافقة"),
+  ).toBeVisible();
+});
+
 it("waits on failed tasks, opens drafts through onOpen and answers questions inline", async () => {
   const user = userEvent.setup(),
     onRetry = vi.fn(),

@@ -518,8 +518,8 @@ export function ApiReference({
         "expanded / onExpandedChange",
         "readonly string[] / (ids: string[]) => void",
         t(
-          "الصفوف المفتوحة. يفتح العنوانُ الصفَّ، وكذلك «راجع» أو «أجب»، ويبقى التركيز على ما ضُغط ولا يأخذه شيء داخل الصف. ولا يُفتح صفٌّ قرارُه السريع قيد التسجيل، ويطويه Escape من أي مكان فيه ولا يسجّل شيئًا.",
-          "The open rows. The title opens a row, as Review or Answer do; focus stays on what was pressed and nothing inside takes it. A row whose quick decision is being recorded can't open, and Escape anywhere in an open row folds it and records nothing.",
+          "الصفوف المفتوحة. يفتح العنوانُ الصفَّ، وكذلك «راجع» أو «أجب»، ويبقى التركيز على ما ضُغط ولا يأخذه شيء داخل الصف. ولا يُفتح صفٌّ قرارُه السريع قيد التسجيل ولو مرّره تطبيقك في expanded، ويطويه Escape من أي مكان فيه ولا يسجّل شيئًا، إلا إذا كانت بطاقته تسجّل قرارًا، فيبقى مفتوحًا حتى يجيب تطبيقك.",
+          "The open rows. The title opens a row, as Review or Answer do; focus stays on what was pressed and nothing inside takes it. A row whose quick decision is being recorded can't open, even when expanded names it. Escape anywhere in an open row folds it and records nothing, except while its card is recording a decision: then the row stays open until your app answers.",
         ),
       ],
       [
@@ -534,8 +534,8 @@ export function ApiReference({
         "onDecision",
         "(request, decision, { signal }) => void | Promise<void>",
         t(
-          "يسجّل قرار البطاقة في الصف المفتوح، أو القرار السريع لطلب reversible وليس irreversible ولا منتهيًا: زرّا رفض وموافقة ثانويان بلا اختصار، يظهران والصف مطوي. لا يُحتسب القرار حتى يحلّ وعد تطبيقك، ويُلغى إذا تغيّر الطلب أو انتهت مهلته أو صار لا يمكن التراجع عنه. وبلا onDecision يظهر الطلب نصًا دون إجراءات.",
-          "Records the open card's decision, or the quick one of a request that is reversible, not irreversible and not expired: secondary Reject and Approve with no shortcut, shown while the row is closed. A decision counts only once your promise resolves, and is aborted if the request changes, expires or turns irreversible. Without onDecision the request shows as text, with no actions.",
+          "يسجّل قرار البطاقة في الصف المفتوح، أو القرار السريع لطلب reversible وليس irreversible ولا منتهيًا: زرّا رفض وموافقة ثانويان بلا اختصار، يظهران والصف مطوي. لا يُحتسب القرار حتى يحلّ وعد تطبيقك، ويُلغى إذا تغيّر الطلب أو انتهت مهلته أو صار لا يمكن التراجع عنه، ويُعاد بناء الزرّين عند التغيير فينتقل التركيز إلى عنوان الصف، ويصف الإيصالُ العنوانَ بعد القرار. وبلا onDecision يظهر الطلب نصًا دون إجراءات.",
+          "Records the open card's decision, or the quick one of a request that is reversible, not irreversible and not expired: secondary Reject and Approve with no shortcut, shown while the row is closed. A decision counts only once your promise resolves, and is aborted if the request changes, expires or turns irreversible; a change also rebuilds both buttons, so focus moves to the row's title, and once decided the receipt describes that title. Without onDecision the request shows as text, with no actions.",
         ),
       ],
       [
@@ -3154,8 +3154,8 @@ export function ApiReference({
         "variant / state / size",
         "ButtonVariant / ButtonState / sm | md",
         t(
-          "الحجم الافتراضي sm. تمنع حالة loading الضغط وتضبط aria-busy.",
-          "sm is the default. Loading blocks clicks and manages aria-busy.",
+          "الحجم الافتراضي sm. في حالة loading يبقى الزر قابلًا للتركيز لكنه لا يستجيب: يضبط aria-disabled وaria-busy ويتجاهل الضغط، فلا يسقط التركيز إلى الصفحة أثناء العملية.",
+          "sm is the default. Loading keeps the button focusable but inert: it sets aria-disabled and aria-busy and ignores clicks, so focus never drops to the page mid-action.",
         ),
       ],
       [

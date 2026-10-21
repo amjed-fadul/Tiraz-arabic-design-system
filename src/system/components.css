@@ -88,22 +88,25 @@
     background: color-mix(in srgb, var(--danger) 15%, var(--surface));
   }
 }
-.tz-button:not(:disabled):active {
+.tz-button:not(:disabled):not([data-state="loading"]):active {
   transform: scale(var(--press-scale));
   transition-duration:
     var(--motion-fast), var(--motion-fast), var(--motion-fast),
     var(--motion-state), var(--motion-press), var(--motion-press);
   transition-timing-function: var(--ease-out);
 }
-.tz-button:not([data-variant="ghost"]):not(:disabled):active {
+.tz-button:not([data-variant="ghost"]):not(:disabled):not(
+    [data-state="loading"]
+  ):active {
   box-shadow: var(--shadow-pressed);
 }
 .tz-button:disabled:not([data-state="loading"]) {
   opacity: var(--disabled-opacity);
   box-shadow: none;
 }
-/* Loading keeps full opacity: the spinner says it is busy, and the button is
-   disabled while it loads, so clicks never land. */
+/* Loading keeps full opacity: the spinner says it is busy. The button keeps
+   focus while it loads, inert (aria-disabled) and swallowing clicks, so it
+   does not press either. */
 .tz-button[data-state="loading"] {
   cursor: wait;
 }
@@ -7571,7 +7574,10 @@ button.tz-tool-chip[aria-expanded="true"] {
 .tz-chat-entry-surface .tz-chat-entry-send {
   border-radius: var(--radius-pill);
 }
-.tz-chat-entry-surface .tz-chat-entry-send:disabled {
+/* Disabled, or at work on a send: a loading button keeps focus rather than
+   going disabled, and looks the same. */
+.tz-chat-entry-surface
+  .tz-chat-entry-send:is(:disabled, [data-state="loading"]) {
   opacity: 1;
   background: var(--surface-tray);
   color: var(--text-muted);

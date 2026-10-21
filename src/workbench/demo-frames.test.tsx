@@ -721,7 +721,7 @@ it("shows the API reference open, as a table with column headers and LTR code", 
   ).toEqual([
     "ButtonVariant / ButtonState / sm | md",
     '"primary" / "idle" / "sm"',
-    "الحجم الافتراضي sm. تمنع حالة loading الضغط وتضبط aria-busy.",
+    "الحجم الافتراضي sm. في حالة loading يبقى الزر قابلًا للتركيز لكنه لا يستجيب: يضبط aria-disabled وaria-busy ويتجاهل الضغط، فلا يسقط التركيز إلى الصفحة أثناء العملية.",
   ]);
 });
 

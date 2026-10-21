@@ -131,7 +131,7 @@ it("offers Undo only inside the host's window and never claims a recall", () => 
   fireEvent.click(undoButton()!);
   fireEvent.click(undoButton()!);
   expect(onUndo).toHaveBeenCalledTimes(1);
-  expect(undoButton()).toBeDisabled();
+  expect(undoButton()).toHaveAttribute("aria-disabled", "true");
   view.rerender(draft("ready", { onSend: () => {} }));
   expect(region().textContent).toBe("أُلغي الإرسال، والمسودة محفوظة");
   expect(section().textContent).not.toMatch(recall);
