@@ -108,7 +108,7 @@ export interface DecisionInboxProps {
   onExpandedChange?: (ids: string[]) => void;
   /** The agents strip: a toggle per agent, with its state in words. */
   agents?: readonly { id: string; name: ReactNode; state: StatusPillState }[];
-  /** The picked agent, which filters the rows and the counts. */
+  /** The picked agent, which filters the rows and the counts, unannounced. */
   agent?: string | null;
   onAgentChange?: (id: string | null) => void;
   /** Records a decision: the open card's, or a reversible row's quick one. */
@@ -706,9 +706,10 @@ export function DecisionInbox({
 
   // One polite region, empty at mount, speaks only when the counts change.
   // Waiting counts needs-you and failed items as requests, running ones as
-  // tasks.
+  // tasks. Picking an agent filters the counts, and filtering is never
+  // announced, so a new agent resets what was heard without speaking.
   const live = useRef<HTMLSpanElement>(null),
-    heard = useRef<string | null>(null);
+    heard = useRef<{ agent: string | null; counts: string } | null>(null);
   const waiting = count("needs-you"),
     running = count("running"),
     counts = `${waiting} ${running}`;
@@ -724,12 +725,15 @@ export function DecisionInbox({
       .filter(Boolean)
       .join(" · ") || copy.nothingWaiting;
   useEffect(() => {
-    if (heard.current === null) {
-      heard.current = counts;
+    const was = heard.current;
+    heard.current = { agent: agent ?? null, counts };
+    if (
+      !was ||
+      was.agent !== (agent ?? null) ||
+      was.counts === counts ||
+      !live.current
+    )
       return;
-    }
-    if (heard.current === counts || !live.current) return;
-    heard.current = counts;
     live.current.textContent = sentence;
   });
 

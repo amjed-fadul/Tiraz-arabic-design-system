@@ -2223,7 +2223,7 @@
       ],
       "state": "The host owns every item, its status, its request and its times; the inbox never resolves, moves or removes an item by itself. It holds only UI state: the uncontrolled tab, open rows and agent, each question row's draft answers, a quick decision in flight, and the receipt timer for a row the host moved out of the shown tab.",
       "accessibility": [
-        "A section labelled by its title. One polite region, empty at mount, speaks only when the counts change, joining its non-zero parts with « · »: «طلبان بانتظارك · ٣ مهام تعمل», or «لا شيء بانتظارك». Changing the tab says nothing; the open card keeps its own region.",
+        "A section labelled by its title. One polite region, empty at mount, speaks only when the counts change, joining its non-zero parts with « · »: «طلبان بانتظارك · ٣ مهام تعمل», or «لا شيء بانتظارك». Changing the tab or picking an agent says nothing; the open card keeps its own region.",
         "Opening a row never moves focus, and nothing inside takes it; a new or changed item never moves focus. Escape anywhere in an open row, the card included, folds it, returns focus to its title and records nothing: the row takes the key in its capture phase, and the card's DecisionBar drops its Esc hint there. While a decision in the open row is being recorded, Escape and the title leave the row open. When a row's own action goes away, such as an accepted quick decision or Try again, focus moves to that row's title, which the receipt then describes (aria-describedby). When a row leaves, or the host deletes it, while focus is in it, focus goes to the next row's title, else the previous row's, else the tab panel.",
         "Each row action is named by its own word and then the row's title through aria-labelledby, so «رفض» reads «رفض ترحيل قيود الاستحقاق الأربعة». Each row's pill names its status in words (بانتظارك، بانتظار مراجعتك، يعمل، تعثّرت، اكتملت), a failed row's error stays as text, and each step's icon has a hidden state word."
       ],
@@ -3197,7 +3197,7 @@
       ],
       "state": "Controlled question drafts. Submission is guarded and aborted on schema replacement, reset and unmount. States: asking, submitting, answered (with receipt, the answers the host accepted) and failed (the draft stays). The receipt shows what the host accepted, never what the agent did with it.",
       "accessibility": [
-        "A named form with native radios and labeled text fields. Never steals focus on mount. Keys 1–9 (ASCII, Arabic-Indic or Eastern Arabic) choose the matching choice; the position and the key hint follow config.numerals. Required errors focus the first incomplete question, and moving between questions focuses the question heading. Ctrl or Cmd+Enter submits from a text answer.",
+        "A named form with native radios and labeled text fields. Never steals focus on mount. Keys 1–9 (ASCII, Arabic-Indic or Eastern Arabic) choose the matching choice; the position and the key hint follow config.numerals. Required errors focus the first incomplete question, and moving between questions focuses the question heading. Ctrl or Cmd+Enter submits from a text answer. While submitting, Submit is aria-disabled rather than disabled, so focus stays on it and never drops to the page.",
         "A polite status line, and on failure an alert that keeps the draft. The status pill says needs-you while the questions wait. When the receipt replaces the focused control, focus moves to the form."
       ],
       "limitations": [

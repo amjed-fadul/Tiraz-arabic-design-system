@@ -546,6 +546,41 @@ it("waits on failed tasks, opens drafts through onOpen and answers questions inl
   );
 });
 
+it("keeps focus on a busy submit, so Escape folds the row and records nothing", async () => {
+  const user = userEvent.setup(),
+    task = deferred(),
+    onAnswer = vi.fn<NonNullable<DecisionInboxProps["onAnswer"]>>(
+      () => task.promise,
+    );
+  render(<DecisionInbox items={items} onAnswer={onAnswer} />);
+  const trigger = title(jeddah);
+  await user.click(trigger);
+  await user.click(
+    within(panelOf(jeddah)).getByRole("radio", { name: /نعم، استثنِه/ }),
+  );
+  const submit = within(panelOf(jeddah)).getByRole("button", {
+    name: "إرسال الإجابات",
+  });
+  await user.tab();
+  expect(submit).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(onAnswer).toHaveBeenCalledTimes(1);
+  // Busy, the button stays focusable and inert, so focus stays in the row.
+  expect(submit).toBeEnabled();
+  expect(submit).toHaveAttribute("aria-disabled", "true");
+  expect(submit).toHaveFocus();
+  await user.keyboard("{Enter}");
+  expect(onAnswer).toHaveBeenCalledTimes(1);
+  // Escape mid-submit folds the row and aborts the answers, so a host that
+  // honors the signal records nothing.
+  await user.keyboard("{Escape}");
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+  expect(trigger).toHaveFocus();
+  expect(onAnswer.mock.calls[0][2].signal.aborted).toBe(true);
+  await act(async () => task.resolve());
+  expect(row(jeddah)).not.toHaveTextContent("أُرسلت الإجابات.");
+});
+
 it("counts with Arabic agreement and speaks only when counts change", async () => {
   const user = userEvent.setup();
   const view = render(<DecisionInbox items={items} />);
@@ -655,4 +690,36 @@ it("filters rows and counts by agent from the strip", async () => {
   );
   await user.click(chip());
   expect(onAgentChange).toHaveBeenLastCalledWith(null);
+});
+
+it("never announces picking an agent, and still speaks a count change", async () => {
+  const user = userEvent.setup();
+  const view = render(<DecisionInbox items={items} agents={agents} />);
+  const chip = (name: RegExp) =>
+    within(screen.getByRole("group", { name: "الوكلاء" })).getByRole("button", {
+      name,
+    });
+  // Each pick changes the counts, and none of them is spoken.
+  await user.click(chip(/^وكيل التحصيل/));
+  expect(screen.getByRole("tab", { name: /^بانتظارك/ })).toHaveTextContent(
+    "بانتظارك ٢",
+  );
+  expect(region()).toBeEmptyDOMElement();
+  await user.click(chip(/^وكيل المالية/));
+  expect(chip(/^وكيل المالية/)).toHaveAttribute("aria-pressed", "true");
+  expect(region()).toBeEmptyDOMElement();
+  // A real change to the picked agent's counts still speaks…
+  view.rerender(
+    <DecisionInbox
+      items={changed("close", { status: "completed" })}
+      agents={agents}
+    />,
+  );
+  expect(region().textContent).toBe("طلبان بانتظارك");
+  // …and letting go of the agent says nothing new.
+  await user.click(chip(/^وكيل المالية/));
+  expect(screen.getByRole("tab", { name: /^بانتظارك/ })).toHaveTextContent(
+    "بانتظارك ٥",
+  );
+  expect(region().textContent).toBe("طلبان بانتظارك");
 });

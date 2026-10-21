@@ -22,9 +22,11 @@ npm run format:check
 
 ## Customer dashboard example
 
-Open **Dashboard example** in the documentation header (it is also **Dashboard with
-AI** under Screens in the AI patterns navigation), or visit
-`/examples/dashboard` on the local server. This full-page Arabic-first customer
+Open **Customer dashboard** («لوحة العملاء») under Screens in the documentation
+navigation, or **Dashboard example** in the documentation header. Like the ten example
+screens, it opens as a screen page inside the docs, with Desktop, Tablet and Phone
+width chips; its new-tab link, or `/examples/dashboard` on the local server, opens it
+on its own. This full-page Arabic-first customer
 dashboard connects metrics, period-filtered charts, searchable/filterable
 DataTable and validated customer creation using existing Tiraz components. Its
 overview shows four figure cards: customers, orders, revenue and the average order.
@@ -343,8 +345,9 @@ The connected dashboard uses Sidebar on desktop and the same content in Sheet
 on mobile, keeping Overview, Orders and Customers as real section destinations.
 
 The documentation component menu leads with AI patterns, grouped by job (Ask,
-Delegate, Create, Understand and control), then Screens (the Assistant workspace,
-with a link to the Dashboard with AI) and Parts, a collapsible section that is closed
+Delegate, Create, Understand and control), then Screens (the Assistant workspace
+page, then the Customer dashboard and the ten example screens, each a button that
+opens its screen page inside the docs) and Parts, a collapsible section that is closed
 by default and remembers its state. Forms, Files, Navigation, Data, Display & feedback
 (which holds the content blocks LoadingState, CodeBlock, Markdown and Terminal),
 Overlays and Charts follow, with compact Arabic and English labels. Groups stay
@@ -403,7 +406,7 @@ FileTree displays application-supplied files and folders with stable unique IDs;
 
 ## AI task patterns
 
-Each AI pattern finishes one job in one anatomy (a header that names the state once, what the assistant produced on paper, the evidence folded away, the person's options and the meta), using the zones its job needs. The host owns the state. A pattern renders the `status` and data it is given and reports what the person asks for; it never runs a request or simulates progress. There are nine pattern pages: Start a task (`TaskStarter`), Cited answer (`CitedAnswer`), Agent task (`AgentTask`), Clarifying questions (`AskUserQuestions`), Approval request and Approval sequence (`ApprovalCard`, `ApprovalFlow`), Suggested edits (`SuggestedEdits`), Image generation (`ImageGeneration`) and What changed (`ChangeSummary`). Two screens compose them: the Assistant workspace (`ChatApp`, at `/examples/chat-app`) and the Dashboard with AI (`/examples/dashboard`). The shared parts they are built on (AIMark, StatusPill, Tray, Countdown, StatusIcon, ThinkingPanel, FeedbackBar, FollowUps, InlineDiff and WeaveCanvas) are exported and described under `support` in the registry; the fifteen older pieces, such as ChatComposer and ToolCall, keep their pages in Parts. Agents start at [Start with a pattern](src/system/ai/README.md#start-with-a-pattern). The rules every pattern follows are in [composition.md](src/system/ai/composition.md#patterns): one live region, scoped and safe shortcuts, plain appearance inside other patterns, amber only for "needs you", and no approve-all.
+Each AI pattern finishes one job in one anatomy (a header that names the state once, what the assistant produced on paper, the evidence folded away, the person's options and the meta), using the zones its job needs. The host owns the state. A pattern renders the `status` and data it is given and reports what the person asks for; it never runs a request or simulates progress. There are nine pattern pages: Start a task (`TaskStarter`), Cited answer (`CitedAnswer`), Agent task (`AgentTask`), Clarifying questions (`AskUserQuestions`), Approval request and Approval sequence (`ApprovalCard`, `ApprovalFlow`), Suggested edits (`SuggestedEdits`), Image generation (`ImageGeneration`) and What changed (`ChangeSummary`). Two screens compose them: the Assistant workspace (`ChatApp`, at `/examples/chat-app`) and the Customer dashboard (`/examples/dashboard`). The shared parts they are built on (AIMark, StatusPill, Tray, Countdown, StatusIcon, ThinkingPanel, FeedbackBar, FollowUps, InlineDiff and WeaveCanvas) are exported and described under `support` in the registry; the fifteen older pieces, such as ChatComposer and ToolCall, keep their pages in Parts. Agents start at [Start with a pattern](src/system/ai/README.md#start-with-a-pattern). The rules every pattern follows are in [composition.md](src/system/ai/composition.md#patterns): one live region, scoped and safe shortcuts, plain appearance inside other patterns, amber only for "needs you", and no approve-all.
 
 ## AI feedback
 

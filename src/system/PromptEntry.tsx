@@ -149,7 +149,12 @@ export function PromptEntry({
       }}
       onClick={() => {
         if (stop) onStop?.();
-        else void submit();
+        else {
+          // Send is disabled while busy, which would drop focus to the page,
+          // so a keyboard send leaves it in the text area, as a click does.
+          input.current?.focus();
+          void submit();
+        }
       }}
     >
       {stop ? (

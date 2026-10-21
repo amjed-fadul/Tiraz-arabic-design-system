@@ -381,7 +381,9 @@ function QuestionsInstance({
       <Button
         variant={index === questions.length - 1 ? "primary" : "secondary"}
         type="submit"
-        disabled={busy}
+        // Busy, it stays focusable, so focus never drops to the page and
+        // Escape still reaches a surrounding inbox row; onSubmit ignores it.
+        aria-disabled={busy || undefined}
       >
         {submitLabel ?? copy.submit}
       </Button>

@@ -1,5 +1,7 @@
 import { accentColors, defaultConfig } from "../system/config";
 import type { SystemConfig } from "../system/config";
+import { screens } from "../examples/frame/screen";
+import type { ScreenSlug } from "../examples/frame/screen";
 import type { ComponentId } from "./catalog";
 import { navigationCatalog } from "./catalog";
 import type { Language } from "./i18n";
@@ -27,12 +29,15 @@ export interface DocumentationPreferences {
   settingsOpen: boolean;
   /** The AI group's Parts disclosure; stored optionally, closed when absent. */
   aiPartsOpen: boolean;
+  /** The screen page open in place of the docs page `active`, if any. */
+  screen: ScreenSlug | null;
 }
 export const defaultDocumentation: DocumentationPreferences = {
   language: "ar",
   active: "button",
   settingsOpen: false,
   aiPartsOpen: false,
+  screen: null,
 };
 function read(key: string): unknown {
   try {
@@ -83,6 +88,9 @@ export function readDocumentation(): DocumentationPreferences {
           : "button",
     settingsOpen: p.settingsOpen === true,
     aiPartsOpen: p.aiPartsOpen === true,
+    screen: screens.some((item) => item.slug === p.screen)
+      ? (p.screen as ScreenSlug)
+      : null,
   };
 }
 export function readSystem(): AppearanceSettings {

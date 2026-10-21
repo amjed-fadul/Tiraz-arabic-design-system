@@ -305,8 +305,10 @@ bdi {
 .standalone-playground > .playground-canvas {
   justify-self: stretch;
 }
-/* The usage guidelines follow the playground, under a hairline. */
-.guidelines-section {
+/* The usage guidelines follow the playground, under a hairline, as a screen
+   page's list of the pages it uses follows the screen. */
+.guidelines-section,
+.docs-screen-uses {
   margin-block-end: 36px;
   padding-block-start: var(--space-8);
   border-block-start: 0.5px solid var(--hairline);
@@ -318,6 +320,104 @@ bdi {
    nothing behind it. */
 .playground-region > .tiraz-system {
   background: transparent;
+}
+/* A screen's page (example-screens spec §2.3): the playground's toolbar, then
+   the stage, with the playground stage's border, radius and paper, holding
+   the screen's iframe. Its content box is the screen's window, with the
+   border outside: Tablet and Phone give it exactly 768 or 390px, centered
+   and never wider than the column. */
+.docs-screen-preview {
+  --screen-height: clamp(560px, 100dvh - 260px, 900px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  margin-block-end: 36px;
+}
+.docs-screen-preview > .docs-screen-stage {
+  position: relative;
+  box-sizing: content-box;
+  inline-size: calc(100% - 2px);
+  max-inline-size: calc(100% - 2px);
+  block-size: var(--screen-height);
+  margin-inline: auto;
+  overflow: hidden;
+  /* Forced colors drop the ring shadow; this border becomes the edge. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-paper);
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
+}
+.docs-screen-preview > .docs-screen-stage[data-width="tablet"] {
+  inline-size: 768px;
+}
+.docs-screen-preview > .docs-screen-stage[data-width="phone"] {
+  inline-size: 390px;
+}
+.docs-screen-stage > iframe {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+}
+/* Desktop: a 1,280px window, scaled from the top to the stage's width
+   (--screen-scale) and as tall as the stage is once scaled back up
+   (--screen-window-height, the stage's height divided by the scale). Workbench
+   measures both. The stage keeps its height at every width, so a narrower
+   stage gives the screen a taller viewport, not a shorter box, and the scaled
+   window fills the stage with nothing overflowing or left over. The origin is
+   the top-left corner, physical like the transform, so the scaled screen lines
+   up with the stage in either direction. */
+.docs-screen-stage[data-width="desktop"] > iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  inline-size: 1280px;
+  block-size: var(--screen-window-height, 100%);
+  transform: scale(var(--screen-scale, 1));
+  transform-origin: 0 0;
+}
+/* «على هذه الشاشة»: a paper chip for each page the screen uses. */
+.docs-screen-pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.docs-screen-pages button {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 36px;
+  padding-inline: 14px;
+  /* Forced colors drop the ring shadow; this border draws the chip. */
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-chip);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    transform var(--motion-release) var(--ease-out);
+}
+.docs-screen-pages button:active {
+  transform: scale(var(--press-scale));
+  transition-duration: var(--motion-fast), var(--motion-press);
+}
+@media (hover: hover) and (pointer: fine) {
+  .docs-screen-pages button:hover {
+    background: color-mix(in srgb, var(--text) 4%, var(--surface));
+  }
+}
+@media (pointer: coarse) {
+  .docs-screen-pages button {
+    min-block-size: 44px;
+  }
 }
 /* A page the notes row suggests instead; activating it opens that page. */
 .note-link {
@@ -1151,8 +1251,7 @@ bdi {
 .component-nav-toggle {
   padding: 0;
 }
-.component-nav .component-nav-disclosure,
-.component-nav-link {
+.component-nav .component-nav-disclosure {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1172,20 +1271,6 @@ bdi {
 }
 .component-nav-disclosure[aria-expanded="true"] > svg {
   rotate: 180deg;
-}
-.component-nav-link {
-  font-size: var(--text-label);
-  text-decoration: none;
-}
-.component-nav-link > svg {
-  flex: none;
-  color: var(--text-muted);
-}
-@media (hover: hover) and (pointer: fine) {
-  .component-nav-link:hover {
-    color: var(--text);
-    background: var(--wash);
-  }
 }
 
 /* Every demo shares its frame; canvases only arrange the component body. */

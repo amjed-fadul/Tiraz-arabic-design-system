@@ -58,14 +58,24 @@ const overflow = async () => {
 try {
   await page.goto(root);
   await page
-    .getByRole("link", { name: /مثال لوحة العملاء|Dashboard example/ })
+    .getByRole("button", { name: /مثال لوحة العملاء|Dashboard example/ })
     .click();
-  assert.ok(page.url().endsWith("/examples/dashboard"));
+  // The Dashboard opens as a page of the docs, at the same address, with the
+  // standalone route embedded in its iframe.
+  assert.equal(page.url().replace(/\/$/, ""), root.replace(/\/$/, ""));
   assert.equal(
-    await page.locator(".docs-sidebar, .appearance-panel, .docs-shell").count(),
-    0,
+    await page.getByRole("heading", { level: 1 }).innerText(),
+    "لوحة العملاء",
   );
-  check("documentation link opens the standalone dashboard");
+  assert.equal(
+    await page.locator(".docs-screen-stage iframe").getAttribute("src"),
+    "/examples/dashboard?embed=1",
+  );
+  await page
+    .frameLocator(".docs-screen-stage iframe")
+    .locator(".recharts-area-curve")
+    .waitFor();
+  check("documentation header opens the Dashboard's page in the docs");
   for (const width of [1440, 768, 390, 320]) {
     for (const language of ["ar", "en"]) {
       for (const theme of ["light", "dark"]) {

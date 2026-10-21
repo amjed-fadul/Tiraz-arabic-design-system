@@ -1,3 +1,4 @@
+import type { ScreenSlug } from "../examples/frame/screen";
 import type { Localized } from "./i18n";
 export const catalog = [
   {
@@ -774,7 +775,6 @@ interface DocumentationSection {
   name: Localized;
   ids: readonly ComponentId[];
   collapsible?: boolean;
-  links?: readonly { href: string; name: Localized }[];
 }
 const aiSections: readonly DocumentationSection[] = [
   {
@@ -803,17 +803,9 @@ const aiSections: readonly DocumentationSection[] = [
     name: jobNames.understand,
     ids: ["change-summary", "assistant-controls"],
   },
-  {
-    id: "screens",
-    name: ["شاشات", "Screens"],
-    ids: ["chat-app"],
-    links: [
-      {
-        href: "/examples/dashboard",
-        name: ["لوحة بمساعد", "Dashboard with AI"],
-      },
-    ],
-  },
+  // The chat app's page, then a button for each example screen, which opens
+  // its screen page (Workbench, src/examples/frame/screen.ts).
+  { id: "screens", name: ["شاشات", "Screens"], ids: ["chat-app"] },
   { id: "parts", name: ["الأجزاء", "Parts"], ids: aiParts, collapsible: true },
 ];
 
@@ -916,3 +908,38 @@ export const navigationGroups = documentationGroups
       .filter((section) => section.items.length > 0),
   }))
   .filter((group) => group.items.length > 0);
+
+/**
+ * The docs pages each example screen is built from, in the order its screen
+ * page lists them under «على هذه الشاشة». The screens themselves are
+ * src/examples/frame/screen.ts's table.
+ */
+export const screenUses: Record<ScreenSlug, readonly ComponentId[]> = {
+  dashboard: [
+    "change-summary",
+    "data-answer",
+    "decision-inbox",
+    "data-table",
+    "filter-bar",
+  ],
+  "month-end-close": ["agent-task", "change-summary", "decision-inbox"],
+  invoices: ["draft-review", "data-table", "filter-bar"],
+  "customer-profile": ["task-starter", "data-answer", "timeline", "tabs"],
+  onboarding: ["ask-user-questions", "steps", "otp-input", "file-dropzone"],
+  "help-center": ["task-starter", "cited-answer", "prompt-bar"],
+  "contract-review": ["suggested-edits", "approval-card", "file-tree"],
+  "content-studio": [
+    "image-generation",
+    "suggested-edits",
+    "tag-input",
+    "color-picker",
+  ],
+  "agent-control-room": [
+    "decision-inbox",
+    "task-rows",
+    "tool-call",
+    "context-meter",
+  ],
+  "team-settings": ["assistant-controls", "data-table", "modal"],
+  "sales-pipeline": ["change-summary", "draft-review", "card", "dropdown"],
+};

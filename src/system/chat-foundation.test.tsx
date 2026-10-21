@@ -94,6 +94,27 @@ it("locks duplicate sends while awaiting host, never steals deliberately moved f
   await act(async () => resolve());
   expect(screen.getByRole("button", { name: "Elsewhere" })).toHaveFocus();
 });
+it("keeps focus in the text area after a keyboard send", async () => {
+  const user = userEvent.setup();
+  let resolve!: () => void;
+  const submit = vi.fn(() => new Promise<void>((r) => (resolve = r)));
+  render(
+    wrap(
+      <ChatComposer value="hello" onValueChange={() => {}} onSubmit={submit} />,
+    ),
+  );
+  await user.click(screen.getByRole("textbox"));
+  await user.tab();
+  const send = screen.getByRole("button", { name: "Send" });
+  expect(send).toHaveFocus();
+  // Send turns disabled while the host works, so focus can't stay on it.
+  await user.keyboard("{Enter}");
+  expect(submit).toHaveBeenCalledTimes(1);
+  expect(send).toBeDisabled();
+  expect(screen.getByRole("textbox")).toHaveFocus();
+  await act(async () => resolve());
+  expect(screen.getByRole("textbox")).toHaveFocus();
+});
 it("busy state permits draft editing but prevents sending; stop is host-owned", () => {
   const stop = vi.fn(),
     send = vi.fn(),
