@@ -885,7 +885,9 @@ host accepts and clears by updating value; neither component clears internally.
 Throw/reject on failure: the draft and focus stay, localized failure feedback is
 shown, and retry is available. A pending promise prevents duplicate sends; also
 set `state` to submitting/streaming for host execution. Keep these callbacks stable
-in purpose and let the application own cancellation and transport.
+in purpose and let the application own cancellation and transport. Send, clicked
+or pressed from the keyboard, leaves focus in the text area, because Send is
+disabled while busy.
 
 Drafts remain editable while busy, but sending is blocked. `state="streaming"`
 shows a Stop action only with `onStop`. `disabled` disables editing/actions;
