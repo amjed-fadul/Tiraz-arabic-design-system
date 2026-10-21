@@ -41,6 +41,26 @@ async function decideAll(user: User) {
   await decide(user, "c3", "رفض");
 }
 
+it("uses one initially empty announcement region through review and recording", async () => {
+  const user = setup();
+  const regions = () =>
+    document.querySelectorAll('[aria-live="polite"], [role="status"]');
+  expect(regions()).toHaveLength(1);
+  expect(regions()[0]).toBeEmptyDOMElement();
+  await decideAll(user);
+  expect(regions()).toHaveLength(1);
+  expect(regions()[0]).toHaveTextContent("طلب إرسال العقد جاهز لقرارك");
+  await user.click(
+    within(approval()).getByRole("button", { name: "أرسل العقد" }),
+  );
+  expect(regions()).toHaveLength(1);
+  expect(regions()[0]).toHaveTextContent("تُسجَّل الموافقة");
+  await pass(1000);
+  expect(regions()).toHaveLength(1);
+  expect(regions()[0]).toHaveTextContent("تمت الموافقة");
+  expect(approval()).toHaveTextContent("تمت الموافقة");
+});
+
 it("holds the send until every change has a decision, then shows it irreversible with the clause as decided", async () => {
   const user = setup();
   expect(

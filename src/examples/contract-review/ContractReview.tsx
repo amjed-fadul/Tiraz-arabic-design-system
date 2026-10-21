@@ -226,19 +226,34 @@ function Review() {
     decision: ApprovalDecision,
     { signal }: { signal: AbortSignal },
   ) {
+    announce(
+      decision === "approved"
+        ? t("تُسجَّل الموافقة", "Recording approval")
+        : t("يُسجَّل الرفض", "Recording rejection"),
+    );
     await recorded(signal);
     if (approvalRequestKey(asked) !== current.current)
       throw new DOMException("Cancelled", "AbortError");
     setRecord(decision);
+    announce(
+      decision === "approved"
+        ? t("تمت الموافقة", "Approved")
+        : t("رُفض الطلب", "Request rejected"),
+    );
   }
   // Once the send is approved nothing may change what it was approved on.
   function decideEdits(next: Decisions) {
     if (sent) return;
     setDecisions(next);
     setRecord(null);
+    announce("");
   }
 
-  // One polite region: the moment the approval is ready, said once.
+  function announce(text: string) {
+    if (live.current) live.current.textContent = text;
+  }
+
+  // The screen owns announcements for the edits and approval together.
   const was = useRef(ready);
   useEffect(() => {
     if (was.current === ready) return;
@@ -318,6 +333,7 @@ function Review() {
                 <p>{item.text[language]}</p>
               ) : (
                 <SuggestedEdits
+                  announcement="off"
                   status={applied || sent ? "applied" : "reviewing"}
                   actions={[]}
                   onAction={() => {}}
@@ -334,10 +350,15 @@ function Review() {
                   onApply={() => {
                     decideEdits({ ...settled("rejected"), ...decisions });
                     setApplied(true);
+                    announce(
+                      t("اكتملت مراجعة التعديلات", "Edit review completed"),
+                    );
                   }}
                   onDismiss={() => {
+                    if (applied || sent) return;
                     decideEdits(settled("rejected"));
                     setApplied(true);
+                    announce(t("تم تجاهل التعديلات", "Edits dismissed"));
                   }}
                   // Undo goes back to reviewing, and a send that waited on the
                   // host is dropped. There is no way back once it is approved.
@@ -348,6 +369,12 @@ function Review() {
                           setApplied(false);
                           setRecord(null);
                           setRound((count) => count + 1);
+                          announce(
+                            t(
+                              "أُعيد فتح مراجعة التعديلات",
+                              "Edit review reopened",
+                            ),
+                          );
                         }
                   }
                   labels={{
@@ -418,6 +445,7 @@ function Review() {
   );
   const approval = (
     <ApprovalCard
+      announcement="off"
       headingLevel={2}
       appearance={wide ? "plain" : "card"}
       request={request}
