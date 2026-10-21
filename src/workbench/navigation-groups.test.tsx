@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
 import { Workbench } from "./Workbench";
 import { catalog } from "./catalog";
+import { screens } from "../examples/frame/screen";
 import { persist, storageKeys } from "./storage";
 
 it("keeps every implemented documentation page reachable once in expanded Arabic groups", async () => {
@@ -20,14 +21,14 @@ it("keeps every implemented documentation page reachable once in expanded Arabic
     "النوافذ",
     "الرسوم",
   ]);
-  // The parts open from their disclosure; then every page is listed once.
+  // The parts open from their disclosure; then every page, and every screen,
+  // is listed once.
   await user.click(within(nav).getByRole("button", { name: "الأجزاء" }));
   const items = within(nav)
     .getAllByRole("button")
     .filter((item) => !item.hasAttribute("aria-expanded"));
   expect(items.map((item) => item.textContent).sort()).toEqual(
-    catalog
-      .filter((item) => item.id !== "field")
+    [...catalog.filter((item) => item.id !== "field"), ...screens]
       .map((item) => item.name[0])
       .sort(),
   );
@@ -116,13 +117,12 @@ it("groups AI patterns by job, folds the parts and ends Display with content blo
       "ما الذي تغيّر",
       "إعدادات المساعد",
       "مساحة عمل المساعد",
+      ...screens.map((item) => item.name[0]),
       "الأجزاء",
     ],
   );
-  expect(ai.getByRole("link", { name: "لوحة بمساعد" })).toHaveAttribute(
-    "href",
-    "/examples/dashboard",
-  );
+  // The screens open as pages of the docs, never in a new tab.
+  expect(ai.queryAllByRole("link")).toEqual([]);
   // The parts are folded, and not rendered until they open.
   const parts = ai.getByRole("button", { name: "الأجزاء" });
   expect(parts).toHaveAttribute("aria-expanded", "false");

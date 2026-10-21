@@ -1,4 +1,5 @@
 import { aiParts, navigationCatalog } from "./catalog";
+import { screens } from "../examples/frame/screen";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -43,12 +44,15 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
-  // Every page, less the fifteen folded AI parts, and their disclosure.
+  // Every page, less the fifteen folded AI parts, their disclosure and the
+  // screens.
   expect(nav.getAllByRole("button")).toHaveLength(
-    navigationCatalog.length - aiParts.length + 1,
+    navigationCatalog.length - aiParts.length + 1 + screens.length,
   );
   await userEvent.click(nav.getByRole("button", { name: "Parts" }));
-  expect(nav.getAllByRole("button")).toHaveLength(navigationCatalog.length + 1);
+  expect(nav.getAllByRole("button")).toHaveLength(
+    navigationCatalog.length + 1 + screens.length,
+  );
   const rail = within(
     screen.getByRole("complementary", { name: "Customize the preview" }),
   );

@@ -24,12 +24,13 @@ const check = (name) => {
 };
 // Groups and rows follow navigationGroups in src/workbench/catalog.ts. Every
 // page is a button, the fifteen AI parts only while the Parts disclosure is
-// open, and the disclosure is one more; the Dashboard with AI link is one
-// more stop for Tab.
+// open, and the disclosure is one more. So is each of the eleven screens of
+// src/examples/frame/screen.ts, which open as pages of the docs.
 const pageCount = ids.length;
 const partCount = 15;
-const closedRows = pageCount - partCount + 1;
-const openRows = pageCount + 1;
+const screenCount = 11;
+const closedRows = pageCount - partCount + 1 + screenCount;
+const openRows = pageCount + 1 + screenCount;
 const names = {
   ar: [
     "أنماط الذكاء الاصطناعي",
@@ -88,14 +89,22 @@ try {
       assert.equal(await menu.getByRole("button").count(), closedRows);
       for (const group of await menu.getByRole("group").all())
         assert.ok((await group.getByRole("button").count()) > 0);
+      // A screen opens as a page of the docs, with the screen in an iframe
+      // that follows the docs' language and theme; nothing is a link.
+      assert.equal(await menu.getByRole("link").count(), 0);
+      const dashboard = menu.getByRole("button", {
+        name: language === "ar" ? "لوحة العملاء" : "Customer dashboard",
+        exact: true,
+      });
+      await dashboard.click();
+      assert.equal(await dashboard.getAttribute("aria-current"), "page");
       assert.equal(
-        await menu
-          .getByRole("link", {
-            name: language === "ar" ? "لوحة بمساعد" : "Dashboard with AI",
-            exact: true,
-          })
-          .getAttribute("href"),
-        "/examples/dashboard",
+        await page.getByRole("heading", { level: 1 }).innerText(),
+        language === "ar" ? "لوحة العملاء" : "Customer dashboard",
+      );
+      assert.equal(
+        await page.locator(".docs-screen-stage iframe").getAttribute("src"),
+        `/examples/dashboard?embed=1${language === "en" ? "&lang=en" : ""}${theme === "dark" ? "&theme=dark" : ""}`,
       );
       const parts = menu.getByRole("button", {
         name: language === "ar" ? "الأجزاء" : "Parts",
@@ -180,9 +189,9 @@ try {
   );
   await page.setViewportSize({ width: 1440, height: 380 });
   const arMenu = nav("ar");
-  // Parts stays open, as saved; every row, the link included, takes Tab.
+  // Parts stays open, as saved; every row takes Tab.
   await arMenu.getByRole("button", { name: "ابدأ مهمة", exact: true }).focus();
-  for (let index = 0; index < openRows; index++)
+  for (let index = 1; index < openRows; index++)
     await page.keyboard.press("Tab");
   assert.equal(
     await arMenu

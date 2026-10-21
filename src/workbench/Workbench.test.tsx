@@ -1,4 +1,5 @@
 import { aiParts, navigationCatalog } from "./catalog";
+import { screens } from "../examples/frame/screen";
 import {
   fireEvent,
   render,
@@ -72,13 +73,14 @@ it("isolates portable library paths as complete LTR runs inside the Arabic promp
 it("places only navigation in its sidebar and both settings sections in the panel", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
-  // Every page, less the fifteen folded AI parts, and their disclosure.
+  // Every page, less the fifteen folded AI parts, their disclosure and the
+  // screens.
   expect(within(nav).getAllByRole("button")).toHaveLength(
-    navigationCatalog.length - aiParts.length + 1,
+    navigationCatalog.length - aiParts.length + 1 + screens.length,
   );
   fireEvent.click(within(nav).getByRole("button", { name: "الأجزاء" }));
   expect(within(nav).getAllByRole("button")).toHaveLength(
-    navigationCatalog.length + 1,
+    navigationCatalog.length + 1 + screens.length,
   );
   expect(within(nav).queryByText("خصائص الأزرار")).not.toBeInTheDocument();
   expect(

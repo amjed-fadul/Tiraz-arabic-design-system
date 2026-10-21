@@ -2,11 +2,13 @@ import {
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
   useSyncExternalStore,
 } from "react";
+import type { CSSProperties } from "react";
 import {
   ArrowUpRight,
   ChevronDown,
@@ -19,10 +21,12 @@ import {
 import { Sheet, SystemProvider, defaultConfig } from "../system";
 import { SystemContext } from "../system/useSystem";
 import type { ButtonState, SystemConfig } from "../system";
-import { aiParts, catalog, navigationGroups } from "./catalog";
+import { screenPath, screens } from "../examples/frame/screen";
+import type { ScreenSlug } from "../examples/frame/screen";
+import { aiParts, catalog, navigationGroups, screenUses } from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
-import type { Language } from "./i18n";
+import type { Language, Localized } from "./i18n";
 import {
   defaultPlaygrounds,
   normalizePlaygrounds,
@@ -83,27 +87,32 @@ function BrandMark() {
  * The component navigation, which the sidebar and the mobile drawer share.
  * A group with sections shows each under its heading; the collapsible one
  * (the AI parts) is a disclosure, and its pages are not rendered while it
- * is closed.
+ * is closed. The Screens section ends with a button for each example screen,
+ * which opens its screen page; while one is open, no docs page is current.
  */
 function ComponentNavigation({
   language,
   active,
+  screen,
   partsOpen,
   onPartsOpenChange,
   onOpen,
+  onOpenScreen,
 }: {
   language: Language;
   active: ComponentId;
+  screen: ScreenSlug | null;
   partsOpen: boolean;
   onPartsOpenChange: (open: boolean) => void;
   onOpen: (id: ComponentId) => void;
+  onOpenScreen: (slug: ScreenSlug) => void;
 }) {
   const id = useId();
   const page = (item: (typeof navigationGroups)[number]["items"][number]) => (
     <button
       type="button"
       key={item.id}
-      aria-current={active === item.id ? "page" : undefined}
+      aria-current={!screen && active === item.id ? "page" : undefined}
       onClick={() => onOpen(item.id)}
     >
       {localize(item.name, language)}
@@ -153,19 +162,18 @@ function ComponentNavigation({
                       >
                         {open && section.items.map(page)}
                         {open &&
-                          section.links?.map((link) => (
-                            <a
-                              key={link.href}
-                              className="component-nav-link"
-                              href={link.href}
+                          section.id === "screens" &&
+                          screens.map((item) => (
+                            <button
+                              type="button"
+                              key={item.slug}
+                              aria-current={
+                                screen === item.slug ? "page" : undefined
+                              }
+                              onClick={() => onOpenScreen(item.slug)}
                             >
-                              {localize(link.name, language)}
-                              <ArrowUpRight
-                                size={14}
-                                aria-hidden="true"
-                                className="tz-mirror-rtl"
-                              />
-                            </a>
+                              {localize(item.name, language)}
+                            </button>
                           ))}
                       </div>
                     </div>
@@ -175,6 +183,145 @@ function ComponentNavigation({
           </div>
         ))}
       </nav>
+    </>
+  );
+}
+type ScreenWidth = "desktop" | "tablet" | "phone";
+const screenWidths: readonly { id: ScreenWidth; name: Localized }[] = [
+  { id: "desktop", name: ["سطح المكتب", "Desktop"] },
+  { id: "tablet", name: ["جهاز لوحي", "Tablet"] },
+  { id: "phone", name: ["هاتف", "Phone"] },
+];
+/** The window a screen gets on Desktop, scaled down to the stage's width. */
+const desktopWidth = 1280;
+/**
+ * An example screen's page in the docs: its name and description, the width
+ * chips and the new-tab link, the screen itself in an iframe that follows the
+ * docs' language and theme, then the docs pages it is built from.
+ */
+function ScreenPage({
+  slug,
+  language,
+  theme,
+  width,
+  onWidthChange,
+  onOpenPage,
+}: {
+  slug: ScreenSlug;
+  language: Language;
+  theme: SystemConfig["theme"];
+  width: ScreenWidth;
+  onWidthChange: (width: ScreenWidth) => void;
+  onOpenPage: (id: ComponentId) => void;
+}) {
+  const t = words(language);
+  const item = screens.find((entry) => entry.slug === slug)!;
+  const name = localize(item.name, language);
+  const query = [
+    language === "en" && "lang=en",
+    theme === "dark" && "theme=dark",
+  ].filter(Boolean);
+  const standalone = query.length
+    ? `${screenPath(slug)}?${query.join("&")}`
+    : screenPath(slug);
+  const src = `${screenPath(slug)}?${["embed=1", ...query].join("&")}`;
+  const openName = t("افتح في نافذة جديدة", "Open in a new tab");
+  // On Desktop the screen gets a 1,280px window, which the stage is narrower
+  // than, so it is scaled to the stage's width. The scale follows the stage
+  // as it resizes; Tablet and Phone are never scaled.
+  const stage = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  useLayoutEffect(() => {
+    const element = stage.current;
+    if (!element || width !== "desktop") return;
+    const fit = (stageWidth: number) => {
+      if (stageWidth > 0) setScale(Math.min(1, stageWidth / desktopWidth));
+    };
+    fit(element.clientWidth);
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) fit(entry.contentRect.width);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [width]);
+  return (
+    <>
+      <header className="component-heading">
+        <h1>{name}</h1>
+        <p>{localize(item.description, language)}</p>
+      </header>
+      <div className="docs-screen-preview">
+        <div className="tz-demo-bar">
+          <div
+            className="tz-demo-states"
+            role="group"
+            aria-label={t("عرض المعاينة", "Preview width")}
+          >
+            {screenWidths.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                className="tz-demo-state"
+                aria-pressed={width === option.id}
+                onClick={() => onWidthChange(option.id)}
+              >
+                {localize(option.name, language)}
+              </button>
+            ))}
+          </div>
+          <a
+            className="tz-demo-icon"
+            href={standalone}
+            target="_blank"
+            rel="noopener"
+            aria-label={openName}
+            title={openName}
+          >
+            {/* Out and forward: the arrow follows the reading direction. */}
+            <ArrowUpRight
+              className="tz-mirror-rtl"
+              size={18}
+              aria-hidden="true"
+            />
+          </a>
+        </div>
+        <div
+          ref={stage}
+          className="docs-screen-stage"
+          data-width={width}
+          style={
+            width === "desktop"
+              ? ({ "--screen-scale": scale } as CSSProperties)
+              : undefined
+          }
+        >
+          {/* A new src mounts a new iframe, so changing the screen, language
+              or theme adds nothing to the browser's history. */}
+          <iframe key={src} title={name} src={src} />
+        </div>
+      </div>
+      <section
+        className="docs-screen-uses"
+        aria-labelledby="screen-uses-heading"
+      >
+        <div className="section-title-row">
+          <h2 id="screen-uses-heading">
+            {t("على هذه الشاشة", "On this screen")}
+          </h2>
+        </div>
+        <ul className="docs-screen-pages">
+          {screenUses[slug].map((id) => (
+            <li key={id}>
+              <button type="button" onClick={() => onOpenPage(id)}>
+                {localize(
+                  catalog.find((entry) => entry.id === id)!.name,
+                  language,
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </section>
     </>
   );
 }
@@ -188,6 +335,8 @@ export function Workbench() {
   });
   const language = documentation.language,
     active = documentation.active,
+    // A screen page, when one is open, stands in for the docs page `active`.
+    screenSlug = documentation.screen,
     direction = language === "ar" ? "rtl" : "ltr",
     t = words(language);
   const [settings, setSettings] = useState(readSystem);
@@ -200,6 +349,8 @@ export function Workbench() {
     Partial<Record<ComponentId, EventRecord[]>>
   >({});
   const [navigationOpen, setNavigationOpen] = useState(false);
+  // The screen pages' width chip lasts the session.
+  const [screenWidth, setScreenWidth] = useState<ScreenWidth>("desktop");
   const narrow = useSyncExternalStore(watchNarrow, isNarrow, () => false);
   // The narrow Sheet's open state lasts the session: it never opens on load.
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -265,13 +416,16 @@ export function Workbench() {
       : (pressedPhase ?? undefined);
   const code = generateCode(active, model, systemConfig, language),
     prompt = generatePrompt(active, model, systemConfig, language);
+  const pageName = screenSlug
+    ? screens.find((item) => item.slug === screenSlug)!.name
+    : current.name;
   useEffect(() => {
-    document.title = `${language === "ar" ? "طِراز" : "Tiraz"} · ${localize(current.name, language)}`;
+    document.title = `${language === "ar" ? "طِراز" : "Tiraz"} · ${localize(pageName, language)}`;
     persist(storageKeys.documentation, documentation);
     document.documentElement.dir = direction;
     document.documentElement.lang = language;
     document.documentElement.style.colorScheme = theme;
-  }, [documentation, direction, language, current.name, theme]);
+  }, [documentation, direction, language, pageName, theme]);
   useEffect(() => persist(storageKeys.theme, theme), [theme]);
   useEffect(() => persist(storageKeys.system, settings), [settings]);
   useEffect(() => persist(storageKeys.playgrounds, playgrounds), [playgrounds]);
@@ -407,10 +561,37 @@ export function Workbench() {
       ...prev,
       active: id,
       aiPartsOpen: prev.aiPartsOpen || aiParts.includes(id),
+      screen: null,
     }));
     // The new page opens at its top, not where the old one was scrolled to.
     window.scrollTo(0, 0);
   }
+  const openScreen = useCallback(
+    (slug: ScreenSlug) => {
+      cancelButtonAction();
+      stopReplay();
+      openedFromState.current = false;
+      stopFocusReturn.current?.();
+      setPhases({});
+      setDocumentation((prev) => ({ ...prev, screen: slug }));
+      window.scrollTo(0, 0);
+    },
+    [cancelButtonAction, stopReplay],
+  );
+  // A screen in the iframe asks for another screen's page; anything else, or
+  // from anywhere else, is ignored.
+  useEffect(() => {
+    function onMessage(event: MessageEvent) {
+      const data: unknown = event.data;
+      if (event.origin !== window.location.origin) return;
+      if (typeof data !== "object" || data === null) return;
+      const { type, slug } = data as { type?: unknown; slug?: unknown };
+      const target = screens.find((item) => item.slug === slug);
+      if (type === "tiraz:open-screen" && target) openScreen(target.slug);
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, [openScreen]);
   // A props state takes the inspector's path, so it persists, cancels the
   // simulated click and remounts where an edit would.
   function applyState(id: string) {
@@ -588,12 +769,17 @@ export function Workbench() {
     <ComponentNavigation
       language={language}
       active={active}
+      screen={screenSlug}
       partsOpen={documentation.aiPartsOpen}
       onPartsOpenChange={(open) =>
         setDocumentation((prev) => ({ ...prev, aiPartsOpen: open }))
       }
       onOpen={(id) => {
         openPage(id);
+        setNavigationOpen(false);
+      }}
+      onOpenScreen={(slug) => {
+        openScreen(slug);
         setNavigationOpen(false);
       }}
     />
@@ -678,9 +864,13 @@ export function Workbench() {
             {t("توثيق المكوّنات", "Component documentation")}
           </span>
           <div className="header-actions">
-            <a className="doc-button" href="/examples/dashboard">
+            <button
+              type="button"
+              className="doc-button"
+              onClick={() => openScreen("dashboard")}
+            >
               {t("مثال لوحة العملاء", "Dashboard example")}
-            </a>
+            </button>
             <div className="mobile-navigation">
               <DocsDrawer
                 title={label("components", language)}
@@ -722,7 +912,9 @@ export function Workbench() {
         </header>
         <div
           className="docs-layout"
-          data-settings={!narrow && settingsOpen ? "open" : undefined}
+          data-settings={
+            !narrow && settingsOpen && !screenSlug ? "open" : undefined
+          }
         >
           <aside
             className="docs-sidebar"
@@ -737,158 +929,180 @@ export function Workbench() {
               className="component-page"
               tabIndex={-1}
             >
-              <header className="component-heading">
-                <h1>{localize(current.name, language)}</h1>
-                <p>{localize(current.description, language)}</p>
-              </header>
-              <section className="agent-section">
-                <h2 id="agent-heading">{label("useInApp", language)}</h2>
-                <div className="prompt-row">
-                  {/* The prompt is English on every page; its heading and
-                      copy control follow the page. */}
-                  <p className="prompt-preview" lang="en" dir="ltr">
-                    {prompt
-                      .replace(/\s+/g, " ")
-                      .split(
-                        /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
-                      )
-                      .map((part, index) =>
-                        index % 2 === 1 ? (
-                          <bdi dir="ltr" key={index}>
-                            {part}
-                          </bdi>
-                        ) : (
-                          part
-                        ),
-                      )}
-                  </p>
-                  <CopyControl
-                    text={prompt}
-                    caption={label("copyPrompt", language)}
-                    language={language}
-                    iconOnly
-                  />
-                </div>
-              </section>
-              <section className="playground-section">
-                <div className="section-title-row">
-                  <h2 id="playground-heading">
-                    {label("playground", language)}
-                  </h2>
-                </div>
-                <div className="playground-region" ref={playgroundRegion}>
-                  <SystemProvider config={effectiveConfig}>
-                    <PreviewFrame
-                      // One frame per page, so a page change is never
-                      // announced as a state change.
-                      key={active}
-                      language={language}
-                      code={code}
-                      replayable={canReplayPlayground(active)}
-                      onReplay={playReplay}
-                      states={pageStates?.states.map((state) => ({
-                        id: state.id,
-                        label: { ar: state.label[0], en: state.label[1] },
-                      }))}
-                      state={stateOf(active, model, phase, language)}
-                      onStateChange={pressState}
-                      customize={customize}
-                      // The stored props and settings open with it; the
-                      // phase, which is not stored, rides along.
-                      openHref={`/examples/playground/${active}${phase ? `?phase=${encodeURIComponent(phase)}` : ""}`}
-                      onViewChange={(view) => {
-                        if (view === "code") stopReplay();
-                      }}
-                      replaying={replaying}
-                    >
-                      <div
-                        className={`playground-canvas playground-${active}`}
-                        role="region"
-                        aria-labelledby="playground-heading"
-                      >
-                        <Playground
-                          key={`${active}-${revisions[active] ?? 0}`}
-                          component={active}
-                          model={model}
+              {screenSlug ? (
+                <ScreenPage
+                  slug={screenSlug}
+                  language={language}
+                  theme={theme}
+                  width={screenWidth}
+                  onWidthChange={setScreenWidth}
+                  onOpenPage={(id) => {
+                    openPage(id);
+                    mainRef.current?.focus();
+                  }}
+                />
+              ) : (
+                <>
+                  <header className="component-heading">
+                    <h1>{localize(current.name, language)}</h1>
+                    <p>{localize(current.description, language)}</p>
+                  </header>
+                  <section className="agent-section">
+                    <h2 id="agent-heading">{label("useInApp", language)}</h2>
+                    <div className="prompt-row">
+                      {/* The prompt is English on every page; its heading and
+                          copy control follow the page. */}
+                      <p className="prompt-preview" lang="en" dir="ltr">
+                        {prompt
+                          .replace(/\s+/g, " ")
+                          .split(
+                            /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
+                          )
+                          .map((part, index) =>
+                            index % 2 === 1 ? (
+                              <bdi dir="ltr" key={index}>
+                                {part}
+                              </bdi>
+                            ) : (
+                              part
+                            ),
+                          )}
+                      </p>
+                      <CopyControl
+                        text={prompt}
+                        caption={label("copyPrompt", language)}
+                        language={language}
+                        iconOnly
+                      />
+                    </div>
+                  </section>
+                  <section className="playground-section">
+                    <div className="section-title-row">
+                      <h2 id="playground-heading">
+                        {label("playground", language)}
+                      </h2>
+                    </div>
+                    <div className="playground-region" ref={playgroundRegion}>
+                      <SystemProvider config={effectiveConfig}>
+                        <PreviewFrame
+                          // One frame per page, so a page change is never
+                          // announced as a state change.
+                          key={active}
                           language={language}
-                          onPatch={(patch) => {
-                            patchPage(active, patch);
-                            if (
-                              patch.open === false &&
-                              openedFromState.current
-                            ) {
-                              openedFromState.current = false;
-                              returnFocusToOpenState();
-                            }
+                          code={code}
+                          replayable={canReplayPlayground(active)}
+                          onReplay={playReplay}
+                          states={pageStates?.states.map((state) => ({
+                            id: state.id,
+                            label: { ar: state.label[0], en: state.label[1] },
+                          }))}
+                          state={stateOf(active, model, phase, language)}
+                          onStateChange={pressState}
+                          customize={customize}
+                          // The stored props and settings open with it; the
+                          // phase, which is not stored, rides along.
+                          openHref={`/examples/playground/${active}${phase ? `?phase=${encodeURIComponent(phase)}` : ""}`}
+                          onViewChange={(view) => {
+                            if (view === "code") stopReplay();
                           }}
-                          onEvent={(name, value) => record(active, name, value)}
-                          onButtonAction={buttonAction}
-                          buttonState={buttonFeedback ?? undefined}
-                          phase={phase}
-                          onPhaseChange={(next) => {
-                            // The visitor moved the example on, which ends
-                            // a Replay before its next step overwrites it.
-                            stopReplay();
-                            setPhases((prev) => ({ ...prev, [active]: next }));
-                          }}
-                        />
+                          replaying={replaying}
+                        >
+                          <div
+                            className={`playground-canvas playground-${active}`}
+                            role="region"
+                            aria-labelledby="playground-heading"
+                          >
+                            <Playground
+                              key={`${active}-${revisions[active] ?? 0}`}
+                              component={active}
+                              model={model}
+                              language={language}
+                              onPatch={(patch) => {
+                                patchPage(active, patch);
+                                if (
+                                  patch.open === false &&
+                                  openedFromState.current
+                                ) {
+                                  openedFromState.current = false;
+                                  returnFocusToOpenState();
+                                }
+                              }}
+                              onEvent={(name, value) =>
+                                record(active, name, value)
+                              }
+                              onButtonAction={buttonAction}
+                              buttonState={buttonFeedback ?? undefined}
+                              phase={phase}
+                              onPhaseChange={(next) => {
+                                // The visitor moved the example on, which ends
+                                // a Replay before its next step overwrites it.
+                                stopReplay();
+                                setPhases((prev) => ({
+                                  ...prev,
+                                  [active]: next,
+                                }));
+                              }}
+                            />
+                          </div>
+                        </PreviewFrame>
+                      </SystemProvider>
+                    </div>
+                    {![
+                      "skeleton",
+                      "progress",
+                      "spinner",
+                      "badge",
+                      "avatar",
+                      "avatar-group",
+                      "tooltip",
+                      "modal",
+                    ].includes(active) && (
+                      <div
+                        // Announced for assistive tech; the stage stays visually clean.
+                        className="tz-visually-hidden"
+                        role="status"
+                        aria-label={
+                          (events[active]?.length ?? 0) > 0
+                            ? label("lastEvent", language)
+                            : undefined
+                        }
+                      >
+                        {(events[active]?.length ?? 0) > 0 && (
+                          <>
+                            <span>{label("lastEvent", language)}</span>
+                            <code dir="ltr">
+                              {events[active]!.map(
+                                (event) =>
+                                  `${event.name}${event.value !== undefined ? `(${JSON.stringify(event.value)})` : ""}`,
+                              ).join(" → ")}
+                            </code>
+                          </>
+                        )}
                       </div>
-                    </PreviewFrame>
-                  </SystemProvider>
-                </div>
-                {![
-                  "skeleton",
-                  "progress",
-                  "spinner",
-                  "badge",
-                  "avatar",
-                  "avatar-group",
-                  "tooltip",
-                  "modal",
-                ].includes(active) && (
-                  <div
-                    // Announced for assistive tech; the stage stays visually clean.
-                    className="tz-visually-hidden"
-                    role="status"
-                    aria-label={
-                      (events[active]?.length ?? 0) > 0
-                        ? label("lastEvent", language)
-                        : undefined
-                    }
-                  >
-                    {(events[active]?.length ?? 0) > 0 && (
-                      <>
-                        <span>{label("lastEvent", language)}</span>
-                        <code dir="ltr">
-                          {events[active]!.map(
-                            (event) =>
-                              `${event.name}${event.value !== undefined ? `(${JSON.stringify(event.value)})` : ""}`,
-                          ).join(" → ")}
-                        </code>
-                      </>
                     )}
-                  </div>
-                )}
-              </section>
-              {notes && (
-                <section
-                  className="guidelines-section"
-                  aria-labelledby="guidelines-heading"
-                >
-                  <div className="section-title-row">
-                    <h2 id="guidelines-heading">
-                      {label("guidelines", language)}
-                    </h2>
-                  </div>
-                  <DemoNotes notes={notes} language={language} />
-                </section>
+                  </section>
+                  {notes && (
+                    <section
+                      className="guidelines-section"
+                      aria-labelledby="guidelines-heading"
+                    >
+                      <div className="section-title-row">
+                        <h2 id="guidelines-heading">
+                          {label("guidelines", language)}
+                        </h2>
+                      </div>
+                      <DemoNotes notes={notes} language={language} />
+                    </section>
+                  )}
+                  <ApiReference component={active} language={language} />
+                </>
               )}
-              <ApiReference component={active} language={language} />
             </main>
           </div>
-          {!narrow && (
+          {!narrow && !screenSlug && (
             // Docked at the end side, it pushes the page narrower rather than
             // covering it. It stays mounted while closed, so it can slide out.
+            // A screen page has no settings.
             <aside
               id="settings-panel"
               className="settings-panel"
