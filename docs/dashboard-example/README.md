@@ -1,10 +1,12 @@
 # Customer dashboard example
 
-Open `/examples/dashboard` from the documentation header's **Dashboard example**
-link. The full-page Arabic-first example lives outside the documentation rails.
-Its overview, orders and customers navigation links all target sections on the
-same page. English changes copy and direction together; one theme applies to the
-whole dashboard and its portals.
+Open **Customer dashboard** («لوحة العملاء») under Screens in the documentation, or
+the header's **Dashboard example** button: it opens as a screen page inside the
+docs, like the ten other example screens. Its new-tab link, or `/examples/dashboard`
+on the dev server, opens the full-page Arabic-first example outside the
+documentation rails. Its overview, orders and customers navigation links all target
+sections on the same page. English changes copy and direction together; one theme
+applies to the whole dashboard and its portals.
 
 ## Run or reuse
 
