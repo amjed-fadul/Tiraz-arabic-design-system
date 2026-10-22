@@ -131,6 +131,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
     // same checkout from two physical locations/cwds, without mocking the generator.
     for (const path of [
       "src/workbench/generate.ts",
+      "src/workbench/agent-preview.ts",
       "src/workbench/generate-batch.ts",
       "src/workbench/generate-charts.ts",
       "src/workbench/exhaustive.ts",
@@ -202,6 +203,15 @@ it("generates identical prompts when the same checkout is relocated", () => {
       mkdirSync(dirname(outputPath), { recursive: true });
       writeFileSync(
         outputPath,
+        `Object.defineProperty(exports, "__esModule", { value: true }); exports.default = ${JSON.stringify(readFileSync(join(projectRoot, path), "utf8"))};`,
+      );
+    }
+    for (const path of [
+      "src/workbench/agent-preview.ts",
+      "src/workbench/playground-agent.tsx",
+    ]) {
+      writeFileSync(
+        join(first, path + "?raw"),
         `Object.defineProperty(exports, "__esModule", { value: true }); exports.default = ${JSON.stringify(readFileSync(join(projectRoot, path), "utf8"))};`,
       );
     }

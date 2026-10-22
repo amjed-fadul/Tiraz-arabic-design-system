@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useEffect, useRef, useState } from "react";
 import { SuggestedEdits, numberLocale, useSystem } from "../../index";
 import type { DiffSegment, SuggestedEditsProps } from "../../index";
@@ -28,12 +29,14 @@ const sampleDecisions: Decisions = {
 };
 
 export function SuggestedEditsExample({
+  getAgentPresentation,
   language = "ar",
   undo = true,
   phase,
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   /** Offers Undo in the receipt. */
   undo?: boolean;
   /**
@@ -177,6 +180,7 @@ export function SuggestedEditsExample({
 
   return (
     <SuggestedEdits
+      agentPresentation={getAgentPresentation?.(status)}
       status={status}
       actions={actions}
       onAction={(action, picked) => {

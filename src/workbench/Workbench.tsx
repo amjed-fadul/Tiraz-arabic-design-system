@@ -509,6 +509,13 @@ export function Workbench() {
       return;
     }
     patchPage(active, patch);
+    // Identity changes restyle the mounted task, preserving drafts and its state.
+    if (
+      Object.keys(patch).every(
+        (key) => key === "agentAppearance" || key === "agentColor",
+      )
+    )
+      return;
     // Keep Input's IDs and native editing state through label/help/error edits.
     // Mode/default-value changes still need a fresh uncontrolled demonstration.
     // Image percentages and sizing update the existing request rather than replaying it.

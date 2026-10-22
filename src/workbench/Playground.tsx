@@ -1,3 +1,5 @@
+import { getPlaygroundAgentPresentation } from "./playground-agent";
+import type { AgentPreviewOptions } from "./agent-preview";
 import { AgentTaskExample } from "../system/ai/examples/AgentTaskExamples";
 import { TaskStarterExample } from "../system/ai/examples/TaskStarterExamples";
 import { SuggestedEditsExample } from "../system/ai/examples/SuggestedEditsExamples";
@@ -316,9 +318,15 @@ export function Playground({
   onPhaseChange,
 }: Props) {
   const t = words(language);
+  const getAgentPresentation = getPlaygroundAgentPresentation(
+    component,
+    model as Partial<AgentPreviewOptions>,
+    language,
+  );
   if (component === "task-starter")
     return (
       <TaskStarterExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["task-starter"])}
         phase={phase}
@@ -328,6 +336,7 @@ export function Playground({
   if (component === "cited-answer")
     return (
       <CitedAnswerExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["cited-answer"])}
         phase={phase}
@@ -337,6 +346,7 @@ export function Playground({
   if (component === "data-answer")
     return (
       <DataAnswerExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["data-answer"])}
         phase={phase}
@@ -346,6 +356,7 @@ export function Playground({
   if (component === "change-summary")
     return (
       <ChangeSummaryExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["change-summary"])}
         phase={phase}
@@ -355,6 +366,7 @@ export function Playground({
   if (component === "assistant-controls")
     return (
       <AssistantControlsExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["assistant-controls"])}
       />
@@ -362,6 +374,7 @@ export function Playground({
   if (component === "suggested-edits")
     return (
       <SuggestedEditsExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["suggested-edits"])}
         phase={phase}
@@ -371,6 +384,7 @@ export function Playground({
   if (component === "image-generation")
     return (
       <ImageGenerationExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["image-generation"])}
         phase={phase}
@@ -380,6 +394,7 @@ export function Playground({
   if (component === "draft-review")
     return (
       <DraftReviewExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["draft-review"])}
         phase={phase}
@@ -389,6 +404,7 @@ export function Playground({
   if (component === "agent-task")
     return (
       <AgentTaskExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["agent-task"])}
         phase={phase}
@@ -421,6 +437,7 @@ export function Playground({
   if (component === "ask-user-questions")
     return (
       <AskUserQuestionsExample
+        getAgentPresentation={getAgentPresentation}
         language={language}
         {...(model as Playgrounds["ask-user-questions"])}
         phase={phase}

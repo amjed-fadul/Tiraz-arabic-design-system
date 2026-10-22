@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useState } from "react";
 import { AssistantControls, numberLocale, useSystem } from "../../index";
 import type {
@@ -28,11 +29,13 @@ const usages = {
 };
 
 export function AssistantControlsExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   usage = "normal",
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   /** "normal" uses 41,000 of 128,000 tokens; "filling" uses 110,000. */
   usage?: "normal" | "filling";
@@ -181,6 +184,7 @@ export function AssistantControlsExample({
 
   return (
     <AssistantControls
+      agentPresentation={getAgentPresentation?.("idle")}
       permissions={permissions}
       onPermissionChange={(id, level) =>
         setLevels((current) => ({ ...current, [id]: level }))

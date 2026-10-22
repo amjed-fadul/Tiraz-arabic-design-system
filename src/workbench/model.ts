@@ -1,3 +1,5 @@
+import { agentPreviewDefaults } from "./agent-preview";
+import type { AgentPreviewOptions } from "./agent-preview";
 import type { TaskRowsExampleProps } from "../system/ai/examples/TaskRowsExamples";
 import type { NotificationListExampleProps } from "../system/ai/examples/NotificationListExamples";
 import type { SliderExampleProps } from "../system/ai/examples/SliderExamples";
@@ -281,23 +283,38 @@ export interface FilterBarModel {
   clearAll: boolean;
 }
 export interface Playgrounds {
-  "task-starter": { appearance: "card" | "plain"; disabled: boolean };
-  "cited-answer": { appearance: "card" | "plain"; question: boolean };
-  "data-answer": { appearance: "card" | "plain" };
-  "agent-task": { appearance: "card" | "plain"; autoStart: boolean };
+  "task-starter": {
+    appearance: "card" | "plain";
+    disabled: boolean;
+  } & AgentPreviewOptions;
+  "cited-answer": {
+    appearance: "card" | "plain";
+    question: boolean;
+  } & AgentPreviewOptions;
+  "data-answer": { appearance: "card" | "plain" } & AgentPreviewOptions;
+  "agent-task": {
+    appearance: "card" | "plain";
+    autoStart: boolean;
+  } & AgentPreviewOptions;
   "decision-inbox": { appearance: "card" | "plain" };
-  "suggested-edits": { undo: boolean };
+  "suggested-edits": { undo: boolean } & AgentPreviewOptions;
   "image-generation": {
     appearance: "card" | "plain";
     knownProgress: boolean;
-  };
-  "draft-review": { appearance: "card" | "plain"; undo: boolean };
-  "change-summary": { appearance: "card" | "plain" };
+  } & AgentPreviewOptions;
+  "draft-review": {
+    appearance: "card" | "plain";
+    undo: boolean;
+  } & AgentPreviewOptions;
+  "change-summary": { appearance: "card" | "plain" } & AgentPreviewOptions;
   "assistant-controls": {
     appearance: "card" | "plain";
     usage: "normal" | "filling";
-  };
-  "ask-user-questions": { appearance: "card" | "plain"; longContent: boolean };
+  } & AgentPreviewOptions;
+  "ask-user-questions": {
+    appearance: "card" | "plain";
+    longContent: boolean;
+  } & AgentPreviewOptions;
   terminal: {
     state: "running" | "completed" | "failed";
     longContent: boolean;
@@ -438,17 +455,41 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     "code-block": { codeLanguage: "ts", longContent: false },
     markdown: { longContent: false },
     "streaming-text": { markdown: false },
-    "task-starter": { appearance: "card", disabled: false },
-    "cited-answer": { appearance: "card", question: true },
-    "data-answer": { appearance: "card" },
-    "agent-task": { appearance: "card", autoStart: true },
+    "task-starter": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      disabled: false,
+    },
+    "cited-answer": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      question: true,
+    },
+    "data-answer": { ...agentPreviewDefaults, appearance: "card" },
+    "agent-task": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      autoStart: true,
+    },
     "decision-inbox": { appearance: "card" },
-    "suggested-edits": { undo: true },
-    "image-generation": { appearance: "card", knownProgress: true },
-    "draft-review": { appearance: "card", undo: true },
-    "change-summary": { appearance: "card" },
-    "assistant-controls": { appearance: "card", usage: "normal" },
-    "ask-user-questions": { appearance: "card", longContent: false },
+    "suggested-edits": { ...agentPreviewDefaults, undo: true },
+    "image-generation": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      knownProgress: true,
+    },
+    "draft-review": { ...agentPreviewDefaults, appearance: "card", undo: true },
+    "change-summary": { ...agentPreviewDefaults, appearance: "card" },
+    "assistant-controls": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      usage: "normal",
+    },
+    "ask-user-questions": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      longContent: false,
+    },
     terminal: { state: "completed", longContent: false, followOutput: false },
     "chat-app": { longContent: false },
     "approval-card": { appearance: "card", longContent: false },
@@ -1186,6 +1227,11 @@ export function normalizePlaygrounds(
         "Check the entered value.",
       );
     const r = defaults;
+    if (
+      "agentColor" in r &&
+      (typeof r.agentColor !== "string" || !/^#[\da-f]{6}$/i.test(r.agentColor))
+    )
+      r.agentColor = agentPreviewDefaults.agentColor;
     const enums: Record<string, string[]> = {
       orientation: ["horizontal", "vertical"],
       currentState: ["upcoming", "current", "completed", "error"],

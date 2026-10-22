@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useEffect, useRef, useState } from "react";
 import {
   DraftReview,
@@ -28,6 +29,7 @@ const wordMs = 140,
   holdSeconds = 10;
 
 export function DraftReviewExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   undo = true,
@@ -35,6 +37,7 @@ export function DraftReviewExample({
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   /**
    * Stands in for the person's own setting, which your app reads before they
@@ -170,6 +173,7 @@ export function DraftReviewExample({
 
   return (
     <DraftReview
+      agentPresentation={getAgentPresentation?.(status)}
       status={status}
       title={t("تذكير بالسداد", "Payment reminder")}
       agent={story.agents.collections[language]}

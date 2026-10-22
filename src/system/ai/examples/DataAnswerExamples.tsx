@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useEffect, useState } from "react";
 import {
   DataAnswer,
@@ -24,12 +25,14 @@ const shortNames = {
 } as const;
 
 export function DataAnswerExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   phase,
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   /**
    * "thinking", "completed", "failed" or "empty", held as given. Trying again
@@ -207,6 +210,7 @@ export function DataAnswerExample({
 
   return (
     <DataAnswer
+      agentPresentation={getAgentPresentation?.(status)}
       status={status}
       question={
         empty

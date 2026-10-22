@@ -1,6 +1,14 @@
+import { agentSwatches } from "../mascot/agent-swatches";
 import { useId, useState } from "react";
 import { RotateCcw } from "lucide-react";
-import { Button, Input, Select, Switch, Textarea } from "../system";
+import {
+  Button,
+  ColorPicker,
+  Input,
+  Select,
+  Switch,
+  Textarea,
+} from "../system";
 import type { ComponentId } from "./catalog";
 import { commonFields, optionNames } from "./fields";
 import type { WorkbenchField } from "./fields";
@@ -108,6 +116,16 @@ function Control({
       });
     else onPatch({ [field.key]: next });
   }
+  if (field.kind === "color")
+    return (
+      <ColorPicker
+        label={caption}
+        value={String(value)}
+        onValueChange={patch}
+        swatches={agentSwatches(language === "ar")}
+        announcement="off"
+      />
+    );
   if (field.kind === "collection")
     return (
       <CollectionEditor
@@ -218,6 +236,11 @@ export function Inspector({
   const [resetRevision, setResetRevision] = useState(0);
   const shown = commonFields[component].filter(
     (field) =>
+      !(
+        field.key === "agentColor" &&
+        (model as unknown as { agentAppearance?: string }).agentAppearance !==
+          "mascot"
+      ) &&
       !(
         component === "avatar" &&
         field.key === "src" &&

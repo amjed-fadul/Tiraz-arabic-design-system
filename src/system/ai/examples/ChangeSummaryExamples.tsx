@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useEffect, useRef, useState } from "react";
 import { ChangeSummary, numberLocale, useSystem } from "../../index";
 import type { ChangeSummaryProps, SourceReference } from "../../index";
@@ -6,12 +7,14 @@ type Language = "ar" | "en";
 type Status = ChangeSummaryProps["status"];
 
 export function ChangeSummaryExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   phase,
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   /**
    * "updating", "ready" or "stale", held as given. Refresh moves the summary to
@@ -106,6 +109,7 @@ export function ChangeSummaryExample({
 
   return (
     <ChangeSummary
+      agentPresentation={getAgentPresentation?.(status)}
       status={status}
       title={t(
         `ما الذي تغيّر · ${n(12)}–${n(18)} ${story.period.month.ar}`,

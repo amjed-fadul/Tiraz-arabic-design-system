@@ -1,3 +1,4 @@
+import { agentPreviewComponents } from "./agent-preview";
 import * as ts from "typescript";
 import { expect, it } from "vitest";
 import { defaultConfig } from "../system";
@@ -14,6 +15,8 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const id of agentPreviewComponents)
+    cases.push([id, { ...p[id], agentAppearance: "icon" }]);
   for (const state of ["loading", "loaded", "error"] as const)
     for (const aspectRatio of ["landscape", "square", "portrait"] as const)
       cases.push(["image-result", { state, aspectRatio, progress: 42 }]);

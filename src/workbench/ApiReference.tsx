@@ -1,3 +1,4 @@
+import { isAgentPreview } from "./agent-preview";
 import { useId } from "react";
 import registrySource from "../system/ai/registry.json?raw";
 import type { ComponentId } from "./catalog";
@@ -3551,7 +3552,23 @@ export function ApiReference({
       <div className="section-title-row">
         <h2 id={`${id}-api`}>{label("api", language)}</h2>
       </div>
-      {table(rows[component], propsOf(component), `${id}-api`)}
+      {table(
+        isAgentPreview(component)
+          ? [
+              ...rows[component],
+              [
+                "agentPresentation",
+                "AgentPresentation",
+                t(
+                  "صورة المساعد واسمه ولونه في الترويسة الحالية. يحدّد التطبيق حالته وحركته؛ حذف الخاصية يُبقي أيقونة الذكاء الاصطناعي الأصلية.",
+                  "Avatar, name, identity controls and color in the existing header. The host owns the avatar state and motion; omit to keep the original AI icon.",
+                ),
+              ],
+            ]
+          : rows[component],
+        propsOf(component),
+        `${id}-api`,
+      )}
       {component === "input" && (
         <>
           <h3 id={`${id}-field`}>

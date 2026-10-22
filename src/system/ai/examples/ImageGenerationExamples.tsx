@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useEffect, useRef, useState } from "react";
 import { ImageGeneration, numberLocale, useSystem } from "../../index";
 import type { ImageGenerationProps } from "../../index";
@@ -131,6 +132,7 @@ const scenes: Scene[] = [
 ];
 
 export function ImageGenerationExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   knownProgress = true,
@@ -138,6 +140,7 @@ export function ImageGenerationExample({
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   /** Reports progress while weaving; without it the loom waits for the picture. */
   knownProgress?: boolean;
@@ -215,6 +218,7 @@ export function ImageGenerationExample({
 
   return (
     <ImageGeneration
+      agentPresentation={getAgentPresentation?.(status)}
       status={status}
       prompt={t(
         "غلاف لحملة رمضان لمتجر تمور: كثبان عند الغروب، هلال ونخيل، بألوان دافئة",

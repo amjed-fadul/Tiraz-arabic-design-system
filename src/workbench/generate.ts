@@ -1,3 +1,6 @@
+import agentPreviewSource from "./agent-preview.ts?raw";
+import playgroundAgentSource from "./playground-agent.tsx?raw";
+import { isAgentPreview, agentIdentityHeaders } from "./agent-preview";
 import localResponseSource from "../system/ai/examples/useLocalResponse.ts?raw";
 import agentTaskSource from "../system/ai/examples/AgentTaskExamples.tsx?raw";
 import taskStarterSource from "../system/ai/examples/TaskStarterExamples.tsx?raw";
@@ -180,14 +183,41 @@ export default function Example(){return <div lang={${json(language)}}><SystemPr
                             : component === "approval-card"
                               ? "ApprovalCardExample"
                               : "ApprovalFlowExample";
+    const options = model as unknown as Record<string, unknown>;
+    const mascot =
+      isAgentPreview(component) && options.agentAppearance === "mascot";
+    const identitySource = mascot
+      ? (agentPreviewSource + "\n" + playgroundAgentSource)
+          .replace(
+            /import (?:type )?\{[^}]+\} from "\.\/agent-preview";\n/g,
+            "",
+          )
+          .replace(/from "\.\.\/mascot\//g, 'from "./mascot/')
+          .replace(/from "\.\.\/system"/g, 'from "./system"')
+          .replace(
+            /from "\.\.\/system\/ai\/examples\/finance-story"/g,
+            'from "./system/ai/examples/finance-story"',
+          )
+      : "";
+    const exampleModel = Object.fromEntries(
+      Object.entries(model).filter(
+        ([key]) => key !== "agentAppearance" && key !== "agentColor",
+      ),
+    );
+    const identityProp = mascot
+      ? ` getAgentPresentation={getPlaygroundAgentPresentation(${json(component)},${json({ agentAppearance: options.agentAppearance, agentColor: options.agentColor })},${json(language)})}`
+      : isAgentPreview(component) && agentIdentityHeaders.includes(component)
+        ? ` getAgentPresentation={() => ({name:${json(language === "ar" ? "وكيل المالية" : "Finance agent")}})}`
+        : "";
     return `${source}
+${identitySource}
 import { SystemProvider, defaultConfig } from "./system";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
 import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "./system/tokens.css";
 import "./system/components.css";
-export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(exampleModel)}}${identityProp}/></SystemProvider></div>;}`;
   }
   if (
     isOneOf(component, ["selection-actions", "context-meter", "model-selector"])
@@ -755,6 +785,14 @@ export function generatePrompt(
       "SelectionActions is scoped to children and excludes editors, code, links and buttons. Alt+Enter focuses actions; Escape returns to the scope. Preserve native selection/copy; scroll dismisses.",
       "Models use controlled stable IDs and onValueChange. Usage, capacity, estimates, prices and availability belong to the host. These components add no AI execution, automatic replacement or network.",
       "Copy the complete source bundle with Popper, Popover, Select and the Radix layer overrides in ai/README.md.",
+    );
+
+  if (
+    isAgentPreview(component) &&
+    (model as unknown as Record<string, unknown>).agentAppearance === "mascot"
+  )
+    notes.push(
+      "This example uses the optional Khayt avatar through agentPresentation. Copy mascot/Khayt.tsx, khayt-artwork.ts, khayt-renderer.ts, khayt-motion.ts, khayt.css and the full mascot/assets directory from the checkout's src/mascot beside the copied system directory. Preserve asset paths and provenance; adjust Khayt's useReducedMotion import if your source-root folder has another name. The studio and workbench are not needed. The host maps its actual state to the avatar; respect reduced motion and keep the existing visible status and single announcement owner. Switching to the original AI icon omits this optional runtime.",
     );
 
   return [

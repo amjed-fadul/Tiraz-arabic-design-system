@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useEffect, useState } from "react";
 import {
   CitedAnswer,
@@ -21,6 +22,7 @@ const arrivalMs = 450,
   wordsPerBeat = 5;
 
 export function CitedAnswerExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   question = true,
@@ -28,6 +30,7 @@ export function CitedAnswerExample({
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   /** Shows the question above the answer; a conversation would show it. */
   question?: boolean;
@@ -202,6 +205,7 @@ export function CitedAnswerExample({
 
   return (
     <CitedAnswer
+      agentPresentation={getAgentPresentation?.(status)}
       status={status}
       question={
         question

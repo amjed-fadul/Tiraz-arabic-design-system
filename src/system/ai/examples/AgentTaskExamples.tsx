@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { FileText } from "lucide-react";
 import { useRef, useState } from "react";
 import { AgentTask, numberLocale, useSystem } from "../../index";
@@ -110,6 +111,7 @@ const elapsed: Record<Status, number | undefined> = {
 const durations = [64, 48, 22, 9, 17];
 
 export function AgentTaskExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   autoStart = true,
@@ -117,6 +119,7 @@ export function AgentTaskExample({
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   /** Starts a proposed plan on its own after five seconds. */
   autoStart?: boolean;
@@ -335,6 +338,7 @@ export function AgentTaskExample({
   }
   return (
     <AgentTask
+      agentPresentation={getAgentPresentation?.(status)}
       title={t("إقفال حسابات أكتوبر", "Close the October books")}
       agent={story.agents.finance[language]}
       status={status}

@@ -70,6 +70,13 @@ the existing tray and leaves the result paper unchanged. These slots add no live
 region and never approve, retry, submit or send. Khayt is a host avatar used by the
 example screens; the portable components do not depend on it.
 
+The workbench also previews Khayt in these pattern headers. Its example hosts
+accept an optional `getAgentPresentation(status)` callback, so a supplied avatar
+can follow the actual task state without a mascot dependency in the portable
+example. The generated integration prompt lists the optional Khayt runtime and
+sprite assets when that appearance is selected. Choosing the original AI icon
+keeps those extra runtime files out of the generated example.
+
 ## Copy and setup
 
 Copy the **whole source-root directory**, keeping `ai/`, its JSON/Markdown and

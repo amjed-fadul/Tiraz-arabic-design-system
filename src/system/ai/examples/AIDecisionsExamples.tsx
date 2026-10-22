@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import {
   useCallback,
   useEffect,
@@ -239,6 +240,7 @@ function accrualsRequest(
   };
 }
 export function AskUserQuestionsExample({
+  getAgentPresentation,
   language = "ar",
   appearance = "card",
   longContent = false,
@@ -246,6 +248,7 @@ export function AskUserQuestionsExample({
   onPhaseChange,
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: Appearance;
   longContent?: boolean;
   /**
@@ -258,6 +261,7 @@ export function AskUserQuestionsExample({
 }) {
   const ar = language === "ar",
     respond = useHostLatency();
+  const [agentStatus, setAgentStatus] = useState("waiting");
   const sent = phase === "answered" || phase === "failed" ? phase : undefined;
   const [value, setValue] = useState<QuestionAnswers>(
     sent
@@ -287,6 +291,7 @@ export function AskUserQuestionsExample({
   return (
     <div ref={root} style={{ display: "contents" }}>
       <AskUserQuestions
+        agentPresentation={getAgentPresentation?.(agentStatus)}
         appearance={appearance}
         agent={story.agents.finance[language]}
         questions={closeQuestions(ar, longContent)}
@@ -295,6 +300,7 @@ export function AskUserQuestionsExample({
         resetKey={round}
         receipt
         onEditAnswers={() => {
+          setAgentStatus("waiting");
           editing.current = true;
           setRound((count) => count + 1);
           onPhaseChange?.("asking");
@@ -302,9 +308,16 @@ export function AskUserQuestionsExample({
         onSubmit={async (_answers, { signal }) => {
           const held = replay.current;
           replay.current = undefined;
-          if (!held) await respond(signal);
-          if (held === "failed") throw new Error("The answers were refused.");
-          onPhaseChange?.("answered");
+          setAgentStatus("working");
+          try {
+            if (!held) await respond(signal);
+            if (held === "failed") throw new Error("The answers were refused.");
+            setAgentStatus("done");
+            onPhaseChange?.("answered");
+          } catch (error) {
+            setAgentStatus(signal.aborted ? "waiting" : "blocked");
+            throw error;
+          }
         }}
       />
     </div>

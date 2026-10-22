@@ -1,8 +1,16 @@
+import { agentPreviewComponents } from "./agent-preview";
 import type { ComponentId } from "./catalog";
 import type { Localized } from "./i18n";
 export interface WorkbenchField {
   key: string;
-  kind: "text" | "select" | "boolean" | "number" | "collection" | "attributes";
+  kind:
+    | "text"
+    | "select"
+    | "boolean"
+    | "number"
+    | "collection"
+    | "attributes"
+    | "color";
   title: Localized;
   api: string;
   advanced?: boolean;
@@ -952,7 +960,28 @@ export function selectOptions(
   return fields[component].find((f) => f.kind === "select" && f.key === key)
     ?.options;
 }
+for (const component of agentPreviewComponents)
+  fields[component].push(
+    field(
+      "agentAppearance",
+      "select",
+      "مظهر المساعد",
+      "Agent appearance",
+      "agentPresentation.avatar",
+      { options: ["icon", "mascot"] },
+    ),
+    field(
+      "agentColor",
+      "color",
+      "لون المساعد",
+      "Agent color",
+      "agentPresentation.color",
+    ),
+  );
+
 export const optionNames: Record<string, Localized> = {
+  icon: ["أيقونة الذكاء الاصطناعي", "AI icon"],
+  mascot: ["خيط", "Khayt"],
   horizontal: ["أفقي", "Horizontal"],
   vertical: ["عمودي", "Vertical"],
   upcoming: ["قادمة", "Upcoming"],
@@ -1156,6 +1185,9 @@ const commonKeys: Record<ComponentId, string[]> = {
   sheet: ["title", "children", "side"],
   toast: ["title", "description", "tone", "duration"],
 };
+for (const component of agentPreviewComponents)
+  commonKeys[component].push("agentAppearance", "agentColor");
+
 export const commonFields = Object.fromEntries(
   Object.entries(commonKeys).map(([component, keys]) => [
     component,

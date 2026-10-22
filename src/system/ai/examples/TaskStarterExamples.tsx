@@ -1,3 +1,4 @@
+import type { AgentPresentation } from "../../index";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { TaskStarter, numberLocale, useSystem } from "../../index";
 import type { ContextItem, TaskStarterProps } from "../../index";
@@ -28,6 +29,7 @@ export function TaskStarterExample({
   ...props
 }: {
   language?: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   disabled?: boolean;
   /**
@@ -44,6 +46,7 @@ export function TaskStarterExample({
 }
 
 function Starter({
+  getAgentPresentation,
   language,
   appearance = "card",
   disabled = false,
@@ -51,6 +54,7 @@ function Starter({
   onPhaseChange,
 }: {
   language: Language;
+  getAgentPresentation?: (status: string) => AgentPresentation;
   appearance?: "card" | "plain";
   disabled?: boolean;
   phase?: string;
@@ -177,6 +181,7 @@ function Starter({
 
   return (
     <TaskStarter
+      agentPresentation={getAgentPresentation?.("idle")}
       greeting={t(`مرحبًا يا ${story.user.ar}`, `Hello, ${story.user.en}`)}
       value={value}
       onValueChange={setValue}

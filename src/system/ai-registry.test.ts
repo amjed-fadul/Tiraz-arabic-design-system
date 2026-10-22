@@ -202,9 +202,14 @@ it("compiles the bundled example after copying only the library to a different a
         "timeline",
       ] as const) {
         const path = resolve(temporary, `app/${component}-${language}.tsx`);
+        // Bundle-only consumers keep the original mark. The optional Khayt
+        // runtime is covered by the separate mascot source-copy check.
+        const model = defaultPlaygrounds(language)[component];
         const code = generateCode(
           component,
-          defaultPlaygrounds(language)[component],
+          component === "ask-user-questions"
+            ? { ...model, agentAppearance: "icon" }
+            : model,
           {
             ...defaultConfig,
             direction: language === "ar" ? "rtl" : "ltr",
