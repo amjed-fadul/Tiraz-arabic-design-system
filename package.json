@@ -6,12 +6,14 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:package": "node scripts/build-package.mjs",
+    "pack:package": "npm run build:package && npm pack ./packages/tiraz",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "format": "prettier --write src index.html vite.config.ts *.json README.md docs/implementation-plan.md",
-    "format:check": "prettier --check src index.html vite.config.ts *.json README.md docs/implementation-plan.md"
+    "format": "prettier --write src index.html vite.config.ts *.json README.md docs/implementation-plan.md scripts/build-package.mjs packages/tiraz/bin packages/tiraz/package.json packages/tiraz/README.md",
+    "format:check": "prettier --check src index.html vite.config.ts *.json README.md docs/implementation-plan.md scripts/build-package.mjs packages/tiraz/bin packages/tiraz/package.json packages/tiraz/README.md"
   },
   "dependencies": {
     "@daypicker/react": "10.0.2",
@@ -36,6 +38,7 @@
     "react-markdown": "^10.1.0",
     "recharts": "3.10.1",
     "remark-gfm": "^4.0.1",
+    "semver": "7.8.5",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {

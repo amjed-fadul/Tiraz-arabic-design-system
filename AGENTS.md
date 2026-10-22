@@ -9,7 +9,9 @@ are authoritative. Read the same bundle before changing APIs or examples;
 keep metadata synchronized with actual types and behavior. The workbench
 inspector is a curated subset, not the public API specification. Preserve the
 approved continuous documentation layout and one-line prompt/Copy row unless
-the user requests a design change. Landing-page work is paused.
+the user requests a design change. Preserve the approved Night loom landing.
+Public packaging lives in `packages/tiraz`; `npm run build:package` builds its
+runtime, declarations and editable source. The repository root stays private.
 
 Use focused tests for the change, then the existing tests (including generated
 example compilation), build, lint and formatting. Inspect rendered interaction

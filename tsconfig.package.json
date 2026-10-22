@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "rootDir": "./src",
+    "declarationDir": "./packages/tiraz/dist/types"
+  },
+  "include": ["src/system", "src/mascot/Khayt.tsx"],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "src/system/css-audit.ts",
+    "src/system/css-audit.families.ts"
+  ]
+}

@@ -5,14 +5,15 @@ import { numberLocale } from "../system/config";
 import { CopyControl } from "./CopyControl";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
+import { npmRelease } from "./npm-release";
 import "./quick-start.css";
 
 const setupPrompt = (
   existing: boolean,
-) => `${existing ? "Add Tiraz to this existing React and TypeScript application. Preserve its routes, data, and toolchain." : "Create a React 19 and TypeScript application using Vite, then add Tiraz."}
-I will provide the Tiraz source directory. Read src/system/ai/README.md and the registry before making changes.
-Copy the complete src/system directory into the app, keeping ai/, examples, assets, and licenses. Test files may be excluded. Do not overwrite an existing system directory without reviewing the differences.
-Inspect the source imports and Tiraz package/lock files, then install compatible dependencies in the app. Load tokens.css, components.css, and IBM Plex Sans Arabic weights 400, 500, and 600 once.
+) => `${existing ? "Use Tiraz in this existing React and TypeScript application. Preserve its routes, data, and toolchain." : "Use this Tiraz React 19 and TypeScript application created with Vite. Preserve its routes and toolchain."}
+Read src/system/ai/README.md and the registry before making changes. The Tiraz installer places editable source in src/system and the optional Khayt runtime in src/mascot.
+If that source is missing, report the gap and ask me to run the documented installer; do not invent an import or overwrite an existing system directory. Keep ai/, examples, assets, and licenses with the source.
+Inspect the source imports and application package/lock files. Load tokens.css, components.css, and IBM Plex Sans Arabic weights 400, 500, and 600 once; preserve existing entry setup when already present.
 Wrap the app with SystemProvider using the full defaultConfig. Put lang and dir on an ancestor; support Arabic RTL and English LTR with translated application copy. Preserve :dir() in the CSS build target.
 Add an AGENTS.md entry pointing to the copied system/ai/README.md. Verify the app starts and builds, fonts load, and keyboard focus and both directions work. Report any missing source or dependencies instead of inventing a Tiraz installer.`;
 
@@ -80,11 +81,26 @@ export function QuickStart({
   const number = new Intl.NumberFormat(
     numberLocale({ numerals: "arab" }, language),
   );
+  const installCommand = `npx ${npmRelease.name}@${npmRelease.version} init${existing ? "" : " --new my-app\ncd my-app\nnpm run dev"}`;
+  const packageCode = `import "tiraz/styles.css";
+import { Button, SystemProvider, defaultConfig } from "tiraz";
+
+export function App() {
+  return (
+    <div lang="ar" dir="rtl">
+      <SystemProvider config={{ ...defaultConfig, direction: "rtl" }}>
+        <Button>ابدأ الآن</Button>
+      </SystemProvider>
+    </div>
+  );
+}`;
   const copyButton = (text: string, key: string, caption: string) => (
     <CopyControl
       text={text}
       caption={caption}
       language={language}
+      iconOnly
+      inlineFeedback={false}
       announcement="off"
       onFeedbackChange={(result) =>
         setFeedback((current) =>
@@ -108,12 +124,12 @@ export function QuickStart({
     >
       <header className="quick-start-intro">
         <Heading id={`${id}-title`}>
-          {t("ابدأ من المصدر", "Start from source")}
+          {t("ابدأ مع طِراز", "Get started with Tiraz")}
         </Heading>
         <p>
           {t(
-            "أضف طِراز إلى تطبيقك، ثم ابنِ أول شاشة مع أداة البرمجة التي تفضّلها. المكوّنات وإرشاداتها تبقى في مشروعك.",
-            "Add Tiraz to your app, then build your first screen with your preferred coding tool. The components and their guidance live in your project.",
+            "أمر واحد يجهّز المكوّنات وإرشاداتها في مشروعك. بعدها افتح أداة البرمجة التي تفضّلها، وابدأ بأول شاشة. يتطلّب Node.js 22.12 أو أحدث وReact 19.",
+            "One command adds the components and their guidance to your project. Then open your preferred coding tool and build your first screen. Requires Node.js 22.12 or newer and React 19.",
           )}
         </p>
       </header>
@@ -128,8 +144,8 @@ export function QuickStart({
             </StepHeading>
             <p>
               {t(
-                "اختر مشروعًا جديدًا أو أضف طِراز إلى مشروعك الحالي.",
-                "Start a new project or add Tiraz to one you already have.",
+                "ابدأ مشروع Vite جديدًا، أو أضف المصدر إلى مشروع Vite قائم. لأدوات البناء الأخرى، استخدم الاستيراد من الحزمة أدناه.",
+                "Create a Vite app or add editable source to an existing Vite React TypeScript app. For other bundlers, use package imports below.",
               )}
             </p>
             <div className="quick-start-install">
@@ -161,50 +177,62 @@ export function QuickStart({
               </div>
               <div
                 className="quick-start-terminal"
-                aria-label={t("معاينة أمر التثبيت", "Install command preview")}
+                aria-label={t("أمر التثبيت", "Install command")}
               >
                 <div className="quick-start-terminal-bar">
                   <span>
                     <bdi dir="ltr">npm</bdi>
                   </span>
                   <span className="quick-start-coming">
-                    {t("قريبًا", "Coming soon")}
+                    {npmRelease.published ? (
+                      <bdi dir="ltr">v{npmRelease.version}</bdi>
+                    ) : (
+                      t("جاهزة للنشر", "Prepared for release")
+                    )}
                   </span>
+                  {copyButton(
+                    installCommand,
+                    "install",
+                    t("نسخ أمر التثبيت", "Copy install command"),
+                  )}
                 </div>
                 <pre
                   dir="ltr"
                   lang="en"
                   tabIndex={0}
                   role="region"
-                  aria-label={t(
-                    "معاينة أمر التثبيت",
-                    "Install command preview",
-                  )}
+                  aria-label={t("أمر التثبيت", "Install command")}
                 >
-                  <code>
-                    {existing
-                      ? "npx <tiraz-package> init"
-                      : "npx <tiraz-package> init --new my-app"}
-                  </code>
+                  <code>{installCommand}</code>
                 </pre>
                 <p className="quick-start-package-note">
-                  {t(
-                    "معاينة فقط. لم تُنشر الحزمة بعد، وسيُضاف أمر التثبيت هنا عند إطلاقها.",
-                    "Preview only. The package is not published yet; the install command will be added here at launch.",
-                  )}
+                  {npmRelease.published
+                    ? t(
+                        "ينسخ المصدر إلى src/system، ويحتفظ بالتراخيص وإرشادات المساعد. لا يستبدل ملفاتك الحالية.",
+                        "Copies editable source to src/system, with licenses and agent guidance. Existing source is never overwritten.",
+                      )
+                    : t(
+                        "الأمر جاهز للإطلاق، لكنه لن يعمل من سجل npm حتى يكتمل نشر الحزمة. يمكنك استخدام المصدر الآن.",
+                        "This is the release command. It will work from npm once package publication is complete; you can use the source today.",
+                      )}
                 </p>
               </div>
             </div>
             <details className="quick-start-source">
               <summary>
-                <span>{t("استخدم المصدر الآن", "Use the source today")}</span>
+                <span>
+                  {t(
+                    "طلب الإعداد لأداة البرمجة",
+                    "Setup prompt for your coding tool",
+                  )}
+                </span>
                 <ChevronDown size={18} aria-hidden="true" />
               </summary>
               <div className="quick-start-source-body">
                 <p>
                   {t(
-                    "إذا كان مصدر طِراز متاحًا لديك، افتح مجلده مع مشروعك في أداة البرمجة، ثم انسخ طلب الإعداد. حافظ على الإرشادات والأصول والتراخيص عند نقل المكوّنات.",
-                    "Already have the Tiraz source? Open its folder alongside your project in your coding tool, then copy the setup prompt. Keep the guidance, assets, and licenses with the components.",
+                    "بعد التثبيت، افتح مجلد مشروعك في أداة البرمجة، ثم انسخ طلب الإعداد. تبقى الإرشادات والأصول والتراخيص مع المكوّنات.",
+                    "After installation, open your project folder in your coding tool and copy the setup prompt. Guidance, assets and licenses stay with the components.",
                   )}
                 </p>
                 <div className="quick-start-prompt">
@@ -252,6 +280,57 @@ export function QuickStart({
                     <code>{entryCode}</code>
                   </pre>
                 </details>
+              </div>
+            </details>
+            <details className="quick-start-source">
+              <summary>
+                <span>
+                  {t("تفضّل الاستيراد من حزمة؟", "Prefer package imports?")}
+                </span>
+                <ChevronDown size={18} aria-hidden="true" />
+              </summary>
+              <div className="quick-start-source-body">
+                <p>
+                  {t(
+                    "ثبّت الحزمة، ثم حمّل الأنماط وغلّف تطبيقك بالمزوّد. يضم ملف الأنماط الخط والرموز والمكوّنات. المصدر وإرشاداته مرفقة بالحزمة أيضًا.",
+                    "Install the package, load its styles and wrap your app with the provider. The stylesheet includes the font, tokens and components. Editable source and guidance are also included.",
+                  )}
+                </p>
+                <div className="quick-start-prompt">
+                  <div className="quick-start-prompt-bar">
+                    <span>{t("الطرفية", "Terminal")}</span>
+                    {copyButton(
+                      "npm install tiraz",
+                      "npm",
+                      t("نسخ أمر npm", "Copy npm command"),
+                    )}
+                  </div>
+                  <pre dir="ltr" lang="en">
+                    <code>npm install tiraz</code>
+                  </pre>
+                </div>
+                <div className="quick-start-prompt">
+                  <div className="quick-start-prompt-bar">
+                    <bdi dir="ltr">App.tsx</bdi>
+                    {copyButton(
+                      packageCode,
+                      "package-entry",
+                      t("نسخ مثال الاستيراد", "Copy package example"),
+                    )}
+                  </div>
+                  <pre
+                    dir="ltr"
+                    lang="en"
+                    tabIndex={0}
+                    role="region"
+                    aria-label={t(
+                      "مثال الاستيراد من الحزمة",
+                      "Package import example",
+                    )}
+                  >
+                    <code>{packageCode}</code>
+                  </pre>
+                </div>
               </div>
             </details>
           </div>

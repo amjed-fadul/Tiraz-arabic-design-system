@@ -2,8 +2,27 @@ import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import { QuickStart } from "./QuickStart";
+import { npmRelease } from "./npm-release";
 
 afterEach(() => vi.restoreAllMocks());
+
+it("copies real versioned new and existing source-install commands", async () => {
+  const user = userEvent.setup();
+  const clipboard = vi.spyOn(navigator.clipboard, "writeText");
+  render(<QuickStart language="en" />);
+  await user.click(
+    screen.getByRole("button", { name: "Copy install command" }),
+  );
+  expect(clipboard).toHaveBeenLastCalledWith(
+    "npx tiraz@0.1.0 init --new my-app\ncd my-app\nnpm run dev",
+  );
+  await user.click(screen.getByRole("button", { name: "Existing project" }));
+  await user.click(
+    screen.getByRole("button", { name: "Copy install command" }),
+  );
+  expect(clipboard).toHaveBeenLastCalledWith("npx tiraz@0.1.0 init");
+  expect(screen.queryByText(/<tiraz-package>/)).not.toBeInTheDocument();
+});
 
 it("copies the chosen setup and English starter prompt with one initially empty announcement", async () => {
   const user = userEvent.setup();
@@ -15,7 +34,7 @@ it("copies the chosen setup and English starter prompt with one initially empty 
   await user.click(existing);
   expect(existing).toHaveFocus();
   expect(existing).toHaveAttribute("aria-pressed", "true");
-  await user.click(screen.getByText("استخدم المصدر الآن"));
+  await user.click(screen.getByText("طلب الإعداد لأداة البرمجة"));
   const copy = screen.getByRole("button", { name: "نسخ طلب الإعداد" });
   await user.click(copy);
   expect(copy).toHaveFocus();
@@ -39,7 +58,7 @@ it("provides a selectable fallback when clipboard access fails", async () => {
     new Error("denied"),
   );
   render(<QuickStart language="en" />);
-  await user.click(screen.getByText("Use the source today"));
+  await user.click(screen.getByText("Setup prompt for your coding tool"));
   await user.click(screen.getByRole("button", { name: "Copy setup prompt" }));
   await waitFor(() =>
     expect(screen.getByRole("status")).toHaveTextContent(
@@ -51,9 +70,7 @@ it("provides a selectable fallback when clipboard access fails", async () => {
   ).toHaveFocus();
   expect(
     screen.getByRole("region", { name: "Setup prompt" }),
-  ).toHaveTextContent(
-    "Create a React 19 and TypeScript application using Vite",
-  );
+  ).toHaveTextContent("Read src/system/ai/README.md");
 });
 
 it("guards pending setup copies and ignores results for a replaced project prompt", async () => {
@@ -69,7 +86,7 @@ it("guards pending setup copies and ignores results for a replaced project promp
         }),
     );
   render(<QuickStart language="en" />);
-  await user.click(screen.getByText("Use the source today"));
+  await user.click(screen.getByText("Setup prompt for your coding tool"));
   const copy = screen.getByRole("button", { name: "Copy setup prompt" });
   await user.click(copy);
   expect(copy).toHaveAttribute("aria-busy", "true");
@@ -93,10 +110,10 @@ it("fits a landing section without adding an h1 and keeps Arabic step numerals",
   const { container } = render(<QuickStart language="ar" headingLevel={2} />);
   expect(screen.queryByRole("heading", { level: 1 })).toBeNull();
   expect(
-    screen.getByRole("heading", { level: 2, name: "ابدأ من المصدر" }),
+    screen.getByRole("heading", { level: 2, name: "ابدأ مع طِراز" }),
   ).toBeVisible();
   expect(
-    within(screen.getByRole("region", { name: "ابدأ من المصدر" })).getAllByRole(
+    within(screen.getByRole("region", { name: "ابدأ مع طِراز" })).getAllByRole(
       "heading",
       { level: 3 },
     ),
@@ -108,7 +125,7 @@ it("fits a landing section without adding an h1 and keeps Arabic step numerals",
   ).toEqual(["١", "٢"]);
 });
 
-it("keeps long instructions collapsed and identifies npm commands as unpublished previews", async () => {
+it("keeps long instructions collapsed and reports the actual package release status", async () => {
   const user = userEvent.setup();
   const { container } = render(<QuickStart language="en" />);
   expect(container.querySelectorAll("details[open]")).toHaveLength(0);
@@ -120,12 +137,15 @@ it("keeps long instructions collapsed and identifies npm commands as unpublished
       name: /Source on GitHub|Download source guide/,
     }),
   ).toBeNull();
-  expect(screen.getByText(/The package is not published yet/)).toBeVisible();
+  if (!npmRelease.published)
+    expect(
+      screen.getByText(/once package publication is complete/),
+    ).toBeVisible();
   expect(
-    screen.getByText("npx <tiraz-package> init --new my-app"),
-  ).toBeVisible();
+    screen.getByRole("region", { name: "Install command" }),
+  ).toHaveTextContent("npx tiraz@0.1.0 init --new my-app");
   await user.click(screen.getByRole("button", { name: "Existing project" }));
-  expect(screen.getByText("npx <tiraz-package> init")).toBeVisible();
+  expect(screen.getByText("npx tiraz@0.1.0 init")).toBeVisible();
   await user.click(screen.getByText("Customer dashboard"));
   expect(
     screen.getByRole("button", { name: "Copy prompt: Customer dashboard" }),

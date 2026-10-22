@@ -47,7 +47,7 @@ it("restores explicit routes on Back and keeps language/theme across destination
   expect(
     screen.getByRole("heading", {
       level: 1,
-      name: "Start from source",
+      name: "Get started with Tiraz",
     }),
   ).toBeVisible();
   await userEvent.click(screen.getByRole("button", { name: "العربية" }));
@@ -385,7 +385,7 @@ it.each(["/docs", "/docs/installation", "/docs/rtl"])(
     at(path);
     expect(window.location.pathname).toBe("/start");
     expect(
-      screen.getByRole("heading", { level: 1, name: "ابدأ من المصدر" }),
+      screen.getByRole("heading", { level: 1, name: "ابدأ مع طِراز" }),
     ).toBeVisible();
   },
 );
