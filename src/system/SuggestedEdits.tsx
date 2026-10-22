@@ -1,3 +1,4 @@
+import { agentPresentationStyle } from "./agent-presentation";
 import * as Popper from "@radix-ui/react-popper";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import {
@@ -11,7 +12,8 @@ import {
 } from "react";
 import type { FocusEvent, ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { AIMark } from "./AIMark";
+import { AgentAvatar, AgentHeaderActions } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { Button } from "./Button";
 import { DecisionBar } from "./DecisionBar";
 import type { DecisionAction } from "./DecisionBar";
@@ -55,6 +57,8 @@ export interface SuggestedEditsLabels extends InlineDiffLabels {
   applied: (count: number, edits: string, total: string) => string;
 }
 export interface SuggestedEditsProps {
+  /** Optional identity in the existing rewriting and review header. */
+  agentPresentation?: AgentPresentation;
   /** The text region, as SelectionActions wraps it. */
   children: ReactNode;
   actions: readonly { id: string; label: string; icon?: ReactNode }[];
@@ -122,6 +126,7 @@ function rangeIn(scope: Node, start: number, end: number) {
  * the host owns announcements.
  */
 export function SuggestedEdits({
+  agentPresentation,
   children,
   actions,
   onAction,
@@ -299,6 +304,7 @@ export function SuggestedEdits({
   const review =
     status === "reviewing" && suggestion ? (
       <ReviewCard
+        agentPresentation={agentPresentation}
         placement={reviewPlacement}
         restoreFocus={restoreReviewFocus}
         copy={copy}
@@ -390,7 +396,7 @@ export function SuggestedEdits({
               collisionPadding={8}
               hideWhenDetached
             >
-              <AIMark size="xs" working />
+              <AgentAvatar agent={agentPresentation} size="xs" working />
               <span className="tz-ai-shimmer">{copy.rewriting}</span>
               <Thread state="running" />
             </Popper.Content>,
@@ -412,6 +418,7 @@ export function SuggestedEdits({
  * it, and Apply below. A non-modal popover; Escape reaches the pattern.
  */
 function ReviewCard({
+  agentPresentation,
   placement,
   restoreFocus,
   copy,
@@ -427,6 +434,7 @@ function ReviewCard({
   end,
   opened,
 }: {
+  agentPresentation?: AgentPresentation;
   placement: "floating" | "inline";
   restoreFocus: () => boolean;
   copy: SuggestedEditsLabels;
@@ -509,7 +517,7 @@ function ReviewCard({
   const header = (
     <div className="tz-suggested-edits-header" data-zone="header">
       <div className="tz-suggested-edits-heading">
-        <AIMark />
+        <AgentAvatar agent={agentPresentation} />
         <h3
           ref={heading}
           id={`${uid}-title`}
@@ -518,6 +526,7 @@ function ReviewCard({
         >
           {copy.title} · {title}
         </h3>
+        <AgentHeaderActions agent={agentPresentation} />
         {ids.length > 0 && (
           <div className="tz-suggested-edits-nav">
             <Button
@@ -588,6 +597,8 @@ function ReviewCard({
         : {})}
     >
       <Tray
+        data-agent-presentation={agentPresentation?.color ? "" : undefined}
+        style={agentPresentationStyle(agentPresentation)}
         paper={false}
         header={header}
         footer={

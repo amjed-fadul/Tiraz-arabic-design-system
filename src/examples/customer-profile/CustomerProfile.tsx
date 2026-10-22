@@ -55,7 +55,7 @@ export function CustomerProfile() {
 }
 
 function CustomerProfileScreen() {
-  const [agentColor, setAgentColor] = useAgentColor("customer");
+  const [agentColor] = useAgentColor("customer");
   const demo = useScreenDemo();
   const screen = useScreen();
   const { t, language, locale, number, money, date, href } = screen;
@@ -349,9 +349,14 @@ function CustomerProfileScreen() {
           style={{ "--agent-color": agentColor } as CSSProperties}
         >
           <ScreenAgentHeading
-            color={agentColor}
-            onColorChange={setAgentColor}
-            state={answer === "thinking" ? "thinking" : "done"}
+            agent="customer"
+            state={
+              demo.active && demo.phase === "typing"
+                ? "idle"
+                : answerStatus === "thinking"
+                  ? "thinking"
+                  : "done"
+            }
             title={t("مساعد العملاء", "Customer assistant")}
             description={t(
               "يحلّل سجل العميل ويجيب من بياناتك.",

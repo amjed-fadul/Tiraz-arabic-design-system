@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode, SyntheticEvent } from "react";
 import { Check, Pause, Play, RotateCcw } from "lucide-react";
-import { AIMark, Button, useReducedMotion } from "../../system";
+import { Button, useReducedMotion } from "../../system";
 import { useScreen } from "./screen";
 import { ScreenDemoContext, useScreenDemo } from "./useScreenDemo";
 import type { ScreenDemoState } from "./useScreenDemo";
-import { Khayt } from "../../mascot/Khayt";
-import type { KhaytState } from "../../mascot/khayt-motion";
-import { AgentColorControl } from "../../mascot/AgentColorControl";
+import { ScreenAgentAvatar } from "./ScreenAgent";
+import { screenAgent } from "./screen-agents";
+export { ScreenAgentHeading } from "./ScreenAgent";
 
 const typingEnd = 2400;
 const sendingEnd = 2800;
@@ -185,59 +185,6 @@ export function ScreenDemoControls() {
   );
 }
 
-/** Identifies the AI workspace without adding another live region. */
-export function ScreenAgentHeading({
-  title,
-  description,
-  children,
-  state = "idle",
-  color = "#946D91",
-  onColorChange,
-}: {
-  title: string;
-  description?: string;
-  children?: ReactNode;
-  state?: KhaytState;
-  color?: string;
-  onColorChange?: (color: string) => void;
-}) {
-  const { t, language } = useScreen();
-  const demo = useScreenDemo();
-  return (
-    <div className="screen-agent-heading">
-      <div className="screen-agent-identity">
-        <Khayt
-          state={
-            demo.active
-              ? demo.phase === "working"
-                ? "working"
-                : "thinking"
-              : state
-          }
-          color={color}
-          animated={!demo.paused}
-          size={48}
-        />
-        <div>
-          <span className="screen-agent-eyebrow">
-            {t("مساعد ذكي", "AI agent")}
-          </span>
-          <h2>{title}</h2>
-        </div>
-        {onColorChange && (
-          <AgentColorControl
-            language={language}
-            color={color}
-            onChange={onColorChange}
-          />
-        )}
-      </div>
-      {description && <p>{description}</p>}
-      {children}
-    </div>
-  );
-}
-
 /** Background screens start with the agent inspecting their existing records. */
 export function ScreenActivity({
   steps,
@@ -247,10 +194,21 @@ export function ScreenActivity({
   ready: string;
 }) {
   const demo = useScreenDemo();
+  const { slug } = useScreen();
   return (
     <div className="screen-activity" data-working={demo.active || undefined}>
       {demo.active ? (
-        <AIMark size="xs" working={!demo.paused} />
+        <ScreenAgentAvatar
+          agent={screenAgent[slug]}
+          state={
+            demo.phase === "typing"
+              ? "idle"
+              : demo.phase === "sending"
+                ? "thinking"
+                : "working"
+          }
+          size={32}
+        />
       ) : (
         <Check size={14} aria-hidden />
       )}

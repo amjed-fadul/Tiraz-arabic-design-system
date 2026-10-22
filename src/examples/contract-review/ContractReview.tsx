@@ -25,6 +25,7 @@ import { story } from "../../system/ai/examples/finance-story";
 import { diffText } from "../../system/diff-text";
 import { formatCount } from "../../system/format";
 import { ScreenActivity } from "../frame/ScreenDemo";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { useScreenDemo } from "../frame/useScreenDemo";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
 import { recorded, useScreen } from "../frame/screen";
@@ -318,6 +319,10 @@ function Review() {
   );
 
   const preparing = demo.active && !(applied || sent);
+  const agentPresentation = useScreenAgentPresentation(
+    "contracts",
+    preparing ? "working" : applied || sent ? "done" : "waiting",
+  );
   const reviewing = file === "annex" && !(preparing || applied || sent);
   const reserve = useReviewCard(annexPage, reviewing && size !== "narrow");
   const readOnly = t("للقراءة فقط", "Read-only");
@@ -338,6 +343,7 @@ function Review() {
                 <p>{item.text[language]}</p>
               ) : (
                 <SuggestedEdits
+                  agentPresentation={agentPresentation}
                   // Mount the ready review quietly: an automatic transition
                   // must not move focus from the page into its dialog.
                   key={preparing ? "preparing" : "review"}
@@ -529,6 +535,7 @@ function Review() {
       <div className="contract-review-layout">
         <div className="contract-review-main">
           {page}
+
           {!wide &&
             (ready ? (
               approval

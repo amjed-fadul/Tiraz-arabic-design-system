@@ -102,7 +102,12 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   // .tz-ai is the shared AI shimmer and the AIResultsExamples layout.
   ai: [".tz-ai"],
   // The shared parts of the AI patterns.
-  "ai-mark": [".tz-ai-mark"],
+  "ai-mark": [
+    ".tz-ai-mark",
+    ".tz-agent-avatar",
+    ".tz-agent-header-actions",
+    ".tz-agent-identity",
+  ],
   "status-pill": [".tz-status-pill"],
   thread: [".tz-thread"],
   tray: [".tz-tray"],

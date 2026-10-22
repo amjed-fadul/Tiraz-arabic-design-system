@@ -1,3 +1,4 @@
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react";
 import {
@@ -26,12 +27,22 @@ import { daysLate, reminderText, statusOf } from "./invoice";
 import type { InvoiceStatus } from "./invoice";
 import { dayCount, invoiceCount, lateInvoices } from "./words";
 import "./invoices.css";
-import { ScreenAgentHeading } from "../frame/ScreenDemo";
+import { ScreenAgentHeading } from "../frame/ScreenAgent";
+import type { KhaytState } from "../../mascot/khayt-motion";
 import { useScreenDemo } from "../frame/useScreenDemo";
 import type { CSSProperties } from "react";
 import { useAgentColor } from "../../mascot/useAgentColor";
 
 type Status = DraftReviewProps["status"];
+function reminderState(status: Status): KhaytState {
+  return status === "writing" || status === "sending"
+    ? "working"
+    : status === "sent"
+      ? "done"
+      : status === "discarded"
+        ? "idle"
+        : "waiting";
+}
 /** What the host keeps for one invoice's reminder. */
 interface Draft {
   status: Status;
@@ -65,14 +76,20 @@ function Reminder({
   onBodyChange,
   onSend,
   announcement = "polite",
+  showAgent = false,
 }: {
   invoice: Invoice;
   announcement?: "polite" | "off";
+  showAgent?: boolean;
   draft: Draft;
   headingLevel: 2 | 3;
   onBodyChange: (body: string) => void;
   onSend: (text: string) => void;
 }) {
+  const agentPresentation = useScreenAgentPresentation(
+    "collections",
+    reminderState(draft.status),
+  );
   const screen = useScreen();
   const { t, language, money } = screen;
   const text = reminderText(invoice, screen);
@@ -82,6 +99,7 @@ function Reminder({
       : (draft.edited ?? text);
   return (
     <DraftReview
+      agentPresentation={showAgent ? agentPresentation : undefined}
       announcement={announcement}
       status={draft.status}
       title={t("تذكير بالسداد", "Payment reminder")}
@@ -115,7 +133,7 @@ function Reminder({
 }
 
 function InvoicesScreen() {
-  const [agentColor, setAgentColor] = useAgentColor("collections");
+  const [agentColor] = useAgentColor("collections");
   const demo = useScreenDemo();
   const screen = useScreen();
   const { t, language, number, money, date, href, size, endSide } = screen;
@@ -361,6 +379,7 @@ function InvoicesScreen() {
               {drafts[invoice.id] && (
                 <div className="invoices-sheet">
                   <Reminder
+                    showAgent
                     invoice={invoice}
                     draft={drafts[invoice.id]}
                     headingLevel={3}
@@ -497,17 +516,9 @@ function InvoicesScreen() {
             style={{ "--agent-color": agentColor } as CSSProperties}
           >
             <ScreenAgentHeading
-              color={agentColor}
-              onColorChange={setAgentColor}
+              agent="collections"
               state={
-                selectedDraft.status === "writing" ||
-                selectedDraft.status === "sending"
-                  ? "working"
-                  : selectedDraft.status === "sent"
-                    ? "done"
-                    : selectedDraft.status === "discarded"
-                      ? "idle"
-                      : "waiting"
+                demo.active ? "working" : reminderState(selectedDraft.status)
               }
               title={t("وكيل التحصيل", "Collections agent")}
               description={t(

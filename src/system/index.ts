@@ -258,3 +258,5 @@ export type {
   ChatAppLabels,
   ChatConversationItem,
 } from "./ChatApp";
+
+export type { AgentPresentation } from "./AgentPresentation";

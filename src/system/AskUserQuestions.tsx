@@ -1,7 +1,9 @@
+import { agentPresentationStyle } from "./agent-presentation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useId, useLayoutEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import { AIMark } from "./AIMark";
+import { AgentAvatar, AgentHeaderActions } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { Alert } from "./Alert";
 import { Button } from "./Button";
 import { Field } from "./Field";
@@ -60,6 +62,8 @@ export interface AskUserQuestionsLabels {
   needsYou: string;
 }
 export interface AskUserQuestionsProps {
+  /** Optional avatar, name, identity controls and tray color in the existing header. */
+  agentPresentation?: AgentPresentation;
   questions: readonly UserQuestion[];
   value: QuestionAnswers;
   onValueChange: (answers: QuestionAnswers) => void;
@@ -100,6 +104,7 @@ export function AskUserQuestions(props: AskUserQuestionsProps) {
   );
 }
 function QuestionsInstance({
+  agentPresentation,
   questions,
   value,
   onValueChange,
@@ -189,11 +194,16 @@ function QuestionsInstance({
   const Heading = `h${headingLevel}` as const;
   const header = (
     <div className="tz-question-header" data-zone="header">
-      <AIMark />
-      {agent != null && <span className="tz-question-agent">{agent}</span>}
+      <AgentAvatar agent={agentPresentation} />
+      {(agentPresentation?.name ?? agent) != null && (
+        <span className="tz-question-agent">
+          {agentPresentation?.name ?? agent}
+        </span>
+      )}
       {!answered && task.state !== "accepted" && (
         <StatusPill state="needs-you" label={copy.needsYou} />
       )}
+      <AgentHeaderActions agent={agentPresentation} />
     </div>
   );
   const content = answered ? (
@@ -411,6 +421,8 @@ function QuestionsInstance({
       aria-label={label ?? copy.name}
       tabIndex={-1}
       className={`tz-ask-questions ${className}`}
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-appearance={appearance}
       data-changed={changed || undefined}
       onSubmit={(event) => {

@@ -23,6 +23,7 @@ import type {
   PermissionLevel,
 } from "../../system";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { useScreen } from "../frame/screen";
 import {
   context,
@@ -49,6 +50,7 @@ export function TeamSettings() {
 
 function TeamSettingsContent() {
   const { language, t, number, date } = useScreen();
+  const agentPresentation = useScreenAgentPresentation("finance", "idle");
   const { toast } = useToast();
   const [tab, setTab] = useState("team");
   const [members, setMembers] = useState<readonly Member[]>(team);
@@ -261,6 +263,7 @@ function TeamSettingsContent() {
             content: (
               <div className="team-settings-panel">
                 <AssistantControls
+                  agentPresentation={agentPresentation}
                   headingLevel={2}
                   permissions={permissions}
                   onPermissionChange={(id, level) =>

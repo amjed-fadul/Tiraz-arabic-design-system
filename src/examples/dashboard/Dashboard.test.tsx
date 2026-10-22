@@ -272,7 +272,7 @@ it("starts from the address and, embedded in the docs, leaves language, theme an
     expect(document.querySelector('a[href="/"]')).toBeNull();
     // Everything else stays.
     expect(
-      screen.getByRole("button", { name: "Decision inbox, needs you: 2" }),
+      screen.getByRole("button", { name: "Decision inbox 2, needs you" }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("combobox", { name: "Preview state" }),
@@ -373,7 +373,7 @@ it("sets What changed beside the orders trend with rows from the orders", async 
 it("opens the decision inbox beside customer creation and asks the orders a question", async () => {
   const user = userEvent.setup();
   render(<Dashboard />);
-  const waiting = (count: string) => `صندوق القرارات، بانتظارك: ${count}`;
+  const waiting = (count: string) => `صندوق القرارات ${count}، بانتظارك`;
   const dialog = () => screen.getByRole("dialog", { name: "صندوق القرارات" });
   const rows = () => within(dialog()).getAllByRole("listitem");
   const closed = () =>
@@ -474,7 +474,7 @@ it("opens the decision inbox beside customer creation and asks the orders a ques
   // Shared language changes preserve the approved decision and selected chart.
   await user.click(screen.getByRole("button", { name: "English" }));
   expect(
-    screen.getByRole("button", { name: "Decision inbox, needs you: 1" }),
+    screen.getByRole("button", { name: "Decision inbox 1, needs you" }),
   ).toBeInTheDocument();
   expect(
     within(customerTable()).getByRole("row", { name: /ليلى أحمد/ }),

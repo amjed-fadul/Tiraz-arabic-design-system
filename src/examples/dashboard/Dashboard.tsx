@@ -32,6 +32,7 @@ import type {
   SourceReference,
 } from "../../system";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { recorded, useScreen } from "../frame/screen";
 import { CreateCustomer } from "./CreateCustomer";
 import {
@@ -104,6 +105,14 @@ function ChartCard({
 
 function DashboardContent() {
   const demo = useScreenDemo();
+  const answerAgent = useScreenAgentPresentation(
+    "customer",
+    demo.active ? "thinking" : "done",
+  );
+  const agentPresentation = useScreenAgentPresentation(
+    "customer",
+    demo.active ? "working" : "done",
+  );
   const { t, language, locale, number } = useScreen();
   const [inboxOpen, setInboxOpen] = useState(false);
   const [period, setPeriod] = useState<Period>(7);
@@ -423,8 +432,8 @@ function DashboardContent() {
                     variant="ghost"
                     className="dashboard-inbox"
                     aria-label={t(
-                      `صندوق القرارات، بانتظارك: ${number(waiting)}`,
-                      `Decision inbox, needs you: ${number(waiting)}`,
+                      `صندوق القرارات ${number(waiting)}، بانتظارك`,
+                      `Decision inbox ${number(waiting)}, needs you`,
                     )}
                   >
                     <Inbox size={17} aria-hidden="true" />
@@ -539,7 +548,9 @@ function DashboardContent() {
               dataTable
             />
           </ChartCard>
+
           <ChangeSummary
+            agentPresentation={agentPresentation}
             announcement="off"
             status={demo.active ? "updating" : "ready"}
             rows={changes}
@@ -571,6 +582,7 @@ function DashboardContent() {
             />
           </ChartCard>
           <DataAnswer
+            agentPresentation={answerAgent}
             announcement={inboxOpen || newCustomer ? "off" : "polite"}
             status={demo.active ? "thinking" : "completed"}
             question={t(

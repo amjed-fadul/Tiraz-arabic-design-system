@@ -9,6 +9,7 @@ import {
 import type { CitedAnswerProps, FeedbackReason } from "../../system";
 import { story } from "../../system/ai/examples/finance-story";
 import { useScreenDemo } from "../frame/useScreenDemo";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
 import { useScreen } from "../frame/screen";
 import {
@@ -163,6 +164,18 @@ function Help() {
           )
         : notFound[language];
   const text = answerText(run);
+  const agentPresentation = useScreenAgentPresentation(
+    "support",
+    run?.status === "thinking"
+      ? "thinking"
+      : run?.status === "writing"
+        ? "working"
+        : run?.status === "failed"
+          ? "blocked"
+          : run?.status === "completed"
+            ? "done"
+            : "idle",
+  );
   const parts = wordsOf(text);
   const manualWords = wordsOf(answerText(manualRun)).length;
 
@@ -250,6 +263,7 @@ function Help() {
         }}
       >
         <TaskStarter
+          agentPresentation={agentPresentation}
           headingLevel={2}
           greeting={t(`مرحبًا ${story.user.ar}`, `Hello, ${story.user.en}`)}
           title={t("كيف نساعدك؟", "How can we help?")}
@@ -325,6 +339,7 @@ function Help() {
         }}
       >
         <CitedAnswer
+          agentPresentation={agentPresentation}
           headingLevel={2}
           status={run.status}
           question={run.topic?.question[language] ?? run.text}

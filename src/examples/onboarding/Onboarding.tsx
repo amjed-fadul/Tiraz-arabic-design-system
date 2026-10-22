@@ -16,6 +16,7 @@ import {
 } from "../../system";
 import type { QuestionAnswers, StepItem, UserQuestion } from "../../system";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { recorded, useScreen } from "../frame/screen";
 import { assistant, company, limits, steps } from "./data";
 import "./onboarding.css";
@@ -82,6 +83,10 @@ function OnboardingContent() {
   const [answers, setAnswers] = useState<QuestionAnswers>({});
   const [accepted, setAccepted] = useState(false);
   const [saving, setSaving] = useState(false);
+  const agentPresentation = useScreenAgentPresentation(
+    "verification",
+    saving ? "working" : accepted ? "done" : "waiting",
+  );
   const [round, setRound] = useState(0);
   const formId = useId();
   const titleId = useId();
@@ -384,6 +389,7 @@ function OnboardingContent() {
                 {questions.length ? (
                   <div ref={questionsRoot} className="onboarding-questions">
                     <AskUserQuestions
+                      agentPresentation={agentPresentation}
                       appearance="plain"
                       headingLevel={3}
                       agent={t(assistant.ar, assistant.en)}

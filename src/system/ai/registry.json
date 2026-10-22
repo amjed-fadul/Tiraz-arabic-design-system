@@ -1223,6 +1223,10 @@
     {
       "name": "ChatConversationItem",
       "source": "ChatApp.tsx"
+    },
+    {
+      "name": "AgentPresentation",
+      "source": "AgentPresentation.tsx"
     }
   ],
   "configuration": {
@@ -1537,6 +1541,12 @@
           "default": "card",
           "values": ["card", "plain"],
           "note": "card sits on a tray with the field on paper; plain drops the tray and lives on its host's paper, keeping the field's hairline."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns the draft, the attached records, the mode and the model. The pattern keeps only what the moment needs: the @ word at the caret, which option is active and whether a submission is pending. It never runs a request: onSubmit hands the draft and the records to the host.",
@@ -1720,6 +1730,12 @@
           "default": "card",
           "values": ["card", "plain"],
           "note": "card sits on a tray with the answer on paper; plain lives on its host's paper."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns the status, the text, the sources, the rating and every time. The pattern never advances by itself: it shows the thinking panel, streams the words it is given and reports what the person asks for. The panel folds when writing starts unless the host controls it.",
@@ -1889,6 +1905,12 @@
           "default": "card",
           "values": ["card", "plain"],
           "note": "card sits on a tray with the chart and the explanation on paper; plain lives on its host's paper."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created."
         }
       ],
       "state": "The host owns the status, the chart and its data for every type, the text, the tables and every time. The pattern never fetches, computes or reshapes anything and never advances by itself: it shows the thinking, draws the chart it is given, and reports what the person asks for, including the chart type to show next.",
@@ -2094,6 +2116,12 @@
           "values": ["card", "plain"],
           "default": "card",
           "note": "card sits on a tray with the steps on paper; plain lives on its host's paper."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns the status, the steps, the times and the outputs; the pattern never advances by itself. The countdown is a UI affordance the host opts into, and it calls onStart. The inline approval keeps ApprovalCard's decision integrity: a decision counts only after the host's promise resolves.",
@@ -2374,6 +2402,12 @@
           "required": false,
           "default": "polite",
           "note": "Speaks status changes politely by default; off removes the live region while keeping the visible rewriting note and receipt."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns the status, the suggestion, the decisions (or leaves them to the pattern) and its own text, which it replaces on Apply. The pattern keeps only the last action's range and which change the counter is on. It never rewrites anything itself.",
@@ -2532,6 +2566,12 @@
           "required": false,
           "default": "polite",
           "note": "Speaks status changes politely by default; off also makes the failed ImageResult status plain while keeping its visible error and alt text."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns the status, the progress, the images and, if it wants, the chosen version. The pattern never generates an image, simulates progress or advances its status; it reports the version chosen, Use image, Similar variations, Edit with a description and Try again.",
@@ -2701,6 +2741,12 @@
           "required": false,
           "default": "polite",
           "note": "Speaks status changes politely by default; off removes the live region while keeping the visible receipt, sending line and error text."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns the status, the text, the suggestion and its decisions, the tone, the recipients, the attachments and the sending: it holds the message for its undo window, sends it once the window ends, cancels it on onUndo, and marks it sent. The pattern sends and cancels nothing itself. It holds only UI state: whether Send, Discard or Undo has acted in this status, and whether its countdown has ended.",
@@ -2811,6 +2857,12 @@
           "required": false,
           "default": "polite",
           "note": "Speaks status changes politely by default; off removes the live region while keeping visible status and footer text."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns the status, the rows, their tones, the reason and the times. The pattern never refreshes by itself; Refresh and Try again call onRefresh and the host sets updating.",
@@ -2951,6 +3003,12 @@
           "values": ["card", "plain"],
           "default": "card",
           "note": "card sits on a tray with the sections on paper; plain lives on its host's paper, as in a side panel or a settings page."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "The host owns every setting: each action's level, whether memory is on, the remembered items and whether each is paused, the context usage and the model. It stores and enforces them. The pattern shows them and reports the person's choices, and keeps only where focus was. A locked action shows «اسأل دائمًا» whatever level the host passes, and an item the person asks to delete stays until the host removes it.",
@@ -3260,6 +3318,12 @@
           "type": "() => void",
           "required": false,
           "note": "Adds Edit answers to the receipt; the host reopens the questions, for example with resetKey."
+        },
+        {
+          "name": "agentPresentation",
+          "type": "AgentPresentation",
+          "required": false,
+          "note": "Optional decorative avatar, agent name, identity controls and tray color in the existing header. The host controls avatar state; no extra card, announcement or action is created. Default AI marks remain when omitted."
         }
       ],
       "state": "Controlled question drafts. Submission is guarded and aborted on schema replacement, reset and unmount. States: asking, submitting, answered (with receipt, the answers the host accepted) and failed (the draft stays). The receipt shows what the host accepted, never what the agent did with it.",

@@ -1,7 +1,9 @@
+import { agentPresentationStyle } from "./agent-presentation";
 import { useEffect, useId, useLayoutEffect, useRef } from "react";
 import type { FocusEvent, ReactNode } from "react";
 import { ArrowDown, ArrowUp, Minus } from "lucide-react";
-import { AIMark } from "./AIMark";
+import { AgentAvatar, AgentHeaderActions } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { DecisionBar } from "./DecisionBar";
 import type { DecisionAction } from "./DecisionBar";
 import { Skeleton } from "./Skeleton";
@@ -35,6 +37,8 @@ export interface ChangeSummaryLabels {
   failed: string;
 }
 export interface ChangeSummaryProps {
+  /** Optional avatar, name, identity controls and tray color in the existing header. */
+  agentPresentation?: AgentPresentation;
   title?: ReactNode;
   status: "updating" | "ready" | "stale" | "failed";
   /** The first six show. `direction` says which way, `tone` what it means. */
@@ -126,6 +130,7 @@ function Sparkline({
  * once unless the host owns announcements.
  */
 export function ChangeSummary({
+  agentPresentation,
   title,
   status,
   rows,
@@ -181,19 +186,22 @@ export function ChangeSummary({
 
   const header = (
     <div className="tz-change-summary-header" data-zone="header">
-      <AIMark working={updating} />
+      <AgentAvatar agent={agentPresentation} working={updating} />
       <div className="tz-change-summary-heading">
         <Heading id={`${uid}-title`} className="tz-change-summary-title">
           {title ?? copy.title}
         </Heading>
         {(status === "ready" || status === "stale") && (
-          <p className="tz-change-summary-made">{copy.madeByAssistant}</p>
+          <p className="tz-change-summary-made">
+            {agentPresentation?.name ?? copy.madeByAssistant}
+          </p>
         )}
       </div>
       {updating && <StatusPill state="running" label={copy.updatingPill} />}
       {status === "failed" && (
         <StatusPill state="failed" label={copy.failedPill} />
       )}
+      <AgentHeaderActions agent={agentPresentation} />
     </div>
   );
 
@@ -323,6 +331,8 @@ export function ChangeSummary({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-change-summary"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-status={status}
       data-appearance={appearance}
       onFocus={(event) => {

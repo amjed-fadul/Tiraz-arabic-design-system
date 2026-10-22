@@ -1,3 +1,6 @@
+import { agentPresentationStyle } from "./agent-presentation";
+import { AgentIdentityRow } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { Lock } from "lucide-react";
 import { useId, useLayoutEffect, useRef } from "react";
 import type { FocusEvent, ReactNode } from "react";
@@ -59,6 +62,8 @@ export interface AssistantControlsLabels {
   model: string;
 }
 export interface AssistantControlsProps {
+  /** Optional identity in the existing task or answer header. */
+  agentPresentation?: AgentPresentation;
   permissions?: readonly AssistantPermission[];
   /** The person's choice for an action; never called for a locked one. */
   onPermissionChange?: (id: string, level: PermissionLevel) => void;
@@ -94,6 +99,7 @@ const levels: readonly PermissionLevel[] = ["always", "sensitive", "auto"];
  * level the host passes, and a deleted memory stays until the host removes it.
  */
 export function AssistantControls({
+  agentPresentation,
   permissions,
   onPermissionChange,
   memoryEnabled,
@@ -148,6 +154,7 @@ export function AssistantControls({
 
   const header = (
     <div className="tz-assistant-controls-header" data-zone="header">
+      <AgentIdentityRow agent={agentPresentation} />
       <Heading id={`${uid}-title`} className="tz-assistant-controls-title">
         {title ?? copy.title}
       </Heading>
@@ -353,6 +360,8 @@ export function AssistantControls({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-assistant-controls"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-appearance={appearance}
       onFocus={(event) => {
         lastFocus.current = event.target as HTMLElement;

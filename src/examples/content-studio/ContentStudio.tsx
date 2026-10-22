@@ -29,6 +29,7 @@ import type {
 import { story } from "../../system/ai/examples/finance-story";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
 import { useScreenDemo } from "../frame/useScreenDemo";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { recorded, useScreen } from "../frame/screen";
 import {
   actions,
@@ -77,6 +78,16 @@ function Caption({
 }) {
   const { t, language } = useScreen();
   const [status, setStatus] = useState<SuggestedEditsProps["status"]>("idle");
+  const agentPresentation = useScreenAgentPresentation(
+    "campaigns",
+    status === "rewriting"
+      ? "working"
+      : status === "reviewing"
+        ? "waiting"
+        : status === "applied"
+          ? "done"
+          : "idle",
+  );
   const [request, setRequest] = useState<{
     action: string;
     start: number;
@@ -130,6 +141,7 @@ function Caption({
       </CardHeader>
       <CardContent>
         <SuggestedEdits
+          agentPresentation={agentPresentation}
           announcement="off"
           status={status}
           actions={actions.map((item) => ({
@@ -278,6 +290,18 @@ function Studio() {
     ? Math.round(demo.progress * 100)
     : job.progress;
   const introducing = demo.phase === "typing" || demo.phase === "sending";
+  const agentPresentation = useScreenAgentPresentation(
+    "campaigns",
+    introducing
+      ? "idle"
+      : shownStatus === "queued"
+        ? "thinking"
+        : shownStatus === "weaving"
+          ? "working"
+          : used
+            ? "done"
+            : "waiting",
+  );
 
   function generate() {
     if (busy) return;
@@ -338,6 +362,7 @@ function Studio() {
   const main = (
     <div key="main" className="content-studio-main">
       <ImageGeneration
+        agentPresentation={agentPresentation}
         announcement="off"
         headingLevel={2}
         prompt={made.prompt ?? opening.prompt.en}
@@ -356,6 +381,7 @@ function Studio() {
         agent={story.agents.campaigns[language]}
         duration={shownStatus === "completed" ? seconds : undefined}
       />
+
       {used && (
         <Caption
           key={language}

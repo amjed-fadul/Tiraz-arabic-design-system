@@ -1,3 +1,6 @@
+import { agentPresentationStyle } from "./agent-presentation";
+import { AgentIdentityRow } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { FocusEvent, ReactNode } from "react";
 import { DecisionBar } from "./DecisionBar";
@@ -40,6 +43,8 @@ export interface CitedAnswerLabels {
   feedbackBar?: Partial<FeedbackBarLabels>;
 }
 export interface CitedAnswerProps {
+  /** Optional identity in the existing task or answer header. */
+  agentPresentation?: AgentPresentation;
   status: "thinking" | "writing" | "completed" | "failed" | "stopped";
   /** The question, as the section's heading. Leave it out when a conversation
    * already shows it. */
@@ -91,6 +96,7 @@ export interface CitedAnswerProps {
  * status once; the panel, the streamed words and the bar are silent.
  */
 export function CitedAnswer({
+  agentPresentation,
   status,
   question,
   content,
@@ -331,6 +337,8 @@ export function CitedAnswer({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-cited-answer"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-status={status}
       data-appearance={appearance}
       onFocus={(event) => {
@@ -357,7 +365,16 @@ export function CitedAnswer({
       {appearance === "card" ? (
         <Tray
           paper={false}
-          header={panel || undefined}
+          header={
+            agentPresentation ? (
+              <>
+                <AgentIdentityRow agent={agentPresentation} />
+                {panel}
+              </>
+            ) : (
+              panel || undefined
+            )
+          }
           footer={footer || undefined}
         >
           {paper && (
@@ -371,6 +388,7 @@ export function CitedAnswer({
         </Tray>
       ) : (
         <>
+          <AgentIdentityRow agent={agentPresentation} />
           {panel}
           {paper && (
             <div className="tz-cited-answer-paper" data-zone="paper">

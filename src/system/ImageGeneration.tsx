@@ -1,3 +1,4 @@
+import { agentPresentationStyle } from "./agent-presentation";
 import {
   Fragment,
   useEffect,
@@ -8,7 +9,8 @@ import {
 } from "react";
 import type { CSSProperties, FocusEvent, ReactNode } from "react";
 import { Check, Pencil, ShieldAlert } from "lucide-react";
-import { AIMark } from "./AIMark";
+import { AgentAvatar, AgentHeaderActions } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { Button } from "./Button";
 import { DecisionBar } from "./DecisionBar";
 import type { DecisionAction } from "./DecisionBar";
@@ -58,6 +60,8 @@ export interface ImageGenerationLabels {
   saysCompleted: string;
 }
 export interface ImageGenerationProps {
+  /** Optional avatar, name, identity controls and tray color in the existing header. */
+  agentPresentation?: AgentPresentation;
   /** The person's description of the image. */
   prompt: ReactNode;
   /** What the request asked for besides the description: ratio, style, count. */
@@ -111,6 +115,7 @@ const pills: Record<ImageGenerationProps["status"], StatusPillState> = {
  * once unless the host owns announcements, never the progress.
  */
 export function ImageGeneration({
+  agentPresentation,
   prompt,
   options,
   status,
@@ -219,7 +224,7 @@ export function ImageGeneration({
 
   const header = (
     <div className="tz-image-generation-header" data-zone="header">
-      <AIMark working={status === "weaving"} />
+      <AgentAvatar agent={agentPresentation} working={status === "weaving"} />
       <Heading id={`${uid}-title`} className="tz-image-generation-title">
         {copy.title}
       </Heading>
@@ -235,6 +240,7 @@ export function ImageGeneration({
           }[status]
         }
       />
+      <AgentHeaderActions agent={agentPresentation} />
     </div>
   );
 
@@ -406,7 +412,8 @@ export function ImageGeneration({
   // The agent, the images and the time, then what the person can do. The
   // actions wait, in place, until the images are done.
   const facts: ReactNode[] = [];
-  if (agent != null) facts.push(agent);
+  const attribution = agentPresentation?.name ?? agent;
+  if (attribution != null) facts.push(attribution);
   if (!blocked && images.length > 0)
     facts.push(formatCount(images.length, "image", config));
   if (duration !== undefined) facts.push(formatElapsed(duration, config));
@@ -463,6 +470,8 @@ export function ImageGeneration({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-image-generation"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-status={status}
       data-appearance={appearance}
       onFocus={(event) => {

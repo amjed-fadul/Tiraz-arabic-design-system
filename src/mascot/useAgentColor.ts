@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-export type AgentIdentity = "collections" | "customer";
-export const agentColors: Record<AgentIdentity, string> = {
+export const agentColors = {
   collections: "#946D91",
   customer: "#738D76",
+  finance: "#647FA5",
+  campaigns: "#B59255",
+  support: "#678B91",
+  contracts: "#957DAD",
+  sales: "#A67A62",
+  verification: "#7C8B60",
 };
+export type AgentIdentity = keyof typeof agentColors;
 const eventName = "tiraz-agent-color";
 const memory = new Map<string, string>();
 const key = (agent: AgentIdentity) => `tiraz.agent-color.${agent}.v1`;

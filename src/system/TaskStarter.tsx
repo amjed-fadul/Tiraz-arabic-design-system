@@ -1,3 +1,6 @@
+import { agentPresentationStyle } from "./agent-presentation";
+import { AgentIdentityRow } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as Popper from "@radix-ui/react-popper";
 import { AtSign, Check, ChevronDown, Mic, Paperclip } from "lucide-react";
@@ -73,6 +76,8 @@ export interface TaskStarterLabels {
   recentStates: Record<StatusPillState, string>;
 }
 export interface TaskStarterProps {
+  /** Optional identity in the existing task or answer header. */
+  agentPresentation?: AgentPresentation;
   value: string;
   onValueChange: (value: string) => void;
   /** As the entry beneath: a rejected promise keeps the draft and shows the error. */
@@ -188,6 +193,7 @@ const none: readonly ContextItem[] = [];
  * focus; an input method's keys never choose, move or send.
  */
 export function TaskStarter({
+  agentPresentation,
   value,
   onValueChange,
   onSubmit,
@@ -735,6 +741,8 @@ export function TaskStarter({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-task-starter"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-status={
         disabled
           ? "disabled"
@@ -770,8 +778,9 @@ export function TaskStarter({
           {copy.used(percent)}
         </span>
       )}
-      {greeting != null || title != null ? (
+      {greeting != null || title != null || agentPresentation != null ? (
         <div className="tz-task-starter-greeting" data-zone="header">
+          <AgentIdentityRow agent={agentPresentation} />
           {greeting != null && (
             <p className="tz-task-starter-hello">{greeting}</p>
           )}

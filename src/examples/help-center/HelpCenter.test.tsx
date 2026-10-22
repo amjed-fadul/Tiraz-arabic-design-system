@@ -44,6 +44,8 @@ const bank = "كيف أطابق كشف البنك الأهلي؟";
 const accrual = "كيف أرحّل قيد استحقاق؟";
 const support = () =>
   screen.queryByRole("link", { name: "تواصل مع فريق الدعم" });
+const mascot = () =>
+  document.querySelector(".help-center .tz-agent-avatar .khayt");
 /** Picks a suggestion and sends it. */
 async function ask(user: ReturnType<typeof userEvent.setup>, question: string) {
   await user.click(screen.getByRole("button", { name: question }));
@@ -57,6 +59,7 @@ it("asks a suggested question, stops it, and regenerates it with sources and fol
     screen.getByRole("heading", { level: 1, name: "مركز المساعدة" }),
   ).toBeInTheDocument();
   expect(screen.getByText("مرحبًا ليلى")).toBeInTheDocument();
+  expect(mascot()).toHaveAttribute("data-state", "idle");
   expect(
     screen.getByRole("heading", { level: 2, name: "كيف نساعدك؟" }),
   ).toBeInTheDocument();
@@ -78,6 +81,7 @@ it("asks a suggested question, stops it, and regenerates it with sources and fol
   const answer = screen.getByRole("region", { name: bank });
   expect(answer).toHaveFocus();
   expect(answer).toHaveAttribute("data-status", "thinking");
+  expect(mascot()).toHaveAttribute("data-state", "thinking");
   expect(screen.queryByRole("textbox")).toBeNull();
   await pass(700);
   expect(answer).toHaveAttribute("data-status", "thinking");
@@ -85,6 +89,7 @@ it("asks a suggested question, stops it, and regenerates it with sources and fol
   // Stop keeps what there is, and nothing moves on afterwards.
   await user.click(within(answer).getByRole("button", { name: "إيقاف" }));
   expect(answer).toHaveAttribute("data-status", "stopped");
+  expect(mascot()).toHaveAttribute("data-state", "idle");
   expect(within(answer).getByRole("status")).toHaveTextContent(
     "أُوقفت الإجابة",
   );
@@ -107,9 +112,11 @@ it("asks a suggested question, stops it, and regenerates it with sources and fol
   expect(answer).toHaveAttribute("data-status", "thinking");
   await pass(700);
   expect(answer).toHaveAttribute("data-status", "writing");
+  expect(mascot()).toHaveAttribute("data-state", "working");
   expect(answer).toHaveTextContent("طابق حركات");
   expect(answer).not.toHaveTextContent("ثم أغلق التسوية");
   await until(answer, "completed");
+  expect(mascot()).toHaveAttribute("data-state", "done");
   expect(answer).toHaveTextContent("ثم أغلق التسوية");
   expect(
     within(answer).getByRole("button", { name: /^٣ مصادر/ }),
@@ -132,6 +139,7 @@ it("fails the accruals question once, offers a person, and completes on Try agai
   const { user } = setup();
   const answer = await ask(user, accrual);
   await until(answer, "failed");
+  expect(mascot()).toHaveAttribute("data-state", "blocked");
   expect(answer).toHaveTextContent("تعذّر إكمال الإجابة");
   expect(answer).toHaveTextContent("انقطع الاتصال بمكتبة المقالات");
   expect(support()).toHaveAttribute("href", "mailto:support@tiraz.example");
@@ -140,6 +148,7 @@ it("fails the accruals question once, offers a person, and completes on Try agai
     within(answer).getByRole("button", { name: "أعد المحاولة" }),
   );
   expect(answer).toHaveAttribute("data-status", "thinking");
+  expect(mascot()).toHaveAttribute("data-state", "thinking");
   expect(support()).toBeNull();
   await until(answer, "completed");
   expect(answer).toHaveTextContent("٤ قيود بمجموع ٦٬٨٥٠ ر.س");

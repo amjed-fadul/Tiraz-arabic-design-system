@@ -1,6 +1,8 @@
+import { agentPresentationStyle } from "./agent-presentation";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { FocusEvent, KeyboardEvent, ReactNode, RefObject } from "react";
-import { AIMark } from "./AIMark";
+import { AgentAvatar, AgentHeaderActions } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { ApprovalCard } from "./ApprovalCard";
 import type {
   ApprovalCardProps,
@@ -121,6 +123,8 @@ export interface AgentTaskLabels {
 }
 
 export interface AgentTaskProps {
+  /** Optional avatar, name, identity controls and tray color in the existing header. */
+  agentPresentation?: AgentPresentation;
   title: ReactNode;
   agent?: ReactNode;
   status: "plan" | "running" | "needs-you" | "failed" | "stopped" | "completed";
@@ -392,6 +396,7 @@ function AgentRunStep({
  * what the person asks for: start, steer, stop, decide, retry or skip.
  */
 export function AgentTask({
+  agentPresentation,
   title,
   agent,
   status,
@@ -545,13 +550,15 @@ export function AgentTask({
 
   const header = (
     <div className="tz-agent-run-header" data-zone="header">
-      <AIMark working={status === "running"} />
+      <AgentAvatar agent={agentPresentation} working={status === "running"} />
       <div className="tz-agent-run-heading">
         <Heading id={`${uid}-title`} className="tz-agent-run-title">
           {title}
         </Heading>
         <p className="tz-agent-run-agent">
-          {agent != null && <>{agent} · </>}
+          {(agentPresentation?.name ?? agent) != null && (
+            <>{agentPresentation?.name ?? agent} · </>
+          )}
           {copy.stepCount?.(steps.length) ??
             formatCount(steps.length, "step", config)}
         </p>
@@ -572,6 +579,7 @@ export function AgentTask({
           status === "running" || status === "completed" ? elapsed : undefined
         }
       />
+      <AgentHeaderActions agent={agentPresentation} />
     </div>
   );
 
@@ -781,6 +789,8 @@ export function AgentTask({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-agent-run"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-status={status}
       data-appearance={appearance}
       onPointerEnter={() => setHovered(true)}

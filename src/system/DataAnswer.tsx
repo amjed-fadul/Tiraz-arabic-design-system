@@ -1,7 +1,9 @@
+import { agentPresentationStyle } from "./agent-presentation";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { FocusEvent, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
-import { AIMark } from "./AIMark";
+import { AgentAvatar, AgentHeaderActions } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { AreaChart, BarChart, DonutChart, LineChart } from "./Charts";
 import type { CartesianChartProps, DonutChartProps } from "./Charts";
 import { DecisionBar } from "./DecisionBar";
@@ -59,6 +61,8 @@ export interface DataAnswerLabels {
   feedbackBar?: Partial<FeedbackBarLabels>;
 }
 export interface DataAnswerProps {
+  /** Optional identity in the existing answer header. */
+  agentPresentation?: AgentPresentation;
   status: "thinking" | "completed" | "failed" | "empty";
   /** The question, as the section's heading. */
   question: ReactNode;
@@ -116,6 +120,7 @@ function Chart({ chart }: { chart: DataAnswerChart }) {
  * bar are silent.
  */
 export function DataAnswer({
+  agentPresentation,
   status,
   question,
   chart,
@@ -194,11 +199,12 @@ export function DataAnswer({
         : { state: "completed", label: copy.completedPill };
   const header = (
     <div className="tz-data-answer-header" data-zone="header">
-      <AIMark working={status === "thinking"} />
+      <AgentAvatar agent={agentPresentation} working={status === "thinking"} />
       <Heading id={`${uid}-title`} className="tz-data-answer-title">
         {question}
       </Heading>
       <StatusPill state={pill.state} label={pill.label} />
+      <AgentHeaderActions agent={agentPresentation} />
     </div>
   );
 
@@ -422,6 +428,8 @@ export function DataAnswer({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-data-answer"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-status={status}
       data-appearance={appearance}
       onFocus={(event) => {

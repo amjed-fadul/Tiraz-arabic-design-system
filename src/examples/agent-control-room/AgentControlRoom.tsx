@@ -1,6 +1,6 @@
+import { agentStyle } from "../frame/screen-agents";
 import { useId, useState } from "react";
 import {
-  AIMark,
   Button,
   ContextMeter,
   DecisionInbox,
@@ -42,6 +42,21 @@ import {
 import type { AgentId, Summary } from "./data";
 import "./agent-control-room.css";
 import { useScreenDemo } from "../frame/useScreenDemo";
+import { ScreenAgentAvatar, ScreenAgentHeading } from "../frame/ScreenAgent";
+import { useAgentColor } from "../../mascot/useAgentColor";
+import type { KhaytState } from "../../mascot/khayt-motion";
+
+function mascotState(state: StatusPillState): KhaytState {
+  return state === "failed"
+    ? "blocked"
+    : state === "needs-you"
+      ? "waiting"
+      : state === "running"
+        ? "working"
+        : state === "completed"
+          ? "done"
+          : "idle";
+}
 
 export function AgentControlRoom() {
   return (
@@ -61,6 +76,14 @@ function screenOf(id: string): ScreenSlug {
 }
 
 function Room() {
+  const [financeColor] = useAgentColor("finance");
+  const [collectionsColor] = useAgentColor("collections");
+  const [campaignsColor] = useAgentColor("campaigns");
+  const colors = {
+    finance: financeColor,
+    collections: collectionsColor,
+    campaigns: campaignsColor,
+  };
   const { language, t, number, money, size, open, endSide } = useScreen();
   const { config } = useSystem();
   const text = (value: Text) => t(value.ar, value.en);
@@ -186,7 +209,9 @@ function Room() {
         ? "failed"
         : own.some((item) => item.status === "running")
           ? "running"
-          : "idle";
+          : own.length > 0 && own.every((item) => item.status === "completed")
+            ? "completed"
+            : "idle";
   };
   // The inbox's own counts, in words that agree: failed tasks wait on the
   // person too.
@@ -267,6 +292,7 @@ function Room() {
               }
             >
               <AgentPanel
+                key={focusedAgent}
                 id={focusedAgent}
                 retried={retried}
                 state={stateOf(focusedAgent)}
@@ -287,19 +313,15 @@ function Room() {
               key={id}
               type="button"
               className="agent-control-room-card"
-              aria-label={t(
-                `عرض نشاط ${story.agents[id][language]}`,
-                `View ${story.agents[id][language]} activity`,
-              )}
+              data-agent={id}
+              style={agentStyle(colors[id])}
               aria-pressed={agent === id}
               onClick={() => setAgent(agent === id ? null : id)}
             >
               <span className="agent-control-room-card-top">
-                <AIMark
-                  size="md"
-                  working={items.some(
-                    (item) => item.agent.id === id && item.status === "running",
-                  )}
+                <ScreenAgentAvatar
+                  agent={id}
+                  state={mascotState(stateOf(id))}
                 />
                 <span className="agent-control-room-card-identity">
                   <span className="agent-control-room-eyebrow">
@@ -378,8 +400,12 @@ function Room() {
           headingLevel={2}
         />
         {size === "wide" && (
-          <Tray className="agent-control-room-panel screen-agent-panel">
+          <Tray
+            className="agent-control-room-panel screen-agent-panel"
+            style={agentStyle(colors[focusedAgent])}
+          >
             <AgentPanel
+              key={focusedAgent}
               id={focusedAgent}
               retried={retried}
               state={stateOf(focusedAgent)}
@@ -411,13 +437,13 @@ function AgentPanel({
   waiting: number;
   level: 2 | 3;
 }) {
+  const [color] = useAgentColor(id);
   const { language, t, number } = useScreen();
   const demo = useScreenDemo();
   const uid = useId();
   const text = (value: Text) => t(value.ar, value.en);
   const panel = panels[id];
   const name = story.agents[id][language];
-  const Heading = `h${level}` as const;
   const Section = `h${level + 1}` as "h3" | "h4";
   const said = (summary: Summary) =>
     summary.count === undefined
@@ -455,20 +481,14 @@ function AgentPanel({
         ? t("تذكيرات الفواتير المتأخرة", "Overdue invoice reminders")
         : text(cover.title);
   return (
-    <>
+    <div className="agent-control-room-panel-content" style={agentStyle(color)}>
       <div className="agent-control-room-agent">
-        <div className="agent-control-room-identity">
-          <AIMark
-            size="md"
-            working={Boolean(step) || (demo.active && !demo.paused)}
-          />
-          <div>
-            <p className="agent-control-room-eyebrow">
-              {t("وكيل ذكاء اصطناعي", "AI agent workspace")}
-            </p>
-            <Heading className="agent-control-room-title">{name}</Heading>
-          </div>
-        </div>
+        <ScreenAgentHeading
+          agent={id}
+          title={name}
+          state={mascotState(state)}
+          headingLevel={level}
+        />
         {/* Keyed by agent, so one agent's open details don't carry over to
             the next. Quiet: the inbox's region is the page's one. */}
         <ContextMeter
@@ -564,6 +584,6 @@ function AgentPanel({
           </p>
         )}
       </section>
-    </>
+    </div>
   );
 }

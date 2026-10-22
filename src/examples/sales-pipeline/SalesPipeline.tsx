@@ -16,6 +16,7 @@ import {
 } from "../../system";
 import type { ChangeSummaryProps, DraftReviewProps } from "../../system";
 import { ScreenFrame, ScreenHeader } from "../frame/ScreenFrame";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 import { recorded, today, useScreen } from "../frame/screen";
 import { dayCount } from "../invoices/words";
 import {
@@ -87,6 +88,14 @@ function FollowUp({
   onUnmount: (id: string) => void;
 }) {
   const { language, money } = useScreen();
+  const agentPresentation = useScreenAgentPresentation(
+    "sales",
+    draft.status === "writing" || draft.status === "sending"
+      ? "working"
+      : draft.status === "sent"
+        ? "done"
+        : "waiting",
+  );
   // A responsive branch or a filter can remove the Sheet without asking
   // Radix to close it. The content owns cancellation for every unmount path.
   // StrictMode replays cleanup on mount, so cancellation must not close it.
@@ -94,6 +103,7 @@ function FollowUp({
   const owner = owners.find((item) => item.id === deal.owner)!.name[language];
   return (
     <DraftReview
+      agentPresentation={agentPresentation}
       status={draft.status}
       record={{
         id: deal.id,

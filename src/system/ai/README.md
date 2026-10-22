@@ -56,6 +56,20 @@ A pattern finishes one job, from its first state to the person's decision and th
 
 Parts are what patterns are built on. The registry gives every AI family a `kind`: `pattern` (the thirteen above), `screen` (ChatApp), `part` (the fifteen pieces that also work alone, such as SelectionActions, ChatComposer, ToolCall and Sources) or `content` (Terminal, CodeBlock, Markdown and LoadingState, which show supplied text). The pieces added with the patterns (AIMark, StatusPill, Tray, Countdown, StatusIcon, ThinkingPanel, FeedbackBar, FollowUps, InlineDiff and WeaveCanvas) are exported and listed under `support`. A pattern's `parts` names, by registry id, what it is built on: Start a task renders StatusPill and Tray, and builds on the entry that ChatComposer and PromptBar share, ModelSelector's options and ContextMeter's ring. A part's `usedBy` names the patterns that list it, so the two link both ways, and an empty `usedBy` means no pattern is built on that part. Use a part alone when the job is smaller than a pattern. When no pattern fits the job, compose parts, say so, and do not invent a pattern or an export.
 
+## Agent identity in pattern headers
+
+The task, draft, image, summary, answer, question, edit-review and assistant-controls
+patterns accept optional `agentPresentation: AgentPresentation`. Supply a decorative
+`avatar`, a `name` where the pattern shows attribution, optional identity `actions`,
+and a CSS `color`. The avatar replaces the small AI mark in the existing header;
+it does not create another card. Without this prop the default mark remains.
+The host controls the avatar's state and motion. Keep the pattern's visible status
+and action feedback, and respect reduced motion in your avatar. Identity controls
+must be separate from task actions; use `type="button"` inside forms. Color tints
+the existing tray and leaves the result paper unchanged. These slots add no live
+region and never approve, retry, submit or send. Khayt is a host avatar used by the
+example screens; the portable components do not depend on it.
+
 ## Copy and setup
 
 Copy the **whole source-root directory**, keeping `ai/`, its JSON/Markdown and

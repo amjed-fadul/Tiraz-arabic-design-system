@@ -343,7 +343,8 @@
   font-size: var(--text-meta);
   font-weight: var(--weight-medium);
 }
-.screen-agent-heading h2 {
+.screen-agent-heading h2,
+.screen-agent-heading h3 {
   margin: 0;
   font-size: var(--text-body);
   font-weight: var(--weight-semibold);
@@ -437,4 +438,11 @@
 }
 .screen-navigation-hint .first-visit-hint-arrow:dir(rtl) {
   transform: rotate(180deg) scaleX(-1);
+}
+
+.screen-agent-name {
+  min-inline-size: 0;
+}
+.screen-agent-identity > .khayt {
+  flex: none;
 }

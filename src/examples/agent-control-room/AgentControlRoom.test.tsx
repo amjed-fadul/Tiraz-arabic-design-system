@@ -39,7 +39,9 @@ it("leaves a picked agent's own items and shows its panel", async () => {
   expect(document.querySelector('[aria-live="polite"]')).toBeEmptyDOMElement();
 
   await user.click(
-    within(overview).getByRole("button", { name: "عرض نشاط وكيل التحصيل" }),
+    within(overview).getByRole("button", {
+      name: /وكيل التحصيل.*عرض مساحة العمل/,
+    }),
   );
   expect(strip("وكيل التحصيل")).toHaveAttribute("aria-pressed", "true");
   // Its three drafts, and nothing of the Finance agent's.
@@ -104,12 +106,22 @@ it("starts the failed cover again, and its agent's panel shows the running step"
   render(<AgentControlRoom />);
   await user.click(strip("مصمّم الحملات"));
   expect(strip("مصمّم الحملات")).toHaveTextContent("تعثّر");
+  expect(
+    document.querySelector(
+      '.screen-agent-heading[data-agent="campaigns"] .khayt',
+    ),
+  ).toHaveAttribute("data-state", "blocked");
   expect(screen.getByText("لا توجد خطوة تعمل الآن.")).toBeInTheDocument();
   await user.click(
     within(row(cover)).getByRole("button", { name: `أعد المحاولة ${cover}` }),
   );
   // Running, it leaves «بانتظارك» for «يعمل», and its step is on show.
   expect(strip("مصمّم الحملات")).toHaveTextContent("يعمل");
+  expect(
+    document.querySelector(
+      '.screen-agent-heading[data-agent="campaigns"] .khayt',
+    ),
+  ).toHaveAttribute("data-state", "working");
   expect(
     screen.getByRole("button", { name: /^توليد غلاف حملة رمضان/ }),
   ).toBeInTheDocument();
@@ -179,7 +191,9 @@ it("opens an agent workspace directly from its phone card and restores focus", a
   try {
     const user = userEvent.setup();
     render(<AgentControlRoom />);
-    const card = screen.getByRole("button", { name: "عرض نشاط وكيل التحصيل" });
+    const card = screen.getByRole("button", {
+      name: /وكيل التحصيل.*عرض مساحة العمل/,
+    });
     await user.click(card);
     expect(
       screen.getByRole("dialog", { name: "مهام وكيل التحصيل" }),

@@ -35,6 +35,7 @@ import {
 import type { Run, Text } from "./data";
 import "./month-end-close.css";
 import { useScreenDemo } from "../frame/useScreenDemo";
+import { useScreenAgentPresentation } from "../frame/useScreenAgentPresentation";
 
 export function MonthEndClose() {
   return (
@@ -50,6 +51,14 @@ const remindersAt = 4;
 
 function Close() {
   const demo = useScreenDemo();
+  const agentPresentation = useScreenAgentPresentation(
+    "finance",
+    demo.active ? "working" : "waiting",
+  );
+  const summaryAgent = useScreenAgentPresentation(
+    "finance",
+    demo.active ? "working" : "done",
+  );
   const { language, t, number, percent, money, date, href, open, endSide } =
     useScreen();
   const text = (value: Text) => t(value.ar, value.en);
@@ -361,6 +370,7 @@ function Close() {
       <div className="month-end-close">
         <div className="month-end-close-main" ref={task}>
           <AgentTask
+            agentPresentation={agentPresentation}
             announcement="off"
             title={text(taskTitle)}
             agent={finance[language]}
@@ -384,6 +394,7 @@ function Close() {
         </div>
         <Tray className="month-end-close-panel">
           <ChangeSummary
+            agentPresentation={summaryAgent}
             announcement="off"
             status={demo.active ? "updating" : "ready"}
             rows={rows}

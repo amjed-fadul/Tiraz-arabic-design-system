@@ -1,7 +1,9 @@
+import { agentPresentationStyle } from "./agent-presentation";
 import { Check, X } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import type { FocusEvent, ReactNode } from "react";
-import { AIMark } from "./AIMark";
+import { AgentAvatar, AgentHeaderActions } from "./AgentPresentation";
+import type { AgentPresentation } from "./AgentPresentation";
 import { Alert } from "./Alert";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
@@ -65,6 +67,8 @@ export interface DraftReviewLabels {
   inlineDiff?: Partial<InlineDiffLabels>;
 }
 export interface DraftReviewProps {
+  /** Optional avatar, name, identity controls and tray color in the existing header. */
+  agentPresentation?: AgentPresentation;
   status: "writing" | "ready" | "sending" | "sent" | "discarded";
   /** The heading; «مسودة للمراجعة» / Draft for review by default. */
   title?: ReactNode;
@@ -147,6 +151,7 @@ function Chips({
  * the host owns announcements.
  */
 export function DraftReview({
+  agentPresentation,
   status,
   title,
   record,
@@ -276,14 +281,20 @@ export function DraftReview({
   }
 
   const header = (
-    <div className="tz-draft-review-header" data-zone="header">
-      <AIMark working={status === "writing"} />
+    <div
+      className="tz-draft-review-header"
+      data-zone="header"
+      data-agent-actions={agentPresentation?.actions != null || undefined}
+    >
+      <AgentAvatar agent={agentPresentation} working={status === "writing"} />
       <div className="tz-draft-review-heading">
         <Heading id={`${uid}-title`} className="tz-draft-review-title">
           {title ?? copy.title}
         </Heading>
-        {agent != null && (
-          <span className="tz-draft-review-agent">{agent}</span>
+        {(agentPresentation?.name ?? agent) != null && (
+          <span className="tz-draft-review-agent">
+            {agentPresentation?.name ?? agent}
+          </span>
         )}
       </div>
       <StatusPill state={pillStates[status]} label={copy.pills[status]} />
@@ -306,6 +317,7 @@ export function DraftReview({
           </span>
         </p>
       )}
+      <AgentHeaderActions agent={agentPresentation} />
     </div>
   );
 
@@ -479,6 +491,8 @@ export function DraftReview({
       tabIndex={-1}
       aria-labelledby={`${uid}-title`}
       className="tz-draft-review"
+      data-agent-presentation={agentPresentation?.color ? "" : undefined}
+      style={agentPresentationStyle(agentPresentation)}
       data-status={status}
       data-appearance={appearance}
       onFocus={(event) => {
