@@ -24,7 +24,7 @@ const labels = {
     working: "يعمل",
     waiting: "بانتظارك",
     done: "اكتملت المهمة",
-    blocked: "يحتاج مساعدة",
+    blocked: "تعذّرت المتابعة",
   },
   en: {
     idle: "Ready",

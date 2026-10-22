@@ -1,98 +1,5 @@
-import bodyUrl from "./assets/khayt-body.png";
-import threadUrl from "./assets/khayt-thread.png";
-import eyeUrl from "./assets/khayt-eye.png";
+import type { KhaytSprites } from "./khayt-artwork";
 import type { KhaytPose } from "./khayt-motion";
-
-type Sprites = {
-  body: HTMLCanvasElement;
-  thread: HTMLCanvasElement;
-  eye: HTMLCanvasElement;
-};
-let originals: Promise<Sprites> | undefined;
-const colors = new Map<string, Sprites>();
-const clamp = (value: number) => Math.min(255, Math.max(0, value));
-
-function load(url: string, crop: [number, number, number, number]) {
-  return new Promise<HTMLCanvasElement>((resolve, reject) => {
-    const image = new Image();
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = crop[2];
-      canvas.height = crop[3];
-      const ctx = canvas.getContext("2d")!;
-      ctx.drawImage(image, ...crop, 0, 0, canvas.width, canvas.height);
-      const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      // Ignore the generator's almost-transparent fringe, preserving soft edges.
-      for (let i = 3; i < pixels.data.length; i += 4)
-        if (pixels.data[i] < 12) pixels.data[i] = 0;
-      ctx.putImageData(pixels, 0, 0);
-      resolve(canvas);
-    };
-    image.onerror = () => reject(new Error("Khayt artwork could not load"));
-    image.src = url;
-  });
-}
-
-function tint(source: HTMLCanvasElement, hex: string, eye = false) {
-  const canvas = document.createElement("canvas");
-  canvas.width = source.width;
-  canvas.height = source.height;
-  const ctx = canvas.getContext("2d")!;
-  ctx.drawImage(source, 0, 0);
-  const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const rgb = [1, 3, 5].map((offset) =>
-    parseInt(hex.slice(offset, offset + 2), 16),
-  );
-  const lightEye = rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722 < 85;
-  for (let i = 0; i < pixels.data.length; i += 4) {
-    if (!pixels.data[i + 3]) continue;
-    const [r, g, b] = [pixels.data[i], pixels.data[i + 1], pixels.data[i + 2]];
-    if (eye) {
-      if (lightEye) {
-        pixels.data[i] = 232 + r * 0.08;
-        pixels.data[i + 1] = 224 + g * 0.08;
-        pixels.data[i + 2] = 210 + b * 0.08;
-      }
-      continue;
-    }
-    // Select dyed yarn by chroma, so the ivory core retains its own material.
-    const weight = Math.min(1, Math.max(0, (Math.min(r, b) - g - 5) / 18));
-    const shade = g / 125;
-    const highlight = Math.max(0, g - 165) * 0.45;
-    for (let channel = 0; channel < 3; channel++) {
-      const old = pixels.data[i + channel];
-      pixels.data[i + channel] =
-        old * (1 - weight) + clamp(rgb[channel] * shade + highlight) * weight;
-    }
-  }
-  ctx.putImageData(pixels, 0, 0);
-  return canvas;
-}
-
-export async function khaytSprites(color: string): Promise<Sprites> {
-  const hex = /^#[\da-f]{6}$/i.test(color) ? color.toUpperCase() : "#946D91";
-  if (colors.has(hex)) return colors.get(hex)!;
-  originals ??= Promise.all([
-    load(bodyUrl, [232, 144, 790, 1020]),
-    load(threadUrl, [118, 145, 1042, 1002]),
-    load(eyeUrl, [446, 254, 362, 744]),
-  ])
-    .then(([body, thread, eye]) => ({ body, thread, eye }))
-    .catch((error) => {
-      originals = undefined;
-      throw error;
-    });
-  const source = await originals;
-  if (colors.has(hex)) return colors.get(hex)!;
-  const result = {
-    body: tint(source.body, hex),
-    thread: tint(source.thread, hex),
-    eye: tint(source.eye, hex, true),
-  };
-  if (colors.size >= 8) colors.delete(colors.keys().next().value!);
-  colors.set(hex, result);
-  return result;
-}
 
 function bend(pose: KhaytPose, v: number) {
   return (
@@ -101,10 +8,46 @@ function bend(pose: KhaytPose, v: number) {
   );
 }
 
-/** Raster puppet: the cotton body, ceramic eyes, and loose thread move separately. */
+function thread(
+  ctx: CanvasRenderingContext2D,
+  sprite: HTMLCanvasElement,
+  width: number,
+  height: number,
+  rootX: number,
+  rootY: number,
+  opacity: number,
+  pose: KhaytPose,
+  rotationLimit = 1,
+) {
+  if (opacity < 0.001) return;
+  ctx.save();
+  ctx.globalAlpha = opacity;
+  // Limit each silhouette's turn, including while two states crossfade.
+  ctx.rotate(Math.max(-rotationLimit, Math.min(rotationLimit, pose.thread)));
+  // Root stays attached. Only the free length responds to the cotton's motion.
+  for (let row = 0; row < 48; row++) {
+    const v = row / 48;
+    const distance = Math.abs(v - rootY);
+    const offset = pose.curl * distance * Math.sin(v * Math.PI * 2);
+    ctx.drawImage(
+      sprite,
+      0,
+      v * sprite.height,
+      sprite.width,
+      sprite.height / 48,
+      -rootX * width + offset,
+      (v - rootY) * height,
+      width,
+      height / 48 + 0.35,
+    );
+  }
+  ctx.restore();
+}
+
+/** Generated cotton and ceramic layers deform independently, retaining their texture. */
 export function drawKhayt(
   ctx: CanvasRenderingContext2D,
-  sprites: Sprites,
+  sprites: KhaytSprites,
   pose: KhaytPose,
 ) {
   const width = ctx.canvas.width;
@@ -115,30 +58,48 @@ export function drawKhayt(
   ctx.imageSmoothingQuality = "high";
   const h = 338 * pose.stretch,
     w = 262,
-    x = 97,
-    y = 452 - h;
-  // The attachment is hidden behind the upper yarn tier. Motion grows towards
-  // the free tip instead of sliding the root around the body.
+    x = 85,
+    y = 452 - h - pose.lift;
+  ctx.translate(x + w / 2, 452 - pose.lift);
+  ctx.rotate(pose.lean / 260);
+  ctx.translate(-x - w / 2, -452 + pose.lift);
   ctx.save();
   ctx.translate(x + w - 22 + bend(pose, 0.23), y + h * 0.23);
-  ctx.rotate(pose.thread);
-  const threadW = 126,
-    threadH = 133;
-  for (let row = 0; row < 40; row++) {
-    const v = row / 40;
-    const offset = pose.curl * (1 - v) ** 2;
-    ctx.drawImage(
-      sprites.thread,
-      0,
-      v * sprites.thread.height,
-      sprites.thread.width,
-      sprites.thread.height / 40,
-      -7 + offset,
-      -123 + v * threadH,
-      threadW,
-      threadH / 40 + 0.35,
-    );
-  }
+  thread(ctx, sprites.thread, 114, 119, 0.055, 0.925, pose.readyThread, pose);
+  thread(
+    ctx,
+    sprites.thinking,
+    72,
+    82,
+    0.066,
+    0.924,
+    pose.thinkingThread,
+    pose,
+  );
+  thread(
+    ctx,
+    sprites.working,
+    145,
+    288,
+    0.12,
+    0.118,
+    pose.workingThread,
+    pose,
+    0.025,
+  );
+  thread(ctx, sprites.thread, 91, 159, 0.055, 0.925, pose.waitingThread, pose);
+  thread(
+    ctx,
+    sprites.done,
+    132,
+    264,
+    0.04,
+    0.026,
+    pose.doneThread,
+    pose,
+    0.025,
+  );
+  thread(ctx, sprites.blocked, 91, 126, 0.015, 0.43, pose.blockedThread, pose);
   ctx.restore();
   for (let row = 0; row < 80; row++) {
     const v = row / 80;
@@ -155,13 +116,40 @@ export function drawKhayt(
     );
   }
   const faceY = y + h * 0.636;
-  const faceX = x + w / 2 + bend(pose, 0.636) + pose.gazeX;
+  const faceX = x + w / 2 + bend(pose, 0.636);
   for (const side of [-1, 1]) {
     ctx.save();
-    ctx.translate(faceX + side * 29, faceY + pose.gazeY);
+    ctx.translate(faceX + side * 31, faceY);
     ctx.rotate(-pose.lean / 500);
-    const eyeH = 37 * pose.eye;
-    ctx.drawImage(sprites.eye, -9, -eyeH / 2, 18, eyeH);
+    const eyeH = (43 + pose.eyeRound * 4) * (1 + side * pose.asymmetry);
+    const eyeW = 32 + pose.eyeRound * 9;
+    ctx.scale(1, pose.eye);
+    const open = Math.max(0, 1 - pose.happy - pose.concern);
+    ctx.globalAlpha = pose.whites * open;
+    ctx.drawImage(sprites.white, -eyeW / 2, -eyeH / 2, eyeW, eyeH);
+    // Pupils stay dark over ivory, even when the user chooses a very dark yarn.
+    const pupilW = 18 + pose.eyeRound * 8;
+    const pupilH = 29 + pose.eyeRound * 5;
+    ctx.drawImage(
+      sprites.eye,
+      pose.gazeX - pupilW / 2,
+      pose.gazeY - pupilH / 2,
+      pupilW,
+      pupilH,
+    );
+    ctx.globalAlpha = (1 - pose.whites) * open;
+    ctx.drawImage(sprites.bareEye, pose.gazeX - 9, pose.gazeY - 18.5, 18, 37);
+    ctx.globalAlpha = pose.happy;
+    ctx.drawImage(sprites.happy, -17.5, -10.5, 35, 21);
+    ctx.globalAlpha = pose.concern;
+    ctx.scale(-side, 1);
+    ctx.drawImage(
+      sprites.concerned,
+      -18 + pose.gazeX * -side * 0.2,
+      -22,
+      36,
+      44,
+    );
     ctx.restore();
   }
   ctx.restore();

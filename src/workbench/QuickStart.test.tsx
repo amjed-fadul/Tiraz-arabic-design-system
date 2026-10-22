@@ -41,8 +41,10 @@ it("provides a selectable fallback when clipboard access fails", async () => {
   render(<QuickStart language="en" />);
   await user.click(screen.getByText("Use the source today"));
   await user.click(screen.getByRole("button", { name: "Copy setup prompt" }));
-  expect(screen.getByRole("status")).toHaveTextContent(
-    "Select the text and copy it manually.",
+  await waitFor(() =>
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Select the text and copy it manually.",
+    ),
   );
   expect(
     screen.getByRole("button", { name: "Copy setup prompt" }),

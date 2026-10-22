@@ -12,21 +12,45 @@ export interface KhaytPose {
   lean: number;
   twist: number;
   stretch: number;
+  lift: number;
   gazeX: number;
   gazeY: number;
   eye: number;
   thread: number;
   curl: number;
+  whites: number;
+  eyeRound: number;
+  happy: number;
+  concern: number;
+  asymmetry: number;
+  readyThread: number;
+  thinkingThread: number;
+  workingThread: number;
+  waitingThread: number;
+  doneThread: number;
+  blockedThread: number;
 }
 const rest: KhaytPose = {
   lean: 0,
   twist: 0,
   stretch: 1,
+  lift: 0,
   gazeX: 0,
   gazeY: 0,
   eye: 1,
   thread: 0,
   curl: 0,
+  whites: 0,
+  eyeRound: 0,
+  happy: 0,
+  concern: 0,
+  asymmetry: 0,
+  readyThread: 1,
+  thinkingThread: 0,
+  workingThread: 0,
+  waitingThread: 0,
+  doneThread: 0,
+  blockedThread: 0,
 };
 const tau = Math.PI * 2;
 const pulse = (time: number, start: number, duration: number) =>
@@ -40,47 +64,70 @@ export function khaytPose(
   seconds: number,
   still = false,
 ): KhaytPose {
-  const t = Math.max(0, seconds);
+  const t = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
   const pose = { ...rest };
+  if (state !== "idle") {
+    pose.readyThread = 0;
+    pose.whites = 1;
+  }
   if (state === "thinking") {
-    pose.lean = -9 + (still ? 0 : Math.sin(t * 1.4) * 5);
+    // A glance, a pause, then another thought. The pauses distinguish thinking
+    // from working's steady rhythm without claiming measurable progress.
+    const glance = still ? 0 : pulse(t % 5.8, 0.5, 1.6);
+    const consider = still ? 0 : pulse(t % 5.8, 3.2, 1.1);
+    pose.thinkingThread = 1;
+    pose.lean = 20 + glance * 6 - consider * 3;
+    pose.twist = -6;
     pose.gazeX = -4;
-    pose.gazeY = -6;
-    pose.thread = -0.13 + (still ? 0 : Math.sin(t * 1.4 - 0.6) * 0.07);
-    pose.curl = still ? 0 : Math.sin(t * 1.4) * 6;
+    pose.gazeY = -6 - glance;
+    pose.eyeRound = 0.35;
+    pose.asymmetry = 0.12;
+    pose.thread = glance * -0.06;
+    pose.curl = consider * 3;
   } else if (state === "working") {
-    const cycle = still ? 0.18 : (t % 3.2) / 3.2;
+    const cycle = still ? 0 : (t % 2.8) / 2.8;
     const wind = Math.sin(cycle * tau);
     const follow = Math.sin(cycle * tau - 0.65);
-    pose.lean = wind * 12;
-    pose.twist = follow * 7;
-    pose.stretch = 1 - Math.cos(cycle * tau * 2) * 0.018;
-    pose.gazeX = 5 + wind * 4;
-    pose.gazeY = -3 - Math.max(0, follow) * 3;
-    pose.thread = 0.06 + follow * 0.2;
-    pose.curl = Math.sin(cycle * tau - 1) * 12;
+    pose.workingThread = 1;
+    pose.lean = 22 + wind * 6;
+    pose.twist = follow * 3;
+    pose.stretch = 0.97 - Math.cos(cycle * tau) * 0.012;
+    pose.gazeX = 5 + wind;
+    pose.gazeY = -1 + follow;
+    pose.eyeRound = 0.12;
+    pose.thread = follow * 0.018;
+    pose.curl = still ? 0 : Math.sin(cycle * tau - 1) * 5;
   } else if (state === "waiting") {
-    pose.lean = 7;
-    pose.gazeY = -2;
-    pose.thread = -0.28;
-    pose.curl = -5;
-    pose.stretch = 1.015;
-    if (!still) pose.thread -= pulse(t, 0.15, 0.75) * 0.12;
+    const wave = still ? 0 : pulse(t, 0.12, 0.95);
+    pose.waitingThread = 1;
+    pose.eyeRound = 1;
+    pose.stretch = 1.035 + wave * 0.008;
+    pose.thread = -0.25 + Math.sin(t * 11) * wave * 0.11;
+    pose.curl = wave * 3;
   } else if (state === "done") {
-    const nod = still ? 0 : pulse(t, 0.08, 0.7);
-    pose.stretch = 1 - nod * 0.045;
-    pose.gazeY = nod * 5;
-    pose.eye = 0.85 - nod * 0.4;
-    pose.thread = -0.08 - nod * 0.2;
-    pose.curl = -4;
+    const prepare = still ? 0 : pulse(t, 0, 0.25);
+    const lift = still ? 0 : pulse(t, 0.2, 0.55);
+    const land = still ? 0 : pulse(t, 0.75, 0.35);
+    pose.doneThread = 1;
+    pose.happy = 1;
+    pose.whites = 0;
+    pose.stretch = 1 - prepare * 0.035 + lift * 0.015 - land * 0.025;
+    pose.lift = lift * 9;
+    pose.thread = -lift * 0.025;
+    pose.curl = land * 2;
   } else if (state === "blocked") {
-    pose.lean = -10;
-    pose.gazeX = -4;
-    pose.eye = 0.82;
-    pose.thread = 0.3;
-    pose.curl = 9;
+    const catchThread = still ? 0 : pulse(t, 0.1, 0.5);
+    const notice = still ? 0 : pulse(t, 0.4, 0.65);
+    pose.blockedThread = 1;
+    pose.lean = -7 + catchThread * 9;
+    pose.stretch = 0.94 - catchThread * 0.015;
+    pose.eyeRound = 0.3;
+    pose.concern = 1;
+    pose.gazeY = -3;
+    pose.gazeX = notice * 5;
+    pose.thread = catchThread * 0.06;
   } else if (!still) {
-    pose.stretch = 1 + Math.sin(t * 1.25) * 0.004;
+    pose.stretch = 1 + Math.sin(t * 1.25) * 0.005;
     pose.thread = Math.sin(t * 1.25 - 0.5) * 0.025;
   }
   // Blinks are brief and sparse, with one double blink in a 13-second phrase.

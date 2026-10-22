@@ -33,7 +33,9 @@ it("exposes the exact source for manual copying after clipboard failure without 
   const copy = screen.getByRole("button", { name: "Copy source file" });
   await user.click(copy);
   expect(copy).toHaveFocus();
-  expect(screen.getByRole("status")).toHaveTextContent("copy it manually");
+  await waitFor(() =>
+    expect(screen.getByRole("status")).toHaveTextContent("copy it manually"),
+  );
   const fallback = screen.getByRole("region", {
     name: "Source file: EmptyStateIllustrations.tsx",
   });

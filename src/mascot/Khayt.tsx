@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "../system/useReducedMotion";
-import { drawKhayt, khaytSprites } from "./khayt-renderer";
+import { drawKhayt } from "./khayt-renderer";
+import { khaytSprites } from "./khayt-artwork";
 import { isLooping, khaytPose, mixPose } from "./khayt-motion";
 import type { KhaytPose, KhaytState } from "./khayt-motion";
 import bodyUrl from "./assets/khayt-body.png";

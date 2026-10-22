@@ -1,6 +1,7 @@
 # Khayt motion prototype
 
-22 October 2026. Selected by the owner from mascot concept option 3.
+22 October 2026. Selected by the owner from mascot concept option 3, then
+refined to the approved second state-expression sheet.
 
 Preview: `/illustrations/khayt`. Existing screen integration: Invoices and
 Customer profile. English and Arabic share the character's physical silhouette;
@@ -9,30 +10,42 @@ the layout, copy, controls, and numerals follow the page language.
 ## Character and material
 
 Four rounded cotton tiers, ivory spool rims, two dark ceramic eyes, and an
-expressive loose thread. The original generated PNG layers live in
-`src/mascot/assets/`. Each is 1254 × 1254 RGBA. They were generated for Tiraz
-from the selected concept, with no external character artwork used.
+expressive loose thread. Generated PNG layers live in `src/mascot/assets/`;
+their sizes, crop bounds, and provenance are in its README. They were generated
+for Tiraz from the selected concept and expression sheet.
 
 The browser crops transparent padding and removes near-invisible alpha fringe
 when loading. Yarn chroma is recolored while its shading, weave, and ivory rims
-remain. Very dark identity colors use light eyes. Up to eight color variants
+remain. Very dark identity colors use light bare and happy eyes; pupils over
+ivory always stay dark. The worried cotton lid follows the identity dye.
+Up to eight color variants
 are cached. No network service is needed after the local assets load.
 
 ## Motion vocabulary
 
-| State     | Character behavior                                   | Timing                     |
-| --------- | ---------------------------------------------------- | -------------------------- |
-| Ready     | Small breath, sparse blink, quiet thread tip         | 13-second blink phrase     |
-| Thinking  | Slight lean and upward glance, slow thread flex      | Continuous while thinking  |
-| Working   | Upper tiers twist, thread follows, gaze follows work | 3.2-second cycle           |
-| Needs you | Thread lifts once and the character holds the pose   | Settles within 1.2 seconds |
-| Done      | Small nod and soft eye expression                    | Settles within 1.2 seconds |
-| Blocked   | Work stops, concerned lean and lowered thread        | Settles within 1.2 seconds |
+| State     | Character behavior                                                 | Timing                     |
+| --------- | ------------------------------------------------------------------ | -------------------------- |
+| Ready     | Small breath, sparse blink, quiet thread tip                       | 13-second blink phrase     |
+| Thinking  | Upward gaze, curious tilt, thread curled inward, deliberate pauses | 5.8-second phrase          |
+| Working   | Alert gaze follows extended thread; steady lean and wave           | 2.8-second cycle           |
+| Needs you | Wide round eyes, taller posture, raised thread waves once          | Settles within 1.2 seconds |
+| Done      | Happy crescent eyes; small lift, soft landing, relaxed loop        | Settles within 1.2 seconds |
+| Blocked   | Worried lids, slight compression; thread catches in a knot         | Settles within 1.2 seconds |
 
-Transitions blend over 420 ms. The lower body stays grounded. Body deformation,
+Transitions blend over 420 ms. Long thread silhouettes have their own rotation
+limit, so a crossfade from the raised hand cannot swing them outside the canvas.
+Body deformation,
 eyes, and thread are drawn separately from real raster artwork. This is a 2D
 character rig, not a 3D model or a whole-image bounce. Small avatars use the same
 silhouette; texture naturally simplifies with raster downsampling.
+
+The seven added expression sprites preserve the chosen materials. `khayt-artwork.ts`
+owns loading, display-sized caches, and tinting; `khayt-renderer.ts` composes the
+body, eyes, and thread. Motion uses numeric channels so interrupted transitions
+start from the currently visible pose rather than snapping to an old state.
+
+The six-state recording is `docs/woven/khayt-expressions-preview.mp4` and the
+rendered comparison sheet is `docs/woven/khayt-expressions-rendered.png`.
 
 `Khayt` accepts `state`, `color`, `animated`, `size`, and `className`. Animation
 is opt-in. The canvas is decorative: the host supplies the agent name and
