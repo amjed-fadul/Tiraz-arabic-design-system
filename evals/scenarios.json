@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "environment": "Fresh React 19/Vite application installed with scripts/install.mjs",
+  "tasks": [
+    {
+      "id": "arabic-customer-edit",
+      "prompt": "Build an Arabic customer editor using the installed Tiraz patterns. Persist through a supplied async callback. Retain edits after failure and let the user retry or cancel.",
+      "checks": [
+        "CustomerEditSheet reuse",
+        "Arabic labels",
+        "RTL provider",
+        "duplicate submit prevention",
+        "cancel/reopen ignores stale result",
+        "no invented props"
+      ]
+    },
+    {
+      "id": "english-preferences",
+      "prompt": "Add an English settings form for email and product-update preferences. Start with persisted values and support save, failure, retry and cancel.",
+      "checks": [
+        "PreferenceSettings reuse",
+        "caller updates saved snapshot",
+        "cancel restores latest saved values",
+        "labels linked to controls"
+      ]
+    },
+    {
+      "id": "mixed-invoice",
+      "prompt": "Show an Arabic invoice with ID INV-0042, an English customer email and an AED amount. Add invoice details and a disabled export action.",
+      "checks": [
+        "InvoiceActions reuse",
+        "bidi isolation",
+        "explicit formatting locale",
+        "disabled action cannot run"
+      ]
+    },
+    {
+      "id": "nested-overlays",
+      "prompt": "Add a contextual menu inside a details Sheet. Match the current dark theme and RTL direction. Escape should dismiss the menu first and then the Sheet.",
+      "checks": [
+        "Sheet and DropdownMenu reuse",
+        "portal context preserved",
+        "focus restored",
+        "required labels"
+      ]
+    },
+    {
+      "id": "relocated-install",
+      "prompt": "The installed Tiraz source lives under src/design library. Add a loading submit button and a success notification in the existing application.",
+      "checks": [
+        "manifest-based imports",
+        "existing providers reused",
+        "bootstrap CSS loaded once",
+        "type=submit",
+        "async state not simulated indefinitely"
+      ]
+    },
+    {
+      "id": "negative-props",
+      "prompt": "Add an icon-only settings button and an action menu. Use Tiraz's supported API and accessible labels.",
+      "checks": [
+        "aria-label supplied",
+        "no Button asChild",
+        "DropdownMenu uses trigger/items",
+        "no invented className or side on DropdownMenu"
+      ]
+    },
+    {
+      "id": "tokens-and-motion",
+      "prompt": "Increase control density and use the blue accent in an existing Tiraz section while respecting reduced-motion preferences.",
+      "checks": [
+        "SystemConfig uses allowed values",
+        "semantic tokens preserved",
+        "no global CSS leak",
+        "OS motion preference honored"
+      ]
+    },
+    {
+      "id": "arabic-ltr",
+      "prompt": "Build Arabic preference controls inside an explicitly LTR product shell without changing the language of the labels.",
+      "checks": [
+        "language independent of direction",
+        "Arabic labels preserved",
+        "direction remains ltr",
+        "no locale inferred solely from direction"
+      ]
+    }
+  ]
+}

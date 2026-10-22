@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "id": "tabs",
+  "name": [
+    "التبويبات",
+    "Tabs"
+  ],
+  "description": [
+    "تنقّل بين المحتوى باستخدام مؤشر سلس ولوحة المفاتيح.",
+    "Navigate related content with a smooth indicator and keyboard support."
+  ],
+  "exportName": "Tabs",
+  "source": "src/system/Tabs.tsx",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "defaults": {
+    "defaultValue": "items.find((item) => !item.disabled)?.value",
+    "variant": "\"underline\"",
+    "className": "\"\""
+  },
+  "prerequisites": [
+    "SystemProvider",
+    "system/styles.css"
+  ],
+  "api": "../api/Tabs.json",
+  "props": {
+    "items": {
+      "type": "TabItem[]",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "defaultValue": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "onValueChange": {
+      "type": "((value: string) => void) | undefined",
+      "required": false
+    },
+    "variant": {
+      "type": "\"underline\" | \"segment\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"underline\"",
+        "\"segment\""
+      ]
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "useFor": "Switch between related panels within one context.",
+  "avoidFor": "Site navigation or unrelated routed pages.",
+  "rules": [
+    "Provide a descriptive label for the tab list and unique item values.",
+    "Controlled value requires onValueChange to update application state; otherwise use defaultValue.",
+    "Item label and content accept ReactNode. The workbench's string editor and collection limit are not runtime API restrictions.",
+    "Direction comes from SystemProvider; preserve keyboard navigation."
+  ],
+  "parts": {
+    "root": "className targets Tabs root",
+    "list": "managed tablist and active indicator",
+    "panel": "content supplied through items"
+  },
+  "relatedTypes": [
+    "TabsProps",
+    "TabItem"
+  ]
+}

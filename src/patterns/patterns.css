@@ -1,0 +1,87 @@
+/* Load after system/tokens.css and system/components.css. No workbench dependency. */
+.tiraz-system .tz-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+.tiraz-system .tz-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tiraz-system .tz-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.tiraz-system .tz-field > label {
+  font-weight: var(--weight-medium);
+}
+.tiraz-system .tz-input {
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--control-height);
+  padding-block: var(--space-2);
+  padding-inline: var(--control-padding);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-small);
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+}
+.tiraz-system .tz-input:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tiraz-system .tz-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.tiraz-system .tz-input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.tiraz-system .tz-field-description,
+.tiraz-system .tz-pattern-error,
+.tiraz-system .tz-pattern-success {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.tiraz-system .tz-field-description {
+  color: var(--text-secondary);
+}
+.tiraz-system .tz-pattern-error {
+  color: var(--danger);
+}
+.tiraz-system .tz-pattern-success {
+  color: var(--success);
+}
+.tiraz-system .tz-pattern-heading {
+  margin: 0;
+  font-size: var(--text-heading);
+}
+.tiraz-system .tz-invoice-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+}
+.tiraz-system .tz-invoice-details > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  border-block-end: 1px solid var(--border);
+  padding-block-end: var(--space-3);
+}
+.tiraz-system .tz-invoice-details dt {
+  color: var(--text-secondary);
+}
+.tiraz-system .tz-invoice-details dd {
+  margin-inline: 0;
+  overflow-wrap: anywhere;
+}

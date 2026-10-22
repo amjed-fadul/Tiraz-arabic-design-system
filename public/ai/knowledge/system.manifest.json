@@ -1,0 +1,206 @@
+{
+  "schemaVersion": 1,
+  "name": "tiraz",
+  "version": "0.1.0",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "files": {
+    "src/system/Button.tsx": "cf99baed8770d2bfc4961e8284b84c9ec688036ff9cc9de855aba7a74fbf6fd7",
+    "src/system/DropdownMenu.tsx": "4b573e959e348ef3d9bbe7c270190ab9eed8d0a03fd561303335ac2c90e7899f",
+    "src/system/Provider.tsx": "bb872cc9cec4775d1c0120fe328f4f4f4d6d66fbf99c1bcef839a63e3aa2fe18",
+    "src/system/Sheet.tsx": "02e258783fc9c34aaf98f7cd0a5c183095e7adf17bd7b91eb79e38b762774797",
+    "src/system/Switch.tsx": "98784d97339337294ce91788b980d7de3281f7454a02d84ef1434dd1428c38c0",
+    "src/system/Tabs.tsx": "09c87fb0369862ebe9dc98fe44444f9161dcbbb97d2bff537449014a877845fd",
+    "src/system/Toast.tsx": "697583b2b9326c5861c3a06816f309de2730330aceeac0b17f14e0cd081e90ed",
+    "src/system/components.css": "97d59cf113998e88caf9c6ef7bc14657c0bd2e1bd5648b820aa2113dfcf2f22f",
+    "src/system/config.ts": "d829c8a9d0c04e9287e3333f77039338c8228f51cbeb9ae433538ab60dbab42a",
+    "src/system/index.ts": "b3b7fc77cc9d0ce6d4b34dfe55c3f2537abd8c949cd6dc7a5a35f1e7243dd1c8",
+    "src/system/styles.css": "2fc7a8851b26b03c0848532590a4f10b4369cccb7b7e9aa7ec79e719061021d6",
+    "src/system/tokens.css": "25b252e90f39dece72c587a27e0ad4e02abf210a55a9a40dd9cd1109441b41d0",
+    "src/system/useSystem.ts": "3db68ea2fe7e112b013056bbd4b686d7127863435b9891f24cc709218e31f225",
+    "src/system/useToast.ts": "6d93e1370b3dce1cbaa6de3f33e723ead97c13b8a4eb467822251f5388e0b161",
+    "src/patterns/CustomerEditSheet.tsx": "d2aeaf5b001b43784535a711a391a7f7f29312a570bc0a1ae0c6279de799dcd3",
+    "src/patterns/InvoiceActions.tsx": "ccff0cce87b5523e1618f4839a2b135575d3014329c039038e69ad63cee0126c",
+    "src/patterns/PreferenceSettings.tsx": "a42ca57db296a287421c5ad1ae52501edc01145ac1f62272ced2fa5ab880f299",
+    "src/patterns/index.ts": "d18a2386344cc906d2325b880836964dee570b05d349684802c798a9401ef5de",
+    "src/patterns/patterns.css": "146fe28d77d74b55d358eef7e023afcf5b8d7c9a38678a4dd87b4d52e573261d",
+    "src/patterns/primitives.tsx": "804fd114b93614ff29404ae8b8e5da6b8b27dc7f29aff581ff07d886ff647caa",
+    "src/patterns/useAsyncAction.ts": "0984b17fdb1df2d42b182b368b549db919a5a7bb462936e5eb9c939317fafafd",
+    "src/examples/Components.tsx": "38e1e81cf35815e1587af6d41243922e257cebdfc9a4fce9345ebe14b9cc7f4b",
+    "src/examples/Patterns.tsx": "89e5c036c156ffb779bab08c2e06a91719121b5a33f0945ee6e790e0abebc0f0"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "lucide-react": "^1.55.0",
+    "@radix-ui/react-dropdown-menu": "^2.2.0",
+    "@radix-ui/react-direction": "^1.2.0",
+    "@radix-ui/react-dialog": "^1.3.0",
+    "@radix-ui/react-switch": "^1.4.0",
+    "@radix-ui/react-tabs": "^1.2.0",
+    "@radix-ui/react-toast": "^1.3.0",
+    "@fontsource/ibm-plex-sans-arabic": "^5.3.0"
+  },
+  "supported": {
+    "react": "19",
+    "environment": "Vite browser application",
+    "ssr": "not verified"
+  },
+  "defaults": {
+    "theme": "light",
+    "direction": "rtl",
+    "density": "compact",
+    "accent": "sage",
+    "radius": 8,
+    "reducedMotion": false,
+    "typography": "standard"
+  },
+  "configuration": {
+    "props": {
+      "accent": {
+        "type": "Accent",
+        "required": true,
+        "members": [
+          "\"sage\"",
+          "\"blue\"",
+          "\"plum\"",
+          "\"clay\""
+        ]
+      },
+      "density": {
+        "type": "\"standard\" | \"compact\"",
+        "required": true,
+        "members": [
+          "\"standard\"",
+          "\"compact\""
+        ]
+      },
+      "direction": {
+        "type": "Direction",
+        "required": true,
+        "members": [
+          "\"rtl\"",
+          "\"ltr\""
+        ]
+      },
+      "radius": {
+        "type": "number",
+        "required": true
+      },
+      "reducedMotion": {
+        "type": "boolean",
+        "required": true,
+        "members": [
+          "false",
+          "true"
+        ]
+      },
+      "theme": {
+        "type": "\"light\" | \"dark\"",
+        "required": true,
+        "members": [
+          "\"light\"",
+          "\"dark\""
+        ]
+      },
+      "typography": {
+        "type": "\"standard\" | \"large\" | undefined",
+        "required": false,
+        "members": [
+          "undefined",
+          "\"standard\"",
+          "\"large\""
+        ]
+      }
+    },
+    "branches": []
+  },
+  "publicExports": [
+    "Accent",
+    "Button",
+    "ButtonProps",
+    "ButtonState",
+    "ButtonVariant",
+    "Direction",
+    "DropdownMenu",
+    "DropdownMenuProps",
+    "MenuItem",
+    "Sheet",
+    "SheetClose",
+    "SheetProps",
+    "Switch",
+    "SwitchProps",
+    "SystemConfig",
+    "SystemProvider",
+    "TabItem",
+    "Tabs",
+    "TabsProps",
+    "ToastMessage",
+    "ToastProvider",
+    "accentColors",
+    "defaultConfig",
+    "useSystem",
+    "useToast"
+  ],
+  "components": [
+    {
+      "id": "button",
+      "name": [
+        "الأزرار",
+        "Button"
+      ],
+      "contract": "components/button.json",
+      "docs": "../docs/ai/components/button.md"
+    },
+    {
+      "id": "tabs",
+      "name": [
+        "التبويبات",
+        "Tabs"
+      ],
+      "contract": "components/tabs.json",
+      "docs": "../docs/ai/components/tabs.md"
+    },
+    {
+      "id": "switch",
+      "name": [
+        "مفتاح التبديل",
+        "Switch"
+      ],
+      "contract": "components/switch.json",
+      "docs": "../docs/ai/components/switch.md"
+    },
+    {
+      "id": "dropdown",
+      "name": [
+        "القائمة المنسدلة",
+        "Dropdown menu"
+      ],
+      "contract": "components/dropdown.json",
+      "docs": "../docs/ai/components/dropdown.md"
+    },
+    {
+      "id": "sheet",
+      "name": [
+        "اللوحة الجانبية",
+        "Sheet"
+      ],
+      "contract": "components/sheet.json",
+      "docs": "../docs/ai/components/sheet.md"
+    },
+    {
+      "id": "toast",
+      "name": [
+        "التنبيهات",
+        "Toast"
+      ],
+      "contract": "components/toast.json",
+      "docs": "../docs/ai/components/toast.md"
+    }
+  ],
+  "patterns": [
+    "customer-edit",
+    "preference-settings",
+    "invoice-actions"
+  ],
+  "tokens": "tokens.json"
+}

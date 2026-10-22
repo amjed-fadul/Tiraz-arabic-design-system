@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "id": "dropdown",
+  "name": [
+    "القائمة المنسدلة",
+    "Dropdown menu"
+  ],
+  "description": [
+    "إجراءات سياقية مع تنقّل بلوحة المفاتيح واستعادة التركيز.",
+    "Contextual actions with keyboard navigation and focus restoration."
+  ],
+  "exportName": "DropdownMenu",
+  "source": "src/system/DropdownMenu.tsx",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "defaults": {
+    "align": "\"start\""
+  },
+  "prerequisites": [
+    "SystemProvider",
+    "system/styles.css"
+  ],
+  "api": "../api/DropdownMenu.json",
+  "props": {
+    "trigger": {
+      "type": "ReactElement<unknown, string | import(\"react\").JSXElementConstructor<any>>",
+      "required": true
+    },
+    "items": {
+      "type": "MenuItem[]",
+      "required": true
+    },
+    "align": {
+      "type": "\"end\" | \"start\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"end\"",
+        "\"start\""
+      ]
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    }
+  },
+  "useFor": "Contextual actions for a record or page.",
+  "avoidFor": "Form value selection; use a suitable select control instead.",
+  "rules": [
+    "trigger is one ReactElement capable of receiving Radix trigger props; use Tiraz Button.",
+    "Items have unique IDs, string labels and application onSelect callbacks. Disabled actions cannot run.",
+    "Controlled open requires onOpenChange. Uncontrolled opening is managed internally.",
+    "No children, className, side or ref prop is exposed. align uses logical start/end.",
+    "Reuse the provider portal context, including menus nested in Sheet."
+  ],
+  "parts": {
+    "trigger": "caller element",
+    "menu": "managed non-modal portal",
+    "item": "configured through MenuItem"
+  },
+  "relatedTypes": [
+    "DropdownMenuProps",
+    "MenuItem"
+  ]
+}

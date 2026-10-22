@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "id": "button",
+  "name": [
+    "الأزرار",
+    "Button"
+  ],
+  "description": [
+    "إجراءات واضحة، مع حالات للتحميل والنجاح والخطأ.",
+    "Clear actions, with loading, success and error states."
+  ],
+  "exportName": "Button",
+  "source": "src/system/Button.tsx",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "defaults": {
+    "variant": "\"primary\"",
+    "state": "\"idle\"",
+    "size": "\"sm\"",
+    "className": "\"\"",
+    "iconOnly": "false",
+    "type": "\"button\""
+  },
+  "prerequisites": [
+    "SystemProvider",
+    "system/styles.css"
+  ],
+  "api": "../api/Button.json",
+  "props": {
+    "variant": {
+      "type": "ButtonVariant | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"primary\"",
+        "\"secondary\"",
+        "\"ghost\"",
+        "\"destructive\""
+      ]
+    },
+    "state": {
+      "type": "ButtonState | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"idle\"",
+        "\"loading\"",
+        "\"success\"",
+        "\"error\""
+      ]
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\""
+      ]
+    },
+    "iconOnly": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "aria-label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "type": {
+      "type": "\"submit\" | \"reset\" | \"button\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"submit\"",
+        "\"reset\"",
+        "\"button\""
+      ]
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "onClick": {
+      "type": "MouseEventHandler<HTMLButtonElement> | undefined",
+      "required": false
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "useFor": "Trigger an action in the current workflow.",
+  "avoidFor": "Navigation requiring an anchor or router link.",
+  "rules": [
+    "iconOnly=true requires a meaningful aria-label.",
+    "Loading disables repeated clicks and exposes aria-busy. The application owns async work and state transitions.",
+    "Use type=submit for form submission; the default is button.",
+    "Native button attributes are supported; no asChild prop is exposed."
+  ],
+  "parts": {
+    "root": "button; className and native attributes target this element",
+    "label": "internal span; state icons are managed by the component"
+  },
+  "relatedTypes": [
+    "ButtonProps",
+    "ButtonState",
+    "ButtonVariant"
+  ]
+}

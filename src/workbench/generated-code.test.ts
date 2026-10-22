@@ -7,112 +7,116 @@ import { defaultPlaygrounds } from "./model";
 import type { PlaygroundModel } from "./model";
 import type { ComponentId } from "./catalog";
 import { generateCode } from "./generate";
-it("type-checks copied code for every component, state mode and composition preset", () => {
-  const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = [];
-  for (const language of ["ar", "en"] as const) {
-    const defaults = defaultPlaygrounds(language);
-    for (const item of catalog) cases.push([item.id, defaults[item.id]]);
-  }
-  const p = defaultPlaygrounds("en");
-  for (const variant of [
-    "primary",
-    "secondary",
-    "ghost",
-    "destructive",
-  ] as const)
-    for (const size of ["sm", "md"] as const)
-      for (const density of ["standard", "compact"] as const)
-        for (const typography of ["standard", "large"] as const)
-          cases.push([
-            "button",
-            { ...p.button, variant, size, iconOnly: true, icon: "settings" },
-            { ...defaultConfig, density, typography },
-          ]);
-  for (const state of ["idle", "loading", "success", "error"] as const)
-    cases.push(["button", { ...p.button, state }]);
-  cases.push([
-    "switch",
-    { ...p.switch, attributes: { "aria-describedby": "external-description" } },
-  ]);
-  cases.push(
-    [
-      "button",
-      {
-        ...p.button,
-        action: "log",
-        iconOnly: true,
-        icon: "settings",
-        size: "md",
-        attributes: { title: "Details", "aria-label": "Open details" },
-      },
-    ],
-    [
-      "button",
-      {
-        ...p.button,
-        stylePreset: "wide",
-        attributes: { "data-id": "INV-1", tabIndex: 0 },
-      },
-    ],
-    ["tabs", { ...p.tabs, mode: "uncontrolled" }],
-    [
+it.each(["ar", "en"] as const)(
+  "type-checks copied %s code for every component, state mode and composition preset",
+  (language) => {
+    const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = [];
+    const p = defaultPlaygrounds(language);
+    for (const item of catalog) cases.push([item.id, p[item.id]]);
+    for (const variant of [
+      "primary",
+      "secondary",
+      "ghost",
+      "destructive",
+    ] as const)
+      for (const size of ["sm", "md"] as const)
+        for (const density of ["standard", "compact"] as const)
+          for (const typography of ["standard", "large"] as const)
+            cases.push([
+              "button",
+              { ...p.button, variant, size, iconOnly: true, icon: "settings" },
+              { ...defaultConfig, density, typography },
+            ]);
+    for (const state of ["idle", "loading", "success", "error"] as const)
+      cases.push(["button", { ...p.button, state }]);
+    cases.push([
       "switch",
       {
         ...p.switch,
-        mode: "uncontrolled",
-        stylePreset: "wide",
-        attributes: { dir: "ltr", title: "Preference" },
+        attributes: { "aria-describedby": "external-description" },
       },
-    ],
-    [
-      "dropdown",
-      {
-        ...p.dropdown,
-        mode: "uncontrolled",
-        items: [
-          { id: "a", label: "Create", icon: "plus" },
-          { id: "b", label: "Download", icon: "download" },
-        ],
-      },
-    ],
-    ["sheet", { ...p.sheet, mode: "uncontrolled" }],
-    ["sheet", { ...p.sheet, footer: false, side: "left" }],
-  );
-  const root = ts.sys.getCurrentDirectory();
-  const sources = new Map(
-    cases.map(([id, model, config], index) => [
-      `${root}/src/__generated_${index}.tsx`,
-      generateCode(id, model, config ?? defaultConfig, "en"),
-    ]),
-  );
-  const options: ts.CompilerOptions = {
-    target: ts.ScriptTarget.ES2023,
-    module: ts.ModuleKind.ESNext,
-    moduleResolution: ts.ModuleResolutionKind.Bundler,
-    jsx: ts.JsxEmit.ReactJSX,
-    noEmit: true,
-    strict: true,
-    noUnusedLocals: true,
-    noUnusedParameters: true,
-    skipLibCheck: true,
-    types: ["vite/client"],
-  };
-  const host = ts.createCompilerHost(options);
-  const originalGet = host.getSourceFile.bind(host),
-    originalExists = host.fileExists.bind(host),
-    originalRead = host.readFile.bind(host);
-  host.fileExists = (file) => sources.has(file) || originalExists(file);
-  host.readFile = (file) => sources.get(file) ?? originalRead(file);
-  host.getSourceFile = (file, target, ...rest) =>
-    sources.has(file)
-      ? ts.createSourceFile(file, sources.get(file)!, target, true)
-      : originalGet(file, target, ...rest);
-  const program = ts.createProgram([...sources.keys()], options, host);
-  const diagnostics = ts
-    .getPreEmitDiagnostics(program)
-    .map(
-      (d) =>
-        `${d.file?.fileName}: ${ts.flattenDiagnosticMessageText(d.messageText, " ")}`,
+    ]);
+    cases.push(
+      [
+        "button",
+        {
+          ...p.button,
+          action: "log",
+          iconOnly: true,
+          icon: "settings",
+          size: "md",
+          attributes: { title: "Details", "aria-label": "Open details" },
+        },
+      ],
+      [
+        "button",
+        {
+          ...p.button,
+          stylePreset: "wide",
+          attributes: { "data-id": "INV-1", tabIndex: 0 },
+        },
+      ],
+      ["tabs", { ...p.tabs, mode: "uncontrolled" }],
+      [
+        "switch",
+        {
+          ...p.switch,
+          mode: "uncontrolled",
+          stylePreset: "wide",
+          attributes: { dir: "ltr", title: "Preference" },
+        },
+      ],
+      [
+        "dropdown",
+        {
+          ...p.dropdown,
+          mode: "uncontrolled",
+          items: [
+            { id: "a", label: "Create", icon: "plus" },
+            { id: "b", label: "Download", icon: "download" },
+          ],
+        },
+      ],
+      ["sheet", { ...p.sheet, mode: "uncontrolled" }],
+      ["sheet", { ...p.sheet, footer: false, side: "left" }],
     );
-  expect(diagnostics).toEqual([]);
-}, 15000);
+    const root = ts.sys.getCurrentDirectory();
+    const sources = new Map(
+      cases.map(([id, model, config], index) => [
+        `${root}/src/__generated_${index}.tsx`,
+        generateCode(id, model, config ?? defaultConfig, language),
+      ]),
+    );
+    const options: ts.CompilerOptions = {
+      target: ts.ScriptTarget.ES2023,
+      module: ts.ModuleKind.ESNext,
+      moduleResolution: ts.ModuleResolutionKind.Bundler,
+      jsx: ts.JsxEmit.ReactJSX,
+      noEmit: true,
+      strict: true,
+      noUnusedLocals: true,
+      noUnusedParameters: true,
+      skipLibCheck: true,
+      types: ["vite/client"],
+    };
+    const host = ts.createCompilerHost(options);
+    const originalGet = host.getSourceFile.bind(host),
+      originalExists = host.fileExists.bind(host),
+      originalRead = host.readFile.bind(host);
+    host.fileExists = (file) => sources.has(file) || originalExists(file);
+    host.readFile = (file) => sources.get(file) ?? originalRead(file);
+    host.getSourceFile = (file, target, ...rest) =>
+      sources.has(file)
+        ? ts.createSourceFile(file, sources.get(file)!, target, true)
+        : originalGet(file, target, ...rest);
+    const program = ts.createProgram([...sources.keys()], options, host);
+    const diagnostics = ts
+      .getPreEmitDiagnostics(program)
+      .map(
+        (d) =>
+          `${d.file?.fileName}: ${ts.flattenDiagnosticMessageText(d.messageText, " ")}`,
+      );
+    expect(diagnostics).toEqual([]);
+  },
+  15000,
+);

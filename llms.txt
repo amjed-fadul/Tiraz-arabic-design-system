@@ -1,0 +1,16 @@
+# Tiraz
+
+Arabic-first, source-owned React components. Follow the installed tiraz.project.json for real paths.
+
+- [Integration](docs/ai/integration.md)
+- [Rules](docs/ai/rules.md)
+- [Patterns](docs/ai/patterns.md)
+- [Pattern types](knowledge/patterns.json)
+- [System contract](knowledge/system.manifest.json)
+- [Tokens](knowledge/tokens.json)
+- [Button / الأزرار](docs/ai/components/button.md)
+- [Tabs / التبويبات](docs/ai/components/tabs.md)
+- [Switch / مفتاح التبديل](docs/ai/components/switch.md)
+- [Dropdown menu / القائمة المنسدلة](docs/ai/components/dropdown.md)
+- [Sheet / اللوحة الجانبية](docs/ai/components/sheet.md)
+- [Toast / التنبيهات](docs/ai/components/toast.md)

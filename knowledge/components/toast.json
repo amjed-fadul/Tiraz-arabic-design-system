@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "toast",
+  "name": [
+    "التنبيهات",
+    "Toast"
+  ],
+  "description": [
+    "رسائل نجاح وخطأ ومعلومات، معلنة لقارئات الشاشة.",
+    "Success, error and informational feedback with accessible announcements."
+  ],
+  "exportName": "ToastProvider",
+  "source": "src/system/Toast.tsx",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "defaults": {},
+  "prerequisites": [
+    "SystemProvider",
+    "system/styles.css"
+  ],
+  "api": "../api/ToastProvider.json",
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "useFor": "Brief success, error or information feedback after an action.",
+  "avoidFor": "The only presentation of a persistent form error or information requiring a decision.",
+  "rules": [
+    "Wrap callers in ToastProvider inside SystemProvider; invoke useToast within that provider.",
+    "Supply translated provider label and closeLabel; toast() accepts ToastMessage.",
+    "At most three active entries are retained. Default duration is 5000 ms; hover/focus pauses expiry.",
+    "Events and business state belong to the application. No string-evaluated callbacks."
+  ],
+  "parts": {
+    "provider": "notification lifecycle",
+    "viewport": "scoped notification region",
+    "message": "title, optional description, tone and duration"
+  },
+  "relatedTypes": [
+    "ToastMessage"
+  ]
+}

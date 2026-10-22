@@ -1,0 +1,7 @@
+# Generated knowledge and distribution assets are reviewable in their generators.
+knowledge/** linguist-generated=true
+docs/ai/components/** linguist-generated=true
+public/ai/** linguist-generated=true
+public/r/** linguist-generated=true
+public/llms.txt linguist-generated=true
+llms.txt linguist-generated=true

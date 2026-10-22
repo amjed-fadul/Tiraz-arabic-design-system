@@ -1,0 +1,48 @@
+{
+  "exportName": "ToastProvider",
+  "source": "src/system/Toast.tsx",
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ToastMessage": {
+      "props": {
+        "description": {
+          "type": "string | undefined",
+          "required": false
+        },
+        "duration": {
+          "type": "number | undefined",
+          "required": false
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "tone": {
+          "type": "\"success\" | \"error\" | \"info\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"success\"",
+            "\"error\"",
+            "\"info\""
+          ]
+        }
+      },
+      "branches": []
+    }
+  }
+}

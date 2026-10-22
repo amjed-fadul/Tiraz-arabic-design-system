@@ -1,0 +1,63 @@
+type Localized = readonly [string, string];
+export const catalog = [
+  {
+    id: "button",
+    name: ["الأزرار", "Button"],
+    description: [
+      "إجراءات واضحة، مع حالات للتحميل والنجاح والخطأ.",
+      "Clear actions, with loading, success and error states.",
+    ],
+    file: "Button.tsx",
+  },
+  {
+    id: "tabs",
+    name: ["التبويبات", "Tabs"],
+    description: [
+      "تنقّل بين المحتوى باستخدام مؤشر سلس ولوحة المفاتيح.",
+      "Navigate related content with a smooth indicator and keyboard support.",
+    ],
+    file: "Tabs.tsx",
+  },
+  {
+    id: "switch",
+    name: ["مفتاح التبديل", "Switch"],
+    description: [
+      "تحكّم واضح في إعداد بحالتين، مع تسمية مرتبطة.",
+      "A labeled two-state control for settings and preferences.",
+    ],
+    file: "Switch.tsx",
+  },
+  {
+    id: "dropdown",
+    name: ["القائمة المنسدلة", "Dropdown menu"],
+    description: [
+      "إجراءات سياقية مع تنقّل بلوحة المفاتيح واستعادة التركيز.",
+      "Contextual actions with keyboard navigation and focus restoration.",
+    ],
+    file: "DropdownMenu.tsx",
+  },
+  {
+    id: "sheet",
+    name: ["اللوحة الجانبية", "Sheet"],
+    description: [
+      "عرض التفاصيل دون مغادرة الصفحة، مع إدارة كاملة للتركيز.",
+      "Show details without leaving the page, with managed modal focus.",
+    ],
+    file: "Sheet.tsx",
+  },
+  {
+    id: "toast",
+    name: ["التنبيهات", "Toast"],
+    description: [
+      "رسائل نجاح وخطأ ومعلومات، معلنة لقارئات الشاشة.",
+      "Success, error and informational feedback with accessible announcements.",
+    ],
+    file: "Toast.tsx",
+  },
+] as const satisfies ReadonlyArray<{
+  id: string;
+  name: Localized;
+  description: Localized;
+  file: string;
+}>;
+export type ComponentId = (typeof catalog)[number]["id"];

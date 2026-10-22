@@ -283,7 +283,7 @@ it("copies the full current prompt despite its single-line presentation", async 
     ),
   );
   expect(copied).not.toContain("/Users/");
-  expect(copied).toContain("README.md");
+  expect(copied).toContain("tiraz.project.json");
   expect(copied).toContain(
     screen.getByRole("region", { name: "مثال الاستخدام" }).textContent!,
   );

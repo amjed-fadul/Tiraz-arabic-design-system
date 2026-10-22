@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "id": "sheet",
+  "name": [
+    "اللوحة الجانبية",
+    "Sheet"
+  ],
+  "description": [
+    "عرض التفاصيل دون مغادرة الصفحة، مع إدارة كاملة للتركيز.",
+    "Show details without leaving the page, with managed modal focus."
+  ],
+  "exportName": "Sheet",
+  "source": "src/system/Sheet.tsx",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "defaults": {},
+  "prerequisites": [
+    "SystemProvider",
+    "system/styles.css"
+  ],
+  "api": "../api/Sheet.json",
+  "props": {
+    "trigger": {
+      "type": "ReactElement<unknown, string | import(\"react\").JSXElementConstructor<any>>",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "footer": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "side": {
+      "type": "\"right\" | \"left\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"right\"",
+        "\"left\""
+      ]
+    }
+  },
+  "useFor": "Details or editing without leaving the current page.",
+  "avoidFor": "A small contextual action menu or a navigation destination.",
+  "rules": [
+    "title, description and closeLabel are required accessible copy.",
+    "side accepts physical left/right; omitted means right in RTL and left in LTR.",
+    "trigger is one ReactElement; use Tiraz Button. Content and footer accept ReactNode.",
+    "For asynchronous forms, close only after successful save and retain input on failure.",
+    "Escape/backdrop/close restore focus. Nested overlays inherit the Sheet container.",
+    "SheetClose is the public dismissal helper for footer buttons."
+  ],
+  "parts": {
+    "trigger": "caller element",
+    "overlay": "managed backdrop",
+    "content": "modal dialog with nested portal context",
+    "footer": "caller ReactNode"
+  },
+  "relatedTypes": [
+    "SheetProps"
+  ]
+}

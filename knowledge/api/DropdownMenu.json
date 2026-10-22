@@ -1,0 +1,126 @@
+{
+  "exportName": "DropdownMenu",
+  "source": "src/system/DropdownMenu.tsx",
+  "props": {
+    "align": {
+      "type": "\"end\" | \"start\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"end\"",
+        "\"start\""
+      ]
+    },
+    "items": {
+      "type": "MenuItem[]",
+      "required": true
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "trigger": {
+      "type": "ReactElement<unknown, string | import(\"react\").JSXElementConstructor<any>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "DropdownMenuProps": {
+      "props": {
+        "align": {
+          "type": "\"end\" | \"start\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"end\"",
+            "\"start\""
+          ]
+        },
+        "items": {
+          "type": "MenuItem[]",
+          "required": true
+        },
+        "onOpenChange": {
+          "type": "((open: boolean) => void) | undefined",
+          "required": false
+        },
+        "open": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "trigger": {
+          "type": "ReactElement<unknown, string | import(\"react\").JSXElementConstructor<any>>",
+          "required": true
+        }
+      },
+      "branches": []
+    },
+    "MenuItem": {
+      "props": {
+        "destructive": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "disabled": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "icon": {
+          "type": "ReactNode",
+          "required": false
+        },
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        },
+        "onSelect": {
+          "type": "(() => void) | undefined",
+          "required": false
+        },
+        "separatorBefore": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "shortcut": {
+          "type": "string | undefined",
+          "required": false
+        }
+      },
+      "branches": []
+    }
+  }
+}

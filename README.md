@@ -4,7 +4,7 @@ An Arabic-first, MIT-licensed design system for business dashboards, with six so
 
 ## Run locally
 
-Use Node.js **22.12 or newer** and npm.
+Use Node.js **24.15 or newer** and npm.
 
 ```sh
 npm ci
@@ -22,7 +22,7 @@ npm run format:check
 
 ## Documentation workbench
 
-Each component has one continuous page: title and description → a single-line agent prompt with its copy button → playground → useful examples → generated usage code and an API disclosure. The visible prompt truncates with an ellipsis; copying includes the entire prompt, current configuration and compiling usage module. Latin paths are isolated within Arabic text. Prompts first ask the agent to locate Tiraz within the current project and clearly report if the system cannot be found. Source, export, configuration, font-entry and README guidance paths are relative to the located Tiraz root; prompts contain no machine-specific project root, installer or invented instruction file.
+Each component has one continuous page: title and description → a single-line agent prompt with its copy button → playground → useful examples → generated usage code and an API disclosure. The visible prompt truncates with an ellipsis; copying includes the entire prompt, current configuration and compiling usage module. Latin paths are isolated within Arabic text. Prompts first ask the agent to locate Tiraz within the current project and clearly report if the system cannot be found. Prompts read `tiraz.project.json` first, resolve the installed paths, load focused contracts, and adapt the sample to the consumer application. Checkout-relative paths are a fallback. API facts in the workbench come from generated TypeScript contracts; localized usage guidance remains authored.
 
 Arabic mode has navigation only in the compact 190px right sidebar. A separate 240px rail sits 10px from the viewport's left edge, with compact system settings above the contextual component inspector, each on its own rounded surface with a 16px gap. Its bounded scroll region supports keyboard access and shorter windows. English mode mirrors both rails through logical layout. They reserve their own grid space outside the centered article. Navigation scrolls independently for a growing library.
 
@@ -79,15 +79,17 @@ Components consume scoped provider tokens. Menus and Sheets portal into the prov
 
 ## Use the system
 
-Copy `src/system` into your app, excluding tests, and install the runtime dependencies listed in `package.json`. No workbench code is required. Import the local fonts and library CSS once:
+Install source into an existing React 19/Vite application:
+
+```sh
+node scripts/install.mjs /absolute/path/to/consumer
+```
+
+The installer writes `tiraz.project.json`, copies runtime code, patterns, docs and contracts into `src/tiraz`, and prints only the required runtime dependencies. Install those dependencies with your package manager. Existing files are never overwritten. Read [integration](docs/ai/integration.md) for custom destinations, provider setup and update checks.
 
 ```tsx
-import "@fontsource/ibm-plex-sans-arabic/400.css";
-import "@fontsource/ibm-plex-sans-arabic/500.css";
-import "@fontsource/ibm-plex-sans-arabic/600.css";
-import "./system/tokens.css";
-import "./system/components.css";
-import { Button, SystemProvider, defaultConfig } from "./system";
+import "./tiraz/styles.css";
+import { Button, SystemProvider, defaultConfig } from "./tiraz/src/system";
 
 export function App() {
   return (
@@ -97,6 +99,20 @@ export function App() {
   );
 }
 ```
+
+Start agent discovery at [llms.txt](llms.txt). Focused [component contracts](knowledge/components), full [inherited APIs](knowledge/api), and the [CSS token inventory](knowledge/tokens.json) are generated from source plus authored guidance. [Business patterns](docs/ai/patterns.md) add customer editing, preference settings and invoice actions with caller-owned persistence and localization. The inventory preserves CSS expressions and mode contexts; it is not a DTCG export.
+
+```sh
+npm run knowledge:build
+npm run registry:build
+npm run verify
+npx playwright install chromium
+npm run test:consumer
+```
+
+`verify` rejects stale knowledge/registry artifacts and runs tooling, unit, strict TypeScript, lint, build and formatting checks. `test:consumer` installs into an isolated temporary React/Vite project, builds it and exercises it in Chromium. CI runs both. Node dependencies for that consumer are resolved from the generated dependency list, without Tiraz's workbench dependencies. The consumer test pins that list to repository lockfile versions for reproducibility.
+
+The generated shadcn registry item is at `public/r/tiraz-system.json`. It is ready for hosting but is not published by these commands. [Evaluation scenarios](evals/README.md) define a repeatable future agent benchmark; no model success-rate claim is implied. Figma Code Connect, remote MCP and SSR support remain separate integration work.
 
 `Button` defaults to `sm`; the system defaults to compact density. `md` and standard density remain available. Small labels use readable 14px Arabic text and normal pointer targets; Sheet widths remain **440px**, bounded by the viewport.
 

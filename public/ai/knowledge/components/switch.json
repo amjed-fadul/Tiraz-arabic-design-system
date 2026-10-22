@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "id": "switch",
+  "name": [
+    "مفتاح التبديل",
+    "Switch"
+  ],
+  "description": [
+    "تحكّم واضح في إعداد بحالتين، مع تسمية مرتبطة.",
+    "A labeled two-state control for settings and preferences."
+  ],
+  "exportName": "Switch",
+  "source": "src/system/Switch.tsx",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "defaults": {
+    "className": "\"\""
+  },
+  "prerequisites": [
+    "SystemProvider",
+    "system/styles.css"
+  ],
+  "api": "../api/Switch.json",
+  "props": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "checked": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "defaultChecked": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "onCheckedChange": {
+      "type": "((checked: boolean) => void) | undefined",
+      "required": false
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "required": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "name": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "string | number | readonly string[] | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
+      "required": false
+    },
+    "ref": {
+      "type": "Ref<HTMLButtonElement> | undefined",
+      "required": false
+    }
+  },
+  "useFor": "A labeled on/off preference.",
+  "avoidFor": "Choosing among multiple mutually exclusive options.",
+  "rules": [
+    "label is required and linked to the control. description is combined with caller aria-describedby.",
+    "Choose controlled checked/onCheckedChange or uncontrolled defaultChecked.",
+    "Native Radix Switch.Root props are inherited except children and asChild; the wrapper owns Thumb markup.",
+    "className targets the label wrapper; style, ref and native attributes target the control."
+  ],
+  "parts": {
+    "wrapper": "label and control layout; className target",
+    "control": "Radix root; style/ref/native attributes target",
+    "thumb": "managed internally"
+  },
+  "relatedTypes": [
+    "SwitchProps"
+  ]
+}

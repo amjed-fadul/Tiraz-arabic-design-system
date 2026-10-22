@@ -1,0 +1,106 @@
+{
+  "exportName": "Sheet",
+  "source": "src/system/Sheet.tsx",
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "footer": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "side": {
+      "type": "\"right\" | \"left\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"right\"",
+        "\"left\""
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "trigger": {
+      "type": "ReactElement<unknown, string | import(\"react\").JSXElementConstructor<any>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SheetProps": {
+      "props": {
+        "children": {
+          "type": "ReactNode",
+          "required": true
+        },
+        "closeLabel": {
+          "type": "string",
+          "required": true
+        },
+        "description": {
+          "type": "string",
+          "required": true
+        },
+        "footer": {
+          "type": "ReactNode",
+          "required": false
+        },
+        "onOpenChange": {
+          "type": "((open: boolean) => void) | undefined",
+          "required": false
+        },
+        "open": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "side": {
+          "type": "\"right\" | \"left\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"right\"",
+            "\"left\""
+          ]
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "trigger": {
+          "type": "ReactElement<unknown, string | import(\"react\").JSXElementConstructor<any>>",
+          "required": true
+        }
+      },
+      "branches": []
+    }
+  }
+}

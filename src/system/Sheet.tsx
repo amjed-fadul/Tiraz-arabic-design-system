@@ -60,3 +60,6 @@ export function Sheet({
     </Primitive.Root>
   );
 }
+
+/** Dismiss a Sheet from caller-owned footer content. */
+export const SheetClose = Primitive.Close;

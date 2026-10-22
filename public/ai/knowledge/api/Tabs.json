@@ -1,0 +1,106 @@
+{
+  "exportName": "Tabs",
+  "source": "src/system/Tabs.tsx",
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "defaultValue": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "items": {
+      "type": "TabItem[]",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "onValueChange": {
+      "type": "((value: string) => void) | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "variant": {
+      "type": "\"underline\" | \"segment\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"underline\"",
+        "\"segment\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "TabsProps": {
+      "props": {
+        "className": {
+          "type": "string | undefined",
+          "required": false
+        },
+        "defaultValue": {
+          "type": "string | undefined",
+          "required": false
+        },
+        "items": {
+          "type": "TabItem[]",
+          "required": true
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        },
+        "onValueChange": {
+          "type": "((value: string) => void) | undefined",
+          "required": false
+        },
+        "value": {
+          "type": "string | undefined",
+          "required": false
+        },
+        "variant": {
+          "type": "\"underline\" | \"segment\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"underline\"",
+            "\"segment\""
+          ]
+        }
+      },
+      "branches": []
+    },
+    "TabItem": {
+      "props": {
+        "content": {
+          "type": "ReactNode",
+          "required": true
+        },
+        "disabled": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "label": {
+          "type": "ReactNode",
+          "required": true
+        },
+        "value": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "branches": []
+    }
+  }
+}

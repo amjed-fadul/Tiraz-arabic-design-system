@@ -29,13 +29,14 @@ for (const language of ["ar", "en"] as const) {
         direction: language === "ar" ? ("rtl" as const) : ("ltr" as const),
       };
       const prompt = generatePrompt(entry.id, model, config, language);
-      // Read targets must exist; src/Example.tsx is explicitly a proposed output file.
+      // The prompt's discovery and integration guidance must exist in the checkout.
       for (const path of [
-        "README.md",
+        "llms.txt",
+        "docs/ai/integration.md",
+        `knowledge/components/${entry.id}.json`,
         `src/system/${entry.file}`,
         "src/system/index.ts",
         "src/system/config.ts",
-        "src/main.tsx",
       ]) {
         expect(existsSync(resolve(projectRoot, path))).toBe(true);
         expect(prompt).toContain(path);
@@ -45,6 +46,9 @@ for (const language of ["ar", "en"] as const) {
       expect(prompt).not.toContain(projectRoot.replace(/\/$/, ""));
       expect(prompt).not.toContain("AGENTS.md");
       expect(prompt).not.toContain("npx");
+      expect(prompt).toContain("tiraz.project.json");
+      expect(prompt).not.toContain("src/main.tsx");
+      expect(prompt).not.toContain("Create src/Example.tsx");
       expect(prompt).toContain(generateCode(entry.id, model, config, language));
       expect(prompt).toContain(JSON.stringify(config));
       expect(prompt).toContain(
@@ -68,6 +72,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
     for (const path of [
       "src/workbench/generate.ts",
       "src/workbench/catalog.ts",
+      "src/knowledge/catalog.ts",
       "src/workbench/model.ts",
       "src/workbench/i18n.ts",
       "src/workbench/native-attributes.ts",

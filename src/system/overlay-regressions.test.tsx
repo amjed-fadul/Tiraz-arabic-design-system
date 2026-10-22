@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -6,7 +7,7 @@ import {
   within,
 } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import {
   Button,
   DropdownMenu,
@@ -122,10 +123,12 @@ it.each(["loading", "success", "error"] as const)(
   },
 );
 
-function ToastExpiryDemo() {
+afterEach(() => vi.useRealTimers());
+
+function ToastExpiryDemo({ duration = Infinity }: { duration?: number }) {
   const { toast } = useToast();
   return (
-    <Button onClick={() => toast({ title: "Timed message", duration: 150 })}>
+    <Button onClick={() => toast({ title: "Timed message", duration })}>
       Notify
     </Button>
   );
@@ -143,23 +146,29 @@ it("restores caller focus after manually closing a toast", async () => {
   await userEvent.click(screen.getByRole("button", { name: "Dismiss" }));
   await waitFor(() => expect(trigger).toHaveFocus());
 });
-it("expires subsequent toasts after a manual dismissal", async () => {
+it("expires subsequent toasts after a manual dismissal", () => {
+  vi.useFakeTimers();
   render(
     <SystemProvider>
       <ToastProvider label="Notifications" closeLabel="Dismiss">
-        <ToastExpiryDemo />
+        <ToastExpiryDemo duration={1000} />
       </ToastProvider>
     </SystemProvider>,
   );
   const trigger = screen.getByRole("button", { name: "Notify" });
-  await userEvent.click(trigger);
-  await userEvent.click(screen.getByRole("button", { name: "Dismiss" }));
-  await userEvent.click(trigger);
+  act(() => trigger.focus());
+  fireEvent.click(trigger);
+  const dismiss = screen.getByRole("button", { name: "Dismiss" });
+  fireEvent.pointerMove(dismiss);
+  act(() => dismiss.focus());
+  fireEvent.click(dismiss);
+  expect(trigger).toHaveFocus();
+  fireEvent.click(trigger);
   expect(screen.getAllByText("Timed message").length).toBeGreaterThan(0);
-  await waitFor(
-    () => expect(screen.queryByText("Timed message")).not.toBeInTheDocument(),
-    { timeout: 1500 },
-  );
+  act(() => vi.advanceTimersByTime(999));
+  expect(screen.getByText("Timed message")).toBeInTheDocument();
+  act(() => vi.advanceTimersByTime(1));
+  expect(screen.queryByText("Timed message")).not.toBeInTheDocument();
 });
 
 it("keeps focus in a sibling toast when another toast closes", async () => {
@@ -179,24 +188,26 @@ it("keeps focus in a sibling toast when another toast closes", async () => {
   expect(dismiss[1]).toHaveFocus();
 });
 
-it("expires a new toast after pointer-only dismissal of the last message", async () => {
+it("expires a new toast after pointer-only dismissal of the last message", () => {
+  vi.useFakeTimers();
   render(
     <SystemProvider>
       <ToastProvider label="Notifications" closeLabel="Dismiss">
-        <ToastExpiryDemo />
+        <ToastExpiryDemo duration={1000} />
       </ToastProvider>
     </SystemProvider>,
   );
   const trigger = screen.getByRole("button", { name: "Notify" });
-  await userEvent.click(trigger);
+  act(() => trigger.focus());
+  fireEvent.click(trigger);
   fireEvent.pointerMove(screen.getByRole("button", { name: "Dismiss" }));
   fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
   expect(trigger).toHaveFocus();
-  await userEvent.click(trigger);
-  await waitFor(
-    () => expect(screen.queryByText("Timed message")).not.toBeInTheDocument(),
-    { timeout: 1500 },
-  );
+  fireEvent.click(trigger);
+  act(() => vi.advanceTimersByTime(999));
+  expect(screen.getByText("Timed message")).toBeInTheDocument();
+  act(() => vi.advanceTimersByTime(1));
+  expect(screen.queryByText("Timed message")).not.toBeInTheDocument();
 });
 
 it("preserves caller state when starting a new toast batch", async () => {

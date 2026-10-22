@@ -126,10 +126,7 @@ export function generateCode(
     const p = model as SheetModel;
     imports.add("Button");
     imports.add("Sheet");
-    if (p.footer)
-      otherImports.add(
-        'import { Close as SheetClose } from "@radix-ui/react-dialog";',
-      );
+    if (p.footer) imports.add("SheetClose");
     declarations =
       p.mode === "controlled"
         ? `const [open, setOpen] = useState(${p.open});`
@@ -160,9 +157,9 @@ export function generatePrompt(
   const c = previewConfig(config, model);
   return (
     t(
-      `اعثر أولًا على طِراز داخل المشروع الحالي. إذا لم تتمكن من العثور على النظام، أبلغ بذلك بوضوح وتوقف. انطلاقًا من جذر مشروع طِراز الذي عثرت عليه، اقرأ README.md لإرشادات الاستخدام وsrc/system/${entry.file} لمصدر المكوّن وsrc/system/index.ts للتصديرات وsrc/system/config.ts للإعدادات. جميع المسارات نسبية إلى ذلك الجذر، بما فيها src/main.tsx الذي يحمّل الخط المحلي. استخدم ${localize(entry.name, language)} بالخصائص والإعدادات الحالية كما في المثال أدناه. لا تضف مثبتًا أو CLI.`,
-      `First locate Tiraz within the current project. If you cannot locate the system, clearly report that and stop. From the located Tiraz project root, read README.md for usage guidance, src/system/${entry.file} for the component source, src/system/index.ts for exports and src/system/config.ts for configuration. All paths are relative to that root, including src/main.tsx, which loads the local font. Use ${localize(entry.name, language)} with the exact current properties and system settings in the example below. Do not add an installer or CLI.`,
+      `اعثر أولًا على طِراز داخل المشروع الحالي. اقرأ tiraz.project.json إن وجد واستخدم مسارات entry وstyles وknowledge وdocs النسبية إلى الملف. اقرأ llms.txt وdocs/ai/integration.md وknowledge/components/${entry.id}.json داخل مجلد طِراز المثبت. إذا لم تتمكن من العثور على النظام، أبلغ بذلك بوضوح وتوقف. في نسخة المستودع فقط، المصدر هو src/system/${entry.file} والتصديرات src/system/index.ts والإعدادات src/system/config.ts. استخدم ${localize(entry.name, language)} كما في المثال. عدّل مسارات الاستيراد إلى مكان التثبيت الحقيقي وحمّل styles مرة واحدة وأعد استخدام المزوّدات الحالية. المثال يوضح السلوك؛ اربط العمليات ببيانات التطبيق ودواله.`,
+      `First locate Tiraz within the current project. Read tiraz.project.json when present and resolve its entry, styles, knowledge and docs relative to that manifest. Read llms.txt, docs/ai/integration.md and knowledge/components/${entry.id}.json inside the installed Tiraz folder. If you cannot locate the system, clearly report that and stop. In a repository checkout only, read src/system/${entry.file}, src/system/index.ts and src/system/config.ts. Use ${localize(entry.name, language)} as demonstrated below. Adapt imports to the actual installation, load manifest styles once and reuse existing providers. The example illustrates behavior; connect actions to application data and callbacks.`,
     ) +
-    `\n\nSystemProvider: ${JSON.stringify(c)}\n\n${t("أنشئ src/Example.tsx تحت ذلك الجذر للمثال واربط أحداثه بتطبيقك.", "Create src/Example.tsx under that root for this example and connect its events to your application.")}\n\n\`\`\`tsx\n${generateCode(component, model, config, language)}\`\`\``
+    `\n\nSystemProvider: ${JSON.stringify(c)}\n\n${t("ضع التنفيذ في ملف مناسب للتطبيق؛ مسارات المثال نسبية إلى src في المستودع فقط.", "Implement in an appropriate application file; the sample paths are relative to repository src only.")}\n\n\`\`\`tsx\n${generateCode(component, model, config, language)}\`\`\``
   );
 }
