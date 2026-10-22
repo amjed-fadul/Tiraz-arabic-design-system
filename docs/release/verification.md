@@ -85,3 +85,13 @@ Local preview 5411 stays on Woven. The unrelated approved landing preview 5243
 and owner worktrees remain untouched. Temporary consumer servers are stopped
 at handoff. Main's prior local edits remain in the named stash and external
 backup documented in worktree-audit.md.
+
+## Production root routing
+
+Visual inspection caught filesystem precedence at `/`: the original root rewrite
+left the workbench index visible. `scripts/prepare-site.mjs` now preserves the
+workbench as `workbench.html` and writes the landing to `index.html` after Vite.
+Deep-link rewrites target the separate workbench entry. Development remains
+unchanged. Two regression tests and 27 navigation tests pass, along with build,
+zero-warning lint and formatting. Live route verification now explicitly checks
+the landing mount at `/` and the workbench mount on library routes.

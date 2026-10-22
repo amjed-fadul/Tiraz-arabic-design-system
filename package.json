@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run registry:build && tsc -b && vite build",
+    "build": "npm run registry:build && tsc -b && vite build && node scripts/prepare-site.mjs",
     "build:package": "node scripts/build-package.mjs",
     "pack:package": "npm run build:package && npm pack ./packages/tiraz",
     "lint": "oxlint",

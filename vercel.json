@@ -4,11 +4,25 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/", "destination": "/landing.html" },
-    { "source": "/library/:path*", "destination": "/index.html" },
-    { "source": "/start/:path*", "destination": "/index.html" },
-    { "source": "/docs/:path*", "destination": "/index.html" },
-    { "source": "/illustrations/:path*", "destination": "/index.html" },
-    { "source": "/examples/:path*", "destination": "/index.html" }
+    {
+      "source": "/library/:path*",
+      "destination": "/workbench.html"
+    },
+    {
+      "source": "/start/:path*",
+      "destination": "/workbench.html"
+    },
+    {
+      "source": "/docs/:path*",
+      "destination": "/workbench.html"
+    },
+    {
+      "source": "/illustrations/:path*",
+      "destination": "/workbench.html"
+    },
+    {
+      "source": "/examples/:path*",
+      "destination": "/workbench.html"
+    }
   ]
 }

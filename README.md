@@ -85,9 +85,9 @@ npm run format:check
 npm run pack:package
 ```
 
-The Vite build emits the landing and workbench entries. `vercel.json` routes
-`/` to the landing and library/start/illustration/example deep links to the
-workbench entry. All example data and actions are local demonstrations; no
+The build serves the landing as `index.html` and keeps the docs entry at
+`workbench.html`. `vercel.json` routes library/start/illustration/example deep
+links to that workbench entry. All example data and actions are local demonstrations; no
 backend or model credentials are required.
 
 Use browser evidence scripts only when deliberately refreshing tracked
