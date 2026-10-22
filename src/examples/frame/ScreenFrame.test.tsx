@@ -21,6 +21,13 @@ function Probe() {
 }
 const sidebar = () =>
   within(screen.getByRole("navigation", { name: /الشاشات|Screens/ }));
+function openNavigation() {
+  fireEvent.click(
+    screen.getByRole("button", {
+      name: /إظهار القائمة الجانبية|Show navigation/,
+    }),
+  );
+}
 afterEach(() => window.history.replaceState(null, "", "/"));
 
 it("carries a valid preview accent through screen navigation and ignores unknown accents", () => {
@@ -37,6 +44,7 @@ it("carries a valid preview accent through screen navigation and ignores unknown
   expect(view.container.querySelector(".tiraz-system")).toHaveStyle({
     "--action": "#D6B6E5",
   });
+  openNavigation();
   expect(
     sidebar().getByRole("link", { name: "Sales pipeline" }),
   ).toHaveAttribute(
@@ -69,6 +77,7 @@ it("opens in Arabic and switches everything to English", async () => {
   expect(
     screen.getByRole("heading", { level: 1, name: "الفواتير والتحصيل" }),
   ).toBeInTheDocument();
+  openNavigation();
   expect(
     sidebar().getByRole("link", { name: "الفواتير والتحصيل" }),
   ).toHaveAttribute("aria-current", "page");
@@ -127,6 +136,7 @@ it("hands a screen link to the docs when embedded", () => {
     expect(screen.queryByRole("button", { name: "English" })).toBeNull();
     expect(screen.queryByRole("button", { name: "الوضع الداكن" })).toBeNull();
     expect(screen.queryByRole("link", { name: "توثيق طِراز" })).toBeNull();
+    openNavigation();
     const link = sidebar().getByRole("link", { name: "الفواتير والتحصيل" });
     // The link keeps its standalone href; a plain click stays in the docs.
     expect(link).toHaveAttribute("href", "/examples/invoices");
@@ -160,6 +170,7 @@ it.each([
     );
     const draft = screen.getByRole("textbox", { name: "Draft" });
     await user.type(draft, "Keep this draft");
+    openNavigation();
     const trigger = screen.getByRole("button", { name: hide });
     const panel = document.getElementById(
       trigger.getAttribute("aria-controls")!,
@@ -192,6 +203,7 @@ it("Escape in navigation hides it and restores focus without capturing content E
       <input aria-label="Draft" />
     </ScreenFrame>,
   );
+  openNavigation();
   const trigger = screen.getByRole("button", {
     name: "إخفاء القائمة الجانبية",
   });
@@ -203,4 +215,109 @@ it("Escape in navigation hides it and restores focus without capturing content E
   expect(trigger).toHaveFocus();
   expect(trigger).toHaveAttribute("aria-expanded", "false");
   expect(screen.queryByRole("navigation", { name: "الشاشات" })).toBeNull();
+});
+
+it.each([
+  [
+    "ar",
+    "إظهار القائمة الجانبية",
+    "افتح القائمة من هنا",
+    "إخفاء تلميح القائمة",
+  ],
+  ["en", "Show navigation", "Open the sidebar", "Dismiss sidebar hint"],
+])(
+  "starts %s screens closed and opens from the first-visit guide without losing focus",
+  async (language, show, note, dismiss) => {
+    window.history.replaceState(
+      null,
+      "",
+      `/examples/invoices?lang=${language}&embed=1`,
+    );
+    const user = userEvent.setup();
+    const { unmount, container } = render(
+      <ScreenFrame slug="invoices">
+        <ScreenHeader />
+      </ScreenFrame>,
+    );
+    const trigger = screen.getByRole("button", { name: show });
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(
+      screen.queryByRole("navigation", { name: /الشاشات|Screens/ }),
+    ).toBeNull();
+    expect(screen.getByRole("button", { name: note })).toBeVisible();
+    expect(
+      container.querySelector(".screen-navigation-hint [aria-live]"),
+    ).toBeNull();
+    await user.click(screen.getByRole("button", { name: note }));
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+    expect(trigger).toHaveFocus();
+    expect(sidebar().getAllByRole("link")).toHaveLength(11);
+    expect(screen.queryByRole("button", { name: dismiss })).toBeNull();
+    unmount();
+    render(
+      <ScreenFrame slug="customer-profile">
+        <ScreenHeader />
+      </ScreenFrame>,
+    );
+    expect(screen.getByRole("button", { name: show })).toHaveAttribute(
+      "aria-expanded",
+      "false",
+    );
+    expect(screen.queryByRole("button", { name: note })).toBeNull();
+    // Learning the sidebar must not consume the separate customization guide.
+    expect(localStorage.getItem("tiraz.customize-hint.v1")).toBeNull();
+  },
+);
+
+it("dismisses the sidebar guide without opening navigation and remembers it", async () => {
+  localStorage.setItem("tiraz.customize-hint.v1", "seen");
+  window.history.replaceState(null, "", "/examples/invoices?lang=en");
+  const user = userEvent.setup();
+  const { unmount } = render(
+    <ScreenFrame slug="invoices">
+      <ScreenHeader />
+    </ScreenFrame>,
+  );
+  await user.click(
+    screen.getByRole("button", { name: "Dismiss sidebar hint" }),
+  );
+  const trigger = screen.getByRole("button", { name: "Show navigation" });
+  expect(trigger).toHaveFocus();
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+  unmount();
+  render(
+    <ScreenFrame slug="invoices">
+      <ScreenHeader />
+    </ScreenFrame>,
+  );
+  expect(screen.queryByRole("button", { name: "Open the sidebar" })).toBeNull();
+});
+
+it("the guide opens the mobile drawer and returns focus to its real trigger on Escape", async () => {
+  const media = window.matchMedia;
+  const mobile = vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+    ...media(query),
+    matches: query === "(max-width: 767px)",
+  }));
+  try {
+    const user = userEvent.setup();
+    render(
+      <ScreenFrame slug="invoices">
+        <ScreenHeader />
+      </ScreenFrame>,
+    );
+    const trigger = screen.getByRole("button", { name: "فتح القائمة" });
+    await user.click(
+      screen.getByRole("button", { name: "افتح القائمة من هنا" }),
+    );
+    expect(screen.getByRole("dialog", { name: "الشاشات" })).toBeVisible();
+    await user.keyboard("{Escape}");
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
+    expect(trigger).toHaveFocus();
+    expect(
+      screen.queryByRole("button", { name: "افتح القائمة من هنا" }),
+    ).toBeNull();
+  } finally {
+    mobile.mockRestore();
+  }
 });

@@ -171,6 +171,8 @@ it("opens the shared screens menu and restores its trigger focus", async () => {
 
 it("uses the shared screen navigation and retains connected data when the navigation is hidden", async () => {
   const user = await setup();
+  expect(screen.queryByRole("navigation", { name: "Screens" })).toBeNull();
+  await user.click(screen.getByRole("button", { name: "Show navigation" }));
   const navigation = within(
     screen.getByRole("navigation", { name: "Screens" }),
   );
@@ -195,6 +197,7 @@ it("hands embedded screen navigation to the docs and preserves modified native l
   const post = vi.spyOn(window, "postMessage").mockImplementation(() => {});
   try {
     render(<Dashboard />);
+    fireEvent.click(screen.getByRole("button", { name: "Show navigation" }));
     const navigation = within(
       screen.getByRole("navigation", { name: "Screens" }),
     );

@@ -1,0 +1,101 @@
+/* An ink annotation in the space above the toolbar, with no overlay or scrim. */
+.first-visit-hint {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 0;
+  inset-inline-end: calc(-1 * var(--space-2));
+  display: block;
+  inline-size: 164px;
+  block-size: 88px;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.first-visit-hint-note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.first-visit-hint-action,
+.first-visit-hint-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-small);
+  background: transparent;
+  color: inherit;
+  font-family: var(--font);
+  cursor: pointer;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
+
+.first-visit-hint-action {
+  min-block-size: 36px;
+  padding-inline: var(--space-1);
+  font-size: var(--text-reading);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  white-space: nowrap;
+  text-underline-offset: var(--space-1);
+}
+
+.first-visit-hint:lang(en) .first-visit-hint-action {
+  font-family: "Bradley Hand", "Segoe Print", var(--font), cursive;
+  font-size: var(--text-heading);
+  transform: rotate(-7deg);
+}
+
+.first-visit-hint-dismiss {
+  inline-size: 28px;
+  block-size: 28px;
+  color: var(--text-muted);
+}
+
+.first-visit-hint-arrow {
+  position: absolute;
+  inset-inline-end: 24px;
+  inset-block-end: 0;
+  inline-size: 88px;
+  block-size: 64px;
+  overflow: visible;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.first-visit-hint-arrow:dir(rtl) {
+  transform: scaleX(-1);
+}
+
+.first-visit-hint :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .first-visit-hint-action:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+
+  .first-visit-hint-dismiss:hover {
+    background: var(--surface-hover);
+    color: var(--text);
+  }
+}
+
+@media (forced-colors: active) {
+  .first-visit-hint {
+    color: CanvasText;
+  }
+
+  .first-visit-hint-dismiss {
+    color: ButtonText;
+  }
+}

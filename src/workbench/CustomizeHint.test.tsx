@@ -127,7 +127,7 @@ it("uses Arabic copy and direction with a purely decorative arrow", () => {
     "lang",
     "ar",
   );
-  expect(container.querySelector(".customize-hint-arrow")).toHaveAttribute(
+  expect(container.querySelector(".first-visit-hint-arrow")).toHaveAttribute(
     "aria-hidden",
     "true",
   );

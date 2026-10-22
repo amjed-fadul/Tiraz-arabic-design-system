@@ -407,3 +407,34 @@
     animation: none;
   }
 }
+
+/* Reserve space for the first-visit annotation; it never covers the screen. */
+.screen-navigation-hint-anchor {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+.screen-bar:has(.screen-navigation-hint) {
+  padding-block-end: calc(var(--space-10) * 2 + var(--space-3));
+}
+.screen-navigation-hint.first-visit-hint {
+  inset-block-start: 100%;
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  inline-size: calc(var(--space-10) * 6);
+}
+.screen-navigation-hint .first-visit-hint-note {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: var(--space-8);
+}
+.screen-navigation-hint .first-visit-hint-arrow {
+  inset-block-start: 0;
+  inset-block-end: auto;
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  transform: rotate(180deg);
+}
+.screen-navigation-hint .first-visit-hint-arrow:dir(rtl) {
+  transform: rotate(180deg) scaleX(-1);
+}

@@ -1,5 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { FirstVisitHint } from "../../first-visit/FirstVisitHint";
+import { useFirstVisitHint } from "../../first-visit/use-first-visit-hint";
 import { TirazMark } from "../../brand/TirazMark";
 import { BookOpenIcon } from "@phosphor-icons/react/dist/csr/BookOpen";
 import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
@@ -88,13 +90,18 @@ export function ScreenFrame({
     () => ({ ...defaultConfig, direction, theme, accent }),
     [direction, theme, accent],
   );
-  const [navigationHidden, setNavigationHidden] = useState(false);
+  // Start with the full content width, including the agent panel.
+  const [navigationHidden, setNavigationHidden] = useState(true);
   const navigationId = useId();
   const navigationToggle = useRef<HTMLDivElement>(null);
   const navigationPanel = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [mobileNavigation, setMobileNavigation] = useState(
     () => window.matchMedia("(max-width: 767px)").matches,
+  );
+  const navigationHint = useFirstVisitHint(
+    "tiraz.screen-navigation-hint.v1",
+    mobileNavigation ? !menuOpen : navigationHidden,
   );
   const [size, setSize] = useState<Screen["size"]>("wide");
   const host = useRef<HTMLDivElement>(null);
@@ -292,56 +299,84 @@ export function ScreenFrame({
                       className="screen-navigation-control"
                       ref={navigationToggle}
                     >
-                      <Sheet
-                        open={menuOpen}
-                        onOpenChange={(open) => {
-                          if (mobileNavigation) setMenuOpen(open);
-                          else setNavigationHidden((hidden) => !hidden);
-                        }}
-                        title={t("الشاشات", "Screens")}
-                        description={t(
-                          "انتقل إلى شاشة أخرى.",
-                          "Go to another screen.",
+                      <span className="screen-navigation-hint-anchor">
+                        <Sheet
+                          open={menuOpen}
+                          onOpenChange={(open) => {
+                            navigationHint.dismiss();
+                            if (mobileNavigation) setMenuOpen(open);
+                            else setNavigationHidden((hidden) => !hidden);
+                          }}
+                          title={t("الشاشات", "Screens")}
+                          description={t(
+                            "انتقل إلى شاشة أخرى.",
+                            "Go to another screen.",
+                          )}
+                          closeLabel={t("إغلاق القائمة", "Close navigation")}
+                          trigger={
+                            <Button
+                              variant="ghost"
+                              iconOnly
+                              aria-label={
+                                mobileNavigation
+                                  ? t("فتح القائمة", "Open navigation")
+                                  : navigationHidden
+                                    ? t(
+                                        "إظهار القائمة الجانبية",
+                                        "Show navigation",
+                                      )
+                                    : t(
+                                        "إخفاء القائمة الجانبية",
+                                        "Hide navigation",
+                                      )
+                              }
+                              aria-haspopup={
+                                mobileNavigation ? "dialog" : undefined
+                              }
+                              {...(!mobileNavigation
+                                ? {
+                                    "aria-expanded": !navigationHidden,
+                                    "aria-controls": navigationId,
+                                  }
+                                : {})}
+                            >
+                              <SidebarSimpleIcon
+                                size={22}
+                                weight="regular"
+                                className="tz-mirror-rtl"
+                                aria-hidden="true"
+                              />
+                            </Button>
+                          }
+                        >
+                          {navigation(true)}
+                        </Sheet>
+                        {navigationHint.visible && (
+                          <FirstVisitHint
+                            language={language}
+                            className="screen-navigation-hint"
+                            label={t("افتح القائمة من هنا", "Open the sidebar")}
+                            dismissLabel={t(
+                              "إخفاء تلميح القائمة",
+                              "Dismiss sidebar hint",
+                            )}
+                            onDismiss={navigationHint.dismiss}
+                            onOpen={() => {
+                              navigationToggle.current
+                                ?.querySelector("button")
+                                ?.focus();
+                              navigationToggle.current
+                                ?.querySelector("button")
+                                ?.click();
+                            }}
+                            onReturnFocus={() =>
+                              navigationToggle.current
+                                ?.querySelector("button")
+                                ?.focus()
+                            }
+                          />
                         )}
-                        closeLabel={t("إغلاق القائمة", "Close navigation")}
-                        trigger={
-                          <Button
-                            variant="ghost"
-                            iconOnly
-                            aria-label={
-                              mobileNavigation
-                                ? t("فتح القائمة", "Open navigation")
-                                : navigationHidden
-                                  ? t(
-                                      "إظهار القائمة الجانبية",
-                                      "Show navigation",
-                                    )
-                                  : t(
-                                      "إخفاء القائمة الجانبية",
-                                      "Hide navigation",
-                                    )
-                            }
-                            aria-haspopup={
-                              mobileNavigation ? "dialog" : undefined
-                            }
-                            {...(!mobileNavigation
-                              ? {
-                                  "aria-expanded": !navigationHidden,
-                                  "aria-controls": navigationId,
-                                }
-                              : {})}
-                          >
-                            <SidebarSimpleIcon
-                              size={22}
-                              weight="regular"
-                              className="tz-mirror-rtl"
-                              aria-hidden="true"
-                            />
-                          </Button>
-                        }
-                      >
-                        {navigation(true)}
-                      </Sheet>
+                      </span>
                       <span className="screen-brand">
                         <TirazMark className="screen-mark" />
                         {t("طِراز", "Tiraz")}
