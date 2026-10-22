@@ -1,6 +1,6 @@
 # Toast · التنبيهات
 
-Generated from the public TypeScript API and authored guidance. Source digest: `9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0`.
+Generated from the public TypeScript API and authored guidance. Source digest: `7b4c22f134c086d72fefb61ed433fb19727481cffc5f75b9feed9dae02fbbc59`.
 
 Brief success, error or information feedback after an action.
 

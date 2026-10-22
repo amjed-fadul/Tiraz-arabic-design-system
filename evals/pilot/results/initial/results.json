@@ -1,0 +1,152 @@
+{
+  "startedAt": "2026-10-22T11:41:25.664Z",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "compile": {
+    "passed": true
+  },
+  "lint": {
+    "passed": true,
+    "output": ""
+  },
+  "checks": [
+    {
+      "name": "en: customer failure, retained draft and successful retry",
+      "passed": true
+    },
+    {
+      "name": "en: customer duplicate submit, cancel and late completion",
+      "passed": true
+    },
+    {
+      "name": "en: preferences failure, cancel restores saved values, successful retry",
+      "passed": true
+    },
+    {
+      "name": "en: preferences cancellation and navigation abort pending work",
+      "passed": true
+    },
+    {
+      "name": "en: nested invoice menu, disabled export, Escape and focus return",
+      "passed": true
+    },
+    {
+      "name": "en: invoice failure and retry update status only after success",
+      "passed": true
+    },
+    {
+      "name": "en: pending invoice cancellation ignores completion",
+      "passed": true
+    },
+    {
+      "name": "ar: customer failure, retained draft and successful retry",
+      "passed": true
+    },
+    {
+      "name": "ar: customer duplicate submit, cancel and late completion",
+      "passed": true
+    },
+    {
+      "name": "ar: preferences failure, cancel restores saved values, successful retry",
+      "passed": true
+    },
+    {
+      "name": "ar: preferences cancellation and navigation abort pending work",
+      "passed": true
+    },
+    {
+      "name": "ar: nested invoice menu, disabled export, Escape and focus return",
+      "passed": true
+    },
+    {
+      "name": "ar: invoice failure and retry update status only after success",
+      "passed": true
+    },
+    {
+      "name": "ar: pending invoice cancellation ignores completion",
+      "passed": true
+    },
+    {
+      "name": "customers ar/rtl/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "preferences ar/rtl/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "invoices ar/rtl/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "customers ar/rtl/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "preferences ar/rtl/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "invoices ar/rtl/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "customers en/ltr/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "preferences en/ltr/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "invoices en/ltr/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "customers en/ltr/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "preferences en/ltr/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "invoices en/ltr/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "customers ar/ltr/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "preferences ar/ltr/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "invoices ar/ltr/light: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "customers ar/ltr/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "preferences ar/ltr/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "invoices ar/ltr/dark: desktop/mobile layout, locale and axe",
+      "passed": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "passed": true
+    }
+  ],
+  "runtimeErrors": [],
+  "screenshots": [
+    "customers-desktop.png",
+    "preferences-mobile.png",
+    "invoice-mobile-dark.png"
+  ],
+  "finishedAt": "2026-10-22T11:41:37.914Z"
+}

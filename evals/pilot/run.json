@@ -1,0 +1,53 @@
+{
+  "startedAt": "2026-10-22T11:34:25.993Z",
+  "baseCommit": "00c3d43",
+  "sourceDigest": "9765b7dc6bc3df7734e533c06e0d25e3f0bf5d05888a88e8abbe9dee331795a0",
+  "protocol": "One fresh-context generation of three related screens; freeze first output, then guided repair. No baseline arm or repeated sampling.",
+  "model": "Inherited Codex model; exact model ID not exposed by collaboration tool",
+  "inputTokens": null,
+  "outputTokens": null,
+  "tokenMetricsNote": "Not exposed by available agent tool. Do not estimate billed usage.",
+  "builderReportedToolCalls": 6,
+  "initialObservations": {
+    "compile": "pass on first attempt",
+    "behavior": "33/33 checks pass after correcting test isolation",
+    "publicPatternsUsed": ["CustomerEditSheet", "PreferenceSettings"],
+    "internalImports": ["patterns/useAsyncAction"],
+    "capabilityGap": "InvoiceActions did not support contextual actions within its details Sheet; agent composed this workflow manually."
+  },
+  "harnessCorrection": "Initial evaluator reused the same URL and inadvertently kept app state between checks. Corrected with unique query per load. Discarded those false failures; recorded separately as harness-debug. Generated screen source was unchanged.",
+  "initialSnapshotAt": "2026-10-22T11:38:48.630337+00:00",
+  "builderReadSummary": [
+    "Consumer TASK.md, manifest, package and bootstrap/service files",
+    "Installed llms.txt, integration/rules/pattern docs, Button/Sheet/Dropdown/Toast docs",
+    "Pattern exports and relevant pattern source including internal useAsyncAction",
+    "System exports, toast hook, semantic tokens, focused Toast/Dropdown source"
+  ],
+  "repairReportedToolCalls": 2,
+  "finalObservations": {
+    "compile": "pass",
+    "lint": "pass",
+    "browserChecksPassed": 33,
+    "browserChecksTotal": 33,
+    "publicPatternsUsed": [
+      "CustomerEditSheet",
+      "PreferenceSettings",
+      "InvoiceActions"
+    ],
+    "internalImports": [],
+    "fix": "InvoiceActions.actionsInDetails shares actions and async feedback within the details Sheet.",
+    "sourceDigest": "7b4c22f134c086d72fefb61ed433fb19727481cffc5f75b9feed9dae02fbbc59",
+    "finishedAt": "2026-10-22T11:46:23.778Z"
+  },
+  "snapshotSha256": {
+    "evals/pilot/initial/Pilot.tsx": "f5fb26a6a5edee5780e77c9cd930ba9a437c107ed75237033890fcabc4a62e0e",
+    "evals/pilot/initial/api.ts": "e7b1d3891b84e9d24b58d18033b9107a34f249a762f062eb548b58fa9d2c4856",
+    "evals/pilot/initial/main.tsx": "f57f08eef3b44501f74b2fce283e03bc1f6fcb81c6b74b5d13cfed11c730976e",
+    "evals/pilot/initial/pilot.css": "2cdcb7d7fb3b6ae00522f61099bc916c7243141833a5b9129414dfdd1d82f05d",
+    "evals/pilot/initial/tiraz.project.json": "bd65b656f1e3fd1c103a22972735fc23cfcfcad734da358f11781885a3bb7207",
+    "evals/pilot/app/Pilot.tsx": "79190f9b819149b98e47a70a02c3e29f44b8c30506f5b57b1e9e57d84d8b3854",
+    "evals/pilot/app/api.ts": "a67809af432aed32e49bb9fb05117944f07d3bce384d709e6ada800e73417fee",
+    "evals/pilot/app/main.tsx": "c84501f7567ec43bf185739c59804af28edda05b95b2fc92e23292474e7d5e95",
+    "evals/pilot/app/pilot.css": "5e7c3c1f4226227bae5ffd723765133b322e77f3741c5ccba9320c32bc40349a"
+  }
+}

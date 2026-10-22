@@ -257,6 +257,15 @@
           "type": "InvoiceAction[]",
           "required": true
         },
+        "actionsInDetails": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
         "invoice": {
           "type": "InvoiceData",
           "required": true

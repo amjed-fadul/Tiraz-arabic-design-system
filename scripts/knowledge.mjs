@@ -373,7 +373,7 @@ export function buildKnowledge() {
   });
   output.set(
     "llms.txt",
-    `# Tiraz\n\nArabic-first, source-owned React components. Follow the installed tiraz.project.json for real paths.\n\n- [Integration](docs/ai/integration.md)\n- [Rules](docs/ai/rules.md)\n- [Patterns](docs/ai/patterns.md)\n- [Pattern types](knowledge/patterns.json)\n- [System contract](knowledge/system.manifest.json)\n- [Tokens](knowledge/tokens.json)\n${catalog.map((c) => `- [${c.name[1]} / ${c.name[0]}](docs/ai/components/${c.id}.md)`).join("\n")}\n`,
+    `# Tiraz\n\nArabic-first, source-owned React components. Follow the installed tiraz.project.json for real paths.\n\n- [Integration](docs/ai/integration.md)\n- [Rules](docs/ai/rules.md)\n- [Patterns](docs/ai/patterns.md)\n- [Pattern types](knowledge/patterns.json)\n- [Invoice details with actions](docs/ai/patterns.md#invoice-actions-and-nested-menus)\n- [System contract](knowledge/system.manifest.json)\n- [Tokens](knowledge/tokens.json)\n${catalog.map((c) => `- [${c.name[1]} / ${c.name[0]}](docs/ai/components/${c.id}.md)`).join("\n")}\n`,
   );
   // Serve the same focused knowledge at /llms.txt on the Vite documentation site.
   // Mirror the original relative layout so links remain valid when hosted.

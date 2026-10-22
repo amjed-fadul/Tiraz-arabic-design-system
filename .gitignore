@@ -32,3 +32,6 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# Reproducible pilot output (intentional initial/final records live under evals/)
+.artifacts/

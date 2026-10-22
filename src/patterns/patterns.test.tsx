@@ -292,4 +292,63 @@ describe("reusable business patterns", () => {
       expect(screen.getByRole("button", { name: "Actions" })).toBeEnabled();
     },
   );
+  it("shares invoice actions and persistent feedback inside the details Sheet", async () => {
+    const first = deferred();
+    const second = deferred();
+    const signals: AbortSignal[] = [];
+    const submissions: string[] = [];
+    const props = {
+      invoice: {
+        id: "INV-42",
+        fields: [{ id: "amount", label: "Total", value: "AED 42" }],
+      },
+      actions: [
+        { id: "pay", label: "Mark as paid" },
+        { id: "export", label: "Export", disabled: true },
+      ],
+      labels: invoiceLabels,
+      actionsInDetails: true,
+      onAction: (
+        id: string,
+        _: unknown,
+        { signal }: { signal: AbortSignal },
+      ) => {
+        submissions.push(id);
+        signals.push(signal);
+        return submissions.length === 1 ? first.promise : second.promise;
+      },
+    };
+    wrap(<InvoiceActions {...props} />);
+    await userEvent.click(screen.getByRole("button", { name: "View details" }));
+    const dialog = within(screen.getByRole("dialog"));
+    await userEvent.click(dialog.getByRole("button", { name: "Actions" }));
+    expect(dialog.getByRole("menuitem", { name: "Export" })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    await userEvent.keyboard("{Escape}");
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(dialog.getByRole("button", { name: "Actions" })).toHaveFocus();
+    await userEvent.click(dialog.getByRole("button", { name: "Actions" }));
+    await userEvent.click(
+      dialog.getByRole("menuitem", { name: "Mark as paid" }),
+    );
+    expect(dialog.getByRole("button", { name: "Working" })).toBeDisabled();
+    expect(submissions).toEqual(["pay"]);
+    await act(async () => first.reject(new Error("service failed")));
+    expect(dialog.getByRole("alert")).toHaveTextContent("Action failed");
+    expect(screen.getAllByRole("alert")).toHaveLength(1);
+    await userEvent.click(dialog.getByRole("button", { name: "Actions" }));
+    await userEvent.click(
+      dialog.getByRole("menuitem", { name: "Mark as paid" }),
+    );
+    await userEvent.click(
+      dialog.getByRole("button", { name: "Cancel action" }),
+    );
+    expect(signals[1].aborted).toBe(true);
+    await act(async () => second.resolve());
+    expect(screen.queryByText("Action complete")).not.toBeInTheDocument();
+    await userEvent.click(dialog.getByRole("button", { name: "Close" }));
+    expect(screen.getByRole("button", { name: "View details" })).toHaveFocus();
+  });
 });

@@ -10,15 +10,16 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "format": "prettier --write src scripts tests/tooling tests/browser/consumer.mjs index.html vite.config.ts *.json README.md docs/implementation-plan.md",
-    "format:check": "prettier --check src scripts tests/tooling tests/browser/consumer.mjs index.html vite.config.ts *.json README.md docs/implementation-plan.md",
+    "format": "prettier --write src scripts tests/tooling tests/browser/consumer.mjs tests/browser/pilot.mjs evals/pilot/app index.html vite.config.ts *.json README.md docs/implementation-plan.md",
+    "format:check": "prettier --check src scripts tests/tooling tests/browser/consumer.mjs tests/browser/pilot.mjs evals/pilot/app index.html vite.config.ts *.json README.md docs/implementation-plan.md",
     "knowledge:build": "node scripts/knowledge.mjs",
     "knowledge:check": "node scripts/knowledge.mjs --check",
     "registry:build": "node scripts/registry.mjs",
     "registry:check": "node scripts/registry.mjs --check",
     "test:tooling": "node --test tests/tooling/*.test.mjs",
     "test:consumer": "node tests/browser/consumer.mjs",
-    "verify": "npm run knowledge:check && npm run registry:check && npm run test:tooling && npm test && npm run lint && npm run build && npm run format:check"
+    "verify": "npm run knowledge:check && npm run registry:check && npm run test:tooling && npm test && npm run lint && npm run build && npm run format:check",
+    "test:pilot": "node tests/browser/pilot.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-sans-arabic": "^5.3.0",

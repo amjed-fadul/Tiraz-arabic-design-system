@@ -18,3 +18,4 @@ jobs:
       - run: npm run verify
       - run: npx playwright install --with-deps chromium
       - run: npm run test:consumer
+      - run: npm run test:pilot

@@ -6,6 +6,7 @@ Arabic-first, source-owned React components. Follow the installed tiraz.project.
 - [Rules](docs/ai/rules.md)
 - [Patterns](docs/ai/patterns.md)
 - [Pattern types](knowledge/patterns.json)
+- [Invoice details with actions](docs/ai/patterns.md#invoice-actions-and-nested-menus)
 - [System contract](knowledge/system.manifest.json)
 - [Tokens](knowledge/tokens.json)
 - [Button / الأزرار](docs/ai/components/button.md)

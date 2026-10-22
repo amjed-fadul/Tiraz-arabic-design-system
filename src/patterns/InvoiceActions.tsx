@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Button, DropdownMenu, Sheet } from "../system";
 import { Inline, Stack } from "./primitives";
 import { useAsyncAction } from "./useAsyncAction";
@@ -30,6 +30,8 @@ export interface InvoiceActionsProps {
   invoice: InvoiceData;
   actions: InvoiceAction[];
   labels: InvoiceActionLabels;
+  /** Show the same action menu, cancel control and feedback inside the details Sheet. */
+  actionsInDetails?: boolean;
   onAction: (
     actionId: string,
     invoice: InvoiceData,
@@ -44,28 +46,27 @@ function InvoiceActionControls({
   actions,
   labels,
   onAction,
+  actionsInDetails = false,
 }: InvoiceActionsProps) {
   const action = useAsyncAction();
-  return (
-    <Stack>
+  const [open, setOpen] = useState(false);
+  const feedback = (
+    <>
+      {action.state === "error" && (
+        <p role="alert" className="tz-pattern-error">
+          {labels.error}
+        </p>
+      )}
+      {action.state === "success" && (
+        <p role="status" className="tz-pattern-success">
+          {labels.success}
+        </p>
+      )}
+    </>
+  );
+  function controls() {
+    return (
       <Inline>
-        <Sheet
-          trigger={<Button variant="secondary">{labels.details}</Button>}
-          title={labels.title}
-          description={labels.description}
-          closeLabel={labels.close}
-        >
-          <dl className="tz-invoice-details">
-            {invoice.fields.map((field) => (
-              <div key={field.id}>
-                <dt>{field.label}</dt>
-                <dd>
-                  <bdi>{field.value}</bdi>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Sheet>
         <DropdownMenu
           trigger={
             <Button
@@ -90,16 +91,41 @@ function InvoiceActionControls({
           </Button>
         )}
       </Inline>
-      {action.state === "error" && (
-        <p role="alert" className="tz-pattern-error">
-          {labels.error}
-        </p>
-      )}
-      {action.state === "success" && (
-        <p role="status" className="tz-pattern-success">
-          {labels.success}
-        </p>
-      )}
+    );
+  }
+  return (
+    <Stack>
+      <Inline>
+        <Sheet
+          open={open}
+          onOpenChange={setOpen}
+          trigger={<Button variant="secondary">{labels.details}</Button>}
+          title={labels.title}
+          description={labels.description}
+          closeLabel={labels.close}
+        >
+          <Stack>
+            <dl className="tz-invoice-details">
+              {invoice.fields.map((field) => (
+                <div key={field.id}>
+                  <dt>{field.label}</dt>
+                  <dd>
+                    <bdi>{field.value}</bdi>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+            {actionsInDetails && (
+              <>
+                {controls()}
+                {feedback}
+              </>
+            )}
+          </Stack>
+        </Sheet>
+        {controls()}
+      </Inline>
+      {!(open && actionsInDetails) && feedback}
     </Stack>
   );
 }

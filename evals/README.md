@@ -8,4 +8,4 @@ Compare a baseline (runtime source and existing README) with treatment (manifest
 
 Score each listed check as pass/fail with file or browser evidence. Compile and lint every output. Test keyboard, accessibility names, failed saves, duplicate submits, cancel/reopen, light/dark, RTL/LTR and mobile overflow as applicable. Report first-attempt compile rate, correct component reuse, unsupported-prop rate, verified behavior, corrections, token cost and time. A working screenshot alone is insufficient.
 
-No model benchmark was run as part of this implementation. This keeps the implementation budget focused on deterministic checks; the task set and rubric make a later measurement reproducible.
+The initial foundation implementation did not run a model benchmark. A subsequent bounded real-screen diagnostic is recorded in [pilot/README.md](pilot/README.md). It uses one initial generation and one guided repair rather than this full repeated-trial protocol; do not generalize its results into a model success rate.
