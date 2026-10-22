@@ -157,7 +157,11 @@ it("shows Replay only where a sequence exists", () => {
       section.items.some((item) => item.id === (parent ?? page.id)),
     )!;
     const sectionLink = nav.getByRole("link", { name: group.name[0] });
-    if (sectionLink.getAttribute("aria-expanded") !== "true")
+    if (
+      nav
+        .getByRole("button", { name: new RegExp(`^${group.name[0]}:`) })
+        .getAttribute("aria-expanded") !== "true"
+    )
       fireEvent.click(sectionLink);
     if (parent) {
       fireEvent.click(

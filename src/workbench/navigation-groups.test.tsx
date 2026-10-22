@@ -1,10 +1,12 @@
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
 import { catalog, nestedParts, navigationGroups } from "./catalog";
 import { screens } from "../examples/frame/screen";
 import { persist, storageKeys } from "./storage";
+
+afterEach(() => vi.restoreAllMocks());
 
 it("keeps every section heading visible and lists each curated page once when its section opens", async () => {
   render(<Workbench />);
@@ -23,7 +25,9 @@ it("keeps every section heading visible and lists each curated page once when it
   const names: (string | null)[] = [];
   for (const group of navigationGroups) {
     await userEvent.click(nav.getByRole("link", { name: group.name[0] }));
-    const buttons = nav.getAllByRole("button");
+    const buttons = within(nav.getByRole("group", { name: group.name[0] }))
+      .getAllByRole("button")
+      .filter((button) => !button.hasAttribute("aria-expanded"));
     expect(buttons.map((item) => item.textContent)).toEqual(
       (group.id === "screens" ? screens : group.items).map(
         (item) => item.name[0],
@@ -31,10 +35,8 @@ it("keeps every section heading visible and lists each curated page once when it
     );
     names.push(...buttons.map((item) => item.textContent));
     expect(
-      nav
-        .getAllByRole("link")
-        .filter((link) => link.getAttribute("aria-expanded") === "true"),
-    ).toEqual([nav.getByRole("link", { name: group.name[0] })]);
+      nav.getByRole("button", { name: `${group.name[0]}: طي القسم` }),
+    ).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       group.name[0],
     );
@@ -54,12 +56,11 @@ it("keeps every section heading visible and lists each curated page once when it
   );
 });
 
-it("opens a section gallery from the keyboard and replaces its children with the next section", async () => {
+it("opens section galleries without removing other expanded lists", async () => {
   persist(storageKeys.documentation, { language: "en" });
   render(<Workbench />);
   const user = userEvent.setup();
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
-  expect(nav.getByRole("button", { name: "Button" })).toBeVisible();
   const screensLink = nav.getByRole("link", { name: "Screens" });
   screensLink.focus();
   await user.keyboard("{Enter}");
@@ -67,15 +68,11 @@ it("opens a section gallery from the keyboard and replaces its children with the
     "/library?category=screens",
   );
   expect(screensLink).toHaveAttribute("aria-current", "page");
-  expect(screensLink).toHaveAttribute("aria-expanded", "true");
   expect(screen.getByRole("main")).toHaveFocus();
-  expect(nav.queryByRole("button", { name: "Button" })).toBeNull();
+  expect(nav.getByRole("button", { name: "Button" })).toBeVisible();
   expect(nav.getByRole("button", { name: "Customer dashboard" })).toBeVisible();
   await user.click(nav.getByRole("link", { name: "Forms" }));
-  expect(nav.queryByRole("button", { name: "Customer dashboard" })).toBeNull();
-  expect(nav.getByRole("button", { name: "Button" })).toBeVisible();
-  expect(screensLink).toHaveAttribute("aria-expanded", "false");
-  expect(screensLink).not.toHaveAttribute("aria-controls");
+  expect(nav.getByRole("button", { name: "Customer dashboard" })).toBeVisible();
   const results = within(
     screen.getByRole("region", { name: "Library results" }),
   );
@@ -83,6 +80,87 @@ it("opens a section gallery from the keyboard and replaces its children with the
   expect(
     results.queryByRole("link", { name: "Customer dashboard" }),
   ).toBeNull();
+});
+
+it.each(["ar", "en"] as const)(
+  "expands and collapses independently without navigating or moving focus in %s",
+  async (language) => {
+    persist(storageKeys.documentation, { language });
+    render(<Workbench />);
+    const user = userEvent.setup();
+    const nav = within(
+      screen.getByRole("navigation", {
+        name: language === "ar" ? "المكوّنات" : "Components",
+      }),
+    );
+    const path = window.location.href;
+    const main = screen.getByRole("main");
+    const toggle = nav.getByRole("button", {
+      name:
+        language === "ar" ? "شاشات: توسيع القسم" : "Screens: Expand section",
+    });
+    toggle.focus();
+    await user.keyboard(" ");
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(toggle).toHaveFocus();
+    expect(
+      nav.getByRole("button", {
+        name: language === "ar" ? "الأزرار" : "Button",
+      }),
+    ).toBeVisible();
+    expect(
+      nav.getByRole("button", {
+        name: language === "ar" ? "لوحة العملاء" : "Customer dashboard",
+      }),
+    ).toBeVisible();
+    const target = document.getElementById(
+      toggle.getAttribute("aria-controls")!,
+    );
+    expect(target).not.toBeNull();
+    await user.keyboard("{Enter}");
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveFocus();
+    expect(
+      nav.queryByRole("button", {
+        name: language === "ar" ? "لوحة العملاء" : "Customer dashboard",
+      }),
+    ).toBeNull();
+    expect(window.location.href).toBe(path);
+    expect(screen.getByRole("main")).toBe(main);
+  },
+);
+
+it("keeps section choices when closing and reopening the mobile drawer", async () => {
+  const media = window.matchMedia;
+  const mobile = vi.spyOn(window, "matchMedia").mockImplementation((query) => ({
+    ...media(query),
+    matches: query === "(max-width: 760px)",
+  }));
+  persist(storageKeys.documentation, { language: "en" });
+  const user = userEvent.setup();
+  render(<Workbench />);
+  await user.click(screen.getByRole("button", { name: "Open navigation" }));
+  let drawer = within(screen.getByRole("dialog", { name: "Components" }));
+  await user.click(
+    drawer.getByRole("button", { name: "Screens: Expand section" }),
+  );
+  await user.click(
+    drawer.getByRole("button", { name: "Forms: Collapse section" }),
+  );
+  expect(screen.getByRole("dialog", { name: "Components" })).toBeVisible();
+  await user.keyboard("{Escape}");
+  await user.click(screen.getByRole("button", { name: "Open navigation" }));
+  drawer = within(screen.getByRole("dialog", { name: "Components" }));
+  expect(
+    drawer.getByRole("button", { name: "Screens: Collapse section" }),
+  ).toHaveAttribute("aria-expanded", "true");
+  expect(
+    drawer.getByRole("button", { name: "Forms: Expand section" }),
+  ).toHaveAttribute("aria-expanded", "false");
+  await user.click(drawer.getByRole("link", { name: "Forms" }));
+  expect(screen.queryByRole("dialog")).toBeNull();
+  expect(window.location.search).toBe("?category=forms");
+  mobile.mockRestore();
 });
 
 it("keeps the curated page and URL when switching languages with the keyboard", async () => {

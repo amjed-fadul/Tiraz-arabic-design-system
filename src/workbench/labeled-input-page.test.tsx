@@ -43,8 +43,12 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
-  // Input expands its Forms section; the other section children stay unmounted.
-  expect(nav.getAllByRole("button")).toHaveLength(
+  // Input starts with Forms open; other section children stay hidden.
+  expect(
+    nav
+      .getAllByRole("button")
+      .filter((button) => !button.hasAttribute("aria-expanded")),
+  ).toHaveLength(
     navigationGroups.find((group) => group.id === "forms")!.items.length,
   );
   const rail = within(

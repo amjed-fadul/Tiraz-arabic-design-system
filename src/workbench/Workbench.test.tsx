@@ -127,7 +127,11 @@ it("places only navigation in its sidebar and both settings sections in the pane
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
   // Only the current component's section is expanded.
-  expect(within(nav).getAllByRole("button")).toHaveLength(
+  expect(
+    within(nav)
+      .getAllByRole("button")
+      .filter((button) => !button.hasAttribute("aria-expanded")),
+  ).toHaveLength(
     navigationGroups.find((group) => group.id === "forms")!.items.length,
   );
   expect(within(nav).queryByText("خصائص الأزرار")).not.toBeInTheDocument();

@@ -346,7 +346,11 @@ it.each([
     at(path);
     const nav = screen.getByRole("navigation", { name });
     expect(within(nav).getAllByRole("link").length).toBeGreaterThan(1);
-    expect(nav.querySelector("svg, img")).toBeNull();
+    expect(
+      nav.querySelector(
+        ".component-nav-items svg, .component-nav-items img, .component-nav-heading svg, .component-nav-heading img",
+      ),
+    ).toBeNull();
     const start = screen.getByRole("navigation", {
       name: language === "ar" ? "البداية" : "Getting started",
     });

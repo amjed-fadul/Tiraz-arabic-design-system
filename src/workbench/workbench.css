@@ -1069,31 +1069,6 @@ bdi {
 .component-nav-items[hidden] {
   display: none;
 }
-.component-nav-toggle {
-  padding: 0;
-}
-.component-nav .component-nav-disclosure {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  inline-size: 100%;
-  min-block-size: 32px;
-  padding: 4px 10px;
-  border-radius: var(--radius-item);
-  color: var(--text);
-}
-.component-nav .component-nav-disclosure {
-  font-size: var(--text-meta);
-  font-weight: var(--weight-semibold);
-}
-.component-nav-disclosure > svg {
-  flex: none;
-  transition: rotate var(--motion-state) var(--ease-out);
-}
-.component-nav-disclosure[aria-expanded="true"] > svg {
-  rotate: 180deg;
-}
-
 /* Every demo shares its frame; canvases only arrange the component body. */
 .playground-terminal,
 .playground-chat-app,

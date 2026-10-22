@@ -64,6 +64,7 @@ import { CopyControl } from "./CopyControl";
 import { PromptPanel } from "./PromptPanel";
 import { generateCode, generatePrompt } from "./generate";
 import { DocsDrawer } from "./DocsDrawer";
+import { ComponentNavigation } from "./ComponentNavigation";
 import { destination, readSiteRoute, routePath } from "./site-routes";
 import type { SiteRoute } from "./site-routes";
 import { SiteLink } from "./SiteLink";
@@ -88,6 +89,17 @@ function watchNarrow(change: () => void) {
   return () => query.removeEventListener("change", change);
 }
 const isNarrow = () => window.matchMedia(narrowQuery).matches;
+function navigationSection(route: SiteRoute): string | undefined {
+  if (route.kind === "screen") return "screens";
+  if (route.kind === "library") return route.category;
+  if (route.kind === "illustrations") return "illustrations";
+  if (route.kind !== "component") return undefined;
+  const parent = nestedParts[route.id as keyof typeof nestedParts];
+  return navigationGroups.find((group) =>
+    group.items.some((item) => item.id === (parent ?? route.id)),
+  )?.id;
+}
+
 function BrandMark() {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
@@ -101,142 +113,6 @@ function BrandMark() {
         strokeWidth="3"
       />
     </svg>
-  );
-}
-/** One section stays expanded, following the current page or gallery. */
-function ComponentNavigation({
-  language,
-  route,
-  navigate,
-}: {
-  language: Language;
-  route: SiteRoute;
-  navigate: (route: SiteRoute) => void;
-}) {
-  const id = useId();
-  const t = words(language);
-  const active = route.kind === "component" ? route.id : undefined;
-  const parent = nestedParts[active as keyof typeof nestedParts];
-  const expanded =
-    route.kind === "screen"
-      ? "screens"
-      : route.kind === "library"
-        ? route.category
-        : route.kind === "illustrations"
-          ? "illustrations"
-          : navigationGroups.find((group) =>
-              group.items.some((item) => item.id === (parent ?? active)),
-            )?.id;
-  return (
-    <nav
-      className="component-nav site-secondary"
-      aria-label={label("components", language)}
-    >
-      {navigationGroups.map((group) => (
-        <div
-          key={group.id}
-          className="component-nav-group"
-          role="group"
-          aria-label={localize(group.name, language)}
-        >
-          <h2 className="component-nav-heading">
-            <SiteLink
-              className="component-nav-section"
-              route={{ kind: "library", category: group.id }}
-              navigate={navigate}
-              aria-expanded={expanded === group.id}
-              aria-controls={
-                expanded === group.id ? `${id}-${group.id}` : undefined
-              }
-              aria-current={
-                route.kind === "library" && route.category === group.id
-                  ? "page"
-                  : undefined
-              }
-            >
-              {localize(group.name, language)}
-              <span className="component-nav-chevron" aria-hidden="true" />
-            </SiteLink>
-          </h2>
-          {expanded === group.id && (
-            <div id={`${id}-${group.id}`} className="component-nav-items">
-              {group.items.map((item) => (
-                <button
-                  type="button"
-                  key={item.id}
-                  aria-current={
-                    active === item.id || parent === item.id
-                      ? "page"
-                      : undefined
-                  }
-                  onClick={() => navigate({ kind: "component", id: item.id })}
-                >
-                  {localize(item.name, language)}
-                </button>
-              ))}
-              {group.id === "screens" &&
-                screens.map((item) => (
-                  <button
-                    type="button"
-                    key={item.slug}
-                    aria-current={
-                      route.kind === "screen" && route.slug === item.slug
-                        ? "page"
-                        : undefined
-                    }
-                    onClick={() =>
-                      navigate({ kind: "screen", slug: item.slug })
-                    }
-                  >
-                    {localize(item.name, language)}
-                  </button>
-                ))}
-            </div>
-          )}
-        </div>
-      ))}
-      <div
-        className="component-nav-group docs-navigation-resources"
-        role="group"
-        aria-label={t("الرسوم التوضيحية", "Illustrations")}
-      >
-        <h2 className="component-nav-heading">
-          <SiteLink
-            className="component-nav-section"
-            route={{ kind: "illustrations" }}
-            navigate={navigate}
-            aria-expanded={expanded === "illustrations"}
-            aria-controls={
-              expanded === "illustrations" ? `${id}-illustrations` : undefined
-            }
-            aria-current={
-              route.kind === "illustrations" && !route.id ? "page" : undefined
-            }
-          >
-            {t("الرسوم التوضيحية", "Illustrations")}
-            <span className="component-nav-chevron" aria-hidden="true" />
-          </SiteLink>
-        </h2>
-        {expanded === "illustrations" && (
-          <div id={`${id}-illustrations`} className="component-nav-items">
-            {illustrations.map((item) => (
-              <SiteLink
-                key={item.id}
-                route={{ kind: "illustrations", id: item.id }}
-                navigate={navigate}
-                aria-current={
-                  route.kind === "illustrations" && route.id === item.id
-                    ? "page"
-                    : undefined
-                }
-              >
-                {localize(item.name, language)}
-              </SiteLink>
-            ))}
-          </div>
-        )}
-      </div>
-    </nav>
   );
 }
 type ScreenWidth = "desktop" | "tablet" | "phone";
@@ -414,6 +290,19 @@ export function Workbench() {
     readSiteRoute(new URL(window.location.href), readDocumentation()),
   );
   const initialRoute = useRef(route);
+  const [openNavigationSections, setOpenNavigationSections] = useState<
+    string[]
+  >(() => {
+    const section = navigationSection(route);
+    return section ? [section] : [];
+  });
+  function toggleNavigationSection(section: string) {
+    setOpenNavigationSections((open) =>
+      open.includes(section)
+        ? open.filter((item) => item !== section)
+        : [...open, section],
+    );
+  }
   const language = documentation.language,
     active = route.kind === "component" ? route.id : documentation.active,
     screenSlug = route.kind === "screen" ? route.slug : null,
@@ -711,6 +600,11 @@ export function Workbench() {
       if (history && !samePath)
         window.history.pushState({}, "", routePath(next));
       focusRoute.current = !keepFilterFocus;
+      const section = navigationSection(next);
+      if (section)
+        setOpenNavigationSections((open) =>
+          open.includes(section) ? open : [...open, section],
+        );
       setRoute(next);
       if (!keepFilterFocus) window.scrollTo(0, 0);
     },
@@ -977,6 +871,8 @@ export function Workbench() {
         language={language}
         route={route}
         navigate={navigate}
+        openSections={openNavigationSections}
+        onToggleSection={toggleNavigationSection}
       />
     </div>
   );

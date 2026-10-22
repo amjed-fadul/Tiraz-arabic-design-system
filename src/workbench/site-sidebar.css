@@ -58,6 +58,8 @@
   padding: var(--space-6) var(--space-4);
   scrollbar-width: thin;
   scrollbar-gutter: stable;
+  overscroll-behavior-y: contain;
+  overflow-anchor: none;
   opacity: 1;
   transition: opacity var(--motion-collapse) var(--ease-out);
 }
@@ -160,52 +162,88 @@
   border-inline-start-color: transparent;
 }
 
-/* Section titles open a focused gallery and its one matching navigation list. */
+/* Titles navigate to galleries; adjacent controls expand each list independently. */
 .docs-shell .component-nav-group + .component-nav-group {
   margin-block-start: var(--space-2);
 }
+.component-nav-heading-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
 .docs-shell .component-nav-heading {
+  flex: 1;
+  min-inline-size: 0;
   padding: 0;
   margin: 0;
 }
 .docs-shell .component-nav .component-nav-section {
-  justify-content: space-between;
-  min-block-size: var(--control-height);
+  min-block-size: var(--space-10);
   padding-inline: var(--space-2);
   font-size: var(--text-body);
   font-weight: var(--weight-semibold);
-  color: var(--text-secondary);
-}
-.docs-shell .component-nav .component-nav-section[aria-expanded="true"] {
   color: var(--text);
 }
 .docs-shell .component-nav .component-nav-section[aria-current="page"] {
-  background: transparent;
+  background: var(--wash);
 }
 .docs-shell .component-nav .component-nav-section::before {
   display: none;
 }
-.docs-shell .component-nav-chevron {
+.docs-shell .component-nav .component-nav-toggle {
   flex: none;
-  inline-size: var(--space-2);
-  block-size: var(--space-2);
-  margin-inline-end: var(--space-2);
-  border-inline-end: 1px solid currentColor;
-  border-block-end: 1px solid currentColor;
-  transform: rotate(45deg);
+  inline-size: var(--space-10);
+  min-block-size: var(--space-10);
+  padding: 0;
+  justify-content: center;
+  color: var(--text-muted);
 }
-.docs-shell
-  .component-nav-section[aria-expanded="true"]
-  .component-nav-chevron {
-  transform: rotate(225deg);
+.component-nav-toggle svg {
+  flex: none;
+  transform: rotate(-90deg);
+  transition: transform var(--motion-collapse) var(--ease-out);
 }
-.docs-shell .component-nav-section:dir(rtl) .component-nav-chevron {
-  transform: rotate(-45deg);
+.component-nav-toggle:dir(rtl) svg {
+  transform: rotate(90deg);
 }
-.docs-shell
-  .component-nav-section[aria-expanded="true"]:dir(rtl)
-  .component-nav-chevron {
-  transform: rotate(-225deg);
+.component-nav-toggle[aria-expanded="true"] svg {
+  transform: rotate(0deg);
+}
+.component-nav-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--motion-collapse-exit) var(--ease-out),
+    visibility 0s linear var(--motion-collapse-exit);
+}
+.component-nav-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-duration: var(--motion-collapse), 0s;
+  transition-delay: 0s;
+}
+.component-nav-clip {
+  min-block-size: 0;
+  overflow: hidden;
+}
+.component-nav-panel .component-nav-items {
+  padding-block: var(--space-1);
+  padding-inline-end: var(--space-1);
+}
+.docs-shell .docs-drawer-body {
+  overscroll-behavior-y: contain;
+  overflow-anchor: none;
+  scrollbar-gutter: stable;
+}
+@media (pointer: coarse) {
+  .docs-shell .component-nav .component-nav-toggle,
+  .docs-shell .component-nav .component-nav-section {
+    min-block-size: calc(var(--space-10) + var(--space-1));
+  }
+  .docs-shell .component-nav .component-nav-toggle {
+    inline-size: calc(var(--space-10) + var(--space-1));
+  }
 }
 .docs-shell .docs-navigation-resources {
   border-block-start: 1px solid var(--border);

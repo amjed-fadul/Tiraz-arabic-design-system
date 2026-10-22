@@ -46,18 +46,21 @@ function stubStage(width: number, height: number) {
 it("opens the Screens section and lists its children as buttons, with no new-tab links", async () => {
   render(<Workbench />);
   await userEvent.click(nav().getByRole("link", { name: "شاشات" }));
-  const section = within(
-    nav().getByRole("heading", { level: 2, name: "شاشات" }).parentElement!,
-  );
+  const section = within(nav().getByRole("group", { name: "شاشات" }));
   expect(
-    section.getAllByRole("button").map((item) => item.textContent),
+    section
+      .getAllByRole("button")
+      .filter((item) => !item.hasAttribute("aria-expanded"))
+      .map((item) => item.textContent),
   ).toEqual(screens.map((item) => item.name[0]));
   expect(section.getAllByRole("link")).toHaveLength(1);
   expect(section.getByRole("link", { name: "شاشات" })).not.toHaveAttribute(
     "target",
   );
   expect(
-    screen.getByRole("group", { name: "شاشات" }).querySelector("svg"),
+    screen
+      .getByRole("group", { name: "شاشات" })
+      .querySelector(".component-nav-items svg"),
   ).toBeNull();
 });
 
@@ -75,7 +78,9 @@ it("opens a screen's page with the screen in an iframe", async () => {
     "aria-current",
     "page",
   );
-  expect(nav().queryByRole("button", { name: "الأزرار" })).toBeNull();
+  expect(nav().getByRole("button", { name: "الأزرار" })).not.toHaveAttribute(
+    "aria-current",
+  );
   // A screen page has no prompt, code view or settings.
   expect(
     screen.queryByRole("heading", { name: "استخدمه في تطبيقك" }),
