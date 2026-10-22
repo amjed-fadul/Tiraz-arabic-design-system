@@ -9,9 +9,11 @@ import "lenis/dist/lenis.css";
 import "./fonts.css";
 import "./landing.css";
 import { Landing } from "./Landing";
+import { SiteAnalytics } from "../SiteAnalytics";
 
 createRoot(document.getElementById("landing-root")!).render(
   <StrictMode>
     <Landing />
+    <SiteAnalytics />
   </StrictMode>,
 );

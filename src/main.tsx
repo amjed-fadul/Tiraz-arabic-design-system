@@ -22,6 +22,7 @@ import { screenPath } from "./examples/frame/screen";
 import { Workbench } from "./workbench/Workbench";
 import { StandalonePlayground } from "./workbench/StandalonePlayground";
 import { navigationCatalog } from "./workbench/catalog";
+import { SiteAnalytics } from "./SiteAnalytics";
 // Standalone example screens.
 const routes: { path: string; component: ComponentType }[] = [
   { path: screenPath("dashboard"), component: Dashboard },
@@ -51,5 +52,6 @@ createRoot(document.getElementById("root")!).render(
     ) : (
       <Workbench />
     )}
+    <SiteAnalytics />
   </StrictMode>,
 );
