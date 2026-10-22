@@ -47,8 +47,11 @@ describe("landing pattern previews", () => {
 
   it("previews the edited request with its current context and keeps entry focus", async () => {
     const user = userEvent.setup();
-    showcase();
+    const view = showcase();
     const entry = screen.getByRole("combobox", { name: "Your request" });
+    const mascot = () =>
+      view.container.querySelector(".tz-task-starter .khayt");
+    expect(mascot()).toHaveAttribute("data-state", "idle");
     await user.click(screen.getByRole("button", { name: "Review the brief" }));
     expect(entry).toHaveValue(
       "Review the project brief and list the open questions.",
@@ -66,14 +69,23 @@ describe("landing pattern previews", () => {
     ).toBeVisible();
     expect(updates()).toHaveTextContent(/Local preview ready.*1/);
     expect(screen.getAllByRole("status")).toHaveLength(1);
+    expect(mascot()).toHaveAttribute("data-state", "done");
+    await user.type(entry, " Include owners.");
+    expect(mascot()).toHaveAttribute("data-state", "idle");
+    expect(
+      screen.queryByText("Prepare a launch checklist.", { selector: "p" }),
+    ).not.toBeInTheDocument();
   });
 
   it("runs only on request, stops its pending steps, and replays from the start", async () => {
     vi.useFakeTimers();
     const view = showcase();
+    const mascot = () => view.container.querySelector(".tz-agent-run .khayt");
+    expect(mascot()).toHaveAttribute("data-state", "waiting");
     await act(async () => vi.advanceTimersByTime(12_000));
     expect(screen.getByRole("button", { name: /Start now/ })).toBeEnabled();
     fireEvent.click(screen.getByRole("button", { name: /Start now/ }));
+    expect(mascot()).toHaveAttribute("data-state", "working");
     await act(async () => vi.advanceTimersByTime(1_500));
     const stop = screen.getByRole("button", { name: "Stop" });
     stop.focus();
@@ -83,6 +95,7 @@ describe("landing pattern previews", () => {
     ).toHaveFocus();
     await act(async () => vi.advanceTimersByTime(12_000));
     expect(updates()).toHaveTextContent("Task preview stopped");
+    expect(mascot()).toHaveAttribute("data-state", "idle");
     const replay = screen.getByRole("button", { name: "Replay task" });
     replay.focus();
     fireEvent.click(replay);
@@ -93,10 +106,12 @@ describe("landing pattern previews", () => {
       await act(async () => vi.advanceTimersByTime(1_500));
     }
     expect(updates()).toHaveTextContent("Task preview complete");
+    expect(mascot()).toHaveAttribute("data-state", "done");
     expect(
       screen.getByText("Launch checklist", { selector: "bdi" }),
     ).toBeVisible();
     fireEvent.click(screen.getByRole("button", { name: "Replay task" }));
+    expect(mascot()).toHaveAttribute("data-state", "working");
     expect(screen.getByRole("button", { name: "Stop" })).toBeEnabled();
     view.unmount();
     expect(vi.getTimerCount()).toBe(0);
@@ -125,10 +140,14 @@ describe("landing pattern previews", () => {
   it("finishes image previews, selects a local version, and reruns variations", async () => {
     vi.useFakeTimers();
     const view = showcase();
+    const mascot = () =>
+      view.container.querySelector(".tz-image-generation .khayt");
+    expect(mascot()).toHaveAttribute("data-state", "idle");
     expect(screen.getByRole("radio", { name: "Version 1" })).toBeDisabled();
     const generate = screen.getByRole("button", { name: "Generate preview" });
     generate.focus();
     fireEvent.click(generate);
+    expect(mascot()).toHaveAttribute("data-state", "working");
     expect(
       screen.getByRole("region", { name: "Image generation" }),
     ).toHaveFocus();
@@ -137,6 +156,7 @@ describe("landing pattern previews", () => {
     ).toBeVisible();
     expect(screen.getByRole("button", { name: "Use image" })).toBeDisabled();
     await act(async () => vi.advanceTimersByTime(4_500));
+    expect(mascot()).toHaveAttribute("data-state", "done");
     fireEvent.click(screen.getByRole("radio", { name: "Version 2" }));
     expect(screen.getByRole("radio", { name: "Version 2" })).toBeChecked();
     fireEvent.click(screen.getByRole("button", { name: "Use image" }));
@@ -149,6 +169,7 @@ describe("landing pattern previews", () => {
     fireEvent.click(
       screen.getByRole("button", { name: "Generate variations" }),
     );
+    expect(mascot()).toHaveAttribute("data-state", "working");
     await act(async () => vi.advanceTimersByTime(4_500));
     expect(screen.getByRole("button", { name: "Use image" })).toBeEnabled();
     fireEvent.click(
@@ -160,7 +181,16 @@ describe("landing pattern previews", () => {
 
   it("keeps the English prompt and uses the configured digits in Arabic feedback", async () => {
     vi.useFakeTimers();
-    showcase(true, "latn");
+    const view = showcase(true, "latn");
+    expect(
+      within(view.container.querySelector(".tz-task-starter")!).getByText(
+        "مساعد المشروع",
+      ),
+    ).toBeVisible();
+    for (const mascot of view.container.querySelectorAll(".khayt")) {
+      expect(mascot).toHaveAttribute("aria-hidden", "true");
+      expect(mascot).toHaveAttribute("data-animated", "false");
+    }
     expect(screen.getByRole("combobox", { name: "طلبك" })).toHaveValue(
       "Turn this project brief into a clear launch plan.",
     );

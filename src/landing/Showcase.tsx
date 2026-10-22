@@ -10,12 +10,15 @@ import {
   TaskStarter,
 } from "../system";
 import type {
+  AgentPresentation,
   AgentStep,
   AgentTaskProps,
   ApprovalDecision,
   ApprovalRequest,
   ImageGenerationProps,
 } from "../system";
+import { Khayt } from "../mascot/Khayt";
+import type { KhaytState } from "../mascot/khayt-motion";
 import { numberLocale } from "../system/config";
 import { useSystem } from "../system/useSystem";
 import finishedBand from "./assets/loom/finished-band.webp";
@@ -23,6 +26,14 @@ import weavingDraft from "./assets/loom/draft.webp";
 import "./showcase.css";
 
 type DemoProps = { ar: boolean; announce: (message: string) => void };
+
+function previewAgent(state: KhaytState): AgentPresentation {
+  const color = "#946D91";
+  return {
+    avatar: <Khayt state={state} color={color} size={48} animated />,
+    color,
+  };
+}
 
 function Tile({
   title,
@@ -102,8 +113,15 @@ function StarterPreview({ ar, announce }: DemoProps) {
   return (
     <div className="lp-showcase-demo">
       <TaskStarter
+        agentPresentation={{
+          ...previewAgent(receipt ? "done" : "idle"),
+          name: ar ? "مساعد المشروع" : "Project assistant",
+        }}
         value={value}
-        onValueChange={setValue}
+        onValueChange={(next) => {
+          setValue(next);
+          setReceipt(undefined);
+        }}
         onSubmit={(prompt, context) => {
           setReceipt({ prompt, count: context.length });
           announce(receiptLabel(context.length));
@@ -111,6 +129,7 @@ function StarterPreview({ ar, announce }: DemoProps) {
         context={records.filter((record) => contextIds.includes(record.id))}
         mentionOptions={records}
         onAddContext={(id) => {
+          setReceipt(undefined);
           setContextIds((current) => [...new Set([...current, id])]);
           const label = records.find((record) => record.id === id)?.label;
           announce(
@@ -118,6 +137,7 @@ function StarterPreview({ ar, announce }: DemoProps) {
           );
         }}
         onRemoveContext={(id) => {
+          setReceipt(undefined);
           setContextIds((current) => current.filter((record) => record !== id));
           const label = records.find((record) => record.id === id)?.label;
           announce(
@@ -128,6 +148,7 @@ function StarterPreview({ ar, announce }: DemoProps) {
         onSuggestion={(id) => {
           const suggestion = suggestions.find((item) => item.id === id);
           if (suggestion) {
+            setReceipt(undefined);
             setValue(suggestion.prompt);
             announce(
               ar
@@ -208,9 +229,18 @@ function AgentPreview({ ar, announce }: DemoProps) {
     announce(ar ? "بدأت معاينة المهمة" : "Task preview started");
   }
   const replay = ar ? "أعد تجربة المهمة" : "Replay task";
+  const mascotState =
+    status === "plan"
+      ? "waiting"
+      : status === "running"
+        ? "working"
+        : status === "completed"
+          ? "done"
+          : "idle";
   return (
     <div ref={root} className="lp-showcase-demo">
       <AgentTask
+        agentPresentation={previewAgent(mascotState)}
         title={ar ? "تجهيز خطة الإطلاق" : "Prepare the launch plan"}
         agent={ar ? "معاينة محلية" : "Local preview"}
         status={status}
@@ -368,6 +398,13 @@ function ImagePreview({ ar, announce }: DemoProps) {
   return (
     <div ref={root} className="lp-showcase-demo lp-showcase-demo-image">
       <ImageGeneration
+        agentPresentation={previewAgent(
+          status === "weaving"
+            ? "working"
+            : status === "completed"
+              ? "done"
+              : "idle",
+        )}
         prompt="Ivory threads, a deep green woven pattern, and soft studio light."
         status={status}
         images={[
