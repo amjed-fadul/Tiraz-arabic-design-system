@@ -340,16 +340,14 @@ it.each([
   ["/illustrations", "ar", "المكوّنات", "ابدأ هنا"],
   ["/illustrations", "en", "Components", "Start here"],
 ] as const)(
-  "keeps the same text-only section navigation on %s in %s",
+  "keeps section names accessible and menu items text-only on %s in %s",
   (path, language, name, startName) => {
     persist(storageKeys.documentation, { language });
     at(path);
     const nav = screen.getByRole("navigation", { name });
     expect(within(nav).getAllByRole("link").length).toBeGreaterThan(1);
     expect(
-      nav.querySelector(
-        ".component-nav-items svg, .component-nav-items img, .component-nav-heading svg, .component-nav-heading img",
-      ),
+      nav.querySelector(".component-nav-items svg, .component-nav-items img"),
     ).toBeNull();
     const start = screen.getByRole("navigation", {
       name: language === "ar" ? "البداية" : "Getting started",
@@ -357,7 +355,6 @@ it.each([
     expect(
       within(start).getByRole("link", { name: startName }),
     ).toHaveAttribute("href", "/start");
-    expect(start.querySelector("svg, img")).toBeNull();
     expect(
       screen
         .getByRole("button", {

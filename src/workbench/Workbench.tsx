@@ -13,6 +13,7 @@ import { ArrowUpRight, SlidersHorizontal, X } from "lucide-react";
 import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/csr/SidebarSimple";
 import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
 import { SunIcon } from "@phosphor-icons/react/dist/csr/Sun";
+import { RocketLaunchIcon } from "@phosphor-icons/react/dist/csr/RocketLaunch";
 import {
   Button,
   Sheet,
@@ -64,7 +65,7 @@ import { CopyControl } from "./CopyControl";
 import { PromptPanel } from "./PromptPanel";
 import { generateCode, generatePrompt } from "./generate";
 import { DocsDrawer } from "./DocsDrawer";
-import { ComponentNavigation } from "./ComponentNavigation";
+import { ComponentNavigation, NavigationHeading } from "./ComponentNavigation";
 import { destination, readSiteRoute, routePath } from "./site-routes";
 import type { SiteRoute } from "./site-routes";
 import { SiteLink } from "./SiteLink";
@@ -857,14 +858,14 @@ export function Workbench() {
         className="component-nav site-secondary docs-navigation-start"
         aria-label={t("البداية", "Getting started")}
       >
-        <div className="component-nav-items">
-          <SiteLink
-            route={{ kind: "start" }}
+        <div className="component-nav-heading-row">
+          <NavigationHeading
+            name={t("ابدأ هنا", "Start here")}
+            icon={RocketLaunchIcon}
+            target={{ kind: "start" }}
             navigate={navigate}
-            aria-current={route.kind === "start" ? "page" : undefined}
-          >
-            {t("ابدأ هنا", "Start here")}
-          </SiteLink>
+            current={route.kind === "start"}
+          />
         </div>
       </nav>
       <ComponentNavigation

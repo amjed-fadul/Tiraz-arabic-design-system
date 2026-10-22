@@ -1,6 +1,20 @@
 import { useId } from "react";
 import type { ReactNode } from "react";
 import { CaretDownIcon } from "@phosphor-icons/react/dist/csr/CaretDown";
+import { BellIcon } from "@phosphor-icons/react/dist/csr/Bell";
+import { ChartBarIcon } from "@phosphor-icons/react/dist/csr/ChartBar";
+import { ChatCircleDotsIcon } from "@phosphor-icons/react/dist/csr/ChatCircleDots";
+import { CompassIcon } from "@phosphor-icons/react/dist/csr/Compass";
+import { DatabaseIcon } from "@phosphor-icons/react/dist/csr/Database";
+import { FolderOpenIcon } from "@phosphor-icons/react/dist/csr/FolderOpen";
+import { ListChecksIcon } from "@phosphor-icons/react/dist/csr/ListChecks";
+import { PaletteIcon } from "@phosphor-icons/react/dist/csr/Palette";
+import { RobotIcon } from "@phosphor-icons/react/dist/csr/Robot";
+import { SlidersHorizontalIcon } from "@phosphor-icons/react/dist/csr/SlidersHorizontal";
+import { SparkleIcon } from "@phosphor-icons/react/dist/csr/Sparkle";
+import { SquaresFourIcon } from "@phosphor-icons/react/dist/csr/SquaresFour";
+import { StackIcon } from "@phosphor-icons/react/dist/csr/Stack";
+import type { Icon } from "@phosphor-icons/react";
 import { Button } from "../system/Button";
 import { screens } from "../examples/frame/screen";
 import { navigationGroups, nestedParts } from "./catalog";
@@ -11,8 +25,58 @@ import { SiteLink } from "./SiteLink";
 import type { Navigate } from "./SiteLink";
 import type { SiteRoute } from "./site-routes";
 
+const sectionIcons: Record<string, Icon> = {
+  screens: SquaresFourIcon,
+  ask: ChatCircleDotsIcon,
+  delegate: RobotIcon,
+  create: SparkleIcon,
+  understand: SlidersHorizontalIcon,
+  forms: ListChecksIcon,
+  files: FolderOpenIcon,
+  navigation: CompassIcon,
+  data: DatabaseIcon,
+  display: BellIcon,
+  overlays: StackIcon,
+  charts: ChartBarIcon,
+};
+
+export function NavigationHeading({
+  name,
+  icon: SectionIcon,
+  target,
+  current,
+  navigate,
+}: {
+  name: string;
+  icon: Icon;
+  target: SiteRoute;
+  current: boolean;
+  navigate: Navigate;
+}) {
+  return (
+    <h2 className="component-nav-heading">
+      <SiteLink
+        className="component-nav-section"
+        route={target}
+        navigate={navigate}
+        aria-current={current ? "page" : undefined}
+      >
+        <SectionIcon
+          className="component-nav-section-icon"
+          size={20}
+          weight="duotone"
+          aria-hidden="true"
+          focusable="false"
+        />
+        <span>{name}</span>
+      </SiteLink>
+    </h2>
+  );
+}
+
 function NavigationSection({
   name,
+  icon,
   language,
   target,
   current,
@@ -23,6 +87,7 @@ function NavigationSection({
   children,
 }: {
   name: string;
+  icon: Icon;
   language: Language;
   target: SiteRoute;
   current: boolean;
@@ -41,16 +106,13 @@ function NavigationSection({
       aria-label={name}
     >
       <div className="component-nav-heading-row">
-        <h2 className="component-nav-heading">
-          <SiteLink
-            className="component-nav-section"
-            route={target}
-            navigate={navigate}
-            aria-current={current ? "page" : undefined}
-          >
-            {name}
-          </SiteLink>
-        </h2>
+        <NavigationHeading
+          name={name}
+          icon={icon}
+          target={target}
+          current={current}
+          navigate={navigate}
+        />
         <Button
           variant="ghost"
           size="sm"
@@ -105,6 +167,7 @@ export function ComponentNavigation({
         <NavigationSection
           key={group.id}
           name={localize(group.name, language)}
+          icon={sectionIcons[group.id]}
           language={language}
           target={{ kind: "library", category: group.id }}
           navigate={navigate}
@@ -143,6 +206,7 @@ export function ComponentNavigation({
       ))}
       <NavigationSection
         name={t("الرسوم التوضيحية", "Illustrations")}
+        icon={PaletteIcon}
         language={language}
         target={{ kind: "illustrations" }}
         navigate={navigate}
