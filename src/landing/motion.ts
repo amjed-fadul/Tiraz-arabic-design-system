@@ -126,7 +126,10 @@ export function useSmoothScroll() {
         );
       }
       target.focus({ preventScroll: true });
-      lenis.scrollTo(target, { offset: -12 });
+      const headerBottom =
+        document.querySelector(".lp-header")?.getBoundingClientRect().bottom ??
+        0;
+      lenis.scrollTo(target, { offset: -headerBottom - 16 });
       history.replaceState(null, "", id);
     };
     void import("lenis")

@@ -221,7 +221,7 @@ export function ScreenFrame({
         <SidebarIdentity>
           <TirazMark className="screen-mark" />
           <SidebarLabel className="screen-sidebar-copy">
-            <span>{t("طِراز", "Tiraz")}</span>
+            <span lang="ar">طِراز</span>
           </SidebarLabel>
         </SidebarIdentity>
       </SidebarHeader>
@@ -379,7 +379,7 @@ export function ScreenFrame({
                       </span>
                       <span className="screen-brand">
                         <TirazMark className="screen-mark" />
-                        {t("طِراز", "Tiraz")}
+                        <span lang="ar">طِراز</span>
                       </span>
                     </div>
                     <ScreenDemoControls />

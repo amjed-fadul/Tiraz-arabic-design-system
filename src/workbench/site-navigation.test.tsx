@@ -326,7 +326,7 @@ it("puts Start here first, section disclosures next and Illustrations last, with
   expect(
     screen.queryByRole("navigation", { name: "Primary navigation" }),
   ).toBeNull();
-  const header = screen.getByRole("link", { name: "Tiraz" }).closest("header")!;
+  const header = screen.getByRole("link", { name: "طِراز" }).closest("header")!;
   expect(within(header).getAllByRole("link")).toHaveLength(1);
   const side = screen.getByRole("complementary", { name: "Components" });
   const headings = within(side).getAllByRole("heading", { level: 2 });

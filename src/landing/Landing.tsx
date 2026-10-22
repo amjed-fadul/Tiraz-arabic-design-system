@@ -41,7 +41,6 @@ function Wordmark() {
     <a className="lp-wordmark" href="#top">
       <TirazMark size={22} className="lp-warp-mark" />
       <span lang="ar">طِراز</span>
-      <span lang="en">Tiraz</span>
     </a>
   );
 }
@@ -171,8 +170,8 @@ export function Landing() {
                 </h1>
                 <p className="lp-lede lp-enter" data-step="2">
                   {ar
-                    ? "طِراز نظام تصميم مفتوح المصدر للوحات التحكم وتطبيقات الويب العربية. انسخ مكوّنات React إلى مشروعك وعدّلها بما يناسب تطبيقك."
-                    : "Tiraz is an open-source design system for Arabic dashboards and web apps. Copy the React components into your project and make them your own."}
+                    ? "مكوّنات React للوحات التحكم وتطبيقات الويب، بالعربية والإنجليزية. ثبّت الحزمة أو انسخ المصدر وعدّله ليناسب مشروعك."
+                    : "React components for dashboards and web apps, in Arabic and English. Install the package or copy the source and make it your own."}
                 </p>
                 <div className="lp-actions lp-enter" data-step="3">
                   <a className="lp-primary-link" href="#start">
@@ -216,8 +215,8 @@ export function Landing() {
               </h2>
               <p>
                 {ar
-                  ? "استكشف لوحة العملاء، ثم راجع الفواتير مع وكيل التحصيل. شاشات حقيقية يمكنك تجربتها هنا."
-                  : "Explore the customer dashboard, then review invoices with the collections agent. Real screens you can try right here."}
+                  ? "جرّب لوحة العملاء ومراجعة الفواتير مع المساعد، بمكوّنات طِراز نفسها."
+                  : "Try a customer dashboard and an assistant for invoice review, built with Tiraz."}
               </p>
             </div>
             <div className="lp-container lp-stage">
@@ -260,8 +259,8 @@ export function Landing() {
               <Showcase ar={ar} />
               <p className="lp-source-note">
                 {ar
-                  ? "هذه مكوّنات طِراز نفسها. جرّب الطلبات والقرارات وتوليد الصور، ثم افتح أي مكوّن لاستخدامه في تطبيقك."
-                  : "These are the Tiraz components themselves. Try requests, decisions and image generation, then open any component to use it in your app."}
+                  ? "أمثلة تفاعلية ببيانات تجريبية، تعمل داخل متصفحك. افتح أي مكوّن للاطلاع على الكود وخيارات التخصيص."
+                  : "Interactive demos with sample data, running in your browser. Open a component for its code and customization options."}
               </p>
             </div>
           </section>

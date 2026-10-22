@@ -3,7 +3,7 @@
   "exportName": "TabItem",
   "kind": "type",
   "source": "Tabs.tsx",
-  "sourceHash": "321eb455fa5a3e1814eddfe0e12f723d8aeae04557ac9e4210fcfea2ad3acce3",
+  "sourceHash": "6ee6d6a6de54a77b979e0ab07120868dcd0a80a4f929e411ec724cdcfb01a997",
   "type": "TabItem",
   "typeParameters": [],
   "props": {

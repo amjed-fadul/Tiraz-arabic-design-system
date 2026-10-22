@@ -1028,7 +1028,7 @@ export function Workbench() {
             </DocsDrawer>
             <a className="docs-brand" href="/landing.html">
               <TirazMark />
-              <span>{t("طِراز", "Tiraz")}</span>
+              <span lang="ar">طِراز</span>
             </a>
           </div>
           <div className="header-actions">

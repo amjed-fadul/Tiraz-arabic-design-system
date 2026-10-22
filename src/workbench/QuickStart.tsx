@@ -125,9 +125,13 @@ export function App() {
         </Heading>
         <p>
           {t(
-            "أمر واحد يجهّز المكوّنات وإرشاداتها في مشروعك. بعدها افتح أداة البرمجة التي تفضّلها، وابدأ بأول شاشة. يتطلّب Node.js 22.12 أو أحدث وReact 19.",
-            "One command adds the components and their guidance to your project. Then open your preferred coding tool and build your first screen. Requires Node.js 22.12 or newer and React 19.",
+            "ثبّت طِراز، ثم استخدم المكوّنات وإرشادات المساعد لبناء أول شاشة.",
+            "Install Tiraz, then use the components and coding guidance to build your first screen.",
           )}
+        </p>
+        <p className="quick-start-requirements">
+          <bdi dir="ltr">Node.js 22.12</bdi> {t("أو أحدث، و", "or newer, and ")}
+          <bdi dir="ltr">React 19</bdi>
         </p>
       </header>
       <div className="quick-start-steps">
@@ -141,58 +145,50 @@ export function App() {
             </StepHeading>
             <p>
               {t(
-                "ابدأ مشروع Vite جديدًا، أو أضف المصدر إلى مشروع Vite قائم. لأدوات البناء الأخرى، استخدم الاستيراد من الحزمة أدناه.",
-                "Create a Vite app or add editable source to an existing Vite React TypeScript app. For other bundlers, use package imports below.",
+                "اختر مشروع Vite جديدًا أو أضف المصدر إلى مشروع Vite قائم يستخدم React وTypeScript. لأدوات البناء الأخرى، افتح خيار الاستيراد من الحزمة أدناه.",
+                "Start a Vite app or add the source to an existing Vite React TypeScript project. For other bundlers, use package imports below.",
               )}
             </p>
             <div className="quick-start-install">
-              <div
-                className="quick-start-choice"
-                role="group"
-                aria-label={t("نوع المشروع", "Project type")}
-              >
-                <Button
-                  variant={existing ? "ghost" : "secondary"}
-                  aria-pressed={!existing}
-                  onClick={() => {
-                    setExisting(false);
-                    setFeedback(null);
-                  }}
+              <div className="quick-start-install-bar">
+                <div
+                  className="quick-start-choice"
+                  role="group"
+                  aria-label={t("نوع المشروع", "Project type")}
                 >
-                  {t("مشروع جديد", "New project")}
-                </Button>
-                <Button
-                  variant={existing ? "secondary" : "ghost"}
-                  aria-pressed={existing}
-                  onClick={() => {
-                    setExisting(true);
-                    setFeedback(null);
-                  }}
-                >
-                  {t("مشروع قائم", "Existing project")}
-                </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-pressed={!existing}
+                    onClick={() => {
+                      setExisting(false);
+                      setFeedback(null);
+                    }}
+                  >
+                    {t("مشروع جديد", "New project")}
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    aria-pressed={existing}
+                    onClick={() => {
+                      setExisting(true);
+                      setFeedback(null);
+                    }}
+                  >
+                    {t("مشروع قائم", "Existing project")}
+                  </Button>
+                </div>
+                {copyButton(
+                  installCommand,
+                  "install",
+                  t("نسخ أمر التثبيت", "Copy install command"),
+                )}
               </div>
               <div
                 className="quick-start-terminal"
                 aria-label={t("أمر التثبيت", "Install command")}
               >
-                <div className="quick-start-terminal-bar">
-                  <span>
-                    <bdi dir="ltr">npm</bdi>
-                  </span>
-                  <span className="quick-start-coming">
-                    {npmRelease.published ? (
-                      <bdi dir="ltr">v{npmRelease.version}</bdi>
-                    ) : (
-                      t("جاهزة للنشر", "Prepared for release")
-                    )}
-                  </span>
-                  {copyButton(
-                    installCommand,
-                    "install",
-                    t("نسخ أمر التثبيت", "Copy install command"),
-                  )}
-                </div>
                 <pre
                   dir="ltr"
                   lang="en"
@@ -202,19 +198,19 @@ export function App() {
                 >
                   <code>{installCommand}</code>
                 </pre>
-                <p className="quick-start-package-note">
-                  {npmRelease.published
-                    ? t(
-                        "ينسخ المصدر إلى src/system، ويحتفظ بالتراخيص وإرشادات المساعد. لا يستبدل ملفاتك الحالية.",
-                        "Copies editable source to src/system, with licenses and agent guidance. Existing source is never overwritten.",
-                      )
-                    : t(
-                        "الأمر جاهز للإطلاق، لكنه لن يعمل من سجل npm حتى يكتمل نشر الحزمة. يمكنك استخدام المصدر الآن.",
-                        "This is the release command. It will work from npm once package publication is complete; you can use the source today.",
-                      )}
-                </p>
               </div>
             </div>
+            <p className="quick-start-package-note">
+              {npmRelease.published
+                ? t(
+                    "المصدر وإرشاداته في src/system. لا يستبدل ملفات المصدر الحالية.",
+                    "Editable source and guidance in src/system. Existing source is never overwritten.",
+                  )
+                : t(
+                    "الأمر جاهز للإطلاق، لكنه لن يعمل من سجل npm حتى يكتمل نشر الحزمة. يمكنك استخدام المصدر الآن.",
+                    "This is the release command. It will work from npm once package publication is complete; you can use the source today.",
+                  )}
+            </p>
             <details className="quick-start-source">
               <summary>
                 <span>

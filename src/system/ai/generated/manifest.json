@@ -5,7 +5,7 @@
   "entry": "index.ts",
   "hashAlgorithm": "sha256",
   "hashScope": "Source-root files, including authored guidance and binary assets; excludes generated metadata, tests and CSS audit tooling.",
-  "sourceDigest": "8fce5e12cfe0da60c4f85ed38decdc1bef532dd1a4aa3e08d6b4319ef43c4c8a",
+  "sourceDigest": "bb1982a084cb21bf16832859f77143542af5ac198622ff3edd29cfd798ffad36",
   "files": {
     "AIMark.tsx": "848f4e233ae40235abb7ddfcda009707bd13471932509bc84e296820e7323e4e",
     "Accordion.tsx": "031f4e14f65056fd9818dcb81919bae7f112d52c648be4c3d287b543f32afafa",
@@ -84,7 +84,7 @@
     "SuggestedEdits.tsx": "0288e97df35ef60fc67da59363ebbf9ee236d9d85d166bf806900c46879ffe1a",
     "Switch.tsx": "98784d97339337294ce91788b980d7de3281f7454a02d84ef1434dd1428c38c0",
     "Table.tsx": "2459ed5e0e0eac588d2f13603ccc08f52fe19144825423cf72466568ef31c04b",
-    "Tabs.tsx": "321eb455fa5a3e1814eddfe0e12f723d8aeae04557ac9e4210fcfea2ad3acce3",
+    "Tabs.tsx": "6ee6d6a6de54a77b979e0ab07120868dcd0a80a4f929e411ec724cdcfb01a997",
     "TagInput.tsx": "7c0cf700cea567795662343f7137ac9b1c2a43c3ab803e0c0b0bda3d860348b2",
     "TaskRows.tsx": "7e02db2ca04fd901c5c8ab2d4a6b24cf48b531831ca6b7fffb46fb550d04bf2e",
     "TaskStarter.tsx": "34a91d7de51faa0a9dc647a5e519786f9b661bdbcc418416fcb32359defd0603",

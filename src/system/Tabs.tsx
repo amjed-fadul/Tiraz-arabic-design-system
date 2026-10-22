@@ -40,12 +40,11 @@ export function Tabs({
     const measure = () => {
       const tab = el.querySelector<HTMLElement>('[data-state="active"]');
       if (tab) {
-        const rect = tab.getBoundingClientRect();
-        const parent = el.getBoundingClientRect();
-        // From the list's padding edge, where the indicator is placed.
+        // Use layout coordinates: viewport rectangles include any ancestor's
+        // scale or perspective, which would be applied to the indicator twice.
         setIndicator({
-          width: rect.width,
-          x: rect.left - parent.left - el.clientLeft + el.scrollLeft,
+          width: tab.offsetWidth,
+          x: tab.offsetLeft,
         });
       }
     };

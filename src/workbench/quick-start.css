@@ -37,6 +37,11 @@
 .quick-start .quick-start-intro p {
   max-inline-size: 62ch;
 }
+.quick-start .quick-start-intro .quick-start-requirements {
+  margin-block-start: var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-label);
+}
 .quick-start .quick-start-steps {
   display: grid;
   gap: var(--space-10);
@@ -69,7 +74,7 @@
   letter-spacing: normal;
 }
 .quick-start .quick-start-install {
-  margin-block: var(--space-5) var(--space-4);
+  margin-block: var(--space-5) var(--space-3);
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-panel);
@@ -77,34 +82,41 @@
 }
 .quick-start .quick-start-choice {
   display: flex;
-  flex-wrap: wrap;
   gap: var(--space-1);
-  padding: var(--space-2);
-  border-block-end: 1px solid var(--border);
-  background: var(--surface);
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tray);
 }
-.quick-start .quick-start-terminal-bar {
+.quick-start .quick-start-install-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-4) var(--space-5) 0;
-  color: var(--text-muted);
-  font-size: var(--text-label);
+  padding: var(--space-2) var(--space-3);
+  border-block-end: 1px solid var(--border);
 }
-.quick-start .quick-start-coming {
-  padding: 0 var(--space-2);
-  border: 1px solid var(--border-strong);
+.quick-start .quick-start-choice > .tz-button {
   border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+.quick-start .quick-start-choice > .tz-button[aria-pressed="true"] {
+  background: var(--surface);
+  box-shadow: var(--shadow-control);
+  color: var(--text);
+}
+.quick-start .quick-start-install-bar > .copy-control {
+  flex: none;
   color: var(--text-secondary);
 }
 .quick-start .quick-start-terminal pre {
-  padding-block: var(--space-4);
+  padding-block: var(--space-5);
   color: var(--text);
+  white-space: pre;
+  overflow-wrap: normal;
 }
 .quick-start .quick-start-package-note {
-  padding: 0 var(--space-5) var(--space-5);
   font-size: var(--text-label);
+  color: var(--text-muted);
 }
 .quick-start .quick-start-prompt {
   overflow: hidden;
@@ -260,6 +272,13 @@
   .quick-start .quick-start-intro {
     margin-block-end: var(--space-8);
   }
+  .quick-start .quick-start-install-bar {
+    gap: var(--space-1);
+    padding-inline: var(--space-2);
+  }
+  .quick-start .quick-start-choice > .tz-button {
+    padding-inline: var(--space-1);
+  }
   .quick-start pre {
     padding: var(--space-4);
   }
@@ -267,8 +286,6 @@
     grid-template-columns: minmax(0, 1fr);
     margin-inline-start: 0;
   }
-  .quick-start .quick-start-terminal-bar,
-  .quick-start .quick-start-package-note,
   .quick-start .quick-start-examples summary {
     padding-inline: var(--space-4);
   }
@@ -277,8 +294,4 @@
   .quick-start summary > svg {
     transition: none;
   }
-}
-
-.quick-start .quick-start-choice > .tz-button {
-  flex: 1;
 }

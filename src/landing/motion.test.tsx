@@ -19,6 +19,7 @@ function Page() {
   useSmoothScroll();
   return (
     <>
+      <header className="lp-header" />
       <a href="#start">Get started</a>
       <a href="#explore">Browse components</a>
       <section id="start" tabIndex={-1} aria-labelledby="start-title">
@@ -42,18 +43,24 @@ beforeEach(() => {
 });
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
   vi.clearAllMocks();
 });
 
 describe("landing anchor navigation", () => {
   it("moves keyboard focus into setup so the next Tab reaches its first action", async () => {
     const user = userEvent.setup();
-    render(<Page />);
+    const { container } = render(<Page />);
+    vi.spyOn(
+      container.querySelector(".lp-header")!,
+      "getBoundingClientRect",
+    ).mockReturnValue({ bottom: 84 } as DOMRect);
     await waitFor(() => expect(lenis.create).toHaveBeenCalled());
     await user.tab();
     expect(screen.getByRole("link", { name: "Get started" })).toHaveFocus();
     await user.keyboard("{Enter}");
     const start = screen.getByRole("region", { name: "Start from source" });
+    expect(lenis.scrollTo).toHaveBeenCalledWith(start, { offset: -100 });
     expect(start).toHaveFocus();
     expect(window.location.hash).toBe("#start");
     await user.tab();

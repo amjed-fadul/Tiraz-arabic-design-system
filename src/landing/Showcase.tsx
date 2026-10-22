@@ -486,8 +486,8 @@ export function Showcase({ ar }: { ar: boolean }) {
         title={ar ? "طلب يبدأ بسياقه" : "Start with context"}
         caption={
           ar
-            ? "اكتب طلبًا، أرفق سياقه، وعاين النتيجة محليًا."
-            : "Write a request, attach its context, and preview it locally."
+            ? "اكتب طلبًا وأرفق المستندات التي يحتاجها المساعد."
+            : "Write a request and attach the documents your assistant needs."
         }
         component="task-starter"
         tag="TaskStarter"
@@ -512,8 +512,8 @@ export function Showcase({ ar }: { ar: boolean }) {
         title={ar ? "القرار بيدك" : "Make the decision"}
         caption={
           ar
-            ? "اعتماد واضح، مع إيصال لقرار يمكنك تغييره."
-            : "A clear approval, with a receipt for a decision you can change."
+            ? "راجع المقترح، ثم اعتمده أو واصل المراجعة."
+            : "Review the proposal, then approve it or keep reviewing."
         }
         component="approval-card"
         tag="ApprovalCard"
@@ -525,8 +525,8 @@ export function Showcase({ ar }: { ar: boolean }) {
         title={ar ? "من الوصف إلى الصورة" : "From prompt to image"}
         caption={
           ar
-            ? "جرّب التوليد، ثم اختر من صور طِراز المحلية."
-            : "Try the generation preview, then choose from Tiraz’s local images."
+            ? "شاهد مراحل التوليد، ثم اختر الصورة المناسبة."
+            : "Watch the generation preview, then choose an image."
         }
         component="image-generation"
         tag="ImageGeneration"

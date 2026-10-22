@@ -22,9 +22,6 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
       alt: ar
         ? "خيط أخضر يعبر خيوط السدى العاجية من اليمين إلى اليسار"
         : "A green thread passing through ivory warp threads from right to left",
-      caption: ar
-        ? "الخيط الأول يعبر النول من اليمين إلى اليسار."
-        : "The first thread crosses the loom from right to left.",
     },
     {
       title: ar
@@ -37,9 +34,6 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
       alt: ar
         ? "مخطط نسج على ورق شبكي بجانب القطعة المنسوجة منه"
         : "A weaving draft on grid paper beside the swatch woven from it",
-      caption: ar
-        ? "مخطط يوضّح ترتيب الخيوط والنقش."
-        : "A weaving draft showing the thread arrangement and pattern.",
     },
     {
       title: ar ? "جاهز للعمل مع الذكاء الاصطناعي" : "Ready to work with AI",
@@ -50,9 +44,6 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
       alt: ar
         ? "بطاقات نول مثقّبة متصلة توجّه نسج شريط هندسي"
         : "Laced punched loom cards guiding the weaving of a geometric band",
-      caption: ar
-        ? "بطاقات مثقّبة تتحكّم في نمط النسج."
-        : "Punched cards control the weaving pattern.",
     },
   ];
 
@@ -232,7 +223,6 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
                     height="1280"
                     loading="eager"
                   />
-                  <figcaption>{story.caption}</figcaption>
                 </figure>
               </article>
             ))}
@@ -250,9 +240,6 @@ export function WhyTiraz({ ar }: { ar: boolean }) {
               decoding="async"
             />
           ))}
-          <p className="lp-story-caption" key={active}>
-            {stories[active].caption}
-          </p>
         </div>
       </div>
     </section>
