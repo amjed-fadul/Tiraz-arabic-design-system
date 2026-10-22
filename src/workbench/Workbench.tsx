@@ -9,6 +9,7 @@ import {
   useSyncExternalStore,
 } from "react";
 import type { CSSProperties } from "react";
+import { TirazMark } from "../brand/TirazMark";
 import { ArrowUpRight, SlidersHorizontal, X } from "lucide-react";
 import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/csr/SidebarSimple";
 import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
@@ -101,21 +102,6 @@ function navigationSection(route: SiteRoute): string | undefined {
   )?.id;
 }
 
-function BrandMark() {
-  return (
-    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <path
-        d="M5 6h8v8H5zM19 6h8v8h-8zM5 20h8v8H5zM19 20h8v8h-8z"
-        fill="currentColor"
-      />
-      <path
-        d="M13 10h6M9 14v6m14-6v6m-10 4h6"
-        stroke="currentColor"
-        strokeWidth="3"
-      />
-    </svg>
-  );
-}
 type ScreenWidth = "desktop" | "tablet" | "phone";
 const screenWidths: readonly { id: ScreenWidth; name: Localized }[] = [
   { id: "desktop", name: ["سطح المكتب", "Desktop"] },
@@ -1034,7 +1020,7 @@ export function Workbench() {
               {navigation}
             </DocsDrawer>
             <a className="docs-brand" href="/landing.html">
-              <BrandMark />
+              <TirazMark />
               <span>{t("طِراز", "Tiraz")}</span>
             </a>
           </div>

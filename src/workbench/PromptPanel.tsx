@@ -15,6 +15,7 @@ export function PromptPanel({
 }) {
   const id = useId();
   const [expanded, setExpanded] = useState("");
+  const [copyFailed, setCopyFailed] = useState(false);
   const t = words(language);
   return (
     <section className="agent-section doc-prompt" aria-labelledby={id}>
@@ -29,14 +30,22 @@ export function PromptPanel({
           </p>
         </div>
         <CopyControl
+          iconOnly
+          inlineFeedback={false}
           text={prompt}
           onFeedbackChange={(result) => {
+            setCopyFailed(result === "failure");
             if (result === "failure") setExpanded("prompt");
           }}
           caption={label("copyPrompt", language)}
           language={language}
         />
       </div>
+      {copyFailed && (
+        <p className="doc-prompt-error" aria-hidden="true">
+          {label("failed", language)}
+        </p>
+      )}
       <Accordion
         collapsible
         value={expanded}

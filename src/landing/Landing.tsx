@@ -15,7 +15,8 @@ import type { Accent, SystemConfig } from "../system";
 import { QuickStart } from "../workbench/QuickStart";
 import { persist, readDocumentation, storageKeys } from "../workbench/storage";
 import { AccentPicker } from "./AccentPicker";
-import { ComponentMarquee, WarpMark } from "./ComponentMarquee";
+import { ComponentMarquee } from "./ComponentMarquee";
+import { TirazMark } from "../brand/TirazMark";
 import { ScreenShowcase } from "./ScreenShowcase";
 import { Showcase } from "./Showcase";
 import { WhyTiraz } from "./WhyTiraz";
@@ -38,7 +39,7 @@ function readLandingTheme(): SystemConfig["theme"] {
 function Wordmark() {
   return (
     <a className="lp-wordmark" href="#top">
-      <WarpMark size={22} />
+      <TirazMark size={22} className="lp-warp-mark" />
       <span lang="ar">طِراز</span>
       <span lang="en">Tiraz</span>
     </a>

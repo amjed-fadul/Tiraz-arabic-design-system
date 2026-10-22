@@ -5,14 +5,12 @@
   padding: var(--space-5);
 }
 .doc-prompt-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: var(--space-4) var(--space-6);
 }
 .doc-prompt-intro {
-  flex: 1 1 24rem;
   min-inline-size: 0;
 }
 .doc-prompt-intro h2 {
@@ -29,9 +27,14 @@
   line-height: var(--line-height);
 }
 .doc-prompt-header > .copy-control {
-  flex: 0 1 auto;
   align-items: flex-start;
   max-inline-size: 100%;
+}
+.doc-prompt-error {
+  color: var(--danger);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  margin-block: var(--space-3) 0;
 }
 .doc-prompt-disclosure {
   margin-block-start: var(--space-4);

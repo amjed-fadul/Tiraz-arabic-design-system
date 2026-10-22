@@ -1,3 +1,4 @@
+import { TirazMark } from "../brand/TirazMark";
 /** Selected families; the complete library is listed in system/ai/README.md. */
 const families: readonly (readonly [string, string])[] = [
   ["بدء مهمة", "TaskStarter"],
@@ -71,7 +72,7 @@ export function ComponentMarquee({ ar }: { ar: boolean }) {
           <div className="lp-marquee-track">
             {[...row, ...row].map(([arabic, english], item) => (
               <span className="lp-marquee-item" key={`${english}-${item}`}>
-                <WarpMark />
+                <TirazMark size={14} className="lp-warp-mark" />
                 <span lang={ar ? "ar" : "en"}>{ar ? arabic : english}</span>
                 <small lang={ar ? "en" : "ar"} dir={ar ? "ltr" : "rtl"}>
                   {ar ? english : arabic}
@@ -82,23 +83,5 @@ export function ComponentMarquee({ ar }: { ar: boolean }) {
         </div>
       ))}
     </section>
-  );
-}
-
-/** The selected Warp symbol, drawn with the current text color. */
-export function WarpMark({ size = 14 }: { size?: number }) {
-  return (
-    <svg
-      className="lp-warp-mark"
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      fill="currentColor"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M4 4h12v4H8v16h8v4H4V4Zm24 0v24H16v-4h8V8h-8V4h12Z" />
-      <path d="M10 12h12v4H10zM10 20h12v-4h-4v4z" />
-    </svg>
   );
 }

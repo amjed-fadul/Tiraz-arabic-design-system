@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { TirazMark } from "../../brand/TirazMark";
 import { BookOpenIcon } from "@phosphor-icons/react/dist/csr/BookOpen";
 import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
 import { SunIcon } from "@phosphor-icons/react/dist/csr/Sun";
@@ -211,9 +212,7 @@ export function ScreenFrame({
     >
       <SidebarHeader>
         <SidebarIdentity>
-          <span className="screen-mark" aria-hidden="true">
-            ✳
-          </span>
+          <TirazMark className="screen-mark" />
           <SidebarLabel className="screen-sidebar-copy">
             <span>{t("طِراز", "Tiraz")}</span>
           </SidebarLabel>
@@ -344,9 +343,7 @@ export function ScreenFrame({
                         {navigation(true)}
                       </Sheet>
                       <span className="screen-brand">
-                        <span className="screen-mark" aria-hidden="true">
-                          ✳
-                        </span>
+                        <TirazMark className="screen-mark" />
                         {t("طِراز", "Tiraz")}
                       </span>
                     </div>

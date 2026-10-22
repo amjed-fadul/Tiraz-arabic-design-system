@@ -2,6 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
 import { PromptPanel } from "./PromptPanel";
+import { SystemProvider } from "../system";
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -29,9 +30,9 @@ it.each(["ar", "en"] as const)(
     });
     await user.click(copy);
     expect(copy).toHaveFocus();
-    expect(copy).toHaveTextContent(
-      language === "ar" ? "نسخ الطلب" : "Copy agent prompt",
-    );
+    expect(copy).toHaveAttribute("data-icon-only", "true");
+    expect(copy.textContent).toBe("");
+    expect(screen.getByRole("status")).toHaveClass("sr-only");
     expect(clipboard).toHaveBeenLastCalledWith(prompt);
     expect(screen.getByRole("status")).not.toBeEmptyDOMElement();
   },
@@ -47,7 +48,7 @@ it("opens the selectable fallback on copy failure without moving focus", async (
   await user.click(copy);
   expect(copy).toHaveFocus();
   expect(copy).toHaveAccessibleDescription(/Copy failed/);
-  expect(screen.getByRole("textbox")).toHaveValue("Exact fallback text");
+  expect(await screen.findByRole("textbox")).toHaveValue("Exact fallback text");
   expect(screen.getByRole("button", { name: "Review prompt" })).toHaveAttribute(
     "aria-expanded",
     "true",
@@ -81,3 +82,35 @@ it("keeps focus while copying and discards stale feedback after settings change"
   await user.click(copy);
   expect(clipboard).toHaveBeenLastCalledWith("Changed settings");
 });
+
+it.each(["ar", "en"] as const)(
+  "labels the icon copy action with a dismissible tooltip in %s",
+  async (language) => {
+    const user = userEvent.setup();
+    const caption = language === "ar" ? "نسخ الطلب" : "Copy agent prompt";
+    render(
+      <SystemProvider>
+        <PromptPanel prompt="Copy these instructions" language={language} />
+      </SystemProvider>,
+    );
+    const copy = screen.getByRole("button", { name: caption });
+    await user.hover(copy);
+    expect(
+      await screen.findByRole("tooltip", { hidden: true }),
+    ).toHaveTextContent(caption);
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("tooltip", { hidden: true })).toBeNull();
+    await user.unhover(copy);
+    await user.tab();
+    expect(copy).toHaveFocus();
+    expect(screen.getByRole("tooltip", { hidden: true })).toHaveTextContent(
+      caption,
+    );
+    await user.keyboard("{Enter}");
+    expect(copy).toHaveFocus();
+    expect(copy).toHaveAccessibleName(caption);
+    expect(screen.getByRole("status")).toHaveTextContent(
+      language === "ar" ? "تم النسخ" : "Copied",
+    );
+  },
+);

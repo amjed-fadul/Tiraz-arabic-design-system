@@ -150,13 +150,9 @@
 }
 .screen-mark {
   color: var(--action);
-  font-size: var(--text-title);
-  line-height: 1;
-}
-.screen-sidebar .screen-mark,
-.screen-menu-sidebar .screen-mark {
   inline-size: var(--space-6);
-  text-align: center;
+  block-size: var(--space-6);
+  flex-shrink: 0;
 }
 .screen-sidebar-copy {
   display: flex;
