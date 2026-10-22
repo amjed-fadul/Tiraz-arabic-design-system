@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight, Search, X } from "lucide-react";
+import { Input, Select, Button } from "../system";
 import { numberLocale } from "../system/config";
 import { navigationGroups } from "./catalog";
 import type { Language } from "./i18n";
@@ -27,6 +28,7 @@ export function LibraryPage({
     setQuery("");
   }
   const input = useRef<HTMLInputElement>(null);
+  const categoryTrigger = useRef<HTMLButtonElement>(null);
   const filter =
     category === "components" ||
     navigationGroups.some((group) => group.id === category)
@@ -87,7 +89,9 @@ export function LibraryPage({
       <div className="library-toolbar">
         <div className="library-search">
           <Search size={18} aria-hidden="true" />
-          <input
+          <Input
+            size="md"
+            dir={query ? "auto" : language === "ar" ? "rtl" : "ltr"}
             ref={input}
             type="search"
             aria-label={t("ابحث في المكتبة", "Search the Library")}
@@ -99,38 +103,44 @@ export function LibraryPage({
             onChange={(event) => setQuery(event.target.value)}
           />
           {query && (
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="sm"
+              iconOnly
+              className="library-clear"
               aria-label={t("مسح البحث", "Clear search")}
               onClick={clear}
             >
               <X size={16} aria-hidden="true" />
-            </button>
+            </Button>
           )}
         </div>
-        <label className="library-category">
-          <span className="sr-only">{t("التصنيف", "Category")}</span>
-          <select
+        <div className="library-category">
+          <Select
+            ref={categoryTrigger}
+            size="md"
+            aria-label={t("التصنيف", "Category")}
             value={filter}
-            onChange={(event) =>
+            onValueChange={(value) => {
+              categoryTrigger.current?.focus();
               navigate({
                 kind: "library",
-                category:
-                  event.target.value === "all" ? undefined : event.target.value,
-              })
-            }
-          >
-            <option value="all">{t("كل المكتبة", "All items")}</option>
-            <option value="components">
-              {t("كل المكوّنات", "All components")}
-            </option>
-            {navigationGroups.map((group) => (
-              <option key={group.id} value={group.id}>
-                {localize(group.name, language)}
-              </option>
-            ))}
-          </select>
-        </label>
+                category: value === "all" ? undefined : value,
+              });
+            }}
+            options={[
+              { value: "all", label: t("كل المكتبة", "All items") },
+              {
+                value: "components",
+                label: t("كل المكوّنات", "All components"),
+              },
+              ...navigationGroups.map((group) => ({
+                value: group.id,
+                label: localize(group.name, language),
+              })),
+            ]}
+          />
+        </div>
       </div>
       <div
         className="library-results"
@@ -186,9 +196,9 @@ export function LibraryPage({
               )}
             </p>
             {query ? (
-              <button type="button" className="site-action" onClick={clear}>
+              <Button variant="secondary" onClick={clear}>
                 {t("مسح البحث", "Clear search")}
-              </button>
+              </Button>
             ) : (
               <SiteLink
                 className="site-action"

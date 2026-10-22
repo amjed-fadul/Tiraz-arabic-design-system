@@ -1,6 +1,6 @@
 import { useId, useState } from "react";
 import { RotateCcw } from "lucide-react";
-import { Select, Switch } from "../system";
+import { Button, Input, Select, Switch, Textarea } from "../system";
 import type { ComponentId } from "./catalog";
 import { commonFields, optionNames } from "./fields";
 import type { WorkbenchField } from "./fields";
@@ -30,8 +30,16 @@ function CollectionEditor({
   onChange: (value: unknown) => void;
 }) {
   const uid = useId(),
-    [draft, setDraft] = useState(JSON.stringify(value, null, 2)),
+    source = JSON.stringify(value, null, 2),
+    [savedSource, setSavedSource] = useState(source),
+    [draft, setDraft] = useState(source),
     [error, setError] = useState(false);
+  // Refresh a changed model without remounting the focused Apply button.
+  if (savedSource !== source) {
+    setSavedSource(source);
+    setDraft(source);
+    setError(false);
+  }
   function apply() {
     try {
       const parsed: unknown = JSON.parse(draft);
@@ -51,20 +59,21 @@ function CollectionEditor({
   return (
     <div className="settings-field collection-field">
       <label htmlFor={uid}>{localize(field.title, language)}</label>
-      <textarea
+      <Textarea
         id={uid}
-        className="tz-textarea"
         rows={4}
         dir="ltr"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         spellCheck={false}
+        invalid={error}
+        aria-describedby={error ? `${uid}-error` : undefined}
       />
-      <button type="button" className="settings-text-button" onClick={apply}>
+      <Button variant="ghost" className="settings-action" onClick={apply}>
         {label("apply", language)}
-      </button>
+      </Button>
       {error && (
-        <p role="alert" className="field-error">
+        <p id={`${uid}-error`} role="alert" className="tz-field-error">
           {label("invalid", language)}
         </p>
       )}
@@ -102,7 +111,6 @@ function Control({
   if (field.kind === "collection")
     return (
       <CollectionEditor
-        key={JSON.stringify(value)}
         field={field}
         value={value}
         language={language}
@@ -157,20 +165,21 @@ function Control({
       </div>
     );
   }
-  return (
-    <div className="settings-field">
-      <label htmlFor={uid}>{caption}</label>
-      <input
-        id={uid}
-        className="tz-input"
-        data-size="sm"
-        dir="auto"
-        type={field.kind === "number" ? "number" : "text"}
-        min={field.min}
-        max={field.max}
-        value={String(value ?? "")}
-        onChange={(e) => {
-          if (field.kind === "number") {
+  if (field.kind === "number")
+    return (
+      <div className="settings-field">
+        <label htmlFor={uid}>{caption}</label>
+        {/* Tiraz Input is text entry; preserve native number/step semantics. */}
+        <input
+          id={uid}
+          className="tz-input"
+          data-size="sm"
+          dir="auto"
+          type="number"
+          min={field.min}
+          max={field.max}
+          value={String(value ?? "")}
+          onChange={(e) => {
             if (!e.target.value) return;
             const n = Number(e.target.value);
             if (Number.isFinite(n))
@@ -180,8 +189,18 @@ function Control({
                   Math.min(field.max ?? Infinity, n),
                 ),
               );
-          } else patch(e.target.value);
-        }}
+          }}
+        />
+      </div>
+    );
+  return (
+    <div className="settings-field">
+      <label htmlFor={uid}>{caption}</label>
+      <Input
+        id={uid}
+        dir="auto"
+        value={String(value ?? "")}
+        onChange={(e) => patch(e.target.value)}
       />
     </div>
   );
@@ -217,9 +236,9 @@ export function Inspector({
         <h3 id={id}>
           {language === "ar" ? `خصائص ${name}` : `${name} properties`}
         </h3>
-        <button
-          type="button"
-          className="settings-text-button"
+        <Button
+          variant="ghost"
+          className="settings-action"
           aria-label={label("resetPlayground", language)}
           onClick={() => {
             setResetRevision((revision) => revision + 1);
@@ -228,7 +247,7 @@ export function Inspector({
         >
           <RotateCcw size={14} aria-hidden="true" />
           {label("reset", language)}
-        </button>
+        </Button>
       </div>
       {shown.map((field) => (
         <Control

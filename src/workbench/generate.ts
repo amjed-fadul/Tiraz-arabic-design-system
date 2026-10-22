@@ -688,45 +688,107 @@ export function generatePrompt(
 ): string {
   const entry = catalog.find((item) => item.id === component)!;
   const c = previewConfig(config, model);
-  return (
-    `First locate Tiraz within the current project, either a full checkout or a source copy in another application. If you cannot locate the system, clearly report that and stop. Identify the source root: the directory containing index.ts, config.ts, tokens.css, components.css and ai/. In a full checkout this is usually src/system; for example src/system/${entry.file}. Read ai/README.md, ai/registry.json for the ${entry.id} family and support APIs, and ai/composition.md; then inspect ${entry.file}, index.ts, config.ts, Provider.tsx, styles and the host application's local font setup. For Avatar photos, preserve ai/assets/sara.jpg, ai/assets/omar.jpg, ai/assets/README.md and ai/assets/LICENSE.txt with the copied source; adjust emitted local imports, do not replace bundled portraits with remote services. Registry paths are relative to the source root; a source copy needs no checkout README or src/main.tsx. Use ${localize(entry.name, "en")} with the exact current properties and system settings in the example. Adjust ./system imports and CSS paths to the located library, connect events to the requested application behavior, and validate the rendered result, direction, customization, keyboard, focus and accessible names. Do not invent exports/props or add an installer or CLI.` +
-    (["terminal", "chat-app"].includes(component)
-      ? "\nTerminal is read-only: the host supplies text, execution state, exit code and duration. Copy is command + newline + output, or output alone. No HTML/ANSI interpretation, execution, shell or connection. Output scrolls internally by keyboard; opt-in following respects selection and older reading. ChatApp composes Sidebar and Sheet with children, composer, toolbar, actions and sidePanel slots. Host owns conversations with unique stable IDs, groups, messages, drafts and cancellation, plus the rename field and the confirmation before a delete: the component only calls onConversationRename and onConversationDelete. Use ChatThread with the assistant's patterns as messages in plain appearance, and TaskStarter in plain appearance as the composer. The in-memory example tells the October close, and unmount cancels its timers. Bind callbacks to conversation and run identity; stale work must never update another conversation. No backend, auth, persistence, real AI or tool execution."
-      : "") +
-    (["image-result", "sources", "insight-cards"].includes(component)
-      ? "\nCopy the entire ai/assets/results directory: local SVG images and sample text documents with ?url&no-inline imports. Source copies need @radix-ui/react-popover@1.3.1 and the Radix overrides in ai/README.md. Host owns images, alt text, stable source IDs/numbers, findings and actions. ImageResult progress is a real supplied 0–100 percentage; omit for unknown progress and never invent a timer-based percentage. URLs allow HTTP(S) or relative/local destinations only; missing/rejected destinations remain honest text. Use links for navigation and buttons for disclosure; no generation or retrieval."
-      : "") +
-    (["chat-thread", "chat-composer", "prompt-bar"].includes(component)
-      ? "\nHost owns stable message IDs, draft, submission, cancellation and execution state. Entry direction follows SystemProvider by default: right-start in RTL, left-start in LTR, regardless of draft script; use native dir only for an intentional override. Enter sends; Shift+Enter inserts a newline; never submit during IME composition. Preserve valid text exactly and clear only on host acceptance. Follow output is opt-in and near-bottom only; preserve older reading, settled selection and focus. Reuse ai/examples/ChatExamples.tsx for fixed local chunks starting only on explicit submission; invalidate callbacks on stop/reset/unmount. No network, storage or uploads."
-      : "") +
-    (["code-block", "markdown", "streaming-text"].includes(component)
-      ? "\nFor a source copy install react-markdown@10.1.0 and remark-gfm@4.0.1. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR. Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The copied StreamingText example plays its local sample once when it mounts. Invalidate timers on replay/unmount and retain received text on cancellation."
-      : "") +
-    ([
+  const code = generateCode(component, model, config, language);
+  const notes: string[] = [];
+  if (/\.\/system\/ai\/assets\/(sara|omar)\.jpg/.test(code))
+    notes.push(
+      "Keep the bundled portraits referenced by this example, ai/assets/README.md and ai/assets/LICENSE.txt. Adjust local asset imports to the copied source root; do not replace these portraits with a remote image service.",
+    );
+  if (component === "terminal")
+    notes.push(
+      "Terminal is read-only: the host supplies text, execution state, exit code and duration. Copy is command + newline + output, or output alone. No HTML/ANSI interpretation, execution, shell or connection.",
+      "Output scrolls internally by keyboard. Opt-in following must preserve selection and older reading.",
+    );
+  if (component === "chat-app")
+    notes.push(
+      "ChatApp composes Sidebar and Sheet with children, composer, toolbar, actions and sidePanel slots. Use ChatThread with patterns as messages in plain appearance, and TaskStarter in plain appearance as the composer.",
+      "Host owns conversations with unique stable IDs, groups, messages, drafts and cancellation, plus the rename field and the confirmation before a delete. The component reports onConversationRename and onConversationDelete intents. Bind callbacks to conversation and run identity so stale work never updates another conversation.",
+      "The example tells the October close in memory and cancels its timers on unmount. It has no backend, auth, persistence, real AI or tool execution.",
+    );
+  if (["image-result", "sources", "insight-cards"].includes(component))
+    notes.push(
+      "Copy the entire ai/assets/results directory, including local SVG images and sample text documents. Preserve ?url&no-inline imports. Source copies need @radix-ui/react-popover@1.3.1 and the Radix overrides in ai/README.md.",
+      "Host owns images, alt text, stable source IDs/numbers, findings and actions. ImageResult progress must be a real supplied 0-100 percentage; omit it when unknown. URLs allow HTTP(S) or relative/local destinations only; missing/rejected destinations remain honest text. Use links for navigation and buttons for disclosure. These components do not generate or retrieve content.",
+    );
+  if (["chat-thread", "chat-composer", "prompt-bar"].includes(component))
+    notes.push(
+      "Host owns stable message IDs, draft, submission, cancellation and execution state. Entry direction follows SystemProvider: right-start in RTL, left-start in LTR, regardless of draft script. Use native dir only for an intentional override.",
+      "Enter sends; Shift+Enter inserts a newline. Never submit during IME composition. Preserve valid text exactly and clear only on host acceptance. Following output is opt-in and near-bottom only; preserve older reading, settled selection and focus.",
+      "ai/examples/ChatExamples.tsx supplies fixed local response chunks. Invalidate callbacks on stop/reset/unmount. Connect real responses through the host; the example adds no network, storage or uploads.",
+    );
+  if (["code-block", "markdown", "streaming-text"].includes(component))
+    notes.push(
+      "For a source copy, resolve react-markdown@10.1.0 and remark-gfm@4.0.1 through the host toolchain. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR.",
+      "Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The StreamingText example plays its local sample once on mount. Invalidate timers on replay/unmount and retain received text on cancellation.",
+    );
+  if (
+    [
       "tool-call",
       "tool-chips",
       "loading-state",
       "thinking-indicator",
       "thinking-state",
     ].includes(component)
-      ? "\nThe host owns execution and brief user-facing summaries. Never expose private model reasoning or fabricate logs. Use one polite announcement owner; a local simulation must start explicitly and cancel timers on replay/unmount."
-      : "") +
-    (["tool-call", "tool-chips"].includes(component)
-      ? "\nToolCall details one supplied operation; ToolChips summarizes activity without automatic details. Connect onRetry/onActivate to real host behavior. Do not add tool execution, network, permissions or library execution timers."
-      : "") +
-    (component === "file-tree"
-      ? "\nFileTree displays supplied data only. onActivate delegates opening to the host; the preview reads application-owned sample strings without filesystem access."
-      : "") +
-    (["ask-user-questions", "approval-card", "approval-flow"].includes(
-      component,
-    )
-      ? "\nSupported questions: single choice with optional Other, or text only. The host must validate request identity, authorization and execution independently. Approval is a one-time decision, not execution or ongoing permission. Changed content invalidates old decisions; honor AbortSignal on reset, replacement and unmount. Preserve drafts on failure. Controlled ApprovalRecord values must bind requestId and approvalRequestKey to the exact current request. No standing access or approve all."
-      : "") +
-    (["selection-actions", "context-meter", "model-selector"].includes(
-      component,
-    )
-      ? "\nSelectionActions is scoped to children; excludes editors, code, links and buttons. Alt+Enter focuses actions; Escape returns to the scope. Preserve native selection/copy; scroll dismisses. Models use controlled stable IDs and onValueChange. Usage, capacity, estimates, prices and availability belong to the host. No AI execution, automatic replacement or network. Copy the complete source bundle with Popper, Popover, Select and the Radix layer overrides in ai/README.md."
-      : "") +
-    `\n\nSystemProvider: ${JSON.stringify(c)}\n\n${"Place the example in an appropriate application component file after adjusting imports. Retain the ai/ bundle when copying the library."}\n\n\`\`\`tsx\n${generateCode(component, model, config, language)}\`\`\``
-  );
+  )
+    notes.push(
+      "The host owns execution and brief user-facing summaries. Never expose private model reasoning or fabricate logs. Use one polite announcement owner. Start local simulations explicitly and cancel timers on replay/unmount.",
+    );
+  if (["tool-call", "tool-chips"].includes(component))
+    notes.push(
+      "ToolCall details one supplied operation; ToolChips summarizes activity without automatic details. Connect onRetry/onActivate to host behavior. These components add no tool execution, network, permissions or execution timers.",
+    );
+  if (component === "file-tree")
+    notes.push(
+      "FileTree displays supplied data only. onActivate delegates opening to the host; the example reads application-owned sample strings without filesystem access.",
+    );
+  if (
+    ["ask-user-questions", "approval-card", "approval-flow"].includes(component)
+  )
+    notes.push(
+      "Supported questions are single choice with optional Other, or text only. Honor AbortSignal on reset, replacement and unmount, and preserve drafts on failure.",
+      "The host must validate request identity, authorization and execution independently. Approval is a one-time decision and grants no execution or ongoing permission. Changed content invalidates old decisions. Controlled ApprovalRecord values must bind requestId and approvalRequestKey to the exact current request. Do not add standing access or approve-all.",
+    );
+  if (
+    ["selection-actions", "context-meter", "model-selector"].includes(component)
+  )
+    notes.push(
+      "SelectionActions is scoped to children and excludes editors, code, links and buttons. Alt+Enter focuses actions; Escape returns to the scope. Preserve native selection/copy; scroll dismisses.",
+      "Models use controlled stable IDs and onValueChange. Usage, capacity, estimates, prices and availability belong to the host. These components add no AI execution, automatic replacement or network.",
+      "Copy the complete source bundle with Popper, Popover, Select and the Radix layer overrides in ai/README.md.",
+    );
+
+  return [
+    `First locate Tiraz, then integrate the ${localize(entry.name, "en")} example into my application using the current settings below.`,
+    `## Locate the source
+
+1. Find the full checkout or source copy in the current project. The source root contains index.ts, config.ts, tokens.css, components.css and ai/. In a checkout it is usually src/system; for example, src/system/${entry.file}. If you cannot locate the system, report the missing source, request its location and stop.
+2. Read ai/README.md and ai/composition.md. In ai/registry.json, query only the relevant entries: the "${entry.id}" family in components, its support APIs, and the records used by its props. Registry paths are relative to the source root, not the application root.
+3. Inspect ${entry.file}, the exported types in index.ts, config.ts, Provider.tsx and the relevant styles. Source and exported types are authoritative; workbench controls show a subset of the API. A source copy needs no checkout README or src/main.tsx. Do not invent exports/props or add an installer or CLI.`,
+    `## Current settings
+
+Language: ${language === "ar" ? "Arabic" : "English"} (${language})
+SystemProvider: ${JSON.stringify(c)}
+
+Keep the example's exact props, supplied content, state choices and shared settings unless the requested application behavior requires a change. The TSX below captures the current selection.`,
+    `## Integrate
+
+- Place the example in an appropriate application component file. Adjust ./system imports, CSS paths and local asset imports to the located source root.
+- Reuse the host's toolchain and existing Tiraz setup. When copying the library, copy the whole source root. Retain the ai/ bundle, including examples, assets, provenance and licenses.
+- Load tokens.css and components.css once. Verify the host loads local IBM Plex Sans Arabic at weights 400, 500 and 600. Follow ai/README.md for dependencies and Radix overrides.
+- Keep SystemProvider around the interface and its overlays, merge settings with defaultConfig, and set lang on a host ancestor above the provider. Preserve :dir() in the host CSS pipeline.
+- Connect events to the requested application behavior and keep application state in the host. Replace demonstration handlers where needed; identify any remaining sample data or local simulation.`,
+    ...(notes.length
+      ? [`## Component notes\n\n${notes.map((note) => `- ${note}`).join("\n")}`]
+      : []),
+    `## Validate
+
+- Run the host's relevant type checks, tests and build. Resolve imports and assets against the actual source location.
+- Inspect the rendered result with the selected settings, then check RTL and LTR, narrow layouts, theme, typography, numerals and reduced motion.
+- Exercise the connected interactions with keyboard and pointer. Check focus order, focus restoration for overlays, accessible names and relevant loading, empty, error and disabled states.
+- Report changed files, checks run and remaining integration work. Do not claim production readiness or accessibility from compilation alone.`,
+    `## Current example
+
+\`\`\`tsx
+${code}${code.endsWith("\n") ? "" : "\n"}\`\`\``,
+  ].join("\n\n");
 }

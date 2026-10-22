@@ -30,6 +30,7 @@ it.each([
     if (en === "StreamingText")
       await user.click(screen.getByRole("link", { name: ar }));
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
+    expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
     await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     for (const name of ["Examples", "Usage example"])

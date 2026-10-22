@@ -1,7 +1,9 @@
-import { render, screen, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 import { QuickStart } from "./QuickStart";
+
+afterEach(() => vi.restoreAllMocks());
 
 it("copies the chosen setup and English starter prompt with one initially empty announcement", async () => {
   const user = userEvent.setup();
@@ -45,6 +47,44 @@ it("provides a selectable fallback when clipboard access fails", async () => {
   expect(
     screen.getByRole("button", { name: "Copy setup prompt" }),
   ).toHaveFocus();
+  expect(
+    screen.getByRole("region", { name: "Setup prompt" }),
+  ).toHaveTextContent(
+    "Create a React 19 and TypeScript application using Vite",
+  );
+});
+
+it("guards pending setup copies and ignores results for a replaced project prompt", async () => {
+  const user = userEvent.setup();
+  let resolveCopy!: () => void;
+  const clipboard = vi
+    .spyOn(navigator.clipboard, "writeText")
+    .mockResolvedValue(undefined)
+    .mockImplementationOnce(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveCopy = resolve;
+        }),
+    );
+  render(<QuickStart language="en" />);
+  await user.click(screen.getByText("Use the source today"));
+  const copy = screen.getByRole("button", { name: "Copy setup prompt" });
+  await user.click(copy);
+  expect(copy).toHaveAttribute("aria-busy", "true");
+  expect(copy).toHaveFocus();
+  await user.click(copy);
+  expect(clipboard).toHaveBeenCalledTimes(1);
+  await user.click(screen.getByRole("button", { name: "Existing project" }));
+  await act(async () => resolveCopy());
+  expect(screen.getByRole("status")).toBeEmptyDOMElement();
+  expect(copy).not.toHaveAttribute("aria-busy", "true");
+  await user.click(copy);
+  expect(clipboard).toHaveBeenLastCalledWith(
+    expect.stringContaining("Preserve its routes, data, and toolchain."),
+  );
+  await waitFor(() =>
+    expect(screen.getByRole("status")).toHaveTextContent("Copied"),
+  );
 });
 
 it("fits a landing section without adding an h1 and keeps Arabic step numerals", () => {

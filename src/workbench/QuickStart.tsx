@@ -1,6 +1,8 @@
 import { useId, useState } from "react";
-import { Check, Copy, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
+import { Button } from "../system/Button";
 import { numberLocale } from "../system/config";
+import { CopyControl } from "./CopyControl";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import "./quick-start.css";
@@ -70,35 +72,30 @@ export function QuickStart({
   const Heading = headingLevel === 1 ? "h1" : "h2";
   const StepHeading = headingLevel === 1 ? "h2" : "h3";
   const [existing, setExisting] = useState(false);
-  const [copied, setCopied] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<"copied" | "failed" | null>(null);
+  const [feedback, setFeedback] = useState<{
+    key: string;
+    result: "success" | "failure";
+  } | null>(null);
   const id = useId();
   const number = new Intl.NumberFormat(
     numberLocale({ numerals: "arab" }, language),
   );
-  async function copy(text: string, key: string) {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(key);
-      setFeedback("copied");
-    } catch {
-      setCopied(null);
-      setFeedback("failed");
-    }
-  }
   const copyButton = (text: string, key: string, caption: string) => (
-    <button
-      type="button"
-      className="quick-start-copy"
-      onClick={() => void copy(text, key)}
-    >
-      {copied === key ? (
-        <Check size={16} aria-hidden="true" />
-      ) : (
-        <Copy size={16} aria-hidden="true" />
-      )}
-      {caption}
-    </button>
+    <CopyControl
+      text={text}
+      caption={caption}
+      language={language}
+      announcement="off"
+      onFeedbackChange={(result) =>
+        setFeedback((current) =>
+          result === "idle"
+            ? current?.key === key
+              ? null
+              : current
+            : { key, result },
+        )
+      }
+    />
   );
   return (
     <section
@@ -141,26 +138,26 @@ export function QuickStart({
                 role="group"
                 aria-label={t("نوع المشروع", "Project type")}
               >
-                <button
-                  type="button"
+                <Button
+                  variant={existing ? "ghost" : "secondary"}
                   aria-pressed={!existing}
                   onClick={() => {
                     setExisting(false);
-                    setCopied(null);
+                    setFeedback(null);
                   }}
                 >
                   {t("مشروع جديد", "New project")}
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant={existing ? "secondary" : "ghost"}
                   aria-pressed={existing}
                   onClick={() => {
                     setExisting(true);
-                    setCopied(null);
+                    setFeedback(null);
                   }}
                 >
                   {t("مشروع قائم", "Existing project")}
-                </button>
+                </Button>
               </div>
               <div
                 className="quick-start-terminal"
@@ -174,7 +171,16 @@ export function QuickStart({
                     {t("قريبًا", "Coming soon")}
                   </span>
                 </div>
-                <pre dir="ltr" lang="en" tabIndex={0}>
+                <pre
+                  dir="ltr"
+                  lang="en"
+                  tabIndex={0}
+                  role="region"
+                  aria-label={t(
+                    "معاينة أمر التثبيت",
+                    "Install command preview",
+                  )}
+                >
                   <code>
                     {existing
                       ? "npx <tiraz-package> init"
@@ -210,7 +216,13 @@ export function QuickStart({
                       t("نسخ طلب الإعداد", "Copy setup prompt"),
                     )}
                   </div>
-                  <pre dir="ltr" lang="en" tabIndex={0}>
+                  <pre
+                    dir="ltr"
+                    lang="en"
+                    tabIndex={0}
+                    role="region"
+                    aria-label={t("طلب الإعداد", "Setup prompt")}
+                  >
                     <code>{setupPrompt(existing)}</code>
                   </pre>
                 </div>
@@ -230,7 +242,13 @@ export function QuickStart({
                     "entry",
                     t("نسخ مثال الإعداد", "Copy setup example"),
                   )}
-                  <pre dir="ltr" lang="en" tabIndex={0}>
+                  <pre
+                    dir="ltr"
+                    lang="en"
+                    tabIndex={0}
+                    role="region"
+                    aria-label={t("مثال الإعداد", "Setup example")}
+                  >
                     <code>{entryCode}</code>
                   </pre>
                 </details>
@@ -275,7 +293,13 @@ export function QuickStart({
                         `${t("نسخ طلب", "Copy prompt:")} ${prompt.name[language === "ar" ? 0 : 1]}`,
                       )}
                     </div>
-                    <pre dir="ltr" lang="en" tabIndex={0}>
+                    <pre
+                      dir="ltr"
+                      lang="en"
+                      tabIndex={0}
+                      role="region"
+                      aria-label={`${t("طلب", "Prompt:")} ${prompt.name[language === "ar" ? 0 : 1]}`}
+                    >
                       <code>{prompt.text}</code>
                     </pre>
                   </div>
@@ -316,12 +340,12 @@ export function QuickStart({
         </section>
       </div>
       <p className="quick-start-feedback" role="status" aria-live="polite">
-        {feedback === "copied"
+        {feedback?.result === "success"
           ? t(
               "نُسخ النص. الصقه في أداة البرمجة التي تستخدمها.",
               "Copied. Paste it into your coding tool.",
             )
-          : feedback === "failed"
+          : feedback?.result === "failure"
             ? t(
                 "تعذّر النسخ. يمكنك تحديد النص ونسخه يدويًا.",
                 "Could not copy. Select the text and copy it manually.",

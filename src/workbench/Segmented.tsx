@@ -1,4 +1,6 @@
 import { useId } from "react";
+import { Button } from "../system";
+import "./settings-controls.css";
 
 /** One choice: the word it shows and, where that word alone is not enough to
     name it (a row of digits), its name. */
@@ -29,9 +31,9 @@ export function Segmented({
       <span id={id}>{label}</span>
       <div className="settings-segmented" role="group" aria-labelledby={id}>
         {options.map((option) => (
-          <button
+          <Button
             key={option.value}
-            type="button"
+            variant="ghost"
             aria-pressed={option.value === value}
             aria-label={option.name}
             onClick={() => {
@@ -39,7 +41,7 @@ export function Segmented({
             }}
           >
             {option.text}
-          </button>
+          </Button>
         ))}
       </div>
     </div>

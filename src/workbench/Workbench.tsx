@@ -13,7 +13,13 @@ import { ArrowUpRight, SlidersHorizontal, X } from "lucide-react";
 import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/csr/SidebarSimple";
 import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
 import { SunIcon } from "@phosphor-icons/react/dist/csr/Sun";
-import { Sheet, SystemProvider, defaultConfig } from "../system";
+import {
+  Button,
+  Sheet,
+  SystemProvider,
+  Textarea,
+  defaultConfig,
+} from "../system";
 import { SystemContext } from "../system/useSystem";
 import type { ButtonState, SystemConfig } from "../system";
 import { screenPath, screens } from "../examples/frame/screen";
@@ -55,6 +61,7 @@ import { DemoNotes } from "../system/ai/examples/DemoFrame";
 import type { DemoFrameNotes } from "../system/ai/examples/DemoFrame";
 import { ApiReference } from "./ApiReference";
 import { CopyControl } from "./CopyControl";
+import { PromptPanel } from "./PromptPanel";
 import { generateCode, generatePrompt } from "./generate";
 import { DocsDrawer } from "./DocsDrawer";
 import { destination, readSiteRoute, routePath } from "./site-routes";
@@ -68,6 +75,7 @@ import { IllustrationsPage } from "./IllustrationsPage";
 import { illustrations } from "./illustrations";
 import "./site.css";
 import "./site-sidebar.css";
+import "./settings-copy-fallback.css";
 interface EventRecord {
   name: string;
   value?: unknown;
@@ -446,6 +454,14 @@ export function Workbench() {
   const narrow = useSyncExternalStore(watchNarrow, isNarrow, () => false);
   // The narrow Sheet's open state lasts the session: it never opens on load.
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [failedSettingsText, setFailedSettingsText] = useState<string | null>(
+    null,
+  );
+  const settingsCopyFallback = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (failedSettingsText !== null)
+      settingsCopyFallback.current?.scrollIntoView({ block: "nearest" });
+  }, [failedSettingsText]);
   const settingsOpen = narrow ? sheetOpen : documentation.settingsOpen;
   const { visible: showCustomizeHint, dismiss: dismissCustomizeHint } =
     useCustomizeHint(route.kind === "component" && !settingsOpen);
@@ -972,13 +988,32 @@ export function Workbench() {
       onReset={resetSystem}
     />
   );
+  const settingsJSON = JSON.stringify(systemConfig, null, 2);
   const copySettings = (
     <CopyControl
-      text={JSON.stringify(systemConfig, null, 2)}
+      text={settingsJSON}
       caption={label("copyConfig", language)}
       language={language}
       iconOnly
+      inlineFeedback={false}
+      onFeedbackChange={(result) =>
+        setFailedSettingsText(result === "failure" ? settingsJSON : null)
+      }
     />
+  );
+  const settingsFallback = failedSettingsText === settingsJSON && (
+    <div ref={settingsCopyFallback} className="settings-copy-fallback">
+      <Textarea
+        label={t("الإعدادات بصيغة JSON", "Settings JSON")}
+        helper={label("failed", language)}
+        readOnly
+        value={settingsJSON}
+        rows={8}
+        dir="ltr"
+        lang="en"
+        spellCheck={false}
+      />
+    </div>
   );
   // «تخصيص» sits in the playground's toolbar. From 1,024px it opens the
   // docked panel; below, it is the trigger of a Sheet with the same content.
@@ -1017,6 +1052,7 @@ export function Workbench() {
         }
       >
         <div className="settings-body">
+          {settingsFallback}
           {inspector}
           {appearance}
         </div>
@@ -1059,7 +1095,7 @@ export function Workbench() {
                 <button
                   ref={navigationToggle}
                   type="button"
-                  className="doc-icon-button docs-navigation-toggle"
+                  className="docs-navigation-toggle"
                   aria-label={
                     mobileNavigation
                       ? t("فتح القائمة", "Open navigation")
@@ -1092,19 +1128,24 @@ export function Workbench() {
             </a>
           </div>
           <div className="header-actions">
-            <button
+            <Button
+              variant="ghost"
+              size="sm"
               type="button"
-              className="doc-button language-control"
+              className="language-control"
               title={t("التبديل إلى الإنجليزية", "Switch to Arabic")}
               onClick={() => changeLanguage(language === "ar" ? "en" : "ar")}
             >
               <span lang={language === "ar" ? "en" : "ar"}>
                 {language === "ar" ? "English" : "العربية"}
               </span>
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              iconOnly
               type="button"
-              className="doc-icon-button"
+              className="docs-theme-control"
               aria-label={label("docTheme", language)}
               title={label("docTheme", language)}
               aria-pressed={theme === "dark"}
@@ -1117,7 +1158,7 @@ export function Workbench() {
               ) : (
                 <SunIcon size={20} weight="regular" aria-hidden="true" />
               )}
-            </button>
+            </Button>
           </div>
         </header>
         <div
@@ -1339,35 +1380,11 @@ export function Workbench() {
                       </div>
                     )}
                   </section>
-                  <section className="agent-section">
-                    <h2 id="agent-heading">{label("useInApp", language)}</h2>
-                    <div className="prompt-row">
-                      {/* The prompt is English on every page; its heading and
-                          copy control follow the page. */}
-                      <p className="prompt-preview" lang="en" dir="ltr">
-                        {prompt
-                          .replace(/\s+/g, " ")
-                          .split(
-                            /(ai\/[\w/.-]+|src\/[\w/.-]+|\.\/system(?:\/[\w.-]+)*|[\w.-]+\.(?:tsx?|css|md|json))/,
-                          )
-                          .map((part, index) =>
-                            index % 2 === 1 ? (
-                              <bdi dir="ltr" key={index}>
-                                {part}
-                              </bdi>
-                            ) : (
-                              part
-                            ),
-                          )}
-                      </p>
-                      <CopyControl
-                        text={prompt}
-                        caption={label("copyPrompt", language)}
-                        language={language}
-                        iconOnly
-                      />
-                    </div>
-                  </section>
+                  <PromptPanel
+                    key={active}
+                    prompt={prompt}
+                    language={language}
+                  />
                   {notes && (
                     <section
                       className="guidelines-section"
@@ -1440,18 +1457,22 @@ export function Workbench() {
                 </div>
                 <div className="settings-actions">
                   {copySettings}
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    iconOnly
                     type="button"
-                    className="tz-icon-button settings-close"
+                    className="settings-close"
                     aria-label={label("closeCustomize", language)}
                     title={label("closeCustomize", language)}
                     onClick={closeSettings}
                   >
                     <X size={16} aria-hidden="true" />
-                  </button>
+                  </Button>
                 </div>
               </header>
               <div className="settings-body">
+                {settingsFallback}
                 {inspector}
                 {appearance}
               </div>

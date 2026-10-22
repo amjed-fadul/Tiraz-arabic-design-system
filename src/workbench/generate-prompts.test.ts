@@ -29,7 +29,7 @@ for (const language of ["ar", "en"] as const) {
         direction: language === "ar" ? ("rtl" as const) : ("ltr" as const),
       };
       const prompt = generatePrompt(entry.id, model, config, language);
-      // Read targets must exist; src/Example.tsx is explicitly a proposed output file.
+      // Every read target must exist in the source bundle.
       for (const path of [
         "src/system/ai/README.md",
         "src/system/ai/registry.json",
@@ -51,12 +51,75 @@ for (const language of ["ar", "en"] as const) {
       expect(prompt).toContain("Adjust");
       expect(prompt).not.toContain("npx");
       expect(prompt).toContain(generateCode(entry.id, model, config, language));
+      expect(prompt).toMatch(/\n```$/);
       expect(prompt).toContain(JSON.stringify(config));
       expect(prompt.startsWith("First locate Tiraz")).toBe(true);
       expect(prompt).toContain("If you cannot locate the system");
+      const instructions = prompt.split("```tsx\n")[0];
+      expect(instructions).not.toMatch(/[\u0600-\u06ff]/);
+      expect(instructions).toContain("## Locate the source");
+      expect(instructions).toContain("## Current settings");
+      expect(instructions).toContain("## Integrate");
+      expect(instructions).toContain("## Validate");
+      expect(instructions).toContain("## Current example");
+      expect(instructions).toContain("query only the relevant entries");
+      expect(instructions).toContain("records");
+      expect(instructions).toContain("Retain the ai/ bundle");
+      expect(instructions).toContain("keyboard");
+      expect(instructions).toContain("accessible names");
+      expect(instructions).toContain("RTL and LTR");
+      expect(instructions).toContain(
+        `Language: ${language === "ar" ? "Arabic" : "English"} (${language})`,
+      );
     });
   }
 }
+it("includes portrait guidance only when the current example imports bundled photos", () => {
+  const models = defaultPlaygrounds("en");
+  const instructionsFor = (
+    component: Parameters<typeof generatePrompt>[0],
+    model = models[component],
+  ) =>
+    generatePrompt(component, model, defaultConfig, "en").split("```tsx\n")[0];
+  expect(instructionsFor("button")).not.toContain("portrait");
+  expect(
+    instructionsFor("avatar", { ...models.avatar, appearance: "initials" }),
+  ).not.toContain("portrait");
+  expect(
+    instructionsFor("avatar", {
+      ...models.avatar,
+      appearance: "photo",
+      src: "",
+    }),
+  ).toContain("bundled portraits");
+  expect(
+    instructionsFor("avatar", {
+      ...models.avatar,
+      appearance: "photo",
+      src: "https://example.com/photo.jpg",
+    }),
+  ).not.toContain("bundled portraits");
+  expect(instructionsFor("skeleton")).toContain("bundled portraits");
+});
+it("keeps Terminal and ChatApp integration guidance specific to their own example", () => {
+  const models = defaultPlaygrounds("en");
+  const terminal = generatePrompt(
+    "terminal",
+    models.terminal,
+    defaultConfig,
+    "en",
+  ).split("```tsx\n")[0];
+  const chat = generatePrompt(
+    "chat-app",
+    models["chat-app"],
+    defaultConfig,
+    "en",
+  ).split("```tsx\n")[0];
+  expect(terminal).toContain("No HTML/ANSI interpretation");
+  expect(terminal).not.toContain("Host owns conversations");
+  expect(chat).toContain("Host owns conversations");
+  expect(chat).not.toContain("Terminal is read-only");
+});
 it("generates identical prompts when the same checkout is relocated", () => {
   const temporaryRoot = mkdtempSync(join(tmpdir(), "tiraz-prompt-relocation-"));
   try {

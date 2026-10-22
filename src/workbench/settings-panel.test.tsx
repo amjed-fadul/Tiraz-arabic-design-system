@@ -115,6 +115,32 @@ it("makes the accent swatches a named radiogroup", async () => {
   expect(readSystem().accent).toBe("blue");
 });
 
+it("formats the radius readout using the chosen numerals", async () => {
+  const user = userEvent.setup();
+  render(<Workbench />);
+  await user.click(customize());
+  const settings = within(panel()!);
+  const radius = settings.getByRole("slider", { name: "استدارة الزوايا" });
+  expect(radius).toHaveAttribute("aria-valuetext", "٨ بكسل");
+  await user.click(settings.getByRole("button", { name: "غربية · 123" }));
+  expect(radius).toHaveAttribute("aria-valuetext", "8 بكسل");
+  expect(settings.getByText("8 بكسل")).toBeInTheDocument();
+});
+
+it("moves and wraps the accent choice in English reading order", async () => {
+  const user = userEvent.setup();
+  persist(storageKeys.documentation, { language: "en", settingsOpen: true });
+  render(<Workbench />);
+  const accents = within(screen.getByRole("radiogroup", { name: "Accent" }));
+  accents.getByRole("radio", { name: "Green" }).focus();
+  await user.keyboard("{ArrowRight}");
+  expect(accents.getByRole("radio", { name: "Blue" })).toHaveFocus();
+  expect(readSystem().accent).toBe("blue");
+  await user.keyboard("{ArrowLeft}{ArrowLeft}");
+  expect(accents.getByRole("radio", { name: "Ink" })).toHaveFocus();
+  expect(readSystem().accent).toBe("ink");
+});
+
 it("shows only the system settings on a page with no props", () => {
   const tooltip = commonFields.tooltip;
   commonFields.tooltip = [];

@@ -794,10 +794,13 @@ it("keeps the prompt English on an Arabic page, under an Arabic heading", async 
   const section = screen
     .getByRole("heading", { level: 2, name: "استخدمه في تطبيقك" })
     .closest("section") as HTMLElement;
-  const preview = section.querySelector(".prompt-preview") as HTMLElement;
+  await user.click(within(section).getByRole("button", { name: "راجع الطلب" }));
+  const preview = within(section).getByRole("textbox", {
+    name: "الطلب الكامل للمساعد البرمجي",
+  }) as HTMLTextAreaElement;
   expect(preview).toHaveAttribute("lang", "en");
   expect(preview).toHaveAttribute("dir", "ltr");
-  expect(preview.textContent).toMatch(/^First locate Tiraz/);
+  expect(preview.value).toMatch(/^First locate Tiraz/);
   await user.click(within(section).getByRole("button", { name: "نسخ الطلب" }));
   const copied = await navigator.clipboard.readText();
   expect(copied).toMatch(/^First locate Tiraz/);

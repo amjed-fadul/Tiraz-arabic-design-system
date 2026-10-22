@@ -1,6 +1,7 @@
-import { useRef, useState } from "react";
-import { ArrowLeft, ArrowUpRight, Check, Copy } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ArrowClockwiseIcon } from "@phosphor-icons/react/dist/csr/ArrowClockwise";
+import { Button } from "../system/Button";
 import emptySource from "../system/EmptyStateIllustrations.tsx?raw";
 import vaultSource from "../illustrations/DocumentVault.tsx?raw";
 import handoffSource from "../illustrations/AgentHandoff.tsx?raw";
@@ -8,6 +9,7 @@ import voiceSource from "../illustrations/VoiceField.tsx?raw";
 import { illustrations, type IllustrationCategory } from "./illustrations";
 import type { IllustrationId } from "./site-routes";
 import { SiteLink } from "./SiteLink";
+import { CopyControl } from "./CopyControl";
 import type { Navigate } from "./SiteLink";
 import { localize, words } from "./i18n";
 import type { Language } from "./i18n";
@@ -30,9 +32,12 @@ export function IllustrationsPage({
     null,
   );
   const [playback, setPlayback] = useState(0);
-  const [copied, setCopied] = useState<"example" | "source" | null>(null);
-  const [failed, setFailed] = useState(false);
-  const request = useRef(0);
+  const [feedback, setFeedback] = useState<{
+    kind: "example" | "source";
+    result: "success" | "failure";
+  } | null>(null);
+  const [exampleOpen, setExampleOpen] = useState(false);
+  const [sourceOpen, setSourceOpen] = useState(false);
   const isScene = item && item.category !== "empty";
   const sourceFile = isScene
     ? `${item.exportName}.tsx`
@@ -54,22 +59,6 @@ export function IllustrationsPage({
   <${item.exportName}${isScene ? ` language="${language}"${item.id === "document-vault" ? " interactive" : item.id === "voice-field" ? " interactive animated" : " animated"}` : ""} />
 </div>`
     : "";
-  async function copy(kind: "example" | "source") {
-    const current = ++request.current;
-    try {
-      await navigator.clipboard.writeText(
-        kind === "example" ? example : source,
-      );
-      if (current !== request.current) return;
-      setFailed(false);
-      setCopied(kind);
-    } catch {
-      if (current === request.current) {
-        setFailed(true);
-        setCopied(null);
-      }
-    }
-  }
   if (!item)
     return (
       <div className="illustrations-page">
@@ -95,8 +84,8 @@ export function IllustrationsPage({
               ["empty", "الحالات الفارغة", "Empty states"],
             ] as const
           ).map(([value, ar, en]) => (
-            <button
-              type="button"
+            <Button
+              variant={category === value ? "secondary" : "ghost"}
               key={value}
               aria-pressed={category === value}
               onClick={() => {
@@ -105,7 +94,7 @@ export function IllustrationsPage({
               }}
             >
               {t(ar, en)}
-            </button>
+            </Button>
           ))}
         </div>
         <div className="illustration-grid">
@@ -189,20 +178,19 @@ export function IllustrationsPage({
               ["medium", "متوسط", "Medium"],
               ["large", "كبير", "Large"],
             ].map(([value, ar, en]) => (
-              <button
-                type="button"
+              <Button
+                variant={size === value ? "secondary" : "ghost"}
                 key={value}
                 aria-pressed={size === value}
                 onClick={() => setSize(value)}
               >
                 {t(ar, en)}
-              </button>
+              </Button>
             ))}
           </div>
           {isScene && item.id !== "document-vault" && (
-            <button
-              className="site-action"
-              type="button"
+            <Button
+              variant="secondary"
               onClick={() => setPlayback((value) => value + 1)}
             >
               <ArrowClockwiseIcon
@@ -211,7 +199,7 @@ export function IllustrationsPage({
                 aria-hidden="true"
               />
               {t("إعادة الحركة", "Replay animation")}
-            </button>
+            </Button>
           )}
         </div>
         <div
@@ -237,34 +225,75 @@ export function IllustrationsPage({
         </p>
         <div className="illustration-copy-actions">
           {(["example", "source"] as const).map((kind) => (
-            <button
-              className="site-action"
-              type="button"
+            <CopyControl
               key={kind}
-              onClick={() => void copy(kind)}
-            >
-              {copied === kind ? (
-                <Check size={16} aria-hidden="true" />
-              ) : (
-                <Copy size={16} aria-hidden="true" />
-              )}
-              {kind === "example"
-                ? t("نسخ المثال", "Copy example")
-                : t("نسخ ملف الرسوم", "Copy source file")}
-            </button>
+              text={kind === "example" ? example : source}
+              caption={
+                kind === "example"
+                  ? t("نسخ المثال", "Copy example")
+                  : t("نسخ ملف الرسوم", "Copy source file")
+              }
+              language={language}
+              announcement="off"
+              onFeedbackChange={(result) => {
+                setFeedback((current) =>
+                  result === "idle"
+                    ? current?.kind === kind
+                      ? null
+                      : current
+                    : { kind, result },
+                );
+                if (result === "failure") {
+                  if (kind === "example") setExampleOpen(true);
+                  else setSourceOpen(true);
+                }
+              }}
+            />
           ))}
-          <span role="status">
-            {failed
-              ? t("تعذّر النسخ. حاول مرة أخرى.", "Could not copy. Try again.")
-              : copied
-                ? t("تم النسخ", "Copied")
+          <span role="status" aria-live="polite">
+            {feedback?.result === "failure"
+              ? t(
+                  "تعذّر النسخ. حدّد النص المعروض أدناه وانسخه يدويًا.",
+                  "Could not copy. Select the text shown below and copy it manually.",
+                )
+              : feedback?.result === "success"
+                ? feedback.kind === "example"
+                  ? t("تم نسخ المثال.", "Example copied.")
+                  : t("تم نسخ ملف المصدر.", "Source file copied.")
                 : ""}
           </span>
         </div>
-        <details className="illustration-code">
+        <details
+          className="illustration-code"
+          open={exampleOpen}
+          onToggle={(event) => setExampleOpen(event.currentTarget.open)}
+        >
           <summary>{t("عرض المثال", "View example")}</summary>
-          <pre dir="ltr" lang="en" tabIndex={0}>
+          <pre
+            dir="ltr"
+            lang="en"
+            tabIndex={0}
+            role="region"
+            aria-label={t("مثال الرسم", "Illustration example")}
+          >
             <code>{example}</code>
+          </pre>
+        </details>
+        <details
+          className="illustration-code"
+          open={sourceOpen}
+          onToggle={(event) => setSourceOpen(event.currentTarget.open)}
+        >
+          <summary>{t("عرض ملف المصدر", "View source file")}</summary>
+          <pre
+            className="illustration-source-code"
+            dir="ltr"
+            lang="en"
+            tabIndex={0}
+            role="region"
+            aria-label={`${t("ملف المصدر:", "Source file:")} ${sourceFile}`}
+          >
+            <code>{source}</code>
           </pre>
         </details>
         {isScene && (

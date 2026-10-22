@@ -106,24 +106,6 @@
   padding: 0 var(--space-5) var(--space-5);
   font-size: var(--text-label);
 }
-.quick-start button {
-  font: inherit;
-  cursor: pointer;
-}
-.quick-start .quick-start-choice button {
-  flex: 1;
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid transparent;
-  border-radius: var(--radius-control);
-  background: transparent;
-  color: var(--text-secondary);
-}
-.quick-start .quick-start-choice button[aria-pressed="true"] {
-  border-color: var(--border);
-  background: var(--surface-tray);
-  color: var(--text);
-  box-shadow: var(--shadow-control);
-}
 .quick-start .quick-start-prompt {
   overflow: hidden;
   border: 1px solid var(--border);
@@ -140,22 +122,6 @@
   border-block-end: 1px solid var(--border);
   color: var(--text-muted);
   font-size: var(--text-label);
-}
-.quick-start .quick-start-copy {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-  min-block-size: var(--control-small);
-  padding: var(--space-1) var(--space-3);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-control);
-  color: var(--text);
-  background: var(--surface);
-  font-size: var(--text-label);
-}
-.quick-start .quick-start-copy svg {
-  flex: none;
 }
 .quick-start pre {
   margin: 0;
@@ -282,10 +248,6 @@
   outline-offset: calc(var(--space-1) * -1);
 }
 @media (hover: hover) and (pointer: fine) {
-  .quick-start .quick-start-copy:hover,
-  .quick-start .quick-start-choice button:hover {
-    background: var(--surface-hover);
-  }
   .quick-start summary:hover {
     color: var(--action);
   }
@@ -315,4 +277,8 @@
   .quick-start summary > svg {
     transition: none;
   }
+}
+
+.quick-start .quick-start-choice > .tz-button {
+  flex: 1;
 }

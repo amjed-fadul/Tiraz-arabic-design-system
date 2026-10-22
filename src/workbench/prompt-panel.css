@@ -1,0 +1,46 @@
+.doc-prompt {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-tray);
+  background: var(--surface);
+  padding: var(--space-5);
+}
+.doc-prompt-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+}
+.doc-prompt-intro {
+  flex: 1 1 24rem;
+  min-inline-size: 0;
+}
+.doc-prompt-intro h2 {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
+}
+.doc-prompt-intro p {
+  margin-block: var(--space-2) 0;
+  max-inline-size: 52ch;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+}
+.doc-prompt-header > .copy-control {
+  flex: 0 1 auto;
+  align-items: flex-start;
+  max-inline-size: 100%;
+}
+.doc-prompt-disclosure {
+  margin-block-start: var(--space-4);
+}
+.doc-prompt-text {
+  min-block-size: 18rem;
+  max-block-size: 36rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+  line-height: var(--leading-reading);
+  resize: vertical;
+}

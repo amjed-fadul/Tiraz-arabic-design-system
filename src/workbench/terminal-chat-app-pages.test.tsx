@@ -68,8 +68,16 @@ it.each(["terminal", "chat-app"] as const)(
     render(<Example />);
     expect(screen.getAllByRole("region").length).toBeGreaterThan(0);
     const prompt = generatePrompt(component, model, config, "en");
-    expect(prompt).toContain("Host owns conversations");
-    expect(prompt).toContain("No HTML/ANSI interpretation");
+    expect(prompt).toContain(
+      component === "chat-app"
+        ? "Host owns conversations"
+        : "No HTML/ANSI interpretation",
+    );
+    expect(prompt).not.toContain(
+      component === "chat-app"
+        ? "No HTML/ANSI interpretation"
+        : "Host owns conversations",
+    );
   },
 );
 it.each(["chat-composer", "prompt-bar"] as const)(

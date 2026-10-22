@@ -255,8 +255,8 @@ it("cancels replay on state press, Code view, page change and unmount", async ()
   await wait(800);
   fireEvent.click(nav.getByRole("link", { name: "العرض والتنبيهات" }));
   fireEvent.click(nav.getByRole("button", { name: "الطرفية" }));
-  // jsdom queues a selectionchange task when route focus moves to main.
-  await wait(0);
+  // Flush route focus and the newly mounted prompt disclosure’s layout frame.
+  await act(async () => vi.advanceTimersToNextFrame());
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
   fireEvent.click(nav.getByRole("link", { name: "النماذج" }));
@@ -328,7 +328,7 @@ it("puts the prompt after the demo", () => {
   expect(
     Array.from(
       container.querySelectorAll(".component-page > section"),
-      (section) => section.className,
+      (section) => section.classList[0],
     ),
   ).toEqual([
     "playground-section",
@@ -1785,6 +1785,8 @@ it("returns a phase page to its resting phase when the inspector resets it", asy
   fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
   expect(pressed()).toEqual([word("running")]);
   reset();
+  // The prompt disclosure schedules its first layout frame on mount.
+  await act(async () => vi.advanceTimersToNextFrame());
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
   expect(pressed()).toEqual([word("done")]);

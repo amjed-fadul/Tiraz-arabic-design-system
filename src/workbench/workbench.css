@@ -98,35 +98,6 @@ bdi {
   gap: 14px;
   margin-inline-start: auto;
 }
-.doc-button,
-.doc-icon-button {
-  border: 0;
-  background: transparent;
-  color: var(--text-secondary);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  min-block-size: 32px;
-  border-radius: var(--radius-control);
-  padding: 4px 8px;
-  line-height: 1.6;
-  font-size: var(--text-meta) !important;
-  font-weight: 400;
-  cursor: pointer;
-}
-@media (hover: hover) and (pointer: fine) {
-  .doc-button:hover,
-  .doc-icon-button:hover {
-    background: var(--wash);
-    color: var(--text);
-  }
-}
-.doc-icon-button {
-  inline-size: 32px;
-  padding: 0;
-  flex-shrink: 0;
-}
 .language-control {
   min-inline-size: 64px;
 }
@@ -246,36 +217,6 @@ bdi {
 .agent-section bdi {
   font: var(--text-micro) var(--font-mono);
 }
-.prompt-disclosure {
-  margin-block-start: 9px;
-  font-size: var(--text-meta);
-}
-.prompt-disclosure summary {
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: list-item;
-}
-.prompt-disclosure pre {
-  border-radius: var(--radius-paper);
-  background: var(--surface-subtle);
-  border: 1px solid var(--border);
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-  font: var(--text-meta) / 1.8 var(--font);
-  padding: 16px;
-  max-block-size: 330px;
-  overflow: auto;
-}
-.copy-control {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-.copy-error {
-  font-size: var(--text-meta);
-  color: var(--danger);
-}
 .playground-section {
   margin-block-end: var(--space-6);
 }
@@ -290,6 +231,23 @@ bdi {
   padding: var(--space-4) var(--space-6) var(--space-8);
   background: var(--surface);
   color: var(--text);
+}
+/* Standalone previews retain a link back to the documentation. */
+.standalone-playground > .doc-button {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--control-small);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+@media (hover: hover) and (pointer: fine) {
+  .standalone-playground > .doc-button:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
 }
 .standalone-playground > .playground-canvas {
   justify-self: stretch;
@@ -683,19 +641,11 @@ bdi {
     gap: 5px;
     margin: 0;
   }
-  .header-actions .doc-button {
-    font-size: var(--text-micro) !important;
-    padding-inline: 6px;
-  }
   .component-heading {
     margin-block-end: var(--space-5);
   }
   .section-title-row {
     gap: 8px;
-  }
-  .copy-button {
-    font-size: var(--text-micro) !important;
-    padding-inline: 3px;
   }
 
   .playground-tabs .tz-tab {
@@ -731,9 +681,6 @@ bdi {
   }
   .header-actions {
     gap: 1px;
-  }
-  .header-actions .doc-button {
-    padding-inline: 4px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -864,7 +811,7 @@ bdi {
   display: flex;
   gap: var(--space-1);
 }
-.settings-actions .tz-icon-button {
+.settings-actions .tz-button[data-icon-only] {
   border-radius: var(--radius-pill);
 }
 .settings-actions svg {
@@ -874,7 +821,7 @@ bdi {
 .settings-close {
   background: var(--surface-tray);
 }
-.tz-icon-button.settings-close {
+.tz-button.settings-close {
   color: var(--text);
 }
 .settings-body {
@@ -915,29 +862,6 @@ bdi {
   font-weight: var(--weight-semibold);
   line-height: var(--leading-heading);
 }
-/* Reset and Apply: text in the action color. */
-.settings-text-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: none;
-  padding: var(--space-1) var(--space-2);
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--action);
-  font-size: var(--text-meta);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-meta);
-  touch-action: manipulation;
-  transition:
-    background-color var(--motion-fast) var(--ease-out),
-    transform var(--motion-release) var(--ease-out);
-}
-.settings-text-button:active {
-  transform: scale(var(--press-scale));
-  transition-duration: var(--motion-fast), var(--motion-press);
-}
 /* A row: the label at the start, its value or control at the end. */
 .settings-row {
   display: flex;
@@ -965,14 +889,6 @@ bdi {
   min-block-size: 100px;
   font: var(--text-micro) / var(--leading-meta) var(--font-mono);
 }
-.collection-field .settings-text-button {
-  justify-self: start;
-}
-.field-error {
-  margin: 0;
-  color: var(--danger);
-  font-size: var(--text-micro);
-}
 .settings-section .tz-switch-field {
   min-block-size: 0;
   gap: var(--space-3);
@@ -980,46 +896,6 @@ bdi {
 .settings-section .tz-switch-copy label {
   font-size: var(--text-label);
   font-weight: var(--weight-regular);
-}
-/* Short choices: a tray with the chosen option as a paper chip. */
-.settings-segmented {
-  display: inline-flex;
-  gap: 2px;
-  padding: var(--space-1);
-  border-radius: var(--radius-pill);
-  background: var(--surface-tray);
-}
-.settings-segmented > button {
-  min-block-size: 28px;
-  padding-inline: 10px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: var(--text-meta);
-  font-weight: var(--weight-medium);
-  line-height: var(--leading-meta);
-  white-space: nowrap;
-  touch-action: manipulation;
-  transition:
-    background-color var(--motion-fast) var(--ease-out),
-    color var(--motion-fast) var(--ease-out),
-    box-shadow var(--motion-fast) var(--ease-out),
-    transform var(--motion-release) var(--ease-out);
-}
-.settings-segmented > button[aria-pressed="true"] {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow-chip);
-}
-.settings-segmented > button:active {
-  transform: scale(var(--press-scale));
-  transition-duration:
-    var(--motion-fast), var(--motion-fast), var(--motion-fast),
-    var(--motion-press);
-}
-.settings-segmented > button:focus-visible {
-  outline-offset: -2px;
 }
 /* The accent: twelve swatches in six columns. The chosen one has a ring of
    paper, then a ring in its own color, and a check. */
@@ -1079,22 +955,13 @@ bdi {
   .settings-close:hover {
     background: color-mix(in srgb, var(--text) 6%, var(--surface-tray));
   }
-  .settings-text-button:hover {
-    background: var(--wash);
-  }
-  .settings-segmented > button:not([aria-pressed="true"]):hover {
-    background: var(--wash);
-    color: var(--text);
-  }
 }
 /* Coarse pointers: targets of 44px. */
 @media (pointer: coarse) {
-  .customize-pill,
-  .settings-segmented > button,
-  .settings-text-button {
+  .customize-pill {
     min-block-size: 44px;
   }
-  .settings-actions .tz-icon-button {
+  .settings-actions .tz-button[data-icon-only] {
     inline-size: 44px;
     block-size: 44px;
   }
@@ -1112,7 +979,6 @@ bdi {
    backplate, and focus rings take CanvasText. */
 @media (forced-colors: active) {
   .customize-pill[aria-expanded="true"],
-  .settings-segmented > button[aria-pressed="true"],
   .accent-swatches > button[aria-checked="true"] {
     forced-color-adjust: none;
     background: Highlight;
@@ -1126,32 +992,6 @@ bdi {
 .agent-section > h2 {
   margin-block-end: 10px;
 }
-/* Paper with a ring. Forced colors drop the ring; the border becomes its
-   edge. */
-.prompt-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 9px;
-  min-inline-size: 0;
-  border: 1px solid transparent;
-  border-radius: var(--radius-paper);
-  background: var(--surface);
-  box-shadow: var(--shadow-paper);
-}
-.prompt-preview {
-  min-inline-size: 0;
-  flex: 1;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font: var(--text-meta) / 1.8 var(--font);
-  color: var(--text-secondary);
-}
-.prompt-row .copy-control {
-  flex-shrink: 0;
-}
 @media (max-width: 1100px) {
   .docs-workspace {
     padding-inline: 32px;
@@ -1164,18 +1004,11 @@ bdi {
   .docs-workspace {
     padding: 28px 22px 50px;
   }
-  .prompt-preview {
-    font-size: var(--text-micro);
-  }
 }
 @media (max-width: 360px) {
   .docs-workspace {
     padding-inline: 16px;
   }
-}
-
-.copy-icon[data-copy-state="failed"] {
-  color: var(--danger);
 }
 
 .playground-form {

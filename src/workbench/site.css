@@ -65,66 +65,6 @@
   gap: var(--space-3);
   margin-block-end: var(--space-8);
 }
-.library-search {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  gap: var(--space-3);
-  min-inline-size: 0;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-control);
-  padding-inline: var(--space-4);
-  background: var(--surface);
-  color: var(--text-secondary);
-}
-.library-search > svg {
-  flex-shrink: 0;
-}
-.library-search input {
-  flex: 1;
-  min-inline-size: 0;
-  inline-size: 100%;
-  block-size: calc(var(--space-6) * 2);
-  border: 0;
-  background: transparent;
-  color: var(--text);
-  font: inherit;
-  font-size: var(--text-body);
-  outline: none;
-}
-.library-search input::placeholder {
-  color: var(--text-muted);
-}
-.library-search:focus-within {
-  outline: 2px solid var(--focus);
-  outline-offset: 2px;
-}
-.library-search button {
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  inline-size: var(--space-8);
-  block-size: var(--space-8);
-  border: 0;
-  border-radius: var(--radius-control);
-  background: var(--surface-tray);
-  color: var(--text-secondary);
-}
-.library-search input::-webkit-search-cancel-button {
-  display: none;
-}
-.library-category select {
-  block-size: 100%;
-  min-block-size: calc(var(--space-6) * 2);
-  max-inline-size: 100%;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-control);
-  padding-inline: var(--space-3);
-  color: var(--text);
-  background: var(--surface);
-  font-family: inherit;
-  font-size: var(--text-body);
-}
 .library-results > section + section {
   margin-block-start: var(--space-10);
 }
@@ -332,21 +272,6 @@
   gap: var(--space-2);
   margin-block: var(--space-6) var(--space-8);
 }
-.illustration-filters button {
-  min-block-size: var(--space-10);
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: var(--text-label);
-  line-height: var(--leading-meta);
-}
-.illustration-filters button[aria-pressed="true"] {
-  background: var(--text);
-  border-color: var(--text);
-  color: var(--surface);
-}
 .illustration-card {
   min-inline-size: 0;
 }
@@ -408,9 +333,6 @@
   gap: var(--space-2);
   padding: var(--space-3);
 }
-.illustration-preview-toolbar .site-action {
-  background: var(--surface);
-}
 .illustration-stage[data-size="small"] > svg {
   inline-size: 8rem;
 }
@@ -426,20 +348,6 @@
   justify-content: center;
   gap: var(--space-1);
   padding: var(--space-1);
-}
-.illustration-size button {
-  min-block-size: var(--space-8);
-  padding-inline: var(--space-4);
-  border: 0;
-  border-radius: var(--radius-control);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: var(--text-meta);
-}
-.illustration-size button[aria-pressed="true"] {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: var(--shadow-chip);
 }
 .illustration-usage {
   max-inline-size: 52rem;
@@ -532,26 +440,8 @@
   .library-toolbar {
     flex-wrap: wrap;
   }
-  .library-search {
-    flex-basis: 100%;
-  }
-  .library-category,
-  .library-category select {
-    inline-size: 100%;
-  }
 }
 @media (max-width: 760px) {
-  .mobile-navigation .doc-button span {
-    position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  .mobile-navigation .doc-button {
-    inline-size: var(--space-8);
-  }
   .guide-pagination {
     gap: var(--space-2);
   }
@@ -561,9 +451,7 @@
   }
 }
 @media (forced-colors: active) {
-  .site-secondary a[aria-current="page"],
-  .illustration-size button[aria-pressed="true"],
-  .illustration-filters button[aria-pressed="true"] {
+  .site-secondary a[aria-current="page"] {
     outline: 1px solid Highlight;
   }
 }
@@ -571,8 +459,50 @@
 .guide-pagination > a:only-child {
   grid-column: 1 / -1;
 }
-@media (max-width: 760px) {
-  .library-search input {
-    font-size: var(--text-touch);
+
+/* The Input owns the search field's border and focus ring. */
+.library-search {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-inline-size: 0;
+}
+.library-search > svg {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.library-search .tz-input {
+  inline-size: 100%;
+  padding-inline: var(--space-10);
+}
+.library-search .library-clear {
+  position: absolute;
+  inset-inline-end: var(--space-2);
+  inset-block: 0;
+  margin-block: auto;
+}
+.library-search input::-webkit-search-cancel-button {
+  display: none;
+}
+.library-category {
+  flex: 0 1 14rem;
+  min-inline-size: 0;
+}
+.library-category .tz-select,
+.library-category .tz-select-trigger {
+  inline-size: 100%;
+}
+.illustration-code pre.illustration-source-code {
+  max-block-size: 20rem;
+  overflow: auto;
+}
+@container (max-width: 36rem) {
+  .library-search,
+  .library-category {
+    flex-basis: 100%;
   }
 }

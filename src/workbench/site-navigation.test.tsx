@@ -249,7 +249,8 @@ it("keeps keyboard focus on the Library filter when narrowing results", async ()
   at("/library");
   const category = screen.getByRole("combobox", { name: "التصنيف" });
   category.focus();
-  await userEvent.selectOptions(category, "forms");
+  await userEvent.click(category);
+  await userEvent.click(screen.getByRole("option", { name: "النماذج" }));
   expect(category).toHaveFocus();
   expect(window.location.search).toBe("?category=forms");
   const results = within(screen.getByRole("region", { name: "نتائج المكتبة" }));
@@ -403,8 +404,8 @@ it("recovers a saved Assistant workspace preference through the Screens catalog"
   expect(
     screen.getByRole("heading", { level: 1, name: "Screens" }),
   ).toBeVisible();
-  expect(screen.getByRole("combobox", { name: "Category" })).toHaveValue(
-    "screens",
+  expect(screen.getByRole("combobox", { name: "Category" })).toHaveTextContent(
+    "Screens",
   );
   expect(
     screen.queryByRole("heading", { level: 1, name: "Button" }),

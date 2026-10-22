@@ -212,3 +212,25 @@
   margin-block-start: var(--space-4);
   padding-block-start: var(--space-4);
 }
+
+/* The navigation trigger needs a DOM ref for Escape and drawer focus return. */
+.docs-navigation-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  inline-size: var(--control-small);
+  block-size: var(--control-small);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .docs-navigation-toggle:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}

@@ -104,9 +104,14 @@ async function shownCode() {
     .getByRole("region", { name: "الكود: src/Example.tsx" })
     .querySelector("pre")!.textContent!;
 }
-it("isolates portable library paths as complete LTR runs inside the Arabic prompt", () => {
-  const { container } = render(<Workbench />);
-  const paths = Array.from(container.querySelectorAll(".prompt-preview bdi"));
+it("keeps the full prompt and portable paths in one English LTR field", async () => {
+  render(<Workbench />);
+  await userEvent.click(screen.getByRole("button", { name: "راجع الطلب" }));
+  const prompt = screen.getByRole("textbox", {
+    name: "الطلب الكامل للمساعد البرمجي",
+  });
+  expect(prompt).toHaveAttribute("dir", "ltr");
+  expect(prompt).toHaveAttribute("lang", "en");
   for (const path of [
     "ai/README.md",
     "ai/registry.json",
@@ -115,14 +120,9 @@ it("isolates portable library paths as complete LTR runs inside the Arabic promp
     "./system",
     "./system/tokens.css",
   ])
-    expect(
-      paths.some(
-        (node) =>
-          node.textContent === path && node.getAttribute("dir") === "ltr",
-      ),
-      path,
-    ).toBe(true);
+    expect((prompt as HTMLTextAreaElement).value).toContain(path);
 });
+
 it("places only navigation in its sidebar and both settings sections in the panel", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });

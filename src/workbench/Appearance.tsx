@@ -1,7 +1,7 @@
 import { useId } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { Check, RotateCcw } from "lucide-react";
-import { accentColors, numberLocale, Slider, Switch } from "../system";
+import { accentColors, Button, numberLocale, Slider, Switch } from "../system";
 import type { Accent, SystemConfig } from "../system";
 import type { AppearanceSettings } from "./storage";
 import type { Language } from "./i18n";
@@ -50,20 +50,20 @@ export function Appearance({ config, language, onChange, onReset }: Props) {
       ?.focus();
   }
   // In the page's digits.
-  const radius = `${new Intl.NumberFormat(numberLocale({}, language)).format(config.radius)} ${label("pixels", language)}`;
+  const radius = `${new Intl.NumberFormat(numberLocale(config, language)).format(config.radius)} ${label("pixels", language)}`;
   return (
     <section className="settings-section" aria-labelledby={`${uid}-heading`}>
       <div className="settings-section-head">
         <h3 id={`${uid}-heading`}>{label("systemSettings", language)}</h3>
-        <button
-          type="button"
-          className="settings-text-button"
+        <Button
+          variant="ghost"
+          className="settings-action"
           aria-label={label("resetSystem", language)}
           onClick={onReset}
         >
           <RotateCcw size={14} aria-hidden="true" />
           {label("reset", language)}
-        </button>
+        </Button>
       </div>
       <div className="settings-field">
         <div className="settings-row">

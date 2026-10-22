@@ -1,0 +1,16 @@
+.copy-control {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.copy-feedback {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.copy-feedback[data-error="true"],
+.copy-button[data-copy-state="failed"] {
+  color: var(--danger);
+}
