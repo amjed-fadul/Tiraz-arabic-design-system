@@ -298,11 +298,19 @@ export function Workbench() {
     return section ? [section] : [];
   });
   function toggleNavigationSection(section: string) {
-    setOpenNavigationSections((open) =>
-      open.includes(section)
-        ? open.filter((item) => item !== section)
-        : [...open, section],
-    );
+    if (openNavigationSections.includes(section)) {
+      setOpenNavigationSections((open) =>
+        open.filter((item) => item !== section),
+      );
+    } else {
+      navigate(
+        section === "illustrations"
+          ? { kind: "illustrations" }
+          : { kind: "library", category: section },
+        true,
+        { keepNavigation: true },
+      );
+    }
   }
   const language = documentation.language,
     active = route.kind === "component" ? route.id : documentation.active,
@@ -576,7 +584,11 @@ export function Workbench() {
     setRevisions((prev) => ({ ...prev, [active]: (prev[active] ?? 0) + 1 }));
   }
   const navigate = useCallback(
-    (next: SiteRoute, history = true) => {
+    (
+      next: SiteRoute,
+      history = true,
+      { keepNavigation = false }: { keepNavigation?: boolean } = {},
+    ) => {
       const samePath =
         window.location.pathname + window.location.search === routePath(next);
       const keepFilterFocus =
@@ -589,8 +601,10 @@ export function Workbench() {
       stopFocusReturn.current?.();
       setPhases({});
       setSheetOpen(false);
-      navigationSelection.current = true;
-      setNavigationOpen(false);
+      if (!keepNavigation) {
+        navigationSelection.current = true;
+        setNavigationOpen(false);
+      }
       setDocumentation((prev) =>
         next.kind === "component"
           ? { ...prev, active: next.id, screen: null }
@@ -600,7 +614,7 @@ export function Workbench() {
       );
       if (history && !samePath)
         window.history.pushState({}, "", routePath(next));
-      focusRoute.current = !keepFilterFocus;
+      focusRoute.current = !keepFilterFocus && !keepNavigation;
       const section = navigationSection(next);
       if (section)
         setOpenNavigationSections((open) =>

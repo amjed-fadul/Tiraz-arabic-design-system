@@ -49,7 +49,7 @@ it("keeps chart inspectors compact and copied prompts consistent with the curren
   const user = userEvent.setup(),
     write = vi.spyOn(navigator.clipboard, "writeText");
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  await user.click(nav.getByRole("link", { name: "الرسوم" }));
+  await user.click(nav.getByRole("button", { name: "الرسوم" }));
   for (const name of [
     "الرسم الخطي",
     "الرسم المساحي",

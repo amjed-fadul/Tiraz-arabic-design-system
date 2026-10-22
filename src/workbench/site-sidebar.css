@@ -161,7 +161,7 @@
   border-inline-start-color: transparent;
 }
 
-/* Titles navigate to galleries; adjacent controls expand each list independently. */
+/* Each section has one full-width disclosure and one shared hover/focus state. */
 .docs-shell .component-nav-group + .component-nav-group {
   margin-block-start: var(--space-2);
 }
@@ -177,8 +177,11 @@
   margin: 0;
 }
 .docs-shell .component-nav .component-nav-section {
+  inline-size: 100%;
   min-block-size: var(--space-10);
   padding-inline: var(--space-2);
+  justify-content: flex-start;
+  white-space: normal;
   font-size: var(--text-body);
   font-weight: var(--weight-semibold);
   color: var(--text);
@@ -196,23 +199,23 @@
   block-size: var(--space-5);
   color: var(--text-secondary);
 }
-.docs-shell .component-nav .component-nav-toggle {
-  flex: none;
-  inline-size: var(--space-10);
-  min-block-size: var(--space-10);
-  padding: 0;
-  justify-content: center;
-  color: var(--text-muted);
+.component-nav-section > .tz-button-label {
+  inline-size: 100%;
+  gap: var(--space-3);
 }
-.component-nav-toggle svg {
+.component-nav-caret {
   flex: none;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  margin-inline-start: auto;
+  color: var(--text-muted);
   transform: rotate(-90deg);
   transition: transform var(--motion-collapse) var(--ease-out);
 }
-.component-nav-toggle:dir(rtl) svg {
+.component-nav-caret:dir(rtl) {
   transform: rotate(90deg);
 }
-.component-nav-toggle[aria-expanded="true"] svg {
+.component-nav-toggle[aria-expanded="true"] .component-nav-caret {
   transform: rotate(0deg);
 }
 .component-nav-panel {
@@ -243,12 +246,8 @@
   scrollbar-gutter: stable;
 }
 @media (pointer: coarse) {
-  .docs-shell .component-nav .component-nav-toggle,
   .docs-shell .component-nav .component-nav-section {
     min-block-size: calc(var(--space-10) + var(--space-1));
-  }
-  .docs-shell .component-nav .component-nav-toggle {
-    inline-size: calc(var(--space-10) + var(--space-1));
   }
 }
 .docs-shell .docs-navigation-resources {

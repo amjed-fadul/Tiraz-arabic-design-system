@@ -70,7 +70,7 @@ it("replays streaming text from the stage's corner, without a stop, keeping Repl
   vi.useFakeTimers();
   render(<Workbench />);
   // StreamingText is linked from ChatThread in the Ask section.
-  fireEvent.click(screen.getByRole("link", { name: "اسأل" }));
+  fireEvent.click(screen.getByRole("button", { name: "اسأل" }));
   fireEvent.click(screen.getByRole("button", { name: "المحادثة" }));
   fireEvent.click(screen.getByRole("link", { name: "النص المتتابع" }));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
@@ -156,13 +156,9 @@ it("shows Replay only where a sequence exists", () => {
     const group = navigationGroups.find((section) =>
       section.items.some((item) => item.id === (parent ?? page.id)),
     )!;
-    const sectionLink = nav.getByRole("link", { name: group.name[0] });
-    if (
-      nav
-        .getByRole("button", { name: new RegExp(`^${group.name[0]}:`) })
-        .getAttribute("aria-expanded") !== "true"
-    )
-      fireEvent.click(sectionLink);
+    const sectionToggle = nav.getByRole("button", { name: group.name[0] });
+    if (sectionToggle.getAttribute("aria-expanded") !== "true")
+      fireEvent.click(sectionToggle);
     if (parent) {
       fireEvent.click(
         nav.getByRole("button", {
@@ -356,7 +352,7 @@ it("announces copy failure honestly, supports retry, and ignores stale clipboard
 it("records the EmptyState playground action without offering a replay", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("link", { name: "العرض والتنبيهات" }));
+  await user.click(screen.getByRole("button", { name: "العرض والتنبيهات" }));
   await user.click(screen.getByRole("button", { name: "الحالة الفارغة" }));
   const frame = document.querySelector(
     ".playground-region .tz-demo-frame",

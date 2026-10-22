@@ -28,7 +28,7 @@ it.each([
     render(<Workbench />);
     const ai = within(screen.getByRole("navigation", { name: "المكوّنات" }));
     await user.click(
-      ai.getByRole("link", {
+      ai.getByRole("button", {
         name: en === "SelectionActions" ? "أنشئ" : "افهم وتحكّم",
       }),
     );

@@ -76,29 +76,22 @@ export function NavigationHeading({
 
 function NavigationSection({
   name,
-  icon,
-  language,
-  target,
+  icon: SectionIcon,
   current,
   open,
   onToggle,
-  navigate,
   resource = false,
   children,
 }: {
   name: string;
   icon: Icon;
-  language: Language;
-  target: SiteRoute;
   current: boolean;
   open: boolean;
   onToggle: () => void;
-  navigate: Navigate;
   resource?: boolean;
   children: ReactNode;
 }) {
   const id = useId();
-  const t = words(language);
   return (
     <div
       className={`component-nav-group${resource ? " docs-navigation-resources" : ""}`}
@@ -106,25 +99,33 @@ function NavigationSection({
       aria-label={name}
     >
       <div className="component-nav-heading-row">
-        <NavigationHeading
-          name={name}
-          icon={icon}
-          target={target}
-          current={current}
-          navigate={navigate}
-        />
-        <Button
-          variant="ghost"
-          size="sm"
-          iconOnly
-          className="component-nav-toggle"
-          aria-label={`${name}: ${open ? t("طي القسم", "Collapse section") : t("توسيع القسم", "Expand section")}`}
-          aria-expanded={open}
-          aria-controls={id}
-          onClick={onToggle}
-        >
-          <CaretDownIcon size={16} weight="regular" aria-hidden="true" />
-        </Button>
+        <h2 className="component-nav-heading">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="component-nav-section component-nav-toggle"
+            aria-current={current ? "page" : undefined}
+            aria-expanded={open}
+            aria-controls={id}
+            onClick={onToggle}
+          >
+            <SectionIcon
+              className="component-nav-section-icon"
+              size={20}
+              weight="duotone"
+              aria-hidden="true"
+              focusable="false"
+            />
+            <span>{name}</span>
+            <CaretDownIcon
+              className="component-nav-caret"
+              size={16}
+              weight="regular"
+              aria-hidden="true"
+              focusable="false"
+            />
+          </Button>
+        </h2>
       </div>
       <div
         id={id}
@@ -141,7 +142,7 @@ function NavigationSection({
   );
 }
 
-/** Gallery links navigate; adjacent disclosures only change their own list. */
+/** Each heading is one disclosure; opening also selects its gallery. */
 export function ComponentNavigation({
   language,
   route,
@@ -168,9 +169,6 @@ export function ComponentNavigation({
           key={group.id}
           name={localize(group.name, language)}
           icon={sectionIcons[group.id]}
-          language={language}
-          target={{ kind: "library", category: group.id }}
-          navigate={navigate}
           current={route.kind === "library" && route.category === group.id}
           open={openSections.includes(group.id)}
           onToggle={() => onToggleSection(group.id)}
@@ -207,9 +205,6 @@ export function ComponentNavigation({
       <NavigationSection
         name={t("الرسوم التوضيحية", "Illustrations")}
         icon={PaletteIcon}
-        language={language}
-        target={{ kind: "illustrations" }}
-        navigate={navigate}
         current={route.kind === "illustrations" && !route.id}
         open={openSections.includes("illustrations")}
         onToggle={() => onToggleSection("illustrations")}

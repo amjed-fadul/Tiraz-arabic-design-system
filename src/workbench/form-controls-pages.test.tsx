@@ -19,7 +19,7 @@ it("adds four continuous documentation pages with complete prompt/code and prese
   ] as const) {
     if (!nav.queryByRole("button", { name: label }))
       await user.click(
-        nav.getByRole("link", {
+        nav.getByRole("button", {
           name: id === "badge" ? "العرض والتنبيهات" : "النماذج",
         }),
       );

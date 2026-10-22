@@ -132,10 +132,9 @@ it("cancels a loading action when navigating and unmounting", () => {
   const view = render(<Workbench />);
   fireEvent.click(preview());
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  fireEvent.click(nav.getByRole("link", { name: "التنقّل" }));
+  fireEvent.click(nav.getByRole("button", { name: "التنقّل" }));
   fireEvent.click(nav.getByRole("button", { name: "التبويبات" }));
   tick(3000);
-  fireEvent.click(nav.getByRole("link", { name: "النماذج" }));
   fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
   expect(preview()).toHaveAttribute("data-state", "idle");
   fireEvent.click(preview());

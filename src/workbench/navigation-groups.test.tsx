@@ -8,6 +8,51 @@ import { persist, storageKeys } from "./storage";
 
 afterEach(() => vi.restoreAllMocks());
 
+it.each(["ar", "en"] as const)(
+  "toggles the list on repeated title clicks without moving focus in %s",
+  async (language) => {
+    persist(storageKeys.documentation, { language });
+    render(<Workbench />);
+    const user = userEvent.setup();
+    const nav = within(
+      screen.getByRole("navigation", {
+        name: language === "ar" ? "المكوّنات" : "Components",
+      }),
+    );
+    const title = nav.getByRole("heading", {
+      level: 2,
+      name: language === "ar" ? "شاشات" : "Screens",
+    });
+    await user.click(
+      within(title).getByText(language === "ar" ? "شاشات" : "Screens"),
+    );
+    const toggle = within(title).getByRole("button");
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(toggle).toHaveFocus();
+    expect(window.location.pathname + window.location.search).toBe(
+      "/library?category=screens",
+    );
+    await user.click(
+      within(title).getByText(language === "ar" ? "شاشات" : "Screens"),
+    );
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    expect(toggle).toHaveFocus();
+    expect(
+      nav.queryByRole("button", {
+        name: language === "ar" ? "لوحة العملاء" : "Customer dashboard",
+      }),
+    ).toBeNull();
+    expect(
+      nav.getByRole("button", {
+        name: language === "ar" ? "الأزرار" : "Button",
+      }),
+    ).toBeVisible();
+    expect(window.location.pathname + window.location.search).toBe(
+      "/library?category=screens",
+    );
+  },
+);
+
 it("keeps every section heading visible and lists each curated page once when its section opens", async () => {
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
@@ -24,7 +69,9 @@ it("keeps every section heading visible and lists each curated page once when it
   expect(nav.queryByText("أنماط الذكاء الاصطناعي")).toBeNull();
   const names: (string | null)[] = [];
   for (const group of navigationGroups) {
-    await userEvent.click(nav.getByRole("link", { name: group.name[0] }));
+    const toggle = nav.getByRole("button", { name: group.name[0] });
+    if (toggle.getAttribute("aria-expanded") === "false")
+      await userEvent.click(toggle);
     const buttons = within(nav.getByRole("group", { name: group.name[0] }))
       .getAllByRole("button")
       .filter((button) => !button.hasAttribute("aria-expanded"));
@@ -34,11 +81,9 @@ it("keeps every section heading visible and lists each curated page once when it
       ),
     );
     names.push(...buttons.map((item) => item.textContent));
-    expect(
-      nav.getByRole("button", { name: `${group.name[0]}: طي القسم` }),
-    ).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      group.name[0],
+    expect(nav.getByRole("button", { name: group.name[0] })).toHaveAttribute(
+      "aria-expanded",
+      "true",
     );
   }
   expect(names.sort()).toEqual(
@@ -61,17 +106,22 @@ it("opens section galleries without removing other expanded lists", async () => 
   render(<Workbench />);
   const user = userEvent.setup();
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
-  const screensLink = nav.getByRole("link", { name: "Screens" });
-  screensLink.focus();
+  const screensToggle = nav.getByRole("button", { name: "Screens" });
+  screensToggle.focus();
   await user.keyboard("{Enter}");
   expect(window.location.pathname + window.location.search).toBe(
     "/library?category=screens",
   );
-  expect(screensLink).toHaveAttribute("aria-current", "page");
-  expect(screen.getByRole("main")).toHaveFocus();
+  expect(screensToggle).toHaveAttribute("aria-current", "page");
+  expect(screensToggle).toHaveFocus();
   expect(nav.getByRole("button", { name: "Button" })).toBeVisible();
   expect(nav.getByRole("button", { name: "Customer dashboard" })).toBeVisible();
-  await user.click(nav.getByRole("link", { name: "Forms" }));
+  await user.click(nav.getByRole("button", { name: "Forms" }));
+  expect(nav.getByRole("button", { name: "Forms" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await user.click(nav.getByRole("button", { name: "Forms" }));
   expect(nav.getByRole("button", { name: "Customer dashboard" })).toBeVisible();
   const results = within(
     screen.getByRole("region", { name: "Library results" }),
@@ -83,7 +133,7 @@ it("opens section galleries without removing other expanded lists", async () => 
 });
 
 it.each(["ar", "en"] as const)(
-  "expands and collapses independently without navigating or moving focus in %s",
+  "keeps keyboard focus and other lists open while toggling a section in %s",
   async (language) => {
     persist(storageKeys.documentation, { language });
     render(<Workbench />);
@@ -93,11 +143,9 @@ it.each(["ar", "en"] as const)(
         name: language === "ar" ? "المكوّنات" : "Components",
       }),
     );
-    const path = window.location.href;
     const main = screen.getByRole("main");
     const toggle = nav.getByRole("button", {
-      name:
-        language === "ar" ? "شاشات: توسيع القسم" : "Screens: Expand section",
+      name: language === "ar" ? "شاشات" : "Screens",
     });
     toggle.focus();
     await user.keyboard(" ");
@@ -125,7 +173,9 @@ it.each(["ar", "en"] as const)(
         name: language === "ar" ? "لوحة العملاء" : "Customer dashboard",
       }),
     ).toBeNull();
-    expect(window.location.href).toBe(path);
+    expect(window.location.pathname + window.location.search).toBe(
+      "/library?category=screens",
+    );
     expect(screen.getByRole("main")).toBe(main);
   },
 );
@@ -141,25 +191,27 @@ it("keeps section choices when closing and reopening the mobile drawer", async (
   render(<Workbench />);
   await user.click(screen.getByRole("button", { name: "Open navigation" }));
   let drawer = within(screen.getByRole("dialog", { name: "Components" }));
-  await user.click(
-    drawer.getByRole("button", { name: "Screens: Expand section" }),
-  );
-  await user.click(
-    drawer.getByRole("button", { name: "Forms: Collapse section" }),
-  );
+  await user.click(drawer.getByRole("button", { name: "Screens" }));
+  await user.click(drawer.getByRole("button", { name: "Forms" }));
   expect(screen.getByRole("dialog", { name: "Components" })).toBeVisible();
   await user.keyboard("{Escape}");
   await user.click(screen.getByRole("button", { name: "Open navigation" }));
   drawer = within(screen.getByRole("dialog", { name: "Components" }));
-  expect(
-    drawer.getByRole("button", { name: "Screens: Collapse section" }),
-  ).toHaveAttribute("aria-expanded", "true");
-  expect(
-    drawer.getByRole("button", { name: "Forms: Expand section" }),
-  ).toHaveAttribute("aria-expanded", "false");
-  await user.click(drawer.getByRole("link", { name: "Forms" }));
+  expect(drawer.getByRole("button", { name: "Screens" })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+  expect(drawer.getByRole("button", { name: "Forms" })).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await user.click(drawer.getByRole("button", { name: "Forms" }));
+  expect(screen.getByRole("dialog", { name: "Components" })).toBeVisible();
+  expect(drawer.getByRole("button", { name: "Forms" })).toHaveFocus();
+  await user.click(drawer.getByRole("button", { name: "Button" }));
   expect(screen.queryByRole("dialog")).toBeNull();
-  expect(window.location.search).toBe("?category=forms");
+  expect(window.location.pathname).toBe("/library/components/button");
+  expect(screen.getByRole("main")).toHaveFocus();
   mobile.mockRestore();
 });
 

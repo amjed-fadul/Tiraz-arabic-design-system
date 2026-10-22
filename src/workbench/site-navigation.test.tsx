@@ -75,7 +75,7 @@ it("starts a newly selected section with its complete gallery after a search", a
   const search = screen.getByRole("searchbox", { name: "Search the Library" });
   await user.type(search, "checkbox");
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
-  await user.click(nav.getByRole("link", { name: "Screens" }));
+  await user.click(nav.getByRole("button", { name: "Screens" }));
   expect(search).toHaveValue("");
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
     "Screens",
@@ -86,7 +86,7 @@ it("starts a newly selected section with its complete gallery after a search", a
       { name: "Customer dashboard" },
     ),
   ).toBeVisible();
-  expect(screen.getByRole("main")).toHaveFocus();
+  expect(nav.getByRole("button", { name: "Screens" })).toHaveFocus();
 });
 
 it("restores the original root history entry without changing a fresh visit's saved page", async () => {
@@ -231,14 +231,14 @@ it("cancels pending demo work when navigating to a gallery", () => {
     );
     fireEvent.click(
       within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-        "link",
-        { name: "النماذج" },
+        "button",
+        { name: "شاشات" },
       ),
     );
     act(() => vi.runOnlyPendingTimers());
     expect(document.querySelector(".playground-canvas")).toBeNull();
     expect(
-      screen.getByRole("heading", { name: "النماذج", level: 1 }),
+      screen.getByRole("heading", { name: "شاشات", level: 1 }),
     ).toBeVisible();
   } finally {
     vi.useRealTimers();
@@ -309,7 +309,7 @@ it("keeps navigation hidden when moving between destinations", async () => {
   expect(screen.getByRole("main")).toHaveFocus();
 });
 
-it("puts Start here first, all section links next and Illustrations last, with no Library row or top navigation", async () => {
+it("puts Start here first, section disclosures next and Illustrations last, with no Library row or top navigation", async () => {
   persist(storageKeys.documentation, { language: "en" });
   at("/start");
   expect(
@@ -318,20 +318,20 @@ it("puts Start here first, all section links next and Illustrations last, with n
   const header = screen.getByRole("link", { name: "Tiraz" }).closest("header")!;
   expect(within(header).getAllByRole("link")).toHaveLength(1);
   const side = screen.getByRole("complementary", { name: "Components" });
-  const links = within(side).getAllByRole("link");
-  expect(links[0]).toHaveTextContent("Start here");
-  expect(links[1]).toHaveTextContent("Screens");
+  const headings = within(side).getAllByRole("heading", { level: 2 });
+  expect(headings[0]).toHaveTextContent("Start here");
+  expect(headings[1]).toHaveTextContent("Screens");
   expect(within(side).queryByRole("link", { name: "Library" })).toBeNull();
-  expect(links.at(-1)).toHaveTextContent("Illustrations");
+  expect(headings.at(-1)).toHaveTextContent("Illustrations");
   expect(
     within(side).queryByRole("button", { name: "Assistant workspace" }),
   ).toBeNull();
   expect(within(side).queryByRole("button", { current: "page" })).toBeNull();
-  await userEvent.click(links[1]);
+  await userEvent.click(within(headings[1]).getByRole("button"));
   expect(window.location.pathname + window.location.search).toBe(
     "/library?category=screens",
   );
-  expect(screen.getByRole("main")).toHaveFocus();
+  expect(within(headings[1]).getByRole("button")).toHaveFocus();
 });
 
 it.each([
@@ -345,7 +345,9 @@ it.each([
     persist(storageKeys.documentation, { language });
     at(path);
     const nav = screen.getByRole("navigation", { name });
-    expect(within(nav).getAllByRole("link").length).toBeGreaterThan(1);
+    expect(
+      within(nav).getAllByRole("heading", { level: 2 }).length,
+    ).toBeGreaterThan(1);
     expect(
       nav.querySelector(".component-nav-items svg, .component-nav-items img"),
     ).toBeNull();

@@ -45,7 +45,7 @@ function stubStage(width: number, height: number) {
 
 it("opens the Screens section and lists its children as buttons, with no new-tab links", async () => {
   render(<Workbench />);
-  await userEvent.click(nav().getByRole("link", { name: "شاشات" }));
+  await userEvent.click(nav().getByRole("button", { name: "شاشات" }));
   const section = within(nav().getByRole("group", { name: "شاشات" }));
   expect(
     section
@@ -53,8 +53,8 @@ it("opens the Screens section and lists its children as buttons, with no new-tab
       .filter((item) => !item.hasAttribute("aria-expanded"))
       .map((item) => item.textContent),
   ).toEqual(screens.map((item) => item.name[0]));
-  expect(section.getAllByRole("link")).toHaveLength(1);
-  expect(section.getByRole("link", { name: "شاشات" })).not.toHaveAttribute(
+  expect(section.queryAllByRole("link")).toHaveLength(0);
+  expect(section.getByRole("button", { name: "شاشات" })).not.toHaveAttribute(
     "target",
   );
   expect(
@@ -67,7 +67,7 @@ it("opens the Screens section and lists its children as buttons, with no new-tab
 it("opens a screen's page with the screen in an iframe", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(nav().getByRole("link", { name: "شاشات" }));
+  await user.click(nav().getByRole("button", { name: "شاشات" }));
   await user.click(nav().getByRole("button", { name: "لوحة العملاء" }));
   expect(heading()).toHaveTextContent("لوحة العملاء");
   expect(document.title).toBe("طِراز · لوحة العملاء");
@@ -147,9 +147,8 @@ it("starts on Phone when the stage is narrower than a tablet, and keeps the pers
   expect(pressed()).toEqual(["سطح المكتب"]);
   expect(stage()).toHaveAttribute("data-width", "desktop");
   // It also lasts a visit to another page and back to a screen.
-  await user.click(nav().getByRole("link", { name: "النماذج" }));
+  await user.click(nav().getByRole("button", { name: "النماذج" }));
   await user.click(nav().getByRole("button", { name: "الأزرار" }));
-  await user.click(nav().getByRole("link", { name: "شاشات" }));
   await user.click(nav().getByRole("button", { name: "خط المبيعات" }));
   expect(pressed()).toEqual(["سطح المكتب"]);
 });
@@ -221,7 +220,7 @@ it("keeps focus on main when a screen in the iframe opens another", () => {
 it("restores a saved screen, and forgets an unknown one", async () => {
   const user = userEvent.setup();
   const view = render(<Workbench />);
-  await user.click(nav().getByRole("link", { name: "شاشات" }));
+  await user.click(nav().getByRole("button", { name: "شاشات" }));
   await user.click(nav().getByRole("button", { name: "خط المبيعات" }));
   expect(readDocumentation().screen).toBe("sales-pipeline");
   view.unmount();

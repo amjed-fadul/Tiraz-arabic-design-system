@@ -149,9 +149,8 @@ it("holds a phase until it is changed", async () => {
   // Opening the page again starts from its resting phase.
   fireEvent.click(states().getByRole("button", { name: word("running") }));
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  fireEvent.click(nav.getByRole("link", { name: "النماذج" }));
+  fireEvent.click(nav.getByRole("button", { name: "النماذج" }));
   fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
-  fireEvent.click(nav.getByRole("link", { name: "فوّض" }));
   fireEvent.click(nav.getByRole("button", { name: "استدعاء الأداة" }));
   fireEvent.click(screen.getByRole("link", { name: "ملخص الأدوات" }));
   expect(pressed()).toEqual([word("done")]);
@@ -253,13 +252,12 @@ it("cancels replay on state press, Code view, page change and unmount", async ()
   // A page change.
   replay();
   await wait(800);
-  fireEvent.click(nav.getByRole("link", { name: "العرض والتنبيهات" }));
+  fireEvent.click(nav.getByRole("button", { name: "العرض والتنبيهات" }));
   fireEvent.click(nav.getByRole("button", { name: "الطرفية" }));
   // Flush route focus and the newly mounted prompt disclosure’s layout frame.
   await act(async () => vi.advanceTimersToNextFrame());
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
-  fireEvent.click(nav.getByRole("link", { name: "النماذج" }));
   fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
   expect(stateSelect()).toHaveTextContent(stateName.loading);
   expect(frameStatus()).toBeEmptyDOMElement();

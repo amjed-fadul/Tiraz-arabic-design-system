@@ -17,7 +17,7 @@ it.each([
     // LoadingState sits in Display; the other two in the folded AI parts.
     const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
     await user.click(
-      nav.getByRole("link", {
+      nav.getByRole("button", {
         name: en === "ThinkingState" ? "فوّض" : "العرض والتنبيهات",
       }),
     );

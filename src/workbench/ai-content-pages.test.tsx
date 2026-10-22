@@ -21,7 +21,7 @@ it.each([
   async (ar, en, group) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    await user.click(screen.getByRole("link", { name: group }));
+    await user.click(screen.getByRole("button", { name: group }));
     await user.click(
       within(screen.getByRole("group", { name: group })).getByRole("button", {
         name: en === "StreamingText" ? "المحادثة" : ar,
@@ -193,7 +193,7 @@ it.each(["ar", "en"] as const)(
 it("uses the page's frame for the streaming demo: view tabs above, an icon Replay in the stage and an icon Copy in the code's header", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("link", { name: "اسأل" }));
+  await user.click(screen.getByRole("button", { name: "اسأل" }));
   await user.click(screen.getByRole("button", { name: "المحادثة" }));
   await user.click(screen.getByRole("link", { name: "النص المتتابع" }));
   await user.click(screen.getByRole("button", { name: "English" }));
@@ -232,7 +232,7 @@ it("uses the page's frame for the streaming demo: view tabs above, an icon Repla
 it("opens the documentation demo complete, without autoplay, local footer or empty event scaffolding", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  fireEvent.click(screen.getByRole("link", { name: "اسأل" }));
+  fireEvent.click(screen.getByRole("button", { name: "اسأل" }));
   fireEvent.click(screen.getByRole("button", { name: "المحادثة" }));
   fireEvent.click(screen.getByRole("link", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(0));
@@ -249,7 +249,6 @@ it("opens the documentation demo complete, without autoplay, local footer or emp
     screen.queryByText("عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."),
   ).toBeNull();
   expect(screen.queryByRole("status", { name: "آخر حدث" })).toBeNull();
-  fireEvent.click(screen.getByRole("link", { name: "النماذج" }));
   fireEvent.click(screen.getByRole("button", { name: "الأزرار" }));
   expect(screen.queryByRole("status", { name: "آخر حدث" })).toBeNull();
 });

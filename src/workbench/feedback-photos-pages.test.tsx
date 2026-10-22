@@ -11,7 +11,7 @@ it("documents four feedback pages with complete copied code and prompts", async 
   const user = userEvent.setup(),
     write = vi.spyOn(navigator.clipboard, "writeText"),
     nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  await user.click(nav.getByRole("link", { name: "العرض والتنبيهات" }));
+  await user.click(nav.getByRole("button", { name: "العرض والتنبيهات" }));
   for (const name of [
     "الرسالة الدلالية",
     "هيكل التحميل",
@@ -51,7 +51,7 @@ it("records the Alert playground action and drops it when its label is cleared",
     write = vi.spyOn(navigator.clipboard, "writeText");
   await user.click(
     within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-      "link",
+      "button",
       { name: "العرض والتنبيهات" },
     ),
   );
@@ -86,7 +86,7 @@ it("opens the skeleton playground loaded and replays the load", async () => {
   render(<Workbench />);
   fireEvent.click(
     within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-      "link",
+      "button",
       { name: "العرض والتنبيهات" },
     ),
   );

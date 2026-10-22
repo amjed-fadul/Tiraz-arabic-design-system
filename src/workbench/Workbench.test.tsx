@@ -33,7 +33,7 @@ async function openPage(name: string) {
       section.items.some((item) => item.name[0] === name),
     )!;
     await userEvent.click(
-      navigation().getByRole("link", { name: group.name[0] }),
+      navigation().getByRole("button", { name: group.name[0] }),
     );
   }
   await userEvent.click(navigation().getByRole("button", { name }));
@@ -79,10 +79,10 @@ it("waits through Start and screen pages, then opens Customize from the hint wit
   const nav = () =>
     within(screen.getByRole("navigation", { name: "Components" }));
   expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
-  await user.click(nav().getByRole("link", { name: "Screens" }));
+  await user.click(nav().getByRole("button", { name: "Screens" }));
   await user.click(nav().getByRole("button", { name: "Customer dashboard" }));
   expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
-  await user.click(nav().getByRole("link", { name: "Forms" }));
+  await user.click(nav().getByRole("button", { name: "Forms" }));
   expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
   await user.click(nav().getByRole("button", { name: "Button" }));
   expect(screen.getByRole("main")).toHaveFocus();

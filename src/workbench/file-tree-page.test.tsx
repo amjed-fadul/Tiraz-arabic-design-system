@@ -8,7 +8,7 @@ it("documents FileTree in Files with a minimal inspector and portable copied act
   const copy = vi.spyOn(navigator.clipboard, "writeText");
   await user.click(
     within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-      "link",
+      "button",
       { name: "الملفات" },
     ),
   );

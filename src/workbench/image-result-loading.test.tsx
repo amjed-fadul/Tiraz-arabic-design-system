@@ -3,7 +3,7 @@ import { expect, it } from "vitest";
 import { Workbench } from "./Workbench";
 it("updates image loading percentage in the inspector without remounting the image or frame", () => {
   render(<Workbench />);
-  fireEvent.click(screen.getByRole("link", { name: "العرض والتنبيهات" }));
+  fireEvent.click(screen.getByRole("button", { name: "العرض والتنبيهات" }));
   fireEvent.click(screen.getByRole("button", { name: "نتيجة الصورة" }));
   fireEvent.click(screen.getByRole("button", { name: "تخصيص" }));
   const frame = document.querySelector(".playground-region .tz-image-result");

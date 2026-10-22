@@ -12,7 +12,7 @@ it.each([
     render(<Workbench />);
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-    await user.click(nav.getByRole("link", { name: group }));
+    await user.click(nav.getByRole("button", { name: group }));
     await user.click(
       within(nav.getByRole("group", { name: group })).getByRole("button", {
         name: ar,

@@ -27,7 +27,7 @@ it.each([
   async (ar, en) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    await user.click(screen.getByRole("link", { name: "فوّض" }));
+    await user.click(screen.getByRole("button", { name: "فوّض" }));
     await user.click(
       within(screen.getByRole("group", { name: "فوّض" })).getByRole("button", {
         name: ar,
