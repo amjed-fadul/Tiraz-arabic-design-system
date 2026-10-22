@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ToolLabels",
+  "kind": "type",
+  "source": "useToolLabels.ts",
+  "sourceHash": "6ac9e4adc98202ee69245619247ac1f2ea2950eb14fa9ae729512916341a9d89",
+  "type": "ToolLabels",
+  "description": "The five state words of a tool call, and its section and retry words.",
+  "typeParameters": [],
+  "props": {
+    "completed": {
+      "type": "string",
+      "required": true
+    },
+    "error": {
+      "type": "string",
+      "required": true
+    },
+    "failed": {
+      "type": "string",
+      "required": true
+    },
+    "input": {
+      "type": "string",
+      "required": true
+    },
+    "needs-you": {
+      "type": "string",
+      "required": true
+    },
+    "output": {
+      "type": "string",
+      "required": true
+    },
+    "pending": {
+      "type": "string",
+      "required": true
+    },
+    "retry": {
+      "type": "string",
+      "required": true
+    },
+    "running": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ToolCallState": "ToolCallState.json"
+  }
+}

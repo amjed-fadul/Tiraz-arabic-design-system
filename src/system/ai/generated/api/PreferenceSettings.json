@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "exportName": "PreferenceSettings",
+  "kind": "component",
+  "source": "patterns/PreferenceSettings.tsx",
+  "sourceHash": "bfc2f34c02c0ac1f63c0111cb9da5cd24fc417ae2b95c25f501ba2694bbb530f",
+  "type": "({ value, items, labels, onSave, }: PreferenceSettingsProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  value,\n  items,\n  labels,\n  onSave,\n}",
+          "type": "PreferenceSettingsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "items": {
+      "type": "PreferenceItem[]",
+      "required": true
+    },
+    "labels": {
+      "type": "PreferenceLabels",
+      "required": true
+    },
+    "onSave": {
+      "type": "(value: Record<string, boolean>, context: ActionContext) => Promise<void>",
+      "required": true
+    },
+    "value": {
+      "type": "Record<string, boolean>",
+      "required": true,
+      "description": "Caller-owned persisted values. Use a React key when changing the account or entity."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ActionContext": "ActionContext.json",
+    "PreferenceItem": "PreferenceItem.json",
+    "PreferenceLabels": "PreferenceLabels.json",
+    "PreferenceSettingsProps": "PreferenceSettingsProps.json"
+  }
+}

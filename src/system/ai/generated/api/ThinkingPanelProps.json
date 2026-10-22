@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ThinkingPanelProps",
+  "kind": "type",
+  "source": "ThinkingPanel.tsx",
+  "sourceHash": "b8b66fae41441b61fb378e0365f5d5a6bf24ebd539a36ca9f3ad892edb7cdfe2",
+  "type": "ThinkingPanelProps",
+  "typeParameters": [],
+  "props": {
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ]
+    },
+    "elapsed": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds, shown in the header while running; never announced."
+    },
+    "labels": {
+      "type": "Partial<ThinkingPanelLabels> | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Controls the disclosure; pair it with `onOpenChange`. It starts open\nwhile running and closed once done."
+    },
+    "sources": {
+      "type": "readonly SourceReference[] | undefined",
+      "required": false,
+      "description": "The sources found so far; the first three show as chips, and a button\nreveals the rest."
+    },
+    "status": {
+      "type": "\"failed\" | \"running\" | \"completed\" | \"stopped\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"stopped\""
+      ],
+      "description": "A stopped or failed search reads «أُوقف بعد ٦ث» or «تعثّر بعد ٦ث», and its\nthread stays still instead of closing into the line that means done."
+    },
+    "steps": {
+      "type": "readonly { id: string; label: string; state: \"pending\" | \"running\" | \"completed\"; }[] | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SourceReference": "SourceReference.json",
+    "ThinkingPanelLabels": "ThinkingPanelLabels.json"
+  }
+}

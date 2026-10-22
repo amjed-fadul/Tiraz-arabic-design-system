@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "exportName": "PreferenceLabels",
+  "kind": "type",
+  "source": "patterns/PreferenceSettings.tsx",
+  "sourceHash": "bfc2f34c02c0ac1f63c0111cb9da5cd24fc417ae2b95c25f501ba2694bbb530f",
+  "type": "PreferenceLabels",
+  "typeParameters": [],
+  "props": {
+    "cancel": {
+      "type": "string",
+      "required": true
+    },
+    "error": {
+      "type": "string",
+      "required": true
+    },
+    "save": {
+      "type": "string",
+      "required": true
+    },
+    "saved": {
+      "type": "string",
+      "required": true
+    },
+    "saving": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "PreferenceItem": "PreferenceItem.json",
+    "PreferenceSettingsProps": "PreferenceSettingsProps.json"
+  }
+}

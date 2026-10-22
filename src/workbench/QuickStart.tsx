@@ -11,11 +11,11 @@ import "./quick-start.css";
 const setupPrompt = (
   existing: boolean,
 ) => `${existing ? "Use Tiraz in this existing React and TypeScript application. Preserve its routes, data, and toolchain." : "Use this Tiraz React 19 and TypeScript application created with Vite. Preserve its routes and toolchain."}
-Read src/system/ai/README.md and the registry before making changes. The Tiraz installer places editable source in src/system and the optional Khayt runtime in src/mascot.
+Read tiraz.project.json first and follow its entry, styles, knowledge, and instructions paths. Read src/system/ai/README.md at the default location, or the instructions path in that manifest when a custom directory was chosen. Query the authored registry and the generated API contract for the component you need; source and exported types remain authoritative.
 If that source is missing, report the gap and ask me to run the documented installer; do not invent an import or overwrite an existing system directory. Keep ai/, examples, assets, and licenses with the source.
 Inspect the source imports and application package/lock files. Load tokens.css, components.css, and IBM Plex Sans Arabic weights 400, 500, and 600 once; preserve existing entry setup when already present.
 Wrap the app with SystemProvider using the full defaultConfig. Put lang and dir on an ancestor; support Arabic RTL and English LTR with translated application copy. Preserve :dir() in the CSS build target.
-Add an AGENTS.md entry pointing to the copied system/ai/README.md. Verify the app starts and builds, fonts load, and keyboard focus and both directions work. Report any missing source or dependencies instead of inventing a Tiraz installer.`;
+Preserve the AGENTS.md pointer to tiraz.project.json. Run npx @amjedfadul/tiraz verify before editing to establish the installed baseline; later verification reports intentional edits too and never overwrites them. Verify the app starts and builds, fonts load, and keyboard focus and both directions work. Report any missing source or dependencies instead of inventing a Tiraz installer.`;
 
 const prompts = [
   {
@@ -24,7 +24,7 @@ const prompts = [
       "أرقام واضحة وجدول قابل للبحث.",
       "Clear metrics and a searchable table.",
     ],
-    text: "Read system/ai/README.md and the registry. Build a customer dashboard with Tiraz: a balanced metrics row, a searchable DataTable, and a customer detail view. Use local sample data and label simulated actions accurately. Support Arabic RTL and English LTR, format numbers through numberLocale, and verify keyboard navigation and mobile layout. Reuse existing components and tokens; consult their exported types before choosing props.",
+    text: "Read tiraz.project.json, then follow its instructions and knowledge paths and query the registry. Build a customer dashboard with Tiraz: a balanced metrics row, a searchable DataTable, and a customer detail view. Use local sample data and label simulated actions accurately. Support Arabic RTL and English LTR, format numbers through numberLocale, and verify keyboard navigation and mobile layout. Reuse existing components and tokens; consult their exported types before choosing props.",
   },
   {
     name: ["مراجعة الفواتير", "Invoice review"],
@@ -32,7 +32,7 @@ const prompts = [
       "مسودة من المساعد، والقرار بيدك.",
       "An assistant draft, with you in control.",
     ],
-    text: "Read system/ai/README.md and the registry. Build an invoice review screen with Tiraz DataTable and DraftReview. Let the user select an invoice, review an assistant-written reminder, edit it, and confirm one send. Use local sample data. Closing or cancelling must record nothing; a receipt should describe only the action actually recorded. Support Arabic RTL and English LTR, sensible focus return, reduced motion, and one initially empty polite live region.",
+    text: "Read tiraz.project.json, then follow its instructions and knowledge paths and query the registry. Build an invoice review screen with Tiraz DataTable and DraftReview. Let the user select an invoice, review an assistant-written reminder, edit it, and confirm one send. Use local sample data. Closing or cancelling must record nothing; a receipt should describe only the action actually recorded. Support Arabic RTL and English LTR, sensible focus return, reduced motion, and one initially empty polite live region.",
   },
   {
     name: ["إعدادات الفريق", "Team settings"],
@@ -40,15 +40,11 @@ const prompts = [
       "أعضاء وصلاحيات وحفظ واضح.",
       "Members, permissions, and clear save feedback.",
     ],
-    text: "Read system/ai/README.md and the registry. Build a responsive team settings page using Tiraz components. Include member roles, notification preferences, validation, and an explicit Save action. Keep changes local until saved; confirm destructive actions and preserve focus during async feedback. Support Arabic RTL and English LTR, localized numbers, light and dark themes, and keyboard-only operation. Use the existing component APIs and semantic tokens.",
+    text: "Read tiraz.project.json, then follow its instructions and knowledge paths and query the registry. Build a responsive team settings page using Tiraz components. Include member roles, notification preferences, validation, and an explicit Save action. Keep changes local until saved; confirm destructive actions and preserve focus during async feedback. Support Arabic RTL and English LTR, localized numbers, light and dark themes, and keyboard-only operation. Use the existing component APIs and semantic tokens.",
   },
 ] as const;
 
-const entryCode = `import "@fontsource/ibm-plex-sans-arabic/400.css";
-import "@fontsource/ibm-plex-sans-arabic/500.css";
-import "@fontsource/ibm-plex-sans-arabic/600.css";
-import "./system/tokens.css";
-import "./system/components.css";
+const entryCode = `import "./system/styles.css";
 import { Button, SystemProvider, defaultConfig } from "./system";
 
 export function App() {
@@ -264,6 +260,12 @@ export function App() {
                     {t(
                       "بعد نسخ المصدر، ثبّت الاعتماديات المطلوبة من ملفات الحزم والاستيراد. حمّل الأنماط والخط مرة واحدة، ثم أضف المزوّد. هذا مثال لنقطة الدخول؛ عدّل المسارات لتناسب مشروعك.",
                       "After copying the source, install the dependencies listed in its package files and imports. Load styles and fonts once, then add the provider. This entry-point example assumes the system folder sits beside it; adjust paths for your app.",
+                    )}
+                  </p>
+                  <p>
+                    {t(
+                      "لتغيير المجلد، أضف --dir src/ui إلى أمر التثبيت. يحفظ tiraz.project.json المسارات الفعلية. يفحص أمر npx @amjedfadul/tiraz verify الملفات ويُظهر التعديلات دون تغييرها.",
+                      "To choose a folder, add --dir src/ui to the install command. tiraz.project.json records the actual paths. Run npx @amjedfadul/tiraz verify to report missing or edited files without changing them.",
                     )}
                   </p>
                   {copyButton(

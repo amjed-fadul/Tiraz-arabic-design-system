@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DataAnswerLabels",
+  "kind": "type",
+  "source": "DataAnswer.tsx",
+  "sourceHash": "f69f774e63ced36c38ab85ab936b192fcff6f6b9d36cb5e9af36537c8cde527f",
+  "type": "DataAnswerLabels",
+  "description": "Every built-in string Ask your data shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "chartType": {
+      "type": "string",
+      "required": true,
+      "description": "The chart types' group, and each type's name in it."
+    },
+    "chartTypes": {
+      "type": "Record<\"area\" | \"line\" | \"bar\" | \"donut\", string>",
+      "required": true
+    },
+    "completed": {
+      "type": "string",
+      "required": true
+    },
+    "completedPill": {
+      "type": "string",
+      "required": true
+    },
+    "empty": {
+      "type": "string",
+      "required": true
+    },
+    "failed": {
+      "type": "string",
+      "required": true
+    },
+    "failedPill": {
+      "type": "string",
+      "required": true
+    },
+    "feedbackBar": {
+      "type": "Partial<FeedbackBarLabels> | undefined",
+      "required": false
+    },
+    "filters": {
+      "type": "string",
+      "required": true
+    },
+    "method": {
+      "type": "string",
+      "required": true,
+      "description": "The disclosure's name, and the heading of the method in a copied answer."
+    },
+    "noFilters": {
+      "type": "string",
+      "required": true
+    },
+    "openTable": {
+      "type": "string",
+      "required": true
+    },
+    "pin": {
+      "type": "string",
+      "required": true
+    },
+    "range": {
+      "type": "string",
+      "required": true,
+      "description": "The method's terms, and what «التصفية» reads without a filter."
+    },
+    "retry": {
+      "type": "string",
+      "required": true,
+      "description": "Beside a failed answer."
+    },
+    "tables": {
+      "type": "string",
+      "required": true
+    },
+    "thinking": {
+      "type": "string",
+      "required": true,
+      "description": "The four announcements, one sentence each. Failed and empty also head the\nnote on the paper."
+    },
+    "thinkingPanel": {
+      "type": "Partial<ThinkingPanelLabels> | undefined",
+      "required": false,
+      "description": "Words for the panel and the bar inside the answer."
+    },
+    "thinkingPill": {
+      "type": "string",
+      "required": true,
+      "description": "The status pill's word beside the question."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "CartesianChartProps": "CartesianChartProps.json",
+    "ChartDatum": "ChartDatum.json",
+    "ChartProps": "ChartProps.json",
+    "ChartSeries": "ChartSeries.json",
+    "DataAnswerChart": "DataAnswerChart.json",
+    "DataAnswerProps": "DataAnswerProps.json",
+    "DonutChartProps": "DonutChartProps.json",
+    "DonutDatum": "DonutDatum.json",
+    "FeedbackBarLabels": "FeedbackBarLabels.json",
+    "FeedbackReason": "FeedbackReason.json",
+    "ThinkingPanelLabels": "ThinkingPanelLabels.json"
+  }
+}

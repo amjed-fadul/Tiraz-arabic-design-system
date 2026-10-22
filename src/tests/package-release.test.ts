@@ -6,7 +6,9 @@ import {
   readFileSync,
   mkdirSync,
   rmSync,
+  renameSync,
   symlinkSync,
+  unlinkSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
@@ -30,7 +32,7 @@ beforeAll(() => {
     encoding: "utf8",
   });
   expect(built.status, built.stderr || built.stdout).toBe(0);
-});
+}, 30000);
 afterAll(() => folders.forEach((path) => rmSync(path, { recursive: true })));
 
 it("renders the artifact in production even when built from the test environment", () => {
@@ -163,6 +165,140 @@ it("directs non-Vite existing apps to package imports before writing source", ()
   expect(result.status).toBe(1);
   expect(result.stderr).toContain("Vite");
   expect(existsSync(join(app, "src"))).toBe(false);
+});
+
+it("verifies a custom source installation after moving the whole application", () => {
+  const parent = folder();
+  const installed = run(
+    parent,
+    "init",
+    "--new",
+    "before",
+    "--dir",
+    "src/ui",
+    "--no-install",
+  );
+  expect(installed.status, installed.stderr).toBe(0);
+  const app = join(parent, "after");
+  renameSync(join(parent, "before"), app);
+  const manifest = JSON.parse(read(join(app, "tiraz.project.json")));
+  expect(manifest.entry).toBe("src/ui/system/index.ts");
+  expect(manifest.mascotEntry).toBe("src/ui/mascot/Khayt.tsx");
+  expect(read(join(app, "src/App.tsx"))).toContain('from "./ui/system"');
+  expect(read(join(app, "AGENTS.md"))).toContain("src/ui/system/ai/README.md");
+  expect(run(app, "verify").status).toBe(0);
+  writeFileSync(join(app, manifest.entry), "// owner customization\n");
+  const modified = run(app, "verify");
+  expect(modified.status).toBe(1);
+  expect(modified.stderr).toContain("Modified: src/ui/system/index.ts");
+  expect(read(join(app, manifest.entry))).toBe("// owner customization\n");
+  unlinkSync(join(app, manifest.styles));
+  expect(run(app, "verify").stderr).toContain(`Missing: ${manifest.styles}`);
+});
+
+it.each([
+  "../outside",
+  "/tmp/outside",
+  "src/../../outside",
+  "src//ui",
+  "node_modules/ui",
+  ".GIT/config",
+  "NODE_MODULES/ui",
+  "src\\ui",
+])(
+  "refuses unsafe source destinations before creating an app: %s",
+  (directory) => {
+    const parent = folder();
+    const result = run(
+      parent,
+      "init",
+      "--new",
+      "app",
+      "--dir",
+      directory,
+      "--no-install",
+    );
+    expect(result.status).toBe(1);
+    expect(existsSync(join(parent, "app"))).toBe(false);
+  },
+);
+
+it.each([
+  "src/App.tsx",
+  "src/app.tsx",
+  "SRC/MAIN.TSX/nested",
+  "Package.JSON",
+  "src/main.tsx/nested",
+  "package.json",
+  "AGENTS.md",
+  "TIRAZ_SETUP.md/nested",
+  "tiraz.project.json",
+  "tsconfig.json",
+  ".gitignore",
+])(
+  "refuses a source folder that collides with generated files: %s",
+  (directory) => {
+    const parent = folder();
+    const result = run(
+      parent,
+      "init",
+      "--new",
+      "app",
+      "--dir",
+      directory,
+      "--no-install",
+    );
+    expect(result.status).toBe(1);
+    expect(existsSync(join(parent, "app"))).toBe(false);
+  },
+);
+
+it("writes relative imports for a hidden source directory", () => {
+  const parent = folder();
+  const result = run(
+    parent,
+    "init",
+    "--new",
+    "app",
+    "--dir",
+    "src/.ui",
+    "--no-install",
+  );
+  expect(result.status, result.stderr).toBe(0);
+  expect(read(join(parent, "app/src/App.tsx"))).toContain(
+    'from "./.ui/system"',
+  );
+  expect(read(join(parent, "app/TIRAZ_SETUP.md"))).toContain(
+    'from "./.ui/system"',
+  );
+  expect(run(join(parent, "app"), "verify").status).toBe(0);
+});
+
+it("refuses manifest collisions and tampered manifest pointers or symlinks", () => {
+  const parent = folder();
+  const result = run(parent, "init", "--new", "app", "--no-install");
+  expect(result.status, result.stderr).toBe(0);
+  const app = join(parent, "app");
+  const original = read(join(app, "package.json"));
+  expect(run(app, "init", "--dir", "src/other", "--no-install").status).toBe(1);
+  expect(read(join(app, "package.json"))).toBe(original);
+  expect(existsSync(join(app, "src/other"))).toBe(false);
+  const manifestPath = join(app, "tiraz.project.json");
+  const manifest = JSON.parse(read(manifestPath));
+  writeFileSync(
+    manifestPath,
+    JSON.stringify({ ...manifest, entry: "../outside" }),
+  );
+  expect(run(app, "verify").status).toBe(1);
+  writeFileSync(manifestPath, JSON.stringify(manifest));
+  const source = join(app, manifest.entry);
+  const elsewhere = join(parent, "elsewhere.ts");
+  writeFileSync(elsewhere, read(source));
+  unlinkSync(source);
+  symlinkSync(elsewhere, source);
+  const linked = run(app, "verify");
+  expect(linked.status).toBe(1);
+  expect(linked.stderr).toContain("symlink");
 });
 
 it("packs runtime, types, source and licenses without website or private files", () => {

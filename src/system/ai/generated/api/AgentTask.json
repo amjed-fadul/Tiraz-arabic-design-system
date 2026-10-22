@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AgentTask",
+  "kind": "component",
+  "source": "AgentTask.tsx",
+  "sourceHash": "6228fb06652ae9da6a58173ad35b5f9e71aa47bbaa76d95524352c86c39c94d4",
+  "type": "({ agentPresentation, title, agent, status, steps, elapsed, outputs, autoStartAfter, onStart, onEditPlan, onSteer, onApplyNoteNow, onRemoveNote, onStop, onDecision, onRetryStep, onSkipStep, onReconnect, primaryAction, headingLevel, labels, announcement, appearance, }: AgentTaskProps) => JSX.Element",
+  "description": "Agent task (spec §12.3): a multi-step job the agent runs while the person\nstays in control. The host owns the status, the steps and the time; the\npattern names the state once, announces each status once, and reports\nwhat the person asks for: start, steer, stop, decide, retry or skip.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  agentPresentation,\n  title,\n  agent,\n  status,\n  steps,\n  elapsed,\n  outputs,\n  autoStartAfter,\n  onStart,\n  onEditPlan,\n  onSteer,\n  onApplyNoteNow,\n  onRemoveNote,\n  onStop,\n  onDecision,\n  onRetryStep,\n  onSkipStep,\n  onReconnect,\n  primaryAction,\n  headingLevel = 3,\n  labels,\n  announcement = \"polite\",\n  appearance = \"card\",\n}",
+          "type": "AgentTaskProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agent": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional avatar, name, identity controls and tray color in the existing header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status and steering feedback politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "autoStartAfter": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds before a proposed plan starts on its own; it calls `onStart`."
+    },
+    "elapsed": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds, shown in the pill while running and once done; never announced."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The title's level; 3 by default. Nested headings sit one deeper."
+    },
+    "labels": {
+      "type": "Partial<AgentTaskLabels> | undefined",
+      "required": false
+    },
+    "onApplyNoteNow": {
+      "type": "((id: string) => void) | undefined",
+      "required": false,
+      "description": "A queued note's Apply now and Remove while running, each only when given."
+    },
+    "onDecision": {
+      "type": "((request: ApprovalRequest, decision: ApprovalDecision, context: { signal: AbortSignal; }) => void | Promise<void>) | undefined",
+      "required": false,
+      "description": "The inline approval's (request, decision, { signal }) contract."
+    },
+    "onEditPlan": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onReconnect": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onRemoveNote": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onRetryStep": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onSkipStep": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onStart": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onSteer": {
+      "type": "((text: string, when: \"next\" | \"now\") => void) | undefined",
+      "required": false
+    },
+    "onStop": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "outputs": {
+      "type": "readonly { id: string; label: ReactNode; icon?: ReactNode; onOpen?(): void; }[] | undefined",
+      "required": false
+    },
+    "primaryAction": {
+      "type": "{ label: ReactNode; onSelect(): void; } | undefined",
+      "required": false
+    },
+    "status": {
+      "type": "\"failed\" | \"running\" | \"completed\" | \"needs-you\" | \"stopped\" | \"plan\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"needs-you\"",
+        "\"stopped\"",
+        "\"plan\""
+      ]
+    },
+    "steps": {
+      "type": "readonly AgentStep[]",
+      "required": true
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "headingLevel": "3",
+    "announcement": "\"polite\"",
+    "appearance": "\"card\""
+  },
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "AgentStep": "AgentStep.json",
+    "AgentTaskLabels": "AgentTaskLabels.json",
+    "AgentTaskProps": "AgentTaskProps.json",
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json",
+    "ButtonVariant": "ButtonVariant.json",
+    "ToolCallProps": "ToolCallProps.json",
+    "ToolCallState": "ToolCallState.json",
+    "ToolLabels": "ToolLabels.json"
+  }
+}

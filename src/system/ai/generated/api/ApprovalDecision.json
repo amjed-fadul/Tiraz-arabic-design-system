@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ApprovalDecision",
+  "kind": "type",
+  "source": "ApprovalCard.tsx",
+  "sourceHash": "90848ba6883649ed56fe53326a1321e75e6599049363bbfd2af2ba4127ced5e3",
+  "type": "ApprovalDecision",
+  "typeParameters": [],
+  "members": [
+    "\"approved\"",
+    "\"rejected\""
+  ],
+  "relatedTypes": {
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json"
+  }
+}

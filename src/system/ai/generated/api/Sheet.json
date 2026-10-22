@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Sheet",
+  "kind": "component",
+  "source": "Sheet.tsx",
+  "sourceHash": "182b0e37881f68688d46ea0d7c2aa28a1110a58a336270d54aec9ec3a16d9648",
+  "type": "({ trigger, title, description, closeLabel, children, footer, open, onOpenChange, side, }: SheetProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  trigger,\n  title,\n  description,\n  closeLabel,\n  children,\n  footer,\n  open,\n  onOpenChange,\n  side,\n}",
+          "type": "SheetProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "footer": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "side": {
+      "type": "\"right\" | \"left\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"right\"",
+        "\"left\""
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "trigger": {
+      "type": "ReactElement<unknown, string | JSXElementConstructor<any>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "SheetProps": "SheetProps.json"
+  }
+}

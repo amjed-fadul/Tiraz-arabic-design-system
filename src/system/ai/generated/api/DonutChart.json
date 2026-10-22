@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DonutChart",
+  "kind": "component",
+  "source": "Charts.tsx",
+  "sourceHash": "dcc11f58cb7a5d8424e3402bcb0efe5c156d81b1604a9c4c1968474908c1f30d",
+  "type": "(props: DonutChartProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "props",
+          "type": "DonutChartProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "data": {
+      "type": "DonutDatum[]",
+      "required": true
+    },
+    "dataTable": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "height": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "interactiveLegend": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Native buttons, with aria-pressed. Defaults true; requires legend=true."
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "legend": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "locale": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "numberFormat": {
+      "type": "Intl.NumberFormatOptions | undefined",
+      "required": false
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
+      "required": false
+    },
+    "summary": {
+      "type": "string",
+      "required": true,
+      "description": "Concise, application-owned text explaining the data, visible below the plot."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "CartesianChartProps": "CartesianChartProps.json",
+    "ChartDatum": "ChartDatum.json",
+    "ChartProps": "ChartProps.json",
+    "ChartSeries": "ChartSeries.json",
+    "DonutChartProps": "DonutChartProps.json",
+    "DonutDatum": "DonutDatum.json"
+  }
+}

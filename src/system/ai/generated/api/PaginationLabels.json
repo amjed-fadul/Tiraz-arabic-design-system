@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "exportName": "PaginationLabels",
+  "kind": "type",
+  "source": "Pagination.tsx",
+  "sourceHash": "0e56279db33c18ce13279dd19b32d2b29e171570644df7b816868a9e08f8628d",
+  "type": "PaginationLabels",
+  "typeParameters": [],
+  "props": {
+    "navigation": {
+      "type": "string",
+      "required": true
+    },
+    "next": {
+      "type": "string",
+      "required": true
+    },
+    "page": {
+      "type": "(page: number) => string",
+      "required": true
+    },
+    "previous": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "PaginationProps": "PaginationProps.json"
+  }
+}

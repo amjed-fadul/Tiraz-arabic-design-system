@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AccordionProps",
+  "kind": "type",
+  "source": "Accordion.tsx",
+  "sourceHash": "031f4e14f65056fd9818dcb81919bae7f112d52c648be4c3d287b543f32afafa",
+  "type": "AccordionProps",
+  "typeParameters": [],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "collapsible": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "defaultValue": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    "items": {
+      "type": "readonly AccordionItem[]",
+      "required": true
+    },
+    "onValueChange": {
+      "type": "((value: string) => void) | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AccordionItem": "AccordionItem.json"
+  }
+}

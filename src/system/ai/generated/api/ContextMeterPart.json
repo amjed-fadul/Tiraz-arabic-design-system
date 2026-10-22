@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ContextMeterPart",
+  "kind": "type",
+  "source": "ContextMeter.tsx",
+  "sourceHash": "7e4dfd67aeb3071a80ae67ecf78d974d6c9ce6892f6e55770f2c7948e48b9315",
+  "type": "ContextMeterPart",
+  "typeParameters": [],
+  "props": {
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "number | null | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ContextMeterProps": "ContextMeterProps.json"
+  }
+}

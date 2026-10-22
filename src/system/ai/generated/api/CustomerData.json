@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "exportName": "CustomerData",
+  "kind": "type",
+  "source": "patterns/CustomerEditSheet.tsx",
+  "sourceHash": "783d82b8fef45c71a729020727873a3eb8b6657c9c8766ff3b4e48b64721e83b",
+  "type": "CustomerData",
+  "typeParameters": [],
+  "props": {
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "CustomerEditLabels": "CustomerEditLabels.json",
+    "CustomerEditSheetProps": "CustomerEditSheetProps.json"
+  }
+}

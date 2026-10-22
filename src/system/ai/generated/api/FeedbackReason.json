@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FeedbackReason",
+  "kind": "type",
+  "source": "FeedbackBar.tsx",
+  "sourceHash": "0b9aa356751ca594c0eeaad0c0188eb56dc878e580614a290a09be2dee731f13",
+  "type": "FeedbackReason",
+  "typeParameters": [],
+  "members": [
+    "\"inaccurate\"",
+    "\"wrong-source\"",
+    "\"too-long\"",
+    "\"outdated\""
+  ],
+  "relatedTypes": {
+    "FeedbackBarLabels": "FeedbackBarLabels.json",
+    "FeedbackBarProps": "FeedbackBarProps.json"
+  }
+}

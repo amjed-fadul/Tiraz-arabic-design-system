@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Numerals",
+  "kind": "type",
+  "source": "config.ts",
+  "sourceHash": "fa05b108befd572a4e9eccc2b194eb33ad4913e00fa7ab911d0d16655427f0e3",
+  "type": "Numerals",
+  "description": "Arabic-Indic (٠١٢) or Western (012) digits for Arabic text.",
+  "typeParameters": [],
+  "members": [
+    "\"arab\"",
+    "\"latn\""
+  ],
+  "relatedTypes": {
+    "Accent": "Accent.json",
+    "Direction": "Direction.json",
+    "SystemConfig": "SystemConfig.json"
+  }
+}

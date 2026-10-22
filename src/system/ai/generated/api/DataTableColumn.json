@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DataTableColumn",
+  "kind": "type",
+  "source": "DataTable.tsx",
+  "sourceHash": "c916c3be3d6a96c90e81268bdaedc6c2f68d6af2a869ab976a441aab62a6aad3",
+  "type": "DataTableColumn<T>",
+  "typeParameters": [
+    {
+      "name": "T"
+    }
+  ],
+  "props": {
+    "cell": {
+      "type": "(row: T) => ReactNode",
+      "required": true
+    },
+    "header": {
+      "type": "string",
+      "required": true
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "rowHeader": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "sortValue": {
+      "type": "((row: T) => string) | undefined",
+      "required": false,
+      "description": "Text sorting uses Intl.Collator with numeric ordering and base sensitivity."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "DataTableLabels": "DataTableLabels.json",
+    "DataTableProps": "DataTableProps.json"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModelSelector",
+  "kind": "component",
+  "source": "ModelSelector.tsx",
+  "sourceHash": "0e3183968dbd140836bb3c46ae823f2a8f7daef5d0dbc67788df0e13271d2395",
+  "type": "({ models, value, onValueChange, label, placeholder, disabled, size, labels, className, }: ModelSelectorProps) => JSX.Element",
+  "description": "Controlled choice only. All availability, capability and pricing data is supplied.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  models,\n  value,\n  onValueChange,\n  label,\n  placeholder,\n  disabled = false,\n  size = \"sm\",\n  labels,\n  className = \"\",\n}",
+          "type": "ModelSelectorProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "labels": {
+      "type": "{ unavailable?: string; } | undefined",
+      "required": false,
+      "description": "The word beside a model that cannot be chosen; «غير متاح» or \"Unavailable\" by default."
+    },
+    "models": {
+      "type": "readonly ModelOption[]",
+      "required": true
+    },
+    "onValueChange": {
+      "type": "(id: string) => void",
+      "required": true
+    },
+    "placeholder": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\""
+      ]
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "disabled": "false",
+    "size": "\"sm\"",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "ModelOption": "ModelOption.json",
+    "ModelSelectorProps": "ModelSelectorProps.json"
+  }
+}

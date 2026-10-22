@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InvoiceActionConfirmation",
+  "kind": "type",
+  "source": "patterns/InvoiceActions.tsx",
+  "sourceHash": "b9b78805149f51ac145bd27682799b6c9db42f4341f3483bc85cfeec34aa07d6",
+  "type": "InvoiceActionConfirmation",
+  "typeParameters": [],
+  "props": {
+    "cancel": {
+      "type": "string",
+      "required": true
+    },
+    "close": {
+      "type": "string",
+      "required": true
+    },
+    "confirm": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InvoiceAction": "InvoiceAction.json",
+    "InvoiceActionLabels": "InvoiceActionLabels.json",
+    "InvoiceActionsProps": "InvoiceActionsProps.json",
+    "InvoiceData": "InvoiceData.json"
+  }
+}

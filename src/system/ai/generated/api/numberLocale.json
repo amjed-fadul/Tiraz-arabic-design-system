@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "exportName": "numberLocale",
+  "kind": "function",
+  "source": "config.ts",
+  "sourceHash": "fa05b108befd572a4e9eccc2b194eb33ad4913e00fa7ab911d0d16655427f0e3",
+  "type": "(config: { direction?: Direction; numerals?: Numerals; }, language?: string) => string",
+  "description": "The Intl locale for digits. Arabic follows `numerals`; any other language is\nreturned as supplied. `language` defaults from direction (rtl=ar, ltr=en).",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "config",
+          "type": "{ direction?: Direction; numerals?: Numerals; }",
+          "required": true
+        },
+        {
+          "name": "language",
+          "type": "string",
+          "required": false,
+          "default": "config.direction === \"rtl\" ? \"ar\" : \"en\""
+        }
+      ],
+      "returns": "string"
+    }
+  ],
+  "relatedTypes": {
+    "Accent": "Accent.json",
+    "Direction": "Direction.json",
+    "Numerals": "Numerals.json",
+    "SystemConfig": "SystemConfig.json"
+  }
+}

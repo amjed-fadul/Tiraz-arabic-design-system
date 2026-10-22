@@ -1,7 +1,13 @@
 #!/usr/bin/env node
 import { cp, lstat, mkdir, readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
-import { dirname, resolve, basename } from "node:path";
+import { dirname, resolve, basename, relative, sep } from "node:path";
+import {
+  createSourceManifest,
+  relocateSourceManifest,
+  safePath,
+  verifySource,
+} from "./source-manifest.mjs";
 import { fileURLToPath } from "node:url";
 import semver from "semver";
 
@@ -9,7 +15,7 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(
   await readFile(resolve(packageRoot, "package.json"), "utf8"),
 );
-const help = `Tiraz ${manifest.version} — Arabic-first React components\n\n  npx ${manifest.name} init                    Add source to an existing Vite React TypeScript app\n  npx ${manifest.name} init --new my-app       Create a Vite React TypeScript app\n  --no-install                     Prepare files without running npm install\n  --help                           Show this help\n  --version                        Show the package version\n\nRequires Node >=22.12 and React 19. Existing source is never overwritten.\n`;
+const help = `Tiraz ${manifest.version} — Arabic-first React components\n\n  npx ${manifest.name} init                    Add source to an existing Vite React TypeScript app\n  npx ${manifest.name} init --new my-app       Create a Vite React TypeScript app\n  npx ${manifest.name} verify       Check installed source without changing it\n  --dir src/ui                     Choose the source parent (default: src)\n  --no-install                     Prepare files without running npm install\n  --help                           Show this help\n  --version                        Show the package version\n\nRequires Node >=22.12 and React 19. Existing source is never overwritten.\n`;
 const exists = async (path) => {
   try {
     return await lstat(path);
@@ -26,11 +32,22 @@ async function safeFile(path) {
 function parse(args) {
   if (args.length === 0 || args.includes("--help")) return { help: true };
   if (args.length === 1 && args[0] === "--version") return { version: true };
-  if (args[0] !== "init") throw new Error("Unknown command. Run tiraz --help.");
+  if ((args[0] === "verify" || args[0] === "--verify") && args.length <= 2)
+    return { verify: resolve(args[1] ?? process.cwd()) };
+  if (args[0] !== "init")
+    throw new Error(`Unknown command. Run npx ${manifest.name} --help.`);
   let name;
+  let directory;
   let install = true;
   for (let i = 1; i < args.length; i++) {
     if (args[i] === "--no-install") install = false;
+    else if (
+      args[i] === "--dir" &&
+      !directory &&
+      args[i + 1] &&
+      !args[i + 1].startsWith("--")
+    )
+      directory = args[++i];
     else if (
       args[i] === "--new" &&
       !name &&
@@ -40,21 +57,38 @@ function parse(args) {
       name = args[++i];
     else throw new Error(`Unknown or incomplete option: ${args[i]}`);
   }
-  return { name, install };
+  return { name, install, directory: directory ?? "src" };
 }
 
-async function init({ name, install }) {
+async function init({ name, install, directory }) {
   const target = name ? resolve(process.cwd(), name) : process.cwd();
   if (name && (await exists(target)))
     throw new Error(`Project folder already exists: ${target}`);
-  const src = resolve(target, "src");
+  const src = await safePath(target, directory);
+  const reservedFiles = [
+    "package.json",
+    "AGENTS.md",
+    "TIRAZ_SETUP.md",
+    "tiraz.project.json",
+    ...(name ? Object.keys(scaffoldFiles()) : []),
+  ];
+  if (
+    reservedFiles.some(
+      (file) =>
+        directory.toLowerCase() === file.toLowerCase() ||
+        directory.toLowerCase().startsWith(`${file.toLowerCase()}/`),
+    )
+  )
+    throw new Error(
+      `Source directory conflicts with a generated file: ${directory}`,
+    );
   const srcStat = await exists(src);
   if (srcStat && (!srcStat.isDirectory() || srcStat.isSymbolicLink()))
     throw new Error("Refusing a non-directory or symlink src destination.");
   for (const item of ["system", "mascot"])
     if (await exists(resolve(src, item)))
       throw new Error(
-        `src/${item} already exists. Review it before installing Tiraz.`,
+        `${directory}/${item} already exists. Review it before installing Tiraz.`,
       );
   const packageFile = resolve(target, "package.json");
   let project;
@@ -121,8 +155,12 @@ async function init({ name, install }) {
     throw new Error(
       "src/tiraz-env.d.ts already exists. Review it before installing Tiraz.",
     );
-  for (const path of ["AGENTS.md", "TIRAZ_SETUP.md"])
+  for (const path of ["AGENTS.md", "TIRAZ_SETUP.md", "tiraz.project.json"])
     await safeFile(resolve(target, path));
+  if (await exists(resolve(target, "tiraz.project.json")))
+    throw new Error(
+      "tiraz.project.json already exists. Use verify to check your installed source.",
+    );
   if (await exists(resolve(target, "TIRAZ_SETUP.md")))
     throw new Error(
       "TIRAZ_SETUP.md already exists. Review it before installing Tiraz.",
@@ -132,6 +170,10 @@ async function init({ name, install }) {
       throw new Error(
         "The package source payload is missing; reinstall Tiraz.",
       );
+  const sourceManifest = relocateSourceManifest(
+    await createSourceManifest(packageRoot, "source", manifest),
+    directory,
+  );
   project.dependencies ??= {};
   for (const [dep, version] of Object.entries({
     ...manifest.dependencies,
@@ -158,19 +200,26 @@ async function init({ name, install }) {
     '/// <reference types="vite/client" />\n',
   );
   await writeFile(packageFile, JSON.stringify(project, null, 2) + "\n");
-  const instructions =
-    "## Tiraz\n\nRead src/system/ai/README.md and query src/system/ai/registry.json before building UI. Use the exported component APIs, semantic tokens, Arabic RTL and English LTR, numberLocale, visible focus and reduced-motion support. Khayt's optional runtime lives in src/mascot; keep its assets and provenance.\n";
+  const instructions = `## Tiraz\n\nRead tiraz.project.json for installed paths, ${directory}/system/ai/README.md and ${directory}/system/ai/registry.json before building UI. Use exported APIs, semantic tokens, Arabic RTL and English LTR, numberLocale, visible focus and reduced motion. Khayt lives in ${directory}/mascot; preserve assets and provenance. Run npx ${manifest.name} verify to identify changed or missing source without overwriting customizations.\n`;
   const agentFile = resolve(target, "AGENTS.md");
   const previous = (await exists(agentFile))
     ? await readFile(agentFile, "utf8")
     : "";
-  if (!previous.includes("src/system/ai/README.md"))
+  if (!previous.includes(`${directory}/system/ai/README.md`))
     await writeFile(
       agentFile,
       previous + (previous ? "\n" : "") + instructions,
     );
-  await writeFile(resolve(target, "TIRAZ_SETUP.md"), setupGuide);
-  if (name) await scaffold(target);
+  await writeFile(resolve(target, "TIRAZ_SETUP.md"), guideFor(directory));
+  await writeFile(
+    resolve(target, "tiraz.project.json"),
+    JSON.stringify(sourceManifest, null, 2) + "\n",
+    { flag: "wx" },
+  );
+  if (name) {
+    await mkdir(resolve(target, "src"), { recursive: true });
+    await scaffold(target, directory);
+  }
   console.log(
     `Tiraz source is ready in ${target}.\nRead TIRAZ_SETUP.md for imports and your first prompt.`,
   );
@@ -194,8 +243,30 @@ async function init({ name, install }) {
 
 const setupGuide = `# Tiraz setup\n\nRequires Vite, React 19 and TypeScript. Existing routes and entry files were preserved.\n\nLoad these once in your application entry:\n\n\`\`\`tsx\nimport "@fontsource/ibm-plex-sans-arabic/400.css";\nimport "@fontsource/ibm-plex-sans-arabic/500.css";\nimport "@fontsource/ibm-plex-sans-arabic/600.css";\nimport "./system/tokens.css";\nimport "./system/components.css";\nimport { Button, SystemProvider, defaultConfig } from "./system";\n\`\`\`\n\nWrap the app with SystemProvider using the full defaultConfig. Put lang="ar" and dir="rtl" on an ancestor for Arabic; use lang="en" and dir="ltr" for English. Translate application copy. Preserve :dir() in your CSS target (Chrome/Edge 120+, Firefox 114+, Safari 16.4+).\n\nOptional mascot: import { Khayt } from "./mascot/Khayt" and pass it through agentPresentation.avatar. Supply its real state, animated and a color. The existing component keeps its status text and actions.\n\nYour first prompt:\n\nRead src/system/ai/README.md and the registry, then build my first screen with Tiraz. Preserve this app's routes and data. Support Arabic RTL and English LTR, numberLocale, keyboard focus and reduced motion. Use real exported APIs and semantic tokens.\n\nRun your project's typecheck, tests and build, then inspect both languages in a browser.\n`;
 
-async function scaffold(target) {
-  const files = {
+function sourceImportBase(directory) {
+  const path = relative("src", directory).split(sep).join("/");
+  return path
+    ? path === ".." || path.startsWith("../")
+      ? path
+      : `./${path}`
+    : ".";
+}
+
+function guideFor(directory) {
+  const base = sourceImportBase(directory);
+  return (
+    setupGuide
+      .replaceAll("src/system", `${directory}/system`)
+      .replaceAll("src/mascot", `${directory}/mascot`)
+      .replace(/"\.\/(system|mascot)([^"\n]*)"/g, (_, name, rest) =>
+        JSON.stringify(`${base}/${name}${rest}`),
+      ) +
+    `\nInstalled paths and checksums are in tiraz.project.json. From your project folder, run npx ${manifest.name} verify to report missing or modified files. This command never overwrites your source. To update, install a new copy in a separate project and review a diff.\n`
+  );
+}
+
+function scaffoldFiles() {
+  return {
     "index.html":
       '<!doctype html>\n<html lang="ar" dir="rtl"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Tiraz</title></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>\n',
     "vite.config.ts":
@@ -226,14 +297,28 @@ async function scaffold(target) {
     "src/App.tsx":
       'import { useEffect, useState } from "react";\nimport { Button, SystemProvider, defaultConfig } from "./system";\nexport function App() {\n  const [ar, setAr] = useState(true);\n  useEffect(() => { document.documentElement.lang = ar ? "ar" : "en"; document.documentElement.dir = ar ? "rtl" : "ltr"; }, [ar]);\n  return <SystemProvider config={{ ...defaultConfig, direction: ar ? "rtl" : "ltr" }}><main style={{ maxInlineSize: "42rem", marginInline: "auto", padding: "var(--space-8)", fontFamily: "var(--font)", color: "var(--text)" }}><h1>{ar ? "طِراز جاهز" : "Tiraz is ready"}</h1><p>{ar ? "افتح مشروعك في أداة البرمجة، واقرأ AGENTS.md، ثم ابدأ بشاشتك الأولى." : "Open your project in your coding tool, read AGENTS.md, and build your first screen."}</p><Button onClick={() => setAr(!ar)}>{ar ? "English" : "العربية"}</Button></main></SystemProvider>;\n}\n',
   };
-  for (const [path, content] of Object.entries(files))
-    await writeFile(resolve(target, path), content);
+}
+
+async function scaffold(target, directory) {
+  for (const [path, content] of Object.entries(scaffoldFiles()))
+    await writeFile(
+      resolve(target, path),
+      path.endsWith(".tsx")
+        ? content.replace(/"\.\/system([^"\n]*)"/g, (_, rest) =>
+            JSON.stringify(`${sourceImportBase(directory)}/system${rest}`),
+          )
+        : content,
+    );
 }
 
 try {
   const options = parse(process.argv.slice(2));
   if (options.help) console.log(help);
   else if (options.version) console.log(manifest.version);
+  else if (options.verify)
+    console.log(
+      `Verified ${await verifySource(options.verify)} installed files.`,
+    );
   else await init(options);
 } catch (error) {
   console.error(`Tiraz: ${error.message}`);

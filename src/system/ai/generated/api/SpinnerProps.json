@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SpinnerProps",
+  "kind": "type",
+  "source": "Spinner.tsx",
+  "sourceHash": "a09f4a80b7d852df32b1772a2a5485113481801b2762f7a27faa3d712243b271",
+  "type": "SpinnerProps",
+  "typeParameters": [],
+  "members": [
+    "{ size?: \"sm\" | \"md\"; tone?: \"neutral\" | \"ai\"; } & { decorative?: false; label: string; }",
+    "{ size?: \"sm\" | \"md\"; tone?: \"neutral\" | \"ai\"; } & { decorative: true; label?: never; }"
+  ],
+  "props": {
+    "decorative": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\""
+      ]
+    },
+    "tone": {
+      "type": "\"neutral\" | \"ai\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"neutral\"",
+        "\"ai\""
+      ],
+      "description": "\"ai\" paints the arc in the AI color, for work the assistant is doing."
+    }
+  },
+  "branches": [
+    {
+      "type": "{ size?: \"sm\" | \"md\"; tone?: \"neutral\" | \"ai\"; } & { decorative?: false; label: string; }",
+      "props": {
+        "decorative": {
+          "type": "false | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        },
+        "size": {
+          "type": "\"sm\" | \"md\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"sm\"",
+            "\"md\""
+          ]
+        },
+        "tone": {
+          "type": "\"neutral\" | \"ai\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"neutral\"",
+            "\"ai\""
+          ],
+          "description": "\"ai\" paints the arc in the AI color, for work the assistant is doing."
+        }
+      }
+    },
+    {
+      "type": "{ size?: \"sm\" | \"md\"; tone?: \"neutral\" | \"ai\"; } & { decorative: true; label?: never; }",
+      "props": {
+        "decorative": {
+          "type": "true",
+          "required": true
+        },
+        "label": {
+          "type": "undefined",
+          "required": false
+        },
+        "size": {
+          "type": "\"sm\" | \"md\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"sm\"",
+            "\"md\""
+          ]
+        },
+        "tone": {
+          "type": "\"neutral\" | \"ai\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"neutral\"",
+            "\"ai\""
+          ],
+          "description": "\"ai\" paints the arc in the AI color, for work the assistant is doing."
+        }
+      }
+    }
+  ],
+  "relatedTypes": {}
+}

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TerminalProps",
+  "kind": "type",
+  "source": "Terminal.tsx",
+  "sourceHash": "d562b07db5a15910ded4f8dbabd7eebf6e0cca5df22a3b638aedecded1d0b119",
+  "type": "TerminalProps",
+  "typeParameters": [],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "command": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "duration": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Application-supplied display text, never measured by this component."
+    },
+    "exitCode": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "followOutput": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "labels": {
+      "type": "InputCopyLabels | undefined",
+      "required": false
+    },
+    "output": {
+      "type": "string",
+      "required": true
+    },
+    "state": {
+      "type": "\"failed\" | \"running\" | \"completed\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InputCopyLabels": "InputCopyLabels.json"
+  }
+}

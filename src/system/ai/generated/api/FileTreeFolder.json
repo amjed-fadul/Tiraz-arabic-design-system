@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FileTreeFolder",
+  "kind": "type",
+  "source": "FileTree.tsx",
+  "sourceHash": "381a7b91fe0e54022d5385e4043bc6ae7dbd230fe79fa86cf53c1fa429de8d47",
+  "type": "FileTreeFolder",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "readonly FileTreeNode[]",
+      "required": true
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "kind": {
+      "type": "\"folder\"",
+      "required": true
+    },
+    "metadata": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FileTreeFile": "FileTreeFile.json",
+    "FileTreeNode": "FileTreeNode.json",
+    "FileTreeProps": "FileTreeProps.json"
+  }
+}

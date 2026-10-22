@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "exportName": "EmptyState",
+  "kind": "component",
+  "source": "EmptyState.tsx",
+  "sourceHash": "ef6f68a9036e7376f0e75fd0ceefc7de3cdc9e8df09c6e04f5164b1d46329ac2",
+  "type": "({ title, description, illustration, action, }: EmptyStateProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  title,\n  description,\n  illustration,\n  action,\n}",
+          "type": "EmptyStateProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "action": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "illustration": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "EmptyStateProps": "EmptyStateProps.json"
+  }
+}

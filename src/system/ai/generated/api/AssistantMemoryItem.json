@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AssistantMemoryItem",
+  "kind": "type",
+  "source": "AssistantControls.tsx",
+  "sourceHash": "77a13e1424cb1e6161a1d2aac7bab253998a3eb8909e0303aafc7abe397076e6",
+  "type": "AssistantMemoryItem",
+  "typeParameters": [],
+  "props": {
+    "category": {
+      "type": "string",
+      "required": true,
+      "description": "The heading it is grouped under, in the order categories first appear."
+    },
+    "date": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "paused": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "source": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "text": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "What the assistant remembers: «تفضّل شركة مدار التواصل مع سارة العتيبي»."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AssistantControlsLabels": "AssistantControlsLabels.json",
+    "AssistantControlsProps": "AssistantControlsProps.json",
+    "AssistantPermission": "AssistantPermission.json",
+    "PermissionLevel": "PermissionLevel.json"
+  }
+}

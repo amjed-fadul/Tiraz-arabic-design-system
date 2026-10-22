@@ -1,0 +1,4 @@
+# Deterministic generated facts are checked by knowledge:check.
+src/system/ai/generated/
+public/ai/
+public/r/

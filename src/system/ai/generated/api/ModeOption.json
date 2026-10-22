@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModeOption",
+  "kind": "type",
+  "source": "TaskStarter.tsx",
+  "sourceHash": "34a91d7de51faa0a9dc647a5e519786f9b661bdbcc418416fcb32359defd0603",
+  "type": "ModeOption",
+  "typeParameters": [],
+  "props": {
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ContextItem": "ContextItem.json",
+    "TaskStarterLabels": "TaskStarterLabels.json",
+    "TaskStarterProps": "TaskStarterProps.json"
+  }
+}

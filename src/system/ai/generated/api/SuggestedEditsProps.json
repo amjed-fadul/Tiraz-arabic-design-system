@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SuggestedEditsProps",
+  "kind": "type",
+  "source": "SuggestedEdits.tsx",
+  "sourceHash": "0288e97df35ef60fc67da59363ebbf9ee236d9d85d166bf806900c46879ffe1a",
+  "type": "SuggestedEditsProps",
+  "typeParameters": [],
+  "props": {
+    "actions": {
+      "type": "readonly { id: string; label: string; icon?: ReactNode; }[]",
+      "required": true
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional identity in the existing rewriting and review header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status changes politely, or leave announcements to the host."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The text region, as SelectionActions wraps it."
+    },
+    "decisions": {
+      "type": "Readonly<Record<string, Decision>> | undefined",
+      "required": false,
+      "description": "Keyed by each change's first segment id. Without it the pattern keeps its own."
+    },
+    "labels": {
+      "type": "Partial<SuggestedEditsLabels> | undefined",
+      "required": false
+    },
+    "onAction": {
+      "type": "(id: string, selection: { text: string; start: number; end: number; }) => void",
+      "required": true,
+      "description": "The person chose an action: the selected text, and where it sits in the region's text content."
+    },
+    "onApply": {
+      "type": "((text: string, selection: Offsets) => void) | undefined",
+      "required": false,
+      "description": "The text with the accepted changes, and the range it replaces."
+    },
+    "onDecisionsChange": {
+      "type": "((next: Record<string, Decision>) => void) | undefined",
+      "required": false
+    },
+    "onDismiss": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onUndo": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "reviewPlacement": {
+      "type": "\"inline\" | \"floating\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"inline\"",
+        "\"floating\""
+      ],
+      "description": "Floating by default; inline keeps the review below the text in document flow."
+    },
+    "selection": {
+      "type": "Offsets | undefined",
+      "required": false,
+      "description": "The range the suggestion is for, as onAction reported it. Without it, the last action's range."
+    },
+    "status": {
+      "type": "\"idle\" | \"rewriting\" | \"reviewing\" | \"applied\"",
+      "required": true,
+      "members": [
+        "\"idle\"",
+        "\"rewriting\"",
+        "\"reviewing\"",
+        "\"applied\""
+      ]
+    },
+    "suggestion": {
+      "type": "{ title: ReactNode; segments: readonly DiffSegment[]; } | undefined",
+      "required": false,
+      "description": "Keep it through applied, with `decisions`: the receipt counts them."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "DiffSegment": "DiffSegment.json",
+    "SuggestedEditsLabels": "SuggestedEditsLabels.json"
+  }
+}

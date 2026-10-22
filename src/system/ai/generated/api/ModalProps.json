@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModalProps",
+  "kind": "type",
+  "source": "Modal.tsx",
+  "sourceHash": "2ce0044aedf3ce0b7b429c6d34f3b62785cea6c6930db506b24ca8ca017088ba",
+  "type": "ModalProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "footer": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "initialFocusRef": {
+      "type": "RefObject<HTMLElement | null> | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "trigger": {
+      "type": "ReactElement<unknown, string | JSXElementConstructor<any>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

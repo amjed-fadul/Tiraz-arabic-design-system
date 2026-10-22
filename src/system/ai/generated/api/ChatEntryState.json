@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChatEntryState",
+  "kind": "type",
+  "source": "PromptEntry.tsx",
+  "sourceHash": "6c4468a300e795c53f5bb3522d78dec3a93c7d94630b93f72bb6b2100c6cb16b",
+  "type": "ChatEntryState",
+  "typeParameters": [],
+  "members": [
+    "\"idle\"",
+    "\"streaming\"",
+    "\"submitting\""
+  ],
+  "relatedTypes": {
+    "ChatComposerProps": "ChatComposerProps.json",
+    "ChatEntryLabels": "ChatEntryLabels.json"
+  }
+}

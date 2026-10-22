@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModelSelectorProps",
+  "kind": "type",
+  "source": "ModelSelector.tsx",
+  "sourceHash": "0e3183968dbd140836bb3c46ae823f2a8f7daef5d0dbc67788df0e13271d2395",
+  "type": "ModelSelectorProps",
+  "typeParameters": [],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "labels": {
+      "type": "{ unavailable?: string; } | undefined",
+      "required": false,
+      "description": "The word beside a model that cannot be chosen; «غير متاح» or \"Unavailable\" by default."
+    },
+    "models": {
+      "type": "readonly ModelOption[]",
+      "required": true
+    },
+    "onValueChange": {
+      "type": "(id: string) => void",
+      "required": true
+    },
+    "placeholder": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\""
+      ]
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ModelOption": "ModelOption.json"
+  }
+}

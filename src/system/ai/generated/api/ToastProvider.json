@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ToastProvider",
+  "kind": "component",
+  "source": "Toast.tsx",
+  "sourceHash": "9f47a1ab2c9f3abab5589b6b59d431fd0f882dfd7a06bc912323b0522b2d31b2",
+  "type": "({ children, closeLabel, label, }: { children: ReactNode; closeLabel: string; label: string; }) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  children,\n  closeLabel,\n  label,\n}",
+          "type": "{ children: ReactNode; closeLabel: string; label: string; }",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ToastMessage": "ToastMessage.json"
+  }
+}

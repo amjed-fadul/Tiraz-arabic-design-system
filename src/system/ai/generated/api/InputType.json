@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InputType",
+  "kind": "type",
+  "source": "Input.tsx",
+  "sourceHash": "3c56cb587a454e89cd345103534cf51a1e91b2fde018d79d7e2756bac9a61451",
+  "type": "InputType",
+  "typeParameters": [],
+  "members": [
+    "\"search\"",
+    "\"text\"",
+    "\"tel\"",
+    "\"url\"",
+    "\"email\"",
+    "\"password\""
+  ],
+  "relatedTypes": {
+    "InputProps": "InputProps.json"
+  }
+}

@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DecisionInboxItem",
+  "kind": "type",
+  "source": "DecisionInbox.tsx",
+  "sourceHash": "c19ef2d40f4852b899311aee8de8793d4ff45fe2faf5004c7886649a27c32976",
+  "type": "DecisionInboxItem",
+  "description": "One thing an agent waits on the person for, or works at.",
+  "typeParameters": [],
+  "props": {
+    "agent": {
+      "type": "{ id: string; name: ReactNode; }",
+      "required": true,
+      "description": "The agent it comes from."
+    },
+    "approval": {
+      "type": "ApprovalDetails | undefined",
+      "required": false
+    },
+    "context": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "One line, such as «ضمن إقفال حسابات أكتوبر»."
+    },
+    "draft": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "…or a draft waiting for review, which the host opens."
+    },
+    "error": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "A failed item's error, shown as text in its row."
+    },
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique and stable."
+    },
+    "questions": {
+      "type": "readonly UserQuestion[] | undefined",
+      "required": false,
+      "description": "…or questions, answered in the row…"
+    },
+    "receipt": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "What happened, shown while the row leaves its tab."
+    },
+    "request": {
+      "type": "ApprovalRequest | undefined",
+      "required": false,
+      "description": "An approval, shown in full as an Approval request when its row opens…"
+    },
+    "status": {
+      "type": "\"failed\" | \"running\" | \"completed\" | \"needs-you\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"needs-you\""
+      ],
+      "description": "Failed items wait on the person with the needs-you ones."
+    },
+    "steps": {
+      "type": "readonly { id: string; label: ReactNode; state: TaskState; time?: ReactNode; }[] | undefined",
+      "required": false,
+      "description": "The last three or four steps, oldest first."
+    },
+    "time": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Host-formatted, such as «قبل ٤ د»."
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json",
+    "DecisionInboxLabels": "DecisionInboxLabels.json",
+    "DecisionInboxProps": "DecisionInboxProps.json",
+    "DecisionInboxTab": "DecisionInboxTab.json",
+    "TaskState": "TaskState.json",
+    "UserQuestion": "UserQuestion.json"
+  }
+}

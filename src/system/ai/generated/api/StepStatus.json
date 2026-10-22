@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "exportName": "StepStatus",
+  "kind": "type",
+  "source": "Steps.tsx",
+  "sourceHash": "fdfbdc2cdd12c1109828ded208f9d4f4d0c4c0e2417bb553d9954232276d9c32",
+  "type": "StepStatus",
+  "typeParameters": [],
+  "members": [
+    "\"error\"",
+    "\"current\"",
+    "\"upcoming\"",
+    "\"completed\""
+  ],
+  "relatedTypes": {
+    "StepItem": "StepItem.json",
+    "StepsProps": "StepsProps.json"
+  }
+}

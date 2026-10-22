@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AIMark",
+  "kind": "component",
+  "source": "AIMark.tsx",
+  "sourceHash": "848f4e233ae40235abb7ddfcda009707bd13471932509bc84e296820e7323e4e",
+  "type": "({ size, working, label, className, }: AIMarkProps) => JSX.Element",
+  "description": "The eight-point star that marks AI presence (Woven spec section 14), in the\nAI color on its soft tile. The star is symmetric, so it never rests tilted;\nunder reduced motion it holds still.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  size = \"sm\",\n  working = false,\n  label,\n  className = \"\",\n}",
+          "type": "AIMarkProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "An accessible name; without one the mark is decorative and hidden."
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | \"xs\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\"",
+        "\"xs\""
+      ],
+      "description": "Glyph 10, 13 or 16 px in an 18, 24 or 30 px tile."
+    },
+    "working": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Turns a quarter step on a loop while the assistant works."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "size": "\"sm\"",
+    "working": "false",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "AIMarkProps": "AIMarkProps.json"
+  }
+}

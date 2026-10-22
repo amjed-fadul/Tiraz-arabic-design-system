@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ThinkingPanelLabels",
+  "kind": "type",
+  "source": "ThinkingPanel.tsx",
+  "sourceHash": "b8b66fae41441b61fb378e0365f5d5a6bf24ebd539a36ca9f3ad892edb7cdfe2",
+  "type": "ThinkingPanelLabels",
+  "description": "Every built-in string the panel shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "done": {
+      "type": "string",
+      "required": true,
+      "description": "The header once done when the host gives no time."
+    },
+    "failed": {
+      "type": "(elapsed: string) => string",
+      "required": true,
+      "description": "The header once failed, the same way: «تعثّر بعد ٦ث»."
+    },
+    "more": {
+      "type": "(count: string) => string",
+      "required": true,
+      "description": "The sources past the chips shown, `count` in the reader's digits: «+٢»."
+    },
+    "searched": {
+      "type": "string",
+      "required": true,
+      "description": "Before the sources the search covered: «بحث في»."
+    },
+    "showAll": {
+      "type": "string",
+      "required": true,
+      "description": "Said after «+٢» in the button's name, so it reads «+٢ عرض كل المصادر»."
+    },
+    "showFewer": {
+      "type": "string",
+      "required": true,
+      "description": "The same button once every source shows."
+    },
+    "stepStates": {
+      "type": "Record<\"running\" | \"completed\" | \"pending\", string>",
+      "required": true,
+      "description": "Each step's hidden state word, beside its icon."
+    },
+    "steps": {
+      "type": "string",
+      "required": true,
+      "description": "The steps list's name."
+    },
+    "stopped": {
+      "type": "(elapsed: string) => string",
+      "required": true,
+      "description": "The header once stopped, around the time it ran: «أُوقف بعد ٦ث». `elapsed`\nis empty when the host gives no time, and then it is the bare word."
+    },
+    "thinking": {
+      "type": "string",
+      "required": true,
+      "description": "The header while running, and the one sentence announced for it."
+    },
+    "thought": {
+      "type": "(elapsed: string) => string",
+      "required": true,
+      "description": "The header once done, around the time it took: «فكّر لمدة ٦ث»."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ThinkingPanelProps": "ThinkingPanelProps.json"
+  }
+}

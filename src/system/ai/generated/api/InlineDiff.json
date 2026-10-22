@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InlineDiff",
+  "kind": "component",
+  "source": "InlineDiff.tsx",
+  "sourceHash": "a140b52d1e6c6ab84d4f42363294f39ce6a9adfa40e88dd7b95c31914ef09abc",
+  "type": "({ segments, decisions, onDecisionsChange, labels, }: InlineDiffProps) => JSX.Element",
+  "description": "Tracked changes in running text (spec section 11). A change is a run of\nconsecutive inserts and deletes: a focusable group named by what it does,\nwith its own accept (Y) and reject (N). The keys match by position\n(`event.code`), so an Arabic layout works, and only while focus is in the\nchange; never on a repeat, with Ctrl, Meta or Alt, or in a text field.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  segments,\n  decisions,\n  onDecisionsChange,\n  labels,\n}",
+          "type": "InlineDiffProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "decisions": {
+      "type": "Readonly<Record<string, \"accepted\" | \"rejected\">>",
+      "required": true,
+      "description": "Keyed by each change's first segment id."
+    },
+    "labels": {
+      "type": "Partial<InlineDiffLabels> | undefined",
+      "required": false
+    },
+    "onDecisionsChange": {
+      "type": "(next: Record<string, \"accepted\" | \"rejected\">) => void",
+      "required": true
+    },
+    "segments": {
+      "type": "readonly DiffSegment[]",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "DiffSegment": "DiffSegment.json",
+    "InlineDiffProps": "InlineDiffProps.json"
+  }
+}

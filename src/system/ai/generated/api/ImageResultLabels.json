@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ImageResultLabels",
+  "kind": "type",
+  "source": "ImageResult.tsx",
+  "sourceHash": "9b5a0eb9ffe64814119ee786d273c3b4be266881466c1976111bc2fc8c388f8e",
+  "type": "ImageResultLabels",
+  "typeParameters": [],
+  "props": {
+    "error": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "loading": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "retry": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ImageResultProps": "ImageResultProps.json"
+  }
+}

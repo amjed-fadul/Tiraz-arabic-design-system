@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FilterBarFilter",
+  "kind": "type",
+  "source": "FilterBar.tsx",
+  "sourceHash": "fb940ef9e3c60e155cf54d51e93927fb7ba550be589bf80ba49764e743e9aed9",
+  "type": "FilterBarFilter",
+  "typeParameters": [],
+  "props": {
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "onRemove": {
+      "type": "() => void",
+      "required": true
+    },
+    "removeLabel": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FilterBarProps": "FilterBarProps.json"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SelectionActionsProps",
+  "kind": "type",
+  "source": "SelectionActions.tsx",
+  "sourceHash": "bb834f76f73fb9115bdcb3a447f8534d3e976f692c57598d5a3a29e575ded653",
+  "type": "SelectionActionsProps",
+  "typeParameters": [],
+  "props": {
+    "actions": {
+      "type": "readonly SelectionAction[]",
+      "required": true
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "description": "Names the focusable content region. Alt+Enter moves to the action row."
+    },
+    "labels": {
+      "type": "{ actions?: string; more?: string; less?: string; hint?: string; } | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SelectionAction": "SelectionAction.json"
+  }
+}

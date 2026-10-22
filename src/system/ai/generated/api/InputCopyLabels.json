@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InputCopyLabels",
+  "kind": "type",
+  "source": "InputCopy.tsx",
+  "sourceHash": "86b09071843470380b351fd6628820f4ab7952a40cd9d71017fd33d9b42e5032",
+  "type": "InputCopyLabels",
+  "typeParameters": [],
+  "props": {
+    "copied": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "copy": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "failure": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InputCopyProps": "InputCopyProps.json"
+  }
+}

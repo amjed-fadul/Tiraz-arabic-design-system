@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DecisionInbox",
+  "kind": "component",
+  "source": "DecisionInbox.tsx",
+  "sourceHash": "c19ef2d40f4852b899311aee8de8793d4ff45fe2faf5004c7886649a27c32976",
+  "type": "({ items, tab: tabProp, onTabChange, expanded: expandedProp, onExpandedChange, agents, agent: agentProp, onAgentChange, onDecision, onAnswer, onRetry, onOpen, receiptFor, title, headingLevel, labels, appearance, }: DecisionInboxProps) => JSX.Element",
+  "description": "Decision inbox (spec section 13.2): what every agent waits on the person\nfor, most urgent first, in tabs with counts. A row opens into the full\nApproval request or Clarifying questions, and only a reversible request\ndecides from its closed row. There is no approve-all. The host owns every\nitem and its status; a row the host moves out of the shown tab stays for\nits receipt, then leaves, and focus never drops to the page. One polite\nregion speaks only when the counts change.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  items,\n  tab: tabProp,\n  onTabChange,\n  expanded: expandedProp,\n  onExpandedChange,\n  agents,\n  agent: agentProp,\n  onAgentChange,\n  onDecision,\n  onAnswer,\n  onRetry,\n  onOpen,\n  receiptFor = 5,\n  title,\n  headingLevel = 3,\n  labels,\n  appearance = \"card\",\n}",
+          "type": "DecisionInboxProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agent": {
+      "type": "string | null | undefined",
+      "required": false,
+      "description": "The picked agent, which filters the rows and the counts, unannounced."
+    },
+    "agents": {
+      "type": "readonly { id: string; name: ReactNode; state: StatusPillState; }[] | undefined",
+      "required": false,
+      "description": "The agents strip: a toggle per agent, with its state in words."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "expanded": {
+      "type": "readonly string[] | undefined",
+      "required": false,
+      "description": "The open rows' ids; none by default."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The title's level; 3 by default. Rows sit one deeper."
+    },
+    "items": {
+      "type": "readonly DecisionInboxItem[]",
+      "required": true,
+      "description": "In the host's order, most urgent first."
+    },
+    "labels": {
+      "type": "Partial<DecisionInboxLabels> | undefined",
+      "required": false
+    },
+    "onAgentChange": {
+      "type": "((id: string | null) => void) | undefined",
+      "required": false
+    },
+    "onAnswer": {
+      "type": "((id: string, answers: QuestionAnswers, context: { signal: AbortSignal; }) => void | Promise<void>) | undefined",
+      "required": false
+    },
+    "onDecision": {
+      "type": "((request: ApprovalRequest, decision: ApprovalDecision, context: { signal: AbortSignal; }) => void | Promise<void>) | undefined",
+      "required": false,
+      "description": "Records a decision: the open card's, or a reversible row's quick one."
+    },
+    "onExpandedChange": {
+      "type": "((ids: string[]) => void) | undefined",
+      "required": false
+    },
+    "onOpen": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onRetry": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onTabChange": {
+      "type": "((tab: DecisionInboxTab) => void) | undefined",
+      "required": false
+    },
+    "receiptFor": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds a row the host moved out of the tab stays; 0 moves it at once."
+    },
+    "tab": {
+      "type": "DecisionInboxTab | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"all\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"needs-you\""
+      ],
+      "description": "The shown tab; «بانتظارك» by default."
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "receiptFor": "5",
+    "headingLevel": "3",
+    "appearance": "\"card\""
+  },
+  "relatedTypes": {
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json",
+    "DecisionInboxItem": "DecisionInboxItem.json",
+    "DecisionInboxLabels": "DecisionInboxLabels.json",
+    "DecisionInboxProps": "DecisionInboxProps.json",
+    "DecisionInboxTab": "DecisionInboxTab.json",
+    "QuestionAnswer": "QuestionAnswer.json",
+    "QuestionAnswers": "QuestionAnswers.json",
+    "StatusPillState": "StatusPillState.json",
+    "TaskState": "TaskState.json",
+    "UserQuestion": "UserQuestion.json"
+  }
+}

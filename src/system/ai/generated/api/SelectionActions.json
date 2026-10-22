@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SelectionActions",
+  "kind": "component",
+  "source": "SelectionActions.tsx",
+  "sourceHash": "bb834f76f73fb9115bdcb3a447f8534d3e976f692c57598d5a3a29e575ded653",
+  "type": "({ children, actions, label, labels, className, }: SelectionActionsProps) => JSX.Element",
+  "description": "Instance-scoped selection presentation; never executes or replaces content.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  children,\n  actions,\n  label,\n  labels,\n  className = \"\",\n}",
+          "type": "SelectionActionsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "actions": {
+      "type": "readonly SelectionAction[]",
+      "required": true
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "description": "Names the focusable content region. Alt+Enter moves to the action row."
+    },
+    "labels": {
+      "type": "{ actions?: string; more?: string; less?: string; hint?: string; } | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "SelectionAction": "SelectionAction.json",
+    "SelectionActionsProps": "SelectionActionsProps.json"
+  }
+}

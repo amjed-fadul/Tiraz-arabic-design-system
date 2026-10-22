@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "exportName": "GettingStartedIllustration",
+  "kind": "component",
+  "source": "EmptyStateIllustrations.tsx",
+  "sourceHash": "a95291a088f722d8f20f2495c3af5e508109c6583b3e5dc8f44f2f7da6a57cf2",
+  "type": "() => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [],
+      "returns": "JSX.Element"
+    }
+  ],
+  "defaults": {},
+  "relatedTypes": {}
+}

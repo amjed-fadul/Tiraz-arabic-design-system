@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AssistantControlsLabels",
+  "kind": "type",
+  "source": "AssistantControls.tsx",
+  "sourceHash": "77a13e1424cb1e6161a1d2aac7bab253998a3eb8909e0303aafc7abe397076e6",
+  "type": "AssistantControlsLabels",
+  "description": "Every built-in string Assistant controls shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "context": {
+      "type": "string",
+      "required": true
+    },
+    "delete": {
+      "type": "string",
+      "required": true
+    },
+    "levels": {
+      "type": "Record<PermissionLevel, string>",
+      "required": true,
+      "description": "The three levels: «اسأل دائمًا», «إن كان حساسًا», «تلقائي بالكامل»."
+    },
+    "locked": {
+      "type": "string",
+      "required": true,
+      "description": "Why a locked action always asks; it describes the action's group."
+    },
+    "memory": {
+      "type": "string",
+      "required": true
+    },
+    "memoryOff": {
+      "type": "string",
+      "required": true
+    },
+    "model": {
+      "type": "string",
+      "required": true,
+      "description": "Names the model selector."
+    },
+    "pause": {
+      "type": "string",
+      "required": true
+    },
+    "paused": {
+      "type": "string",
+      "required": true,
+      "description": "A paused item's tag, and the item buttons, each named with its item."
+    },
+    "permissions": {
+      "type": "string",
+      "required": true,
+      "description": "The three sections' headings."
+    },
+    "resume": {
+      "type": "string",
+      "required": true
+    },
+    "risks": {
+      "type": "Record<\"irreversible\" | \"sensitive\", string>",
+      "required": true,
+      "description": "The risk tags: «حساس» and «لا يمكن التراجع»."
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "The heading when the host gives no `title`: «إعدادات المساعد»."
+    },
+    "useMemory": {
+      "type": "string",
+      "required": true,
+      "description": "The memory switch, and the note while memory is off."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AssistantControlsProps": "AssistantControlsProps.json",
+    "AssistantMemoryItem": "AssistantMemoryItem.json",
+    "AssistantPermission": "AssistantPermission.json",
+    "PermissionLevel": "PermissionLevel.json"
+  }
+}

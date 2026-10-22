@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FieldControlProps",
+  "kind": "type",
+  "source": "Field.tsx",
+  "sourceHash": "87f52cc2f8cede959012004c7d201eb049e7e85a25d8ff192094f827435bd018",
+  "type": "FieldControlProps",
+  "description": "Explicit association contract for exactly one compatible Tiraz control.",
+  "typeParameters": [],
+  "props": {
+    "aria-describedby": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-invalid": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "aria-labelledby": {
+      "type": "string",
+      "required": true
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "required": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FieldProps": "FieldProps.json"
+  }
+}

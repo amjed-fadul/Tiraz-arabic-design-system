@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InvoiceAction",
+  "kind": "type",
+  "source": "patterns/InvoiceActions.tsx",
+  "sourceHash": "b9b78805149f51ac145bd27682799b6c9db42f4341f3483bc85cfeec34aa07d6",
+  "type": "InvoiceAction",
+  "typeParameters": [],
+  "members": [
+    "{ id: string; label: string; disabled?: boolean; } & { destructive: true; confirmation: InvoiceActionConfirmation; }",
+    "{ id: string; label: string; disabled?: boolean; } & { destructive?: false; confirmation?: never; }"
+  ],
+  "props": {
+    "confirmation": {
+      "type": "InvoiceActionConfirmation | undefined",
+      "required": false
+    },
+    "destructive": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [
+    {
+      "type": "{ id: string; label: string; disabled?: boolean; } & { destructive: true; confirmation: InvoiceActionConfirmation; }",
+      "props": {
+        "confirmation": {
+          "type": "InvoiceActionConfirmation",
+          "required": true
+        },
+        "destructive": {
+          "type": "true",
+          "required": true
+        },
+        "disabled": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    {
+      "type": "{ id: string; label: string; disabled?: boolean; } & { destructive?: false; confirmation?: never; }",
+      "props": {
+        "confirmation": {
+          "type": "undefined",
+          "required": false
+        },
+        "destructive": {
+          "type": "false | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false"
+          ]
+        },
+        "disabled": {
+          "type": "boolean | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false",
+            "true"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "required": true
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        }
+      }
+    }
+  ],
+  "relatedTypes": {
+    "InvoiceActionConfirmation": "InvoiceActionConfirmation.json",
+    "InvoiceActionLabels": "InvoiceActionLabels.json",
+    "InvoiceActionsProps": "InvoiceActionsProps.json",
+    "InvoiceData": "InvoiceData.json"
+  }
+}

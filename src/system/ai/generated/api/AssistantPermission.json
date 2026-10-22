@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AssistantPermission",
+  "kind": "type",
+  "source": "AssistantControls.tsx",
+  "sourceHash": "77a13e1424cb1e6161a1d2aac7bab253998a3eb8909e0303aafc7abe397076e6",
+  "type": "AssistantPermission",
+  "typeParameters": [],
+  "props": {
+    "description": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The action, in the person's words: «إرسال رسائل للعملاء»."
+    },
+    "level": {
+      "type": "PermissionLevel",
+      "required": true,
+      "members": [
+        "\"auto\"",
+        "\"always\"",
+        "\"sensitive\""
+      ]
+    },
+    "risks": {
+      "type": "readonly (\"irreversible\" | \"sensitive\")[] | undefined",
+      "required": false,
+      "description": "An irreversible action is locked to «اسأل دائمًا», whatever `level` says."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AssistantControlsLabels": "AssistantControlsLabels.json",
+    "AssistantControlsProps": "AssistantControlsProps.json",
+    "AssistantMemoryItem": "AssistantMemoryItem.json",
+    "PermissionLevel": "PermissionLevel.json"
+  }
+}

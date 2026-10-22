@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SuggestedEditsLabels",
+  "kind": "type",
+  "source": "SuggestedEdits.tsx",
+  "sourceHash": "0288e97df35ef60fc67da59363ebbf9ee236d9d85d166bf806900c46879ffe1a",
+  "type": "SuggestedEditsLabels",
+  "description": "Every built-in string Suggested edits shows, InlineDiff's included; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "accept": {
+      "type": "string",
+      "required": true
+    },
+    "acceptAll": {
+      "type": "string",
+      "required": true
+    },
+    "applied": {
+      "type": "(count: number, edits: string, total: string) => string",
+      "required": true,
+      "description": "The receipt, and its announcement: «طُبّق تعديلان من ٣»."
+    },
+    "apply": {
+      "type": "string",
+      "required": true
+    },
+    "change": {
+      "type": "(removed: string, added: string) => string",
+      "required": true,
+      "description": "Names a change by what it does: «حذف «…» وإضافة «…»»."
+    },
+    "dismiss": {
+      "type": "string",
+      "required": true
+    },
+    "next": {
+      "type": "string",
+      "required": true
+    },
+    "plainText": {
+      "type": "string",
+      "required": true,
+      "description": "Shown when the selection spans formatting."
+    },
+    "position": {
+      "type": "(current: string, total: string) => string",
+      "required": true,
+      "description": "The counter: «١ من ٣»."
+    },
+    "previous": {
+      "type": "string",
+      "required": true
+    },
+    "region": {
+      "type": "string",
+      "required": true,
+      "description": "Names the text region the person selects in."
+    },
+    "reject": {
+      "type": "string",
+      "required": true
+    },
+    "rejectAll": {
+      "type": "string",
+      "required": true
+    },
+    "reviewing": {
+      "type": "(count: number, edits: string) => string",
+      "required": true,
+      "description": "Announced when the card opens; `edits` is the count with its noun."
+    },
+    "rewriting": {
+      "type": "string",
+      "required": true,
+      "description": "The note below the selection while the assistant rewrites it, and its announcement."
+    },
+    "shortcut": {
+      "type": "(key: string) => string",
+      "required": true,
+      "description": "Describes each button with its key: «اختصار لوحة المفاتيح: Y»."
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "The card's heading, before the suggestion's own title."
+    },
+    "undo": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SuggestedEditsProps": "SuggestedEditsProps.json"
+  }
+}

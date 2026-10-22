@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InsightItem",
+  "kind": "type",
+  "source": "InsightCards.tsx",
+  "sourceHash": "ba1e9a28aa1c0ad485df4a5c13fa4c75567a70aac8d4becb2e6a1499b0a75d85",
+  "type": "InsightItem",
+  "typeParameters": [],
+  "props": {
+    "action": {
+      "type": "{ label: string; onClick: () => void; } | undefined",
+      "required": false
+    },
+    "details": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Concise host-owned supporting content; may compose an existing chart."
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tone": {
+      "type": "BadgeTone | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"error\"",
+        "\"success\"",
+        "\"info\"",
+        "\"warning\"",
+        "\"neutral\"",
+        "\"ai\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "BadgeTone": "BadgeTone.json",
+    "InsightCardsLabels": "InsightCardsLabels.json",
+    "InsightCardsProps": "InsightCardsProps.json"
+  }
+}

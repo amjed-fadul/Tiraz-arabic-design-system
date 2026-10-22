@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AvatarGroup",
+  "kind": "component",
+  "source": "AvatarGroup.tsx",
+  "sourceHash": "add7d784d201953b9283dfb4557010cdc288ee78d91371bf52dc35b211fbb6c5",
+  "type": "({ members, label, overflowLabel, maxVisible, size, }: AvatarGroupProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  members,\n  label,\n  overflowLabel,\n  maxVisible = 4,\n  size = \"sm\",\n}",
+          "type": "AvatarGroupProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "maxVisible": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "members": {
+      "type": "AvatarMember[]",
+      "required": true
+    },
+    "overflowLabel": {
+      "type": "(count: number) => string",
+      "required": true
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\""
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "maxVisible": "4",
+    "size": "\"sm\""
+  },
+  "relatedTypes": {
+    "AvatarGroupProps": "AvatarGroupProps.json",
+    "AvatarMember": "AvatarMember.json"
+  }
+}

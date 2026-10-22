@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChangeSummary",
+  "kind": "component",
+  "source": "ChangeSummary.tsx",
+  "sourceHash": "96944f2bfdd4195a888b1337e6d66340fd927fa3327e50e9c56790a8b82ba0e4",
+  "type": "({ agentPresentation, title, status, rows, reason, sources, basedOn, updated, actions, onRefresh, headingLevel, labels, announcement, appearance, }: ChangeSummaryProps) => JSX.Element",
+  "description": "What changed (spec section 12.8): what moved, why, and what to do next. The\nhost supplies the status, the rows and their tones; each row says which way\nwith an arrow and a hidden word, and what it means with color, so more late\ninvoices is red though it rises. Its polite region says each status change\nonce unless the host owns announcements.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  agentPresentation,\n  title,\n  status,\n  rows,\n  reason,\n  sources,\n  basedOn,\n  updated,\n  actions,\n  onRefresh,\n  headingLevel = 3,\n  labels,\n  announcement = \"polite\",\n  appearance = \"card\",\n}",
+          "type": "ChangeSummaryProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "actions": {
+      "type": "readonly { id: string; label: string; primary?: boolean; onSelect(): void; }[] | undefined",
+      "required": false,
+      "description": "Shown while ready: one primary next step, one secondary."
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional avatar, name, identity controls and tray color in the existing header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status changes politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "basedOn": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The footer's «اعتمادًا على ٣ تقارير» and «حُدّث قبل ٥ د»."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The title's level; 3 by default."
+    },
+    "labels": {
+      "type": "Partial<ChangeSummaryLabels> | undefined",
+      "required": false
+    },
+    "onRefresh": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "reason": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The most likely reason, with a citation for each of `sources`."
+    },
+    "rows": {
+      "type": "readonly { id: string; metric: string; change: ReactNode; direction: \"up\" | \"down\" | \"flat\"; tone: \"good\" | \"bad\" | \"neutral\"; series?: readonly number[]; }[]",
+      "required": true,
+      "description": "The first six show. `direction` says which way, `tone` what it means."
+    },
+    "sources": {
+      "type": "readonly SourceReference[] | undefined",
+      "required": false
+    },
+    "status": {
+      "type": "\"failed\" | \"ready\" | \"updating\" | \"stale\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"ready\"",
+        "\"updating\"",
+        "\"stale\""
+      ]
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "updated": {
+      "type": "ReactNode",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "headingLevel": "3",
+    "announcement": "\"polite\"",
+    "appearance": "\"card\""
+  },
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "ButtonVariant": "ButtonVariant.json",
+    "ChangeSummaryLabels": "ChangeSummaryLabels.json",
+    "ChangeSummaryProps": "ChangeSummaryProps.json",
+    "SourceReference": "SourceReference.json"
+  }
+}

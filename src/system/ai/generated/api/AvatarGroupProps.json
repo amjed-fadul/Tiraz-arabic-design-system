@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AvatarGroupProps",
+  "kind": "type",
+  "source": "AvatarGroup.tsx",
+  "sourceHash": "add7d784d201953b9283dfb4557010cdc288ee78d91371bf52dc35b211fbb6c5",
+  "type": "AvatarGroupProps",
+  "typeParameters": [],
+  "props": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "maxVisible": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "members": {
+      "type": "AvatarMember[]",
+      "required": true
+    },
+    "overflowLabel": {
+      "type": "(count: number) => string",
+      "required": true
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AvatarMember": "AvatarMember.json"
+  }
+}

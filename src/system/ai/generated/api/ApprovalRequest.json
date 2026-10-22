@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ApprovalRequest",
+  "kind": "type",
+  "source": "ApprovalCard.tsx",
+  "sourceHash": "90848ba6883649ed56fe53326a1321e75e6599049363bbfd2af2ba4127ced5e3",
+  "type": "ApprovalRequest",
+  "typeParameters": [],
+  "props": {
+    "action": {
+      "type": "string",
+      "required": true
+    },
+    "approveLabel": {
+      "type": "string",
+      "required": true
+    },
+    "consequences": {
+      "type": "readonly string[]",
+      "required": true
+    },
+    "details": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "rejectLabel": {
+      "type": "string",
+      "required": true
+    },
+    "target": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json"
+  }
+}

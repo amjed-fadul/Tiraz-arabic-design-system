@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "exportName": "StatusPillState",
+  "kind": "type",
+  "source": "StatusPill.tsx",
+  "sourceHash": "679029af598fc48b40878a53b319757d1d3bc7db49a642fa0af5d5944ac831c9",
+  "type": "StatusPillState",
+  "description": "The six states every pattern shares (spec section 10).",
+  "typeParameters": [],
+  "members": [
+    "\"idle\"",
+    "\"failed\"",
+    "\"running\"",
+    "\"completed\"",
+    "\"needs-you\"",
+    "\"stopped\""
+  ],
+  "relatedTypes": {
+    "StatusPillProps": "StatusPillProps.json"
+  }
+}

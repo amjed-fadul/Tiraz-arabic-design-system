@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "exportName": "approvalRequestKey",
+  "kind": "function",
+  "source": "approval-request.ts",
+  "sourceHash": "fa2526ee92ca22e2cfda2ffe28bc80e19c81c232dab58fb92b6743b08f3a49c3",
+  "type": "(request: ApprovalRequest) => string",
+  "description": "Content, including the stable ID, binds a decision to one concrete proposal.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "request",
+          "type": "ApprovalRequest",
+          "required": true
+        }
+      ],
+      "returns": "string"
+    }
+  ],
+  "relatedTypes": {
+    "ApprovalRequest": "ApprovalRequest.json"
+  }
+}

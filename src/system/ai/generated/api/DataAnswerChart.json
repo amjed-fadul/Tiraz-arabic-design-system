@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DataAnswerChart",
+  "kind": "type",
+  "source": "DataAnswer.tsx",
+  "sourceHash": "f69f774e63ced36c38ab85ab936b192fcff6f6b9d36cb5e9af36537c8cde527f",
+  "type": "DataAnswerChart",
+  "description": "The chart that answers the question: one of the four chart families, given\nthat family's own props. The host reshapes its data for the type it shows.",
+  "typeParameters": [],
+  "members": [
+    "{ type: \"line\" | \"area\" | \"bar\"; props: CartesianChartProps; }",
+    "{ type: \"donut\"; props: DonutChartProps; }"
+  ],
+  "props": {
+    "props": {
+      "type": "CartesianChartProps | DonutChartProps",
+      "required": true
+    },
+    "type": {
+      "type": "\"area\" | \"line\" | \"bar\" | \"donut\"",
+      "required": true,
+      "members": [
+        "\"area\"",
+        "\"line\"",
+        "\"bar\"",
+        "\"donut\""
+      ]
+    }
+  },
+  "branches": [
+    {
+      "type": "{ type: \"line\" | \"area\" | \"bar\"; props: CartesianChartProps; }",
+      "props": {
+        "props": {
+          "type": "CartesianChartProps",
+          "required": true
+        },
+        "type": {
+          "type": "\"area\" | \"line\" | \"bar\"",
+          "required": true,
+          "members": [
+            "\"area\"",
+            "\"line\"",
+            "\"bar\""
+          ]
+        }
+      }
+    },
+    {
+      "type": "{ type: \"donut\"; props: DonutChartProps; }",
+      "props": {
+        "props": {
+          "type": "DonutChartProps",
+          "required": true
+        },
+        "type": {
+          "type": "\"donut\"",
+          "required": true
+        }
+      }
+    }
+  ],
+  "relatedTypes": {
+    "CartesianChartProps": "CartesianChartProps.json",
+    "ChartDatum": "ChartDatum.json",
+    "ChartProps": "ChartProps.json",
+    "ChartSeries": "ChartSeries.json",
+    "DataAnswerLabels": "DataAnswerLabels.json",
+    "DataAnswerProps": "DataAnswerProps.json",
+    "DonutChartProps": "DonutChartProps.json",
+    "DonutDatum": "DonutDatum.json"
+  }
+}

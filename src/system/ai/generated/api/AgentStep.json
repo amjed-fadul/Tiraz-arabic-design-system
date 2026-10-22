@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AgentStep",
+  "kind": "type",
+  "source": "AgentTask.tsx",
+  "sourceHash": "6228fb06652ae9da6a58173ad35b5f9e71aa47bbaa76d95524352c86c39c94d4",
+  "type": "AgentStep",
+  "typeParameters": [],
+  "props": {
+    "agent": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The agent the step was handed to; its request names it as who asks."
+    },
+    "approval": {
+      "type": "ApprovalDetails | undefined",
+      "required": false,
+      "description": "What the inline card shows beyond its request (Decision 4)."
+    },
+    "detail": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "One quiet line under the title, such as «٢١٧ فاتورة · ٣ فروقات»."
+    },
+    "duration": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds; a running step's is live, updated at most once a second."
+    },
+    "error": {
+      "type": "{ title: ReactNode; body?: ReactNode; actions?: readonly (\"retry\" | \"skip\" | \"reconnect\")[]; } | undefined",
+      "required": false,
+      "description": "A failed step's error, with the ways forward the host offers."
+    },
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique and stable."
+    },
+    "notes": {
+      "type": "readonly { id: string; text: string; applied: boolean; }[] | undefined",
+      "required": false,
+      "description": "Steering notes for this step; `applied` once the agent picked one up."
+    },
+    "request": {
+      "type": "ApprovalRequest | undefined",
+      "required": false,
+      "description": "Shown inline as a plain ApprovalCard while the step needs you."
+    },
+    "state": {
+      "type": "\"failed\" | \"running\" | \"completed\" | \"pending\" | \"needs-you\" | \"skipped\" | \"planned\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"pending\"",
+        "\"needs-you\"",
+        "\"skipped\"",
+        "\"planned\""
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tools": {
+      "type": "readonly Pick<ToolCallProps, \"error\" | \"input\" | \"state\" | \"label\" | \"output\" | \"duration\" | \"tool\">[] | undefined",
+      "required": false,
+      "description": "A finished step's operations, listed under its details."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AgentTaskLabels": "AgentTaskLabels.json",
+    "AgentTaskProps": "AgentTaskProps.json",
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json",
+    "ToolCallProps": "ToolCallProps.json",
+    "ToolCallState": "ToolCallState.json",
+    "ToolLabels": "ToolLabels.json"
+  }
+}

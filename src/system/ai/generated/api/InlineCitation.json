@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InlineCitation",
+  "kind": "component",
+  "source": "Sources.tsx",
+  "sourceHash": "31a121e3b2e202903de08c6230412d844d90678be56ff85a42ccb9bcfe29729a",
+  "type": "({ source, mode, onOpenChange, labels, className, }: InlineCitationProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  source,\n  mode = \"disclosure\",\n  onOpenChange,\n  labels,\n  className = \"\",\n}",
+          "type": "InlineCitationProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "labels": {
+      "type": "InlineCitationLabels | undefined",
+      "required": false
+    },
+    "mode": {
+      "type": "\"link\" | \"disclosure\" | \"preview\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"link\"",
+        "\"disclosure\"",
+        "\"preview\""
+      ],
+      "description": "Disclosure uses an interactive popup; link preserves native browser\nbehavior; preview is a link that shows the source on hover or focus (a\nbutton, when the source has no safe destination), and a tap opens the\ndisclosure's popup instead of following the link."
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false,
+      "description": "Called when the popup or preview opens or closes."
+    },
+    "source": {
+      "type": "SourceReference",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "mode": "\"disclosure\"",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "InlineCitationLabels": "InlineCitationLabels.json",
+    "InlineCitationProps": "InlineCitationProps.json",
+    "SourceReference": "SourceReference.json",
+    "SourcesLabels": "SourcesLabels.json",
+    "SourcesProps": "SourcesProps.json"
+  }
+}

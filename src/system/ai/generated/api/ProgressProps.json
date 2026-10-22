@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ProgressProps",
+  "kind": "type",
+  "source": "Progress.tsx",
+  "sourceHash": "2b629a3d4e1f4353c6e3a7c8b067f899a72b1c6bd0f62d2ab8c1338cb3d18f62",
+  "type": "ProgressProps",
+  "typeParameters": [],
+  "props": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "locale": {
+      "type": "\"ar\" | \"en\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"ar\"",
+        "\"en\""
+      ]
+    },
+    "showValue": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "value": {
+      "type": "number | null | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

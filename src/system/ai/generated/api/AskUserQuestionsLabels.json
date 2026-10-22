@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AskUserQuestionsLabels",
+  "kind": "type",
+  "source": "AskUserQuestions.tsx",
+  "sourceHash": "372837b435ff86e4f6eb501683fd58b911eeee95550908f3d3655f3633f9e5bd",
+  "type": "AskUserQuestionsLabels",
+  "description": "Every built-in string the questions show; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "accepted": {
+      "type": "string",
+      "required": true
+    },
+    "answers": {
+      "type": "string",
+      "required": true,
+      "description": "Heads the receipt."
+    },
+    "editAnswers": {
+      "type": "string",
+      "required": true
+    },
+    "empty": {
+      "type": "string",
+      "required": true
+    },
+    "failed": {
+      "type": "string",
+      "required": true
+    },
+    "hint": {
+      "type": "(first: string, last: string) => string",
+      "required": true,
+      "description": "The 1–9 key hint. The digits arrive formatted."
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "description": "The form's name when `label` is not given."
+    },
+    "needsYou": {
+      "type": "string",
+      "required": true,
+      "description": "The status pill while the questions wait."
+    },
+    "next": {
+      "type": "string",
+      "required": true
+    },
+    "other": {
+      "type": "string",
+      "required": true,
+      "description": "The free-answer choice."
+    },
+    "otherAnswer": {
+      "type": "string",
+      "required": true,
+      "description": "Names the free-answer field."
+    },
+    "position": {
+      "type": "(current: string, total: string) => string",
+      "required": true,
+      "description": "«السؤال ١ من ٢». The digits arrive formatted for the page's numerals."
+    },
+    "previous": {
+      "type": "string",
+      "required": true
+    },
+    "required": {
+      "type": "string",
+      "required": true,
+      "description": "Asks for an answer left out."
+    },
+    "skip": {
+      "type": "string",
+      "required": true
+    },
+    "submit": {
+      "type": "string",
+      "required": true,
+      "description": "The submit button when `submitLabel` is not given."
+    },
+    "submitting": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AskUserQuestionsProps": "AskUserQuestionsProps.json",
+    "QuestionAnswer": "QuestionAnswer.json",
+    "QuestionAnswers": "QuestionAnswers.json",
+    "UserQuestion": "UserQuestion.json"
+  }
+}

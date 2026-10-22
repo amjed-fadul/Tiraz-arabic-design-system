@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "exportName": "StatusPill",
+  "kind": "component",
+  "source": "StatusPill.tsx",
+  "sourceHash": "679029af598fc48b40878a53b319757d1d3bc7db49a642fa0af5d5944ac831c9",
+  "type": "({ state, label, elapsed, className, }: StatusPillProps) => JSX.Element",
+  "description": "The single place a pattern names its state: a decorative dot and the word as\nreal text, in the state's color role. It pings once when the state changes\ninto needs-you, never on mount.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  state,\n  label,\n  elapsed,\n  className = \"\",\n}",
+          "type": "StatusPillProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "elapsed": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds, shown after the word; never announced."
+    },
+    "label": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Replaces the default word, for a form that agrees with the subject."
+    },
+    "state": {
+      "type": "StatusPillState",
+      "required": true,
+      "members": [
+        "\"idle\"",
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"needs-you\"",
+        "\"stopped\""
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "StatusPillProps": "StatusPillProps.json",
+    "StatusPillState": "StatusPillState.json"
+  }
+}

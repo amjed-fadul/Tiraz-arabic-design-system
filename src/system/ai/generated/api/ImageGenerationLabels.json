@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ImageGenerationLabels",
+  "kind": "type",
+  "source": "ImageGeneration.tsx",
+  "sourceHash": "9696331a866f3ef78d848faeb4a70ac8fb259b28913970f6e9a2765149a6053e",
+  "type": "ImageGenerationLabels",
+  "description": "Every built-in string Image generation shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "blocked": {
+      "type": "string",
+      "required": true,
+      "description": "What a refused request is called, before its reason."
+    },
+    "completed": {
+      "type": "string",
+      "required": true,
+      "description": "The pill's word when done, which agrees with الصورة: «جاهزة»."
+    },
+    "edit": {
+      "type": "string",
+      "required": true
+    },
+    "failed": {
+      "type": "string",
+      "required": true,
+      "description": "The failure's text, which is also its announcement."
+    },
+    "failedPill": {
+      "type": "string",
+      "required": true
+    },
+    "options": {
+      "type": "string",
+      "required": true,
+      "description": "The list of options: ratio, style and count."
+    },
+    "progress": {
+      "type": "string",
+      "required": true,
+      "description": "The progress tag's name for assistive technology."
+    },
+    "queued": {
+      "type": "string",
+      "required": true,
+      "description": "The pill's word, and the canvas tag's, while queued."
+    },
+    "retry": {
+      "type": "string",
+      "required": true
+    },
+    "saysCompleted": {
+      "type": "string",
+      "required": true
+    },
+    "saysQueued": {
+      "type": "string",
+      "required": true,
+      "description": "The announcements for queued, weaving and completed."
+    },
+    "saysWeaving": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "The heading: «توليد صورة»."
+    },
+    "use": {
+      "type": "string",
+      "required": true
+    },
+    "variations": {
+      "type": "string",
+      "required": true
+    },
+    "version": {
+      "type": "(number: string) => string",
+      "required": true,
+      "description": "Each version: «النسخة ١»."
+    },
+    "versions": {
+      "type": "string",
+      "required": true,
+      "description": "The group of versions: «اختر نسخة»."
+    },
+    "weaving": {
+      "type": "string",
+      "required": true,
+      "description": "The pill's word while weaving, and the canvas tag's when progress is unknown."
+    },
+    "weavingAt": {
+      "type": "(percent: string) => string",
+      "required": true,
+      "description": "The canvas tag while progress is known: «يُنسج · ٤٢٪»."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ImageGenerationProps": "ImageGenerationProps.json"
+  }
+}

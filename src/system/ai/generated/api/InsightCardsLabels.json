@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InsightCardsLabels",
+  "kind": "type",
+  "source": "InsightCards.tsx",
+  "sourceHash": "ba1e9a28aa1c0ad485df4a5c13fa4c75567a70aac8d4becb2e6a1499b0a75d85",
+  "type": "InsightCardsLabels",
+  "typeParameters": [],
+  "props": {
+    "empty": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "next": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "position": {
+      "type": "((current: number, total: number) => string) | undefined",
+      "required": false
+    },
+    "previous": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InsightCardsProps": "InsightCardsProps.json",
+    "InsightItem": "InsightItem.json"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ToolCallState",
+  "kind": "type",
+  "source": "ToolCall.tsx",
+  "sourceHash": "0f5e4143c6bd76652696878b698ebb26c1840fcb06d5ca48368d6243b13362d4",
+  "type": "ToolCallState",
+  "typeParameters": [],
+  "members": [
+    "\"failed\"",
+    "\"running\"",
+    "\"completed\"",
+    "\"pending\"",
+    "\"needs-you\""
+  ],
+  "relatedTypes": {
+    "ToolCallProps": "ToolCallProps.json"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "exportName": "BreadcrumbItem",
+  "kind": "type",
+  "source": "Breadcrumbs.tsx",
+  "sourceHash": "227b0358848a234d2172a274295d4dc10fac999eede2abeedf998c7ed486ef1a",
+  "type": "BreadcrumbItem",
+  "typeParameters": [],
+  "props": {
+    "href": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "BreadcrumbsProps": "BreadcrumbsProps.json"
+  }
+}

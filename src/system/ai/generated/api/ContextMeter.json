@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ContextMeter",
+  "kind": "component",
+  "source": "ContextMeter.tsx",
+  "sourceHash": "7e4dfd67aeb3071a80ae67ecf78d974d6c9ce6892f6e55770f2c7948e48b9315",
+  "type": "({ used, capacity, estimated, details, metadata, label, unit, locale, thresholds, open, onOpenChange, inline, action, announcement, className, }: ContextMeterProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  used,\n  capacity,\n  estimated = false,\n  details,\n  metadata,\n  label,\n  unit,\n  locale,\n  thresholds,\n  open,\n  onOpenChange,\n  inline = false,\n  action,\n  announcement = \"polite\",\n  className = \"\",\n}",
+          "type": "ContextMeterProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "action": {
+      "type": "{ label: ReactNode; onSelect(): void; } | undefined",
+      "required": false,
+      "description": "A way out once the meter fills up, such as «لخّص المحادثة»: a button in\nthe details while the status is high, near or over."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "\"polite\" says «السياق: يقترب من الامتلاء» once each time the status word\nchanges; \"off\" when an owner speaks for the meter."
+    },
+    "capacity": {
+      "type": "number | null | undefined",
+      "required": false
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "details": {
+      "type": "readonly ContextMeterPart[] | undefined",
+      "required": false
+    },
+    "estimated": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "inline": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Shows the details in place of the ring and its popover."
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "locale": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "metadata": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Supplied metadata, e.g. a model or cost. Never looked up by this component."
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Controls the details; pair `open` with `onOpenChange`."
+    },
+    "thresholds": {
+      "type": "{ high?: number; near?: number; } | undefined",
+      "required": false,
+      "description": "Where the status moves, as a share of capacity: \"high\" is where the meter\nfills up (0.8) and \"near\" where it nears capacity (0.95). Over capacity is\nalways above 1."
+    },
+    "unit": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "used": {
+      "type": "number | null | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "estimated": "false",
+    "inline": "false",
+    "announcement": "\"polite\"",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "ContextMeterPart": "ContextMeterPart.json",
+    "ContextMeterProps": "ContextMeterProps.json"
+  }
+}

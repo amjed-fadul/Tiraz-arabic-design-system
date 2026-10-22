@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TaskRowItem",
+  "kind": "type",
+  "source": "TaskRows.tsx",
+  "sourceHash": "7e02db2ca04fd901c5c8ab2d4a6b24cf48b531831ca6b7fffb46fb550d04bf2e",
+  "type": "TaskRowItem",
+  "typeParameters": [],
+  "props": {
+    "content": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Application-owned detail content/actions, outside the disclosure button."
+    },
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique, stable application ID."
+    },
+    "state": {
+      "type": "TaskState",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"pending\"",
+        "\"needs-you\""
+      ]
+    },
+    "summary": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Short, noninteractive summary or count."
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "TaskRowsProps": "TaskRowsProps.json",
+    "TaskState": "TaskState.json"
+  }
+}

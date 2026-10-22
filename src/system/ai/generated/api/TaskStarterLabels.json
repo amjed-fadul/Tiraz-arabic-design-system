@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TaskStarterLabels",
+  "kind": "type",
+  "source": "TaskStarter.tsx",
+  "sourceHash": "34a91d7de51faa0a9dc647a5e519786f9b661bdbcc418416fcb32359defd0603",
+  "type": "TaskStarterLabels",
+  "description": "Every built-in string Start a task shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "attach": {
+      "type": "string",
+      "required": true
+    },
+    "attached": {
+      "type": "(count: number, records: string) => string",
+      "required": true
+    },
+    "contextAdded": {
+      "type": "(name: string) => string",
+      "required": true,
+      "description": "The polite region's two sentences, when the host's context gains or loses a record."
+    },
+    "contextRemoved": {
+      "type": "(name: string) => string",
+      "required": true
+    },
+    "contextStatus": {
+      "type": "(status: string) => string",
+      "required": true,
+      "description": "The region's sentence when the ring's status word changes: «السياق: يقترب من الامتلاء»."
+    },
+    "failure": {
+      "type": "string",
+      "required": true
+    },
+    "field": {
+      "type": "string",
+      "required": true,
+      "description": "The text area's name, its placeholder and the tool buttons' names."
+    },
+    "mention": {
+      "type": "string",
+      "required": true,
+      "description": "The @ button, and the picker's name."
+    },
+    "mode": {
+      "type": "string",
+      "required": true,
+      "description": "The mode button's name, the models' section and their unavailable word."
+    },
+    "model": {
+      "type": "string",
+      "required": true
+    },
+    "placeholder": {
+      "type": "string",
+      "required": true
+    },
+    "recent": {
+      "type": "string",
+      "required": true
+    },
+    "recentStates": {
+      "type": "Record<StatusPillState, string>",
+      "required": true,
+      "description": "The status word of a recent task; it agrees with المهمة."
+    },
+    "removeContext": {
+      "type": "(name: string) => string",
+      "required": true
+    },
+    "send": {
+      "type": "string",
+      "required": true
+    },
+    "suggestions": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "The question above the entry, unless the host gives its own `title`."
+    },
+    "unavailable": {
+      "type": "string",
+      "required": true
+    },
+    "used": {
+      "type": "(percent: string) => string",
+      "required": true,
+      "description": "«السياق المستخدم ٣٢٪», and what agrees with the count of attached records."
+    },
+    "voice": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ContextItem": "ContextItem.json",
+    "ModeOption": "ModeOption.json",
+    "StatusPillState": "StatusPillState.json",
+    "TaskStarterProps": "TaskStarterProps.json"
+  }
+}

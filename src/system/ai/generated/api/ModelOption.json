@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModelOption",
+  "kind": "type",
+  "source": "ModelSelector.tsx",
+  "sourceHash": "0e3183968dbd140836bb3c46ae823f2a8f7daef5d0dbc67788df0e13271d2395",
+  "type": "ModelOption",
+  "typeParameters": [],
+  "props": {
+    "context": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "price": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "provider": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "tags": {
+      "type": "readonly string[] | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ModelSelectorProps": "ModelSelectorProps.json"
+  }
+}

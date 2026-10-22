@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Tooltip",
+  "kind": "component",
+  "source": "Tooltip.tsx",
+  "sourceHash": "a657d887a08b8f872c000794da630f74e0865c5a3fe70741530774372596cadd",
+  "type": "({ trigger, content, delayDuration, }: TooltipProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  trigger,\n  content,\n  delayDuration = 500,\n}",
+          "type": "TooltipProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "content": {
+      "type": "string",
+      "required": true
+    },
+    "delayDuration": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "trigger": {
+      "type": "ReactElement<unknown, string | JSXElementConstructor<any>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "delayDuration": "500"
+  },
+  "relatedTypes": {
+    "TooltipProps": "TooltipProps.json"
+  }
+}

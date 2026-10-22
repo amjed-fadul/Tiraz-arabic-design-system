@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "exportName": "WeaveCanvasProps",
+  "kind": "type",
+  "source": "WeaveCanvas.tsx",
+  "sourceHash": "3d3bfc4b8648895e8e577f1e3fa7f1bdaa8c8f9788300594eaa523344dfc21fc",
+  "type": "WeaveCanvasProps",
+  "typeParameters": [],
+  "props": {
+    "alt": {
+      "type": "string",
+      "required": true,
+      "description": "Names the whole box as one image."
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "progress": {
+      "type": "number | null | undefined",
+      "required": false,
+      "description": "Actual host progress from 0 to 100; omit or pass null while it is unknown."
+    },
+    "src": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Application-owned preview URL. Without one the canvas shows a halftone field."
+    },
+    "status": {
+      "type": "\"failed\" | \"completed\" | \"queued\" | \"weaving\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"completed\"",
+        "\"queued\"",
+        "\"weaving\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

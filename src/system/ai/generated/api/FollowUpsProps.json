@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FollowUpsProps",
+  "kind": "type",
+  "source": "FollowUps.tsx",
+  "sourceHash": "ab9f70669168c26581fe553c5155f5642eb079449ee66560315fa96a3288cae3",
+  "type": "FollowUpsProps",
+  "typeParameters": [],
+  "props": {
+    "items": {
+      "type": "readonly { id: string; label: string; }[]",
+      "required": true
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "The list's name; «أسئلة تالية» by default."
+    },
+    "onSelect": {
+      "type": "(id: string) => void",
+      "required": true,
+      "description": "The person picked a question; the host asks it."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

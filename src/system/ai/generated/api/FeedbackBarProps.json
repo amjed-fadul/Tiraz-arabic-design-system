@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FeedbackBarProps",
+  "kind": "type",
+  "source": "FeedbackBar.tsx",
+  "sourceHash": "0b9aa356751ca594c0eeaad0c0188eb56dc878e580614a290a09be2dee731f13",
+  "type": "FeedbackBarProps",
+  "typeParameters": [],
+  "props": {
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak copy feedback locally, or leave it to the containing pattern."
+    },
+    "feedback": {
+      "type": "\"down\" | \"up\" | null | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "null",
+        "\"down\"",
+        "\"up\""
+      ]
+    },
+    "labels": {
+      "type": "Partial<FeedbackBarLabels> | undefined",
+      "required": false
+    },
+    "onCopy": {
+      "type": "(() => void | Promise<void>) | undefined",
+      "required": false,
+      "description": "The host copies the answer; «نُسخت» shows once its promise resolves."
+    },
+    "onCopyAnnouncement": {
+      "type": "((message: string) => void) | undefined",
+      "required": false,
+      "description": "Reports \"\" when copying starts, then the localized confirmation on success.\nPair with announcement=\"off\" to reuse the owner's live region."
+    },
+    "onFeedbackChange": {
+      "type": "((value: \"up\" | \"down\" | null, reason?: FeedbackReason) => void) | undefined",
+      "required": false,
+      "description": "`value` is null when the person takes their rating back; a reason comes\nonly with \"down\"."
+    },
+    "onRegenerate": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "reason": {
+      "type": "FeedbackReason | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"inaccurate\"",
+        "\"wrong-source\"",
+        "\"too-long\"",
+        "\"outdated\""
+      ],
+      "description": "The reason picked for a \"down\"; without it the bar keeps its own."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FeedbackBarLabels": "FeedbackBarLabels.json",
+    "FeedbackReason": "FeedbackReason.json"
+  }
+}

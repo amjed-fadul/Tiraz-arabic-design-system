@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AgentTaskLabels",
+  "kind": "type",
+  "source": "AgentTask.tsx",
+  "sourceHash": "6228fb06652ae9da6a58173ad35b5f9e71aa47bbaa76d95524352c86c39c94d4",
+  "type": "AgentTaskLabels",
+  "description": "Every built-in string Agent task shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "applyNoteNow": {
+      "type": "(text: string) => string",
+      "required": true
+    },
+    "applyNow": {
+      "type": "string",
+      "required": true,
+      "description": "A queued note's buttons; each name is the visible word and the note."
+    },
+    "autoStart": {
+      "type": "(time: string) => string",
+      "required": true,
+      "description": "The countdown's sentence around the time left."
+    },
+    "completed": {
+      "type": "string",
+      "required": true
+    },
+    "details": {
+      "type": "string",
+      "required": true
+    },
+    "done": {
+      "type": "string",
+      "required": true,
+      "description": "Announced once the task completes."
+    },
+    "editPlan": {
+      "type": "string",
+      "required": true
+    },
+    "failed": {
+      "type": "string",
+      "required": true
+    },
+    "failedAt": {
+      "type": "(step: string) => string",
+      "required": true
+    },
+    "handedTo": {
+      "type": "string",
+      "required": true,
+      "description": "Before the agent a step was handed to."
+    },
+    "hideDetails": {
+      "type": "string",
+      "required": true
+    },
+    "needsDecision": {
+      "type": "string",
+      "required": true,
+      "description": "Announced as «{title}: يحتاج قرارك»."
+    },
+    "needsYou": {
+      "type": "string",
+      "required": true
+    },
+    "notUsed": {
+      "type": "string",
+      "required": true
+    },
+    "operationCount": {
+      "type": "((count: number) => string) | undefined",
+      "required": false
+    },
+    "outputs": {
+      "type": "string",
+      "required": true,
+      "description": "Above the output chips once the task completes."
+    },
+    "pickedUp": {
+      "type": "string",
+      "required": true,
+      "description": "After a steering note the agent picked up."
+    },
+    "pickedUpNote": {
+      "type": "(text: string) => string",
+      "required": true
+    },
+    "plan": {
+      "type": "string",
+      "required": true,
+      "description": "The pill in each status, agreeing with المهمة."
+    },
+    "queuedNext": {
+      "type": "(text: string) => string",
+      "required": true,
+      "description": "Announced once a note is sent, and once the agent picks one up."
+    },
+    "queuedNow": {
+      "type": "(text: string) => string",
+      "required": true
+    },
+    "reconnect": {
+      "type": "string",
+      "required": true
+    },
+    "remove": {
+      "type": "string",
+      "required": true
+    },
+    "removeNote": {
+      "type": "(text: string) => string",
+      "required": true
+    },
+    "retry": {
+      "type": "string",
+      "required": true
+    },
+    "running": {
+      "type": "string",
+      "required": true
+    },
+    "skip": {
+      "type": "string",
+      "required": true
+    },
+    "skipped": {
+      "type": "string",
+      "required": true,
+      "description": "A skipped step's line."
+    },
+    "start": {
+      "type": "string",
+      "required": true
+    },
+    "steer": {
+      "type": "string",
+      "required": true,
+      "description": "The steering field's name and placeholder."
+    },
+    "steerNext": {
+      "type": "string",
+      "required": true
+    },
+    "steerNow": {
+      "type": "string",
+      "required": true
+    },
+    "stepCount": {
+      "type": "((count: number) => string) | undefined",
+      "required": false,
+      "description": "Replace the shared count helper's «٥ خطوات» and «١٢ عملية»."
+    },
+    "stepStates": {
+      "type": "Record<\"failed\" | \"running\" | \"completed\" | \"pending\" | \"needs-you\" | \"skipped\" | \"planned\", string>",
+      "required": true,
+      "description": "Each step's hidden state word, beside its icon."
+    },
+    "stop": {
+      "type": "string",
+      "required": true
+    },
+    "stopped": {
+      "type": "string",
+      "required": true
+    },
+    "stoppedAt": {
+      "type": "(step: string) => string",
+      "required": true
+    },
+    "waiting": {
+      "type": "(step: string) => string",
+      "required": true,
+      "description": "The footers; `step` is the position, in the reader's digits."
+    },
+    "waitingNote": {
+      "type": "string",
+      "required": true,
+      "description": "After a note not picked up yet, and once the task ended without it."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AgentStep": "AgentStep.json",
+    "AgentTaskProps": "AgentTaskProps.json",
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json",
+    "ToolCallProps": "ToolCallProps.json",
+    "ToolCallState": "ToolCallState.json",
+    "ToolLabels": "ToolLabels.json"
+  }
+}

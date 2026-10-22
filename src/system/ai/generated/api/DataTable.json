@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DataTable",
+  "kind": "component",
+  "source": "DataTable.tsx",
+  "sourceHash": "c916c3be3d6a96c90e81268bdaedc6c2f68d6af2a869ab976a441aab62a6aad3",
+  "type": "<T>({ data, columns, getRowId, caption, locale, labels, emptyContent, pageSize, resetKey, loading, announcement, }: DataTableProps<T>) => JSX.Element",
+  "description": "Native Table with client-side text sorting and pagination. Filtering belongs to the caller.",
+  "signatures": [
+    {
+      "typeParameters": [
+        {
+          "name": "T"
+        }
+      ],
+      "parameters": [
+        {
+          "name": "{\n  data,\n  columns,\n  getRowId,\n  caption,\n  locale,\n  labels,\n  emptyContent,\n  pageSize = 10,\n  resetKey,\n  loading = false,\n  announcement = \"polite\",\n}",
+          "type": "DataTableProps<T>",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak result counts politely, or leave announcements to the host."
+    },
+    "caption": {
+      "type": "string",
+      "required": true
+    },
+    "columns": {
+      "type": "readonly DataTableColumn<T>[]",
+      "required": true
+    },
+    "data": {
+      "type": "readonly T[]",
+      "required": true
+    },
+    "emptyContent": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "getRowId": {
+      "type": "(row: T) => Key",
+      "required": true
+    },
+    "labels": {
+      "type": "DataTableLabels",
+      "required": true
+    },
+    "loading": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "locale": {
+      "type": "string",
+      "required": true
+    },
+    "pageSize": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Positive integer; defaults to 10."
+    },
+    "resetKey": {
+      "type": "string | number | undefined",
+      "required": false,
+      "description": "Change when application filters change, including when the result count is unchanged."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "pageSize": "10",
+    "loading": "false",
+    "announcement": "\"polite\""
+  },
+  "relatedTypes": {
+    "DataTableColumn": "DataTableColumn.json",
+    "DataTableLabels": "DataTableLabels.json",
+    "DataTableProps": "DataTableProps.json"
+  }
+}

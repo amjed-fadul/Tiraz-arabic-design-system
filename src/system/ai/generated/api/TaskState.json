@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TaskState",
+  "kind": "type",
+  "source": "TaskRows.tsx",
+  "sourceHash": "7e02db2ca04fd901c5c8ab2d4a6b24cf48b531831ca6b7fffb46fb550d04bf2e",
+  "type": "TaskState",
+  "typeParameters": [],
+  "members": [
+    "\"failed\"",
+    "\"running\"",
+    "\"completed\"",
+    "\"pending\"",
+    "\"needs-you\""
+  ],
+  "relatedTypes": {
+    "TaskRowItem": "TaskRowItem.json",
+    "TaskRowsProps": "TaskRowsProps.json"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DropdownMenuProps",
+  "kind": "type",
+  "source": "DropdownMenu.tsx",
+  "sourceHash": "c6d5e808df7ad8f8770b5eedecb54d8c8421e2ed47ab3d451d25b69dff813179",
+  "type": "DropdownMenuProps",
+  "typeParameters": [],
+  "props": {
+    "align": {
+      "type": "\"end\" | \"start\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"end\"",
+        "\"start\""
+      ]
+    },
+    "items": {
+      "type": "MenuItem[]",
+      "required": true
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "trigger": {
+      "type": "ReactElement<unknown, string | JSXElementConstructor<any>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "MenuItem": "MenuItem.json"
+  }
+}

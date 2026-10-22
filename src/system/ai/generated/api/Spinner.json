@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Spinner",
+  "kind": "component",
+  "source": "Spinner.tsx",
+  "sourceHash": "a09f4a80b7d852df32b1772a2a5485113481801b2762f7a27faa3d712243b271",
+  "type": "({ size, tone, decorative, label, }: SpinnerProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  size = \"sm\",\n  tone = \"neutral\",\n  decorative = false,\n  label,\n}",
+          "type": "SpinnerProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "decorative": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "size": {
+      "type": "\"sm\" | \"md\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"sm\"",
+        "\"md\""
+      ]
+    },
+    "tone": {
+      "type": "\"neutral\" | \"ai\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"neutral\"",
+        "\"ai\""
+      ],
+      "description": "\"ai\" paints the arc in the AI color, for work the assistant is doing."
+    }
+  },
+  "branches": [
+    {
+      "type": "{ size?: \"sm\" | \"md\"; tone?: \"neutral\" | \"ai\"; } & { decorative?: false; label: string; }",
+      "props": {
+        "decorative": {
+          "type": "false | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "false"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "required": true
+        },
+        "size": {
+          "type": "\"sm\" | \"md\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"sm\"",
+            "\"md\""
+          ]
+        },
+        "tone": {
+          "type": "\"neutral\" | \"ai\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"neutral\"",
+            "\"ai\""
+          ],
+          "description": "\"ai\" paints the arc in the AI color, for work the assistant is doing."
+        }
+      }
+    },
+    {
+      "type": "{ size?: \"sm\" | \"md\"; tone?: \"neutral\" | \"ai\"; } & { decorative: true; label?: never; }",
+      "props": {
+        "decorative": {
+          "type": "true",
+          "required": true
+        },
+        "label": {
+          "type": "undefined",
+          "required": false
+        },
+        "size": {
+          "type": "\"sm\" | \"md\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"sm\"",
+            "\"md\""
+          ]
+        },
+        "tone": {
+          "type": "\"neutral\" | \"ai\" | undefined",
+          "required": false,
+          "members": [
+            "undefined",
+            "\"neutral\"",
+            "\"ai\""
+          ],
+          "description": "\"ai\" paints the arc in the AI color, for work the assistant is doing."
+        }
+      }
+    }
+  ],
+  "defaults": {
+    "size": "\"sm\"",
+    "tone": "\"neutral\"",
+    "decorative": "false"
+  },
+  "relatedTypes": {
+    "SpinnerProps": "SpinnerProps.json"
+  }
+}

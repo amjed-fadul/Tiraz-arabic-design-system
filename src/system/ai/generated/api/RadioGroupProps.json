@@ -1,0 +1,1463 @@
+{
+  "schemaVersion": 1,
+  "exportName": "RadioGroupProps",
+  "kind": "type",
+  "source": "RadioGroup.tsx",
+  "sourceHash": "0fc995e4b88eeb71915093b945a9a503442f7763fc823f62fead333bb6b4de16",
+  "type": "RadioGroupProps",
+  "typeParameters": [],
+  "props": {
+    "about": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "accessKey": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-activedescendant": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-atomic": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-autocomplete": {
+      "type": "\"none\" | \"list\" | \"inline\" | \"both\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"none\"",
+        "\"list\"",
+        "\"inline\"",
+        "\"both\""
+      ]
+    },
+    "aria-braillelabel": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-brailleroledescription": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-busy": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-checked": {
+      "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\"",
+        "\"mixed\""
+      ]
+    },
+    "aria-colcount": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-colindex": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-colindextext": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-colspan": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-controls": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-current": {
+      "type": "boolean | \"location\" | \"true\" | \"false\" | \"page\" | \"step\" | \"date\" | \"time\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"location\"",
+        "\"true\"",
+        "\"false\"",
+        "\"page\"",
+        "\"step\"",
+        "\"date\"",
+        "\"time\""
+      ]
+    },
+    "aria-describedby": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-details": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-disabled": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-dropeffect": {
+      "type": "\"copy\" | \"link\" | \"none\" | \"execute\" | \"move\" | \"popup\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"copy\"",
+        "\"link\"",
+        "\"none\"",
+        "\"execute\"",
+        "\"move\"",
+        "\"popup\""
+      ]
+    },
+    "aria-errormessage": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-expanded": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-flowto": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-grabbed": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-haspopup": {
+      "type": "boolean | \"true\" | \"false\" | \"dialog\" | \"grid\" | \"listbox\" | \"menu\" | \"tree\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\"",
+        "\"dialog\"",
+        "\"grid\"",
+        "\"listbox\"",
+        "\"menu\"",
+        "\"tree\""
+      ]
+    },
+    "aria-hidden": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-invalid": {
+      "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\"",
+        "\"grammar\"",
+        "\"spelling\""
+      ]
+    },
+    "aria-keyshortcuts": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-labelledby": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-level": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-live": {
+      "type": "\"off\" | \"assertive\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"assertive\"",
+        "\"polite\""
+      ]
+    },
+    "aria-modal": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-multiline": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-multiselectable": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-orientation": {
+      "type": "\"horizontal\" | \"vertical\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"horizontal\"",
+        "\"vertical\""
+      ]
+    },
+    "aria-owns": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-placeholder": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-posinset": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-pressed": {
+      "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\"",
+        "\"mixed\""
+      ]
+    },
+    "aria-readonly": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-relevant": {
+      "type": "\"text\" | \"additions\" | \"additions removals\" | \"additions text\" | \"all\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"text\"",
+        "\"additions\"",
+        "\"additions removals\"",
+        "\"additions text\"",
+        "\"all\"",
+        "\"removals\"",
+        "\"removals additions\"",
+        "\"removals text\"",
+        "\"text additions\"",
+        "\"text removals\""
+      ]
+    },
+    "aria-required": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-roledescription": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-rowcount": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-rowindex": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-rowindextext": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "aria-rowspan": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-selected": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "aria-setsize": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-sort": {
+      "type": "\"none\" | \"ascending\" | \"descending\" | \"other\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"none\"",
+        "\"ascending\"",
+        "\"descending\"",
+        "\"other\""
+      ]
+    },
+    "aria-valuemax": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-valuemin": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-valuenow": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "aria-valuetext": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "autoCapitalize": {
+      "type": "(string & {}) | \"off\" | \"none\" | \"on\" | \"sentences\" | \"words\" | \"characters\" | undefined",
+      "required": false
+    },
+    "autoCorrect": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "autoFocus": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "autoSave": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "color": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "content": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "contentEditable": {
+      "type": "\"inherit\" | Booleanish | \"plaintext-only\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"inherit\"",
+        "\"true\"",
+        "\"false\"",
+        "\"plaintext-only\""
+      ]
+    },
+    "contextMenu": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "dangerouslySetInnerHTML": {
+      "type": "{ __html: string | TrustedHTML; } | undefined",
+      "required": false
+    },
+    "datatype": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "defaultChecked": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "defaultValue": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "dir": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "draggable": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "enterKeyHint": {
+      "type": "\"search\" | \"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"send\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"search\"",
+        "\"enter\"",
+        "\"done\"",
+        "\"go\"",
+        "\"next\"",
+        "\"previous\"",
+        "\"send\""
+      ]
+    },
+    "error": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "exportparts": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "form": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "helper": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "hidden": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "id": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "inert": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "inlist": {
+      "type": "any",
+      "required": false
+    },
+    "inputMode": {
+      "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"search\"",
+        "\"none\"",
+        "\"text\"",
+        "\"tel\"",
+        "\"url\"",
+        "\"email\"",
+        "\"numeric\"",
+        "\"decimal\""
+      ]
+    },
+    "is": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "itemID": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "itemProp": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "itemRef": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "itemScope": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "itemType": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "key": {
+      "type": "Key | null | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "lang": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "nonce": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "onAbort": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAbortCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAnimationEnd": {
+      "type": "AnimationEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAnimationEndCapture": {
+      "type": "AnimationEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAnimationIteration": {
+      "type": "AnimationEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAnimationIterationCapture": {
+      "type": "AnimationEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAnimationStart": {
+      "type": "AnimationEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAnimationStartCapture": {
+      "type": "AnimationEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAuxClick": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onAuxClickCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onBeforeInput": {
+      "type": "InputEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onBeforeInputCapture": {
+      "type": "InputEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onBeforeToggle": {
+      "type": "ToggleEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onBlur": {
+      "type": "FocusEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onBlurCapture": {
+      "type": "FocusEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCanPlay": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCanPlayCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCanPlayThrough": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCanPlayThroughCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onChange": {
+      "type": "ChangeEventHandler<HTMLFieldSetElement, Element> | undefined",
+      "required": false
+    },
+    "onChangeCapture": {
+      "type": "ChangeEventHandler<HTMLFieldSetElement, Element> | undefined",
+      "required": false
+    },
+    "onClick": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onClickCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCompositionEnd": {
+      "type": "CompositionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCompositionEndCapture": {
+      "type": "CompositionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCompositionStart": {
+      "type": "CompositionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCompositionStartCapture": {
+      "type": "CompositionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCompositionUpdate": {
+      "type": "CompositionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCompositionUpdateCapture": {
+      "type": "CompositionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onContextMenu": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onContextMenuCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCopy": {
+      "type": "ClipboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCopyCapture": {
+      "type": "ClipboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCut": {
+      "type": "ClipboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onCutCapture": {
+      "type": "ClipboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDoubleClick": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDoubleClickCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDrag": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragEnd": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragEndCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragEnter": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragEnterCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragExit": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragExitCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragLeave": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragLeaveCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragOver": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragOverCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragStart": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDragStartCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDrop": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDropCapture": {
+      "type": "DragEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDurationChange": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onDurationChangeCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onEmptied": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onEmptiedCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onEncrypted": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onEncryptedCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onEnded": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onEndedCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onError": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onErrorCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onFocus": {
+      "type": "FocusEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onFocusCapture": {
+      "type": "FocusEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onGotPointerCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onGotPointerCaptureCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onInput": {
+      "type": "InputEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onInputCapture": {
+      "type": "InputEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onInvalid": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onInvalidCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onKeyDown": {
+      "type": "KeyboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onKeyDownCapture": {
+      "type": "KeyboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onKeyPress": {
+      "type": "KeyboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onKeyPressCapture": {
+      "type": "KeyboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onKeyUp": {
+      "type": "KeyboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onKeyUpCapture": {
+      "type": "KeyboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoad": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoadCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoadStart": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoadStartCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoadedData": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoadedDataCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoadedMetadata": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLoadedMetadataCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLostPointerCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onLostPointerCaptureCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseDown": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseDownCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseEnter": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseLeave": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseMove": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseMoveCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseOut": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseOutCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseOver": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseOverCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseUp": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onMouseUpCapture": {
+      "type": "MouseEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPaste": {
+      "type": "ClipboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPasteCapture": {
+      "type": "ClipboardEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPause": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPauseCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPlay": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPlayCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPlaying": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPlayingCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerCancel": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerCancelCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerDown": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerDownCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerEnter": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerLeave": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerMove": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerMoveCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerOut": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerOutCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerOver": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerOverCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerUp": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onPointerUpCapture": {
+      "type": "PointerEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onProgress": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onProgressCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onRateChange": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onRateChangeCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onReset": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onResetCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onScroll": {
+      "type": "UIEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onScrollCapture": {
+      "type": "UIEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onScrollEnd": {
+      "type": "UIEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onScrollEndCapture": {
+      "type": "UIEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSeeked": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSeekedCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSeeking": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSeekingCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSelect": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSelectCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onStalled": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onStalledCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSubmit": {
+      "type": "SubmitEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSubmitCapture": {
+      "type": "SubmitEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSuspend": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onSuspendCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTimeUpdate": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTimeUpdateCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onToggle": {
+      "type": "ToggleEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchCancel": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchCancelCapture": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchEnd": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchEndCapture": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchMove": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchMoveCapture": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchStart": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTouchStartCapture": {
+      "type": "TouchEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionCancel": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionCancelCapture": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionEnd": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionEndCapture": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionRun": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionRunCapture": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionStart": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onTransitionStartCapture": {
+      "type": "TransitionEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onValueChange": {
+      "type": "((value: string) => void) | undefined",
+      "required": false
+    },
+    "onVolumeChange": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onVolumeChangeCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onWaiting": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onWaitingCapture": {
+      "type": "ReactEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onWheel": {
+      "type": "WheelEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "onWheelCapture": {
+      "type": "WheelEventHandler<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "options": {
+      "type": "readonly RadioOption[]",
+      "required": true
+    },
+    "part": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "popover": {
+      "type": "\"\" | \"auto\" | \"manual\" | \"hint\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"\"",
+        "\"auto\"",
+        "\"manual\"",
+        "\"hint\""
+      ]
+    },
+    "popoverTarget": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "popoverTargetAction": {
+      "type": "\"toggle\" | \"show\" | \"hide\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"toggle\"",
+        "\"show\"",
+        "\"hide\""
+      ]
+    },
+    "prefix": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "property": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "radioGroup": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "ref": {
+      "type": "Ref<HTMLFieldSetElement> | undefined",
+      "required": false
+    },
+    "rel": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "required": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "resource": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "results": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "rev": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "role": {
+      "type": "AriaRole | undefined",
+      "required": false
+    },
+    "security": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "slot": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "spellCheck": {
+      "type": "Booleanish | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true",
+        "\"true\"",
+        "\"false\""
+      ]
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
+      "required": false
+    },
+    "suppressContentEditableWarning": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "suppressHydrationWarning": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "tabIndex": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "translate": {
+      "type": "\"yes\" | \"no\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"yes\"",
+        "\"no\""
+      ]
+    },
+    "typeof": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "unselectable": {
+      "type": "\"off\" | \"on\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"on\""
+      ]
+    },
+    "value": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "vocab": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "RadioOption": "RadioOption.json"
+  }
+}

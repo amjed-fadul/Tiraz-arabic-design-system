@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "exportName": "CitedAnswerProps",
+  "kind": "type",
+  "source": "CitedAnswer.tsx",
+  "sourceHash": "7de8c4fcc63e61e601b2b372690e236f9dbf608eebeba687f840eb4dcc7223aa",
+  "type": "CitedAnswerProps",
+  "typeParameters": [],
+  "props": {
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional identity in the existing task or answer header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status and copy feedback politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "content": {
+      "type": "string",
+      "required": true,
+      "description": "Markdown, with `[n]` markers that name a source's `number`."
+    },
+    "duration": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds the answer took; shown with the sources' count."
+    },
+    "error": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "What went wrong, beside a failed answer."
+    },
+    "feedback": {
+      "type": "\"down\" | \"up\" | null | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "null",
+        "\"down\"",
+        "\"up\""
+      ]
+    },
+    "followUps": {
+      "type": "readonly { id: string; label: string; }[] | undefined",
+      "required": false
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The question's level; 3 by default."
+    },
+    "labels": {
+      "type": "Partial<CitedAnswerLabels> | undefined",
+      "required": false
+    },
+    "onCopy": {
+      "type": "((text: string) => void | Promise<void>) | undefined",
+      "required": false,
+      "description": "The host copies `text`, the answer as written followed by «المصادر» and\none numbered line per source, with its link where it is safe; «نُسخت» shows\nonce the promise resolves. A host that ignores the text keeps working."
+    },
+    "onFeedbackChange": {
+      "type": "((value: \"up\" | \"down\" | null, reason?: FeedbackReason) => void) | undefined",
+      "required": false
+    },
+    "onFollowUp": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onRegenerate": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onRetry": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onStop": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onThinkingOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "question": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The question, as the section's heading. Leave it out when a conversation\nalready shows it."
+    },
+    "reason": {
+      "type": "FeedbackReason | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"inaccurate\"",
+        "\"wrong-source\"",
+        "\"too-long\"",
+        "\"outdated\""
+      ]
+    },
+    "sources": {
+      "type": "readonly SourceReference[]",
+      "required": true,
+      "description": "The sources the answer cites."
+    },
+    "status": {
+      "type": "\"failed\" | \"completed\" | \"stopped\" | \"thinking\" | \"writing\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"completed\"",
+        "\"stopped\"",
+        "\"thinking\"",
+        "\"writing\""
+      ]
+    },
+    "thinking": {
+      "type": "{ elapsed: number; searched: readonly SourceReference[]; steps?: ThinkingPanelProps[\"steps\"]; } | undefined",
+      "required": false,
+      "description": "What the search covered. Seconds, the sources found so far, and the steps."
+    },
+    "thinkingOpen": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Controls the thinking panel; pair it with `onThinkingOpenChange`. Without\nit the panel is open while thinking and folds when writing starts."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "CitedAnswerLabels": "CitedAnswerLabels.json",
+    "FeedbackBarLabels": "FeedbackBarLabels.json",
+    "FeedbackBarProps": "FeedbackBarProps.json",
+    "FeedbackReason": "FeedbackReason.json",
+    "SourceReference": "SourceReference.json",
+    "ThinkingPanelLabels": "ThinkingPanelLabels.json",
+    "ThinkingPanelProps": "ThinkingPanelProps.json"
+  }
+}

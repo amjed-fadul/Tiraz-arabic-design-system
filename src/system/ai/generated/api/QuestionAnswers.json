@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "exportName": "QuestionAnswers",
+  "kind": "type",
+  "source": "AskUserQuestions.tsx",
+  "sourceHash": "372837b435ff86e4f6eb501683fd58b911eeee95550908f3d3655f3633f9e5bd",
+  "type": "Readonly<Record<string, QuestionAnswer>>",
+  "typeParameters": [],
+  "props": {},
+  "branches": [],
+  "indexSignatures": [
+    {
+      "key": "string",
+      "value": "QuestionAnswer",
+      "readonly": true
+    }
+  ],
+  "relatedTypes": {
+    "AskUserQuestionsLabels": "AskUserQuestionsLabels.json",
+    "AskUserQuestionsProps": "AskUserQuestionsProps.json",
+    "QuestionAnswer": "QuestionAnswer.json",
+    "UserQuestion": "UserQuestion.json"
+  }
+}

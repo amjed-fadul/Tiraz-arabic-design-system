@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Alert",
+  "kind": "component",
+  "source": "Alert.tsx",
+  "sourceHash": "f851b0345af1580d4ddd62b5c973767347f8f547b9eae3a98d0d1d6f9d16eed2",
+  "type": "({ title, description, tone, action, announcement, }: AlertProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  title,\n  description,\n  tone = \"info\",\n  action,\n  announcement = \"off\",\n}",
+          "type": "AlertProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "action": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "announcement": {
+      "type": "\"off\" | \"assertive\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"assertive\"",
+        "\"polite\""
+      ]
+    },
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tone": {
+      "type": "BadgeTone | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"error\"",
+        "\"success\"",
+        "\"info\"",
+        "\"warning\"",
+        "\"neutral\"",
+        "\"ai\""
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "tone": "\"info\"",
+    "announcement": "\"off\""
+  },
+  "relatedTypes": {
+    "AlertProps": "AlertProps.json",
+    "BadgeTone": "BadgeTone.json"
+  }
+}

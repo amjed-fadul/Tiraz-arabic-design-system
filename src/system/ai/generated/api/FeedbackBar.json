@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FeedbackBar",
+  "kind": "component",
+  "source": "FeedbackBar.tsx",
+  "sourceHash": "0b9aa356751ca594c0eeaad0c0188eb56dc878e580614a290a09be2dee731f13",
+  "type": "({ feedback, reason, onFeedbackChange, onCopy, announcement, onCopyAnnouncement, onRegenerate, labels, }: FeedbackBarProps) => JSX.Element",
+  "description": "What the person can do with a finished answer (spec section 11): copy it,\nask for another, and rate it helpful or not helpful, the latter with a\nreason. Each button shows only when its handler exists, and the ratings are\ntoggles. The bar has no status of its own, so the owner pattern keeps the one\nlive region when announcement is off. «نُسخت» is always rendered so the\nbuttons never shift under the pointer; for two seconds after a copy it turns\nvisible, and the copy button keeps its name.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  feedback,\n  reason,\n  onFeedbackChange,\n  onCopy,\n  announcement = \"polite\",\n  onCopyAnnouncement,\n  onRegenerate,\n  labels,\n}",
+          "type": "FeedbackBarProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak copy feedback locally, or leave it to the containing pattern."
+    },
+    "feedback": {
+      "type": "\"down\" | \"up\" | null | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "null",
+        "\"down\"",
+        "\"up\""
+      ]
+    },
+    "labels": {
+      "type": "Partial<FeedbackBarLabels> | undefined",
+      "required": false
+    },
+    "onCopy": {
+      "type": "(() => void | Promise<void>) | undefined",
+      "required": false,
+      "description": "The host copies the answer; «نُسخت» shows once its promise resolves."
+    },
+    "onCopyAnnouncement": {
+      "type": "((message: string) => void) | undefined",
+      "required": false,
+      "description": "Reports \"\" when copying starts, then the localized confirmation on success.\nPair with announcement=\"off\" to reuse the owner's live region."
+    },
+    "onFeedbackChange": {
+      "type": "((value: \"up\" | \"down\" | null, reason?: FeedbackReason) => void) | undefined",
+      "required": false,
+      "description": "`value` is null when the person takes their rating back; a reason comes\nonly with \"down\"."
+    },
+    "onRegenerate": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "reason": {
+      "type": "FeedbackReason | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"inaccurate\"",
+        "\"wrong-source\"",
+        "\"too-long\"",
+        "\"outdated\""
+      ],
+      "description": "The reason picked for a \"down\"; without it the bar keeps its own."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "announcement": "\"polite\""
+  },
+  "relatedTypes": {
+    "FeedbackBarLabels": "FeedbackBarLabels.json",
+    "FeedbackBarProps": "FeedbackBarProps.json",
+    "FeedbackReason": "FeedbackReason.json"
+  }
+}

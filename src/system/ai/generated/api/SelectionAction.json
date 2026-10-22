@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SelectionAction",
+  "kind": "type",
+  "source": "SelectionActions.tsx",
+  "sourceHash": "bb834f76f73fb9115bdcb3a447f8534d3e976f692c57598d5a3a29e575ded653",
+  "type": "SelectionAction",
+  "typeParameters": [],
+  "props": {
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "icon": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "onSelect": {
+      "type": "(text: string, range: { start: number; end: number; }) => void",
+      "required": true,
+      "description": "The selected text, and where it sits in the scope's text content."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SelectionActionsProps": "SelectionActionsProps.json"
+  }
+}

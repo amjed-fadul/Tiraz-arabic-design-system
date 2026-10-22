@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "exportName": "PreferenceItem",
+  "kind": "type",
+  "source": "patterns/PreferenceSettings.tsx",
+  "sourceHash": "bfc2f34c02c0ac1f63c0111cb9da5cd24fc417ae2b95c25f501ba2694bbb530f",
+  "type": "PreferenceItem",
+  "typeParameters": [],
+  "props": {
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "PreferenceLabels": "PreferenceLabels.json",
+    "PreferenceSettingsProps": "PreferenceSettingsProps.json"
+  }
+}

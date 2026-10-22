@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DataTableLabels",
+  "kind": "type",
+  "source": "DataTable.tsx",
+  "sourceHash": "c916c3be3d6a96c90e81268bdaedc6c2f68d6af2a869ab976a441aab62a6aad3",
+  "type": "DataTableLabels",
+  "typeParameters": [],
+  "props": {
+    "next": {
+      "type": "string",
+      "required": true
+    },
+    "pagination": {
+      "type": "string",
+      "required": true
+    },
+    "previous": {
+      "type": "string",
+      "required": true
+    },
+    "resultCount": {
+      "type": "(from: number, to: number, total: number) => string",
+      "required": true
+    },
+    "sortAscending": {
+      "type": "(header: string) => string",
+      "required": true
+    },
+    "sortDescending": {
+      "type": "(header: string) => string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "DataTableColumn": "DataTableColumn.json",
+    "DataTableProps": "DataTableProps.json"
+  }
+}

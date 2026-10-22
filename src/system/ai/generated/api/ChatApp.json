@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChatApp",
+  "kind": "component",
+  "source": "ChatApp.tsx",
+  "sourceHash": "b1093d4527dac8f1d49b8a7dd80f73083269b1ee0145a7eaa1c4be564af13f64",
+  "type": "({ conversations, activeConversationId, onConversationSelect, onNewConversation, children, composer, toolbar, actions, sidePanel, onConversationRename, onConversationDelete, brand, title, labels, className, }: ChatAppProps) => JSX.Element",
+  "description": "Composition only. The application owns identity, drafts, messages and execution.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  conversations,\n  activeConversationId,\n  onConversationSelect,\n  onNewConversation,\n  children,\n  composer,\n  toolbar,\n  actions,\n  sidePanel,\n  onConversationRename,\n  onConversationDelete,\n  brand,\n  title,\n  labels,\n  className = \"\",\n}",
+          "type": "ChatAppProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "actions": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Controls at the header's end, after the toolbar."
+    },
+    "activeConversationId": {
+      "type": "string | null",
+      "required": true
+    },
+    "brand": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The navigation's name. Nothing shows when it is absent."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "composer": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "conversations": {
+      "type": "readonly ChatConversationItem[]",
+      "required": true
+    },
+    "labels": {
+      "type": "ChatAppLabels | undefined",
+      "required": false
+    },
+    "onConversationDelete": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onConversationRename": {
+      "type": "((id: string) => void) | undefined",
+      "required": false,
+      "description": "Each row's menu offers «إعادة التسمية» and «حذف» when its callback is\ngiven. They are intents: the host owns the rename field and the\nconfirmation. Without either callback the rows have no menu."
+    },
+    "onConversationSelect": {
+      "type": "(id: string) => void",
+      "required": true
+    },
+    "onNewConversation": {
+      "type": "() => void",
+      "required": true
+    },
+    "sidePanel": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "An aside at the inline end, for evidence, a draft or a task's details.\nBelow 960px it sits under the conversation."
+    },
+    "title": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "toolbar": {
+      "type": "ReactNode",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "ChatAppLabels": "ChatAppLabels.json",
+    "ChatAppProps": "ChatAppProps.json",
+    "ChatConversationItem": "ChatConversationItem.json",
+    "MenuItem": "MenuItem.json"
+  }
+}

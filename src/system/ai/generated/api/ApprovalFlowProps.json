@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ApprovalFlowProps",
+  "kind": "type",
+  "source": "ApprovalFlow.tsx",
+  "sourceHash": "196ebbf340133ba4aa8df9f097cef9f55c79c6c632e7c0c4ad7c6b212b96ebfd",
+  "type": "ApprovalFlowProps",
+  "typeParameters": [],
+  "props": {
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" puts the whole flow in one tray, its card plain inside."
+    },
+    "approval": {
+      "type": "((request: ApprovalRequest) => ApprovalDetails | undefined) | undefined",
+      "required": false,
+      "description": "What each request's card shows beyond the request itself."
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "Its card's title level; 3 by default."
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "labels": {
+      "type": "Partial<ApprovalFlowLabels> | undefined",
+      "required": false
+    },
+    "onDecision": {
+      "type": "(request: ApprovalRequest, decision: ApprovalDecision, context: { signal: AbortSignal; }) => void | Promise<void>",
+      "required": true
+    },
+    "onValueChange": {
+      "type": "((decisions: readonly ApprovalRecord[]) => void) | undefined",
+      "required": false
+    },
+    "requests": {
+      "type": "readonly ApprovalRequest[]",
+      "required": true
+    },
+    "resetKey": {
+      "type": "string | number | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "readonly ApprovalRecord[] | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalFlowLabels": "ApprovalFlowLabels.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json"
+  }
+}

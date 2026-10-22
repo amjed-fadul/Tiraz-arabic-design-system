@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SystemConfig",
+  "kind": "type",
+  "source": "config.ts",
+  "sourceHash": "fa05b108befd572a4e9eccc2b194eb33ad4913e00fa7ab911d0d16655427f0e3",
+  "type": "SystemConfig",
+  "typeParameters": [],
+  "props": {
+    "accent": {
+      "type": "Accent",
+      "required": true,
+      "members": [
+        "\"sage\"",
+        "\"blue\"",
+        "\"plum\"",
+        "\"clay\"",
+        "\"lime\"",
+        "\"amber\"",
+        "\"teal\"",
+        "\"cyan\"",
+        "\"indigo\"",
+        "\"rose\"",
+        "\"slate\"",
+        "\"ink\""
+      ]
+    },
+    "density": {
+      "type": "\"standard\" | \"compact\"",
+      "required": true,
+      "members": [
+        "\"standard\"",
+        "\"compact\""
+      ]
+    },
+    "direction": {
+      "type": "Direction",
+      "required": true,
+      "members": [
+        "\"rtl\"",
+        "\"ltr\""
+      ]
+    },
+    "numerals": {
+      "type": "Numerals | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"arab\"",
+        "\"latn\""
+      ]
+    },
+    "radius": {
+      "type": "number",
+      "required": true
+    },
+    "reducedMotion": {
+      "type": "boolean",
+      "required": true,
+      "members": [
+        "false",
+        "true"
+      ]
+    },
+    "theme": {
+      "type": "\"light\" | \"dark\"",
+      "required": true,
+      "members": [
+        "\"light\"",
+        "\"dark\""
+      ]
+    },
+    "typography": {
+      "type": "\"standard\" | \"large\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"standard\"",
+        "\"large\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "Accent": "Accent.json",
+    "Direction": "Direction.json",
+    "Numerals": "Numerals.json"
+  }
+}

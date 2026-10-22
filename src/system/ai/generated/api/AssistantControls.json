@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AssistantControls",
+  "kind": "component",
+  "source": "AssistantControls.tsx",
+  "sourceHash": "77a13e1424cb1e6161a1d2aac7bab253998a3eb8909e0303aafc7abe397076e6",
+  "type": "({ agentPresentation, permissions, onPermissionChange, memoryEnabled, onMemoryEnabledChange, memory, onMemoryPauseChange, onMemoryDelete, contextUsage, models, model, onModelChange, title, headingLevel, labels, appearance, }: AssistantControlsProps) => JSX.Element",
+  "description": "Assistant controls (spec section 13.4): the person decides what the\nassistant may do without asking, what it remembers and how much context it\nuses. These are the person's settings, not the assistant's work, so the\npattern has no AI mark, no status pill and no state of its own. The host\nowns every setting and enforces it; the pattern shows them and reports the\nperson's choices. An irreversible action stays at «اسأل دائمًا» whatever\nlevel the host passes, and a deleted memory stays until the host removes it.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  agentPresentation,\n  permissions,\n  onPermissionChange,\n  memoryEnabled,\n  onMemoryEnabledChange,\n  memory,\n  onMemoryPauseChange,\n  onMemoryDelete,\n  contextUsage,\n  models,\n  model,\n  onModelChange,\n  title,\n  headingLevel = 3,\n  labels,\n  appearance = \"card\",\n}",
+          "type": "AssistantControlsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional identity in the existing task or answer header."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "contextUsage": {
+      "type": "ContextMeterProps | undefined",
+      "required": false,
+      "description": "The context meter's data, shown as its detail view."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The title's level; the sections are one lower. 3 by default."
+    },
+    "labels": {
+      "type": "Partial<AssistantControlsLabels> | undefined",
+      "required": false
+    },
+    "memory": {
+      "type": "readonly AssistantMemoryItem[] | undefined",
+      "required": false
+    },
+    "memoryEnabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "model": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "models": {
+      "type": "readonly ModelOption[] | undefined",
+      "required": false
+    },
+    "onMemoryDelete": {
+      "type": "((id: string) => void) | undefined",
+      "required": false,
+      "description": "Asks the host to delete an item; it stays until the host removes it."
+    },
+    "onMemoryEnabledChange": {
+      "type": "((enabled: boolean) => void) | undefined",
+      "required": false
+    },
+    "onMemoryPauseChange": {
+      "type": "((id: string, paused: boolean) => void) | undefined",
+      "required": false
+    },
+    "onModelChange": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onPermissionChange": {
+      "type": "((id: string, level: PermissionLevel) => void) | undefined",
+      "required": false,
+      "description": "The person's choice for an action; never called for a locked one."
+    },
+    "permissions": {
+      "type": "readonly AssistantPermission[] | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The heading; «إعدادات المساعد» / Assistant controls by default."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "headingLevel": "3",
+    "appearance": "\"card\""
+  },
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "AssistantControlsLabels": "AssistantControlsLabels.json",
+    "AssistantControlsProps": "AssistantControlsProps.json",
+    "AssistantMemoryItem": "AssistantMemoryItem.json",
+    "AssistantPermission": "AssistantPermission.json",
+    "ContextMeterPart": "ContextMeterPart.json",
+    "ContextMeterProps": "ContextMeterProps.json",
+    "ModelOption": "ModelOption.json",
+    "PermissionLevel": "PermissionLevel.json"
+  }
+}

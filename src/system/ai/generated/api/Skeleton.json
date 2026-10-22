@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Skeleton",
+  "kind": "component",
+  "source": "Skeleton.tsx",
+  "sourceHash": "533b71394100bb57212d0bf7c0d693732ed02b768574ef1a24811b5fe21a7376",
+  "type": "({ shape, style, className, }: SkeletonProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  shape = \"text\",\n  style,\n  className = \"\",\n}",
+          "type": "SkeletonProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "shape": {
+      "type": "\"text\" | \"circle\" | \"rectangle\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"text\"",
+        "\"circle\"",
+        "\"rectangle\""
+      ]
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "shape": "\"text\"",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "SkeletonProps": "SkeletonProps.json"
+  }
+}

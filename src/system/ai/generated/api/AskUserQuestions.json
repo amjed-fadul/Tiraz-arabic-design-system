@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AskUserQuestions",
+  "kind": "component",
+  "source": "AskUserQuestions.tsx",
+  "sourceHash": "372837b435ff86e4f6eb501683fd58b911eeee95550908f3d3655f3633f9e5bd",
+  "type": "(props: AskUserQuestionsProps) => JSX.Element",
+  "description": "Application-supplied single-choice/Other and text questions, with controlled drafts.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "props",
+          "type": "AskUserQuestionsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agent": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Names the asking agent in the header."
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional avatar, name, identity controls and tray color in the existing header."
+    },
+    "answered": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "With `receipt`, mounts straight into the receipt, built from `value`: the\nhost already holds these answers, so nothing is submitted or announced."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray, at most 38rem wide; \"plain\" lives on its host's paper."
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The question heading's level; 3 by default."
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "labels": {
+      "type": "Partial<AskUserQuestionsLabels> | undefined",
+      "required": false
+    },
+    "onEditAnswers": {
+      "type": "(() => void) | undefined",
+      "required": false,
+      "description": "Offers «تعديل الإجابات» on the receipt."
+    },
+    "onSkip": {
+      "type": "(() => void) | undefined",
+      "required": false,
+      "description": "Lets the person skip questions the agent can do without."
+    },
+    "onSubmit": {
+      "type": "(answers: QuestionAnswers, context: { signal: AbortSignal; }) => void | Promise<void>",
+      "required": true
+    },
+    "onValueChange": {
+      "type": "(answers: QuestionAnswers) => void",
+      "required": true
+    },
+    "questions": {
+      "type": "readonly UserQuestion[]",
+      "required": true
+    },
+    "receipt": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Folds the answers the host accepted into «إجاباتك»."
+    },
+    "resetKey": {
+      "type": "string | number | undefined",
+      "required": false
+    },
+    "submitLabel": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "Readonly<Record<string, QuestionAnswer>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "AskUserQuestionsLabels": "AskUserQuestionsLabels.json",
+    "AskUserQuestionsProps": "AskUserQuestionsProps.json",
+    "QuestionAnswer": "QuestionAnswer.json",
+    "QuestionAnswers": "QuestionAnswers.json",
+    "UserQuestion": "UserQuestion.json"
+  }
+}

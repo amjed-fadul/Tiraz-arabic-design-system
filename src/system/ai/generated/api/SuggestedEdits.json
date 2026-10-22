@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SuggestedEdits",
+  "kind": "component",
+  "source": "SuggestedEdits.tsx",
+  "sourceHash": "0288e97df35ef60fc67da59363ebbf9ee236d9d85d166bf806900c46879ffe1a",
+  "type": "({ agentPresentation, children, actions, onAction, status, announcement, suggestion, selection, reviewPlacement, decisions, onDecisionsChange, onApply, onUndo, onDismiss, labels, }: SuggestedEditsProps) => JSX.Element",
+  "description": "Suggested edits (spec section 12.6): improve selected text with tracked\nchanges the person accepts or rejects. The host owns the status, the\nsuggestion and the decisions, and replaces its own text on Apply; until\nthen its DOM is untouched. While rewriting and reviewing, the range keeps a\nsoft underline through the CSS Custom Highlight API, where the browser has\nit. The rewriting note and the review card float in the provider's layer,\nanchored below the range. The polite region says each status change unless\nthe host owns announcements.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  agentPresentation,\n  children,\n  actions,\n  onAction,\n  status,\n  announcement = \"polite\",\n  suggestion,\n  selection,\n  reviewPlacement = \"floating\",\n  decisions,\n  onDecisionsChange,\n  onApply,\n  onUndo,\n  onDismiss,\n  labels,\n}",
+          "type": "SuggestedEditsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "actions": {
+      "type": "readonly { id: string; label: string; icon?: ReactNode; }[]",
+      "required": true
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional identity in the existing rewriting and review header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status changes politely, or leave announcements to the host."
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The text region, as SelectionActions wraps it."
+    },
+    "decisions": {
+      "type": "Readonly<Record<string, Decision>> | undefined",
+      "required": false,
+      "description": "Keyed by each change's first segment id. Without it the pattern keeps its own."
+    },
+    "labels": {
+      "type": "Partial<SuggestedEditsLabels> | undefined",
+      "required": false
+    },
+    "onAction": {
+      "type": "(id: string, selection: { text: string; start: number; end: number; }) => void",
+      "required": true,
+      "description": "The person chose an action: the selected text, and where it sits in the region's text content."
+    },
+    "onApply": {
+      "type": "((text: string, selection: Offsets) => void) | undefined",
+      "required": false,
+      "description": "The text with the accepted changes, and the range it replaces."
+    },
+    "onDecisionsChange": {
+      "type": "((next: Record<string, Decision>) => void) | undefined",
+      "required": false
+    },
+    "onDismiss": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onUndo": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "reviewPlacement": {
+      "type": "\"inline\" | \"floating\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"inline\"",
+        "\"floating\""
+      ],
+      "description": "Floating by default; inline keeps the review below the text in document flow."
+    },
+    "selection": {
+      "type": "Offsets | undefined",
+      "required": false,
+      "description": "The range the suggestion is for, as onAction reported it. Without it, the last action's range."
+    },
+    "status": {
+      "type": "\"idle\" | \"rewriting\" | \"reviewing\" | \"applied\"",
+      "required": true,
+      "members": [
+        "\"idle\"",
+        "\"rewriting\"",
+        "\"reviewing\"",
+        "\"applied\""
+      ]
+    },
+    "suggestion": {
+      "type": "{ title: ReactNode; segments: readonly DiffSegment[]; } | undefined",
+      "required": false,
+      "description": "Keep it through applied, with `decisions`: the receipt counts them."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "announcement": "\"polite\"",
+    "reviewPlacement": "\"floating\""
+  },
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "DiffSegment": "DiffSegment.json",
+    "SuggestedEditsLabels": "SuggestedEditsLabels.json",
+    "SuggestedEditsProps": "SuggestedEditsProps.json"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ColorPickerLabels",
+  "kind": "type",
+  "source": "ColorPicker.tsx",
+  "sourceHash": "e8f692d5e3039909e21066f3c002ff0c4eb6ab525061002d2f1e437ffd90463d",
+  "type": "ColorPickerLabels",
+  "typeParameters": [],
+  "props": {
+    "chooser": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "invalid": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "swatches": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ColorPickerProps": "ColorPickerProps.json",
+    "ColorSwatch": "ColorSwatch.json"
+  }
+}

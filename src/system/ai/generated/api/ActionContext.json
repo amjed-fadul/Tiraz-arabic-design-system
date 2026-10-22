@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ActionContext",
+  "kind": "type",
+  "source": "patterns/useAsyncAction.ts",
+  "sourceHash": "1fafeb14ae0017d43a8ec9c34a0f3d50321d0b0ddd9142bd61d3070d41fb8ee7",
+  "type": "ActionContext",
+  "typeParameters": [],
+  "props": {
+    "signal": {
+      "type": "AbortSignal",
+      "required": true,
+      "description": "Honor cancellation and check before committing caller state. UI cancellation cannot undo persistence."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

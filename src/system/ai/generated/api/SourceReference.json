@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SourceReference",
+  "kind": "type",
+  "source": "Sources.tsx",
+  "sourceHash": "31a121e3b2e202903de08c6230412d844d90678be56ff85a42ccb9bcfe29729a",
+  "type": "SourceReference",
+  "typeParameters": [],
+  "props": {
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "href": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique, stable application ID; not derived from array position."
+    },
+    "metadata": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "number": {
+      "type": "number",
+      "required": true,
+      "description": "Stable application-assigned citation number, retained on reorder/filter."
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InlineCitationLabels": "InlineCitationLabels.json",
+    "InlineCitationProps": "InlineCitationProps.json",
+    "SourcesLabels": "SourcesLabels.json",
+    "SourcesProps": "SourcesProps.json"
+  }
+}

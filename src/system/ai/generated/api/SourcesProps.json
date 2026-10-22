@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SourcesProps",
+  "kind": "type",
+  "source": "Sources.tsx",
+  "sourceHash": "31a121e3b2e202903de08c6230412d844d90678be56ff85a42ccb9bcfe29729a",
+  "type": "SourcesProps",
+  "typeParameters": [],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "defaultExpanded": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "expanded": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Controls the list; pair it with `onExpandedChange`."
+    },
+    "highlightedId": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Marks this source's row, for the one whose citation is being previewed."
+    },
+    "items": {
+      "type": "readonly SourceReference[]",
+      "required": true
+    },
+    "labels": {
+      "type": "SourcesLabels | undefined",
+      "required": false
+    },
+    "onExpandedChange": {
+      "type": "((expanded: boolean) => void) | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InlineCitationLabels": "InlineCitationLabels.json",
+    "InlineCitationProps": "InlineCitationProps.json",
+    "SourceReference": "SourceReference.json",
+    "SourcesLabels": "SourcesLabels.json"
+  }
+}

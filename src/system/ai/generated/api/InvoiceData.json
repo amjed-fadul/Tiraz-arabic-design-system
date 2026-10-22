@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InvoiceData",
+  "kind": "type",
+  "source": "patterns/InvoiceActions.tsx",
+  "sourceHash": "b9b78805149f51ac145bd27682799b6c9db42f4341f3483bc85cfeec34aa07d6",
+  "type": "InvoiceData",
+  "typeParameters": [],
+  "props": {
+    "fields": {
+      "type": "{ id: string; label: string; value: ReactNode; }[]",
+      "required": true,
+      "description": "Supply locale-formatted values; direction never implies a date/currency locale."
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InvoiceAction": "InvoiceAction.json",
+    "InvoiceActionConfirmation": "InvoiceActionConfirmation.json",
+    "InvoiceActionLabels": "InvoiceActionLabels.json",
+    "InvoiceActionsProps": "InvoiceActionsProps.json"
+  }
+}

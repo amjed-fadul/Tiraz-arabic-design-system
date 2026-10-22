@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AgentPresentation",
+  "kind": "type",
+  "source": "AgentPresentation.tsx",
+  "sourceHash": "71c50a1a090a12eb2b2e4e20823ff7e3fe65d9c57ed6a4ca7b22208129a9444f",
+  "type": "AgentPresentation",
+  "description": "Optional identity in a pattern's existing header. The host owns the avatar's\nstate and animation; these slots never submit, decide, or announce anything.",
+  "typeParameters": [],
+  "props": {
+    "actions": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Identity controls, such as a color picker, inside the same header."
+    },
+    "avatar": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "A decorative avatar, replacing the default AI mark."
+    },
+    "color": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Identity color, tinting the existing tray without recoloring its paper."
+    },
+    "name": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The agent's name, where the pattern shows assistant attribution."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

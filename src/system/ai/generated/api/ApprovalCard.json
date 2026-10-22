@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ApprovalCard",
+  "kind": "component",
+  "source": "ApprovalCard.tsx",
+  "sourceHash": "90848ba6883649ed56fe53326a1321e75e6599049363bbfd2af2ba4127ced5e3",
+  "type": "(props: ApprovalCardProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "props",
+          "type": "ApprovalCardProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agent": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Names the agent that asks, under the title."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status changes politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "expired": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "The host's word that the request lapsed. A decision in flight is aborted."
+    },
+    "expiryLabel": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The host's expiry text. The card runs no clock of its own."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The title's level; 3 by default."
+    },
+    "impact": {
+      "type": "readonly { id: string; label: ReactNode; value?: ReactNode; note?: ReactNode; }[] | undefined",
+      "required": false,
+      "description": "Who or what the action affects, with amounts, as a compact table."
+    },
+    "irreversible": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "True shows the default note in the attention color; a node replaces it."
+    },
+    "labels": {
+      "type": "Partial<ApprovalCardLabels> | undefined",
+      "required": false
+    },
+    "onDecision": {
+      "type": "(request: ApprovalRequest, decision: ApprovalDecision, context: { signal: AbortSignal; }) => void | Promise<void>",
+      "required": true
+    },
+    "receiptTime": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Host-formatted time after the approved receipt, such as «قبل دقيقة»."
+    },
+    "request": {
+      "type": "ApprovalRequest",
+      "required": true
+    },
+    "resetKey": {
+      "type": "string | number | undefined",
+      "required": false
+    },
+    "reversible": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Lets Ctrl or Cmd+Enter approve, unless the request is also irreversible."
+    },
+    "secondaryAction": {
+      "type": "{ label: ReactNode; onSelect(): void; } | undefined",
+      "required": false,
+      "description": "An optional middle action, such as viewing the messages."
+    },
+    "value": {
+      "type": "ApprovalRecord | null | undefined",
+      "required": false,
+      "description": "Controlled accepted decision. Must correspond to this exact request content."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json"
+  }
+}

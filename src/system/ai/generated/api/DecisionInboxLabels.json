@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DecisionInboxLabels",
+  "kind": "type",
+  "source": "DecisionInbox.tsx",
+  "sourceHash": "c19ef2d40f4852b899311aee8de8793d4ff45fe2faf5004c7886649a27c32976",
+  "type": "DecisionInboxLabels",
+  "description": "Every built-in string the inbox shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "agents": {
+      "type": "string",
+      "required": true,
+      "description": "Names the agents strip."
+    },
+    "answer": {
+      "type": "string",
+      "required": true
+    },
+    "byStatus": {
+      "type": "string",
+      "required": true,
+      "description": "Names the tabs."
+    },
+    "draft": {
+      "type": "string",
+      "required": true
+    },
+    "nothingHere": {
+      "type": "string",
+      "required": true,
+      "description": "Any other empty tab."
+    },
+    "nothingWaiting": {
+      "type": "string",
+      "required": true,
+      "description": "Said when nothing waits or runs, and the empty «بانتظارك»'s title."
+    },
+    "nothingWaitingHint": {
+      "type": "string",
+      "required": true
+    },
+    "open": {
+      "type": "string",
+      "required": true
+    },
+    "pills": {
+      "type": "Record<\"failed\" | \"running\" | \"completed\" | \"needs-you\", string>",
+      "required": true,
+      "description": "Each row's pill by its status, and a draft's while it waits."
+    },
+    "retry": {
+      "type": "string",
+      "required": true
+    },
+    "review": {
+      "type": "string",
+      "required": true,
+      "description": "The row actions; each is also named by its row's title."
+    },
+    "running": {
+      "type": "(count: number, tasks: string) => string",
+      "required": true
+    },
+    "steps": {
+      "type": "string",
+      "required": true,
+      "description": "Heads an open row's steps."
+    },
+    "tabs": {
+      "type": "Record<DecisionInboxTab, string>",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "waiting": {
+      "type": "(count: number, requests: string) => string",
+      "required": true,
+      "description": "The region's sentence, from the counts and the count helper's words."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ApprovalCardLabels": "ApprovalCardLabels.json",
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json",
+    "DecisionInboxItem": "DecisionInboxItem.json",
+    "DecisionInboxProps": "DecisionInboxProps.json",
+    "DecisionInboxTab": "DecisionInboxTab.json",
+    "TaskState": "TaskState.json",
+    "UserQuestion": "UserQuestion.json"
+  }
+}

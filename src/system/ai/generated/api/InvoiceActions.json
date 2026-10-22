@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InvoiceActions",
+  "kind": "component",
+  "source": "patterns/InvoiceActions.tsx",
+  "sourceHash": "b9b78805149f51ac145bd27682799b6c9db42f4341f3483bc85cfeec34aa07d6",
+  "type": "(props: InvoiceActionsProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "props",
+          "type": "InvoiceActionsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "actions": {
+      "type": "InvoiceAction[]",
+      "required": true
+    },
+    "actionsInDetails": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Also make the shared actions available inside the details Sheet."
+    },
+    "invoice": {
+      "type": "InvoiceData",
+      "required": true
+    },
+    "labels": {
+      "type": "InvoiceActionLabels",
+      "required": true
+    },
+    "onAction": {
+      "type": "(actionId: string, invoice: InvoiceData, context: ActionContext) => Promise<void>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ActionContext": "ActionContext.json",
+    "InvoiceAction": "InvoiceAction.json",
+    "InvoiceActionConfirmation": "InvoiceActionConfirmation.json",
+    "InvoiceActionLabels": "InvoiceActionLabels.json",
+    "InvoiceActionsProps": "InvoiceActionsProps.json",
+    "InvoiceData": "InvoiceData.json"
+  }
+}

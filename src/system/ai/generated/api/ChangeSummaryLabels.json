@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChangeSummaryLabels",
+  "kind": "type",
+  "source": "ChangeSummary.tsx",
+  "sourceHash": "96944f2bfdd4195a888b1337e6d66340fd927fa3327e50e9c56790a8b82ba0e4",
+  "type": "ChangeSummaryLabels",
+  "description": "Every built-in string What changed shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "directions": {
+      "type": "Record<\"flat\" | \"down\" | \"up\", string>",
+      "required": true,
+      "description": "Each row's hidden direction word, beside its arrow."
+    },
+    "failed": {
+      "type": "string",
+      "required": true
+    },
+    "failedPill": {
+      "type": "string",
+      "required": true
+    },
+    "madeByAssistant": {
+      "type": "string",
+      "required": true,
+      "description": "Under the title while the summary is ready or stale."
+    },
+    "ready": {
+      "type": "string",
+      "required": true
+    },
+    "reason": {
+      "type": "string",
+      "required": true,
+      "description": "Above the reason: «السبب الأرجح»."
+    },
+    "refresh": {
+      "type": "string",
+      "required": true,
+      "description": "Beside a stale summary, and a failed one."
+    },
+    "retry": {
+      "type": "string",
+      "required": true
+    },
+    "stale": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "The heading when the host gives no title."
+    },
+    "updating": {
+      "type": "string",
+      "required": true,
+      "description": "The four announcements. Updating, stale and failed also head the footer."
+    },
+    "updatingPill": {
+      "type": "string",
+      "required": true,
+      "description": "The pill's word while updating and when failed."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ChangeSummaryProps": "ChangeSummaryProps.json"
+  }
+}

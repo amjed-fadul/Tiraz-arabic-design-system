@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "exportName": "StatusIconProps",
+  "kind": "type",
+  "source": "StatusIcon.tsx",
+  "sourceHash": "498cd8af15a957f5e9e4dc31f7a40da773023f9410751a62aa2c336f0c7cd812",
+  "type": "StatusIconProps",
+  "typeParameters": [],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "An accessible name. Without one the icon is decorative and hidden."
+    },
+    "number": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "The position of an ordered item, shown by a pending icon only."
+    },
+    "state": {
+      "type": "StatusIconState",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"running\"",
+        "\"completed\"",
+        "\"pending\"",
+        "\"needs-you\"",
+        "\"stopped\"",
+        "\"skipped\""
+      ]
+    },
+    "tone": {
+      "type": "\"neutral\" | \"ai\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"neutral\"",
+        "\"ai\""
+      ],
+      "description": "\"ai\" when the assistant is the actor; it turns the running arc to the AI color."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "StatusIconState": "StatusIconState.json"
+  }
+}

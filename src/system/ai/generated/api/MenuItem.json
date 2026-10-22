@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "exportName": "MenuItem",
+  "kind": "type",
+  "source": "DropdownMenu.tsx",
+  "sourceHash": "c6d5e808df7ad8f8770b5eedecb54d8c8421e2ed47ab3d451d25b69dff813179",
+  "type": "MenuItem",
+  "typeParameters": [],
+  "props": {
+    "destructive": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "icon": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "onSelect": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "separatorBefore": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "shortcut": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "DropdownMenuProps": "DropdownMenuProps.json"
+  }
+}

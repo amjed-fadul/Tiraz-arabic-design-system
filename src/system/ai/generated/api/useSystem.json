@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "exportName": "useSystem",
+  "kind": "function",
+  "source": "useSystem.ts",
+  "sourceHash": "3db68ea2fe7e112b013056bbd4b686d7127863435b9891f24cc709218e31f225",
+  "type": "() => { config: SystemConfig; container: HTMLDivElement | null; }",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [],
+      "returns": "{ config: SystemConfig; container: HTMLDivElement | null; }"
+    }
+  ],
+  "relatedTypes": {}
+}

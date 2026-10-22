@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChangeSummaryProps",
+  "kind": "type",
+  "source": "ChangeSummary.tsx",
+  "sourceHash": "96944f2bfdd4195a888b1337e6d66340fd927fa3327e50e9c56790a8b82ba0e4",
+  "type": "ChangeSummaryProps",
+  "typeParameters": [],
+  "props": {
+    "actions": {
+      "type": "readonly { id: string; label: string; primary?: boolean; onSelect(): void; }[] | undefined",
+      "required": false,
+      "description": "Shown while ready: one primary next step, one secondary."
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional avatar, name, identity controls and tray color in the existing header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status changes politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "basedOn": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The footer's «اعتمادًا على ٣ تقارير» and «حُدّث قبل ٥ د»."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The title's level; 3 by default."
+    },
+    "labels": {
+      "type": "Partial<ChangeSummaryLabels> | undefined",
+      "required": false
+    },
+    "onRefresh": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "reason": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The most likely reason, with a citation for each of `sources`."
+    },
+    "rows": {
+      "type": "readonly { id: string; metric: string; change: ReactNode; direction: \"up\" | \"down\" | \"flat\"; tone: \"good\" | \"bad\" | \"neutral\"; series?: readonly number[]; }[]",
+      "required": true,
+      "description": "The first six show. `direction` says which way, `tone` what it means."
+    },
+    "sources": {
+      "type": "readonly SourceReference[] | undefined",
+      "required": false
+    },
+    "status": {
+      "type": "\"failed\" | \"ready\" | \"updating\" | \"stale\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"ready\"",
+        "\"updating\"",
+        "\"stale\""
+      ]
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "updated": {
+      "type": "ReactNode",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "ChangeSummaryLabels": "ChangeSummaryLabels.json",
+    "SourceReference": "SourceReference.json"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "exportName": "CitedAnswerLabels",
+  "kind": "type",
+  "source": "CitedAnswer.tsx",
+  "sourceHash": "7de8c4fcc63e61e601b2b372690e236f9dbf608eebeba687f840eb4dcc7223aa",
+  "type": "CitedAnswerLabels",
+  "description": "Every built-in string Cited answer shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "completed": {
+      "type": "string",
+      "required": true
+    },
+    "failed": {
+      "type": "string",
+      "required": true
+    },
+    "feedbackBar": {
+      "type": "Partial<FeedbackBarLabels> | undefined",
+      "required": false
+    },
+    "followUps": {
+      "type": "string",
+      "required": true,
+      "description": "The follow-ups' name."
+    },
+    "regenerate": {
+      "type": "string",
+      "required": true,
+      "description": "Beside a stopped answer."
+    },
+    "retry": {
+      "type": "string",
+      "required": true,
+      "description": "Beside a failed answer."
+    },
+    "stop": {
+      "type": "string",
+      "required": true
+    },
+    "stopped": {
+      "type": "string",
+      "required": true
+    },
+    "thinking": {
+      "type": "string",
+      "required": true,
+      "description": "The five announcements, one sentence each. Failed and stopped also head\nthe note beside the partial answer."
+    },
+    "thinkingPanel": {
+      "type": "Partial<ThinkingPanelLabels> | undefined",
+      "required": false,
+      "description": "Words for the panel and the bar inside the answer."
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "The section's name when there is no question."
+    },
+    "writing": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "CitedAnswerProps": "CitedAnswerProps.json",
+    "FeedbackBarLabels": "FeedbackBarLabels.json",
+    "FeedbackReason": "FeedbackReason.json",
+    "ThinkingPanelLabels": "ThinkingPanelLabels.json"
+  }
+}

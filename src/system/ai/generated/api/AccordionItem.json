@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AccordionItem",
+  "kind": "type",
+  "source": "Accordion.tsx",
+  "sourceHash": "031f4e14f65056fd9818dcb81919bae7f112d52c648be4c3d287b543f32afafa",
+  "type": "AccordionItem",
+  "typeParameters": [],
+  "props": {
+    "content": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "label": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true,
+      "description": "Stable, unique, nonempty value. Empty string represents no open item."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AccordionProps": "AccordionProps.json"
+  }
+}

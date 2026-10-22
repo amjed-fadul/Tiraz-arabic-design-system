@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InlineDiffProps",
+  "kind": "type",
+  "source": "InlineDiff.tsx",
+  "sourceHash": "a140b52d1e6c6ab84d4f42363294f39ce6a9adfa40e88dd7b95c31914ef09abc",
+  "type": "InlineDiffProps",
+  "typeParameters": [],
+  "props": {
+    "decisions": {
+      "type": "Readonly<Record<string, \"accepted\" | \"rejected\">>",
+      "required": true,
+      "description": "Keyed by each change's first segment id."
+    },
+    "labels": {
+      "type": "Partial<InlineDiffLabels> | undefined",
+      "required": false
+    },
+    "onDecisionsChange": {
+      "type": "(next: Record<string, \"accepted\" | \"rejected\">) => void",
+      "required": true
+    },
+    "segments": {
+      "type": "readonly DiffSegment[]",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "DiffSegment": "DiffSegment.json"
+  }
+}

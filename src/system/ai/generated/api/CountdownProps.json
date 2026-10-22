@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "exportName": "CountdownProps",
+  "kind": "type",
+  "source": "Countdown.tsx",
+  "sourceHash": "38a81e522cca4f291db6b8e498038d3fdc596e20f9fdd40a4232dff4e91c2886",
+  "type": "CountdownProps",
+  "typeParameters": [],
+  "props": {
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Off when the owner pattern announces the countdown itself."
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "((remaining: string) => string) | undefined",
+      "required": false,
+      "description": "The sentence around the time left, «خلال ٥ث» / \"in 5s\" by default."
+    },
+    "onComplete": {
+      "type": "() => void",
+      "required": true,
+      "description": "Called once, at zero."
+    },
+    "paused": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Stops the count; it resumes from the time left."
+    },
+    "seconds": {
+      "type": "number",
+      "required": true,
+      "description": "Whole seconds to count down from."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

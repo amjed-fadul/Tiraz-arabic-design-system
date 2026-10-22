@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SelectOption",
+  "kind": "type",
+  "source": "Select.tsx",
+  "sourceHash": "b721858c75b20c416b6717531606cd079df5f736f0676b772b1035f4d225236b",
+  "type": "SelectOption",
+  "typeParameters": [],
+  "props": {
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SelectProps": "SelectProps.json"
+  }
+}

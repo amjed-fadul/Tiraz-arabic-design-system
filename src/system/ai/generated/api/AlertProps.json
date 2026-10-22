@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AlertProps",
+  "kind": "type",
+  "source": "Alert.tsx",
+  "sourceHash": "f851b0345af1580d4ddd62b5c973767347f8f547b9eae3a98d0d1d6f9d16eed2",
+  "type": "AlertProps",
+  "typeParameters": [],
+  "props": {
+    "action": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "announcement": {
+      "type": "\"off\" | \"assertive\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"assertive\"",
+        "\"polite\""
+      ]
+    },
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tone": {
+      "type": "BadgeTone | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"error\"",
+        "\"success\"",
+        "\"info\"",
+        "\"warning\"",
+        "\"neutral\"",
+        "\"ai\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "BadgeTone": "BadgeTone.json"
+  }
+}

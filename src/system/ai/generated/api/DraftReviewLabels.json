@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DraftReviewLabels",
+  "kind": "type",
+  "source": "DraftReview.tsx",
+  "sourceHash": "79132c466e928b3c122569b78358d32ca9ee2e94b36c92340b1c5b11630a3400",
+  "type": "DraftReviewLabels",
+  "description": "Every built-in string Draft for review shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "attachments": {
+      "type": "string",
+      "required": true
+    },
+    "discard": {
+      "type": "string",
+      "required": true
+    },
+    "discarded": {
+      "type": "string",
+      "required": true
+    },
+    "inlineDiff": {
+      "type": "Partial<InlineDiffLabels> | undefined",
+      "required": false,
+      "description": "Words for the tracked changes inside."
+    },
+    "message": {
+      "type": "string",
+      "required": true,
+      "description": "Names the message's text area."
+    },
+    "notSent": {
+      "type": "string",
+      "required": true,
+      "description": "When sending goes back to ready without an Undo, the sending failed: the\nregion says this, and it shows as an error above Send."
+    },
+    "pills": {
+      "type": "Record<\"writing\" | \"ready\" | \"sending\" | \"sent\" | \"discarded\", string>",
+      "required": true,
+      "description": "The pill's word for each status, agreeing with الرسالة: «أُرسلت»."
+    },
+    "saysCancelled": {
+      "type": "string",
+      "required": true
+    },
+    "saysReady": {
+      "type": "string",
+      "required": true
+    },
+    "saysSending": {
+      "type": "string",
+      "required": true
+    },
+    "saysSendingIn": {
+      "type": "(time: string) => string",
+      "required": true
+    },
+    "saysSentAfterUndo": {
+      "type": "string",
+      "required": true
+    },
+    "saysWriting": {
+      "type": "string",
+      "required": true,
+      "description": "The region's other sentences, one per change of status."
+    },
+    "send": {
+      "type": "string",
+      "required": true
+    },
+    "sendingIn": {
+      "type": "(time: string) => string",
+      "required": true,
+      "description": "The line while the host holds the message: «تُرسَل خلال ١٠ث»."
+    },
+    "sendingNow": {
+      "type": "string",
+      "required": true,
+      "description": "The line once the hold is over, or when there is none."
+    },
+    "sent": {
+      "type": "string",
+      "required": true,
+      "description": "The receipts, which the region also says."
+    },
+    "suggestion": {
+      "type": "string",
+      "required": true,
+      "description": "Heads a suggested edit, before its own title: «اقتراح المساعد · …»."
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "description": "The heading when the host gives no `title`: «مسودة للمراجعة»."
+    },
+    "to": {
+      "type": "string",
+      "required": true,
+      "description": "Name the recipients and the attachments."
+    },
+    "tone": {
+      "type": "string",
+      "required": true,
+      "description": "Names the tone group, and each tone in it."
+    },
+    "tones": {
+      "type": "Record<DraftTone, string>",
+      "required": true
+    },
+    "undo": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "DiffSegment": "DiffSegment.json",
+    "DraftReviewProps": "DraftReviewProps.json",
+    "DraftTone": "DraftTone.json"
+  }
+}

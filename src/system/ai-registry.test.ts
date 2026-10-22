@@ -256,6 +256,14 @@ it("resolves every registry source and example from a movable library root", () 
   const paths = [
     registry.entry,
     registry.composition,
+    registry.generatedKnowledge,
+    ...registry.businessPatterns.flatMap(
+      (p: { source: string; docs: string; examples: string[] }) => [
+        p.source,
+        p.docs,
+        ...p.examples,
+      ],
+    ),
     ...registry.assets.flatMap(
       (asset: { path: string; provenance: string; license: string }) => [
         asset.path,
@@ -337,6 +345,11 @@ it("documents real public exports and supported prop values and compiles the lin
     ...new Set<string>(
       registry.components
         .flatMap((c: { examples: string[] }) => c.examples)
+        .concat(
+          registry.businessPatterns.flatMap(
+            (p: { examples: string[] }) => p.examples,
+          ),
+        )
         .map((path: string) => resolve(root, path)),
     ),
   ];

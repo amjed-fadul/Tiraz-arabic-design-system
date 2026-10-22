@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChartDatum",
+  "kind": "type",
+  "source": "Charts.tsx",
+  "sourceHash": "dcc11f58cb7a5d8424e3402bcb0efe5c156d81b1604a9c4c1968474908c1f30d",
+  "type": "ChartDatum",
+  "typeParameters": [],
+  "props": {
+    "category": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "indexSignatures": [
+    {
+      "key": "string",
+      "value": "string | number | null | undefined",
+      "readonly": false
+    }
+  ],
+  "relatedTypes": {
+    "CartesianChartProps": "CartesianChartProps.json",
+    "ChartProps": "ChartProps.json",
+    "ChartSeries": "ChartSeries.json",
+    "DonutChartProps": "DonutChartProps.json",
+    "DonutDatum": "DonutDatum.json"
+  }
+}

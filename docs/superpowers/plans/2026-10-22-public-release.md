@@ -73,8 +73,54 @@ Files: `src/workbench/QuickStart.tsx`, `src/workbench/QuickStart.test.tsx`,
 
 ## Task 5: deploy and connect domain
 
-- [ ] Create/reuse the Git-connected Tiraz project in the discovered Vercel team.
+- [x] Create/reuse the Git-connected Tiraz project in the discovered Vercel team.
 - [ ] Deploy remote main; inspect build state and check rendered preview routes.
 - [ ] Attach tiraz.dev and verify the returned DNS configuration and HTTPS.
 - [ ] Check landing, library, Start here, illustration and screen deep links.
 - [ ] Keep localhost 5411 running; record URLs, commits and any unfinished step.
+
+## Approved extension: AI-ready branch reconciliation
+
+The owner chose to include and verify these additions before publication.
+
+### Task 6: current business patterns
+
+Files: `src/system/patterns/*`, focused pattern tests, `src/system/index.ts`,
+`src/system/components.css`, portable AI guidance/registry.
+
+- [x] Port the three branch patterns using current controls and logical CSS.
+- [x] Test save/retry, duplicate submission, cancellation/unmount, changing entity,
+      nested menu/Sheet focus, confirmation and both translated label sets.
+- [x] Export and document the actual APIs, then inspect them in a fresh consumer.
+
+### Task 7: current generated knowledge
+
+Files: `scripts/knowledge.mjs`, `src/system/ai/generated/*`,
+`src/tests/knowledge-generation.test.ts`, public AI index generation.
+
+- [x] Adapt TypeScript contract extraction and token inventory to current exports.
+- [x] Generate `manifest.json`, `api/<export>.json` and `tokens.json` with relative
+      source paths and content hashes. Exclude generated metadata from its own hash.
+- [x] Test conditional/optional props, inherited attributes, generic exports,
+      conditional tokens, missing pointers and stale/obsolete output detection.
+- [x] Keep generated facts separate from authored guidance; package both.
+
+### Task 8: verified source and registry delivery
+
+Files: `packages/tiraz/bin/*`, `scripts/build-package.mjs`,
+`scripts/registry.mjs`, package/installer/registry tests, installation guides.
+
+- [x] Add source manifest and `verify`; preserve existing default init commands.
+- [x] Support a safe custom system destination with movable relative pointers.
+- [x] Test moved installs, changed/missing files, symlink/path attacks and
+      pre-existing files, including no partial overwrite on refused input.
+- [x] Generate the shadcn item from the same release source and dependencies.
+- [x] Validate schemas and install through the real CLI into a fresh local app;
+      typecheck/build and inspect Arabic/English, fonts and assets.
+
+### Task 9: finish integration and release
+
+- [ ] Review the complete additions and run the full local gate and CSS audit.
+- [ ] Record the AI-ready branch merge and exact capability dispositions.
+- [ ] Rebuild/repack and verify the actual artifact before publishing.
+- [ ] Complete Tasks 4–5 with the final tested commit and registry version.

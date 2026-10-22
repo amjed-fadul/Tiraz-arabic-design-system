@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FileDropzoneLabels",
+  "kind": "type",
+  "source": "FileDropzone.tsx",
+  "sourceHash": "cad99aa33455c9e0da09651f5a684c193c0b0780761fda3e159ae5e2b88d057b",
+  "type": "FileDropzoneLabels",
+  "typeParameters": [],
+  "props": {
+    "browse": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "drop": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "rejected": {
+      "type": "((file: File, reason: \"type\" | \"size\" | \"count\" | \"duplicate\") => string) | undefined",
+      "required": false
+    },
+    "remove": {
+      "type": "((file: File) => string) | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FileDropzoneProps": "FileDropzoneProps.json"
+  }
+}

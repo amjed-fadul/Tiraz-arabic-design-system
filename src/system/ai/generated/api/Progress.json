@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Progress",
+  "kind": "component",
+  "source": "Progress.tsx",
+  "sourceHash": "2b629a3d4e1f4353c6e3a7c8b067f899a72b1c6bd0f62d2ab8c1338cb3d18f62",
+  "type": "({ label, value, showValue, locale, }: ProgressProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  label,\n  value,\n  showValue = false,\n  locale,\n}",
+          "type": "ProgressProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "locale": {
+      "type": "\"ar\" | \"en\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"ar\"",
+        "\"en\""
+      ]
+    },
+    "showValue": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "value": {
+      "type": "number | null | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "showValue": "false"
+  },
+  "relatedTypes": {
+    "ProgressProps": "ProgressProps.json"
+  }
+}

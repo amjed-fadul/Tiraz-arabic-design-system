@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DataAnswer",
+  "kind": "component",
+  "source": "DataAnswer.tsx",
+  "sourceHash": "f69f774e63ced36c38ab85ab936b192fcff6f6b9d36cb5e9af36537c8cde527f",
+  "type": "({ agentPresentation, status, question, chart, explanation, sources, method, thinking, chartTypes, onChartTypeChange, onPin, onOpenTable, onCopy, onRetry, error, headingLevel, labels, announcement, appearance, }: DataAnswerProps) => JSX.Element",
+  "description": "Ask your data (spec section 13.1): a question answered as a chart, a short\nexplanation and «كيف حُسب هذا؟». The host owns the status and every figure:\nthe pattern draws the chart it is given, never fetches or computes, and\nreports what the person asks for, including the chart type to show next. One\npolite region says each change of status once; the panel, the chart and the\nbar are silent.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  agentPresentation,\n  status,\n  question,\n  chart,\n  explanation,\n  sources = [],\n  method,\n  thinking,\n  chartTypes,\n  onChartTypeChange,\n  onPin,\n  onOpenTable,\n  onCopy,\n  onRetry,\n  error,\n  headingLevel = 3,\n  labels,\n  announcement = \"polite\",\n  appearance = \"card\",\n}",
+          "type": "DataAnswerProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional identity in the existing answer header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status and copy feedback politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "chart": {
+      "type": "DataAnswerChart | undefined",
+      "required": false,
+      "description": "Drawn by `chart.type`'s family with `chart.props` as given, once completed."
+    },
+    "chartTypes": {
+      "type": "readonly (\"area\" | \"line\" | \"bar\" | \"donut\")[] | undefined",
+      "required": false,
+      "description": "The types the person can switch between; two or more, with the handler."
+    },
+    "error": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "What went wrong, beside a failed answer."
+    },
+    "explanation": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Markdown, two sentences. A `[n]` marker names the `number` of a source."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The question's level; 3 by default."
+    },
+    "labels": {
+      "type": "Partial<DataAnswerLabels> | undefined",
+      "required": false
+    },
+    "method": {
+      "type": "{ range: string; filters?: string; } | undefined",
+      "required": false,
+      "description": "How the answer was worked out. Without it there is no «كيف حُسب هذا؟»."
+    },
+    "onChartTypeChange": {
+      "type": "((type: DataAnswerChart[\"type\"]) => void) | undefined",
+      "required": false
+    },
+    "onCopy": {
+      "type": "((text: string) => void | Promise<void>) | undefined",
+      "required": false,
+      "description": "The host copies `text`: the explanation, then «كيف حُسب هذا؟» with its\nrange and filters, then «المصادر» and one numbered line per table."
+    },
+    "onOpenTable": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onPin": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onRetry": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "question": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The question, as the section's heading."
+    },
+    "sources": {
+      "type": "readonly SourceReference[] | undefined",
+      "required": false,
+      "description": "The tables the answer rests on. Cited by number, and listed in the method."
+    },
+    "status": {
+      "type": "\"failed\" | \"completed\" | \"thinking\" | \"empty\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"completed\"",
+        "\"thinking\"",
+        "\"empty\""
+      ]
+    },
+    "thinking": {
+      "type": "{ elapsed: number; searched: readonly SourceReference[]; steps?: ThinkingPanelProps[\"steps\"]; } | undefined",
+      "required": false,
+      "description": "What the search covered. Seconds, the tables found so far, and the steps."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "sources": "[]",
+    "headingLevel": "3",
+    "announcement": "\"polite\"",
+    "appearance": "\"card\""
+  },
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "ButtonVariant": "ButtonVariant.json",
+    "CartesianChartProps": "CartesianChartProps.json",
+    "ChartDatum": "ChartDatum.json",
+    "ChartProps": "ChartProps.json",
+    "ChartSeries": "ChartSeries.json",
+    "DataAnswerChart": "DataAnswerChart.json",
+    "DataAnswerLabels": "DataAnswerLabels.json",
+    "DataAnswerProps": "DataAnswerProps.json",
+    "DonutChartProps": "DonutChartProps.json",
+    "DonutDatum": "DonutDatum.json",
+    "FeedbackBarLabels": "FeedbackBarLabels.json",
+    "FeedbackReason": "FeedbackReason.json",
+    "SourceReference": "SourceReference.json",
+    "StatusPillState": "StatusPillState.json",
+    "ThinkingPanelLabels": "ThinkingPanelLabels.json",
+    "ThinkingPanelProps": "ThinkingPanelProps.json"
+  }
+}

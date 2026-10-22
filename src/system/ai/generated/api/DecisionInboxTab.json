@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DecisionInboxTab",
+  "kind": "type",
+  "source": "DecisionInbox.tsx",
+  "sourceHash": "c19ef2d40f4852b899311aee8de8793d4ff45fe2faf5004c7886649a27c32976",
+  "type": "DecisionInboxTab",
+  "typeParameters": [],
+  "members": [
+    "\"all\"",
+    "\"running\"",
+    "\"completed\"",
+    "\"needs-you\""
+  ],
+  "relatedTypes": {
+    "DecisionInboxItem": "DecisionInboxItem.json",
+    "DecisionInboxLabels": "DecisionInboxLabels.json",
+    "DecisionInboxProps": "DecisionInboxProps.json"
+  }
+}

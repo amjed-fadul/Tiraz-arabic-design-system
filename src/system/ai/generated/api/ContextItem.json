@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ContextItem",
+  "kind": "type",
+  "source": "TaskStarter.tsx",
+  "sourceHash": "34a91d7de51faa0a9dc647a5e519786f9b661bdbcc418416fcb32359defd0603",
+  "type": "ContextItem",
+  "description": "A record attached to the request, or offered by the @ picker.",
+  "typeParameters": [],
+  "props": {
+    "icon": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "kind": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "What kind of record it is, beside its name in the picker: «عميل», «فاتورة»."
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ModeOption": "ModeOption.json",
+    "TaskStarterLabels": "TaskStarterLabels.json",
+    "TaskStarterProps": "TaskStarterProps.json"
+  }
+}

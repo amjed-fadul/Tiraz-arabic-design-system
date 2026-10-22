@@ -1,0 +1,50 @@
+.tiraz-system .tz-pattern-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-inline-size: 0;
+}
+.tiraz-system .tz-pattern-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.tiraz-system .tz-pattern-error,
+.tiraz-system .tz-pattern-success {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.tiraz-system .tz-pattern-error {
+  color: var(--danger);
+}
+.tiraz-system .tz-pattern-success {
+  color: var(--success);
+}
+.tiraz-system .tz-pattern-heading {
+  margin: 0;
+  font-size: var(--text-heading);
+}
+.tiraz-system .tz-invoice-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+}
+.tiraz-system .tz-invoice-details > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  border-block-end: 1px solid var(--border);
+  padding-block-end: var(--space-3);
+}
+.tiraz-system .tz-invoice-details dt {
+  color: var(--text-secondary);
+}
+.tiraz-system .tz-invoice-details dd {
+  margin: 0;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}

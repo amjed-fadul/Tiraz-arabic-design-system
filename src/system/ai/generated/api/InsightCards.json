@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InsightCards",
+  "kind": "component",
+  "source": "InsightCards.tsx",
+  "sourceHash": "ba1e9a28aa1c0ad485df4a5c13fa4c75567a70aac8d4becb2e6a1499b0a75d85",
+  "type": "({ items, headingLevel, labels, className, }: InsightCardsProps) => JSX.Element",
+  "description": "One finding at a time; stable IDs preserve the selected finding through updates.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  items,\n  headingLevel = 3,\n  labels,\n  className = \"\",\n}",
+          "type": "InsightCardsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The level of the finding's title; 3 by default."
+    },
+    "items": {
+      "type": "readonly InsightItem[]",
+      "required": true
+    },
+    "labels": {
+      "type": "InsightCardsLabels | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "headingLevel": "3",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "BadgeTone": "BadgeTone.json",
+    "InsightCardsLabels": "InsightCardsLabels.json",
+    "InsightCardsProps": "InsightCardsProps.json",
+    "InsightItem": "InsightItem.json"
+  }
+}

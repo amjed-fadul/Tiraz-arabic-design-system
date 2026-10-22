@@ -16,6 +16,28 @@ guidance and dependencies while preserving routes, entry files and existing
 versions. For other React bundlers, use the compiled package imports. Follow `TIRAZ_SETUP.md`; use React 19. The remaining guide applies to
 both copied source and `node_modules/@amjedfadul/tiraz/source/system`.
 
+## Installed source and generated facts
+
+Source installs include `tiraz.project.json` at the app root. Its paths resolve
+from that directory, so the app can move without changing the manifest. Use
+`npx @amjedfadul/tiraz init --dir src/ui` to choose a source parent; it keeps
+`system` and `mascot` as siblings. Run `npx @amjedfadul/tiraz verify` from the
+app to report modified or missing files. Verification never overwrites changes;
+for updates, install separately and review a diff.
+
+[Generated knowledge](generated/manifest.json) contains the current public
+TypeScript contracts, source hashes, and [CSS token inventory](generated/tokens.json).
+API facts are generated from source; this guide and registry remain authored
+usage guidance. The token inventory preserves selectors, media conditions and
+CSS references; it is not a DTCG export. Source/types remain authoritative.
+
+[Business patterns](../patterns/README.md) export `CustomerEditSheet`,
+`PreferenceSettings` and `InvoiceActions` from the main entry. They reuse current
+controls and caller-owned data, localized labels and persistence. Their
+[compiling example](../patterns/examples/BusinessPatternsExample.tsx) covers
+Arabic/English, cancellation and destructive-action confirmation. Read their
+contracts before choosing callback and label props.
+
 Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-eight**
 component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, DataAnswer, AgentTask, DecisionInbox, SuggestedEdits, ImageGeneration, DraftReview, ChangeSummary, AssistantControls, Terminal and ChatApp.
 Toast is an imperative hook/provider family, not an exported `Toast` component.

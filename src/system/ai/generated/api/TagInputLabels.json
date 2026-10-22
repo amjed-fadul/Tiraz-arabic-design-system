@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TagInputLabels",
+  "kind": "type",
+  "source": "TagInput.tsx",
+  "sourceHash": "7c0cf700cea567795662343f7137ac9b1c2a43c3ab803e0c0b0bda3d860348b2",
+  "type": "TagInputLabels",
+  "typeParameters": [],
+  "props": {
+    "duplicate": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "maximum": {
+      "type": "((count: number) => string) | undefined",
+      "required": false
+    },
+    "remove": {
+      "type": "((tag: string) => string) | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "TagInputProps": "TagInputProps.json"
+  }
+}

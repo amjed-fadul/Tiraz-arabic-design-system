@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "exportName": "CustomerEditSheet",
+  "kind": "component",
+  "source": "patterns/CustomerEditSheet.tsx",
+  "sourceHash": "783d82b8fef45c71a729020727873a3eb8b6657c9c8766ff3b4e48b64721e83b",
+  "type": "(props: CustomerEditSheetProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "props",
+          "type": "CustomerEditSheetProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "customer": {
+      "type": "CustomerData",
+      "required": true
+    },
+    "labels": {
+      "type": "CustomerEditLabels",
+      "required": true
+    },
+    "onSave": {
+      "type": "(customer: CustomerData, context: ActionContext) => Promise<void>",
+      "required": true,
+      "description": "Resolve after persistence succeeds; reject to retain the draft."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ActionContext": "ActionContext.json",
+    "CustomerData": "CustomerData.json",
+    "CustomerEditLabels": "CustomerEditLabels.json",
+    "CustomerEditSheetProps": "CustomerEditSheetProps.json"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "exportName": "useReducedMotion",
+  "kind": "function",
+  "source": "useReducedMotion.ts",
+  "sourceHash": "af92e9f686959f186823f698909c0ddb6b1c30be7e862b2f579f46ed89fc838e",
+  "type": "() => boolean",
+  "description": "Internal preference for cosmetic timers and SVG motion as well as CSS.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [],
+      "returns": "boolean"
+    }
+  ],
+  "relatedTypes": {}
+}

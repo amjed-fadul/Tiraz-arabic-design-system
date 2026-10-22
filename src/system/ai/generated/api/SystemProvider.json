@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SystemProvider",
+  "kind": "component",
+  "source": "Provider.tsx",
+  "sourceHash": "e7176df0bb9f38e354c226bca4976adaba5a4f635053e2446f3bba926de680cf",
+  "type": "({ config, children, }: { config?: SystemConfig; children: ReactNode; }) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  config = defaultConfig,\n  children,\n}",
+          "type": "{ config?: SystemConfig; children: ReactNode; }",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "config": {
+      "type": "SystemConfig | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "config": "defaultConfig"
+  },
+  "relatedTypes": {
+    "Accent": "Accent.json",
+    "Direction": "Direction.json",
+    "Numerals": "Numerals.json",
+    "SystemConfig": "SystemConfig.json"
+  }
+}

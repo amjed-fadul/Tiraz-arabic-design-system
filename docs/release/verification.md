@@ -6,12 +6,12 @@ GitHub push, npm publication, Vercel deployment and connection to tiraz.dev.
 
 ## Local candidate
 
-- Full local suite: **1,844 tests, 147 files passed** with
+- Full local suite: **1,894 tests, 150 files passed** with
   `npm test -- --maxWorkers=2`.
-- Package/installer tests: **14 passed**, including a production React render
+- Package/installer tests: **36 passed**, including a production React render
   after building from the test environment, source collisions, symlinks,
   unsupported React/ReactDOM versions, non-Vite refusal and package contents.
-- Final guide/navigation tests: **33 passed** after visual copy-control refinements.
+- Final guide/portable registry checks: **17 passed**; registry delivery checks: **7 passed** after correcting the test module import for the website typecheck.
 - Lint: zero warnings. Website build and formatting pass. CSS audit: `[]`.
 - Packed `@amjedfadul/tiraz@0.1.0` installed into a separate app with real npm dependencies;
   that app typechecks and builds. Its installed CLI creates a fresh Vite app,
@@ -23,6 +23,18 @@ GitHub push, npm publication, Vercel deployment and connection to tiraz.dev.
 - Independent review found three issues, all fixed and re-reviewed: test-mode
   JSX output, incomplete React version preflight, and unsupported non-Vite
   source copying. No remaining Critical/Important findings were reported.
+- AI-ready extensions reviewed independently. Custom destination collisions
+  (including case variants) and hidden-directory imports were fixed and verified.
+  No remaining Critical/Important findings in the review.
+- Generated API/token knowledge and registry freshness checks pass. All three
+  business patterns ship in runtime exports, declarations and editable source.
+- Real shadcn 4.22.1 install: 552 files; all 551 source hashes verify. Fresh
+  consumer typecheck/build and Arabic/English fonts, portraits and Khayt checks pass.
+- The installed npm CLI builds both default and custom (`src/.ui`) fresh apps;
+  each verifies all 551 files. The compiled package consumer also builds.
+- Packed business patterns: eight Chrome scenarios across Arabic/English,
+  light/dark and desktop/phone pass cancellation, confirmation and focus checks;
+  no browser errors or axe violations.
 - npm authentication confirmed as the owner account before publication.
 
 The package keeps React as a peer and external import. Mascot PNGs are emitted
@@ -36,12 +48,18 @@ Local scripts, screenshots and full logs are under `/tmp/tiraz-release/`.
 
 ## Publication and production
 
-Main integration completed at `f84016f`; GitHub transfer is in progress.
-The unscoped npm name was rejected by the registry similarity policy. The owner
-selected `@amjedfadul/tiraz`; the renamed package passes 47 focused tests, lint,
-build, formatting and a clean-consumer install/build.
+Initial main integration completed at `f84016f`; GitHub main and Woven reached
+`4b68801`. The unscoped npm name was rejected by the registry similarity policy;
+the owner selected `@amjedfadul/tiraz` and approved the AI-ready additions.
 
-Publication is held pending reconciliation of the distinct AI-ready branch
-capabilities recorded in worktree-audit.md. No npm publication is claimed.
-Record registry and deployment results here after completing them. The guide retains an unpublished status
-until the npm registry confirms version 0.1.0.
+Final tested tarball: `@amjedfadul/tiraz@0.1.0`, SHA-512 integrity
+`sha512-vK3P7rvcNduwPIJJZrsBa1vD2587SHVuPi2iuUQe8En7H75JK8m63fKclvD7kX2w9aQKu8z0xi/IXn9P0zpUFA==`.
+
+Vercel project `tiraz` is connected to the intended GitHub repository in team
+`team_9mgxRbrPlrY6rwLal9hJ4Gpg`. Project ID:
+`prj_75uv04BOPWWWArHPSJQJ5HNKEnSp`. Vite, Node 24, `npm run build`, output `dist`.
+`tiraz.dev` is attached, owned by that team, verified and configured correctly.
+No nameserver or mail-record changes were required.
+
+Publication and the production deployment remain pending at this candidate.
+The guide keeps its unpublished status until the registry confirms version 0.1.0.

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "exportName": "UserQuestion",
+  "kind": "type",
+  "source": "AskUserQuestions.tsx",
+  "sourceHash": "372837b435ff86e4f6eb501683fd58b911eeee95550908f3d3655f3633f9e5bd",
+  "type": "UserQuestion",
+  "typeParameters": [],
+  "props": {
+    "allowOther": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "choices": {
+      "type": "readonly { value: string; label: string; description?: string; }[] | undefined",
+      "required": false
+    },
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "required": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Defaults to true; optional questions may be left blank."
+    },
+    "type": {
+      "type": "\"text\" | \"choice\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"text\"",
+        "\"choice\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AskUserQuestionsLabels": "AskUserQuestionsLabels.json",
+    "AskUserQuestionsProps": "AskUserQuestionsProps.json",
+    "QuestionAnswer": "QuestionAnswer.json",
+    "QuestionAnswers": "QuestionAnswers.json"
+  }
+}

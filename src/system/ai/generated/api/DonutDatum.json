@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DonutDatum",
+  "kind": "type",
+  "source": "Charts.tsx",
+  "sourceHash": "dcc11f58cb7a5d8424e3402bcb0efe5c156d81b1604a9c4c1968474908c1f30d",
+  "type": "DonutDatum",
+  "typeParameters": [],
+  "props": {
+    "color": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "key": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "number | null",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "CartesianChartProps": "CartesianChartProps.json",
+    "ChartDatum": "ChartDatum.json",
+    "ChartProps": "ChartProps.json",
+    "ChartSeries": "ChartSeries.json",
+    "DonutChartProps": "DonutChartProps.json"
+  }
+}

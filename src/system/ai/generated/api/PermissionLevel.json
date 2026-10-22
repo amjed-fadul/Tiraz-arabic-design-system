@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "exportName": "PermissionLevel",
+  "kind": "type",
+  "source": "AssistantControls.tsx",
+  "sourceHash": "77a13e1424cb1e6161a1d2aac7bab253998a3eb8909e0303aafc7abe397076e6",
+  "type": "PermissionLevel",
+  "description": "How much the assistant may do before it asks: always, if sensitive, or never.",
+  "typeParameters": [],
+  "members": [
+    "\"auto\"",
+    "\"always\"",
+    "\"sensitive\""
+  ],
+  "relatedTypes": {
+    "AssistantControlsLabels": "AssistantControlsLabels.json",
+    "AssistantControlsProps": "AssistantControlsProps.json",
+    "AssistantMemoryItem": "AssistantMemoryItem.json",
+    "AssistantPermission": "AssistantPermission.json"
+  }
+}

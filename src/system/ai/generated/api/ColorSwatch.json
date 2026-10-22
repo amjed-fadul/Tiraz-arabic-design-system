@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ColorSwatch",
+  "kind": "type",
+  "source": "ColorPicker.tsx",
+  "sourceHash": "e8f692d5e3039909e21066f3c002ff0c4eb6ab525061002d2f1e437ffd90463d",
+  "type": "ColorSwatch",
+  "typeParameters": [],
+  "props": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ColorPickerLabels": "ColorPickerLabels.json",
+    "ColorPickerProps": "ColorPickerProps.json"
+  }
+}

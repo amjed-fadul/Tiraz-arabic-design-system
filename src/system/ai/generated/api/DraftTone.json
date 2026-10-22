@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DraftTone",
+  "kind": "type",
+  "source": "DraftReview.tsx",
+  "sourceHash": "79132c466e928b3c122569b78358d32ca9ee2e94b36c92340b1c5b11630a3400",
+  "type": "DraftTone",
+  "typeParameters": [],
+  "members": [
+    "\"friendly\"",
+    "\"brief\"",
+    "\"formal\""
+  ],
+  "relatedTypes": {
+    "DraftReviewLabels": "DraftReviewLabels.json",
+    "DraftReviewProps": "DraftReviewProps.json"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FollowUps",
+  "kind": "component",
+  "source": "FollowUps.tsx",
+  "sourceHash": "ab9f70669168c26581fe553c5155f5642eb079449ee66560315fa96a3288cae3",
+  "type": "({ items, onSelect, label }: FollowUpsProps) => JSX.Element | null",
+  "description": "Suggested next questions (spec section 11): a named list of buttons.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ items, onSelect, label }",
+          "type": "FollowUpsProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element | null"
+    }
+  ],
+  "props": {
+    "items": {
+      "type": "readonly { id: string; label: string; }[]",
+      "required": true
+    },
+    "label": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "The list's name; «أسئلة تالية» by default."
+    },
+    "onSelect": {
+      "type": "(id: string) => void",
+      "required": true,
+      "description": "The person picked a question; the host asks it."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "FollowUpsProps": "FollowUpsProps.json"
+  }
+}

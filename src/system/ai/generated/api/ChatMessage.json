@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChatMessage",
+  "kind": "type",
+  "source": "ChatThread.tsx",
+  "sourceHash": "c3c5ca5906b56dd7aa8e36780a903f0a48a4b5b8c5eb278a9de251ed1b046cc5",
+  "type": "ChatMessage",
+  "typeParameters": [],
+  "props": {
+    "actions": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "avatar": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "content": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "error": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Why a failed reply failed, kept as text beside the partial reply."
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "identity": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "onRetry": {
+      "type": "(() => void) | undefined",
+      "required": false,
+      "description": "Offers «أعد المحاولة» on a failed reply."
+    },
+    "role": {
+      "type": "\"user\" | \"assistant\"",
+      "required": true,
+      "members": [
+        "\"user\"",
+        "\"assistant\""
+      ]
+    },
+    "status": {
+      "type": "\"failed\" | \"completed\" | \"stopped\" | \"streaming\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"failed\"",
+        "\"completed\"",
+        "\"stopped\"",
+        "\"streaming\""
+      ],
+      "description": "The reply's state. A stopped one says so; a failed one shows `error`."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ChatThreadMessageProps": "ChatThreadMessageProps.json",
+    "ChatThreadProps": "ChatThreadProps.json"
+  }
+}

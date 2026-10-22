@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChartSeries",
+  "kind": "type",
+  "source": "Charts.tsx",
+  "sourceHash": "dcc11f58cb7a5d8424e3402bcb0efe5c156d81b1604a9c4c1968474908c1f30d",
+  "type": "ChartSeries",
+  "typeParameters": [],
+  "props": {
+    "color": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "CSS color or variable; omit for the system palette."
+    },
+    "key": {
+      "type": "string",
+      "required": true,
+      "description": "Stable, unique key into each data row. Reuse order/colors across comparable charts."
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "CartesianChartProps": "CartesianChartProps.json",
+    "ChartDatum": "ChartDatum.json",
+    "ChartProps": "ChartProps.json",
+    "DonutChartProps": "DonutChartProps.json",
+    "DonutDatum": "DonutDatum.json"
+  }
+}

@@ -47,3 +47,31 @@ app without partial writes. Check both languages in a browser, the full local
 gate, npm contents, the remote commit, Vercel build state and public domain.
 Publishing may require the owner to complete npm authentication; never request
 or print an authentication token.
+
+## Approved AI-ready branch integration
+
+The owner explicitly selected inclusion of the useful additions from
+`codex/tiraz-ai-ready` before the first public release. Adapt those capabilities
+against the current Woven APIs; do not replace modern styling, RTL behavior,
+portable guidance or workbench interfaces with the earlier six-component tree.
+
+- Port CustomerEditSheet, PreferenceSettings and InvoiceActions into
+  `src/system/patterns`, reuse current Input/Button/Switch/Sheet/DropdownMenu,
+  and export the patterns from the main system entry. Use caller-owned labels
+  and persistence, cancellation signals, duplicate-submit guards and stale-result
+  protection. Closing details cancels outstanding work. Destructive actions
+  require confirmation before their callback. Keep busy controls focusable.
+- Generate public TypeScript contracts and a CSS token inventory from current
+  authoritative source, with hashes and freshness checks. Keep authored guidance
+  separate. Ship generated metadata inside `src/system/ai/generated` and expose
+  the same guidance at `/llms.txt` and `/ai/` on the website.
+- Extend the npm source installer with a relative installation manifest and
+  `verify` command that reports modified/missing files without overwriting them.
+  Support a safe custom system destination while preserving relative mascot
+  imports. Reject traversal, symlinks and existing output before writing.
+- Generate a shadcn-compatible complete source item from the same npm source
+  payload, including binary assets in a supported delivery form. Test actual
+  installation with the CLI against a locally served registry, then the deployed
+  URL. No claim of working hosted installation until tested.
+- Preserve prior pilot/research work in Git history and record the integration
+  disposition. It is evidence and developer tooling, not package runtime.

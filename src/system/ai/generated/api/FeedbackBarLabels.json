@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FeedbackBarLabels",
+  "kind": "type",
+  "source": "FeedbackBar.tsx",
+  "sourceHash": "0b9aa356751ca594c0eeaad0c0188eb56dc878e580614a290a09be2dee731f13",
+  "type": "FeedbackBarLabels",
+  "description": "Every built-in string the bar shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "copied": {
+      "type": "string",
+      "required": true,
+      "description": "The word that shows beside the buttons for two seconds after a copy."
+    },
+    "copy": {
+      "type": "string",
+      "required": true
+    },
+    "group": {
+      "type": "string",
+      "required": true,
+      "description": "The bar's name."
+    },
+    "helpful": {
+      "type": "string",
+      "required": true
+    },
+    "notHelpful": {
+      "type": "string",
+      "required": true
+    },
+    "reason": {
+      "type": "Record<FeedbackReason, string>",
+      "required": true
+    },
+    "reasons": {
+      "type": "string",
+      "required": true,
+      "description": "The reasons' name, shown once the answer is rated not helpful."
+    },
+    "regenerate": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FeedbackBarProps": "FeedbackBarProps.json",
+    "FeedbackReason": "FeedbackReason.json"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ToastMessage",
+  "kind": "type",
+  "source": "useToast.ts",
+  "sourceHash": "5183e4936ac200afa0ebca6a30534bc2140d76219af079ff0fb0b91066d8ee00",
+  "type": "ToastMessage",
+  "typeParameters": [],
+  "props": {
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "duration": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tone": {
+      "type": "\"error\" | \"success\" | \"info\" | \"warning\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"error\"",
+        "\"success\"",
+        "\"info\"",
+        "\"warning\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {}
+}

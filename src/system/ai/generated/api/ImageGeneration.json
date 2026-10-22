@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ImageGeneration",
+  "kind": "component",
+  "source": "ImageGeneration.tsx",
+  "sourceHash": "9696331a866f3ef78d848faeb4a70ac8fb259b28913970f6e9a2765149a6053e",
+  "type": "({ agentPresentation, prompt, options, status, progress, images, selected, onSelectedChange, onUse, onVariations, onEditPrompt, onRetry, blockedReason, agent, duration, headingLevel, labels, announcement, appearance, }: ImageGenerationProps) => JSX.Element",
+  "description": "Image generation (spec section 12.7): make an image from a description and\npick the version to use. The host owns the status, the progress and the\nimages. While it is queued or weaving the canvas is a WeaveCanvas, with the\nversions and actions quiet; once it is done or failed the canvas is the\nchosen image as an ImageResult. Its polite region says each change of status\nonce unless the host owns announcements, never the progress.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  agentPresentation,\n  prompt,\n  options,\n  status,\n  progress,\n  images,\n  selected,\n  onSelectedChange,\n  onUse,\n  onVariations,\n  onEditPrompt,\n  onRetry,\n  blockedReason,\n  agent,\n  duration,\n  headingLevel = 3,\n  labels,\n  announcement = \"polite\",\n  appearance = \"card\",\n}",
+          "type": "ImageGenerationProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agent": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The agent that made the images, first in the footer."
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional avatar, name, identity controls and tray color in the existing header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status changes politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "blockedReason": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Why the request was refused, shown while `status` is \"blocked\"."
+    },
+    "duration": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Seconds the generation took, last in the footer."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The heading's level; 3 by default."
+    },
+    "images": {
+      "type": "readonly { id: string; src?: string; alt: string; width: number; height: number; }[]",
+      "required": true
+    },
+    "labels": {
+      "type": "Partial<ImageGenerationLabels> | undefined",
+      "required": false
+    },
+    "onEditPrompt": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onRetry": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onSelectedChange": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onUse": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onVariations": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "options": {
+      "type": "readonly { id: string; label: ReactNode; }[] | undefined",
+      "required": false,
+      "description": "What the request asked for besides the description: ratio, style, count."
+    },
+    "progress": {
+      "type": "number | null | undefined",
+      "required": false,
+      "description": "Actual host progress from 0 to 100; omit or pass null while it is unknown."
+    },
+    "prompt": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The person's description of the image."
+    },
+    "selected": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "The chosen version. Without it the pattern keeps its own, from the first."
+    },
+    "status": {
+      "type": "\"failed\" | \"completed\" | \"queued\" | \"weaving\" | \"blocked\"",
+      "required": true,
+      "members": [
+        "\"failed\"",
+        "\"completed\"",
+        "\"queued\"",
+        "\"weaving\"",
+        "\"blocked\""
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "headingLevel": "3",
+    "announcement": "\"polite\"",
+    "appearance": "\"card\""
+  },
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "ButtonVariant": "ButtonVariant.json",
+    "ImageGenerationLabels": "ImageGenerationLabels.json",
+    "ImageGenerationProps": "ImageGenerationProps.json"
+  }
+}

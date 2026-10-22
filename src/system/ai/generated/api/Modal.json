@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Modal",
+  "kind": "component",
+  "source": "Modal.tsx",
+  "sourceHash": "2ce0044aedf3ce0b7b429c6d34f3b62785cea6c6930db506b24ca8ca017088ba",
+  "type": "({ trigger, title, description, closeLabel, children, footer, open, onOpenChange, initialFocusRef, }: ModalProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  trigger,\n  title,\n  description,\n  closeLabel,\n  children,\n  footer,\n  open,\n  onOpenChange,\n  initialFocusRef,\n}",
+          "type": "ModalProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "footer": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "initialFocusRef": {
+      "type": "RefObject<HTMLElement | null> | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "trigger": {
+      "type": "ReactElement<unknown, string | JSXElementConstructor<any>>",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ModalProps": "ModalProps.json"
+  }
+}

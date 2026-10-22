@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AvatarMember",
+  "kind": "type",
+  "source": "AvatarGroup.tsx",
+  "sourceHash": "add7d784d201953b9283dfb4557010cdc288ee78d91371bf52dc35b211fbb6c5",
+  "type": "AvatarMember",
+  "typeParameters": [],
+  "props": {
+    "fallback": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "src": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AvatarGroupProps": "AvatarGroupProps.json"
+  }
+}

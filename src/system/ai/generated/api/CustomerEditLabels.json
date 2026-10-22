@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "exportName": "CustomerEditLabels",
+  "kind": "type",
+  "source": "patterns/CustomerEditSheet.tsx",
+  "sourceHash": "783d82b8fef45c71a729020727873a3eb8b6657c9c8766ff3b4e48b64721e83b",
+  "type": "CustomerEditLabels",
+  "typeParameters": [],
+  "props": {
+    "cancel": {
+      "type": "string",
+      "required": true
+    },
+    "close": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "edit": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "error": {
+      "type": "string",
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "save": {
+      "type": "string",
+      "required": true
+    },
+    "saved": {
+      "type": "string",
+      "required": true
+    },
+    "saving": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "CustomerData": "CustomerData.json",
+    "CustomerEditSheetProps": "CustomerEditSheetProps.json"
+  }
+}

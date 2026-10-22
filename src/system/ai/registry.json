@@ -1227,6 +1227,66 @@
     {
       "name": "AgentPresentation",
       "source": "AgentPresentation.tsx"
+    },
+    {
+      "name": "CustomerEditSheet",
+      "source": "patterns/CustomerEditSheet.tsx"
+    },
+    {
+      "name": "CustomerData",
+      "source": "patterns/CustomerEditSheet.tsx"
+    },
+    {
+      "name": "CustomerEditLabels",
+      "source": "patterns/CustomerEditSheet.tsx"
+    },
+    {
+      "name": "CustomerEditSheetProps",
+      "source": "patterns/CustomerEditSheet.tsx"
+    },
+    {
+      "name": "PreferenceSettings",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "PreferenceItem",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "PreferenceLabels",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "PreferenceSettingsProps",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "InvoiceActions",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
+      "name": "InvoiceData",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
+      "name": "InvoiceAction",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
+      "name": "InvoiceActionConfirmation",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
+      "name": "InvoiceActionLabels",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
+      "name": "InvoiceActionsProps",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
+      "name": "ActionContext",
+      "source": "patterns/useAsyncAction.ts"
     }
   ],
   "configuration": {
@@ -11932,6 +11992,27 @@
       "provenance": "ai/assets/results/README.md",
       "license": "ai/assets/LICENSE.txt",
       "purpose": "Original local illustration or fictional source document; preserve asset URL imports in copied examples."
+    }
+  ],
+  "generatedKnowledge": "ai/generated/manifest.json",
+  "businessPatterns": [
+    {
+      "api": "CustomerEditSheet",
+      "source": "patterns/CustomerEditSheet.tsx",
+      "docs": "patterns/README.md",
+      "examples": ["patterns/examples/BusinessPatternsExample.tsx"]
+    },
+    {
+      "api": "PreferenceSettings",
+      "source": "patterns/PreferenceSettings.tsx",
+      "docs": "patterns/README.md",
+      "examples": ["patterns/examples/BusinessPatternsExample.tsx"]
+    },
+    {
+      "api": "InvoiceActions",
+      "source": "patterns/InvoiceActions.tsx",
+      "docs": "patterns/README.md",
+      "examples": ["patterns/examples/BusinessPatternsExample.tsx"]
     }
   ]
 }

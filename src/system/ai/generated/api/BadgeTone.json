@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "exportName": "BadgeTone",
+  "kind": "type",
+  "source": "Badge.tsx",
+  "sourceHash": "f745989f5489cbf6e49131ac51abd03273c938e2e49f8ddccc3295fde98287cb",
+  "type": "BadgeTone",
+  "typeParameters": [],
+  "members": [
+    "\"error\"",
+    "\"success\"",
+    "\"info\"",
+    "\"warning\"",
+    "\"neutral\"",
+    "\"ai\""
+  ],
+  "relatedTypes": {
+    "BadgeProps": "BadgeProps.json"
+  }
+}

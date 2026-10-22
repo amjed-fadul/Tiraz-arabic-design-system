@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TimelineItem",
+  "kind": "type",
+  "source": "Timeline.tsx",
+  "sourceHash": "759476922fc7c6c946ad424ec614bddbfa3d3b2bae3792cbdc3bcb1fb0b8b86d",
+  "type": "TimelineItem",
+  "typeParameters": [],
+  "props": {
+    "content": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Application content/actions, composed with existing components."
+    },
+    "dateTime": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "A valid machine-readable HTML date/time, when available."
+    },
+    "description": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "icon": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Decorative icon; include any essential meaning in the title."
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "timestamp": {
+      "type": "string",
+      "required": true,
+      "description": "Application-formatted date/time, in the application's locale/time zone."
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "TimelineProps": "TimelineProps.json"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InlineCitationLabels",
+  "kind": "type",
+  "source": "Sources.tsx",
+  "sourceHash": "31a121e3b2e202903de08c6230412d844d90678be56ff85a42ccb9bcfe29729a",
+  "type": "InlineCitationLabels",
+  "typeParameters": [],
+  "props": {
+    "open": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "source": {
+      "type": "((number: number, title: string) => string) | undefined",
+      "required": false
+    },
+    "unavailable": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InlineCitationProps": "InlineCitationProps.json",
+    "SourceReference": "SourceReference.json",
+    "SourcesLabels": "SourcesLabels.json",
+    "SourcesProps": "SourcesProps.json"
+  }
+}

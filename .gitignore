@@ -24,6 +24,11 @@ packages/tiraz/LICENSE
 *.tgz
 .vercel
 
+# Generated website delivery (npm run build regenerates these)
+/public/ai/
+/public/r/
+/public/llms.txt
+
 # Local credentials and environment configuration
 .env
 .env.*

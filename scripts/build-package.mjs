@@ -2,12 +2,14 @@ import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { basename, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildKnowledge, writeOrCheck } from "./knowledge.mjs";
 
 // This is a release artifact, including when spawned by Vitest (NODE_ENV=test).
 process.env.NODE_ENV = "production";
 const { build } = await import("vite");
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+writeOrCheck(buildKnowledge());
 const target = resolve(root, "packages/tiraz");
 const manifest = JSON.parse(
   await readFile(resolve(target, "package.json"), "utf8"),

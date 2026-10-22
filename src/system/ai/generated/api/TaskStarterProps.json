@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TaskStarterProps",
+  "kind": "type",
+  "source": "TaskStarter.tsx",
+  "sourceHash": "34a91d7de51faa0a9dc647a5e519786f9b661bdbcc418416fcb32359defd0603",
+  "type": "TaskStarterProps",
+  "typeParameters": [],
+  "props": {
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional identity in the existing task or answer header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak context changes and submission errors, or leave them to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "context": {
+      "type": "readonly ContextItem[] | undefined",
+      "required": false
+    },
+    "contextUsage": {
+      "type": "ContextMeterProps | undefined",
+      "required": false,
+      "description": "The ring beside the mode, and the usage line in its menu."
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "disabledReason": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Why the assistant cannot take a request, as a line under the entry."
+    },
+    "greeting": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The small line above the question."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The question's level; the recent list's is one lower. 3 by default."
+    },
+    "labels": {
+      "type": "Partial<TaskStarterLabels> | undefined",
+      "required": false
+    },
+    "mentionOptions": {
+      "type": "readonly ContextItem[] | undefined",
+      "required": false,
+      "description": "The records \"@\" offers, filtered by what follows it."
+    },
+    "mode": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "modeMenuOpen": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ],
+      "description": "Controls the mode menu; pair `modeMenuOpen` with `onModeMenuOpenChange`."
+    },
+    "model": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "models": {
+      "type": "readonly ModelOption[] | undefined",
+      "required": false,
+      "description": "Explicit models, as a second radio section of the mode menu."
+    },
+    "modes": {
+      "type": "readonly ModeOption[] | undefined",
+      "required": false
+    },
+    "onAddContext": {
+      "type": "((id: string) => void) | undefined",
+      "required": false,
+      "description": "Called with the chosen record's id; the host adds it to `context`."
+    },
+    "onAttach": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onMention": {
+      "type": "((query: string) => void) | undefined",
+      "required": false,
+      "description": "Used when `mentionOptions` is absent: the host opens its own picker."
+    },
+    "onModeChange": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onModeMenuOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "onModelChange": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onOpenRecent": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onRemoveContext": {
+      "type": "((id: string) => void) | undefined",
+      "required": false
+    },
+    "onSubmit": {
+      "type": "(value: string, context: ContextItem[]) => void | Promise<void>",
+      "required": true,
+      "description": "As the entry beneath: a rejected promise keeps the draft and shows the error."
+    },
+    "onSuggestion": {
+      "type": "((id: string) => void) | undefined",
+      "required": false,
+      "description": "Called with the chosen suggestion's id; the host fills the draft or sends."
+    },
+    "onValueChange": {
+      "type": "(value: string) => void",
+      "required": true
+    },
+    "onVoice": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "recent": {
+      "type": "readonly { id: string; title: string; status: StatusPillState; time: ReactNode; }[] | undefined",
+      "required": false
+    },
+    "suggestions": {
+      "type": "readonly { id: string; label: string; prompt?: string; icon?: ReactNode; }[] | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The question; «ماذا نُنجز اليوم؟» by default."
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "ContextItem": "ContextItem.json",
+    "ContextMeterPart": "ContextMeterPart.json",
+    "ContextMeterProps": "ContextMeterProps.json",
+    "ModeOption": "ModeOption.json",
+    "ModelOption": "ModelOption.json",
+    "StatusPillState": "StatusPillState.json",
+    "TaskStarterLabels": "TaskStarterLabels.json"
+  }
+}

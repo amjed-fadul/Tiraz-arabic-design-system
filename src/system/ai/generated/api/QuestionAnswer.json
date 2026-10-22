@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "exportName": "QuestionAnswer",
+  "kind": "type",
+  "source": "AskUserQuestions.tsx",
+  "sourceHash": "372837b435ff86e4f6eb501683fd58b911eeee95550908f3d3655f3633f9e5bd",
+  "type": "QuestionAnswer",
+  "typeParameters": [],
+  "props": {
+    "choice": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "text": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AskUserQuestionsLabels": "AskUserQuestionsLabels.json",
+    "AskUserQuestionsProps": "AskUserQuestionsProps.json",
+    "QuestionAnswers": "QuestionAnswers.json",
+    "UserQuestion": "UserQuestion.json"
+  }
+}

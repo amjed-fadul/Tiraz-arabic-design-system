@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Field",
+  "kind": "component",
+  "source": "Field.tsx",
+  "sourceHash": "87f52cc2f8cede959012004c7d201eb049e7e85a25d8ff192094f827435bd018",
+  "type": "({ label, helper, error, required, id, className, \"aria-describedby\": describedBy, children, }: FieldProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  label,\n  helper,\n  error,\n  required,\n  id,\n  className = \"\",\n  \"aria-describedby\": describedBy,\n  children,\n}",
+          "type": "FieldProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "aria-describedby": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "children": {
+      "type": "(control: FieldControlProps) => ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "error": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "helper": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "required": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "FieldControlProps": "FieldControlProps.json",
+    "FieldProps": "FieldProps.json"
+  }
+}

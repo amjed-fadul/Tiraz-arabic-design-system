@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "exportName": "NotificationItem",
+  "kind": "type",
+  "source": "NotificationList.tsx",
+  "sourceHash": "31de87cd8d78b55c02298e51b1c391b8c80e06ff148760c9cc130a9b50e502f6",
+  "type": "NotificationItem",
+  "typeParameters": [],
+  "props": {
+    "action": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "avatar": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "dateTime": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Valid machine-readable HTML date/time, supplied by the application."
+    },
+    "description": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "icon": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Decorative icon. Essential meaning belongs in text."
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "read": {
+      "type": "boolean",
+      "required": true,
+      "members": [
+        "false",
+        "true"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "NotificationListProps": "NotificationListProps.json"
+  }
+}

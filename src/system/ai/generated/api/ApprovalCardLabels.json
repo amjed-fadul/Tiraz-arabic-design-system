@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ApprovalCardLabels",
+  "kind": "type",
+  "source": "ApprovalCard.tsx",
+  "sourceHash": "90848ba6883649ed56fe53326a1321e75e6599049363bbfd2af2ba4127ced5e3",
+  "type": "ApprovalCardLabels",
+  "description": "Every built-in string the card shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "approved": {
+      "type": "string",
+      "required": true
+    },
+    "expired": {
+      "type": "string",
+      "required": true
+    },
+    "failed": {
+      "type": "string",
+      "required": true
+    },
+    "irreversible": {
+      "type": "string",
+      "required": true,
+      "description": "The note `irreversible={true}` shows."
+    },
+    "needsYou": {
+      "type": "string",
+      "required": true,
+      "description": "The status pill while the request waits."
+    },
+    "oneTime": {
+      "type": "string",
+      "required": true
+    },
+    "recording": {
+      "type": "string",
+      "required": true
+    },
+    "rejected": {
+      "type": "string",
+      "required": true
+    },
+    "retryHint": {
+      "type": "string",
+      "required": true
+    },
+    "scope": {
+      "type": "string",
+      "required": true,
+      "description": "The card's description: approval records a decision, nothing more."
+    },
+    "target": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ApprovalCardProps": "ApprovalCardProps.json",
+    "ApprovalDecision": "ApprovalDecision.json",
+    "ApprovalDetails": "ApprovalDetails.json",
+    "ApprovalRecord": "ApprovalRecord.json",
+    "ApprovalRequest": "ApprovalRequest.json"
+  }
+}

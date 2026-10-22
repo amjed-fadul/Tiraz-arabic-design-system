@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "exportName": "StepItem",
+  "kind": "type",
+  "source": "Steps.tsx",
+  "sourceHash": "fdfbdc2cdd12c1109828ded208f9d4f4d0c4c0e2417bb553d9954232276d9c32",
+  "type": "StepItem",
+  "typeParameters": [],
+  "props": {
+    "description": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Text or inline content; keep labels free of interactive descendants."
+    },
+    "status": {
+      "type": "StepStatus",
+      "required": true,
+      "members": [
+        "\"error\"",
+        "\"current\"",
+        "\"upcoming\"",
+        "\"completed\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "StepStatus": "StepStatus.json",
+    "StepsProps": "StepsProps.json"
+  }
+}

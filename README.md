@@ -48,12 +48,26 @@ Inside an existing Vite React TypeScript application, run `npx @amjedfadul/tiraz
 `src/system` and `src/mascot`, retains licenses/assets, adds an additive
 `AGENTS.md` pointer, and preserves routes, entry files and dependency versions.
 It refuses existing source directories. `--no-install` skips npm installation.
-Read the generated `TIRAZ_SETUP.md` for existing-entry setup.
+Read the generated `TIRAZ_SETUP.md` for existing-entry setup. Add
+`--dir src/ui` to choose a source parent. `tiraz.project.json` records the actual
+paths and file hashes; `npx @amjedfadul/tiraz verify` reports missing or modified
+source without changing it.
 
-Before building a screen with a coding agent, read `src/system/ai/README.md`
+Before building a screen with a coding agent, follow `tiraz.project.json` to the
+guide (default `src/system/ai/README.md`)
 and query the bundled registry for the component needed. With package imports,
 that guide is at `node_modules/@amjedfadul/tiraz/source/system/ai/README.md`.
-Component source and exported types are authoritative.
+Generated TypeScript contracts and CSS token facts are indexed by
+`ai/generated/manifest.json`. Component source and exported types are authoritative.
+
+The package also exports `CustomerEditSheet`, `PreferenceSettings` and
+`InvoiceActions`, with translated labels, cancellation signals and confirmation
+for destructive actions. See `src/system/patterns/README.md`.
+
+For an existing shadcn workflow, the optional source registry is
+`https://tiraz.dev/r/tiraz-system.json`. It installs the same Tiraz library under
+`src/tiraz` and writes `tiraz.project.json`; Tiraz's own installer remains the
+primary quick start. The hosted AI entry point is `https://tiraz.dev/llms.txt`.
 
 ## Develop this repository
 

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChatAppLabels",
+  "kind": "type",
+  "source": "ChatApp.tsx",
+  "sourceHash": "b1093d4527dac8f1d49b8a7dd80f73083269b1ee0145a7eaa1c4be564af13f64",
+  "type": "ChatAppLabels",
+  "typeParameters": [],
+  "props": {
+    "closeNavigation": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "conversationActions": {
+      "type": "((title: string) => string) | undefined",
+      "required": false,
+      "description": "Names a row's menu button, for example «خيارات {title}»."
+    },
+    "delete": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "navigation": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "navigationDescription": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "newConversation": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "openNavigation": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "rename": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "sidePanel": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Names the side panel; «التفاصيل» by default."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ChatAppProps": "ChatAppProps.json",
+    "ChatConversationItem": "ChatConversationItem.json"
+  }
+}

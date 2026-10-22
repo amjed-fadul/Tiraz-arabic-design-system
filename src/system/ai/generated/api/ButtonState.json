@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ButtonState",
+  "kind": "type",
+  "source": "Button.tsx",
+  "sourceHash": "97a9c956b592f2b8bf48b46ef4468f90f64695b70c86cebd97666272ef91bb7f",
+  "type": "ButtonState",
+  "typeParameters": [],
+  "members": [
+    "\"error\"",
+    "\"idle\"",
+    "\"loading\"",
+    "\"success\""
+  ],
+  "relatedTypes": {
+    "ButtonProps": "ButtonProps.json",
+    "ButtonVariant": "ButtonVariant.json"
+  }
+}

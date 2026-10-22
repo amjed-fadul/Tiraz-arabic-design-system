@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChatConversationItem",
+  "kind": "type",
+  "source": "ChatApp.tsx",
+  "sourceHash": "b1093d4527dac8f1d49b8a7dd80f73083269b1ee0145a7eaa1c4be564af13f64",
+  "type": "ChatConversationItem",
+  "typeParameters": [],
+  "props": {
+    "group": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Conversations that share a group sit under its heading, and groups follow\nthe order of their first conversation. Ungrouped ones sit under the\nnavigation's own heading."
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ChatAppLabels": "ChatAppLabels.json",
+    "ChatAppProps": "ChatAppProps.json"
+  }
+}

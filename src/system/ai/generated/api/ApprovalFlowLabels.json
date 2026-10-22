@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ApprovalFlowLabels",
+  "kind": "type",
+  "source": "ApprovalFlow.tsx",
+  "sourceHash": "196ebbf340133ba4aa8df9f097cef9f55c79c6c632e7c0c4ad7c6b212b96ebfd",
+  "type": "ApprovalFlowLabels",
+  "description": "Every built-in string the flow shows; `labels` overrides any of them.",
+  "typeParameters": [],
+  "props": {
+    "allDecided": {
+      "type": "string",
+      "required": true,
+      "description": "Shown, and announced after the last decision, once all are decided."
+    },
+    "history": {
+      "type": "string",
+      "required": true,
+      "description": "Names the list of decisions already recorded."
+    },
+    "none": {
+      "type": "string",
+      "required": true,
+      "description": "Shown when there are no requests."
+    },
+    "position": {
+      "type": "(current: string, total: string) => string",
+      "required": true,
+      "description": "«الطلب ١ من ٢». The digits arrive formatted for the page's numerals."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ApprovalFlowProps": "ApprovalFlowProps.json"
+  }
+}

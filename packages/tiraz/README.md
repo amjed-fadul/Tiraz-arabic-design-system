@@ -49,6 +49,33 @@ It refuses existing source folders; there is no overwrite flag. Other React bund
 `TIRAZ_SETUP.md` for the entry imports. `--no-install` prepares files without
 running npm. Review compatibility if your existing app uses React before 19.
 
+## Verify and customize editable source
+
+```sh
+npx @amjedfadul/tiraz init --dir src/ui
+npx @amjedfadul/tiraz verify
+```
+
+`--dir` chooses the parent of `system` and `mascot`. The installer writes
+`tiraz.project.json` with real entry, stylesheet, guidance and knowledge paths,
+plus SHA-256 hashes. `verify` reports missing or modified files without changing
+them; your intentional edits are reported too. Keep that baseline for upgrades.
+It is a local change check, not a signature or proof of remote provenance.
+
+The generated knowledge bundle describes the current public TypeScript APIs
+and CSS tokens. Start with `ai/generated/manifest.json`, then read only the
+needed API file. Source and exported types remain authoritative.
+
+## Business patterns
+
+`CustomerEditSheet`, `PreferenceSettings` and `InvoiceActions` compose the
+shared controls for common application workflows. They are exported from the
+package root and from editable source. Pass translated labels and async
+callbacks; use the callback's `AbortSignal` to cancel pending work. Destructive
+invoice actions require confirmation copy. See
+`source/system/patterns/README.md` and its compiling example for the full APIs.
+A cancelled UI cannot undo a write your server already accepted.
+
 ## Optional Khayt avatar
 
 ```tsx

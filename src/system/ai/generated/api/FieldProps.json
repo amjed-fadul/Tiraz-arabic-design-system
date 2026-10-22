@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FieldProps",
+  "kind": "type",
+  "source": "Field.tsx",
+  "sourceHash": "87f52cc2f8cede959012004c7d201eb049e7e85a25d8ff192094f827435bd018",
+  "type": "FieldProps",
+  "typeParameters": [],
+  "props": {
+    "aria-describedby": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "children": {
+      "type": "(control: FieldControlProps) => ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "error": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "helper": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "id": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "required": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FieldControlProps": "FieldControlProps.json"
+  }
+}

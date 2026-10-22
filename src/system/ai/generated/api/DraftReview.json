@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DraftReview",
+  "kind": "component",
+  "source": "DraftReview.tsx",
+  "sourceHash": "79132c466e928b3c122569b78358d32ca9ee2e94b36c92340b1c5b11630a3400",
+  "type": "({ agentPresentation, status, title, record, recipients, attachments, body, onBodyChange, suggestion, tone, onToneChange, onSend, onDiscard, undoWindow, onUndo, agent, headingLevel, labels, announcement, appearance, }: DraftReviewProps) => JSX.Element",
+  "description": "Draft for review (spec section 13.3): the assistant writes a message for a\nrecord, and the person reviews it, edits it and sends it. The host owns the\nstatus, the text and the sending. Send hands over the text on screen, once\nper ready status; Ctrl or Cmd+Enter does the same, 500 ms after the text,\nthe tone, the recipients or the attachments last changed. Undo shows only\nwhile the host holds the message, and a receipt says what was sent, never\nthat it came back. The polite region says each status change once unless\nthe host owns announcements.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  agentPresentation,\n  status,\n  title,\n  record,\n  recipients,\n  attachments = [],\n  body,\n  onBodyChange,\n  suggestion,\n  tone,\n  onToneChange,\n  onSend,\n  onDiscard,\n  undoWindow,\n  onUndo,\n  agent,\n  headingLevel = 3,\n  labels,\n  announcement = \"polite\",\n  appearance = \"card\",\n}",
+          "type": "DraftReviewProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "agent": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The agent that wrote the draft, under the title."
+    },
+    "agentPresentation": {
+      "type": "AgentPresentation | undefined",
+      "required": false,
+      "description": "Optional avatar, name, identity controls and tray color in the existing header."
+    },
+    "announcement": {
+      "type": "\"off\" | \"polite\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"off\"",
+        "\"polite\""
+      ],
+      "description": "Speak status changes politely, or leave announcements to the host."
+    },
+    "appearance": {
+      "type": "\"card\" | \"plain\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"card\"",
+        "\"plain\""
+      ],
+      "description": "\"card\" sits on a tray; \"plain\" lives on its host's paper."
+    },
+    "attachments": {
+      "type": "readonly { id: string; label: ReactNode; }[] | undefined",
+      "required": false
+    },
+    "body": {
+      "type": "string",
+      "required": true,
+      "description": "The message: the host's growing text while writing, then the draft."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "description": "The heading's level; 3 by default."
+    },
+    "labels": {
+      "type": "Partial<DraftReviewLabels> | undefined",
+      "required": false
+    },
+    "onBodyChange": {
+      "type": "((body: string) => void) | undefined",
+      "required": false,
+      "description": "Makes the body a text area while ready without a suggestion."
+    },
+    "onDiscard": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "onSend": {
+      "type": "((text: string) => void) | undefined",
+      "required": false,
+      "description": "The text on screen, once per ready status."
+    },
+    "onToneChange": {
+      "type": "((tone: DraftTone) => void) | undefined",
+      "required": false
+    },
+    "onUndo": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "recipients": {
+      "type": "readonly { id: string; label: ReactNode; }[]",
+      "required": true
+    },
+    "record": {
+      "type": "{ id: string; customer: ReactNode; amount: ReactNode; overdue?: ReactNode; } | undefined",
+      "required": false,
+      "description": "The record the draft is about, framed on the tray under the header."
+    },
+    "status": {
+      "type": "\"writing\" | \"ready\" | \"sending\" | \"sent\" | \"discarded\"",
+      "required": true,
+      "members": [
+        "\"writing\"",
+        "\"ready\"",
+        "\"sending\"",
+        "\"sent\"",
+        "\"discarded\""
+      ]
+    },
+    "suggestion": {
+      "type": "{ title?: ReactNode; segments: readonly DiffSegment[]; decisions: Readonly<Record<string, \"accepted\" | \"rejected\">>; onDecisionsChange: (next: Record<string, \"accepted\" | \"rejected\">) => void; } | undefined",
+      "required": false,
+      "description": "An edit to the body, shown as tracked changes while ready."
+    },
+    "title": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "The heading; «مسودة للمراجعة» / Draft for review by default."
+    },
+    "tone": {
+      "type": "DraftTone | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"friendly\"",
+        "\"brief\"",
+        "\"formal\""
+      ]
+    },
+    "undoWindow": {
+      "type": "number | undefined",
+      "required": false,
+      "description": "Whole seconds left in the host's hold before it sends, read when the\ncountdown mounts. Undo shows only with `onUndo`, while they last."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "attachments": "[]",
+    "headingLevel": "3",
+    "announcement": "\"polite\"",
+    "appearance": "\"card\""
+  },
+  "relatedTypes": {
+    "AgentPresentation": "AgentPresentation.json",
+    "ButtonVariant": "ButtonVariant.json",
+    "DiffSegment": "DiffSegment.json",
+    "DraftReviewLabels": "DraftReviewLabels.json",
+    "DraftReviewProps": "DraftReviewProps.json",
+    "DraftTone": "DraftTone.json"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DiffSegment",
+  "kind": "type",
+  "source": "InlineDiff.tsx",
+  "sourceHash": "a140b52d1e6c6ab84d4f42363294f39ce6a9adfa40e88dd7b95c31914ef09abc",
+  "type": "DiffSegment",
+  "description": "A run of the passage: text that stays, or text a change inserts or deletes.",
+  "typeParameters": [],
+  "props": {
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "kind": {
+      "type": "\"insert\" | \"same\" | \"delete\"",
+      "required": true,
+      "members": [
+        "\"insert\"",
+        "\"same\"",
+        "\"delete\""
+      ]
+    },
+    "text": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InlineDiffProps": "InlineDiffProps.json"
+  }
+}

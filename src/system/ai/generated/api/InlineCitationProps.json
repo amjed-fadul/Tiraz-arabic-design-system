@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "exportName": "InlineCitationProps",
+  "kind": "type",
+  "source": "Sources.tsx",
+  "sourceHash": "31a121e3b2e202903de08c6230412d844d90678be56ff85a42ccb9bcfe29729a",
+  "type": "InlineCitationProps",
+  "typeParameters": [],
+  "props": {
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "labels": {
+      "type": "InlineCitationLabels | undefined",
+      "required": false
+    },
+    "mode": {
+      "type": "\"link\" | \"disclosure\" | \"preview\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"link\"",
+        "\"disclosure\"",
+        "\"preview\""
+      ],
+      "description": "Disclosure uses an interactive popup; link preserves native browser\nbehavior; preview is a link that shows the source on hover or focus (a\nbutton, when the source has no safe destination), and a tap opens the\ndisclosure's popup instead of following the link."
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false,
+      "description": "Called when the popup or preview opens or closes."
+    },
+    "source": {
+      "type": "SourceReference",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "InlineCitationLabels": "InlineCitationLabels.json",
+    "SourceReference": "SourceReference.json",
+    "SourcesLabels": "SourcesLabels.json",
+    "SourcesProps": "SourcesProps.json"
+  }
+}

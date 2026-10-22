@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ChatEntryLabels",
+  "kind": "type",
+  "source": "PromptEntry.tsx",
+  "sourceHash": "6c4468a300e795c53f5bb3522d78dec3a93c7d94630b93f72bb6b2100c6cb16b",
+  "type": "ChatEntryLabels",
+  "typeParameters": [],
+  "props": {
+    "failure": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "send": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "stop": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ChatComposerProps": "ChatComposerProps.json",
+    "ChatEntryState": "ChatEntryState.json"
+  }
+}
