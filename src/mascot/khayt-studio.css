@@ -1,0 +1,220 @@
+.khayt-studio {
+  --khayt-tint: color-mix(in srgb, var(--agent-color) 10%, var(--surface));
+  color: var(--text);
+}
+.khayt-studio .khayt-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-6);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  text-decoration: none;
+}
+.khayt-studio .khayt-studio-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(16rem, 0.8fr);
+  gap: var(--space-8);
+  margin-block: var(--space-8);
+}
+.khayt-studio .khayt-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-6);
+  background: radial-gradient(
+    ellipse at 50% 58%,
+    var(--khayt-tint),
+    var(--surface-subtle) 70%
+  );
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  min-inline-size: 0;
+}
+.khayt-studio .khayt-stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  inline-size: 100%;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.khayt-studio .khayt-state-label {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  background: var(--surface);
+  color: var(--text);
+  white-space: nowrap;
+}
+.khayt-studio .khayt-stage-art {
+  inline-size: min(100%, 25rem);
+  margin-block: auto;
+}
+.khayt-studio .khayt-playback {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+.khayt-studio .khayt-stage-caption {
+  margin-block: var(--space-3) 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  text-align: center;
+}
+.khayt-studio .khayt-studio-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-block: var(--space-3);
+  min-inline-size: 0;
+}
+.khayt-studio h2 {
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  margin-block: 0 var(--space-3);
+}
+.khayt-studio .khayt-states {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+.khayt-studio .khayt-states .tz-button {
+  inline-size: 100%;
+}
+.khayt-studio .khayt-state-description {
+  min-block-size: calc(var(--text-body) * var(--line-height) * 2);
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+  margin-block: var(--space-3) 0;
+  color: var(--text-secondary);
+}
+.khayt-studio .khayt-sizes {
+  display: flex;
+  justify-content: space-around;
+  gap: var(--space-4);
+}
+.khayt-studio .khayt-sizes > div {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+.khayt-studio .khayt-size-avatar {
+  display: grid;
+  place-items: center;
+  block-size: 4rem;
+  inline-size: 4rem;
+  background: var(--surface-subtle);
+  border-radius: var(--radius-panel);
+}
+.khayt-studio .khayt-context-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: var(--space-8);
+  align-items: center;
+  margin-block: var(--space-10);
+}
+.khayt-studio .khayt-eyebrow {
+  font-size: var(--text-micro);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+.khayt-studio .khayt-context-intro h2 {
+  margin-block: var(--space-2) var(--space-3);
+  font-size: var(--text-heading);
+}
+.khayt-studio .khayt-context-intro p {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+  color: var(--text-secondary);
+}
+.khayt-studio .khayt-context-intro a {
+  display: inline-block;
+  margin-block-start: var(--space-4);
+  color: var(--action);
+  font-size: var(--text-label);
+  text-underline-offset: var(--space-1);
+}
+.khayt-studio .khayt-agent-panel {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--agent-color) 35%, var(--border));
+  border-radius: var(--radius-panel);
+  background: var(--surface);
+}
+.khayt-studio .khayt-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--khayt-tint);
+  border-block-end: 1px solid var(--border);
+}
+.khayt-studio .khayt-panel-heading h3 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+.khayt-studio .khayt-panel-heading > div > span {
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+.khayt-studio .khayt-panel-status {
+  margin-inline-start: auto;
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+.khayt-studio .khayt-panel-content {
+  padding: var(--space-5);
+}
+.khayt-studio .khayt-panel-description {
+  margin-block: 0 var(--space-4);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  min-block-size: calc(var(--text-label) * var(--line-height) * 2);
+}
+.khayt-studio .khayt-draft {
+  border-inline-start: 2px solid var(--agent-color);
+  padding-inline: var(--space-4) var(--space-2);
+}
+.khayt-studio .khayt-draft p {
+  margin-block: var(--space-2) 0;
+  font-size: var(--text-body);
+  line-height: var(--line-height);
+}
+.khayt-studio .khayt-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-start: var(--space-5);
+}
+.khayt-studio .khayt-panel-actions > span {
+  font-size: var(--text-micro);
+  color: var(--text-secondary);
+}
+.khayt-studio .khayt-panel-actions [aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: default;
+}
+@media (max-width: 760px) {
+  .khayt-studio .khayt-studio-grid,
+  .khayt-studio .khayt-context-section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .khayt-studio .khayt-stage {
+    padding: var(--space-4);
+  }
+  .khayt-studio .khayt-stage-art {
+    inline-size: min(100%, 21rem);
+  }
+  .khayt-studio .khayt-state-description {
+    min-block-size: 0;
+  }
+}

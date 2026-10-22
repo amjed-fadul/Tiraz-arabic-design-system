@@ -316,12 +316,21 @@
   font-size: var(--text-meta);
 }
 .screen-agent-panel {
-  border-color: color-mix(in srgb, var(--ai) 24%, var(--border));
-  background: var(--ai-soft);
+  border-color: color-mix(
+    in srgb,
+    var(--agent-color, var(--ai)) 24%,
+    var(--border)
+  );
+  background: color-mix(
+    in srgb,
+    var(--agent-color, var(--ai)) 8%,
+    var(--surface)
+  );
 }
 .screen-agent-heading {
   padding: var(--space-4);
-  border-block-end: 1px solid color-mix(in srgb, var(--ai) 16%, var(--border));
+  border-block-end: 1px solid
+    color-mix(in srgb, var(--agent-color, var(--ai)) 16%, var(--border));
 }
 .screen-agent-identity {
   display: flex;
@@ -330,7 +339,7 @@
 }
 .screen-agent-eyebrow {
   display: block;
-  color: var(--ai);
+  color: var(--text-secondary);
   font-size: var(--text-meta);
   font-weight: var(--weight-medium);
 }

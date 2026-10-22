@@ -5,6 +5,7 @@ import type { ScreenSlug } from "../examples/frame/screen";
 import type { DocumentationPreferences } from "./storage";
 
 export const illustrationIds = [
+  "khayt",
   "document-vault",
   "agent-handoff",
   "voice-field",

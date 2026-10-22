@@ -40,12 +40,18 @@
 /* An AI workspace is visually distinct from the customer's record cards. */
 .customer-profile-panel {
   min-inline-size: 0;
-  border: 1px solid color-mix(in srgb, var(--ai) 25%, var(--border));
-  background: var(--ai-soft);
+  border: 1px solid
+    color-mix(in srgb, var(--agent-color, var(--ai)) 25%, var(--border));
+  background: color-mix(
+    in srgb,
+    var(--agent-color, var(--ai)) 8%,
+    var(--surface)
+  );
 }
 .customer-profile-panel .screen-agent-heading {
   padding-block-end: var(--space-4);
-  border-block-end: 1px solid color-mix(in srgb, var(--ai) 20%, var(--border));
+  border-block-end: 1px solid
+    color-mix(in srgb, var(--agent-color, var(--ai)) 20%, var(--border));
 }
 /* In the side panel the pattern's question is a heading, not a banner. */
 .customer-profile-panel .tz-task-starter-title {

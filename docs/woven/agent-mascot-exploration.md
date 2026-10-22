@@ -1,12 +1,15 @@
 # Tiraz agent mascot exploration
 
-22 October 2026. Visual proposals only; no mascot is implemented yet.
+22 October 2026. The owner selected **option 3, Khayt / خيط**. Its animated
+prototype is available at `/illustrations/khayt` and in the Invoices and Customer
+profile agent panels. See [the motion notes](khayt-motion.md).
 
-## Recommendation
+## Selected direction
 
-Start with **Nool**, the woven-loop character. It has the closest connection to
-Tiraz's Warp mark and offers a distinctive silhouette. The selected direction
-still needs a small-size and motion pass before product integration.
+**Khayt** connects Tiraz's woven identity to a small, expressive working
+character. The cotton body, ceramic eyes, and loose thread are separate raster
+assets, animated independently. The material and four-tier silhouette follow
+the selected concept board. The landing page's Warp mark remains the logo.
 
 The three boards were displayed in this order:
 
@@ -50,10 +53,11 @@ page's existing Warp mark remains the product logo.
   example. Correct that in the selected direction; the intended behavior is
   that avatar and panel identity color always match.
 
-## Motion to develop after selection
+## Implemented motion
 
 - **Ready:** still pose with an occasional quiet blink.
-- **Working:** a small weaving, shuttle, or thread movement tied to actual work.
+- **Thinking:** a slight lean, upward glance, and measured thread movement.
+- **Working:** a grounded twist and loose-thread movement tied to actual work.
   Show the current action in text as well.
 - **Needs you:** one gentle change of pose, then hold still beside the decision.
 - **Done:** a short settling motion, then return to rest.
@@ -66,8 +70,14 @@ left. Mirror spatial gestures only when they point toward content. Preserve the
 character's identity, isolate Latin identifiers, and use Arabic-Indic numerals
 in Arabic UI.
 
-## Next step
+## Preview and integration
 
-Choose a direction, refine its small-size silhouette and color correspondence,
-then create a motion prototype in one existing agent panel before extending it
-to other screens. Color persistence and animation behavior are not built yet.
+The studio provides six states, a pause control, a task demonstration that waits
+for explicit review, custom colors, and 24/32/48 px samples. Each named agent's
+color persists locally and is shared between the studio and its screen. The
+mascot and panel use the same color, with neutral readable text and separate
+semantic status colors. The two existing agent headers use their real host
+states after the opening screen presentation finishes.
+
+This remains an internal mascot implementation, not a new public system export.
+Extending it to every AI pattern would require a separate API and registry pass.

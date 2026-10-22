@@ -13,7 +13,20 @@ import { CopyControl } from "./CopyControl";
 import type { Navigate } from "./SiteLink";
 import { localize, words } from "./i18n";
 import type { Language } from "./i18n";
-export function IllustrationsPage({
+import { KhaytStudio } from "../mascot/KhaytStudio";
+type IllustrationsPageProps = {
+  id?: IllustrationId;
+  language: Language;
+  navigate: Navigate;
+};
+export function IllustrationsPage(props: IllustrationsPageProps) {
+  return props.id === "khayt" ? (
+    <KhaytStudio language={props.language} navigate={props.navigate} />
+  ) : (
+    <IllustrationsContent {...props} />
+  );
+}
+function IllustrationsContent({
   id,
   language,
   navigate,

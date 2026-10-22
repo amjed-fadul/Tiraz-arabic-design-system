@@ -160,7 +160,7 @@ it("filters the expanded illustration gallery without losing focus or starting m
   persist(storageKeys.documentation, { language: "en" });
   at("/illustrations");
   const main = within(screen.getByRole("main"));
-  expect(main.getAllByRole("article")).toHaveLength(6);
+  expect(main.getAllByRole("article")).toHaveLength(7);
   expect(
     document.querySelectorAll('[data-illustration][data-animated="true"]'),
   ).toHaveLength(0);
@@ -168,7 +168,18 @@ it("filters the expanded illustration gallery without losing focus or starting m
   await userEvent.click(filter);
   expect(filter).toHaveFocus();
   expect(filter).toHaveAttribute("aria-pressed", "true");
-  expect(main.getAllByRole("article")).toHaveLength(2);
+  expect(main.getAllByRole("article")).toHaveLength(3);
+  const mascot = main.getByRole("link", { name: "Khayt" });
+  fireEvent.focus(mascot);
+  expect(mascot.querySelector("[data-illustration='khayt']")).toHaveAttribute(
+    "data-animated",
+    "true",
+  );
+  fireEvent.blur(mascot);
+  expect(mascot.querySelector("[data-illustration='khayt']")).toHaveAttribute(
+    "data-animated",
+    "false",
+  );
   const preview = main.getByRole("link", { name: "Agent handoff" });
   fireEvent.focus(preview);
   expect(preview.querySelector("[data-illustration]")).toHaveAttribute(

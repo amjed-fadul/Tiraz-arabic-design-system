@@ -20,9 +20,14 @@
   inset-block-start: var(--space-4);
   min-inline-size: 0;
   padding: var(--space-3);
-  border: 1px solid color-mix(in srgb, var(--ai) 25%, var(--border));
+  border: 1px solid
+    color-mix(in srgb, var(--agent-color, var(--ai)) 25%, var(--border));
   border-radius: var(--radius-panel);
-  background: var(--ai-soft);
+  background: color-mix(
+    in srgb,
+    var(--agent-color, var(--ai)) 8%,
+    var(--surface)
+  );
 }
 .invoices-panel .screen-agent-heading {
   padding: var(--space-1);

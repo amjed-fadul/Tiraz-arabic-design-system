@@ -5,6 +5,9 @@ import { AIMark, Button, useReducedMotion } from "../../system";
 import { useScreen } from "./screen";
 import { ScreenDemoContext, useScreenDemo } from "./useScreenDemo";
 import type { ScreenDemoState } from "./useScreenDemo";
+import { Khayt } from "../../mascot/Khayt";
+import type { KhaytState } from "../../mascot/khayt-motion";
+import { AgentColorControl } from "../../mascot/AgentColorControl";
 
 const typingEnd = 2400;
 const sendingEnd = 2800;
@@ -187,23 +190,47 @@ export function ScreenAgentHeading({
   title,
   description,
   children,
+  state = "idle",
+  color = "#946D91",
+  onColorChange,
 }: {
   title: string;
   description?: string;
   children?: ReactNode;
+  state?: KhaytState;
+  color?: string;
+  onColorChange?: (color: string) => void;
 }) {
-  const { t } = useScreen();
+  const { t, language } = useScreen();
   const demo = useScreenDemo();
   return (
     <div className="screen-agent-heading">
       <div className="screen-agent-identity">
-        <AIMark size="sm" working={demo.active && !demo.paused} />
+        <Khayt
+          state={
+            demo.active
+              ? demo.phase === "working"
+                ? "working"
+                : "thinking"
+              : state
+          }
+          color={color}
+          animated={!demo.paused}
+          size={48}
+        />
         <div>
           <span className="screen-agent-eyebrow">
             {t("مساعد ذكي", "AI agent")}
           </span>
           <h2>{title}</h2>
         </div>
+        {onColorChange && (
+          <AgentColorControl
+            language={language}
+            color={color}
+            onChange={onColorChange}
+          />
+        )}
       </div>
       {description && <p>{description}</p>}
       {children}

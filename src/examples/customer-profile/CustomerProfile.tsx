@@ -40,6 +40,8 @@ import {
 import "./customer-profile.css";
 import { ScreenAgentHeading } from "../frame/ScreenDemo";
 import { useScreenDemo } from "../frame/useScreenDemo";
+import type { CSSProperties } from "react";
+import { useAgentColor } from "../../mascot/useAgentColor";
 
 // How long the host takes over the answer, and the screen's one question.
 const thinkingMs = 1400;
@@ -53,6 +55,7 @@ export function CustomerProfile() {
 }
 
 function CustomerProfileScreen() {
+  const [agentColor, setAgentColor] = useAgentColor("customer");
   const demo = useScreenDemo();
   const screen = useScreen();
   const { t, language, locale, number, money, date, href } = screen;
@@ -341,8 +344,14 @@ function CustomerProfileScreen() {
             ]}
           />
         </div>
-        <Card className="customer-profile-panel screen-agent-panel">
+        <Card
+          className="customer-profile-panel screen-agent-panel"
+          style={{ "--agent-color": agentColor } as CSSProperties}
+        >
           <ScreenAgentHeading
+            color={agentColor}
+            onColorChange={setAgentColor}
+            state={answer === "thinking" ? "thinking" : "done"}
             title={t("مساعد العملاء", "Customer assistant")}
             description={t(
               "يحلّل سجل العميل ويجيب من بياناتك.",

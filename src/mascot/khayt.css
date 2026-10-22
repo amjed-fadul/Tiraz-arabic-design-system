@@ -1,0 +1,46 @@
+.khayt {
+  display: inline-block;
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 1;
+  flex: none;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.khayt canvas {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+.khayt .khayt-fallback {
+  direction: ltr;
+  position: absolute;
+  inset: 0;
+}
+.khayt[data-ready="true"] .khayt-fallback {
+  visibility: hidden;
+}
+.khayt .khayt-fallback img {
+  position: absolute;
+}
+.khayt .khayt-fallback-body {
+  inline-size: 81%;
+  inset-inline-start: 4%;
+  inset-block-start: 13%;
+}
+.khayt .khayt-fallback-thread {
+  inline-size: 34%;
+  inset-inline-start: 62%;
+  inset-block-start: 12%;
+}
+.khayt .khayt-fallback-eye {
+  inline-size: 12%;
+  inset-inline-start: 33%;
+  inset-block-start: 58%;
+}
+.khayt .khayt-fallback-eye-second {
+  inset-inline-start: 44%;
+}
+.khayt.khayt-gallery {
+  inline-size: min(100%, 20rem);
+}

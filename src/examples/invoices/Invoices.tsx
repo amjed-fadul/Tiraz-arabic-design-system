@@ -28,6 +28,8 @@ import { dayCount, invoiceCount, lateInvoices } from "./words";
 import "./invoices.css";
 import { ScreenAgentHeading } from "../frame/ScreenDemo";
 import { useScreenDemo } from "../frame/useScreenDemo";
+import type { CSSProperties } from "react";
+import { useAgentColor } from "../../mascot/useAgentColor";
 
 type Status = DraftReviewProps["status"];
 /** What the host keeps for one invoice's reminder. */
@@ -113,6 +115,7 @@ function Reminder({
 }
 
 function InvoicesScreen() {
+  const [agentColor, setAgentColor] = useAgentColor("collections");
   const demo = useScreenDemo();
   const screen = useScreen();
   const { t, language, number, money, date, href, size, endSide } = screen;
@@ -489,8 +492,23 @@ function InvoicesScreen() {
           />
         </div>
         {selectedDraft && (
-          <Card className="invoices-panel screen-agent-panel">
+          <Card
+            className="invoices-panel screen-agent-panel"
+            style={{ "--agent-color": agentColor } as CSSProperties}
+          >
             <ScreenAgentHeading
+              color={agentColor}
+              onColorChange={setAgentColor}
+              state={
+                selectedDraft.status === "writing" ||
+                selectedDraft.status === "sending"
+                  ? "working"
+                  : selectedDraft.status === "sent"
+                    ? "done"
+                    : selectedDraft.status === "discarded"
+                      ? "idle"
+                      : "waiting"
+              }
               title={t("وكيل التحصيل", "Collections agent")}
               description={t(
                 "يجهّز التذكيرات. تراجعها أنت قبل الإرسال.",

@@ -6,6 +6,7 @@ import {
 import { DocumentVault } from "../illustrations/DocumentVault";
 import { AgentHandoff } from "../illustrations/AgentHandoff";
 import { VoiceField } from "../illustrations/VoiceField";
+import { KhaytIllustration } from "../mascot/Khayt";
 import type { Localized } from "./i18n";
 import type { IllustrationId } from "./site-routes";
 import type { ComponentType } from "react";
@@ -22,6 +23,17 @@ export const illustrations: readonly {
     interactive?: boolean;
   }>;
 }[] = [
+  {
+    id: "khayt",
+    category: "agents",
+    name: ["خيط", "Khayt"],
+    description: [
+      "شخصية من القطن لمساعدك. اختر اللون، وجرّب حركة كل حالة.",
+      "A cotton character for your agent. Choose a color and explore its expressions.",
+    ],
+    exportName: "Khayt",
+    Component: KhaytIllustration,
+  },
   {
     id: "document-vault",
     category: "workspace",
