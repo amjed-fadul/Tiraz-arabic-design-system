@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+
+ Test Files  26 passed (26)
+      Tests  205 passed (205)
+   Start at  21:22:14
+   Duration  12.72s (tests 58%, environment 24%, import 9%, transform 5%, setup 5%)
+
+    Isolate  26 workers spawned · ~801ms startup each (spawn + environment, per file)
+             at least ~2.17s faster with isolate: false — reuses workers across files instead of one per file
+

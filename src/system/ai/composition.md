@@ -1,0 +1,598 @@
+# Compose and validate
+
+## Patterns
+
+Start from the pattern that finishes the user's job ([Start with a pattern](README.md#start-with-a-pattern)), and compose parts only when no pattern fits. Say so when none does. Every pattern follows these rules.
+
+- **The host owns state; the pattern emits intents.** A pattern renders the `status` and data you pass and reports what the person asks for through `on…` callbacks (`onStop`, `onSteer`, `onDecision`, `onRetry`, `onApply`…). It never advances its own lifecycle, runs a request or simulates progress. A timer exists only for a real UI affordance, such as Agent task's auto-start countdown or Draft for review's undo countdown, which you opt into and which calls back to you. Change the status in your callbacks, after the real work. Every pattern has Arabic and English words and takes `labels` to replace them.
+- **One live region per owner.** A standalone pattern's polite `role="status"` says each change of status once, in one sentence, and not the status it mounts in. Streamed words, elapsed time, step durations, progress and countdown ticks never reach it. For one region across a composed screen, let the screen own announcements and pass `announcement="off"` to nested SuggestedEdits, ApprovalCard, ImageGeneration, DraftReview, ChangeSummary, TagInput and ColorPicker; do the same for ImageResult used by itself. Receipts and validation remain visible, and TagInput/ColorPicker keep their `aria-describedby` links. ImageGeneration passes the setting to its nested ImageResult. Otherwise a nested pattern, such as the approval inside Agent task, keeps its own region. Agent task's region also speaks each steering note once: the queued or applying-now sentence when a note is sent, and «أخذ الوكيل بتوجيهك: …» when its `applied` turns true, never a note at mount. The Decision inbox's region speaks its counts instead, only when they change, and never when picking an agent filters them. ContextMeter's region speaks only when its status word changes («السياق: يقترب من الامتلاء»), never a number; inside Assistant controls it is the pattern's one region, and Start a task's region says the same crossings for its ring. A failure also stays as text beside the failed item, and moving to "needs you" never moves focus.
+- **Shortcuts are scoped and safe.** They work only while focus is inside the pattern and no menu, list or dialog inside it is open. Plain Enter is never a shortcut that acts from elsewhere in the pattern: it activates the focused button, and in a text entry it does what that entry says (a composer sends its draft on Enter and Shift+Enter adds a line; Draft for review's text area keeps Enter for new lines; Agent task's steering field applies the note at the next step). The shortcuts are Escape (reject, inside an approval), Ctrl or Cmd+Enter (send a draft, steer now, start a plan, approve a request marked `reversible`) and, while focus is in a tracked change, Y and N. Key hints show only on real shortcuts. An approval the host marks `irreversible`, or does not mark `reversible`, has no shortcut: it needs a click, or Enter or Space on the focused button. Held keys are ignored: a repeat does nothing, and Ctrl or Cmd+Enter waits 500 ms after the content it acts on appears or changes, so a held key never approves the next request unread. Inside a Sheet or Modal, Escape closes the dialog and records nothing, and anywhere in an open Decision inbox row it folds the row and records nothing, except while a decision in the row is being recorded.
+- **Plain inside, card outside.** `appearance="card"` (the default) draws a tray around the paper. Use `appearance="plain"` when the pattern sits inside another pattern or a conversation: Agent task's inline approval, or the messages of the Assistant workspace. Never put a tray inside a tray or a card inside a card, and keep one primary button per pattern.
+- **Amber means "needs you".** The attention color, the `warning` tone and the needs-you pill belong to something that waits on the person; AI work is never amber. The AI color, the AI mark and the thread belong only to what the assistant produced or is doing, never to the person's own content, code or tool output. Color is never the only signal: every state has a word.
+- **Decisions are about specific content.** There is no approve-all, no preselected decision and no standing access. A receipt records the decision, never the outcome: show whether the work ran where it happens, as an Agent task step does. The host validates and executes after an intent, and owns what needs a second look. The Assistant workspace's rename and delete are intents, so the host opens the rename field and the delete confirmation and never deletes on the intent alone. The Decision inbox has no approve-all either: only a request marked `reversible`, and neither `irreversible` nor `expired`, decides from its closed row, with no shortcut, and opening a row never puts focus on Approve. Its 5 s receipt is a UI timer, and `receiptFor={0}` turns it off.
+- **Permissions are the person's, and the host enforces them.** Assistant controls shows each action's level and reports the person's choice through `onPermissionChange`; store the level and apply it where the assistant acts, since the pattern only shows and reports it. An action marked `irreversible` stays at «اسأل دائمًا» whatever level you pass, and never calls `onPermissionChange`. Memory works the same way: Delete only asks (`onMemoryDelete`), and the item stays until you remove it. These are the person's own standing settings, made here and never as a side effect of an approval, which stays a one-time decision; so the pattern has no AI mark, no pill and no states.
+- **Undo is the host's hold, and a receipt never recalls.** Draft for review's Send hands over the text on screen, once per ready status, and Discard never sends. Move to `sending` in the same update as `onSend`, since Send and Discard stay locked until the status changes, and if sending fails, return to `ready`: the pattern then says the message couldn't be sent, never that it was cancelled. Its Undo shows only while the host holds the message (`undoWindow` with `onUndo`). Take the window from a setting the person controls before they meet it, either off or adjustable to at least ten times the default (WCAG 2.2.1). Pass `undoWindow` as the seconds left in that hold, not its full length, send only once the window ends, and cancel if `onUndo` is called. A receipt records the sending, never a recall: the countdown never pauses, and only your next status says what became of an Undo.
+
+Compose patterns the way the examples do. Put them in a ChatThread as messages in `plain` appearance with TaskStarter in plain appearance as the composer. Let Agent task show its own approval rather than wrapping an ApprovalCard around it. Cite a Cited answer with the same `SourceReference` records its chips use. Give Ask your data the chart and every figure yourself: it draws the family you pass, with the props you pass, and never fetches, computes or reshapes data, so reshape your data and pass a new `chart` when the person asks for another chart type. Keep What changed's `tone` as the host's judgement of good or bad, since the arrow shows direction and the color shows meaning. Open a draft that waits in the Decision inbox in Draft for review, through the inbox's `onOpen`, rather than inside the row. [ai/README.md](README.md) has each pattern's contract.
+
+## Before JSX
+
+- Identify the user's task, information to show, primary action and outcome.
+  Map each need to a pattern, or else to the available registry families. Prefer an inline task and a
+  clear primary Button; reserve Sheets for focused modal detail/editing.
+- Use Tabs for related views, Switch for a boolean preference, DropdownMenu
+  for contextual commands, and Toast for transient outcomes. Use Table for native
+  tabular content, Steps for process progress and Timeline for event history.
+  For an unavailable request, name the gap and propose a concrete alternative.
+  Do not invent exports, silently add a family or describe ordinary HTML as a
+  Tiraz component.
+
+## Content and configuration
+
+- Start with useful Arabic copy and compact defaults. Use IBM Plex Sans Arabic
+  and the shared title/heading/body/meta tokens for clear hierarchy. Animate
+  whole labels; never split Arabic into independently animated characters or
+  insert letter spacing that breaks shaping. Labels are caller-owned.
+- Coordinate `lang` on a host ancestor **above SystemProvider** (or the document)
+  and `SystemConfig.direction`: Arabic/RTL,
+  English/LTR. Changing direction does not translate copy; changing copy does
+  not set direction. A `lang` only on `<main>` misses sibling portal/Toast
+  content; SystemProvider has no `lang` prop. Use `<bdi dir="ltr">INV-42</bdi>` (or equivalent isolation)
+  for Latin identifiers within Arabic, keeping punctuation correctly ordered.
+- Choose digits once with `SystemConfig.numerals`: `"arab"` (Arabic-Indic,
+  default) or `"latn"` (Western). Component numbers and dates follow it; format
+  application figures with `numberLocale(useSystem().config, language)` instead
+  of hard-coding `ar-u-nu-arab`. Arabic-Indic digits in IBM Plex Sans Arabic are
+  proportional, so prefer `"latn"` where figures must align in columns.
+- Use logical CSS (`padding-inline`, `margin-block`, `inset-inline-end`, etc.)
+  and shared spacing, radius, typography, surface/text/border/action tokens.
+  Inspect `tokens.css`; do not introduce arbitrary colors or dimensions for
+  the library controls. Theme/accent settings propagate through the provider.
+  Let content columns shrink with `minmax(0, 1fr)` and `min-inline-size: 0`;
+  contain long tables/code in scrolling wrappers rather than overflowing the page.
+- Keep success/error/destructive meanings distinct from accent colors. Honor
+  both the application reduced-motion setting and OS preference; false in
+  config cannot force motion when the OS asks for reduction. Reduced motion
+  zeroes every duration token. The one exception is Image generation's 200ms
+  fade, `--weave-fade`, an opacity change that replaces the weave; the rule that
+  applies it (`.tz-weave[data-fade] > .tz-weave-image`) says `!important` to
+  stand against the global rule that zeroes the rest, so keep both when you
+  restyle it.
+- Keep persistent configuration separate from transient action state. Button
+  `state` is supplied by the application: await the real operation, show its
+  result and return to the intended state. Clear any application timers on
+  unmount; use error handling. Tiraz does not save data or simulate requests.
+
+## Interaction contracts
+
+- Read required and conditional props in the registry before composition.
+  Icon-only Button needs a meaningful `aria-label`; Sheet needs title,
+  description and closeLabel; Tabs needs label and valid enabled values.
+- Controlled `value`, `checked` or `open` requires its change callback to update
+  caller state. Use documented defaults for uncontrolled mode; wrappers do
+  not invent `defaultOpen` or forward every Radix Root prop.
+- Give overlay triggers accessible names and preserve injected Radix props/ref.
+  Keep nested menus in Sheet's descendant scope; do not move them to body or
+  replace keyboard/focus handlers. Test navigation during opening motion as
+  well as after settling, genuine pointer hover, scrolling and Escape/Tab.
+- Put ToastProvider inside the intended SystemProvider. Invoke useToast from
+  below ToastProvider; otherwise it throws. At most three active notices are
+  shown. Hover/focus pauses expiry; essential errors must also remain available
+  in persistent, associated application text. Avoid immediately removing the
+  trigger that should receive restored focus. An active Toast is a Radix
+  dismissable layer: Escape can close it before an open Sheet even when focus
+  is in the Sheet. Verify one layer at a time and check actual dismissal/DOM
+  removal and focus restoration; do not assume the first Escape closes the Sheet.
+
+## Validate the rendered application
+
+1. Type-check real imports, props, examples and callback arguments. Ensure CSS
+   and local font files load; inspect the scope of provider and portal nodes.
+2. Exercise the primary action with success/error paths and rapid repetition.
+   Verify transient feedback does not overwrite shared configuration.
+3. Inspect Arabic/RTL and English/LTR, light/dark, compact/standard density,
+   typography/radius/accent/numerals changes, narrow/short viewports and reduced motion.
+   Check readable shaping, isolated identifiers, wrapping and internal scroll.
+4. Use keyboard only: names, visible focus, Tabs arrows, Switch Space, menu
+   ArrowDown/Home/End/Enter/typeahead, nested overlays, Escape/Tab dismissal and
+   focus restoration. Move the pointer after keyboard navigation; repeat Toast
+   dismissal/expiry. Check modal focus stays within its Sheet.
+5. Inspect accessible names, roles, descriptions and announcements, including
+   representative screen-reader checks where available. Automated type, DOM,
+   axe or browser assertions are evidence, not a guarantee of accessibility.
+6. Report verified behavior, unavailable capabilities and untested conditions
+   honestly. Keep source-copy checks independent of workbench entry files.
+
+## Form foundation
+
+Start text entry with Input: `<Input label="Name" helper="As shown on the invoice" error={error} required name="name" />`. Input reuses Field internally when label is supplied; helper/error accompany labeled mode. An error message marks invalid but does not execute validation. Without label, use a native label or ARIA for standalone Input. Ref, native attributes/events/form behavior, className/style and external description IDs remain on the actual input. Do not combine convenience label/helper/error with field. Field remains a lower-level composition helper: `<Field label="Status">{field => <Select field={field} options={options} />}</Field>`. Existing Field + Input composition remains supported. Field never clones arbitrary children or performs validation. Supply rules, errors and focus management in application code. Input/Select merge external aria-describedby IDs; field owns the control ID. Native required/invalid state is forwarded, but error display does not mean Tiraz validated anything.
+
+Input supports text/email/password/search/tel/url, default text/sm; use its native events, value/defaultValue, form/name/autocomplete and React 19 input ref. Uncontrolled native reset works; controlled Input requires host onReset to restore its value. Select accepts options with unique nonempty value, string label and optional disabled. Empty value shows placeholder. Controlled Select must update value on onValueChange, including successful reset callbacks. Tiraz defers reset until event dispatch completes; cancelling onReset or onResetCapture preserves value and emits no reset callback, including external form associations. While Select stays mounted, reset follows its currently associated form even if that form appears later or is replaced under the same ID. Replacement preserves selection; resetting a former form has no effect. Radix's hidden native select handles FormData/required. Static checkValidity does not move focus. For interactive reporting/submission, actual native focus redirects to the visible trigger. An ancestor onInvalid/onInvalidCapture can preventDefault and focus an error summary; Tiraz respects that ownership. App validation supplies persistent associated messages and focuses the first invalid control.
+
+Select uses Radix Select rather than DropdownMenu. Scope its portal to the nearest provider/Sheet, constrain available height and preserve internal scroll and keyboard/typeahead/focus behavior. Do not move it to body. Opening fades only, preserving stationary-pointer hit targets. Honor both reduced-motion sources. Search and multi-select are future scope.
+
+The CreateCustomer example is application code: required name, optional validated email, single status, semantic Table, synchronous save guard and Toast. Discard drafts on all dismissals, verify a clean reopen and keep the trigger mounted for focus restoration. State exists only while mounted, with no backend persistence.
+
+## Table foundation
+
+Compose Table with TableHeader, TableBody, TableRow, TableHead and TableCell.
+Table renders a native table inside a keyboard-focusable horizontal scroll container.
+Use caption for a visible native table name, or aria-label/aria-labelledby when no
+caption is supplied. The scroll region inherits this name; containerProps exposes
+separate native div attributes/ref. Table's attributes, className/style and ref stay
+on the table. Preserve the container's default tabIndex=0 for keyboard scrolling.
+TableHead defaults to scope="col"; use scope="row" for row headers. Native colSpan
+and headers work. Use stable unique data IDs as React row keys. Render empty text
+as a cell spanning the columns; Table never manufactures data or empty messages.
+Shared density/text scale/theme/direction apply through SystemProvider. Cells wrap;
+a 32rem table minimum gives columns space and stays inside its scrolling container.
+Use bdi for mixed Arabic/English names and bdi dir="ltr" for email addresses.
+There is no sorting, filtering, pagination, selection, editing, virtualization or
+sticky-column API. The connected CreateCustomer flow lives in
+ai/examples/CreateCustomer.tsx.
+
+## DataTable v1
+
+Use Table for simple tabular content or full native cell composition. Use
+DataTable when local data needs text sorting and pagination (10 rows by default).
+Supply typed columns (`id`, `header`, `cell`, optional `sortValue` and `rowHeader`),
+`data`, stable unique `getRowId`, `caption`, `locale`, translated `labels`, and
+`emptyContent`. Sorting uses Intl.Collator with numeric ordering and base
+sensitivity; equal values retain their input order. Do not mutate records or
+use array positions as IDs. DataTable owns one internal sort/page state; there
+are no controlled modes or server data framework. Changing sort resets page one.
+
+The application filters before passing data. Change `resetKey` when search or
+filters change, even if the count stays equal. A shrinking result clamps the
+page permanently. `pageSize` is a positive integer (default 10); fractions are
+floored, values below one clamp to one, nonfinite values use ten.
+`labels` contains previous/next/pagination strings and sortAscending(header),
+sortDescending(header), resultCount(from,to,total) text functions.
+
+Use application-owned emptyContent to distinguish zero source records from
+filtered-out results. For errors, pass empty data and useful persistent
+content. loading=true shows a page of skeleton rows, announces busy and
+disables pagination; say what is loading in resultCount. Retry belongs to the
+host. The example's explicit presets do not fetch data or randomly fail.
+
+Keep filters, records, validation and create/details Sheets in the application.
+Creating records must preserve active filters; a newly saved customer may be
+filtered out. Reuse CreateCustomer's validated flow with an optional initial
+list and render callback, keeping its synchronous duplicate-save guard, draft
+discard and trigger restoration. CustomerDataTable demonstrates a menu-to-Sheet
+transition and restores the originating row action after closing details.
+Use bdi for names and bdi dir=ltr for emails. Keep source data in memory.
+There is no selection, bulk action, editing, deletion, virtualization or sticky
+column API. No extra dependency is required.
+
+## Small native controls
+
+Badge displays meaningful status text using neutral (default), success, error, info, warning or ai; meaning must remain readable without color. Keep `warning` (the attention color) for something that needs the person and `ai` for what the assistant produced. Keep it noninteractive. It has no automatic announcement, dismissal, size or variant API.
+
+Checkbox requires label and supports helper/error, invalid and native checked/defaultChecked, onChange, required, disabled, name/value, form and HTMLInputElement ref. Read event.currentTarget.checked in onChange. It reuses Field associations internally; className/style/ref stay on input. Error marks invalid without validating. No indeterminate or DataTable selection capability.
+
+RadioGroup requires label, name and options (unique nonempty stable value, string label, optional disabled). Use a distinct shared name for each independent group; native radios enforce one choice. Fieldset/legend provides the group name; helper/error/external aria-describedby describe group and inputs. disabled disables the whole fieldset, options may be independently disabled, required forwards to inputs and form associates each input externally. Ref targets HTMLFieldSetElement. Use value/onValueChange for controlled mode or defaultValue for native uncontrolled selection. Do not add a custom keyboard handler or selection-card behavior.
+
+Textarea mirrors Input's optional label/helper/error convenience mode and separate Field composition mode. Do not combine those modes. Without label, supply a native label or accessible name. Native rows (default 3), name/form, value/defaultValue, editing/selection events, disabled, readOnly, className/style and HTMLTextAreaElement ref remain on the textarea. Resize vertically; no automatic growth or character counter.
+
+All three native controls preserve uncontrolled form submission/reset and cancellation of reset. Native reset does not emit change callbacks. Controlled modes require caller state updates and application onReset to restore controlled values. Keep validation rules/messages/focus in the application. Use [FeedbackForm](examples/FeedbackForm.tsx) for a small combined example; its Send feedback action validates required notes and confirms the send. It demonstrates a persistent associated error, first-invalid focus and native reset after a successful send. It does not save values or add a service or customer workflow.
+
+## Avatars, tooltips, centered dialogs and empty content
+
+Use Avatar(name, src?, fallback?, size?) with sm by default. Supply meaningful name and deliberate Arabic fallback; fallback remains during loading/failure and resets when src changes. Internal portrait/initials are hidden from AT so name is announced once. Use decorative beside equivalent text. AvatarGroup uses members in reading order with unique stable ids, label and translated overflowLabel(count); its noninteractive +N includes the remaining names for AT. Limits floor/clamp to at least one, default four for nonfinite values; groups wrap within narrow containers.
+
+Tooltip trigger must forward ref, native events and ARIA to a focusable element. Do not replace its accessible name with tooltip content or put essential instructions only in a tooltip. content is a short string, never a button/link/form. Hover delays 500ms, focus is immediate, Escape dismisses without losing trigger focus. The tooltip can be hovered and portals into the surrounding provider/overlay. Preserve descriptions already supplied on the trigger. Positioning/collision uses @radix-ui/react-popper 1.4.0.
+
+Modal requires title, description and translated closeLabel; trigger/children and optional footer mirror Sheet. initialFocusRef may select a focusable descendant; otherwise Radix chooses its first focusable element. Controlled open requires onOpenChange to update it; omit open for internal usage. There is no defaultOpen. For either mode, a footer may use @radix-ui/react-dialog Close asChild with Button. Tab stays contained, Escape/outside dismiss and the mounted trigger receives focus again. Menus/Select/Tooltip must retain the nearest Modal container; test dismissal of each layer before the dialog. Do not add stacked/nested dialog examples or a manager.
+
+EmptyState(title, description?, illustration?, action?) leaves content and actions to the application. Omit illustration, use one exported geometric SVG or supply a custom decorative node. The slot is aria-hidden; never place interactive controls there. Text conveys meaning, action conveys its actual result. Use the three original exports NoRecordsIllustration, NoSearchResultsIllustration and GettingStartedIllustration with tokens in either theme. [EmptyStateExamples](examples/EmptyStateExamples.tsx) reveals a guide and returns with Back; it does not create a customer, persist values or pretend to call a service.
+
+For nested Select/Menu in Sheet/Modal, use a single resolved Radix dismissable-layer and focus-scope module. The verified dependency graph needs the host overrides in [README.md](README.md#shared-radix-overlay-infrastructure), because source copies do not include root package.json. Test Select Escape as well as selection: one Escape closes Select and restores its trigger, the next closes the dialog. Merely putting portals inside a dialog does not unify duplicated primitive contexts.
+
+## Persistent feedback and loading
+
+Use Alert for inline persistent feedback; Toast for transient event feedback. Tone conveys meaning independently of accent: Alert takes the Badge tones, Toast takes success, error, info or warning, and Spinner takes `neutral` or `ai` (the arc in the AI color, for work the assistant is doing). Static examples use announcement=off. Choose polite for routine live updates and assertive only for urgency; do not announce all error-colored content as urgent. Supply action ReactNode and own any dismissal in application state.
+
+Use Skeleton to reserve simple text/rectangle/circle space, always hidden from assistive technology. The host sets aria-busy and provides a single loading status. Use Spinner with label for a standalone status; use decorative beside equivalent announced text. Reduced motion stops shimmer/pulse/rotation; text and static shapes keep loading understandable.
+
+Progress is a named 0–100 bar: value=0 is real zero, value=100 is completion, finite out-of-range values clamp. Omit value or pass null for unknown progress; nonfinite values also omit numeric claims. Explicit locale handles language independently of direction; Arabic digits follow config.numerals. Updates and completion behavior belong to the host. Use explicit example states without timers or fake requests.
+
+Avatar photo examples import bundled ai/assets/sara.jpg and omar.jpg. Copy those assets and their provenance/license alongside the source. Initials-only, custom URL and mixed groups are compositions of the existing src prop; they add no public appearance or upload API.
+
+## Structure and navigation
+
+- Card is a quiet surface. Compose CardHeader, optional CardTitle (h3) and
+  CardDescription (p), CardContent and CardFooter. All retain native attributes,
+  events and React 19 refs. Use native headings for the correct document outline.
+  Place Buttons/links inside the header/footer; never add a clickable surface,
+  role=button or a tab stop as a library pattern.
+- Accordion reveals detail beneath headings; Tabs switches related views.
+  Supply unique stable nonempty values and noninteractive label content. Start
+  closed or use an enabled defaultValue; controlled value requires onValueChange
+  updating the host. Empty string closes all. collapsible defaults false,
+  headingLevel=3. Use the compatible Radix Accordion dependency; do not build a
+  keyboard engine, nested arrangement or multi-open configuration. Verify disabled
+  skipping, arrows/Home/End, Enter/Space and linked regions in both directions.
+  Closed panels are immediately inert and aria-hidden during exit motion.
+- Breadcrumbs names a native nav with caller-translated label. Supply label/href
+  items with real destinations; final item is text with aria-current=page even if
+  href was supplied. Missing ancestor href is static text. Decorative separators
+  mirror in RTL. Allow wrapping and isolate mixed identifiers with bdi.
+- Pagination is controlled navigation only. Supply page, totalPages,
+  onPageChange and translated labels.navigation/previous/next/page(number).
+  Normalize inputs in application state when the data requires it; the component
+  only normalizes display and requested target pages, with no render callback.
+  Finite values floor/clamp, nonfinite become 1; zero total displays one inert page.
+  Locale controls digits separately from names; Arabic digits follow config.numerals. Boundaries and disabled prevent
+  navigation; current number has aria-current and emits no change. Ellipses have
+  no action. Keep content slicing, page size, filter/reset, loading/fetching and
+  announcements in the application. DataTable has its own internal data lifecycle;
+  do not wrap it with a second page state or invent a server data API.
+
+[StructureExamples](examples/StructureExamples.tsx) demonstrates local note
+reveal, disclosure, real anchor destinations and slicing a small list. It adds no
+backend, saved state, fake service or customer workflow.
+
+## Charts
+
+Use Line/Area for trends, Bar for comparisons, Donut for positive parts of a whole.
+Supply a visible summary and nonempty accessible label, and enable dataTable for
+exact values. Keep ISO chronological rows in application order even in RTL.
+Missing values remain gaps, never manufactured zeros. A summary explains the
+meaning; tooltips add detail. Share ordered series definitions and explicit token
+colors across comparable charts. Compose Card/Field/Select around charts; period
+selection, data slicing and totals belong to the application. See ChartExamples.
+No stacked plots, generic configuration, backend, saving or DataTable changes.
+
+## Connected dashboard composition
+
+Keep full-page example layout, navigation anchors, records and filters in the
+host. One provider coordinates language/direction and theme across all controls
+and portals. An overview can use a native definition list rather than a Card per
+metric. Derive chart rows, channel totals and period metrics from one filtered
+order dataset; count customers independently. Creating a customer adds no orders.
+
+Preserve active customer filters when saving. If they hide the new record,
+explain that persistently and provide a reveal action that selects that record
+and resets DataTable's page, plus a clear-filters action to return to everyone.
+Explicit loading/error previews should withhold unavailable numbers rather than
+claim zero; an empty source dataset and no matching filter results need different
+messages. Preview state belongs to the example, with no fake fetch or persistence.
+
+For section links inside a navigation Sheet, hand focus to the destination after
+Radix restores the mounted trigger (for example, from the trigger's focus event).
+Scheduling destination focus immediately on click can race dialog dismissal.
+Cancel/Escape still restores the trigger. Keep section targets focusable with
+`tabIndex={-1}` and retain native links for real destinations.
+
+## Sidebar navigation composition
+
+Compose a host-bounded Sidebar at inline-start, with Header, named Content/nav,
+and Footer. Group headings are optional. Item is a native anchor; Action and
+Disclosure are native buttons. Supply real destinations and connected actions.
+Use SidebarLabel for hideable slot text and Toggle for root collapse. Preserve
+native attributes/refs and modifiers; never replace links with router-like buttons.
+Caller owns active/activeChild and any destination focus. One level of children;
+rail parent activation expands the root and reveals those children. Controlled
+collapsed and open each need their change callback. Hidden content is inert,
+focus moves to its visible parent/toggle, and labels use existing Tooltip.
+Reuse this navigation inside Sheet on mobile, with mounted trigger and the
+post-restoration destination focus handoff described above. No new overlay system.
+See SidebarExamples for working local notes and account details.
+
+Compose branding and account icon/avatar + SidebarLabel inside SidebarIdentity
+(native div attributes/ref). SidebarHeader places identity and toggle on opposite
+ends of a direction-aware row; the rail stacks centered logo then expand toggle.
+Footer identity centers the actual avatar box. Rail headings/label spacing and
+scrollbar width are removed while native navigation scrolling remains available.
+The richer SidebarExample has seven top-level entries in two groups, three library
+children and initially active Components. Documents/People/Notifications counts
+come from local sample lists. Selection, recent activity, reminder clearing,
+summary preferences and account details change real local content. These are
+fictional library examples, not services or saved product data.
+
+## Tags and list filters
+
+Compose TagInput with a label/helper/error or exactly one external Field. Enter
+commits trimmed strings; duplicates use exact case-sensitive matching. Keep IME,
+selection and plain paste native. Ref/className/style target the draft input,
+whose onChange is separate from array onValueChange. Submit committed arrays with
+repeated name entries; use FormData.getAll. Draft is omitted, disabled omits values,
+read-only submits. Uncontrolled reset restores initial tags without callback after
+cancellation checks; reset controlled arrays in the host onReset. The container
+owns draft focus styling; remove buttons retain distinct keyboard rings. Error
+borders remain visible alongside focus. No native
+required-tag validation or autocomplete. labels translates built-in feedback.
+
+FilterBar is layout and removable active chips. Put existing Input in search and
+Select/Button in children. Supply stable filter ids, label, removeLabel and
+onRemove; optional onClearAll/clearLabel. Own all filtering, counts and page resets.
+Disable composed controls yourself when disabling removal/Clear. Focus after
+removal goes to the next chip, a control or the group. Preserve the dashboard's
+customer reveal and clear behavior; no additional dashboard data model.
+
+Compose InputCopy for a real value supplied by the application. Field naming and
+native selection match Input; ref remains on the read-only input. Copy full value
+with navigator.clipboard.writeText and report success only after resolution.
+Keep the button inside the input at logical end with reserved text padding. Success
+uses a temporary check icon and a visually hidden polite announcement, with no
+visible success row or text. Keep the busy button focusable with aria-disabled and
+guard repeated copying. Preserve the button keyboard ring and native input
+selection. Translate copy/copied/failure with labels. On failure keep the selectable input;
+never manufacture success or add execCommand. Replacing value or unmounting cancels
+pending results/timers. [TagInputExamples](examples/TagInputExamples.tsx),
+[FilterBarExamples](examples/FilterBarExamples.tsx) and
+[InputCopyExamples](examples/InputCopyExamples.tsx)
+show local form values, filtering three actual sample documents and copying real
+source paths. Examples do not persist data or pretend to run services.
+
+## Local files and colors
+
+Use FileDropzone for local File[] selection. Wire onValueChange to application state, construct FormData from that array, and supply actual upload infrastructure separately. The native input clears for reliable reselection and has no name/required API. Type/size checks are convenience checks; server validation remains necessary. Multiple appends, single replaces, partial rejections preserve valid files, and exact name/size/type/lastModified duplicates give feedback. No previews or directories.
+
+Use ColorPicker for opaque #RGB/#RRGGBB values; commit normalizes #RRGGBB. Keep incomplete text while editing, commit on Enter/blur, and retain selected color on invalid text. Named presets and native chooser synchronize the same value. name submits the committed hidden value; local error feedback does not block submission. Controlled parents update onValueChange and restore values onReset; uncontrolled reset restores initial defaults without callbacks. Use the compiling examples linked in README, preserve Field associations and LTR HEX, and keep the local sample independent from system accent.
+
+For one bounded numeric value use Slider; use OTPInput for a fixed-length digit
+code and DatePicker for a single Gregorian date. Their examples are local forms,
+not services. Preserve code strings (including leading zeros) and date-only
+YYYY-MM-DD strings; never serialize date-only values through UTC. Use their Field
+label/helper/error associations, supply application validation and controlled
+onReset handlers, and keep DatePicker inside the existing scoped overlay provider.
+Read ai/README.md for required calendar/popover dependencies and Radix overrides.
+
+## Application processes and chronological events
+
+Use Steps for ordered progress, Timeline for ordered event history. Both require
+stable unique IDs and a translated list label. Read their registry/source and
+[StepsExamples](examples/StepsExamples.tsx) or
+[TimelineExamples](examples/TimelineExamples.tsx) before composing them.
+
+Steps is static unless onStepActivate is supplied. That callback reports every
+button's ID; the host owns eligibility, validation and navigation. Select the
+current step with status=current or explicit currentId (which also supports a
+current error). Keep labels/descriptions free of nested controls. Validate before
+advancing, focus invalid inputs and preserve values on Back. Completion copy must
+state what actually happened locally.
+
+Timeline never sorts or reverses events in RTL. The application formats timestamp
+text, supplies valid dateTime when available, and composes content/actions. Use bdi
+for Latin identifiers inside Arabic. Explain sample data scope. A local append
+must append a real event to application state, without implying server activity.
+No fetching, grouping engine, virtualization or automatic relative-time timers.
+
+## Task and notification lists
+
+Use TaskRows for a list of agent tasks, with stable IDs, title, optional short
+summary, pending/running/needs-you/completed/failed state and detail content. The
+application owns every execution state, needs-you included (the run waits for the
+person); opening a disclosure never changes it. Choose capsules, list or plain (no
+surface of its own, for a host's paper). Keep content and actions inside the
+associated panel, outside the header button. Translate stateLabels when direction
+differs from language. Never add completion checkboxes, assignees or manual checklist
+behavior. For one task's steps, tool details and approvals use Agent task.
+
+Control expansion with expandedIds/onExpandedChange or initialize internal
+expansion with defaultExpandedIds. Use existing Badge for state text. Height/opacity
+transition on disclosure only and respect system/OS reduced motion; hover covers
+the complete task. Closing panels become aria-hidden/inert immediately during exit;
+external collapse recovers panel focus to the trigger. State updates must preserve
+focus, IDs and supplied order. The local example alone owns its run timer, which
+clears on unmount; its copy explicitly denies processing real files, emails or
+backend tasks. Do not transplant example timers into the library or invent an
+execution engine. See TaskRowsExamples.
+
+NotificationList displays supplied order and derives unread count from those
+items. Optional onMarkRead/onMarkAllRead request application updates. Actions
+must not silently mark items read. Format timestamps in the application and
+provide valid dateTime when available. Prefer avatar or a decorative icon; put
+essential meaning in title/description. Translate labels when language differs
+from direction. Preserve native root refs/attributes and list semantics.
+
+Filtering belongs to the application. Distinguish no supplied notifications from
+no unread results. When a focused mark-read control leaves Unread, recover focus
+to the next remaining control, previous if last, or the selected filter when none
+remain; Mark all uses that filter. Do not steal focus for updates originating
+elsewhere. Read controls remain stable in All. See the compiling local examples
+linked in README; no fake links, services, persistence or automatic read behavior.
+
+Use FileTree for a compact read-only hierarchy of supplied data. Keep IDs stable across rename/reorder/move and update controlled values in their callbacks. Focus does not select. Use onActivate(file) to render host-owned strings or perform the host action; do not imply filesystem access. See [FileTreeExamples](examples/FileTreeExamples.tsx).
+
+## Compact AI feedback
+
+LoadingState offers Drive/Dots/Orbit pixel-grid motion, a shimmer label and optional
+host-supplied elapsedMs. The host owns elapsed time and aria-busy on real content.
+Spinner remains the general-purpose loader; Skeleton represents future content shape.
+ThinkingIndicator pairs the turning AI mark with optional whole-word rotation
+or textOnly. Its label stays accessible and stable while words change decoratively.
+Never split Arabic words into letters. Reduced motion holds the mark still and shows
+the first word.
+
+ThinkingState pairs the AI mark, current summary and chevron with
+smooth disclosure of host-supplied user-facing steps. Set active=false and update
+label for a completed summary. Keep private model reasoning out of details. TaskRows
+fits several independently tracked tasks. Execution, elapsed clocks and steps
+belong to the host; cosmetic word rotation never drives them.
+
+Use one polite announcement owner; announcement="off" opts out. Elapsed ticks,
+rotating words and animated frames are excluded from live regions. Closed details
+remain mounted but immediately hidden/aria-hidden/inert, with focus recovery to the
+trigger on controlled collapse. Outside focus is preserved. Shared settings and
+both reduced-motion preferences apply. [Examples](examples/AIFeedbackExamples.tsx)
+include all grid variants, whole-word and text-only indicators, and an explicitly
+started local demo with replay/cancel/unmount cleanup.
+
+## Tool activity
+
+Use ToolCall for one operation's supplied input/output/error; its state is
+pending, running, needs-you, completed or failed, and needs-you means the operation
+waits for the person. Wrap consecutive
+calls in `<div className="tz-tool-calls">` to join them into one trace; a plain
+div/list with a gap keeps them as separate cards. `appearance="plain"` drops the
+card for a host's own surface, as Agent task's details do, and `labels` and
+`headingLevel` replace the words and set the heading level. `icon` adds an optional
+decorative tool glyph. Use ToolChips for concise activity
+labels, states and counts. onActivate is host-owned; informational items stay
+noninteractive. controls/expanded must reference the actual connected detail.
+See [ToolActivityExamples](examples/ToolActivityExamples.tsx) for disclosure, retry,
+rendered output and explicit local replay with timer cleanup. TaskRows describes
+broader tasks; ThinkingState describes brief public activity, never private
+reasoning. Keep one announcement owner and exclude duration/output from it.
+
+## AI content
+
+Compose CodeBlock for source, Markdown for static response prose and StreamingText
+for updates arriving from the host. CodeBlock and Markdown are content blocks;
+StreamingText is a part. See [the portable contract and dependency setup](README.md#ai-response-content)
+and [the compiling examples](examples/AIContentExamples.tsx). Install
+`react-markdown@10.1.0 remark-gfm@4.0.1` when copying the source bundle. Keep raw
+HTML disabled and parser URL filtering enabled. Host text/state/transport remain
+outside the components; set StreamingText to `stopped` when the person stops the
+response and `failed` when the transport fails: both keep what arrived, end the
+cursor and announce once. `renderCitation(marker)` turns `[n]` markers into citation
+chips, once per number: in ASCII, Arabic-Indic or Persian digits, and grouped as
+`[1, 3]` or `[٢، ٣]` into adjacent chips. `links="strict"` keeps an AI answer's
+links to http, https, relative and fragment targets; Cited answer sets both.
+
+## Controlled chat composition
+
+Use ChatThread for host-supplied stable IDs and message slots; compose Markdown,
+StreamingText, ThinkingIndicator and patterns in `plain` appearance, and use the
+Assistant workspace below when the conversation needs navigation. A message's
+`status` (stopped or failed), `error` and `onRetry` show a stopped or failed reply as
+text with Retry, and ChatThreadMessage draws one message alone. Use ChatComposer
+for multiline conversation replies and PromptBar for compact task entry. Both
+share controlled entry/submission behavior; `tools` adds the host's own controls
+under the text area, and Start a task is the pattern that begins a request with
+records, a mode and suggestions. Follow [the chat guidance](README.md#chat-foundations)
+and [portable host example](examples/ChatExamples.tsx).
+
+Keep messages, draft, acceptance/clearing, execution, cancellation and errors in
+the app. Enter sends exact valid text; Shift+Enter edits; IME never submits.
+Rejected submissions retain draft/focus. Busy/pending guards block duplicate sends;
+Stop exists only with a host callback. Suggestions require a host callback too.
+Bound thread height in the layout; scrolling defaults to the host. Opt-in
+followOutput follows near-bottom readers only, never older reading or selection.
+Use one concise state announcement; never announce the full response each chunk.
+Invalidate every local callback on stop/reset/replay/configuration change/unmount.
+Do not infer uploads, models, transport, storage, virtualization or orchestration.
+
+## Results in AI replies
+
+Compose ImageResult for application-supplied media, InlineCitation beside a
+supported claim and Sources under that same response using the same stable source
+records. Keep source IDs and explicit citation numbers stable across updates.
+Use disclosure buttons for source details, `mode="preview"` for numbered chips in
+running text (hover or focus previews the source, Enter or a click opens it, and a
+tap on a touch screen opens its card) and link mode for direct navigation.
+HTTP(S), relative paths and fragments are accepted; missing/rejected destinations
+remain text. Popover portals use nearest provider/dialog scope and the installed
+Radix primitive; verify Escape and focus when nesting in Sheet/Modal. When an answer
+rests on sources, use Cited answer: it composes this and adds the thinking panel,
+follow-ups and rating. Copy the text its `onCopy(text)` hands you, which ends with
+the numbered sources. Those parts work alone: ThinkingPanel for the evidence while
+an answer is prepared, FeedbackBar for copy, regenerate and rating, and FollowUps for
+next questions. SourceChip, the chip inside the panel, is internal.
+
+Use InsightCards for concise host-supplied findings, one at a time, with evidence
+in the supporting Card and a connected follow-up action. Prefer neutral meaning;
+never synthesize credibility, evidence, retrieval results or generation. Host owns
+image rights/URL trust, meaningful alt, source records and action execution. Reuse
+[AIResultsExamples](examples/AIResultsExamples.tsx) and copy all
+`ai/assets/results/` (SVG and sample text documents) with their local URL imports.
+To tell a manager what moved and why, use What changed: the host supplies each row's
+`tone`, because the arrow shows direction and the color shows meaning.
+
+### Context controls in a chat
+
+Use SelectionActions only around the intended read-only reply scope; place the
+ChatComposer outside that scope. The host appends callback text into its own
+controlled draft, or copies it with explicit success/failure feedback. Preserve
+native text selection and copying. Alt+Enter enters actions; Escape leaves them.
+Exclude code/editor/control descendants and never silently replace selected text.
+`onSelect(text, { start, end })` also reports offsets into the scope's text content.
+Use Suggested edits with `reviewPlacement="inline"` when a narrow document needs the review to occupy space after its text; keep the default `"floating"` for a selection-anchored popover that may flip to remain in the viewport. Inline review needs no reserved height.
+
+When the assistant rewrites the selection, use Suggested edits, which builds on them:
+the host replaces its own text only on Apply, and should dismiss a suggestion whose
+text changed meanwhile. Editable drafts use InlineDiff directly.
+
+Compose ModelSelector and ContextMeter in a wrapping header/toolbar above the
+existing ChatThread. Keep model IDs stable and update the controlled value in
+onValueChange. Supply all descriptions, availability, context limits and prices;
+label sample data. ContextMeter shows supplied usage/capacity and flags estimates,
+missing/invalid values and excess honestly. Do not add token estimation, model
+lookup, provider authentication or implied execution. ContextMeter's `thresholds`
+move its status and `open` with `onOpenChange` controls its details; `inline` shows
+the details in place, `action` adds a way out once it fills up, and `announcement`
+says each crossing once; ModelSelector's
+`labels.unavailable` replaces its unavailable word. Start a task is where a request
+begins with both: its mode menu holds the `models` and its ring shows `contextUsage`.
+See AIContextExamples.tsx for the compiling local composition; it remains portable
+with the source root.
+
+## Local assistant: ask, preview, decide
+
+Use AskUserQuestions (Clarifying questions) for single-choice/Other and optional text
+questions. Keep application-supplied IDs stable and drafts controlled. Submit actual
+answers to the host; required errors focus the first incomplete question and rejected
+promises retain drafts. Do not generate questions or add branching behavior. A
+receipt (`receipt`, or `answered` when the host already holds the answers) shows what
+the host accepted, never what the agent did with it.
+
+Then use ApprovalCard (Approval request), or ApprovalFlow (Approval sequence) for a
+short sequence of independent requests. Present exact action, target, consequences and
+specific approve/reject labels; add `impact` for who or what is affected, and mark
+`irreversible` and `reversible` honestly, because they decide the shortcut. One-time
+approval reports a decision, never execution success or ongoing
+permission, and its receipt has no Undo. Do not add standing access, automatic
+approval or approve-all.
+ApprovalFlow advances only after host acceptance and exposes prior decisions.
+Changed request content invalidates old records and pending callbacks; unchanged
+requests retain their identity across reorder/append. Controlled records bind
+requestId and approvalRequestKey. Reset clears host-controlled records/drafts as
+well as resetKey. Honor AbortSignal on reset, replacement and unmount, and check
+it immediately before committing host state. UI cancellation cannot undo effects.
+The host must validate request identity, authorization and execution independently.
+
+Adapt AIDecisionsExamples.tsx from this directory's examples/ bundle: all sample
+data is harmless and in memory, the first decision can fail/retry, rejection is
+recorded, and the second request has a separate decision. There is no execution.
+Inline groups never steal initial focus. Escape rejects inside an inline card;
+inside a Sheet or Modal it closes the dialog and records nothing, because the dialog
+owns Escape. Ctrl or Cmd+Enter approves only a `reversible` request that is not
+`irreversible`, and waits 500 ms after the card appears or its content changes.
+Keep modal focus policy in the host Modal. Keep a single status announcement per
+transition and do not move focus if the user has left the surface.
+
+### Read-only terminal and the Assistant workspace
+
+Prefer Terminal for supplied command logs and CodeBlock for source. Supply output
+as text, plus optional command/state/exitCode/duration. Never execute commands or
+interpret HTML/ANSI. Exact copy excludes decorative status. Keep its LTR named
+keyboard scroll region and opt-in near-bottom following; preserve selections and
+older reading. Append text immutably without changing component identity.
+
+ChatApp owns layout and mobile disclosure only. Compose Sidebar/Sheet navigation,
+ChatThread children and TaskStarter in plain appearance in the composer slot (a
+ChatComposer or PromptBar still fits a simpler shell). Group conversations with
+`group`, and put a task's evidence or details in `sidePanel`. Use unique stable
+conversation/message IDs; the host owns active conversation, drafts, execution and
+cancellation. Key thread and entry by conversation identity. Bound the shell and let
+native internal regions scroll. Do not fork message rendering, IME submission,
+streaming presentation or approved composer/caret styling. The reference hierarchy is
+a quiet rail, small title bar, flat assistant replies and user bubbles, and a
+composer below.
+
+Rename and delete are intents (`onConversationRename`, `onConversationDelete`). The
+host owns the rename field and the delete confirmation: open a Modal from the intent,
+delete only when the person confirms it, and choose where focus goes, because a deleted
+row's menu goes with the row. Never delete on the intent alone.
+
+Use `ai/examples/ChatAppExample.tsx` as an in-memory example only. It tells the
+October close: patterns in `plain` appearance as messages (a cited answer, the
+agent's questions with their receipt, an agent task waiting on an approval), TaskStarter
+as the composer and the task's details in the side panel. Approving finishes the task;
+each conversation keeps its own draft; unmount clears timers. Capture conversation
+and message IDs, invalidate run generations, and never let an old callback update the
+active conversation by accident. Do not invent real execution, auth, backend,
+persistence or navigation.

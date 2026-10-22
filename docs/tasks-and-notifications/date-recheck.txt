@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/slider-otp-date.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  22 passed (22)
+   Start at  16:59:11
+   Duration  10.47s (tests 62%, import 22%, environment 13%, setup 2%, transform 1%)
+

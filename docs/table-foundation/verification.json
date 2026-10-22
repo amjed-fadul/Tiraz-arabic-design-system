@@ -1,0 +1,245 @@
+{
+  "baseline": "1aac66e61a99c66605363f1715ab568936cbf388",
+  "branch": "codex/table-foundation",
+  "checkout": "/Users/amjedfadul/.codex/worktrees/table-foundation/Tiraz",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "verification": "All implementation and checks ran locally on the user’s Mac through this Codex session. No GitHub Actions or remote Codex tasks. The returned local commit contains this verified source.",
+  "preview": "http://127.0.0.1:5175/",
+  "node": "/Users/amjedfadul/.nvm/versions/node/v24.21.0/bin/node",
+  "browser": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+  "unit": {
+    "baseline": 169,
+    "testFirst": {
+      "failed": 6,
+      "log": "test-first-output.txt"
+    },
+    "namingReviewRegressionBefore": {
+      "failed": 1,
+      "passed": 3,
+      "log": "naming-before-output.txt"
+    },
+    "namingAfter": {
+      "passed": 4,
+      "log": "naming-after-output.txt"
+    },
+    "focused": {
+      "passed": 15,
+      "files": 5,
+      "log": "focused-output.txt",
+      "note": "Before supplemental naming regression; final full suite includes it."
+    },
+    "final": {
+      "passed": 176,
+      "files": 20,
+      "log": "full-unit-output.txt"
+    }
+  },
+  "checks": [
+    {
+      "command": "npm test -- --maxWorkers=2",
+      "result": "pass",
+      "evidence": "full-unit-output.txt"
+    },
+    {
+      "command": "npm run build",
+      "result": "pass",
+      "evidence": "build-output.txt"
+    },
+    {
+      "command": "npm run lint",
+      "result": "pass",
+      "evidence": "lint-output.txt"
+    },
+    {
+      "command": "npm run format:check",
+      "result": "pass",
+      "evidence": "format-output.txt"
+    },
+    {
+      "command": "npx prettier --check AGENTS.md tests/browser/table.mjs tests/browser/forms.mjs tests/browser/labeled-input.mjs",
+      "result": "pass",
+      "evidence": "additional-format-output.txt"
+    },
+    {
+      "command": "TIRAZ_URL=http://127.0.0.1:5175 TIRAZ_PLAYWRIGHT=<local runtime>/playwright TIRAZ_BROWSER=<local Chrome> node tests/browser/table.mjs",
+      "result": "pass",
+      "evidence": "browser/results.json"
+    },
+    {
+      "command": "TIRAZ_URL=http://127.0.0.1:5175 TIRAZ_EVIDENCE=docs/table-foundation/input-regressions TIRAZ_PLAYWRIGHT=<local runtime>/playwright TIRAZ_BROWSER=<local Chrome> node tests/browser/labeled-input.mjs",
+      "result": "pass",
+      "evidence": "input-regressions/results.json"
+    }
+  ],
+  "browserMatrix": {
+    "combinations": 32,
+    "pages": ["Table", "Sheet"],
+    "dimensions": {
+      "language": ["ar", "en"],
+      "theme": ["light", "dark"],
+      "density": ["compact", "standard"],
+      "typography": ["standard", "large"],
+      "viewportWidth": [1440, 390]
+    },
+    "measurements": 64,
+    "checks": 65,
+    "captures": [
+      "table-ar-light-compact-standard-1440.png",
+      "sheet-ar-light-compact-standard-1440.png",
+      "table-ar-light-compact-standard-390.png",
+      "sheet-ar-light-compact-standard-390-form.png",
+      "sheet-ar-light-compact-standard-390.png",
+      "table-ar-dark-compact-standard-1440.png",
+      "sheet-ar-dark-compact-standard-1440.png",
+      "table-ar-dark-compact-standard-390.png",
+      "sheet-ar-dark-compact-standard-390-form.png",
+      "sheet-ar-dark-compact-standard-390.png",
+      "table-ar-dark-standard-large-1440.png",
+      "sheet-ar-dark-standard-large-1440.png",
+      "table-ar-dark-standard-large-390.png",
+      "sheet-ar-dark-standard-large-390-form.png",
+      "sheet-ar-dark-standard-large-390.png",
+      "table-en-light-compact-standard-1440.png",
+      "sheet-en-light-compact-standard-1440.png",
+      "table-en-light-compact-standard-390.png",
+      "sheet-en-light-compact-standard-390-form.png",
+      "sheet-en-light-compact-standard-390.png",
+      "table-en-light-standard-large-1440.png",
+      "sheet-en-light-standard-large-1440.png",
+      "table-en-light-standard-large-390.png",
+      "sheet-en-light-standard-large-390-form.png",
+      "sheet-en-light-standard-large-390.png",
+      "table-en-dark-compact-standard-1440.png",
+      "sheet-en-dark-compact-standard-1440.png",
+      "table-en-dark-compact-standard-390.png",
+      "sheet-en-dark-compact-standard-390-form.png",
+      "sheet-en-dark-compact-standard-390.png"
+    ],
+    "errors": []
+  },
+  "inputBrowserRegressions": {
+    "checks": 19,
+    "captures": [
+      "input-ar-light-1440.png",
+      "sheet-ar-light-1440.png",
+      "input-ar-light-390.png",
+      "sheet-ar-light-390.png",
+      "input-ar-dark-1440.png",
+      "sheet-ar-dark-1440.png",
+      "input-ar-dark-390.png",
+      "sheet-ar-dark-390.png",
+      "input-en-light-1440.png",
+      "sheet-en-light-1440.png",
+      "input-en-light-390.png",
+      "sheet-en-light-390.png",
+      "input-en-dark-1440.png",
+      "sheet-en-dark-1440.png",
+      "input-en-dark-390.png",
+      "sheet-en-dark-390.png"
+    ],
+    "errors": []
+  },
+  "density": {
+    "englishDesktopStandardTextCompactRowPx": 34.1875,
+    "englishDesktopStandardTextStandardRowPx": 42.1875,
+    "differencePx": 8,
+    "paddingBlockPx": {
+      "compact": 4,
+      "standard": 8
+    }
+  },
+  "independentReview": {
+    "reviewer": "/root/table_review",
+    "initialFindings": [
+      "Portable composition guidance still described Table as unavailable.",
+      "Caption + aria-label gave region and table different names.",
+      "Customer-list description stale."
+    ],
+    "fixes": "Guidance corrected, native naming priority respected, stale prose updated. Failing supplemental naming regression observed before fixing.",
+    "reReview": "No remaining actionable issues; independently reran Table tests and Chrome accessibility naming probes, inspected final spacing change and matrix evidence."
+  },
+  "visualInspection": [
+    "browser/table-ar-light-compact-standard-1440.png",
+    "browser/table-ar-light-compact-standard-390.png",
+    "browser/table-ar-dark-standard-large-390.png",
+    "browser/sheet-ar-dark-standard-large-390-form.png",
+    "browser/table-en-light-compact-standard-1440.png",
+    "browser/sheet-en-dark-compact-standard-390.png",
+    "browser/sheet-en-light-standard-large-1440.png"
+  ],
+  "untested": [
+    "Other browser engines (Firefox/WebKit), manual screen-reader session, touch devices and production deployment. Advanced data-grid behavior is outside scope."
+  ],
+  "sourceSha256": {
+    "AGENTS.md": "28c03d562dd23d11ddacbb8e8d2af65340be7b216918af1baf5d1b38100c1245",
+    "README.md": "83dd4396162c5e888d551e4bfc7ca929c16776eb1aff3ccd9fdef55153a43114",
+    "src/main.tsx": "f1ee3cde846bbee3878252ebf19823feb09e1f38214a1aa6b21adf5f1444f9d1",
+    "src/system/Button.tsx": "cf99baed8770d2bfc4961e8284b84c9ec688036ff9cc9de855aba7a74fbf6fd7",
+    "src/system/DropdownMenu.tsx": "4b573e959e348ef3d9bbe7c270190ab9eed8d0a03fd561303335ac2c90e7899f",
+    "src/system/Field.tsx": "6a56c5f4a86303a87b60c651a210562e35c82c39f4189ae919030b2aa472fb5e",
+    "src/system/Input.tsx": "3c56cb587a454e89cd345103534cf51a1e91b2fde018d79d7e2756bac9a61451",
+    "src/system/Provider.tsx": "bb872cc9cec4775d1c0120fe328f4f4f4d6d66fbf99c1bcef839a63e3aa2fe18",
+    "src/system/Select.tsx": "5361b969afcbd69bc83e65fe41e48c61b313afed97fc23419188fbdfef296fc7",
+    "src/system/Sheet.tsx": "e498818bb9e6c23ef6559e859f0e8d409860aec1bf1a50dd796e4882e8e05039",
+    "src/system/Switch.tsx": "98784d97339337294ce91788b980d7de3281f7454a02d84ef1434dd1428c38c0",
+    "src/system/Table.tsx": "2459ed5e0e0eac588d2f13603ccc08f52fe19144825423cf72466568ef31c04b",
+    "src/system/Tabs.tsx": "09c87fb0369862ebe9dc98fe44444f9161dcbbb97d2bff537449014a877845fd",
+    "src/system/Toast.tsx": "697583b2b9326c5861c3a06816f309de2730330aceeac0b17f14e0cd081e90ed",
+    "src/system/ai-registry.test.ts": "9e036ee86eac9525aae6758cac672a7cd6d8b3693a439d1627536e983691ac7d",
+    "src/system/ai/README.md": "618d76f589100539fab3c608553209e69cceef8742576a6bfcc7e76e5f70d3ec",
+    "src/system/ai/composition.md": "c79199cd021ac5739f713803a572b634c4148f50c2c5d90e9f774d3075266ec3",
+    "src/system/ai/examples/CreateCustomer.tsx": "79b5cccd6ca73bad98bab478e373201fcbdc97655485ae6e142b907fd3ce4c0e",
+    "src/system/ai/examples/TableExample.tsx": "662d711eb34dbbd47dd287639d3d7901435e12c57388559b202da2cf1e43081e",
+    "src/system/ai/examples/usage.tsx": "70454087c6a25c70bbc46b63a8d5eb24a6aaf94ccbd54018c15959e5cf94fa70",
+    "src/system/ai/registry.json": "f6caa50cca6aa03890185f28293e33f036b9819471b96ef6dc52714a3c47d90f",
+    "src/system/components.css": "b940b176e5e79e845200c68c1c1076a57be0b454e354a4bd46826222c964a66e",
+    "src/system/components.test.tsx": "33ccc21cf451ba780533fcf474e5d6ef1bf87fd4a45274563ff4b21d97c3e79a",
+    "src/system/config.ts": "d829c8a9d0c04e9287e3333f77039338c8228f51cbeb9ae433538ab60dbab42a",
+    "src/system/control-associations.ts": "a8dc0c84c85fbb49d9312451c6d3bf9111d6c33325e13f8bbc581af5c53117ef",
+    "src/system/forms.test.tsx": "378d10e6fa99bd725bb5d7d3d4713a856c4a374c302e7660108a5f811f8531bb",
+    "src/system/index.ts": "30dc2af6a2428bb40a7151becbde4d7fcf5eca7f521b5784e26eb516f8313a44",
+    "src/system/labeled-input.test.tsx": "234c069674e9d7810e6bfb3f7c7a6d203acafaa8643cd7b3e17971d9740816f2",
+    "src/system/overlay-regressions.test.tsx": "82516320a1fcd9eb2328b4304fa117df8335a4d4d7f6e7c63a49438ae39728db",
+    "src/system/select-association.test.tsx": "f5e67272111d57dd024fbf1ed3f809ff5da76808cabe53d68209ed1ac691c148",
+    "src/system/select-form-regressions.test.tsx": "17e4ed4e4327aa94327b70e0826010cb938d28cc858a778fa0304e08dfe34d82",
+    "src/system/table.test.tsx": "d902486f5eaa2e97c816188b322d620f622be28742ae8ede88436e75c7f601da",
+    "src/system/tokens.css": "27b4340f961366319100a4dbc05b1ab6399c4fdb9fcfa1e3e97ab624f8be34a9",
+    "src/system/useSelectValue.ts": "e0a60ac87a07f7c6ea6f4da7ca27e13cadc4fadc25999740ce59fe472860af1d",
+    "src/system/useSystem.ts": "3db68ea2fe7e112b013056bbd4b686d7127863435b9891f24cc709218e31f225",
+    "src/system/useToast.ts": "6d93e1370b3dce1cbaa6de3f33e723ead97c13b8a4eb467822251f5388e0b161",
+    "src/tests/setup.ts": "8b27982b11901c11423cf88f674053e08b6415277247d67c57c14d71bf8d9b93",
+    "src/workbench/ApiReference.tsx": "b1285b59c9e3e1d2678758b735dcce8b43625f4b5a551cf10633f84333441b66",
+    "src/workbench/Appearance.tsx": "a89eef8592a3b39bb7d7c730385badcb29fc372820d37a58f43fe83bc8b3b9e6",
+    "src/workbench/CodeExample.tsx": "1e7860667f912778e9067d82be7c0fa6f50e66b2e25f0dba2e68cef1e3f43da4",
+    "src/workbench/CopyControl.tsx": "5d54bb1f9b89ad266e57ec5115c76e43b41efd43b467719557242d7c081f0f70",
+    "src/workbench/DocsDrawer.tsx": "129790da550b739326021b5d062fab1bce6479326e02f68cc955c8276ed48c0d",
+    "src/workbench/Examples.tsx": "5f3c1c473800e5c6c79551104f75e884ed86ab7a8c9e4e673aeb6284bc3b3f40",
+    "src/workbench/Inspector.tsx": "a965e80c7a529ad61b2a05d556a94e1cba2b7efb170815b9368de416edd38cdd",
+    "src/workbench/Playground.tsx": "3a49fd2a4163a3d2490a072419f952e5d0242bd22e323ee4e19eaef545d0c024",
+    "src/workbench/Workbench.test.tsx": "8bc5ea3dc892fc25ea37ed9ea58788438f9465827a69c872fcf1b509e4984de6",
+    "src/workbench/Workbench.tsx": "5a254e024c90a50ea4395fb30afb890c19a4bb3e7fc464502a11f46c596548dd",
+    "src/workbench/action-lifecycle.test.tsx": "8093c3f98fefb9e27084ce87894fa8fd2c43f3352de9e0e258db75028cba11fd",
+    "src/workbench/catalog.ts": "ffe1a6e09854504b1eb82e0420849efbb3ade25738cf7b41da77b9762a8bcf3b",
+    "src/workbench/customer-flow.test.tsx": "51b5605bda1bfa5acc47d33874b7c2cb692668f996d8cfcaf4986b3554e3b30c",
+    "src/workbench/fields.ts": "ed015ec235cb1d5c86ece7c52651ba87f58f7e96a4c61446f67ed3d2cbf7508a",
+    "src/workbench/form-playground.test.tsx": "18323f5da5a306e0bb2f10caa9c71ef82d3da819671d86a93368362d5dcffc41",
+    "src/workbench/generate-prompts.test.ts": "10ee2b8ed0b49954096eceab067240908ee0d9cbd9659dbe301f774ba33f418b",
+    "src/workbench/generate.ts": "8dce138350dd7d3834f0809bacbac720c19ebdbf05e64a1f3370d75f56740a86",
+    "src/workbench/generated-action.test.tsx": "e283d23223bfef6d18f5808e21dd4f1bdbe939fe4fdcca21abad99c98090fa25",
+    "src/workbench/generated-code.test.ts": "51a66eace25b5bb20ac44628d2c61a064f1403cbd1715581d4d7635b7e640ed6",
+    "src/workbench/i18n.ts": "ba857a79e3e7fbd13fc21a9f7d2f1c0a805cb0182e51b36e39a6e4d375de2130",
+    "src/workbench/labeled-input-page.test.tsx": "cac4c1d372989df491c492f59f69c5e9863974934f6e064b90764ad33687710c",
+    "src/workbench/model.test.ts": "6291f3e0d68c769e799d4176bcb6dced9e0371ca92b2ae87da96b79ebe792c0e",
+    "src/workbench/model.ts": "21d95ead9d844ef4225f6eed27733ae7f6cc81b2257d349376e5add89adc4f2d",
+    "src/workbench/native-attributes.ts": "3fa4113f0f4744f068d7438a1ebb518ecb21cf99c8a38b75657a7d5a16991f6c",
+    "src/workbench/preferences.test.ts": "62b7494fd60b9f58b3c274045cd6e748ed9355a84ef52697b017f681ae6fa804",
+    "src/workbench/preferences.ts": "988c0176ebbcaa196ab4e406d10bb8ef372849b87494c854e8a3da6d75785cdb",
+    "src/workbench/storage.test.ts": "32dc6566eccdc56ed3d8c42df61aac86b23afdbe41bd3dc0ac4f083175dffca8",
+    "src/workbench/storage.ts": "7da524a462c780068be960ab0243a9dd0d4deb1b6f25fca277862fe597cdc380",
+    "src/workbench/table-page.test.tsx": "b2cd0d35a51f23221edd49ec472bada2d099dd535aeecbe6eff063bd295b89b2",
+    "src/workbench/workbench.css": "b1ab91caf795f6a6dea85cd674fd73f256e39dc6e81d7d8941e7c40305f45a83",
+    "tests/browser/forms.mjs": "ee88aa143e876d25eb324c48029214a84dcc51dceb5861c002a91189d6979401",
+    "tests/browser/labeled-input.mjs": "fd7cc8f4974e277ebf41f213bfbbbba1ce5c319a7a76c42f38794b22a08d678a",
+    "tests/browser/table.mjs": "c2a6e89b4f207579aef0b1072b9a2e68f5aee748ebc229296fc3213f23ad33a1"
+  }
+}

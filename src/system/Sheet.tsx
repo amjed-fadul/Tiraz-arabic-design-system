@@ -28,6 +28,12 @@ export function Sheet({
   const { container, config } = useSystem();
   const [content, setContent] = useState<HTMLDivElement | null>(null);
   const resolvedSide = side ?? (config.direction === "rtl" ? "right" : "left");
+  // The same edge in reading terms, so the CSS can place it with logical
+  // properties: the right edge is the start in Arabic and the end in English.
+  const edge =
+    (resolvedSide === "right") === (config.direction === "rtl")
+      ? "start"
+      : "end";
   return (
     <Primitive.Root open={open} onOpenChange={onOpenChange}>
       <Primitive.Trigger asChild>{trigger}</Primitive.Trigger>
@@ -37,6 +43,7 @@ export function Sheet({
           ref={setContent}
           className="tz-sheet"
           data-side={resolvedSide}
+          data-edge={edge}
           dir={config.direction}
         >
           <SystemContext.Provider value={{ config, container: content }}>

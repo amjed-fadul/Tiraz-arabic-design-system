@@ -1,0 +1,73 @@
+{
+  "cases": [
+    {
+      "language": "en",
+      "width": 1440,
+      "theme": "light",
+      "action": "Check form",
+      "description": "Small form · application-owned validation",
+      "associatedError": [
+        "Add a short note.",
+        "Enter a note to complete the form check."
+      ],
+      "firstInvalidFocused": true,
+      "whitespaceRejected": true,
+      "success": "Form check passed.",
+      "resetClearsFeedbackAndErrors": true,
+      "nativeValuesRestored": true,
+      "overflow": false
+    },
+    {
+      "language": "en",
+      "width": 320,
+      "theme": "dark",
+      "action": "Check form",
+      "description": "Small form · application-owned validation",
+      "associatedError": [
+        "Add a short note.",
+        "Enter a note to complete the form check."
+      ],
+      "firstInvalidFocused": true,
+      "whitespaceRejected": true,
+      "success": "Form check passed.",
+      "resetClearsFeedbackAndErrors": true,
+      "nativeValuesRestored": true,
+      "overflow": false
+    },
+    {
+      "language": "ar",
+      "width": 1440,
+      "theme": "light",
+      "action": "تحقق من النموذج",
+      "description": "نموذج صغير · التطبيق يملك التحقق",
+      "associatedError": [
+        "أضف ملاحظة قصيرة.",
+        "أدخل ملاحظة لإكمال التحقق من النموذج."
+      ],
+      "firstInvalidFocused": true,
+      "whitespaceRejected": true,
+      "success": "تم التحقق من النموذج بنجاح.",
+      "resetClearsFeedbackAndErrors": true,
+      "nativeValuesRestored": true,
+      "overflow": false
+    },
+    {
+      "language": "ar",
+      "width": 320,
+      "theme": "dark",
+      "action": "تحقق من النموذج",
+      "description": "نموذج صغير · التطبيق يملك التحقق",
+      "associatedError": [
+        "أضف ملاحظة قصيرة.",
+        "أدخل ملاحظة لإكمال التحقق من النموذج."
+      ],
+      "firstInvalidFocused": true,
+      "whitespaceRejected": true,
+      "success": "تم التحقق من النموذج بنجاح.",
+      "resetClearsFeedbackAndErrors": true,
+      "nativeValuesRestored": true,
+      "overflow": false
+    }
+  ],
+  "errors": []
+}

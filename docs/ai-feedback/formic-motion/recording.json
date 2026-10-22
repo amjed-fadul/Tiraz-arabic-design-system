@@ -1,0 +1,41 @@
+{
+  "source": "Actual local Chromium Page.startScreencast JPEG frames sorted by browser timestamps. No synthetic motion.",
+  "cssViewport": [960, 900],
+  "frames": 1195,
+  "seconds": 17.95847797393799,
+  "frameDimensions": [1162, 1089],
+  "actions": [
+    {
+      "ms": 3017,
+      "completedMs": 3299,
+      "action": "collapse",
+      "state": "neric: 12.4s\n    - generic: Dots\n    - status: Working\n    - generic: Working\n    - generic: 12.4s\n    - generic: Orbit\n    - status: Working\n    - generic: Working\n    - generic: 12.4s\n  - region \"ThinkingIndicator\":\n    - heading \"ThinkingIndicator\" [level=2]\n    - status: Preparing reply\n    - generic: Planning\n    - generic: Assistant\n    - status: Preparing text reply\n    - generic: Checking\n  - region \"ThinkingState\":\n    - heading \"ThinkingState\" [level=2]\n    - status: Preparing summary\n    - button \"Preparing summary\" [active]:\n      - generic: Preparing summary\n    - region:\n      - list:\n        - generic: Review sample labels\n        - generic: Group sample topics\n        - generic: Prepare sample outline\n    - button \"Complete sample\":\n      - generic: Complete sample\n  - region \"Connected demo\":\n    - heading \"Connected local demo\" [level=2]\n    - paragraph: Local simulation\n    - button \"Run demo\":\n      - generic: Run demo\n    - button \"Cancel demo\" [disabled]:\n      - generic: Cancel demo\n    - status: Demo ready\n    - button \"Demo ready\":\n      - generic: Demo ready"
+    },
+    {
+      "ms": 6029,
+      "completedMs": 6307,
+      "action": "expand",
+      "state": " Working\n    - generic: Working\n    - generic: 12.4s\n    - generic: Orbit\n    - status: Working\n    - generic: Working\n    - generic: 12.4s\n  - region \"ThinkingIndicator\":\n    - heading \"ThinkingIndicator\" [level=2]\n    - status: Preparing reply\n    - generic: Planning\n    - generic: Assistant\n    - status: Preparing text reply\n    - generic: Checking\n  - region \"ThinkingState\":\n    - heading \"ThinkingState\" [level=2]\n    - status: Preparing summary\n    - button \"Preparing summary\" [expanded] [active]:\n      - generic: Preparing summary\n    - region \"Preparing summary\":\n      - list \"Sample steps\":\n        - generic: Review sample labels\n        - generic: Group sample topics\n        - generic: Prepare sample outline\n    - button \"Complete sample\":\n      - generic: Complete sample\n  - region \"Connected demo\":\n    - heading \"Connected local demo\" [level=2]\n    - paragraph: Local simulation\n    - button \"Run demo\":\n      - generic: Run demo\n    - button \"Cancel demo\" [disabled]:\n      - generic: Cancel demo\n    - status: Demo ready\n    - button \"Demo ready\":\n      - generic: Demo ready"
+    },
+    {
+      "ms": 9016,
+      "completedMs": 9291,
+      "action": "complete",
+      "state": "\n    - generic: Working\n    - generic: 12.4s\n    - generic: Orbit\n    - status: Working\n    - generic: Working\n    - generic: 12.4s\n  - region \"ThinkingIndicator\":\n    - heading \"ThinkingIndicator\" [level=2]\n    - status: Preparing reply\n    - generic: Refining\n    - generic: Assistant\n    - status: Preparing text reply\n    - generic: Thinking\n  - region \"ThinkingState\":\n    - heading \"ThinkingState\" [level=2]\n    - status: Sample summary ready\n    - button \"Sample summary ready\" [expanded]:\n      - generic: Sample summary ready\n    - region \"Sample summary ready\":\n      - list \"Sample steps\":\n        - generic: Review sample labels\n        - generic: Group sample topics\n        - generic: Prepare sample outline\n    - button \"Replay sample\" [active]:\n      - generic: Replay sample\n  - region \"Connected demo\":\n    - heading \"Connected local demo\" [level=2]\n    - paragraph: Local simulation\n    - button \"Run demo\":\n      - generic: Run demo\n    - button \"Cancel demo\" [disabled]:\n      - generic: Cancel demo\n    - status: Demo ready\n    - button \"Demo ready\":\n      - generic: Demo ready"
+    },
+    {
+      "ms": 12022,
+      "completedMs": 12300,
+      "action": "replay",
+      "state": " Working\n    - generic: Working\n    - generic: 12.4s\n    - generic: Orbit\n    - status: Working\n    - generic: Working\n    - generic: 12.4s\n  - region \"ThinkingIndicator\":\n    - heading \"ThinkingIndicator\" [level=2]\n    - status: Preparing reply\n    - generic: Checking\n    - generic: Assistant\n    - status: Preparing text reply\n    - generic: Checking\n  - region \"ThinkingState\":\n    - heading \"ThinkingState\" [level=2]\n    - status: Preparing summary\n    - button \"Preparing summary\" [expanded]:\n      - generic: Preparing summary\n    - region \"Preparing summary\":\n      - list \"Sample steps\":\n        - generic: Review sample labels\n        - generic: Group sample topics\n        - generic: Prepare sample outline\n    - button \"Complete sample\" [active]:\n      - generic: Complete sample\n  - region \"Connected demo\":\n    - heading \"Connected local demo\" [level=2]\n    - paragraph: Local simulation\n    - button \"Run demo\":\n      - generic: Run demo\n    - button \"Cancel demo\" [disabled]:\n      - generic: Cancel demo\n    - status: Demo ready\n    - button \"Demo ready\":\n      - generic: Demo ready"
+    },
+    {
+      "ms": 15004,
+      "completedMs": 15274,
+      "action": "demo",
+      "state": "ric: 12.4s\n  - region \"ThinkingIndicator\":\n    - heading \"ThinkingIndicator\" [level=2]\n    - status: Preparing reply\n    - generic: Thinking\n    - generic: Assistant\n    - status: Preparing text reply\n    - generic: Thinking\n  - region \"ThinkingState\":\n    - heading \"ThinkingState\" [level=2]\n    - status: Preparing summary\n    - button \"Preparing summary\" [expanded]:\n      - generic: Preparing summary\n    - region \"Preparing summary\":\n      - list \"Sample steps\":\n        - generic: Review sample labels\n        - generic: Group sample topics\n        - generic: Prepare sample outline\n    - button \"Complete sample\":\n      - generic: Complete sample\n  - region \"Connected demo\":\n    - heading \"Connected local demo\" [level=2]\n    - paragraph: Local simulation\n    - button \"Replay demo\" [active]:\n      - generic: Replay demo\n    - button \"Cancel demo\":\n      - generic: Cancel demo\n    - generic: Loading local sample\n    - generic: Loading local sample\n    - generic: 0.2s\n    - status: \"Demo: preparing sample\"\n    - 'button \"Demo: preparing sample\"':\n      - generic: \"Demo: preparing sample\""
+    }
+  ],
+  "maxCaptureGapSeconds": 0.26314783096313477,
+  "encoding": "H.264 at50fps CRF18; GIF preview25fps. UI automation produces brief capture gaps around clicks; DOM interpolation sampled separately."
+}

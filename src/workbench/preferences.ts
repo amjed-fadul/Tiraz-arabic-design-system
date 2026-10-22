@@ -1,4 +1,4 @@
-import { defaultConfig } from "../system/config";
+import { accentColors, defaultConfig } from "../system/config";
 import type { SystemConfig } from "../system/config";
 const KEY = "tiraz.preferences.v1";
 export function readPreferences(): SystemConfig {
@@ -11,7 +11,7 @@ export function readPreferences(): SystemConfig {
       !["light", "dark"].includes(p.theme as string) ||
       !["rtl", "ltr"].includes(p.direction as string) ||
       !["standard", "compact"].includes(p.density as string) ||
-      !["sage", "blue", "plum", "clay"].includes(p.accent as string) ||
+      !Object.keys(accentColors).includes(p.accent as string) ||
       typeof p.radius !== "number" ||
       !Number.isFinite(p.radius) ||
       p.radius < 0 ||
@@ -27,6 +27,7 @@ export function readPreferences(): SystemConfig {
       radius: p.radius,
       reducedMotion: p.reducedMotion,
       typography: p.typography === "large" ? "large" : "standard",
+      numerals: p.numerals === "latn" ? "latn" : "arab",
     };
   } catch {
     return { ...defaultConfig };

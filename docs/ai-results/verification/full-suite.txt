@@ -1,0 +1,12 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/ai-results/Tiraz
+
+
+ Test Files  73 passed (73)
+      Tests  678 passed (678)
+   Start at  23:55:22
+   Duration  222.55s (import 41%, tests 40%, environment 12%, transform 6%, setup 2%)
+
+     Import  264 modules were evaluated 6743 times · 177.69s total, 41% of tracked time
+             ~83.22s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

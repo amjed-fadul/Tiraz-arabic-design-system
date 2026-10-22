@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/structure-navigation.test.tsx src/workbench/structure-navigation-pages.test.tsx src/workbench/generated-structure.test.tsx src/workbench/generated-code.test.ts src/workbench/generate-prompts.test.ts src/system/ai-registry.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz
+
+
+ Test Files  6 passed (6)
+      Tests  96 passed (96)
+   Start at  01:41:29
+   Duration  6.60s (tests 52%, environment 22%, transform 14%, import 9%, setup 2%)
+

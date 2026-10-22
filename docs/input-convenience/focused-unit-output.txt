@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/labeled-input.test.tsx src/workbench/labeled-input-page.test.tsx src/workbench/generated-code.test.ts src/workbench/customer-flow.test.tsx src/workbench/form-playground.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/labeled-input/Tiraz
+
+
+ Test Files  5 passed (5)
+      Tests  16 passed (16)
+   Start at  14:56:14
+   Duration  4.34s (tests 48%, environment 30%, import 12%, setup 5%, transform 5%)
+
+Environment  jsdom was created 5 times · 2.35s total, 30% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

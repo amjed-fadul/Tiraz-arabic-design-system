@@ -1,0 +1,19 @@
+{
+  "originalCheckout": "/Users/amjedfadul/Tiraz",
+  "originalHEAD": "ce78408818b6a9866ab0faa7748404cba44d8939",
+  "originalBranch": "main",
+  "originalStatus": " M README.md\n M src/workbench/workbench.css\n",
+  "workingTreeDiffUnchanged": true,
+  "indexDiffUnchanged": true,
+  "originalApplicationListenerPorts": [
+    5311, 7000, 5000, 10007, 19054, 5206, 5191, 8792, 59869, 19292, 58736,
+    58738, 58740, 8000, 5207, 5189, 18872, 18894, 18893, 5193
+  ],
+  "missingOriginalApplicationListenerPorts": [],
+  "systemServiceNote": "rapportd PID911 remains on58004; its transient55431/55432 listeners disappeared during verification. No process or server was stopped by this task.",
+  "previewURL": "http://127.0.0.1:5208/",
+  "previewCheckout": "/Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz",
+  "baseline": "0808c1a48a552e4920e979b0aea789795742f84a",
+  "branch": "codex/structure-and-navigation",
+  "dataTableUnchanged": true
+}

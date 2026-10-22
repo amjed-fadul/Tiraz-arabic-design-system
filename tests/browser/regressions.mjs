@@ -2,6 +2,8 @@ import { createRequire } from "node:module";
 import { writeFile, mkdir } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url);
+const evidenceDir = process.env.TIRAZ_EVIDENCE || "docs/review-evidence";
+await mkdir(evidenceDir, { recursive: true });
 const { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
 const browser = await chromium.launch({
   headless: true,
@@ -92,8 +94,9 @@ for (const typography of ["standard", "large"])
           for (const r of m) {
             assert.equal(r.height, m[0].height);
             assert.equal(r.width, m[0].width);
-            assert.equal(r.iconWidth, 16);
-            assert.equal(r.iconHeight, 16);
+            // Transformed SVG bounds can differ by a fraction of a CSS pixel.
+            assert.ok(Math.abs(r.iconWidth - 16) < 0.001);
+            assert.ok(Math.abs(r.iconHeight - 16) < 0.001);
             assert.ok(r.height >= 32);
           }
         },
@@ -114,7 +117,7 @@ await check(
     );
     await page.waitForTimeout(1250);
     assert.equal(await button.getAttribute("data-state"), "success");
-    await page.screenshot({ path: "docs/review-evidence/after-success.png" });
+    await page.screenshot({ path: `${evidenceDir}/after-success.png` });
     await page.waitForTimeout(1050);
     assert.equal(await button.getAttribute("data-state"), "idle");
   },
@@ -200,7 +203,7 @@ for (const direction of ["rtl", "ltr"]) {
         }),
     );
     await page.screenshot({
-      path: `docs/review-evidence/after-nested-${direction}.png`,
+      path: `${evidenceDir}/after-nested-${direction}.png`,
     });
     await page.keyboard.press("Enter");
     assert.equal(await page.locator("output").textContent(), "Selected 40");
@@ -356,9 +359,9 @@ await check("nested standard provider keeps its own density gap", async () =>
     "8px",
   ),
 );
-await mkdir("docs/review-evidence", { recursive: true });
+await mkdir(evidenceDir, { recursive: true });
 await writeFile(
-  "docs/review-evidence/regressions.json",
+  `${evidenceDir}/regressions.json`,
   JSON.stringify(evidence, null, 2),
 );
 console.log(

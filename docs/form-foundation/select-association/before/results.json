@@ -1,0 +1,735 @@
+{
+  "checks": [
+    {
+      "name": "controlled replace bubble reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled replace bubble click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled replace capture reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled replace capture click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late bubble reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late bubble click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late capture reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late capture click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain bubble reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain bubble click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain capture reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain capture click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace bubble reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace bubble click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace capture reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace capture click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late bubble reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late bubble click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late capture reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late capture click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain bubble reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain bubble click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain capture reset",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain capture click",
+      "before": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "previousReset": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      },
+      "after": {
+        "display": "Beta",
+        "native": "b",
+        "submitted": "b",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    }
+  ],
+  "failures": [
+    {
+      "name": "controlled replace none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled replace none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled late none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "controlled retain none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled replace none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled late none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain none reset",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    },
+    {
+      "name": "uncontrolled retain none click",
+      "error": "{\"display\":\"Beta\",\"native\":\"a\",\"submitted\":\"a\",\"application\":\"b\",\"changes\":[],\"mounted\":true}",
+      "observed": {
+        "display": "Beta",
+        "native": "a",
+        "submitted": "a",
+        "application": "b",
+        "changes": [],
+        "mounted": true
+      }
+    }
+  ],
+  "errors": []
+}

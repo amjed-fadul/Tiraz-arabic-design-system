@@ -1,0 +1,47 @@
+{
+  "root": "http://127.0.0.1:5212",
+  "browser": "155.0.8059.40",
+  "checks": [
+    "documentation link opens the standalone dashboard",
+    "ar/light/1440: direction, font, charts and no page overflow",
+    "ar/dark/1440: direction, font, charts and no page overflow",
+    "en/light/1440: direction, font, charts and no page overflow",
+    "en/dark/1440: direction, font, charts and no page overflow",
+    "ar/light/768: direction, font, charts and no page overflow",
+    "ar/dark/768: direction, font, charts and no page overflow",
+    "en/light/768: direction, font, charts and no page overflow",
+    "en/dark/768: direction, font, charts and no page overflow",
+    "ar/light/390: direction, font, charts and no page overflow",
+    "ar/dark/390: direction, font, charts and no page overflow",
+    "en/light/390: direction, font, charts and no page overflow",
+    "en/dark/390: direction, font, charts and no page overflow",
+    "ar/light/320: direction, font, charts and no page overflow",
+    "ar/dark/320: direction, font, charts and no page overflow",
+    "en/light/320: direction, font, charts and no page overflow",
+    "en/dark/320: direction, font, charts and no page overflow",
+    "dashboard rail in both languages/themes: inline-start placement, active links, destination focus and no overflow",
+    "period synchronizes both chart tables, summaries, orders and revenue",
+    "combined search/status filters reset pages; sorting works both ways",
+    "cancel/close/Escape discard drafts and restore trigger focus",
+    "validation, repeated save guard, Toast, accurate metrics and filtered customer reveal",
+    "all preview states, working Retry, empty create without orders, OS reduced motion",
+    "reload restores sample; live theme reaches Sheets; nested Select Escape respects focus/layers",
+    "mobile navigation focuses real destination; wide table stays keyboard-scrollable inside page",
+    "300px-high mobile Sheet retains usable scrolling navigation and contained footer",
+    "reused dashboard portal links retain token appearance without documentation CSS",
+    "automated accessibility scan: no WCAG A/AA findings (manual screen reader unverified)",
+    "no browser console errors or warnings"
+  ],
+  "errors": [],
+  "warnings": [],
+  "axe": [],
+  "motion": {
+    "animation": "none",
+    "transition": "0s"
+  },
+  "scrolling": {
+    "region": 286,
+    "content": 512,
+    "tabIndex": 0
+  }
+}

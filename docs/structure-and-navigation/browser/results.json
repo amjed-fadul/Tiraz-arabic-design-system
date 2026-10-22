@@ -1,0 +1,625 @@
+{
+  "matrix": [
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 360,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "motion": "reduce"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "no-preference"
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 360,
+      "motion": "reduce"
+    }
+  ],
+  "checks": [
+    "64 fixture combinations: both languages/themes/densities/text scales/widths/OS motion; native semantics, disabled skipping, keyboard, one-open/collapse, boundaries, normalization, ellipses, retained Next focus, no overflow, Arabic font, bidi and separator direction.",
+    "Live provider customization changes theme/accent/density/text/radius/direction; application reduced motion stops disclosure motion; global disabled prevents paging.",
+    "16 documentation language/viewport/page checks with real connected outcomes and copied prompts; real appearance controls update the live preview."
+  ],
+  "screenshots": [
+    "components-ar-light-narrow.png",
+    "components-en-dark-desktop.png",
+    "docs-card-ar-narrow.png",
+    "docs-accordion-ar-narrow.png",
+    "docs-breadcrumbs-ar-narrow.png",
+    "docs-pagination-ar-narrow.png",
+    "docs-card-en-desktop.png",
+    "docs-accordion-en-desktop.png",
+    "docs-breadcrumbs-en-desktop.png",
+    "docs-pagination-en-desktop.png",
+    "docs-pagination-live-customization.png"
+  ],
+  "axe": [
+    {
+      "scenario": {
+        "language": "ar",
+        "theme": "light",
+        "density": "compact",
+        "typography": "standard",
+        "width": 1280,
+        "motion": "no-preference"
+      },
+      "violations": []
+    },
+    {
+      "scenario": {
+        "language": "ar",
+        "theme": "light",
+        "density": "compact",
+        "typography": "standard",
+        "width": 360,
+        "motion": "no-preference"
+      },
+      "violations": []
+    },
+    {
+      "scenario": {
+        "language": "ar",
+        "theme": "dark",
+        "density": "compact",
+        "typography": "standard",
+        "width": 1280,
+        "motion": "no-preference"
+      },
+      "violations": []
+    },
+    {
+      "scenario": {
+        "language": "ar",
+        "theme": "dark",
+        "density": "compact",
+        "typography": "standard",
+        "width": 360,
+        "motion": "no-preference"
+      },
+      "violations": []
+    },
+    {
+      "scenario": {
+        "language": "en",
+        "theme": "light",
+        "density": "compact",
+        "typography": "standard",
+        "width": 1280,
+        "motion": "no-preference"
+      },
+      "violations": []
+    },
+    {
+      "scenario": {
+        "language": "en",
+        "theme": "light",
+        "density": "compact",
+        "typography": "standard",
+        "width": 360,
+        "motion": "no-preference"
+      },
+      "violations": []
+    },
+    {
+      "scenario": {
+        "language": "en",
+        "theme": "dark",
+        "density": "compact",
+        "typography": "standard",
+        "width": 1280,
+        "motion": "no-preference"
+      },
+      "violations": []
+    },
+    {
+      "scenario": {
+        "language": "en",
+        "theme": "dark",
+        "density": "compact",
+        "typography": "standard",
+        "width": 360,
+        "motion": "no-preference"
+      },
+      "violations": []
+    }
+  ],
+  "errors": []
+}

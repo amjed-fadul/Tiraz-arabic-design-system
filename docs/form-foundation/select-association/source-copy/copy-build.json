@@ -1,0 +1,8 @@
+{
+  "sourceCopy": "src/vendor/tiraz",
+  "instructionBundleRetained": true,
+  "standaloneTypecheck": "passed",
+  "standaloneBuild": "passed",
+  "requiresWorkbench": false,
+  "requiresCheckoutReadme": false
+}

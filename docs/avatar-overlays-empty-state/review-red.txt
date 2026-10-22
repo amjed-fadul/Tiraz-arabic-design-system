@@ -1,0 +1,281 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/avatar-overlays-empty-state.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+ ❯ src/system/avatar-overlays-empty-state.test.tsx (19 tests | 2 failed) 3474ms
+   × opens on fresh keyboard focus immediately after dismissing a hovered tooltip 1027ms
+   × does not consume Escape for empty tooltip content inside a Modal 1043ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > opens on fresh keyboard focus immediately after dismissing a hovered tooltip
+TestingLibraryElementError: Unable to find role="tooltip"
+
+Ignored nodes: comments, script, style
+[36m<body[39m
+  [33mstyle[39m=[32m""[39m
+[36m>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"rtl"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<button>[39m
+        [0mTrigger[0m
+      [36m</button>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body[39m
+    [33mstyle[39m=[32m""[39m
+  [36m>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tiraz-system"[39m
+        [33mdata-density[39m=[32m"compact"[39m
+        [33mdata-reduced-motion[39m=[32m"false"[39m
+        [33mdata-theme[39m=[32m"light"[39m
+        [33mdata-typography[39m=[32m"standard"[39m
+        [33mdir[39m=[32m"rtl"[39m
+        [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+      [36m>[39m
+        [36m<button>[39m
+          [0mTrigger[0m
+        [36m</button>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</body>[39m
+[36m</html>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ src/system/avatar-overlays-empty-state.test.tsx:319:9
+    317|   fireEvent.pointerLeave(trigger);
+    318|   trigger.focus();
+    319|   await waitFor(()=>expect(screen.getByRole("tooltip",{hidden:true})).…
+       |         ^
+    320| });
+    321| it("does not consume Escape for empty tooltip content inside a Modal",…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > does not consume Escape for empty tooltip content inside a Modal
+AssertionError: expected <div role="dialog" …(8)>…(2)</div> to be null
+
+Ignored nodes: comments, script, style
+[36m<html>[39m
+  [36m<head />[39m
+  [36m<body[39m
+    [33mdata-scroll-locked[39m=[32m"1"[39m
+    [33mstyle[39m=[32m"pointer-events: none;"[39m
+  [36m>[39m
+    [36m<span[39m
+      [33maria-hidden[39m=[32m"true"[39m
+      [33mdata-aria-hidden[39m=[32m"true"[39m
+      [33mdata-radix-focus-guard[39m=[32m""[39m
+      [33mstyle[39m=[32m"outline: none; opacity: 0; position: fixed; pointer-events: none;"[39m
+      [33mtabindex[39m=[32m"0"[39m
+    [36m/>[39m
+    [36m<div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tiraz-system"[39m
+        [33mdata-density[39m=[32m"compact"[39m
+        [33mdata-reduced-motion[39m=[32m"false"[39m
+        [33mdata-theme[39m=[32m"light"[39m
+        [33mdata-typography[39m=[32m"standard"[39m
+        [33mdir[39m=[32m"rtl"[39m
+        [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33maria-controls[39m=[32m"radix-_r_1v_"[39m
+          [33maria-expanded[39m=[32m"true"[39m
+          [33maria-haspopup[39m=[32m"dialog"[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"tz-button "[39m
+          [33mdata-aria-hidden[39m=[32m"true"[39m
+          [33mdata-size[39m=[32m"sm"[39m
+          [33mdata-state[39m=[32m"idle"[39m
+          [33mdata-variant[39m=[32m"primary"[39m
+          [33mtype[39m=[32m"button"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"tz-button-label"[39m
+          [36m>[39m
+            [0mOpen[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<div[39m
+          [33maria-hidden[39m=[32m"true"[39m
+          [33mclass[39m=[32m"tz-sheet-backdrop tz-modal-backdrop"[39m
+          [33mdata-aria-hidden[39m=[32m"true"[39m
+          [33mdata-state[39m=[32m"open"[39m
+          [33mstyle[39m=[32m"pointer-events: auto;"[39m
+        [36m/>[39m
+        [36m<div[39m
+          [33maria-describedby[39m=[32m"radix-_r_21_"[39m
+          [33maria-labelledby[39m=[32m"radix-_r_20_"[39m
+          [33mclass[39m=[32m"tz-modal"[39m
+          [33mdata-state[39m=[32m"open"[39m
+          [33mdir[39m=[32m"rtl"[39m
+          [33mid[39m=[32m"radix-_r_1v_"[39m
+          [33mrole[39m=[32m"dialog"[39m
+          [33mstyle[39m=[32m"pointer-events: auto;"[39m
+          [33mtabindex[39m=[32m"-1"[39m
+        [36m>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"tz-modal-header"[39m
+          [36m>[39m
+            [36m<div>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"radix-_r_20_"[39m
+              [36m>[39m
+                [0mTest[0m
+              [36m</h2>[39m
+              [36m<p[39m
+                [33mid[39m=[32m"radix-_r_21_"[39m
+              [36m>[39m
+                [0mHelp[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Close"[39m
+              [33mclass[39m=[32m"tz-icon-button"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-x"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"18"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"18"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M18 6 6 18"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m6 6 12 12"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+          [36m</header>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"tz-modal-body"[39m
+          [36m>[39m
+            [36m<button>[39m
+              [0mEmpty help[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+    [36m<span[39m
+      [33maria-hidden[39m=[32m"true"[39m
+      [33mdata-aria-hidden[39m=[32m"true"[39m
+      [33mdata-radix-focus-guard[39m=[32m""[39m
+      [33mstyle[39m=[32m"outline: none; opacity: 0; position: fixed; pointer-events: none;"[39m
+      [33mtabindex[39m=[32m"0"[39m
+    [36m/>[39m
+  [36m</body>[39m
+[36m</html>[39m
+
+- Expected:
+null
+
++ Received:
+<div
+  aria-describedby="radix-_r_21_"
+  aria-labelledby="radix-_r_20_"
+  class="tz-modal"
+  data-state="open"
+  dir="rtl"
+  id="radix-_r_1v_"
+  role="dialog"
+  style="pointer-events: auto;"
+  tabindex="-1"
+>
+  <header
+    class="tz-modal-header"
+  >
+    <div>
+      <h2
+        id="radix-_r_20_"
+      >
+        Test
+      </h2>
+      <p
+        id="radix-_r_21_"
+      >
+        Help
+      </p>
+    </div>
+    <button
+      aria-label="Close"
+      class="tz-icon-button"
+      type="button"
+    >
+      <svg
+        aria-hidden="true"
+        class="lucide lucide-x"
+        fill="none"
+        height="18"
+        stroke="currentColor"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        viewBox="0 0 24 24"
+        width="18"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M18 6 6 18"
+        />
+        <path
+          d="m6 6 12 12"
+        />
+      </svg>
+    </button>
+  </header>
+  <div
+    class="tz-modal-body"
+  >
+    <button>
+      Empty help
+    </button>
+  </div>
+</div>
+
+ ❯ src/system/avatar-overlays-empty-state.test.tsx:326:58
+    324|   screen.getByRole("button",{name:"Empty help"}).focus();
+    325|   await userEvent.keyboard("{Escape}");
+    326|   await waitFor(()=>expect(screen.queryByRole("dialog")).toBeNull());
+       |                                                          ^
+    327| });
+    328|
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 17 passed (19)
+   Start at  21:36:27
+   Duration  4.58s (tests 78%, environment 9%, transform 6%, import 5%, setup 2%)
+

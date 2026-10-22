@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 export interface ToastMessage {
   title: string;
   description?: string;
-  tone?: "success" | "error" | "info";
+  tone?: "success" | "error" | "info" | "warning";
   duration?: number;
 }
 export const ToastContext = createContext<{

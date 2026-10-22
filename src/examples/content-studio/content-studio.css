@@ -1,0 +1,286 @@
+/* Content Studio owns its canvas treatment; shared component rules stay local. */
+.content-studio-campaign {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-block-end: var(--space-5);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface-well);
+}
+.content-studio-campaign-identity,
+.content-studio-campaign-meta,
+.content-studio-campaign-meta > span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.content-studio-campaign-mark,
+.content-studio-brief-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--control-height);
+  block-size: var(--control-height);
+  border: 1px solid var(--action-border);
+  border-radius: var(--radius-control);
+  background: var(--action-soft);
+  color: var(--action);
+}
+.content-studio-eyebrow {
+  margin: 0 0 var(--space-1);
+  color: var(--text-secondary);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-micro);
+}
+.content-studio-campaign h2 {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
+  text-wrap: balance;
+}
+.content-studio-campaign-meta {
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.content-studio-campaign-meta > span {
+  gap: var(--space-2);
+}
+.content-studio-campaign-meta svg {
+  flex: none;
+}
+.content-studio-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.content-studio-main {
+  display: grid;
+  gap: var(--space-5);
+  min-inline-size: 0;
+}
+.content-studio .tz-image-generation[data-appearance="card"] {
+  max-inline-size: none;
+}
+.content-studio .tz-image-generation-paper {
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+/* Lead with the image, then show the four directions and their brief. */
+.content-studio .tz-image-generation-canvas {
+  grid-row: 1;
+  max-inline-size: calc(30rem * var(--weave-aspect, 1.5));
+}
+.content-studio .tz-image-generation-variants {
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+.content-studio .tz-image-generation-variant {
+  display: grid;
+  gap: var(--space-2);
+  max-inline-size: none;
+  padding: var(--space-1);
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  transition: background-color var(--motion-fast) var(--ease-out);
+}
+.content-studio .tz-image-generation-thumb {
+  aspect-ratio: 3 / 2;
+}
+/* The existing radio's localized name doubles as its visible label. */
+.content-studio .tz-image-generation-variant > .tz-visually-hidden {
+  position: static;
+  inline-size: auto;
+  block-size: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  clip-path: none;
+  white-space: normal;
+  text-align: center;
+  font-size: var(--text-micro);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.content-studio .tz-image-generation-variant:has(:checked) {
+  background: var(--action-soft);
+  color: var(--action);
+}
+.content-studio .tz-image-generation-prompt {
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--border);
+}
+.content-studio .tz-image-generation-prompt-text {
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  line-height: var(--leading-meta);
+}
+.content-studio .tz-image-generation-options {
+  gap: var(--space-2);
+}
+.content-studio .tz-image-generation-options > li {
+  background: var(--surface-well);
+}
+.content-studio-panel {
+  min-inline-size: 0;
+}
+.content-studio-brief-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  border-block-end: 1px solid var(--border);
+}
+.content-studio-brief-header > div {
+  display: grid;
+  gap: var(--space-1);
+}
+.content-studio-brief-header .tz-card-description {
+  font-size: var(--text-meta);
+}
+.content-studio-brief-card > .content-studio-brief {
+  padding-block-start: var(--space-5);
+}
+.content-studio-brief {
+  display: grid;
+  gap: var(--space-5);
+}
+.content-studio-settings-fields {
+  display: grid;
+  gap: var(--space-5);
+}
+.content-studio-settings > summary {
+  display: none;
+}
+.content-studio-heading {
+  margin: 0;
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.content-studio-brief .tz-radio-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+}
+.content-studio-generate {
+  inline-size: 100%;
+}
+.screen-demo-host[data-demo-phase="sending"]
+  .content-studio
+  .content-studio-generate {
+  transform: scale(var(--press-scale));
+  box-shadow: 0 0 0 var(--space-1) var(--ai-soft);
+}
+.content-studio-color {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.content-studio-swatch {
+  inline-size: 10px;
+  block-size: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--hairline);
+}
+.content-studio-chosen {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--success);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.content-studio-caption .tz-selection-scope p {
+  margin: 0;
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
+@container screen (width >= 960px) {
+  .content-studio-layout {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+  }
+  .content-studio-panel {
+    position: sticky;
+    inset-block-start: var(--space-4);
+  }
+}
+@container screen (width >= 640px) and (width < 960px) {
+  .content-studio-brief {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+  .content-studio-brief > :first-child {
+    align-self: stretch;
+  }
+  .content-studio-brief > :first-child textarea {
+    min-block-size: 12rem;
+  }
+  .content-studio-brief > .content-studio-generate {
+    grid-column: 1 / -1;
+  }
+}
+@container screen (width < 640px) {
+  .content-studio-settings > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+    color: var(--text-secondary);
+    font-size: var(--text-label);
+    font-weight: var(--weight-medium);
+    cursor: pointer;
+    list-style: none;
+  }
+  .content-studio-settings > summary::-webkit-details-marker {
+    display: none;
+  }
+  .content-studio-settings > summary:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: var(--radius-small);
+  }
+  .content-studio-settings[open] > summary svg {
+    transform: rotate(180deg);
+  }
+  .content-studio-settings-fields {
+    padding-block-start: var(--space-4);
+  }
+  .content-studio-campaign {
+    padding: var(--space-4);
+  }
+  .content-studio-campaign-meta {
+    inline-size: 100%;
+    justify-content: space-between;
+  }
+  .content-studio .tz-image-generation-paper {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+  .content-studio .tz-image-generation-variants {
+    gap: var(--space-2);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .content-studio
+    .tz-image-generation-variant:has(> input:not(:disabled)):hover {
+    background: var(--surface-hover);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .content-studio .tz-image-generation-variant {
+    transition: none;
+  }
+}

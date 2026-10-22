@@ -1,0 +1,60 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/steps-timeline.test.tsx src/workbench/steps-timeline-pages.test.tsx src/system/ai-registry.test.ts src/workbench/generated-code.test.ts --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+ ❯ src/system/ai-registry.test.ts (10 tests | 2 failed) 62450ms
+   × compiles the bundled example after copying only the library to a different application path 23161ms
+   × documents real public exports and supported prop values and compiles the linked examples 30975ms
+ ❯ src/workbench/generated-code.test.ts (1 test | 1 failed) 68250ms
+   × type-checks copied code for every component, state mode and composition preset 68249ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/generated-code.test.ts > type-checks copied code for every component, state mode and composition preset
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-code.test.ts:10:1
+      8| import type { ComponentId } from "./catalog";
+      9| import { generateCode } from "./generate";
+     10| it("type-checks copied code for every component, state mode and compos…
+       | ^
+     11|   const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = …
+     12|   for (const language of ["ar", "en"] as const) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/system/ai-registry.test.ts > compiles the bundled example after copying only the library to a different application path
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/ai-registry.test.ts:150:1
+    148|   }
+    149| });
+    150| it("compiles the bundled example after copying only the library to a d…
+       | ^
+    151|   const temporary = mkdtempSync(resolve(tmpdir(), "tiraz-source-consum…
+    152|   try {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/system/ai-registry.test.ts > documents real public exports and supported prop values and compiles the linked examples
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/ai-registry.test.ts:230:1
+    228| });
+    229|
+    230| it("documents real public exports and supported prop values and compil…
+       | ^
+    231|   const registry = readRegistry();
+    232|   const files = [
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 2 passed (4)
+      Tests  3 failed | 18 passed (21)
+   Start at  15:30:48
+   Duration  96.84s (tests 72%, import 16%, environment 8%, transform 3%, setup 1%)
+

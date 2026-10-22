@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Unread first removal",
+    "count": "Project notifications1 unreadMark all as read",
+    "focus": "Mark as read: New package note",
+    "items": [
+      "New package note"
+    ]
+  },
+  {
+    "name": "Unread final removal",
+    "count": "Project notifications0 unreadMark all as read",
+    "focus": "Unread",
+    "heading": "No unread notifications"
+  },
+  {
+    "name": "Arabic mark all focus",
+    "focus": "غير المقروءة",
+    "heading": "لا توجد إشعارات غير مقروءة"
+  },
+  {
+    "name": "Live customization",
+    "accent": "#A8C6EF",
+    "animations": [
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none",
+      "none"
+    ],
+    "bodySize": "16px",
+    "density": "standard",
+    "overflow": false,
+    "reducedMotion": "true",
+    "theme": "dark",
+    "typography": "large"
+  }
+]

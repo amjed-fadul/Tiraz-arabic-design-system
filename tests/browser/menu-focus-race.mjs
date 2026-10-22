@@ -70,6 +70,20 @@ for (const scenario of cases) {
             type,
             (event) => {
               const role = event.target.getAttribute?.("role");
+              if (type === "keydown" && event.key === "End") {
+                // Sample at the actual key event, not a later protocol roundtrip.
+                // A busy machine can finish the animation between those moments.
+                window.endAnimations =
+                  document
+                    .querySelector(".tz-menu")
+                    ?.getAnimations()
+                    .map((a) => ({
+                      name: a.animationName,
+                      time: a.currentTime,
+                      duration: a.effect.getTiming().duration,
+                      playState: a.playState,
+                    })) ?? [];
+              }
               if (type === "pointerdown" || type === "pointermove")
                 window.pointerPosition = { x: event.clientX, y: event.clientY };
               if (type === "focusin") {
@@ -119,6 +133,18 @@ for (const scenario of cases) {
         await dialog
           .getByLabel("Fixture reducedMotion", { exact: true })
           .selectOption("true");
+      // Open the menu from a settled Sheet: its slide-in moves the trigger, and
+      // the scenario is the menu's own opening motion.
+      await dialog.evaluate((el) =>
+        Promise.all(
+          el
+            .getAnimations({ subtree: true })
+            .filter(
+              (a) => a.effect?.getComputedTiming().iterations !== Infinity,
+            )
+            .map((a) => a.finished.catch(() => {})),
+        ),
+      );
       const trigger = page.getByRole("button", {
         name: "Nested menu trigger",
         exact: true,
@@ -133,17 +159,6 @@ for (const scenario of cases) {
       if (scenario.settled) await page.waitForTimeout(300);
       // The regression intentionally does NOT wait for opening motion before End.
       await page.keyboard.press("End");
-      await page.evaluate(() => {
-        window.endAnimations = document
-          .querySelector(".tz-menu")
-          .getAnimations()
-          .map((a) => ({
-            name: a.animationName,
-            time: a.currentTime,
-            duration: a.effect.getTiming().duration,
-            playState: a.playState,
-          }));
-      });
       await page.waitForTimeout(350);
       result.beforeEnter = await page.evaluate(() => {
         const menu = document.querySelector(".tz-menu"),
@@ -178,16 +193,14 @@ for (const scenario of cases) {
           result.failures.push(error.message);
         }
       };
+      // Woven §15: ArrowDown opens the menu under keyboard modality, which
+      // skips tz-menu-in. Focus and visibility are still checked below.
       if (!scenario.settled && !scenario.reducedMotion)
         check(() =>
-          assert.ok(
-            result.beforeEnter.endAnimations.some(
-              (a) =>
-                a.name === "tz-menu-in" &&
-                a.playState === "running" &&
-                a.time < a.duration,
-            ),
-            "End must occur during opening animation",
+          assert.deepEqual(
+            result.beforeEnter.endAnimations,
+            [],
+            "A keyboard-opened menu must not animate",
           ),
         );
       check(() =>

@@ -1,0 +1,8 @@
+
+> tiraz@0.1.0 lint
+> oxlint
+
+tests/ai-exercise/verify.mjs:302:50: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+tests/ai-exercise/verify.mjs:302:56: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+tests/ai-exercise/verify.mjs:470:38: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+tests/ai-exercise/verify.mjs:470:44: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.

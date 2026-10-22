@@ -1,0 +1,30 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz
+
+ ❯ src/system/InputCopy.test.tsx (7 tests | 1 failed) 2231ms
+   × uses check-only success with a hidden polite status, keeping failure guidance visible 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/InputCopy.test.tsx > uses check-only success with a hidden polite status, keeping failure guidance visible
+Error: expect(element).toHaveClass("tz-visually-hidden")
+
+Expected the element to have class:
+  tz-visually-hidden
+Received:
+  tz-entry-feedback
+ ❯ src/system/InputCopy.test.tsx:124:38
+    122|   fireEvent.click(screen.getByRole("button",{name:"Copy Code"}));
+    123|   await waitFor(()=>expect(screen.getByRole("status")).toHaveTextConte…
+    124|   expect(screen.getByRole("status")).toHaveClass("tz-visually-hidden");
+       |                                      ^
+    125|   expect(screen.getByRole("status")).toHaveAttribute("aria-live","poli…
+    126|   expect(container.querySelector(".lucide-check")).toBeInTheDocument();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  22:37:57
+   Duration  3.25s (tests 71%, environment 20%, setup 4%, import 3%, transform 2%)

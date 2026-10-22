@@ -1,0 +1,36 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/form-controls-pages.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+ ❯ src/workbench/form-controls-pages.test.tsx (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/form-controls-pages.test.tsx [ src/workbench/form-controls-pages.test.tsx ]
+Error: Failed to resolve import "../system/ai/examples/FeedbackForm" from "src/workbench/form-controls-pages.test.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz/src/workbench/form-controls-pages.test.tsx:8:29
+  6  |  import { defaultPlaygrounds } from "./model";
+  7  |  import { generateCode, generatePrompt } from "./generate";
+  8  |  import { FeedbackForm } from "../system/ai/examples/FeedbackForm";
+     |                                ^
+  9  |  var _jsxFileName = "/Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz/src/workbench/form-controls-page...
+  10 |  import { jsxDEV as _jsxDEV } from "react/jsx-dev-runtime";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  no tests
+   Start at  19:17:40
+   Duration  1.21s (environment 83%, setup 14%, transform 2%)

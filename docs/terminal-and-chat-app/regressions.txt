@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/slider-otp-date.test.tsx src/system/Terminal.test.tsx src/system/ChatApp.test.tsx src/system/ai-registry.test.ts --maxWorkers=1 --testTimeout=15000
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/terminal-and-chat-app/Tiraz
+
+
+ Test Files  4 passed (4)
+      Tests  42 passed (42)
+   Start at  03:01:50
+   Duration  49.37s (tests 79%, import 10%, environment 7%, transform 3%, setup 1%)
+
+    Isolate  4 workers spawned · ~1.03s startup each (spawn + environment, per file)
+             at least ~3.10s faster with isolate: false — reuses workers across files instead of one per file

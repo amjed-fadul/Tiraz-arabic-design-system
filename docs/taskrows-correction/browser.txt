@@ -1,0 +1,7 @@
+PASS 16 language/theme/width/appearance cases: long mixed text, four states, no overflow or row entry motion
+PASS Native disclosure keyboard, hidden panels, controlled collapse focus, state/retry focus, identity and honest simulation
+PASS Details do not mark read; Unread last-row fallback, final removal, empty message and Show all focus
+PASS Arabic mark all read, derived zero count, focus fallback and supplied order on All
+PASS Live theme, density, typography, accent; system and OS reduced motion; large Arabic at320 without overflow
+PASS Continuous docs, minimal live inspector, code/full copied prompt synchronization and narrow docs
+PASS No uncaught browser errors

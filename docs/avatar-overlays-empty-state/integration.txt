@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/avatar-overlays-empty-state.test.tsx src/workbench/avatar-overlays-pages.test.tsx src/workbench/generated-code.test.ts src/system/ai-registry.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+
+ Test Files  4 passed (4)
+      Tests  28 passed (28)
+   Start at  21:31:26
+   Duration  4.85s (tests 63%, environment 20%, import 7%, transform 6%, setup 4%)
+

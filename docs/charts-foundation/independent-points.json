@@ -1,0 +1,14 @@
+[
+  {
+    "kind": "line",
+    "fill": "rgb(53, 94, 76)",
+    "fillOpacity": "1",
+    "r": "2"
+  },
+  {
+    "kind": "area",
+    "fill": "rgb(53, 94, 76)",
+    "fillOpacity": "1",
+    "r": "2"
+  }
+]

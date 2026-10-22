@@ -1,0 +1,81 @@
+Tiraz AI decisions verification — 2026-10-18 (Asia/Dubai)
+
+Baseline: 70ab25b9192fdcbccad27281b34d77379f636c20
+Branch: codex/ai-decisions
+Checkout: /Users/amjedfadul/.codex/worktrees/ai-decisions/Tiraz
+Preview: http://127.0.0.1:5237/ (left running; HTTP 200)
+Connected fixture: http://127.0.0.1:5237/tests/browser/ai-decisions-fixture.html
+Runtime: local macOS, bundled Node v24.19.0. No dependencies added.
+Final source content is recorded in source.sha256; final commit is returned in chat.
+
+Passing commands/results:
+- npm test -- --maxWorkers=2: 730 tests / 78 files passed (full-tests.txt).
+- Focused components, connected docs, generated code, portable registry compilation:
+  30 passed / 4 files (focused-tests.txt).
+- Interaction, generated prompt relocation and navigation: 154 passed / 4 files
+  (interaction-tests.txt; then expanded lifecycle tests also passed in full suite).
+- npm run build: passed. Vite reports the existing large workbench chunk warning.
+- npm run lint: passed, no warnings.
+- npm run format:check: passed; browser fixtures/scripts also pass Prettier.
+- tests/browser/ai-decisions.mjs: 17 checks passed in local Google Chrome;
+  browser/results.json lists matrix, keyboard/focus, reset, customization and axe.
+- tests/browser/ai-decisions-record.mjs: captured browser/connected-flow.webm,
+  6.48 seconds: question -> preview -> host failure -> rejection retry -> second
+  independent approval -> explicit decision-only receipt. No action executes.
+
+Coverage:
+Single-choice, Other/text and optional textarea; actual answer payloads; required
+errors/first-invalid focus; draft retention/retry; duplicate submissions/decisions;
+rejected promises; same-ID changed request during submission; stale resolution;
+reset/unmount abort; changed-back request invalidation; controlled records updated
+while pending; append/reorder; safe Escape rejection; failure and advancement focus;
+no focus stealing when the user leaves; persistent polite acceptance announcements.
+Arabic/English, light/dark, 1280px desktop and 320x480 short viewport, compact and
+shared standard/large typography/plum/radius customization. Actions remain reachable
+without document overflow. Explicit system and emulated OS reduced motion tested.
+The components add no motion. Browser axe checks passed for every matrix example.
+Manual in-app browser inspection also covered Arabic dark and continuous docs.
+
+References inspected first in the live in-app browser:
+https://formicai.dev/preview.html#/askuserquestions
+https://formicai.dev/preview.html#/approvalcard
+https://formicai.dev/preview.html#/approvalflow
+All three loaded. Web text fetch was unavailable, so live browser evidence was used.
+AskUserQuestions: exercised Other + Enter, multiple choices + Next, free text + Done,
+and actual received answers. Card: single choice advance, multiple choice continuation,
+final answer and Answers sent. Flow: single-choice advance, explicit Continue,
+completion/reset and Hold for review as its rejection alternative.
+The current Formic approval references are questionnaire selectors; they do not expose
+an independent binary rejected receipt or host failure/retry. Those behaviors follow
+the requested Tiraz contract and are verified locally. Formic visual cues retained:
+bordered compact card, numbered stacked choices, inline Other field, counter/navigation
+and terminal feedback, using Tiraz primitives/typography/tokens. No reference motion
+was copied; reduced-motion behavior is static. See formic-flow.png.
+
+Independent review:
+Three actionable findings fixed and re-reviewed twice. Final reviewer reported no
+further actionable findings. See review.txt. Agent-consent-patterns skill applied.
+
+Limitations and run history:
+No manual VoiceOver/NVDA or other screen-reader speech testing; live region semantics
+and focus assertions do not establish spoken output. No physical phone/tablet/touch
+or assistive-device tests. Automated browser coverage is Google Chrome on this Mac;
+in-app WebKit view inspected manually. Standalone Safari, Firefox and other browser
+versions remain untested. No backend, authorization service, persistence, network calls
+or consequential execution was implemented or tested; the host owns all of those.
+
+The first unconstrained full run, performed concurrently with build/browser work,
+hit timeouts in Workbench accent-copy tests and Dashboard cancellation, plus a
+sibling Toast focus timing failure. No unrelated production files were changed.
+The complete rerun with two workers passed these same tests and the entire suite.
+New navigation/relocation tests were updated for the added pages/raw source, and
+prompt subprocess buffers were enlarged to accommodate the expanded real examples.
+
+Original checkout preserved:
+HEAD ce78408818b6a9866ab0faa7748404cba44d8939
+.git/index SHA1 91150b79e7091167e2133ae89525aa0c5395852e
+README.md SHA1 d170db61dde068efba64fc7188689f710a634ea3
+src/workbench/workbench.css SHA1 3e57b8b0c6526ed1fbb2ba74f8c06891a129c347
+Original status remains README.md + workbench.css modified and .claude/ untracked.
+Landing checkout and unrelated servers were not modified or stopped.
+Local commit only: no push, merge, deployment or landing changes.

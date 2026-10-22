@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/table.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/table-foundation/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  15:49:54
+   Duration  2.20s (environment 69%, transform 9%, import 9%, tests 6%, setup 6%)

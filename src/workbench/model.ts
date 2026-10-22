@@ -1,9 +1,38 @@
+import { agentPreviewDefaults } from "./agent-preview";
+import type { AgentPreviewOptions } from "./agent-preview";
+import type { TaskRowsExampleProps } from "../system/ai/examples/TaskRowsExamples";
+import type { NotificationListExampleProps } from "../system/ai/examples/NotificationListExamples";
+import type { SliderExampleProps } from "../system/ai/examples/SliderExamples";
+import type { OTPInputExampleProps } from "../system/ai/examples/OTPInputExamples";
+import type { DatePickerExampleProps } from "../system/ai/examples/DatePickerExamples";
 import { defaultConfig } from "../system/config";
 import type { ButtonState, ButtonVariant, SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
+import { fields, selectOptions } from "./fields";
 import type { Language } from "./i18n";
 import { words } from "./i18n";
 import { nativeRules } from "./native-attributes";
+export interface FileDropzoneModel {
+  label: string;
+  helper: string;
+  error: string;
+  multiple: boolean;
+  accept: string;
+  maxFileSize: number;
+  maxFiles: number;
+  disabled: boolean;
+  mode: "controlled" | "uncontrolled";
+  // The example opens with sample files.
+  filled: boolean;
+}
+export interface ColorPickerModel {
+  label: string;
+  helper: string;
+  error: string;
+  disabled: boolean;
+  showSwatches: boolean;
+  mode: "controlled" | "uncontrolled";
+}
 export type NativeValue = string | number | boolean | string[];
 export type NativeAttributes = Record<string, NativeValue>;
 export type DemoIcon = "none" | "plus" | "download" | "settings";
@@ -85,18 +114,313 @@ export interface ToastModel {
   triggerLabel: string;
   title: string;
   description: string;
-  tone: "success" | "error" | "info";
+  tone: "success" | "error" | "info" | "warning";
   duration: number;
   providerLabel: string;
   closeLabel: string;
 }
+export interface FieldModel {
+  label: string;
+  helper: string;
+  error: string;
+  required: boolean;
+}
+export interface InputModel extends FieldModel, Stateful {
+  value: string;
+  placeholder: string;
+  size: "sm" | "md";
+  type: "text" | "email" | "password" | "search" | "tel" | "url";
+  disabled: boolean;
+  readOnly: boolean;
+  name: string;
+}
+export interface SelectModel extends FieldModel, Stateful {
+  value: string;
+  placeholder: string;
+  size: "sm" | "md";
+  disabled: boolean;
+  invalid: boolean;
+  name: string;
+  options: { value: string; label: string; disabled?: boolean }[];
+}
+export interface TableModel {
+  caption: string;
+  preset: "populated" | "empty";
+}
+export interface DataTableModel {
+  caption: string;
+  preset: "populated" | "loading" | "empty" | "no-results" | "error";
+  // The column the table opens sorted by.
+  sort: "none" | "name";
+}
+export interface BadgeModel {
+  children: string;
+  tone: "neutral" | "success" | "error" | "info" | "warning" | "ai";
+}
+export interface CheckboxModel extends FieldModel, Stateful {
+  checked: boolean;
+  disabled: boolean;
+  name: string;
+  value: string;
+}
+export interface RadioGroupModel extends FieldModel, Stateful {
+  value: string;
+  disabled: boolean;
+  name: string;
+  options: { value: string; label: string; disabled?: boolean }[];
+}
+export interface TextareaModel extends FieldModel, Stateful {
+  value: string;
+  placeholder: string;
+  disabled: boolean;
+  readOnly: boolean;
+  name: string;
+  rows: number;
+}
+export interface AvatarModel {
+  appearance: "initials" | "photo";
+  src: string;
+  name: string;
+  fallback: string;
+  size: "sm" | "md";
+}
+export interface AvatarGroupModel {
+  appearance: "initials" | "mixed";
+  maxVisible: number;
+  size: "sm" | "md";
+}
+export interface TooltipModel {
+  content: string;
+}
+export interface ModalModel {
+  title: string;
+  description: string;
+  footer: boolean;
+  mode: "controlled" | "uncontrolled";
+  // Also the mark of props saved after the states (see defaultsBeforeStates).
+  open: boolean;
+}
+export interface EmptyStateModel {
+  title: string;
+  description: string;
+  illustration: "no-records" | "no-results" | "getting-started" | "none";
+  actionLabel: string;
+}
+export interface AlertModel {
+  title: string;
+  description: string;
+  tone: "neutral" | "success" | "error" | "info" | "warning" | "ai";
+  actionLabel: string;
+}
+export interface SkeletonModel {
+  shape: "text" | "rectangle" | "circle";
+}
+export interface ProgressModel {
+  label: string;
+  value: number;
+  indeterminate: boolean;
+  showValue: boolean;
+}
+export interface SpinnerModel {
+  label: string;
+  size: "sm" | "md";
+  tone: "neutral" | "ai";
+  decorative: boolean;
+}
+export interface CardModel {
+  title: string;
+  description: string;
+  actions: boolean;
+}
+export interface AccordionModel {
+  mode: "controlled" | "uncontrolled";
+  collapsible: boolean;
+  defaultOpen: boolean;
+}
+export interface BreadcrumbsModel {
+  label: string;
+  current: string;
+}
+export interface PaginationModel {
+  page: number;
+  totalPages: number;
+}
+export interface ChartModel {
+  sample: "single" | "multi" | "gaps" | "point" | "zero" | "empty" | "long";
+  legend: boolean;
+  grid: boolean;
+}
+export interface SidebarModel {
+  collapsed: boolean;
+  grouped: boolean;
+  nested: boolean;
+  footer: boolean;
+  mode: "controlled" | "uncontrolled";
+  longLabels: boolean;
+}
+export interface TagInputModel {
+  label: string;
+  helper: string;
+  error: string;
+  placeholder: string;
+  maxTags: number;
+  disabled: boolean;
+  readOnly: boolean;
+  mode: "controlled" | "uncontrolled";
+  // The example opens with sample tags.
+  filled: boolean;
+}
+export interface InputCopyModel {
+  label: string;
+  value: string;
+  helper: string;
+  error: string;
+  disabled: boolean;
+}
+export interface FilterBarModel {
+  initialQuery: string;
+  initialKind: "all" | "guide" | "note";
+  clearAll: boolean;
+}
 export interface Playgrounds {
+  "task-starter": {
+    appearance: "card" | "plain";
+    disabled: boolean;
+  } & AgentPreviewOptions;
+  "cited-answer": {
+    appearance: "card" | "plain";
+    question: boolean;
+  } & AgentPreviewOptions;
+  "data-answer": { appearance: "card" | "plain" } & AgentPreviewOptions;
+  "agent-task": {
+    appearance: "card" | "plain";
+    autoStart: boolean;
+  } & AgentPreviewOptions;
+  "decision-inbox": { appearance: "card" | "plain" };
+  "suggested-edits": { undo: boolean } & AgentPreviewOptions;
+  "image-generation": {
+    appearance: "card" | "plain";
+    knownProgress: boolean;
+  } & AgentPreviewOptions;
+  "draft-review": {
+    appearance: "card" | "plain";
+    undo: boolean;
+  } & AgentPreviewOptions;
+  "change-summary": { appearance: "card" | "plain" } & AgentPreviewOptions;
+  "assistant-controls": {
+    appearance: "card" | "plain";
+    usage: "normal" | "filling";
+  } & AgentPreviewOptions;
+  "ask-user-questions": {
+    appearance: "card" | "plain";
+    longContent: boolean;
+  } & AgentPreviewOptions;
+  terminal: {
+    state: "running" | "completed" | "failed";
+    longContent: boolean;
+    followOutput: boolean;
+  };
+  "chat-app": { longContent: boolean };
+  "approval-card": { appearance: "card" | "plain"; longContent: boolean };
+  "approval-flow": { appearance: "card" | "plain"; longContent: boolean };
+  "selection-actions": { longContent: boolean };
+  "context-meter": {
+    preset:
+      "normal" | "high" | "near" | "over" | "zero" | "missing" | "invalid";
+    estimated: boolean;
+  };
+  "model-selector": { disabled: boolean; longContent: boolean };
+  "image-result": {
+    state: "loading" | "loaded" | "error";
+    aspectRatio: "landscape" | "square" | "portrait";
+    progress: number;
+  };
+  sources: { defaultExpanded: boolean; longContent: boolean };
+  "insight-cards": { longContent: boolean };
+  "chat-thread": {
+    longContent: boolean;
+    followOutput: boolean;
+  };
+  "chat-composer": { disabled: boolean; failSend: boolean };
+  "prompt-bar": { disabled: boolean; failSend: boolean };
+  "code-block": { codeLanguage: string; longContent: boolean };
+  markdown: { longContent: boolean };
+  "streaming-text": { markdown: boolean };
+  "loading-state": {
+    label: string;
+    indicator: "spinner" | "skeleton";
+    description: boolean;
+    variant: "drive" | "dots" | "orbit";
+    elapsed: boolean;
+  };
+  "thinking-indicator": { label: string; words: boolean; textOnly: boolean };
+  "thinking-state": { active: boolean; defaultExpanded: boolean };
+  "tool-call": { defaultExpanded: boolean; longContent: boolean };
+  "tool-chips": { counts: boolean };
+  "file-tree": {
+    mode: "controlled" | "uncontrolled";
+    metadata: boolean;
+    empty: boolean;
+    defaultExpanded: boolean;
+    defaultSelected: boolean;
+  };
+  "task-rows": Required<Omit<TaskRowsExampleProps, "language">>;
+  "notification-list": Required<Omit<NotificationListExampleProps, "language">>;
+  steps: {
+    orientation: "horizontal" | "vertical";
+    currentState: "upcoming" | "current" | "completed" | "error";
+    // The stage the example opens on. Also the mark of props saved after the
+    // last of the states (see defaultsBeforeRest).
+    step: number;
+  };
+  timeline: {
+    descriptions: boolean;
+    icons: boolean;
+    actions: boolean;
+    empty: boolean;
+    longContent: boolean;
+  };
+  slider: Required<Omit<SliderExampleProps, "language">>;
+  "otp-input": Required<Omit<OTPInputExampleProps, "language">>;
+  "date-picker": Required<Omit<DatePickerExampleProps, "language">>;
+  "file-dropzone": FileDropzoneModel;
+  "color-picker": ColorPickerModel;
+  "tag-input": TagInputModel;
+  "input-copy": InputCopyModel;
+  "filter-bar": FilterBarModel;
+  sidebar: SidebarModel;
+  "line-chart": ChartModel;
+  "area-chart": ChartModel;
+  "bar-chart": ChartModel;
+  "donut-chart": ChartModel;
+  card: CardModel;
+  accordion: AccordionModel;
+  breadcrumbs: BreadcrumbsModel;
+  pagination: PaginationModel;
+  alert: AlertModel;
+  skeleton: SkeletonModel;
+  progress: ProgressModel;
+  spinner: SpinnerModel;
+  avatar: AvatarModel;
+  "avatar-group": AvatarGroupModel;
+  tooltip: TooltipModel;
+  modal: ModalModel;
+  "empty-state": EmptyStateModel;
+  badge: BadgeModel;
+  checkbox: CheckboxModel;
+  "radio-group": RadioGroupModel;
+  textarea: TextareaModel;
+  "data-table": DataTableModel;
+  table: TableModel;
   button: ButtonModel;
   tabs: TabsModel;
   switch: SwitchModel;
   dropdown: MenuModel;
   sheet: SheetModel;
   toast: ToastModel;
+  field: FieldModel;
+  input: InputModel;
+  select: SelectModel;
 }
 export type PlaygroundModel = Playgrounds[ComponentId];
 const native: NativeModel = {
@@ -113,6 +437,356 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     triggerSize: "sm",
   };
   return {
+    "loading-state": {
+      label: t("جارٍ تحميل الملاحظات…", "Loading notes"),
+      indicator: "spinner",
+      variant: "drive",
+      elapsed: true,
+      description: false,
+    },
+    "thinking-indicator": {
+      label: t("جارٍ إعداد الرد…", "Preparing reply"),
+      words: true,
+      textOnly: false,
+    },
+    "thinking-state": { active: true, defaultExpanded: false },
+    "tool-call": { defaultExpanded: false, longContent: false },
+    "tool-chips": { counts: true },
+    "code-block": { codeLanguage: "ts", longContent: false },
+    markdown: { longContent: false },
+    "streaming-text": { markdown: false },
+    "task-starter": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      disabled: false,
+    },
+    "cited-answer": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      question: true,
+    },
+    "data-answer": { ...agentPreviewDefaults, appearance: "card" },
+    "agent-task": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      autoStart: true,
+    },
+    "decision-inbox": { appearance: "card" },
+    "suggested-edits": { ...agentPreviewDefaults, undo: true },
+    "image-generation": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      knownProgress: true,
+    },
+    "draft-review": { ...agentPreviewDefaults, appearance: "card", undo: true },
+    "change-summary": { ...agentPreviewDefaults, appearance: "card" },
+    "assistant-controls": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      usage: "normal",
+    },
+    "ask-user-questions": {
+      ...agentPreviewDefaults,
+      appearance: "card",
+      longContent: false,
+    },
+    terminal: { state: "completed", longContent: false, followOutput: false },
+    "chat-app": { longContent: false },
+    "approval-card": { appearance: "card", longContent: false },
+    "approval-flow": { appearance: "card", longContent: false },
+    "selection-actions": { longContent: false },
+    "context-meter": { preset: "normal", estimated: false },
+    "model-selector": { disabled: false, longContent: false },
+    "image-result": {
+      state: "loaded",
+      aspectRatio: "landscape",
+      progress: 42,
+    },
+    sources: { defaultExpanded: true, longContent: false },
+    "insight-cards": { longContent: false },
+    "chat-thread": {
+      longContent: false,
+      followOutput: false,
+    },
+    "chat-composer": { disabled: false, failSend: false },
+    "prompt-bar": { disabled: false, failSend: false },
+    "file-tree": {
+      mode: "uncontrolled",
+      metadata: true,
+      empty: false,
+      defaultExpanded: true,
+      defaultSelected: false,
+    },
+    "task-rows": {
+      appearance: "capsules",
+      mode: "uncontrolled",
+      empty: false,
+      longContent: false,
+    },
+    "notification-list": {
+      empty: false,
+      longContent: false,
+      avatars: true,
+      readControls: true,
+      allRead: false,
+    },
+    steps: { orientation: "horizontal", currentState: "current", step: 1 },
+    timeline: {
+      descriptions: true,
+      icons: true,
+      actions: true,
+      empty: false,
+      longContent: false,
+    },
+    slider: {
+      label: t("الحد الشهري", "Monthly limit"),
+      helper: t(
+        "عدد الفواتير التي يمكنك إصدارها كل شهر.",
+        "Invoices allowed per month.",
+      ),
+      error: "",
+      min: 0,
+      max: 100,
+      step: 1,
+      disabled: false,
+      showValue: true,
+      mode: "controlled",
+    },
+    "otp-input": {
+      label: t("رمز التحقق", "Verification code"),
+      helper: t("أرسلناه إلى بريدك الإلكتروني.", "We sent it to your email."),
+      error: "",
+      length: 6,
+      disabled: false,
+      readOnly: false,
+      mode: "controlled",
+      defaultValue: "482915",
+    },
+    "date-picker": {
+      label: t("تاريخ الاستحقاق", "Due date"),
+      helper: t("نذكّرك قبل يومين.", "We’ll remind you two days before."),
+      error: "",
+      min: "",
+      max: "",
+      disabled: false,
+      mode: "controlled",
+      defaultValue: "2026-11-15",
+    },
+    "file-dropzone": {
+      label: t("ملفات المراجعة", "Review files"),
+      // Stays true whatever type, size and count the inspector sets.
+      helper: t(
+        "اختر ملفات من الأنواع المسموح بها وضمن الحجم المحدد.",
+        "Choose files of an allowed type and size.",
+      ),
+      error: "",
+      multiple: true,
+      accept: ".pdf,.txt,image/*",
+      maxFileSize: 5242880,
+      maxFiles: 3,
+      disabled: false,
+      mode: "controlled",
+      filled: true,
+    },
+    "color-picker": {
+      label: t("لون العلامة التجارية", "Brand color"),
+      helper: t(
+        "اكتب اللون بصيغة #RGB أو #RRGGBB دون شفافية.",
+        "Use #RGB or #RRGGBB, without transparency.",
+      ),
+      error: "",
+      disabled: false,
+      showSwatches: true,
+      mode: "controlled",
+    },
+    "tag-input": {
+      label: t("وسوم الملاحظات", "Note tags"),
+      helper: t("اضغط Enter لإضافة وسم.", "Press Enter to add a tag."),
+      error: "",
+      placeholder: t("أضف وسمًا…", "Add a tag…"),
+      maxTags: 5,
+      disabled: false,
+      readOnly: false,
+      mode: "controlled",
+      filled: true,
+    },
+    "input-copy": {
+      label: t("رابط الدعوة", "Invite link"),
+      value: "https://madar.sa/invite/7KQ2-RX9",
+      helper: t("شاركه مع فريقك.", "Share it with your team."),
+      error: "",
+      disabled: false,
+    },
+    "filter-bar": { initialQuery: "", initialKind: "guide", clearAll: true },
+    sidebar: {
+      collapsed: false,
+      grouped: true,
+      nested: true,
+      footer: true,
+      mode: "controlled",
+      longLabels: false,
+    },
+    "line-chart": { sample: "multi", legend: true, grid: true },
+    "area-chart": { sample: "multi", legend: true, grid: true },
+    "bar-chart": { sample: "multi", legend: true, grid: true },
+    "donut-chart": { sample: "multi", legend: true, grid: false },
+    card: {
+      title: t("دليل القراءة", "Reading guide"),
+      description: t(
+        "ملاحظات قصيرة تساعدك على ترتيب المحتوى.",
+        "Short notes for arranging content.",
+      ),
+      actions: true,
+    },
+    accordion: { mode: "controlled", collapsible: true, defaultOpen: true },
+    breadcrumbs: {
+      label: t("مسار الصفحة", "Page path"),
+      current: t("القراءة", "Reading"),
+    },
+    pagination: { page: 6, totalPages: 12 },
+    alert: {
+      title: t("تغيّرت خطة الفوترة", "Billing plan updated"),
+      description: t(
+        "يبدأ السعر الجديد في ١ نوفمبر.",
+        "The new price starts on November 1.",
+      ),
+      tone: "info",
+      actionLabel: t("عرض الخطة", "View plan"),
+    },
+    skeleton: { shape: "circle" },
+    progress: {
+      label: t("جارٍ تجهيز التقرير…", "Preparing report"),
+      value: 64,
+      indeterminate: false,
+      showValue: true,
+    },
+    spinner: {
+      label: t("جارٍ التحميل…", "Loading"),
+      size: "sm",
+      tone: "neutral",
+      decorative: false,
+    },
+    avatar: {
+      appearance: "photo",
+      src: "",
+      name: t("سارة علي", "Sara Ali"),
+      fallback: t("س ع", "SA"),
+      size: "sm",
+    },
+    "avatar-group": { maxVisible: 3, size: "sm", appearance: "mixed" },
+    tooltip: {
+      content: t("يشمل ضريبة القيمة المضافة ١٥٪.", "Includes 15% VAT."),
+    },
+    modal: {
+      title: t("خيارات العرض", "Display options"),
+      description: t(
+        "اختر طريقة عرض الفواتير.",
+        "Choose how invoices are displayed.",
+      ),
+      footer: true,
+      mode: "controlled",
+      open: false,
+    },
+    "empty-state": {
+      title: t("لا توجد سجلات بعد", "No records yet"),
+      description: t(
+        "ستظهر سجلاتك هنا حين تضيفها.",
+        "Your records will appear here when added.",
+      ),
+      illustration: "no-records",
+      actionLabel: t("إضافة سجل", "Add record"),
+    },
+    badge: { children: t("نشط", "Active"), tone: "neutral" },
+    checkbox: {
+      label: t("تلقّي التحديثات", "Receive updates"),
+      helper: t("تحديثات اختيارية عن حسابك", "Optional account updates"),
+      error: "",
+      required: false,
+      checked: true,
+      disabled: false,
+      name: "updates",
+      value: "yes",
+      mode: "controlled",
+    },
+    "radio-group": {
+      label: t("وتيرة التحديثات", "Update frequency"),
+      helper: "",
+      error: "",
+      required: false,
+      disabled: false,
+      name: "frequency",
+      value: "weekly",
+      mode: "controlled",
+      options: [
+        { value: "weekly", label: t("أسبوعيًا", "Weekly") },
+        { value: "monthly", label: t("شهريًا", "Monthly") },
+        {
+          value: "daily",
+          label: t("يوميًا · غير متاح", "Daily · unavailable"),
+          disabled: true,
+        },
+      ],
+    },
+    textarea: {
+      label: t("ملاحظات", "Notes"),
+      helper: "",
+      error: "",
+      required: false,
+      value: t(
+        "يفضّل العميل التواصل عبر البريد الإلكتروني.",
+        "The customer prefers to be contacted by email.",
+      ),
+      placeholder: t("أضف تفاصيل مفيدة", "Add useful details"),
+      disabled: false,
+      readOnly: false,
+      name: "notes",
+      rows: 3,
+      mode: "controlled",
+    },
+    "data-table": {
+      caption: t("العملاء", "Customers"),
+      preset: "populated",
+      sort: "none",
+    },
+    table: { caption: t("العملاء", "Customers"), preset: "populated" },
+    field: {
+      label: t("اسم العميل", "Customer name"),
+      helper: t("كما يظهر في الفاتورة", "As shown on the invoice"),
+      error: "",
+      required: true,
+    },
+    input: {
+      label: t("اسم العميل", "Customer name"),
+      helper: "",
+      error: "",
+      required: false,
+      value: t("شركة مدار للتقنية", "Madar Technology"),
+      placeholder: t("مثلًا: شركة مدار للتقنية", "e.g. Madar Technology"),
+      mode: "controlled",
+      size: "sm",
+      type: "text",
+      disabled: false,
+      readOnly: false,
+      name: "customerName",
+    },
+    select: {
+      label: t("الحالة", "Status"),
+      helper: "",
+      error: "",
+      required: false,
+      value: "active",
+      placeholder: t("اختر الحالة", "Choose status"),
+      mode: "controlled",
+      size: "sm",
+      disabled: false,
+      invalid: false,
+      name: "status",
+      options: [
+        { value: "active", label: t("نشط", "Active") },
+        { value: "paused", label: t("متوقف", "Paused") },
+        { value: "archived", label: t("مؤرشف", "Archived"), disabled: true },
+      ],
+    },
     button: {
       ...native,
       children: t("حفظ الفاتورة", "Save invoice"),
@@ -153,7 +827,7 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
         {
           value: "activity",
           label: t("سجل النشاط", "Activity"),
-          content: t("تم تحديث معلومات العميل", "Customer information updated"),
+          content: t("حُدّثت معلومات العميل", "Customer information updated"),
         },
         {
           value: "archive",
@@ -216,8 +890,8 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       ),
       closeLabel: t("إغلاق اللوحة", "Close panel"),
       children: t(
-        "شركة مدار للتقنية · هذه بيانات تجريبية.",
-        "Madar Technology · Example customer data.",
+        "شركة مدار للتقنية · عميل منذ ٢٠٢٢.",
+        "Madar Technology · Customer since 2022.",
       ),
       footer: true,
       footerLabel: t("إغلاق", "Close"),
@@ -225,9 +899,9 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
     },
     toast: {
       triggerLabel: t("عرض التنبيه", "Show toast"),
-      title: t("تم حفظ الفاتورة", "Invoice saved"),
+      title: t("حُفظت الفاتورة", "Invoice saved"),
       description: t(
-        "الفاتورة جاهزة للمشاركة مع العميل.",
+        "يمكنك الآن مشاركتها مع العميل.",
         "The invoice is ready to share with your customer.",
       ),
       tone: "success",
@@ -295,7 +969,7 @@ export function nativeAttributes(
   );
 }
 export function validateCollection(
-  component: "tabs" | "dropdown",
+  component: "tabs" | "dropdown" | "select",
   value: unknown,
 ): boolean {
   if (!Array.isArray(value) || value.length < 1 || value.length > 12)
@@ -304,19 +978,21 @@ export function validateCollection(
   const valid = value.every((item) => {
     if (!item || typeof item !== "object" || Array.isArray(item)) return false;
     const allowed =
-      component === "tabs"
-        ? ["value", "label", "content", "disabled"]
-        : [
-            "id",
-            "label",
-            "icon",
-            "shortcut",
-            "disabled",
-            "destructive",
-            "separatorBefore",
-          ];
+      component === "select"
+        ? ["value", "label", "disabled"]
+        : component === "tabs"
+          ? ["value", "label", "content", "disabled"]
+          : [
+              "id",
+              "label",
+              "icon",
+              "shortcut",
+              "disabled",
+              "destructive",
+              "separatorBefore",
+            ];
     if (Object.keys(item).some((key) => !allowed.includes(key))) return false;
-    const id = component === "tabs" ? item.value : item.id;
+    const id = component === "dropdown" ? item.id : item.value;
     if (
       typeof id !== "string" ||
       !id.trim() ||
@@ -328,6 +1004,7 @@ export function validateCollection(
     identifiers.add(id);
     if (item.disabled !== undefined && typeof item.disabled !== "boolean")
       return false;
+    if (component === "select") return true;
     if (component === "tabs") return typeof item.content === "string";
     return (
       (item.icon === undefined ||
@@ -339,9 +1016,128 @@ export function validateCollection(
     );
   });
   return (
-    valid && (component !== "tabs" || value.some((item) => !item.disabled))
+    valid && (component === "dropdown" || value.some((item) => !item.disabled))
   );
 }
+// Demo-flavoured defaults from earlier versions. A saved value that still
+// equals one of them was never customised, so it follows the current default.
+const retiredDefaults: Partial<Record<ComponentId, Record<string, string[]>>> =
+  {
+    slider: {
+      label: ["قيمة محلية", "Local amount"],
+      helper: [
+        "اسحب أو استخدم الأسهم وHome وEnd.",
+        "Drag or use arrows, Home and End.",
+        "عدد الفواتير المسموح بها شهريًا.",
+      ],
+    },
+    "otp-input": {
+      label: ["رمز تجريبي", "Sample code"],
+      helper: [
+        "أرقام عربية أو إنجليزية؛ دون تحقق.",
+        "Arabic or ASCII digits; no verification.",
+      ],
+    },
+    "date-picker": {
+      label: ["موعد محلي", "Local date"],
+      helper: [
+        "تاريخ ميلادي واحد؛ Escape للإغلاق.",
+        "One Gregorian date; Escape to close.",
+      ],
+    },
+    "file-dropzone": {
+      helper: [
+        "اختر ملفات ضمن قيود النوع والحجم والعدد المحددة لهذا المثال.",
+        "Choose files within this example's configured type, size and count limits.",
+        "اختر ملفات بالأنواع والحجم المسموح بها.",
+      ],
+    },
+    "color-picker": {
+      label: ["لون العيّنة", "Sample color", "لون العلامة"],
+      helper: ["صيغة #RGB أو #RRGGBB، دون شفافية."],
+    },
+    "tag-input": {
+      helper: [
+        "Enter يضيف وسمًا. النص غير المؤكد لا يُرسل.",
+        "Enter adds a tag. Uncommitted text is not submitted.",
+      ],
+    },
+    "input-copy": {
+      label: ["مسار المصدر", "Source path"],
+      value: ["src/system/TagInput.tsx"],
+      helper: [
+        "حدّد النص أو انسخ القيمة كاملة.",
+        "Select the text or copy the full value.",
+      ],
+    },
+    alert: {
+      title: ["المعاينة جاهزة", "Preview ready", "تم تحديث خطة الفوترة"],
+      description: [
+        "هذه رسالة ثابتة داخل الصفحة.",
+        "This is persistent feedback within the page.",
+      ],
+    },
+    tooltip: {
+      content: [
+        "عرض معلومات إضافية في هذه المعاينة.",
+        "Show extra information in this preview.",
+      ],
+    },
+    modal: {
+      description: [
+        "اختر تخطيطًا لهذه المعاينة فقط.",
+        "Choose a layout for this preview only.",
+      ],
+    },
+    sheet: {
+      children: [
+        "شركة مدار للتقنية · هذه بيانات تجريبية.",
+        "Madar Technology · Example customer data.",
+      ],
+    },
+    "loading-state": { label: ["جارٍ تحميل الملاحظات"] },
+    "thinking-indicator": { label: ["جارٍ إعداد الرد"] },
+    card: { description: ["ملاحظات قصيرة لتنسيق المحتوى."] },
+    progress: { label: ["تجهيز التقرير"] },
+    spinner: { label: ["جارٍ التحميل"] },
+    "empty-state": { description: ["ستظهر سجلاتك هنا عند إضافتها."] },
+    checkbox: {
+      label: ["تلقي التحديثات"],
+      helper: ["تحديثات الحساب الاختيارية"],
+    },
+    input: { placeholder: ["مثل: شركة مدار"] },
+    toast: {
+      title: ["تم حفظ الفاتورة"],
+      description: ["الفاتورة جاهزة للمشاركة مع العميل."],
+    },
+  };
+// Old defaults that the states replaced (spec §8). Each is also a state a
+// visitor can pick (Empty, Unchecked, First...), so it moves to the new
+// resting state only in props saved before the states, never on an edit.
+type MovedDefaults = Partial<
+  Record<ComponentId, Record<string, (string | number | boolean)[]>>
+>;
+const defaultsBeforeStates: MovedDefaults = {
+  input: { value: [""] },
+  textarea: { value: [""] },
+  select: { value: [""] },
+  checkbox: { checked: [false] },
+  pagination: { page: [1] },
+  avatar: { appearance: ["initials"] },
+  "image-result": { state: ["loading"] },
+  sources: { defaultExpanded: [false] },
+};
+// The same for the last of the states: props saved before them have no Steps
+// `step`, and every later save does.
+const defaultsBeforeRest: MovedDefaults = {
+  "filter-bar": { initialKind: ["all"] },
+};
+const wasDefault = (
+  moved: MovedDefaults,
+  component: ComponentId,
+  key: string,
+  item: unknown,
+) => moved[component]?.[key]?.some((old) => old === item) === true;
 export function normalizePlaygrounds(
   value: unknown,
   language: Language,
@@ -349,15 +1145,29 @@ export function normalizePlaygrounds(
   const result = defaultPlaygrounds(language);
   if (!value || typeof value !== "object" || Array.isArray(value))
     return result;
+  // Props saved before the states have no Modal `open`; every later save does.
+  const savedWith = (page: string, key: string) => {
+    const model = (value as Record<string, unknown>)[page];
+    return !!model && typeof model === "object" && key in model;
+  };
+  const beforeStates = !savedWith("modal", "open"),
+    beforeRest = !savedWith("steps", "step");
   for (const component of Object.keys(result) as ComponentId[]) {
     const saved = (value as Record<string, unknown>)[component];
     if (!saved || typeof saved !== "object" || Array.isArray(saved)) continue;
     const defaults = result[component] as unknown as Record<string, unknown>;
     for (const [key, item] of Object.entries(saved)) {
       if (!(key in defaults)) continue;
-      if (key === "items") {
+      if (key === "items" || key === "options") {
         if (
-          validateCollection(component === "tabs" ? "tabs" : "dropdown", item)
+          validateCollection(
+            component === "select" || component === "radio-group"
+              ? "select"
+              : component === "tabs"
+                ? "tabs"
+                : "dropdown",
+            item,
+          )
         )
           defaults[key] = item;
         continue;
@@ -367,22 +1177,92 @@ export function normalizePlaygrounds(
         continue;
       }
       if (
+        typeof item === "string" &&
+        retiredDefaults[component]?.[key]?.includes(item)
+      )
+        continue;
+      if (
+        (beforeStates &&
+          wasDefault(defaultsBeforeStates, component, key, item)) ||
+        (beforeRest && wasDefault(defaultsBeforeRest, component, key, item))
+      )
+        continue;
+      if (
         typeof item === typeof defaults[key] &&
         ["string", "boolean", "number"].includes(typeof item)
       )
         defaults[key] = item;
     }
+    if (component === "file-dropzone") {
+      const p = result[component];
+      // Old default copy promised fixed constraints even after settings changed.
+      if (
+        [
+          "PDF أو نص أو صور · حتى ٥ ميغابايت لكل ملف · ٣ ملفات كحد أقصى.",
+          "PDF, text or images · up to 5 MB each · maximum 3 files.",
+        ].includes(p.helper)
+      )
+        p.helper = defaultPlaygrounds(language)[component].helper;
+      p.maxFiles = Number.isFinite(p.maxFiles)
+        ? Math.max(0, Math.min(20, Math.floor(p.maxFiles)))
+        : 3;
+      p.maxFileSize = Number.isFinite(p.maxFileSize)
+        ? Math.max(0, p.maxFileSize)
+        : 5242880;
+    }
+    if (component === "tag-input") {
+      const p = result[component];
+      p.maxTags = Number.isFinite(p.maxTags)
+        ? Math.max(0, Math.min(20, Math.floor(p.maxTags)))
+        : 5;
+    }
+    // Carry the old invalid preset into the single error control.
+    if (
+      component === "input" &&
+      (saved as Record<string, unknown>).invalid === true &&
+      !defaults.error
+    )
+      defaults.error = words(language)(
+        "راجع القيمة المدخلة.",
+        "Check the entered value.",
+      );
     const r = defaults;
+    if (
+      "agentColor" in r &&
+      (typeof r.agentColor !== "string" || !/^#[\da-f]{6}$/i.test(r.agentColor))
+    )
+      r.agentColor = agentPreviewDefaults.agentColor;
     const enums: Record<string, string[]> = {
+      orientation: ["horizontal", "vertical"],
+      currentState: ["upcoming", "current", "completed", "error"],
+      sample: ["single", "multi", "gaps", "point", "zero", "empty", "long"],
+      preset:
+        component === "data-table"
+          ? ["populated", "loading", "empty", "no-results", "error"]
+          : ["populated", "empty"],
+      appearance:
+        component === "task-rows"
+          ? ["capsules", "list"]
+          : component === "avatar"
+            ? ["initials", "photo"]
+            : ["initials", "mixed"],
+      shape: ["text", "rectangle", "circle"],
+      sort: ["none", "name"],
+      illustration: ["no-records", "no-results", "getting-started", "none"],
       mode: ["controlled", "uncontrolled"],
       variant:
-        component === "tabs"
-          ? ["underline", "segment"]
-          : ["primary", "secondary", "ghost", "destructive"],
+        component === "loading-state"
+          ? ["drive", "dots", "orbit"]
+          : component === "tabs"
+            ? ["underline", "segment"]
+            : ["primary", "secondary", "ghost", "destructive"],
       size: ["sm", "md"],
       state: ["idle", "loading", "success", "error"],
       icon: ["none", "plus", "download", "settings"],
-      type: ["button", "submit", "reset"],
+      type:
+        component === "input"
+          ? ["text", "email", "password", "search", "tel", "url"]
+          : ["button", "submit", "reset"],
       action: ["simulate", "log"],
       outcome: ["success", "error"],
       stylePreset: ["none", "wide"],
@@ -390,14 +1270,48 @@ export function normalizePlaygrounds(
       triggerSize: ["sm", "md"],
       align: ["start", "end"],
       side: ["auto", "left", "right"],
-      tone: ["success", "error", "info"],
+      tone: ["badge", "alert"].includes(component)
+        ? ["neutral", "success", "error", "info", "warning", "ai"]
+        : ["success", "error", "info", "warning"],
     };
     const original = defaultPlaygrounds(language)[
       component
     ] as unknown as Record<string, unknown>;
-    for (const [key, allowed] of Object.entries(enums))
-      if (key in r && !allowed.includes(r[key] as string))
+    // A page's own select options decide what is valid on that page. The shared
+    // table above is keyed by field name alone, so it only covers keys the page
+    // has no list for.
+    const pageSelectKeys = fields[component]
+      .filter((f) => f.kind === "select" && f.options)
+      .map((f) => f.key);
+    for (const key of new Set([...Object.keys(enums), ...pageSelectKeys])) {
+      const allowed = selectOptions(component, key) ?? enums[key];
+      if (allowed && key in r && !allowed.includes(r[key] as string))
         r[key] = original[key];
+    }
+    if (component === "pagination") {
+      r.totalPages = Number.isFinite(r.totalPages)
+        ? Math.min(20, Math.max(1, Math.floor(Number(r.totalPages))))
+        : 12;
+      r.page = Number.isFinite(r.page)
+        ? Math.max(
+            1,
+            Math.min(Number(r.totalPages), Math.floor(Number(r.page))),
+          )
+        : 1;
+    }
+    if (component === "progress")
+      r.value = Number.isFinite(r.value)
+        ? Math.max(0, Math.min(100, Number(r.value)))
+        : 64;
+    if (component === "avatar-group")
+      r.maxVisible = Number.isFinite(r.maxVisible)
+        ? Math.max(1, Math.min(5, Math.floor(Number(r.maxVisible))))
+        : 3;
+    if (
+      component === "textarea" &&
+      (!Number.isInteger(r.rows) || Number(r.rows) < 1 || Number(r.rows) > 12)
+    )
+      r.rows = 3;
     if (
       component === "toast" &&
       (!Number.isFinite(r.duration) ||
@@ -405,6 +1319,14 @@ export function normalizePlaygrounds(
         Number(r.duration) > 60000)
     )
       r.duration = 5000;
+    if (
+      (component === "select" || component === "radio-group") &&
+      r.value !== "" &&
+      !(r.options as SelectModel["options"]).some(
+        (option) => option.value === r.value && !option.disabled,
+      )
+    )
+      r.value = "";
     if (component === "tabs") {
       const items = r.items as TabRecord[];
       if (!items.some((item) => item.value === r.value && !item.disabled))

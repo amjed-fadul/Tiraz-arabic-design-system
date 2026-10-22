@@ -1,0 +1,256 @@
+{
+  "checks": [
+    "Local portrait loading, failure, replacement, removal and restored cached source; decorative internals and one name.",
+    "Static Alert silence, explicit status/alert urgency, application-owned dismissal/restoration, explicit Skeleton ready/loading action with one host announcement.",
+    "Progress zero/completion/clamping/fractions/nonfinite modes; named and decorative Spinner; app and OS reductions stop all loading animation.",
+    "Axe checks on composed feedback/photo examples; semantic tone independent of live accent changes.",
+    "Live documentation Progress state, accent, density, text scale and motion controls update the preview.",
+    "Documentation photo selector, custom URL failure/removal, local imports and matching copied code/prompt.",
+    "32 complete component locale/theme/density/text-scale/width combinations, 24 focused documentation views, font loading and no horizontal clipping."
+  ],
+  "matrix": [
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 320
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 320
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 320
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 320
+    }
+  ],
+  "screenshots": [
+    "feedback-photos-ar-desktop.png",
+    "feedback-photos-ar-narrow.png",
+    "feedback-photos-en-desktop.png",
+    "feedback-photos-en-narrow.png",
+    "docs-alert-ar-narrow.png",
+    "docs-skeleton-ar-narrow.png",
+    "docs-progress-ar-narrow.png",
+    "docs-spinner-ar-narrow.png",
+    "docs-avatar-ar-narrow.png",
+    "docs-avatar-group-ar-narrow.png",
+    "docs-alert-en-desktop.png",
+    "docs-skeleton-en-desktop.png",
+    "docs-progress-en-desktop.png",
+    "docs-spinner-en-desktop.png",
+    "docs-avatar-en-desktop.png",
+    "docs-avatar-group-en-desktop.png"
+  ],
+  "errors": []
+}

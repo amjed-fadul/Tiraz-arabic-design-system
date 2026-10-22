@@ -1,0 +1,57 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/select-association.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.4 /Users/amjedfadul/.codex/worktrees/form-foundation/Tiraz
+
+ ❯ src/system/select-association.test.tsx (36 tests | 12 failed) 4077ms
+   × follows replace external form: uncontrolled, none, reset 295ms
+   × follows replace external form: uncontrolled, none, click 140ms
+   × follows late external form: uncontrolled, none, reset 94ms
+   × follows late external form: uncontrolled, none, click 105ms
+   × follows retain external form: uncontrolled, none, reset 103ms
+   × follows retain external form: uncontrolled, none, click 130ms
+   × follows replace external form: controlled, none, reset 103ms
+   × follows replace external form: controlled, none, click 113ms
+   × follows late external form: controlled, none, reset 88ms
+   × follows late external form: controlled, none, click 93ms
+   × follows retain external form: controlled, none, reset 111ms
+   × follows retain external form: controlled, none, click 129ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/select-association.test.tsx > follows replace external form: uncontrolled, none, reset
+ FAIL  src/system/select-association.test.tsx > follows replace external form: uncontrolled, none, click
+ FAIL  src/system/select-association.test.tsx > follows late external form: uncontrolled, none, reset
+ FAIL  src/system/select-association.test.tsx > follows late external form: uncontrolled, none, click
+ FAIL  src/system/select-association.test.tsx > follows retain external form: uncontrolled, none, reset
+ FAIL  src/system/select-association.test.tsx > follows retain external form: uncontrolled, none, click
+ FAIL  src/system/select-association.test.tsx > follows replace external form: controlled, none, reset
+ FAIL  src/system/select-association.test.tsx > follows replace external form: controlled, none, click
+ FAIL  src/system/select-association.test.tsx > follows late external form: controlled, none, reset
+ FAIL  src/system/select-association.test.tsx > follows late external form: controlled, none, click
+ FAIL  src/system/select-association.test.tsx > follows retain external form: controlled, none, reset
+ FAIL  src/system/select-association.test.tsx > follows retain external form: controlled, none, click
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Alpha
+Received:
+  Beta
+ ❯ assertValue src/system/select-association.test.tsx:84:29
+     82|           ) as HTMLFormElement;
+     83|           function assertValue(label: string, value: string, changes: …
+     84|             expect(trigger).toHaveTextContent(label);
+       |                             ^
+     85|             expect(
+     86|               document.querySelector<HTMLSelectElement>(
+ ❯ src/system/select-association.test.tsx:120:34
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  12 failed | 24 passed (36)
+   Start at  05:52:11
+   Duration  5.27s (tests 79%, environment 13%, import 4%, setup 3%, transform 1%)

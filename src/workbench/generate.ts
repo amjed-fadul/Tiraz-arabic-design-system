@@ -1,7 +1,59 @@
+import agentPreviewSource from "./agent-preview.ts?raw";
+import playgroundAgentSource from "./playground-agent.tsx?raw";
+import { isAgentPreview, agentIdentityHeaders } from "./agent-preview";
+import localResponseSource from "../system/ai/examples/useLocalResponse.ts?raw";
+import agentTaskSource from "../system/ai/examples/AgentTaskExamples.tsx?raw";
+import taskStarterSource from "../system/ai/examples/TaskStarterExamples.tsx?raw";
+import suggestedEditsSource from "../system/ai/examples/SuggestedEditsExamples.tsx?raw";
+import imageGenerationSource from "../system/ai/examples/ImageGenerationExamples.tsx?raw";
+import draftReviewSource from "../system/ai/examples/DraftReviewExamples.tsx?raw";
+import changeSummarySource from "../system/ai/examples/ChangeSummaryExamples.tsx?raw";
+import assistantControlsSource from "../system/ai/examples/AssistantControlsExamples.tsx?raw";
+import citedAnswerSource from "../system/ai/examples/CitedAnswerExamples.tsx?raw";
+import dataAnswerSource from "../system/ai/examples/DataAnswerExamples.tsx?raw";
+import decisionInboxSource from "../system/ai/examples/DecisionInboxExamples.tsx?raw";
+import terminalSource from "../system/ai/examples/TerminalExamples.tsx?raw";
+import chatAppSource from "../system/ai/examples/ChatAppExample.tsx?raw";
+import aiDecisionsSource from "../system/ai/examples/AIDecisionsExamples.tsx?raw";
+import aiContextSource from "../system/ai/examples/AIContextExamples.tsx?raw";
+import aiResultsSource from "../system/ai/examples/AIResultsExamples.tsx?raw";
+import chatSource from "../system/ai/examples/ChatExamples.tsx?raw";
+import aiContentSource from "../system/ai/examples/AIContentExamples.tsx?raw";
+import toolActivitySource from "../system/ai/examples/ToolActivityExamples.tsx?raw";
+import aiFeedbackSource from "../system/ai/examples/AIFeedbackExamples.tsx?raw";
+import fileTreeSource from "../system/ai/examples/FileTreeExamples.tsx?raw";
+import taskRowsSource from "../system/ai/examples/TaskRowsExamples.tsx?raw";
+import notificationListSource from "../system/ai/examples/NotificationListExamples.tsx?raw";
+import stepsSource from "../system/ai/examples/StepsExamples.tsx?raw";
+import timelineSource from "../system/ai/examples/TimelineExamples.tsx?raw";
+import sliderSource from "../system/ai/examples/SliderExamples.tsx?raw";
+import otpSource from "../system/ai/examples/OTPInputExamples.tsx?raw";
+import dateSource from "../system/ai/examples/DatePickerExamples.tsx?raw";
+import filesSource from "../system/ai/examples/FileDropzoneExamples.tsx?raw";
+import colorsSource from "../system/ai/examples/ColorPickerExamples.tsx?raw";
+import tagSource from "../system/ai/examples/TagInputExamples.tsx?raw";
+import filterSource from "../system/ai/examples/FilterBarExamples.tsx?raw";
+import copySource from "../system/ai/examples/InputCopyExamples.tsx?raw";
+import sidebarSource from "../system/ai/examples/SidebarExamples.tsx?raw";
+import type { SidebarModel } from "./model";
+import { generateChartCode } from "./generate-charts";
+import type { ChartModel } from "./model";
+import { generateBatchCode } from "./generate-batch";
+import customerSource from "../system/ai/examples/CustomerDataTable.tsx?raw";
+import createSource from "../system/ai/examples/CreateCustomer.tsx?raw";
+import type { DataTableModel } from "./model";
 import type { SystemConfig } from "../system";
 import type { ComponentId } from "./catalog";
-import { catalog } from "./catalog";
+import { catalog, chartIds } from "./catalog";
+import { assertNever, isOneOf } from "./exhaustive";
 import type {
+  BadgeModel,
+  CheckboxModel,
+  RadioGroupModel,
+  TextareaModel,
+  FieldModel,
+  InputModel,
+  SelectModel,
   ButtonModel,
   MenuModel,
   PlaygroundModel,
@@ -9,6 +61,7 @@ import type {
   SwitchModel,
   TabsModel,
   ToastModel,
+  TableModel,
 } from "./model";
 import { nativeAttributes, previewConfig } from "./model";
 import type { Language } from "./i18n";
@@ -41,6 +94,398 @@ export function generateCode(
   config: SystemConfig,
   language: Language,
 ): string {
+  if (component === "terminal" || component === "chat-app") {
+    const source = (component === "terminal" ? terminalSource : chatAppSource)
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
+      .replace(
+        /from "\.\/finance-story"/g,
+        'from "./system/ai/examples/finance-story"',
+      );
+    const name =
+      component === "terminal" ? "TerminalExample" : "ChatAppExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
+  if (
+    isOneOf(component, [
+      "task-starter",
+      "cited-answer",
+      "data-answer",
+      "agent-task",
+      "decision-inbox",
+      "suggested-edits",
+      "image-generation",
+      "draft-review",
+      "change-summary",
+      "assistant-controls",
+      "ask-user-questions",
+      "approval-card",
+      "approval-flow",
+    ])
+  ) {
+    const source = (
+      component === "task-starter"
+        ? taskStarterSource
+        : component === "cited-answer"
+          ? citedAnswerSource
+          : component === "data-answer"
+            ? dataAnswerSource
+            : component === "agent-task"
+              ? agentTaskSource
+              : component === "decision-inbox"
+                ? decisionInboxSource
+                : component === "suggested-edits"
+                  ? suggestedEditsSource
+                  : component === "image-generation"
+                    ? imageGenerationSource
+                    : component === "draft-review"
+                      ? draftReviewSource
+                      : component === "change-summary"
+                        ? changeSummarySource
+                        : component === "assistant-controls"
+                          ? assistantControlsSource
+                          : aiDecisionsSource
+    )
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
+      .replace(
+        /from "\.\/finance-story"/g,
+        'from "./system/ai/examples/finance-story"',
+      );
+    const name =
+      component === "task-starter"
+        ? "TaskStarterExample"
+        : component === "cited-answer"
+          ? "CitedAnswerExample"
+          : component === "data-answer"
+            ? "DataAnswerExample"
+            : component === "agent-task"
+              ? "AgentTaskExample"
+              : component === "decision-inbox"
+                ? "DecisionInboxExample"
+                : component === "suggested-edits"
+                  ? "SuggestedEditsExample"
+                  : component === "image-generation"
+                    ? "ImageGenerationExample"
+                    : component === "draft-review"
+                      ? "DraftReviewExample"
+                      : component === "change-summary"
+                        ? "ChangeSummaryExample"
+                        : component === "assistant-controls"
+                          ? "AssistantControlsExample"
+                          : component === "ask-user-questions"
+                            ? "AskUserQuestionsExample"
+                            : component === "approval-card"
+                              ? "ApprovalCardExample"
+                              : "ApprovalFlowExample";
+    const options = model as unknown as Record<string, unknown>;
+    const mascot =
+      isAgentPreview(component) && options.agentAppearance === "mascot";
+    const identitySource = mascot
+      ? (agentPreviewSource + "\n" + playgroundAgentSource)
+          .replace(
+            /import (?:type )?\{[^}]+\} from "\.\/agent-preview";\n/g,
+            "",
+          )
+          .replace(/from "\.\.\/mascot\//g, 'from "./mascot/')
+          .replace(/from "\.\.\/system"/g, 'from "./system"')
+          .replace(
+            /from "\.\.\/system\/ai\/examples\/finance-story"/g,
+            'from "./system/ai/examples/finance-story"',
+          )
+      : "";
+    const exampleModel = Object.fromEntries(
+      Object.entries(model).filter(
+        ([key]) => key !== "agentAppearance" && key !== "agentColor",
+      ),
+    );
+    const identityProp = mascot
+      ? ` getAgentPresentation={getPlaygroundAgentPresentation(${json(component)},${json({ agentAppearance: options.agentAppearance, agentColor: options.agentColor })},${json(language)})}`
+      : isAgentPreview(component) && agentIdentityHeaders.includes(component)
+        ? ` getAgentPresentation={() => ({name:${json(language === "ar" ? "وكيل المالية" : "Finance agent")}})}`
+        : "";
+    return `${source}
+${identitySource}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(exampleModel)}}${identityProp}/></SystemProvider></div>;}`;
+  }
+  if (
+    isOneOf(component, ["selection-actions", "context-meter", "model-selector"])
+  ) {
+    const source = aiContextSource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    const name =
+      component === "selection-actions"
+        ? "SelectionActionsExample"
+        : component === "context-meter"
+          ? "ContextMeterExample"
+          : "ModelSelectorExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
+  if (isOneOf(component, ["image-result", "sources", "insight-cards"])) {
+    const source = aiResultsSource
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
+      .replaceAll(
+        'from "../assets/results/',
+        'from "./system/ai/assets/results/',
+      )
+      .replace(
+        'from "./ai-result-samples"',
+        'from "./system/ai/examples/ai-result-samples"',
+      );
+    const name =
+      component === "image-result"
+        ? "ImageResultExample"
+        : component === "sources"
+          ? "SourcesExample"
+          : "InsightCardsExample";
+    return `// Copy the whole system/ai/assets/results directory. Preserve local SVG and text ?url&no-inline imports.
+${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
+  if (isOneOf(component, ["chat-thread", "chat-composer", "prompt-bar"])) {
+    const source = chatSource
+      .replace(
+        'import { useLocalResponse } from "./useLocalResponse";',
+        localResponseSource,
+      )
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"');
+    const name =
+      component === "chat-thread"
+        ? "ChatThreadExample"
+        : component === "chat-composer"
+          ? "ChatComposerExample"
+          : "PromptBarExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
+  if (isOneOf(component, ["code-block", "markdown", "streaming-text"])) {
+    const source = aiContentSource
+      .replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"')
+      .replace('from "./DemoFrame"', 'from "./system/ai/examples/DemoFrame"');
+    const name =
+      component === "code-block"
+        ? "CodeBlockExample"
+        : component === "markdown"
+          ? "MarkdownExample"
+          : "StreamingTextExample";
+    return `// Dependencies: npm install react-markdown@10.1.0 remark-gfm@4.0.1
+${source}
+import {SystemProvider,defaultConfig} from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example(){return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}}/></SystemProvider></div>;}`;
+  }
+  if (
+    component === "tool-call" ||
+    component === "tool-chips" ||
+    component === "loading-state" ||
+    component === "thinking-indicator" ||
+    component === "thinking-state" ||
+    component === "file-tree" ||
+    component === "steps" ||
+    component === "timeline" ||
+    component === "task-rows" ||
+    component === "notification-list"
+  ) {
+    const source = (
+      component === "tool-call" || component === "tool-chips"
+        ? toolActivitySource
+        : ["loading-state", "thinking-indicator", "thinking-state"].includes(
+              component,
+            )
+          ? aiFeedbackSource
+          : component === "file-tree"
+            ? fileTreeSource
+            : component === "task-rows"
+              ? taskRowsSource
+              : component === "notification-list"
+                ? notificationListSource
+                : component === "steps"
+                  ? stepsSource
+                  : timelineSource
+    ).replace(/from "\.\.\/\.\.\/index"/g, 'from "./system"');
+    const name =
+      component === "tool-call"
+        ? "ToolCallExample"
+        : component === "tool-chips"
+          ? "ToolChipsExample"
+          : component === "loading-state"
+            ? "LoadingStateExample"
+            : component === "thinking-indicator"
+              ? "ThinkingIndicatorExample"
+              : component === "thinking-state"
+                ? "ThinkingStateExample"
+                : component === "file-tree"
+                  ? "FileTreeExample"
+                  : component === "task-rows"
+                    ? "TaskRowsExample"
+                    : component === "notification-list"
+                      ? "NotificationListExample"
+                      : component === "steps"
+                        ? "StepsExample"
+                        : "TimelineExample";
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() { return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}} /></SystemProvider></div>; }
+`;
+  }
+  if (
+    isOneOf(component, [
+      "slider",
+      "otp-input",
+      "date-picker",
+      "file-dropzone",
+      "color-picker",
+      "tag-input",
+      "filter-bar",
+      "input-copy",
+    ])
+  ) {
+    const name =
+      component === "slider"
+        ? "SliderExample"
+        : component === "otp-input"
+          ? "OTPInputExample"
+          : component === "date-picker"
+            ? "DatePickerExample"
+            : component === "file-dropzone"
+              ? "FileDropzoneExample"
+              : component === "color-picker"
+                ? "ColorPickerExample"
+                : component === "tag-input"
+                  ? "TagInputExample"
+                  : component === "filter-bar"
+                    ? "FilterBarExample"
+                    : "InputCopyExample";
+    const entrySource =
+      component === "slider"
+        ? sliderSource
+        : component === "otp-input"
+          ? otpSource
+          : component === "date-picker"
+            ? dateSource
+            : component === "file-dropzone"
+              ? filesSource
+              : component === "color-picker"
+                ? colorsSource
+                : component === "tag-input"
+                  ? tagSource
+                  : component === "filter-bar"
+                    ? filterSource
+                    : copySource;
+    const source = entrySource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() { return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><${name} language={${json(language)}} {...${json(model)}} /></SystemProvider></div>; }
+`;
+  }
+  if (component === "sidebar") {
+    const p = model as SidebarModel;
+    const source = sidebarSource.replace(
+      /from "\.\.\/\.\.\/index"/g,
+      'from "./system"',
+    );
+    return `${source}
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() {
+  const [collapsed, setCollapsed] = useState(${json(p.collapsed)});
+  return <div lang={${json(language)}}><SystemProvider config={{...defaultConfig,...${json(config)}}}><SidebarExample language={${json(language)}} grouped={${p.grouped}} nested={${p.nested}} footer={${p.footer}} longLabels={${p.longLabels}} ${p.mode === "controlled" ? "collapsed={collapsed} onCollapsedChange={setCollapsed}" : "defaultCollapsed={collapsed} onCollapsedChange={setCollapsed}"} /></SystemProvider></div>;
+}
+`;
+  }
+  if (isOneOf(component, chartIds))
+    return generateChartCode(component, model as ChartModel, config, language);
+  if (
+    isOneOf(component, [
+      "card",
+      "accordion",
+      "breadcrumbs",
+      "pagination",
+      "alert",
+      "skeleton",
+      "progress",
+      "spinner",
+      "avatar",
+      "avatar-group",
+      "tooltip",
+      "modal",
+      "empty-state",
+    ])
+  )
+    return generateBatchCode(component, model, config, language);
+  if (component === "data-table") {
+    const p = model as DataTableModel;
+    const source = (text: string) => text.replace(/^import[\s\S]*?;\n/gm, "");
+    return `import { useId, useRef, useState } from "react";
+import type { ReactNode } from "react";
+import { MoreHorizontal } from "lucide-react";
+import { Button, Field, Input, Select, Sheet, Table, TableHeader, TableBody, TableRow, TableHead, TableCell, useToast, DataTable, Badge, DropdownMenu, SystemProvider, ToastProvider, defaultConfig, numberLocale, useSystem } from "./system";
+import type { DataTableColumn } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+${source(createSource)}
+${source(customerSource)}
+export default function Example() {
+  return <div lang={${json(language)}}><SystemProvider config={{ ...defaultConfig, ...${json(config)} }}><ToastProvider label={${json(language === "ar" ? "تنبيهات العملاء" : "Customer notifications")}} closeLabel={${json(language === "ar" ? "إغلاق التنبيه" : "Dismiss notification")}}><CustomerDataTable language={${json(language)}} caption={${json(p.caption)}} preset={${json(p.preset)}} /></ToastProvider></SystemProvider></div>;
+}
+`;
+  }
   const c = previewConfig(config, model),
     imports = new Set(["SystemProvider", "defaultConfig"]),
     otherImports = new Set<string>();
@@ -48,7 +493,121 @@ export function generateCode(
   let declarations = "",
     jsx = "";
   const recordEvent = "setEvent";
-  if (component === "button") {
+  if (component === "badge") {
+    const p = model as BadgeModel;
+    imports.add("Badge");
+    jsx = `<Badge tone="${p.tone}">{${json(p.children)}}</Badge>`;
+  } else if (component === "checkbox") {
+    const p = model as CheckboxModel;
+    imports.add("Checkbox");
+    declarations =
+      p.mode === "controlled"
+        ? `const [checked, setChecked] = useState(${p.checked});`
+        : "";
+    jsx = `<Checkbox ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}} disabled={${p.disabled}} ${attribute("name", p.name)} ${attribute("value", p.value)} ${p.mode === "controlled" ? "checked={checked}" : `defaultChecked={${p.checked}}`} onChange={event => { ${p.mode === "controlled" ? "setChecked(event.currentTarget.checked);" : ""} setEvent("onChange: " + event.currentTarget.checked); }} />`;
+  } else if (component === "radio-group" || component === "textarea") {
+    const p = model as RadioGroupModel | TextareaModel;
+    const name = component === "radio-group" ? "RadioGroup" : "Textarea";
+    imports.add(name);
+    declarations =
+      p.mode === "controlled"
+        ? `const [value, setValue] = useState(${json(p.value)});`
+        : "";
+    const change =
+      component === "radio-group"
+        ? `onValueChange={next => { ${p.mode === "controlled" ? "setValue(next);" : ""} setEvent("onValueChange: " + next); }}`
+        : `onChange={event => { ${p.mode === "controlled" ? "setValue(event.currentTarget.value);" : ""} setEvent("onChange: " + event.currentTarget.value); }}`;
+    const extras =
+      component === "radio-group"
+        ? `options={${json((p as RadioGroupModel).options)}}`
+        : `rows={${(p as TextareaModel).rows}} readOnly={${(p as TextareaModel).readOnly}} ${attribute("placeholder", (p as TextareaModel).placeholder)}`;
+    jsx = `<${name} ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}} disabled={${p.disabled}} ${attribute("name", p.name)} ${p.mode === "controlled" ? "value={value}" : attribute("defaultValue", p.value)} ${extras} ${change} />`;
+  } else if (component === "table") {
+    const p = model as TableModel;
+    for (const name of [
+      "Table",
+      "TableHeader",
+      "TableBody",
+      "TableRow",
+      "TableHead",
+      "TableCell",
+    ])
+      imports.add(name);
+    declarations =
+      p.preset === "empty"
+        ? ""
+        : `const rows = ${json([
+            {
+              id: "madar",
+              name: t("شركة مدار للتقنية", "Madar Technology"),
+              email: "hello@madar.sa",
+              status: t("نشط", "Active"),
+            },
+            {
+              id: "nour",
+              name: t(
+                "مؤسسة نور للخدمات والاستشارات",
+                "Nour Services and Consulting",
+              ),
+              email: "team@nour.com.sa",
+              status: t("متوقف", "Paused"),
+            },
+          ])};`;
+    jsx = `<Table ${attribute("caption", p.caption)} ${p.caption ? "" : attribute("aria-label", t("العملاء", "Customers"))}>
+        <TableHeader><TableRow>
+          <TableHead>{${json(t("الاسم", "Name"))}}</TableHead>
+          <TableHead>{${json(t("البريد الإلكتروني", "Email"))}}</TableHead>
+          <TableHead>{${json(t("الحالة", "Status"))}}</TableHead>
+        </TableRow></TableHeader>
+        <TableBody>
+          ${
+            p.preset === "empty"
+              ? `<TableRow><TableCell colSpan={3}>{${json(t("لا يوجد عملاء بعد.", "No customers yet."))}}</TableCell></TableRow>`
+              : `{rows.map(row => <TableRow key={row.id}>
+            <TableHead scope="row"><bdi>{row.name}</bdi></TableHead>
+            <TableCell><bdi dir="ltr">{row.email}</bdi></TableCell>
+            <TableCell>{row.status}</TableCell>
+          </TableRow>)}`
+          }
+        </TableBody>
+      </Table>`;
+  } else if (
+    component === "field" ||
+    component === "input" ||
+    component === "select"
+  ) {
+    const p = model as FieldModel | InputModel | SelectModel;
+    if (component !== "input") imports.add("Field");
+    const controlName = component === "select" ? "Select" : "Input";
+    imports.add(controlName);
+    const f = `<Field ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}}>`;
+    if (component === "field")
+      jsx = `${f}{field => <Input field={field} onChange={event => setEvent("onChange: " + event.currentTarget.value)} />}</Field>`;
+    else {
+      const control = p as InputModel | SelectModel;
+      declarations =
+        control.mode === "controlled"
+          ? `const [value, setValue] = useState(${json(control.value)});`
+          : "";
+      const state =
+        control.mode === "controlled"
+          ? "value={value}"
+          : attribute("defaultValue", control.value);
+      const change =
+        component === "input"
+          ? `onChange={event => { ${control.mode === "controlled" ? "setValue(event.currentTarget.value);" : ""} setEvent("onChange: " + event.currentTarget.value); }}`
+          : `onValueChange={next => { ${control.mode === "controlled" ? "setValue(next);" : ""} setEvent("onValueChange: " + next); }}`;
+      const extras =
+        component === "input"
+          ? `type="${(p as InputModel).type}" readOnly={${(p as InputModel).readOnly}}`
+          : `options={${json((p as SelectModel).options)}}`;
+      const common = `${state} ${attribute("placeholder", control.placeholder)} ${attribute("name", control.name)} size="${control.size}" disabled={${control.disabled}} ${extras} ${change}`;
+      jsx =
+        component === "input"
+          ? `<Input ${attribute("label", p.label)} ${attribute("helper", p.helper)} ${attribute("error", p.error)} required={${p.required}} ${common} />`
+          : `${f}{field => <Select field={field} invalid={${(p as SelectModel).invalid}} ${common} />}</Field>`;
+    }
+  } else if (component === "button") {
     const p = model as ButtonModel;
     imports.add("Button");
     const icons = {
@@ -134,20 +693,22 @@ export function generateCode(
       p.mode === "controlled"
         ? `const [open, setOpen] = useState(${p.open});`
         : "";
-    jsx = `<Sheet\n        trigger={<Button variant="${p.triggerVariant}" size="${p.triggerSize}">{${json(p.triggerLabel)}}</Button>}\n        ${attribute("title", p.title)}\n        ${attribute("description", p.description)}\n        ${attribute("closeLabel", p.closeLabel)}\n        ${p.side === "auto" ? "" : `side="${p.side}"`}\n        ${p.mode === "controlled" ? "open={open}" : ""}\n        onOpenChange={(next) => { ${p.mode === "controlled" ? "setOpen(next); " : ""}${recordEvent}("onOpenChange: " + next); }}\n        ${p.footer ? `footer={<SheetClose asChild><Button>{${json(p.footerLabel)}}</Button></SheetClose>}` : ""}\n      >\n        <p dir="auto">{${json(p.children)}}</p>\n        <dl>\n          <div><dt>{${json(t("البريد الإلكتروني", "Email"))}}</dt><dd><bdi dir="ltr">hello@madar.example</bdi></dd></div>\n          <div><dt>{${json(t("الموقع الإلكتروني", "Website"))}}</dt><dd><bdi dir="ltr">https://madar.example</bdi></dd></div>\n        </dl>\n      </Sheet>`;
-  } else {
+    jsx = `<Sheet\n        trigger={<Button variant="${p.triggerVariant}" size="${p.triggerSize}">{${json(p.triggerLabel)}}</Button>}\n        ${attribute("title", p.title)}\n        ${attribute("description", p.description)}\n        ${attribute("closeLabel", p.closeLabel)}\n        ${p.side === "auto" ? "" : `side="${p.side}"`}\n        ${p.mode === "controlled" ? "open={open}" : ""}\n        onOpenChange={(next) => { ${p.mode === "controlled" ? "setOpen(next); " : ""}${recordEvent}("onOpenChange: " + next); }}\n        ${p.footer ? `footer={<SheetClose asChild><Button>{${json(p.footerLabel)}}</Button></SheetClose>}` : ""}\n      >\n        <p dir="auto">{${json(p.children)}}</p>\n        <dl>\n          <div><dt>{${json(t("البريد الإلكتروني", "Email"))}}</dt><dd><bdi dir="ltr">hello@madar.sa</bdi></dd></div>\n          <div><dt>{${json(t("الموقع الإلكتروني", "Website"))}}</dt><dd><bdi dir="ltr">https://madar.sa</bdi></dd></div>\n        </dl>\n      </Sheet>`;
+  } else if (component === "toast") {
     const p = model as ToastModel;
     imports.add("Button");
     imports.add("ToastProvider");
     imports.add("useToast");
     declarations = "const { toast } = useToast();";
     jsx = `<Button variant="secondary" onClick={() => {\n        toast(${JSON.stringify({ title: p.title, description: p.description, tone: p.tone, duration: p.duration }, null, 2)});\n        setEvent("toast: ${p.tone}");\n      }}>{${json(p.triggerLabel)}}</Button>`;
+  } else {
+    return assertNever(component, "generateCode");
   }
-  const importsCode = `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\nimport { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "./system/tokens.css";\nimport "./system/components.css";`;
-  const configCode = `const config: SystemConfig = {\n  ...defaultConfig,\n  theme: "${c.theme}",\n  direction: "${c.direction}",\n  density: "${c.density}",\n  accent: "${c.accent}",\n  typography: "${c.typography ?? "standard"}",\n  radius: ${c.radius},\n  reducedMotion: ${c.reducedMotion},\n};`;
-  const inner = `function Demo() {\n  const [event, setEvent] = useState("");\n  ${declarations}\n  return (\n    <>\n      ${jsx}\n      <output aria-live="polite" dir="auto">{event}</output>\n    </>\n  );\n}`;
+  const importsCode = `${["table", "badge"].includes(component) ? "" : `import { useState${component === "button" && (model as ButtonModel).action === "simulate" ? ", useEffect, useRef" : ""} } from "react";\n`}import { ${[...imports].join(", ")} } from "./system";\nimport type { SystemConfig${component === "button" && (model as ButtonModel).action === "simulate" ? ", ButtonState" : ""} } from "./system";\n${[...otherImports].join("\n")}\nimport "@fontsource/ibm-plex-sans-arabic/400.css";\nimport "@fontsource/ibm-plex-sans-arabic/500.css";\nimport "@fontsource/ibm-plex-sans-arabic/600.css";\nimport "./system/tokens.css";\nimport "./system/components.css";`;
+  const configCode = `const config: SystemConfig = {\n  ...defaultConfig,\n  theme: "${c.theme}",\n  direction: "${c.direction}",\n  density: "${c.density}",\n  accent: "${c.accent}",\n  typography: "${c.typography ?? "standard"}",\n  numerals: "${c.numerals ?? "arab"}",\n  radius: ${c.radius},\n  reducedMotion: ${c.reducedMotion},\n};`;
+  const inner = `function Demo() {\n  ${["table", "badge"].includes(component) ? "" : 'const [event, setEvent] = useState("");'}\n  ${declarations}\n  return (\n    <>\n      ${jsx}\n      ${["table", "badge"].includes(component) ? "" : '<output aria-live="polite" dir="auto">{event}</output>'}\n    </>\n  );\n}`;
   const p = model as ToastModel;
-  return `${importsCode}\n\n${configCode}\n\n${inner}\n\nexport default function Example() {\n  return (\n    <SystemProvider config={config}>\n      ${component === "toast" ? `<ToastProvider ${attribute("label", p.providerLabel)} ${attribute("closeLabel", p.closeLabel)}>\n        <Demo />\n      </ToastProvider>` : "<Demo />"}\n    </SystemProvider>\n  );\n}\n`;
+  return `${importsCode}\n\n${configCode}\n\n${inner}\n\nexport default function Example() {\n  return (\n    <div lang={${json(language)}}><SystemProvider config={config}>\n      ${component === "toast" ? `<ToastProvider ${attribute("label", p.providerLabel)} ${attribute("closeLabel", p.closeLabel)}>\n        <Demo />\n      </ToastProvider>` : "<Demo />"}\n    </SystemProvider></div>\n  );\n}\n`;
 }
 export function generatePrompt(
   component: ComponentId,
@@ -156,13 +717,116 @@ export function generatePrompt(
   language: Language,
 ): string {
   const entry = catalog.find((item) => item.id === component)!;
-  const t = words(language);
   const c = previewConfig(config, model);
-  return (
-    t(
-      `اعثر أولًا على طِراز داخل المشروع الحالي. إذا لم تتمكن من العثور على النظام، أبلغ بذلك بوضوح وتوقف. انطلاقًا من جذر مشروع طِراز الذي عثرت عليه، اقرأ README.md لإرشادات الاستخدام وsrc/system/${entry.file} لمصدر المكوّن وsrc/system/index.ts للتصديرات وsrc/system/config.ts للإعدادات. جميع المسارات نسبية إلى ذلك الجذر، بما فيها src/main.tsx الذي يحمّل الخط المحلي. استخدم ${localize(entry.name, language)} بالخصائص والإعدادات الحالية كما في المثال أدناه. لا تضف مثبتًا أو CLI.`,
-      `First locate Tiraz within the current project. If you cannot locate the system, clearly report that and stop. From the located Tiraz project root, read README.md for usage guidance, src/system/${entry.file} for the component source, src/system/index.ts for exports and src/system/config.ts for configuration. All paths are relative to that root, including src/main.tsx, which loads the local font. Use ${localize(entry.name, language)} with the exact current properties and system settings in the example below. Do not add an installer or CLI.`,
-    ) +
-    `\n\nSystemProvider: ${JSON.stringify(c)}\n\n${t("أنشئ src/Example.tsx تحت ذلك الجذر للمثال واربط أحداثه بتطبيقك.", "Create src/Example.tsx under that root for this example and connect its events to your application.")}\n\n\`\`\`tsx\n${generateCode(component, model, config, language)}\`\`\``
-  );
+  const code = generateCode(component, model, config, language);
+  const notes: string[] = [];
+  if (/\.\/system\/ai\/assets\/(sara|omar)\.jpg/.test(code))
+    notes.push(
+      "Keep the bundled portraits referenced by this example, ai/assets/README.md and ai/assets/LICENSE.txt. Adjust local asset imports to the copied source root; do not replace these portraits with a remote image service.",
+    );
+  if (component === "terminal")
+    notes.push(
+      "Terminal is read-only: the host supplies text, execution state, exit code and duration. Copy is command + newline + output, or output alone. No HTML/ANSI interpretation, execution, shell or connection.",
+      "Output scrolls internally by keyboard. Opt-in following must preserve selection and older reading.",
+    );
+  if (component === "chat-app")
+    notes.push(
+      "ChatApp composes Sidebar and Sheet with children, composer, toolbar, actions and sidePanel slots. Use ChatThread with patterns as messages in plain appearance, and TaskStarter in plain appearance as the composer.",
+      "Host owns conversations with unique stable IDs, groups, messages, drafts and cancellation, plus the rename field and the confirmation before a delete. The component reports onConversationRename and onConversationDelete intents. Bind callbacks to conversation and run identity so stale work never updates another conversation.",
+      "The example tells the October close in memory and cancels its timers on unmount. It has no backend, auth, persistence, real AI or tool execution.",
+    );
+  if (["image-result", "sources", "insight-cards"].includes(component))
+    notes.push(
+      "Copy the entire ai/assets/results directory, including local SVG images and sample text documents. Preserve ?url&no-inline imports. Source copies need @radix-ui/react-popover@1.3.1 and the Radix overrides in ai/README.md.",
+      "Host owns images, alt text, stable source IDs/numbers, findings and actions. ImageResult progress must be a real supplied 0-100 percentage; omit it when unknown. URLs allow HTTP(S) or relative/local destinations only; missing/rejected destinations remain honest text. Use links for navigation and buttons for disclosure. These components do not generate or retrieve content.",
+    );
+  if (["chat-thread", "chat-composer", "prompt-bar"].includes(component))
+    notes.push(
+      "Host owns stable message IDs, draft, submission, cancellation and execution state. Entry direction follows SystemProvider: right-start in RTL, left-start in LTR, regardless of draft script. Use native dir only for an intentional override.",
+      "Enter sends; Shift+Enter inserts a newline. Never submit during IME composition. Preserve valid text exactly and clear only on host acceptance. Following output is opt-in and near-bottom only; preserve older reading, settled selection and focus.",
+      "ai/examples/ChatExamples.tsx supplies fixed local response chunks. Invalidate callbacks on stop/reset/unmount. Connect real responses through the host; the example adds no network, storage or uploads.",
+    );
+  if (["code-block", "markdown", "streaming-text"].includes(component))
+    notes.push(
+      "For a source copy, resolve react-markdown@10.1.0 and remark-gfm@4.0.1 through the host toolchain. CommonMark plus GFM only; raw HTML is disabled and unsafe URLs rejected. Unsupported code languages remain plain text; code stays LTR.",
+      "Host owns text, streaming/completed state and cancellation. Do not add a typing queue or network. The StreamingText example plays its local sample once on mount. Invalidate timers on replay/unmount and retain received text on cancellation.",
+    );
+  if (
+    [
+      "tool-call",
+      "tool-chips",
+      "loading-state",
+      "thinking-indicator",
+      "thinking-state",
+    ].includes(component)
+  )
+    notes.push(
+      "The host owns execution and brief user-facing summaries. Never expose private model reasoning or fabricate logs. Use one polite announcement owner. Start local simulations explicitly and cancel timers on replay/unmount.",
+    );
+  if (["tool-call", "tool-chips"].includes(component))
+    notes.push(
+      "ToolCall details one supplied operation; ToolChips summarizes activity without automatic details. Connect onRetry/onActivate to host behavior. These components add no tool execution, network, permissions or execution timers.",
+    );
+  if (component === "file-tree")
+    notes.push(
+      "FileTree displays supplied data only. onActivate delegates opening to the host; the example reads application-owned sample strings without filesystem access.",
+    );
+  if (
+    ["ask-user-questions", "approval-card", "approval-flow"].includes(component)
+  )
+    notes.push(
+      "Supported questions are single choice with optional Other, or text only. Honor AbortSignal on reset, replacement and unmount, and preserve drafts on failure.",
+      "The host must validate request identity, authorization and execution independently. Approval is a one-time decision and grants no execution or ongoing permission. Changed content invalidates old decisions. Controlled ApprovalRecord values must bind requestId and approvalRequestKey to the exact current request. Do not add standing access or approve-all.",
+    );
+  if (
+    ["selection-actions", "context-meter", "model-selector"].includes(component)
+  )
+    notes.push(
+      "SelectionActions is scoped to children and excludes editors, code, links and buttons. Alt+Enter focuses actions; Escape returns to the scope. Preserve native selection/copy; scroll dismisses.",
+      "Models use controlled stable IDs and onValueChange. Usage, capacity, estimates, prices and availability belong to the host. These components add no AI execution, automatic replacement or network.",
+      "Copy the complete source bundle with Popper, Popover, Select and the Radix layer overrides in ai/README.md.",
+    );
+
+  if (
+    isAgentPreview(component) &&
+    (model as unknown as Record<string, unknown>).agentAppearance === "mascot"
+  )
+    notes.push(
+      "This example uses the optional Khayt avatar through agentPresentation. Copy mascot/Khayt.tsx, khayt-artwork.ts, khayt-renderer.ts, khayt-motion.ts, khayt.css and the full mascot/assets directory from the checkout's src/mascot beside the copied system directory. Preserve asset paths and provenance; adjust Khayt's useReducedMotion import if your source-root folder has another name. The studio and workbench are not needed. The host maps its actual state to the avatar; respect reduced motion and keep the existing visible status and single announcement owner. Switching to the original AI icon omits this optional runtime.",
+    );
+
+  return [
+    `First locate Tiraz, then integrate the ${localize(entry.name, "en")} example into my application using the current settings below.`,
+    `## Locate the source
+
+1. Find the full checkout or source copy in the current project. The source root contains index.ts, config.ts, tokens.css, components.css and ai/. In a checkout it is usually src/system; for example, src/system/${entry.file}. If you cannot locate the system, report the missing source, request its location and stop.
+2. Read ai/README.md and ai/composition.md. In ai/registry.json, query only the relevant entries: the "${entry.id}" family in components, its support APIs, and the records used by its props. Registry paths are relative to the source root, not the application root.
+3. Inspect ${entry.file}, the exported types in index.ts, config.ts, Provider.tsx and the relevant styles. Source and exported types are authoritative; workbench controls show a subset of the API. A source copy needs no checkout README or src/main.tsx. Do not invent exports/props or add an installer or CLI.`,
+    `## Current settings
+
+Language: ${language === "ar" ? "Arabic" : "English"} (${language})
+SystemProvider: ${JSON.stringify(c)}
+
+Keep the example's exact props, supplied content, state choices and shared settings unless the requested application behavior requires a change. The TSX below captures the current selection.`,
+    `## Integrate
+
+- Place the example in an appropriate application component file. Adjust ./system imports, CSS paths and local asset imports to the located source root.
+- Reuse the host's toolchain and existing Tiraz setup. When copying the library, copy the whole source root. Retain the ai/ bundle, including examples, assets, provenance and licenses.
+- Load tokens.css and components.css once. Verify the host loads local IBM Plex Sans Arabic at weights 400, 500 and 600. Follow ai/README.md for dependencies and Radix overrides.
+- Keep SystemProvider around the interface and its overlays, merge settings with defaultConfig, and set lang on a host ancestor above the provider. Preserve :dir() in the host CSS pipeline.
+- Connect events to the requested application behavior and keep application state in the host. Replace demonstration handlers where needed; identify any remaining sample data or local simulation.`,
+    ...(notes.length
+      ? [`## Component notes\n\n${notes.map((note) => `- ${note}`).join("\n")}`]
+      : []),
+    `## Validate
+
+- Run the host's relevant type checks, tests and build. Resolve imports and assets against the actual source location.
+- Inspect the rendered result with the selected settings, then check RTL and LTR, narrow layouts, theme, typography, numerals and reduced motion.
+- Exercise the connected interactions with keyboard and pointer. Check focus order, focus restoration for overlays, accessible names and relevant loading, empty, error and disabled states.
+- Report changed files, checks run and remaining integration work. Do not claim production readiness or accessibility from compilation alone.`,
+    `## Current example
+
+\`\`\`tsx
+${code}${code.endsWith("\n") ? "" : "\n"}\`\`\``,
+  ].join("\n\n");
 }

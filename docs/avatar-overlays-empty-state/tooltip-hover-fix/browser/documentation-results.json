@@ -1,0 +1,107 @@
+{
+  "checks": [
+    {
+      "language": "ar",
+      "active": "avatar",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "ar",
+      "active": "avatar-group",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "ar",
+      "tooltip": "click/Escape stay dismissed under stationary pointer; genuine leave/re-entry reopens after hover delay with trigger focused; content stays hoverable"
+    },
+    {
+      "language": "ar",
+      "active": "tooltip",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "ar",
+      "active": "modal",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "ar",
+      "active": "empty-state",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "en",
+      "active": "avatar",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "en",
+      "active": "avatar-group",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "en",
+      "tooltip": "click/Escape stay dismissed under stationary pointer; genuine leave/re-entry reopens after hover delay with trigger focused; content stays hoverable"
+    },
+    {
+      "language": "en",
+      "active": "tooltip",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "en",
+      "active": "modal",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "en",
+      "active": "empty-state",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "liveCustomization": {
+        "theme": "dark",
+        "font": "\"IBM Plex Sans Arabic\", sans-serif",
+        "text": "16px",
+        "radius": "16px",
+        "accent": "#E8BAA3"
+      }
+    }
+  ],
+  "errors": [],
+  "tooltipRecovery": {
+    "language": "en",
+    "phase": "Escape dismissal followed by focused pointer leave/re-entry",
+    "focused": true
+  }
+}

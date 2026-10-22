@@ -1,0 +1,74 @@
+[
+  {
+    "check": "real-copy",
+    "state": {
+      "buttonText": "",
+      "check": true,
+      "feedback": "Copied.",
+      "focused": true,
+      "source": "\tconst name = \"مدار / Madar\";  \r\n\n"
+    }
+  },
+  {
+    "check": "clipboard-denied",
+    "status": "Could not copy. Select the code and copy it manually."
+  },
+  {
+    "check": "unsafe-html-urls-and-unknown-fence",
+    "result": {
+      "code": "const plain = true;\n",
+      "links": ["https://example.com"],
+      "script": 0,
+      "tokens": 0,
+      "unsafe": 0
+    }
+  },
+  {
+    "check": "keyboard-scroll-long-code",
+    "result": {
+      "clientHeight": 320,
+      "clientWidth": 866,
+      "focused": true,
+      "scrollHeight": 1752,
+      "scrollLeft": 1.5,
+      "scrollTop": 29,
+      "scrollWidth": 2964
+    }
+  },
+  {
+    "check": "system-reduced-motion",
+    "animations": ["none"]
+  },
+  {
+    "check": "os-reduced-motion",
+    "animations": ["tz-stream-reveal", "none"]
+  },
+  {
+    "check": "os-reduced-motion-after-specificity-fix",
+    "animations": ["none"]
+  },
+  {
+    "check": "browser-markdown-selection-after-host-append",
+    "selection": ""
+  },
+  {
+    "check": "browser-markdown-selection-with-content-focus",
+    "selection": "Hello"
+  },
+  {
+    "at": 1181,
+    "state": "cancelled",
+    "text": "Local summary"
+  },
+  {
+    "at": 2185,
+    "state": "cancelled-content-retained",
+    "text": "Local summary"
+  },
+  {
+    "at": 6017,
+    "state": "completed-and-copied",
+    "status": "Local demo with fixed chunks; no AI or network request.\n\nReplay local demo\nCancel demo\nLocal summary\n\nTiraz · مرحبًا / Hello\n\nts\nconst ready = true;\n\nCopied.\nName\tState\nTiraz\tReady\nLocal sample complete",
+    "cursors": 0
+  }
+]

@@ -1,0 +1,463 @@
+{
+  "checks": [
+    "Avatar failed local source, replacement load, removal; one accessible image name and deliberate fallback",
+    "Tooltip true pointer delay, hoverable content, focus/ref/merged descriptions, Escape without focus loss, edge collision flip, trigger action",
+    "Modal initial focus, forward/backward Tab containment, Escape/outside restoration; nested Select keyboard selection, menu pointer/keyboard, focus restoration, tooltip Escape closes one layer",
+    "Portable focused Modal Select/menu reset/Done and EmptyState guide/Back produce stated results",
+    "48 combinations: both languages/themes/densities/text scales x desktop/narrow/short; no page overflow/group clipping, RTL visual order, tooltip/menu/Select collisions, Modal bounds and internal scrolling",
+    {
+      "check": "Live theme/direction/density/text/accent/corners/application reduction in open Modal; OS reduction overrides false; local IBM Plex Arabic loaded",
+      "tokens": {
+        "theme": "dark",
+        "direction": "rtl",
+        "body": "16px",
+        "radius": "16px",
+        "action": "#D6B6E5",
+        "motion": "0ms"
+      }
+    }
+  ],
+  "matrix": [
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "standard",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 1280,
+      "height": 900,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 320,
+      "height": 568,
+      "pass": true
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "typography": "large",
+      "width": 640,
+      "height": 280,
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "activeCase": {
+    "language": "en",
+    "theme": "dark",
+    "density": "standard",
+    "typography": "large",
+    "width": 640,
+    "height": 280
+  }
+}

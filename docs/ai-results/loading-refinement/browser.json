@@ -1,0 +1,99 @@
+[
+  {
+    "size": [1280, 900],
+    "language": "en",
+    "theme": "light",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "Loading image36%",
+    "viewport": 1280
+  },
+  {
+    "size": [1280, 900],
+    "language": "en",
+    "theme": "dark",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "Loading image36%",
+    "viewport": 1280
+  },
+  {
+    "size": [1280, 900],
+    "language": "ar",
+    "theme": "light",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "جارٍ تحميل الصورة٣٦٪؜",
+    "viewport": 1280
+  },
+  {
+    "size": [1280, 900],
+    "language": "ar",
+    "theme": "dark",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "جارٍ تحميل الصورة٣٦٪؜",
+    "viewport": 1280
+  },
+  {
+    "size": [320, 568],
+    "language": "en",
+    "theme": "light",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "Loading image36%",
+    "viewport": 320
+  },
+  {
+    "size": [320, 568],
+    "language": "en",
+    "theme": "dark",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "Loading image36%",
+    "viewport": 320
+  },
+  {
+    "size": [320, 568],
+    "language": "ar",
+    "theme": "light",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "جارٍ تحميل الصورة٣٦٪؜",
+    "viewport": 320
+  },
+  {
+    "size": [320, 568],
+    "language": "ar",
+    "theme": "dark",
+    "contentFits": true,
+    "overflow": false,
+    "progress": "36",
+    "text": "جارٍ تحميل الصورة٣٦٪؜",
+    "viewport": 320
+  },
+  {
+    "check": "large-reduced-motion",
+    "animation": "none",
+    "overflow": false,
+    "transition": "0s"
+  },
+  {
+    "check": "stable-documentation-size",
+    "loadingSize": {
+      "height": 426.6640625,
+      "width": 640
+    },
+    "loadedSize": {
+      "height": 426.6640625,
+      "width": 640
+    }
+  }
+]

@@ -1,8 +1,16 @@
+import { agentPreviewComponents } from "./agent-preview";
 import type { ComponentId } from "./catalog";
 import type { Localized } from "./i18n";
-export interface Field {
+export interface WorkbenchField {
   key: string;
-  kind: "text" | "select" | "boolean" | "number" | "collection" | "attributes";
+  kind:
+    | "text"
+    | "select"
+    | "boolean"
+    | "number"
+    | "collection"
+    | "attributes"
+    | "color";
   title: Localized;
   api: string;
   advanced?: boolean;
@@ -13,12 +21,12 @@ export interface Field {
 }
 const field = (
   key: string,
-  kind: Field["kind"],
+  kind: WorkbenchField["kind"],
   ar: string,
   en: string,
   api = key,
-  extra: Partial<Field> = {},
-): Field => ({ key, kind, title: [ar, en], api, ...extra });
+  extra: Partial<WorkbenchField> = {},
+): WorkbenchField => ({ key, kind, title: [ar, en], api, ...extra });
 const mode = field(
   "mode",
   "select",
@@ -27,10 +35,10 @@ const mode = field(
   "value / defaultValue",
   { advanced: true, options: ["controlled", "uncontrolled"] },
 );
-const native: Field[] = [
+const native: WorkbenchField[] = [
   field("id", "text", "معرّف العنصر", "Element ID"),
   field("className", "text", "فئة CSS", "CSS class"),
-  field("stylePreset", "select", "نمط عنصر جاهز", "Style preset", "style", {
+  field("stylePreset", "select", "نمط جاهز", "Style preset", "style", {
     options: ["none", "wide"],
   }),
   field(
@@ -41,13 +49,13 @@ const native: Field[] = [
     "HTML / ARIA / data-*",
     {
       help: [
-        "سمات أصلية فقط. معالجات الأحداث موثّقة، ولا تُكتب كسلاسل.",
+        "أضف السمات الأصلية فقط. معالجات الأحداث موثّقة في دليل الخصائص، ولا تُكتب هنا نصًّا.",
         "Native attributes only. Event functions are documented, not edited as strings.",
       ],
     },
   ),
 ].map((item) => ({ ...item, advanced: true }));
-const trigger: Field[] = [
+const trigger: WorkbenchField[] = [
   field(
     "triggerLabel",
     "text",
@@ -75,7 +83,671 @@ const trigger: Field[] = [
     { advanced: true, options: ["sm", "md"] },
   ),
 ];
-export const fields: Record<ComponentId, Field[]> = {
+// Where a pattern sits: on its own tray, or plain on its host's paper.
+const appearance = field(
+  "appearance",
+  "select",
+  "المظهر",
+  "Appearance",
+  "appearance",
+  {
+    options: ["card", "plain"],
+  },
+);
+const chartFields = [
+  field("sample", "select", "بيانات المثال", "Sample dataset", "example", {
+    options: ["single", "multi", "gaps", "point", "zero", "empty", "long"],
+  }),
+  field("legend", "boolean", "مفتاح الرسم", "Show legend"),
+  field("grid", "boolean", "خطوط الشبكة", "Show grid"),
+];
+export const fields: Record<ComponentId, WorkbenchField[]> = {
+  "task-starter": [
+    appearance,
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
+  "cited-answer": [
+    appearance,
+    field("question", "boolean", "عرض السؤال", "Show the question", "question"),
+  ],
+  "data-answer": [appearance],
+  "change-summary": [appearance],
+  "assistant-controls": [
+    appearance,
+    field(
+      "usage",
+      "select",
+      "استخدام السياق",
+      "Context usage",
+      "contextUsage",
+      {
+        options: ["normal", "filling"],
+      },
+    ),
+  ],
+  "suggested-edits": [
+    field("undo", "boolean", "إتاحة التراجع", "Offer undo", "onUndo"),
+  ],
+  "image-generation": [
+    appearance,
+    field(
+      "knownProgress",
+      "boolean",
+      "نسبة التقدّم معروفة",
+      "Known progress",
+      "progress",
+    ),
+  ],
+  "draft-review": [
+    appearance,
+    field("undo", "boolean", "مهلة للتراجع", "Undo window", "undoWindow"),
+  ],
+  "agent-task": [
+    appearance,
+    field(
+      "autoStart",
+      "boolean",
+      "البدء التلقائي",
+      "Auto start",
+      "autoStartAfter",
+    ),
+  ],
+  "decision-inbox": [appearance],
+  terminal: [
+    field("state", "select", "الحالة", "State", "state", {
+      options: ["running", "completed", "failed"],
+    }),
+    field("longContent", "boolean", "مخرجات طويلة", "Long output", "output"),
+    field("followOutput", "boolean", "متابعة المخرجات", "Follow output"),
+  ],
+  "chat-app": [
+    field("longContent", "boolean", "مخرجات طويلة", "Long output", "example"),
+  ],
+  "ask-user-questions": [
+    appearance,
+    field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
+  ],
+  "approval-card": [
+    appearance,
+    field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
+  ],
+  "approval-flow": [
+    appearance,
+    field("longContent", "boolean", "محتوى طويل", "Long content", "example"),
+  ],
+
+  "selection-actions": [
+    field("longContent", "boolean", "محتوى طويل", "Long content", "children"),
+  ],
+  "context-meter": [
+    field(
+      "preset",
+      "select",
+      "قيم المثال",
+      "Sample values",
+      "used / capacity",
+      {
+        options: [
+          "normal",
+          "high",
+          "near",
+          "over",
+          "zero",
+          "missing",
+          "invalid",
+        ],
+      },
+    ),
+    field("estimated", "boolean", "قيم تقديرية", "Estimated values"),
+  ],
+  "model-selector": [
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field(
+      "longContent",
+      "boolean",
+      "وصف طويل",
+      "Long description",
+      "models[].description",
+    ),
+  ],
+  "image-result": [
+    field("progress", "number", "نسبة التقدّم", "Progress (%)", "progress", {
+      min: 0,
+      max: 100,
+    }),
+    field("state", "select", "الحالة", "State", "state", {
+      options: ["loaded", "loading", "error"],
+    }),
+    field(
+      "aspectRatio",
+      "select",
+      "نسبة الإطار",
+      "Frame ratio",
+      "aspectRatio",
+      { options: ["landscape", "square", "portrait"] },
+    ),
+  ],
+  sources: [
+    field(
+      "defaultExpanded",
+      "boolean",
+      "مفتوح في البداية",
+      "Initially expanded",
+    ),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
+  "insight-cards": [
+    field(
+      "longContent",
+      "boolean",
+      "محتوى طويل",
+      "Long content",
+      "items[].details",
+    ),
+  ],
+  "chat-thread": [
+    field(
+      "longContent",
+      "boolean",
+      "محتوى طويل",
+      "Long content",
+      "messages[].content",
+    ),
+    field(
+      "followOutput",
+      "boolean",
+      "متابعة آخر الرسائل",
+      "Follow near bottom",
+      "followOutput",
+    ),
+  ],
+  "chat-composer": [
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("failSend", "boolean", "تعذّر الإرسال", "Failed send", "onSubmit"),
+  ],
+  "prompt-bar": [
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("failSend", "boolean", "تعذّر الإرسال", "Failed send", "onSubmit"),
+  ],
+  "code-block": [
+    field("codeLanguage", "select", "لغة الكود", "Code language", "language", {
+      options: ["ts", "python", "json", "text", "unsupported"],
+    }),
+    field("longContent", "boolean", "كود طويل", "Long code", "code"),
+  ],
+  markdown: [
+    field("longContent", "boolean", "جدول طويل", "Long table", "text"),
+  ],
+  "streaming-text": [
+    field("markdown", "boolean", "تنسيق Markdown", "Markdown"),
+  ],
+  "tool-call": [
+    field(
+      "defaultExpanded",
+      "boolean",
+      "مفتوح في البداية",
+      "Initially expanded",
+    ),
+    field("longContent", "boolean", "مخرجات طويلة", "Long output", "output"),
+  ],
+  "tool-chips": [
+    field("counts", "boolean", "الأعداد", "Counts", "items[].count"),
+  ],
+  "loading-state": [
+    field("label", "text", "التسمية", "Label"),
+    field("variant", "select", "الحركة", "Variant", "variant", {
+      options: ["drive", "dots", "orbit"],
+    }),
+    field("elapsed", "boolean", "الوقت المنقضي", "Elapsed time", "elapsedMs"),
+    field("description", "boolean", "الوصف", "Description", "description"),
+  ],
+  "thinking-indicator": [
+    field("label", "text", "التسمية", "Label"),
+    field("words", "boolean", "كلمات متغيرة", "Rotating words", "words"),
+    field("textOnly", "boolean", "نص فقط", "Text only", "textOnly"),
+  ],
+  "thinking-state": [
+    field("active", "boolean", "نشط", "Active"),
+    field(
+      "defaultExpanded",
+      "boolean",
+      "مفتوح في البداية",
+      "Initially expanded",
+    ),
+  ],
+  "file-tree": [
+    field(
+      "mode",
+      "select",
+      "إدارة الحالة",
+      "State mode",
+      "expandedIds / selectedId",
+      { options: ["controlled", "uncontrolled"] },
+    ),
+    field(
+      "metadata",
+      "boolean",
+      "بيانات الملف",
+      "File metadata",
+      "nodes[].metadata",
+    ),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "nodes / emptyState",
+    ),
+  ],
+  "task-rows": [
+    field("appearance", "select", "المظهر", "Appearance", "appearance", {
+      options: ["capsules", "list"],
+    }),
+    field(
+      "mode",
+      "select",
+      "حالة التوسيع",
+      "Expansion state",
+      "expandedIds / defaultExpandedIds",
+      { options: ["controlled", "uncontrolled"] },
+    ),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "items / emptyState",
+    ),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
+  "notification-list": [
+    field(
+      "readControls",
+      "boolean",
+      "تعليم كمقروءة",
+      "Read controls",
+      "onMarkRead / onMarkAllRead",
+    ),
+    field("avatars", "boolean", "الصور الشخصية", "Avatars", "items[].avatar"),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "items / emptyState",
+    ),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
+  steps: [
+    field("orientation", "select", "الاتجاه", "Orientation", "orientation", {
+      options: ["horizontal", "vertical"],
+    }),
+    field(
+      "currentState",
+      "select",
+      "حالة الخطوة",
+      "Current state",
+      "items[].status",
+      { options: ["upcoming", "current", "completed", "error"] },
+    ),
+  ],
+  timeline: [
+    field(
+      "descriptions",
+      "boolean",
+      "الأوصاف",
+      "Descriptions",
+      "items[].description",
+    ),
+    field("icons", "boolean", "الأيقونات", "Icons", "items[].icon"),
+    field(
+      "actions",
+      "boolean",
+      "المحتوى والإجراءات",
+      "Content and actions",
+      "items[].content",
+    ),
+    field(
+      "empty",
+      "boolean",
+      "حالة فارغة",
+      "Empty state",
+      "items / emptyState",
+    ),
+    field("longContent", "boolean", "محتوى طويل", "Long content", "items"),
+  ],
+  slider: [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("min", "number", "الحد الأدنى", "Min"),
+    field("max", "number", "الحد الأقصى", "Max"),
+    field("step", "number", "الخطوة", "Step"),
+    field("showValue", "boolean", "عرض القيمة", "Show value"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+  "otp-input": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("length", "number", "عدد الأرقام", "Length", "length", {
+      min: 1,
+      max: 12,
+    }),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+  "date-picker": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("min", "text", "أول تاريخ متاح", "Min date"),
+    field("max", "text", "آخر تاريخ متاح", "Max date"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+
+  "file-dropzone": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("multiple", "boolean", "ملفات متعددة", "Multiple files"),
+    field("accept", "text", "الأنواع المقبولة", "Accepted types"),
+    field(
+      "maxFileSize",
+      "number",
+      "أقصى حجم بالبايت",
+      "Maximum size in bytes",
+      "maxFileSize",
+      { min: 0, max: 52428800 },
+    ),
+    field(
+      "maxFiles",
+      "number",
+      "أقصى عدد للملفات",
+      "Maximum files",
+      "maxFiles",
+      {
+        min: 0,
+        max: 20,
+      },
+    ),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+  "color-picker": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field(
+      "showSwatches",
+      "boolean",
+      "ألوان جاهزة",
+      "Preset swatches",
+      "example",
+    ),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    mode,
+  ],
+  "tag-input": [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
+    field("maxTags", "number", "أقصى عدد للوسوم", "Maximum tags", "maxTags", {
+      min: 0,
+      max: 20,
+    }),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+    mode,
+  ],
+  "input-copy": [
+    field("label", "text", "التسمية", "Label"),
+    field("value", "text", "القيمة", "Value"),
+    field("helper", "text", "النص المساعد", "Helper"),
+    field("error", "text", "الخطأ", "Error"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
+  "filter-bar": [
+    field("initialQuery", "text", "البحث الأولي", "Initial search", "example"),
+    field("initialKind", "select", "النوع الأولي", "Initial kind", "example", {
+      options: ["all", "guide", "note"],
+    }),
+    field("clearAll", "boolean", "مسح الكل", "Clear all action", "onClearAll"),
+  ],
+  sidebar: [
+    field("collapsed", "boolean", "شريط أيقونات", "Icon rail"),
+    field(
+      "grouped",
+      "boolean",
+      "عناوين المجموعات",
+      "Group headings",
+      "example",
+    ),
+    field("nested", "boolean", "قوائم فرعية", "Nested navigation", "example"),
+    field("footer", "boolean", "تذييل الحساب", "Account footer", "example"),
+    field("longLabels", "boolean", "تسميات طويلة", "Long labels", "example"),
+    { ...mode, api: "collapsed / defaultCollapsed" },
+  ],
+  "line-chart": chartFields,
+  "area-chart": chartFields,
+  "bar-chart": chartFields,
+  "donut-chart": chartFields.filter((f) => f.key !== "grid"),
+  card: [
+    field("title", "text", "العنوان", "Title", "CardTitle.children"),
+    field(
+      "description",
+      "text",
+      "الوصف",
+      "Description",
+      "CardDescription.children",
+    ),
+    field(
+      "actions",
+      "boolean",
+      "زر الملاحظات",
+      "Notes action",
+      "CardFooter.children · example",
+    ),
+  ],
+  accordion: [
+    field("collapsible", "boolean", "السماح بالإغلاق", "Allow collapse"),
+    mode,
+  ],
+  breadcrumbs: [
+    field("label", "text", "اسم المسار", "Path label"),
+    field(
+      "current",
+      "text",
+      "الصفحة الحالية",
+      "Current page",
+      "items · example",
+    ),
+  ],
+  pagination: [
+    field("totalPages", "number", "عدد الصفحات", "Total pages", "totalPages", {
+      min: 1,
+      max: 20,
+    }),
+  ],
+  alert: [
+    field("title", "text", "العنوان", "Title"),
+    field("description", "text", "الوصف", "Description"),
+    field("tone", "select", "النوع", "Tone", "tone", {
+      options: ["neutral", "success", "error", "info", "warning", "ai"],
+    }),
+    field("actionLabel", "text", "زر الإجراء", "Action button", "action"),
+  ],
+  skeleton: [
+    field("shape", "select", "الشكل", "Shape", "shape", {
+      options: ["text", "rectangle", "circle"],
+    }),
+  ],
+  progress: [
+    field("label", "text", "التسمية", "Label"),
+    field("value", "number", "النسبة · %", "Value · %", "value", {
+      min: 0,
+      max: 100,
+    }),
+    field(
+      "indeterminate",
+      "boolean",
+      "نسبة غير معروفة",
+      "Indeterminate",
+      "value=null",
+    ),
+    field("showValue", "boolean", "إظهار النسبة", "Show value"),
+  ],
+  spinner: [
+    field("label", "text", "التسمية", "Label"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+    field("tone", "select", "النوع", "Tone", "tone", {
+      options: ["neutral", "ai"],
+    }),
+    field(
+      "decorative",
+      "boolean",
+      "زخرفي بجانب نص",
+      "Beside announced text",
+      "decorative",
+    ),
+  ],
+  avatar: [
+    field("appearance", "select", "المظهر", "Appearance", "src · example", {
+      options: ["initials", "photo"],
+    }),
+    field(
+      "src",
+      "text",
+      "رابط الصورة · اختياري",
+      "Image URL · optional",
+      "src",
+      {
+        help: [
+          "اتركه فارغًا لتظهر صورة سارة المرفقة.",
+          "Leave blank for the bundled Sara portrait.",
+        ],
+      },
+    ),
+    field("name", "text", "الاسم", "Name"),
+    field("fallback", "text", "الأحرف الأولى", "Initials"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+  ],
+  "avatar-group": [
+    field(
+      "appearance",
+      "select",
+      "المظهر",
+      "Appearance",
+      "members[].src · example",
+      { options: ["initials", "mixed"] },
+    ),
+    field(
+      "maxVisible",
+      "number",
+      "الأعضاء الظاهرون",
+      "Visible members",
+      "maxVisible",
+      { min: 1, max: 5 },
+    ),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+  ],
+  tooltip: [field("content", "text", "التوضيح", "Explanation")],
+  modal: [
+    field("title", "text", "العنوان", "Title"),
+    field("description", "text", "الوصف", "Description"),
+    field("footer", "boolean", "التذييل", "Footer"),
+    mode,
+  ],
+  "empty-state": [
+    field("title", "text", "العنوان", "Title"),
+    field("description", "text", "الوصف", "Description"),
+    field("illustration", "select", "الرسم", "Illustration", "illustration", {
+      options: ["no-records", "no-results", "getting-started", "none"],
+    }),
+    field("actionLabel", "text", "زر الإجراء", "Action button", "action"),
+  ],
+  badge: [
+    field("children", "text", "النص", "Text"),
+    field("tone", "select", "النوع", "Tone", "tone", {
+      options: ["neutral", "success", "error", "info", "warning", "ai"],
+    }),
+  ],
+  checkbox: [
+    field("label", "text", "التسمية", "Label"),
+    field("checked", "boolean", "محدد", "Checked"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
+  "radio-group": [
+    field("label", "text", "التسمية", "Label"),
+    field("options", "collection", "الخيارات", "Options"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+  ],
+  textarea: [
+    field("label", "text", "التسمية", "Label"),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
+    field("rows", "number", "عدد الأسطر", "Rows", "rows", { min: 1, max: 12 }),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+  ],
+  "data-table": [
+    field("caption", "text", "العنوان", "Caption", "caption"),
+    field(
+      "preset",
+      "select",
+      "حالة المثال",
+      "Example state",
+      "application preset",
+      { options: ["populated", "loading", "empty", "no-results", "error"] },
+    ),
+  ],
+  table: [
+    field("caption", "text", "عنوان الجدول", "Caption", "caption"),
+    field("preset", "select", "المحتوى", "Content", "children", {
+      options: ["populated", "empty"],
+    }),
+  ],
+  field: [
+    field("label", "text", "التسمية", "Label"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+  ],
+  input: [
+    field("label", "text", "التسمية", "Label"),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+    field("type", "select", "نوع الإدخال", "Input type", "type", {
+      options: ["text", "email", "password", "search", "tel", "url"],
+    }),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("readOnly", "boolean", "للقراءة فقط", "Read only"),
+    field("helper", "text", "النص المساعد", "Helper text"),
+    field("error", "text", "رسالة الخطأ", "Error message"),
+    field("required", "boolean", "مطلوب", "Required"),
+    mode,
+  ],
+  select: [
+    field("label", "text", "التسمية", "Label"),
+    field("placeholder", "text", "النص الإرشادي", "Placeholder"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("options", "collection", "الخيارات", "Options"),
+    field("required", "boolean", "مطلوب", "Required"),
+    mode,
+  ],
   button: [
     field("children", "text", "التسمية", "Label", "children"),
     field("variant", "select", "النوع", "Variant", "variant", {
@@ -90,7 +762,7 @@ export const fields: Record<ComponentId, Field[]> = {
     field(
       "icon",
       "select",
-      "أيقونة المحتوى",
+      "أيقونة الزر",
       "Content icon",
       "children · preset",
       { advanced: true, options: ["none", "plus", "download", "settings"] },
@@ -98,12 +770,12 @@ export const fields: Record<ComponentId, Field[]> = {
     field(
       "ariaLabel",
       "text",
-      "الاسم المعلن",
+      "الاسم لقارئ الشاشة",
       "Accessible name",
       "aria-label",
       { advanced: true },
     ),
-    field("type", "select", "نوع عنصر HTML", "HTML button type", "type", {
+    field("type", "select", "نوع الزر في HTML", "HTML button type", "type", {
       advanced: true,
       options: ["button", "submit", "reset"],
     }),
@@ -139,7 +811,7 @@ export const fields: Record<ComponentId, Field[]> = {
     field("items", "collection", "محتوى التبويبات", "Tab collection", "items", {
       advanced: true,
       help: [
-        "value، label، content، disabled. يدعم العرض نصوصًا ممثلة لـ ReactNode.",
+        "يقبل كل تبويب: value، label، content، disabled. يمثّل النص هنا أي محتوى ReactNode.",
         "value, label, content, disabled. Text represents ReactNode content.",
       ],
     }),
@@ -162,7 +834,7 @@ export const fields: Record<ComponentId, Field[]> = {
     field("checked", "boolean", "مفعّل", "Checked", "checked / defaultChecked"),
     field("disabled", "boolean", "معطّل", "Disabled"),
     { ...mode, api: "checked / defaultChecked" },
-    field("type", "select", "نوع عنصر HTML", "HTML button type", "type", {
+    field("type", "select", "نوع الزر في HTML", "HTML button type", "type", {
       advanced: true,
       options: ["button", "submit", "reset"],
     }),
@@ -192,7 +864,7 @@ export const fields: Record<ComponentId, Field[]> = {
     field("items", "collection", "عناصر القائمة", "Menu items", "items", {
       advanced: true,
       help: [
-        "id، label، icon، shortcut، disabled، destructive، separatorBefore. كل عنصر يعلن onSelect.",
+        "يقبل كل عنصر: id، label، icon، shortcut، disabled، destructive، separatorBefore. عند اختيار أي عنصر يُستدعى onSelect.",
         "id, label, icon, shortcut, disabled, destructive, separatorBefore. Every item reports onSelect.",
       ],
     }),
@@ -216,7 +888,7 @@ export const fields: Record<ComponentId, Field[]> = {
     field(
       "closeLabel",
       "text",
-      "تسمية الإغلاق",
+      "اسم زر الإغلاق",
       "Close accessible name",
       "closeLabel",
       { advanced: true },
@@ -243,7 +915,7 @@ export const fields: Record<ComponentId, Field[]> = {
     field("title", "text", "عنوان التنبيه", "Toast title"),
     field("description", "text", "وصف التنبيه", "Toast description"),
     field("tone", "select", "نوع التنبيه", "Tone", "toast.tone", {
-      options: ["success", "error", "info"],
+      options: ["success", "error", "info", "warning"],
     }),
     field(
       "duration",
@@ -272,14 +944,68 @@ export const fields: Record<ComponentId, Field[]> = {
     field(
       "closeLabel",
       "text",
-      "تسمية الإغلاق",
+      "اسم زر الإغلاق",
       "Dismiss accessible name",
       "ToastProvider.closeLabel",
       { advanced: true },
     ),
   ],
 };
+// The values the inspector offers for one page's select field. A select with
+// no static list (Tabs' value follows its own items) returns undefined.
+export function selectOptions(
+  component: ComponentId,
+  key: string,
+): readonly string[] | undefined {
+  return fields[component].find((f) => f.kind === "select" && f.key === key)
+    ?.options;
+}
+for (const component of agentPreviewComponents)
+  fields[component].push(
+    field(
+      "agentAppearance",
+      "select",
+      "مظهر المساعد",
+      "Agent appearance",
+      "agentPresentation.avatar",
+      { options: ["icon", "mascot"] },
+    ),
+    field(
+      "agentColor",
+      "color",
+      "لون المساعد",
+      "Agent color",
+      "agentPresentation.color",
+    ),
+  );
+
 export const optionNames: Record<string, Localized> = {
+  icon: ["أيقونة الذكاء الاصطناعي", "AI icon"],
+  mascot: ["خيط", "Khayt"],
+  horizontal: ["أفقي", "Horizontal"],
+  vertical: ["عمودي", "Vertical"],
+  upcoming: ["قادمة", "Upcoming"],
+  current: ["الحالية", "Current"],
+  completed: ["مكتملة", "Completed"],
+  single: ["سلسلة واحدة", "Single series"],
+  multi: ["سلاسل متعددة", "Multiple series"],
+  gaps: ["قيم مفقودة", "Missing values"],
+  point: ["نقطة واحدة", "Single point"],
+  normal: ["اعتيادي", "Normal"],
+  high: ["مرتفع", "High"],
+  near: ["قريب من السعة", "Near capacity"],
+  over: ["تجاوز السعة", "Over capacity"],
+  filling: ["يقترب من الامتلاء", "Filling up"],
+  missing: ["قيم مفقودة", "Missing values"],
+  invalid: ["قيم غير صالحة", "Invalid values"],
+  zero: ["قيم صفرية", "Zero values"],
+  long: ["تسميات طويلة", "Long labels"],
+  initials: ["الأحرف الأولى", "Initials"],
+  photo: ["صورة", "Photo"],
+  mixed: ["صور وأحرف", "Photos and initials"],
+  text: ["نص", "Text"],
+  rectangle: ["مستطيل", "Rectangle"],
+  circle: ["دائرة", "Circle"],
   primary: ["أساسي", "Primary"],
   secondary: ["ثانوي", "Secondary"],
   ghost: ["خفيف", "Ghost"],
@@ -298,8 +1024,8 @@ export const optionNames: Record<string, Localized> = {
   settings: ["إعدادات", "Settings"],
   simulate: ["محاكاة 1.2s", "Simulate 1.2s"],
   log: ["تسجيل الحدث", "Log event"],
-  controlled: ["متحكّم بها", "Controlled"],
-  uncontrolled: ["داخلية", "Uncontrolled"],
+  controlled: ["يديرها تطبيقك", "Controlled"],
+  uncontrolled: ["يديرها المكوّن", "Uncontrolled"],
   underline: ["خط سفلي", "Underline"],
   segment: ["مقسّم", "Segmented"],
   start: ["البداية", "Start"],
@@ -307,7 +1033,17 @@ export const optionNames: Record<string, Localized> = {
   auto: ["بحسب الاتجاه", "Direction default"],
   right: ["اليمين", "Right"],
   left: ["اليسار", "Left"],
+  neutral: ["محايد", "Neutral"],
   info: ["معلومة", "Information"],
+  warning: ["تحذير", "Warning"],
+  ai: ["الذكاء الاصطناعي", "AI"],
+  "no-results": ["لا توجد نتائج مطابقة", "No matching results"],
+  populated: ["مع بيانات", "Populated"],
+  empty: ["فارغ", "Empty"],
+  card: ["بطاقة", "Card"],
+  plain: ["مدمج", "Plain"],
+  capsules: ["كبسولات", "Capsules"],
+  list: ["قائمة متصلة", "Connected list"],
   inherit: ["إعداد النظام", "System setting"],
   light: ["فاتح", "Light"],
   dark: ["داكن", "Dark"],
@@ -315,13 +1051,133 @@ export const optionNames: Record<string, Localized> = {
   blue: ["أزرق", "Blue"],
   plum: ["بنفسجي", "Purple"],
   clay: ["بني", "Brown"],
+  lime: ["ليموني", "Lime"],
+  amber: ["كهرماني", "Amber"],
+  teal: ["فيروزي", "Teal"],
+  cyan: ["سماوي", "Cyan"],
+  indigo: ["نيلي", "Indigo"],
+  rose: ["وردي", "Rose"],
+  slate: ["رمادي", "Slate"],
+  ink: ["حبر", "Ink"],
   button: ["زر", "Button"],
-  submit: ["إرسال نموذج", "Submit"],
-  reset: ["إعادة ضبط نموذج", "Reset"],
+  submit: ["إرسال النموذج", "Submit"],
+  reset: ["إعادة ضبط النموذج", "Reset"],
+  running: ["يعمل", "Running"],
+  failed: ["تعثّر", "Failed"],
+  loaded: ["تم التحميل", "Loaded"],
+  landscape: ["عرضي", "Landscape"],
+  square: ["مربّع", "Square"],
+  portrait: ["طولي", "Portrait"],
+  drive: ["شبكة", "Drive"],
+  dots: ["نقاط", "Dots"],
+  orbit: ["مدار", "Orbit"],
+  all: ["الكل", "All"],
+  guide: ["دليل", "Guide"],
+  note: ["ملاحظة", "Note"],
+  "no-records": ["لا توجد سجلات", "No records"],
+  "getting-started": ["البدء", "Getting started"],
 };
 
 // The complete field catalog remains available to API documentation; the inspector is intentionally small.
 const commonKeys: Record<ComponentId, string[]> = {
+  "task-starter": ["appearance", "disabled"],
+  "cited-answer": ["appearance", "question"],
+  "data-answer": ["appearance"],
+  "agent-task": ["appearance", "autoStart"],
+  "decision-inbox": ["appearance"],
+  "suggested-edits": ["undo"],
+  "image-generation": ["appearance", "knownProgress"],
+  "draft-review": ["appearance", "undo"],
+  "change-summary": ["appearance"],
+  "assistant-controls": ["appearance", "usage"],
+  terminal: ["state", "longContent", "followOutput"],
+  "chat-app": ["longContent"],
+  "ask-user-questions": ["appearance", "longContent"],
+  "approval-card": ["appearance", "longContent"],
+  "approval-flow": ["appearance", "longContent"],
+
+  "selection-actions": ["longContent"],
+  "context-meter": ["preset", "estimated"],
+  "model-selector": ["disabled", "longContent"],
+  "image-result": ["state", "progress", "aspectRatio"],
+  sources: ["defaultExpanded", "longContent"],
+  "insight-cards": ["longContent"],
+  "chat-thread": ["longContent", "followOutput"],
+  "chat-composer": ["disabled", "failSend"],
+  "prompt-bar": ["disabled", "failSend"],
+  "code-block": ["codeLanguage", "longContent"],
+  markdown: ["longContent"],
+  "streaming-text": ["markdown"],
+  "loading-state": ["label", "variant", "elapsed"],
+  "thinking-indicator": ["label", "words", "textOnly"],
+  "thinking-state": ["active", "defaultExpanded"],
+  "tool-call": ["defaultExpanded", "longContent"],
+  "tool-chips": ["counts"],
+  "file-tree": ["mode", "metadata", "empty"],
+  "task-rows": ["appearance", "mode", "empty", "longContent"],
+  "notification-list": ["readControls", "avatars", "empty", "longContent"],
+  steps: ["orientation", "currentState"],
+  timeline: ["descriptions", "icons", "actions", "empty", "longContent"],
+  slider: ["label", "min", "max", "step", "showValue", "disabled"],
+  "otp-input": ["label", "length", "readOnly", "disabled"],
+  "date-picker": ["label", "min", "max", "disabled"],
+  "file-dropzone": ["label", "multiple", "accept", "maxFiles", "disabled"],
+  "color-picker": ["label", "showSwatches", "disabled"],
+  "tag-input": ["label", "helper", "error", "maxTags", "disabled", "readOnly"],
+  "input-copy": ["label", "value", "helper", "error", "disabled"],
+  "filter-bar": ["initialQuery", "initialKind", "clearAll"],
+  sidebar: ["collapsed", "grouped", "nested", "footer", "longLabels", "mode"],
+  "line-chart": ["sample", "legend", "grid"],
+  "area-chart": ["sample", "legend", "grid"],
+  "bar-chart": ["sample", "legend", "grid"],
+  "donut-chart": ["sample", "legend"],
+  card: ["title", "description", "actions"],
+  accordion: ["collapsible", "mode"],
+  breadcrumbs: ["label", "current"],
+  pagination: ["totalPages"],
+  alert: ["title", "description", "tone", "actionLabel"],
+  skeleton: ["shape"],
+  progress: ["label", "value", "indeterminate", "showValue"],
+  spinner: ["label", "size", "tone", "decorative"],
+  avatar: ["appearance", "src", "name", "fallback", "size"],
+  "avatar-group": ["appearance", "maxVisible", "size"],
+  tooltip: ["content"],
+  modal: ["title", "description", "footer"],
+  "empty-state": ["title", "description", "illustration", "actionLabel"],
+  badge: ["children", "tone"],
+  checkbox: ["label", "checked", "helper", "error", "required", "disabled"],
+  "radio-group": [
+    "label",
+    "options",
+    "helper",
+    "error",
+    "required",
+    "disabled",
+  ],
+  textarea: [
+    "label",
+    "placeholder",
+    "rows",
+    "helper",
+    "error",
+    "required",
+    "disabled",
+    "readOnly",
+  ],
+  "data-table": ["caption", "preset"],
+  table: ["caption", "preset"],
+  field: ["label", "helper", "error", "required"],
+  input: [
+    "label",
+    "placeholder",
+    "helper",
+    "error",
+    "required",
+    "size",
+    "disabled",
+    "readOnly",
+  ],
+  select: ["placeholder", "size", "disabled", "options"],
   button: ["children", "variant", "size", "state", "icon", "iconOnly"],
   tabs: ["variant", "value"],
   switch: ["label", "checked", "disabled"],
@@ -329,6 +1185,9 @@ const commonKeys: Record<ComponentId, string[]> = {
   sheet: ["title", "children", "side"],
   toast: ["title", "description", "tone", "duration"],
 };
+for (const component of agentPreviewComponents)
+  commonKeys[component].push("agentAppearance", "agentColor");
+
 export const commonFields = Object.fromEntries(
   Object.entries(commonKeys).map(([component, keys]) => [
     component,
@@ -336,7 +1195,7 @@ export const commonFields = Object.fromEntries(
       fields[component as ComponentId].find((field) => field.key === key)!,
     ),
   ]),
-) as Record<ComponentId, Field[]>;
+) as Record<ComponentId, WorkbenchField[]>;
 
 const shortTitles: Record<string, Localized> = {
   children: ["التسمية", "Label"],
@@ -354,7 +1213,11 @@ for (const component of Object.keys(commonFields) as ComponentId[])
   commonFields[component] = commonFields[component].map((f) => ({
     ...f,
     title:
-      component === "sheet" && f.key === "children"
-        ? ["المحتوى", "Content"]
-        : (shortTitles[f.key] ?? f.title),
+      component === "input-copy" && f.key === "value"
+        ? ["القيمة", "Value"]
+        : component === "progress" && f.key === "value"
+          ? ["النسبة · %", "Value · %"]
+          : component === "sheet" && f.key === "children"
+            ? ["المحتوى", "Content"]
+            : (shortTitles[f.key] ?? f.title),
   }));

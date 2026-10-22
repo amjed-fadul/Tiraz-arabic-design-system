@@ -1,19 +1,28 @@
+import { agentSwatches } from "../mascot/agent-swatches";
 import { useId, useState } from "react";
 import { RotateCcw } from "lucide-react";
-import { Switch } from "../system";
+import {
+  Button,
+  ColorPicker,
+  Input,
+  Select,
+  Switch,
+  Textarea,
+} from "../system";
 import type { ComponentId } from "./catalog";
 import { commonFields, optionNames } from "./fields";
-import type { Field } from "./fields";
+import type { WorkbenchField } from "./fields";
 import { localize, label } from "./i18n";
 import type { Language } from "./i18n";
 import { validateCollection } from "./model";
 import type { PlaygroundModel, TabRecord } from "./model";
+import { Segmented } from "./Segmented";
 interface Props {
   component: ComponentId;
+  /** The page's name, for the section's heading. */
+  name: string;
   model: PlaygroundModel;
   language: Language;
-  open: boolean;
-  onOpenChange: (value: boolean) => void;
   onPatch: (patch: Record<string, unknown>) => void;
   onReset: () => void;
 }
@@ -23,18 +32,32 @@ function CollectionEditor({
   language,
   onChange,
 }: {
-  field: Field;
+  field: WorkbenchField;
   value: unknown;
   language: Language;
   onChange: (value: unknown) => void;
 }) {
   const uid = useId(),
-    [draft, setDraft] = useState(JSON.stringify(value, null, 2)),
+    source = JSON.stringify(value, null, 2),
+    [savedSource, setSavedSource] = useState(source),
+    [draft, setDraft] = useState(source),
     [error, setError] = useState(false);
+  // Refresh a changed model without remounting the focused Apply button.
+  if (savedSource !== source) {
+    setSavedSource(source);
+    setDraft(source);
+    setError(false);
+  }
   function apply() {
     try {
       const parsed: unknown = JSON.parse(draft);
-      if (!validateCollection("dropdown", parsed)) throw Error();
+      if (
+        !validateCollection(
+          field.key === "options" ? "select" : "dropdown",
+          parsed,
+        )
+      )
+        throw Error();
       onChange(parsed);
       setError(false);
     } catch {
@@ -42,21 +65,23 @@ function CollectionEditor({
     }
   }
   return (
-    <div className="inspector-field collection-field">
+    <div className="settings-field collection-field">
       <label htmlFor={uid}>{localize(field.title, language)}</label>
-      <textarea
+      <Textarea
         id={uid}
         rows={4}
         dir="ltr"
         value={draft}
         onChange={(e) => setDraft(e.target.value)}
         spellCheck={false}
+        invalid={error}
+        aria-describedby={error ? `${uid}-error` : undefined}
       />
-      <button type="button" className="doc-button" onClick={apply}>
+      <Button variant="ghost" className="settings-action" onClick={apply}>
         {label("apply", language)}
-      </button>
+      </Button>
       {error && (
-        <p role="alert" className="field-error">
+        <p id={`${uid}-error`} role="alert" className="tz-field-error">
           {label("invalid", language)}
         </p>
       )}
@@ -70,7 +95,7 @@ function Control({
   language,
   onPatch,
 }: {
-  field: Field;
+  field: WorkbenchField;
   model: PlaygroundModel;
   component: ComponentId;
   language: Language;
@@ -91,10 +116,19 @@ function Control({
       });
     else onPatch({ [field.key]: next });
   }
+  if (field.kind === "color")
+    return (
+      <ColorPicker
+        label={caption}
+        value={String(value)}
+        onValueChange={patch}
+        swatches={agentSwatches(language === "ar")}
+        announcement="off"
+      />
+    );
   if (field.kind === "collection")
     return (
       <CollectionEditor
-        key={JSON.stringify(value)}
         field={field}
         value={value}
         language={language}
@@ -103,108 +137,151 @@ function Control({
     );
   if (field.kind === "boolean")
     return (
-      <div className="inspector-field boolean-field">
-        <Switch
-          label={caption}
-          checked={Boolean(value)}
-          onCheckedChange={patch}
+      <Switch
+        label={caption}
+        checked={Boolean(value)}
+        onCheckedChange={patch}
+      />
+    );
+  if (field.kind === "select") {
+    let values = field.options ?? [];
+    if (component === "button" && field.key === "state")
+      values = [...values, "disabled"];
+    if (component === "tabs" && field.key === "value")
+      values = (record.items as TabRecord[])
+        .filter((item) => !item.disabled)
+        .map((item) => item.value);
+    const options = values.map((option) => ({
+      value: option,
+      text:
+        (field.key === "value"
+          ? (record.items as TabRecord[]).find((item) => item.value === option)
+              ?.label
+          : optionNames[option] && localize(optionNames[option], language)) ??
+        option,
+    }));
+    // Up to three options fit a segmented control; more take the Select.
+    return options.length <= 3 ? (
+      <Segmented
+        label={caption}
+        options={options}
+        value={String(value)}
+        onChange={patch}
+      />
+    ) : (
+      <div className="settings-field">
+        <label htmlFor={uid}>{caption}</label>
+        <Select
+          id={uid}
+          options={options.map((option) => ({
+            value: option.value,
+            label: option.text,
+          }))}
+          value={String(value)}
+          onValueChange={patch}
         />
       </div>
     );
-  let options = field.options ?? [];
-  if (component === "button" && field.key === "state")
-    options = [...options, "disabled"];
-  if (component === "tabs" && field.key === "value")
-    options = (record.items as TabRecord[])
-      .filter((item) => !item.disabled)
-      .map((item) => item.value);
-  return (
-    <div className="inspector-field">
-      <label htmlFor={uid}>{caption}</label>
-      {field.kind === "select" ? (
-        <select
-          id={uid}
-          value={String(value)}
-          onChange={(e) => patch(e.target.value)}
-        >
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {field.key === "value"
-                ? (record.items as TabRecord[]).find(
-                    (item) => item.value === option,
-                  )?.label
-                : optionNames[option]
-                  ? localize(optionNames[option], language)
-                  : option}
-            </option>
-          ))}
-        </select>
-      ) : (
+  }
+  if (field.kind === "number")
+    return (
+      <div className="settings-field">
+        <label htmlFor={uid}>{caption}</label>
+        {/* Tiraz Input is text entry; preserve native number/step semantics. */}
         <input
           id={uid}
+          className="tz-input"
+          data-size="sm"
           dir="auto"
-          type={field.kind === "number" ? "number" : "text"}
+          type="number"
           min={field.min}
           max={field.max}
           value={String(value ?? "")}
           onChange={(e) => {
-            if (field.kind === "number") {
-              if (!e.target.value) return;
-              const n = Number(e.target.value);
-              if (Number.isFinite(n))
-                patch(
-                  Math.max(
-                    field.min ?? -Infinity,
-                    Math.min(field.max ?? Infinity, n),
-                  ),
-                );
-            } else patch(e.target.value);
+            if (!e.target.value) return;
+            const n = Number(e.target.value);
+            if (Number.isFinite(n))
+              patch(
+                Math.max(
+                  field.min ?? -Infinity,
+                  Math.min(field.max ?? Infinity, n),
+                ),
+              );
           }}
         />
-      )}
+      </div>
+    );
+  return (
+    <div className="settings-field">
+      <label htmlFor={uid}>{caption}</label>
+      <Input
+        id={uid}
+        dir="auto"
+        value={String(value ?? "")}
+        onChange={(e) => patch(e.target.value)}
+      />
     </div>
   );
 }
+/** The page's properties: its own section, hidden on a page with none. */
 export function Inspector({
   component,
+  name,
   model,
   language,
-  open,
-  onOpenChange,
   onPatch,
   onReset,
 }: Props) {
+  const id = useId();
+  const [resetRevision, setResetRevision] = useState(0);
+  const shown = commonFields[component].filter(
+    (field) =>
+      !(
+        field.key === "agentColor" &&
+        (model as unknown as { agentAppearance?: string }).agentAppearance !==
+          "mascot"
+      ) &&
+      !(
+        component === "avatar" &&
+        field.key === "src" &&
+        (model as unknown as { appearance: string }).appearance !== "photo"
+      ) &&
+      !(
+        component === "progress" &&
+        field.key === "value" &&
+        (model as unknown as { indeterminate: boolean }).indeterminate
+      ),
+  );
+  if (shown.length === 0) return null;
   return (
-    <details
-      className="playground-inspector"
-      open={open}
-      onToggle={(e) => onOpenChange(e.currentTarget.open)}
-    >
-      <summary>{label("properties", language)}</summary>
-      <div className="inspector-scroll">
-        <div className="inspector-scope">
-          <p>{label("previewOnly", language)}</p>
-          <button
-            type="button"
-            className="doc-icon-button"
-            title={label("resetPlayground", language)}
-            aria-label={label("resetPlayground", language)}
-            onClick={onReset}
-          >
-            <RotateCcw size={13} />
-          </button>
-        </div>
-        {commonFields[component].map((field) => (
-          <Control
-            key={field.key}
-            field={field}
-            model={model}
-            component={component}
-            language={language}
-            onPatch={onPatch}
-          />
-        ))}
+    <section className="settings-section" aria-labelledby={id}>
+      <div className="settings-section-head">
+        <h3 id={id}>
+          {language === "ar" ? `خصائص ${name}` : `${name} properties`}
+        </h3>
+        <Button
+          variant="ghost"
+          className="settings-action"
+          aria-label={label("resetPlayground", language)}
+          onClick={() => {
+            setResetRevision((revision) => revision + 1);
+            onReset();
+          }}
+        >
+          <RotateCcw size={14} aria-hidden="true" />
+          {label("reset", language)}
+        </Button>
       </div>
-    </details>
+      {shown.map((field) => (
+        <Control
+          key={`${field.key}-${resetRevision}`}
+          field={field}
+          model={model}
+          component={component}
+          language={language}
+          onPatch={onPatch}
+        />
+      ))}
+    </section>
   );
 }

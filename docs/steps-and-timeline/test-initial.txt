@@ -1,0 +1,113 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+ ❯ src/workbench/generated-code.test.ts (1 test | 1 failed) 23065ms
+   × type-checks copied code for every component, state mode and composition preset 23063ms
+ ❯ src/workbench/labeled-input-page.test.tsx (6 tests | 1 failed) 11623ms
+   × makes Input the complete entry page while retaining Field in its API disclosure 5356ms
+node:internal/modules/cjs/loader:1520
+  throw err;
+  ^
+
+Error: Cannot find module '../system/ai/examples/StepsExamples.tsx?raw'
+Require stack:
+- /private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/src/workbench/generate.js
+- /private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/[eval]
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
+    at Module._load (node:internal/modules/cjs/loader:1294:5)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1617:12)
+    at require (node:internal/modules/helpers:153:16)
+    at Object.<anonymous> (/private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/src/workbench/generate.js:8:49)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/src/workbench/generate.js',
+    '/private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/[eval]'
+  ]
+}
+
+Node.js v24.19.0
+ ❯ src/workbench/generate-prompts.test.ts (87 tests | 1 failed) 280ms
+   × generates identical prompts when the same checkout is relocated 257ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/generate-prompts.test.ts > generates identical prompts when the same checkout is relocated
+Error: Command failed: /Users/amjedfadul/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node -e const {generatePrompt}=require('./src/workbench/generate.js');const {catalog}=require('./src/workbench/catalog.js');const {defaultPlaygrounds}=require('./src/workbench/model.js');const {defaultConfig}=require('./src/system/config.js');console.log(JSON.stringify(['ar','en'].flatMap(language=>catalog.map(entry=>generatePrompt(entry.id,defaultPlaygrounds(language)[entry.id],defaultConfig,language)))));
+node:internal/modules/cjs/loader:1520
+  throw err;
+  ^
+
+Error: Cannot find module '../system/ai/examples/StepsExamples.tsx?raw'
+Require stack:
+- /private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/src/workbench/generate.js
+- /private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/[eval]
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
+    at Module._load (node:internal/modules/cjs/loader:1294:5)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    at Module.require (node:internal/modules/cjs/loader:1617:12)
+    at require (node:internal/modules/helpers:153:16)
+    at Object.<anonymous> (/private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/src/workbench/generate.js:8:49)
+    at Module._compile (node:internal/modules/cjs/loader:1872:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/src/workbench/generate.js',
+    '/private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/[eval]'
+  ]
+}
+
+Node.js v24.19.0
+
+ ❯ Object.<anonymous> ../../../../../../private/var/folders/wk/dcql9dfd74l1ktt20q5rvln40000gn/T/tiraz-prompt-relocation-UQNTih/original-checkout/src/workbench/generate.js:8:49
+ ❯ src/workbench/generate-prompts.test.ts:123:22
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/workbench/generated-code.test.ts > type-checks copied code for every component, state mode and composition preset
+Error: Test timed out in 15000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-code.test.ts:10:1
+      8| import type { ComponentId } from "./catalog";
+      9| import { generateCode } from "./generate";
+     10| it("type-checks copied code for every component, state mode and compos…
+       | ^
+     11|   const cases: Array<[ComponentId, PlaygroundModel, SystemConfig?]> = …
+     12|   for (const language of ["ar", "en"] as const) {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/workbench/labeled-input-page.test.tsx > makes Input the complete entry page while retaining Field in its API disclosure
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/labeled-input-page.test.tsx:37:1
+     35|   });
+     36| });
+     37| it("makes Input the complete entry page while retaining Field in its A…
+       | ^
+     38|   persist(storageKeys.documentation, { language: "en", active: "input"…
+     39|   render(<Workbench />);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  3 failed | 52 passed (55)
+      Tests  3 failed | 473 passed (476)
+   Start at  15:33:25
+   Duration  350.90s (import 44%, tests 37%, environment 13%, transform 3%, setup 2%)
+
+     Import  196 modules were evaluated 3586 times · 150.40s total, 44% of tracked time
+             ~142.18s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation
+

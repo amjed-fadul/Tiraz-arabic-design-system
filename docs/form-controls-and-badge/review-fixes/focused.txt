@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/form-controls.test.tsx src/workbench/form-controls-pages.test.tsx src/workbench/generated-code.test.ts src/system/ai-registry.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+
+ Test Files  4 passed (4)
+      Tests  19 passed (19)
+   Start at  20:18:36
+   Duration  4.99s (tests 50%, environment 30%, import 8%, transform 7%, setup 5%)

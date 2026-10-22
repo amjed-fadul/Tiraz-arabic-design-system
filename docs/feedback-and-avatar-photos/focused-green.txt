@@ -1,0 +1,15 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/feedback.test.tsx src/workbench/feedback-photos-pages.test.tsx src/workbench/generated-batch.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/feedback-and-avatar-photos/Tiraz
+
+
+ Test Files  3 passed (3)
+      Tests  29 passed (29)
+   Start at  23:32:51
+   Duration  3.41s (tests 37%, environment 33%, import 13%, transform 10%, setup 6%)
+
+    Isolate  3 workers spawned · ~722ms startup each (spawn + environment, per file)
+             at least ~361ms faster with isolate: false — reuses workers across files instead of one per file

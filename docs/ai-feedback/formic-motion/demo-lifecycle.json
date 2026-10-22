@@ -1,0 +1,40 @@
+{
+  "demoStart": {
+    "events": ["Demo: preparing sample"],
+    "time": "0.2s"
+  },
+  "demoTick": {
+    "events": ["Demo: preparing sample"],
+    "time": "0.7s"
+  },
+  "replayDuring": {
+    "status": [
+      "Loading notes Notes will appear here when available.",
+      "Loading local sample",
+      "Preparing reply",
+      "Preparing summary",
+      "Demo: arranging sample"
+    ]
+  },
+  "cancelled": {
+    "focus": "Cancel demo",
+    "status": [
+      "Loading notes Notes will appear here when available.",
+      "Loading local sample",
+      "Preparing reply",
+      "Preparing summary",
+      "Demo cancelled"
+    ]
+  },
+  "remounted": {
+    "ariaHidden": "true",
+    "inert": "",
+    "status": [
+      "Loading notes Notes will appear here when available.",
+      "Loading local sample",
+      "Preparing reply",
+      "Preparing summary",
+      "Demo ready"
+    ]
+  }
+}

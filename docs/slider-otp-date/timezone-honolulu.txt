@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/slider-otp-date.test.tsx -t round-trips|rejects
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/slider-otp-date/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  9 passed | 8 skipped (17)
+   Start at  23:28:06
+   Duration  3.29s (import 75%, environment 18%, transform 4%, setup 2%)

@@ -1,3 +1,4 @@
+import { agentPreviewComponents } from "./agent-preview";
 import * as ts from "typescript";
 import { expect, it } from "vitest";
 import { defaultConfig } from "../system";
@@ -14,6 +15,162 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const id of agentPreviewComponents)
+    cases.push([id, { ...p[id], agentAppearance: "icon" }]);
+  for (const state of ["loading", "loaded", "error"] as const)
+    for (const aspectRatio of ["landscape", "square", "portrait"] as const)
+      cases.push(["image-result", { state, aspectRatio, progress: 42 }]);
+  cases.push(
+    ["sources", { defaultExpanded: true, longContent: true }],
+    ["insight-cards", { longContent: true }],
+  );
+  cases.push(
+    ["tool-call", { defaultExpanded: true, longContent: true }],
+    ["tool-chips", { counts: false }],
+  );
+  for (const variant of ["drive", "dots", "orbit"] as const)
+    cases.push([
+      "loading-state",
+      { ...p["loading-state"], variant, elapsed: variant !== "dots" },
+    ]);
+  for (const words of [false, true])
+    for (const textOnly of [false, true])
+      cases.push([
+        "thinking-indicator",
+        { ...p["thinking-indicator"], words, textOnly },
+      ]);
+  cases.push(
+    [
+      "loading-state",
+      {
+        ...p["loading-state"],
+        indicator: "skeleton",
+        description: false,
+        label: 'ملاحظات / Notes "DEMO-42"',
+      },
+    ],
+    [
+      "thinking-indicator",
+      { ...p["thinking-indicator"], label: 'إعداد / Preparing "DEMO-42"' },
+    ],
+    ["thinking-state", { active: false, defaultExpanded: true }],
+  );
+  for (const mode of ["controlled", "uncontrolled"] as const)
+    cases.push([
+      "file-tree",
+      { ...p["file-tree"], mode, empty: true, metadata: false },
+    ]);
+  for (const appearance of ["capsules", "list"] as const)
+    for (const mode of ["controlled", "uncontrolled"] as const)
+      cases.push([
+        "task-rows",
+        { ...p["task-rows"], appearance, mode, longContent: true },
+      ]);
+
+  cases.push(
+    [
+      "task-rows",
+      {
+        ...p["task-rows"],
+        appearance: "list",
+        mode: "controlled",
+        empty: true,
+        longContent: true,
+      },
+    ],
+    [
+      "notification-list",
+      {
+        ...p["notification-list"],
+        avatars: false,
+        readControls: false,
+        empty: true,
+        longContent: true,
+      },
+    ],
+  );
+  for (const orientation of ["horizontal", "vertical"] as const)
+    for (const currentState of [
+      "upcoming",
+      "current",
+      "completed",
+      "error",
+    ] as const)
+      cases.push(["steps", { ...p.steps, orientation, currentState }]);
+  cases.push([
+    "timeline",
+    {
+      ...p.timeline,
+      empty: true,
+      longContent: true,
+      actions: false,
+      icons: false,
+      descriptions: false,
+    },
+  ]);
+
+  for (const mode of ["controlled", "uncontrolled"] as const) {
+    cases.push([
+      "tag-input",
+      {
+        ...p["tag-input"],
+        mode,
+        maxTags: 0,
+        disabled: true,
+        readOnly: true,
+        error: "Application error",
+      },
+    ]);
+  }
+  cases.push(
+    [
+      "input-copy",
+      {
+        ...p["input-copy"],
+        disabled: true,
+        error: "Application error",
+        value: "Long value",
+      },
+    ],
+    [
+      "filter-bar",
+      {
+        ...p["filter-bar"],
+        initialKind: "note",
+        initialQuery: "Design",
+        clearAll: false,
+      },
+    ],
+  );
+  for (const mode of ["controlled", "uncontrolled"] as const)
+    for (const collapsed of [false, true])
+      cases.push([
+        "sidebar",
+        {
+          ...p.sidebar,
+          mode,
+          collapsed,
+          grouped: false,
+          nested: false,
+          footer: false,
+          longLabels: true,
+        },
+      ]);
+  for (const id of [
+    "line-chart",
+    "area-chart",
+    "bar-chart",
+    "donut-chart",
+  ] as const)
+    for (const sample of [
+      "single",
+      "gaps",
+      "point",
+      "zero",
+      "empty",
+      "long",
+    ] as const)
+      cases.push([id, { ...p[id], sample, legend: false, grid: false }]);
   for (const variant of [
     "primary",
     "secondary",
@@ -78,12 +235,194 @@ it("type-checks copied code for every component, state mode and composition pres
     ["sheet", { ...p.sheet, mode: "uncontrolled" }],
     ["sheet", { ...p.sheet, footer: false, side: "left" }],
   );
+  for (const type of [
+    "text",
+    "email",
+    "password",
+    "search",
+    "tel",
+    "url",
+  ] as const)
+    for (const mode of ["controlled", "uncontrolled"] as const) {
+      cases.push([
+        "input",
+        {
+          ...p.input,
+          type,
+          mode,
+          readOnly: true,
+          required: true,
+          error: "Correct this",
+        },
+      ]);
+      cases.push([
+        "select",
+        { ...p.select, mode, required: true, value: "active", disabled: true },
+      ]);
+    }
+  cases.push(
+    ["table", { ...p.table, preset: "empty" }],
+    ["table", { ...p.table, caption: "" }],
+  );
+  for (const mode of ["controlled", "uncontrolled"] as const) {
+    cases.push([
+      "checkbox",
+      { ...p.checkbox, mode, required: true, disabled: true, error: "Confirm" },
+    ]);
+    cases.push([
+      "radio-group",
+      { ...p["radio-group"], mode, required: true, error: "Choose one" },
+    ]);
+    cases.push([
+      "textarea",
+      { ...p.textarea, mode, rows: 5, readOnly: true, error: "Add details" },
+    ]);
+  }
+  cases.push([
+    "field",
+    { ...p.field, error: "Application error", required: true },
+  ]);
+  for (const mode of ["controlled", "uncontrolled"] as const)
+    for (const collapsible of [false, true])
+      cases.push(["accordion", { ...p.accordion, mode, collapsible }]);
+  cases.push(["card", { ...p.card, actions: false, description: "" }]);
+  for (const page of [1, 4, 10, 20])
+    cases.push(["pagination", { page, totalPages: 20 }]);
+  cases.push(["breadcrumbs", { label: "Page path", current: "DOC-24 / دليل" }]);
+  cases.push(["modal", { ...p.modal, mode: "uncontrolled", footer: false }]);
+  for (const illustration of [
+    "no-records",
+    "no-results",
+    "getting-started",
+    "none",
+  ] as const)
+    cases.push(["empty-state", { ...p["empty-state"], illustration }]);
+  cases.push(
+    ["avatar", { ...p.avatar, size: "md" }],
+    ["avatar-group", { ...p["avatar-group"], maxVisible: 1, size: "md" }],
+  );
+  for (const appearance of ["initials", "photo"] as const)
+    for (const src of ["", "/local-custom.jpg"])
+      cases.push(["avatar", { ...p.avatar, appearance, src }]);
+  cases.push([
+    "avatar-group",
+    { ...p["avatar-group"], appearance: "initials" },
+  ]);
+  for (const tone of ["neutral", "success", "error", "info"] as const)
+    cases.push(["alert", { ...p.alert, tone, description: "" }]);
+  for (const shape of ["text", "rectangle", "circle"] as const)
+    cases.push(["skeleton", { shape }]);
+  for (const value of [0, 100, -20, 120])
+    for (const indeterminate of [true, false])
+      cases.push([
+        "progress",
+        { ...p.progress, value, indeterminate, showValue: false },
+      ]);
+  cases.push(["spinner", { ...p.spinner, decorative: true, size: "md" }]);
+  for (const id of [
+    "button",
+    "progress",
+    "pagination",
+    "date-picker",
+    "steps",
+    "bar-chart",
+  ] as const)
+    cases.push([id, p[id], { ...defaultConfig, numerals: "latn" }]);
   const root = ts.sys.getCurrentDirectory();
   const sources = new Map(
     cases.map(([id, model, config], index) => [
       `${root}/src/__generated_${index}.tsx`,
       generateCode(id, model, config ?? defaultConfig, "en"),
     ]),
+  );
+  for (const language of ["ar", "en"] as const)
+    for (const preset of [
+      "populated",
+      "loading",
+      "empty",
+      "no-results",
+      "error",
+    ] as const)
+      sources.set(
+        `${root}/src/__generated_datatable_${language}_${preset}.tsx`,
+        generateCode(
+          "data-table",
+          {
+            ...defaultPlaygrounds(language)["data-table"],
+            preset,
+            caption: "",
+          },
+          { ...defaultConfig, direction: language === "ar" ? "rtl" : "ltr" },
+          language,
+        ),
+      );
+  sources.set(
+    `${root}/src/__generated_entries_contract.tsx`,
+    `
+    import { Field, TagInput, InputCopy, FilterBar } from "./system";
+    <TagInput label="Tags" defaultValue={["One"]}/>;
+    <Field label="Tags">{field => <TagInput field={field}/>}</Field>;
+    <InputCopy label="Path" value="src/system"/>;
+    <Field label="Path">{field => <InputCopy field={field} value="src/system"/>}</Field>;
+    <FilterBar label="Filters" filters={[{id:"one",label:"One",removeLabel:"Remove one",onRemove:()=>{}}]}/>;
+    // @ts-expect-error mutually exclusive naming modes
+    <TagInput label="Tags" field={{id:"x","aria-labelledby":"y"}}/>;
+    // @ts-expect-error no native required tag validation
+    <TagInput label="Tags" required/>;
+    // @ts-expect-error value is an array
+    <TagInput label="Tags" value="One"/>;
+    // @ts-expect-error underlying copy value is required
+    <InputCopy label="Path"/>;
+    // @ts-expect-error helper requires labeled convenience mode
+    <InputCopy helper="Help" value="Path"/>;
+    // @ts-expect-error filter remove action needs accessible name
+    <FilterBar label="Filters" filters={[{id:"one",label:"One",onRemove:()=>{}}]}/>;
+  `,
+  );
+  sources.set(
+    `${root}/src/__generated_input_contract.tsx`,
+    `
+    import { Input, Field } from "./system";
+    import type { FieldControlProps } from "./system";
+    const field: FieldControlProps = { id: "composed", "aria-labelledby": "composed-label" };
+    <Input label="Name" helper="Help" error="Error" required />;
+    <Input aria-label="Native" />;
+    <Field label="Composed">{field => <Input field={field} />}</Field>;
+    // @ts-expect-error convenience mode cannot also receive Field composition
+    <Input label="Duplicate" field={field} />;
+    // @ts-expect-error helper only accompanies labeled mode
+    <Input helper="Orphan help" />;
+    // @ts-expect-error error only accompanies labeled mode
+    <Input field={field} error="Duplicate error" />;
+  `,
+  );
+  sources.set(
+    `${root}/src/__generated_spinner_contract.tsx`,
+    `
+    import { Spinner } from "./system";
+    <Spinner label="Loading"/>;
+    <Spinner decorative/>;
+    // @ts-expect-error named mode requires label
+    <Spinner/>;
+    // @ts-expect-error decorative mode uses the adjacent host announcement
+    <Spinner decorative label="Duplicate"/>;
+  `,
+  );
+  sources.set(
+    `${root}/src/__generated_taskrows_contract.tsx`,
+    `
+    import { TaskRows } from "./system";
+    import type { TaskRowItem, TaskState } from "./system";
+    const state: TaskState = "failed";
+    const item: TaskRowItem = {id:"sample",title:"Sample",state,content:<button>Retry locally</button>};
+    <TaskRows label="Tasks" items={[item]} appearance="list" expandedIds={["sample"]} onExpandedChange={ids => console.log(ids)} />;
+    // @ts-expect-error old checklist item fields are not supported
+    <TaskRows label="Tasks" items={[{id:"sample",label:"Old",completed:true}]} />;
+    // @ts-expect-error no manual completion callback
+    <TaskRows label="Tasks" items={[item]} onCompletedChange={() => {}} />;
+    // @ts-expect-error no automatic execution state
+    <TaskRows label="Tasks" items={[{...item,state:"idle"}]} />;
+  `,
   );
   const options: ts.CompilerOptions = {
     target: ts.ScriptTarget.ES2023,
@@ -115,4 +454,33 @@ it("type-checks copied code for every component, state mode and composition pres
         `${d.file?.fileName}: ${ts.flattenDiagnosticMessageText(d.messageText, " ")}`,
     );
   expect(diagnostics).toEqual([]);
-}, 15000);
+}, 45000);
+it("emits the numerals setting in generated examples", () => {
+  const config = { ...defaultConfig, numerals: "latn" as const };
+  const p = defaultPlaygrounds("ar");
+  // Explicit config literal (button) and spread config (other components).
+  expect(generateCode("button", p.button, config, "ar")).toContain(
+    'numerals: "latn"',
+  );
+  for (const id of ["pagination", "progress", "date-picker"] as const)
+    expect(generateCode(id, p[id], config, "ar")).toContain(
+      '"numerals":"latn"',
+    );
+  expect(generateCode("button", p.button, defaultConfig, "ar")).toContain(
+    'numerals: "arab"',
+  );
+});
+it("formats the Arabic AvatarGroup overflow count through numberLocale", () => {
+  const code = (language: "ar" | "en") =>
+    generateCode(
+      "avatar-group",
+      defaultPlaygrounds(language)["avatar-group"],
+      defaultConfig,
+      language,
+    );
+  // A raw ${count} in Arabic copy prints Western digits whatever `numerals` says.
+  expect(code("ar")).toContain("numberLocale");
+  expect(code("ar")).not.toMatch(/\$\{count\} أعضاء آخرون/);
+  // English copy keeps its plain count.
+  expect(code("en")).toContain("${count} more members");
+});

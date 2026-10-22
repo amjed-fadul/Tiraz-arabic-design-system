@@ -1,0 +1,10 @@
+{
+  "method": "Actual local browser Page.startScreencast JPEG frames, ordered by browser timestamp and deduplicated before encoding; no animation was synthesized.",
+  "framesReceived": 862,
+  "uniqueFrames": 862,
+  "cycleSeconds": 1.62,
+  "cycles": 6,
+  "encoding": "H.264 MP4 at 50 fps; GIF preview at 25 fps. Trimmed to six complete 1.62-second cycles for a continuous preview loop.",
+  "capturedSeconds": 9.9917471408844,
+  "seconds": 9.72
+}

@@ -1,0 +1,128 @@
+/* Team and AI settings (example-screens spec §3.9). Every rule names .team-settings. */
+
+/* A centred 64rem column: the header, the tabs and each tab's content span it. */
+.team-settings {
+  max-inline-size: 64rem;
+  min-inline-size: 0;
+  margin-inline: auto;
+}
+.team-settings-panel {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+  padding-block-start: var(--space-6);
+}
+
+/* The team: its heading at the start, and the seats beside «دعوة عضو» at the
+   end. The heading takes focus once a member has been removed, so it shows a
+   ring for the keyboard, hugging its text. */
+.team-settings-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+}
+.team-settings-title {
+  margin: 0;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.team-settings-title:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-small);
+}
+.team-settings-invite {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.team-settings-seats {
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* The table's caption names it for assistive technology; the heading above
+   already names it for everyone else. Its cells centre on the avatar. */
+.team-settings .tz-table caption {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.team-settings .tz-table :where(th, td) {
+  vertical-align: middle;
+}
+/* The actions take only what a button needs, so they sit at the table's end
+   and the three columns before them share the rest. */
+.team-settings .tz-table th:last-child {
+  inline-size: 6rem;
+}
+.team-settings-member {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.team-settings-who {
+  display: grid;
+  min-inline-size: 0;
+}
+.team-settings-name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+}
+.team-settings-email {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-meta);
+  overflow-wrap: anywhere;
+}
+
+/* Phones: the table fits its box rather than scrolling, so a row's button
+   stays in view. «آخر نشاط», the one secondary column, leaves, and the others
+   take what is left. */
+@container screen (width < 640px) {
+  .team-settings .tz-table {
+    min-inline-size: 0;
+  }
+  .team-settings .tz-table :where(th, td) {
+    padding-inline: var(--space-3);
+  }
+  .team-settings .tz-table :is(th, td):nth-child(3) {
+    display: none;
+  }
+  .team-settings .tz-table th:first-child {
+    inline-size: 55%;
+  }
+  .team-settings .tz-table th:last-child {
+    inline-size: 4.5rem;
+  }
+}
+
+/* The assistant's card spans the column instead of stopping at its 40rem cap,
+   which would leave it hugging one edge. */
+.team-settings .tz-assistant-controls[data-appearance="card"] {
+  max-inline-size: none;
+}
+
+/* The invitation, in a Modal that the system portals out of the column. The
+   email keeps its left-to-right letters but sits at the field's start in an
+   Arabic page. */
+.team-settings-form {
+  display: grid;
+  gap: var(--space-4);
+}
+.team-settings-form:dir(rtl) .tz-input[dir="ltr"] {
+  text-align: end;
+}

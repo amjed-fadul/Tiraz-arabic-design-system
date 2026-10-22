@@ -1,0 +1,34 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/data-table.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/data-table-v1/Tiraz
+
+ ❯ src/system/data-table.test.tsx (2 tests | 2 failed) 18ms
+   × sorts naturally in both directions without mutating data and retains row identity and header focus 16ms
+   × defaults to ten, resets on query/sort changes and clamps permanently when records shrink 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/data-table.test.tsx > sorts naturally in both directions without mutating data and retains row identity and header focus
+ FAIL  src/system/data-table.test.tsx > defaults to ten, resets on query/sort changes and clamps permanently when records shrink
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12468:13
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  16:33:05
+   Duration  1.68s (environment 66%, import 13%, setup 11%, transform 9%, tests 1%)

@@ -1,0 +1,105 @@
+{
+  "startingCommit": "cf6f173659f22b14030862c331f725ecc5a05631",
+  "branch": "codex/form-foundation",
+  "before": {
+    "unit": {
+      "passed": 24,
+      "failed": 12,
+      "total": 36
+    },
+    "chromium": {
+      "passed": 24,
+      "failed": 12,
+      "total": 36,
+      "pageErrors": 0
+    }
+  },
+  "after": {
+    "focusedUnit": {
+      "passed": 59,
+      "files": 3
+    },
+    "fullUnit": {
+      "passed": 157,
+      "files": 16
+    },
+    "chromiumAssociation": {
+      "passed": 36,
+      "failed": 0,
+      "pageErrors": 0
+    }
+  },
+  "existingBrowser": {
+    "previousCancellationFocusMatrix": 90,
+    "nativeValidation": 15,
+    "geometryCombinations": 16,
+    "nestedFormFlows": 32,
+    "interactions": "passed; no failures",
+    "additionalRegressions": 58,
+    "sourceCopy": {
+      "strictTypecheck": "passed",
+      "build": "passed",
+      "browserGroups": 14,
+      "pageErrors": 0
+    }
+  },
+  "independentReview": {
+    "verdict": "No actionable findings",
+    "focusedUnitPassed": 59,
+    "chromiumMatrixPassed": 36,
+    "extraDOMOnlyPassed": 6,
+    "synchronousPassed": 16,
+    "report": "independent-review/review.md"
+  },
+  "checks": {
+    "build": "passed",
+    "lint": "passed; no warnings",
+    "format": "passed",
+    "diff": "passed"
+  },
+  "contracts": {
+    "mountedSelect": "Preserved across replacement and late form insertion",
+    "currentFormReset": "Uses native association at event dispatch; successful reset after dispatch, cancelled reset emits no callback",
+    "formerFormReset": "Ignored, including detached stale Radix reset listeners",
+    "validationFocus": "Prior behavior retained; Select.tsx unchanged",
+    "publicAPI": "Unchanged",
+    "dependencies": "package.json/package-lock.json and installed dependency source unchanged",
+    "nativeMethods": "No global patch"
+  },
+  "originalCheckout": {
+    "head": "ce78408818b6a9866ab0faa7748404cba44d8939",
+    "branch": "main",
+    "preserved": [
+      "HEAD",
+      "branch",
+      "index bytes and entries",
+      "status",
+      "complete diff",
+      "README.md and workbench.css hashes"
+    ]
+  },
+  "evidence": {
+    "unitBefore": "unit-before.txt",
+    "unitAfter": "unit-after.txt",
+    "chromiumBefore": "before/results.json",
+    "chromiumAfter": "after/results.json",
+    "fullUnit": "full-unit-output.txt",
+    "build": "build-output.txt",
+    "lint": "lint-output.txt",
+    "format": "format-output.txt",
+    "additionalFormat": "added-format-output.txt",
+    "previousMatrix": "previous-review/results.json",
+    "nativeValidation": "native-validation/results.json",
+    "forms": "forms/results.json",
+    "interactions": "interactions/interactions.json",
+    "regressions": "regressions/regressions.json",
+    "sourceCopy": "source-copy/copy-build.json",
+    "independentMatrix": "independent-review/matrix/results.json",
+    "independentExtra": "independent-review/extra-results.json",
+    "independentSynchronous": "independent-review/synchronous-results.json"
+  },
+  "limits": [
+    "Chromium/macOS verified; other engines, touch, screen readers and cross-document adoption not tested",
+    "Successful reset commits in the next task; controlled callers must accept callback"
+  ]
+}

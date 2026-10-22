@@ -1,0 +1,90 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/FileTree.test.tsx src/workbench/generated-lists.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/file-tree/Tiraz
+
+ ❯ src/system/FileTree.test.tsx (11 tests | 2 failed) 5577ms
+   × does not toggle ancestors on nested clicks, and exposes empty folders honestly 580ms
+   × treats nested empty folders as end nodes for parent navigation and sibling expansion 81ms
+ ❯ src/workbench/generated-lists.test.tsx (4 tests | 2 failed) 1684ms
+   × runs copied ar FileTree source with host-owned sample text 153ms
+   × runs copied en FileTree source with host-owned sample text 309ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/FileTree.test.tsx > does not toggle ancestors on nested clicks, and exposes empty folders honestly
+Error: expect(element).not.toHaveAttribute("aria-expanded") // element.hasAttribute("aria-expanded")
+
+Expected the element not to have attribute:
+  aria-expanded
+Received:
+  aria-expanded="true"
+ ❯ src/system/FileTree.test.tsx:264:29
+    262|   expect(item("components")).toHaveAttribute("aria-expanded", "true");
+    263|   await user.click(item("Empty"));
+    264|   expect(item("Empty")).not.toHaveAttribute("aria-expanded");
+       |                             ^
+    265|   expect(item("Empty")).toHaveAttribute("aria-selected", "true");
+    266|   await user.keyboard("{ArrowRight}");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/system/FileTree.test.tsx > treats nested empty folders as end nodes for parent navigation and sibling expansion
+Error: expect(element).not.toHaveAttribute("aria-expanded") // element.hasAttribute("aria-expanded")
+
+Expected the element not to have attribute:
+  aria-expanded
+Received:
+  aria-expanded="true"
+ ❯ src/system/FileTree.test.tsx:302:60
+    300| it("treats nested empty folders as end nodes for parent navigation and…
+    301|  const user=userEvent.setup();render(<FileTree label="Project" nodes={…
+    302|  await user.click(item("Empty"));expect(item("Empty")).not.toHaveAttri…
+       |                                                            ^
+    303|  await user.keyboard("*");expect(item("Empty")).not.toHaveAttribute("a…
+    304|  await user.keyboard("{ArrowLeft}");expect(item("Parent")).toHaveFocus…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/workbench/generated-lists.test.tsx > runs copied ar FileTree source with host-owned sample text
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  --space: 8px
+Received:
+  App.tsx · نص نموذجيimport { Welcome } from "./components/Welcome"; export function App() { return <Welcome />; }
+ ❯ src/workbench/generated-lists.test.tsx:95:93
+     93|       screen.getByRole("treeitem", { name: "tokens.css" }),
+     94|     ).toHaveAttribute("aria-selected", "true");
+     95|     expect(screen.getByRole("region",{name:language==="ar"?"معاينة الم…
+       |                                                                                             ^
+     96|     await user.keyboard("{Enter}");
+     97|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/workbench/generated-lists.test.tsx > runs copied en FileTree source with host-owned sample text
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  --space: 8px
+Received:
+  App.tsx · Sample textimport { Welcome } from "./components/Welcome"; export function App() { return <Welcome />; }
+ ❯ src/workbench/generated-lists.test.tsx:95:93
+     93|       screen.getByRole("treeitem", { name: "tokens.css" }),
+     94|     ).toHaveAttribute("aria-selected", "true");
+     95|     expect(screen.getByRole("region",{name:language==="ar"?"معاينة الم…
+       |                                                                                             ^
+     96|     await user.keyboard("{Enter}");
+     97|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 11 passed (15)
+   Start at  22:16:52
+   Duration  12.75s (tests 35%, import 32%, environment 17%, transform 13%, setup 2%)
+

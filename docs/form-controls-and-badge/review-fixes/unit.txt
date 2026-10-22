@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+
+ Test Files  26 passed (26)
+      Tests  205 passed (205)
+   Start at  20:20:09
+   Duration  20.63s (tests 52%, environment 27%, import 9%, transform 6%, setup 5%)
+
+Environment  jsdom was created 26 times · 26.76s total, 27% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

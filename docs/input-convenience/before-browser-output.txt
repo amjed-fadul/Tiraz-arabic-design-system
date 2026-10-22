@@ -1,0 +1,22 @@
+{
+  "captures": [
+    "input-ar-light-1440.png",
+    "sheet-ar-light-1440.png",
+    "input-ar-light-390.png",
+    "sheet-ar-light-390.png",
+    "input-ar-dark-1440.png",
+    "sheet-ar-dark-1440.png",
+    "input-ar-dark-390.png",
+    "sheet-ar-dark-390.png",
+    "input-en-light-1440.png",
+    "sheet-en-light-1440.png",
+    "input-en-light-390.png",
+    "sheet-en-light-390.png",
+    "input-en-dark-1440.png",
+    "sheet-en-dark-1440.png",
+    "input-en-dark-390.png",
+    "sheet-en-dark-390.png"
+  ],
+  "checks": [],
+  "errors": []
+}

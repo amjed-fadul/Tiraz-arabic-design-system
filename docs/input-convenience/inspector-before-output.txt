@@ -1,0 +1,80 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/labeled-input-page.test.tsx --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/labeled-input/Tiraz
+
+ ❯ src/workbench/labeled-input-page.test.tsx (6 tests | 2 failed) 838ms
+   × keeps controlled Input node, associations and value while inspector errors change 251ms
+   × keeps uncontrolled Input node, associations and value while inspector errors change 154ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/labeled-input-page.test.tsx > keeps controlled Input node, associations and value while inspector errors change
+AssertionError: expected <input …(10)></input> to be <input …(8)></input> // Object.is equality
+
+- Expected
++ Received
+
+  <input
+-   aria-labelledby="tz-field-_r_2k_-label"
++   aria-describedby="tz-field-_r_3h_-error"
++   aria-invalid="true"
++   aria-labelledby="tz-field-_r_3h_-label"
+    class="tz-input "
+    data-size="sm"
+-   id="tz-field-_r_2k_"
++   id="tz-field-_r_3h_"
+    name="customerName"
+    placeholder="e.g. Madar Technology"
+    type="text"
+    value="Draft updated"
+  />
+
+ ❯ src/workbench/labeled-input-page.test.tsx:139:42
+    137|     await userEvent.type(input, " updated");
+    138|     await userEvent.type(rail.getByLabelText("Error message"), "Correc…
+    139|     expect(preview.getByRole("textbox")).toBe(input);
+       |                                          ^
+    140|     expect(input.id).toBe(id);
+    141|     expect(input).toHaveValue("Draft updated");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/workbench/labeled-input-page.test.tsx > keeps uncontrolled Input node, associations and value while inspector errors change
+AssertionError: expected <input …(10)></input> to be <input …(8)></input> // Object.is equality
+
+- Expected
++ Received
+
+  <input
+-   aria-labelledby="tz-field-_r_3o_-label"
++   aria-describedby="tz-field-_r_4l_-error"
++   aria-invalid="true"
++   aria-labelledby="tz-field-_r_4l_-label"
+    class="tz-input "
+    data-size="sm"
+-   id="tz-field-_r_3o_"
++   id="tz-field-_r_4l_"
+    name="customerName"
+    placeholder="e.g. Madar Technology"
+    type="text"
+    value="Draft updated"
+  />
+
+ ❯ src/workbench/labeled-input-page.test.tsx:139:42
+    137|     await userEvent.type(input, " updated");
+    138|     await userEvent.type(rail.getByLabelText("Error message"), "Correc…
+    139|     expect(preview.getByRole("textbox")).toBe(input);
+       |                                          ^
+    140|     expect(input.id).toBe(id);
+    141|     expect(input).toHaveValue("Draft updated");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  14:55:34
+   Duration  2.04s (tests 43%, environment 31%, import 10%, transform 10%, setup 6%)

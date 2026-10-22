@@ -1,0 +1,77 @@
+{
+  "base": "ed6484d4b2075741cbd81cab959764d7e2183ec6",
+  "branch": "codex/labeled-input",
+  "checkout": "/Users/amjedfadul/.codex/worktrees/labeled-input/Tiraz",
+  "preview": "http://127.0.0.1:5174/",
+  "publicFamilies": 9,
+  "navigationPages": 8,
+  "baselineUnitPassed": 157,
+  "testFirst": {
+    "newTests": 9,
+    "failed": 7,
+    "passed": 2,
+    "inspectorFollowUpFailed": 2
+  },
+  "finalUnit": {
+    "passed": 169,
+    "files": 18,
+    "focusedPassed": 16,
+    "focusedFiles": 5
+  },
+  "browser": {
+    "beforeCaptures": 16,
+    "afterCaptures": 16,
+    "focusedChecks": 19,
+    "pageErrors": [],
+    "nativeValidationCases": 15,
+    "languages": ["ar", "en"],
+    "themes": ["light", "dark"],
+    "widths": [1440, 390],
+    "sharedCustomization": [
+      "standard density",
+      "large typography",
+      "blue accent",
+      "16px radius",
+      "native state controls"
+    ],
+    "clipboard": "Complete direct Input code and copied prompt retained; one-line prompt/Copy row preserved"
+  },
+  "independentReview": {
+    "verdict": "No outstanding actionable findings after re-review",
+    "independentTests": 30,
+    "files": 7,
+    "resolved": "Inspector patches originally remounted Input; ordinary edits now preserve node/IDs/value",
+    "evidence": "independent-review/review.json"
+  },
+  "checks": {
+    "build": "passed",
+    "lint": "passed; no warnings",
+    "format": "passed",
+    "diff": "passed"
+  },
+  "unchanged": [
+    "Field implementation",
+    "association utility",
+    "Select API/implementation/reset handling",
+    "public exports",
+    "dependency manifest/lockfile"
+  ],
+  "preservation": "Original checkout/index/unrelated edits untouched; unrelated servers preserved",
+  "limitations": [
+    "Chromium and macOS visual checks; screen readers, touch and other engines not manually verified",
+    "Mode/initial-value/reset edits can intentionally remount the workbench demonstration; helper/error edits preserve the control",
+    "Application owns validation and controlled reset"
+  ],
+  "evidence": {
+    "before": "before/results.json",
+    "after": "after/results.json",
+    "focused": "focused-unit-output.txt",
+    "full": "full-unit-output.txt",
+    "build": "build-output.txt",
+    "lint": "lint-output.txt",
+    "format": "format-output.txt",
+    "extraFormat": "added-format-output.txt",
+    "review": "independent-review/review.json",
+    "nativeValidation": "native-validation/results.json"
+  }
+}

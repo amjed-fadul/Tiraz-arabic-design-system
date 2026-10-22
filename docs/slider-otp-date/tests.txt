@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=1
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/slider-otp-date/Tiraz
+
+
+ Test Files  51 passed (51)
+      Tests  451 passed (451)
+   Start at  13:37:50
+   Duration  190.53s (import 48%, tests 36%, environment 13%, setup 2%, transform 1%)
+
+     Import  186 modules were evaluated 3180 times · 88.13s total, 48% of tracked time
+             ~82.98s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

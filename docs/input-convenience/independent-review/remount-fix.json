@@ -1,0 +1,6 @@
+{
+  "checks": [
+    "controlled: node/ID/label ID/value preserved through four error updates and label/helper/required/size/readOnly/disabled edits",
+    "uncontrolled: node/ID/label ID/value preserved through four error updates and label/helper/required/size/readOnly/disabled edits"
+  ]
+}

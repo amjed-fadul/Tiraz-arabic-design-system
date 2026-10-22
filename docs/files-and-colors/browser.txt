@@ -1,0 +1,30 @@
+PASS file-dropzone ar light 1440px shaping/wrapping
+PASS file-dropzone ar dark 320px shaping/wrapping
+PASS file-dropzone en light 320px shaping/wrapping
+PASS file-dropzone en dark 1440px shaping/wrapping
+PASS color-picker ar light 1440px shaping/wrapping
+PASS color-picker ar dark 320px shaping/wrapping
+PASS color-picker en light 320px shaping/wrapping
+PASS color-picker en dark 1440px shaping/wrapping
+PASS real Browse button emits native filechooser; existing local file selected via chooser.setFiles (OS panel not automated)
+PASS local report matches selected files and makes no upload claim
+PASS drop partial rejection/count caps preserve valid files
+PASS duplicates rejected with explanation
+PASS removal returns focus to Browse
+PASS keyboard order skips hidden picker and reaches removal
+PASS controlled example reset clears selection
+PASS nested synthetic dragenter/dragleave does not flicker
+PASS live file inspector label edits preserve selection
+PASS live disabled state blocks drop and native buttons
+PASS incomplete invalid HEX retains draft and selected color
+PASS HEX Enter normalizes and synchronizes native color
+PASS named swatch check/pressed state and local sample synchronize
+PASS SIMULATED native color input/change synchronizes HEX/swatches/sample; no OS chooser selection claimed
+PASS native FormData submits committed color and controlled reset restores sample
+PASS invalid draft submits previous committed value as documented
+PASS live color inspector preserves editing draft
+PASS live accent/typography/density/corners customization renders
+PASS application reduced motion reaches composite
+PASS OS reduced motion overrides application motion
+PASS axe scoped file preview: no violations
+PASS axe scoped color preview: no violations

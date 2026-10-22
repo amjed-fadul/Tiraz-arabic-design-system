@@ -1,0 +1,23 @@
+PASS en: native pointer/arrows/Home/End/RTL range with decimal boundaries
+PASS en: real clipboard paste, normalized Arabic digits, leading zeros, selection deletion, readonly and autofill attributes (desktop simulation)
+Calendar focus: rdp-day_button
+PASS en: leap-day selection crosses month; calendar arrows/PageUp/Home/End/Escape and focus restore
+PASS en: clear, reset and canceled native reset preserve expected values
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+false !== true
+
+    at file:///private/tmp/tiraz-date-batch.mjs:219:16 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

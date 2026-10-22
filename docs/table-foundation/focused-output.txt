@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/table.test.tsx src/system/ai-registry.test.ts src/workbench/table-page.test.tsx src/workbench/customer-flow.test.tsx src/workbench/generated-code.test.ts --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/table-foundation/Tiraz
+
+
+ Test Files  5 passed (5)
+      Tests  15 passed (15)
+   Start at  15:45:42
+   Duration  5.63s (tests 51%, environment 29%, import 11%, setup 5%, transform 4%)
+
+Environment  jsdom was created 5 times · 2.95s total, 29% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

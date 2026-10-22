@@ -1,0 +1,240 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/select-form-regressions.test.tsx
+
+
+ RUN  v5.0.4 /Users/amjedfadul/.codex/worktrees/form-foundation/Tiraz
+
+ ❯ src/system/select-form-regressions.test.tsx (16 tests | 12 failed) 1872ms
+   × preserves uncontrolled value/app state on onReset cancellation (nested form) 300ms
+   × preserves uncontrolled value/app state on onResetCapture cancellation (nested form) 124ms
+   × preserves uncontrolled value/app state on onReset cancellation (external form) 146ms
+   × preserves uncontrolled value/app state on onResetCapture cancellation (external form) 108ms
+   × preserves controlled value/app state on onReset cancellation (nested form) 104ms
+   × preserves controlled value/app state on onResetCapture cancellation (nested form) 102ms
+   × preserves controlled value/app state on onReset cancellation (external form) 98ms
+   × preserves controlled value/app state on onResetCapture cancellation (external form) 104ms
+   × does not move focus for static checkValidity (nested) 34ms
+   × does not move focus for static checkValidity (external) 31ms
+   × respects application onInvalid cancellation and summary focus 87ms
+   × respects application onInvalidCapture cancellation and summary focus 50ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 12 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/select-form-regressions.test.tsx > preserves uncontrolled value/app state on onReset cancellation (nested form)
+ FAIL  src/system/select-form-regressions.test.tsx > preserves uncontrolled value/app state on onResetCapture cancellation (nested form)
+ FAIL  src/system/select-form-regressions.test.tsx > preserves uncontrolled value/app state on onReset cancellation (external form)
+ FAIL  src/system/select-form-regressions.test.tsx > preserves uncontrolled value/app state on onResetCapture cancellation (external form)
+ FAIL  src/system/select-form-regressions.test.tsx > preserves controlled value/app state on onReset cancellation (nested form)
+ FAIL  src/system/select-form-regressions.test.tsx > preserves controlled value/app state on onResetCapture cancellation (nested form)
+ FAIL  src/system/select-form-regressions.test.tsx > preserves controlled value/app state on onReset cancellation (external form)
+ FAIL  src/system/select-form-regressions.test.tsx > preserves controlled value/app state on onResetCapture cancellation (external form)
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Beta
+Received:
+  Alpha
+ ❯ src/system/select-form-regressions.test.tsx:13:40
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/12]⎯
+
+ FAIL  src/system/select-form-regressions.test.tsx > does not move focus for static checkValidity (nested)
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <button>
+  Anchor
+</button>
+Received element with focus:
+  <button
+  aria-autocomplete="none"
+  aria-expanded="false"
+  aria-label="Required"
+  aria-required="true"
+  class="tz-select-trigger "
+  data-placeholder=""
+  data-size="sm"
+  data-state="closed"
+  dir="rtl"
+  required=""
+  role="combobox"
+  type="button"
+>
+  <span
+    style="pointer-events: none;"
+  />
+  <svg
+    aria-hidden="true"
+    class="lucide lucide-chevron-down"
+    fill="none"
+    height="16"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    width="16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m6 9 6 6 6-6"
+    />
+  </svg>
+</button>
+ ❯ src/system/select-form-regressions.test.tsx:26:222
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/12]⎯
+
+ FAIL  src/system/select-form-regressions.test.tsx > does not move focus for static checkValidity (external)
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <button>
+  Anchor
+</button>
+Received element with focus:
+  <button
+  aria-autocomplete="none"
+  aria-expanded="false"
+  aria-label="Required"
+  aria-required="true"
+  class="tz-select-trigger "
+  data-placeholder=""
+  data-size="sm"
+  data-state="closed"
+  dir="rtl"
+  form="choices"
+  required=""
+  role="combobox"
+  type="button"
+>
+  <span
+    style="pointer-events: none;"
+  />
+  <svg
+    aria-hidden="true"
+    class="lucide lucide-chevron-down"
+    fill="none"
+    height="16"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    width="16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m6 9 6 6 6-6"
+    />
+  </svg>
+</button>
+ ❯ src/system/select-form-regressions.test.tsx:26:222
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/12]⎯
+
+ FAIL  src/system/select-form-regressions.test.tsx > respects application onInvalid cancellation and summary focus
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <button>
+  Summary
+</button>
+Received element with focus:
+  <button
+  aria-autocomplete="none"
+  aria-expanded="false"
+  aria-label="Required"
+  aria-required="true"
+  class="tz-select-trigger "
+  data-placeholder=""
+  data-size="sm"
+  data-state="closed"
+  dir="rtl"
+  required=""
+  role="combobox"
+  type="button"
+>
+  <span
+    style="pointer-events: none;"
+  />
+  <svg
+    aria-hidden="true"
+    class="lucide lucide-chevron-down"
+    fill="none"
+    height="16"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    width="16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m6 9 6 6 6-6"
+    />
+  </svg>
+</button>
+ ❯ src/system/select-form-regressions.test.tsx:32:159
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/12]⎯
+
+ FAIL  src/system/select-form-regressions.test.tsx > respects application onInvalidCapture cancellation and summary focus
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <button>
+  Summary
+</button>
+Received element with focus:
+  <button
+  aria-autocomplete="none"
+  aria-expanded="false"
+  aria-label="Required"
+  aria-required="true"
+  class="tz-select-trigger "
+  data-placeholder=""
+  data-size="sm"
+  data-state="closed"
+  dir="rtl"
+  required=""
+  role="combobox"
+  type="button"
+>
+  <span
+    style="pointer-events: none;"
+  />
+  <svg
+    aria-hidden="true"
+    class="lucide lucide-chevron-down"
+    fill="none"
+    height="16"
+    stroke="currentColor"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    stroke-width="2"
+    viewBox="0 0 24 24"
+    width="16"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="m6 9 6 6 6-6"
+    />
+  </svg>
+</button>
+ ❯ src/system/select-form-regressions.test.tsx:32:159
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/12]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  12 failed | 4 passed (16)
+   Start at  04:46:31
+   Duration  3.59s (tests 54%, environment 31%, import 6%, setup 5%, transform 3%)

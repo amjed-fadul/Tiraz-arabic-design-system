@@ -1,0 +1,83 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz
+
+ ❯ src/system/ai-registry.test.ts (2 tests | 2 failed) 5ms
+   × resolves every registry source and example from a movable library root 4ms
+   × documents real public exports and supported prop values and compiles the linked examples 0ms
+ ❯ src/workbench/generate-prompts.test.ts (13 tests | 12 failed) 204ms
+   × generates a portable ar prompt for button with real source and guidance paths 6ms
+   × generates a portable ar prompt for tabs with real source and guidance paths 1ms
+   × generates a portable ar prompt for switch with real source and guidance paths 0ms
+   × generates a portable ar prompt for dropdown with real source and guidance paths 0ms
+   × generates a portable ar prompt for sheet with real source and guidance paths 0ms
+   × generates a portable ar prompt for toast with real source and guidance paths 0ms
+   × generates a portable en prompt for button with real source and guidance paths 0ms
+   × generates a portable en prompt for tabs with real source and guidance paths 0ms
+   × generates a portable en prompt for switch with real source and guidance paths 0ms
+   × generates a portable en prompt for dropdown with real source and guidance paths 0ms
+   × generates a portable en prompt for sheet with real source and guidance paths 0ms
+   × generates a portable en prompt for toast with real source and guidance paths 0ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/ai-registry.test.ts > resolves every registry source and example from a movable library root
+Error: ENOENT: no such file or directory, open '/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/src/system/ai/registry.json'
+ ❯ readRegistry src/system/ai-registry.test.ts:9:39
+      7|
+      8| const root = resolve("src/system");
+      9| const readRegistry = () => JSON.parse(readFileSync(resolve(root, "ai/r…
+       |                                       ^
+     10| it("resolves every registry source and example from a movable library …
+     11|   const registry = readRegistry();
+ ❯ src/system/ai-registry.test.ts:11:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  src/system/ai-registry.test.ts > documents real public exports and supported prop values and compiles the linked examples
+Error: ENOENT: no such file or directory, open '/Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz/src/system/ai/registry.json'
+ ❯ readRegistry src/system/ai-registry.test.ts:9:39
+      7|
+      8| const root = resolve("src/system");
+      9| const readRegistry = () => JSON.parse(readFileSync(resolve(root, "ai/r…
+       |                                       ^
+     10| it("resolves every registry source and example from a movable library …
+     11|   const registry = readRegistry();
+ ❯ src/system/ai-registry.test.ts:23:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable ar prompt for button with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable ar prompt for tabs with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable ar prompt for switch with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable ar prompt for dropdown with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable ar prompt for sheet with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable ar prompt for toast with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable en prompt for button with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable en prompt for tabs with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable en prompt for switch with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable en prompt for dropdown with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable en prompt for sheet with real source and guidance paths
+ FAIL  src/workbench/generate-prompts.test.ts > generates a portable en prompt for toast with real source and guidance paths
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ src/workbench/generate-prompts.test.ts:41:56
+     39|         "src/system/config.ts",
+     40|       ]) {
+     41|         expect(existsSync(resolve(projectRoot, path))).toBe(true);
+       |                                                        ^
+     42|         expect(prompt).toContain(path.replace("src/system/", ""));
+     43|       }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  14 failed | 1 passed (15)
+   Start at  23:55:38
+   Duration  1.51s (environment 57%, import 14%, setup 11%, transform 9%, tests 8%)

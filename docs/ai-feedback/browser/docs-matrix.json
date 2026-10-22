@@ -1,0 +1,546 @@
+[
+  {
+    "lang": "ar",
+    "theme": "light",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 1428,
+    "title": "حالة التحميل",
+    "visibleStatuses": [
+      "",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ تحميل الملاحظات",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 307,
+    "title": "حالة التحميل",
+    "visibleStatuses": [
+      "",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ تحميل الملاحظات",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 1428,
+    "title": "مؤشر النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الرد",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ إعداد الرد",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 307,
+    "title": "مؤشر النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الرد",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ إعداد الرد",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 1428,
+    "title": "حالة النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الملخص",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "الملخص جاهز",
+      "العرض جاهز",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "ar",
+    "theme": "light",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 307,
+    "title": "حالة النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الملخص",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "الملخص جاهز",
+      "العرض جاهز",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 1428,
+    "title": "حالة التحميل",
+    "visibleStatuses": [
+      "",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ تحميل الملاحظات",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 307,
+    "title": "حالة التحميل",
+    "visibleStatuses": [
+      "",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ تحميل الملاحظات",
+      "جارٍ تحميل الملاحظات تظهر الملاحظات هنا عند توفّرها.",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 1428,
+    "title": "مؤشر النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الرد",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ إعداد الرد",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 307,
+    "title": "مؤشر النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الرد",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "جارٍ إعداد الرد",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 1428,
+    "title": "حالة النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الملخص",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "الملخص جاهز",
+      "العرض جاهز",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "ar",
+    "theme": "dark",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "استخدمه في تطبيقك",
+      "المعاينة التفاعلية",
+      "أمثلة",
+      "مثال الاستخدام"
+    ],
+    "scrollWidth": 307,
+    "title": "حالة النشاط",
+    "visibleStatuses": [
+      "",
+      "جارٍ إعداد الملخص",
+      "آخر حدثتفاعل مع المكوّن لرؤية الحدث هنا.",
+      "الملخص جاهز",
+      "العرض جاهز",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 1428,
+    "title": "LoadingState",
+    "visibleStatuses": [
+      "",
+      "Loading notes Notes will appear here when available.",
+      "Latest eventInteract with the component to see its event here.",
+      "Loading notes",
+      "Loading notes Notes will appear here when available.",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 307,
+    "title": "LoadingState",
+    "visibleStatuses": [
+      "",
+      "Loading notes Notes will appear here when available.",
+      "Latest eventInteract with the component to see its event here.",
+      "Loading notes",
+      "Loading notes Notes will appear here when available.",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 1428,
+    "title": "ThinkingIndicator",
+    "visibleStatuses": [
+      "",
+      "Preparing reply",
+      "Latest eventInteract with the component to see its event here.",
+      "Preparing reply",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 307,
+    "title": "ThinkingIndicator",
+    "visibleStatuses": [
+      "",
+      "Preparing reply",
+      "Latest eventInteract with the component to see its event here.",
+      "Preparing reply",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 1428,
+    "title": "ThinkingState",
+    "visibleStatuses": [
+      "",
+      "Preparing summary",
+      "Latest eventInteract with the component to see its event here.",
+      "Summary ready",
+      "Demo ready",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "en",
+    "theme": "light",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 307,
+    "title": "ThinkingState",
+    "visibleStatuses": [
+      "",
+      "Preparing summary",
+      "Latest eventInteract with the component to see its event here.",
+      "Summary ready",
+      "Demo ready",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 1428,
+    "title": "LoadingState",
+    "visibleStatuses": [
+      "",
+      "Loading notes Notes will appear here when available.",
+      "Latest eventInteract with the component to see its event here.",
+      "Loading notes",
+      "Loading notes Notes will appear here when available.",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 307,
+    "title": "LoadingState",
+    "visibleStatuses": [
+      "",
+      "Loading notes Notes will appear here when available.",
+      "Latest eventInteract with the component to see its event here.",
+      "Loading notes",
+      "Loading notes Notes will appear here when available.",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 1428,
+    "title": "ThinkingIndicator",
+    "visibleStatuses": [
+      "",
+      "Preparing reply",
+      "Latest eventInteract with the component to see its event here.",
+      "Preparing reply",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 307,
+    "title": "ThinkingIndicator",
+    "visibleStatuses": [
+      "",
+      "Preparing reply",
+      "Latest eventInteract with the component to see its event here.",
+      "Preparing reply",
+      ""
+    ],
+    "width": 320
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "targetWidth": 1440,
+    "documentWidth": 1428,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 1428,
+    "title": "ThinkingState",
+    "visibleStatuses": [
+      "",
+      "Preparing summary",
+      "Latest eventInteract with the component to see its event here.",
+      "Summary ready",
+      "Demo ready",
+      ""
+    ],
+    "width": 1440
+  },
+  {
+    "lang": "en",
+    "theme": "dark",
+    "targetWidth": 320,
+    "documentWidth": 307,
+    "headings": [
+      "Use it in your app",
+      "Interactive playground",
+      "Examples",
+      "Usage example"
+    ],
+    "scrollWidth": 307,
+    "title": "ThinkingState",
+    "visibleStatuses": [
+      "",
+      "Preparing summary",
+      "Latest eventInteract with the component to see its event here.",
+      "Summary ready",
+      "Demo ready",
+      ""
+    ],
+    "width": 320
+  }
+]

@@ -1,0 +1,218 @@
+[
+  {
+    "component": "محرر الرسائل",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "محرر الرسائل",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "مرحبا",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "محرر الرسائل",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "Hello",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "محرر الرسائل",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "Tiraz / العربية",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "محرر الرسائل",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "العربية / Tiraz",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "محرر الرسائل",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "شريط الموجّه",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "شريط الموجّه",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "مرحبا",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "شريط الموجّه",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "Hello",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "شريط الموجّه",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "Tiraz / العربية",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "شريط الموجّه",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "العربية / Tiraz",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "شريط الموجّه",
+    "dir": "rtl",
+    "direction": "rtl",
+    "draft": "",
+    "language": "ar",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "ChatComposer",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "ChatComposer",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "مرحبا",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "ChatComposer",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "Hello",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "ChatComposer",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "Tiraz / العربية",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "ChatComposer",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "العربية / Tiraz",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "ChatComposer",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "PromptBar",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "PromptBar",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "مرحبا",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "PromptBar",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "Hello",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "PromptBar",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "Tiraz / العربية",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "PromptBar",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "العربية / Tiraz",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  },
+  {
+    "component": "PromptBar",
+    "dir": "ltr",
+    "direction": "ltr",
+    "draft": "",
+    "language": "en",
+    "outline": "none",
+    "textAlign": "start"
+  }
+]

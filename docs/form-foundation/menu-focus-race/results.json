@@ -1,0 +1,2654 @@
+[
+  {
+    "name": "rtl-light-motion-early-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 16.723999989884884,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 503.8999999910593,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 261.8999999910593,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 421.79999999701977,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 455.5,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 455.79999999701977,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 455.8999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 488,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 494,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 503.5,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 503.8999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 519.8999999910593,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 520,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 586.5,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 37",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 586.5,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 718.7999999970198,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 865.5,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 935.5999999940395,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1086,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1088,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-light-motion-settled-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 583.2999999970198,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 144.79999999701977,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 223.8999999910593,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 251.59999999403954,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 251.70000000298023,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 251.8999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 277.8999999910593,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 308.5,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 408.20000000298023,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 408.3999999910593,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 408.3999999910593,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 424.8999999910593,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 507.59999999403954,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 582.7999999970198,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 583,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 583.2999999970198,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 589.7000000029802,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 589.7000000029802,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 589.7999999970198,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 969.3999999910593,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 1041.2000000029802,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1191.2000000029802,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1192.8999999910593,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-light-reduced-early-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": true,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 0,
+          "duration": 0.01,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 279.3999999910593,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 149,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 221.79999999701977,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 246.20000000298023,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 246.29999999701977,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 246.3999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 275.59999999403954,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 278.20000000298023,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 278.29999999701977,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 279.09999999403954,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 279.3999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 295.29999999701977,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 295.29999999701977,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 643.7000000029802,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 711.8999999910593,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 712.0999999940395,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 713.7999999970198,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-light-reduced-settled-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "light",
+      "reducedMotion": true,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 535.6000000089407,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 116.5,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 178.6000000089407,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 204.20000000298023,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 204.29999999701977,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 204.40000000596046,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 230.20000000298023,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 230.40000000596046,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 246.40000000596046,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 534.9000000059605,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 535.1000000089407,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 535.6000000089407,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 542,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 542.1000000089407,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 542.2000000029802,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 912.2999999970198,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 980,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 980.1000000089407,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 981.7000000029802,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-dark-motion-early-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "dark",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 50.08299998626764,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 265.70000000298023,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 102.5,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 161.6000000089407,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 189.20000000298023,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 189.40000000596046,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 189.40000000596046,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 218.90000000596046,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 248.29999999701977,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 254,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 265.40000000596046,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 265.70000000298023,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 281.20000000298023,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 281.40000000596046,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 281.5,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 364,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 37",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 364,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 446.70000000298023,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 624.6000000089407,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 680.2000000029802,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 830.5,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 832.2999999970198,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-dark-motion-settled-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "dark",
+      "reducedMotion": false,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 571.3999999910593,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 115.19999998807907,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 196.8999999910593,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 223.79999999701977,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 223.8999999910593,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 224.09999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 235.3999999910593,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 237.59999999403954,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 245.3999999910593,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 278.5,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 377.8999999910593,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 378,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 378,
+        "type": "pointerleave",
+        "target": "menu",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 395.19999998807907,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 478.09999999403954,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 570.8999999910593,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 571.0999999940395,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 571.3999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 578.2999999970198,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 578.3999999910593,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 578.5,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 1705.699999988079,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 1794.7999999970198,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1944.699999988079,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1946.7999999970198,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-dark-reduced-early-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "dark",
+      "reducedMotion": true,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 849.5,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 647.5999999940395,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 773,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 802.2000000029802,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 802.2999999970198,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 802.3999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 831.2000000029802,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 831.5,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 844.2000000029802,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 848.7000000029802,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 849.2000000029802,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 849.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 864.8999999910593,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 865,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 865.2000000029802,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 1255.7999999970198,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 1315,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1315.0999999940395,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1316.8999999910593,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "rtl-dark-reduced-settled-0",
+    "scenario": {
+      "direction": "rtl",
+      "theme": "dark",
+      "reducedMotion": true,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 728.4000244140625,
+        "y": 250.5
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 844.5,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 330,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 435.80000001192093,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 461.40000000596046,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 461.5,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 461.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 488.30000001192093,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 488.5,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 506.6000000089407,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 842.2000000029802,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 843.9000000059605,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 844.6000000089407,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 851.5,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 851.6000000089407,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 3",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 851.7000000029802,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 1250.9000000059605,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 1329.2000000029802,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1329.4000000059605,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1331.2000000029802,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-light-motion-early-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 16.717999993685616,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 377.59999999403954,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 247.3999999910593,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 314.29999999701977,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 340.8999999910593,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 341,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 341.09999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 352.20000000298023,
+        "type": "pointerover",
+        "target": "menu",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 354,
+        "type": "pointerout",
+        "target": "menu",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 354.09999999403954,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 360.09999999403954,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 370.20000000298023,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 377.3999999910593,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 377.59999999403954,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 394,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 394.20000000298023,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 394.20000000298023,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 394.20000000298023,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 593.2999999970198,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 738.0999999940395,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 809.8999999910593,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 960,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 961.7000000029802,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-light-motion-settled-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "light",
+      "reducedMotion": false,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 558.5,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 103.29999999701977,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 192,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 220.79999999701977,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 220.79999999701977,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 220.8999999910593,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 234.69999998807907,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 247.3999999910593,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 481.3999999910593,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 557.8999999910593,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 558.1999999880791,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 558.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 564.7999999970198,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 564.8999999910593,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 564.8999999910593,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 565,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 938.3999999910593,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 997.5,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1147.5999999940395,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1149.199999988079,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-light-reduced-early-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "light",
+      "reducedMotion": true,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 317.79999999701977,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 170.70000000298023,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 255,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 281,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 281.09999999403954,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 281.29999999701977,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 295,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 301.59999999403954,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 301.8999999910593,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 312.20000000298023,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 317.5,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 317.79999999701977,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 334.79999999701977,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 334.8999999910593,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 334.8999999910593,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 335,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 735.8999999910593,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 800.7999999970198,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 800.8999999910593,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 802.3999999910593,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-light-reduced-settled-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "light",
+      "reducedMotion": true,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 643.3000000119209,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 116.5,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 217.70000000298023,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 241.80000001192093,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 242,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 242.1000000089407,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 256.70000000298023,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 263.90000000596046,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 264.1000000089407,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 642.6000000089407,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 643,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 643.3000000119209,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 649.9000000059605,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 650,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 650,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 650.2000000029802,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 1048.5,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 1113.4000000059605,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1113.4000000059605,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1115,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-dark-motion-early-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "dark",
+      "reducedMotion": false,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 33.386999993934296,
+          "duration": 240,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 331.90000000596046,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 121.40000000596046,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 243.59999999403954,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 272.59999999403954,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 272.70000000298023,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 272.79999999701977,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 287.20000000298023,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 297.70000000298023,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 321,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 331.59999999403954,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 331.90000000596046,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 347.90000000596046,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 348.09999999403954,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 348.09999999403954,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 348.20000000298023,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 530.2999999970198,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 748.0999999940395,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 814.2999999970198,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 964.2000000029802,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 965.9000000059605,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-dark-motion-settled-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "dark",
+      "reducedMotion": false,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 698.0999999940395,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 162.59999999403954,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 332.09999999403954,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 362.29999999701977,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 362.40000000596046,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 362.5,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 374.09999999403954,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 391.70000000298023,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 625,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 697.7000000029802,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 697.9000000059605,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 698.0999999940395,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 704.2999999970198,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 704.4000000059605,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 704.4000000059605,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 704.5,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 1069.7000000029802,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 1124.9000000059605,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1274.9000000059605,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1276.2999999970198,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-dark-reduced-early-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "dark",
+      "reducedMotion": true,
+      "settled": false
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [
+        {
+          "name": "tz-menu-in",
+          "time": 0,
+          "duration": 0.01,
+          "playState": "running"
+        }
+      ],
+      "samples": [
+        {
+          "time": 447.40000000596046,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 286.79999999701977,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 383.90000000596046,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 410.20000000298023,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 410.29999999701977,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 410.40000000596046,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 425.79999999701977,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 444.90000000596046,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 446.20000000298023,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 446.29999999701977,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 447.1000000089407,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 447.40000000596046,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 463.20000000298023,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 463.29999999701977,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 463.29999999701977,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 463.40000000596046,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 819,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 879.5,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 879.5,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 881,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  },
+  {
+    "name": "ltr-dark-reduced-settled-0",
+    "scenario": {
+      "direction": "ltr",
+      "theme": "dark",
+      "reducedMotion": true,
+      "settled": true
+    },
+    "failures": [],
+    "beforeEnter": {
+      "focused": "Item 40",
+      "visible": true,
+      "scrollTop": 1234,
+      "pointer": {
+        "x": 90,
+        "y": 200
+      },
+      "pointerInMenu": true,
+      "endAnimations": [],
+      "samples": [
+        {
+          "time": 606.2000000029802,
+          "focused": "Item 40"
+        }
+      ]
+    },
+    "selected": "Selected 40",
+    "restored": true,
+    "trace": [
+      {
+        "time": 117.40000000596046,
+        "type": "pointerdown",
+        "target": "tz-button-label",
+        "x": 728.4000244140625,
+        "y": 250.5,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 229.80000001192093,
+        "type": "keydown",
+        "target": "tz-button ",
+        "key": "ArrowDown"
+      },
+      {
+        "time": 255.5,
+        "type": "focusin",
+        "target": "menu"
+      },
+      {
+        "time": 255.6000000089407,
+        "type": "focusout",
+        "target": "menu"
+      },
+      {
+        "time": 255.70000000298023,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 269.70000000298023,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 283.30000001192093,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 283.5,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 605.6000000089407,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 1",
+        "key": "End"
+      },
+      {
+        "time": 605.9000000059605,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 1"
+      },
+      {
+        "time": 606.2000000029802,
+        "type": "focusin",
+        "target": "menuitem",
+        "text": "Item 40"
+      },
+      {
+        "time": 613.8000000119209,
+        "type": "pointerout",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 614,
+        "type": "pointerleave",
+        "target": "menuitem",
+        "text": "Item 1",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 614,
+        "type": "pointerover",
+        "target": "menuitem",
+        "text": "Item 35",
+        "x": 90,
+        "y": 200,
+        "movementX": 0,
+        "movementY": 0
+      },
+      {
+        "time": 614.1000000089407,
+        "type": "scroll",
+        "target": "menu"
+      },
+      {
+        "time": 981.8000000119209,
+        "type": "keydown",
+        "target": "menuitem",
+        "text": "Item 40",
+        "key": "Enter"
+      },
+      {
+        "time": 1047,
+        "type": "animationstart",
+        "target": "menu"
+      },
+      {
+        "time": 1047.1000000089407,
+        "type": "animationend",
+        "target": "menu"
+      },
+      {
+        "time": 1048.7000000029802,
+        "type": "focusout",
+        "target": "menuitem",
+        "text": "Item 40"
+      }
+    ],
+    "pointerAndKeyboard": "pass",
+    "sheetRestored": true
+  }
+]

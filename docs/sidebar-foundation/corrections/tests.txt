@@ -1,0 +1,12 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/sidebar-foundation/Tiraz
+
+
+ Test Files  41 passed (41)
+      Tests  366 passed (366)
+   Start at  19:00:56
+   Duration  26.38s (tests 58%, environment 21%, import 14%, transform 4%, setup 3%)
+
+    Isolate  41 workers spawned · ~610ms startup each (spawn + environment, per file)
+             at least ~5.64s faster with isolate: false — reuses workers across files instead of one per file
+

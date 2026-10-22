@@ -1,0 +1,20 @@
+{
+  "checks": [
+    "12 exact CSS viewport language/theme cases: long mixed text, no overflow or row entry motion",
+    "Task completion/reopening, derived count, stable identities/order, focus and disabled Tab skipping",
+    "Details do not mark read; Unread last-row fallback, final removal, empty message and Show all focus",
+    "Arabic mark all read, derived zero count, focus fallback and supplied order on All",
+    "Live theme, density, typography, accent; system and OS reduced motion; large Arabic at320 without overflow",
+    "Continuous docs, minimal live inspector, code/full copied prompt synchronization and narrow docs",
+    "No uncaught browser errors"
+  ],
+  "custom": {
+    "theme": "dark",
+    "density": "standard",
+    "typography": "large",
+    "motion": "true",
+    "size": "16px",
+    "accent": "#A8C6EF"
+  },
+  "errors": []
+}

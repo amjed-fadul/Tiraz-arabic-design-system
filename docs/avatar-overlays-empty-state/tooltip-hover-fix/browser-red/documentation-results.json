@@ -1,0 +1,26 @@
+{
+  "checks": [
+    {
+      "language": "ar",
+      "active": "avatar",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    },
+    {
+      "language": "ar",
+      "active": "avatar-group",
+      "viewport": "320x568",
+      "density": "standard",
+      "typography": "large",
+      "noOverflow": true
+    }
+  ],
+  "errors": [],
+  "tooltipRecovery": {
+    "language": "ar",
+    "phase": "click dismissal followed by focused pointer leave/re-entry",
+    "focused": true
+  }
+}

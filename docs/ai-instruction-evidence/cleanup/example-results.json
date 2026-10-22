@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "Honest current-preferences action and accessible menu name",
+    "Enabled preference displayed",
+    "Disabled preference displayed",
+    "Local/session storage unchanged",
+    "Reload resets in-memory preference"
+  ],
+  "pageErrors": [],
+  "screenshots": ["example-enabled.png", "example-disabled.png"]
+}

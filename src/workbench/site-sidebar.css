@@ -1,0 +1,279 @@
+/* Shared by Library, Start here, Illustrations, and their detail pages. */
+.docs-shell {
+  --docs-header-height: 64px;
+  --docs-navigation-width: 300px;
+  background: var(--surface-tray);
+}
+.docs-shell .docs-header {
+  gap: var(--space-4);
+  padding-inline: var(--space-5);
+  background: var(--surface-tray);
+  border-block-end: 0;
+}
+.docs-shell .docs-header::after {
+  display: none;
+}
+.docs-header-start {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex: none;
+}
+.docs-shell .header-actions {
+  margin-inline-start: auto;
+}
+.docs-shell .docs-brand {
+  inline-size: auto;
+}
+.docs-shell .docs-navigation-toggle {
+  inline-size: var(--space-10);
+  min-block-size: var(--space-10);
+}
+.docs-shell .docs-layout {
+  grid-template-columns:
+    var(--docs-navigation-column, var(--docs-navigation-width))
+    minmax(0, 1fr) var(--docs-settings-column, 0px);
+  transition: grid-template-columns var(--motion-collapse) var(--ease-out);
+}
+.docs-shell .docs-layout[data-settings="open"] {
+  --docs-settings-column: 352px;
+}
+.docs-shell[data-navigation-hidden="true"] .docs-layout {
+  --docs-navigation-column: 0px;
+  transition-duration: var(--motion-collapse-exit);
+}
+.docs-shell .docs-sidebar {
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+}
+.docs-shell[data-mobile-navigation="true"] .docs-sidebar {
+  display: none;
+}
+.docs-navigation-inner {
+  inline-size: var(--docs-navigation-width);
+  block-size: 100%;
+  overflow-y: auto;
+  padding: var(--space-6) var(--space-4);
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+  overscroll-behavior-y: contain;
+  overflow-anchor: none;
+  opacity: 1;
+  transition: opacity var(--motion-collapse) var(--ease-out);
+}
+.docs-shell[data-navigation-hidden="true"] .docs-navigation-inner {
+  opacity: 0;
+  transition-duration: var(--motion-fast);
+}
+.docs-shell .component-nav {
+  gap: var(--space-2);
+}
+.docs-shell .component-nav-heading {
+  padding: 0 var(--space-2);
+  margin-block: 0 var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+}
+.docs-shell .component-nav-items {
+  gap: 0;
+  margin-inline-start: var(--space-2);
+  padding-inline-start: var(--space-3);
+  border-inline-start: 1px solid var(--border);
+}
+.docs-shell .component-nav button,
+.docs-shell .site-secondary a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: calc(var(--space-6) * 2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-secondary);
+  border-radius: var(--radius-control);
+  font-size: var(--text-reading);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-meta);
+  box-shadow: none;
+}
+.docs-shell .component-nav button[aria-current="page"],
+.docs-shell .site-secondary a[aria-current="page"] {
+  color: var(--text);
+  background: var(--wash);
+  font-weight: var(--weight-regular);
+}
+.docs-shell .component-nav button[aria-current="page"]::before,
+.docs-shell .site-secondary a[aria-current="page"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(-1 * var(--space-3) - 2px);
+  inset-block: var(--space-3);
+  inline-size: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--text);
+}
+.docs-shell .docs-workspace {
+  min-block-size: calc(100dvh - var(--docs-header-height) - var(--space-4));
+  margin: var(--space-2);
+  padding: var(--space-8) var(--space-8) var(--space-10);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-tray);
+  background: var(--surface);
+}
+.docs-shell .docs-drawer {
+  inline-size: min(var(--docs-navigation-width), calc(100% - var(--space-4)));
+  background: var(--surface-tray);
+}
+.docs-shell .docs-drawer-body {
+  padding: var(--space-6) var(--space-4);
+}
+.docs-shell .docs-drawer-body .site-secondary > .component-nav-heading {
+  display: none;
+}
+@media (max-width: 760px) {
+  .docs-shell .docs-header {
+    gap: 0;
+    padding-inline: var(--space-3);
+  }
+  .docs-header-start {
+    gap: var(--space-2);
+  }
+  .docs-shell .docs-workspace {
+    margin: var(--space-1);
+    padding: var(--space-6) var(--space-4) var(--space-8);
+    border-radius: var(--radius-panel);
+  }
+}
+
+.docs-navigation-sections {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100%;
+  gap: var(--space-4);
+}
+.docs-navigation-resources {
+  margin-block-start: auto;
+  padding-block-start: var(--space-4);
+}
+.docs-shell .docs-navigation-resources .component-nav-items {
+  border-inline-start-color: transparent;
+}
+
+/* Each section has one full-width disclosure and one shared hover/focus state. */
+.docs-shell .component-nav-group + .component-nav-group {
+  margin-block-start: var(--space-2);
+}
+.component-nav-heading-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+.docs-shell .component-nav-heading {
+  flex: 1;
+  min-inline-size: 0;
+  padding: 0;
+  margin: 0;
+}
+.docs-shell .component-nav .component-nav-section {
+  inline-size: 100%;
+  min-block-size: var(--space-10);
+  padding-inline: var(--space-2);
+  justify-content: flex-start;
+  white-space: normal;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--text);
+}
+.docs-shell .component-nav .component-nav-section[aria-current="page"] {
+  background: var(--wash);
+  font-weight: var(--weight-semibold);
+}
+.docs-shell .component-nav .component-nav-section::before {
+  display: none;
+}
+.component-nav-section-icon {
+  flex: none;
+  inline-size: var(--space-5);
+  block-size: var(--space-5);
+  color: var(--text-secondary);
+}
+.component-nav-section > .tz-button-label {
+  inline-size: 100%;
+  gap: var(--space-3);
+}
+.component-nav-caret {
+  flex: none;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  transform: rotate(-90deg);
+  transition: transform var(--motion-collapse) var(--ease-out);
+}
+.component-nav-caret:dir(rtl) {
+  transform: rotate(90deg);
+}
+.component-nav-toggle[aria-expanded="true"] .component-nav-caret {
+  transform: rotate(0deg);
+}
+.component-nav-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--motion-collapse-exit) var(--ease-out),
+    visibility 0s linear var(--motion-collapse-exit);
+}
+.component-nav-panel[data-open="true"] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-duration: var(--motion-collapse), 0s;
+  transition-delay: 0s;
+}
+.component-nav-clip {
+  min-block-size: 0;
+  overflow: hidden;
+}
+.component-nav-panel .component-nav-items {
+  padding-block: var(--space-1);
+  padding-inline-end: var(--space-1);
+}
+.docs-shell .docs-drawer-body {
+  overscroll-behavior-y: contain;
+  overflow-anchor: none;
+  scrollbar-gutter: stable;
+}
+@media (pointer: coarse) {
+  .docs-shell .component-nav .component-nav-section {
+    min-block-size: calc(var(--space-10) + var(--space-1));
+  }
+}
+.docs-shell .docs-navigation-resources {
+  border-block-start: 1px solid var(--border);
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-4);
+}
+
+/* The navigation trigger needs a DOM ref for Escape and drawer focus return. */
+.docs-navigation-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  inline-size: var(--control-small);
+  block-size: var(--control-small);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  .docs-navigation-toggle:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}

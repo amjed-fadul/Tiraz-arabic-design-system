@@ -1,0 +1,318 @@
+{
+  "checks": [
+    "en: native pointer/arrows/Home/End/RTL range with decimal boundaries",
+    "en: real clipboard paste, normalized Arabic digits, leading zeros, selection deletion, readonly and autofill attributes (desktop simulation)",
+    "en: leap-day selection crosses month; calendar arrows/PageUp/Home/End/Escape and focus restore",
+    "en: clear, reset and canceled native reset preserve expected values",
+    "en: Sheet/Modal portal scope, short/narrow viewport containment, ordered Escape and two-level focus restore",
+    "en: live theme/density/type/accent/corners/reduced-motion tokens reach popup",
+    "ar: native pointer/arrows/Home/End/RTL range with decimal boundaries",
+    "ar: real clipboard paste, normalized Arabic digits, leading zeros, selection deletion, readonly and autofill attributes (desktop simulation)",
+    "ar: leap-day selection crosses month; calendar arrows/PageUp/Home/End/Escape and focus restore",
+    "ar: clear, reset and canceled native reset preserve expected values",
+    "ar: Sheet/Modal portal scope, short/narrow viewport containment, ordered Escape and two-level focus restore",
+    "ar: live theme/density/type/accent/corners/reduced-motion tokens reach popup",
+    "slider: minimal live inspector updates actual control and local example feedback",
+    "slider: Arabic/English light/dark desktop/narrow documentation, clipboard code + full portable prompt",
+    "otp-input: minimal live inspector updates actual control and local example feedback",
+    "otp-input: Arabic/English light/dark desktop/narrow documentation, clipboard code + full portable prompt",
+    "date-picker: minimal live inspector updates actual control and local example feedback",
+    "date-picker: Arabic/English light/dark desktop/narrow documentation, clipboard code + full portable prompt",
+    "OS reduced motion wins",
+    "Axe scan of controls and open calendar: no violations; no manual screen-reader claim",
+    "Today selects the local Gregorian date without a UTC shift",
+    "No browser runtime errors"
+  ],
+  "geometry": [
+    {
+      "box": {
+        "x": 16,
+        "y": 423,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 25,
+        "y": 204,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 25,
+        "y": 204,
+        "width": 284,
+        "height": 207.828125
+      },
+      "viewport": {
+        "width": 390,
+        "height": 420
+      }
+    },
+    {
+      "box": {
+        "x": 25,
+        "y": 8,
+        "width": 284,
+        "height": 148.171875
+      },
+      "viewport": {
+        "width": 320,
+        "height": 320
+      }
+    },
+    {
+      "box": {
+        "x": 307,
+        "y": 529.9140625,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 29,
+        "y": 7.9140625,
+        "width": 284,
+        "height": 234.078125
+      },
+      "viewport": {
+        "width": 390,
+        "height": 420
+      }
+    },
+    {
+      "box": {
+        "x": 28,
+        "y": 7.9140625,
+        "width": 284,
+        "height": 184.078125
+      },
+      "viewport": {
+        "width": 320,
+        "height": 320
+      }
+    },
+    {
+      "box": {
+        "x": 16,
+        "y": 309,
+        "width": 284,
+        "height": 346.1875
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 800,
+        "y": 423,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 792,
+        "y": 204,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 82,
+        "y": 204,
+        "width": 284,
+        "height": 207.828125
+      },
+      "viewport": {
+        "width": 390,
+        "height": 420
+      }
+    },
+    {
+      "box": {
+        "x": 12,
+        "y": 8,
+        "width": 284,
+        "height": 148.171875
+      },
+      "viewport": {
+        "width": 320,
+        "height": 320
+      }
+    },
+    {
+      "box": {
+        "x": 509,
+        "y": 529.9140625,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 77,
+        "y": 7.9140625,
+        "width": 284,
+        "height": 234.078125
+      },
+      "viewport": {
+        "width": 390,
+        "height": 420
+      }
+    },
+    {
+      "box": {
+        "x": 8,
+        "y": 7.9140625,
+        "width": 284,
+        "height": 184.078125
+      },
+      "viewport": {
+        "width": 320,
+        "height": 320
+      }
+    },
+    {
+      "box": {
+        "x": 800,
+        "y": 309,
+        "width": 284,
+        "height": 346.1875
+      },
+      "viewport": {
+        "width": 1100,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 801,
+        "y": 488,
+        "width": 284,
+        "height": 348.59375
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 65,
+        "y": 498,
+        "width": 284,
+        "height": 348.59375
+      },
+      "viewport": {
+        "width": 390,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 801,
+        "y": 488,
+        "width": 284,
+        "height": 348.59375
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 65,
+        "y": 498,
+        "width": 284,
+        "height": 348.59375
+      },
+      "viewport": {
+        "width": 390,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 355,
+        "y": 488,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 41,
+        "y": 536,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 390,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 355,
+        "y": 488,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "box": {
+        "x": 41,
+        "y": 536,
+        "width": 284,
+        "height": 314.59375
+      },
+      "viewport": {
+        "width": 390,
+        "height": 900
+      }
+    }
+  ],
+  "errors": [],
+  "deviceAutofill": "Not tested: desktop Chromium only; clipboard/keyboard real desktop automation, autofill simulated attributes/events."
+}

@@ -1,0 +1,97 @@
+{
+  "startingCommit": "32622da0862f6702cc7b88012867aa16adfb5e9a",
+  "baseline": "2a84c371dc87110c0bb9aa271fb5c003a8255f02",
+  "branch": "codex/form-foundation",
+  "scope": ["Cancelled Select form reset", "Native validation focus ownership"],
+  "before": {
+    "focusedNewUnitTests": {
+      "passed": 4,
+      "failed": 12,
+      "total": 16
+    },
+    "chromium": {
+      "passed": 29,
+      "failed": 61,
+      "total": 90,
+      "pageErrors": 0
+    }
+  },
+  "after": {
+    "focusedUnitTests": {
+      "passed": 23,
+      "files": 2
+    },
+    "fullUnitSuite": {
+      "passed": 121,
+      "files": 15
+    },
+    "chromium": {
+      "passed": 90,
+      "failed": 0,
+      "pageErrors": 0
+    }
+  },
+  "existingBrowserRegressions": {
+    "nativeValidationCases": 15,
+    "formGeometryCombinations": 16,
+    "nestedFormFlows": 32,
+    "formPageErrors": 0,
+    "interactions": "passed; no failures",
+    "additionalRegressionChecks": 58,
+    "additionalRegressionFailures": 0,
+    "sourceCopy": {
+      "strictTypecheck": "passed",
+      "productionBuild": "passed",
+      "browserGroups": 14,
+      "pageErrors": 0
+    }
+  },
+  "independentReview": {
+    "verdict": "No actionable findings",
+    "chromiumCases": 90,
+    "pageErrors": 0,
+    "evidence": "independent-review/review.json"
+  },
+  "checks": {
+    "build": "passed",
+    "lint": "passed; no warnings",
+    "format": "passed",
+    "diffCheck": "passed"
+  },
+  "dependencies": "package.json/package-lock.json unchanged from starting commit; installed dependencies not modified",
+  "nativeMethods": "No global patches",
+  "publicAPI": "Unchanged",
+  "originalCheckout": {
+    "path": "/Users/amjedfadul/Tiraz",
+    "head": "ce78408818b6a9866ab0faa7748404cba44d8939",
+    "branch": "main",
+    "preserved": [
+      "HEAD",
+      "branch",
+      "index bytes and entries",
+      "status",
+      "complete diff",
+      "README.md and workbench.css content hashes"
+    ]
+  },
+  "evidence": {
+    "unitBefore": "unit-before.txt",
+    "unitAfter": "unit-after.txt",
+    "chromiumBefore": "before/results.json",
+    "chromiumAfter": "after/results.json",
+    "fullUnitSuite": "full-unit-output.txt",
+    "build": "build-output.txt",
+    "lint": "lint-output.txt",
+    "format": "format-output.txt",
+    "additionalFormat": "added-format-output.txt",
+    "nativeValidation": "native-validation/results.json",
+    "forms": "forms/results.json",
+    "interactions": "interactions/interactions.json",
+    "regressions": "regressions/regressions.json",
+    "sourceCopy": "source-copy/copy-build.json"
+  },
+  "limits": [
+    "Chromium on macOS verified; other engines, touch and screen readers not tested",
+    "Successful Select reset is applied in the next task after dispatch; controlled consumers must accept the callback"
+  ]
+}

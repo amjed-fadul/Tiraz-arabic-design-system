@@ -1,0 +1,175 @@
+[
+  {
+    "check": "Enter opens",
+    "value": "true"
+  },
+  {
+    "check": "Space closes",
+    "value": "false"
+  },
+  {
+    "check": "replaced detail collapse restores focus",
+    "value": "Controlled probefocus_sampleCompleted"
+  },
+  {
+    "check": "chip opens and focuses call",
+    "value": {
+      "expanded": "true",
+      "focus": "Read sample notesread_notesPending"
+    }
+  },
+  {
+    "check": "explicit simulation running",
+    "value": ["running", "pending"]
+  },
+  {
+    "check": "retry running and focus",
+    "value": {
+      "focus": "Save sample summarysave_summaryRunningRunning",
+      "states": ["completed", "running"]
+    }
+  },
+  {
+    "check": "animation cycles",
+    "value": [
+      {
+        "cycle": 0,
+        "samples": [
+          {
+            "expanded": "false",
+            "grid": "158.4px",
+            "height": 158.40003967285156,
+            "hidden": true,
+            "opacity": "1"
+          },
+          {
+            "expanded": "false",
+            "grid": "34.9496px",
+            "height": 74.40599060058594,
+            "hidden": true,
+            "opacity": "0.469744"
+          },
+          {
+            "expanded": "false",
+            "grid": "1.03306px",
+            "height": 12.809916496276855,
+            "hidden": true,
+            "opacity": "0.0809045"
+          }
+        ]
+      },
+      {
+        "cycle": 1,
+        "samples": [
+          {
+            "expanded": "true",
+            "grid": "45.758px",
+            "height": 85.13687896728516,
+            "hidden": false,
+            "opacity": "0.5375"
+          },
+          {
+            "expanded": "true",
+            "grid": "114.205px",
+            "height": 134.49766540527344,
+            "hidden": false,
+            "opacity": "0.849121"
+          },
+          {
+            "expanded": "true",
+            "grid": "147.514px",
+            "height": 152.8602752685547,
+            "hidden": false,
+            "opacity": "0.965058"
+          }
+        ]
+      },
+      {
+        "cycle": 2,
+        "samples": [
+          {
+            "expanded": "false",
+            "grid": "34.4525px",
+            "height": 73.87654876708984,
+            "hidden": true,
+            "opacity": "0.466407"
+          },
+          {
+            "expanded": "false",
+            "grid": "7.38636px",
+            "height": 34.20712661743164,
+            "hidden": true,
+            "opacity": "0.215974"
+          },
+          {
+            "expanded": "false",
+            "grid": "0px",
+            "height": 0.06456611305475235,
+            "hidden": true,
+            "opacity": "0.000421843"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "check": "RTL custom long content after dir auto fix",
+    "value": {
+      "output": {
+        "height": 288,
+        "scrollHeight": 1528,
+        "scrollWidth": 3582,
+        "width": 240
+      },
+      "pageWidth": 320,
+      "width": 320
+    }
+  },
+  {
+    "check": "OS reduced motion",
+    "value": {
+      "osReduced": true,
+      "spinner": "none",
+      "transition": "0s"
+    }
+  },
+  {
+    "check": "System reduced motion",
+    "value": {
+      "osReduced": false,
+      "spinner": "none",
+      "systemReduced": "true",
+      "transition": "0s"
+    }
+  },
+  {
+    "check": "remount after stale run stays pending",
+    "value": ["pending", "pending"]
+  },
+  {
+    "check": "Tab skips collapsed detail",
+    "value": "Check sample labelscheck_labelsRunningRunning"
+  },
+  {
+    "check": "chip hover and keyboard focus",
+    "value": {
+      "before": "rgba(0, 0, 0, 0)",
+      "hovered": {
+        "background": "rgb(234, 236, 234)",
+        "hover": true
+      },
+      "focusStyle": {
+        "focusVisible": false,
+        "outline": "2.89256px"
+      }
+    }
+  },
+  {
+    "check": "keyboard Tab chip focus visible",
+    "value": {
+      "focused": true,
+      "outline": "1.65289px",
+      "visible": true
+    }
+  }
+]

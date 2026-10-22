@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/steps-timeline.test.tsx src/workbench/generated-sequence.test.tsx src/workbench/generate-prompts.test.ts --maxWorkers=2 --testTimeout=15000
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/steps-and-timeline/Tiraz
+
+
+ Test Files  3 passed (3)
+      Tests  97 passed (97)
+   Start at  15:40:26
+   Duration  5.32s (import 49%, tests 21%, environment 19%, transform 6%, setup 4%)
+
+    Isolate  3 workers spawned · ~680ms startup each (spawn + environment, per file)
+             at least ~340ms faster with isolate: false — reuses workers across files instead of one per file
+

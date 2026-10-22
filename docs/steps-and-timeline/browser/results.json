@@ -1,0 +1,1630 @@
+{
+  "checks": [
+    "ar/light/1440/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "ar/light/1440/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "ar/light/360/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "ar/light/360/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "ar/dark/1440/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "ar/dark/1440/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "ar/dark/360/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "ar/dark/360/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "en/light/1440/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "en/light/1440/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "en/light/360/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "en/light/360/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "en/dark/1440/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "en/dark/1440/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "en/dark/360/horizontal: order, multiline alignment, rails, dates, font and overflow",
+    "en/dark/360/vertical: order, multiline alignment, rails, dates, font and overflow",
+    "320px long-content overflow",
+    "Browser form validation/focus, Back values and accurate completion",
+    "Native Tab/Space activation, current semantics and visible keyboard focus",
+    "Local timestamped append preserves order; empty state and application content work",
+    "Live orientation/theme/accent and application/OS reduced motion",
+    "Continuous documentation, category navigation, live inspector and full copied prompt/code",
+    "Documentation axe structure, names and contrast"
+  ],
+  "geometry": [
+    {
+      "lang": "ar",
+      "theme": "light",
+      "width": 1440,
+      "orientation": "horizontal",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 78.78125
+      },
+      "indicators": [
+        {
+          "x": 1152,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 848,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 544,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 892.71875,
+          "y": 252.53125,
+          "w": 283.28125,
+          "h": 46.78125
+        },
+        {
+          "x": 625.765625,
+          "y": 252.53125,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 325.375,
+          "y": 252.53125,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "65.7812px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "65.7812px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "ar",
+      "theme": "light",
+      "width": 1440,
+      "orientation": "vertical",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 172.34375
+      },
+      "indicators": [
+        {
+          "x": 1152,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 1152,
+          "y": 283.3125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 1152,
+          "y": 346.09375,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 856.71875,
+          "y": 220.53125,
+          "w": 283.28125,
+          "h": 46.78125
+        },
+        {
+          "x": 893.765625,
+          "y": 283.3125,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 897.375,
+          "y": 346.09375,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "ar",
+      "theme": "light",
+      "width": 360,
+      "orientation": "horizontal",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 197.53125
+      },
+      "indicators": [
+        {
+          "x": 312,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 412.78125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 36,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 53.765625,
+          "y": 350,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 57.375,
+          "y": 412.78125,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "ar",
+      "theme": "light",
+      "width": 360,
+      "orientation": "vertical",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 197.53125
+      },
+      "indicators": [
+        {
+          "x": 312,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 412.78125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 36,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 53.765625,
+          "y": 350,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 57.375,
+          "y": 412.78125,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "orientation": "horizontal",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 78.78125
+      },
+      "indicators": [
+        {
+          "x": 1152,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 848,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 544,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 892.71875,
+          "y": 252.53125,
+          "w": 283.28125,
+          "h": 46.78125
+        },
+        {
+          "x": 625.765625,
+          "y": 252.53125,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 325.375,
+          "y": 252.53125,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "65.7812px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "65.7812px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "orientation": "vertical",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 172.34375
+      },
+      "indicators": [
+        {
+          "x": 1152,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 1152,
+          "y": 283.3125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 1152,
+          "y": 346.09375,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 856.71875,
+          "y": 220.53125,
+          "w": 283.28125,
+          "h": 46.78125
+        },
+        {
+          "x": 893.765625,
+          "y": 283.3125,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 897.375,
+          "y": 346.09375,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "ar",
+      "theme": "dark",
+      "width": 360,
+      "orientation": "horizontal",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 197.53125
+      },
+      "indicators": [
+        {
+          "x": 312,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 412.78125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 36,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 53.765625,
+          "y": 350,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 57.375,
+          "y": 412.78125,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "ar",
+      "theme": "dark",
+      "width": 360,
+      "orientation": "vertical",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 197.53125
+      },
+      "indicators": [
+        {
+          "x": 312,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 312,
+          "y": 412.78125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 36,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 53.765625,
+          "y": 350,
+          "w": 246.234375,
+          "h": 46.78125
+        },
+        {
+          "x": 57.375,
+          "y": 412.78125,
+          "w": 242.625,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "إضافة ملاحظات تفصيلية لمراجعة الطلب مع جميع أعضاء فريق المشروع",
+            "تجهيز المعاينة"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "orientation": "horizontal",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 103.96875
+      },
+      "indicators": [
+        {
+          "x": 264,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 568,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 872,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 264,
+          "y": 252.53125,
+          "w": 292,
+          "h": 71.96875
+        },
+        {
+          "x": 568,
+          "y": 252.53125,
+          "w": 292,
+          "h": 71.96875
+        },
+        {
+          "x": 872,
+          "y": 252.53125,
+          "w": 292,
+          "h": 71.96875
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "90.9688px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "90.9688px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 1440,
+      "orientation": "vertical",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 172.34375
+      },
+      "indicators": [
+        {
+          "x": 264,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 264,
+          "y": 283.3125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 264,
+          "y": 346.09375,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 300,
+          "y": 220.53125,
+          "w": 435.46875,
+          "h": 46.78125
+        },
+        {
+          "x": 300,
+          "y": 283.3125,
+          "w": 322.015625,
+          "h": 46.78125
+        },
+        {
+          "x": 300,
+          "y": 346.09375,
+          "w": 380.125,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 360,
+      "orientation": "horizontal",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 247.90625
+      },
+      "indicators": [
+        {
+          "x": 24,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 437.96875,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 60,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 350,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 437.96875,
+          "w": 264,
+          "h": 71.96875
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "light",
+      "width": 360,
+      "orientation": "vertical",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 247.90625
+      },
+      "indicators": [
+        {
+          "x": 24,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 437.96875,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 60,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 350,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 437.96875,
+          "w": 264,
+          "h": 71.96875
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "orientation": "horizontal",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 103.96875
+      },
+      "indicators": [
+        {
+          "x": 264,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 568,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 872,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 264,
+          "y": 252.53125,
+          "w": 292,
+          "h": 71.96875
+        },
+        {
+          "x": 568,
+          "y": 252.53125,
+          "w": 292,
+          "h": 71.96875
+        },
+        {
+          "x": 872,
+          "y": 252.53125,
+          "w": 292,
+          "h": 71.96875
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "90.9688px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "32px",
+          "block": "12px",
+          "end": "90.9688px",
+          "borderInline": "0px",
+          "borderBlock": "1px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 1440,
+      "orientation": "vertical",
+      "documentWidth": 1440,
+      "list": {
+        "x": 264,
+        "y": 220.53125,
+        "w": 912,
+        "h": 172.34375
+      },
+      "indicators": [
+        {
+          "x": 264,
+          "y": 220.53125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 264,
+          "y": 283.3125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 264,
+          "y": 346.09375,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 300,
+          "y": 220.53125,
+          "w": 435.46875,
+          "h": 46.78125
+        },
+        {
+          "x": 300,
+          "y": 283.3125,
+          "w": 322.015625,
+          "h": 46.78125
+        },
+        {
+          "x": 300,
+          "y": 346.09375,
+          "w": 380.125,
+          "h": 46.78125
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 360,
+      "orientation": "horizontal",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 247.90625
+      },
+      "indicators": [
+        {
+          "x": 24,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 437.96875,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 60,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 350,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 437.96875,
+          "w": 264,
+          "h": 71.96875
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    },
+    {
+      "lang": "en",
+      "theme": "dark",
+      "width": 360,
+      "orientation": "vertical",
+      "documentWidth": 360,
+      "list": {
+        "x": 24,
+        "y": 262.03125,
+        "w": 312,
+        "h": 247.90625
+      },
+      "indicators": [
+        {
+          "x": 24,
+          "y": 262.03125,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 350,
+          "w": 24,
+          "h": 24
+        },
+        {
+          "x": 24,
+          "y": 437.96875,
+          "w": 24,
+          "h": 24
+        }
+      ],
+      "labels": [
+        {
+          "x": 60,
+          "y": 262.03125,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 350,
+          "w": 264,
+          "h": 71.96875
+        },
+        {
+          "x": 60,
+          "y": 437.96875,
+          "w": 264,
+          "h": 71.96875
+        }
+      ],
+      "rails": [
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "\"\"",
+          "inline": "12px",
+          "block": "28px",
+          "end": "4px",
+          "borderInline": "1px",
+          "borderBlock": "0px"
+        },
+        {
+          "content": "none",
+          "inline": "auto",
+          "block": "auto",
+          "end": "auto",
+          "borderInline": "0px",
+          "borderBlock": "0px"
+        }
+      ],
+      "timeline": [
+        {
+          "trailing": "none",
+          "order": [
+            "Add detailed application notes for review with every member of the project team",
+            "Preview prepared"
+          ]
+        },
+        {
+          "trailing": "none",
+          "order": []
+        },
+        {
+          "trailing": "none",
+          "order": [
+            "Later supplied first",
+            "Earlier supplied second"
+          ]
+        }
+      ],
+      "font": "\"IBM Plex Sans Arabic\", sans-serif"
+    }
+  ],
+  "errors": []
+}

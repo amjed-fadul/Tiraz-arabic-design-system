@@ -1,0 +1,50 @@
+# Changed implementation files
+
+- `README.md`
+- `docs/superpowers/plans/2026-10-13-form-foundation.md`
+- `package-lock.json`
+- `package.json`
+- `src/system/Field.tsx`
+- `src/system/Input.tsx`
+- `src/system/Select.tsx`
+- `src/system/ai/README.md`
+- `src/system/ai/composition.md`
+- `src/system/ai/examples/CreateCustomer.tsx`
+- `src/system/ai/examples/usage.tsx`
+- `src/system/ai/registry.json`
+- `src/system/components.css`
+- `src/system/control-associations.ts`
+- `src/system/forms.test.tsx`
+- `src/system/index.ts`
+- `src/system/tokens.css`
+- `src/workbench/ApiReference.tsx`
+- `src/workbench/Examples.tsx`
+- `src/workbench/Inspector.tsx`
+- `src/workbench/Playground.tsx`
+- `src/workbench/Workbench.test.tsx`
+- `src/workbench/catalog.ts`
+- `src/workbench/customer-flow.test.tsx`
+- `src/workbench/fields.ts`
+- `src/workbench/form-playground.test.tsx`
+- `src/workbench/generate-prompts.test.ts`
+- `src/workbench/generate.ts`
+- `src/workbench/generated-code.test.ts`
+- `src/workbench/model.test.ts`
+- `src/workbench/model.ts`
+- `src/workbench/workbench.css`
+- `tests/ai-exercise/App.tsx`
+- `tests/ai-exercise/exercise-notes.md`
+- `tests/ai-exercise/prepare.mjs`
+- `tests/ai-exercise/verify.mjs`
+- `tests/browser/customer-captures.mjs`
+- `tests/browser/customization.mjs`
+- `tests/browser/forms-fixture.html`
+- `tests/browser/forms-fixture.tsx`
+- `tests/browser/forms.mjs`
+- `tests/browser/interactions.mjs`
+- `tests/browser/inventory.mjs`
+- `tests/browser/menu-focus-race.mjs`
+- `tests/browser/native-validation.mjs`
+- `tests/browser/regressions.mjs`
+
+Milestone evidence, review notes, screenshots and verification logs are under `docs/form-foundation/`. Historical evidence under `docs/review-evidence/` is preserved.

@@ -1,0 +1,103 @@
+[
+  {
+    "check": "controlled collapse recovers panel focus",
+    "result": {
+      "focused": "Preparing summary",
+      "inert": "",
+      "panelHidden": true
+    }
+  },
+  {
+    "check": "controlled collapse preserves outside focus",
+    "focused": "Outside"
+  },
+  {
+    "check": "collapse with replaced focused child recovers focus",
+    "focused": "Preparing summary"
+  },
+  {
+    "check": "animation and disclosure do not mutate status text",
+    "events": []
+  },
+  {
+    "check": "one atomic polite label update, no animated frame updates",
+    "events": ["Summary ready"],
+    "live": [
+      {
+        "atomic": "true",
+        "live": "polite",
+        "text": "Loading notes Notes will appear here when available."
+      },
+      {
+        "atomic": "true",
+        "live": "polite",
+        "text": "Loading local sample"
+      },
+      {
+        "atomic": "true",
+        "live": "polite",
+        "text": "Preparing reply"
+      },
+      {
+        "atomic": "true",
+        "live": "polite",
+        "text": "Summary ready"
+      },
+      {
+        "atomic": "true",
+        "live": "polite",
+        "text": "Demo ready"
+      }
+    ]
+  },
+  {
+    "check": "disclosure usable during activity and cancel retains focus",
+    "expanded": "true",
+    "cancelFocus": "Cancel demo"
+  },
+  {
+    "check": "scheduled completion preserves Cancel focus",
+    "focused": "Cancel demo"
+  },
+  {
+    "check": "application reduced motion stops dots, spinner, skeleton and chevron transitions",
+    "chevron": "0s",
+    "dots": ["none", "none", "none", "none", "none", "none"],
+    "skeleton": "none",
+    "spinner": "none"
+  },
+  {
+    "check": "OS reduced motion stops all decorative activity motion",
+    "chevron": "0s",
+    "dots": ["none", "none", "none", "none", "none", "none"],
+    "skeleton": "none",
+    "spinner": "none"
+  },
+  {
+    "check": "detail input value retained across collapse",
+    "value": "Retained browser note"
+  },
+  {
+    "check": "actual browser clipboard matches displayed compiling code and portable prompt",
+    "codeCharacters": 5766,
+    "promptCharacters": 7567
+  },
+  {
+    "check": "unmount/remount during simulation leaves fresh demo idle after prior deadlines",
+    "status": "Demo ready"
+  },
+  {
+    "check": "Enter/Space disclosure and collapsed tab order",
+    "language": "ar",
+    "collapsed": "false",
+    "next": "Collapse later",
+    "expandedFocus": "tz-field-_r_1_"
+  },
+  {
+    "check": "Enter/Space disclosure and collapsed tab order",
+    "language": "en",
+    "collapsed": "false",
+    "next": "Collapse later",
+    "expandedFocus": "tz-field-_r_1_"
+  }
+]

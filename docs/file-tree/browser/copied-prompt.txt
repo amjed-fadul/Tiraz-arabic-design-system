@@ -1,0 +1,197 @@
+اعثر أولًا على طِراز داخل المشروع الحالي، سواء كان مشروعًا كاملًا أو نسخة المصدر في تطبيق آخر. إذا لم تتمكن من العثور على النظام، أبلغ بذلك بوضوح وتوقف. حدّد جذر المصدر: المجلد الذي يحوي index.ts وconfig.ts وtokens.css وcomponents.css وai/. في المشروع الكامل يكون عادة src/system؛ مثل src/system/FileTree.tsx. اقرأ ai/README.md وai/registry.json لقسم file-tree وواجهات الدعم وai/composition.md، ثم افحص FileTree.tsx وindex.ts وconfig.ts وProvider.tsx والأنماط وإعداد الخط المحلي في التطبيق. لصور Avatar احتفظ بـ ai/assets/sara.jpg وai/assets/omar.jpg وai/assets/README.md وai/assets/LICENSE.txt عند نسخ المصدر، وعدّل الاستيرادات المحلية. مسارات السجل نسبية إلى جذر المصدر، ولا تتطلب نسخة المصدر README للمشروع أو src/main.tsx. استخدم شجرة الملفات بالخصائص والإعدادات الحالية كما في المثال. عدّل استيرادات ./system ومسارات CSS إلى موقع المكتبة، واربط الأحداث بسلوك التطبيق المطلوب، وتحقق من العرض الفعلي والاتجاه والتخصيص ولوحة المفاتيح والتركيز والأسماء الميسرة. لا تخترع تصديرات أو خصائص ولا تضف مثبتًا أو CLI.
+FileTree يعرض بيانات يزوّدها التطبيق فقط. onActivate يفوّض فتح الملف للتطبيق، والمعاينة تقرأ نصوص المثال المحلية دون نظام ملفات.
+
+SystemProvider: {"accent":"sage","density":"compact","typography":"standard","radius":8,"reducedMotion":false,"direction":"rtl","theme":"light"}
+
+ضع المثال في ملف مناسب داخل تطبيقك بعد تعديل مسارات الاستيراد. احتفظ بحزمة ai/ عند نسخ المكتبة.
+
+```tsx
+import { useState } from "react";
+import { EmptyState, FileTree } from "./system";
+import type { FileTreeFile, FileTreeNode } from "./system";
+export interface FileTreeExampleProps {
+  language?: "ar" | "en";
+  mode?: "controlled" | "uncontrolled";
+  metadata?: boolean;
+  empty?: boolean;
+}
+/** All names and preview strings belong to this application example. */
+export function FileTreeExample({
+  language = "ar",
+  mode = "uncontrolled",
+  metadata = true,
+  empty = false,
+}: FileTreeExampleProps) {
+  const ar = language === "ar";
+  const [expanded, setExpanded] = useState<string[]>([
+    "project",
+    "src",
+    "components",
+  ]);
+  const [selected, setSelected] = useState<string | null>("app");
+  const files: Record<string, string> = {
+    app: 'import { Welcome } from "./components/Welcome";\n\nexport function App() {\n  return <Welcome />;\n}',
+    welcome: ar
+      ? "// محتوى نموذجي يملكه التطبيق\nexport const Welcome = () => <h1>مرحبًا بك</h1>;"
+      : "export const Welcome = () => <h1>Welcome</h1>;",
+    tokens: ":root {\n  --space: 8px;\n  --surface: #ffffff;\n}",
+    guide: ar
+      ? "# دليل المشروع\n\nأسماء ومحتوى نموذجي يزوّدها التطبيق."
+      : "# Project guide\n\nSample names and content supplied by the application.",
+    package: '{ "name": "tiraz-project", "private": true }',
+  };
+  const file = (id: string, name: string, detail: string): FileTreeFile => ({
+    id,
+    kind: "file",
+    name,
+    metadata: metadata ? detail : undefined,
+  });
+  const nodes: FileTreeNode[] = [
+    {
+      id: "project",
+      kind: "folder",
+      name: ar ? "مشروع طراز" : "tiraz-project",
+      children: [
+        {
+          id: "src",
+          kind: "folder",
+          name: "src",
+          children: [
+            {
+              id: "components",
+              kind: "folder",
+              name: "components",
+              children: [file("welcome", "Welcome.tsx", "1.2 KB")],
+            },
+            file("app", "App.tsx", "860 B"),
+            file("tokens", "tokens.css", "420 B"),
+          ],
+        },
+        {
+          id: "docs",
+          kind: "folder",
+          name: ar ? "التوثيق" : "docs",
+          children: [
+            file(
+              "guide",
+              "دليل-project-setup-and-contribution-notes.md",
+              "2.4 KB",
+            ),
+          ],
+        },
+        file("package", "package.json", "310 B"),
+      ],
+    },
+  ];
+  const selectedName = (function find(
+    items: readonly FileTreeNode[],
+  ): string | undefined {
+    for (const node of items) {
+      if (node.id === selected && node.kind === "file") return node.name;
+      if (node.kind === "folder") {
+        const name = find(node.children);
+        if (name) return name;
+      }
+    }
+  })(nodes);
+  return (
+    <div style={{ display: "grid", gap: "var(--space-4)", minInlineSize: 0 }}>
+      <p
+        style={{
+          margin: 0,
+          color: "var(--text-secondary)",
+          fontSize: "var(--text-meta)",
+        }}
+      >
+        {ar
+          ? "بيانات يزوّدها التطبيق. انقر أو اضغط المسافة لتحديد ملف ومعاينة نصه النموذجي. Enter ينشط الملف؛ الأسهم تنقل التركيز فقط."
+          : "Application-supplied data. Click or press Space to select a file and preview its sample text. Enter activates the file; arrows move focus only."}
+      </p>
+      <FileTree
+        nodes={empty ? [] : nodes}
+        label={ar ? "ملفات المشروع" : "Project files"}
+        {...(mode === "controlled"
+          ? {
+              expandedIds: expanded,
+              onExpandedChange: setExpanded,
+              selectedId: selected,
+            }
+          : {
+              defaultExpandedIds: ["project", "src", "components"],
+              defaultSelectedId: "app",
+            })}
+        onSelectedChange={setSelected}
+        onActivate={(node) => setSelected(node.id)}
+        emptyState={
+          <EmptyState
+            title={ar ? "لا توجد ملفات" : "No files"}
+            description={
+              ar
+                ? "أضف بيانات المشروع في تطبيقك لعرضها هنا."
+                : "Supply project data from your application to display it here."
+            }
+          />
+        }
+      />
+      {!empty && (
+        <section
+          aria-label={ar ? "معاينة الملف" : "File preview"}
+          style={{
+            minInlineSize: 0,
+            borderBlockStart: "1px solid var(--border)",
+            paddingBlockStart: "var(--space-3)",
+          }}
+        >
+          {selectedName ? (
+            <>
+              <p
+                style={{
+                  margin: "0 0 var(--space-2)",
+                  fontSize: "var(--text-meta)",
+                  overflowWrap: "anywhere",
+                }}
+              >
+                <bdi>{selectedName}</bdi> · {ar ? "نص نموذجي" : "Sample text"}
+              </p>
+              <pre
+                dir="auto"
+                style={{
+                  margin: 0,
+                  padding: "var(--space-3)",
+                  background: "var(--surface-subtle)",
+                  borderRadius: "var(--radius)",
+                  fontSize: "var(--text-meta)",
+                  whiteSpace: "pre-wrap",
+                  overflowWrap: "anywhere",
+                }}
+              >
+                {selected ? files[selected] : ""}
+              </pre>
+            </>
+          ) : (
+            <p
+              style={{
+                margin: 0,
+                fontSize: "var(--text-meta)",
+                color: "var(--text-secondary)",
+              }}
+            >
+              {ar
+                ? "حدد ملفًا لمعاينة نصه النموذجي."
+                : "Select a file to preview its sample text."}
+            </p>
+          )}
+        </section>
+      )}
+    </div>
+  );
+}
+
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() { return <div lang={"ar"}><SystemProvider config={{...defaultConfig,...{"accent":"sage","density":"compact","typography":"standard","radius":8,"reducedMotion":false,"direction":"rtl","theme":"light"}}}><div style={{display:"grid",gap:"var(--space-8)",minInlineSize:0}}><FileTreeExample language={"ar"} {...{"mode":"uncontrolled","metadata":true,"empty":false}} /></div></SystemProvider></div>; }
+```

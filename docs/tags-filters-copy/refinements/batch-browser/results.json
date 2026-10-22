@@ -1,0 +1,1056 @@
+{
+  "checks": [
+    "48 component/language/theme/density/viewport layouts: no overflow/overlap or axe A/AA findings; real clipboard succeeds in both directions/themes/densities",
+    "tag trimming, duplicate announcement, IME, keyboard removal/focus, committed form data/reset and native literal paste",
+    "live maximum/read-only/disabled controls preserve existing tags",
+    "combined local filters, individual removal, Clear all and focus",
+    "exact long clipboard value, keyboard selection, honest simulated failure/unavailable access and cancellation of a pending write",
+    "live accent/typography/corners, app and OS reduced-motion settings",
+    "all three examples fit a 320px viewport"
+  ],
+  "geometry": [
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "compact",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "light",
+      "density": "standard",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "compact",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "ar",
+      "theme": "dark",
+      "density": "standard",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "compact",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "light",
+      "density": "standard",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "compact",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 202,
+          "scroll": 202,
+          "client": 202
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "width": 1440,
+      "component": "tag-input",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 658,
+          "client": 658
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "width": 1440,
+      "component": "filter-bar",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 660,
+          "scroll": 660,
+          "client": 660
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "width": 1440,
+      "component": "input-copy",
+      "document": 1440,
+      "body": 1440,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "width": 390,
+      "component": "tag-input",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 306,
+          "client": 306
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        },
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "width": 390,
+      "component": "filter-bar",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 308,
+          "scroll": 308,
+          "client": 308
+        }
+      ],
+      "chips": [
+        {
+          "separated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "theme": "dark",
+      "density": "standard",
+      "width": 390,
+      "component": "input-copy",
+      "document": 390,
+      "body": 390,
+      "controls": [
+        {
+          "width": 208,
+          "scroll": 208,
+          "client": 208
+        }
+      ],
+      "chips": []
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "clipboard": "Real Chrome write/read for success; failure/unavailable/pending results simulated explicitly"
+}

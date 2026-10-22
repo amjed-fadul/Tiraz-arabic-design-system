@@ -1,0 +1,4 @@
+PASS 32 ar/en × light/dark × typography × density × desktop/264px-short layouts: at most5rows, all201years scroll, viewport containment, preserved date and Escape focus
+PASS Sheet/Modal in both languages: short viewport, Home/End/arrow/Enter, no date commit, year→calendar→dialog Escape ordering and focus restoration
+PASS Min/max two-year menu stays bounded; open year menu Axe scan has zero violations
+PASS No browser runtime errors

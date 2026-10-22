@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/files-colors.test.tsx src/workbench/files-colors-pages.test.tsx src/workbench/generated-code.test.ts src/workbench/generate-prompts.test.ts src/system/ai-registry.test.ts --maxWorkers=2
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/files-and-colors/Tiraz
+
+
+ Test Files  5 passed (5)
+      Tests  104 passed (104)
+   Start at  01:32:02
+   Duration  14.98s (tests 68%, environment 14%, import 9%, transform 7%, setup 3%)
+
+    Isolate  5 workers spawned · ~913ms startup each (spawn + environment, per file)
+             at least ~1.37s faster with isolate: false — reuses workers across files instead of one per file
+

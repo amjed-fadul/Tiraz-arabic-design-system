@@ -4,6 +4,7 @@ import { afterEach } from "vitest";
 afterEach(() => {
   cleanup();
   localStorage.clear();
+  window.history.replaceState({}, "", "/");
 });
 window.matchMedia = (query: string) => ({
   matches: false,
@@ -21,7 +22,10 @@ class TestResizeObserver {
   disconnect() {}
 }
 globalThis.ResizeObserver = TestResizeObserver;
+// jsdom has no range geometry; SelectionActions places its toolbar from it.
+Range.prototype.getBoundingClientRect = () => new DOMRect();
 HTMLElement.prototype.scrollIntoView = () => {};
+window.scrollTo = () => {};
 HTMLElement.prototype.hasPointerCapture = () => false;
 HTMLElement.prototype.setPointerCapture = () => {};
 HTMLElement.prototype.releasePointerCapture = () => {};

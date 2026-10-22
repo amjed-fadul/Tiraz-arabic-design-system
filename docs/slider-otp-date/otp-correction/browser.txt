@@ -1,0 +1,6 @@
+PASS 32 layout combinations × empty/partial/full/000000: digit centers within 0.5px in both axes, single active ring, neutral borders, no duplicate native paint
+PASS ar: every slot click with empty/partial/full/zeros; arrows/Home/End, backward/forward selection, Shift-click, drag, Delete/Backspace, replacement, clipboard paste/copy, undo and imperative selection
+PASS ar: disabled/readonly selection, separate error borders and active focus, controlled rejection/external value, reset
+PASS en: every slot click with empty/partial/full/zeros; arrows/Home/End, backward/forward selection, Shift-click, drag, Delete/Backspace, replacement, clipboard paste/copy, undo and imperative selection
+PASS en: disabled/readonly selection, separate error borders and active focus, controlled rejection/external value, reset
+PASS No browser runtime errors; autofill attributes retained (no actual mobile/SMS autofill test)

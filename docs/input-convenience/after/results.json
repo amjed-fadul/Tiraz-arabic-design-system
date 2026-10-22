@@ -1,0 +1,87 @@
+{
+  "captures": [
+    "input-ar-light-1440.png",
+    "sheet-ar-light-1440.png",
+    "input-ar-light-390.png",
+    "sheet-ar-light-390.png",
+    "input-ar-dark-1440.png",
+    "sheet-ar-dark-1440.png",
+    "input-ar-dark-390.png",
+    "sheet-ar-dark-390.png",
+    "input-en-light-1440.png",
+    "sheet-en-light-1440.png",
+    "input-en-light-390.png",
+    "sheet-en-light-390.png",
+    "input-en-dark-1440.png",
+    "sheet-en-dark-1440.png",
+    "input-en-dark-390.png",
+    "sheet-en-dark-390.png"
+  ],
+  "checks": [
+    "ar light 1440: direct Input examples, associations and shared appearance",
+    "ar light 1440: Sheet validates, focuses, saves once",
+    "ar light 390: direct Input examples, associations and shared appearance",
+    "ar light 390: Sheet validates, focuses, saves once",
+    "ar dark 1440: direct Input examples, associations and shared appearance",
+    "ar dark 1440: Sheet validates, focuses, saves once",
+    "ar dark 390: direct Input examples, associations and shared appearance",
+    "ar dark 390: Sheet validates, focuses, saves once",
+    "en light 1440: direct Input examples, associations and shared appearance",
+    "en light 1440: Sheet validates, focuses, saves once",
+    "en light 390: direct Input examples, associations and shared appearance",
+    "en light 390: Sheet validates, focuses, saves once",
+    "en dark 1440: direct Input examples, associations and shared appearance",
+    "en dark 1440: Sheet validates, focuses, saves once",
+    "en dark 390: direct Input examples, associations and shared appearance",
+    "en dark 390: Sheet validates, focuses, saves once",
+    {
+      "sharedCustomization": [
+        {
+          "height": 40,
+          "font": "16px",
+          "radius": "16px",
+          "action": "#365B87"
+        },
+        {
+          "height": 36,
+          "font": "16px",
+          "radius": "16px",
+          "action": "#365B87"
+        },
+        {
+          "height": 36,
+          "font": "16px",
+          "radius": "16px",
+          "action": "#365B87"
+        },
+        {
+          "height": 36,
+          "font": "16px",
+          "radius": "16px",
+          "action": "#365B87"
+        },
+        {
+          "height": 36,
+          "font": "16px",
+          "radius": "16px",
+          "action": "#365B87"
+        },
+        {
+          "height": 36,
+          "font": "16px",
+          "radius": "16px",
+          "action": "#365B87"
+        }
+      ]
+    },
+    {
+      "savedPageRedirect": true,
+      "customizationPersists": true,
+      "codeLength": 1074,
+      "promptLength": 2393,
+      "promptRow": 1
+    },
+    "Field composition API disclosed under Input; Select stays component-focused"
+  ],
+  "errors": []
+}

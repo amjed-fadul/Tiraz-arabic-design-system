@@ -1,0 +1,123 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/avatar-overlays-empty-state.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+ ❯ src/system/avatar-overlays-empty-state.test.tsx (17 tests | 17 failed) 71ms
+   × names an Avatar once, with deliberate fallback during load and failure 23ms
+   × retries changed and removed/reintroduced image sources without stale failure 3ms
+   × can hide an Avatar's naming beside equivalent text, forwarding its ref 5ms
+   × keeps rtl group member order and translated noninteractive overflow 8ms
+   × keeps ltr group member order and translated noninteractive overflow 4ms
+   × normalizes group limit 0 without dropping members 1ms
+   × normalizes group limit -1 without dropping members 1ms
+   × normalizes group limit 1.8 without dropping members 1ms
+   × normalizes group limit Infinity without dropping members 1ms
+   × normalizes group limit NaN without dropping members 1ms
+   × preserves Tooltip trigger ref/name/existing descriptions and dismisses on Escape 6ms
+   × delays hover, allows tooltip hover, closes on leave and cancels pending work 5ms
+   × names and focuses Modal in controlled=false mode, traps Tab and restores trigger 4ms
+   × names and focuses Modal in controlled=true mode, traps Tab and restores trigger 2ms
+   × dismisses Modal on an outside pointer and restores focus 1ms
+   × scopes nested menu, Select and Tooltip to Modal, dismissing one layer at a time 2ms
+   × renders optional EmptyState slots and hides each geometric illustration from AT 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > names an Avatar once, with deliberate fallback during load and failure
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > retries changed and removed/reintroduced image sources without stale failure
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > normalizes group limit 0 without dropping members
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > normalizes group limit -1 without dropping members
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > normalizes group limit 1.8 without dropping members
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > normalizes group limit Infinity without dropping members
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > normalizes group limit NaN without dropping members
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > renders optional EmptyState slots and hides each geometric illustration from AT
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/17]⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > can hide an Avatar's naming beside equivalent text, forwarding its ref
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ createChild node_modules/react-dom/cjs/react-dom-client.development.js:6701:26
+ ❯ reconcileChildrenArray node_modules/react-dom/cjs/react-dom-client.development.js:7033:25
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7357:20
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/17]⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > keeps rtl group member order and translated noninteractive overflow
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > keeps ltr group member order and translated noninteractive overflow
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > delays hover, allows tooltip hover, closes on leave and cancels pending work
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12468:13
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/17]⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > preserves Tooltip trigger ref/name/existing descriptions and dismisses on Escape
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ createChild node_modules/react-dom/cjs/react-dom-client.development.js:6701:26
+ ❯ reconcileChildrenArray node_modules/react-dom/cjs/react-dom-client.development.js:7033:25
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7357:20
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12468:13
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/17]⎯
+
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > names and focuses Modal in controlled=false mode, traps Tab and restores trigger
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > names and focuses Modal in controlled=true mode, traps Tab and restores trigger
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > dismisses Modal on an outside pointer and restores focus
+ FAIL  src/system/avatar-overlays-empty-state.test.tsx > scopes nested menu, Select and Tooltip to Modal, dismissing one layer at a time
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `DialogExample`.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ createChild node_modules/react-dom/cjs/react-dom-client.development.js:6701:26
+ ❯ reconcileChildrenArray node_modules/react-dom/cjs/react-dom-client.development.js:7033:25
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7357:20
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12468:13
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/17]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  17 failed (17)
+   Start at  21:23:35
+   Duration  4.13s (environment 56%, transform 16%, import 14%, setup 11%, tests 3%)
+

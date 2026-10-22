@@ -1,0 +1,50 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/sidebar-foundation/Tiraz
+
+ ❯ src/system/SidebarExamples.test.tsx (1 test | 1 failed) 126ms
+   × retains native modified destinations without changing the current sample note 125ms
+ ❯ src/examples/dashboard/Dashboard.test.tsx (8 tests | 1 failed) 3664ms
+   × preserves the current dashboard destination and focus on modified native links 79ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/SidebarExamples.test.tsx > retains native modified destinations without changing the current sample note
+Error: expect(element).toHaveAttribute("aria-current", "page") // element.getAttribute("aria-current") === "page"
+
+Expected the element to have attribute:
+  aria-current="page"
+Received:
+  null
+ ❯ src/system/SidebarExamples.test.tsx:11:17
+      9|   const layout=within(nav).getByRole("link",{name:"Layout"});
+     10|   fireEvent.click(layout,{ctrlKey:true});
+     11|   expect(guide).toHaveAttribute("aria-current","page");
+       |                 ^
+     12|   expect(layout).not.toHaveAttribute("aria-current");
+     13|   fireEvent.click(layout);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/examples/dashboard/Dashboard.test.tsx > preserves the current dashboard destination and focus on modified native links
+Error: expect(element).toHaveAttribute("aria-current", "page") // element.getAttribute("aria-current") === "page"
+
+Expected the element to have attribute:
+  aria-current="page"
+Received:
+  null
+ ❯ src/examples/dashboard/Dashboard.test.tsx:187:20
+    185|   orders.focus();
+    186|   fireEvent.click(orders,{metaKey:true});
+    187|   expect(overview).toHaveAttribute("aria-current","page");
+       |                    ^
+    188|   expect(orders).toHaveFocus();
+    189| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  2 failed | 7 passed (9)
+   Start at  18:03:32
+   Duration  5.05s (tests 60%, environment 18%, import 12%, transform 6%, setup 4%)
+

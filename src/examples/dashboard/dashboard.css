@@ -1,0 +1,248 @@
+.dashboard {
+  container: dashboard-main / inline-size;
+  --dashboard-card-gap: var(--space-4);
+  --dashboard-row-gap: var(--space-4);
+  min-inline-size: 0;
+}
+/* Equal axes keep the inbox count circular in both numeral systems. */
+.dashboard-inbox .tz-badge {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  padding: 0;
+  border-radius: 50%;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.dashboard section {
+  scroll-margin-block-start: var(--space-6);
+  min-inline-size: 0;
+}
+.dashboard > section:focus {
+  outline: none;
+}
+.dashboard-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+.dashboard h1,
+.dashboard h2,
+.dashboard h3,
+.dashboard p,
+.dashboard dl,
+.dashboard dd {
+  margin: 0;
+}
+.dashboard h2 {
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+}
+.dashboard-muted {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+/* Metrics share one quiet surface: label, figure and note use the same
+   padding, so the value carries the hierarchy without an inner paper tray. */
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--dashboard-card-gap);
+  padding-block-end: var(--space-8);
+}
+.dashboard-metric {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-tray);
+  background: var(--surface-tray);
+}
+.dashboard-metric-label {
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+}
+.dashboard-metric-value {
+  font-size: var(--text-figure);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-figure);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dashboard-metric-note {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.dashboard-section {
+  border-block-start: 1px solid var(--border);
+  padding-block: var(--space-6);
+}
+.dashboard-section-heading {
+  margin-block-end: var(--space-6);
+}
+.dashboard-section-heading > .tz-select .tz-select-trigger {
+  inline-size: 128px;
+  flex-shrink: 0;
+}
+/* Rows span the column. The cards in a row share one height, and the paper
+   takes what the stretch adds, so no space pools under a footer. */
+.dashboard-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--dashboard-card-gap);
+  align-items: stretch;
+}
+.dashboard-row + .dashboard-row {
+  margin-block-start: var(--dashboard-row-gap);
+}
+.dashboard :is(.tz-change-summary, .tz-data-answer) {
+  max-inline-size: none;
+}
+.dashboard-card,
+.dashboard-row > :is(.tz-change-summary, .tz-data-answer) {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.dashboard-row
+  :is(.dashboard-card, .tz-change-summary, .tz-data-answer)
+  > .tz-tray,
+.dashboard-row .tz-tray-paper {
+  flex: 1;
+}
+.dashboard-card-title {
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+}
+.dashboard-card .tz-tray-paper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/* A chart's data table has two columns, so it fits its card's paper instead
+   of keeping the system table's 32rem floor and hiding the values. */
+.dashboard-card .tz-table {
+  min-inline-size: 0;
+}
+/* Stretched, What changed spaces its rows evenly down the paper, and an
+   answer's note (empty or failed) sits in the middle of it. */
+.dashboard-row .tz-change-summary-paper {
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-row .tz-change-summary-rows {
+  flex: 1;
+  grid-auto-rows: 1fr;
+}
+.dashboard-row .tz-data-answer-paper {
+  align-content: center;
+}
+.dashboard-filters {
+  margin-block-end: var(--space-4);
+}
+.dashboard-filters .tz-filter-search {
+  max-inline-size: 320px;
+  flex: 1 1 180px;
+  min-inline-size: 0;
+}
+.dashboard-filters .tz-select .tz-select-trigger {
+  inline-size: 136px;
+}
+.dashboard-customer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.dashboard .tz-data-table,
+.dashboard .tz-table-container {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+.dashboard .tz-table caption {
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+}
+.dashboard .tz-table td,
+.dashboard .tz-table th {
+  padding-block: var(--space-3);
+}
+.dashboard .tz-alert {
+  margin-block-end: var(--space-4);
+}
+.dashboard-form {
+  display: grid;
+  gap: var(--space-5);
+}
+/* Side by side, the two cards of a row halve it, on the figures' middle
+   gutter. Their trays share rows, so the titles, the papers' tops and the
+   footers line up across the row; a chart's paper runs down to the end of
+   its neighbour's footer. The rows stack below 800px, where half the column
+   is too narrow for What changed's English pills to keep to one line. */
+@container dashboard-main (width >= 800px) {
+  .dashboard-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 0;
+  }
+  .dashboard-row-trend {
+    grid-template-rows: auto 1fr auto;
+  }
+  .dashboard-row-split {
+    grid-template-rows: auto 1fr auto auto;
+  }
+  .dashboard-row > :is(.dashboard-card, .tz-change-summary, .tz-data-answer),
+  .dashboard-row
+    > :is(.dashboard-card, .tz-change-summary, .tz-data-answer)
+    > .tz-tray {
+    display: grid;
+    grid-row: 1 / -1;
+    grid-template-rows: subgrid;
+  }
+  .dashboard-row .tz-tray-header {
+    align-self: start;
+  }
+  .dashboard-row .dashboard-card .tz-tray-paper {
+    grid-row: 2 / -1;
+  }
+}
+/* Four figures keep a comfortable width for each currency value. */
+@container dashboard-main (width < 880px) {
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container dashboard-main (width < 480px) {
+  .dashboard-metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dashboard-metric {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-4);
+  }
+  .dashboard-metric-value {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    text-align: end;
+  }
+  .dashboard-section-heading {
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .dashboard-filters .tz-filter-search {
+    max-inline-size: none;
+    flex-basis: 100%;
+  }
+  .dashboard-inbox-label,
+  .dashboard-inbox-word {
+    display: none;
+  }
+}

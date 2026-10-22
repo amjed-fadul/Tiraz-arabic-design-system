@@ -1,0 +1,15 @@
+.customize-hint-anchor {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+}
+
+/* Reserve the annotation above its own button even when toolbar rows wrap. */
+.customize-hint-anchor:has(> .customize-hint) {
+  padding-block-start: calc(var(--space-10) * 2 + var(--space-2));
+}
+.tz-demo-bar:has(.customize-hint),
+.tz-demo-bar-end:has(.customize-hint) {
+  align-items: flex-end;
+}

@@ -1,0 +1,43 @@
+/* Settings compose Tiraz buttons while keeping the compact tray layout. */
+.tz-button.settings-action {
+  flex: none;
+  color: var(--action);
+  font-size: var(--text-meta);
+}
+.collection-field > .settings-action {
+  justify-self: start;
+}
+.settings-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tray);
+}
+.settings-segmented > .tz-button {
+  --button-height: 28px;
+  padding-inline: 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-meta);
+}
+.settings-segmented > .tz-button[aria-pressed="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-chip);
+}
+.settings-segmented > .tz-button:focus-visible {
+  outline-offset: -2px;
+}
+@media (pointer: coarse) {
+  .settings-segmented > .tz-button,
+  .tz-button.settings-action {
+    min-block-size: 44px;
+  }
+}
+@media (forced-colors: active) {
+  .settings-segmented > .tz-button[aria-pressed="true"] {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+  }
+}

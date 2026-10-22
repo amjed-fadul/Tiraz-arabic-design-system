@@ -1,0 +1,82 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/feedback.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/feedback-and-avatar-photos/Tiraz
+
+ ❯ src/system/feedback.test.tsx (20 tests | 19 failed) 131ms
+   × keeps static Alert feedback nonurgent regardless of semantic tone 14ms
+   × uses explicit polite Alert announcement 2ms
+   × uses explicit assertive Alert announcement 1ms
+   × renders an application action without manufacturing dismissal state 1ms
+   × keeps text Skeleton decorative and accepts native sizing style 1ms
+   × keeps rectangle Skeleton decorative and accepts native sizing style 1ms
+   × keeps circle Skeleton decorative and accepts native sizing style 1ms
+   × normalizes Progress value 0 with correct semantics 2ms
+   × normalizes Progress value 100 with correct semantics 1ms
+   × normalizes Progress value -20 with correct semantics 1ms
+   × normalizes Progress value 120 with correct semantics 0ms
+   × normalizes Progress value 42.5 with correct semantics 0ms
+   × does not claim a numeric Progress value for undefined 1ms
+   × does not claim a numeric Progress value for null 0ms
+   × does not claim a numeric Progress value for NaN 0ms
+   × does not claim a numeric Progress value for Infinity 0ms
+   × does not claim a numeric Progress value for -Infinity 0ms
+   × formats Progress for Arabic and can explicitly use English in RTL 2ms
+   × names Spinner and supports decorative composition without an extra announcement 1ms
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 19 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/feedback.test.tsx > keeps static Alert feedback nonurgent regardless of semantic tone
+ FAIL  src/system/feedback.test.tsx > uses explicit polite Alert announcement
+ FAIL  src/system/feedback.test.tsx > uses explicit assertive Alert announcement
+ FAIL  src/system/feedback.test.tsx > renders an application action without manufacturing dismissal state
+ FAIL  src/system/feedback.test.tsx > normalizes Progress value 0 with correct semantics
+ FAIL  src/system/feedback.test.tsx > normalizes Progress value 100 with correct semantics
+ FAIL  src/system/feedback.test.tsx > normalizes Progress value -20 with correct semantics
+ FAIL  src/system/feedback.test.tsx > normalizes Progress value 120 with correct semantics
+ FAIL  src/system/feedback.test.tsx > normalizes Progress value 42.5 with correct semantics
+ FAIL  src/system/feedback.test.tsx > does not claim a numeric Progress value for undefined
+ FAIL  src/system/feedback.test.tsx > does not claim a numeric Progress value for null
+ FAIL  src/system/feedback.test.tsx > does not claim a numeric Progress value for NaN
+ FAIL  src/system/feedback.test.tsx > does not claim a numeric Progress value for Infinity
+ FAIL  src/system/feedback.test.tsx > does not claim a numeric Progress value for -Infinity
+ FAIL  src/system/feedback.test.tsx > names Spinner and supports decorative composition without an extra announcement
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  src/system/feedback.test.tsx > keeps text Skeleton decorative and accepts native sizing style
+ FAIL  src/system/feedback.test.tsx > keeps rectangle Skeleton decorative and accepts native sizing style
+ FAIL  src/system/feedback.test.tsx > keeps circle Skeleton decorative and accepts native sizing style
+ FAIL  src/system/feedback.test.tsx > formats Progress for Arabic and can explicitly use English in RTL
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12468:13
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  19 failed | 1 passed (20)
+   Start at  23:06:35
+   Duration  2.44s (environment 55%, transform 13%, import 12%, setup 10%, tests 9%)

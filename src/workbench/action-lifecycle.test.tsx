@@ -8,8 +8,24 @@ function preview() {
     screen.getByRole("region", { name: "المعاينة التفاعلية" }),
   ).getByRole("button");
 }
+/** The settings panel, opened from «تخصيص» in the toolbar when it is closed. */
 function controls() {
-  return within(screen.getByRole("complementary", { name: "التخصيص" }));
+  if (!screen.queryByRole("complementary", { name: "تخصيص المعاينة" }))
+    fireEvent.click(screen.getByRole("button", { name: "تخصيص" }));
+  return within(screen.getByRole("complementary", { name: "تخصيص المعاينة" }));
+}
+/** Sets an inspector field through its control: a text field, a segmented
+    control or a Select. */
+function edit(field: string, value: string) {
+  const control = controls().getByLabelText(field);
+  if (control.tagName === "INPUT")
+    fireEvent.change(control, { target: { value } });
+  else if (control.getAttribute("role") === "group")
+    fireEvent.click(within(control).getByRole("button", { name: value }));
+  else {
+    fireEvent.keyDown(control, { key: "Enter" });
+    fireEvent.click(screen.getByRole("option", { name: value }));
+  }
 }
 function tick(ms: number) {
   act(() => vi.advanceTimersByTime(ms));
@@ -29,10 +45,18 @@ it.each(["success", "error"] as const)(
     expect(
       JSON.parse(localStorage.getItem(storageKeys.playgrounds)!).button.state,
     ).toBe("idle");
-    expect(controls().getByLabelText("الحالة")).toHaveValue("idle");
     expect(
-      screen.getByRole("region", { name: "مثال الاستخدام" }),
+      controls().getByRole("combobox", { name: "الحالة" }),
+    ).toHaveTextContent("جاهز");
+    // The Code view keeps the persisted state while the preview is busy.
+    fireEvent.click(screen.getByRole("tab", { name: "الكود" }));
+    expect(
+      screen
+        .getByRole("region", { name: "الكود: src/Example.tsx" })
+        .querySelector("pre"),
     ).toHaveTextContent('ButtonState>("idle")');
+    fireEvent.click(screen.getByRole("tab", { name: "معاينة" }));
+    expect(preview()).toHaveAttribute("data-state", "loading");
     tick(1200);
     expect(preview()).toHaveAttribute("data-state", outcome);
     tick(1000);
@@ -51,14 +75,12 @@ it.each(["التسمية", "النوع", "الحجم", "الأيقونة", "ال
     fireEvent.click(preview());
     const values: Record<string, string> = {
       التسمية: "اختيار جديد",
-      النوع: "ghost",
-      الحجم: "md",
-      الأيقونة: "plus",
-      الحالة: "error",
+      النوع: "خفيف",
+      الحجم: "عادي · md",
+      الأيقونة: "إضافة",
+      الحالة: "خطأ",
     };
-    fireEvent.change(controls().getByLabelText(field), {
-      target: { value: values[field] },
-    });
+    edit(field, values[field]);
     expect(preview()).toHaveAttribute(
       "data-state",
       field === "الحالة" ? "error" : "idle",
@@ -73,9 +95,7 @@ it.each(["التسمية", "النوع", "الحجم", "الأيقونة", "ال
 it("preserves an intentional inspector feedback state after simulation", () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  fireEvent.change(controls().getByLabelText("الحالة"), {
-    target: { value: "error" },
-  });
+  edit("الحالة", "خطأ");
   fireEvent.click(preview());
   tick(1200);
   expect(preview()).toHaveAttribute("data-state", "success");
@@ -89,9 +109,7 @@ it("propagates global settings during feedback and cancels timers on both resets
   vi.useFakeTimers();
   const { container } = render(<Workbench />);
   fireEvent.click(preview());
-  fireEvent.change(controls().getByLabelText("اللون الأساسي"), {
-    target: { value: "blue" },
-  });
+  fireEvent.click(controls().getByRole("radio", { name: "أزرق" }));
   expect(preview()).toHaveAttribute("data-state", "loading");
   expect(
     (
@@ -114,6 +132,7 @@ it("cancels a loading action when navigating and unmounting", () => {
   const view = render(<Workbench />);
   fireEvent.click(preview());
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
+  fireEvent.click(nav.getByRole("button", { name: "التنقّل" }));
   fireEvent.click(nav.getByRole("button", { name: "التبويبات" }));
   tick(3000);
   fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
@@ -146,9 +165,7 @@ it("cancels simulation for icon-only edits and language transitions", () => {
   tick(3000);
   expect(preview()).toHaveAttribute("data-state", "idle");
   fireEvent.click(preview());
-  fireEvent.change(screen.getByLabelText("لغة التوثيق"), {
-    target: { value: "en" },
-  });
+  fireEvent.click(screen.getByRole("button", { name: "English" }));
   tick(3000);
   expect(
     within(

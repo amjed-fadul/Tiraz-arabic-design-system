@@ -1,0 +1,7 @@
+{
+  "tiraz-ai-content-original.diff": true,
+  "tiraz-ai-content-original-index.diff": true,
+  "tiraz-ai-content-original-status": true,
+  "originalListeningSocketsStillPresent": false,
+  "missingListeningSockets": [["13250", "127.0.0.1:9232"]]
+}

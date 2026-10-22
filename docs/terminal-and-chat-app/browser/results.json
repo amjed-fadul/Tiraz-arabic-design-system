@@ -1,0 +1,37 @@
+{
+  "checks": [
+    {
+      "name": "exact unsafe output copy and safe literal text"
+    },
+    {
+      "name": "keyboard scrolling, old-output reading, follow and selected text"
+    },
+    {
+      "name": "clipboard denied gives accessible visible failure"
+    },
+    {
+      "name": "drafts, model, send duplicate guard, stable stream and switch cancellation"
+    },
+    {
+      "name": "stop preserves content; new cancels; reset restores samples"
+    },
+    {
+      "name": "desktop and 320px Arabic/English light/dark shared customization and short viewport"
+    },
+    {
+      "name": "mobile Sheet selection, new, Escape, outside dismissal and focus restoration in RTL/LTR"
+    },
+    {
+      "name": "OS/system reduced motion and automated accessibility"
+    },
+    {
+      "name": "continuous documentation pages"
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "engine": "Installed Chrome (Chromium) on macOS; headless automated checks.",
+  "limitations": [
+    "No screen-reader session or physical mobile device. Narrow layouts emulate viewport size. Firefox and WebKit not tested. OS reduced-motion preference emulated; no OS settings changed."
+  ]
+}

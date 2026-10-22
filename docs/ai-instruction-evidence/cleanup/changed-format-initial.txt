@@ -1,0 +1,4 @@
+Checking formatting...
+[warn] docs/ai-instruction-evidence/cleanup/example-results.json
+[warn] docs/ai-instruction-evidence/cleanup/original-before.json
+[warn] Code style issues found in 2 files. Run Prettier with --write to fix.

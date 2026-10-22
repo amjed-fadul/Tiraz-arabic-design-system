@@ -1,0 +1,195 @@
+import * as Popper from "@radix-ui/react-popper";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import type { HTMLAttributes, ReactElement } from "react";
+import { createPortal } from "react-dom";
+import { useSystem } from "./useSystem";
+export interface TooltipProps {
+  trigger: ReactElement;
+  content: string;
+  delayDuration?: number;
+}
+// Tooltips warm up as a group: while one is open, or shortly after one closes
+// on its own, the next trigger opens at once and without an entrance. A
+// deliberate dismissal (Escape or press) cools the group again.
+const group = { open: 0, closedAt: Number.NEGATIVE_INFINITY };
+const WARM_WINDOW = 400;
+function isWarm() {
+  return group.open > 0 || Date.now() - group.closedAt < WARM_WINDOW;
+}
+export function Tooltip({
+  trigger,
+  content,
+  delayDuration = 500,
+}: TooltipProps) {
+  const { container, config } = useSystem();
+  const [open, setOpen] = useState(false);
+  const [instant, setInstant] = useState(false);
+  const id = useId();
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hovered = useRef(false),
+    focused = useRef(false),
+    dismissed = useRef(false),
+    pointerFocus = useRef(false);
+  function cancel() {
+    if (timer.current !== null) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+  }
+  function dismiss() {
+    cancel();
+    dismissed.current = true;
+    setOpen(false);
+  }
+  function leave() {
+    cancel();
+    dismissed.current = false;
+    if (!focused.current)
+      timer.current = setTimeout(() => {
+        setOpen(false);
+      }, 100);
+  }
+  useEffect(
+    () => () => {
+      if (timer.current !== null) clearTimeout(timer.current);
+    },
+    [],
+  );
+  const shown = open && !!content && !!container;
+  // Once hidden, the tooltip stays mounted while its exit plays, then leaves.
+  // With no exit to see (none declared, a zeroed one under keyboard modality or
+  // reduced motion, or no stylesheet) it leaves at once.
+  const [present, setPresent] = useState(shown);
+  if (shown && !present) setPresent(true);
+  const tip = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (shown || !present) return;
+    const exit = tip.current && getComputedStyle(tip.current);
+    if (
+      !exit?.animationName ||
+      exit.animationName === "none" ||
+      parseFloat(exit.animationDuration) <= 0.001
+    )
+      setPresent(false);
+  }, [shown, present]);
+  useEffect(() => {
+    if (!shown) return;
+    group.open += 1;
+    return () => {
+      group.open -= 1;
+      group.closedAt = dismissed.current
+        ? Number.NEGATIVE_INFINITY
+        : Date.now();
+    };
+  }, [shown]);
+  useEffect(() => {
+    if (!shown || !container) return;
+    const doc = container.ownerDocument;
+    function keydown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        if (timer.current !== null) clearTimeout(timer.current);
+        dismissed.current = true;
+        setOpen(false);
+      }
+    }
+    const view = doc.defaultView;
+    view?.addEventListener("keydown", keydown, true);
+    return () => view?.removeEventListener("keydown", keydown, true);
+  }, [shown, container]);
+  const element = trigger as ReactElement<HTMLAttributes<HTMLElement>>;
+  const props = element.props;
+  const describedBy =
+    [props["aria-describedby"], shown ? id : undefined]
+      .filter(Boolean)
+      .join(" ") || undefined;
+  return (
+    <Popper.Root>
+      <Popper.Anchor
+        asChild
+
+        aria-describedby={describedBy}
+        onPointerEnter={(event) => {
+          if (event.defaultPrevented || event.pointerType === "touch") return;
+          hovered.current = true;
+          cancel();
+          if (dismissed.current) return;
+          if (isWarm()) {
+            setInstant(true);
+            setOpen(true);
+            return;
+          }
+          timer.current = setTimeout(
+            () => {
+              setInstant(false);
+              setOpen(true);
+            },
+            Number.isFinite(delayDuration) ? Math.max(0, delayDuration) : 500,
+          );
+        }}
+        onPointerLeave={() => {
+          hovered.current = false;
+          leave();
+        }}
+        onFocus={(event) => {
+          if (event.defaultPrevented) return;
+          focused.current = true;
+          cancel();
+          if (!pointerFocus.current) {
+            dismissed.current = false;
+            setInstant(isWarm());
+            setOpen(true);
+          }
+          pointerFocus.current = false;
+        }}
+        onBlur={() => {
+          focused.current = false;
+          pointerFocus.current = false;
+          if (!hovered.current) {
+            cancel();
+            setOpen(false);
+            dismissed.current = false;
+          }
+        }}
+        onPointerDown={() => {
+          pointerFocus.current = true;
+          dismiss();
+        }}
+      >
+        {trigger}
+      </Popper.Anchor>
+      {present &&
+        container &&
+        createPortal(
+          <Popper.Content
+            ref={tip}
+            id={id}
+            role="tooltip"
+            className="tz-tooltip"
+            data-state={shown ? "open" : "closed"}
+            data-instant={instant || undefined}
+            dir={config.direction}
+            side="top"
+            sideOffset={6}
+            collisionPadding={12}
+            hideWhenDetached
+            onPointerEnter={() => {
+              hovered.current = true;
+              cancel();
+            }}
+            onPointerLeave={() => {
+              hovered.current = false;
+              leave();
+            }}
+            onAnimationEnd={() => {
+              if (!shown) setPresent(false);
+            }}
+          >
+            {content}
+          </Popper.Content>,
+          container,
+        )}
+    </Popper.Root>
+  );
+}

@@ -1,0 +1,6 @@
+{
+  "scenarios": 32,
+  "checks": 34,
+  "failures": [],
+  "errors": []
+}

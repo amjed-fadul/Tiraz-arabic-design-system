@@ -1,0 +1,31 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/sidebar-foundation/Tiraz
+
+ ❯ src/system/SidebarExamples.test.tsx (2 tests | 1 failed) 151ms
+   × opens native hash destinations and follows browser history in the sample 24ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/SidebarExamples.test.tsx > opens native hash destinations and follows browser history in the sample
+Error: expect(element).toHaveAttribute("aria-current", "page") // element.getAttribute("aria-current") === "page"
+
+Expected the element to have attribute:
+  aria-current="page"
+Received:
+  null
+ ❯ src/system/SidebarExamples.test.tsx:25:58
+     23|   render(<SystemProvider><SidebarExample language="en"/></SystemProvid…
+     24|   const nav=screen.getByRole("navigation",{name:"Library navigation"});
+     25|   expect(within(nav).getByRole("link",{name:"Reading"})).toHaveAttribu…
+       |                                                          ^
+     26|   expect(screen.getByRole("heading",{level:4,name:"Reading"})).toBeVis…
+     27|   window.history.replaceState(null,"", "/#tiraz-sidebar-layout");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  18:09:52
+   Duration  1.16s (environment 35%, import 26%, transform 17%, tests 14%, setup 7%)
+

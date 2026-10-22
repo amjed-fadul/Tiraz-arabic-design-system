@@ -1,7 +1,9 @@
-import { defaultConfig } from "../system/config";
+import { accentColors, defaultConfig } from "../system/config";
 import type { SystemConfig } from "../system/config";
+import { screens } from "../examples/frame/screen";
+import type { ScreenSlug } from "../examples/frame/screen";
 import type { ComponentId } from "./catalog";
-import { catalog } from "./catalog";
+import { navigationCatalog } from "./catalog";
 import type { Language } from "./i18n";
 import { normalizePlaygrounds } from "./model";
 import type { Playgrounds } from "./model";
@@ -16,20 +18,26 @@ export const defaultSettings: AppearanceSettings = {
   accent: defaultConfig.accent,
   density: defaultConfig.density,
   typography: defaultConfig.typography,
+  numerals: defaultConfig.numerals,
   radius: defaultConfig.radius,
   reducedMotion: defaultConfig.reducedMotion,
 };
 export interface DocumentationPreferences {
   language: Language;
   active: ComponentId;
-  systemPanelOpen: boolean;
-  inspectorOpen: boolean;
+  /** The settings panel: closed until «تخصيص» opens it, then remembered. */
+  settingsOpen: boolean;
+  /** The Parts disclosure; stored optionally, closed when absent. */
+  aiPartsOpen: boolean;
+  /** The screen page open in place of the docs page `active`, if any. */
+  screen: ScreenSlug | null;
 }
 export const defaultDocumentation: DocumentationPreferences = {
   language: "ar",
   active: "button",
-  systemPanelOpen: true,
-  inspectorOpen: true,
+  settingsOpen: false,
+  aiPartsOpen: false,
+  screen: null,
 };
 function read(key: string): unknown {
   try {
@@ -72,13 +80,20 @@ export function readDocumentation(): DocumentationPreferences {
   if (!p) return { ...defaultDocumentation };
   return {
     language: p.language === "en" ? "en" : "ar",
-    active: catalog.some((item) => item.id === p.active)
-      ? (p.active as ComponentId)
-      : "button",
-    systemPanelOpen:
-      typeof p.systemPanelOpen === "boolean" ? p.systemPanelOpen : true,
-    inspectorOpen:
-      typeof p.inspectorOpen === "boolean" ? p.inspectorOpen : true,
+    active:
+      p.active === "field"
+        ? "input"
+        : // Keep this legacy value until routing can recover its saved root
+          // entry through the Screens catalog. It is no longer navigable.
+          p.active === "chat-app" ||
+            navigationCatalog.some((item) => item.id === p.active)
+          ? (p.active as ComponentId)
+          : "button",
+    settingsOpen: p.settingsOpen === true,
+    aiPartsOpen: p.aiPartsOpen === true,
+    screen: screens.some((item) => item.slug === p.screen)
+      ? (p.screen as ScreenSlug)
+      : null,
   };
 }
 export function readSystem(): AppearanceSettings {
@@ -89,7 +104,7 @@ export function readSystem(): AppearanceSettings {
   if (!p) return { ...defaultSettings };
   return {
     density: p.density === "standard" ? "standard" : "compact",
-    accent: ["sage", "blue", "plum", "clay"].includes(p.accent as string)
+    accent: Object.keys(accentColors).includes(p.accent as string)
       ? (p.accent as SystemConfig["accent"])
       : "sage",
     radius:
@@ -101,6 +116,7 @@ export function readSystem(): AppearanceSettings {
         : defaultSettings.radius,
     reducedMotion: p.reducedMotion === true,
     typography: p.typography === "large" ? "large" : "standard",
+    numerals: p.numerals === "latn" ? "latn" : "arab",
   };
 }
 export function readPlaygrounds(language: Language): Playgrounds {

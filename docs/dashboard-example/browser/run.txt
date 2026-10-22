@@ -1,0 +1,27 @@
+PASS documentation link opens the standalone dashboard
+PASS ar/light/1440: direction, font, charts and no page overflow
+PASS ar/dark/1440: direction, font, charts and no page overflow
+PASS en/light/1440: direction, font, charts and no page overflow
+PASS en/dark/1440: direction, font, charts and no page overflow
+PASS ar/light/768: direction, font, charts and no page overflow
+PASS ar/dark/768: direction, font, charts and no page overflow
+PASS en/light/768: direction, font, charts and no page overflow
+PASS en/dark/768: direction, font, charts and no page overflow
+PASS ar/light/390: direction, font, charts and no page overflow
+PASS ar/dark/390: direction, font, charts and no page overflow
+PASS en/light/390: direction, font, charts and no page overflow
+PASS en/dark/390: direction, font, charts and no page overflow
+PASS ar/light/320: direction, font, charts and no page overflow
+PASS ar/dark/320: direction, font, charts and no page overflow
+PASS en/light/320: direction, font, charts and no page overflow
+PASS en/dark/320: direction, font, charts and no page overflow
+PASS period synchronizes both chart tables, summaries, orders and revenue
+PASS combined search/status filters reset pages; sorting works both ways
+PASS cancel/close/Escape discard drafts and restore trigger focus
+PASS validation, repeated save guard, Toast, accurate metrics and filtered customer reveal
+PASS all preview states, working Retry, empty create without orders, OS reduced motion
+PASS reload restores sample; live theme reaches Sheets; nested Select Escape respects focus/layers
+PASS mobile navigation focuses real destination; wide table stays keyboard-scrollable inside page
+PASS reused dashboard portal links retain token appearance without documentation CSS
+PASS automated accessibility scan: no WCAG A/AA findings (manual screen reader unverified)
+PASS no browser console errors or warnings

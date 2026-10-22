@@ -1,0 +1,44 @@
+{
+  "base": "2a84c371dc87110c0bb9aa271fb5c003a8255f02",
+  "branch": "codex/form-foundation",
+  "tests": {
+    "files": 14,
+    "passed": 105,
+    "command": "npm test -- --maxWorkers=2"
+  },
+  "lint": "passed, no warnings",
+  "build": "passed",
+  "format": "passed",
+  "inventoryBrowser": {
+    "systemGroups": 82,
+    "contextual": 18,
+    "pages": 108,
+    "clipboard": 18,
+    "persistence": 18,
+    "resets": 36,
+    "errors": [],
+    "failures": []
+  },
+  "formsBrowser": {
+    "geometryCombinations": 16,
+    "nestedFlowCombinations": 32,
+    "desktopCustomerCaptures": 8,
+    "nativeValidationCases": 15,
+    "errors": []
+  },
+  "sourceCopy": {
+    "typecheck": "passed",
+    "build": "passed",
+    "browserGroups": 14
+  },
+  "menuRegressionMatrix": 16,
+  "independentReview": "findings fixed and independently re-reviewed; no remaining actionable findings",
+  "originalCheckoutPreserved": true,
+  "limits": [
+    "in-memory only",
+    "single select; no search/multi-select/Table",
+    "Chromium verified; other engines, screen readers and touch not manually verified"
+  ],
+  "selectReviewFollowUp": "select-review/verification.json",
+  "selectAssociationFollowUp": "select-association/verification.json"
+}

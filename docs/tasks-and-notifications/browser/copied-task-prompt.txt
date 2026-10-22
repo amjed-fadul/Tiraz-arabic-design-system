@@ -1,0 +1,159 @@
+First locate Tiraz within the current project, either a full checkout or a source copy in another application. If you cannot locate the system, clearly report that and stop. Identify the source root: the directory containing index.ts, config.ts, tokens.css, components.css and ai/. In a full checkout this is usually src/system; for example src/system/TaskRows.tsx. Read ai/README.md, ai/registry.json for the task-rows family and support APIs, and ai/composition.md; then inspect TaskRows.tsx, index.ts, config.ts, Provider.tsx, styles and the host application's local font setup. For Avatar photos, preserve ai/assets/sara.jpg, ai/assets/omar.jpg, ai/assets/README.md and ai/assets/LICENSE.txt with the copied source; adjust emitted local imports, do not replace bundled portraits with remote services. Registry paths are relative to the source root; a source copy needs no checkout README or src/main.tsx. Use TaskRows with the exact current properties and system settings in the example. Adjust ./system imports and CSS paths to the located library, connect events to the requested application behavior, and validate the rendered result, direction, customization, keyboard, focus and accessible names. Do not invent exports/props or add an installer or CLI.
+
+SystemProvider: {"density":"standard","accent":"sage","radius":8,"reducedMotion":false,"typography":"large","direction":"ltr","theme":"dark"}
+
+Place the example in an appropriate application component file after adjusting imports. Retain the ai/ bundle when copying the library.
+
+```tsx
+import { useState } from "react";
+import { Avatar, Badge, Button, EmptyState, TaskRows } from "./system";
+import type { TaskRowItem } from "./system";
+
+export interface TaskRowsExampleProps {
+  language?: "ar" | "en";
+  interactive?: boolean;
+  empty?: boolean;
+  longContent?: boolean;
+}
+export function TaskRowsExample({
+  language = "ar",
+  interactive = true,
+  empty = false,
+  longContent = false,
+}: TaskRowsExampleProps) {
+  const t = (ar: string, en: string) => (language === "ar" ? ar : en);
+  const [completed, setCompleted] = useState(["publish"]);
+  const [details, setDetails] = useState(false);
+  const items: TaskRowItem[] = empty
+    ? []
+    : [
+        {
+          id: "review",
+          label: longContent
+            ? t(
+                "مراجعة جميع تسميات المكوّنات والأمثلة العربية مع فريق التصميم قبل تسليم الحزمة",
+                "Review all component names and Arabic examples with the design team before handing over the package",
+              )
+            : t("مراجعة التسميات", "Review labels"),
+          completed: completed.includes("review"),
+          description: (
+            <>
+              {t("المرجع المحلي: ", "Local reference: ")}
+              <bdi dir="ltr">DOC-42/2026</bdi>
+              {longContent && (
+                <>
+                  {" "}
+                  —{" "}
+                  <bdi dir="ltr">
+                    TIRAZ-IDENTIFIER-WITHOUT-BREAKS-012345678901234567890123456789
+                  </bdi>
+                </>
+              )}
+            </>
+          ),
+          assignee: (
+            <Avatar
+              name={t("سارة علي", "Sara Ali")}
+              fallback={t("س ع", "SA")}
+            />
+          ),
+          meta: <Badge>{t("للمراجعة", "For review")}</Badge>,
+          actions: (
+            <Button
+              size="sm"
+              variant="ghost"
+              aria-expanded={details}
+              onClick={() => setDetails((value) => !value)}
+            >
+              {t("تفاصيل المهمة", "Task details")}
+            </Button>
+          ),
+        },
+        {
+          id: "approve",
+          label: t("اعتماد المحتوى — مقفلة", "Approve copy — locked"),
+          description: t(
+            "بانتظار قرار الفريق في هذا المثال.",
+            "Waiting for a team decision in this example.",
+          ),
+          completed: completed.includes("approve"),
+          disabled: true,
+        },
+        {
+          id: "publish",
+          label: t("تجهيز المعاينة المحلية", "Prepare local preview"),
+          completed: completed.includes("publish"),
+        },
+      ];
+  const count = items.filter((item) => item.completed).length;
+  return (
+    <div
+      style={{
+        display: "grid",
+        gap: "var(--space-4)",
+        inlineSize: "100%",
+        minInlineSize: 0,
+      }}
+    >
+      <p style={{ margin: 0, color: "var(--text-secondary)" }}>
+        {t(
+          "مهام نموذجية في الذاكرة فقط؛ لا تُحفظ التغييرات وتبقى المهام بترتيبها الأصلي.",
+          "Sample tasks in memory only; changes are not saved and tasks keep their original order.",
+        )}
+      </p>
+      <p role="status" style={{ margin: 0 }}>
+        {t(
+          `${count} من ${items.length} مكتملة`,
+          `${count} of ${items.length} completed`,
+        )}
+      </p>
+      <TaskRows
+        label={t("مهام المشروع", "Project tasks")}
+        items={items}
+        labels={{
+          completed: t("مكتملة", "Completed"),
+          incomplete: t("غير مكتملة", "Incomplete"),
+        }}
+        onCompletedChange={
+          interactive
+            ? (id, checked) =>
+                setCompleted((ids) =>
+                  checked
+                    ? [...ids.filter((value) => value !== id), id]
+                    : ids.filter((value) => value !== id),
+                )
+            : undefined
+        }
+        emptyState={
+          <EmptyState
+            title={t("لا توجد مهام", "No tasks")}
+            description={t(
+              "لم تُضف مهام لهذا المثال.",
+              "No tasks were supplied to this example.",
+            )}
+          />
+        }
+      />
+      {details && !empty && (
+        <div>
+          <strong>{t("ملاحظات المراجعة المحلية", "Local review notes")}</strong>
+          <p>
+            {t(
+              "تحقّق من وضوح التسميات العربية قبل اعتماد النسخة. هذا العرض لا يغيّر اكتمال المهمة.",
+              "Check Arabic labels for clarity before approving the copy. Opening these notes does not complete the task.",
+            )}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+import { SystemProvider, defaultConfig } from "./system";
+import "@fontsource/ibm-plex-sans-arabic/400.css";
+import "@fontsource/ibm-plex-sans-arabic/500.css";
+import "@fontsource/ibm-plex-sans-arabic/600.css";
+import "./system/tokens.css";
+import "./system/components.css";
+export default function Example() { return <div lang={"en"}><SystemProvider config={{...defaultConfig,...{"density":"standard","accent":"sage","radius":8,"reducedMotion":false,"typography":"large","direction":"ltr","theme":"dark"}}}><div style={{display:"grid",gap:"var(--space-8)",minInlineSize:0}}><TaskRowsExample language={"en"} {...{"interactive":true,"empty":false,"longContent":false}} /></div></SystemProvider></div>; }
+```

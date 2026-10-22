@@ -1,0 +1,75 @@
+{
+  "value": "000000",
+  "selectionStart": 6,
+  "selectionEnd": 6,
+  "scrollLeft": 0,
+  "scrollWidth": 218,
+  "clientWidth": 218,
+  "font": "14px / 25.2px \"IBM Plex Sans Arabic\", sans-serif",
+  "fontFamily": "\"IBM Plex Sans Arabic\", sans-serif",
+  "letterSpacing": "normal",
+  "paddingLeft": "0px",
+  "outline": "rgb(0, 0, 0) none 3px",
+  "input": {
+    "x": 16,
+    "y": 331.453125,
+    "width": 218.390625,
+    "height": 36
+  },
+  "slots": [
+    {
+      "x": 18,
+      "y": 331.453125,
+      "width": 32.390625,
+      "height": 36,
+      "border": "rgb(197, 206, 199)",
+      "centerX": 34.1953125,
+      "centerY": 349.453125
+    },
+    {
+      "x": 54.390625,
+      "y": 331.453125,
+      "width": 32.40625,
+      "height": 36,
+      "border": "rgb(197, 206, 199)",
+      "centerX": 70.59375,
+      "centerY": 349.453125
+    },
+    {
+      "x": 90.796875,
+      "y": 331.453125,
+      "width": 32.390625,
+      "height": 36,
+      "border": "rgb(197, 206, 199)",
+      "centerX": 106.9921875,
+      "centerY": 349.453125
+    },
+    {
+      "x": 127.1875,
+      "y": 331.453125,
+      "width": 32.40625,
+      "height": 36,
+      "border": "rgb(197, 206, 199)",
+      "centerX": 143.390625,
+      "centerY": 349.453125
+    },
+    {
+      "x": 163.59375,
+      "y": 331.453125,
+      "width": 32.390625,
+      "height": 36,
+      "border": "rgb(197, 206, 199)",
+      "centerX": 179.7890625,
+      "centerY": 349.453125
+    },
+    {
+      "x": 199.984375,
+      "y": 331.453125,
+      "width": 32.40625,
+      "height": 36,
+      "border": "rgb(197, 206, 199)",
+      "centerX": 216.1875,
+      "centerY": 349.453125
+    }
+  ]
+}

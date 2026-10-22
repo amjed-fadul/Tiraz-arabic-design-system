@@ -1,0 +1,87 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/form-controls.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+ ❯ src/system/form-controls.test.tsx (6 tests | 6 failed) 25ms
+   ❯ native form controls (6)
+     × associates Checkbox label, helper, error and caller descriptions on the native ref 16ms
+     × submits and resets native uncontrolled values, excluding disabled options and checkboxes 2ms
+     × keeps controlled checkbox/radio selection application-owned 2ms
+     × names the native fieldset and associates required/error state with each radio, including external forms 2ms
+     × preserves Textarea native ref, selection, attributes and associations 1ms
+     × keeps Badge text readable and noninteractive without live-region semantics 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/form-controls.test.tsx > native form controls > associates Checkbox label, helper, error and caller descriptions on the native ref
+ FAIL  src/system/form-controls.test.tsx > native form controls > names the native fieldset and associates required/error state with each radio, including external forms
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ createChild node_modules/react-dom/cjs/react-dom-client.development.js:6701:26
+ ❯ reconcileChildrenArray node_modules/react-dom/cjs/react-dom-client.development.js:7033:25
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7357:20
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/system/form-controls.test.tsx > native form controls > submits and resets native uncontrolled values, excluding disabled options and checkboxes
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ createChild node_modules/react-dom/cjs/react-dom-client.development.js:6701:26
+ ❯ reconcileChildrenArray node_modules/react-dom/cjs/react-dom-client.development.js:7033:25
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7357:20
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12468:13
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/system/form-controls.test.tsx > native form controls > keeps controlled checkbox/radio selection application-owned
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `Controlled`.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ createChild node_modules/react-dom/cjs/react-dom-client.development.js:6701:26
+ ❯ reconcileChildrenArray node_modules/react-dom/cjs/react-dom-client.development.js:7033:25
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7357:20
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10096:13
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10585:7
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  src/system/form-controls.test.tsx > native form controls > preserves Textarea native ref, selection, attributes and associations
+ FAIL  src/system/form-controls.test.tsx > native form controls > keeps Badge text readable and noninteractive without live-region semantics
+Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ❯ createFiberFromTypeAndProps node_modules/react-dom/cjs/react-dom-client.development.js:5330:28
+ ❯ createFiberFromElement node_modules/react-dom/cjs/react-dom-client.development.js:5344:14
+ ❯ reconcileChildFibersImpl node_modules/react-dom/cjs/react-dom-client.development.js:7286:31
+ ❯ node_modules/react-dom/cjs/react-dom-client.development.js:7456:33
+ ❯ reconcileChildren node_modules/react-dom/cjs/react-dom-client.development.js:10097:13
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12326:15
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed (6)
+   Start at  19:15:13
+   Duration  1.42s (environment 59%, import 17%, transform 12%, setup 9%, tests 2%, worker 1%)

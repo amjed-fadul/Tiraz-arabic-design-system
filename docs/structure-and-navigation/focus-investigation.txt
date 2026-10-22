@@ -1,0 +1,37 @@
+{
+  active: '<a href="#guide">Read guide</a>',
+  panels: [
+    {
+      html: '<div data-state="closed" id="radix-_r_2_" role="region" aria-labelledby="radix-_r_1_" data-orientation="vertical" class="tz-accordion-panel" style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width); --radix-collapsible-content-height: 45.1875px; --radix-collapsible-content-width: 766px;"><div class="tz-accordion-content"><a href="#guide">Read guide</a></div></div>',
+      style: 'block',
+      height: 26.484375
+    },
+    {
+      html: '<div data-state="closed" data-disabled="" id="radix-_r_4_" hidden="" role="region" aria-labelledby="radix-_r_3_" data-orientation="vertical" class="tz-accordion-panel" style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"></div>',
+      style: 'none',
+      height: 0
+    },
+    {
+      html: '<div data-state="open" id="radix-_r_6_" role="region" aria-labelledby="radix-_r_5_" data-orientation="vertical" class="tz-accordion-panel" style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width); --radix-collapsible-content-height: 45.1875px; --radix-collapsible-content-width: 766px;"><div class="tz-accordion-content"><p>Mixed content with <bdi dir="ltr">INV-2048</bdi></p></div></div>',
+      style: 'block',
+      height: 16.765625
+    }
+  ]
+}
+{
+  settledActive: '<button type="button" aria-expanded="true" data-state="open" data-orientation="vertical" id="radix-_r_5_" class="tz-accordion-trigger" data-radix-collection-item="" aria-controls="radix-_r_6_"><span>Layout</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down tz-accordion-chevron" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></button>',
+  panels: [
+    {
+      html: '<div data-state="closed" id="radix-_r_2_" role="region" aria-labelledby="radix-_r_1_" data-orientation="vertical" class="tz-accordion-panel" style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width); --radix-collapsible-content-height: 45.1875px; --radix-collapsible-content-width: 766px;" hidden=""></div>',
+      display: 'none'
+    },
+    {
+      html: '<div data-state="closed" data-disabled="" id="radix-_r_4_" hidden="" role="region" aria-labelledby="radix-_r_3_" data-orientation="vertical" class="tz-accordion-panel" style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width);"></div>',
+      display: 'none'
+    },
+    {
+      html: '<div data-state="open" id="radix-_r_6_" role="region" aria-labelledby="radix-_r_5_" data-orientation="vertical" class="tz-accordion-panel" style="--radix-accordion-content-height: var(--radix-collapsible-content-height); --radix-accordion-content-width: var(--radix-collapsible-content-width); --radix-collapsible-content-height: 45.1875px; --radix-collapsible-content-width: 766px;"><div class="tz-accordion-content"><p>Mixed content with <bdi dir="ltr">INV-2048</bdi></p></div></div>',
+      display: 'block'
+    }
+  ]
+}

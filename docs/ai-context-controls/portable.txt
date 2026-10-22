@@ -1,0 +1,9 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/ai-context-controls/Tiraz
+
+·························································································································································
+
+ Test Files  4 passed (4)
+      Tests  153 passed (153)
+   Start at  01:28:01
+   Duration  10.45s (tests 55%, import 26%, transform 9%, environment 8%, setup 2%)

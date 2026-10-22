@@ -1,0 +1,8 @@
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/verify-dd87f63/Tiraz
+
+
+ Test Files  1 passed (1)
+      Tests  8 passed (8)
+   Start at  00:54:59
+   Duration  3.08s (tests 62%, environment 24%, import 6%, setup 4%, transform 4%)

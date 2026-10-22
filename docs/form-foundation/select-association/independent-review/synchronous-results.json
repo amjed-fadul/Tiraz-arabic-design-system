@@ -1,0 +1,226 @@
+[
+  {
+    "mode": "controlled",
+    "life": "replace",
+    "canceled": false,
+    "method": "reset",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "controlled",
+    "life": "replace",
+    "canceled": false,
+    "method": "click",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "controlled",
+    "life": "replace",
+    "canceled": true,
+    "method": "reset",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  },
+  {
+    "mode": "controlled",
+    "life": "replace",
+    "canceled": true,
+    "method": "click",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  },
+  {
+    "mode": "controlled",
+    "life": "late",
+    "canceled": false,
+    "method": "reset",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "controlled",
+    "life": "late",
+    "canceled": false,
+    "method": "click",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "controlled",
+    "life": "late",
+    "canceled": true,
+    "method": "reset",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  },
+  {
+    "mode": "controlled",
+    "life": "late",
+    "canceled": true,
+    "method": "click",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "replace",
+    "canceled": false,
+    "method": "reset",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "replace",
+    "canceled": false,
+    "method": "click",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "replace",
+    "canceled": true,
+    "method": "reset",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "replace",
+    "canceled": true,
+    "method": "click",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "late",
+    "canceled": false,
+    "method": "reset",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "late",
+    "canceled": false,
+    "method": "click",
+    "actual": {
+      "display": "Alpha",
+      "native": "a",
+      "form": "a",
+      "app": "a",
+      "changes": [
+        "a"
+      ]
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "late",
+    "canceled": true,
+    "method": "reset",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  },
+  {
+    "mode": "uncontrolled",
+    "life": "late",
+    "canceled": true,
+    "method": "click",
+    "actual": {
+      "display": "Beta",
+      "native": "b",
+      "form": "b",
+      "app": "b",
+      "changes": []
+    }
+  }
+]

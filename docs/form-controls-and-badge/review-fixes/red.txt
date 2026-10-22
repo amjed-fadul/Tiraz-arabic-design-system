@@ -1,0 +1,630 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/form-controls-pages.test.tsx src/system/ai-registry.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/form-controls-and-badge/Tiraz
+
+ ❯ src/workbench/form-controls-pages.test.tsx (3 tests | 2 failed) 568ms
+   × checks the en form accurately with associated errors, focus and native reset 95ms
+   × checks the ar form accurately with associated errors, focus and native reset 74ms
+ ❯ src/system/ai-registry.test.ts (9 tests | 1 failed) 3218ms
+   × recommends the available Tiraz Checkbox for Switch form choices 8ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/ai-registry.test.ts > recommends the available Tiraz Checkbox for Switch form choices
+AssertionError: expected 'Use Button for a command; an applicat…' to contain 'Tiraz Checkbox for a form choice'
+
+Expected: "Tiraz Checkbox for a form choice"
+Received: "Use Button for a command; an application checkbox may be more appropriate for a form choice (no Tiraz Checkbox)."
+
+ ❯ src/system/ai-registry.test.ts:24:23
+     22|   const alternative = registry.components.find((c: { id: string }) => …
+     23|   expect(registry.components.some((c: { id: string; api: string }) => …
+     24|   expect(alternative).toContain("Tiraz Checkbox for a form choice");
+       |                       ^
+     25|   expect(alternative).not.toContain("no Tiraz Checkbox");
+     26| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/workbench/form-controls-pages.test.tsx > checks the en form accurately with associated errors, focus and native reset
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Check form"
+
+Here are the accessible roles:
+
+  checkbox:
+
+  Name "Receive updates":
+  [36m<input[39m
+    [33maria-describedby[39m=[32m"tz-field-_r_1n_-help"[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_1n_-label"[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mid[39m=[32m"tz-field-_r_1n_"[39m
+    [33mname[39m=[32m"updates"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+    [33mvalue[39m=[32m"yes"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"tz-field-help"[39m
+    [33mdir[39m=[32m"auto"[39m
+    [33mid[39m=[32m"tz-field-_r_1n_-help"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"tz-field-help"[39m
+    [33mdir[39m=[32m"auto"[39m
+    [33mid[39m=[32m"tz-field-_r_1p_-help"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "Update frequency":
+  [36m<fieldset[39m
+    [33mclass[39m=[32m"tz-radio-group "[39m
+    [33mid[39m=[32m"tz-radio-_r_1o_"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  radio:
+
+  Name "Weekly":
+  [36m<input[39m
+    [33mchecked[39m=[32m""[39m
+    [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+    [33mname[39m=[32m"frequency"[39m
+    [33mtype[39m=[32m"radio"[39m
+    [33mvalue[39m=[32m"weekly"[39m
+  [36m/>[39m
+
+  Name "Monthly":
+  [36m<input[39m
+    [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+    [33mname[39m=[32m"frequency"[39m
+    [33mtype[39m=[32m"radio"[39m
+    [33mvalue[39m=[32m"monthly"[39m
+  [36m/>[39m
+
+  Name "Daily · unavailable":
+  [36m<input[39m
+    [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mname[39m=[32m"frequency"[39m
+    [33mtype[39m=[32m"radio"[39m
+    [33mvalue[39m=[32m"daily"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Notes":
+  [36m<textarea[39m
+    [33maria-describedby[39m=[32m"tz-field-_r_1p_-help"[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_1p_-label"[39m
+    [33mclass[39m=[32m"tz-textarea "[39m
+    [33mid[39m=[32m"tz-field-_r_1p_"[39m
+    [33mname[39m=[32m"notes"[39m
+    [33mrequired[39m=[32m""[39m
+    [33mrows[39m=[32m"3"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Save preferences":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  Name "Reset":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"secondary"[39m
+    [33mtype[39m=[32m"reset"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<form[39m
+      [33mclass[39m=[32m"tz-preferences-form"[39m
+      [33mnovalidate[39m=[32m""[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+      [36m>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+          [33mfor[39m=[32m"tz-field-_r_1n_"[39m
+          [33mid[39m=[32m"tz-field-_r_1n_-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mReceive updates[0m
+          [36m</bdi>[39m
+        [36m</label>[39m
+        [36m<input[39m
+          [33maria-describedby[39m=[32m"tz-field-_r_1n_-help"[39m
+          [33maria-labelledby[39m=[32m"tz-field-_r_1n_-label"[39m
+          [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+          [33mid[39m=[32m"tz-field-_r_1n_"[39m
+          [33mname[39m=[32m"updates"[39m
+          [33mtype[39m=[32m"checkbox"[39m
+          [33mvalue[39m=[32m"yes"[39m
+        [36m/>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"tz-field-help"[39m
+          [33mdir[39m=[32m"auto"[39m
+          [33mid[39m=[32m"tz-field-_r_1n_-help"[39m
+        [36m>[39m
+          [0mOptional[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<fieldset[39m
+        [33mclass[39m=[32m"tz-radio-group "[39m
+        [33mid[39m=[32m"tz-radio-_r_1o_"[39m
+      [36m>[39m
+        [36m<legend[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mUpdate frequency[0m
+          [36m</bdi>[39m
+        [36m</legend>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-radio-options"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"tz-radio-option"[39m
+          [36m>[39m
+            [36m<input[39m
+              [33mchecked[39m=[32m""[39m
+              [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+              [33mname[39m=[32m"frequency"[39m
+              [33mtype[39m=[32m"radio"[39m
+              [33mvalue[39m=[32m"weekly"[39m
+            [36m/>[39m
+            [36m<bdi>[39m
+              [0mWeekly[0m
+            [36m</bdi>[39m
+          [36m</label>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"tz-radio-option"[39m
+          [36m>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+              [33mname[39m=[32m"frequency"[39m
+              [33mtype[39m=[32m"radio"[39m
+              [33mvalue[39m=[32m"monthly"[39m
+            [36m/>[39m
+            [36m<bdi>[39m
+              [0mMonthly[0m
+            [36m</bdi>[39m
+          [36m</label>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"tz-radio-option"[39m
+          [36m>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mname[39m=[32m"frequency"[39m
+              [33mtype[39m=[32m"radio"[39m
+              [33mvalue[39m=[32m"daily"[39m
+            [36m/>[39m
+            [36m<bdi>[39m
+              [0mDaily · unavailable[0m
+            [36m</bdi>[39m
+          [36m</label>[39m
+        [36m</div>[39m
+      [36m</fieldset>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-field "[39m
+      [36m>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+          [33mfor[39m=[32m"tz-field-_r_1p_"[39m
+          [33mid[39m=[32m"tz-field-_r_1p_-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mNotes[0m
+          [36m</bdi>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"tz-field-required"[39m
+          [36m>[39m
+            [0m [0m
+            [0m*[0m
+          [36m</span>[39m
+        [36m</label>[39m
+        [36m<textarea[39m
+          [33maria-describedby[39m=[32m"tz-field-_r_1p_-help"[39m
+          [33maria-labelledby[39m=[32m"tz-field-_r_1p_-label"[39m
+          [33mclass[39m=[32m"tz-textarea "[39m
+          [33mid[39m=[32m"tz-field-_r_1p_"[39m
+          [33mname[39m=[32m"notes"[39m
+          [33mrequired[39m=[32m""[39m
+          [33mrows[39m=[32m"3"[39m
+        [36m/>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"tz-field-help"[39m
+          [33mdir[39m=[32m"auto"[39m
+          [33mid[39m=[32m"tz-field-_r_1p_-help"[39m
+        [36m>[39m
+          [0mAdd a short note.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-preferences-actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"tz-button "[39m
+          [33mdata-size[39m=[32m"sm"[39m
+          [33mdata-state[39m=[32m"idle"[39m
+          [33mdata-variant[39m=[32m"primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"tz-button-label"[39m
+          [36m>[39m
+            [0mSave preferences[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"tz-button "[39m
+          [33mdata-size[39m=[32m"sm"[39m
+          [33mdata-state[39m=[32m"idle"[39m
+          [33mdata-variant[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"reset"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"tz-button-label"[39m
+          [36m>[39m
+            [0mReset[0m
+          [36m</span>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m/>[39m
+    [36m</form>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/form-controls-pages.test.tsx:42:29
+     40|     render(<FeedbackForm language={copy.language} />);
+     41|     const user = userEvent.setup(), notes = screen.getByRole("textbox"…
+     42|     await user.click(screen.getByRole("button", { name: copy.action })…
+       |                             ^
+     43|     expect(notes).toHaveAccessibleDescription(`${copy.helper} ${copy.e…
+     44|     expect(notes).toHaveAttribute("aria-invalid", "true");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/workbench/form-controls-pages.test.tsx > checks the ar form accurately with associated errors, focus and native reset
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "تحقق من النموذج"
+
+Here are the accessible roles:
+
+  checkbox:
+
+  Name "تلقي التحديثات":
+  [36m<input[39m
+    [33maria-describedby[39m=[32m"tz-field-_r_1q_-help"[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_1q_-label"[39m
+    [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+    [33mid[39m=[32m"tz-field-_r_1q_"[39m
+    [33mname[39m=[32m"updates"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+    [33mvalue[39m=[32m"yes"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"tz-field-help"[39m
+    [33mdir[39m=[32m"auto"[39m
+    [33mid[39m=[32m"tz-field-_r_1q_-help"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"tz-field-help"[39m
+    [33mdir[39m=[32m"auto"[39m
+    [33mid[39m=[32m"tz-field-_r_1s_-help"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "وتيرة التحديثات":
+  [36m<fieldset[39m
+    [33mclass[39m=[32m"tz-radio-group "[39m
+    [33mid[39m=[32m"tz-radio-_r_1r_"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  radio:
+
+  Name "أسبوعيًا":
+  [36m<input[39m
+    [33mchecked[39m=[32m""[39m
+    [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+    [33mname[39m=[32m"frequency"[39m
+    [33mtype[39m=[32m"radio"[39m
+    [33mvalue[39m=[32m"weekly"[39m
+  [36m/>[39m
+
+  Name "شهريًا":
+  [36m<input[39m
+    [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+    [33mname[39m=[32m"frequency"[39m
+    [33mtype[39m=[32m"radio"[39m
+    [33mvalue[39m=[32m"monthly"[39m
+  [36m/>[39m
+
+  Name "يوميًا · غير متاح":
+  [36m<input[39m
+    [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mname[39m=[32m"frequency"[39m
+    [33mtype[39m=[32m"radio"[39m
+    [33mvalue[39m=[32m"daily"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  textbox:
+
+  Name "ملاحظات":
+  [36m<textarea[39m
+    [33maria-describedby[39m=[32m"tz-field-_r_1s_-help"[39m
+    [33maria-labelledby[39m=[32m"tz-field-_r_1s_-label"[39m
+    [33mclass[39m=[32m"tz-textarea "[39m
+    [33mid[39m=[32m"tz-field-_r_1s_"[39m
+    [33mname[39m=[32m"notes"[39m
+    [33mrequired[39m=[32m""[39m
+    [33mrows[39m=[32m"3"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "حفظ التفضيلات":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"primary"[39m
+    [33mtype[39m=[32m"submit"[39m
+  [36m/>[39m
+
+  Name "إعادة الضبط":
+  [36m<button[39m
+    [33mclass[39m=[32m"tz-button "[39m
+    [33mdata-size[39m=[32m"sm"[39m
+    [33mdata-state[39m=[32m"idle"[39m
+    [33mdata-variant[39m=[32m"secondary"[39m
+    [33mtype[39m=[32m"reset"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<p[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<form[39m
+      [33mclass[39m=[32m"tz-preferences-form"[39m
+      [33mnovalidate[39m=[32m""[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-field tz-checkbox-field"[39m
+      [36m>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+          [33mfor[39m=[32m"tz-field-_r_1q_"[39m
+          [33mid[39m=[32m"tz-field-_r_1q_-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mتلقي التحديثات[0m
+          [36m</bdi>[39m
+        [36m</label>[39m
+        [36m<input[39m
+          [33maria-describedby[39m=[32m"tz-field-_r_1q_-help"[39m
+          [33maria-labelledby[39m=[32m"tz-field-_r_1q_-label"[39m
+          [33mclass[39m=[32m"tz-choice-input tz-checkbox "[39m
+          [33mid[39m=[32m"tz-field-_r_1q_"[39m
+          [33mname[39m=[32m"updates"[39m
+          [33mtype[39m=[32m"checkbox"[39m
+          [33mvalue[39m=[32m"yes"[39m
+        [36m/>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"tz-field-help"[39m
+          [33mdir[39m=[32m"auto"[39m
+          [33mid[39m=[32m"tz-field-_r_1q_-help"[39m
+        [36m>[39m
+          [0mاختياري[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<fieldset[39m
+        [33mclass[39m=[32m"tz-radio-group "[39m
+        [33mid[39m=[32m"tz-radio-_r_1r_"[39m
+      [36m>[39m
+        [36m<legend[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mوتيرة التحديثات[0m
+          [36m</bdi>[39m
+        [36m</legend>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-radio-options"[39m
+        [36m>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"tz-radio-option"[39m
+          [36m>[39m
+            [36m<input[39m
+              [33mchecked[39m=[32m""[39m
+              [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+              [33mname[39m=[32m"frequency"[39m
+              [33mtype[39m=[32m"radio"[39m
+              [33mvalue[39m=[32m"weekly"[39m
+            [36m/>[39m
+            [36m<bdi>[39m
+              [0mأسبوعيًا[0m
+            [36m</bdi>[39m
+          [36m</label>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"tz-radio-option"[39m
+          [36m>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+              [33mname[39m=[32m"frequency"[39m
+              [33mtype[39m=[32m"radio"[39m
+              [33mvalue[39m=[32m"monthly"[39m
+            [36m/>[39m
+            [36m<bdi>[39m
+              [0mشهريًا[0m
+            [36m</bdi>[39m
+          [36m</label>[39m
+          [36m<label[39m
+            [33mclass[39m=[32m"tz-radio-option"[39m
+          [36m>[39m
+            [36m<input[39m
+              [33mclass[39m=[32m"tz-choice-input tz-radio"[39m
+              [33mdisabled[39m=[32m""[39m
+              [33mname[39m=[32m"frequency"[39m
+              [33mtype[39m=[32m"radio"[39m
+              [33mvalue[39m=[32m"daily"[39m
+            [36m/>[39m
+            [36m<bdi>[39m
+              [0mيوميًا · غير متاح[0m
+            [36m</bdi>[39m
+          [36m</label>[39m
+        [36m</div>[39m
+      [36m</fieldset>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-field "[39m
+      [36m>[39m
+        [36m<label[39m
+          [33mclass[39m=[32m"tz-field-label"[39m
+          [33mfor[39m=[32m"tz-field-_r_1s_"[39m
+          [33mid[39m=[32m"tz-field-_r_1s_-label"[39m
+        [36m>[39m
+          [36m<bdi>[39m
+            [0mملاحظات[0m
+          [36m</bdi>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"tz-field-required"[39m
+          [36m>[39m
+            [0m [0m
+            [0m*[0m
+          [36m</span>[39m
+        [36m</label>[39m
+        [36m<textarea[39m
+          [33maria-describedby[39m=[32m"tz-field-_r_1s_-help"[39m
+          [33maria-labelledby[39m=[32m"tz-field-_r_1s_-label"[39m
+          [33mclass[39m=[32m"tz-textarea "[39m
+          [33mid[39m=[32m"tz-field-_r_1s_"[39m
+          [33mname[39m=[32m"notes"[39m
+          [33mrequired[39m=[32m""[39m
+          [33mrows[39m=[32m"3"[39m
+        [36m/>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"tz-field-help"[39m
+          [33mdir[39m=[32m"auto"[39m
+          [33mid[39m=[32m"tz-field-_r_1s_-help"[39m
+        [36m>[39m
+          [0mأضف ملاحظة قصيرة.[0m
+        [36m</p>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-preferences-actions"[39m
+      [36m>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"tz-button "[39m
+          [33mdata-size[39m=[32m"sm"[39m
+          [33mdata-state[39m=[32m"idle"[39m
+          [33mdata-variant[39m=[32m"primary"[39m
+          [33mtype[39m=[32m"submit"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"tz-button-label"[39m
+          [36m>[39m
+            [0mحفظ التفضيلات[0m
+          [36m</span>[39m
+        [36m</button>[39m
+        [36m<button[39m
+          [33mclass[39m=[32m"tz-button "[39m
+          [33mdata-size[39m=[32m"sm"[39m
+          [33mdata-state[39m=[32m"idle"[39m
+          [33mdata-variant[39m=[32m"secondary"[39m
+          [33mtype[39m=[32m"reset"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"tz-button-label"[39m
+          [36m>[39m
+            [0mإعادة الضبط[0m
+          [36m</span>[39m
+        [36m</button>[39m
+      [36m</div>[39m
+      [36m<p[39m
+        [33mrole[39m=[32m"status"[39m
+      [36m/>[39m
+    [36m</form>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/workbench/form-controls-pages.test.tsx:42:29
+     40|     render(<FeedbackForm language={copy.language} />);
+     41|     const user = userEvent.setup(), notes = screen.getByRole("textbox"…
+     42|     await user.click(screen.getByRole("button", { name: copy.action })…
+       |                             ^
+     43|     expect(notes).toHaveAccessibleDescription(`${copy.helper} ${copy.e…
+     44|     expect(notes).toHaveAttribute("aria-invalid", "true");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 9 passed (12)
+   Start at  20:17:43
+   Duration  4.47s (tests 60%, environment 23%, import 7%, transform 6%, setup 4%)

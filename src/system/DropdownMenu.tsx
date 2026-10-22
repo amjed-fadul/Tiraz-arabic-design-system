@@ -1,6 +1,7 @@
 import * as Primitive from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
 import type { ReactElement, ReactNode } from "react";
+import { useGlide } from "./useGlide";
 import { useSystem } from "./useSystem";
 export interface MenuItem {
   id: string;
@@ -28,6 +29,7 @@ export function DropdownMenu({
 }: DropdownMenuProps) {
   const { container, config } = useSystem();
   const [localOpen, setLocalOpen] = useState(false);
+  const glide = useGlide();
   function changeOpen(value: boolean) {
     setLocalOpen(value);
     onOpenChange?.(value);
@@ -42,6 +44,7 @@ export function DropdownMenu({
       <Primitive.Trigger asChild>{trigger}</Primitive.Trigger>
       <Primitive.Portal container={container}>
         <Primitive.Content
+          ref={glide}
           className="tz-menu"
           sideOffset={7}
           align={align}
@@ -76,7 +79,11 @@ export function DropdownMenu({
               >
                 {item.icon && <span aria-hidden="true">{item.icon}</span>}
                 <span>{item.label}</span>
-                {item.shortcut && <kbd dir="ltr">{item.shortcut}</kbd>}
+                {item.shortcut && (
+                  <kbd className="tz-kbd" dir="ltr">
+                    {item.shortcut}
+                  </kbd>
+                )}
               </Primitive.Item>
             </div>
           ))}

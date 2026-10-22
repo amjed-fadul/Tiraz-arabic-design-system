@@ -1,0 +1,12 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/generated-data-table.test.tsx src/workbench/generated-code.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/data-table-v1/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  16:40:47
+   Duration  3.60s (tests 55%, environment 22%, import 14%, transform 5%, setup 5%)

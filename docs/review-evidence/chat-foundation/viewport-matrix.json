@@ -1,0 +1,378 @@
+[
+  {
+    "size": "desktop",
+    "language": "en",
+    "theme": "light",
+    "component": "ChatThread",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "en",
+    "theme": "light",
+    "component": "ChatComposer",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "Your message",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "en",
+    "theme": "light",
+    "component": "PromptBar",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "Prompt",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "en",
+    "theme": "dark",
+    "component": "ChatThread",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "en",
+    "theme": "dark",
+    "component": "ChatComposer",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "Your message",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "en",
+    "theme": "dark",
+    "component": "PromptBar",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "Prompt",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "ar",
+    "theme": "light",
+    "component": "المحادثة",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "ar",
+    "theme": "light",
+    "component": "محرر الرسائل",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "رسالتك",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "ar",
+    "theme": "light",
+    "component": "شريط الموجّه",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "الموجّه",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "ar",
+    "theme": "dark",
+    "component": "المحادثة",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "ar",
+    "theme": "dark",
+    "component": "محرر الرسائل",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "رسالتك",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "desktop",
+    "language": "ar",
+    "theme": "dark",
+    "component": "شريط الموجّه",
+    "body": 680.3460083007812,
+    "height": 882,
+    "pageWidth": 1282,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "الموجّه",
+        "width": 623
+      }
+    ],
+    "width": 1282
+  },
+  {
+    "size": "320",
+    "language": "en",
+    "theme": "light",
+    "component": "ChatThread",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "en",
+    "theme": "light",
+    "component": "ChatComposer",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "Your message",
+        "width": 197
+      }
+    ],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "en",
+    "theme": "light",
+    "component": "PromptBar",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "Prompt",
+        "width": 197
+      }
+    ],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "en",
+    "theme": "dark",
+    "component": "ChatThread",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "en",
+    "theme": "dark",
+    "component": "ChatComposer",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "Your message",
+        "width": 197
+      }
+    ],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "en",
+    "theme": "dark",
+    "component": "PromptBar",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "Prompt",
+        "width": 197
+      }
+    ],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "ar",
+    "theme": "light",
+    "component": "المحادثة",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "ar",
+    "theme": "light",
+    "component": "محرر الرسائل",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "رسالتك",
+        "width": 197
+      }
+    ],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "ar",
+    "theme": "light",
+    "component": "شريط الموجّه",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "الموجّه",
+        "width": 197
+      }
+    ],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "ar",
+    "theme": "dark",
+    "component": "المحادثة",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "ar",
+    "theme": "dark",
+    "component": "محرر الرسائل",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 64,
+        "label": "رسالتك",
+        "width": 197
+      }
+    ],
+    "width": 320
+  },
+  {
+    "size": "320",
+    "language": "ar",
+    "theme": "dark",
+    "component": "شريط الموجّه",
+    "body": 255.01031494140625,
+    "height": 568,
+    "pageWidth": 320,
+    "textarea": [
+      {
+        "disabled": false,
+        "height": 33,
+        "label": "الموجّه",
+        "width": 197
+      }
+    ],
+    "width": 320
+  }
+]

@@ -1,0 +1,448 @@
+/* The screen frame (example-screens spec §2.2): a Sidebar at the inline
+   start, the bar, then main, which is the size container `screen`. Every rule
+   names .screen; screens-css.test.ts audits this file. */
+.screen-host {
+  --screen-navigation-width: 300px;
+}
+.screen-host .tiraz-system {
+  min-block-size: 100dvh;
+}
+.screen {
+  display: grid;
+  grid-template-columns: var(--screen-navigation-width) minmax(0, 1fr);
+  align-items: start;
+  min-block-size: 100dvh;
+  background: var(--surface-tray);
+  color: var(--text);
+  transition: grid-template-columns var(--motion-collapse) var(--ease-out);
+}
+.screen[data-navigation-hidden="true"] {
+  grid-template-columns: 0 minmax(0, 1fr);
+  transition-duration: var(--motion-collapse-exit);
+}
+.screen-skip {
+  position: fixed;
+  inset-block-start: -100px;
+  inset-inline-start: var(--space-4);
+  z-index: 120;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--action);
+  color: var(--action-text);
+}
+.screen-skip:focus {
+  inset-block-start: var(--space-3);
+}
+.screen-navigation {
+  position: sticky;
+  inset-block-start: 0;
+  block-size: 100dvh;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+.screen[data-mobile-navigation="true"] .screen-navigation {
+  display: none;
+}
+.screen-sidebar[data-collapsed="false"] {
+  inline-size: var(--screen-navigation-width);
+  block-size: 100%;
+  opacity: 1;
+  transition: opacity var(--motion-collapse) var(--ease-out);
+}
+.screen[data-navigation-hidden="true"] .screen-sidebar {
+  opacity: 0;
+  transition-duration: var(--motion-fast);
+}
+.screen-sidebar,
+.screen-menu-sidebar {
+  background: transparent;
+  font-size: var(--text-reading);
+  font-weight: var(--weight-regular);
+}
+.screen-menu-sidebar {
+  inline-size: 100%;
+  min-block-size: 100%;
+}
+.screen-sidebar .tz-sidebar-header,
+.screen-menu-sidebar .tz-sidebar-header {
+  padding: var(--space-6);
+}
+.screen-sidebar .tz-sidebar-header .screen-sidebar-copy,
+.screen-menu-sidebar .tz-sidebar-header .screen-sidebar-copy {
+  font-size: var(--text-heading);
+}
+.screen-sidebar .tz-sidebar-content,
+.screen-menu-sidebar .tz-sidebar-content {
+  padding: 0 var(--space-4) var(--space-4);
+  scrollbar-gutter: stable;
+}
+.screen-navigation-heading {
+  display: block;
+  margin-block-end: var(--space-3);
+  padding-inline: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+}
+.screen-sidebar .tz-sidebar-group,
+.screen-menu-sidebar .tz-sidebar-group {
+  border-inline-start: 1px solid var(--border);
+  padding-inline-start: var(--space-3);
+  margin-inline-start: var(--space-2);
+}
+.screen-sidebar .tz-sidebar-item,
+.screen-menu-sidebar .tz-sidebar-item {
+  position: relative;
+  gap: var(--space-3);
+  min-block-size: calc(var(--space-6) * 2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-secondary);
+  font-weight: var(--weight-regular);
+  box-shadow: none;
+  border-radius: var(--radius-control);
+}
+.screen-sidebar .tz-sidebar-item > .tz-sidebar-label,
+.screen-menu-sidebar .tz-sidebar-item > .tz-sidebar-label {
+  white-space: normal;
+  overflow: visible;
+}
+.screen-sidebar .tz-sidebar-item[data-active="true"],
+.screen-menu-sidebar .tz-sidebar-item[data-active="true"] {
+  background: var(--wash);
+  color: var(--text);
+}
+.screen-sidebar .tz-sidebar-group .tz-sidebar-item[data-active="true"]::before,
+.screen-menu-sidebar
+  .tz-sidebar-group
+  .tz-sidebar-item[data-active="true"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: calc(-1 * var(--space-3) - 2px);
+  inset-block: var(--space-3);
+  inline-size: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--text);
+}
+.screen-sidebar .tz-sidebar-item:not(:disabled):active,
+.screen-menu-sidebar .tz-sidebar-item:not(:disabled):active {
+  transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .screen-sidebar .tz-sidebar-item:hover,
+  .screen-menu-sidebar .tz-sidebar-item:hover {
+    background: var(--wash);
+    color: var(--text);
+  }
+}
+.screen-sidebar .tz-sidebar-footer,
+.screen-menu-sidebar .tz-sidebar-footer {
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+}
+.screen-sidebar .tz-sidebar-footer > .tz-sidebar-item,
+.screen-menu-sidebar .tz-sidebar-footer > .tz-sidebar-item {
+  padding-inline: 0;
+  font-size: var(--text-label);
+}
+.screen-sidebar .tz-sidebar-identity,
+.screen-menu-sidebar .tz-sidebar-identity {
+  gap: var(--space-3);
+}
+.screen-mark {
+  color: var(--action);
+  inline-size: var(--space-6);
+  block-size: var(--space-6);
+  flex-shrink: 0;
+}
+.screen-sidebar-copy {
+  display: flex;
+  flex-direction: column;
+}
+.screen-sidebar-copy > span {
+  font-weight: var(--weight-medium);
+}
+.screen-sidebar-copy > small {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.screen-workspace {
+  min-inline-size: 0;
+  min-block-size: calc(100dvh - var(--space-4));
+  margin: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-tray);
+  background: var(--surface);
+}
+.screen-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  padding: var(--space-3) var(--space-5);
+}
+.screen-navigation-control {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.screen-bar-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: auto;
+}
+.screen-brand {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+.screen-main {
+  container: screen / inline-size;
+  inline-size: 100%;
+  max-inline-size: 1184px;
+  min-inline-size: 0;
+  margin-inline: auto;
+  padding: var(--space-6) var(--space-6) var(--space-10);
+}
+/* The skip link lands here; the whole page needs no ring. */
+.screen-main:focus {
+  outline: none;
+}
+/* The drawer keeps its own scroll area and the same spacious navigation. */
+.screen-host .tz-sheet:has(.screen-menu-sidebar) {
+  inline-size: min(var(--screen-navigation-width), calc(100% - var(--space-4)));
+  background: var(--surface-tray);
+}
+.screen-host .tz-sheet:has(.screen-menu-sidebar) .tz-sheet-body {
+  padding: 0;
+}
+.screen-menu-sidebar .tz-sidebar-header,
+.screen-menu-sidebar .screen-navigation-heading {
+  display: none;
+}
+.screen-menu-sidebar .tz-sidebar-content {
+  padding-block-start: var(--space-4);
+}
+/* ScreenHeader: the h1 and its description, with the actions at the inline
+   end, which wrap under the title below 640px. */
+.screen-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+  margin-block-end: var(--space-6);
+}
+.screen-heading {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+.screen-heading > h1 {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title);
+}
+.screen-description {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  line-height: var(--leading-meta);
+}
+.screen-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+@container screen (width < 640px) {
+  .screen-header {
+    flex-direction: column;
+  }
+}
+@media (max-width: 900px) {
+  .screen-bar {
+    padding-inline: var(--space-5);
+  }
+  .screen-main {
+    padding-inline: var(--space-5);
+  }
+}
+/* The desktop panel fully leaves; narrow screens use a modal drawer. */
+@media (max-width: 767px) {
+  .screen {
+    display: block;
+    padding: var(--space-1);
+  }
+  .screen-workspace {
+    margin: 0;
+    min-block-size: calc(100dvh - var(--space-2));
+    border-radius: var(--radius-panel);
+  }
+  .screen-bar {
+    gap: var(--space-1);
+    flex-wrap: wrap;
+    padding-inline: var(--space-3);
+  }
+  .screen-brand {
+    display: flex;
+  }
+  .screen-main {
+    padding: var(--space-5) var(--space-4) var(--space-8);
+  }
+}
+@media (max-width: 380px) {
+  .screen-brand {
+    display: none;
+  }
+}
+
+/* Demo controls stay available in the docs stage as well as standalone. */
+.screen-demo-host {
+  display: contents;
+}
+.screen-demo-controls {
+  display: flex;
+  align-items: center;
+  margin-inline-end: auto;
+  color: var(--text-secondary);
+}
+.screen-demo-controls .tz-button {
+  font-size: var(--text-meta);
+}
+.screen-agent-panel {
+  border-color: color-mix(
+    in srgb,
+    var(--agent-color, var(--ai)) 24%,
+    var(--border)
+  );
+  background: color-mix(
+    in srgb,
+    var(--agent-color, var(--ai)) 8%,
+    var(--surface)
+  );
+}
+.screen-agent-heading {
+  padding: var(--space-4);
+  border-block-end: 1px solid
+    color-mix(in srgb, var(--agent-color, var(--ai)) 16%, var(--border));
+}
+.screen-agent-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.screen-agent-eyebrow {
+  display: block;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+}
+.screen-agent-heading h2,
+.screen-agent-heading h3 {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+.screen-agent-heading p {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.screen-activity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--space-6);
+  margin-block-start: var(--space-2);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.screen-activity[data-working] {
+  color: var(--ai);
+}
+.screen-activity > span:first-of-type {
+  animation: screen-activity-enter var(--motion-state) var(--ease-out);
+}
+.screen-activity-steps {
+  display: flex;
+  flex: none;
+  gap: var(--space-1);
+}
+.screen-activity-steps i {
+  inline-size: var(--space-1);
+  block-size: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  transition: background var(--motion-state) var(--ease-out);
+}
+.screen-activity-steps i[data-done] {
+  background: var(--ai);
+}
+.screen-demo-host[data-demo-paused] * {
+  animation-play-state: paused !important;
+}
+.screen-demo-host[data-demo-phase="sending"]
+  [data-demo-composer]
+  .tz-chat-entry-send {
+  transform: scale(0.94);
+  box-shadow: 0 0 0 var(--space-1) var(--ai-soft);
+}
+@keyframes screen-activity-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-1));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .screen-activity > span:first-of-type {
+    animation: none;
+  }
+}
+
+/* Reserve space for the first-visit annotation; it never covers the screen. */
+.screen-navigation-hint-anchor {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+}
+.screen-bar:has(.screen-navigation-hint) {
+  padding-block-end: calc(var(--space-10) * 2 + var(--space-3));
+}
+.screen-navigation-hint.first-visit-hint {
+  inset-block-start: 100%;
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  inline-size: calc(var(--space-10) * 6);
+}
+.screen-navigation-hint .first-visit-hint-note {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: var(--space-8);
+}
+.screen-navigation-hint .first-visit-hint-arrow {
+  inset-block-start: 0;
+  inset-block-end: auto;
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  transform: rotate(180deg);
+}
+.screen-navigation-hint .first-visit-hint-arrow:dir(rtl) {
+  transform: rotate(180deg) scaleX(-1);
+}
+
+.screen-agent-name {
+  min-inline-size: 0;
+}
+.screen-agent-identity > .khayt {
+  flex: none;
+}

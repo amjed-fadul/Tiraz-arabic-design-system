@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/workbench/generated-structure.test.tsx src/workbench/generated-code.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/structure-and-navigation/Tiraz
+
+
+ Test Files  2 passed (2)
+      Tests  5 passed (5)
+   Start at  01:40:17
+   Duration  3.85s (tests 53%, environment 22%, import 13%, transform 7%, setup 5%)
+

@@ -1,52 +1,80 @@
-import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { useEffect, useId, useRef } from "react";
+import { Copy } from "lucide-react";
+import { Button } from "../system/Button";
+import { Tooltip } from "../system/Tooltip";
+import { useExactCopy } from "../system/useExactCopy";
 import type { Language } from "./i18n";
 import { label } from "./i18n";
+import "./copy-control.css";
+export type CopyFeedback = "idle" | "success" | "failure";
 export function CopyControl({
   text,
   caption,
   language,
   iconOnly = false,
+  announcement = "polite",
+  inlineFeedback = true,
+  onFeedbackChange,
 }: {
   text: string;
   caption: string;
   language: Language;
   iconOnly?: boolean;
+  announcement?: "polite" | "off";
+  inlineFeedback?: boolean;
+  onFeedbackChange?: (result: CopyFeedback) => void;
 }) {
-  const [copiedText, setCopiedText] = useState<string | null>(null);
-  const [failed, setFailed] = useState(false);
-  const copied = copiedText === text;
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedText(text);
-      setFailed(false);
-    } catch {
-      setFailed(true);
-    }
-  }
+  const feedback = useExactCopy(text);
+  const statusId = useId();
+  const report = useRef(onFeedbackChange);
+  useEffect(() => {
+    report.current = onFeedbackChange;
+  });
+  useEffect(() => {
+    report.current?.(feedback.result as CopyFeedback);
+  }, [text, feedback.result]);
+  const failed = feedback.result === "failure";
+  const button = (
+    <Button
+      variant={iconOnly ? "ghost" : "secondary"}
+      size="sm"
+      iconOnly={iconOnly}
+      aria-label={caption}
+      aria-describedby={failed ? statusId : undefined}
+      className={`copy-button${iconOnly ? " copy-icon" : ""}`}
+      state={
+        feedback.busy
+          ? "loading"
+          : feedback.result === "success"
+            ? "success"
+            : "idle"
+      }
+      title={iconOnly ? undefined : caption}
+      data-copy-state={
+        failed ? "failed" : feedback.result === "success" ? "copied" : "idle"
+      }
+      onClick={feedback.copy}
+    >
+      {iconOnly ? <Copy size={16} aria-hidden="true" /> : caption}
+    </Button>
+  );
   return (
     <span className="copy-control">
-      <button
-        type="button"
-        className={`doc-button copy-button${iconOnly ? " copy-icon" : ""}`}
-        aria-label={caption}
-        title={failed ? label("failed", language) : caption}
-        data-copy-state={failed ? "failed" : copied ? "copied" : "idle"}
-        onClick={copy}
-      >
-        {copied ? <Check size={13} /> : <Copy size={13} />}
-        {!iconOnly && (
-          <span>{copied ? label("copied", language) : caption}</span>
-        )}
-      </button>
+      {iconOnly ? <Tooltip trigger={button} content={caption} /> : button}
       <span
-        role="status"
-        className={failed && !iconOnly ? "copy-error" : "sr-only"}
+        id={statusId}
+        role={announcement === "polite" ? "status" : undefined}
+        className={
+          inlineFeedback &&
+          (failed || (!iconOnly && feedback.result === "success"))
+            ? "copy-feedback"
+            : "sr-only"
+        }
+        data-error={failed || undefined}
       >
         {failed
           ? label("failed", language)
-          : copied
+          : feedback.result === "success"
             ? label("copied", language)
             : ""}
       </span>

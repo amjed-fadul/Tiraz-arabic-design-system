@@ -1,0 +1,49 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=4
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/avatar-overlays-empty-state/Tiraz
+
+ ❯ src/system/ai-registry.test.ts (9 tests | 1 failed) 17432ms
+   × rejects incorrect required=false for tabs.label 8503ms
+ ❯ src/workbench/generated-data-table.test.tsx (2 tests | 1 failed) 7061ms
+   × runs copied create → filtered table → details code without any workbench dependency 5249ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/workbench/generated-data-table.test.tsx > runs copied create → filtered table → details code without any workbench dependency
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/workbench/generated-data-table.test.tsx:37:1
+     35|   return exports.default!;
+     36| }
+     37| it("runs copied create → filtered table → details code without any wor…
+       | ^
+     38|   const user = userEvent.setup();
+     39|   const Example = example();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/system/ai-registry.test.ts > rejects incorrect required=false for tabs.label
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ src/system/ai-registry.test.ts:126:3
+    124|   ["configuration", "typography", true],
+    125| ] as const) {
+    126|   it(`rejects incorrect required=${incorrect} for ${group}.${field}`, …
+       |   ^
+    127|     const registry = readRegistry();
+    128|     const props =
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  2 failed | 27 passed (29)
+      Tests  2 failed | 239 passed (241)
+   Start at  22:10:50
+   Duration  57.26s (tests 55%, environment 21%, import 11%, transform 9%, setup 3%, worker 1%)
+
+    Isolate  29 workers spawned · ~1.81s startup each (spawn + environment, per file)
+             at least ~11.32s faster with isolate: false — reuses workers across files instead of one per file
+

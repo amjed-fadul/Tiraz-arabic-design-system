@@ -1,5 +1,6 @@
 import { expect, it, vi } from "vitest";
 import { defaultConfig } from "../system";
+import { readPreferences } from "./preferences";
 import { defaultPlaygrounds } from "./model";
 import {
   defaultDocumentation,
@@ -43,7 +44,7 @@ it("validates persisted enum, numeric and collection values", () => {
     theme: "invalid",
     language: "unknown",
     active: "unknown",
-    inspectorOpen: "no",
+    settingsOpen: "no",
   });
   persist(storageKeys.system, {
     radius: -1,
@@ -125,4 +126,30 @@ it("applies the documented shared theme precedence and fallback", () => {
   expect(readTheme()).toBe("light");
   persist(storageKeys.theme, "invalid");
   expect(readTheme()).toBe("dark");
+});
+
+it.each(["lime", "amber", "teal", "cyan", "indigo", "rose", "slate"])(
+  "retains the %s accent across current and legacy settings reloads",
+  (accent) => {
+    persist(storageKeys.system, { ...defaultConfig, accent });
+    expect(readSystem().accent).toBe(accent);
+    localStorage.removeItem(storageKeys.system);
+    persist("tiraz.preferences.v1", { ...defaultConfig, accent });
+    expect(readSystem().accent).toBe(accent);
+    expect(readPreferences().accent).toBe(accent);
+  },
+);
+it("keeps a valid numerals choice and falls back to Arabic-Indic digits", () => {
+  expect(defaultSettings.numerals).toBe("arab");
+  persist(storageKeys.system, { ...defaultSettings, numerals: "latn" });
+  expect(readSystem().numerals).toBe("latn");
+  for (const numerals of ["hindi", 1, null, undefined]) {
+    persist(storageKeys.system, { ...defaultSettings, numerals });
+    expect(readSystem().numerals).toBe("arab");
+  }
+  localStorage.setItem(
+    "tiraz.preferences.v1",
+    JSON.stringify({ ...defaultConfig, numerals: "latn" }),
+  );
+  expect(readPreferences().numerals).toBe("latn");
 });

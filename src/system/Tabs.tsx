@@ -2,6 +2,7 @@ import * as Primitive from "@radix-ui/react-tabs";
 import { useLayoutEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { useSystem } from "./useSystem";
+import { useChanged } from "./useChanged";
 export interface TabItem {
   value: string;
   label: ReactNode;
@@ -29,6 +30,8 @@ export function Tabs({
   const { config } = useSystem();
   const [local, setLocal] = useState(defaultValue);
   const active = value ?? local;
+  // Panels animate only after the first switch, never on first render.
+  const changed = useChanged(active);
   const list = useRef<HTMLDivElement>(null);
   const [indicator, setIndicator] = useState({ width: 0, x: 0 });
   useLayoutEffect(() => {
@@ -39,9 +42,10 @@ export function Tabs({
       if (tab) {
         const rect = tab.getBoundingClientRect();
         const parent = el.getBoundingClientRect();
+        // From the list's padding edge, where the indicator is placed.
         setIndicator({
           width: rect.width,
-          x: rect.left - parent.left + el.scrollLeft,
+          x: rect.left - parent.left - el.clientLeft + el.scrollLeft,
         });
       }
     };
@@ -61,6 +65,7 @@ export function Tabs({
       }}
       dir={config.direction}
       data-variant={variant}
+      data-changed={changed || undefined}
     >
       <Primitive.List ref={list} className="tz-tab-list" aria-label={label}>
         <span
@@ -68,8 +73,8 @@ export function Tabs({
           className="tz-tab-indicator"
           style={
             {
-              width: indicator.width,
-              transform: `translateX(${indicator.x}px)`,
+              "--tab-x": `${indicator.x}px`,
+              "--tab-w": indicator.width,
             } as CSSProperties
           }
         />

@@ -1,0 +1,18 @@
+12:57:59 AM [vite] (client) Re-optimizing dependencies because vite config has changed
+12:58:01 AM [vite] (client) dependencies optimized: @radix-ui/react-dialog, @radix-ui/react-direction, @radix-ui/react-dropdown-menu, @radix-ui/react-switch, @radix-ui/react-tabs, @radix-ui/react-toast, lucide-react
+12:58:01 AM [vite] (client) optimized dependencies changed. reloading
+{
+  "passed": true,
+  "checks": [
+    "Honest current-preferences action and accessible menu name",
+    "Enabled preference displayed",
+    "Disabled preference displayed",
+    "Local/session storage unchanged",
+    "Reload resets in-memory preference"
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "example-enabled.png",
+    "example-disabled.png"
+  ]
+}

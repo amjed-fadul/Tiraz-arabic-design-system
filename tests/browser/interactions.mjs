@@ -1,8 +1,10 @@
 import { createRequire } from "node:module";
-import { writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import assert from "node:assert/strict";
 const require = createRequire(import.meta.url),
   { chromium } = require(process.env.TIRAZ_PLAYWRIGHT || "playwright");
+const evidenceDir = process.env.TIRAZ_EVIDENCE || "docs/review-evidence";
+await mkdir(evidenceDir, { recursive: true });
 const browser = await chromium.launch({
   headless: true,
   ...(process.env.TIRAZ_BROWSER
@@ -12,6 +14,18 @@ const browser = await chromium.launch({
 const page = await browser.newPage({ viewport: { width: 800, height: 400 } });
 const base = process.env.TIRAZ_URL || "http://127.0.0.1:5176";
 const result = { overlays: [], actions: [], toast: [], failures: [] };
+// Accent is a Radix Select: open it and pick the option by name.
+const accentNames = { blue: ["أزرق", "Blue"], plum: ["بنفسجي", "Purple"] };
+async function selectAccent(scope, accessibleName, value) {
+  await scope.getByLabel(accessibleName, { exact: true }).click();
+  const popup = page.locator(".accent-popup");
+  await popup
+    .getByRole("option", {
+      name: new RegExp(`^(${accentNames[value].join("|")})$`),
+    })
+    .click();
+  await popup.waitFor({ state: "detached" });
+}
 async function check(name, fn) {
   try {
     await fn();
@@ -80,8 +94,12 @@ await check(
           assert.equal(styles.font, value === "large" ? "16px" : "14px");
         if (key === "density")
           assert.equal(styles.itemHeight, value === "standard" ? 40 : 36);
+        // The menu is paper at --radius-paper, which stops at 24px.
         if (key === "radius")
-          assert.equal(styles.radius, `${Number(value) + 4}px`);
+          assert.equal(
+            styles.radius,
+            { 16: "24px", 0: "0px", 8: "15px" }[value],
+          );
         if (key === "reducedMotion" && value === "true")
           assert.ok(parseFloat(styles.motion) <= 0.00001);
         if (key === "direction") {
@@ -91,7 +109,7 @@ await check(
         result.overlays.push({ key, value, styles });
       }
     await page.screenshot({
-      path: "docs/review-evidence/live-nested-overlay.png",
+      path: `${evidenceDir}/live-nested-overlay.png`,
     });
     await page.keyboard.press("Escape");
     await page.waitForFunction(() => !document.querySelector(".tz-menu"));
@@ -114,7 +132,7 @@ await check(
   "live action settings, edits, reset, repeated actions and navigation",
   async () => {
     await button.click();
-    await rail.getByLabel("Accent", { exact: true }).selectOption("blue");
+    await selectAccent(rail, "Accent", "blue");
     await rail.getByLabel("Typography", { exact: true }).selectOption("large");
     await rail.getByLabel("Density", { exact: true }).selectOption("standard");
     await rail.getByLabel("Corner radius", { exact: true }).focus();
@@ -131,9 +149,10 @@ await check(
     assert.equal(loading.state, "loading");
     assert.equal(loading.font, "16px");
     assert.equal(loading.action, "#A8C6EF");
-    assert.equal(loading.radius, "16px");
+    // --radius-control is 1.25 × the corner radius: 16 renders 20px.
+    assert.equal(loading.radius, "20px");
     await page.screenshot({
-      path: "docs/review-evidence/live-action-loading.png",
+      path: `${evidenceDir}/live-action-loading.png`,
     });
     await page.waitForFunction(
       () =>
@@ -141,7 +160,7 @@ await check(
           .state === "success",
     );
     await page.screenshot({
-      path: "docs/review-evidence/live-action-success.png",
+      path: `${evidenceDir}/live-action-success.png`,
     });
     await page.waitForFunction(
       () =>
@@ -149,7 +168,7 @@ await check(
           .state === "idle",
     );
     await page.screenshot({
-      path: "docs/review-evidence/live-action-idle.png",
+      path: `${evidenceDir}/live-action-idle.png`,
     });
     result.actions.push({ loading, sequence: ["loading", "success", "idle"] });
     await button.click();
@@ -212,7 +231,7 @@ await check("simulated error feedback returns to idle", async () => {
       document.querySelector(".playground-canvas .tz-button").dataset.state ===
       "error",
   );
-  await page.screenshot({ path: "docs/review-evidence/live-action-error.png" });
+  await page.screenshot({ path: `${evidenceDir}/live-action-error.png` });
   await page.waitForFunction(
     () =>
       document.querySelector(".playground-canvas .tz-button").dataset.state ===
@@ -234,41 +253,37 @@ await check("simulated error feedback returns to idle", async () => {
     .click();
 });
 await check(
-  "Sheet example saves changes and discards cancelled drafts",
+  "Sheet example saves a customer and discards cancelled drafts",
   async () => {
-    await page
-      .locator(".docs-sidebar nav")
-      .getByRole("button", { name: "Sheet", exact: true })
-      .click();
-    const trigger = page
-      .locator(".examples-canvas")
-      .getByRole("button", { name: "Edit customer information", exact: true });
+    // Create customer is not on a docs page; drive the example (empty table)
+    // in the forms fixture.
+    await page.goto(`${base}/tests/browser/forms-fixture.html?dir=ltr`);
+    const trigger = page.getByRole("button", {
+        name: "Create customer",
+        exact: true,
+      }),
+      name = page.getByRole("textbox", { name: "Customer name", exact: true }),
+      names = () =>
+        page
+          .getByRole("table", { name: "Customers", exact: true })
+          .locator("tbody th[scope=row]")
+          .allInnerTexts();
+    assert.deepEqual(await names(), []);
     await trigger.click();
-    await page.getByLabel("Company name", { exact: true }).fill("QA Company");
+    await name.fill("QA Company");
     await page
-      .getByRole("button", { name: "Save changes", exact: true })
+      .getByRole("button", { name: "Save customer", exact: true })
       .click();
     await page.waitForFunction(() => !document.querySelector(".tz-sheet"));
-    assert.ok(
-      (
-        await page.locator(".examples-canvas .example-feedback").textContent()
-      ).includes("Saved for this session"),
-    );
+    assert.deepEqual(await names(), ["QA Company"]);
     await trigger.click();
-    assert.equal(
-      await page.getByLabel("Company name", { exact: true }).inputValue(),
-      "QA Company",
-    );
-    await page
-      .getByLabel("Company name", { exact: true })
-      .fill("Discard this draft");
+    assert.equal(await name.inputValue(), "");
+    await name.fill("Discard this draft");
     await page.getByRole("button", { name: "Cancel", exact: true }).click();
     await page.waitForFunction(() => !document.querySelector(".tz-sheet"));
+    assert.deepEqual(await names(), ["QA Company"]);
     await trigger.click();
-    assert.equal(
-      await page.getByLabel("Company name", { exact: true }).inputValue(),
-      "QA Company",
-    );
+    assert.equal(await name.inputValue(), "");
     await page.keyboard.press("Escape");
     await page.waitForFunction(() => !document.querySelector(".tz-sheet"));
     assert.ok(await trigger.evaluate((el) => el === document.activeElement));
@@ -280,6 +295,7 @@ await check(
     });
   },
 );
+await page.goto(base);
 await page
   .locator(".docs-sidebar nav")
   .getByRole("button", { name: "Toast", exact: true })
@@ -319,8 +335,13 @@ await check(
     await page.waitForTimeout(1350);
     assert.equal(await toast.count(), 0);
     result.toast.push("focus pauses and leaving resumes expiry");
+    // Expiry checks above intentionally use 1000 ms. Give the separate live
+    // customization inspection the normal 5000 ms window so UI actions cannot
+    // consume its entire lifetime before the style assertion.
+    await rail.getByLabel("Duration · ms", { exact: true }).fill("5000");
     await trigger.click();
-    await rail.getByLabel("Accent", { exact: true }).selectOption("plum");
+    const styleStarted = Date.now();
+    await selectAccent(rail, "Accent", "plum");
     await rail.getByLabel("Typography", { exact: true }).selectOption("large");
     await page
       .getByRole("button", { name: "Toggle theme", exact: true })
@@ -335,7 +356,11 @@ await check(
     assert.equal(m.font, "16px");
     assert.equal(m.tone, "success");
     assert.equal(m.icon, "rgb(165, 212, 179)");
-    result.toast.push(m);
+    result.toast.push({
+      ...m,
+      duration: 5000,
+      styleElapsedMs: Date.now() - styleStarted,
+    });
     await toast.locator("button").click();
     await page.waitForFunction(
       () => !document.querySelector(".playground-region .tz-toast"),
@@ -344,7 +369,7 @@ await check(
   },
 );
 await writeFile(
-  "docs/review-evidence/interactions.json",
+  `${evidenceDir}/interactions.json`,
   JSON.stringify(result, null, 2),
 );
 console.log(JSON.stringify(result, null, 2));

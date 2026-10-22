@@ -1,0 +1,510 @@
+{
+  "checks": [
+    {
+      "name": "connected model keyboard navigation skips disabled and persists through editing",
+      "selected": "studio-review"
+    },
+    {
+      "name": "connected selection appends without replacing draft and preserves selected text"
+    },
+    {
+      "name": "copy writes the actual selected text and More reveals a connected quotation action"
+    },
+    {
+      "name": "mixed-direction backward selection and keyboard activation preserve payload"
+    },
+    {
+      "name": "outside, code, editable and interactive selections are excluded including crossing ranges"
+    },
+    {
+      "name": "clearing, changing, scrolling and resizing dismiss the row"
+    },
+    {
+      "name": "context edge cases have accessible full values and status"
+    },
+    {
+      "name": "nested Select, context and selection Escape preserve their containing Modal"
+    },
+    {
+      "name": "ar light 1100x800: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "ar light 320x520: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "ar light 320x320: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "ar dark 1100x800: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "ar dark 320x520: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "ar dark 320x320: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "en light 1100x800: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "en light 320x520: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "en light 320x320: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "en dark 1100x800: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "en dark 320x520: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "en dark 320x320: bounds, menus, shared customization and motion",
+      "overflow": false,
+      "fonts": true,
+      "animations": [
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ],
+        [
+          "1e-05s",
+          "0s"
+        ]
+      ]
+    },
+    {
+      "name": "native mouse drag creates actionable text selection",
+      "selectedText": "Mixed Arabic مرحبا بالعالم and English selection."
+    },
+    {
+      "name": "documentation pages stay continuous with shared frames and small inspectors"
+    }
+  ],
+  "failures": [],
+  "errors": [],
+  "limitations": [
+    "DOM Range and emulated touch checks are simulated; no physical touch device tested.",
+    "Automated accessibility and keyboard checks do not establish screen-reader conformance."
+  ]
+}

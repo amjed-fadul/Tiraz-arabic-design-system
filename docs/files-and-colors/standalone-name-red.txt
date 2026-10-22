@@ -1,0 +1,121 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/files-colors.test.tsx
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/files-and-colors/Tiraz
+
+ ❯ src/system/files-colors.test.tsx (18 tests | 1 failed) 481ms
+   × carries standalone aria-label into the keyboard Browse name 14ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/system/files-colors.test.tsx > carries standalone aria-label into the keyboard Browse name
+TestingLibraryElementError: Unable to find an accessible element with the role "button" and name "Attachments Browse files"
+
+Here are the accessible roles:
+
+  button:
+
+  Name "Browse files":
+  [36m<button[39m
+    [33maria-labelledby[39m=[32m"tz-files-browse-_r_1q_"[39m
+    [33mclass[39m=[32m"tz-file-browse"[39m
+    [33mid[39m=[32m"tz-files-browse-_r_1q_"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<div[39m
+    [33mclass[39m=[32m"tz-entry-feedback"[39m
+    [33mid[39m=[32m"tz-files-status-_r_1p_"[39m
+    [33mrole[39m=[32m"status"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"tiraz-system"[39m
+      [33mdata-density[39m=[32m"compact"[39m
+      [33mdata-reduced-motion[39m=[32m"false"[39m
+      [33mdata-theme[39m=[32m"light"[39m
+      [33mdata-typography[39m=[32m"standard"[39m
+      [33mdir[39m=[32m"ltr"[39m
+      [33mstyle[39m=[32m"--action: #355E4C; --radius: 8px; color-scheme: light;"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"tz-file-selection"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-file-drop"[39m
+        [36m>[39m
+          [36m<svg[39m
+            [33maria-hidden[39m=[32m"true"[39m
+            [33mclass[39m=[32m"lucide lucide-paperclip"[39m
+            [33mfill[39m=[32m"none"[39m
+            [33mheight[39m=[32m"18"[39m
+            [33mstroke[39m=[32m"currentColor"[39m
+            [33mstroke-linecap[39m=[32m"round"[39m
+            [33mstroke-linejoin[39m=[32m"round"[39m
+            [33mstroke-width[39m=[32m"2"[39m
+            [33mviewBox[39m=[32m"0 0 24 24"[39m
+            [33mwidth[39m=[32m"18"[39m
+            [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+          [36m>[39m
+            [36m<path[39m
+              [33md[39m=[32m"m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"[39m
+            [36m/>[39m
+          [36m</svg>[39m
+          [36m<span>[39m
+            [0mDrop files here or[0m
+          [36m</span>[39m
+          [36m<button[39m
+            [33maria-labelledby[39m=[32m"tz-files-browse-_r_1q_"[39m
+            [33mclass[39m=[32m"tz-file-browse"[39m
+            [33mid[39m=[32m"tz-files-browse-_r_1q_"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [0mBrowse files[0m
+          [36m</button>[39m
+          [36m<input[39m
+            [33maria-label[39m=[32m"Attachments"[39m
+            [33mclass[39m=[32m"tz-visually-hidden "[39m
+            [33mtabindex[39m=[32m"-1"[39m
+            [33mtype[39m=[32m"file"[39m
+          [36m/>[39m
+        [36m</div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"tz-entry-feedback"[39m
+          [33mid[39m=[32m"tz-files-status-_r_1p_"[39m
+          [33mrole[39m=[32m"status"[39m
+        [36m/>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/system/files-colors.test.tsx:336:17
+    334| it("carries standalone aria-label into the keyboard Browse name", () =…
+    335|   mount(<FileDropzone aria-label="Attachments"/>);
+    336|   expect(screen.getByRole('button',{name:'Attachments Browse files'}))…
+       |                 ^
+    337| });
+    338|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 17 passed (18)
+   Start at  01:42:11
+   Duration  1.72s (environment 46%, tests 30%, import 9%, setup 8%, transform 6%)
+

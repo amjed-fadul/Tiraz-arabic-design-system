@@ -33,6 +33,27 @@ describe("public component contracts", () => {
     expect(button).toHaveAttribute("aria-busy", "true");
     expect(onClick).not.toHaveBeenCalled();
   });
+  it("keeps focus on a button that turns loading, and swallows its clicks", async () => {
+    const onClick = vi.fn();
+    const save = (state: "idle" | "loading") => (
+      <SystemProvider config={defaultConfig}>
+        <Button state={state} onClick={onClick}>
+          حفظ
+        </Button>
+      </SystemProvider>
+    );
+    const view = render(save("idle"));
+    const button = screen.getByRole("button", { name: "حفظ" });
+    button.focus();
+    view.rerender(save("loading"));
+    // Still focusable, so focus never drops to the page mid-action.
+    expect(button).toHaveFocus();
+    expect(button).not.toBeDisabled();
+    expect(button).toHaveAttribute("aria-disabled", "true");
+    await userEvent.click(button);
+    await userEvent.keyboard("{Enter}");
+    expect(onClick).not.toHaveBeenCalled();
+  });
   it.each(["rtl", "ltr"] as const)(
     "moves Tabs selection in visual order in %s and skips disabled tabs",
     async (dir) => {

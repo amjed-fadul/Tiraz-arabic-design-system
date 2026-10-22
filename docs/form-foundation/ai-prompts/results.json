@@ -1,0 +1,145 @@
+{
+  "checks": [
+    {
+      "language": "ar",
+      "width": 1440,
+      "clipboardLength": 2861,
+      "codeLength": 1754,
+      "geometry": {
+        "whiteSpace": "nowrap",
+        "overflow": "hidden",
+        "sameRow": true,
+        "buttonInsideViewport": true,
+        "isolatedPaths": [
+          "index.ts",
+          "config.ts",
+          "tokens.css",
+          "components.css",
+          "ai/.",
+          "src/system",
+          "src/system/Button.tsx.",
+          "ai/README.md",
+          "ai/registry.json",
+          "ai/composition.md",
+          "Button.tsx",
+          "index.ts",
+          "config.ts",
+          "Provider.tsx",
+          "src/main.tsx.",
+          "./system",
+          "./system",
+          "./system",
+          "./system/tokens.css",
+          "./system/components.css"
+        ],
+        "documentOverflow": false
+      }
+    },
+    {
+      "language": "en",
+      "width": 1440,
+      "clipboardLength": 3078,
+      "codeLength": 1754,
+      "geometry": {
+        "whiteSpace": "nowrap",
+        "overflow": "hidden",
+        "sameRow": true,
+        "buttonInsideViewport": true,
+        "isolatedPaths": [
+          "index.ts",
+          "config.ts",
+          "tokens.css",
+          "components.css",
+          "ai/.",
+          "src/system",
+          "src/system/Button.tsx.",
+          "ai/README.md",
+          "ai/registry.json",
+          "ai/composition.md",
+          "Button.tsx",
+          "index.ts",
+          "config.ts",
+          "Provider.tsx",
+          "src/main.tsx.",
+          "./system",
+          "./system",
+          "./system",
+          "./system/tokens.css",
+          "./system/components.css"
+        ],
+        "documentOverflow": false
+      }
+    },
+    {
+      "language": "ar",
+      "width": 320,
+      "clipboardLength": 2861,
+      "codeLength": 1754,
+      "geometry": {
+        "whiteSpace": "nowrap",
+        "overflow": "hidden",
+        "sameRow": true,
+        "buttonInsideViewport": true,
+        "isolatedPaths": [
+          "index.ts",
+          "config.ts",
+          "tokens.css",
+          "components.css",
+          "ai/.",
+          "src/system",
+          "src/system/Button.tsx.",
+          "ai/README.md",
+          "ai/registry.json",
+          "ai/composition.md",
+          "Button.tsx",
+          "index.ts",
+          "config.ts",
+          "Provider.tsx",
+          "src/main.tsx.",
+          "./system",
+          "./system",
+          "./system",
+          "./system/tokens.css",
+          "./system/components.css"
+        ],
+        "documentOverflow": false
+      }
+    },
+    {
+      "language": "en",
+      "width": 320,
+      "clipboardLength": 3078,
+      "codeLength": 1754,
+      "geometry": {
+        "whiteSpace": "nowrap",
+        "overflow": "hidden",
+        "sameRow": true,
+        "buttonInsideViewport": true,
+        "isolatedPaths": [
+          "index.ts",
+          "config.ts",
+          "tokens.css",
+          "components.css",
+          "ai/.",
+          "src/system",
+          "src/system/Button.tsx.",
+          "ai/README.md",
+          "ai/registry.json",
+          "ai/composition.md",
+          "Button.tsx",
+          "index.ts",
+          "config.ts",
+          "Provider.tsx",
+          "src/main.tsx.",
+          "./system",
+          "./system",
+          "./system",
+          "./system/tokens.css",
+          "./system/components.css"
+        ],
+        "documentOverflow": false
+      }
+    }
+  ],
+  "failures": []
+}

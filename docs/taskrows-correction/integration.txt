@@ -1,0 +1,13 @@
+
+> tiraz@0.1.0 test
+> vitest run src/system/taskrows-agent.test.tsx src/system/tasks-notifications.test.tsx src/workbench/tasks-notifications-pages.test.tsx src/workbench/generated-lists.test.tsx src/workbench/generated-code.test.ts src/system/ai-registry.test.ts
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/tasks-and-notifications/Tiraz
+
+
+ Test Files  6 passed (6)
+      Tests  30 passed (30)
+   Start at  18:42:05
+   Duration  13.61s (import 42%, tests 38%, environment 11%, transform 7%, setup 2%)
+

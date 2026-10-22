@@ -15,6 +15,15 @@ dist-ssr
 .vite
 coverage
 
+# Generated public-package payload
+packages/tiraz/dist
+packages/tiraz/source
+packages/tiraz/fonts.css
+packages/tiraz/styles.css
+packages/tiraz/LICENSE
+*.tgz
+.vercel
+
 # Local credentials and environment configuration
 .env
 .env.*

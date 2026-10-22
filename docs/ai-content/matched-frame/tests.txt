@@ -1,0 +1,16 @@
+
+> tiraz@0.1.0 test
+> vitest run --maxWorkers=2 --testTimeout=15000
+
+
+ RUN  v5.0.3 /Users/amjedfadul/.codex/worktrees/ai-content/Tiraz
+
+
+ Test Files  69 passed (69)
+      Tests  612 passed (612)
+   Start at  11:58:12
+   Duration  117.78s (import 46%, tests 38%, environment 12%, setup 2%, transform 2%)
+
+     Import  239 modules were evaluated 5696 times · 105.70s total, 46% of tracked time
+             ~49.14s faster with isolate: false — shared modules are evaluated once per worker instead of once per file
+             learn more: https://vitest.dev/guide/improving-performance#test-isolation

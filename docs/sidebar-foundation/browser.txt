@@ -1,0 +1,7 @@
+PASS RTL/LTR light/dark expanded/rail, fixed widths, long-label/count separation, Tooltip names, active parent and rail disclosure
+PASS external controlled collapse preserves child focus; Enter/Space disclosure; hidden descendants absent
+PASS short bounded navigation scroll leaves header/footer available; footer action works
+PASS both system and OS reduced motion remove Sidebar transitions
+PASS mobile Sheet destinations focus after dismissal, Tab trap, Escape/outside restoration, short layout
+PASS sample native hash reload and browser Back keep note destination visible/current
+PASS continuous documentation, connected nested/footer examples, actual copied code and prompts

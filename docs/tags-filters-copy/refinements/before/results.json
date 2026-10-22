@@ -1,0 +1,544 @@
+{
+  "phase": "before",
+  "checks": [],
+  "measurements": [
+    {
+      "component": "tag-input",
+      "language": "ar",
+      "theme": "light",
+      "width": 1440,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(173, 188, 179)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "tag-input",
+      "language": "ar",
+      "theme": "light",
+      "width": 390,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(173, 188, 179)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "tag-input",
+      "language": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(84, 98, 89)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "tag-input",
+      "language": "ar",
+      "theme": "dark",
+      "width": 390,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(97, 115, 104)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "tag-input",
+      "language": "en",
+      "theme": "light",
+      "width": 1440,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(174, 188, 179)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "tag-input",
+      "language": "en",
+      "theme": "light",
+      "width": 390,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(173, 188, 179)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "tag-input",
+      "language": "en",
+      "theme": "dark",
+      "width": 1440,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(97, 115, 104)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "tag-input",
+      "language": "en",
+      "theme": "dark",
+      "width": 390,
+      "styles": {
+        "inner": {
+          "outline": "2px",
+          "outlineStyle": "solid",
+          "shadow": "none"
+        },
+        "outer": {
+          "outline": "3px",
+          "outlineStyle": "none",
+          "offset": "0px",
+          "border": "rgb(97, 115, 104)",
+          "overflow": "visible"
+        },
+        "rules": [
+          {
+            "selector": ".tiraz-system :where(button, a, input, select, textarea, [tabindex]):focus-visible",
+            "outline": "2px solid var(--focus)",
+            "boxShadow": "",
+            "source": "/Users/amjedfadul/.codex/worktrees/tags-filters-copy/Tiraz/src/system/components.css"
+          }
+        ]
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "ar",
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "root": {
+          "x": 651,
+          "y": 454.96875,
+          "width": 208,
+          "height": 32,
+          "right": 859,
+          "bottom": 486.96875
+        },
+        "input": {
+          "x": 687,
+          "y": 454.96875,
+          "width": 172,
+          "height": 32,
+          "right": 859,
+          "bottom": 486.96875
+        },
+        "button": {
+          "x": 651,
+          "y": 454.96875,
+          "width": 32,
+          "height": 32,
+          "right": 683,
+          "bottom": 486.96875
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "ar",
+      "theme": "light",
+      "width": 320,
+      "geometry": {
+        "root": {
+          "x": 56,
+          "y": 463.765625,
+          "width": 208,
+          "height": 32,
+          "right": 264,
+          "bottom": 495.765625
+        },
+        "input": {
+          "x": 92,
+          "y": 463.765625,
+          "width": 172,
+          "height": 32,
+          "right": 264,
+          "bottom": 495.765625
+        },
+        "button": {
+          "x": 56,
+          "y": 463.765625,
+          "width": 32,
+          "height": 32,
+          "right": 88,
+          "bottom": 495.765625
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 320,
+        "viewport": 320
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "ar",
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "root": {
+          "x": 651,
+          "y": 454.96875,
+          "width": 208,
+          "height": 32,
+          "right": 859,
+          "bottom": 486.96875
+        },
+        "input": {
+          "x": 687,
+          "y": 454.96875,
+          "width": 172,
+          "height": 32,
+          "right": 859,
+          "bottom": 486.96875
+        },
+        "button": {
+          "x": 651,
+          "y": 454.96875,
+          "width": 32,
+          "height": 32,
+          "right": 683,
+          "bottom": 486.96875
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "ar",
+      "theme": "dark",
+      "width": 320,
+      "geometry": {
+        "root": {
+          "x": 56,
+          "y": 463.765625,
+          "width": 208,
+          "height": 32,
+          "right": 264,
+          "bottom": 495.765625
+        },
+        "input": {
+          "x": 92,
+          "y": 463.765625,
+          "width": 172,
+          "height": 32,
+          "right": 264,
+          "bottom": 495.765625
+        },
+        "button": {
+          "x": 56,
+          "y": 463.765625,
+          "width": 32,
+          "height": 32,
+          "right": 88,
+          "bottom": 495.765625
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 320,
+        "viewport": 320
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "en",
+      "theme": "light",
+      "width": 1440,
+      "geometry": {
+        "root": {
+          "x": 581,
+          "y": 454.96875,
+          "width": 208,
+          "height": 32,
+          "right": 789,
+          "bottom": 486.96875
+        },
+        "input": {
+          "x": 581,
+          "y": 454.96875,
+          "width": 172,
+          "height": 32,
+          "right": 753,
+          "bottom": 486.96875
+        },
+        "button": {
+          "x": 757,
+          "y": 454.96875,
+          "width": 32,
+          "height": 32,
+          "right": 789,
+          "bottom": 486.96875
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "en",
+      "theme": "light",
+      "width": 320,
+      "geometry": {
+        "root": {
+          "x": 56,
+          "y": 501.546875,
+          "width": 208,
+          "height": 32,
+          "right": 264,
+          "bottom": 533.546875
+        },
+        "input": {
+          "x": 56,
+          "y": 501.546875,
+          "width": 172,
+          "height": 32,
+          "right": 228,
+          "bottom": 533.546875
+        },
+        "button": {
+          "x": 232,
+          "y": 501.546875,
+          "width": 32,
+          "height": 32,
+          "right": 264,
+          "bottom": 533.546875
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 320,
+        "viewport": 320
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "en",
+      "theme": "dark",
+      "width": 1440,
+      "geometry": {
+        "root": {
+          "x": 581,
+          "y": 454.96875,
+          "width": 208,
+          "height": 32,
+          "right": 789,
+          "bottom": 486.96875
+        },
+        "input": {
+          "x": 581,
+          "y": 454.96875,
+          "width": 172,
+          "height": 32,
+          "right": 753,
+          "bottom": 486.96875
+        },
+        "button": {
+          "x": 757,
+          "y": 454.96875,
+          "width": 32,
+          "height": 32,
+          "right": 789,
+          "bottom": 486.96875
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 1440,
+        "viewport": 1440
+      }
+    },
+    {
+      "component": "input-copy",
+      "language": "en",
+      "theme": "dark",
+      "width": 320,
+      "geometry": {
+        "root": {
+          "x": 56,
+          "y": 501.546875,
+          "width": 208,
+          "height": 32,
+          "right": 264,
+          "bottom": 533.546875
+        },
+        "input": {
+          "x": 56,
+          "y": 501.546875,
+          "width": 172,
+          "height": 32,
+          "right": 228,
+          "bottom": 533.546875
+        },
+        "button": {
+          "x": 232,
+          "y": 501.546875,
+          "width": 32,
+          "height": 32,
+          "right": 264,
+          "bottom": 533.546875
+        },
+        "paddingEnd": 10,
+        "buttonOutline": "2px",
+        "buttonOutlineStyle": "solid",
+        "buttonOffset": "3px",
+        "buttonPosition": "static",
+        "body": 320,
+        "viewport": 320
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}

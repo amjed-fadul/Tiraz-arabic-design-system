@@ -1,0 +1,274 @@
+[
+  {
+    "language": "ar",
+    "theme": "light",
+    "density": "compact",
+    "controls": [
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "rtl"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "rtl"
+      }
+    ]
+  },
+  {
+    "language": "ar",
+    "theme": "light",
+    "density": "standard",
+    "controls": [
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "rtl"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "rtl"
+      }
+    ]
+  },
+  {
+    "language": "ar",
+    "theme": "dark",
+    "density": "compact",
+    "controls": [
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "rtl"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "rtl"
+      }
+    ]
+  },
+  {
+    "language": "ar",
+    "theme": "dark",
+    "density": "standard",
+    "controls": [
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "rtl"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "rtl"
+      }
+    ]
+  },
+  {
+    "language": "en",
+    "theme": "light",
+    "density": "compact",
+    "controls": [
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      }
+    ]
+  },
+  {
+    "language": "en",
+    "theme": "light",
+    "density": "standard",
+    "controls": [
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(255, 255, 255)",
+        "border": "rgb(197, 206, 199)",
+        "action": "#365B87",
+        "direction": "ltr"
+      }
+    ]
+  },
+  {
+    "language": "en",
+    "theme": "dark",
+    "density": "compact",
+    "controls": [
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      },
+      {
+        "height": 32,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      }
+    ]
+  },
+  {
+    "language": "en",
+    "theme": "dark",
+    "density": "standard",
+    "controls": [
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      },
+      {
+        "height": 36,
+        "font": "16px",
+        "radius": "8px",
+        "background": "rgb(28, 34, 30)",
+        "border": "rgb(84, 98, 89)",
+        "action": "#A8C6EF",
+        "direction": "ltr"
+      }
+    ]
+  }
+]
