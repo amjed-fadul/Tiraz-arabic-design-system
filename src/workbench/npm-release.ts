@@ -2,5 +2,5 @@
 export const npmRelease = {
   name: "@amjedfadul/tiraz",
   version: "0.1.0",
-  published: false,
+  published: true,
 };

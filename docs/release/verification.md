@@ -61,5 +61,27 @@ Vercel project `tiraz` is connected to the intended GitHub repository in team
 `tiraz.dev` is attached, owned by that team, verified and configured correctly.
 No nameserver or mail-record changes were required.
 
-Publication and the production deployment remain pending at this candidate.
-The guide keeps its unpublished status until the registry confirms version 0.1.0.
+Published `@amjedfadul/tiraz@0.1.0` after the owner's npm browser approval.
+The public registry's version and integrity match the tested artifact exactly;
+the public npm package page confirms version 0.1.0 and public visibility.
+
+The AI-ready integration is recorded at `2de443b` (implementation `be54c0c`);
+`codex/tiraz-ai-ready` is an ancestor of both main and Woven. Both were pushed
+without force and remote commit IDs verified. The merge retains the adapted
+current tree, with historical pilot/research kept in ancestry.
+
+Production deployment `dpl_8vWsHrdUC4382qY16G2eYybUDEdm` is Ready from remote main
+`2de443b`. Public HTTPS checks pass at https://tiraz.dev. Sixty-eight Chrome
+route scenarios cover landing, library, Start here, illustrations, a component,
+an embedded screen and all eleven standalone screens, across Arabic/English and
+1280/390 widths: one h1, correct direction, no page overflow, JavaScript errors
+or failed responses. Ten live guide/mascot scenarios also pass. A fresh real
+shadcn install from https://tiraz.dev/r/tiraz-system.json verifies 551 source
+files and typechecks/builds. `/llms.txt` and its guidance endpoints respond.
+
+The final website-only release-status change marks the version published after
+registry confirmation; it is verified and pushed separately from the package.
+Local preview 5411 stays on Woven. The unrelated approved landing preview 5243
+and owner worktrees remain untouched. Temporary consumer servers are stopped
+at handoff. Main's prior local edits remain in the named stash and external
+backup documented in worktree-audit.md.

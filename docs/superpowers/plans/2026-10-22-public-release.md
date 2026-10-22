@@ -68,16 +68,16 @@ Files: `src/workbench/QuickStart.tsx`, `src/workbench/QuickStart.test.tsx`,
 - [x] Preserve main edits in a named stash and external backup; merge the tested
       release into main. Keep obsolete inset edits saved rather than reapplying
       them over the approved layout.
-- [ ] Push main and release branch without force; verify remote commit IDs.
-- [ ] Publish the verified tarball after npm authentication and confirm registry.
+- [x] Push main and release branch without force; verify remote commit IDs.
+- [x] Publish the verified tarball after npm authentication and confirm registry.
 
 ## Task 5: deploy and connect domain
 
 - [x] Create/reuse the Git-connected Tiraz project in the discovered Vercel team.
-- [ ] Deploy remote main; inspect build state and check rendered preview routes.
-- [ ] Attach tiraz.dev and verify the returned DNS configuration and HTTPS.
-- [ ] Check landing, library, Start here, illustration and screen deep links.
-- [ ] Keep localhost 5411 running; record URLs, commits and any unfinished step.
+- [x] Deploy remote main; inspect build state and check rendered preview routes.
+- [x] Attach tiraz.dev and verify the returned DNS configuration and HTTPS.
+- [x] Check landing, library, Start here, illustration and screen deep links.
+- [x] Keep localhost 5411 running; record URLs, commits and any unfinished step.
 
 ## Approved extension: AI-ready branch reconciliation
 
@@ -120,7 +120,7 @@ Files: `packages/tiraz/bin/*`, `scripts/build-package.mjs`,
 
 ### Task 9: finish integration and release
 
-- [ ] Review the complete additions and run the full local gate and CSS audit.
-- [ ] Record the AI-ready branch merge and exact capability dispositions.
-- [ ] Rebuild/repack and verify the actual artifact before publishing.
-- [ ] Complete Tasks 4–5 with the final tested commit and registry version.
+- [x] Review the complete additions and run the full local gate and CSS audit.
+- [x] Record the AI-ready branch merge and exact capability dispositions.
+- [x] Rebuild/repack and verify the actual artifact before publishing.
+- [x] Complete Tasks 4–5 with the final tested commit and registry version.

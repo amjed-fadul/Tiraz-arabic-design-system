@@ -41,7 +41,7 @@
 | `codex/tags-filters-copy`           | Already contained in Woven; no separate merge needed.                                                                                                                                                                                                 |
 | `codex/tasks-and-notifications`     | Already contained in Woven; no separate merge needed.                                                                                                                                                                                                 |
 | `codex/terminal-and-chat-app`       | Already contained in Woven; no separate merge needed.                                                                                                                                                                                                 |
-| `codex/tiraz-ai-ready`              | Useful additions ported to current APIs and verified: three business patterns, generated knowledge, source verification/custom paths, shadcn registry and hosted AI guidance. Record integration ancestry after the final gate; see comparison below. |
+| `codex/tiraz-ai-ready`              | Useful additions ported to current APIs and verified: three business patterns, generated knowledge, source verification/custom paths, shadcn registry and hosted AI guidance. Merged at 2de443b after porting and verification; see comparison below. |
 | `codex/tool-activity`               | Already contained in Woven; no separate merge needed.                                                                                                                                                                                                 |
 | `fix/nested-menu-focus-race`        | Already contained in Woven; no separate merge needed.                                                                                                                                                                                                 |
 | `main`                              | Already contained in Woven; no separate merge needed.                                                                                                                                                                                                 |
@@ -108,3 +108,6 @@ Main integration: `f84016f`. The previous README and panel-inset bytes remain in
 `stash@{0}` (`pre-release-main-local-edits-2026-10-22`) and in
 `/Users/amjedfadul/.codex/backups/tiraz-release-2026-10-22-main/`. Untracked
 `.claude/` and `docs/research/` in main remain untouched.
+
+AI-ready integration: `2de443b` records `codex/tiraz-ai-ready` ancestry after
+`be54c0c` ports its useful additions. Both main and Woven contain the integration.
