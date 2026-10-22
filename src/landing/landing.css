@@ -792,6 +792,54 @@ body .tiraz-system {
   scroll-margin-block-start: 0;
 }
 
+/* ---------- Frequently asked questions ---------- */
+.lp-faq {
+  scroll-margin-block-start: var(--space-6);
+}
+.lp-faq-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: start;
+}
+.lp-faq-intro > p:last-child {
+  max-inline-size: 34ch;
+  margin-block-start: var(--space-5);
+  color: var(--lp-text-2);
+}
+.lp-faq-intro h2 {
+  font-size: clamp(32px, 3.2vw, 48px);
+}
+.lp-faq .lp-faq-list {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.lp-faq-list .tz-accordion-item {
+  border-block-start: 1px solid var(--lp-line-strong);
+}
+.lp-faq-list .tz-accordion-item:last-child {
+  border-block-end: 1px solid var(--lp-line-strong);
+}
+.lp-faq-list .tz-accordion-item .tz-accordion-trigger {
+  padding: var(--space-5) var(--space-2);
+  border-radius: 0;
+  color: var(--lp-text);
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
+.lp-faq-list .tz-accordion-content {
+  padding: 0 var(--space-2) var(--space-6);
+  color: var(--lp-text-2);
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
+.lp-faq-list a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 /* ---------- Closing ---------- */
 .lp-closing {
   padding-top: clamp(64px, 10vh, 120px);
@@ -892,24 +940,117 @@ body .tiraz-system {
   color: transparent;
 }
 .lp-footer {
-  padding-block: 28px 40px;
-  font-size: 13px;
-  color: var(--lp-muted);
-  border-top: 1px solid var(--lp-line);
+  padding-block: clamp(48px, 6vw, 88px) var(--space-8);
+  color: var(--lp-text-2);
+  border-block-start: 1px solid var(--lp-line);
 }
-.lp-footer-inner {
+.lp-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) repeat(3, minmax(0, 1fr));
+  gap: var(--space-10);
+}
+.lp-footer-brand > p {
+  max-inline-size: 26ch;
+  margin-block-start: var(--space-5);
+  color: var(--lp-muted);
+  font-size: var(--text-body);
+}
+.lp-footer-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+.lp-footer-group > h2 {
+  margin-block-end: var(--space-4);
+  font-family: var(--font);
+  font-size: var(--text-reading);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-reading);
+  color: var(--lp-text);
+  text-wrap: initial;
+}
+.lp-footer-group > a,
+.lp-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--space-8);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--text-body);
+  text-align: start;
+  cursor: pointer;
+}
+.lp-footer-link:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: var(--space-1);
+  border-radius: var(--radius-small);
+}
+.lp-footer-bottom {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
+  gap: var(--space-3) var(--space-6);
+  margin-block-start: clamp(40px, 6vw, 72px);
+  padding-block-start: var(--space-6);
+  border-block-start: 1px solid var(--lp-line);
+  color: var(--lp-muted);
+  font-size: var(--text-meta);
 }
-.lp-footer nav {
-  display: flex;
-  gap: 20px;
+.lp-footer-bottom small {
+  font: inherit;
 }
-.lp-footer a:hover {
-  color: var(--lp-text);
+.lp-privacy-content {
+  display: grid;
+  gap: var(--space-6);
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  line-height: var(--leading-reading);
+}
+.lp-privacy-content h3 {
+  margin: 0 0 var(--space-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: var(--weight-semibold);
+}
+.lp-privacy-content p {
+  margin: 0;
+}
+.lp-privacy-content a {
+  display: inline-block;
+  margin-block-start: var(--space-2);
+  color: var(--action);
+  text-underline-offset: 0.2em;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lp-footer :is(a, .lp-footer-link):hover {
+    color: var(--lp-text);
+  }
+}
+@media (max-width: 900px) {
+  .lp-faq-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+  .lp-footer-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lp-footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 560px) {
+  .lp-footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8) var(--space-6);
+  }
+  .lp-footer-group > h2 {
+    margin-block-end: var(--space-2);
+  }
 }
 
 /* ---------- Motion ---------- */

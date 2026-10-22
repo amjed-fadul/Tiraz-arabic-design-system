@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { GithubLogoIcon } from "@phosphor-icons/react";
 import {
   ArrowUpLeft,
   ArrowUpRight,
-  GitFork,
   Languages,
   Moon,
   MoveLeft,
@@ -20,6 +20,8 @@ import { TirazMark } from "../brand/TirazMark";
 import { ScreenShowcase } from "./ScreenShowcase";
 import { Showcase } from "./Showcase";
 import { WhyTiraz } from "./WhyTiraz";
+import { Faq } from "./Faq";
+import { PrivacyNotice } from "./PrivacyNotice";
 import { Loom } from "./loom/Loom";
 import { useLandingMotion, useSmoothScroll } from "./motion";
 import finishedBand from "./assets/loom/finished-band.webp?url";
@@ -106,7 +108,7 @@ export function Landing() {
                 <Arrow size={14} aria-hidden="true" />
               </a>
               <a className="lp-icon-link" href={repository} aria-label="GitHub">
-                <GitFork size={16} aria-hidden="true" />
+                <GithubLogoIcon size={20} weight="fill" aria-hidden="true" />
               </a>
               <Button
                 variant="ghost"
@@ -275,6 +277,8 @@ export function Landing() {
             </div>
           </div>
 
+          <Faq ar={ar} />
+
           <section className="lp-closing" aria-labelledby="closing-title">
             <div className="lp-container">
               <div className="lp-closing-frame">
@@ -313,7 +317,11 @@ export function Landing() {
                       <Forward size={16} aria-hidden="true" />
                     </a>
                     <a className="lp-secondary-link" href={repository}>
-                      <GitFork size={16} aria-hidden="true" />
+                      <GithubLogoIcon
+                        size={18}
+                        weight="fill"
+                        aria-hidden="true"
+                      />
                       {ar ? "طِراز على GitHub" : "Tiraz on GitHub"}
                     </a>
                   </div>
@@ -326,24 +334,62 @@ export function Landing() {
           </section>
         </main>
         <footer className="lp-footer">
-          <div className="lp-container lp-footer-inner">
-            <Wordmark />
-            <p>
-              {ar
-                ? "نظام تصميم للواجهات العربية."
-                : "A design system for Arabic interfaces."}
-            </p>
-            <nav aria-label={ar ? "روابط التذييل" : "Footer links"}>
-              <a href={docs}>{ar ? "المكتبة" : "Library"}</a>
-              <a href={repository}>GitHub</a>
-              <a href={`${repository}/blob/main/LICENSE`}>
-                {ar ? "رخصة MIT" : "MIT license"}
-              </a>
-            </nav>
-            <small>
-              © {number.format(2026)}{" "}
-              {ar ? "المساهمون في طِراز" : "Tiraz contributors"}
-            </small>
+          <div className="lp-container">
+            <div className="lp-footer-grid">
+              <div className="lp-footer-brand">
+                <Wordmark />
+                <p>
+                  {ar
+                    ? "مكوّنات عربية أولًا، تصنع بها واجهاتك."
+                    : "Arabic-first components to make your own."}
+                </p>
+              </div>
+              <nav
+                className="lp-footer-group"
+                aria-labelledby="footer-navigation"
+              >
+                <h2 id="footer-navigation">{ar ? "تصفّح" : "Navigation"}</h2>
+                <a href="#in-action">{ar ? "الشاشات" : "Screens"}</a>
+                <a href="#explore">{ar ? "المكوّنات" : "Components"}</a>
+                <a href="#faq">{ar ? "الأسئلة الشائعة" : "FAQ"}</a>
+              </nav>
+              <nav className="lp-footer-group" aria-labelledby="footer-legal">
+                <h2 id="footer-legal">{ar ? "معلومات قانونية" : "Legal"}</h2>
+                <a href={`${repository}/blob/main/LICENSE`}>
+                  {ar ? "رخصة MIT" : "MIT license"}
+                </a>
+                <PrivacyNotice ar={ar} />
+              </nav>
+              <nav className="lp-footer-group" aria-labelledby="footer-contact">
+                <h2 id="footer-contact">
+                  {ar ? "التواصل" : "Contact & socials"}
+                </h2>
+                <a href="mailto:amjed.191966@gmail.com">
+                  {ar ? "البريد الإلكتروني" : "Email"}
+                </a>
+                <a href="https://wa.me/971557561582">
+                  {ar ? "واتساب" : "WhatsApp"}
+                </a>
+                <a href="https://www.linkedin.com/in/amjed-fadul/">
+                  {ar ? "لينكدإن" : "LinkedIn"}
+                </a>
+                <a href={repository}>
+                  <GithubLogoIcon size={18} weight="fill" aria-hidden="true" />
+                  GitHub
+                </a>
+              </nav>
+            </div>
+            <div className="lp-footer-bottom">
+              <small>
+                © {number.format(2026)}{" "}
+                {ar ? "المساهمون في طِراز" : "Tiraz contributors"}
+              </small>
+              <span>
+                {ar
+                  ? "مفتوح المصدر. صُمّم للعربية."
+                  : "Open source. Made for Arabic."}
+              </span>
+            </div>
           </div>
         </footer>
       </div>

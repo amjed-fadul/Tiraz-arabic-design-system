@@ -10,6 +10,59 @@ import {
 } from "../workbench/storage";
 
 describe("landing behavior", () => {
+  it.each(["ar", "en"])(
+    "connects the %s footer to real destinations and keyboard-accessible help",
+    async (language) => {
+      const ar = language === "ar";
+      persist(storageKeys.documentation, { language });
+      const user = userEvent.setup();
+      render(<Landing />);
+      const footer = within(screen.getByRole("contentinfo"));
+      expect(
+        footer.getByRole("link", { name: ar ? "البريد الإلكتروني" : "Email" }),
+      ).toHaveAttribute("href", "mailto:amjed.191966@gmail.com");
+      expect(
+        footer.getByRole("link", { name: ar ? "واتساب" : "WhatsApp" }),
+      ).toHaveAttribute("href", "https://wa.me/971557561582");
+      expect(
+        footer.getByRole("link", { name: ar ? "لينكدإن" : "LinkedIn" }),
+      ).toHaveAttribute("href", "https://www.linkedin.com/in/amjed-fadul/");
+      for (const name of [
+        ar ? "الشاشات" : "Screens",
+        ar ? "المكوّنات" : "Components",
+        ar ? "الأسئلة الشائعة" : "FAQ",
+      ]) {
+        const href = footer.getByRole("link", { name }).getAttribute("href")!;
+        expect(document.querySelector(href)).toBeInTheDocument();
+      }
+      const faq = within(
+        screen.getByRole("region", {
+          name: ar ? "الأسئلة الشائعة" : "Frequently asked questions",
+        }),
+      );
+      const question = faq.getByRole("button", {
+        name: ar ? "هل طِراز مجاني؟" : "Is Tiraz free to use?",
+      });
+      question.focus();
+      await user.keyboard("{Enter}");
+      expect(question).toHaveAttribute("aria-expanded", "true");
+      await user.keyboard("{Enter}");
+      expect(question).toHaveAttribute("aria-expanded", "false");
+      const privacy = footer.getByRole("button", {
+        name: ar ? "الخصوصية" : "Privacy",
+      });
+      await user.click(privacy);
+      expect(
+        screen.getByRole("dialog", {
+          name: ar ? "الخصوصية في طِراز" : "Privacy at Tiraz",
+        }),
+      ).toBeVisible();
+      await user.keyboard("{Escape}");
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+      expect(privacy).toHaveFocus();
+    },
+  );
+
   it("shares saved language and theme with the library and preserves its last page", async () => {
     const user = userEvent.setup();
     persist(storageKeys.documentation, {
