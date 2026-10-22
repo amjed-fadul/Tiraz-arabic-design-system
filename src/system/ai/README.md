@@ -2,19 +2,19 @@
 
 ## npm distribution
 
-The public `tiraz` package provides compiled ESM components and types, plus this
-complete editable source bundle. For package imports, install `tiraz`, import
-`tiraz/styles.css` once, and import components from `tiraz`. The styles include
-IBM Plex Sans Arabic. Optional Khayt is available from `tiraz/mascot`, with
-`tiraz/mascot.css`; it remains separate from the component runtime.
+The public `@amjedfadul/tiraz` package provides compiled ESM components and types, plus this
+complete editable source bundle. For package imports, install `@amjedfadul/tiraz`, import
+`@amjedfadul/tiraz/styles.css` once, and import components from `@amjedfadul/tiraz`. The styles include
+IBM Plex Sans Arabic. Optional Khayt is available from `@amjedfadul/tiraz/mascot`, with
+`@amjedfadul/tiraz/mascot.css`; it remains separate from the component runtime.
 
-To own the source, run `npx tiraz init` inside an existing Vite React TypeScript app,
-or `npx tiraz init --new my-app` for a Vite starter. The installer requires Node
+To own the source, run `npx @amjedfadul/tiraz init` inside an existing Vite React TypeScript app,
+or `npx @amjedfadul/tiraz init --new my-app` for a Vite starter. The installer requires Node
 22.12 or newer, copies source to `src/system` and optional avatar files to
 `src/mascot`, retains licenses, and refuses existing source folders. It adds
 guidance and dependencies while preserving routes, entry files and existing
 versions. For other React bundlers, use the compiled package imports. Follow `TIRAZ_SETUP.md`; use React 19. The remaining guide applies to
-both copied source and `node_modules/tiraz/source/system`.
+both copied source and `node_modules/@amjedfadul/tiraz/source/system`.
 
 Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-eight**
 component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, DataAnswer, AgentTask, DecisionInbox, SuggestedEdits, ImageGeneration, DraftReview, ChangeSummary, AssistantControls, Terminal and ChatApp.

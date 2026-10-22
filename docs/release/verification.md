@@ -13,7 +13,7 @@ GitHub push, npm publication, Vercel deployment and connection to tiraz.dev.
   unsupported React/ReactDOM versions, non-Vite refusal and package contents.
 - Final guide/navigation tests: **33 passed** after visual copy-control refinements.
 - Lint: zero warnings. Website build and formatting pass. CSS audit: `[]`.
-- Packed `tiraz@0.1.0` installed into a separate app with real npm dependencies;
+- Packed `@amjedfadul/tiraz@0.1.0` installed into a separate app with real npm dependencies;
   that app typechecks and builds. Its installed CLI creates a fresh Vite app,
   runs npm install, and the generated source app also typechecks/builds.
 - Ten Chrome browser scenarios check the two guide locations in Arabic/English,
@@ -36,6 +36,12 @@ Local scripts, screenshots and full logs are under `/tmp/tiraz-release/`.
 
 ## Publication and production
 
-Pending final release actions; record actual registry, Git and deployment
-results here after completing them. The guide retains an unpublished status
+Main integration completed at `f84016f`; GitHub transfer is in progress.
+The unscoped npm name was rejected by the registry similarity policy. The owner
+selected `@amjedfadul/tiraz`; the renamed package passes 47 focused tests, lint,
+build, formatting and a clean-consumer install/build.
+
+Publication is held pending reconciliation of the distinct AI-ready branch
+capabilities recorded in worktree-audit.md. No npm publication is claimed.
+Record registry and deployment results here after completing them. The guide retains an unpublished status
 until the npm registry confirms version 0.1.0.

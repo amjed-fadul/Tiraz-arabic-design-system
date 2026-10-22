@@ -7,16 +7,16 @@ release source; the older landing stays preserved.
 
 ## Distribution
 
-Publish `tiraz` version 0.1.0 as an MIT ESM package. Keep the repository app
+Publish `@amjedfadul/tiraz` version 0.1.0 as an MIT ESM package. Keep the repository app
 private and put the public manifest in `packages/tiraz`. The public package
 contains compiled components, TypeScript declarations, exported styles and fonts,
 an optional Khayt entry, the complete editable system/mascot source and AI
 guidance, assets and licenses. React and React DOM 19 are peer dependencies.
 Exclude workbench/landing code, tests, screenshots, credentials and local data.
 
-Support `npm install tiraz` with imports from `tiraz`, `tiraz/styles.css`, and
-optional `tiraz/mascot` / `tiraz/mascot.css`. Also provide `npx tiraz init` for an
-existing Vite React TypeScript project and `npx tiraz init --new my-app` for a Vite React TypeScript
+Support `npm install @amjedfadul/tiraz` with imports from `@amjedfadul/tiraz`, `@amjedfadul/tiraz/styles.css`, and
+optional `@amjedfadul/tiraz/mascot` / `@amjedfadul/tiraz/mascot.css`. Also provide `npx @amjedfadul/tiraz init` for an
+existing Vite React TypeScript project and `npx @amjedfadul/tiraz init --new my-app` for a Vite React TypeScript
 starter. The installer copies source, retains licenses and guidance, adds needed
 dependencies without replacing existing versions, and refuses existing source
 directories instead of overwriting them. Existing routes and entry files remain

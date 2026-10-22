@@ -82,8 +82,9 @@ export function QuickStart({
     numberLocale({ numerals: "arab" }, language),
   );
   const installCommand = `npx ${npmRelease.name}@${npmRelease.version} init${existing ? "" : " --new my-app\ncd my-app\nnpm run dev"}`;
-  const packageCode = `import "tiraz/styles.css";
-import { Button, SystemProvider, defaultConfig } from "tiraz";
+  const packageInstallCommand = `npm install ${npmRelease.name}`;
+  const packageCode = `import "${npmRelease.name}/styles.css";
+import { Button, SystemProvider, defaultConfig } from "${npmRelease.name}";
 
 export function App() {
   return (
@@ -300,13 +301,13 @@ export function App() {
                   <div className="quick-start-prompt-bar">
                     <span>{t("الطرفية", "Terminal")}</span>
                     {copyButton(
-                      "npm install tiraz",
+                      packageInstallCommand,
                       "npm",
                       t("نسخ أمر npm", "Copy npm command"),
                     )}
                   </div>
                   <pre dir="ltr" lang="en">
-                    <code>npm install tiraz</code>
+                    <code>{packageInstallCommand}</code>
                   </pre>
                 </div>
                 <div className="quick-start-prompt">

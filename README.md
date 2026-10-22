@@ -12,12 +12,12 @@ Arabic RTL and English LTR, light/dark themes and reduced motion are supported.
 Use Node.js **22.12 or newer** and React **19**.
 
 ```sh
-npm install tiraz
+npm install @amjedfadul/tiraz
 ```
 
 ```tsx
-import "tiraz/styles.css";
-import { Button, SystemProvider, defaultConfig } from "tiraz";
+import "@amjedfadul/tiraz/styles.css";
+import { Button, SystemProvider, defaultConfig } from "@amjedfadul/tiraz";
 
 export function App() {
   return (
@@ -32,19 +32,19 @@ export function App() {
 
 The stylesheet includes IBM Plex Sans Arabic, tokens and component styles.
 The package also includes TypeScript declarations, editable source, AI guidance
-and optional `tiraz/mascot` / `tiraz/mascot.css` exports.
+and optional `@amjedfadul/tiraz/mascot` / `@amjedfadul/tiraz/mascot.css` exports.
 
 ## Own the source
 
 Create a new Vite React TypeScript application:
 
 ```sh
-npx tiraz init --new my-app
+npx @amjedfadul/tiraz init --new my-app
 cd my-app
 npm run dev
 ```
 
-Inside an existing Vite React TypeScript application, run `npx tiraz init`. The installer copies
+Inside an existing Vite React TypeScript application, run `npx @amjedfadul/tiraz init`. The installer copies
 `src/system` and `src/mascot`, retains licenses/assets, adds an additive
 `AGENTS.md` pointer, and preserves routes, entry files and dependency versions.
 It refuses existing source directories. `--no-install` skips npm installation.
@@ -52,7 +52,7 @@ Read the generated `TIRAZ_SETUP.md` for existing-entry setup.
 
 Before building a screen with a coding agent, read `src/system/ai/README.md`
 and query the bundled registry for the component needed. With package imports,
-that guide is at `node_modules/tiraz/source/system/ai/README.md`.
+that guide is at `node_modules/@amjedfadul/tiraz/source/system/ai/README.md`.
 Component source and exported types are authoritative.
 
 ## Develop this repository

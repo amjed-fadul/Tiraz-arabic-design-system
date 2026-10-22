@@ -6,12 +6,12 @@ Requires Node >=22.12 and React/React DOM 19.
 ## Use the package
 
 ```sh
-npm install tiraz
+npm install @amjedfadul/tiraz
 ```
 
 ```tsx
-import "tiraz/styles.css";
-import { Button, SystemProvider, defaultConfig } from "tiraz";
+import "@amjedfadul/tiraz/styles.css";
+import { Button, SystemProvider, defaultConfig } from "@amjedfadul/tiraz";
 
 export function App() {
   return (
@@ -25,13 +25,13 @@ export function App() {
 ```
 
 `styles.css` loads IBM Plex Sans Arabic, tokens and components. To use your own
-font, import `tiraz/tokens.css` and `tiraz/components.css` separately. Preserve
+font, import `@amjedfadul/tiraz/tokens.css` and `@amjedfadul/tiraz/components.css` separately. Preserve
 `:dir()` in your CSS target: Chrome/Edge 120+, Firefox 114+, Safari 16.4+.
 
 ## Own the source
 
 ```sh
-npx tiraz init --new my-app
+npx @amjedfadul/tiraz init --new my-app
 cd my-app
 npm run dev
 ```
@@ -39,7 +39,7 @@ npm run dev
 Inside an existing **Vite React TypeScript** application:
 
 ```sh
-npx tiraz init
+npx @amjedfadul/tiraz init
 ```
 
 The installer copies the complete library to `src/system`, optional Khayt
@@ -52,8 +52,8 @@ running npm. Review compatibility if your existing app uses React before 19.
 ## Optional Khayt avatar
 
 ```tsx
-import "tiraz/mascot.css";
-import { Khayt } from "tiraz/mascot";
+import "@amjedfadul/tiraz/mascot.css";
+import { Khayt } from "@amjedfadul/tiraz/mascot";
 
 const agentPresentation = {
   avatar: <Khayt state="working" color="#946D91" size={48} animated />,
@@ -67,7 +67,7 @@ The avatar is decorative; keep visible names and status text. Reduced motion is
 respected by the runtime.
 
 The complete AI guide and registry are included at
-`node_modules/tiraz/source/system/ai/README.md` and `registry.json`. Query only
+`node_modules/@amjedfadul/tiraz/source/system/ai/README.md` and `registry.json`. Query only
 the component you need, then check its source and exported types. The library
 has no backend or model credentials; example actions are local demonstrations.
 

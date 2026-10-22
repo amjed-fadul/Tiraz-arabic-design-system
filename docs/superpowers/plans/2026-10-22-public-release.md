@@ -34,7 +34,7 @@ integrated into main only after local verification, then deployed from Git.
 - [x] Fetch origin; audit all local/remote branch ancestry and dirty worktrees.
 - [x] Compare exceptional branches against the current release functionality.
 - [x] Record dispositions in `docs/release/worktree-audit.md`.
-- [ ] Preserve main's local changes before merging; leave other worktrees alone.
+- [x] Preserve main's local changes before merging; leave other worktrees alone.
 
 ## Task 2: npm artifact and installer
 
@@ -48,7 +48,7 @@ Files: `packages/tiraz/package.json`, `packages/tiraz/README.md`,
 - [x] Build and pack; inspect the allowlisted file list and dependency boundary.
 - [x] Install the tarball into clean app fixtures; typecheck/build direct imports
       and the installed CLI's new-project output. Verify mascot asset loading.
-- [ ] Commit package and tests by explicit paths.
+- [x] Commit package and tests by explicit paths.
 
 ## Task 3: installation guidance
 
@@ -65,7 +65,9 @@ Files: `src/workbench/QuickStart.tsx`, `src/workbench/QuickStart.test.tsx`,
 - [x] Run focused tests, full tests, lint with zero warnings, build, formatting
       and CSS audit; record local results.
 - [x] Review the final package boundary and installer failure paths.
-- [ ] Preserve main edits, merge tested release into main, restore owner work.
+- [x] Preserve main edits in a named stash and external backup; merge the tested
+      release into main. Keep obsolete inset edits saved rather than reapplying
+      them over the approved layout.
 - [ ] Push main and release branch without force; verify remote commit IDs.
 - [ ] Publish the verified tarball after npm authentication and confirm registry.
 

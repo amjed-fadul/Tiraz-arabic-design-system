@@ -9,7 +9,7 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(
   await readFile(resolve(packageRoot, "package.json"), "utf8"),
 );
-const help = `Tiraz ${manifest.version} — Arabic-first React components\n\n  npx tiraz init                    Add source to an existing Vite React TypeScript app\n  npx tiraz init --new my-app       Create a Vite React TypeScript app\n  --no-install                     Prepare files without running npm install\n  --help                           Show this help\n  --version                        Show the package version\n\nRequires Node >=22.12 and React 19. Existing source is never overwritten.\n`;
+const help = `Tiraz ${manifest.version} — Arabic-first React components\n\n  npx ${manifest.name} init                    Add source to an existing Vite React TypeScript app\n  npx ${manifest.name} init --new my-app       Create a Vite React TypeScript app\n  --no-install                     Prepare files without running npm install\n  --help                           Show this help\n  --version                        Show the package version\n\nRequires Node >=22.12 and React 19. Existing source is never overwritten.\n`;
 const exists = async (path) => {
   try {
     return await lstat(path);
@@ -115,7 +115,7 @@ async function init({ name, install }) {
   }
   if (!name && !project.dependencies?.vite && !project.devDependencies?.vite)
     throw new Error(
-      "Editable-source init requires a Vite React TypeScript app. For other bundlers, use npm install tiraz and package imports.",
+      `Editable-source init requires a Vite React TypeScript app. For other bundlers, use npm install ${manifest.name} and package imports.`,
     );
   if (await exists(resolve(src, "tiraz-env.d.ts")))
     throw new Error(
