@@ -1,4 +1,4 @@
-# Khayt 0.1.1 local release verification
+# Khayt 0.1.1 release verification
 
 Validated on 23 October 2026 in `/Users/amjedfadul/Tiraz-worktrees/woven`,
 branch `claude/woven`, starting from `db158d0`.
@@ -52,3 +52,22 @@ Package-import users receive the animation by updating their dependency.
 Source-copy users should compare and port `khayt-motion.ts` and
 `khayt-renderer.ts`, preserving their own edits; the installer continues to
 refuse overwriting existing source directories.
+
+## Publication
+
+The animation was merged into `main` at `fd75c86` and deployed to `tiraz.dev`.
+Public npm confirmed `@amjedfadul/tiraz@0.1.1` as `latest` on 23 October 2026
+at 12:41 UTC. The downloaded registry tarball matches the tested artifact byte
+for byte, including its SHA-512 integrity and both mascot source hashes.
+The existing consumer verification therefore covers the published package.
+
+After registry confirmation, the shared landing and Start here installation
+guide was advanced to `0.1.1`. Its focused QuickStart and Landing tests pass:
+19 tests across 2 files. Build, lint (with the same artifact exclusion),
+formatting, knowledge and registry checks also pass. Eight local Chrome
+scenarios cover both guide locations in Arabic and English at 1440px and
+390px: exact clipboard commands, retained focus, stable copy controls,
+direction, collapsed instructions and no guide overflow or browser errors.
+Publication evidence is recorded in
+`/tmp/tiraz-khayt-release-0.1.1/published/verification.json`; guide evidence
+is in `local-guide-results.json` beside the other release logs.

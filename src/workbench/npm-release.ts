@@ -1,6 +1,6 @@
 /** Set published only after this version is confirmed in the public registry. */
 export const npmRelease = {
   name: "@amjedfadul/tiraz",
-  version: "0.1.0",
+  version: "0.1.1",
   published: true,
 };
