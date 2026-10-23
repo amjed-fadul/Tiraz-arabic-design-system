@@ -18,6 +18,30 @@ it("provides stable reduced-motion poses for every state", () => {
   }
 });
 
+it("follows each weaving pass and meets the next pass without a body jump", () => {
+  const start = khaytPose("working", 0);
+  const farEdge = khaytPose("working", 1.8);
+  expect(farEdge.gazeX).toBeGreaterThan(start.gazeX);
+  expect(khaytPose("working", 2.8).gazeX).toBeLessThan(farEdge.gazeX);
+  expect(khaytPose("working", 3.6)).toEqual(start);
+  for (const time of [1.8, 3.6]) {
+    const before = khaytPose("working", time - 0.0001);
+    const after = khaytPose("working", time + 0.0001);
+    for (const key of ["lean", "twist", "stretch", "gazeX", "gazeY"] as const)
+      expect(Math.abs(before[key] - after[key])).toBeLessThan(0.01);
+  }
+});
+
+it("removes the weave when interrupted without inventing a completed state", () => {
+  const working = khaytPose("working", 1);
+  for (const state of ["idle", "waiting", "blocked"] as const) {
+    const next = khaytPose(state, 0, true);
+    expect(mixPose(working, next, 0.5).workingThread).toBe(0.5);
+    expect(mixPose(working, next, 1).workingThread).toBe(0);
+    expect(mixPose(working, next, 1).doneThread).toBe(0);
+  }
+});
+
 it("keeps the approved expressions distinct when animation is turned off", () => {
   const ready = khaytPose("idle", 0, true);
   const thinking = khaytPose("thinking", 0, true);
