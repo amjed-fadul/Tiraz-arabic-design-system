@@ -26,6 +26,7 @@ export interface KhaytPose {
   readyThread: number;
   thinkingThread: number;
   workingThread: number;
+  weave: number;
   waitingThread: number;
   doneThread: number;
   blockedThread: number;
@@ -48,11 +49,11 @@ const rest: KhaytPose = {
   readyThread: 1,
   thinkingThread: 0,
   workingThread: 0,
+  weave: 0.45,
   waitingThread: 0,
   doneThread: 0,
   blockedThread: 0,
 };
-const tau = Math.PI * 2;
 const pulse = (time: number, start: number, duration: number) =>
   time < start || time > start + duration
     ? 0
@@ -85,18 +86,22 @@ export function khaytPose(
     pose.thread = glance * -0.06;
     pose.curl = consider * 3;
   } else if (state === "working") {
-    const cycle = still ? 0 : (t % 2.8) / 2.8;
-    const wind = Math.sin(cycle * tau);
-    const follow = Math.sin(cycle * tau - 0.65);
+    // Two alternating passes make a continuous weave, never a progress meter.
+    const weave = still ? 0.45 : (t % 3.6) / 1.8;
+    const pass = weave % 1;
+    const across = Math.min(1, pass / 0.78);
+    const travel = across * across * (3 - 2 * across);
+    const gaze = weave < 1 ? travel : 1 - travel;
+    const pack = Math.max(0, (pass - 0.78) / 0.22);
+    const tug = still ? 0 : Math.sin(pack * Math.PI);
     pose.workingThread = 1;
-    pose.lean = 22 + wind * 6;
-    pose.twist = follow * 3;
-    pose.stretch = 0.97 - Math.cos(cycle * tau) * 0.012;
-    pose.gazeX = 5 + wind;
-    pose.gazeY = -1 + follow;
+    pose.weave = weave;
+    pose.lean = 13 + gaze * 5 - tug * 3;
+    pose.twist = tug * -2;
+    pose.stretch = 0.99 - tug * 0.016;
+    pose.gazeX = 3 + gaze * 3;
+    pose.gazeY = 4;
     pose.eyeRound = 0.12;
-    pose.thread = follow * 0.018;
-    pose.curl = still ? 0 : Math.sin(cycle * tau - 1) * 5;
   } else if (state === "waiting") {
     const wave = still ? 0 : pulse(t, 0.12, 0.95);
     pose.waitingThread = 1;
@@ -152,6 +157,8 @@ export function mixPose(
   amount: number,
 ): KhaytPose {
   const t = Math.min(1, Math.max(0, amount));
+  if (t === 0) return { ...from };
+  if (t === 1) return { ...to };
   const ease = t * t * (3 - 2 * t);
   return Object.fromEntries(
     Object.keys(from).map((key) => {

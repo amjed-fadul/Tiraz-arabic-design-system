@@ -44,6 +44,174 @@ function thread(
   ctx.restore();
 }
 
+type YarnPalette = { shade: string; cotton: string; light: string };
+const yarnPalettes = new WeakMap<HTMLCanvasElement, YarnPalette>();
+
+function yarnPalette(body: HTMLCanvasElement): YarnPalette {
+  const cached = yarnPalettes.get(body);
+  if (cached) return cached;
+  // Sample dyed cotton once per cached sprite, so every agent keeps its color.
+  const pixels = body
+    .getContext("2d")!
+    .getImageData(
+      Math.floor(body.width * 0.4),
+      Math.floor(body.height * 0.4),
+      8,
+      8,
+    ).data;
+  const rgb = [0, 1, 2].map((channel) => {
+    let total = 0;
+    for (let i = channel; i < pixels.length; i += 4) total += pixels[i];
+    return total / (pixels.length / 4);
+  });
+  const color = (shade: number, light = 0) =>
+    `rgb(${rgb.map((value) => Math.round(value * shade + (255 - value) * light)).join(" ")})`;
+  const palette = {
+    shade: color(0.6),
+    cotton: color(1),
+    light: color(1, 0.32),
+  };
+  yarnPalettes.set(body, palette);
+  return palette;
+}
+
+function cotton(
+  ctx: CanvasRenderingContext2D,
+  path: Path2D,
+  size: number,
+  palette: YarnPalette,
+  detailed: boolean,
+) {
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.lineWidth = size;
+  ctx.strokeStyle = palette.shade;
+  ctx.stroke(path);
+  ctx.translate(-0.45, -0.65);
+  ctx.lineWidth = size * 0.78;
+  ctx.strokeStyle = palette.cotton;
+  ctx.stroke(path);
+  ctx.translate(-0.35, -0.45);
+  ctx.lineWidth = size * 0.23;
+  ctx.strokeStyle = palette.light;
+  ctx.stroke(path);
+  if (detailed) {
+    ctx.setLineDash([0.65, 2.4]);
+    ctx.lineWidth = size * 0.72;
+    ctx.globalAlpha *= 0.35;
+    ctx.stroke(path);
+  }
+  ctx.restore();
+}
+
+function miniWeave(
+  ctx: CanvasRenderingContext2D,
+  body: HTMLCanvasElement,
+  pose: KhaytPose,
+  rootX: number,
+  rootY: number,
+) {
+  if (pose.workingThread < 0.001) return;
+  const palette = yarnPalette(body);
+  const detailed = ctx.canvas.width >= 160;
+  const left = 358,
+    right = 466,
+    top = 350,
+    gap = 15;
+  const pass = Math.floor(pose.weave);
+  const time = pose.weave - pass;
+  const smooth = (value: number) => value * value * (3 - 2 * value);
+  const travel = smooth(Math.min(1, time / 0.78));
+  const pack = smooth(Math.max(0, (time - 0.78) / 0.22));
+  const forward = pass % 2 === 0;
+  const tipX = left + (right - left) * (forward ? travel : 1 - travel);
+  const warpX = (index: number) => left + 6 + index * 16;
+
+  ctx.save();
+  ctx.globalAlpha = pose.workingThread;
+  // The free strand stays attached to the spool as its body leans and tugs.
+  const feed = new Path2D();
+  feed.moveTo(rootX, rootY);
+  feed.bezierCurveTo(rootX + 83, rootY - 48, 486, top - 78, tipX, top);
+  cotton(ctx, feed, 8.5, palette, detailed);
+
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(left - 12, top - 7, right - left + 24, 84);
+  ctx.clip();
+  for (let index = 0; index < 7; index++) {
+    const warp = new Path2D();
+    const x = warpX(index);
+    warp.moveTo(x, top - 5);
+    warp.bezierCurveTo(x - 1, top + 24, x + 1, top + 52, x, top + 77);
+    cotton(ctx, warp, 6, palette, detailed);
+  }
+
+  // Finished rows feed down into the cloth. Two passes restore identical
+  // geometry and parity, so the loop has no reset, flash, or completion cue.
+  for (let row = 5; row >= 0; row--) {
+    const y = top + (row + pack) * gap;
+    const progress = row === 0 ? travel : 1;
+    const parity = (pass + row) % 2;
+    const startX = parity === 0 ? left : right;
+    const endX = startX + (parity === 0 ? 1 : -1) * (right - left) * progress;
+    ctx.save();
+    ctx.globalAlpha *= Math.max(0, Math.min(1, (top + 77 - y) / 20));
+    const weft = new Path2D();
+    weft.moveTo(startX, y);
+    const steps = Math.ceil(progress * 42);
+    for (let step = 1; step <= steps; step++) {
+      const x = startX + ((endX - startX) * step) / steps;
+      weft.lineTo(x, y + Math.sin(((x - left) / 16) * Math.PI) * 0.65);
+    }
+    cotton(ctx, weft, 8, palette, detailed);
+    // Alternating crossings expose the warp over every other weft.
+    for (let index = 0; index < 7; index++) {
+      const x = warpX(index);
+      if (
+        (index + parity) % 2 === 0 ||
+        x < Math.min(startX, endX) ||
+        x > Math.max(startX, endX)
+      )
+        continue;
+      const crossing = new Path2D();
+      crossing.moveTo(x, y - 4);
+      crossing.lineTo(x, y + 4);
+      cotton(ctx, crossing, 6, palette, detailed);
+    }
+    const turn = new Path2D();
+    turn.moveTo(startX, y + gap);
+    turn.bezierCurveTo(
+      startX + (parity === 0 ? -8 : 8),
+      y + gap,
+      startX + (parity === 0 ? -8 : 8),
+      y,
+      startX,
+      y,
+    );
+    cotton(ctx, turn, 8, palette, detailed);
+    ctx.restore();
+  }
+  // Lift the free yarn for the return pass while the new row settles.
+  if (pack > 0) {
+    const turn = new Path2D();
+    const outside = (forward ? 8 : -8) * pack;
+    turn.moveTo(tipX, top + pack * gap);
+    turn.bezierCurveTo(
+      tipX + outside,
+      top + pack * gap,
+      tipX + outside,
+      top,
+      tipX,
+      top,
+    );
+    cotton(ctx, turn, 8, palette, detailed);
+  }
+  ctx.restore();
+  ctx.restore();
+}
+
 /** Generated cotton and ceramic layers deform independently, retaining their texture. */
 export function drawKhayt(
   ctx: CanvasRenderingContext2D,
@@ -60,6 +228,16 @@ export function drawKhayt(
     w = 262,
     x = 85,
     y = 452 - h - pose.lift;
+  const angle = pose.lean / 260;
+  const rootX = w / 2 - 22 + bend(pose, 0.23);
+  const rootY = -h * 0.77;
+  miniWeave(
+    ctx,
+    sprites.body,
+    pose,
+    x + w / 2 + rootX * Math.cos(angle) - rootY * Math.sin(angle),
+    452 - pose.lift + rootX * Math.sin(angle) + rootY * Math.cos(angle),
+  );
   ctx.translate(x + w / 2, 452 - pose.lift);
   ctx.rotate(pose.lean / 260);
   ctx.translate(-x - w / 2, -452 + pose.lift);
@@ -75,17 +253,6 @@ export function drawKhayt(
     0.924,
     pose.thinkingThread,
     pose,
-  );
-  thread(
-    ctx,
-    sprites.working,
-    145,
-    288,
-    0.12,
-    0.118,
-    pose.workingThread,
-    pose,
-    0.025,
   );
   thread(ctx, sprites.thread, 91, 159, 0.055, 0.925, pose.waitingThread, pose);
   thread(

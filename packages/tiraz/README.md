@@ -93,6 +93,17 @@ task state to `idle`, `thinking`, `working`, `waiting`, `done` or `blocked`.
 The avatar is decorative; keep visible names and status text. Reduced motion is
 respected by the runtime.
 
+### Updating to 0.1.1
+
+The `working` state now uses the Mini weaving loop: Khayt feeds cotton across
+a small weave, follows it with his eyes, and gently tightens each pass. Agent
+colors, pause behavior and reduced motion still work with the same props.
+
+For package imports, run `npm install @amjedfadul/tiraz@latest`. If you copied
+the source, compare and port `source/mascot/khayt-motion.ts` and
+`source/mascot/khayt-renderer.ts` from this package into your mascot directory,
+preserving your own changes. The installer does not overwrite existing source.
+
 The complete AI guide and registry are included at
 `node_modules/@amjedfadul/tiraz/source/system/ai/README.md` and `registry.json`. Query only
 the component you need, then check its source and exported types. The library
