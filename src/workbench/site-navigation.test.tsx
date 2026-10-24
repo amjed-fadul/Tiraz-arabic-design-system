@@ -17,13 +17,13 @@ it("opens a component URL instead of a saved page, with curated navigation and r
     screen.getByRole("heading", { level: 1, name: "محرر الرسائل" }),
   ).toBeVisible();
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  expect(nav.getByRole("button", { name: "محرر الرسائل" })).toHaveAttribute(
+  expect(nav.getByRole("link", { name: "محرر الرسائل" })).toHaveAttribute(
     "aria-current",
     "page",
   );
-  expect(nav.queryByRole("button", { name: "الأزرار" })).toBeNull();
+  expect(nav.queryByRole("link", { name: "الأزرار" })).toBeNull();
   expect(nav.queryByRole("button", { name: "الأجزاء" })).toBeNull();
-  expect(nav.queryByRole("button", { name: "شريط الطلب" })).toBeNull();
+  expect(nav.queryByRole("link", { name: "شريط الطلب" })).toBeNull();
   const related = screen.getByRole("region", { name: "مكوّنات ذات صلة" });
   await userEvent.click(
     within(related).getByRole("link", { name: "شريط الطلب" }),
@@ -33,7 +33,7 @@ it("opens a component URL instead of a saved page, with curated navigation and r
     screen.getByRole("heading", { level: 1, name: "شريط الطلب" }),
   ).toBeVisible();
   expect(screen.getByRole("main")).toHaveFocus();
-  expect(nav.getByRole("button", { name: "محرر الرسائل" })).toHaveAttribute(
+  expect(nav.getByRole("link", { name: "محرر الرسائل" })).toHaveAttribute(
     "aria-current",
     "page",
   );
@@ -61,18 +61,18 @@ it("restores explicit routes on Back and keeps language/theme across destination
   ).toBeVisible();
   expect(screen.getByRole("main")).toHaveFocus();
   const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  expect(nav.getByRole("button", { name: "المحادثة" })).toHaveAttribute(
+  expect(nav.getByRole("link", { name: "المحادثة" })).toHaveAttribute(
     "aria-current",
     "page",
   );
-  expect(nav.queryByRole("button", { name: "الأزرار" })).toBeNull();
+  expect(nav.queryByRole("link", { name: "الأزرار" })).toBeNull();
 });
 
 it("starts a newly selected section with its complete gallery after a search", async () => {
   persist(storageKeys.documentation, { language: "en" });
   at("/library?category=forms");
   const user = userEvent.setup();
-  const search = screen.getByRole("searchbox", { name: "Search the Library" });
+  const search = screen.getByRole("searchbox", { name: "Search Tiraz" });
   await user.type(search, "checkbox");
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   await user.click(nav.getByRole("button", { name: "Screens" }));
@@ -94,7 +94,7 @@ it("restores the original root history entry without changing a fresh visit's sa
   const initialEntry = window.history.state;
   await userEvent.click(
     within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-      "button",
+      "link",
       { name: "مربع الاختيار" },
     ),
   );
@@ -118,20 +118,20 @@ it("restores the original root history entry without changing a fresh visit's sa
 it("searches the Library in both languages without mounting live examples", async () => {
   at("/library");
   expect(
-    screen.getByRole("heading", { level: 1, name: "المكتبة" }),
+    screen.getByRole("heading", { level: 1, name: "المكوّنات" }),
   ).toBeVisible();
   expect(document.querySelector("iframe")).toBeNull();
   expect(document.querySelector(".playground-canvas")).toBeNull();
-  const search = screen.getByRole("searchbox", { name: "ابحث في المكتبة" });
+  const search = screen.getByRole("searchbox", { name: "ابحث في طِراز" });
   await userEvent.type(search, "invoices");
-  const results = within(screen.getByRole("region", { name: "نتائج المكتبة" }));
+  const results = within(screen.getByRole("region", { name: "نتائج البحث" }));
   expect(
     results.getByRole("link", { name: "الفواتير والتحصيل" }),
   ).toBeVisible();
   await userEvent.clear(search);
   await userEvent.type(search, "لا يوجد مثل هذا المكوّن");
   expect(results.getByText("لم نجد نتائج")).toBeVisible();
-  await userEvent.click(results.getByRole("button", { name: "مسح البحث" }));
+  await userEvent.click(screen.getByRole("button", { name: "مسح البحث" }));
   expect(search).toHaveValue("");
   expect(search).toHaveFocus();
 });

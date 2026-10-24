@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
@@ -15,15 +16,11 @@ import * as ts from "typescript";
 afterEach(() => vi.useRealTimers());
 it.each([["الطرفية", "Terminal", "العرض والتنبيهات"]])(
   "documents %s in its group with continuous shared frames",
-  async (ar, en, group) => {
+  async (ar, en, _group) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    await user.click(screen.getByRole("button", { name: group }));
-    await user.click(
-      within(screen.getByRole("group", { name: group })).getByRole("button", {
-        name: ar,
-      }),
-    );
+
+    await user.click(navigationLink(ar));
     await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     expect(

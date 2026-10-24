@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -15,9 +16,8 @@ it.each([
     const user = userEvent.setup();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     const nav = screen.getByRole("navigation", { name: "المكوّنات" });
-    if (id === "file-dropzone")
-      await user.click(within(nav).getByRole("button", { name: "الملفات" }));
-    await user.click(within(nav).getByRole("button", { name: ar }));
+
+    await user.click(navigationLink(ar));
     expect(
       screen.getByRole("heading", { level: 1, name: ar }),
     ).toBeInTheDocument();
@@ -29,7 +29,7 @@ it.each([
     ).toBeInTheDocument();
     if (id === "file-dropzone")
       expect(
-        within(nav).getByRole("group", { name: "الملفات" }),
+        within(nav).getByRole("region", { name: "قائمة المكوّنات" }),
       ).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "English" }));
     expect(

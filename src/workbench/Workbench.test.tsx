@@ -1,4 +1,5 @@
-import { navigationGroups } from "./catalog";
+import { navigationLink } from "./test-navigation";
+import { sectionEntries } from "./navigation-model";
 import {
   fireEvent,
   render,
@@ -24,19 +25,8 @@ function controls(language: "ar" | "en" = "ar") {
     );
   return within(screen.getByRole("complementary", { name }));
 }
-function navigation() {
-  return within(screen.getByRole("navigation", { name: "المكوّنات" }));
-}
 async function openPage(name: string) {
-  if (!navigation().queryByRole("button", { name })) {
-    const group = navigationGroups.find((section) =>
-      section.items.some((item) => item.name[0] === name),
-    )!;
-    await userEvent.click(
-      navigation().getByRole("button", { name: group.name[0] }),
-    );
-  }
-  await userEvent.click(navigation().getByRole("button", { name }));
+  await userEvent.click(navigationLink(name));
 }
 async function chooseAccent(accent: "blue" | "plum" | "clay") {
   await userEvent.click(
@@ -80,11 +70,11 @@ it("waits through Start and screen pages, then opens Customize from the hint wit
     within(screen.getByRole("navigation", { name: "Components" }));
   expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
   await user.click(nav().getByRole("button", { name: "Screens" }));
-  await user.click(nav().getByRole("button", { name: "Customer dashboard" }));
+  await user.click(navigationLink("Customer dashboard"));
   expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
-  await user.click(nav().getByRole("button", { name: "Forms" }));
+
   expect(screen.queryByRole("button", { name: /Click me/ })).toBeNull();
-  await user.click(nav().getByRole("button", { name: "Button" }));
+  await user.click(navigationLink("Button"));
   expect(screen.getByRole("main")).toHaveFocus();
   await user.click(
     screen.getByRole("button", { name: "Click me to customize the preview" }),
@@ -126,14 +116,11 @@ it("keeps the full prompt and portable paths in one English LTR field", async ()
 it("places only navigation in its sidebar and both settings sections in the panel", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
-  // Only the current component's section is expanded.
   expect(
     within(nav)
-      .getAllByRole("button")
-      .filter((button) => !button.hasAttribute("aria-expanded")),
-  ).toHaveLength(
-    navigationGroups.find((group) => group.id === "forms")!.items.length,
-  );
+      .getAllByRole("link")
+      .filter((link) => link.hasAttribute("aria-label")),
+  ).toHaveLength(sectionEntries("components", "ar").length);
   expect(within(nav).queryByText("خصائص الأزرار")).not.toBeInTheDocument();
   expect(
     controls()
@@ -211,11 +198,9 @@ it("preserves per-component labels and properties while keeping resets separate"
   await userEvent.type(controls().getByLabelText("التسمية"), "اعتماد الطلب");
   await userEvent.click(controls().getByRole("button", { name: "عادي · md" }));
   await choose("النوع", "ثانوي");
-  await userEvent.click(
-    navigation().getByRole("button", { name: "مفتاح التبديل" }),
-  );
+  await userEvent.click(navigationLink("مفتاح التبديل"));
   await userEvent.click(controls().getByRole("switch", { name: "مفعّل" }));
-  await userEvent.click(navigation().getByRole("button", { name: "الأزرار" }));
+  await userEvent.click(navigationLink("الأزرار"));
   expect(preview().getByRole("button")).toHaveTextContent("اعتماد الطلب");
   await userEvent.click(
     controls().getByRole("button", { name: "إعادة ضبط النظام" }),
@@ -226,9 +211,7 @@ it("preserves per-component labels and properties while keeping resets separate"
   );
   expect(preview().getByRole("button")).toHaveTextContent("حفظ الفاتورة");
   expect(preview().getByRole("button")).toHaveAttribute("data-size", "sm");
-  await userEvent.click(
-    navigation().getByRole("button", { name: "مفتاح التبديل" }),
-  );
+  await userEvent.click(navigationLink("مفتاح التبديل"));
   expect(preview().getByRole("switch")).toHaveAttribute(
     "aria-checked",
     "false",

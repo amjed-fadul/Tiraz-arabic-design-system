@@ -1,4 +1,5 @@
-import { render, screen, within } from "@testing-library/react";
+import { navigationLink } from "./test-navigation";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
@@ -15,13 +16,7 @@ it.each([
     render(<Workbench />);
     const user = userEvent.setup();
     const copy = vi.spyOn(navigator.clipboard, "writeText");
-    const nav = screen.getByRole("navigation", { name: "المكوّنات" });
-    await user.click(
-      within(within(nav).getByRole("group", { name: "النماذج" })).getByRole(
-        "button",
-        { name: ar },
-      ),
-    );
+    await user.click(navigationLink(ar));
     expect(
       screen.getByRole("heading", { name: ar, level: 1 }),
     ).toBeInTheDocument();

@@ -19,15 +19,13 @@ for (const component of ["tag-input", "filter-bar", "input-copy"] as const) {
         : component === "filter-bar"
           ? "FilterBar"
           : "InputCopy";
-    expect(within(nav).getByRole("button", { name })).toHaveAttribute(
+    expect(within(nav).getByRole("link", { name })).toHaveAttribute(
       "aria-current",
       "page",
     );
     expect(
-      within(nav).getByRole("group", {
-        name: component === "filter-bar" ? "Data" : "Forms",
-      }),
-    ).toContainElement(within(nav).getByRole("button", { name }));
+      within(nav).getByRole("region", { name: "Components list" }),
+    ).toContainElement(within(nav).getByRole("link", { name }));
     expect(screen.getByRole("heading", { level: 1, name })).toBeInTheDocument();
     expect(document.querySelector(".docs-tabs")).toBeNull();
     const model = defaultPlaygrounds("en")[component];

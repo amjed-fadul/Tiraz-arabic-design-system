@@ -1,14 +1,10 @@
+import { navigationLink } from "./test-navigation";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
-import {
-  navigationCatalog,
-  navigationGroups,
-  nestedParts,
-  catalog,
-} from "./catalog";
+import { navigationCatalog, nestedParts, catalog } from "./catalog";
 import { demoStates } from "./demo-states";
 import { defaultPlaygrounds } from "./model";
 import {
@@ -38,7 +34,7 @@ function Draft() {
 it("gives static previews a matching frame with view tabs and a copy action only in the code's header", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("button", { name: "حقل النسخ" }));
+  await user.click(navigationLink("حقل النسخ"));
   const frames = document.querySelectorAll(".tz-demo-frame");
   expect(frames).toHaveLength(1);
   const frame = frames[0] as HTMLElement;
@@ -70,8 +66,8 @@ it("replays streaming text from the stage's corner, without a stop, keeping Repl
   vi.useFakeTimers();
   render(<Workbench />);
   // StreamingText is linked from ChatThread in the Ask section.
-  fireEvent.click(screen.getByRole("button", { name: "اسأل" }));
-  fireEvent.click(screen.getByRole("button", { name: "المحادثة" }));
+
+  fireEvent.click(navigationLink("المحادثة"));
   fireEvent.click(screen.getByRole("link", { name: "النص المتتابع" }));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
   // The page's frame is the only one, and the text is complete at rest.
@@ -120,7 +116,7 @@ it("replays streaming text from the stage's corner, without a stop, keeping Repl
 it("resets an interactive playground from the inspector without remounting the frame", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("button", { name: "مربع النص" }));
+  await user.click(navigationLink("مربع النص"));
   const frame = document.querySelector(
     ".playground-region .tz-demo-frame",
   ) as HTMLElement;
@@ -147,26 +143,17 @@ it("resets an interactive playground from the inspector without remounting the f
 
 it("shows Replay only where a sequence exists", () => {
   render(<Workbench />);
-  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   // Each page opens its section; specialist pages remain linked from parents.
   const replaying: string[] = [];
   // Every page of the catalog: Replay needs a sequence of states to play.
   for (const page of navigationCatalog) {
     const parent = nestedParts[page.id as keyof typeof nestedParts];
-    const group = navigationGroups.find((section) =>
-      section.items.some((item) => item.id === (parent ?? page.id)),
-    )!;
-    const sectionToggle = nav.getByRole("button", { name: group.name[0] });
-    if (sectionToggle.getAttribute("aria-expanded") !== "true")
-      fireEvent.click(sectionToggle);
     if (parent) {
       fireEvent.click(
-        nav.getByRole("button", {
-          name: catalog.find((item) => item.id === parent)!.name[0],
-        }),
+        navigationLink(catalog.find((item) => item.id === parent)!.name[0]),
       );
       fireEvent.click(screen.getByRole("link", { name: page.name[0] }));
-    } else fireEvent.click(nav.getByRole("button", { name: page.name[0] }));
+    } else fireEvent.click(navigationLink(page.name[0]));
     if (screen.queryByRole("button", { name: "إعادة تشغيل المثال" }))
       replaying.push(page.id);
   }
@@ -352,8 +339,8 @@ it("announces copy failure honestly, supports retry, and ignores stale clipboard
 it("records the EmptyState playground action without offering a replay", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("button", { name: "العرض والتنبيهات" }));
-  await user.click(screen.getByRole("button", { name: "الحالة الفارغة" }));
+
+  await user.click(navigationLink("الحالة الفارغة"));
   const frame = document.querySelector(
     ".playground-region .tz-demo-frame",
   ) as HTMLElement;

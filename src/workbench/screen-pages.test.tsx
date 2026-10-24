@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it } from "vitest";
@@ -43,44 +44,36 @@ function stubStage(width: number, height: number) {
   };
 }
 
-it("opens the Screens section and lists its children as buttons, with no new-tab links", async () => {
+it("opens Screens with text-only destination links that support ordinary navigation", async () => {
   render(<Workbench />);
   await userEvent.click(nav().getByRole("button", { name: "شاشات" }));
-  const section = within(nav().getByRole("group", { name: "شاشات" }));
-  expect(
-    section
-      .getAllByRole("button")
-      .filter((item) => !item.hasAttribute("aria-expanded"))
-      .map((item) => item.textContent),
-  ).toEqual(screens.map((item) => item.name[0]));
-  expect(section.queryAllByRole("link")).toHaveLength(0);
-  expect(section.getByRole("button", { name: "شاشات" })).not.toHaveAttribute(
-    "target",
+  const list = nav().getByRole("region", { name: "قائمة شاشات" });
+  const links = within(list).getAllByRole("link");
+  expect(links.map((link) => link.textContent)).toEqual(
+    screens.map((item) => item.name[0]),
   );
-  expect(
-    screen
-      .getByRole("group", { name: "شاشات" })
-      .querySelector(".component-nav-items svg"),
-  ).toBeNull();
+  for (const link of links) {
+    expect(link).toHaveAttribute("href");
+    expect(link).not.toHaveAttribute("target");
+  }
+  expect(list.querySelector(".component-nav-items svg")).toBeNull();
 });
 
 it("opens a screen's page with the screen in an iframe", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
   await user.click(nav().getByRole("button", { name: "شاشات" }));
-  await user.click(nav().getByRole("button", { name: "لوحة العملاء" }));
+  await user.click(navigationLink("لوحة العملاء"));
   expect(heading()).toHaveTextContent("لوحة العملاء");
   expect(document.title).toBe("طِراز · لوحة العملاء");
   expect(frame()).toHaveAttribute("title", "لوحة العملاء");
   expect(frame()).toHaveAttribute("src", "/examples/dashboard?embed=1");
   // The screen is current, and no docs page is.
-  expect(nav().getByRole("button", { name: "لوحة العملاء" })).toHaveAttribute(
+  expect(nav().getByRole("link", { name: "لوحة العملاء" })).toHaveAttribute(
     "aria-current",
     "page",
   );
-  expect(nav().getByRole("button", { name: "الأزرار" })).not.toHaveAttribute(
-    "aria-current",
-  );
+  expect(nav().queryByRole("link", { name: "الأزرار" })).toBeNull();
   // A screen page has no prompt, code view or settings.
   expect(
     screen.queryByRole("heading", { name: "استخدمه في تطبيقك" }),
@@ -147,9 +140,9 @@ it("starts on Phone when the stage is narrower than a tablet, and keeps the pers
   expect(pressed()).toEqual(["سطح المكتب"]);
   expect(stage()).toHaveAttribute("data-width", "desktop");
   // It also lasts a visit to another page and back to a screen.
-  await user.click(nav().getByRole("button", { name: "النماذج" }));
-  await user.click(nav().getByRole("button", { name: "الأزرار" }));
-  await user.click(nav().getByRole("button", { name: "خط المبيعات" }));
+
+  await user.click(navigationLink("الأزرار"));
+  await user.click(navigationLink("خط المبيعات"));
   expect(pressed()).toEqual(["سطح المكتب"]);
 });
 
@@ -221,7 +214,7 @@ it("restores a saved screen, and forgets an unknown one", async () => {
   const user = userEvent.setup();
   const view = render(<Workbench />);
   await user.click(nav().getByRole("button", { name: "شاشات" }));
-  await user.click(nav().getByRole("button", { name: "خط المبيعات" }));
+  await user.click(navigationLink("خط المبيعات"));
   expect(readDocumentation().screen).toBe("sales-pipeline");
   view.unmount();
   render(<Workbench />);

@@ -47,7 +47,7 @@ it("shows the three labelled columns of a page's notes, and opens the page an al
   render(createElement(Workbench));
   fireEvent.click(
     within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-      "button",
+      "link",
       { name: "الأزرار" },
     ),
   );

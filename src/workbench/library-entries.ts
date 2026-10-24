@@ -2,7 +2,7 @@ import { navigationGroups } from "./catalog";
 import { screens } from "../examples/frame/screen";
 import type { Localized } from "./i18n";
 import type { SiteRoute } from "./site-routes";
-interface LibraryEntry {
+export interface LibraryEntry {
   key: string;
   name: Localized;
   description: Localized;

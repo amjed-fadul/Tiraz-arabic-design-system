@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
@@ -31,7 +32,7 @@ it("shows a pattern page as its playground, prompt, usage guidelines and API ref
   expect(within(reference).getAllByRole("table")).toHaveLength(1);
   expect(within(reference).queryByRole("heading", { level: 3 })).toBeNull();
   // A part has the same page.
-  await userEvent.click(nav().getByRole("button", { name: "صفوف المهام" }));
+  await userEvent.click(navigationLink("صفوف المهام"));
   expect(sections()).toEqual([
     "استخدمه في تطبيقك",
     "إرشادات الاستخدام",
@@ -59,12 +60,12 @@ it("says what a pattern replaces, with links", async () => {
     screen.getByRole("heading", { level: 1, name: "محرر الرسائل" }),
   ).toBeInTheDocument();
   // The part's page sits in the Parts section, which opened for it.
-  expect(nav().getByRole("button", { name: "محرر الرسائل" })).toHaveAttribute(
+  expect(nav().getByRole("link", { name: "محرر الرسائل" })).toHaveAttribute(
     "aria-current",
     "page",
   );
   // A pattern that replaces nothing keeps its alternatives.
-  await userEvent.click(nav().getByRole("button", { name: "فوّض" }));
-  await userEvent.click(nav().getByRole("button", { name: "طلب موافقة" }));
+
+  await userEvent.click(navigationLink("طلب موافقة"));
   expect(columns()).toEqual(["استخدمه عندما", "استخدم غيره عندما", "لاحظ"]);
 });

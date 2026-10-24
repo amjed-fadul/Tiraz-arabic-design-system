@@ -11,6 +11,7 @@ export function DocsDrawer({
   open,
   onOpenChange,
   onClosed,
+  onEscapeKeyDown,
   language,
   portalContainer,
 }: {
@@ -20,6 +21,7 @@ export function DocsDrawer({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onClosed?: () => boolean;
+  onEscapeKeyDown?: (event: KeyboardEvent) => void;
   language: Language;
   portalContainer?: HTMLElement | null;
 }) {
@@ -34,6 +36,7 @@ export function DocsDrawer({
           data-side={config.direction === "rtl" ? "right" : "left"}
           dir={config.direction}
           aria-describedby={undefined}
+          onEscapeKeyDown={onEscapeKeyDown}
           onCloseAutoFocus={(event) => {
             if (onClosed?.()) event.preventDefault();
           }}

@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
@@ -15,9 +16,8 @@ it.each([
     const user = userEvent.setup();
     render(<Workbench />);
     const copy = vi.spyOn(navigator.clipboard, "writeText");
-    const ai = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-    await user.click(ai.getByRole("button", { name: "فوّض" }));
-    await user.click(ai.getByRole("button", { name: "استدعاء الأداة" }));
+
+    await user.click(navigationLink("استدعاء الأداة"));
     if (en === "ToolChips")
       await user.click(screen.getByRole("link", { name: ar }));
     expect(screen.getByRole("heading", { level: 1, name: ar })).toBeVisible();

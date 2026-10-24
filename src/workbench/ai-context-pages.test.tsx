@@ -1,4 +1,5 @@
-import { act, render, screen, within } from "@testing-library/react";
+import { navigationLink } from "./test-navigation";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
@@ -26,13 +27,8 @@ it.each([
   async (ar, en) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    const ai = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-    await user.click(
-      ai.getByRole("button", {
-        name: en === "SelectionActions" ? "أنشئ" : "افهم وتحكّم",
-      }),
-    );
-    await user.click(ai.getByRole("button", { name: ar }));
+
+    await user.click(navigationLink(ar));
     await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     expect(

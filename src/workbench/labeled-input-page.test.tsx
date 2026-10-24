@@ -1,4 +1,5 @@
-import { navigationGroups } from "./catalog";
+import { navigationLink } from "./test-navigation";
+import { sectionEntries } from "./navigation-model";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -42,15 +43,10 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   });
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
-  expect(nav.queryByRole("button", { name: "Field" })).toBeNull();
-  // Input starts with Forms open; other section children stay hidden.
+  expect(nav.queryByRole("link", { name: "Field" })).toBeNull();
   expect(
-    nav
-      .getAllByRole("button")
-      .filter((button) => !button.hasAttribute("aria-expanded")),
-  ).toHaveLength(
-    navigationGroups.find((group) => group.id === "forms")!.items.length,
-  );
+    nav.getAllByRole("link").filter((link) => link.hasAttribute("aria-label")),
+  ).toHaveLength(sectionEntries("components", "en").length);
   const rail = within(
     screen.getByRole("complementary", { name: "Customize the preview" }),
   );
@@ -69,7 +65,7 @@ it("makes Input the complete entry page while retaining Field in its API disclos
   expect(
     screen.getByText("Field · composition helper", { exact: true }),
   ).toBeVisible();
-  await userEvent.click(nav.getByRole("button", { name: "Select" }));
+  await userEvent.click(navigationLink("Select"));
   expect(screen.queryByRole("button", { name: "Create customer" })).toBeNull();
 });
 it("copies complete direct Input code and guidance despite the collapsed prompt row", async () => {
