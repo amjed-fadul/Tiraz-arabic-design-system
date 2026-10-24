@@ -14,14 +14,14 @@ it("copies real versioned new and existing source-install commands", async () =>
     screen.getByRole("button", { name: "Copy install command" }),
   );
   expect(clipboard).toHaveBeenLastCalledWith(
-    "npx @amjedfadul/tiraz@0.1.1 init --new my-app\ncd my-app\nnpm run dev",
+    "npx @amjedfadul/tiraz@0.1.2 init --new my-app\ncd my-app\nnpm run dev",
   );
   await user.click(screen.getByRole("button", { name: "Existing project" }));
   await user.click(
     screen.getByRole("button", { name: "Copy install command" }),
   );
   expect(clipboard).toHaveBeenLastCalledWith(
-    "npx @amjedfadul/tiraz@0.1.1 init",
+    "npx @amjedfadul/tiraz@0.1.2 init",
   );
   expect(screen.queryByText(/<tiraz-package>/)).not.toBeInTheDocument();
 });
@@ -145,9 +145,9 @@ it("keeps long instructions collapsed and reports the actual package release sta
     ).toBeVisible();
   expect(
     screen.getByRole("region", { name: "Install command" }),
-  ).toHaveTextContent("npx @amjedfadul/tiraz@0.1.1 init --new my-app");
+  ).toHaveTextContent("npx @amjedfadul/tiraz@0.1.2 init --new my-app");
   await user.click(screen.getByRole("button", { name: "Existing project" }));
-  expect(screen.getByText("npx @amjedfadul/tiraz@0.1.1 init")).toBeVisible();
+  expect(screen.getByText("npx @amjedfadul/tiraz@0.1.2 init")).toBeVisible();
   await user.click(screen.getByText("Customer dashboard"));
   expect(
     screen.getByRole("button", { name: "Copy prompt: Customer dashboard" }),
