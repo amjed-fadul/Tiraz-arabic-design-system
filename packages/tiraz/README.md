@@ -28,6 +28,21 @@ export function App() {
 font, import `@amjedfadul/tiraz/tokens.css` and `@amjedfadul/tiraz/components.css` separately. Preserve
 `:dir()` in your CSS target: Chrome/Edge 120+, Firefox 114+, Safari 16.4+.
 
+## Updating to 0.1.2
+
+This patch removes the upward text offset in buttons, badges, tabs, inputs,
+selects, menu items, sidebar labels and tags. Text uses the controls' normal
+alignment in Arabic and English. Component APIs are unchanged.
+
+```sh
+npm install @amjedfadul/tiraz@0.1.2
+```
+
+If you copied the source, compare this package's
+`source/system/components.css` with your copy and remove the old
+`--optical-lift` overrides, preserving your own changes. Updating the npm
+dependency does not change copied source; the installer never overwrites it.
+
 ## Own the source
 
 ```sh

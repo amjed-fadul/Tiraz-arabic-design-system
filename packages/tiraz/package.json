@@ -1,6 +1,6 @@
 {
   "name": "@amjedfadul/tiraz",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Arabic-first React components, editable source, and AI-ready guidance",
   "license": "MIT",
   "type": "module",
