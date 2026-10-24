@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -48,15 +49,13 @@ it("keeps chart inspectors compact and copied prompts consistent with the curren
   render(<Workbench />);
   const user = userEvent.setup(),
     write = vi.spyOn(navigator.clipboard, "writeText");
-  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  await user.click(nav.getByRole("button", { name: "الرسوم" }));
   for (const name of [
     "الرسم الخطي",
     "الرسم المساحي",
     "الرسم العمودي",
     "الرسم الحلقي",
   ]) {
-    await user.click(nav.getByRole("button", { name }));
+    await user.click(navigationLink(name));
     // The settings stay open from page to page once «تخصيص» opens them.
     if (!screen.queryByRole("complementary", { name: "تخصيص المعاينة" }))
       await user.click(screen.getByRole("button", { name: "تخصيص" }));

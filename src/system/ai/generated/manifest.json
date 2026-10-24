@@ -5,7 +5,7 @@
   "entry": "index.ts",
   "hashAlgorithm": "sha256",
   "hashScope": "Source-root files, including authored guidance and binary assets; excludes generated metadata, tests and CSS audit tooling.",
-  "sourceDigest": "bb1982a084cb21bf16832859f77143542af5ac198622ff3edd29cfd798ffad36",
+  "sourceDigest": "caef39db4759a3b43c05b93a03334be8867eda79181301a2f8e69d3be4877fe3",
   "files": {
     "AIMark.tsx": "848f4e233ae40235abb7ddfcda009707bd13471932509bc84e296820e7323e4e",
     "Accordion.tsx": "031f4e14f65056fd9818dcb81919bae7f112d52c648be4c3d287b543f32afafa",
@@ -175,7 +175,7 @@
     "chart-format.ts": "2f1217960a2044978e0229707d915b5e51541b764b75a54717778b8cdead6de0",
     "cited-answer-copy.ts": "667c0d371b30b750b6a238333ac1c27c0c4dabcbb786ff02bc8e8cab1ba8563a",
     "code-highlight.tsx": "dad3eaefa62132aa957ab3582ca001419d1c0d166326e59f1972586604759f40",
-    "components.css": "a45daa5870c0c67c7812fa113330723dcf8be97f612a2bbe83226b0925d05cac",
+    "components.css": "de3b913c6f3407a7b98bccff2469f18a404559a072a71075b9dbaab72c647750",
     "config.ts": "fa05b108befd572a4e9eccc2b194eb33ad4913e00fa7ab911d0d16655427f0e3",
     "context-status.ts": "a544f2e35ad78a92e3ccfb10451a0c26d6797ddc7004f093abf16e409b854c8f",
     "control-associations.ts": "a8dc0c84c85fbb49d9312451c6d3bf9111d6c33325e13f8bbc581af5c53117ef",

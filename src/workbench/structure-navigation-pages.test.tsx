@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -6,23 +7,13 @@ it("documents four structure/navigation pages with working previews and complete
   render(<Workbench />);
   const user = userEvent.setup(),
     write = vi.spyOn(navigator.clipboard, "writeText");
-  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   for (const name of [
     "البطاقة",
     "الأكورديون",
     "مسار التنقل",
     "تقسيم الصفحات",
   ]) {
-    if (!nav.queryByRole("button", { name }))
-      await user.click(
-        nav.getByRole("button", {
-          name:
-            name === "البطاقة" || name === "الأكورديون"
-              ? "العرض والتنبيهات"
-              : "التنقّل",
-        }),
-      );
-    await user.click(nav.getByRole("button", { name }));
+    await user.click(navigationLink(name));
     expect(
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),
     ).not.toBeEmptyDOMElement();
@@ -53,21 +44,20 @@ it("connects Card reveal, Accordion disclosure, Breadcrumb destinations and Pagi
   expect(
     preview().getByText("Use shared tokens for spacing and corners."),
   ).toBeVisible();
-  const nav = within(screen.getByRole("navigation", { name: "Components" }));
-  await user.click(nav.getByRole("button", { name: "Accordion" }));
+  await user.click(navigationLink("Accordion"));
   await user.click(
     preview().getByRole("button", { name: "Can I change my plan?" }),
   );
   expect(
     preview().getByRole("region", { name: "Can I change my plan?" }),
   ).toHaveTextContent("next billing cycle");
-  await user.click(nav.getByRole("button", { name: "Navigation" }));
-  await user.click(nav.getByRole("button", { name: "Breadcrumbs" }));
+
+  await user.click(navigationLink("Breadcrumbs"));
   for (const link of preview().getAllByRole("link"))
     expect(
       document.getElementById(link.getAttribute("href")!.slice(1)),
     ).not.toBeNull();
-  await user.click(nav.getByRole("button", { name: "Pagination" }));
+  await user.click(navigationLink("Pagination"));
   // The page opens on its middle, page 6.
   await user.click(preview().getByRole("button", { name: "Next" }));
   expect(preview().getByRole("button", { name: "Page 7" })).toHaveAttribute(

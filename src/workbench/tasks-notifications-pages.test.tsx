@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -7,17 +8,12 @@ it.each([
   ["قائمة الإشعارات", "NotificationList", "العرض والتنبيهات", "Read controls"],
 ])(
   "documents %s with continuous examples, inspector and complete copied source",
-  async (ar, en, group, inspector) => {
+  async (ar, en, _group, inspector) => {
     const user = userEvent.setup();
     render(<Workbench />);
     const copy = vi.spyOn(navigator.clipboard, "writeText");
-    const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-    await user.click(nav.getByRole("button", { name: group }));
-    await user.click(
-      within(nav.getByRole("group", { name: group })).getByRole("button", {
-        name: ar,
-      }),
-    );
+
+    await user.click(navigationLink(ar));
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
     // The playground frame is the only stage and carries the code.
     for (const name of ["مثال الاستخدام", "أمثلة"])

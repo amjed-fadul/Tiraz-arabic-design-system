@@ -10,11 +10,11 @@ import {
 } from "react";
 import type { CSSProperties } from "react";
 import { TirazMark } from "../brand/TirazMark";
+import { SiteAnalytics } from "../SiteAnalytics";
 import { ArrowUpRight, SlidersHorizontal, X } from "lucide-react";
 import { SidebarSimpleIcon } from "@phosphor-icons/react/dist/csr/SidebarSimple";
 import { MoonIcon } from "@phosphor-icons/react/dist/csr/Moon";
 import { SunIcon } from "@phosphor-icons/react/dist/csr/Sun";
-import { RocketLaunchIcon } from "@phosphor-icons/react/dist/csr/RocketLaunch";
 import {
   Button,
   Sheet,
@@ -26,13 +26,7 @@ import { SystemContext } from "../system/useSystem";
 import type { ButtonState, SystemConfig } from "../system";
 import { screenPath, screens } from "../examples/frame/screen";
 import type { ScreenSlug } from "../examples/frame/screen";
-import {
-  catalog,
-  navigationGroups,
-  screenUses,
-  nestedParts,
-  relatedPages,
-} from "./catalog";
+import { catalog, screenUses, nestedParts, relatedPages } from "./catalog";
 import type { ComponentId } from "./catalog";
 import { label, localize, words } from "./i18n";
 import type { Language, Localized } from "./i18n";
@@ -66,7 +60,9 @@ import { CopyControl } from "./CopyControl";
 import { PromptPanel } from "./PromptPanel";
 import { generateCode, generatePrompt } from "./generate";
 import { DocsDrawer } from "./DocsDrawer";
-import { ComponentNavigation, NavigationHeading } from "./ComponentNavigation";
+import { ComponentNavigation } from "./ComponentNavigation";
+import { navigationSection, galleryName } from "./navigation-model";
+import type { NavigationSection } from "./navigation-model";
 import { destination, readSiteRoute, routePath } from "./site-routes";
 import type { SiteRoute } from "./site-routes";
 import { SiteLink } from "./SiteLink";
@@ -91,16 +87,6 @@ function watchNarrow(change: () => void) {
   return () => query.removeEventListener("change", change);
 }
 const isNarrow = () => window.matchMedia(narrowQuery).matches;
-function navigationSection(route: SiteRoute): string | undefined {
-  if (route.kind === "screen") return "screens";
-  if (route.kind === "library") return route.category;
-  if (route.kind === "illustrations") return "illustrations";
-  if (route.kind !== "component") return undefined;
-  const parent = nestedParts[route.id as keyof typeof nestedParts];
-  return navigationGroups.find((group) =>
-    group.items.some((item) => item.id === (parent ?? route.id)),
-  )?.id;
-}
 
 type ScreenWidth = "desktop" | "tablet" | "phone";
 const screenWidths: readonly { id: ScreenWidth; name: Localized }[] = [
@@ -277,17 +263,16 @@ export function Workbench() {
     readSiteRoute(new URL(window.location.href), readDocumentation()),
   );
   const initialRoute = useRef(route);
-  const [openNavigationSections, setOpenNavigationSections] = useState<
-    string[]
-  >(() => {
-    const section = navigationSection(route);
-    return section ? [section] : [];
-  });
-  function toggleNavigationSection(section: string) {
-    if (openNavigationSections.includes(section)) {
-      setOpenNavigationSections((open) =>
-        open.filter((item) => item !== section),
-      );
+  const [selectedNavigationSection, setSelectedNavigationSection] = useState(
+    () => navigationSection(route),
+  );
+  const [navigationExpanded, setNavigationExpanded] = useState(true);
+  const [navigationQuery, setNavigationQuery] = useState("");
+  const [focusSearchRequest, setFocusSearchRequest] = useState(0);
+  function toggleNavigationSection(section: NavigationSection) {
+    setNavigationQuery("");
+    if (selectedNavigationSection === section) {
+      setNavigationExpanded((open) => (navigationQuery ? true : !open));
     } else {
       navigate(
         section === "illustrations"
@@ -332,6 +317,26 @@ export function Workbench() {
     query.addEventListener("change", change);
     return () => query.removeEventListener("change", change);
   }, []);
+  useEffect(() => {
+    const shortcut = (event: KeyboardEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.isComposing ||
+        event.altKey ||
+        !(event.metaKey || event.ctrlKey) ||
+        event.key.toLowerCase() !== "k"
+      )
+        return;
+      event.preventDefault();
+      if (mobileNavigation) {
+        navigationSelection.current = false;
+        setNavigationOpen(true);
+      } else setNavigationHidden(false);
+      setFocusSearchRequest((request) => request + 1);
+    };
+    document.addEventListener("keydown", shortcut);
+    return () => document.removeEventListener("keydown", shortcut);
+  }, [mobileNavigation]);
   // The screen pages' width chip lasts the session. It is unset until the
   // first screen page measures its stage (or the person picks a chip).
   const [screenWidth, setScreenWidth] = useState<ScreenWidth | null>(null);
@@ -416,8 +421,7 @@ export function Workbench() {
     prompt = generatePrompt(active, model, systemConfig, language);
   const pageName =
     route.kind === "library"
-      ? (navigationGroups.find((group) => group.id === route.category)?.name ??
-        (["المكتبة", "Library"] as const))
+      ? galleryName(route.category)
       : route.kind === "start"
         ? (["ابدأ هنا", "Start here"] as const)
         : route.kind === "illustrations"
@@ -608,11 +612,9 @@ export function Workbench() {
       if (history && !samePath)
         window.history.pushState({}, "", routePath(next));
       focusRoute.current = !keepFilterFocus && !keepNavigation;
-      const section = navigationSection(next);
-      if (section)
-        setOpenNavigationSections((open) =>
-          open.includes(section) ? open : [...open, section],
-        );
+      setSelectedNavigationSection(navigationSection(next));
+      setNavigationExpanded(true);
+      setNavigationQuery("");
       setRoute(next);
       if (!keepFilterFocus) window.scrollTo(0, 0);
     },
@@ -860,29 +862,17 @@ export function Workbench() {
       ? t("الرسوم التوضيحية", "Illustrations")
       : label("components", language);
   const navigation = (
-    <div className="docs-navigation-sections">
-      <nav
-        className="component-nav site-secondary docs-navigation-start"
-        aria-label={t("البداية", "Getting started")}
-      >
-        <div className="component-nav-heading-row">
-          <NavigationHeading
-            name={t("ابدأ هنا", "Start here")}
-            icon={RocketLaunchIcon}
-            target={{ kind: "start" }}
-            navigate={navigate}
-            current={route.kind === "start"}
-          />
-        </div>
-      </nav>
-      <ComponentNavigation
-        language={language}
-        route={route}
-        navigate={navigate}
-        openSections={openNavigationSections}
-        onToggleSection={toggleNavigationSection}
-      />
-    </div>
+    <ComponentNavigation
+      language={language}
+      route={route}
+      navigate={navigate}
+      section={selectedNavigationSection}
+      expanded={navigationExpanded}
+      onToggleSection={toggleNavigationSection}
+      query={navigationQuery}
+      onQueryChange={setNavigationQuery}
+      focusSearchRequest={focusSearchRequest}
+    />
   );
   const appearance = (
     <Appearance
@@ -967,6 +957,7 @@ export function Workbench() {
   );
   return (
     <SystemProvider config={documentationConfig}>
+      <SiteAnalytics path={routePath(route)} />
       <div
         className="docs-shell"
         ref={setShell}
@@ -988,6 +979,12 @@ export function Workbench() {
                   if (open) navigationSelection.current = false;
                   setNavigationOpen(open);
                 } else setNavigationHidden((hidden) => !hidden);
+              }}
+              onEscapeKeyDown={(event) => {
+                if (!navigationQuery) return;
+                event.preventDefault();
+                setNavigationQuery("");
+                setFocusSearchRequest((request) => request + 1);
               }}
               onClosed={() => {
                 if (!navigationSelection.current) return false;
@@ -1026,7 +1023,10 @@ export function Workbench() {
             >
               {navigation}
             </DocsDrawer>
-            <a className="docs-brand" href="/landing.html">
+            <a
+              className="docs-brand"
+              href={import.meta.env.PROD ? "/" : "/landing.html"}
+            >
               <TirazMark />
               <span lang="ar">طِراز</span>
             </a>
@@ -1081,8 +1081,13 @@ export function Workbench() {
             onKeyDown={(event) => {
               if (event.key !== "Escape" || event.defaultPrevented) return;
               event.preventDefault();
-              navigationToggle.current?.focus();
-              setNavigationHidden(true);
+              if (navigationQuery) {
+                setNavigationQuery("");
+                setFocusSearchRequest((request) => request + 1);
+              } else {
+                navigationToggle.current?.focus();
+                setNavigationHidden(true);
+              }
             }}
             className="docs-sidebar"
             aria-label={
@@ -1091,7 +1096,9 @@ export function Workbench() {
                 : navigationName
             }
           >
-            <div className="docs-navigation-inner">{navigation}</div>
+            <div className="docs-navigation-inner">
+              {!mobileNavigation && navigation}
+            </div>
           </aside>
           <div className="docs-workspace">
             <main

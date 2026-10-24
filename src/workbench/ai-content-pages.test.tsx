@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { StrictMode } from "react";
 import { render, screen, within, act, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -18,15 +19,11 @@ it.each([
   ["النص المتتابع", "StreamingText", "اسأل"],
 ] as const)(
   "keeps %s in its group and copies portable examples and dependency guidance",
-  async (ar, en, group) => {
+  async (ar, en, _group) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    await user.click(screen.getByRole("button", { name: group }));
-    await user.click(
-      within(screen.getByRole("group", { name: group })).getByRole("button", {
-        name: en === "StreamingText" ? "المحادثة" : ar,
-      }),
-    );
+
+    await user.click(navigationLink(en === "StreamingText" ? "المحادثة" : ar));
     if (en === "StreamingText")
       await user.click(screen.getByRole("link", { name: ar }));
     expect(screen.getByRole("heading", { name: ar, level: 1 })).toBeVisible();
@@ -193,8 +190,8 @@ it.each(["ar", "en"] as const)(
 it("uses the page's frame for the streaming demo: view tabs above, an icon Replay in the stage and an icon Copy in the code's header", async () => {
   const user = userEvent.setup();
   render(<Workbench />);
-  await user.click(screen.getByRole("button", { name: "اسأل" }));
-  await user.click(screen.getByRole("button", { name: "المحادثة" }));
+
+  await user.click(navigationLink("المحادثة"));
   await user.click(screen.getByRole("link", { name: "النص المتتابع" }));
   await user.click(screen.getByRole("button", { name: "English" }));
   const playground = document.querySelector(
@@ -232,8 +229,8 @@ it("uses the page's frame for the streaming demo: view tabs above, an icon Repla
 it("opens the documentation demo complete, without autoplay, local footer or empty event scaffolding", async () => {
   vi.useFakeTimers();
   render(<Workbench />);
-  fireEvent.click(screen.getByRole("button", { name: "اسأل" }));
-  fireEvent.click(screen.getByRole("button", { name: "المحادثة" }));
+
+  fireEvent.click(navigationLink("المحادثة"));
   fireEvent.click(screen.getByRole("link", { name: "النص المتتابع" }));
   await act(async () => vi.advanceTimersByTime(0));
   expect(screen.queryByRole("heading", { name: "أمثلة", level: 2 })).toBeNull();
@@ -249,7 +246,7 @@ it("opens the documentation demo complete, without autoplay, local footer or emp
     screen.queryByText("عرض محلي بقطع ثابتة؛ دون طلب شبكة أو ذكاء اصطناعي."),
   ).toBeNull();
   expect(screen.queryByRole("status", { name: "آخر حدث" })).toBeNull();
-  fireEvent.click(screen.getByRole("button", { name: "الأزرار" }));
+  fireEvent.click(navigationLink("الأزرار"));
   expect(screen.queryByRole("status", { name: "آخر حدث" })).toBeNull();
 });
 it("keeps an empty announcement owner mounted before the first real action, without placeholder text", () => {

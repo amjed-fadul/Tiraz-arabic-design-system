@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
@@ -6,20 +7,8 @@ it("documents FileTree in Files with a minimal inspector and portable copied act
   const user = userEvent.setup();
   render(<Workbench />);
   const copy = vi.spyOn(navigator.clipboard, "writeText");
-  await user.click(
-    within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-      "button",
-      { name: "الملفات" },
-    ),
-  );
-  await user.click(
-    within(
-      within(screen.getByRole("navigation", { name: "المكوّنات" })).getByRole(
-        "group",
-        { name: "الملفات" },
-      ),
-    ).getByRole("button", { name: "شجرة الملفات" }),
-  );
+
+  await user.click(navigationLink("شجرة الملفات"));
   expect(
     screen.getByRole("heading", { name: "شجرة الملفات", level: 1 }),
   ).toBeVisible();

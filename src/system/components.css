@@ -11137,49 +11137,6 @@ a.tz-inline-citation {
   text-wrap: pretty;
 }
 
-/* Optical centering. IBM Plex Sans Arabic centers its line box ~0.33em above
-   the baseline, but Arabic letter bodies (and Latin lowercase) center near
-   0.24em, so text in fixed-height controls reads ~1.5px low. Text is lifted
-   1px by shifting padding; icons sharing the line are set back on center. */
-.tiraz-system {
-  --optical-lift: 1px;
-}
-.tz-button:not([data-icon-only]) {
-  padding-block: calc(3px - var(--optical-lift)) calc(3px + var(--optical-lift));
-}
-.tz-button[data-size="sm"]:not([data-icon-only]) {
-  padding-block: calc(2px - var(--optical-lift)) calc(2px + var(--optical-lift));
-}
-.tz-button:not([data-icon-only]) :is(> svg, > .tz-button-label > svg) {
-  translate: 0 var(--optical-lift);
-}
-.tz-badge {
-  padding-block: calc(var(--space-1) / 2 - var(--optical-lift))
-    calc(var(--space-1) / 2 + var(--optical-lift));
-}
-.tz-badge > svg {
-  translate: 0 var(--optical-lift);
-}
-.tz-tab {
-  padding-block: calc(var(--tab-padding) - var(--optical-lift))
-    calc(var(--tab-padding) + var(--optical-lift));
-}
-.tz-tabs[data-variant="segment"] > .tz-tab-list > .tz-tab {
-  padding-block: calc(3px - var(--optical-lift)) calc(3px + var(--optical-lift));
-}
-.tz-menu-item > span:not([aria-hidden="true"]),
-.tz-sidebar-label,
-.tz-tag > bdi {
-  translate: 0 calc(-1 * var(--optical-lift));
-}
-.tz-input,
-.tz-select-trigger {
-  padding-block: calc(2px - var(--optical-lift)) calc(2px + var(--optical-lift));
-}
-.tz-select-trigger > :not(:first-child) {
-  translate: 0 var(--optical-lift);
-}
-
 /* Keyboard hints sit inside the control they trigger: a key is a machine
    value, so it is set in mono at the micro size, in buttons and menus alike. */
 .tz-kbd {

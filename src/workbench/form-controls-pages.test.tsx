@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it } from "vitest";
@@ -17,13 +18,7 @@ it("adds four continuous documentation pages with complete prompt/code and prese
     ["radio-group", "مجموعة الخيارات"],
     ["textarea", "مربع النص"],
   ] as const) {
-    if (!nav.queryByRole("button", { name: label }))
-      await user.click(
-        nav.getByRole("button", {
-          name: id === "badge" ? "العرض والتنبيهات" : "النماذج",
-        }),
-      );
-    await user.click(nav.getByRole("button", { name: label }));
+    await user.click(navigationLink(label));
     expect(
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),
     ).not.toBeEmptyDOMElement();
@@ -36,7 +31,7 @@ it("adds four continuous documentation pages with complete prompt/code and prese
         screen.queryByRole("status", { name: "آخر حدث" }),
       ).not.toBeInTheDocument();
   }
-  expect(nav.queryByRole("button", { name: "الحقل" })).not.toBeInTheDocument();
+  expect(nav.queryByRole("link", { name: "الحقل" })).not.toBeInTheDocument();
 });
 for (const copy of [
   {

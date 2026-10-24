@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import {
   act,
   fireEvent,
@@ -148,10 +149,9 @@ it("holds a phase until it is changed", async () => {
   expect(chips()).toEqual(chipsDone);
   // Opening the page again starts from its resting phase.
   fireEvent.click(states().getByRole("button", { name: word("running") }));
-  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  fireEvent.click(nav.getByRole("button", { name: "النماذج" }));
-  fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
-  fireEvent.click(nav.getByRole("button", { name: "استدعاء الأداة" }));
+
+  fireEvent.click(navigationLink("الأزرار"));
+  fireEvent.click(navigationLink("استدعاء الأداة"));
   fireEvent.click(screen.getByRole("link", { name: "ملخص الأدوات" }));
   expect(pressed()).toEqual([word("done")]);
   expect(chips()).toEqual(chipsDone);
@@ -231,7 +231,6 @@ it("cancels replay on state press, Code view, page change and unmount", async ()
   const view = open("button", true);
   const replay = () =>
     fireEvent.click(screen.getByRole("button", { name: "إعادة تشغيل المثال" }));
-  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   // A state press: the pressed state wins and nothing fires afterwards.
   replay();
   await wait(800);
@@ -252,13 +251,13 @@ it("cancels replay on state press, Code view, page change and unmount", async ()
   // A page change.
   replay();
   await wait(800);
-  fireEvent.click(nav.getByRole("button", { name: "العرض والتنبيهات" }));
-  fireEvent.click(nav.getByRole("button", { name: "الطرفية" }));
+
+  fireEvent.click(navigationLink("الطرفية"));
   // Flush route focus and the newly mounted prompt disclosure’s layout frame.
   await act(async () => vi.advanceTimersToNextFrame());
   expect(vi.getTimerCount()).toBe(0);
   await wait(5000);
-  fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
+  fireEvent.click(navigationLink("الأزرار"));
   expect(stateSelect()).toHaveTextContent(stateName.loading);
   expect(frameStatus()).toBeEmptyDOMElement();
   // Unmounting leaves no timers behind.

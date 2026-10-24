@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
@@ -131,11 +132,10 @@ it("cancels a loading action when navigating and unmounting", () => {
   vi.useFakeTimers();
   const view = render(<Workbench />);
   fireEvent.click(preview());
-  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-  fireEvent.click(nav.getByRole("button", { name: "التنقّل" }));
-  fireEvent.click(nav.getByRole("button", { name: "التبويبات" }));
+
+  fireEvent.click(navigationLink("التبويبات"));
   tick(3000);
-  fireEvent.click(nav.getByRole("button", { name: "الأزرار" }));
+  fireEvent.click(navigationLink("الأزرار"));
   expect(preview()).toHaveAttribute("data-state", "idle");
   fireEvent.click(preview());
   view.unmount();

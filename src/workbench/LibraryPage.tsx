@@ -1,13 +1,18 @@
-import { useRef, useState } from "react";
-import { ArrowUpRight, Search, X } from "lucide-react";
-import { Input, Select, Button } from "../system";
+import { useRef } from "react";
+import { ArrowUpRight, Search } from "lucide-react";
+import { Select } from "../system";
 import { numberLocale } from "../system/config";
 import { navigationGroups } from "./catalog";
 import type { Language } from "./i18n";
 import { localize, words } from "./i18n";
 import { SiteLink } from "./SiteLink";
 import type { Navigate } from "./SiteLink";
-import { libraryEntries } from "./library-entries";
+import {
+  galleryEntries,
+  galleryName,
+  entrySection,
+  sectionNames,
+} from "./navigation-model";
 
 export function LibraryPage({
   language,
@@ -20,65 +25,28 @@ export function LibraryPage({
   category?: string;
   navigate: Navigate;
 }) {
-  const t = words(language),
-    [query, setQuery] = useState("");
-  const [previousCategory, setPreviousCategory] = useState(category);
-  if (previousCategory !== category) {
-    setPreviousCategory(category);
-    setQuery("");
-  }
-  const input = useRef<HTMLInputElement>(null);
+  const t = words(language);
   const categoryTrigger = useRef<HTMLButtonElement>(null);
   const filter =
+    category === "ai" ||
+    category === "all" ||
     category === "components" ||
     navigationGroups.some((group) => group.id === category)
       ? category
-      : "all";
-  const section = navigationGroups.find((group) => group.id === filter);
-  const needle = query
-    .trim()
-    .normalize("NFKD")
-    .replace(/\p{M}/gu, "")
-    .toLocaleLowerCase();
-  const matches = libraryEntries.filter(
-    (item) =>
-      (filter === "all" ||
-        (filter === "components"
-          ? item.category !== "screens"
-          : item.category === filter)) &&
-      (!needle ||
-        [...item.name, item.key]
-          .join(" ")
-          .normalize("NFKD")
-          .replace(/\p{M}/gu, "")
-          .toLocaleLowerCase()
-          .includes(needle)),
-  );
+      : "components";
+  const matches = galleryEntries(category, language);
   const number = new Intl.NumberFormat(
     numberLocale({ numerals: "arab" }, language),
   );
-  const groups = [
-    {
-      id: "screens",
-      title: t("شاشات", "Screens"),
-      entries: matches.filter((item) => item.category === "screens"),
-    },
-    {
-      id: "components",
-      title: t("مكوّنات", "Components"),
-      entries: matches.filter((item) => item.category !== "screens"),
-    },
-  ];
-  function clear() {
-    setQuery("");
-    input.current?.focus();
-  }
+  const groups = (["screens", "components", "ai"] as const).map((id) => ({
+    id,
+    title: localize(sectionNames[id], language),
+    entries: matches.filter((item) => entrySection(item) === id),
+  }));
   return (
     <div className="library-page">
       <header className="component-heading">
-        <h1>
-          {section ? localize(section.name, language) : t("المكتبة", "Library")}
-        </h1>
+        <h1>{localize(galleryName(category), language)}</h1>
         <p>
           {t(
             "اختر شاشة أو مكوّنًا لتجربته ونسخ مثاله إلى تطبيقك.",
@@ -87,34 +55,6 @@ export function LibraryPage({
         </p>
       </header>
       <div className="library-toolbar">
-        <div className="library-search">
-          <Search size={18} aria-hidden="true" />
-          <Input
-            size="md"
-            dir={query ? "auto" : language === "ar" ? "rtl" : "ltr"}
-            ref={input}
-            type="search"
-            aria-label={t("ابحث في المكتبة", "Search the Library")}
-            placeholder={t(
-              "ابحث بالعربية أو الإنجليزية…",
-              "Search in Arabic or English…",
-            )}
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          {query && (
-            <Button
-              variant="ghost"
-              size="sm"
-              iconOnly
-              className="library-clear"
-              aria-label={t("مسح البحث", "Clear search")}
-              onClick={clear}
-            >
-              <X size={16} aria-hidden="true" />
-            </Button>
-          )}
-        </div>
         <div className="library-category">
           <Select
             ref={categoryTrigger}
@@ -125,15 +65,16 @@ export function LibraryPage({
               categoryTrigger.current?.focus();
               navigate({
                 kind: "library",
-                category: value === "all" ? undefined : value,
+                category: value,
               });
             }}
             options={[
               { value: "all", label: t("كل المكتبة", "All items") },
               {
                 value: "components",
-                label: t("كل المكوّنات", "All components"),
+                label: t("المكوّنات", "Components"),
               },
+              { value: "ai", label: t("واجهات المساعد", "AI interfaces") },
               ...navigationGroups.map((group) => ({
                 value: group.id,
                 label: localize(group.name, language),
@@ -195,19 +136,13 @@ export function LibraryPage({
                 "Try another name or choose a different category.",
               )}
             </p>
-            {query ? (
-              <Button variant="secondary" onClick={clear}>
-                {t("مسح البحث", "Clear search")}
-              </Button>
-            ) : (
-              <SiteLink
-                className="site-action"
-                route={{ kind: "library" }}
-                navigate={navigate}
-              >
-                {t("عرض كل المكتبة", "Browse all items")}
-              </SiteLink>
-            )}
+            <SiteLink
+              className="site-action"
+              route={{ kind: "library" }}
+              navigate={navigate}
+            >
+              {t("عرض المكوّنات", "Browse components")}
+            </SiteLink>
           </div>
         )}
       </div>

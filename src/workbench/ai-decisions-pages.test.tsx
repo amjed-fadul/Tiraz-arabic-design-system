@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
@@ -27,12 +28,8 @@ it.each([
   async (ar, en) => {
     const user = userEvent.setup();
     render(<Workbench />);
-    await user.click(screen.getByRole("button", { name: "فوّض" }));
-    await user.click(
-      within(screen.getByRole("group", { name: "فوّض" })).getByRole("button", {
-        name: ar,
-      }),
-    );
+
+    await user.click(navigationLink(ar));
     await user.click(screen.getByRole("button", { name: "English" }));
     expect(screen.getByRole("heading", { name: en, level: 1 })).toBeVisible();
     expect(

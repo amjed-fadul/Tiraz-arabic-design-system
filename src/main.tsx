@@ -52,6 +52,6 @@ createRoot(document.getElementById("root")!).render(
     ) : (
       <Workbench />
     )}
-    <SiteAnalytics />
+    {(Page || playground) && <SiteAnalytics />}
   </StrictMode>,
 );

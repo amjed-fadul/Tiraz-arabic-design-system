@@ -1,4 +1,5 @@
-import { render, screen, within } from "@testing-library/react";
+import { navigationLink } from "./test-navigation";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { Workbench } from "./Workbench";
@@ -9,7 +10,6 @@ it("adds five focused continuous pages with complete generated prompts", async (
   render(<Workbench />);
   const user = userEvent.setup();
   const write = vi.spyOn(navigator.clipboard, "writeText");
-  const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
   for (const [id, label] of [
     ["avatar", "الصورة الشخصية"],
     ["avatar-group", "مجموعة الصور"],
@@ -17,14 +17,7 @@ it("adds five focused continuous pages with complete generated prompts", async (
     ["modal", "النافذة الحوارية"],
     ["empty-state", "الحالة الفارغة"],
   ] as const) {
-    if (!nav.queryByRole("button", { name: label }))
-      await user.click(
-        nav.getByRole("button", {
-          name:
-            id === "tooltip" || id === "modal" ? "النوافذ" : "العرض والتنبيهات",
-        }),
-      );
-    await user.click(nav.getByRole("button", { name: label }));
+    await user.click(navigationLink(label));
     expect(
       screen.getByRole("region", { name: "المعاينة التفاعلية" }),
     ).not.toBeEmptyDOMElement();

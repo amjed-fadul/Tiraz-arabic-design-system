@@ -1,3 +1,4 @@
+import { navigationLink } from "./test-navigation";
 import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
@@ -15,19 +16,13 @@ it.each([
     render(<Workbench />);
     const copy = vi.spyOn(navigator.clipboard, "writeText");
     // LoadingState sits in Display; the other two in the folded AI parts.
-    const nav = within(screen.getByRole("navigation", { name: "المكوّنات" }));
-    await user.click(
-      nav.getByRole("button", {
-        name: en === "ThinkingState" ? "فوّض" : "العرض والتنبيهات",
-      }),
-    );
-    if (en === "LoadingState")
-      await user.click(nav.getByRole("button", { name: ar }));
+
+    if (en === "LoadingState") await user.click(navigationLink(ar));
     else {
       await user.click(
-        nav.getByRole("button", {
-          name: en === "ThinkingIndicator" ? "حالة التحميل" : "مهمة الوكيل",
-        }),
+        navigationLink(
+          en === "ThinkingIndicator" ? "حالة التحميل" : "مهمة الوكيل",
+        ),
       );
       await user.click(screen.getByRole("link", { name: ar }));
     }
