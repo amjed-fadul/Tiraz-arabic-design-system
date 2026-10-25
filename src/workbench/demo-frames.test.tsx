@@ -771,7 +771,12 @@ it("leads with the playground, then the prompt, guidelines and a table-only API 
     within(main)
       .getAllByRole("heading", { level: 2 })
       .map((heading) => heading.textContent),
-  ).toEqual(["استخدمه في تطبيقك", "إرشادات الاستخدام", "دليل الخصائص"]);
+  ).toEqual([
+    "استخدمه في تطبيقك",
+    "إرشادات الاستخدام",
+    "دليل الخصائص",
+    "مكوّنات ذات صلة",
+  ]);
 });
 
 it("keeps the prompt English on an Arabic page, under an Arabic heading", async () => {

@@ -332,6 +332,7 @@ it("puts the prompt after the demo", () => {
     "agent-section",
     "guidelines-section",
     "reference-section",
+    "related-components",
   ]);
 });
 

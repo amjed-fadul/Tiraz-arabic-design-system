@@ -10,10 +10,13 @@ import type { ButtonModel } from "./model";
 import { Playground } from "./Playground";
 import {
   readDocumentation,
+  readBrandColors,
   readPlaygrounds,
   readSystem,
   readTheme,
 } from "./storage";
+
+import { generateThemeCss } from "./theme-customization";
 
 /**
  * One page's example on its own, at full width (/examples/playground/<page>).
@@ -26,6 +29,7 @@ export function StandalonePlayground({
 }: {
   component: ComponentId;
 }) {
+  const [brandColors] = useState(readBrandColors);
   const [language] = useState(() => readDocumentation().language);
   const [config] = useState<SystemConfig>(() => ({
     ...readSystem(),
@@ -68,33 +72,40 @@ export function StandalonePlayground({
     document.documentElement.style.colorScheme = config.theme;
   }, [name, language, config]);
   return (
-    <SystemProvider config={previewConfig(config, model)}>
-      <main className="standalone-playground">
-        <h1 className="tz-visually-hidden">{name}</h1>
-        <a className="doc-button" href="/">
-          {label("backToDocs", language)}
-        </a>
-        <div className={`playground-canvas playground-${component}`}>
-          <Playground
-            component={component}
-            model={model}
-            language={language}
-            onPatch={(patch) =>
-              setPlaygrounds((prev) =>
-                normalizePlaygrounds(
-                  { ...prev, [component]: { ...prev[component], ...patch } },
-                  language,
-                ),
-              )
-            }
-            onEvent={() => {}}
-            onButtonAction={buttonAction}
-            buttonState={buttonState}
-            phase={phase}
-            onPhaseChange={setPhase}
-          />
-        </div>
-      </main>
-    </SystemProvider>
+    <>
+      {Object.keys(brandColors).length > 0 && (
+        <style>
+          {generateThemeCss(previewConfig(config, model), brandColors)}
+        </style>
+      )}
+      <SystemProvider config={previewConfig(config, model)}>
+        <main className="standalone-playground">
+          <h1 className="tz-visually-hidden">{name}</h1>
+          <a className="doc-button" href="/">
+            {label("backToDocs", language)}
+          </a>
+          <div className={`playground-canvas playground-${component}`}>
+            <Playground
+              component={component}
+              model={model}
+              language={language}
+              onPatch={(patch) =>
+                setPlaygrounds((prev) =>
+                  normalizePlaygrounds(
+                    { ...prev, [component]: { ...prev[component], ...patch } },
+                    language,
+                  ),
+                )
+              }
+              onEvent={() => {}}
+              onButtonAction={buttonAction}
+              buttonState={buttonState}
+              phase={phase}
+              onPhaseChange={setPhase}
+            />
+          </div>
+        </main>
+      </SystemProvider>
+    </>
   );
 }

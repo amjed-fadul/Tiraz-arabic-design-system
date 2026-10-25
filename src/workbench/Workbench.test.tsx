@@ -113,7 +113,7 @@ it("keeps the full prompt and portable paths in one English LTR field", async ()
     expect((prompt as HTMLTextAreaElement).value).toContain(path);
 });
 
-it("places only navigation in its sidebar and both settings sections in the panel", () => {
+it("places only navigation in its sidebar and customization with theme export in the panel", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
   expect(
@@ -126,7 +126,7 @@ it("places only navigation in its sidebar and both settings sections in the pane
     controls()
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent),
-  ).toEqual(["خصائص الأزرار", "إعدادات النظام"]);
+  ).toEqual(["خصائص الأزرار", "إعدادات النظام", "ملف المظهر الخاص بك"]);
   expect(container.querySelector(".settings-panel")?.parentElement).toHaveClass(
     "docs-layout",
   );

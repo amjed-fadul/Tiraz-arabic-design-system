@@ -1170,6 +1170,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   input: [
     "label",
     "placeholder",
+    "type",
     "helper",
     "error",
     "required",
@@ -1177,7 +1178,7 @@ const commonKeys: Record<ComponentId, string[]> = {
     "disabled",
     "readOnly",
   ],
-  select: ["placeholder", "size", "disabled", "options"],
+  select: ["label", "placeholder", "size", "required", "disabled", "options"],
   button: ["children", "variant", "size", "state", "icon", "iconOnly"],
   tabs: ["variant", "value"],
   switch: ["label", "checked", "disabled"],

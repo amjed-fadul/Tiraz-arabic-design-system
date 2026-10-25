@@ -335,6 +335,15 @@ it("type-checks copied code for every component, state mode and composition pres
       generateCode(id, model, config ?? defaultConfig, "en"),
     ]),
   );
+  for (const item of catalog) {
+    sources.set(
+      `${root}/src/__generated_theme_${item.id}.tsx`,
+      generateCode(item.id, p[item.id], defaultConfig, "en", {
+        light: "#123456",
+        dark: "#ABCDEF",
+      }),
+    );
+  }
   for (const language of ["ar", "en"] as const)
     for (const preset of [
       "populated",

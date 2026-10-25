@@ -141,7 +141,7 @@ it("moves and wraps the accent choice in English reading order", async () => {
   expect(readSystem().accent).toBe("ink");
 });
 
-it("shows only the system settings on a page with no props", () => {
+it("shows system settings and theme export on a page with no props", () => {
   const tooltip = commonFields.tooltip;
   commonFields.tooltip = [];
   try {
@@ -155,7 +155,7 @@ it("shows only the system settings on a page with no props", () => {
       within(panel()!)
         .getAllByRole("heading", { level: 3 })
         .map((heading) => heading.textContent),
-    ).toEqual(["إعدادات النظام"]);
+    ).toEqual(["إعدادات النظام", "ملف المظهر الخاص بك"]);
     expect(
       within(panel()!).queryByRole("button", { name: "إعادة ضبط المعاينة" }),
     ).toBeNull();

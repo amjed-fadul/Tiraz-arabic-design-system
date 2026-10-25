@@ -1,28 +1,46 @@
 import { useId } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
 import { Check, RotateCcw } from "lucide-react";
-import { accentColors, Button, numberLocale, Slider, Switch } from "../system";
+import {
+  accentColors,
+  Button,
+  ColorPicker,
+  numberLocale,
+  Slider,
+  Switch,
+} from "../system";
 import type { Accent, SystemConfig } from "../system";
 import type { AppearanceSettings } from "./storage";
 import type { Language } from "./i18n";
 import { label, localize } from "./i18n";
 import { optionNames } from "./fields";
+import type { BrandColors } from "./theme-customization";
 import { Segmented } from "./Segmented";
 interface Props {
   config: SystemConfig;
   language: Language;
   onChange: (settings: AppearanceSettings) => void;
   onReset: () => void;
+  colors: BrandColors;
+  onColorsChange: (colors: BrandColors) => void;
 }
 const accents = Object.keys(accentColors) as Accent[];
 /** The system settings: the panel's second section. */
-export function Appearance({ config, language, onChange, onReset }: Props) {
+export function Appearance({
+  config,
+  language,
+  onChange,
+  onReset,
+  colors,
+  onColorsChange,
+}: Props) {
   const uid = useId();
   function set<K extends keyof AppearanceSettings>(
     key: K,
     value: AppearanceSettings[K],
   ) {
     const { theme: _theme, direction: _direction, ...settings } = config;
+    if (key === "accent") onColorsChange({});
     onChange({ ...settings, [key]: value });
   }
   // The swatches are one radio group: the arrow keys move the choice, and in
@@ -69,7 +87,11 @@ export function Appearance({ config, language, onChange, onReset }: Props) {
         <div className="settings-row">
           <span id={`${uid}-accent`}>{label("accent", language)}</span>
           <span className="settings-value">
-            {localize(optionNames[config.accent], language)}
+            {colors[config.theme]
+              ? language === "ar"
+                ? "مخصّص"
+                : "Custom"
+              : localize(optionNames[config.accent], language)}
           </span>
         </div>
         <div
@@ -79,7 +101,7 @@ export function Appearance({ config, language, onChange, onReset }: Props) {
         >
           {accents.map((accent) => {
             const name = localize(optionNames[accent], language);
-            const checked = accent === config.accent;
+            const checked = accent === config.accent && !colors[config.theme];
             return (
               <button
                 key={accent}
@@ -88,7 +110,7 @@ export function Appearance({ config, language, onChange, onReset }: Props) {
                 aria-checked={checked}
                 aria-label={name}
                 title={name}
-                tabIndex={checked ? 0 : -1}
+                tabIndex={accent === config.accent ? 0 : -1}
                 data-accent={accent}
                 style={
                   {
@@ -106,6 +128,28 @@ export function Appearance({ config, language, onChange, onReset }: Props) {
           })}
         </div>
       </div>
+      <ColorPicker
+        label={
+          language === "ar"
+            ? config.theme === "light"
+              ? "لون العلامة · الوضع الفاتح"
+              : "لون العلامة · الوضع الداكن"
+            : `Brand color · ${config.theme} mode`
+        }
+        helper={
+          language === "ar"
+            ? "يتكيّف لون النص تلقائيًا. بدّل المظهر لضبط لون الوضع الآخر."
+            : "Text color adjusts automatically. Switch appearance to set the other mode."
+        }
+        value={
+          colors[config.theme] ?? accentColors[config.accent][config.theme]
+        }
+        onValueChange={(value) =>
+          onColorsChange({ ...colors, [config.theme]: value })
+        }
+        swatches={[]}
+        announcement="off"
+      />
       <Segmented
         label={label("typography", language)}
         value={config.typography ?? "standard"}

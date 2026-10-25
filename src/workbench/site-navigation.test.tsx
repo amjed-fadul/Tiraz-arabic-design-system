@@ -258,10 +258,11 @@ it("cancels pending demo work when navigating to a gallery", () => {
 
 it("keeps keyboard focus on the Library filter when narrowing results", async () => {
   at("/library");
-  const category = screen.getByRole("combobox", { name: "التصنيف" });
+  const category = within(
+    screen.getByRole("navigation", { name: "مجموعات المكوّنات" }),
+  ).getByRole("link", { name: "النماذج" });
   category.focus();
-  await userEvent.click(category);
-  await userEvent.click(screen.getByRole("option", { name: "النماذج" }));
+  await userEvent.keyboard("{Enter}");
   expect(category).toHaveFocus();
   expect(window.location.search).toBe("?category=forms");
   const results = within(screen.getByRole("region", { name: "نتائج المكتبة" }));

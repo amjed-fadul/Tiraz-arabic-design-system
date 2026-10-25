@@ -7,7 +7,10 @@ import { navigationCatalog } from "./catalog";
 import type { Language } from "./i18n";
 import { normalizePlaygrounds } from "./model";
 import type { Playgrounds } from "./model";
+import { normalizeBrandColors } from "./theme-customization";
+
 export const storageKeys = {
+  brandColors: "tiraz.brand-colors.v1",
   theme: "tiraz.theme.v1",
   documentation: "tiraz.documentation.v2",
   system: "tiraz.system.v3",
@@ -124,4 +127,8 @@ export function readPlaygrounds(language: Language): Playgrounds {
     read(storageKeys.playgrounds) ?? read("tiraz.playgrounds.v1"),
     language,
   );
+}
+
+export function readBrandColors() {
+  return normalizeBrandColors(read(storageKeys.brandColors));
 }

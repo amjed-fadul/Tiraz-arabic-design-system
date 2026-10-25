@@ -42,11 +42,14 @@ import {
   readDocumentation,
   readPlaygrounds,
   readSystem,
+  readBrandColors,
   readTheme,
   defaultSettings,
   storageKeys,
 } from "./storage";
 import { Appearance } from "./Appearance";
+import { ThemeExport } from "./ThemeExport";
+import { themeStyle } from "./theme-customization";
 import { Inspector } from "./Inspector";
 import { Playground } from "./Playground";
 import { PreviewFrame } from "./PreviewFrame";
@@ -289,6 +292,8 @@ export function Workbench() {
     direction = language === "ar" ? "rtl" : "ltr",
     t = words(language);
   const [settings, setSettings] = useState(readSystem);
+  const [brandColors, setBrandColors] = useState(readBrandColors);
+  const [copyNotice, setCopyNotice] = useState("");
   const [theme, setTheme] = useState(readTheme);
   const [playgrounds, setPlaygrounds] = useState(() =>
     readPlaygrounds(language),
@@ -417,8 +422,8 @@ export function Workbench() {
       ? pageStates?.states.find((state) => state.id === pageStates.resting)
           ?.phase
       : (pressedPhase ?? undefined);
-  const code = generateCode(active, model, systemConfig, language),
-    prompt = generatePrompt(active, model, systemConfig, language);
+  const code = generateCode(active, model, systemConfig, language, brandColors),
+    prompt = generatePrompt(active, model, systemConfig, language, brandColors);
   const pageName =
     route.kind === "library"
       ? galleryName(route.category)
@@ -450,6 +455,7 @@ export function Workbench() {
   ]);
   useEffect(() => persist(storageKeys.theme, theme), [theme]);
   useEffect(() => persist(storageKeys.system, settings), [settings]);
+  useEffect(() => persist(storageKeys.brandColors, brandColors), [brandColors]);
   useEffect(() => persist(storageKeys.playgrounds, playgrounds), [playgrounds]);
   useEffect(() => {
     return () => {
@@ -566,6 +572,7 @@ export function Workbench() {
   function resetSystem() {
     cancelButtonAction();
     setSettings({ ...defaultSettings });
+    setBrandColors({});
     setTheme(defaultConfig.theme);
   }
   // The one way back to a page's start: its props, its phase and the example.
@@ -591,7 +598,12 @@ export function Workbench() {
       const keepFilterFocus =
         history &&
         next.kind === "library" &&
-        Boolean(document.activeElement?.closest(".library-category"));
+        Boolean(
+          document.activeElement?.closest(".library-collections") ||
+          ((navigationSection(next) !== "components" ||
+            next.category === "all") &&
+            document.activeElement?.closest(".library-category")),
+        );
       cancelButtonAction();
       stopReplay();
       openedFromState.current = false;
@@ -880,19 +892,44 @@ export function Workbench() {
       language={language}
       onChange={setSettings}
       onReset={resetSystem}
+      colors={brandColors}
+      onColorsChange={setBrandColors}
     />
   );
   const settingsJSON = JSON.stringify(systemConfig, null, 2);
+  const reportCopy = (result: "idle" | "success" | "failure") =>
+    setCopyNotice(
+      result === "failure"
+        ? label("failed", language)
+        : result === "success"
+          ? label("copied", language)
+          : "",
+    );
+  const settingsStatus = (
+    <span role="status" className="sr-only">
+      {copyNotice}
+    </span>
+  );
+  const themeExport = (
+    <ThemeExport
+      config={systemConfig}
+      colors={brandColors}
+      language={language}
+      onFeedback={reportCopy}
+    />
+  );
   const copySettings = (
     <CopyControl
       text={settingsJSON}
+      announcement="off"
       caption={label("copyConfig", language)}
       language={language}
       iconOnly
       inlineFeedback={false}
-      onFeedbackChange={(result) =>
-        setFailedSettingsText(result === "failure" ? settingsJSON : null)
-      }
+      onFeedbackChange={(result) => {
+        setFailedSettingsText(result === "failure" ? settingsJSON : null);
+        reportCopy(result);
+      }}
     />
   );
   const settingsFallback = failedSettingsText === settingsJSON && (
@@ -942,6 +979,7 @@ export function Workbench() {
           <>
             <p className="settings-saved">{label("savedHere", language)}</p>
             {copySettings}
+            {settingsStatus}
           </>
         }
       >
@@ -949,6 +987,7 @@ export function Workbench() {
           {settingsFallback}
           {inspector}
           {appearance}
+          {themeExport}
         </div>
       </Sheet>
     </SystemContext.Provider>
@@ -1178,7 +1217,14 @@ export function Workbench() {
                     <p>{localize(current.description, language)}</p>
                   </header>
                   <section className="playground-section">
-                    <div className="playground-region" ref={playgroundRegion}>
+                    <div
+                      className="playground-region"
+                      ref={playgroundRegion}
+                      style={themeStyle(effectiveConfig, brandColors)}
+                      data-custom-theme={
+                        brandColors[effectiveConfig.theme] ? "" : undefined
+                      }
+                    >
                       <SystemProvider config={effectiveConfig}>
                         <PreviewFrame
                           // One frame per page, so a page change is never
@@ -1386,8 +1432,10 @@ export function Workbench() {
                 {settingsFallback}
                 {inspector}
                 {appearance}
+                {themeExport}
               </div>
               <p className="settings-saved">{label("savedHere", language)}</p>
+              {settingsStatus}
             </aside>
           )}
         </div>

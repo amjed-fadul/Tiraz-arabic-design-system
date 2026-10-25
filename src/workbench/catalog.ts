@@ -783,6 +783,21 @@ export const nestedParts = {
 export const relatedPages: Partial<
   Record<ComponentId, readonly ComponentId[]>
 > = {
+  button: ["input", "dropdown", "tooltip"],
+  input: ["textarea", "select", "input-copy"],
+  badge: ["tag-input", "alert"],
+  "tag-input": ["badge", "select", "input"],
+  select: ["radio-group", "checkbox", "input"],
+  checkbox: ["radio-group", "switch"],
+  "radio-group": ["checkbox", "select"],
+  switch: ["checkbox", "radio-group"],
+  textarea: ["input", "chat-composer"],
+  tabs: ["accordion", "sidebar"],
+  card: ["accordion", "modal"],
+  modal: ["sheet", "alert"],
+  sheet: ["modal", "dropdown"],
+  avatar: ["avatar-group", "badge"],
+  slider: ["input", "progress"],
   "chat-composer": ["prompt-bar"],
   "task-starter": ["prompt-bar"],
   "loading-state": ["thinking-indicator"],
