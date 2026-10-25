@@ -69,6 +69,13 @@ For an existing shadcn workflow, the optional source registry is
 `src/tiraz` and writes `tiraz.project.json`; Tiraz's own installer remains the
 primary quick start. The hosted AI entry point is `https://tiraz.dev/llms.txt`.
 
+This checkout also includes an **unreleased local preview** of individual component
+installation and a user-owned theme. Build the package locally, then use its CLI
+`add button input badge` from a Vite React 19 TypeScript app. See the
+[selective installation guide](packages/tiraz/README.md#select-individual-components-local-preview-not-yet-published)
+for exact local commands, customization and preservation rules. The published
+`0.1.2` CLI and full-system shadcn registry keep their current installation path.
+
 ## Develop this repository
 
 The repository root is a private website/test workspace. The public npm

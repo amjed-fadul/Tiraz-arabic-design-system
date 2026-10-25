@@ -3,7 +3,7 @@
   "exportName": "SystemProvider",
   "kind": "component",
   "source": "Provider.tsx",
-  "sourceHash": "e7176df0bb9f38e354c226bca4976adaba5a4f635053e2446f3bba926de680cf",
+  "sourceHash": "1f1a46d2d14af4d5a6ce27983bfe6cf7dcc2ac67a481e99bfb1602aabedc9df0",
   "type": "({ config, children, }: { config?: SystemConfig; children: ReactNode; }) => JSX.Element",
   "signatures": [
     {

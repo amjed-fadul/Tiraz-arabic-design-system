@@ -45,6 +45,78 @@ dependency does not change copied source; the installer never overwrites it.
 
 ## Own the source
 
+### Select individual components (local preview, not yet published)
+
+This checkout adds selective installation. Build it with `npm run build:package`
+in the Tiraz repository, then run its CLI from an existing Vite React 19
+TypeScript app:
+
+```sh
+node /path/to/Tiraz/packages/tiraz/bin/tiraz.mjs add button input badge
+node /path/to/Tiraz/packages/tiraz/bin/tiraz.mjs add --list
+```
+
+The published `0.1.2` CLI does not have `add` yet. This local feature does not
+publish or upgrade a package. `--no-install` skips npm installation and `--dir
+src/ui` chooses the source parent. Later additions use the recorded directory.
+
+Only selected components, their source dependencies, required CSS and shared
+foundations are copied. Related exports in a shared source module arrive together
+(for example the four chart types). A button does not install chart, Markdown,
+date-picker or mascot dependencies. Existing routes, entry files, scripts and
+compatible dependency versions stay intact.
+
+For the default directory, add these imports to your application's entry:
+
+```tsx
+import "./system/styles.css";
+import { Button, SystemProvider, defaultConfig } from "./system";
+```
+
+Wrap the app in `SystemProvider` as in the package example above. The stylesheet
+loads the font, default tokens, selected component styles, then your theme.
+`TIRAZ_SETUP.md` records your actual paths. Keep the same CLI release for later
+additions; `add` refuses to mix versions and does not update installed source.
+
+### Your theme (local preview)
+
+The local installer creates `src/tiraz.theme.css` next to `system` (or inside your
+custom source parent). **This file belongs to your application.** Adding components
+preserves it byte for byte; intentional theme edits are excluded from `verify`.
+The complete-source installer also creates it and imports it in new starters.
+Existing apps should import it after the default styles.
+
+```css
+.tiraz-system {
+  --tiraz-radius: 12px;
+  --font: "IBM Plex Sans Arabic", system-ui, sans-serif;
+}
+
+.tiraz-system[data-theme="light"] {
+  --tiraz-action: #365b87;
+  --action-text: #ffffff;
+}
+
+.tiraz-system[data-theme="dark"] {
+  --tiraz-action: #a8c6ef;
+  --action-text: #17241c;
+}
+```
+
+Use `--tiraz-action` and `--tiraz-radius` to override the provider's chosen presets
+without `!important`. Other semantic tokens, including surfaces and text, can be
+overridden normally. Load any custom font yourself. Check contrast, wrapping and
+keyboard focus in Arabic/English and both themes after customization.
+
+Component source remains editable. Add preserves those edits and their original
+verification baseline. `index.ts`, `components.css`, `styles.css` and the small
+installed-subset guidance are CLI-managed assembly files. If you edit them, add
+stops before writing anything; preserve and reconcile your changes first. It also
+stops on missing tracked files, untracked file collisions and symlinked paths.
+Keep routine styling changes in your theme to make further additions easy.
+
+### Install the complete source
+
 ```sh
 npx @amjedfadul/tiraz init --new my-app
 cd my-app

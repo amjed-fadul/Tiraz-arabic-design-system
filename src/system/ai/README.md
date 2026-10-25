@@ -25,6 +25,21 @@ from that directory, so the app can move without changing the manifest. Use
 app to report modified or missing files. Verification never overwrites changes;
 for updates, install separately and review a diff.
 
+The current development checkout adds an unreleased `add` command for selective
+source installation and a separate `tiraz.theme.css` owned by the consuming app.
+The published 0.1.2 CLI does not support this command yet. Selective installs have
+a version-2 `tiraz.project.json` and a smaller local guide/registry describing only
+their installed selections. Follow those paths and actual exported types; never
+assume that the complete library is present. Further additions preserve custom
+component source and the theme, and stop if CLI-managed assembly files were edited.
+
+The current provider accepts optional CSS overrides `--tiraz-action` and
+`--tiraz-radius`, falling back to `config.accent` and `config.radius`. Other
+semantic tokens can be overridden in CSS normally. Put user theme rules after
+defaults and scope light/dark rules to `.tiraz-system[data-theme="light"]` and
+`.tiraz-system[data-theme="dark"]`. Check contrast in both themes and text in both
+languages. This changes no component props; existing provider presets still work.
+
 [Generated knowledge](generated/manifest.json) contains the current public
 TypeScript contracts, source hashes, and [CSS token inventory](generated/tokens.json).
 API facts are generated from source; this guide and registry remain authored
@@ -117,7 +132,7 @@ keeps those extra runtime files out of the generated example.
 
 ## Copy and setup
 
-Copy the **whole source-root directory**, keeping `ai/`, its JSON/Markdown and
+For manual installation, copy the **whole source-root directory**, keeping `ai/`, its JSON/Markdown and
 `ai/examples/` and `ai/assets/` (including binary portraits, provenance and license); tests (`*.test.*`) may be excluded. Do not copy only the barrel
 or strip documentation from the bundle. No workbench files, root README or
 root AGENTS.md are required to consume it. A host agent entry file may point

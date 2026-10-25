@@ -118,6 +118,8 @@ it("preserves token selectors, media conditions, references and provider values"
     dark: "#E6EBE6",
   });
   expect(inventory.tokens["--radius"].provider.default).toBe("8px");
+  expect(inventory.tokens["--action"].provider.override).toBe("--tiraz-action");
+  expect(inventory.tokens["--radius"].provider.override).toBe("--tiraz-radius");
 });
 
 it("links every public export to a contract and hashes source bytes without self-reference", () => {

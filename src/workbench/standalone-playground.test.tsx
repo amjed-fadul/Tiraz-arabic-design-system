@@ -50,5 +50,7 @@ it("opens the playground in a new tab as it was on screen", () => {
   expect(system).toHaveAttribute("data-theme", "dark");
   expect(system).toHaveAttribute("data-density", "standard");
   expect(system).toHaveAttribute("data-numerals", "latn");
-  expect(system.style.getPropertyValue("--radius")).toBe("12px");
+  expect(system.style.getPropertyValue("--radius")).toBe(
+    "var(--tiraz-radius, 12px)",
+  );
 });

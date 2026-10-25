@@ -116,7 +116,7 @@ it("propagates global settings during feedback and cancels timers on both resets
     (
       container.querySelector(".playground-region .tiraz-system") as HTMLElement
     ).style.getPropertyValue("--action"),
-  ).toBe("#365B87");
+  ).toBe("var(--tiraz-action, #365B87)");
   tick(1200);
   fireEvent.click(controls().getByRole("button", { name: "إعادة ضبط النظام" }));
   expect(preview()).toHaveAttribute("data-state", "idle");
