@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import {
   existsSync,
   mkdtempSync,
+  readdirSync,
   readFileSync,
   mkdirSync,
   rmSync,
@@ -25,6 +26,277 @@ const folder = () => {
 const read = (path: string) => readFileSync(path, "utf8");
 const run = (cwd: string, ...args: string[]) =>
   spawnSync(process.execPath, [cli, ...args], { cwd, encoding: "utf8" });
+
+function componentApp() {
+  const app = folder();
+  mkdirSync(join(app, "src"));
+  writeFileSync(join(app, "src/App.tsx"), "// existing routes\n");
+  writeFileSync(
+    join(app, "package.json"),
+    JSON.stringify({
+      private: true,
+      type: "module",
+      scripts: { dev: "vite", test: "existing-test" },
+      dependencies: { react: "^19.2.0", "react-dom": "^19.2.0" },
+      devDependencies: { vite: "^8.3.0", typescript: "~6.0.2" },
+    }),
+  );
+  return app;
+}
+
+it("installs only selected components, their dependencies and a user-owned theme", () => {
+  const app = componentApp();
+  const result = run(app, "add", "button", "input", "badge", "--no-install");
+  expect(result.status, result.stderr).toBe(0);
+  const files = readdirSync(join(app, "src/system"));
+  expect(files).toEqual(
+    expect.arrayContaining([
+      "Button.tsx",
+      "Input.tsx",
+      "Badge.tsx",
+      "Field.tsx",
+      "Provider.tsx",
+    ]),
+  );
+  expect(files).not.toContain("Charts.tsx");
+  expect(files).not.toContain("Markdown.tsx");
+  expect(existsSync(join(app, "src/mascot"))).toBe(false);
+  const pkg = JSON.parse(read(join(app, "package.json")));
+  expect(pkg.dependencies["lucide-react"]).toBeTruthy();
+  expect(pkg.dependencies["@radix-ui/react-direction"]).toBeTruthy();
+  expect(pkg.dependencies.recharts).toBeUndefined();
+  expect(pkg.dependencies["react-markdown"]).toBeUndefined();
+  expect(pkg.dependencies["@radix-ui/react-dialog"]).toBeUndefined();
+  expect(pkg.scripts.test).toBe("existing-test");
+  expect(read(join(app, "src/App.tsx"))).toBe("// existing routes\n");
+  const css = read(join(app, "src/system/components.css"));
+  expect(css).toContain(".tz-button");
+  expect(css).toContain(".tz-input");
+  expect(css).toContain(".tz-badge");
+  expect(css).not.toContain(".tz-chart {");
+  expect(css).not.toContain("patterns/patterns.css");
+  expect(read(join(app, "src/system/styles.css"))).toContain(
+    "../tiraz.theme.css",
+  );
+  expect(read(join(app, "src/tiraz.theme.css"))).toContain("--tiraz-action");
+  const manifest = JSON.parse(read(join(app, "tiraz.project.json")));
+  expect(manifest.schemaVersion).toBe(2);
+  expect(manifest.components).toEqual(["badge", "button", "input"]);
+  expect(manifest.files[manifest.theme]).toBeUndefined();
+  expect(run(app, "verify").status).toBe(0);
+});
+
+it("installs Chip with both native modes and its styles without unrelated component dependencies", () => {
+  const app = componentApp();
+  const result = run(app, "add", "chip", "--no-install");
+  expect(result.status, result.stderr).toBe(0);
+  expect(read(join(app, "src/system/index.ts"))).toContain(
+    'export * from "./Chip"',
+  );
+  expect(existsSync(join(app, "src/system/Chip.tsx"))).toBe(true);
+  expect(existsSync(join(app, "src/system/Button.tsx"))).toBe(false);
+  const css = read(join(app, "src/system/components.css"));
+  expect(css).toContain(".tz-chip[data-selected=");
+  expect(css).toContain(".tz-chip[data-disabled]");
+  expect(css).toContain(".tz-chip-label");
+  const pkg = JSON.parse(read(join(app, "package.json")));
+  expect(pkg.dependencies["lucide-react"]).toBeUndefined();
+  expect(pkg.dependencies.recharts).toBeUndefined();
+  expect(run(app, "verify").status).toBe(0);
+});
+
+it("adds incrementally without changing custom source, theme or their upstream baseline", () => {
+  const app = componentApp();
+  expect(run(app, "add", "button", "--no-install").status).toBe(0);
+  const before = JSON.parse(read(join(app, "tiraz.project.json")));
+  const button =
+    read(join(app, "src/system/Button.tsx")) + "\n// My custom button\n";
+  const theme = ".tiraz-system { --tiraz-radius: 12px; --font: sans-serif; }\n";
+  writeFileSync(join(app, "src/system/Button.tsx"), button);
+  writeFileSync(join(app, "src/tiraz.theme.css"), theme);
+  expect(run(app, "add", "input", "--no-install").status).toBe(0);
+  expect(read(join(app, "src/system/Button.tsx"))).toBe(button);
+  expect(read(join(app, "src/tiraz.theme.css"))).toBe(theme);
+  const after = JSON.parse(read(join(app, "tiraz.project.json")));
+  expect(after.files["src/system/Button.tsx"]).toBe(
+    before.files["src/system/Button.tsx"],
+  );
+  expect(read(join(app, "src/system/index.ts"))).toContain("./Input");
+  expect(run(app, "verify").stderr).toContain(
+    "Modified: src/system/Button.tsx",
+  );
+  expect(run(app, "verify").stderr).not.toContain("tiraz.theme.css");
+  const index = read(join(app, "src/system/index.ts"));
+  expect(run(app, "add", "input", "button", "--no-install").status).toBe(0);
+  expect(read(join(app, "src/system/index.ts"))).toBe(index);
+});
+
+it("uses a recorded custom directory for later additions and preserves an existing theme", () => {
+  const app = componentApp();
+  mkdirSync(join(app, "src/ui"));
+  writeFileSync(join(app, "src/ui/tiraz.theme.css"), "/* My theme */\n");
+  expect(
+    run(app, "add", "button", "--dir", "src/ui", "--no-install").status,
+  ).toBe(0);
+  expect(run(app, "add", "input", "--no-install").status).toBe(0);
+  expect(existsSync(join(app, "src/ui/system/Input.tsx"))).toBe(true);
+  expect(read(join(app, "src/ui/tiraz.theme.css"))).toBe("/* My theme */\n");
+  expect(run(app, "verify").status).toBe(0);
+  const mismatch = run(
+    app,
+    "add",
+    "badge",
+    "--dir",
+    "src/other",
+    "--no-install",
+  );
+  expect(mismatch.status).toBe(1);
+  expect(existsSync(join(app, "src/other"))).toBe(false);
+});
+
+it.each(["index.ts", "components.css", "styles.css"])(
+  "refuses to overwrite customized managed %s before writing anything",
+  (file) => {
+    const app = componentApp();
+    expect(run(app, "add", "button", "--no-install").status).toBe(0);
+    const manifest = read(join(app, "tiraz.project.json"));
+    const packageText = read(join(app, "package.json"));
+    writeFileSync(join(app, "src/system", file), "/* My customization */\n");
+    const result = run(app, "add", "input", "--no-install");
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("customized");
+    expect(read(join(app, "tiraz.project.json"))).toBe(manifest);
+    expect(read(join(app, "package.json"))).toBe(packageText);
+    expect(existsSync(join(app, "src/system/Input.tsx"))).toBe(false);
+  },
+);
+
+it("refuses unknown components and lists available names without touching the project", () => {
+  const app = componentApp();
+  expect(
+    run(app, "add", "button", "does-not-exist", "--no-install").status,
+  ).toBe(1);
+  expect(existsSync(join(app, "src/system"))).toBe(false);
+  const listed = run(app, "add", "--list");
+  expect(listed.status, listed.stderr).toBe(0);
+  expect(listed.stdout).toContain("button");
+  expect(listed.stdout).toContain("date-picker");
+  expect(existsSync(join(app, "tiraz.project.json"))).toBe(false);
+});
+
+it.each([
+  "../outside",
+  "src/../../outside",
+  "node_modules/ui",
+  "src\\ui",
+  "src/App.tsx",
+])("rejects unsafe selective destinations: %s", (directory) => {
+  const app = componentApp();
+  const before = read(join(app, "package.json"));
+  expect(
+    run(app, "add", "button", "--dir", directory, "--no-install").status,
+  ).toBe(1);
+  expect(read(join(app, "package.json"))).toBe(before);
+  expect(existsSync(join(app, "tiraz.project.json"))).toBe(false);
+});
+
+it("rejects a symlinked theme and existing untracked source", () => {
+  const app = componentApp();
+  const elsewhere = folder();
+  writeFileSync(join(elsewhere, "theme.css"), "owner theme");
+  symlinkSync(join(elsewhere, "theme.css"), join(app, "src/tiraz.theme.css"));
+  expect(run(app, "add", "button", "--no-install").status).toBe(1);
+  expect(existsSync(join(app, "src/system"))).toBe(false);
+  expect(read(join(elsewhere, "theme.css"))).toBe("owner theme");
+  unlinkSync(join(app, "src/tiraz.theme.css"));
+  mkdirSync(join(app, "src/system"));
+  writeFileSync(join(app, "src/system/Button.tsx"), "owner source");
+  expect(run(app, "add", "button", "--no-install").status).toBe(1);
+  expect(read(join(app, "src/system/Button.tsx"))).toBe("owner source");
+});
+
+it("refuses mixed-release additions and missing installed files", () => {
+  const app = componentApp();
+  expect(run(app, "add", "button", "--no-install").status).toBe(0);
+  const original = read(join(app, "tiraz.project.json"));
+  const manifest = JSON.parse(original);
+  manifest.version = "0.0.0";
+  writeFileSync(join(app, "tiraz.project.json"), JSON.stringify(manifest));
+  expect(run(app, "add", "input", "--no-install").stderr).toContain("version");
+  writeFileSync(join(app, "tiraz.project.json"), original);
+  unlinkSync(join(app, "src/system/Button.tsx"));
+  expect(run(app, "add", "input", "--no-install").status).toBe(1);
+  expect(existsSync(join(app, "src/system/Input.tsx"))).toBe(false);
+});
+
+it("creates a theme for complete starters and keeps theme edits outside verify", () => {
+  const parent = folder();
+  const result = run(
+    parent,
+    "init",
+    "--new",
+    "app",
+    "--dir",
+    "src/ui",
+    "--no-install",
+  );
+  expect(result.status, result.stderr).toBe(0);
+  const app = join(parent, "app");
+  expect(read(join(app, "src/main.tsx"))).toContain(
+    'import "./ui/tiraz.theme.css"',
+  );
+  const manifest = JSON.parse(read(join(app, "tiraz.project.json")));
+  expect(manifest.theme).toBe("src/ui/tiraz.theme.css");
+  writeFileSync(
+    join(app, manifest.theme),
+    ".tiraz-system { --tiraz-radius: 12px; }\n",
+  );
+  expect(run(app, "verify").status).toBe(0);
+});
+
+it.each(["theme", "entry", "directory", "managed", "sourceDigest"])(
+  "rejects tampered selective manifest field %s before writes",
+  (field) => {
+    const app = componentApp();
+    expect(run(app, "add", "button", "--no-install").status).toBe(0);
+    const manifest = JSON.parse(read(join(app, "tiraz.project.json")));
+    manifest[field] = field === "managed" ? ["src/App.tsx"] : "../outside";
+    const tampered = JSON.stringify(manifest);
+    writeFileSync(join(app, "tiraz.project.json"), tampered);
+    expect(run(app, "add", "input", "--no-install").status).toBe(1);
+    expect(read(join(app, "tiraz.project.json"))).toBe(tampered);
+    expect(read(join(app, "src/App.tsx"))).toBe("// existing routes\n");
+    expect(existsSync(join(app, "src/system/Input.tsx"))).toBe(false);
+    expect(run(app, "verify").status).toBe(1);
+  },
+);
+
+it.each(["0.1.0", "^1.0.0", "*", ">=1.0.0", "1.0.0 || ^1.55.0"])(
+  "rejects unsupported dependency range %s before creating selective files",
+  (range) => {
+    const app = componentApp();
+    const pkg = JSON.parse(read(join(app, "package.json")));
+    pkg.dependencies["lucide-react"] = range;
+    const original = JSON.stringify(pkg);
+    writeFileSync(join(app, "package.json"), original);
+    const result = run(app, "add", "button", "--no-install");
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("lucide-react");
+    expect(read(join(app, "package.json"))).toBe(original);
+    expect(existsSync(join(app, "src/system"))).toBe(false);
+  },
+);
+
+it("includes shared loading animation and conditional accessibility rules in selective styles", () => {
+  const app = componentApp();
+  expect(run(app, "add", "button", "--no-install").status).toBe(0);
+  const css = read(join(app, "src/system/components.css"));
+  expect(css).toContain("@keyframes tz-spin");
+  expect(css).toContain("prefers-reduced-motion");
+  expect(css).toContain("focus-visible");
+  expect(css).toContain("forced-colors");
+  expect(css).toContain("(hover: hover) and (pointer: fine)");
+});
 
 beforeAll(() => {
   const built = spawnSync(process.execPath, ["scripts/build-package.mjs"], {

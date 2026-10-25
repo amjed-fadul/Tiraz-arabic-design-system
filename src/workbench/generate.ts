@@ -32,6 +32,7 @@ import dateSource from "../system/ai/examples/DatePickerExamples.tsx?raw";
 import filesSource from "../system/ai/examples/FileDropzoneExamples.tsx?raw";
 import colorsSource from "../system/ai/examples/ColorPickerExamples.tsx?raw";
 import tagSource from "../system/ai/examples/TagInputExamples.tsx?raw";
+import chipSource from "../system/ai/examples/ChipExamples.tsx?raw";
 import filterSource from "../system/ai/examples/FilterBarExamples.tsx?raw";
 import copySource from "../system/ai/examples/InputCopyExamples.tsx?raw";
 import sidebarSource from "../system/ai/examples/SidebarExamples.tsx?raw";
@@ -66,6 +67,12 @@ import type {
 import { nativeAttributes, previewConfig } from "./model";
 import type { Language } from "./i18n";
 import { localize, words } from "./i18n";
+import {
+  generateThemeCss,
+  normalizeBrandColors,
+  withCustomTheme,
+} from "./theme-customization";
+import type { BrandColors } from "./theme-customization";
 const json = (value: unknown) => JSON.stringify(value);
 const attribute = (name: string, value: unknown) => `${name}={${json(value)}}`;
 function nativeCode(p: ButtonModel | SwitchModel) {
@@ -88,7 +95,7 @@ function nativeCode(p: ButtonModel | SwitchModel) {
     .filter(Boolean)
     .join("\n        ");
 }
-export function generateCode(
+function generateBaseCode(
   component: ComponentId,
   model: PlaygroundModel,
   config: SystemConfig,
@@ -378,6 +385,7 @@ export default function Example() { return <div lang={${json(language)}}><System
       "color-picker",
       "tag-input",
       "filter-bar",
+      "chip",
       "input-copy",
     ])
   ) {
@@ -396,7 +404,9 @@ export default function Example() { return <div lang={${json(language)}}><System
                   ? "TagInputExample"
                   : component === "filter-bar"
                     ? "FilterBarExample"
-                    : "InputCopyExample";
+                    : component === "chip"
+                      ? "ChipExample"
+                      : "InputCopyExample";
     const entrySource =
       component === "slider"
         ? sliderSource
@@ -412,7 +422,9 @@ export default function Example() { return <div lang={${json(language)}}><System
                   ? tagSource
                   : component === "filter-bar"
                     ? filterSource
-                    : copySource;
+                    : component === "chip"
+                      ? chipSource
+                      : copySource;
     const source = entrySource.replace(
       /from "\.\.\/\.\.\/index"/g,
       'from "./system"',
@@ -710,15 +722,29 @@ export default function Example() {
   const p = model as ToastModel;
   return `${importsCode}\n\n${configCode}\n\n${inner}\n\nexport default function Example() {\n  return (\n    <div lang={${json(language)}}><SystemProvider config={config}>\n      ${component === "toast" ? `<ToastProvider ${attribute("label", p.providerLabel)} ${attribute("closeLabel", p.closeLabel)}>\n        <Demo />\n      </ToastProvider>` : "<Demo />"}\n    </SystemProvider></div>\n  );\n}\n`;
 }
+export function generateCode(
+  component: ComponentId,
+  model: PlaygroundModel,
+  config: SystemConfig,
+  language: Language,
+  colors: BrandColors = {},
+): string {
+  return withCustomTheme(
+    generateBaseCode(component, model, config, language),
+    config,
+    colors,
+  );
+}
 export function generatePrompt(
   component: ComponentId,
   model: PlaygroundModel,
   config: SystemConfig,
   language: Language,
+  colors: BrandColors = {},
 ): string {
   const entry = catalog.find((item) => item.id === component)!;
   const c = previewConfig(config, model);
-  const code = generateCode(component, model, config, language);
+  const code = generateCode(component, model, config, language, colors);
   const notes: string[] = [];
   if (/\.\/system\/ai\/assets\/(sara|omar)\.jpg/.test(code))
     notes.push(
@@ -784,7 +810,7 @@ export function generatePrompt(
     notes.push(
       "SelectionActions is scoped to children and excludes editors, code, links and buttons. Alt+Enter focuses actions; Escape returns to the scope. Preserve native selection/copy; scroll dismisses.",
       "Models use controlled stable IDs and onValueChange. Usage, capacity, estimates, prices and availability belong to the host. These components add no AI execution, automatic replacement or network.",
-      "Copy the complete source bundle with Popper, Popover, Select and the Radix layer overrides in ai/README.md.",
+      "Use the installed dependencies for this component, including any required Popper, Popover, Select and Radix layer overrides documented in ai/README.md. Preserve the installed source subset; do not replace it with the complete bundle.",
     );
 
   if (
@@ -799,8 +825,8 @@ export function generatePrompt(
     `First locate Tiraz, then integrate the ${localize(entry.name, "en")} example into my application using the current settings below.`,
     `## Locate the source
 
-1. Find the full checkout or source copy in the current project. The source root contains index.ts, config.ts, tokens.css, components.css and ai/. In a checkout it is usually src/system; for example, src/system/${entry.file}. If you cannot locate the system, report the missing source, request its location and stop.
-2. Read ai/README.md and ai/composition.md. In ai/registry.json, query only the relevant entries: the "${entry.id}" family in components, its support APIs, and the records used by its props. Registry paths are relative to the source root, not the application root.
+1. Find the full checkout or source copy in the current project. If tiraz.project.json exists, follow its directory and installed components; selective installs intentionally contain a subset. The source root contains index.ts, config.ts, tokens.css, components.css and ai/. In a checkout it is usually src/system; for example, src/system/${entry.file}. If you cannot locate the system, report the missing source, request its location and stop.
+2. Read ai/README.md and, when present, ai/composition.md. A selective install has subset guidance; do not require files it does not include. In ai/registry.json, query only the relevant entries: the "${entry.id}" family in components, its support APIs, and the records used by its props. Registry paths are relative to the source root, not the application root.
 3. Inspect ${entry.file}, the exported types in index.ts, config.ts, Provider.tsx and the relevant styles. Source and exported types are authoritative; workbench controls show a subset of the API. A source copy needs no checkout README or src/main.tsx. Do not invent exports/props or add an installer or CLI.`,
     `## Current settings
 
@@ -811,7 +837,7 @@ Keep the example's exact props, supplied content, state choices and shared setti
     `## Integrate
 
 - Place the example in an appropriate application component file. Adjust ./system imports, CSS paths and local asset imports to the located source root.
-- Reuse the host's toolchain and existing Tiraz setup. When copying the library, copy the whole source root. Retain the ai/ bundle, including examples, assets, provenance and licenses.
+- Reuse the host's toolchain and existing Tiraz setup. Respect the installed subset; do not expand it to the full library. Preserve existing customized component source and the app-owned tiraz.theme.css. Retain the installed guidance, provenance and licenses. If an export is missing, report the needed component and follow the installer supported by that local release.
 - Load tokens.css and components.css once. Verify the host loads local IBM Plex Sans Arabic at weights 400, 500 and 600. Follow ai/README.md for dependencies and Radix overrides.
 - Keep SystemProvider around the interface and its overlays, merge settings with defaultConfig, and set lang on a host ancestor above the provider. Preserve :dir() in the host CSS pipeline.
 - Connect events to the requested application behavior and keep application state in the host. Replace demonstration handlers where needed; identify any remaining sample data or local simulation.`,
@@ -824,6 +850,16 @@ Keep the example's exact props, supplied content, state choices and shared setti
 - Inspect the rendered result with the selected settings, then check RTL and LTR, narrow layouts, theme, typography, numerals and reduced motion.
 - Exercise the connected interactions with keyboard and pointer. Check focus order, focus restoration for overlays, accessible names and relevant loading, empty, error and disabled states.
 - Report changed files, checks run and remaining integration work. Do not claim production readiness or accessibility from compilation alone.`,
+    ...(Object.keys(normalizeBrandColors(colors)).length
+      ? [
+          `## Custom theme
+
+The example includes these exact rules so it runs independently. For an app-wide theme, merge them into the user-owned tiraz.theme.css, import after default styles, and remove the example's inline style block. Preserve unrelated theme rules.
+
+\`\`\`css
+${generateThemeCss(c, colors)}\`\`\``,
+        ]
+      : []),
     `## Current example
 
 \`\`\`tsx

@@ -216,7 +216,7 @@ describe("hero accent customization", () => {
     await user.click(screen.getByRole("radio", { name: "Blue" }));
     expect(container.querySelectorAll(".tiraz-system")).toHaveLength(1);
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
-      "--action": "#A8C6EF",
+      "--action": "var(--tiraz-action, #A8C6EF)",
     });
     expect(screen.getByRole("radio", { name: "Blue" })).toBeChecked();
     expect(request).toHaveValue("Summarize Nawa's invoices");
@@ -226,12 +226,12 @@ describe("hero accent customization", () => {
     await user.keyboard("{ArrowDown}");
     expect(screen.getByRole("radio", { name: "Purple" })).toBeChecked();
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
-      "--action": "#D6B6E5",
+      "--action": "var(--tiraz-action, #D6B6E5)",
     });
     expect(request).toHaveValue("Summarize Nawa's invoices");
     await user.click(screen.getByRole("button", { name: "Use light theme" }));
     expect(container.querySelector(".tiraz-system")).toHaveStyle({
-      "--action": "#6B487A",
+      "--action": "var(--tiraz-action, #6B487A)",
     });
     expect(
       screen.getByRole("tab", { name: "Invoices and collections" }),

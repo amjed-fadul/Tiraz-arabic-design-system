@@ -670,6 +670,21 @@ export const fields: Record<ComponentId, WorkbenchField[]> = {
     }),
     field("actionLabel", "text", "زر الإجراء", "Action button", "action"),
   ],
+  chip: [
+    field("label", "text", "التسمية", "Label", "children"),
+    field("behavior", "select", "السلوك", "Behavior", "example", {
+      options: ["filter", "multiple", "navigation"],
+    }),
+    field(
+      "selected",
+      "boolean",
+      "محدد عند البدء",
+      "Start selected",
+      "selected",
+    ),
+    field("disabled", "boolean", "معطّل", "Disabled"),
+    field("size", "select", "الحجم", "Size", "size", { options: ["sm", "md"] }),
+  ],
   badge: [
     field("children", "text", "النص", "Text"),
     field("tone", "select", "النوع", "Tone", "tone", {
@@ -980,6 +995,9 @@ for (const component of agentPreviewComponents)
   );
 
 export const optionNames: Record<string, Localized> = {
+  filter: ["تصفية واحدة", "Single filter"],
+  multiple: ["تصفية متعددة", "Multiple filters"],
+  navigation: ["تنقّل", "Navigation"],
   icon: ["أيقونة الذكاء الاصطناعي", "AI icon"],
   mascot: ["خيط", "Khayt"],
   horizontal: ["أفقي", "Horizontal"],
@@ -1144,6 +1162,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   tooltip: ["content"],
   modal: ["title", "description", "footer"],
   "empty-state": ["title", "description", "illustration", "actionLabel"],
+  chip: ["label", "behavior", "selected", "disabled", "size"],
   badge: ["children", "tone"],
   checkbox: ["label", "checked", "helper", "error", "required", "disabled"],
   "radio-group": [
@@ -1170,6 +1189,7 @@ const commonKeys: Record<ComponentId, string[]> = {
   input: [
     "label",
     "placeholder",
+    "type",
     "helper",
     "error",
     "required",
@@ -1177,7 +1197,7 @@ const commonKeys: Record<ComponentId, string[]> = {
     "disabled",
     "readOnly",
   ],
-  select: ["placeholder", "size", "disabled", "options"],
+  select: ["label", "placeholder", "size", "required", "disabled", "options"],
   button: ["children", "variant", "size", "state", "icon", "iconOnly"],
   tabs: ["variant", "value"],
   switch: ["label", "checked", "disabled"],

@@ -15,6 +15,19 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const behavior of ["filter", "multiple", "navigation"] as const)
+    for (const disabled of [false, true])
+      cases.push([
+        "chip",
+        {
+          ...p.chip,
+          behavior,
+          disabled,
+          selected: true,
+          size: "md",
+          label: 'تصميم / Design "long"',
+        },
+      ]);
   for (const id of agentPreviewComponents)
     cases.push([id, { ...p[id], agentAppearance: "icon" }]);
   for (const state of ["loading", "loaded", "error"] as const)
@@ -335,6 +348,15 @@ it("type-checks copied code for every component, state mode and composition pres
       generateCode(id, model, config ?? defaultConfig, "en"),
     ]),
   );
+  for (const item of catalog) {
+    sources.set(
+      `${root}/src/__generated_theme_${item.id}.tsx`,
+      generateCode(item.id, p[item.id], defaultConfig, "en", {
+        light: "#123456",
+        dark: "#ABCDEF",
+      }),
+    );
+  }
   for (const language of ["ar", "en"] as const)
     for (const preset of [
       "populated",

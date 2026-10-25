@@ -59,6 +59,8 @@ import { FileDropzoneExample } from "../system/ai/examples/FileDropzoneExamples"
 import { ColorPickerExample } from "../system/ai/examples/ColorPickerExamples";
 import type { FileDropzoneModel, ColorPickerModel } from "./model";
 import { TagInputExample } from "../system/ai/examples/TagInputExamples";
+import { ChipExample } from "../system/ai/examples/ChipExamples";
+import type { ChipExampleProps } from "../system/ai/examples/ChipExamples";
 import { FilterBarExample } from "../system/ai/examples/FilterBarExamples";
 import { InputCopyExample } from "../system/ai/examples/InputCopyExamples";
 import type { TagInputModel, FilterBarModel, InputCopyModel } from "./model";
@@ -671,6 +673,16 @@ export function Playground({
     return (
       <TagInputExample language={language} {...(model as TagInputModel)} />
     );
+  if (component === "chip") {
+    const p = model as ChipExampleProps;
+    return (
+      <ChipExample
+        key={`${p.behavior}-${p.selected}`}
+        language={language}
+        {...p}
+      />
+    );
+  }
   if (component === "filter-bar")
     return (
       <FilterBarExample language={language} {...(model as FilterBarModel)} />

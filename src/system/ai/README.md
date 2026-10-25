@@ -23,7 +23,35 @@ from that directory, so the app can move without changing the manifest. Use
 `npx @amjedfadul/tiraz init --dir src/ui` to choose a source parent; it keeps
 `system` and `mascot` as siblings. Run `npx @amjedfadul/tiraz verify` from the
 app to report modified or missing files. Verification never overwrites changes;
-for updates, install separately and review a diff.
+for published versions, install separately and review a diff.
+
+The current development checkout adds an unreleased `add` command for selective
+source installation and a separate `tiraz.theme.css` owned by the consuming app.
+The published 0.1.2 CLI does not support this command yet. Selective installs have
+a version-2 `tiraz.project.json` and a smaller local guide/registry describing only
+their installed selections. Follow those paths and actual exported types; never
+assume that the complete library is present. Further additions preserve custom
+component source and the theme, and stop if CLI-managed assembly files were edited.
+
+The development CLI also adds an unreleased `update` workflow. Run it from the
+consumer app using the target package's CLI: `update` previews, `update --prepare`
+creates a separate review folder, and `update --apply` applies a clean plan.
+Resolve conflicts explicitly before `update --apply --review <id>`. The app-owned
+theme is never an update target. Keep `.tiraz/baseline.json` and
+`tiraz.project.json`; original bytes, local edits and incoming source are compared
+without treating customized files as new upstream originals. Older installs need
+`--from <matching-original-package-or-installation>` once. No source is fetched
+and no npm installation is run automatically. Review the backup id after apply;
+`update --restore <id>` refuses to overwrite subsequent edits. A clean merge still
+needs host type checks, tests and rendered Arabic/English verification. Follow the
+package README for conflict choices, baseline bootstrap and interrupted recovery.
+
+The current provider accepts optional CSS overrides `--tiraz-action` and
+`--tiraz-radius`, falling back to `config.accent` and `config.radius`. Other
+semantic tokens can be overridden in CSS normally. Put user theme rules after
+defaults and scope light/dark rules to `.tiraz-system[data-theme="light"]` and
+`.tiraz-system[data-theme="dark"]`. Check contrast in both themes and text in both
+languages. This changes no component props; existing provider presets still work.
 
 [Generated knowledge](generated/manifest.json) contains the current public
 TypeScript contracts, source hashes, and [CSS token inventory](generated/tokens.json).
@@ -38,8 +66,8 @@ controls and caller-owned data, localized labels and persistence. Their
 Arabic/English, cancellation and destructive-action confirmation. Read their
 contracts before choosing callback and label props.
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-eight**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, DataAnswer, AgentTask, DecisionInbox, SuggestedEdits, ImageGeneration, DraftReview, ChangeSummary, AssistantControls, Terminal and ChatApp.
+Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-nine**
+component families: Button, Chip, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, DataAnswer, AgentTask, DecisionInbox, SuggestedEdits, ImageGeneration, DraftReview, ChangeSummary, AssistantControls, Terminal and ChatApp.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -117,7 +145,7 @@ keeps those extra runtime files out of the generated example.
 
 ## Copy and setup
 
-Copy the **whole source-root directory**, keeping `ai/`, its JSON/Markdown and
+For manual installation, copy the **whole source-root directory**, keeping `ai/`, its JSON/Markdown and
 `ai/examples/` and `ai/assets/` (including binary portraits, provenance and license); tests (`*.test.*`) may be excluded. Do not copy only the barrel
 or strip documentation from the bundle. No workbench files, root README or
 root AGENTS.md are required to consume it. A host agent entry file may point
@@ -184,6 +212,19 @@ DataTable adds client-side text sorting and pagination to Table. Use
 status filtering, create/Toast and row-specific details Sheets. These are
 application behaviors, not a general grid API. Explicit populated/loading/empty/
 no-results/error presets demonstrate states without fake services.
+
+Chip offers a controlled category choice. Use `selected`, `disabled`, `size="sm" | "md"`
+and visible children. Without href it is a native button (type defaults to button)
+with aria-pressed; with a string href it is a native anchor with aria-current=page
+when selected. Link consumers may use aria-current="location" for in-page anchors.
+Native events and React 19 refs follow the chosen element. Disabled anchors remove
+href/tab access and suppress click/auxclick; disabled buttons use native disabled.
+The host owns single or multiple selection, filtering and routing. Name the group
+or nav, preserve native link/modifier behavior, and keep labels stable. No live
+region, nested interactive children or arrow-key group model. See
+[ChipExamples](examples/ChipExamples.tsx) for bilingual single/multiple filtering
+and real in-page links. Use Badge for status, TagInput for entered values and Tabs
+for panels. Chip composes inside FilterBar's controls slot.
 
 Badge is static status text, not an action or live region; neutral is the default, success/error/info reuse semantic tokens, `warning` takes the attention color and `ai` the AI color. Use `warning` only for something that needs the person, and `ai` only for what the assistant produced. CustomerDataTable uses Badge for readable customer statuses.
 

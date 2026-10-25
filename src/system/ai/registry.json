@@ -37,6 +37,22 @@
       "source": "Provider.tsx"
     },
     {
+      "name": "Chip",
+      "source": "Chip.tsx"
+    },
+    {
+      "name": "ChipProps",
+      "source": "Chip.tsx"
+    },
+    {
+      "name": "ChipButtonProps",
+      "source": "Chip.tsx"
+    },
+    {
+      "name": "ChipLinkProps",
+      "source": "Chip.tsx"
+    },
+    {
       "name": "Button",
       "source": "Button.tsx"
     },
@@ -7083,6 +7099,87 @@
         "One internal sorting/pagination mode, default 10 rows; no selection, bulk actions, editing, deletion, virtualization, sticky columns or server framework.",
         "Native header buttons and aria-sort; no row motion. Parent supplies filters and row actions."
       ]
+    },
+    {
+      "id": "chip",
+      "api": "Chip",
+      "source": "Chip.tsx",
+      "exports": ["Chip", "ChipProps", "ChipButtonProps", "ChipLinkProps"],
+      "purpose": "Selectable category filters and native navigation links.",
+      "useWhen": "Offer one or several category choices or links between collection pages.",
+      "alternative": "Badge for static status; Tabs for content panels; TagInput for entered tags; FilterBar for search/filter composition.",
+      "props": [
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        {
+          "name": "size",
+          "type": "sm | md",
+          "required": false,
+          "default": "sm",
+          "values": ["sm", "md"]
+        },
+        {
+          "name": "href",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Presence chooses the link branch, which requires a string href."
+        },
+        {
+          "name": "aria-current",
+          "type": "AriaAttributes[aria-current]",
+          "required": false,
+          "default": "page",
+          "note": "Link branch only; applied only when selected. Use location for in-page anchors."
+        },
+        {
+          "name": "type",
+          "type": "button | submit | reset",
+          "required": false,
+          "default": "button",
+          "note": "Native button type in the button branch; links retain native anchor attributes."
+        },
+        {
+          "name": "ref",
+          "type": "Ref<HTMLButtonElement> | Ref<HTMLAnchorElement>",
+          "required": false,
+          "default": "undefined",
+          "note": "Type follows the href-discriminated branch."
+        }
+      ],
+      "inheritedProps": "ChipButtonProps and ChipLinkProps preserve native button/anchor attributes and React 19 refs; own selected/disabled and managed ARIA state.",
+      "state": "Controlled selected; no internal state or filtering engine. Host owns single or multiple selection.",
+      "events": [
+        "onClick and native events. Disabled links suppress click/auxclick callbacks and navigation."
+      ],
+      "accessibility": [
+        "Use stable visible labels; label the group or navigation.",
+        "Buttons use aria-pressed and native Enter/Space; links use href and aria-current with native Enter.",
+        "Disabled buttons use native disabled. Disabled links retain link role and aria-disabled but lose href and tab access.",
+        "No live region, arrow-key selection model or nested interactive children."
+      ],
+      "limitations": [
+        "No automatic selection, filtering, routing, persistence or dismissal. App owns those behaviors."
+      ],
+      "providers": [
+        "SystemProvider for shared tokens, density, direction, theme, corners and reduced motion."
+      ],
+      "examples": ["ai/examples/ChipExamples.tsx"]
     },
     {
       "id": "badge",

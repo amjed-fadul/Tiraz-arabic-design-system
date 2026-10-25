@@ -113,7 +113,7 @@ it("keeps the full prompt and portable paths in one English LTR field", async ()
     expect((prompt as HTMLTextAreaElement).value).toContain(path);
 });
 
-it("places only navigation in its sidebar and both settings sections in the panel", () => {
+it("places only navigation in its sidebar and customization with theme export in the panel", () => {
   const { container } = render(<Workbench />);
   const nav = screen.getByRole("complementary", { name: "تنقّل المكوّنات" });
   expect(
@@ -126,7 +126,7 @@ it("places only navigation in its sidebar and both settings sections in the pane
     controls()
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent),
-  ).toEqual(["خصائص الأزرار", "إعدادات النظام"]);
+  ).toEqual(["خصائص الأزرار", "إعدادات النظام", "ملف المظهر الخاص بك"]);
   expect(container.querySelector(".settings-panel")?.parentElement).toHaveClass(
     "docs-layout",
   );
@@ -166,7 +166,7 @@ it("updates accent through successive selections, navigation and reset despite l
       ".playground-region .tiraz-system",
     ))
       expect((el as HTMLElement).style.getPropertyValue("--action")).toBe(
-        accentColors[accent].light,
+        `var(--tiraz-action, ${accentColors[accent].light})`,
       );
     expect(await shownCode()).toContain(`accent: "${accent}"`);
   }
@@ -175,7 +175,7 @@ it("updates accent through successive selections, navigation and reset despite l
     (
       container.querySelector(".playground-region .tiraz-system") as HTMLElement
     ).style.getPropertyValue("--action"),
-  ).toBe(accentColors.clay.light);
+  ).toBe(`var(--tiraz-action, ${accentColors.clay.light})`);
   await userEvent.click(
     controls().getByRole("button", { name: "إعادة ضبط المعاينة" }),
   );
@@ -321,7 +321,7 @@ it("retains shared tokens in Sheet portals and restores trigger focus", async ()
     (dialog.closest(".tiraz-system") as HTMLElement).style.getPropertyValue(
       "--action",
     ),
-  ).toBe(accentColors.blue.dark);
+  ).toBe(`var(--tiraz-action, ${accentColors.blue.dark})`);
   await userEvent.keyboard("{Escape}");
   await waitFor(() => expect(trigger).toHaveFocus());
 });
@@ -467,7 +467,7 @@ it.each([
         ".playground-region .tiraz-system",
       ))
         expect(provider.style.getPropertyValue("--action")).toBe(
-          accentColors[accent][theme],
+          `var(--tiraz-action, ${accentColors[accent][theme]})`,
         );
       await user.click(
         screen.getByRole("button", {

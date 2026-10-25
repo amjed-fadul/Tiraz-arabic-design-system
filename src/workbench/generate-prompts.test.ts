@@ -64,7 +64,10 @@ for (const language of ["ar", "en"] as const) {
       expect(instructions).toContain("## Current example");
       expect(instructions).toContain("query only the relevant entries");
       expect(instructions).toContain("records");
-      expect(instructions).toContain("Retain the ai/ bundle");
+      expect(instructions).toContain("Respect the installed subset");
+      expect(instructions).toContain(
+        "Retain the installed guidance, provenance and licenses",
+      );
       expect(instructions).toContain("keyboard");
       expect(instructions).toContain("accessible names");
       expect(instructions).toContain("RTL and LTR");
@@ -134,6 +137,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "src/workbench/agent-preview.ts",
       "src/workbench/generate-batch.ts",
       "src/workbench/generate-charts.ts",
+      "src/workbench/theme-customization.ts",
       "src/workbench/exhaustive.ts",
       "src/system/ai/examples/team.ts",
       "src/workbench/catalog.ts",
@@ -193,6 +197,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "FileDropzoneExamples",
       "ColorPickerExamples",
       "SliderExamples",
+      "ChipExamples",
       "OTPInputExamples",
       "DatePickerExamples",
       "FilterBarExamples",

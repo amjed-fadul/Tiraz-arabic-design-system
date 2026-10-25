@@ -1,0 +1,82 @@
+.library-collections {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block: calc(-1 * var(--space-4)) var(--space-8);
+}
+.library-card {
+  position: relative;
+}
+.library-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-tray);
+}
+.library-card-link:focus-visible {
+  outline: none;
+}
+.library-card-link:focus-visible::after {
+  outline: 2px solid var(--action);
+  outline-offset: var(--space-1);
+}
+.library-preview-live {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  background: var(--surface-tray);
+}
+.library-preview-live > * {
+  inline-size: 100%;
+  max-inline-size: 24rem;
+  min-inline-size: 0;
+}
+.core-preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+.core-preview-stack {
+  display: grid;
+  gap: var(--space-4);
+}
+.library-preview-live .tz-card p {
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  margin-block: var(--space-2) 0;
+}
+.library-preview-live .tz-tabs .tz-tab-panel {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .library-card:has(.library-card-link:hover) .library-preview {
+    border-color: var(--action);
+  }
+  .library-card:has(.library-card-link:hover) h3 {
+    color: var(--action);
+  }
+}
+@container (max-width: 28rem) {
+  .library-preview-live {
+    padding: var(--space-4);
+  }
+}
+
+/* Brand overrides belong to the example root, including its portalled overlays. */
+.playground-region[data-custom-theme] > .tiraz-system {
+  --action-text: var(--preview-action-text);
+  --action-hover: var(--preview-action-hover);
+}
+.theme-export-help {
+  font-size: var(--text-meta);
+  color: var(--text-secondary);
+  line-height: var(--line-height);
+  margin: 0;
+}
+.theme-export .tz-textarea {
+  font-family: var(--font-mono);
+  font-size: var(--text-meta);
+}

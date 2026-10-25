@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed React design system with 78 component families,
+An Arabic-first, MIT-licensed React design system with 79 component families,
 AI interaction patterns, example business screens and the Khayt agent mascot.
 Arabic RTL and English LTR, light/dark themes and reduced motion are supported.
 
@@ -68,6 +68,13 @@ For an existing shadcn workflow, the optional source registry is
 `https://tiraz.dev/r/tiraz-system.json`. It installs the same Tiraz library under
 `src/tiraz` and writes `tiraz.project.json`; Tiraz's own installer remains the
 primary quick start. The hosted AI entry point is `https://tiraz.dev/llms.txt`.
+
+This checkout also includes an **unreleased local preview** of individual component
+installation and a user-owned theme. Build the package locally, then use its CLI
+`add button input badge` from a Vite React 19 TypeScript app. See the
+[selective installation guide](packages/tiraz/README.md#select-individual-components-local-preview-not-yet-published)
+for exact local commands, customization and preservation rules. The published
+`0.1.2` CLI and full-system shadcn registry keep their current installation path.
 
 ## Develop this repository
 

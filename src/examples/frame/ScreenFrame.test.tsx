@@ -42,7 +42,7 @@ it("carries a valid preview accent through screen navigation and ignores unknown
     </ScreenFrame>,
   );
   expect(view.container.querySelector(".tiraz-system")).toHaveStyle({
-    "--action": "#D6B6E5",
+    "--action": "var(--tiraz-action, #D6B6E5)",
   });
   openNavigation();
   expect(
@@ -59,7 +59,7 @@ it("carries a valid preview accent through screen navigation and ignores unknown
     </ScreenFrame>,
   );
   expect(fallback.container.querySelector(".tiraz-system")).toHaveStyle({
-    "--action": "#355E4C",
+    "--action": "var(--tiraz-action, #355E4C)",
   });
 });
 

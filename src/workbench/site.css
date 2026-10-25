@@ -427,7 +427,7 @@
     color: var(--text);
   }
 }
-@container (min-width: 68rem) {
+@container (min-width: 52rem) {
   .library-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }

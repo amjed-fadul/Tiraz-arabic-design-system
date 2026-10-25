@@ -1,3 +1,4 @@
+import type { ChipExampleProps } from "../system/ai/examples/ChipExamples";
 import { agentPreviewDefaults } from "./agent-preview";
 import type { AgentPreviewOptions } from "./agent-preview";
 import type { TaskRowsExampleProps } from "../system/ai/examples/TaskRowsExamples";
@@ -406,6 +407,7 @@ export interface Playgrounds {
   tooltip: TooltipModel;
   modal: ModalModel;
   "empty-state": EmptyStateModel;
+  chip: Required<Omit<ChipExampleProps, "language" | "id">>;
   badge: BadgeModel;
   checkbox: CheckboxModel;
   "radio-group": RadioGroupModel;
@@ -695,6 +697,13 @@ export function defaultPlaygrounds(language: Language): Playgrounds {
       ),
       illustration: "no-records",
       actionLabel: t("إضافة سجل", "Add record"),
+    },
+    chip: {
+      behavior: "filter",
+      label: t("التصميم", "Design"),
+      selected: false,
+      disabled: false,
+      size: "sm",
     },
     badge: { children: t("نشط", "Active"), tone: "neutral" },
     checkbox: {

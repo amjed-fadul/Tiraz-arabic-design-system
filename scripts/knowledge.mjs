@@ -95,19 +95,28 @@ function tokenInventory(providerSource) {
     ) {
       const name = node.name.text;
       const expression = node.initializer.getText();
+      const override = ts.isTemplateExpression(node.initializer)
+        ? node.initializer.head.text.match(/^var\((--[\w-]+), /)?.[1]
+        : undefined;
+      const fallback =
+        override && node.initializer.templateSpans.length === 1
+          ? node.initializer.templateSpans[0].expression.getText()
+          : expression;
       const knownValue =
-        expression === "accentColors[config.accent][config.theme]"
+        fallback === "accentColors[config.accent][config.theme]"
           ? {
               values: accentColors,
               default: accentColors[defaultConfig.accent][defaultConfig.theme],
             }
-          : expression === "`${config.radius}px`"
+          : expression === "`${config.radius}px`" ||
+              (override === "--tiraz-radius" && fallback === "config.radius")
             ? { default: `${defaultConfig.radius}px` }
             : {};
       tokens[name] ??= { name, values: [], references: [] };
       tokens[name].provider = {
         source: "Provider.tsx",
         expression,
+        ...(override ? { override } : {}),
         ...knownValue,
       };
     }

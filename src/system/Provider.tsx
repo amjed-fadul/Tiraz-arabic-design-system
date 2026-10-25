@@ -48,8 +48,8 @@ export function SystemProvider({
           data-modality={modality}
           style={
             {
-              "--action": accentColors[config.accent][config.theme],
-              "--radius": `${config.radius}px`,
+              "--action": `var(--tiraz-action, ${accentColors[config.accent][config.theme]})`,
+              "--radius": `var(--tiraz-radius, ${config.radius}px)`,
               colorScheme: config.theme,
             } as CSSProperties
           }

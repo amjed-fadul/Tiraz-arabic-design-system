@@ -23,6 +23,75 @@
 .tiraz-system :where(svg) {
   flex-shrink: 0;
 }
+.tz-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--control-small);
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  gap: var(--control-gap);
+  padding-block: var(--space-1);
+  padding-inline: var(--control-small-padding);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background-color var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
+}
+.tz-chip-label {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.tz-chip[data-size="md"] {
+  min-block-size: var(--control-height);
+  padding-inline: var(--control-padding);
+}
+.tz-chip[data-selected="true"] {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-chip);
+}
+.tz-chip[data-disabled] {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .tz-chip:not([data-disabled]):hover {
+    background: var(--wash);
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+}
+.tz-chip:not([data-disabled]):active {
+  box-shadow: var(--shadow-pressed);
+}
+@media (forced-colors: active) {
+  .tz-chip[data-selected="true"] {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+  }
+  .tz-chip[data-disabled] {
+    color: GrayText;
+    border-color: GrayText;
+    opacity: 1;
+  }
+}
+
 /* Pressable surfaces sink on press and settle back on release. The press is
    near-instant and the release eases out, never on the spring. Every variant
    presses by the root --press-scale, which keyboard modality sets to 1, so

@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import { basename, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildKnowledge, writeOrCheck } from "./knowledge.mjs";
+import { writeComponentCatalog } from "./component-catalog.mjs";
 
 // This is a release artifact, including when spawned by Vitest (NODE_ENV=test).
 process.env.NODE_ENV = "production";
@@ -109,6 +110,7 @@ await cp(resolve(root, "src/mascot/assets"), resolve(target, "dist/assets"), {
 });
 await cp(resolve(root, "LICENSE"), resolve(target, "LICENSE"));
 await cp(resolve(root, "LICENSE"), resolve(target, "source/system/LICENSE"));
+writeComponentCatalog({ root, packageRoot: target });
 await writeFile(
   resolve(target, "fonts.css"),
   [400, 500, 600]
