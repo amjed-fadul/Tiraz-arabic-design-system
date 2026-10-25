@@ -1,22 +1,20 @@
-import { createHash } from "node:crypto";
-import {
-  lstat,
-  mkdir,
-  open,
-  readFile,
-  realpath,
-  rm,
-  rmdir,
-  writeFile,
-} from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { lstat, readFile, realpath } from "node:fs/promises";
+import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import semver from "semver";
 import { safePath, validateSubsetManifest } from "./source-manifest.mjs";
 import { themeSource } from "./theme.mjs";
 
-const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
-const json = (value) => JSON.stringify(value, null, 2) + "\n";
+import {
+  baselinePath,
+  commitPlan,
+  decodeBaseline,
+  encodeBaseline,
+  hash,
+  json,
+  readOptional,
+  withSourceLock,
+} from "./source-files.mjs";
 const sorted = (items) => [...new Set(items)].sort();
 const sections = [
   "dependencies",
@@ -48,7 +46,7 @@ export async function readComponentCatalog(packageRoot, release) {
   return catalog;
 }
 
-function validateProject(project) {
+export function validateProject(project) {
   if (!project || typeof project !== "object" || Array.isArray(project))
     throw new Error("Invalid project package.json.");
   for (const section of sections) {
@@ -89,56 +87,6 @@ function subsetDocuments(directory, components, catalog) {
     }),
     [`${base}/ai/README.md`]: `# Your installed Tiraz components\n\nThis is a selective source installation. Follow tiraz.project.json at the application root for installed paths. Registry source paths resolve from the system directory.\n\nInstalled selections: ${components.join(", ")}.\n\nRead [registry.json](registry.json), then the linked source and its exported types before building. Shared source modules may export related components. Only exports in [../index.ts](../index.ts) are available from the barrel.\n\nUse SystemProvider and defaultConfig. Put lang and dir on an ancestor, use Arabic RTL and English LTR, and format numbers with numberLocale. Preserve keyboard focus and reduced motion. Application data, copy and actions belong to the host.\n\nImport [../styles.css](../styles.css) once. Customize [../../tiraz.theme.css](../../tiraz.theme.css); it is yours and is never rewritten by add. Source files are editable too. index.ts, components.css, styles.css and this subset guidance are managed assembly files: if you change them, add stops for review rather than overwriting them.\n\nUse the same installed release for further additions. See https://tiraz.dev for the complete library. Source updates are separate from add.\n`,
   };
-}
-
-async function commitPlan(root, writes) {
-  const applied = [];
-  const createdDirectories = [];
-  try {
-    for (const [path, { before, content }] of writes) {
-      const target = await safePath(root, path);
-      const current = await stat(target);
-      if (
-        before === null
-          ? current !== null
-          : !current?.isFile() || !(await readFile(target)).equals(before)
-      )
-        throw new Error(
-          `File changed during installation: ${path}. Retry after reviewing it.`,
-        );
-      const missing = [];
-      for (
-        let parent = dirname(target);
-        parent !== root && !(await stat(parent));
-        parent = dirname(parent)
-      )
-        missing.push(parent);
-      await mkdir(dirname(target), { recursive: true });
-      createdDirectories.push(...missing.reverse());
-      const handle = await open(target, before === null ? "wx" : "r+");
-      applied.push([target, before]);
-      try {
-        if (before !== null) await handle.truncate(0);
-        await handle.writeFile(content);
-      } finally {
-        await handle.close();
-      }
-    }
-  } catch (error) {
-    for (const [path, before] of applied.reverse()) {
-      if (before === null) await rm(path, { force: true });
-      else await writeFile(path, before);
-    }
-    for (const path of [...new Set(createdDirectories)].reverse()) {
-      // A concurrent user-created file must prevent directory cleanup.
-      try {
-        await rmdir(path);
-      } catch {
-        /* Leave nonempty directories intact. */
-      }
-    }
-    throw error;
-  }
 }
 
 export async function addComponents({
@@ -204,50 +152,15 @@ export async function addComponents({
   for (const id of components)
     if (!Object.hasOwn(catalog.components, id))
       throw new Error(`Installed component ${id} is absent from this release.`);
-  const selections = components.map((id) => catalog.components[id]);
+  const { files, sourceHashes, managedFiles, dependencies } =
+    await createComponentPayload({
+      packageRoot,
+      release,
+      names: components,
+      directory,
+    });
   const base = `${directory}/system`;
   const theme = `${directory}/tiraz.theme.css`;
-  const files = new Map();
-  const sourceHashes = {};
-  for (const path of sorted(
-    selections.flatMap((item) => item.files).concat(["tokens.css", "LICENSE"]),
-  )) {
-    const from = await safePath(resolve(packageRoot, "source/system"), path);
-    if (!(await stat(from))?.isFile())
-      throw new Error(
-        `Missing package source: ${path}. Rebuild or reinstall Tiraz.`,
-      );
-    const bytes = await readFile(from);
-    if (hash(bytes) !== catalog.files[path])
-      throw new Error(
-        `Package source does not match its catalog: ${path}. Rebuild or reinstall Tiraz.`,
-      );
-    files.set(`${base}/${path}`, bytes);
-    sourceHashes[`${base}/${path}`] = catalog.files[path];
-  }
-  const exports = sorted(selections.flatMap((item) => item.exports));
-  const styleIds = [...new Set(selections.flatMap((item) => item.styles))].sort(
-    (a, b) => a - b,
-  );
-  const managedFiles = {
-    [`${base}/index.ts`]: `// Tiraz-managed exports. Component implementations remain yours to edit.\n${exports.join("\n")}\n`,
-    [`${base}/components.css`]: `/* Tiraz-managed styles for the installed selections. Customize ../tiraz.theme.css. */\n${styleIds.map((id) => catalog.rules[id]).join("\n")}\n`,
-    [`${base}/styles.css`]:
-      [400, 500, 600]
-        .map(
-          (weight) =>
-            `@import "@fontsource/ibm-plex-sans-arabic/${weight}.css";`,
-        )
-        .concat([
-          '@import "./tokens.css";',
-          '@import "./components.css";',
-          '@import "../tiraz.theme.css";',
-        ])
-        .join("\n") + "\n",
-    ...subsetDocuments(directory, components, catalog),
-  };
-  for (const [path, text] of Object.entries(managedFiles))
-    files.set(path, Buffer.from(text));
 
   const writes = new Map();
   async function prepare(path, content, policy = "new") {
@@ -303,10 +216,6 @@ export async function addComponents({
     baselines[path] = hash(bytes);
   }
   await prepare(theme, themeSource, "preserve");
-  const dependencies = Object.assign(
-    {},
-    ...selections.map((item) => item.dependencies),
-  );
   project.dependencies ??= {};
   for (const [name, version] of Object.entries(dependencies)) {
     const existing = sections.flatMap((section) =>
@@ -361,7 +270,14 @@ export async function addComponents({
   await prepare("tiraz.project.json", json(next), "replace");
   // Every path, collision, dependency and existing file has been checked before
   // any writes. Recheck each file during commit and roll back on a write failure.
-  await commitPlan(root, writes);
+  const cache = await readOptional(root, baselinePath);
+  if (cache && installed) decodeBaseline(installed, cache);
+  if (cache && !installed)
+    throw new Error(
+      "Original source cache exists without an installed manifest.",
+    );
+  await prepare(baselinePath, encodeBaseline(next, files), "replace");
+  await withSourceLock(root, () => commitPlan(root, writes));
   console.log(
     `Tiraz components ready: ${components.join(", ")}.\nYour theme: ${theme}\nRead TIRAZ_SETUP.md for imports. Existing component edits were preserved.`,
   );
@@ -376,4 +292,91 @@ export async function addComponents({
         "Source is ready, but npm install failed. Resolve the dependency error and run npm install in your app.",
       );
   }
+}
+
+export async function createComponentPayload({
+  packageRoot,
+  release,
+  names,
+  directory,
+}) {
+  const catalog = await readComponentCatalog(packageRoot, release);
+  const components = sorted(names);
+  for (const id of components)
+    if (!Object.hasOwn(catalog.components, id))
+      throw new Error(`Installed component ${id} is absent from this release.`);
+  const selections = components.map((id) => catalog.components[id]);
+  const base = `${directory}/system`;
+  const theme = `${directory}/tiraz.theme.css`;
+  const files = new Map();
+  const sourceHashes = {};
+  for (const path of sorted(
+    selections.flatMap((item) => item.files).concat(["tokens.css", "LICENSE"]),
+  )) {
+    const from = await safePath(resolve(packageRoot, "source/system"), path);
+    if (!(await stat(from))?.isFile())
+      throw new Error(
+        `Missing package source: ${path}. Rebuild or reinstall Tiraz.`,
+      );
+    const bytes = await readFile(from);
+    if (hash(bytes) !== catalog.files[path])
+      throw new Error(
+        `Package source does not match its catalog: ${path}. Rebuild or reinstall Tiraz.`,
+      );
+    files.set(`${base}/${path}`, bytes);
+    sourceHashes[`${base}/${path}`] = catalog.files[path];
+  }
+  const exports = sorted(selections.flatMap((item) => item.exports));
+  const styleIds = [...new Set(selections.flatMap((item) => item.styles))].sort(
+    (a, b) => a - b,
+  );
+  const managedFiles = {
+    [`${base}/index.ts`]: `// Tiraz-managed exports. Component implementations remain yours to edit.\n${exports.join("\n")}\n`,
+    [`${base}/components.css`]: `/* Tiraz-managed styles for the installed selections. Customize ../tiraz.theme.css. */\n${styleIds.map((id) => catalog.rules[id]).join("\n")}\n`,
+    [`${base}/styles.css`]:
+      [400, 500, 600]
+        .map(
+          (weight) =>
+            `@import "@fontsource/ibm-plex-sans-arabic/${weight}.css";`,
+        )
+        .concat([
+          '@import "./tokens.css";',
+          '@import "./components.css";',
+          '@import "../tiraz.theme.css";',
+        ])
+        .join("\n") + "\n",
+    ...subsetDocuments(directory, components, catalog),
+  };
+  for (const [path, text] of Object.entries(managedFiles))
+    files.set(path, Buffer.from(text));
+
+  const dependencies = Object.assign(
+    {},
+    ...selections.map((item) => item.dependencies),
+  );
+  const baselines = Object.fromEntries(
+    [...files].map(([path, bytes]) => [path, hash(bytes)]),
+  );
+  const orderedFiles = Object.fromEntries(
+    Object.entries(baselines).sort(([a], [b]) => a.localeCompare(b)),
+  );
+  const next = {
+    schemaVersion: 2,
+    mode: "components",
+    name: release.name,
+    version: release.version,
+    directory,
+    components,
+    theme,
+    entry: `${base}/index.ts`,
+    styles: `${base}/styles.css`,
+    docs: `${base}/ai/README.md`,
+    instructions: `${base}/ai/README.md`,
+    knowledge: `${base}/ai/registry.json`,
+    managed: Object.keys(managedFiles).sort(),
+    files: orderedFiles,
+    sourceDigest: hash(JSON.stringify(orderedFiles)),
+  };
+
+  return { files, manifest: next, sourceHashes, managedFiles, dependencies };
 }

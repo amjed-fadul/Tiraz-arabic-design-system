@@ -5,7 +5,7 @@
   "entry": "index.ts",
   "hashAlgorithm": "sha256",
   "hashScope": "Source-root files, including authored guidance and binary assets; excludes generated metadata, tests and CSS audit tooling.",
-  "sourceDigest": "e5ded97d7aa8b4186312fdaf96db5c39dffa88593698736855ffd1ff78dea625",
+  "sourceDigest": "5ba4087a622ad13b79ef42e86e0705debf904d0790cac4e4723a9326eeeabede",
   "files": {
     "AIMark.tsx": "848f4e233ae40235abb7ddfcda009707bd13471932509bc84e296820e7323e4e",
     "Accordion.tsx": "031f4e14f65056fd9818dcb81919bae7f112d52c648be4c3d287b543f32afafa",
@@ -104,7 +104,7 @@
     "WeaveCanvas.tsx": "3d3bfc4b8648895e8e577f1e3fa7f1bdaa8c8f9788300594eaa523344dfc21fc",
     "agent-presentation.ts": "153dcbd12a2eefa854bb39e4f15e8335202d53a4684ef4e5a9b31a79a3d183c8",
     "agent-task-copy.ts": "b7fa3eaa4b6d831c800eeb5146382aeebc1b98217bc2a47107321f108fca5189",
-    "ai/README.md": "6b8e97719cdb794e357abc2696900959182a7f64f8b4792c1575f8584258272e",
+    "ai/README.md": "80eba7ac64a7bba7c1f46d987eeebb21762298f384329177b45b47612fdd0179",
     "ai/assets/LICENSE.txt": "223d5b1ac265f80bd20b43cf68ad3213f672c29fc50a88ce3cd459e6ea30628b",
     "ai/assets/README.md": "1c84e182fe7cc7dc628f50e93bd8d6b44c30c08e70ac8d58cabfa1c381ef4b6d",
     "ai/assets/omar.jpg": "7bd2e811cbf4bb3ddd7435b0ad03e3bff64b46e435920e09d2a44e09d4b21904",

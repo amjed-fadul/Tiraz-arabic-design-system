@@ -23,7 +23,7 @@ from that directory, so the app can move without changing the manifest. Use
 `npx @amjedfadul/tiraz init --dir src/ui` to choose a source parent; it keeps
 `system` and `mascot` as siblings. Run `npx @amjedfadul/tiraz verify` from the
 app to report modified or missing files. Verification never overwrites changes;
-for updates, install separately and review a diff.
+for published versions, install separately and review a diff.
 
 The current development checkout adds an unreleased `add` command for selective
 source installation and a separate `tiraz.theme.css` owned by the consuming app.
@@ -32,6 +32,19 @@ a version-2 `tiraz.project.json` and a smaller local guide/registry describing o
 their installed selections. Follow those paths and actual exported types; never
 assume that the complete library is present. Further additions preserve custom
 component source and the theme, and stop if CLI-managed assembly files were edited.
+
+The development CLI also adds an unreleased `update` workflow. Run it from the
+consumer app using the target package's CLI: `update` previews, `update --prepare`
+creates a separate review folder, and `update --apply` applies a clean plan.
+Resolve conflicts explicitly before `update --apply --review <id>`. The app-owned
+theme is never an update target. Keep `.tiraz/baseline.json` and
+`tiraz.project.json`; original bytes, local edits and incoming source are compared
+without treating customized files as new upstream originals. Older installs need
+`--from <matching-original-package-or-installation>` once. No source is fetched
+and no npm installation is run automatically. Review the backup id after apply;
+`update --restore <id>` refuses to overwrite subsequent edits. A clean merge still
+needs host type checks, tests and rendered Arabic/English verification. Follow the
+package README for conflict choices, baseline bootstrap and interrupted recovery.
 
 The current provider accepts optional CSS overrides `--tiraz-action` and
 `--tiraz-radius`, falling back to `config.accent` and `config.radius`. Other

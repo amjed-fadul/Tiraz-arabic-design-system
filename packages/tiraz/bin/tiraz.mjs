@@ -12,6 +12,8 @@ import { fileURLToPath } from "node:url";
 import semver from "semver";
 import { addComponents, readComponentCatalog } from "./add-components.mjs";
 import { themeSource } from "./theme.mjs";
+import { baselinePath, encodeBaseline } from "./source-files.mjs";
+import { updateSource } from "./update-source.mjs";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const manifest = JSON.parse(
@@ -36,6 +38,37 @@ function parse(args) {
   if (args.length === 1 && args[0] === "--version") return { version: true };
   if ((args[0] === "verify" || args[0] === "--verify") && args.length <= 2)
     return { verify: resolve(args[1] ?? process.cwd()) };
+  if (args[0] === "update") {
+    const options = { update: true };
+    for (let i = 1; i < args.length; i++) {
+      const key = args[i].slice(2);
+      if (
+        ["apply", "prepare"].includes(key) &&
+        args[i].startsWith("--") &&
+        !options[key]
+      )
+        options[key] = true;
+      else if (
+        ["from", "review", "restore"].includes(key) &&
+        args[i].startsWith("--") &&
+        !options[key] &&
+        args[i + 1] &&
+        !args[i + 1].startsWith("-")
+      )
+        options[key] = args[++i];
+      else throw new Error(`Unknown or incomplete update option: ${args[i]}`);
+    }
+    if (
+      (options.apply && options.prepare) ||
+      (options.review && !options.apply) ||
+      (options.restore &&
+        (options.apply || options.prepare || options.from || options.review))
+    )
+      throw new Error(
+        "Use update to preview, --prepare to review, --apply [--review id] to apply, or --restore id to undo.",
+      );
+    return options;
+  }
   if (args[0] === "add") {
     if (args.length === 2 && args[1] === "--list") return { list: true };
     const names = [];
@@ -91,6 +124,11 @@ async function init({ name, install, directory }) {
   if (name && (await exists(target)))
     throw new Error(`Project folder already exists: ${target}`);
   const src = await safePath(target, directory);
+  const baselineFile = await safePath(target, baselinePath);
+  if (await exists(baselineFile))
+    throw new Error(
+      "An original source baseline already exists. Review the existing install first.",
+    );
   const reservedFiles = [
     "package.json",
     "AGENTS.md",
@@ -223,6 +261,18 @@ async function init({ name, install, directory }) {
       errorOnExist: true,
       force: false,
     });
+  const originalFiles = new Map(
+    await Promise.all(
+      Object.keys(sourceManifest.files).map(async (path) => [
+        path,
+        await readFile(await safePath(target, path)),
+      ]),
+    ),
+  );
+  await mkdir(dirname(baselineFile), { recursive: true });
+  await writeFile(baselineFile, encodeBaseline(sourceManifest, originalFiles), {
+    flag: "wx",
+  });
   await writeFile(
     resolve(src, "tiraz-env.d.ts"),
     '/// <reference types="vite/client" />\n',
@@ -295,7 +345,7 @@ function guideFor(directory) {
       .replace(/"\.\/(system|mascot)([^"\n]*)"/g, (_, name, rest) =>
         JSON.stringify(`${base}/${name}${rest}`),
       ) +
-    `\nImport "${base}/tiraz.theme.css" after the default styles. This file belongs to your app: customize fonts, surfaces and text; --tiraz-action and --tiraz-radius override provider presets without !important. Check contrast in light/dark and Arabic/English. Theme edits are excluded from source verification.\n\nInstalled paths and checksums are in tiraz.project.json. From your project folder, run npx ${manifest.name} verify to report missing or modified files. This command never overwrites your source. To update, install a new copy in a separate project and review a diff.\n`
+    `\nImport "${base}/tiraz.theme.css" after the default styles. This file belongs to your app: customize fonts, surfaces and text; --tiraz-action and --tiraz-radius override provider presets without !important. Check contrast in light/dark and Arabic/English. Theme edits are excluded from source verification.\n\nInstalled paths and checksums are in tiraz.project.json. From your project folder, run npx ${manifest.name} verify to report missing or modified files. This command never overwrites your source. Keep .tiraz/baseline.json with this manifest. Use the target release CLI with update to preview, update --prepare to review, then update --apply to apply. Conflicts require update --apply --review <id>. Each applied update saves a backup; update --restore <id> refuses later edits. Run your checks after any update.\n`
   );
 }
 
@@ -358,7 +408,7 @@ try {
   if (options.help)
     console.log(
       help +
-        `\n  npx ${manifest.name} add button input badge  Install selected components\n  npx ${manifest.name} add --list               List components\n\nA separate tiraz.theme.css belongs to your app and is preserved.\n`,
+        `\n  npx ${manifest.name} add button input badge  Install selected components\n  npx ${manifest.name} add --list               List components\n\nA separate tiraz.theme.css belongs to your app and is preserved.\n\n  update                          Preview source updates without writes\n  update --prepare                Create a separate review folder\n  update --apply                  Apply a clean update with a backup\n  update --apply --review <id>     Apply reviewed conflict resolutions\n  update --from <original-path>    Bootstrap a missing original baseline\n  update --restore <id>            Restore an update before further edits\n\nRun update using the target release CLI. No network or npm install is automatic.\n`,
     );
   else if (options.version) console.log(manifest.version);
   else if (options.list)
@@ -369,6 +419,8 @@ try {
     );
   else if (options.add)
     await addComponents({ ...options, packageRoot, release: manifest });
+  else if (options.update)
+    await updateSource({ ...options, packageRoot, release: manifest });
   else if (options.verify)
     console.log(
       `Verified ${await verifySource(options.verify)} installed files.`,
