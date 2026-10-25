@@ -1,6 +1,6 @@
 # طِراز · Tiraz
 
-An Arabic-first, MIT-licensed React design system with 78 component families,
+An Arabic-first, MIT-licensed React design system with 79 component families,
 AI interaction patterns, example business screens and the Khayt agent mascot.
 Arabic RTL and English LTR, light/dark themes and reduced motion are supported.
 

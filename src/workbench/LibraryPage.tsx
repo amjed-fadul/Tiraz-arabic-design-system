@@ -1,11 +1,12 @@
 import { useRef, useState } from "react";
 import { ArrowUpRight, Search, X } from "lucide-react";
-import { Button, Input, Select } from "../system";
+import { Button, Chip, Input, Select } from "../system";
 import { numberLocale } from "../system/config";
 import { navigationGroups } from "./catalog";
 import type { Language } from "./i18n";
 import { localize, words } from "./i18n";
 import { SiteLink } from "./SiteLink";
+import { siteLinkProps } from "./site-link-props";
 import type { Navigate } from "./SiteLink";
 import {
   galleryGroups,
@@ -159,17 +160,19 @@ export function LibraryPage({
             { id: "essentials", name: ["الأساسيات", "Essentials"] as const },
             ...coreGroups,
           ].map((group) => (
-            <SiteLink
+            <Chip
               key={group.id}
-              route={{
-                kind: "library",
-                category: group.id === "components" ? undefined : group.id,
-              }}
-              navigate={navigate}
-              aria-current={selected === group.id ? "page" : undefined}
+              {...siteLinkProps(
+                {
+                  kind: "library",
+                  category: group.id === "components" ? undefined : group.id,
+                },
+                navigate,
+              )}
+              selected={selected === group.id}
             >
               {localize(group.name, language)}
-            </SiteLink>
+            </Chip>
           ))}
         </nav>
       )}

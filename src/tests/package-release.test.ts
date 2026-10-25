@@ -86,6 +86,25 @@ it("installs only selected components, their dependencies and a user-owned theme
   expect(run(app, "verify").status).toBe(0);
 });
 
+it("installs Chip with both native modes and its styles without unrelated component dependencies", () => {
+  const app = componentApp();
+  const result = run(app, "add", "chip", "--no-install");
+  expect(result.status, result.stderr).toBe(0);
+  expect(read(join(app, "src/system/index.ts"))).toContain(
+    'export * from "./Chip"',
+  );
+  expect(existsSync(join(app, "src/system/Chip.tsx"))).toBe(true);
+  expect(existsSync(join(app, "src/system/Button.tsx"))).toBe(false);
+  const css = read(join(app, "src/system/components.css"));
+  expect(css).toContain(".tz-chip[data-selected=");
+  expect(css).toContain(".tz-chip[data-disabled]");
+  expect(css).toContain(".tz-chip-label");
+  const pkg = JSON.parse(read(join(app, "package.json")));
+  expect(pkg.dependencies["lucide-react"]).toBeUndefined();
+  expect(pkg.dependencies.recharts).toBeUndefined();
+  expect(run(app, "verify").status).toBe(0);
+});
+
 it("adds incrementally without changing custom source, theme or their upstream baseline", () => {
   const app = componentApp();
   expect(run(app, "add", "button", "--no-install").status).toBe(0);

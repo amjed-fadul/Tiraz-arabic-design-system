@@ -11,6 +11,7 @@ export const wovenFamilies: Record<string, readonly string[]> = {
   "remove-button": [".tz-remove-button"],
   "demo-frame": [".tz-demo"],
   button: [".tz-button"],
+  chip: [".tz-chip"],
   field: [".tz-field"],
   input: [".tz-input"],
   textarea: [".tz-textarea"],

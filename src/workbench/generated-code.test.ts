@@ -15,6 +15,19 @@ it("type-checks copied code for every component, state mode and composition pres
     for (const item of catalog) cases.push([item.id, defaults[item.id]]);
   }
   const p = defaultPlaygrounds("en");
+  for (const behavior of ["filter", "multiple", "navigation"] as const)
+    for (const disabled of [false, true])
+      cases.push([
+        "chip",
+        {
+          ...p.chip,
+          behavior,
+          disabled,
+          selected: true,
+          size: "md",
+          label: 'تصميم / Design "long"',
+        },
+      ]);
   for (const id of agentPreviewComponents)
     cases.push([id, { ...p[id], agentAppearance: "icon" }]);
   for (const state of ["loading", "loaded", "error"] as const)

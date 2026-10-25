@@ -2002,6 +2002,48 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       ],
     ],
   },
+  chip: {
+    useWhen: [
+      [
+        "تتيح اختيار فئة لتصفية النتائج، أو عدة فئات، أو التنقّل بين صفحات المجموعة.",
+        "Offer one or several category filters, or navigation between collection pages.",
+      ],
+    ],
+    instead: [
+      {
+        text: ["تعرض حالة للقراءة فقط، فاستخدم", "For a read-only status, use"],
+        page: "badge",
+      },
+      {
+        text: [
+          "تبدّل بين لوحات محتوى مترابطة، فاستخدم",
+          "For related content panels, use",
+        ],
+        page: "tabs",
+      },
+      {
+        text: [
+          "تجمع البحث والتصفية وإزالة الاختيارات، فاستخدم",
+          "To combine search, filters and removal, use",
+        ],
+        page: "filter-bar",
+      },
+    ],
+    notice: [
+      [
+        "يتولّى تطبيقك selected والتصفية. اجمع الخيارات في مجموعة أو تنقّل له تسمية واضحة، وحافظ على التسمية عند التحديد.",
+        "Your app owns selected state and filtering. Name the group or navigation, and keep each label stable when selected.",
+      ],
+      [
+        "مرّر href للتنقّل، واترك سلوك الرابط الأصلي يعمل. زر التصفية يعمل بمفتاحي Enter والمسافة، والرابط بمفتاح Enter.",
+        "Pass href for navigation and preserve native link behavior. Filter buttons activate with Enter or Space; links activate with Enter.",
+      ],
+      [
+        "الحالة المعطّلة تمنع التفعيل وتزيل الرابط من ترتيب Tab. لا توجد إدارة تلقائية للاختيار أو إعلان مباشر.",
+        "Disabled choices cannot activate and are skipped by Tab. No automatic selection management or live announcement.",
+      ],
+    ],
+  },
   badge: {
     useWhen: [
       [

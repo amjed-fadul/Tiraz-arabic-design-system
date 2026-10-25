@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { ArrowClockwiseIcon } from "@phosphor-icons/react/dist/csr/ArrowClockwise";
+import { Chip } from "../system/Chip";
 import { Button } from "../system/Button";
 import emptySource from "../system/EmptyStateIllustrations.tsx?raw";
 import vaultSource from "../illustrations/DocumentVault.tsx?raw";
@@ -97,17 +98,16 @@ function IllustrationsContent({
               ["empty", "الحالات الفارغة", "Empty states"],
             ] as const
           ).map(([value, ar, en]) => (
-            <Button
-              variant={category === value ? "secondary" : "ghost"}
+            <Chip
+              selected={category === value}
               key={value}
-              aria-pressed={category === value}
               onClick={() => {
                 setCategory(value);
                 setActivePreview(null);
               }}
             >
               {t(ar, en)}
-            </Button>
+            </Chip>
           ))}
         </div>
         <div className="illustration-grid">

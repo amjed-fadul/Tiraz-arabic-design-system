@@ -29,8 +29,10 @@ it.each(["ar", "en"] as const)(
     });
     await user.type(search, "chip");
     expect(
-      nav.getByRole("link", { name: language === "ar" ? "الشارة" : "Badge" }),
-    ).toHaveAttribute("href", "/library/components/badge");
+      nav.getByRole("link", {
+        name: language === "ar" ? "خيارات التصفية" : "Chip",
+      }),
+    ).toHaveAttribute("href", "/library/components/chip");
     expect(
       nav.getByRole("link", {
         name: language === "ar" ? "إدخال الوسوم" : "TagInput",
@@ -167,7 +169,7 @@ it("clears a desktop query from a focused result before Escape closes navigation
   const user = userEvent.setup();
   const search = nav.getByRole("searchbox");
   await user.type(search, "chip");
-  nav.getByRole("link", { name: "Badge" }).focus();
+  nav.getByRole("link", { name: "Chip" }).focus();
   await user.keyboard("{Escape}");
   expect(search).toHaveValue("");
   expect(search).toHaveFocus();

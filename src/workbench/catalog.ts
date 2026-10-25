@@ -520,6 +520,15 @@ export const catalog = [
     file: "DataTable.tsx",
   },
   {
+    id: "chip",
+    name: ["خيارات التصفية", "Chip"],
+    description: [
+      "خيارات قابلة للتحديد لتصفية النتائج أو روابط للتنقّل بين الفئات.",
+      "Selectable choices for filtering results or navigating categories.",
+    ],
+    file: "Chip.tsx",
+  },
+  {
     id: "badge",
     name: ["الشارة", "Badge"],
     description: [
@@ -785,7 +794,8 @@ export const relatedPages: Partial<
 > = {
   button: ["input", "dropdown", "tooltip"],
   input: ["textarea", "select", "input-copy"],
-  badge: ["tag-input", "alert"],
+  badge: ["chip", "tag-input", "alert"],
+  chip: ["filter-bar", "badge", "tabs"],
   "tag-input": ["badge", "select", "input"],
   select: ["radio-group", "checkbox", "input"],
   checkbox: ["radio-group", "switch"],
@@ -869,6 +879,7 @@ const documentationGroups: readonly DocumentationSection[] = [
     name: ["النماذج", "Forms"],
     ids: [
       "button",
+      "chip",
       "input",
       "slider",
       "otp-input",

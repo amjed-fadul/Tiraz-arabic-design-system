@@ -2843,6 +2843,40 @@ export function ApiReference({
         ),
       ],
     ],
+    chip: [
+      [
+        "children / selected",
+        "ReactNode / boolean?",
+        t(
+          "تسمية ظاهرة وحالة يملكها تطبيقك. الزر يستخدم aria-pressed، والرابط المحدد يستخدم aria-current.",
+          "Visible label and application-owned state. Buttons use aria-pressed; selected links use aria-current.",
+        ),
+      ],
+      [
+        "href / aria-current",
+        "string? / AriaAttributes[aria-current]",
+        t(
+          "href يجعل العنصر رابطًا أصليًا. قيمة aria-current الافتراضية page، ويمكن استخدام location لروابط داخل الصفحة.",
+          "href renders a native link. aria-current defaults to page; use location for in-page navigation.",
+        ),
+      ],
+      [
+        "disabled / size",
+        "boolean? / sm | md",
+        t(
+          "معطّل يمنع التفعيل. يُزال href وترتيب Tab من الرابط المعطّل. الحجم الافتراضي sm.",
+          "Disabled blocks activation. Disabled links lose href and tab access. Size defaults to sm.",
+        ),
+      ],
+      [
+        "onClick / native attributes / ref",
+        "ChipButtonProps | ChipLinkProps",
+        t(
+          "أحداث وسمات وref للزر أو الرابط. حدّث اختيارًا واحدًا أو عدة اختيارات في تطبيقك. نوع الزر الافتراضي button.",
+          "Native events, attributes and ref for a button or anchor. Own single or multiple selection in your app. Button type defaults to button.",
+        ),
+      ],
+    ],
     badge: [
       [
         "children / tone",

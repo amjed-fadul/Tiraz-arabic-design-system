@@ -197,6 +197,7 @@ it("generates identical prompts when the same checkout is relocated", () => {
       "FileDropzoneExamples",
       "ColorPickerExamples",
       "SliderExamples",
+      "ChipExamples",
       "OTPInputExamples",
       "DatePickerExamples",
       "FilterBarExamples",

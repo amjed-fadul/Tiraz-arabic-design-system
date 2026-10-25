@@ -32,6 +32,7 @@ import dateSource from "../system/ai/examples/DatePickerExamples.tsx?raw";
 import filesSource from "../system/ai/examples/FileDropzoneExamples.tsx?raw";
 import colorsSource from "../system/ai/examples/ColorPickerExamples.tsx?raw";
 import tagSource from "../system/ai/examples/TagInputExamples.tsx?raw";
+import chipSource from "../system/ai/examples/ChipExamples.tsx?raw";
 import filterSource from "../system/ai/examples/FilterBarExamples.tsx?raw";
 import copySource from "../system/ai/examples/InputCopyExamples.tsx?raw";
 import sidebarSource from "../system/ai/examples/SidebarExamples.tsx?raw";
@@ -384,6 +385,7 @@ export default function Example() { return <div lang={${json(language)}}><System
       "color-picker",
       "tag-input",
       "filter-bar",
+      "chip",
       "input-copy",
     ])
   ) {
@@ -402,7 +404,9 @@ export default function Example() { return <div lang={${json(language)}}><System
                   ? "TagInputExample"
                   : component === "filter-bar"
                     ? "FilterBarExample"
-                    : "InputCopyExample";
+                    : component === "chip"
+                      ? "ChipExample"
+                      : "InputCopyExample";
     const entrySource =
       component === "slider"
         ? sliderSource
@@ -418,7 +422,9 @@ export default function Example() { return <div lang={${json(language)}}><System
                   ? tagSource
                   : component === "filter-bar"
                     ? filterSource
-                    : copySource;
+                    : component === "chip"
+                      ? chipSource
+                      : copySource;
     const source = entrySource.replace(
       /from "\.\.\/\.\.\/index"/g,
       'from "./system"',

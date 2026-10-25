@@ -3,6 +3,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Chip,
   Card,
   CardContent,
   Checkbox,
@@ -44,6 +45,14 @@ export function CorePreview({
           placeholder={t("اكتب اسمك", "Your name")}
           size="md"
         />
+      );
+    case "chip":
+      return (
+        <div className="core-preview-row">
+          <Chip selected>{t("الكل", "All")}</Chip>
+          <Chip>{t("التصميم", "Design")}</Chip>
+          <Chip>{t("التطوير", "Development")}</Chip>
+        </div>
       );
     case "badge":
       return (

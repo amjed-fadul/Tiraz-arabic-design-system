@@ -66,8 +66,8 @@ controls and caller-owned data, localized labels and persistence. Their
 Arabic/English, cancellation and destructive-action confirmation. Read their
 contracts before choosing callback and label props.
 
-Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-eight**
-component families: Button, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, DataAnswer, AgentTask, DecisionInbox, SuggestedEdits, ImageGeneration, DraftReview, ChangeSummary, AssistantControls, Terminal and ChatApp.
+Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-nine**
+component families: Button, Chip, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, DataAnswer, AgentTask, DecisionInbox, SuggestedEdits, ImageGeneration, DraftReview, ChangeSummary, AssistantControls, Terminal and ChatApp.
 Toast is an imperative hook/provider family, not an exported `Toast` component.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
@@ -212,6 +212,19 @@ DataTable adds client-side text sorting and pagination to Table. Use
 status filtering, create/Toast and row-specific details Sheets. These are
 application behaviors, not a general grid API. Explicit populated/loading/empty/
 no-results/error presets demonstrate states without fake services.
+
+Chip offers a controlled category choice. Use `selected`, `disabled`, `size="sm" | "md"`
+and visible children. Without href it is a native button (type defaults to button)
+with aria-pressed; with a string href it is a native anchor with aria-current=page
+when selected. Link consumers may use aria-current="location" for in-page anchors.
+Native events and React 19 refs follow the chosen element. Disabled anchors remove
+href/tab access and suppress click/auxclick; disabled buttons use native disabled.
+The host owns single or multiple selection, filtering and routing. Name the group
+or nav, preserve native link/modifier behavior, and keep labels stable. No live
+region, nested interactive children or arrow-key group model. See
+[ChipExamples](examples/ChipExamples.tsx) for bilingual single/multiple filtering
+and real in-page links. Use Badge for status, TagInput for entered values and Tabs
+for panels. Chip composes inside FilterBar's controls slot.
 
 Badge is static status text, not an action or live region; neutral is the default, success/error/info reuse semantic tokens, `warning` takes the attention color and `ai` the AI color. Use `warning` only for something that needs the person, and `ai` only for what the assistant produced. CustomerDataTable uses Badge for readable customer statuses.
 

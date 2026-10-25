@@ -1,6 +1,7 @@
 export * from "./config";
 export * from "./Provider";
 export * from "./Button";
+export * from "./Chip";
 export * from "./Tabs";
 export * from "./Switch";
 export * from "./DropdownMenu";

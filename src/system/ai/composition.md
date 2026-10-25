@@ -167,6 +167,11 @@ column API. No extra dependency is required.
 
 ## Small native controls
 
+Chip is a selectable filter button or native category link, determined by href.
+The app owns selected state and single/multiple choice rules. Label its group or
+nav; keep visible labels stable. Do not substitute it for a Badge or content Tabs.
+It composes inside FilterBar alongside Input and Select. See ChipExamples.tsx.
+
 Badge displays meaningful status text using neutral (default), success, error, info, warning or ai; meaning must remain readable without color. Keep `warning` (the attention color) for something that needs the person and `ai` for what the assistant produced. Keep it noninteractive. It has no automatic announcement, dismissal, size or variant API.
 
 Checkbox requires label and supports helper/error, invalid and native checked/defaultChecked, onChange, required, disabled, name/value, form and HTMLInputElement ref. Read event.currentTarget.checked in onChange. It reuses Field associations internally; className/style/ref stay on input. Error marks invalid without validating. No indeterminate or DataTable selection capability.

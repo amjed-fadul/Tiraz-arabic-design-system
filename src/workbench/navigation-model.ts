@@ -10,6 +10,7 @@ export const essentialIds = [
   "button",
   "input",
   "badge",
+  "chip",
   "select",
   "checkbox",
   "radio-group",
@@ -109,17 +110,18 @@ export function galleryName(category: string | undefined): Localized {
 }
 const aliases: Record<string, string[]> = {
   button: ["buttons", "action", "زر", "ازرار", "إجراء"],
-  badge: [
-    "chip",
+  chip: [
     "chips",
+    "filter",
+    "filters",
+    "category",
     "pill",
-    "status",
-    "tag",
-    "شارة",
-    "حالة",
-    "وسم",
+    "تصفية",
+    "تصنيف",
+    "خيارات",
     "وسوم",
   ],
+  badge: ["pill", "status", "tag", "شارة", "حالة", "وسم", "وسوم"],
   "tag-input": ["chip", "chips", "tag", "tags", "pill", "وسم", "وسوم"],
   input: ["text field", "textfield", "حقل", "حقل نص"],
   tabs: ["tab", "تبويب", "تبويبات"],
