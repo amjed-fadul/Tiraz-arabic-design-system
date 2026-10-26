@@ -17,12 +17,12 @@
       "required": true
     },
     "type": {
-      "type": "\"area\" | \"line\" | \"bar\" | \"donut\"",
+      "type": "\"bar\" | \"area\" | \"line\" | \"donut\"",
       "required": true,
       "members": [
+        "\"bar\"",
         "\"area\"",
         "\"line\"",
-        "\"bar\"",
         "\"donut\""
       ]
     }
@@ -36,12 +36,12 @@
           "required": true
         },
         "type": {
-          "type": "\"area\" | \"line\" | \"bar\"",
+          "type": "\"bar\" | \"area\" | \"line\"",
           "required": true,
           "members": [
+            "\"bar\"",
             "\"area\"",
-            "\"line\"",
-            "\"bar\""
+            "\"line\""
           ]
         }
       }

@@ -3,15 +3,15 @@
   "exportName": "SystemProvider",
   "kind": "component",
   "source": "Provider.tsx",
-  "sourceHash": "1f1a46d2d14af4d5a6ce27983bfe6cf7dcc2ac67a481e99bfb1602aabedc9df0",
-  "type": "({ config, children, }: { config?: SystemConfig; children: ReactNode; }) => JSX.Element",
+  "sourceHash": "f534515081a3b2321ccca4b4892887b2ae30f0563bc5208df887dc77c0c4b895",
+  "type": "({ config, children, className, style, lang, }: SystemProviderProps) => JSX.Element",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [
         {
-          "name": "{\n  config = defaultConfig,\n  children,\n}",
-          "type": "{ config?: SystemConfig; children: ReactNode; }",
+          "name": "{\n  config = defaultConfig,\n  children,\n  className,\n  style,\n  lang,\n}",
+          "type": "SystemProviderProps",
           "required": true
         }
       ],
@@ -23,9 +23,24 @@
       "type": "ReactNode",
       "required": true
     },
+    "className": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Additional classes on the existing .tiraz-system root."
+    },
     "config": {
       "type": "SystemConfig | undefined",
       "required": false
+    },
+    "lang": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Content language; direction remains controlled by config.direction."
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
+      "required": false,
+      "description": "Root layout styles. Config owns --action, --radius and colorScheme."
     }
   },
   "branches": [],
@@ -36,6 +51,7 @@
     "Accent": "Accent.json",
     "Direction": "Direction.json",
     "Numerals": "Numerals.json",
-    "SystemConfig": "SystemConfig.json"
+    "SystemConfig": "SystemConfig.json",
+    "SystemProviderProps": "SystemProviderProps.json"
   }
 }

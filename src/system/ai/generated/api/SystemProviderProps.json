@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SystemProviderProps",
+  "kind": "type",
+  "source": "Provider.tsx",
+  "sourceHash": "f534515081a3b2321ccca4b4892887b2ae30f0563bc5208df887dc77c0c4b895",
+  "type": "SystemProviderProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Additional classes on the existing .tiraz-system root."
+    },
+    "config": {
+      "type": "SystemConfig | undefined",
+      "required": false
+    },
+    "lang": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Content language; direction remains controlled by config.direction."
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
+      "required": false,
+      "description": "Root layout styles. Config owns --action, --radius and colorScheme."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "Accent": "Accent.json",
+    "Direction": "Direction.json",
+    "Numerals": "Numerals.json",
+    "SystemConfig": "SystemConfig.json"
+  }
+}

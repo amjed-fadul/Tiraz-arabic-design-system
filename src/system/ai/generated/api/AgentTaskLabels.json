@@ -153,7 +153,7 @@
       "description": "Replace the shared count helper's «٥ خطوات» and «١٢ عملية»."
     },
     "stepStates": {
-      "type": "Record<\"failed\" | \"running\" | \"completed\" | \"pending\" | \"needs-you\" | \"skipped\" | \"planned\", string>",
+      "type": "Record<\"running\" | \"failed\" | \"completed\" | \"pending\" | \"needs-you\" | \"skipped\" | \"planned\", string>",
       "required": true,
       "description": "Each step's hidden state word, beside its icon."
     },

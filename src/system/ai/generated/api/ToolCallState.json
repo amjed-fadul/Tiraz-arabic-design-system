@@ -7,8 +7,8 @@
   "type": "ToolCallState",
   "typeParameters": [],
   "members": [
-    "\"failed\"",
     "\"running\"",
+    "\"failed\"",
     "\"completed\"",
     "\"pending\"",
     "\"needs-you\""

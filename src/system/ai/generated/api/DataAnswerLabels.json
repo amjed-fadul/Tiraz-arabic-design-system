@@ -14,7 +14,7 @@
       "description": "The chart types' group, and each type's name in it."
     },
     "chartTypes": {
-      "type": "Record<\"area\" | \"line\" | \"bar\" | \"donut\", string>",
+      "type": "Record<\"bar\" | \"area\" | \"line\" | \"donut\", string>",
       "required": true
     },
     "completed": {

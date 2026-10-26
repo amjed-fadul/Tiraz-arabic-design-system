@@ -58,11 +58,11 @@
       "description": "An approval, shown in full as an Approval request when its row opens…"
     },
     "status": {
-      "type": "\"failed\" | \"running\" | \"completed\" | \"needs-you\"",
+      "type": "\"running\" | \"failed\" | \"completed\" | \"needs-you\"",
       "required": true,
       "members": [
-        "\"failed\"",
         "\"running\"",
+        "\"failed\"",
         "\"completed\"",
         "\"needs-you\""
       ],

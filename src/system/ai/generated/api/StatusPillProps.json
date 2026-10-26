@@ -25,9 +25,9 @@
       "type": "StatusPillState",
       "required": true,
       "members": [
+        "\"running\"",
         "\"idle\"",
         "\"failed\"",
-        "\"running\"",
         "\"completed\"",
         "\"needs-you\"",
         "\"stopped\""

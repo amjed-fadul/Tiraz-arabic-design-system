@@ -38,8 +38,8 @@
       "type": "StatusIconState",
       "required": true,
       "members": [
-        "\"failed\"",
         "\"running\"",
+        "\"failed\"",
         "\"completed\"",
         "\"pending\"",
         "\"needs-you\"",

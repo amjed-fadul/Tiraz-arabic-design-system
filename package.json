@@ -8,6 +8,7 @@
     "build": "npm run registry:build && tsc -b && vite build && node scripts/prepare-site.mjs",
     "build:package": "node scripts/build-package.mjs",
     "pack:package": "npm run build:package && npm pack ./packages/tiraz",
+    "verify:package": "node scripts/verify-package.mjs",
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",

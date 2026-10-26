@@ -37,6 +37,10 @@
       "source": "Provider.tsx"
     },
     {
+      "name": "SystemProviderProps",
+      "source": "Provider.tsx"
+    },
+    {
       "name": "Chip",
       "source": "Chip.tsx"
     },

@@ -30,19 +30,19 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-autocomplete": {
-      "type": "\"none\" | \"list\" | \"inline\" | \"both\" | undefined",
+      "type": "\"none\" | \"both\" | \"inline\" | \"list\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"none\"",
-        "\"list\"",
+        "\"both\"",
         "\"inline\"",
-        "\"both\""
+        "\"list\""
       ]
     },
     "aria-braillelabel": {
@@ -60,20 +60,20 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-checked": {
-      "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+      "type": "boolean | \"mixed\" | \"false\" | \"true\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "false",
         "true",
-        "\"true\"",
+        "\"mixed\"",
         "\"false\"",
-        "\"mixed\""
+        "\"true\""
       ]
     },
     "aria-colcount": {
@@ -97,16 +97,16 @@
       "required": false
     },
     "aria-current": {
-      "type": "boolean | \"location\" | \"true\" | \"false\" | \"page\" | \"step\" | \"date\" | \"time\" | undefined",
+      "type": "boolean | \"location\" | \"page\" | \"false\" | \"true\" | \"step\" | \"date\" | \"time\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "false",
         "true",
         "\"location\"",
-        "\"true\"",
-        "\"false\"",
         "\"page\"",
+        "\"false\"",
+        "\"true\"",
         "\"step\"",
         "\"date\"",
         "\"time\""
@@ -131,20 +131,20 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-dropeffect": {
-      "type": "\"copy\" | \"link\" | \"none\" | \"execute\" | \"move\" | \"popup\" | undefined",
+      "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"copy\"",
         "\"link\"",
         "\"none\"",
-        "\"execute\"",
         "\"move\"",
+        "\"execute\"",
         "\"popup\""
       ]
     },
@@ -159,8 +159,8 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-flowto": {
@@ -174,23 +174,23 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-haspopup": {
-      "type": "boolean | \"true\" | \"false\" | \"dialog\" | \"grid\" | \"listbox\" | \"menu\" | \"tree\" | undefined",
+      "type": "boolean | \"listbox\" | \"grid\" | \"menu\" | \"false\" | \"true\" | \"dialog\" | \"tree\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\"",
-        "\"dialog\"",
-        "\"grid\"",
         "\"listbox\"",
+        "\"grid\"",
         "\"menu\"",
+        "\"false\"",
+        "\"true\"",
+        "\"dialog\"",
         "\"tree\""
       ]
     },
@@ -201,19 +201,19 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-invalid": {
-      "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\" | undefined",
+      "type": "boolean | \"false\" | \"true\" | \"grammar\" | \"spelling\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "false",
         "true",
-        "\"true\"",
         "\"false\"",
+        "\"true\"",
         "\"grammar\"",
         "\"spelling\""
       ]
@@ -251,8 +251,8 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-multiline": {
@@ -262,8 +262,8 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-multiselectable": {
@@ -273,8 +273,8 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-orientation": {
@@ -299,15 +299,15 @@
       "required": false
     },
     "aria-pressed": {
-      "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+      "type": "boolean | \"mixed\" | \"false\" | \"true\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "false",
         "true",
-        "\"true\"",
+        "\"mixed\"",
         "\"false\"",
-        "\"mixed\""
+        "\"true\""
       ]
     },
     "aria-readonly": {
@@ -317,20 +317,20 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-relevant": {
-      "type": "\"text\" | \"additions\" | \"additions removals\" | \"additions text\" | \"all\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\" | undefined",
+      "type": "\"all\" | \"text\" | \"additions\" | \"additions removals\" | \"additions text\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\" | undefined",
       "required": false,
       "members": [
         "undefined",
+        "\"all\"",
         "\"text\"",
         "\"additions\"",
         "\"additions removals\"",
         "\"additions text\"",
-        "\"all\"",
         "\"removals\"",
         "\"removals additions\"",
         "\"removals text\"",
@@ -345,8 +345,8 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-roledescription": {
@@ -376,8 +376,8 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "aria-setsize": {
@@ -412,7 +412,7 @@
       "required": false
     },
     "autoCapitalize": {
-      "type": "(string & {}) | \"off\" | \"none\" | \"on\" | \"sentences\" | \"words\" | \"characters\" | undefined",
+      "type": "(string & {}) | \"none\" | \"off\" | \"on\" | \"sentences\" | \"words\" | \"characters\" | undefined",
       "required": false
     },
     "autoCorrect": {
@@ -452,8 +452,8 @@
         "false",
         "true",
         "\"inherit\"",
-        "\"true\"",
         "\"false\"",
+        "\"true\"",
         "\"plaintext-only\""
       ]
     },
@@ -502,20 +502,20 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "enterKeyHint": {
-      "type": "\"search\" | \"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"send\" | undefined",
+      "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"search\"",
+        "\"next\"",
         "\"enter\"",
         "\"done\"",
         "\"go\"",
-        "\"next\"",
         "\"previous\"",
         "\"send\""
       ]
@@ -1377,13 +1377,13 @@
       "required": false
     },
     "popoverTargetAction": {
-      "type": "\"toggle\" | \"show\" | \"hide\" | undefined",
+      "type": "\"toggle\" | \"hide\" | \"show\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"toggle\"",
-        "\"show\"",
-        "\"hide\""
+        "\"hide\"",
+        "\"show\""
       ]
     },
     "prefix": {
@@ -1447,8 +1447,8 @@
         "undefined",
         "false",
         "true",
-        "\"true\"",
-        "\"false\""
+        "\"false\"",
+        "\"true\""
       ]
     },
     "style": {
@@ -1540,19 +1540,19 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-autocomplete": {
-          "type": "\"none\" | \"list\" | \"inline\" | \"both\" | undefined",
+          "type": "\"none\" | \"both\" | \"inline\" | \"list\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"none\"",
-            "\"list\"",
+            "\"both\"",
             "\"inline\"",
-            "\"both\""
+            "\"list\""
           ]
         },
         "aria-braillelabel": {
@@ -1570,20 +1570,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-checked": {
-          "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+          "type": "boolean | \"mixed\" | \"false\" | \"true\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
+            "\"mixed\"",
             "\"false\"",
-            "\"mixed\""
+            "\"true\""
           ]
         },
         "aria-colcount": {
@@ -1607,16 +1607,16 @@
           "required": false
         },
         "aria-current": {
-          "type": "boolean | \"location\" | \"true\" | \"false\" | \"page\" | \"step\" | \"date\" | \"time\" | undefined",
+          "type": "boolean | \"location\" | \"page\" | \"false\" | \"true\" | \"step\" | \"date\" | \"time\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
             "\"location\"",
-            "\"true\"",
-            "\"false\"",
             "\"page\"",
+            "\"false\"",
+            "\"true\"",
             "\"step\"",
             "\"date\"",
             "\"time\""
@@ -1641,20 +1641,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"execute\" | \"move\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
             "\"link\"",
             "\"none\"",
-            "\"execute\"",
             "\"move\"",
+            "\"execute\"",
             "\"popup\""
           ]
         },
@@ -1669,8 +1669,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-flowto": {
@@ -1684,23 +1684,23 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-haspopup": {
-          "type": "boolean | \"true\" | \"false\" | \"dialog\" | \"grid\" | \"listbox\" | \"menu\" | \"tree\" | undefined",
+          "type": "boolean | \"listbox\" | \"grid\" | \"menu\" | \"false\" | \"true\" | \"dialog\" | \"tree\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\"",
-            "\"dialog\"",
-            "\"grid\"",
             "\"listbox\"",
+            "\"grid\"",
             "\"menu\"",
+            "\"false\"",
+            "\"true\"",
+            "\"dialog\"",
             "\"tree\""
           ]
         },
@@ -1711,19 +1711,19 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-invalid": {
-          "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\" | undefined",
+          "type": "boolean | \"false\" | \"true\" | \"grammar\" | \"spelling\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
             "\"false\"",
+            "\"true\"",
             "\"grammar\"",
             "\"spelling\""
           ]
@@ -1761,8 +1761,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-multiline": {
@@ -1772,8 +1772,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-multiselectable": {
@@ -1783,8 +1783,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-orientation": {
@@ -1809,15 +1809,15 @@
           "required": false
         },
         "aria-pressed": {
-          "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+          "type": "boolean | \"mixed\" | \"false\" | \"true\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
+            "\"mixed\"",
             "\"false\"",
-            "\"mixed\""
+            "\"true\""
           ]
         },
         "aria-readonly": {
@@ -1827,20 +1827,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-relevant": {
-          "type": "\"text\" | \"additions\" | \"additions removals\" | \"additions text\" | \"all\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\" | undefined",
+          "type": "\"all\" | \"text\" | \"additions\" | \"additions removals\" | \"additions text\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\" | undefined",
           "required": false,
           "members": [
             "undefined",
+            "\"all\"",
             "\"text\"",
             "\"additions\"",
             "\"additions removals\"",
             "\"additions text\"",
-            "\"all\"",
             "\"removals\"",
             "\"removals additions\"",
             "\"removals text\"",
@@ -1855,8 +1855,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-roledescription": {
@@ -1886,8 +1886,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-setsize": {
@@ -1922,7 +1922,7 @@
           "required": false
         },
         "autoCapitalize": {
-          "type": "(string & {}) | \"off\" | \"none\" | \"on\" | \"sentences\" | \"words\" | \"characters\" | undefined",
+          "type": "(string & {}) | \"none\" | \"off\" | \"on\" | \"sentences\" | \"words\" | \"characters\" | undefined",
           "required": false
         },
         "autoCorrect": {
@@ -1962,8 +1962,8 @@
             "false",
             "true",
             "\"inherit\"",
-            "\"true\"",
             "\"false\"",
+            "\"true\"",
             "\"plaintext-only\""
           ]
         },
@@ -2012,20 +2012,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"send\" | undefined",
+          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"search\"",
+            "\"next\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",
-            "\"next\"",
             "\"previous\"",
             "\"send\""
           ]
@@ -2887,13 +2887,13 @@
           "required": false
         },
         "popoverTargetAction": {
-          "type": "\"toggle\" | \"show\" | \"hide\" | undefined",
+          "type": "\"toggle\" | \"hide\" | \"show\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"toggle\"",
-            "\"show\"",
-            "\"hide\""
+            "\"hide\"",
+            "\"show\""
           ]
         },
         "prefix": {
@@ -2957,8 +2957,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "style": {
@@ -3050,19 +3050,19 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-autocomplete": {
-          "type": "\"none\" | \"list\" | \"inline\" | \"both\" | undefined",
+          "type": "\"none\" | \"both\" | \"inline\" | \"list\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"none\"",
-            "\"list\"",
+            "\"both\"",
             "\"inline\"",
-            "\"both\""
+            "\"list\""
           ]
         },
         "aria-braillelabel": {
@@ -3080,20 +3080,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-checked": {
-          "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+          "type": "boolean | \"mixed\" | \"false\" | \"true\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
+            "\"mixed\"",
             "\"false\"",
-            "\"mixed\""
+            "\"true\""
           ]
         },
         "aria-colcount": {
@@ -3117,16 +3117,16 @@
           "required": false
         },
         "aria-current": {
-          "type": "boolean | \"location\" | \"true\" | \"false\" | \"page\" | \"step\" | \"date\" | \"time\" | undefined",
+          "type": "boolean | \"location\" | \"page\" | \"false\" | \"true\" | \"step\" | \"date\" | \"time\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
             "\"location\"",
-            "\"true\"",
-            "\"false\"",
             "\"page\"",
+            "\"false\"",
+            "\"true\"",
             "\"step\"",
             "\"date\"",
             "\"time\""
@@ -3151,20 +3151,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"execute\" | \"move\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
             "\"link\"",
             "\"none\"",
-            "\"execute\"",
             "\"move\"",
+            "\"execute\"",
             "\"popup\""
           ]
         },
@@ -3179,8 +3179,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-flowto": {
@@ -3194,23 +3194,23 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-haspopup": {
-          "type": "boolean | \"true\" | \"false\" | \"dialog\" | \"grid\" | \"listbox\" | \"menu\" | \"tree\" | undefined",
+          "type": "boolean | \"listbox\" | \"grid\" | \"menu\" | \"false\" | \"true\" | \"dialog\" | \"tree\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\"",
-            "\"dialog\"",
-            "\"grid\"",
             "\"listbox\"",
+            "\"grid\"",
             "\"menu\"",
+            "\"false\"",
+            "\"true\"",
+            "\"dialog\"",
             "\"tree\""
           ]
         },
@@ -3221,19 +3221,19 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-invalid": {
-          "type": "boolean | \"true\" | \"false\" | \"grammar\" | \"spelling\" | undefined",
+          "type": "boolean | \"false\" | \"true\" | \"grammar\" | \"spelling\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
             "\"false\"",
+            "\"true\"",
             "\"grammar\"",
             "\"spelling\""
           ]
@@ -3271,8 +3271,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-multiline": {
@@ -3282,8 +3282,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-multiselectable": {
@@ -3293,8 +3293,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-orientation": {
@@ -3319,15 +3319,15 @@
           "required": false
         },
         "aria-pressed": {
-          "type": "boolean | \"true\" | \"false\" | \"mixed\" | undefined",
+          "type": "boolean | \"mixed\" | \"false\" | \"true\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "false",
             "true",
-            "\"true\"",
+            "\"mixed\"",
             "\"false\"",
-            "\"mixed\""
+            "\"true\""
           ]
         },
         "aria-readonly": {
@@ -3337,20 +3337,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-relevant": {
-          "type": "\"text\" | \"additions\" | \"additions removals\" | \"additions text\" | \"all\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\" | undefined",
+          "type": "\"all\" | \"text\" | \"additions\" | \"additions removals\" | \"additions text\" | \"removals\" | \"removals additions\" | \"removals text\" | \"text additions\" | \"text removals\" | undefined",
           "required": false,
           "members": [
             "undefined",
+            "\"all\"",
             "\"text\"",
             "\"additions\"",
             "\"additions removals\"",
             "\"additions text\"",
-            "\"all\"",
             "\"removals\"",
             "\"removals additions\"",
             "\"removals text\"",
@@ -3365,8 +3365,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-roledescription": {
@@ -3396,8 +3396,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "aria-setsize": {
@@ -3432,7 +3432,7 @@
           "required": false
         },
         "autoCapitalize": {
-          "type": "(string & {}) | \"off\" | \"none\" | \"on\" | \"sentences\" | \"words\" | \"characters\" | undefined",
+          "type": "(string & {}) | \"none\" | \"off\" | \"on\" | \"sentences\" | \"words\" | \"characters\" | undefined",
           "required": false
         },
         "autoCorrect": {
@@ -3472,8 +3472,8 @@
             "false",
             "true",
             "\"inherit\"",
-            "\"true\"",
             "\"false\"",
+            "\"true\"",
             "\"plaintext-only\""
           ]
         },
@@ -3522,20 +3522,20 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"enter\" | \"done\" | \"go\" | \"next\" | \"previous\" | \"send\" | undefined",
+          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"search\"",
+            "\"next\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",
-            "\"next\"",
             "\"previous\"",
             "\"send\""
           ]
@@ -4397,13 +4397,13 @@
           "required": false
         },
         "popoverTargetAction": {
-          "type": "\"toggle\" | \"show\" | \"hide\" | undefined",
+          "type": "\"toggle\" | \"hide\" | \"show\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"toggle\"",
-            "\"show\"",
-            "\"hide\""
+            "\"hide\"",
+            "\"show\""
           ]
         },
         "prefix": {
@@ -4467,8 +4467,8 @@
             "undefined",
             "false",
             "true",
-            "\"true\"",
-            "\"false\""
+            "\"false\"",
+            "\"true\""
           ]
         },
         "style": {

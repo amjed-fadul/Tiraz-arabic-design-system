@@ -7,8 +7,8 @@
   "type": "TaskState",
   "typeParameters": [],
   "members": [
-    "\"failed\"",
     "\"running\"",
+    "\"failed\"",
     "\"completed\"",
     "\"pending\"",
     "\"needs-you\""

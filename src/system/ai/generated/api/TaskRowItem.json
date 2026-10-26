@@ -21,8 +21,8 @@
       "type": "TaskState",
       "required": true,
       "members": [
-        "\"failed\"",
         "\"running\"",
+        "\"failed\"",
         "\"completed\"",
         "\"pending\"",
         "\"needs-you\""

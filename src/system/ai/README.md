@@ -46,6 +46,13 @@ and no npm installation is run automatically. Review the backup id after apply;
 needs host type checks, tests and rendered Arabic/English verification. Follow the
 package README for conflict choices, baseline bootstrap and interrupted recovery.
 
+The development provider also accepts optional `className`, `style` and `lang`
+on its existing `.tiraz-system` root; `SystemProviderProps` is exported.
+Use these for application layout and section language. Omitting them preserves
+the existing root and defaults. Language does not translate content or change
+`config.direction`. Config still owns `--action`, `--radius` and `colorScheme`
+when root styles are merged. These props are not in the published 0.1.2 package.
+
 The current provider accepts optional CSS overrides `--tiraz-action` and
 `--tiraz-radius`, falling back to `config.accent` and `config.radius`. Other
 semantic tokens can be overridden in CSS normally. Put user theme rules after
@@ -196,9 +203,10 @@ Wrap the interface in `SystemProvider`; configure with
 `{ ...defaultConfig, ...overrides }`, not an incomplete config object. Put
 `ToastProvider` inside it, and call `useToast` in a descendant. Keep the
 provider around overlays so their tokens and direction remain scoped. Set
-`lang` on a host ancestor above SystemProvider (or on the document), so sibling
+`lang` on SystemProvider, a host ancestor above it, or the document, so sibling
 portal and Toast content also inherit the chosen language; setting it only
-on `<main>` is insufficient. SystemProvider does not accept a `lang` prop.
+on `<main>` is insufficient. Published 0.1.2 needs the host ancestor; the
+development provider accepts `lang` directly.
 
 The source/type contract wins if metadata drifts. State the discrepancy and
 validate against the real implementation; do not silently invent capabilities.

@@ -37,12 +37,12 @@
       ]
     },
     "side": {
-      "type": "\"right\" | \"left\" | undefined",
+      "type": "\"left\" | \"right\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"right\"",
-        "\"left\""
+        "\"left\"",
+        "\"right\""
       ]
     },
     "title": {

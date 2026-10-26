@@ -42,8 +42,8 @@
       "type": "ToolCallState",
       "required": true,
       "members": [
-        "\"failed\"",
         "\"running\"",
+        "\"failed\"",
         "\"completed\"",
         "\"pending\"",
         "\"needs-you\""

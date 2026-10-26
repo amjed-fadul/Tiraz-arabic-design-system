@@ -33,11 +33,12 @@ Compose patterns the way the examples do. Put them in a ChatThread as messages i
   and the shared title/heading/body/meta tokens for clear hierarchy. Animate
   whole labels; never split Arabic into independently animated characters or
   insert letter spacing that breaks shaping. Labels are caller-owned.
-- Coordinate `lang` on a host ancestor **above SystemProvider** (or the document)
+- Coordinate `lang` on SystemProvider, a host ancestor above it, or the document
   and `SystemConfig.direction`: Arabic/RTL,
   English/LTR. Changing direction does not translate copy; changing copy does
   not set direction. A `lang` only on `<main>` misses sibling portal/Toast
-  content; SystemProvider has no `lang` prop. Use `<bdi dir="ltr">INV-42</bdi>` (or equivalent isolation)
+  content. Published 0.1.2 needs the host ancestor; the development provider
+  accepts `lang` directly. Use `<bdi dir="ltr">INV-42</bdi>` (or equivalent isolation)
   for Latin identifiers within Arabic, keeping punctuation correctly ordered.
 - Choose digits once with `SystemConfig.numerals`: `"arab"` (Arabic-Indic,
   default) or `"latn"` (Western). Component numbers and dates follow it; format

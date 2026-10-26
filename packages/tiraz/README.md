@@ -28,6 +28,47 @@ export function App() {
 font, import `@amjedfadul/tiraz/tokens.css` and `@amjedfadul/tiraz/components.css` separately. Preserve
 `:dir()` in your CSS target: Chrome/Edge 120+, Firefox 114+, Safari 16.4+.
 
+## Provider root props (local preview, not yet published)
+
+`SystemProvider` accepts optional `className`, `style` and `lang` props on its
+existing `.tiraz-system` root. Use them to embed Tiraz in a dashboard, size a
+full-height application or identify a multilingual section. No extra wrapper is
+added, and existing calls without these props keep their defaults.
+
+```tsx
+<SystemProvider
+  config={{ ...defaultConfig, direction: "rtl" }}
+  lang="ar"
+  className="dashboard-root"
+  style={{ minHeight: "100dvh", width: "100%" }}
+>
+  <Button>ابدأ الآن</Button>
+</SystemProvider>
+```
+
+`lang` identifies the content language; it does not translate content or change
+`config.direction`. Omit it to inherit the document or parent language.
+`className` is added alongside `tiraz-system`. Layout styles are merged into the
+root, but `config` retains ownership of `--action`, `--radius` and `colorScheme`.
+Use the supported `--tiraz-action` and `--tiraz-radius` CSS hooks for theme
+overrides. `SystemProviderProps` is exported for typed integrations.
+
+This local `0.1.3-preview.0` prerelease has not been published to npm. Package updates do not
+rewrite copied source; source owners can review and incorporate the provider
+change separately.
+
+Maintainers can verify a built archive without publishing it:
+
+```sh
+npm run pack:package
+npm run verify:package -- ./amjedfadul-tiraz-0.1.3-preview.0.tgz
+```
+
+The verifier installs the archive into a temporary app, checks its public types,
+builds its styles/fonts and components with Vite, and checks the compiled runtime.
+It uses the repository's installed React/TypeScript/Vite versions and requires
+registry access for dependencies. Add `--keep` to retain the app for browser review.
+
 ## Updating to 0.1.2
 
 This patch removes the upward text offset in buttons, badges, tabs, inputs,

@@ -59,12 +59,12 @@
       "required": true
     },
     "state": {
-      "type": "\"failed\" | \"running\" | \"completed\" | undefined",
+      "type": "\"running\" | \"failed\" | \"completed\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"failed\"",
         "\"running\"",
+        "\"failed\"",
         "\"completed\""
       ]
     }

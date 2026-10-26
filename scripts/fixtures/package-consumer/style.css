@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  background: #ddd;
+}
+main {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+.embedded-demo {
+  box-sizing: border-box;
+  padding: 24px;
+  min-width: 0;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-block: 24px;
+}

@@ -45,7 +45,7 @@
       "required": true
     },
     "pills": {
-      "type": "Record<\"failed\" | \"running\" | \"completed\" | \"needs-you\", string>",
+      "type": "Record<\"running\" | \"failed\" | \"completed\" | \"needs-you\", string>",
       "required": true,
       "description": "Each row's pill by its status, and a draft's while it waits."
     },

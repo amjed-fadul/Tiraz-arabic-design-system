@@ -51,7 +51,7 @@
       "description": "Drawn by `chart.type`'s family with `chart.props` as given, once completed."
     },
     "chartTypes": {
-      "type": "readonly (\"area\" | \"line\" | \"bar\" | \"donut\")[] | undefined",
+      "type": "readonly (\"bar\" | \"area\" | \"line\" | \"donut\")[] | undefined",
       "required": false,
       "description": "The types the person can switch between; two or more, with the handler."
     },

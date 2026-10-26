@@ -114,11 +114,11 @@
       "required": false
     },
     "status": {
-      "type": "\"failed\" | \"running\" | \"completed\" | \"needs-you\" | \"stopped\" | \"plan\"",
+      "type": "\"running\" | \"failed\" | \"completed\" | \"needs-you\" | \"stopped\" | \"plan\"",
       "required": true,
       "members": [
-        "\"failed\"",
         "\"running\"",
+        "\"failed\"",
         "\"completed\"",
         "\"needs-you\"",
         "\"stopped\"",

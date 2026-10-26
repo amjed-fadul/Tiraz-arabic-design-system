@@ -48,11 +48,11 @@
       "description": "Shown inline as a plain ApprovalCard while the step needs you."
     },
     "state": {
-      "type": "\"failed\" | \"running\" | \"completed\" | \"pending\" | \"needs-you\" | \"skipped\" | \"planned\"",
+      "type": "\"running\" | \"failed\" | \"completed\" | \"pending\" | \"needs-you\" | \"skipped\" | \"planned\"",
       "required": true,
       "members": [
-        "\"failed\"",
         "\"running\"",
+        "\"failed\"",
         "\"completed\"",
         "\"pending\"",
         "\"needs-you\"",

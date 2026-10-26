@@ -8,9 +8,9 @@
   "description": "The six states every pattern shares (spec section 10).",
   "typeParameters": [],
   "members": [
+    "\"running\"",
     "\"idle\"",
     "\"failed\"",
-    "\"running\"",
     "\"completed\"",
     "\"needs-you\"",
     "\"stopped\""

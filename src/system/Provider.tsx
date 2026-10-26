@@ -5,13 +5,23 @@ import { accentColors, defaultConfig } from "./config";
 import type { SystemConfig } from "./config";
 import { useInputModality } from "./useInputModality";
 import { SystemContext } from "./useSystem";
+export interface SystemProviderProps {
+  config?: SystemConfig;
+  children: ReactNode;
+  /** Additional classes on the existing .tiraz-system root. */
+  className?: string;
+  /** Root layout styles. Config owns --action, --radius and colorScheme. */
+  style?: CSSProperties;
+  /** Content language; direction remains controlled by config.direction. */
+  lang?: string;
+}
 export function SystemProvider({
   config = defaultConfig,
   children,
-}: {
-  config?: SystemConfig;
-  children: ReactNode;
-}) {
+  className,
+  style,
+  lang,
+}: SystemProviderProps) {
   const [container, setContainer] = useState<HTMLDivElement | null>(null);
   const modality = useInputModality();
   // Modality re-renders only the root element; consumers of the system
@@ -38,7 +48,8 @@ export function SystemProvider({
       <SystemContext.Provider value={system}>
         <div
           ref={setContainer}
-          className="tiraz-system"
+          className={["tiraz-system", className].filter(Boolean).join(" ")}
+          lang={lang}
           dir={config.direction}
           data-theme={config.theme}
           data-density={config.density}
@@ -48,6 +59,7 @@ export function SystemProvider({
           data-modality={modality}
           style={
             {
+              ...style,
               "--action": `var(--tiraz-action, ${accentColors[config.accent][config.theme]})`,
               "--radius": `var(--tiraz-radius, ${config.radius}px)`,
               colorScheme: config.theme,

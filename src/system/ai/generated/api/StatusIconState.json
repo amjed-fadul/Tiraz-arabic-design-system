@@ -8,8 +8,8 @@
   "description": "The seven statuses of the Woven vocabulary: tasks, tool calls, steps of agent work.",
   "typeParameters": [],
   "members": [
-    "\"failed\"",
     "\"running\"",
+    "\"failed\"",
     "\"completed\"",
     "\"pending\"",
     "\"needs-you\"",
