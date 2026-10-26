@@ -3,7 +3,7 @@
   "exportName": "InlineCitationLabels",
   "kind": "type",
   "source": "Sources.tsx",
-  "sourceHash": "31a121e3b2e202903de08c6230412d844d90678be56ff85a42ccb9bcfe29729a",
+  "sourceHash": "b8469a0a56f54411eb7466a8f7706474cb0ced648ed4edc5b671819d33c09985",
   "type": "InlineCitationLabels",
   "typeParameters": [],
   "props": {

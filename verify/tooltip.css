@@ -1,0 +1,49 @@
+body {
+  margin: 0;
+  background: #e9eceb;
+  color: #17221d;
+  font: 16px system-ui;
+}
+main {
+  padding: 24px;
+}
+.panels {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.panel {
+  width: 380px;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 90px;
+}
+.boundary {
+  width: 360px;
+  height: 260px;
+  border: 2px solid #66756d;
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.boundary > .tiraz-system {
+  padding: 16px;
+  width: auto;
+  min-height: 0;
+}
+.boundary.narrow {
+  width: 160px;
+}
+.panel:nth-child(2) .boundary.narrow {
+  transform: scale(0.8);
+  transform-origin: top left;
+}
+.dialogs {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+}

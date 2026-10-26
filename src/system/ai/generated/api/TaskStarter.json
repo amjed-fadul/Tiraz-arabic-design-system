@@ -3,7 +3,7 @@
   "exportName": "TaskStarter",
   "kind": "component",
   "source": "TaskStarter.tsx",
-  "sourceHash": "34a91d7de51faa0a9dc647a5e519786f9b661bdbcc418416fcb32359defd0603",
+  "sourceHash": "d9e4e285e982173bac6b5892748dbe88adb685b5214ff0f5a860a666f9ccd667",
   "type": "({ agentPresentation, value, onValueChange, onSubmit, context, onRemoveContext, onAttach, onVoice, mentionOptions, onAddContext, onMention, modes, mode, onModeChange, models, model, onModelChange, contextUsage, suggestions, onSuggestion, recent, onOpenRecent, greeting, title, disabled, disabledReason, modeMenuOpen, onModeMenuOpenChange, headingLevel, labels, announcement, appearance, }: TaskStarterProps) => JSX.Element",
   "description": "Start a task (spec section 12.1): a request from the page you are on, with\nthe right records attached. The host owns the draft, the context and the\nmode; the pattern is a prompt entry with chips for the records, an @ picker,\na mode menu that also shows how much of the context is used, suggestions\nand recent tasks. The picker is a combobox on the text area, which keeps\nfocus; an input method's keys never choose, move or send.",
   "signatures": [

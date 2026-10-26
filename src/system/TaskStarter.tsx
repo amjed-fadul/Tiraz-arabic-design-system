@@ -29,7 +29,7 @@ import type { StatusPillState } from "./StatusPill";
 import { Tray } from "./Tray";
 import { taskStarterCopy } from "./task-starter-copy";
 import { useGlide } from "./useGlide";
-import { useSystem } from "./useSystem";
+import { useSystem, usePortalDestination } from "./useSystem";
 
 /** A record attached to the request, or offered by the @ picker. */
 export interface ContextItem {
@@ -226,7 +226,8 @@ export function TaskStarter({
   announcement = "polite",
   appearance = "card",
 }: TaskStarterProps) {
-  const { config, container } = useSystem(),
+  const { config } = useSystem(),
+    container = usePortalDestination(),
     uid = useId(),
     glide = useGlide();
   const copy: TaskStarterLabels = {
@@ -267,7 +268,8 @@ export function TaskStarter({
             fold(option.label).includes(fold(mention.query)),
         )
       : [];
-  const open = matches.length > 0 && !closed && !disabled && !submitting;
+  const open =
+    !!container && matches.length > 0 && !closed && !disabled && !submitting;
   const index = Math.min(active, Math.max(0, matches.length - 1));
   const listId = `${uid}-mentions`,
     optionId = (position: number) => `${listId}-${position}`;
@@ -504,86 +506,46 @@ export function TaskStarter({
           <ChevronDown size={14} aria-hidden="true" />
         </button>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Portal container={container}>
-        <DropdownMenu.Content
-          ref={glide}
-          className="tz-menu tz-task-starter-menu"
-          side="bottom"
-          align="end"
-          sideOffset={7}
-          collisionPadding={12}
-          onKeyDown={(event) => {
-            if (event.key === "Tab") {
-              event.preventDefault();
-              setLocalMenu(false);
-              onModeMenuOpenChange?.(false);
-            }
-          }}
-        >
-          {!!modes?.length && (
-            <DropdownMenu.RadioGroup
-              aria-label={copy.mode}
-              value={mode ?? ""}
-              onValueChange={(id) => id !== mode && onModeChange?.(id)}
-            >
-              {modes.map((item) => (
-                <DropdownMenu.RadioItem
-                  key={item.id}
-                  value={item.id}
-                  textValue={item.label}
-                  className="tz-menu-item tz-task-starter-item"
-                  aria-labelledby={`${uid}-${item.id}-name`}
-                  aria-describedby={
-                    item.description ? `${uid}-${item.id}-hint` : undefined
-                  }
-                  onPointerLeave={keepHighlight}
-                >
-                  <span className="tz-task-starter-item-copy">
-                    <span id={`${uid}-${item.id}-name`}>{item.label}</span>
-                    {item.description && (
-                      <small id={`${uid}-${item.id}-hint`}>
-                        {item.description}
-                      </small>
-                    )}
-                  </span>
-                  <DropdownMenu.ItemIndicator aria-hidden="true">
-                    <Check size={14} />
-                  </DropdownMenu.ItemIndicator>
-                </DropdownMenu.RadioItem>
-              ))}
-            </DropdownMenu.RadioGroup>
-          )}
-          {!!models?.length && (
-            <>
-              {!!modes?.length && (
-                <DropdownMenu.Separator className="tz-menu-separator" />
-              )}
-              <DropdownMenu.Label className="tz-task-starter-menu-label">
-                {copy.model}
-              </DropdownMenu.Label>
+      {container && (
+        <DropdownMenu.Portal container={container}>
+          <DropdownMenu.Content
+            ref={glide}
+            className="tz-menu tz-task-starter-menu"
+            side="bottom"
+            align="end"
+            sideOffset={7}
+            collisionPadding={12}
+            onKeyDown={(event) => {
+              if (event.key === "Tab") {
+                event.preventDefault();
+                setLocalMenu(false);
+                onModeMenuOpenChange?.(false);
+              }
+            }}
+          >
+            {!!modes?.length && (
               <DropdownMenu.RadioGroup
-                aria-label={copy.model}
-                value={model ?? ""}
-                onValueChange={(id) => id !== model && onModelChange?.(id)}
+                aria-label={copy.mode}
+                value={mode ?? ""}
+                onValueChange={(id) => id !== mode && onModeChange?.(id)}
               >
-                {models.map((item) => (
+                {modes.map((item) => (
                   <DropdownMenu.RadioItem
                     key={item.id}
                     value={item.id}
-                    textValue={item.name}
-                    disabled={item.disabled}
+                    textValue={item.label}
                     className="tz-menu-item tz-task-starter-item"
                     aria-labelledby={`${uid}-${item.id}-name`}
                     aria-describedby={
-                      item.disabled ? `${uid}-${item.id}-hint` : undefined
+                      item.description ? `${uid}-${item.id}-hint` : undefined
                     }
                     onPointerLeave={keepHighlight}
                   >
                     <span className="tz-task-starter-item-copy">
-                      <bdi id={`${uid}-${item.id}-name`}>{item.name}</bdi>
-                      {item.disabled && (
+                      <span id={`${uid}-${item.id}-name`}>{item.label}</span>
+                      {item.description && (
                         <small id={`${uid}-${item.id}-hint`}>
-                          {copy.unavailable}
+                          {item.description}
                         </small>
                       )}
                     </span>
@@ -593,23 +555,65 @@ export function TaskStarter({
                   </DropdownMenu.RadioItem>
                 ))}
               </DropdownMenu.RadioGroup>
-            </>
-          )}
-          {ratio !== null && (
-            <>
-              <DropdownMenu.Separator className="tz-menu-separator" />
-              <div className="tz-task-starter-usage" data-tone={tone}>
-                <span className="tz-task-starter-meter" aria-hidden="true">
-                  <span
-                    style={{ inlineSize: `${Math.min(100, ratio * 100)}%` }}
-                  />
-                </span>
-                <span>{`${copy.used(percent)} · ${attached}`}</span>
-              </div>
-            </>
-          )}
-        </DropdownMenu.Content>
-      </DropdownMenu.Portal>
+            )}
+            {!!models?.length && (
+              <>
+                {!!modes?.length && (
+                  <DropdownMenu.Separator className="tz-menu-separator" />
+                )}
+                <DropdownMenu.Label className="tz-task-starter-menu-label">
+                  {copy.model}
+                </DropdownMenu.Label>
+                <DropdownMenu.RadioGroup
+                  aria-label={copy.model}
+                  value={model ?? ""}
+                  onValueChange={(id) => id !== model && onModelChange?.(id)}
+                >
+                  {models.map((item) => (
+                    <DropdownMenu.RadioItem
+                      key={item.id}
+                      value={item.id}
+                      textValue={item.name}
+                      disabled={item.disabled}
+                      className="tz-menu-item tz-task-starter-item"
+                      aria-labelledby={`${uid}-${item.id}-name`}
+                      aria-describedby={
+                        item.disabled ? `${uid}-${item.id}-hint` : undefined
+                      }
+                      onPointerLeave={keepHighlight}
+                    >
+                      <span className="tz-task-starter-item-copy">
+                        <bdi id={`${uid}-${item.id}-name`}>{item.name}</bdi>
+                        {item.disabled && (
+                          <small id={`${uid}-${item.id}-hint`}>
+                            {copy.unavailable}
+                          </small>
+                        )}
+                      </span>
+                      <DropdownMenu.ItemIndicator aria-hidden="true">
+                        <Check size={14} />
+                      </DropdownMenu.ItemIndicator>
+                    </DropdownMenu.RadioItem>
+                  ))}
+                </DropdownMenu.RadioGroup>
+              </>
+            )}
+            {ratio !== null && (
+              <>
+                <DropdownMenu.Separator className="tz-menu-separator" />
+                <div className="tz-task-starter-usage" data-tone={tone}>
+                  <span className="tz-task-starter-meter" aria-hidden="true">
+                    <span
+                      style={{ inlineSize: `${Math.min(100, ratio * 100)}%` }}
+                    />
+                  </span>
+                  <span>{`${copy.used(percent)} · ${attached}`}</span>
+                </div>
+              </>
+            )}
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      )}
     </DropdownMenu.Root>
   );
 
@@ -658,7 +662,7 @@ export function TaskStarter({
         {...(mentions && {
           role: "combobox",
           "aria-expanded": open,
-          "aria-controls": listId,
+          "aria-controls": open ? listId : undefined,
           "aria-autocomplete": "list" as const,
           "aria-activedescendant": open ? optionId(index) : undefined,
         })}
@@ -808,6 +812,7 @@ export function TaskStarter({
           </>
         )}
         {open &&
+          container &&
           createPortal(
             <Popper.Content
               ref={list}
@@ -841,7 +846,7 @@ export function TaskStarter({
                 </div>
               ))}
             </Popper.Content>,
-            container ?? document.body,
+            container,
           )}
       </Popper.Root>
       {!!recent?.length && (

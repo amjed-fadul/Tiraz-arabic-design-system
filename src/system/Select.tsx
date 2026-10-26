@@ -1,3 +1,4 @@
+import { useSelectPortal } from "./useSelectPortal";
 import * as Primitive from "@radix-ui/react-select";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useSelectValue } from "./useSelectValue";
@@ -5,7 +6,7 @@ import type { ComponentPropsWithRef } from "react";
 import { associateControl } from "./control-associations";
 import type { FieldControlProps } from "./Field";
 import { useGlide } from "./useGlide";
-import { useSystem } from "./useSystem";
+import { useSystem, usePortalDestination } from "./useSystem";
 export interface SelectOption {
   value: string;
   label: string;
@@ -43,7 +44,9 @@ export function Select({
   className = "",
   ...props
 }: SelectProps) {
-  const { container, config } = useSystem();
+  const { config } = useSystem();
+  const container = usePortalDestination();
+  const portal = useSelectPortal(container);
   const glide = useGlide();
   const {
     value: selectedValue,
@@ -72,6 +75,8 @@ export function Select({
       }}
     >
       <Primitive.Root
+        open={portal.open}
+        onOpenChange={portal.onOpenChange}
         value={selectedValue}
         onValueChange={changeValue}
         name={name}
@@ -93,40 +98,42 @@ export function Select({
             <ChevronDown size={16} aria-hidden="true" />
           </Primitive.Icon>
         </Primitive.Trigger>
-        <Primitive.Portal container={container}>
-          <Primitive.Content
-            className="tz-select-popup"
-            position="popper"
-            sideOffset={5}
-            collisionPadding={12}
-            dir={config.direction}
-          >
-            <Primitive.ScrollUpButton className="tz-select-scroll">
-              <ChevronUp size={14} aria-hidden="true" />
-            </Primitive.ScrollUpButton>
-            <Primitive.Viewport ref={glide} className="tz-select-viewport">
-              {options.map((option) => (
-                <Primitive.Item
-                  key={option.value}
-                  value={option.value}
-                  disabled={option.disabled}
-                  textValue={option.label}
-                  className="tz-select-option"
-                >
-                  <Primitive.ItemText>
-                    <bdi>{option.label}</bdi>
-                  </Primitive.ItemText>
-                  <Primitive.ItemIndicator className="tz-select-indicator">
-                    <Check size={14} aria-hidden="true" />
-                  </Primitive.ItemIndicator>
-                </Primitive.Item>
-              ))}
-            </Primitive.Viewport>
-            <Primitive.ScrollDownButton className="tz-select-scroll">
-              <ChevronDown size={14} aria-hidden="true" />
-            </Primitive.ScrollDownButton>
-          </Primitive.Content>
-        </Primitive.Portal>
+        {portal.container && (
+          <Primitive.Portal container={portal.container}>
+            <Primitive.Content
+              className="tz-select-popup"
+              position="popper"
+              sideOffset={5}
+              collisionPadding={12}
+              dir={config.direction}
+            >
+              <Primitive.ScrollUpButton className="tz-select-scroll">
+                <ChevronUp size={14} aria-hidden="true" />
+              </Primitive.ScrollUpButton>
+              <Primitive.Viewport ref={glide} className="tz-select-viewport">
+                {options.map((option) => (
+                  <Primitive.Item
+                    key={option.value}
+                    value={option.value}
+                    disabled={option.disabled}
+                    textValue={option.label}
+                    className="tz-select-option"
+                  >
+                    <Primitive.ItemText>
+                      <bdi>{option.label}</bdi>
+                    </Primitive.ItemText>
+                    <Primitive.ItemIndicator className="tz-select-indicator">
+                      <Check size={14} aria-hidden="true" />
+                    </Primitive.ItemIndicator>
+                  </Primitive.Item>
+                ))}
+              </Primitive.Viewport>
+              <Primitive.ScrollDownButton className="tz-select-scroll">
+                <ChevronDown size={14} aria-hidden="true" />
+              </Primitive.ScrollDownButton>
+            </Primitive.Content>
+          </Primitive.Portal>
+        )}
       </Primitive.Root>
     </span>
   );

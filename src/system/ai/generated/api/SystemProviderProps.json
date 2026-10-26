@@ -3,7 +3,7 @@
   "exportName": "SystemProviderProps",
   "kind": "type",
   "source": "Provider.tsx",
-  "sourceHash": "f534515081a3b2321ccca4b4892887b2ae30f0563bc5208df887dc77c0c4b895",
+  "sourceHash": "3068a3fa59def46a2af6e49d77f729ba554d1a4e51fd6f0092c3ddde731902f1",
   "type": "SystemProviderProps",
   "typeParameters": [],
   "props": {
@@ -24,6 +24,11 @@
       "type": "string | undefined",
       "required": false,
       "description": "Content language; direction remains controlled by config.direction."
+    },
+    "portalContainer": {
+      "type": "HTMLElement | null | undefined",
+      "required": false,
+      "description": "Optional same-document portal host; null withholds overlays until ready."
     },
     "style": {
       "type": "CSSProperties | undefined",

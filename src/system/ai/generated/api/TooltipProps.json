@@ -3,16 +3,88 @@
   "exportName": "TooltipProps",
   "kind": "type",
   "source": "Tooltip.tsx",
-  "sourceHash": "a657d887a08b8f872c000794da630f74e0865c5a3fe70741530774372596cadd",
+  "sourceHash": "e4713ae38bcee97ca379141a2e2e36361f070fe3b94ddc7b35f4186249621d4e",
   "type": "TooltipProps",
   "typeParameters": [],
   "props": {
+    "align": {
+      "type": "\"center\" | \"end\" | \"start\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"center\"",
+        "\"end\"",
+        "\"start\""
+      ]
+    },
+    "alignOffset": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "collisionBoundary": {
+      "type": "Boundary | Boundary[] | undefined",
+      "required": false
+    },
+    "collisionPadding": {
+      "type": "number | Partial<Record<\"left\" | \"right\" | \"bottom\" | \"top\", number>> | undefined",
+      "required": false
+    },
     "content": {
       "type": "string",
       "required": true
     },
+    "defaultOpen": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
     "delayDuration": {
       "type": "number | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "portalContainer": {
+      "type": "HTMLElement | null | undefined",
+      "required": false,
+      "description": "Same-document destination. null withholds the tooltip until ready."
+    },
+    "side": {
+      "type": "\"left\" | \"right\" | \"bottom\" | \"top\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"left\"",
+        "\"right\"",
+        "\"bottom\"",
+        "\"top\""
+      ]
+    },
+    "sideOffset": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
       "required": false
     },
     "trigger": {
@@ -21,5 +93,9 @@
     }
   },
   "branches": [],
-  "relatedTypes": {}
+  "relatedTypes": {
+    "TooltipContentProps": "TooltipContentProps.json",
+    "TooltipRootProps": "TooltipRootProps.json",
+    "TooltipTriggerProps": "TooltipTriggerProps.json"
+  }
 }

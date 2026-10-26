@@ -3,7 +3,7 @@
   "exportName": "Select",
   "kind": "component",
   "source": "Select.tsx",
-  "sourceHash": "b721858c75b20c416b6717531606cd079df5f736f0676b772b1035f4d225236b",
+  "sourceHash": "308bd96233805a89af728fbdba3e28d703a7fee7ac003004d3c22426fb34d930",
   "type": "({ options, value, defaultValue, onValueChange, placeholder, name, form, autoComplete, disabled, required, size, invalid, field, className, ...props }: SelectProps) => JSX.Element",
   "signatures": [
     {
@@ -144,14 +144,14 @@
       ]
     },
     "aria-dropeffect": {
-      "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+      "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"copy\"",
-        "\"link\"",
         "\"none\"",
         "\"move\"",
+        "\"link\"",
         "\"execute\"",
         "\"popup\""
       ]
@@ -519,12 +519,12 @@
       ]
     },
     "enterKeyHint": {
-      "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+      "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"search\"",
         "\"next\"",
+        "\"search\"",
         "\"enter\"",
         "\"done\"",
         "\"go\"",
@@ -596,13 +596,13 @@
       "required": false
     },
     "inputMode": {
-      "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+      "type": "\"none\" | \"text\" | \"search\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"search\"",
         "\"none\"",
         "\"text\"",
+        "\"search\"",
         "\"tel\"",
         "\"url\"",
         "\"email\"",

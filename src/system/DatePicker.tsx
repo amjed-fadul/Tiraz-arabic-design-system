@@ -1,3 +1,4 @@
+import { useSelectPortal } from "./useSelectPortal";
 import * as Popover from "@radix-ui/react-popover";
 import { DayPicker } from "@daypicker/react";
 import * as YearSelect from "@radix-ui/react-select";
@@ -18,7 +19,7 @@ import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
 import { useEntryReset } from "./useEntryReset";
-import { useSystem } from "./useSystem";
+import { useSystem, usePortalDestination } from "./useSystem";
 import { numberLocale } from "./config";
 import { parseDateOnly, formatDateOnly } from "./date-only";
 export type DatePickerProps = Omit<
@@ -52,6 +53,7 @@ const YearChoices = createContext<{
 }>({ container: null });
 function NavigationYears(props: DropdownProps) {
   const { range, container } = useContext(YearChoices);
+  const portal = useSelectPortal(container);
   const { config } = useSystem();
   const year = Number(props.value);
   const valid =
@@ -69,6 +71,8 @@ function NavigationYears(props: DropdownProps) {
   );
   return (
     <YearSelect.Root
+      open={portal.open}
+      onOpenChange={portal.onOpenChange}
       value={String(props.value)}
       disabled={props.disabled}
       dir={config.direction}
@@ -92,32 +96,34 @@ function NavigationYears(props: DropdownProps) {
           <ChevronDown size={12} aria-hidden="true" />
         </YearSelect.Icon>
       </YearSelect.Trigger>
-      <YearSelect.Portal container={container}>
-        <YearSelect.Content
-          className="tz-select-popup tz-date-years-popup"
-          position="popper"
-          sideOffset={4}
-          collisionPadding={8}
-          dir={config.direction}
-        >
-          <YearSelect.Viewport className="tz-select-viewport tz-date-years-viewport">
-            {options?.map((option) => (
-              <YearSelect.Item
-                key={option.value}
-                value={String(option.value)}
-                disabled={option.disabled}
-                textValue={option.label}
-                className="tz-select-option"
-              >
-                <YearSelect.ItemText>{option.label}</YearSelect.ItemText>
-                <YearSelect.ItemIndicator>
-                  <Check size={12} aria-hidden="true" />
-                </YearSelect.ItemIndicator>
-              </YearSelect.Item>
-            ))}
-          </YearSelect.Viewport>
-        </YearSelect.Content>
-      </YearSelect.Portal>
+      {portal.container && (
+        <YearSelect.Portal container={portal.container}>
+          <YearSelect.Content
+            className="tz-select-popup tz-date-years-popup"
+            position="popper"
+            sideOffset={4}
+            collisionPadding={8}
+            dir={config.direction}
+          >
+            <YearSelect.Viewport className="tz-select-viewport tz-date-years-viewport">
+              {options?.map((option) => (
+                <YearSelect.Item
+                  key={option.value}
+                  value={String(option.value)}
+                  disabled={option.disabled}
+                  textValue={option.label}
+                  className="tz-select-option"
+                >
+                  <YearSelect.ItemText>{option.label}</YearSelect.ItemText>
+                  <YearSelect.ItemIndicator>
+                    <Check size={12} aria-hidden="true" />
+                  </YearSelect.ItemIndicator>
+                </YearSelect.Item>
+              ))}
+            </YearSelect.Viewport>
+          </YearSelect.Content>
+        </YearSelect.Portal>
+      )}
     </YearSelect.Root>
   );
 }
@@ -165,7 +171,8 @@ export function DatePicker({
   className = "",
   ...props
 }: DatePickerProps) {
-  const { config, container } = useSystem();
+  const { config } = useSystem();
+  const container = usePortalDestination();
   const language = locale ?? (config.direction === "rtl" ? "ar" : "en");
   const arabic = language === "ar";
   const numbers = numberLocale(config, language);
@@ -300,83 +307,85 @@ export function DatePicker({
             <CalendarDays size={16} aria-hidden="true" />
           </button>
         </Popover.Trigger>
-        <Popover.Portal container={container}>
-          <Popover.Content
-            ref={setPopup}
-            className="tz-datepicker-popup"
-            dir={config.direction}
-            sideOffset={6}
-            align="start"
-            collisionPadding={8}
-            hideWhenDetached
-            aria-label={label ?? (arabic ? "اختيار التاريخ" : "Choose date")}
-          >
-            <YearChoices.Provider
-              value={{ range: yearRange, container: popup }}
+        {container && (
+          <Popover.Portal container={container}>
+            <Popover.Content
+              ref={setPopup}
+              className="tz-datepicker-popup"
+              dir={config.direction}
+              sideOffset={6}
+              align="start"
+              collisionPadding={8}
+              hideWhenDetached
+              aria-label={label ?? (arabic ? "اختيار التاريخ" : "Choose date")}
             >
-              <DayPicker
-                captionLayout="dropdown"
-                navLayout="around"
-                components={calendarComponents}
-                formatters={yearFormatters(numbers)}
-                mode="single"
-                autoFocus
-                selected={selected}
-                month={month}
-                onMonthChange={setMonth}
-                onSelect={(date) => commit(date ? formatDateOnly(date) : "")}
-                locale={arabic ? ar : enUS}
-                dir={config.direction}
-                numerals={arabic ? (config.numerals ?? "arab") : "latn"}
-                labels={{
-                  // The bundled Arabic locale reads «اذهب إلى الشهر السابق».
-                  ...(arabic
-                    ? {
-                        labelPrevious: () => "الشهر السابق",
-                        labelNext: () => "الشهر التالي",
-                      }
-                    : {}),
-                  labelDayButton: (date, modifiers) => {
-                    // Numeric days keep visible cell text in the accessible name;
-                    // the default English ordinal labels (1st/2nd) obscure it.
-                    const text = date.toLocaleDateString(dates, {
-                      calendar: "gregory",
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    });
-                    return `${modifiers.today ? (arabic ? "اليوم، " : "Today, ") : ""}${text}${modifiers.selected ? (arabic ? "، محدد" : ", selected") : ""}`;
-                  },
-                }}
-                disabled={[
-                  ...(minimum ? [{ before: minimum }] : []),
-                  ...(maximum ? [{ after: maximum }] : []),
-                ]}
-                startMonth={minimum ?? parseDateOnly("0001-01-01")}
-                endMonth={maximum ?? parseDateOnly("9999-12-31")}
-              />
-            </YearChoices.Provider>
-            <div className="tz-date-actions">
-              <Button
-                variant="ghost"
-                size={size}
-                disabled={todayDisabled}
-                onClick={() => commit(todayValue)}
+              <YearChoices.Provider
+                value={{ range: yearRange, container: popup }}
               >
-                {arabic ? "اليوم" : "Today"}
-              </Button>
-              <Button
-                variant="ghost"
-                size={size}
-                disabled={!raw}
-                onClick={() => commit("")}
-              >
-                {arabic ? "مسح" : "Clear"}
-              </Button>
-            </div>
-          </Popover.Content>
-        </Popover.Portal>
+                <DayPicker
+                  captionLayout="dropdown"
+                  navLayout="around"
+                  components={calendarComponents}
+                  formatters={yearFormatters(numbers)}
+                  mode="single"
+                  autoFocus
+                  selected={selected}
+                  month={month}
+                  onMonthChange={setMonth}
+                  onSelect={(date) => commit(date ? formatDateOnly(date) : "")}
+                  locale={arabic ? ar : enUS}
+                  dir={config.direction}
+                  numerals={arabic ? (config.numerals ?? "arab") : "latn"}
+                  labels={{
+                    // The bundled Arabic locale reads «اذهب إلى الشهر السابق».
+                    ...(arabic
+                      ? {
+                          labelPrevious: () => "الشهر السابق",
+                          labelNext: () => "الشهر التالي",
+                        }
+                      : {}),
+                    labelDayButton: (date, modifiers) => {
+                      // Numeric days keep visible cell text in the accessible name;
+                      // the default English ordinal labels (1st/2nd) obscure it.
+                      const text = date.toLocaleDateString(dates, {
+                        calendar: "gregory",
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      });
+                      return `${modifiers.today ? (arabic ? "اليوم، " : "Today, ") : ""}${text}${modifiers.selected ? (arabic ? "، محدد" : ", selected") : ""}`;
+                    },
+                  }}
+                  disabled={[
+                    ...(minimum ? [{ before: minimum }] : []),
+                    ...(maximum ? [{ after: maximum }] : []),
+                  ]}
+                  startMonth={minimum ?? parseDateOnly("0001-01-01")}
+                  endMonth={maximum ?? parseDateOnly("9999-12-31")}
+                />
+              </YearChoices.Provider>
+              <div className="tz-date-actions">
+                <Button
+                  variant="ghost"
+                  size={size}
+                  disabled={todayDisabled}
+                  onClick={() => commit(todayValue)}
+                >
+                  {arabic ? "اليوم" : "Today"}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size={size}
+                  disabled={!raw}
+                  onClick={() => commit("")}
+                >
+                  {arabic ? "مسح" : "Clear"}
+                </Button>
+              </div>
+            </Popover.Content>
+          </Popover.Portal>
+        )}
       </Popover.Root>
       <input
         ref={inputRef}

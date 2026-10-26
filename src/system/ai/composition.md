@@ -189,6 +189,24 @@ Use Avatar(name, src?, fallback?, size?) with sm by default. Supply meaningful n
 
 Tooltip trigger must forward ref, native events and ARIA to a focusable element. Do not replace its accessible name with tooltip content or put essential instructions only in a tooltip. content is a short string, never a button/link/form. Hover delays 500ms, focus is immediate, Escape dismisses without losing trigger focus. The tooltip can be hovered and portals into the surrounding provider/overlay. Preserve descriptions already supplied on the trigger. Positioning/collision uses @radix-ui/react-popper 1.4.0.
 
+For compound use, compose exactly one `TooltipTrigger` and one `TooltipContent`
+inside `TooltipRoot`. The content's children are a string. `TooltipTrigger` accepts
+native button props and ref; `asChild` requires one focusable child forwarding
+handlers, ARIA and ref. Its default type is button, while explicit submit/reset
+types retain native behavior. `open` is controlled; `defaultOpen` initializes only
+uncontrolled state; `onOpenChange` requests changes. The convenience Tooltip keeps
+its required trigger/content props and forwards these additive options.
+
+Optional provider or Tooltip content `portalContainer` uses a same-document host;
+null means pending, with no body fallback. A component override wins, otherwise
+the nearest Modal/Sheet content or provider destination is used. Inside a dialog,
+explicit hosts must be the dialog content or descendants; outside hosts are
+withheld. External scope carries provider config, language and explicit custom
+properties, not layout or arbitrary ancestor styles. Optional collisionBoundary
+and collisionPadding bound placement and available width separately from the
+portal host. Test transformed and narrow surfaces in a browser. Hover warming
+remains shared across all roots (400ms); deliberate dismissal cools it.
+
 Modal requires title, description and translated closeLabel; trigger/children and optional footer mirror Sheet. initialFocusRef may select a focusable descendant; otherwise Radix chooses its first focusable element. Controlled open requires onOpenChange to update it; omit open for internal usage. There is no defaultOpen. For either mode, a footer may use @radix-ui/react-dialog Close asChild with Button. Tab stays contained, Escape/outside dismiss and the mounted trigger receives focus again. Menus/Select/Tooltip must retain the nearest Modal container; test dismissal of each layer before the dialog. Do not add stacked/nested dialog examples or a manager.
 
 EmptyState(title, description?, illustration?, action?) leaves content and actions to the application. Omit illustration, use one exported geometric SVG or supply a custom decorative node. The slot is aria-hidden; never place interactive controls there. Text conveys meaning, action conveys its actual result. Use the three original exports NoRecordsIllustration, NoSearchResultsIllustration and GettingStartedIllustration with tokens in either theme. [EmptyStateExamples](examples/EmptyStateExamples.tsx) reveals a guide and returns with Back; it does not create a customer, persist values or pretend to call a service.
@@ -602,3 +620,8 @@ each conversation keeps its own draft; unmount clears timers. Capture conversati
 and message IDs, invalidate run generations, and never let an old callback update the
 active conversation by accident. Do not invent real execution, auth, backend,
 persistence or navigation.
+
+A SystemProvider nested inside a Modal or Sheet retains the containing dialog's
+boundary. Its optional portalContainer must also be inside that content; an
+outside destination is withheld. A nested theme provider does not remove the
+containing dialog's accessibility boundary.

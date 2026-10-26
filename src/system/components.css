@@ -1615,6 +1615,9 @@ textarea.tz-textarea:read-only {
   transform-origin: var(--radix-popper-transform-origin);
   animation: tz-menu-in var(--motion-enter) var(--ease-out);
 }
+.tz-tooltip[data-bounded] {
+  max-inline-size: min(18rem, var(--radix-popper-available-width));
+}
 .tz-tooltip[data-instant] {
   animation: none;
 }

@@ -3,7 +3,7 @@
   "exportName": "ContextMeter",
   "kind": "component",
   "source": "ContextMeter.tsx",
-  "sourceHash": "7e4dfd67aeb3071a80ae67ecf78d974d6c9ce6892f6e55770f2c7948e48b9315",
+  "sourceHash": "563a60fa3a6957228b91035be409401b52c09de0d16d40e5619b4f6943a4b544",
   "type": "({ used, capacity, estimated, details, metadata, label, unit, locale, thresholds, open, onOpenChange, inline, action, announcement, className, }: ContextMeterProps) => JSX.Element",
   "signatures": [
     {

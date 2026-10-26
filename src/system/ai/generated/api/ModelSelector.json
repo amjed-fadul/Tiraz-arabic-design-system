@@ -3,7 +3,7 @@
   "exportName": "ModelSelector",
   "kind": "component",
   "source": "ModelSelector.tsx",
-  "sourceHash": "0e3183968dbd140836bb3c46ae823f2a8f7daef5d0dbc67788df0e13271d2395",
+  "sourceHash": "f565cfa352e08e077bb014b7d383c51def2aa49914c70baec78feda8793f446c",
   "type": "({ models, value, onValueChange, label, placeholder, disabled, size, labels, className, }: ModelSelectorProps) => JSX.Element",
   "description": "Controlled choice only. All availability, capability and pricing data is supplied.",
   "signatures": [

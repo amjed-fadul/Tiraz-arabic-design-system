@@ -5,56 +5,184 @@
   "composition": "ai/composition.md",
   "publicExports": [
     {
-      "name": "Direction",
-      "source": "config.ts"
+      "name": "AIMark",
+      "source": "AIMark.tsx"
+    },
+    {
+      "name": "AIMarkProps",
+      "source": "AIMark.tsx"
     },
     {
       "name": "Accent",
       "source": "config.ts"
     },
     {
-      "name": "Numerals",
-      "source": "config.ts"
+      "name": "Accordion",
+      "source": "Accordion.tsx"
     },
     {
-      "name": "SystemConfig",
-      "source": "config.ts"
+      "name": "AccordionItem",
+      "source": "Accordion.tsx"
     },
     {
-      "name": "defaultConfig",
-      "source": "config.ts"
+      "name": "AccordionProps",
+      "source": "Accordion.tsx"
     },
     {
-      "name": "numberLocale",
-      "source": "config.ts"
+      "name": "ActionContext",
+      "source": "patterns/useAsyncAction.ts"
     },
     {
-      "name": "accentColors",
-      "source": "config.ts"
+      "name": "AgentPresentation",
+      "source": "AgentPresentation.tsx"
     },
     {
-      "name": "SystemProvider",
-      "source": "Provider.tsx"
+      "name": "AgentStep",
+      "source": "AgentTask.tsx"
     },
     {
-      "name": "SystemProviderProps",
-      "source": "Provider.tsx"
+      "name": "AgentTask",
+      "source": "AgentTask.tsx"
     },
     {
-      "name": "Chip",
-      "source": "Chip.tsx"
+      "name": "AgentTaskLabels",
+      "source": "AgentTask.tsx"
     },
     {
-      "name": "ChipProps",
-      "source": "Chip.tsx"
+      "name": "AgentTaskProps",
+      "source": "AgentTask.tsx"
     },
     {
-      "name": "ChipButtonProps",
-      "source": "Chip.tsx"
+      "name": "Alert",
+      "source": "Alert.tsx"
     },
     {
-      "name": "ChipLinkProps",
-      "source": "Chip.tsx"
+      "name": "AlertProps",
+      "source": "Alert.tsx"
+    },
+    {
+      "name": "ApprovalCard",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalCardLabels",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalCardProps",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalDecision",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalDetails",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalFlow",
+      "source": "ApprovalFlow.tsx"
+    },
+    {
+      "name": "ApprovalFlowLabels",
+      "source": "ApprovalFlow.tsx"
+    },
+    {
+      "name": "ApprovalFlowProps",
+      "source": "ApprovalFlow.tsx"
+    },
+    {
+      "name": "ApprovalRecord",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "ApprovalRequest",
+      "source": "ApprovalCard.tsx"
+    },
+    {
+      "name": "AreaChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "AskUserQuestions",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "AskUserQuestionsLabels",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "AskUserQuestionsProps",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "AssistantControls",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantControlsLabels",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantControlsProps",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantMemoryItem",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "AssistantPermission",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "Avatar",
+      "source": "Avatar.tsx"
+    },
+    {
+      "name": "AvatarGroup",
+      "source": "AvatarGroup.tsx"
+    },
+    {
+      "name": "AvatarGroupProps",
+      "source": "AvatarGroup.tsx"
+    },
+    {
+      "name": "AvatarMember",
+      "source": "AvatarGroup.tsx"
+    },
+    {
+      "name": "AvatarProps",
+      "source": "Avatar.tsx"
+    },
+    {
+      "name": "Badge",
+      "source": "Badge.tsx"
+    },
+    {
+      "name": "BadgeProps",
+      "source": "Badge.tsx"
+    },
+    {
+      "name": "BadgeTone",
+      "source": "Badge.tsx"
+    },
+    {
+      "name": "BarChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "BreadcrumbItem",
+      "source": "Breadcrumbs.tsx"
+    },
+    {
+      "name": "Breadcrumbs",
+      "source": "Breadcrumbs.tsx"
+    },
+    {
+      "name": "BreadcrumbsProps",
+      "source": "Breadcrumbs.tsx"
     },
     {
       "name": "Button",
@@ -73,287 +201,7 @@
       "source": "Button.tsx"
     },
     {
-      "name": "Tabs",
-      "source": "Tabs.tsx"
-    },
-    {
-      "name": "TabsProps",
-      "source": "Tabs.tsx"
-    },
-    {
-      "name": "TabItem",
-      "source": "Tabs.tsx"
-    },
-    {
-      "name": "Switch",
-      "source": "Switch.tsx"
-    },
-    {
-      "name": "SwitchProps",
-      "source": "Switch.tsx"
-    },
-    {
-      "name": "DropdownMenu",
-      "source": "DropdownMenu.tsx"
-    },
-    {
-      "name": "DropdownMenuProps",
-      "source": "DropdownMenu.tsx"
-    },
-    {
-      "name": "MenuItem",
-      "source": "DropdownMenu.tsx"
-    },
-    {
-      "name": "Sheet",
-      "source": "Sheet.tsx"
-    },
-    {
-      "name": "SheetProps",
-      "source": "Sheet.tsx"
-    },
-    {
-      "name": "ToastProvider",
-      "source": "Toast.tsx"
-    },
-    {
-      "name": "useSystem",
-      "source": "useSystem.ts"
-    },
-    {
-      "name": "useToast",
-      "source": "useToast.ts"
-    },
-    {
-      "name": "ToastMessage",
-      "source": "useToast.ts"
-    },
-    {
-      "name": "Field",
-      "source": "Field.tsx"
-    },
-    {
-      "name": "FieldProps",
-      "source": "Field.tsx"
-    },
-    {
-      "name": "FieldControlProps",
-      "source": "Field.tsx"
-    },
-    {
-      "name": "Input",
-      "source": "Input.tsx"
-    },
-    {
-      "name": "InputProps",
-      "source": "Input.tsx"
-    },
-    {
-      "name": "InputType",
-      "source": "Input.tsx"
-    },
-    {
-      "name": "Select",
-      "source": "Select.tsx"
-    },
-    {
-      "name": "SelectProps",
-      "source": "Select.tsx"
-    },
-    {
-      "name": "SelectOption",
-      "source": "Select.tsx"
-    },
-    {
-      "name": "Table",
-      "source": "Table.tsx"
-    },
-    {
-      "name": "TableProps",
-      "source": "Table.tsx"
-    },
-    {
-      "name": "TableHeader",
-      "source": "Table.tsx"
-    },
-    {
-      "name": "TableBody",
-      "source": "Table.tsx"
-    },
-    {
-      "name": "TableRow",
-      "source": "Table.tsx"
-    },
-    {
-      "name": "TableHead",
-      "source": "Table.tsx"
-    },
-    {
-      "name": "TableCell",
-      "source": "Table.tsx"
-    },
-    {
-      "name": "DataTable",
-      "source": "DataTable.tsx"
-    },
-    {
-      "name": "DataTableProps",
-      "source": "DataTable.tsx"
-    },
-    {
-      "name": "DataTableColumn",
-      "source": "DataTable.tsx"
-    },
-    {
-      "name": "DataTableLabels",
-      "source": "DataTable.tsx"
-    },
-    {
-      "name": "Badge",
-      "source": "Badge.tsx"
-    },
-    {
-      "name": "BadgeProps",
-      "source": "Badge.tsx"
-    },
-    {
-      "name": "BadgeTone",
-      "source": "Badge.tsx"
-    },
-    {
-      "name": "Checkbox",
-      "source": "Checkbox.tsx"
-    },
-    {
-      "name": "CheckboxProps",
-      "source": "Checkbox.tsx"
-    },
-    {
-      "name": "RadioGroup",
-      "source": "RadioGroup.tsx"
-    },
-    {
-      "name": "RadioGroupProps",
-      "source": "RadioGroup.tsx"
-    },
-    {
-      "name": "RadioOption",
-      "source": "RadioGroup.tsx"
-    },
-    {
-      "name": "Textarea",
-      "source": "Textarea.tsx"
-    },
-    {
-      "name": "TextareaProps",
-      "source": "Textarea.tsx"
-    },
-    {
-      "name": "Avatar",
-      "source": "Avatar.tsx"
-    },
-    {
-      "name": "AvatarProps",
-      "source": "Avatar.tsx"
-    },
-    {
-      "name": "AvatarGroup",
-      "source": "AvatarGroup.tsx"
-    },
-    {
-      "name": "AvatarGroupProps",
-      "source": "AvatarGroup.tsx"
-    },
-    {
-      "name": "AvatarMember",
-      "source": "AvatarGroup.tsx"
-    },
-    {
-      "name": "Tooltip",
-      "source": "Tooltip.tsx"
-    },
-    {
-      "name": "TooltipProps",
-      "source": "Tooltip.tsx"
-    },
-    {
-      "name": "Modal",
-      "source": "Modal.tsx"
-    },
-    {
-      "name": "ModalProps",
-      "source": "Modal.tsx"
-    },
-    {
-      "name": "EmptyState",
-      "source": "EmptyState.tsx"
-    },
-    {
-      "name": "EmptyStateProps",
-      "source": "EmptyState.tsx"
-    },
-    {
-      "name": "NoRecordsIllustration",
-      "source": "EmptyStateIllustrations.tsx"
-    },
-    {
-      "name": "NoSearchResultsIllustration",
-      "source": "EmptyStateIllustrations.tsx"
-    },
-    {
-      "name": "GettingStartedIllustration",
-      "source": "EmptyStateIllustrations.tsx"
-    },
-    {
-      "name": "Alert",
-      "source": "Alert.tsx"
-    },
-    {
-      "name": "AlertProps",
-      "source": "Alert.tsx"
-    },
-    {
-      "name": "Skeleton",
-      "source": "Skeleton.tsx"
-    },
-    {
-      "name": "SkeletonProps",
-      "source": "Skeleton.tsx"
-    },
-    {
-      "name": "Progress",
-      "source": "Progress.tsx"
-    },
-    {
-      "name": "ProgressProps",
-      "source": "Progress.tsx"
-    },
-    {
-      "name": "Spinner",
-      "source": "Spinner.tsx"
-    },
-    {
-      "name": "SpinnerProps",
-      "source": "Spinner.tsx"
-    },
-    {
       "name": "Card",
-      "source": "Card.tsx"
-    },
-    {
-      "name": "CardProps",
-      "source": "Card.tsx"
-    },
-    {
-      "name": "CardHeader",
-      "source": "Card.tsx"
-    },
-    {
-      "name": "CardTitle",
-      "source": "Card.tsx"
-    },
-    {
-      "name": "CardDescription",
       "source": "Card.tsx"
     },
     {
@@ -361,71 +209,43 @@
       "source": "Card.tsx"
     },
     {
+      "name": "CardDescription",
+      "source": "Card.tsx"
+    },
+    {
       "name": "CardFooter",
       "source": "Card.tsx"
     },
     {
-      "name": "Accordion",
-      "source": "Accordion.tsx"
+      "name": "CardHeader",
+      "source": "Card.tsx"
     },
     {
-      "name": "AccordionProps",
-      "source": "Accordion.tsx"
+      "name": "CardProps",
+      "source": "Card.tsx"
     },
     {
-      "name": "AccordionItem",
-      "source": "Accordion.tsx"
+      "name": "CardTitle",
+      "source": "Card.tsx"
     },
     {
-      "name": "Breadcrumbs",
-      "source": "Breadcrumbs.tsx"
-    },
-    {
-      "name": "BreadcrumbsProps",
-      "source": "Breadcrumbs.tsx"
-    },
-    {
-      "name": "BreadcrumbItem",
-      "source": "Breadcrumbs.tsx"
-    },
-    {
-      "name": "Pagination",
-      "source": "Pagination.tsx"
-    },
-    {
-      "name": "PaginationProps",
-      "source": "Pagination.tsx"
-    },
-    {
-      "name": "PaginationLabels",
-      "source": "Pagination.tsx"
-    },
-    {
-      "name": "LineChart",
+      "name": "CartesianChartProps",
       "source": "Charts.tsx"
     },
     {
-      "name": "AreaChart",
-      "source": "Charts.tsx"
+      "name": "ChangeSummary",
+      "source": "ChangeSummary.tsx"
     },
     {
-      "name": "BarChart",
-      "source": "Charts.tsx"
+      "name": "ChangeSummaryLabels",
+      "source": "ChangeSummary.tsx"
     },
     {
-      "name": "DonutChart",
-      "source": "Charts.tsx"
-    },
-    {
-      "name": "ChartSeries",
-      "source": "Charts.tsx"
+      "name": "ChangeSummaryProps",
+      "source": "ChangeSummary.tsx"
     },
     {
       "name": "ChartDatum",
-      "source": "Charts.tsx"
-    },
-    {
-      "name": "DonutDatum",
       "source": "Charts.tsx"
     },
     {
@@ -433,419 +253,47 @@
       "source": "Charts.tsx"
     },
     {
-      "name": "CartesianChartProps",
+      "name": "ChartSeries",
       "source": "Charts.tsx"
     },
     {
-      "name": "DonutChartProps",
-      "source": "Charts.tsx"
+      "name": "ChatApp",
+      "source": "ChatApp.tsx"
     },
     {
-      "name": "Sidebar",
-      "source": "Sidebar.tsx"
+      "name": "ChatAppLabels",
+      "source": "ChatApp.tsx"
     },
     {
-      "name": "SidebarHeader",
-      "source": "Sidebar.tsx"
+      "name": "ChatAppProps",
+      "source": "ChatApp.tsx"
     },
     {
-      "name": "SidebarContent",
-      "source": "Sidebar.tsx"
+      "name": "ChatComposer",
+      "source": "ChatComposer.tsx"
     },
     {
-      "name": "SidebarFooter",
-      "source": "Sidebar.tsx"
+      "name": "ChatComposerProps",
+      "source": "PromptEntry.tsx"
     },
     {
-      "name": "SidebarLabel",
-      "source": "Sidebar.tsx"
+      "name": "ChatConversationItem",
+      "source": "ChatApp.tsx"
     },
     {
-      "name": "SidebarGroup",
-      "source": "Sidebar.tsx"
+      "name": "ChatEntryLabels",
+      "source": "PromptEntry.tsx"
     },
     {
-      "name": "SidebarItem",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarAction",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarToggle",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarDisclosure",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarProps",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarGroupProps",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarItemProps",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarActionProps",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarToggleProps",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarDisclosureProps",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "SidebarIdentity",
-      "source": "Sidebar.tsx"
-    },
-    {
-      "name": "TagInput",
-      "source": "TagInput.tsx"
-    },
-    {
-      "name": "TagInputProps",
-      "source": "TagInput.tsx"
-    },
-    {
-      "name": "TagInputLabels",
-      "source": "TagInput.tsx"
-    },
-    {
-      "name": "FilterBar",
-      "source": "FilterBar.tsx"
-    },
-    {
-      "name": "FilterBarProps",
-      "source": "FilterBar.tsx"
-    },
-    {
-      "name": "FilterBarFilter",
-      "source": "FilterBar.tsx"
-    },
-    {
-      "name": "InputCopy",
-      "source": "InputCopy.tsx"
-    },
-    {
-      "name": "InputCopyProps",
-      "source": "InputCopy.tsx"
-    },
-    {
-      "name": "InputCopyLabels",
-      "source": "InputCopy.tsx"
-    },
-    {
-      "name": "FileDropzone",
-      "source": "FileDropzone.tsx"
-    },
-    {
-      "name": "FileDropzoneProps",
-      "source": "FileDropzone.tsx"
-    },
-    {
-      "name": "FileDropzoneLabels",
-      "source": "FileDropzone.tsx"
-    },
-    {
-      "name": "ColorPicker",
-      "source": "ColorPicker.tsx"
-    },
-    {
-      "name": "ColorPickerProps",
-      "source": "ColorPicker.tsx"
-    },
-    {
-      "name": "ColorPickerLabels",
-      "source": "ColorPicker.tsx"
-    },
-    {
-      "name": "ColorSwatch",
-      "source": "ColorPicker.tsx"
-    },
-    {
-      "name": "Slider",
-      "source": "Slider.tsx"
-    },
-    {
-      "name": "SliderProps",
-      "source": "Slider.tsx"
-    },
-    {
-      "name": "OTPInput",
-      "source": "OTPInput.tsx"
-    },
-    {
-      "name": "OTPInputProps",
-      "source": "OTPInput.tsx"
-    },
-    {
-      "name": "DatePicker",
-      "source": "DatePicker.tsx"
-    },
-    {
-      "name": "DatePickerProps",
-      "source": "DatePicker.tsx"
-    },
-    {
-      "name": "Steps",
-      "source": "Steps.tsx"
-    },
-    {
-      "name": "StepsProps",
-      "source": "Steps.tsx"
-    },
-    {
-      "name": "StepItem",
-      "source": "Steps.tsx"
-    },
-    {
-      "name": "StepStatus",
-      "source": "Steps.tsx"
-    },
-    {
-      "name": "Timeline",
-      "source": "Timeline.tsx"
-    },
-    {
-      "name": "TimelineProps",
-      "source": "Timeline.tsx"
-    },
-    {
-      "name": "TimelineItem",
-      "source": "Timeline.tsx"
-    },
-    {
-      "name": "TaskRows",
-      "source": "TaskRows.tsx"
-    },
-    {
-      "name": "TaskRowsProps",
-      "source": "TaskRows.tsx"
-    },
-    {
-      "name": "TaskRowItem",
-      "source": "TaskRows.tsx"
-    },
-    {
-      "name": "NotificationList",
-      "source": "NotificationList.tsx"
-    },
-    {
-      "name": "NotificationListProps",
-      "source": "NotificationList.tsx"
-    },
-    {
-      "name": "NotificationItem",
-      "source": "NotificationList.tsx"
-    },
-    {
-      "name": "TaskState",
-      "source": "TaskRows.tsx"
-    },
-    {
-      "name": "FileTree",
-      "source": "FileTree.tsx"
-    },
-    {
-      "name": "FileTreeProps",
-      "source": "FileTree.tsx"
-    },
-    {
-      "name": "FileTreeNode",
-      "source": "FileTree.tsx"
-    },
-    {
-      "name": "FileTreeFile",
-      "source": "FileTree.tsx"
-    },
-    {
-      "name": "FileTreeFolder",
-      "source": "FileTree.tsx"
-    },
-    {
-      "name": "LoadingState",
-      "source": "LoadingState.tsx"
-    },
-    {
-      "name": "LoadingStateProps",
-      "source": "LoadingState.tsx"
-    },
-    {
-      "name": "ThinkingIndicator",
-      "source": "ThinkingIndicator.tsx"
-    },
-    {
-      "name": "ThinkingIndicatorProps",
-      "source": "ThinkingIndicator.tsx"
-    },
-    {
-      "name": "ThinkingState",
-      "source": "ThinkingState.tsx"
-    },
-    {
-      "name": "ThinkingStateProps",
-      "source": "ThinkingState.tsx"
-    },
-    {
-      "name": "ToolCall",
-      "source": "ToolCall.tsx"
-    },
-    {
-      "name": "ToolCallProps",
-      "source": "ToolCall.tsx"
-    },
-    {
-      "name": "ToolCallState",
-      "source": "ToolCall.tsx"
-    },
-    {
-      "name": "ToolLabels",
-      "source": "useToolLabels.ts"
-    },
-    {
-      "name": "ToolChips",
-      "source": "ToolChips.tsx"
-    },
-    {
-      "name": "ToolChipsProps",
-      "source": "ToolChips.tsx"
-    },
-    {
-      "name": "ToolChipItem",
-      "source": "ToolChips.tsx"
-    },
-    {
-      "name": "StatusIcon",
-      "source": "StatusIcon.tsx"
-    },
-    {
-      "name": "StatusIconProps",
-      "source": "StatusIcon.tsx"
-    },
-    {
-      "name": "StatusIconState",
-      "source": "StatusIcon.tsx"
-    },
-    {
-      "name": "AIMark",
-      "source": "AIMark.tsx"
-    },
-    {
-      "name": "AIMarkProps",
-      "source": "AIMark.tsx"
-    },
-    {
-      "name": "StatusPill",
-      "source": "StatusPill.tsx"
-    },
-    {
-      "name": "StatusPillProps",
-      "source": "StatusPill.tsx"
-    },
-    {
-      "name": "StatusPillState",
-      "source": "StatusPill.tsx"
-    },
-    {
-      "name": "Tray",
-      "source": "Tray.tsx"
-    },
-    {
-      "name": "TrayProps",
-      "source": "Tray.tsx"
-    },
-    {
-      "name": "Countdown",
-      "source": "Countdown.tsx"
-    },
-    {
-      "name": "CountdownProps",
-      "source": "Countdown.tsx"
-    },
-    {
-      "name": "useReducedMotion",
-      "source": "useReducedMotion.ts"
-    },
-    {
-      "name": "ThinkingPanel",
-      "source": "ThinkingPanel.tsx"
-    },
-    {
-      "name": "ThinkingPanelProps",
-      "source": "ThinkingPanel.tsx"
-    },
-    {
-      "name": "ThinkingPanelLabels",
-      "source": "ThinkingPanel.tsx"
-    },
-    {
-      "name": "FeedbackBar",
-      "source": "FeedbackBar.tsx"
-    },
-    {
-      "name": "FeedbackBarProps",
-      "source": "FeedbackBar.tsx"
-    },
-    {
-      "name": "FeedbackBarLabels",
-      "source": "FeedbackBar.tsx"
-    },
-    {
-      "name": "FeedbackReason",
-      "source": "FeedbackBar.tsx"
-    },
-    {
-      "name": "FollowUps",
-      "source": "FollowUps.tsx"
-    },
-    {
-      "name": "FollowUpsProps",
-      "source": "FollowUps.tsx"
-    },
-    {
-      "name": "CodeBlock",
-      "source": "CodeBlock.tsx"
-    },
-    {
-      "name": "CodeBlockProps",
-      "source": "CodeBlock.tsx"
-    },
-    {
-      "name": "Markdown",
-      "source": "Markdown.tsx"
-    },
-    {
-      "name": "MarkdownProps",
-      "source": "Markdown.tsx"
-    },
-    {
-      "name": "StreamingText",
-      "source": "StreamingText.tsx"
-    },
-    {
-      "name": "StreamingTextProps",
-      "source": "StreamingText.tsx"
-    },
-    {
-      "name": "ChatThread",
-      "source": "ChatThread.tsx"
-    },
-    {
-      "name": "ChatThreadProps",
-      "source": "ChatThread.tsx"
+      "name": "ChatEntryState",
+      "source": "PromptEntry.tsx"
     },
     {
       "name": "ChatMessage",
+      "source": "ChatThread.tsx"
+    },
+    {
+      "name": "ChatThread",
       "source": "ChatThread.tsx"
     },
     {
@@ -857,295 +305,35 @@
       "source": "ChatThread.tsx"
     },
     {
-      "name": "ChatComposer",
-      "source": "ChatComposer.tsx"
+      "name": "ChatThreadProps",
+      "source": "ChatThread.tsx"
     },
     {
-      "name": "ChatComposerProps",
-      "source": "PromptEntry.tsx"
+      "name": "Checkbox",
+      "source": "Checkbox.tsx"
     },
     {
-      "name": "ChatEntryState",
-      "source": "PromptEntry.tsx"
+      "name": "CheckboxProps",
+      "source": "Checkbox.tsx"
     },
     {
-      "name": "ChatEntryLabels",
-      "source": "PromptEntry.tsx"
+      "name": "Chip",
+      "source": "Chip.tsx"
     },
     {
-      "name": "PromptBar",
-      "source": "PromptBar.tsx"
+      "name": "ChipButtonProps",
+      "source": "Chip.tsx"
     },
     {
-      "name": "PromptBarProps",
-      "source": "PromptBar.tsx"
+      "name": "ChipLinkProps",
+      "source": "Chip.tsx"
     },
     {
-      "name": "ImageResult",
-      "source": "ImageResult.tsx"
-    },
-    {
-      "name": "ImageResultProps",
-      "source": "ImageResult.tsx"
-    },
-    {
-      "name": "ImageResultLabels",
-      "source": "ImageResult.tsx"
-    },
-    {
-      "name": "Sources",
-      "source": "Sources.tsx"
-    },
-    {
-      "name": "InlineCitation",
-      "source": "Sources.tsx"
-    },
-    {
-      "name": "SourceReference",
-      "source": "Sources.tsx"
-    },
-    {
-      "name": "SourcesProps",
-      "source": "Sources.tsx"
-    },
-    {
-      "name": "SourcesLabels",
-      "source": "Sources.tsx"
-    },
-    {
-      "name": "InlineCitationProps",
-      "source": "Sources.tsx"
-    },
-    {
-      "name": "InlineCitationLabels",
-      "source": "Sources.tsx"
-    },
-    {
-      "name": "InsightCards",
-      "source": "InsightCards.tsx"
-    },
-    {
-      "name": "InsightCardsProps",
-      "source": "InsightCards.tsx"
-    },
-    {
-      "name": "InsightCardsLabels",
-      "source": "InsightCards.tsx"
-    },
-    {
-      "name": "InsightItem",
-      "source": "InsightCards.tsx"
-    },
-    {
-      "name": "SelectionActions",
-      "source": "SelectionActions.tsx"
-    },
-    {
-      "name": "SelectionAction",
-      "source": "SelectionActions.tsx"
-    },
-    {
-      "name": "SelectionActionsProps",
-      "source": "SelectionActions.tsx"
-    },
-    {
-      "name": "ContextMeter",
-      "source": "ContextMeter.tsx"
-    },
-    {
-      "name": "ContextMeterProps",
-      "source": "ContextMeter.tsx"
-    },
-    {
-      "name": "ContextMeterPart",
-      "source": "ContextMeter.tsx"
-    },
-    {
-      "name": "ModelSelector",
-      "source": "ModelSelector.tsx"
-    },
-    {
-      "name": "ModelSelectorProps",
-      "source": "ModelSelector.tsx"
-    },
-    {
-      "name": "ModelOption",
-      "source": "ModelSelector.tsx"
-    },
-    {
-      "name": "AskUserQuestions",
-      "source": "AskUserQuestions.tsx"
-    },
-    {
-      "name": "AskUserQuestionsProps",
-      "source": "AskUserQuestions.tsx"
-    },
-    {
-      "name": "AskUserQuestionsLabels",
-      "source": "AskUserQuestions.tsx"
-    },
-    {
-      "name": "UserQuestion",
-      "source": "AskUserQuestions.tsx"
-    },
-    {
-      "name": "QuestionAnswer",
-      "source": "AskUserQuestions.tsx"
-    },
-    {
-      "name": "QuestionAnswers",
-      "source": "AskUserQuestions.tsx"
-    },
-    {
-      "name": "ApprovalCard",
-      "source": "ApprovalCard.tsx"
-    },
-    {
-      "name": "ApprovalCardProps",
-      "source": "ApprovalCard.tsx"
-    },
-    {
-      "name": "ApprovalCardLabels",
-      "source": "ApprovalCard.tsx"
-    },
-    {
-      "name": "ApprovalDetails",
-      "source": "ApprovalCard.tsx"
-    },
-    {
-      "name": "ApprovalRequest",
-      "source": "ApprovalCard.tsx"
-    },
-    {
-      "name": "ApprovalDecision",
-      "source": "ApprovalCard.tsx"
-    },
-    {
-      "name": "approvalRequestKey",
-      "source": "approval-request.ts"
-    },
-    {
-      "name": "AgentTask",
-      "source": "AgentTask.tsx"
-    },
-    {
-      "name": "AgentStep",
-      "source": "AgentTask.tsx"
-    },
-    {
-      "name": "AgentTaskProps",
-      "source": "AgentTask.tsx"
-    },
-    {
-      "name": "AgentTaskLabels",
-      "source": "AgentTask.tsx"
-    },
-    {
-      "name": "DecisionInbox",
-      "source": "DecisionInbox.tsx"
-    },
-    {
-      "name": "DecisionInboxProps",
-      "source": "DecisionInbox.tsx"
-    },
-    {
-      "name": "DecisionInboxLabels",
-      "source": "DecisionInbox.tsx"
-    },
-    {
-      "name": "DecisionInboxItem",
-      "source": "DecisionInbox.tsx"
-    },
-    {
-      "name": "DecisionInboxTab",
-      "source": "DecisionInbox.tsx"
-    },
-    {
-      "name": "SuggestedEdits",
-      "source": "SuggestedEdits.tsx"
-    },
-    {
-      "name": "SuggestedEditsProps",
-      "source": "SuggestedEdits.tsx"
-    },
-    {
-      "name": "SuggestedEditsLabels",
-      "source": "SuggestedEdits.tsx"
-    },
-    {
-      "name": "InlineDiff",
-      "source": "InlineDiff.tsx"
-    },
-    {
-      "name": "InlineDiffProps",
-      "source": "InlineDiff.tsx"
-    },
-    {
-      "name": "DiffSegment",
-      "source": "InlineDiff.tsx"
-    },
-    {
-      "name": "WeaveCanvas",
-      "source": "WeaveCanvas.tsx"
-    },
-    {
-      "name": "WeaveCanvasProps",
-      "source": "WeaveCanvas.tsx"
-    },
-    {
-      "name": "ImageGeneration",
-      "source": "ImageGeneration.tsx"
-    },
-    {
-      "name": "ImageGenerationProps",
-      "source": "ImageGeneration.tsx"
-    },
-    {
-      "name": "ImageGenerationLabels",
-      "source": "ImageGeneration.tsx"
-    },
-    {
-      "name": "DraftReview",
-      "source": "DraftReview.tsx"
-    },
-    {
-      "name": "DraftReviewProps",
-      "source": "DraftReview.tsx"
-    },
-    {
-      "name": "DraftReviewLabels",
-      "source": "DraftReview.tsx"
-    },
-    {
-      "name": "DraftTone",
-      "source": "DraftReview.tsx"
-    },
-    {
-      "name": "TaskStarter",
-      "source": "TaskStarter.tsx"
-    },
-    {
-      "name": "TaskStarterProps",
-      "source": "TaskStarter.tsx"
-    },
-    {
-      "name": "TaskStarterLabels",
-      "source": "TaskStarter.tsx"
-    },
-    {
-      "name": "ContextItem",
-      "source": "TaskStarter.tsx"
-    },
-    {
-      "name": "ModeOption",
-      "source": "TaskStarter.tsx"
+      "name": "ChipProps",
+      "source": "Chip.tsx"
     },
     {
       "name": "CitedAnswer",
-      "source": "CitedAnswer.tsx"
-    },
-    {
-      "name": "CitedAnswerProps",
       "source": "CitedAnswer.tsx"
     },
     {
@@ -1153,104 +341,56 @@
       "source": "CitedAnswer.tsx"
     },
     {
-      "name": "DataAnswer",
-      "source": "DataAnswer.tsx"
+      "name": "CitedAnswerProps",
+      "source": "CitedAnswer.tsx"
     },
     {
-      "name": "DataAnswerProps",
-      "source": "DataAnswer.tsx"
+      "name": "CodeBlock",
+      "source": "CodeBlock.tsx"
     },
     {
-      "name": "DataAnswerLabels",
-      "source": "DataAnswer.tsx"
+      "name": "CodeBlockProps",
+      "source": "CodeBlock.tsx"
     },
     {
-      "name": "DataAnswerChart",
-      "source": "DataAnswer.tsx"
+      "name": "ColorPicker",
+      "source": "ColorPicker.tsx"
     },
     {
-      "name": "ChangeSummary",
-      "source": "ChangeSummary.tsx"
+      "name": "ColorPickerLabels",
+      "source": "ColorPicker.tsx"
     },
     {
-      "name": "ChangeSummaryProps",
-      "source": "ChangeSummary.tsx"
+      "name": "ColorPickerProps",
+      "source": "ColorPicker.tsx"
     },
     {
-      "name": "ChangeSummaryLabels",
-      "source": "ChangeSummary.tsx"
+      "name": "ColorSwatch",
+      "source": "ColorPicker.tsx"
     },
     {
-      "name": "AssistantControls",
-      "source": "AssistantControls.tsx"
+      "name": "ContextItem",
+      "source": "TaskStarter.tsx"
     },
     {
-      "name": "AssistantControlsProps",
-      "source": "AssistantControls.tsx"
+      "name": "ContextMeter",
+      "source": "ContextMeter.tsx"
     },
     {
-      "name": "AssistantControlsLabels",
-      "source": "AssistantControls.tsx"
+      "name": "ContextMeterPart",
+      "source": "ContextMeter.tsx"
     },
     {
-      "name": "AssistantPermission",
-      "source": "AssistantControls.tsx"
+      "name": "ContextMeterProps",
+      "source": "ContextMeter.tsx"
     },
     {
-      "name": "AssistantMemoryItem",
-      "source": "AssistantControls.tsx"
+      "name": "Countdown",
+      "source": "Countdown.tsx"
     },
     {
-      "name": "PermissionLevel",
-      "source": "AssistantControls.tsx"
-    },
-    {
-      "name": "ApprovalFlow",
-      "source": "ApprovalFlow.tsx"
-    },
-    {
-      "name": "ApprovalFlowProps",
-      "source": "ApprovalFlow.tsx"
-    },
-    {
-      "name": "ApprovalFlowLabels",
-      "source": "ApprovalFlow.tsx"
-    },
-    {
-      "name": "ApprovalRecord",
-      "source": "ApprovalCard.tsx"
-    },
-    {
-      "name": "Terminal",
-      "source": "Terminal.tsx"
-    },
-    {
-      "name": "TerminalProps",
-      "source": "Terminal.tsx"
-    },
-    {
-      "name": "ChatApp",
-      "source": "ChatApp.tsx"
-    },
-    {
-      "name": "ChatAppProps",
-      "source": "ChatApp.tsx"
-    },
-    {
-      "name": "ChatAppLabels",
-      "source": "ChatApp.tsx"
-    },
-    {
-      "name": "ChatConversationItem",
-      "source": "ChatApp.tsx"
-    },
-    {
-      "name": "AgentPresentation",
-      "source": "AgentPresentation.tsx"
-    },
-    {
-      "name": "CustomerEditSheet",
-      "source": "patterns/CustomerEditSheet.tsx"
+      "name": "CountdownProps",
+      "source": "Countdown.tsx"
     },
     {
       "name": "CustomerData",
@@ -1261,32 +401,292 @@
       "source": "patterns/CustomerEditSheet.tsx"
     },
     {
+      "name": "CustomerEditSheet",
+      "source": "patterns/CustomerEditSheet.tsx"
+    },
+    {
       "name": "CustomerEditSheetProps",
       "source": "patterns/CustomerEditSheet.tsx"
     },
     {
-      "name": "PreferenceSettings",
-      "source": "patterns/PreferenceSettings.tsx"
+      "name": "DataAnswer",
+      "source": "DataAnswer.tsx"
     },
     {
-      "name": "PreferenceItem",
-      "source": "patterns/PreferenceSettings.tsx"
+      "name": "DataAnswerChart",
+      "source": "DataAnswer.tsx"
     },
     {
-      "name": "PreferenceLabels",
-      "source": "patterns/PreferenceSettings.tsx"
+      "name": "DataAnswerLabels",
+      "source": "DataAnswer.tsx"
     },
     {
-      "name": "PreferenceSettingsProps",
-      "source": "patterns/PreferenceSettings.tsx"
+      "name": "DataAnswerProps",
+      "source": "DataAnswer.tsx"
     },
     {
-      "name": "InvoiceActions",
-      "source": "patterns/InvoiceActions.tsx"
+      "name": "DataTable",
+      "source": "DataTable.tsx"
     },
     {
-      "name": "InvoiceData",
-      "source": "patterns/InvoiceActions.tsx"
+      "name": "DataTableColumn",
+      "source": "DataTable.tsx"
+    },
+    {
+      "name": "DataTableLabels",
+      "source": "DataTable.tsx"
+    },
+    {
+      "name": "DataTableProps",
+      "source": "DataTable.tsx"
+    },
+    {
+      "name": "DatePicker",
+      "source": "DatePicker.tsx"
+    },
+    {
+      "name": "DatePickerProps",
+      "source": "DatePicker.tsx"
+    },
+    {
+      "name": "DecisionInbox",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxItem",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxLabels",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxProps",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DecisionInboxTab",
+      "source": "DecisionInbox.tsx"
+    },
+    {
+      "name": "DiffSegment",
+      "source": "InlineDiff.tsx"
+    },
+    {
+      "name": "Direction",
+      "source": "config.ts"
+    },
+    {
+      "name": "DonutChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "DonutChartProps",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "DonutDatum",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "DraftReview",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftReviewLabels",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftReviewProps",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DraftTone",
+      "source": "DraftReview.tsx"
+    },
+    {
+      "name": "DropdownMenu",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuProps",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "EmptyState",
+      "source": "EmptyState.tsx"
+    },
+    {
+      "name": "EmptyStateProps",
+      "source": "EmptyState.tsx"
+    },
+    {
+      "name": "FeedbackBar",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "FeedbackBarLabels",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "FeedbackBarProps",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "FeedbackReason",
+      "source": "FeedbackBar.tsx"
+    },
+    {
+      "name": "Field",
+      "source": "Field.tsx"
+    },
+    {
+      "name": "FieldControlProps",
+      "source": "Field.tsx"
+    },
+    {
+      "name": "FieldProps",
+      "source": "Field.tsx"
+    },
+    {
+      "name": "FileDropzone",
+      "source": "FileDropzone.tsx"
+    },
+    {
+      "name": "FileDropzoneLabels",
+      "source": "FileDropzone.tsx"
+    },
+    {
+      "name": "FileDropzoneProps",
+      "source": "FileDropzone.tsx"
+    },
+    {
+      "name": "FileTree",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeFile",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeFolder",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeNode",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FileTreeProps",
+      "source": "FileTree.tsx"
+    },
+    {
+      "name": "FilterBar",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarFilter",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarProps",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FollowUps",
+      "source": "FollowUps.tsx"
+    },
+    {
+      "name": "FollowUpsProps",
+      "source": "FollowUps.tsx"
+    },
+    {
+      "name": "GettingStartedIllustration",
+      "source": "EmptyStateIllustrations.tsx"
+    },
+    {
+      "name": "ImageGeneration",
+      "source": "ImageGeneration.tsx"
+    },
+    {
+      "name": "ImageGenerationLabels",
+      "source": "ImageGeneration.tsx"
+    },
+    {
+      "name": "ImageGenerationProps",
+      "source": "ImageGeneration.tsx"
+    },
+    {
+      "name": "ImageResult",
+      "source": "ImageResult.tsx"
+    },
+    {
+      "name": "ImageResultLabels",
+      "source": "ImageResult.tsx"
+    },
+    {
+      "name": "ImageResultProps",
+      "source": "ImageResult.tsx"
+    },
+    {
+      "name": "InlineCitation",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "InlineCitationLabels",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "InlineCitationProps",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "InlineDiff",
+      "source": "InlineDiff.tsx"
+    },
+    {
+      "name": "InlineDiffProps",
+      "source": "InlineDiff.tsx"
+    },
+    {
+      "name": "Input",
+      "source": "Input.tsx"
+    },
+    {
+      "name": "InputCopy",
+      "source": "InputCopy.tsx"
+    },
+    {
+      "name": "InputCopyLabels",
+      "source": "InputCopy.tsx"
+    },
+    {
+      "name": "InputCopyProps",
+      "source": "InputCopy.tsx"
+    },
+    {
+      "name": "InputProps",
+      "source": "Input.tsx"
+    },
+    {
+      "name": "InputType",
+      "source": "Input.tsx"
+    },
+    {
+      "name": "InsightCards",
+      "source": "InsightCards.tsx"
+    },
+    {
+      "name": "InsightCardsLabels",
+      "source": "InsightCards.tsx"
+    },
+    {
+      "name": "InsightCardsProps",
+      "source": "InsightCards.tsx"
+    },
+    {
+      "name": "InsightItem",
+      "source": "InsightCards.tsx"
     },
     {
       "name": "InvoiceAction",
@@ -1301,12 +701,636 @@
       "source": "patterns/InvoiceActions.tsx"
     },
     {
+      "name": "InvoiceActions",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
       "name": "InvoiceActionsProps",
       "source": "patterns/InvoiceActions.tsx"
     },
     {
-      "name": "ActionContext",
-      "source": "patterns/useAsyncAction.ts"
+      "name": "InvoiceData",
+      "source": "patterns/InvoiceActions.tsx"
+    },
+    {
+      "name": "LineChart",
+      "source": "Charts.tsx"
+    },
+    {
+      "name": "LoadingState",
+      "source": "LoadingState.tsx"
+    },
+    {
+      "name": "LoadingStateProps",
+      "source": "LoadingState.tsx"
+    },
+    {
+      "name": "Markdown",
+      "source": "Markdown.tsx"
+    },
+    {
+      "name": "MarkdownProps",
+      "source": "Markdown.tsx"
+    },
+    {
+      "name": "MenuItem",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "Modal",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalProps",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModeOption",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "ModelOption",
+      "source": "ModelSelector.tsx"
+    },
+    {
+      "name": "ModelSelector",
+      "source": "ModelSelector.tsx"
+    },
+    {
+      "name": "ModelSelectorProps",
+      "source": "ModelSelector.tsx"
+    },
+    {
+      "name": "NoRecordsIllustration",
+      "source": "EmptyStateIllustrations.tsx"
+    },
+    {
+      "name": "NoSearchResultsIllustration",
+      "source": "EmptyStateIllustrations.tsx"
+    },
+    {
+      "name": "NotificationItem",
+      "source": "NotificationList.tsx"
+    },
+    {
+      "name": "NotificationList",
+      "source": "NotificationList.tsx"
+    },
+    {
+      "name": "NotificationListProps",
+      "source": "NotificationList.tsx"
+    },
+    {
+      "name": "Numerals",
+      "source": "config.ts"
+    },
+    {
+      "name": "OTPInput",
+      "source": "OTPInput.tsx"
+    },
+    {
+      "name": "OTPInputProps",
+      "source": "OTPInput.tsx"
+    },
+    {
+      "name": "Pagination",
+      "source": "Pagination.tsx"
+    },
+    {
+      "name": "PaginationLabels",
+      "source": "Pagination.tsx"
+    },
+    {
+      "name": "PaginationProps",
+      "source": "Pagination.tsx"
+    },
+    {
+      "name": "PermissionLevel",
+      "source": "AssistantControls.tsx"
+    },
+    {
+      "name": "PreferenceItem",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "PreferenceLabels",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "PreferenceSettings",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "PreferenceSettingsProps",
+      "source": "patterns/PreferenceSettings.tsx"
+    },
+    {
+      "name": "Progress",
+      "source": "Progress.tsx"
+    },
+    {
+      "name": "ProgressProps",
+      "source": "Progress.tsx"
+    },
+    {
+      "name": "PromptBar",
+      "source": "PromptBar.tsx"
+    },
+    {
+      "name": "PromptBarProps",
+      "source": "PromptBar.tsx"
+    },
+    {
+      "name": "QuestionAnswer",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "QuestionAnswers",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "RadioGroup",
+      "source": "RadioGroup.tsx"
+    },
+    {
+      "name": "RadioGroupProps",
+      "source": "RadioGroup.tsx"
+    },
+    {
+      "name": "RadioOption",
+      "source": "RadioGroup.tsx"
+    },
+    {
+      "name": "Select",
+      "source": "Select.tsx"
+    },
+    {
+      "name": "SelectOption",
+      "source": "Select.tsx"
+    },
+    {
+      "name": "SelectProps",
+      "source": "Select.tsx"
+    },
+    {
+      "name": "SelectionAction",
+      "source": "SelectionActions.tsx"
+    },
+    {
+      "name": "SelectionActions",
+      "source": "SelectionActions.tsx"
+    },
+    {
+      "name": "SelectionActionsProps",
+      "source": "SelectionActions.tsx"
+    },
+    {
+      "name": "Sheet",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetProps",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "Sidebar",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarAction",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarActionProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarContent",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarDisclosure",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarDisclosureProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarFooter",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarGroup",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarGroupProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarHeader",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarIdentity",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarItem",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarItemProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarLabel",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarToggle",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "SidebarToggleProps",
+      "source": "Sidebar.tsx"
+    },
+    {
+      "name": "Skeleton",
+      "source": "Skeleton.tsx"
+    },
+    {
+      "name": "SkeletonProps",
+      "source": "Skeleton.tsx"
+    },
+    {
+      "name": "Slider",
+      "source": "Slider.tsx"
+    },
+    {
+      "name": "SliderProps",
+      "source": "Slider.tsx"
+    },
+    {
+      "name": "SourceReference",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "Sources",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "SourcesLabels",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "SourcesProps",
+      "source": "Sources.tsx"
+    },
+    {
+      "name": "Spinner",
+      "source": "Spinner.tsx"
+    },
+    {
+      "name": "SpinnerProps",
+      "source": "Spinner.tsx"
+    },
+    {
+      "name": "StatusIcon",
+      "source": "StatusIcon.tsx"
+    },
+    {
+      "name": "StatusIconProps",
+      "source": "StatusIcon.tsx"
+    },
+    {
+      "name": "StatusIconState",
+      "source": "StatusIcon.tsx"
+    },
+    {
+      "name": "StatusPill",
+      "source": "StatusPill.tsx"
+    },
+    {
+      "name": "StatusPillProps",
+      "source": "StatusPill.tsx"
+    },
+    {
+      "name": "StatusPillState",
+      "source": "StatusPill.tsx"
+    },
+    {
+      "name": "StepItem",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "StepStatus",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "Steps",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "StepsProps",
+      "source": "Steps.tsx"
+    },
+    {
+      "name": "StreamingText",
+      "source": "StreamingText.tsx"
+    },
+    {
+      "name": "StreamingTextProps",
+      "source": "StreamingText.tsx"
+    },
+    {
+      "name": "SuggestedEdits",
+      "source": "SuggestedEdits.tsx"
+    },
+    {
+      "name": "SuggestedEditsLabels",
+      "source": "SuggestedEdits.tsx"
+    },
+    {
+      "name": "SuggestedEditsProps",
+      "source": "SuggestedEdits.tsx"
+    },
+    {
+      "name": "Switch",
+      "source": "Switch.tsx"
+    },
+    {
+      "name": "SwitchProps",
+      "source": "Switch.tsx"
+    },
+    {
+      "name": "SystemConfig",
+      "source": "config.ts"
+    },
+    {
+      "name": "SystemProvider",
+      "source": "Provider.tsx"
+    },
+    {
+      "name": "SystemProviderProps",
+      "source": "Provider.tsx"
+    },
+    {
+      "name": "TabItem",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "Table",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableBody",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableCell",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableHead",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableHeader",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableProps",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "TableRow",
+      "source": "Table.tsx"
+    },
+    {
+      "name": "Tabs",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsProps",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TagInput",
+      "source": "TagInput.tsx"
+    },
+    {
+      "name": "TagInputLabels",
+      "source": "TagInput.tsx"
+    },
+    {
+      "name": "TagInputProps",
+      "source": "TagInput.tsx"
+    },
+    {
+      "name": "TaskRowItem",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRows",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowsProps",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskStarter",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "TaskStarterLabels",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "TaskStarterProps",
+      "source": "TaskStarter.tsx"
+    },
+    {
+      "name": "TaskState",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "Terminal",
+      "source": "Terminal.tsx"
+    },
+    {
+      "name": "TerminalProps",
+      "source": "Terminal.tsx"
+    },
+    {
+      "name": "Textarea",
+      "source": "Textarea.tsx"
+    },
+    {
+      "name": "TextareaProps",
+      "source": "Textarea.tsx"
+    },
+    {
+      "name": "ThinkingIndicator",
+      "source": "ThinkingIndicator.tsx"
+    },
+    {
+      "name": "ThinkingIndicatorProps",
+      "source": "ThinkingIndicator.tsx"
+    },
+    {
+      "name": "ThinkingPanel",
+      "source": "ThinkingPanel.tsx"
+    },
+    {
+      "name": "ThinkingPanelLabels",
+      "source": "ThinkingPanel.tsx"
+    },
+    {
+      "name": "ThinkingPanelProps",
+      "source": "ThinkingPanel.tsx"
+    },
+    {
+      "name": "ThinkingState",
+      "source": "ThinkingState.tsx"
+    },
+    {
+      "name": "ThinkingStateProps",
+      "source": "ThinkingState.tsx"
+    },
+    {
+      "name": "Timeline",
+      "source": "Timeline.tsx"
+    },
+    {
+      "name": "TimelineItem",
+      "source": "Timeline.tsx"
+    },
+    {
+      "name": "TimelineProps",
+      "source": "Timeline.tsx"
+    },
+    {
+      "name": "ToastMessage",
+      "source": "useToast.ts"
+    },
+    {
+      "name": "ToastProvider",
+      "source": "Toast.tsx"
+    },
+    {
+      "name": "ToolCall",
+      "source": "ToolCall.tsx"
+    },
+    {
+      "name": "ToolCallProps",
+      "source": "ToolCall.tsx"
+    },
+    {
+      "name": "ToolCallState",
+      "source": "ToolCall.tsx"
+    },
+    {
+      "name": "ToolChipItem",
+      "source": "ToolChips.tsx"
+    },
+    {
+      "name": "ToolChips",
+      "source": "ToolChips.tsx"
+    },
+    {
+      "name": "ToolChipsProps",
+      "source": "ToolChips.tsx"
+    },
+    {
+      "name": "ToolLabels",
+      "source": "useToolLabels.ts"
+    },
+    {
+      "name": "Tooltip",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipContent",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipContentProps",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipProps",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipRoot",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipRootProps",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipTrigger",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "TooltipTriggerProps",
+      "source": "Tooltip.tsx"
+    },
+    {
+      "name": "Tray",
+      "source": "Tray.tsx"
+    },
+    {
+      "name": "TrayProps",
+      "source": "Tray.tsx"
+    },
+    {
+      "name": "UserQuestion",
+      "source": "AskUserQuestions.tsx"
+    },
+    {
+      "name": "WeaveCanvas",
+      "source": "WeaveCanvas.tsx"
+    },
+    {
+      "name": "WeaveCanvasProps",
+      "source": "WeaveCanvas.tsx"
+    },
+    {
+      "name": "accentColors",
+      "source": "config.ts"
+    },
+    {
+      "name": "approvalRequestKey",
+      "source": "approval-request.ts"
+    },
+    {
+      "name": "defaultConfig",
+      "source": "config.ts"
+    },
+    {
+      "name": "numberLocale",
+      "source": "config.ts"
+    },
+    {
+      "name": "useReducedMotion",
+      "source": "useReducedMotion.ts"
+    },
+    {
+      "name": "useSystem",
+      "source": "useSystem.ts"
+    },
+    {
+      "name": "useToast",
+      "source": "useToast.ts"
     }
   ],
   "configuration": {
@@ -7677,7 +7701,16 @@
       "id": "tooltip",
       "api": "Tooltip",
       "source": "Tooltip.tsx",
-      "exports": ["Tooltip", "TooltipProps"],
+      "exports": [
+        "Tooltip",
+        "TooltipProps",
+        "TooltipRoot",
+        "TooltipRootProps",
+        "TooltipTrigger",
+        "TooltipTriggerProps",
+        "TooltipContent",
+        "TooltipContentProps"
+      ],
       "purpose": "Explain a focusable trigger briefly.",
       "useWhen": "Explain a focusable trigger briefly.",
       "alternative": "Compose existing Tiraz components for the task.",
@@ -7702,19 +7735,111 @@
           "required": false,
           "default": "500",
           "note": "Hover delay in ms. Focus is immediate. Negative clamps to zero, nonfinite uses 500."
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "note": "Owner-controlled open state. Omit for internal state."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "default": "undefined",
+          "note": "Initial internal state; ignored when open is supplied."
+        },
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": false,
+          "default": "undefined",
+          "note": "Requests a change; controlled owners decide whether to accept it."
+        },
+        {
+          "name": "portalContainer",
+          "type": "HTMLElement | null",
+          "required": false,
+          "default": "undefined",
+          "note": "Same-document host; null withholds content. Inside Modal/Sheet it must be their content or a descendant."
+        },
+        {
+          "name": "side",
+          "type": "top | right | bottom | left",
+          "required": false,
+          "default": "undefined",
+          "note": "Preferred side; collision handling can flip it. Defaults to top."
+        },
+        {
+          "name": "sideOffset",
+          "type": "number",
+          "required": false,
+          "default": "undefined",
+          "note": "Distance from the anchor, default 6."
+        },
+        {
+          "name": "align",
+          "type": "start | center | end",
+          "required": false,
+          "default": "undefined",
+          "note": "Alignment, default center."
+        },
+        {
+          "name": "alignOffset",
+          "type": "number",
+          "required": false,
+          "default": "undefined",
+          "note": "Alignment offset, default 0."
+        },
+        {
+          "name": "collisionBoundary",
+          "type": "Element | null | (Element | null)[]",
+          "required": false,
+          "default": "undefined",
+          "note": "Optional clipping boundary. A nonempty boundary also bounds tooltip width."
+        },
+        {
+          "name": "collisionPadding",
+          "type": "number | Partial<Record<Side, number>>",
+          "required": false,
+          "default": "undefined",
+          "note": "Collision inset, default 12."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "default": "undefined",
+          "note": "Additional tooltip classes."
+        },
+        {
+          "name": "style",
+          "type": "CSSProperties",
+          "required": false,
+          "default": "undefined",
+          "note": "Tooltip styles; retain placement and available-size bounds."
         }
       ],
-      "inheritedProps": "None; native props belong on trigger.",
-      "state": "Tooltip owns transient open state; Escape, blur and pointer leave dismiss.",
-      "events": [],
+      "inheritedProps": "Convenience wrapper retains trigger/content. TooltipTrigger accepts native button props and ref, plus asChild; TooltipContent accepts string children, placement, className, style and ref.",
+      "state": "Uncontrolled by default, with optional defaultOpen. Supplying open makes state controlled: onOpenChange requests changes without overriding the owner. Escape, blur and pointer leave request dismissal.",
+      "events": ["onOpenChange"],
       "accessibility": [
         "See source and ai/composition.md for naming, descriptions, focus and decorative-content requirements."
       ],
-      "limitations": ["Text only; no actions, links or interactive content."],
-      "providers": [
-        "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
+      "limitations": [
+        "Text only; no actions, links or interactive content.",
+        "Exactly one TooltipTrigger and TooltipContent per TooltipRoot.",
+        "External hosts are same-document only. Nested Modal/Sheet overrides outside dialog content are withheld.",
+        "A provider transfers explicit style custom properties and its configuration; arbitrary ancestor/class styles do not transfer."
       ],
-      "examples": ["ai/examples/OverlayExamples.tsx"]
+      "providers": [
+        "SystemProvider supplies shared scope and the default portal host. Component override takes precedence; omitted destination retains the nearest Modal/Sheet content or provider host."
+      ],
+      "examples": [
+        "ai/examples/OverlayExamples.tsx",
+        "ai/examples/TooltipCompoundExample.tsx"
+      ]
     },
     {
       "id": "modal",

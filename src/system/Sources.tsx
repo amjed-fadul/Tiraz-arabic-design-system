@@ -6,7 +6,7 @@ import type {
   PointerEvent as ReactPointerEvent,
 } from "react";
 import { sourceHref } from "./source-url";
-import { useSystem } from "./useSystem";
+import { useSystem, usePortalDestination } from "./useSystem";
 import { useChanged } from "./useChanged";
 import { numberLocale } from "./config";
 import { formatCount } from "./format";
@@ -237,7 +237,8 @@ function CitationPreview({
   className: string;
   onOpenChange?: (open: boolean) => void;
 }) {
-  const { config, container } = useSystem(),
+  const { config } = useSystem(),
+    container = usePortalDestination(),
     previewId = useId(),
     titleId = useId();
   const [open, setOpen] = useState(false),
@@ -279,7 +280,7 @@ function CitationPreview({
     },
     className,
     "aria-label": name,
-    "aria-describedby": open && !tapped ? previewId : undefined,
+    "aria-describedby": open && container && !tapped ? previewId : undefined,
     "data-source-id": source.id,
     "data-state": open ? "open" : "closed",
     onFocus: () => {
@@ -326,39 +327,41 @@ function CitationPreview({
           </button>
         )}
       </Popover.Anchor>
-      <Popover.Portal container={container}>
-        <Popover.Content
-          className="tz-citation-popup"
-          id={previewId}
-          role={tapped ? "dialog" : "tooltip"}
-          aria-labelledby={tapped ? titleId : undefined}
-          dir={config.direction}
-          sideOffset={6}
-          collisionPadding={12}
-          // The preview never takes focus: the chip keeps it.
-          onOpenAutoFocus={(event) => event.preventDefault()}
-          onCloseAutoFocus={(event) => event.preventDefault()}
-          onInteractOutside={(event) => {
-            if (anchor.current?.contains(event.target as Node))
-              event.preventDefault();
-          }}
-          onPointerEnter={(event) => {
-            if (event.pointerType === "touch") return;
-            hovered.current = true;
-            clearTimeout(timer.current);
-          }}
-          onPointerLeave={leave}
-        >
-          <CitationDetails
-            source={source}
-            href={href}
-            digits={digits}
-            unavailable={unavailable}
-            titleId={tapped ? titleId : undefined}
-            openLabel={tapped ? openLabel : undefined}
-          />
-        </Popover.Content>
-      </Popover.Portal>
+      {container && (
+        <Popover.Portal container={container}>
+          <Popover.Content
+            className="tz-citation-popup"
+            id={previewId}
+            role={tapped ? "dialog" : "tooltip"}
+            aria-labelledby={tapped ? titleId : undefined}
+            dir={config.direction}
+            sideOffset={6}
+            collisionPadding={12}
+            // The preview never takes focus: the chip keeps it.
+            onOpenAutoFocus={(event) => event.preventDefault()}
+            onCloseAutoFocus={(event) => event.preventDefault()}
+            onInteractOutside={(event) => {
+              if (anchor.current?.contains(event.target as Node))
+                event.preventDefault();
+            }}
+            onPointerEnter={(event) => {
+              if (event.pointerType === "touch") return;
+              hovered.current = true;
+              clearTimeout(timer.current);
+            }}
+            onPointerLeave={leave}
+          >
+            <CitationDetails
+              source={source}
+              href={href}
+              digits={digits}
+              unavailable={unavailable}
+              titleId={tapped ? titleId : undefined}
+              openLabel={tapped ? openLabel : undefined}
+            />
+          </Popover.Content>
+        </Popover.Portal>
+      )}
     </Popover.Root>
   );
 }
@@ -369,7 +372,8 @@ export function InlineCitation({
   labels,
   className = "",
 }: InlineCitationProps) {
-  const { config, container } = useSystem(),
+  const { config } = useSystem(),
+    container = usePortalDestination(),
     ar = config.direction === "rtl",
     digits = new Intl.NumberFormat(numberLocale(config), {
       useGrouping: false,
@@ -429,24 +433,26 @@ export function InlineCitation({
       >
         {number}
       </Popover.Trigger>
-      <Popover.Portal container={container}>
-        <Popover.Content
-          className="tz-citation-popup"
-          dir={config.direction}
-          aria-labelledby={titleId}
-          sideOffset={6}
-          collisionPadding={12}
-        >
-          <CitationDetails
-            source={source}
-            href={href}
-            digits={digits}
-            unavailable={unavailable}
-            titleId={titleId}
-            openLabel={openLabel}
-          />
-        </Popover.Content>
-      </Popover.Portal>
+      {container && (
+        <Popover.Portal container={container}>
+          <Popover.Content
+            className="tz-citation-popup"
+            dir={config.direction}
+            aria-labelledby={titleId}
+            sideOffset={6}
+            collisionPadding={12}
+          >
+            <CitationDetails
+              source={source}
+              href={href}
+              digits={digits}
+              unavailable={unavailable}
+              titleId={titleId}
+              openLabel={openLabel}
+            />
+          </Popover.Content>
+        </Popover.Portal>
+      )}
     </Popover.Root>
   );
 }

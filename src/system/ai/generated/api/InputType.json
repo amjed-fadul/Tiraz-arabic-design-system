@@ -7,8 +7,8 @@
   "type": "InputType",
   "typeParameters": [],
   "members": [
-    "\"search\"",
     "\"text\"",
+    "\"search\"",
     "\"tel\"",
     "\"url\"",
     "\"email\"",

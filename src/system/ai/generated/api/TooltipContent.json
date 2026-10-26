@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TooltipContent",
+  "kind": "component",
+  "source": "Tooltip.tsx",
+  "sourceHash": "e4713ae38bcee97ca379141a2e2e36361f070fe3b94ddc7b35f4186249621d4e",
+  "type": "({ children, portalContainer, ref, className, style, side, sideOffset, align, alignOffset, collisionBoundary, collisionPadding, }: TooltipContentProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  children,\n  portalContainer,\n  ref,\n  className = \"\",\n  style,\n  side = \"top\",\n  sideOffset = 6,\n  align,\n  alignOffset,\n  collisionBoundary,\n  collisionPadding = 12,\n}",
+          "type": "TooltipContentProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "align": {
+      "type": "\"center\" | \"end\" | \"start\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"center\"",
+        "\"end\"",
+        "\"start\""
+      ]
+    },
+    "alignOffset": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "children": {
+      "type": "string",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "collisionBoundary": {
+      "type": "Boundary | Boundary[] | undefined",
+      "required": false
+    },
+    "collisionPadding": {
+      "type": "number | Partial<Record<\"left\" | \"right\" | \"bottom\" | \"top\", number>> | undefined",
+      "required": false
+    },
+    "portalContainer": {
+      "type": "HTMLElement | null | undefined",
+      "required": false,
+      "description": "Same-document destination. null withholds the tooltip until ready."
+    },
+    "ref": {
+      "type": "Ref<HTMLDivElement> | undefined",
+      "required": false
+    },
+    "side": {
+      "type": "\"left\" | \"right\" | \"bottom\" | \"top\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"left\"",
+        "\"right\"",
+        "\"bottom\"",
+        "\"top\""
+      ]
+    },
+    "sideOffset": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "className": "\"\"",
+    "side": "\"top\"",
+    "sideOffset": "6",
+    "collisionPadding": "12"
+  },
+  "relatedTypes": {
+    "TooltipContentProps": "TooltipContentProps.json",
+    "TooltipProps": "TooltipProps.json",
+    "TooltipRootProps": "TooltipRootProps.json",
+    "TooltipTriggerProps": "TooltipTriggerProps.json"
+  }
+}

@@ -2,7 +2,7 @@ import * as Primitive from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
 import type { ReactElement, ReactNode } from "react";
 import { useGlide } from "./useGlide";
-import { useSystem } from "./useSystem";
+import { useSystem, usePortalDestination } from "./useSystem";
 export interface MenuItem {
   id: string;
   label: string;
@@ -27,7 +27,8 @@ export function DropdownMenu({
   open,
   onOpenChange,
 }: DropdownMenuProps) {
-  const { container, config } = useSystem();
+  const { config } = useSystem();
+  const container = usePortalDestination();
   const [localOpen, setLocalOpen] = useState(false);
   const glide = useGlide();
   function changeOpen(value: boolean) {
@@ -42,53 +43,55 @@ export function DropdownMenu({
       onOpenChange={changeOpen}
     >
       <Primitive.Trigger asChild>{trigger}</Primitive.Trigger>
-      <Primitive.Portal container={container}>
-        <Primitive.Content
-          ref={glide}
-          className="tz-menu"
-          sideOffset={7}
-          align={align}
-          collisionPadding={12}
-          onKeyDown={(event) => {
-            if (event.key === "Tab") {
-              event.preventDefault();
-              changeOpen(false);
-            }
-          }}
-        >
-          {items.map((item) => (
-            <div key={item.id}>
-              {item.separatorBefore && (
-                <Primitive.Separator className="tz-menu-separator" />
-              )}
-              <Primitive.Item
-                className="tz-menu-item"
-                disabled={item.disabled}
-                data-destructive={item.destructive || undefined}
-                onSelect={item.onSelect}
-                onPointerLeave={(event) => {
-                  // Animation/scrolling can move an unfocused item away from a
-                  // stationary pointer. Its leave must not clear keyboard focus.
-                  if (
-                    event.currentTarget !==
-                    event.currentTarget.ownerDocument.activeElement
-                  ) {
-                    event.preventDefault();
-                  }
-                }}
-              >
-                {item.icon && <span aria-hidden="true">{item.icon}</span>}
-                <span>{item.label}</span>
-                {item.shortcut && (
-                  <kbd className="tz-kbd" dir="ltr">
-                    {item.shortcut}
-                  </kbd>
+      {container && (
+        <Primitive.Portal container={container}>
+          <Primitive.Content
+            ref={glide}
+            className="tz-menu"
+            sideOffset={7}
+            align={align}
+            collisionPadding={12}
+            onKeyDown={(event) => {
+              if (event.key === "Tab") {
+                event.preventDefault();
+                changeOpen(false);
+              }
+            }}
+          >
+            {items.map((item) => (
+              <div key={item.id}>
+                {item.separatorBefore && (
+                  <Primitive.Separator className="tz-menu-separator" />
                 )}
-              </Primitive.Item>
-            </div>
-          ))}
-        </Primitive.Content>
-      </Primitive.Portal>
+                <Primitive.Item
+                  className="tz-menu-item"
+                  disabled={item.disabled}
+                  data-destructive={item.destructive || undefined}
+                  onSelect={item.onSelect}
+                  onPointerLeave={(event) => {
+                    // Animation/scrolling can move an unfocused item away from a
+                    // stationary pointer. Its leave must not clear keyboard focus.
+                    if (
+                      event.currentTarget !==
+                      event.currentTarget.ownerDocument.activeElement
+                    ) {
+                      event.preventDefault();
+                    }
+                  }}
+                >
+                  {item.icon && <span aria-hidden="true">{item.icon}</span>}
+                  <span>{item.label}</span>
+                  {item.shortcut && (
+                    <kbd className="tz-kbd" dir="ltr">
+                      {item.shortcut}
+                    </kbd>
+                  )}
+                </Primitive.Item>
+              </div>
+            ))}
+          </Primitive.Content>
+        </Primitive.Portal>
+      )}
     </Primitive.Root>
   );
 }

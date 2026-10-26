@@ -3,7 +3,7 @@
   "exportName": "DatePicker",
   "kind": "component",
   "source": "DatePicker.tsx",
-  "sourceHash": "27990e205c0b1528d97c7c464430bcd1be1bf875de7fda93fca7f6e0850ee437",
+  "sourceHash": "ac38236f154d2141e4ebb3bbbed17a79b8150a54ed3cab3656a864894baa3b02",
   "type": "({ value, defaultValue, onValueChange, min, max, locale, yearRange, placeholder, label, helper, error, field, size, invalid, disabled, name, form, className, ...props }: DatePickerProps) => JSX.Element",
   "description": "Single Gregorian date; empty string clears. The app owns form validation.",
   "signatures": [
@@ -145,14 +145,14 @@
       ]
     },
     "aria-dropeffect": {
-      "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+      "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"copy\"",
-        "\"link\"",
         "\"none\"",
         "\"move\"",
+        "\"link\"",
         "\"execute\"",
         "\"popup\""
       ]
@@ -516,12 +516,12 @@
       ]
     },
     "enterKeyHint": {
-      "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+      "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"search\"",
         "\"next\"",
+        "\"search\"",
         "\"enter\"",
         "\"done\"",
         "\"go\"",
@@ -601,13 +601,13 @@
       "required": false
     },
     "inputMode": {
-      "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+      "type": "\"none\" | \"text\" | \"search\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"search\"",
         "\"none\"",
         "\"text\"",
+        "\"search\"",
         "\"tel\"",
         "\"url\"",
         "\"email\"",
@@ -1655,14 +1655,14 @@
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
-            "\"link\"",
             "\"none\"",
             "\"move\"",
+            "\"link\"",
             "\"execute\"",
             "\"popup\""
           ]
@@ -2026,12 +2026,12 @@
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+          "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"next\"",
+            "\"search\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",
@@ -2111,13 +2111,13 @@
           "required": false
         },
         "inputMode": {
-          "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+          "type": "\"none\" | \"text\" | \"search\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"none\"",
             "\"text\"",
+            "\"search\"",
             "\"tel\"",
             "\"url\"",
             "\"email\"",
@@ -3165,14 +3165,14 @@
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
-            "\"link\"",
             "\"none\"",
             "\"move\"",
+            "\"link\"",
             "\"execute\"",
             "\"popup\""
           ]
@@ -3536,12 +3536,12 @@
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+          "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"next\"",
+            "\"search\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",
@@ -3621,13 +3621,13 @@
           "required": false
         },
         "inputMode": {
-          "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+          "type": "\"none\" | \"text\" | \"search\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"none\"",
             "\"text\"",
+            "\"search\"",
             "\"tel\"",
             "\"url\"",
             "\"email\"",

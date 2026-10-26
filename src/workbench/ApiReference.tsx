@@ -2790,6 +2790,30 @@ export function ApiReference({
           "Hover defaults to 500ms; focus is immediate. Escape dismisses Tooltip first. Portal uses the nearest provider or overlay.",
         ),
       ],
+      [
+        "TooltipRoot / TooltipTrigger / TooltipContent",
+        "compound API",
+        t(
+          "جذر واحد، ومشغّل واحد، ومحتوى نصي واحد. يحافظ asChild على العنصر التفاعلي الأصلي.",
+          "One root, one trigger and one text content. asChild preserves the original focusable element.",
+        ),
+      ],
+      [
+        "open / defaultOpen / onOpenChange",
+        "boolean? / boolean? / callback?",
+        t(
+          "يطلب التلميح تغيير الحالة؛ يقرر التطبيق قبول الطلب عند تمرير open.",
+          "Controlled open requests changes; the application decides whether to accept them. defaultOpen initializes internal state.",
+        ),
+      ],
+      [
+        "portalContainer / collisionBoundary",
+        "HTMLElement | null / Element | Element[]",
+        t(
+          "الوجهة اختيارية وفي الوثيقة نفسها. null يؤجّل العرض. داخل الحوار يجب أن تكون الوجهة ضمن محتواه. تحدّد الحدود مساحة التموضع والعرض.",
+          "Optional same-document host; null withholds content. Inside a dialog the host must remain in its content. A collision boundary constrains placement and available width.",
+        ),
+      ],
     ],
     modal: [
       [

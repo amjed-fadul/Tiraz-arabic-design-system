@@ -146,14 +146,14 @@
       ]
     },
     "aria-dropeffect": {
-      "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+      "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"copy\"",
-        "\"link\"",
         "\"none\"",
         "\"move\"",
+        "\"link\"",
         "\"execute\"",
         "\"popup\""
       ]
@@ -525,12 +525,12 @@
       ]
     },
     "enterKeyHint": {
-      "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+      "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"search\"",
         "\"next\"",
+        "\"search\"",
         "\"enter\"",
         "\"done\"",
         "\"go\"",
@@ -573,13 +573,13 @@
       "required": false
     },
     "inputMode": {
-      "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+      "type": "\"none\" | \"text\" | \"search\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"search\"",
         "\"none\"",
         "\"text\"",
+        "\"search\"",
         "\"tel\"",
         "\"url\"",
         "\"email\"",
@@ -1658,14 +1658,14 @@
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
-            "\"link\"",
             "\"none\"",
             "\"move\"",
+            "\"link\"",
             "\"execute\"",
             "\"popup\""
           ]
@@ -2037,12 +2037,12 @@
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+          "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"next\"",
+            "\"search\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",
@@ -2085,13 +2085,13 @@
           "required": false
         },
         "inputMode": {
-          "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+          "type": "\"none\" | \"text\" | \"search\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"none\"",
             "\"text\"",
+            "\"search\"",
             "\"tel\"",
             "\"url\"",
             "\"email\"",
@@ -3170,14 +3170,14 @@
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
-            "\"link\"",
             "\"none\"",
             "\"move\"",
+            "\"link\"",
             "\"execute\"",
             "\"popup\""
           ]
@@ -3549,12 +3549,12 @@
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+          "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"next\"",
+            "\"search\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",
@@ -3597,13 +3597,13 @@
           "required": false
         },
         "inputMode": {
-          "type": "\"search\" | \"none\" | \"text\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
+          "type": "\"none\" | \"text\" | \"search\" | \"tel\" | \"url\" | \"email\" | \"numeric\" | \"decimal\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"none\"",
             "\"text\"",
+            "\"search\"",
             "\"tel\"",
             "\"url\"",
             "\"email\"",

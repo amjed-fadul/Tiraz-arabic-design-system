@@ -3,7 +3,7 @@
   "exportName": "ModalProps",
   "kind": "type",
   "source": "Modal.tsx",
-  "sourceHash": "2ce0044aedf3ce0b7b429c6d34f3b62785cea6c6930db506b24ca8ca017088ba",
+  "sourceHash": "3c74172865db35841d7a2f2924370fa00b36b216883c4fe269a353858bbeb715",
   "type": "ModalProps",
   "typeParameters": [],
   "props": {

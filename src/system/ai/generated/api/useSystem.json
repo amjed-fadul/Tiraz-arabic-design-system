@@ -3,13 +3,13 @@
   "exportName": "useSystem",
   "kind": "function",
   "source": "useSystem.ts",
-  "sourceHash": "3db68ea2fe7e112b013056bbd4b686d7127863435b9891f24cc709218e31f225",
-  "type": "() => { config: SystemConfig; container: HTMLDivElement | null; }",
+  "sourceHash": "e6a163c54f636c7e6b3163e46d532a01bdcc526465e9554bd9d1ef107f0d4904",
+  "type": "() => { config: SystemConfig; container: HTMLDivElement | null; scope?: PortalScope; portalBoundary?: HTMLDivElement | null; }",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [],
-      "returns": "{ config: SystemConfig; container: HTMLDivElement | null; }"
+      "returns": "{ config: SystemConfig; container: HTMLDivElement | null; scope?: PortalScope; portalBoundary?: HTMLDivElement | null; }"
     }
   ],
   "relatedTypes": {}

@@ -53,6 +53,31 @@ the existing root and defaults. Language does not translate content or change
 `config.direction`. Config still owns `--action`, `--radius` and `colorScheme`
 when root styles are merged. These props are not in the published 0.1.2 package.
 
+The development provider also accepts `portalContainer?: HTMLElement | null`.
+Omit it to keep the original root destination; pass `null` while an embedded host
+is pending to withhold overlays without hiding ordinary content. A same-document
+element receives an owned `.tiraz-system` wrapper, removed on host change or
+unmount. It carries configuration, `lang` and explicit `style` custom properties,
+including `--tiraz-action` and `--tiraz-radius`; layout styles, classes and arbitrary
+ancestor-dependent CSS do not transfer. Global theme rules still apply. The
+provider's root remains the layout element; `useSystem().container` is the effective
+portal destination. Modal/Sheet preserve the nearest dialog content as their host.
+These APIs are unreleased and do not change the published package.
+
+`TooltipRoot`, `TooltipTrigger` and `TooltipContent` provide compound composition.
+Use exactly one trigger and one text-only content per root. The default trigger is
+a native `type="button"`; `asChild` uses one focusable child forwarding events,
+ARIA and ref. Existing `Tooltip({trigger, content})` remains supported. Both forms
+support `open`, `defaultOpen`, `onOpenChange` and the existing hover delay; a
+controlled owner must accept change requests. Content accepts placement and
+collision options plus `portalContainer`. An explicit host inside Modal/Sheet must
+be the dialog content or its descendant; an outside host is withheld because the
+dialog hides siblings and blocks their pointers. An omitted host uses the nearest
+scope. Explicit `null`, empty content or removed content exposes no description
+and does not intercept Escape. The 400ms hover warm window remains global across
+Tooltip roots for compatibility. Supply `collisionBoundary` to bound placement and
+available width in an embedded surface. Hosts and boundaries are independent.
+
 The current provider accepts optional CSS overrides `--tiraz-action` and
 `--tiraz-radius`, falling back to `config.accent` and `config.radius`. Other
 semantic tokens can be overridden in CSS normally. Put user theme rules after
@@ -1423,3 +1448,13 @@ neutral canned reply. Unmount clears its timers. No authentication, backend,
 persistent history, model connection, application framework or uploads are added.
 Copy all source and `ai/` together; adjust CSS and `./system` imports to the
 relocated library root.
+
+A SystemProvider nested inside a Modal or Sheet retains the containing dialog's
+boundary. Its optional portalContainer must also be inside that content; an
+outside destination is withheld. A nested theme provider does not remove the
+containing dialog's accessibility boundary.
+
+Existing components that already portalled to document.body without a provider
+retain that behavior. An actual SystemProvider or source SystemContext with a
+null destination is explicitly pending. The existing Tooltip still requires a
+provider or supplied component host; its old no-provider default is unchanged.

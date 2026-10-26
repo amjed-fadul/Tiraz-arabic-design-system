@@ -567,3 +567,35 @@ it("bundles relocated chat examples and portraits from copied source with proven
     rmSync(temporary, { recursive: true, force: true });
   }
 }, 15000);
+
+it("keeps Tooltip as one family with real compound exports and controlled state guidance", () => {
+  const registry = readRegistry();
+  const tooltip = registry.components.filter(
+    (entry: { id: string }) => entry.id === "tooltip",
+  );
+  expect(tooltip).toHaveLength(1);
+  expect(tooltip[0].exports).toEqual(
+    expect.arrayContaining([
+      "Tooltip",
+      "TooltipProps",
+      "TooltipRoot",
+      "TooltipRootProps",
+      "TooltipTrigger",
+      "TooltipTriggerProps",
+      "TooltipContent",
+      "TooltipContentProps",
+    ]),
+  );
+  expect(tooltip[0].props.map((prop: { name: string }) => prop.name)).toEqual(
+    expect.arrayContaining([
+      "trigger",
+      "content",
+      "open",
+      "defaultOpen",
+      "onOpenChange",
+      "portalContainer",
+      "collisionBoundary",
+    ]),
+  );
+  expect(tooltip[0].state).toMatch(/controlled/i);
+});

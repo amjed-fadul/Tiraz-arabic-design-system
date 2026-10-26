@@ -1,8 +1,9 @@
+import { useSelectPortal } from "./useSelectPortal";
 import * as Select from "@radix-ui/react-select";
 import { useId } from "react";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useGlide } from "./useGlide";
-import { useSystem } from "./useSystem";
+import { useSystem, usePortalDestination } from "./useSystem";
 export interface ModelOption {
   id: string;
   name: string;
@@ -37,9 +38,11 @@ export function ModelSelector({
   labels,
   className = "",
 }: ModelSelectorProps) {
-  const { config, container } = useSystem(),
+  const { config } = useSystem(),
+    container = usePortalDestination(),
     ar = config.direction === "rtl";
   const unavailable = labels?.unavailable ?? (ar ? "غير متاح" : "Unavailable");
+  const portal = useSelectPortal(container);
   const descriptionId = useId();
   const glide = useGlide();
   const selected = models.find((model) => model.id === value);
@@ -48,6 +51,8 @@ export function ModelSelector({
   );
   return (
     <Select.Root
+      open={portal.open}
+      onOpenChange={portal.onOpenChange}
       dir={config.direction}
       value={value}
       onValueChange={(id) => {
@@ -82,88 +87,94 @@ export function ModelSelector({
           <ChevronDown size={14} aria-hidden="true" />
         </Select.Icon>
       </Select.Trigger>
-      <Select.Portal container={container}>
-        <Select.Content
-          position="popper"
-          sideOffset={5}
-          collisionPadding={8}
-          className="tz-model-popup"
-          dir={config.direction}
-        >
-          <Select.ScrollUpButton className="tz-select-scroll">
-            <ChevronUp size={14} aria-hidden="true" />
-          </Select.ScrollUpButton>
-          <Select.Viewport ref={glide} className="tz-model-viewport">
-            {groups.map((group) => (
-              <Select.Group key={group}>
-                {group && (
-                  <Select.Label className="tz-model-group" dir="auto">
-                    {group}
-                  </Select.Label>
-                )}
-                {models
-                  .filter((model) => (model.provider ?? "") === group)
-                  .map((model) => (
-                    <Select.Item
-                      key={model.id}
-                      value={model.id}
-                      textValue={model.name}
-                      aria-describedby={`${descriptionId}-${encodeURIComponent(model.id)}`}
-                      disabled={model.disabled}
-                      className="tz-model-option"
-                    >
-                      <span className="tz-model-mark" aria-hidden="true">
-                        {Array.from((model.provider || model.name).trim())[0]}
-                      </span>
-                      <span className="tz-model-copy">
-                        <span className="tz-model-name">
-                          <Select.ItemText>
-                            <bdi>{model.name}</bdi>
-                          </Select.ItemText>
-                          {model.tags?.map((tag) => (
-                            <span key={tag} className="tz-model-tag" dir="auto">
-                              {tag}
-                            </span>
-                          ))}
-                        </span>
-                        {model.description && (
-                          <small dir="auto">{model.description}</small>
-                        )}
-                        {model.disabled && <small>{unavailable}</small>}
-                      </span>
-                      {(model.context || model.price) && (
-                        <span className="tz-model-meta">
-                          <bdi>{model.context}</bdi>
-                          <bdi>{model.price}</bdi>
-                        </span>
-                      )}
-                      <span
-                        className="tz-visually-hidden"
-                        id={`${descriptionId}-${encodeURIComponent(model.id)}`}
+      {portal.container && (
+        <Select.Portal container={portal.container}>
+          <Select.Content
+            position="popper"
+            sideOffset={5}
+            collisionPadding={8}
+            className="tz-model-popup"
+            dir={config.direction}
+          >
+            <Select.ScrollUpButton className="tz-select-scroll">
+              <ChevronUp size={14} aria-hidden="true" />
+            </Select.ScrollUpButton>
+            <Select.Viewport ref={glide} className="tz-model-viewport">
+              {groups.map((group) => (
+                <Select.Group key={group}>
+                  {group && (
+                    <Select.Label className="tz-model-group" dir="auto">
+                      {group}
+                    </Select.Label>
+                  )}
+                  {models
+                    .filter((model) => (model.provider ?? "") === group)
+                    .map((model) => (
+                      <Select.Item
+                        key={model.id}
+                        value={model.id}
+                        textValue={model.name}
+                        aria-describedby={`${descriptionId}-${encodeURIComponent(model.id)}`}
+                        disabled={model.disabled}
+                        className="tz-model-option"
                       >
-                        {[
-                          model.tags?.join(", "),
-                          model.description,
-                          model.context,
-                          model.price,
-                          model.disabled ? unavailable : null,
-                        ]
-                          .filter(Boolean)
-                          .join(". ")}
-                      </span>
-                      <Select.ItemIndicator className="tz-model-check">
-                        <Check size={14} aria-hidden="true" />
-                      </Select.ItemIndicator>
-                    </Select.Item>
-                  ))}
-              </Select.Group>
-            ))}
-          </Select.Viewport>
-          <Select.ScrollDownButton className="tz-select-scroll">
-            <ChevronDown size={14} aria-hidden="true" />
-          </Select.ScrollDownButton>
-        </Select.Content>
-      </Select.Portal>
+                        <span className="tz-model-mark" aria-hidden="true">
+                          {Array.from((model.provider || model.name).trim())[0]}
+                        </span>
+                        <span className="tz-model-copy">
+                          <span className="tz-model-name">
+                            <Select.ItemText>
+                              <bdi>{model.name}</bdi>
+                            </Select.ItemText>
+                            {model.tags?.map((tag) => (
+                              <span
+                                key={tag}
+                                className="tz-model-tag"
+                                dir="auto"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </span>
+                          {model.description && (
+                            <small dir="auto">{model.description}</small>
+                          )}
+                          {model.disabled && <small>{unavailable}</small>}
+                        </span>
+                        {(model.context || model.price) && (
+                          <span className="tz-model-meta">
+                            <bdi>{model.context}</bdi>
+                            <bdi>{model.price}</bdi>
+                          </span>
+                        )}
+                        <span
+                          className="tz-visually-hidden"
+                          id={`${descriptionId}-${encodeURIComponent(model.id)}`}
+                        >
+                          {[
+                            model.tags?.join(", "),
+                            model.description,
+                            model.context,
+                            model.price,
+                            model.disabled ? unavailable : null,
+                          ]
+                            .filter(Boolean)
+                            .join(". ")}
+                        </span>
+                        <Select.ItemIndicator className="tz-model-check">
+                          <Check size={14} aria-hidden="true" />
+                        </Select.ItemIndicator>
+                      </Select.Item>
+                    ))}
+                </Select.Group>
+              ))}
+            </Select.Viewport>
+            <Select.ScrollDownButton className="tz-select-scroll">
+              <ChevronDown size={14} aria-hidden="true" />
+            </Select.ScrollDownButton>
+          </Select.Content>
+        </Select.Portal>
+      )}
     </Select.Root>
   );
 }

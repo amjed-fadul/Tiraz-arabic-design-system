@@ -222,3 +222,19 @@ it("refuses cleanup through symlinks even for an empty output map", () => {
     "caller-owned\n",
   );
 });
+
+it("publishes compound Tooltip and optional portal contracts without removing convenience props", () => {
+  for (const name of ["TooltipRoot", "TooltipTrigger", "TooltipContent"]) {
+    expect(api(name).kind).toBe("component");
+    expect(document("manifest.json").publicExports).toContain(name);
+  }
+  expect(api("Tooltip").props.trigger.required).toBe(true);
+  expect(api("Tooltip").props.content.required).toBe(true);
+  expect(api("TooltipRoot").props.open.required).toBe(false);
+  expect(api("TooltipTrigger").props.asChild.required).toBe(false);
+  expect(api("TooltipContent").props.children.type).toBe("string");
+  expect(api("TooltipContent").props.portalContainer.type).toContain(
+    "HTMLElement",
+  );
+  expect(api("SystemProvider").props.portalContainer.required).toBe(false);
+});

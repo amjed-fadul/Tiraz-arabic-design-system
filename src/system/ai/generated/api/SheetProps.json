@@ -3,7 +3,7 @@
   "exportName": "SheetProps",
   "kind": "type",
   "source": "Sheet.tsx",
-  "sourceHash": "182b0e37881f68688d46ea0d7c2aa28a1110a58a336270d54aec9ec3a16d9648",
+  "sourceHash": "caf4979d4c25c4b787da11fe75958dc74874be5649eb6c1796c24c49b5348bd0",
   "type": "SheetProps",
   "typeParameters": [],
   "props": {

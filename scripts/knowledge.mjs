@@ -44,7 +44,7 @@ function sourceFiles() {
   });
 }
 
-function tokenInventory(providerSource) {
+function tokenInventory(providerSources) {
   const tokens = {};
   const css = readFileSync(resolve(sourceRoot, "tokens.css"), "utf8");
   postcss.parse(css, { from: "tokens.css" }).walkDecls(/^--/, (declaration) => {
@@ -114,7 +114,7 @@ function tokenInventory(providerSource) {
             : {};
       tokens[name] ??= { name, values: [], references: [] };
       tokens[name].provider = {
-        source: "Provider.tsx",
+        source: slash(relative(sourceRoot, node.getSourceFile().fileName)),
         expression,
         ...(override ? { override } : {}),
         ...knownValue,
@@ -122,14 +122,20 @@ function tokenInventory(providerSource) {
     }
     ts.forEachChild(node, providerTokens);
   }
-  providerTokens(providerSource);
+  providerSources.forEach(providerTokens);
   for (const token of Object.values(tokens)) {
     token.references = [...new Set(token.references)].sort(compare);
   }
   return {
     schemaVersion: 1,
     format: "tiraz-css-token-inventory",
-    sources: ["tokens.css", "config.ts", "Provider.tsx"],
+    sources: [
+      "tokens.css",
+      "config.ts",
+      ...providerSources.map((source) =>
+        slash(relative(sourceRoot, source.fileName)),
+      ),
+    ],
     defaults: defaultConfig,
     note: "CSS expressions, declaration order, selectors and at-rules are preserved. Provider values are inline styles. This is not a DTCG interchange file; evaluate CSS in its actual cascade and provider context.",
     tokens: Object.fromEntries(
@@ -441,7 +447,11 @@ export function buildKnowledge() {
   }
   json(
     "tokens.json",
-    tokenInventory(program.getSourceFile(resolve(sourceRoot, "Provider.tsx"))),
+    tokenInventory(
+      ["Provider.tsx", "portal-scope.tsx"].map((path) =>
+        program.getSourceFile(resolve(sourceRoot, path)),
+      ),
+    ),
   );
   json("manifest.json", {
     schemaVersion: 1,

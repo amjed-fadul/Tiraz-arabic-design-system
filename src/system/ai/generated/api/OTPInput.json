@@ -153,14 +153,14 @@
       ]
     },
     "aria-dropeffect": {
-      "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+      "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
       "required": false,
       "members": [
         "undefined",
         "\"copy\"",
-        "\"link\"",
         "\"none\"",
         "\"move\"",
+        "\"link\"",
         "\"execute\"",
         "\"popup\""
       ]
@@ -540,12 +540,12 @@
       ]
     },
     "enterKeyHint": {
-      "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+      "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
       "required": false,
       "members": [
         "undefined",
-        "\"search\"",
         "\"next\"",
+        "\"search\"",
         "\"enter\"",
         "\"done\"",
         "\"go\"",
@@ -1578,7 +1578,7 @@
   },
   "branches": [
     {
-      "type": "Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, \"children\" | \"dir\" | \"value\" | \"size\" | \"type\" | \"defaultValue\" | \"inputMode\" | \"pattern\" | \"autoComplete\" | \"maxLength\" | \"minLength\"> & { value?: string; defaultValue?: string; length?: number; onValueChange?: (value: string) => void; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label: string; helper?: string; error?: string; field?: never; }",
+      "type": "Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, \"size\" | \"children\" | \"dir\" | \"value\" | \"type\" | \"defaultValue\" | \"inputMode\" | \"pattern\" | \"autoComplete\" | \"maxLength\" | \"minLength\"> & { value?: string; defaultValue?: string; length?: number; onValueChange?: (value: string) => void; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label: string; helper?: string; error?: string; field?: never; }",
       "props": {
         "about": {
           "type": "string | undefined",
@@ -1713,14 +1713,14 @@
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
-            "\"link\"",
             "\"none\"",
             "\"move\"",
+            "\"link\"",
             "\"execute\"",
             "\"popup\""
           ]
@@ -2100,12 +2100,12 @@
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+          "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"next\"",
+            "\"search\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",
@@ -3138,7 +3138,7 @@
       }
     },
     {
-      "type": "Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, \"children\" | \"dir\" | \"value\" | \"size\" | \"type\" | \"defaultValue\" | \"inputMode\" | \"pattern\" | \"autoComplete\" | \"maxLength\" | \"minLength\"> & { value?: string; defaultValue?: string; length?: number; onValueChange?: (value: string) => void; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label?: never; helper?: never; error?: never; field?: FieldControlProps; }",
+      "type": "Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, \"size\" | \"children\" | \"dir\" | \"value\" | \"type\" | \"defaultValue\" | \"inputMode\" | \"pattern\" | \"autoComplete\" | \"maxLength\" | \"minLength\"> & { value?: string; defaultValue?: string; length?: number; onValueChange?: (value: string) => void; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label?: never; helper?: never; error?: never; field?: FieldControlProps; }",
       "props": {
         "about": {
           "type": "string | undefined",
@@ -3273,14 +3273,14 @@
           ]
         },
         "aria-dropeffect": {
-          "type": "\"copy\" | \"link\" | \"none\" | \"move\" | \"execute\" | \"popup\" | undefined",
+          "type": "\"copy\" | \"none\" | \"move\" | \"link\" | \"execute\" | \"popup\" | undefined",
           "required": false,
           "members": [
             "undefined",
             "\"copy\"",
-            "\"link\"",
             "\"none\"",
             "\"move\"",
+            "\"link\"",
             "\"execute\"",
             "\"popup\""
           ]
@@ -3660,12 +3660,12 @@
           ]
         },
         "enterKeyHint": {
-          "type": "\"search\" | \"next\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
+          "type": "\"next\" | \"search\" | \"enter\" | \"done\" | \"go\" | \"previous\" | \"send\" | undefined",
           "required": false,
           "members": [
             "undefined",
-            "\"search\"",
             "\"next\"",
+            "\"search\"",
             "\"enter\"",
             "\"done\"",
             "\"go\"",

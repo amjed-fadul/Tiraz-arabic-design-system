@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TooltipRoot",
+  "kind": "component",
+  "source": "Tooltip.tsx",
+  "sourceHash": "e4713ae38bcee97ca379141a2e2e36361f070fe3b94ddc7b35f4186249621d4e",
+  "type": "({ children, ...options }: TooltipRootProps) => JSX.Element",
+  "description": "Compose exactly one trigger and one short, noninteractive content string.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ children, ...options }",
+          "type": "TooltipRootProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "defaultOpen": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "delayDuration": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "TooltipContentProps": "TooltipContentProps.json",
+    "TooltipProps": "TooltipProps.json",
+    "TooltipRootProps": "TooltipRootProps.json",
+    "TooltipTriggerProps": "TooltipTriggerProps.json"
+  }
+}

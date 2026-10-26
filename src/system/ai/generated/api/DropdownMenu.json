@@ -3,7 +3,7 @@
   "exportName": "DropdownMenu",
   "kind": "component",
   "source": "DropdownMenu.tsx",
-  "sourceHash": "c6d5e808df7ad8f8770b5eedecb54d8c8421e2ed47ab3d451d25b69dff813179",
+  "sourceHash": "e78166594ec6fe060cc4924653c82afa1f054be8167feb49f6133e364ba960de",
   "type": "({ trigger, items, align, open, onOpenChange, }: DropdownMenuProps) => JSX.Element",
   "signatures": [
     {

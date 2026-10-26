@@ -2407,6 +2407,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
+        "يمكن استخدام Tooltip مباشرة، أو تركيب TooltipRoot وTooltipTrigger وTooltipContent. تبقى الوجهات المخصّصة داخل الحوار الذي يحتويها.",
+        "Use Tooltip directly or compose TooltipRoot, TooltipTrigger and TooltipContent. Custom destinations stay inside their containing dialog.",
+      ],
+      [
         "يظهر فور التركيز، وبعد نصف ثانية عند المرور، ويغلقه Escape أو مغادرة العنصر.",
         "It shows at once on focus and after half a second on hover. Escape or leaving the element closes it.",
       ],

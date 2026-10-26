@@ -3,14 +3,15 @@
   "exportName": "Tooltip",
   "kind": "component",
   "source": "Tooltip.tsx",
-  "sourceHash": "a657d887a08b8f872c000794da630f74e0865c5a3fe70741530774372596cadd",
-  "type": "({ trigger, content, delayDuration, }: TooltipProps) => JSX.Element",
+  "sourceHash": "e4713ae38bcee97ca379141a2e2e36361f070fe3b94ddc7b35f4186249621d4e",
+  "type": "({ trigger, content, open, defaultOpen, onOpenChange, delayDuration, ...placement }: TooltipProps) => JSX.Element",
+  "description": "Original convenience API, with additive state and destination controls.",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [
         {
-          "name": "{\n  trigger,\n  content,\n  delayDuration = 500,\n}",
+          "name": "{\n  trigger,\n  content,\n  open,\n  defaultOpen,\n  onOpenChange,\n  delayDuration = 500,\n  ...placement\n}",
           "type": "TooltipProps",
           "required": true
         }
@@ -19,12 +20,84 @@
     }
   ],
   "props": {
+    "align": {
+      "type": "\"center\" | \"end\" | \"start\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"center\"",
+        "\"end\"",
+        "\"start\""
+      ]
+    },
+    "alignOffset": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "collisionBoundary": {
+      "type": "Boundary | Boundary[] | undefined",
+      "required": false
+    },
+    "collisionPadding": {
+      "type": "number | Partial<Record<\"left\" | \"right\" | \"bottom\" | \"top\", number>> | undefined",
+      "required": false
+    },
     "content": {
       "type": "string",
       "required": true
     },
+    "defaultOpen": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
     "delayDuration": {
       "type": "number | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "portalContainer": {
+      "type": "HTMLElement | null | undefined",
+      "required": false,
+      "description": "Same-document destination. null withholds the tooltip until ready."
+    },
+    "side": {
+      "type": "\"left\" | \"right\" | \"bottom\" | \"top\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"left\"",
+        "\"right\"",
+        "\"bottom\"",
+        "\"top\""
+      ]
+    },
+    "sideOffset": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "style": {
+      "type": "CSSProperties | undefined",
       "required": false
     },
     "trigger": {
@@ -37,6 +110,9 @@
     "delayDuration": "500"
   },
   "relatedTypes": {
-    "TooltipProps": "TooltipProps.json"
+    "TooltipContentProps": "TooltipContentProps.json",
+    "TooltipProps": "TooltipProps.json",
+    "TooltipRootProps": "TooltipRootProps.json",
+    "TooltipTriggerProps": "TooltipTriggerProps.json"
   }
 }

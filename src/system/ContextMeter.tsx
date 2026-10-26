@@ -2,7 +2,7 @@ import * as Popover from "@radix-ui/react-popover";
 import { useEffect, useId, useLayoutEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import { Button } from "./Button";
-import { useSystem } from "./useSystem";
+import { useSystem, usePortalDestination } from "./useSystem";
 import { Tick } from "./Tick";
 import { numberLocale } from "./config";
 import { contextStatus } from "./context-status";
@@ -65,7 +65,8 @@ export function ContextMeter({
   announcement = "polite",
   className = "",
 }: ContextMeterProps) {
-  const { config, container } = useSystem(),
+  const { config } = useSystem(),
+    container = usePortalDestination(),
     ar = config.direction === "rtl",
     title = useId();
   const live = useRef<HTMLSpanElement>(null),
@@ -306,26 +307,28 @@ export function ContextMeter({
             </>
           )}
         </Popover.Trigger>
-        <Popover.Portal container={container}>
-          <Popover.Content
-            ref={box}
-            className="tz-context-details"
-            dir={config.direction}
-            aria-labelledby={title}
-            sideOffset={6}
-            collisionPadding={8}
-            // The details open with focus on themselves, never on the action,
-            // so the Enter that opened them can't press it.
-            onOpenAutoFocus={(event) => {
-              event.preventDefault();
-              (event.currentTarget as HTMLElement | null)?.focus({
-                preventScroll: true,
-              });
-            }}
-          >
-            {content}
-          </Popover.Content>
-        </Popover.Portal>
+        {container && (
+          <Popover.Portal container={container}>
+            <Popover.Content
+              ref={box}
+              className="tz-context-details"
+              dir={config.direction}
+              aria-labelledby={title}
+              sideOffset={6}
+              collisionPadding={8}
+              // The details open with focus on themselves, never on the action,
+              // so the Enter that opened them can't press it.
+              onOpenAutoFocus={(event) => {
+                event.preventDefault();
+                (event.currentTarget as HTMLElement | null)?.focus({
+                  preventScroll: true,
+                });
+              }}
+            >
+              {content}
+            </Popover.Content>
+          </Popover.Portal>
+        )}
       </Popover.Root>
       {region}
     </>

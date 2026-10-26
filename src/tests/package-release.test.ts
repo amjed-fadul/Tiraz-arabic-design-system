@@ -597,3 +597,46 @@ it("packs runtime, types, source and licenses without website or private files",
     /workbench|landing|\.test\.|\.env|\.claude/,
   );
 });
+
+it("selectively installs a compiling compound Tooltip with portable scope and public entrypoints", () => {
+  const app = componentApp();
+  const added = run(app, "add", "tooltip", "--no-install");
+  expect(added.status, added.stderr).toBe(0);
+  expect(existsSync(join(app, "src/system/portal-scope.tsx"))).toBe(true);
+  expect(read(join(app, "src/system/components.css"))).toContain(".tz-tooltip");
+  const source = `import {Tooltip,TooltipRoot,TooltipTrigger,TooltipContent,SystemProvider} from "./src/system";
+    export const example = <SystemProvider portalContainer={null} lang="ar"><TooltipRoot open={false} onOpenChange={() => {}}>
+    <TooltipTrigger asChild><button>Details</button></TooltipTrigger><TooltipContent collisionPadding={8}>شرح</TooltipContent>
+    </TooltipRoot><Tooltip trigger={<button>Legacy</button>} content="Legacy help" /></SystemProvider>;`;
+  writeFileSync(join(app, "example.tsx"), source);
+  symlinkSync(join(root, "node_modules"), join(app, "node_modules"), "dir");
+  const compiled = spawnSync(
+    process.execPath,
+    [
+      join(root, "node_modules/typescript/bin/tsc"),
+      "--noEmit",
+      "--strict",
+      "--skipLibCheck",
+      "--jsx",
+      "react-jsx",
+      "--moduleResolution",
+      "bundler",
+      "--module",
+      "esnext",
+      "--target",
+      "es2023",
+      "example.tsx",
+    ],
+    { cwd: app, encoding: "utf8" },
+  );
+  expect(compiled.status, compiled.stdout || compiled.stderr).toBe(0);
+  expect(run(app, "verify").status).toBe(0);
+  const manifest = JSON.parse(read(join(root, "packages/tiraz/package.json")));
+  for (const path of [
+    "./source/*",
+    "./ai/*",
+    "./tokens.css",
+    "./components.css",
+  ])
+    expect(manifest.exports[path]).toBeDefined();
+});
