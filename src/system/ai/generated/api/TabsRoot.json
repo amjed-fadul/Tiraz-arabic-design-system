@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TabsRoot",
+  "kind": "component",
+  "source": "Tabs.tsx",
+  "sourceHash": "3bc5a88a13ac1d95354738c18d89b8b477f90eb0a062bdfaab8ffe0564c247df",
+  "type": "({ label, value, defaultValue, onValueChange, variant, className, children, }: TabsRootProps) => JSX.Element",
+  "description": "Compose one TabsList of triggers and a TabsContent per trigger.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  label,\n  value,\n  defaultValue,\n  onValueChange,\n  variant = \"underline\",\n  className = \"\",\n  children,\n}",
+          "type": "TabsRootProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "defaultValue": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Initial uncontrolled value; defaults to the first enabled trigger."
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "description": "Nonempty accessible name for the tablist."
+    },
+    "onValueChange": {
+      "type": "((value: string) => void) | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Controlled active value; pair with onValueChange."
+    },
+    "variant": {
+      "type": "\"underline\" | \"segment\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"underline\"",
+        "\"segment\""
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "variant": "\"underline\"",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "TabItem": "TabItem.json",
+    "TabsContentProps": "TabsContentProps.json",
+    "TabsListProps": "TabsListProps.json",
+    "TabsProps": "TabsProps.json",
+    "TabsRootProps": "TabsRootProps.json",
+    "TabsTriggerProps": "TabsTriggerProps.json"
+  }
+}

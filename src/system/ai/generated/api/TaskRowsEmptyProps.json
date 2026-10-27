@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TaskRowsEmptyProps",
+  "kind": "type",
+  "source": "TaskRows.tsx",
+  "sourceHash": "c519cf0bdcdd0b6923788052a2d9f211f864a59a2e897773546fb946a30bbf12",
+  "type": "TaskRowsEmptyProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "Replaces the default empty state."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "TaskRowItem": "TaskRowItem.json",
+    "TaskRowsProps": "TaskRowsProps.json",
+    "TaskRowsRootProps": "TaskRowsRootProps.json",
+    "TaskRowsRowProps": "TaskRowsRowProps.json",
+    "TaskState": "TaskState.json"
+  }
+}

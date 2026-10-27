@@ -82,8 +82,15 @@ export { Steps } from "./Steps";
 export type { StepStatus, StepItem, StepsProps } from "./Steps";
 export { Timeline } from "./Timeline";
 export type { TimelineItem, TimelineProps } from "./Timeline";
-export { TaskRows } from "./TaskRows";
-export type { TaskRowsProps, TaskRowItem, TaskState } from "./TaskRows";
+export { TaskRows, TaskRowsRoot, TaskRowsRow, TaskRowsEmpty } from "./TaskRows";
+export type {
+  TaskRowsProps,
+  TaskRowsRootProps,
+  TaskRowsRowProps,
+  TaskRowsEmptyProps,
+  TaskRowItem,
+  TaskState,
+} from "./TaskRows";
 export { NotificationList } from "./NotificationList";
 export type {
   NotificationListProps,

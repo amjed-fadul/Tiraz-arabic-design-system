@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TabsTrigger",
+  "kind": "component",
+  "source": "Tabs.tsx",
+  "sourceHash": "3bc5a88a13ac1d95354738c18d89b8b477f90eb0a062bdfaab8ffe0564c247df",
+  "type": "({ value, disabled, children }: TabsTriggerProps) => JSX.Element",
+  "description": "A native tab button; its children are the label.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ value, disabled, children }",
+          "type": "TabsTriggerProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The visible label."
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "value": {
+      "type": "string",
+      "required": true,
+      "description": "Unique, nonempty value shared with its TabsContent."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "TabItem": "TabItem.json",
+    "TabsContentProps": "TabsContentProps.json",
+    "TabsListProps": "TabsListProps.json",
+    "TabsProps": "TabsProps.json",
+    "TabsRootProps": "TabsRootProps.json",
+    "TabsTriggerProps": "TabsTriggerProps.json"
+  }
+}

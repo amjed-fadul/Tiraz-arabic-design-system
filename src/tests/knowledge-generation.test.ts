@@ -285,3 +285,49 @@ it("publishes compound Modal, Sheet and DropdownMenu contracts with plain-value 
   for (const name of ["Select", "DatePicker"])
     expect(api(name).props.collisionBoundary.required).toBe(false);
 });
+
+it("publishes compound Tabs, Accordion and TaskRows contracts with plain-value props", () => {
+  const parts = [
+    "TabsRoot",
+    "TabsList",
+    "TabsTrigger",
+    "TabsContent",
+    "AccordionRoot",
+    "AccordionSection",
+    "AccordionTrigger",
+    "AccordionContent",
+    "TaskRowsRoot",
+    "TaskRowsRow",
+    "TaskRowsEmpty",
+  ];
+  for (const name of parts) {
+    expect(api(name).kind).toBe("component");
+    expect(document("manifest.json").publicExports).toContain(name);
+  }
+  expect(api("TabsRoot").props.label.required).toBe(true);
+  expect(api("TabsRoot").props.children.required).toBe(true);
+  expect(api("TabsRoot").props).not.toHaveProperty("items");
+  for (const prop of ["value", "defaultValue", "onValueChange", "variant"])
+    expect(api("TabsRoot").props[prop].required).toBe(false);
+  expect(api("TabsTrigger").props.value.required).toBe(true);
+  expect(api("TabsTrigger").props.disabled.required).toBe(false);
+  expect(api("TabsContent").props.value.required).toBe(true);
+  expect(api("AccordionRoot").props).not.toHaveProperty("items");
+  for (const prop of ["value", "defaultValue", "collapsible", "headingLevel"])
+    expect(api("AccordionRoot").props[prop].required).toBe(false);
+  expect(api("AccordionSection").props.value.required).toBe(true);
+  expect(api("AccordionSection").props.disabled.required).toBe(false);
+  expect(api("TaskRowsRoot").props).not.toHaveProperty("items");
+  expect(api("TaskRowsRoot").props).not.toHaveProperty("emptyState");
+  expect(api("TaskRowsRoot").props.label.required).toBe(true);
+  expect(api("TaskRowsRoot").props.children.required).toBe(true);
+  expect(api("TaskRowsEmpty").props.children.required).toBe(false);
+  for (const prop of ["expandedIds", "onExpandedChange"])
+    expect(api("TaskRowsRoot").props[prop].required).toBe(false);
+  for (const prop of ["id", "title", "state", "children"])
+    expect(api("TaskRowsRow").props[prop].required).toBe(true);
+  expect(api("TaskRowsRow").props.summary.required).toBe(false);
+  expect(api("Tabs").props.items.required).toBe(true);
+  expect(api("Accordion").props.items.required).toBe(true);
+  expect(api("TaskRows").props.items.required).toBe(true);
+});

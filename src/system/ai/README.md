@@ -96,6 +96,25 @@ these parts. See the [Modal](examples/ModalCompoundExample.tsx),
 [Sheet](examples/SheetCompoundExample.tsx) and
 [DropdownMenu](examples/DropdownMenuCompoundExample.tsx) compound examples.
 
+`TabsRoot`, `TabsList`, `TabsTrigger` and `TabsContent`, `AccordionRoot`,
+`AccordionSection`, `AccordionTrigger` and `AccordionContent`, and `TaskRowsRoot`,
+`TaskRowsRow` and `TaskRowsEmpty` compose those families part by part, so item
+content becomes children instead of `items` records. Every part prop is a plain
+value apart from `children` and the change callbacks. `TabsTrigger` and
+`AccordionSection` take `value` (and `disabled`), their label or content is
+children, and a tab or section shares its `value` with its content. The accordion
+part is a Section because `AccordionItem` is the exported record type. Without
+`value` or `defaultValue`, `TabsRoot` selects its first enabled trigger. `TaskRowsRow` takes
+`id`, `title`, `summary` and `state` with its detail as children; rows are numbered
+by their place among the root's children, and `TaskRowsEmpty` replaces
+the `emptyState` prop when there are no tasks (the root takes no `emptyState`).
+Roots keep the existing `value`, `defaultValue`, `expandedIds` and change props, and
+a controlled owner must accept each change request, which is made once. `Tabs`,
+`Accordion` and `TaskRows` keep their props and render the same markup through these
+parts. See the [Tabs](examples/TabsCompoundExample.tsx),
+[Accordion](examples/AccordionCompoundExample.tsx) and
+[TaskRows](examples/TaskRowsCompoundExample.tsx) compound examples.
+
 `Select`, `DatePicker` (its calendar and year menu) and `DropdownMenuContent` accept
 `collisionBoundary`, the installed Popper type. A nonempty boundary sets
 `data-bounded` on the popup and limits its width and height to the room left inside

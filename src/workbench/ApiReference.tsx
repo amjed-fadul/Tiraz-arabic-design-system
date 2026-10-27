@@ -1976,6 +1976,14 @@ export function ApiReference({
         ),
       ],
       [
+        "TaskRowsRoot / TaskRowsRow / TaskRowsEmpty",
+        "compound API",
+        t(
+          "جذر بخصائص TaskRows عدا items وemptyState، وصف لكل مهمة يحمل id وtitle وsummary وstate ويضع تفاصيله في المحتوى، وTaskRowsEmpty عند غياب المهام. يُرقَّم الصف بموضعه بين أبناء الجذر. يبقى TaskRows كما هو.",
+          "A root with the TaskRows props except items and emptyState, a row per task holding id, title, summary and state with its details as children, and TaskRowsEmpty when there are no tasks. A row is numbered by its place among the root's children. TaskRows itself is unchanged.",
+        ),
+      ],
+      [
         "state / appearance",
         "pending | running | needs-you | completed | failed / capsules | list | plain",
         t(
@@ -2562,6 +2570,14 @@ export function ApiReference({
         t(
           "لكل قسم value فريد ثابت غير فارغ وlabel وcontent، وdisabled اختياري. لا تضع أزرارًا داخل label.",
           "Stable unique nonempty value, label, content and optional disabled. No interactive children inside label.",
+        ),
+      ],
+      [
+        "AccordionRoot / AccordionSection / AccordionTrigger / AccordionContent",
+        "compound API",
+        t(
+          "جذر يحمل value وdefaultValue وonValueChange وcollapsible وheadingLevel، وفي كل قسم value مع مشغّل واحد ومحتوى واحد. سُمّي القسم Section لأن AccordionItem اسم نوع السجل. يبقى Accordion كما هو.",
+          "A root with value, defaultValue, onValueChange, collapsible and headingLevel; each section has a value, one trigger and one content. It is named Section because AccordionItem is the record type. Accordion itself is unchanged.",
         ),
       ],
       [
@@ -3344,6 +3360,14 @@ export function ApiReference({
         t(
           "لكل تبويب value فريد، وlabel وcontent من نوع ReactNode، وdisabled اختياري. ركّب محتوى ReactNode في كود تطبيقك.",
           "Unique value; label/content are ReactNode; disabled is optional. Compose ReactNode content in your application code.",
+        ),
+      ],
+      [
+        "TabsRoot / TabsList / TabsTrigger / TabsContent",
+        "compound API",
+        t(
+          "جذر يحمل label وvalue وdefaultValue وonValueChange وvariant، وقائمة تضم المشغّلات، ولكل مشغّل value مطابق في محتواه. دون value أو defaultValue يُختار أول مشغّل مفعّل. يبقى Tabs كما هو.",
+          "A root with label, value, defaultValue, onValueChange and variant, a list holding the triggers, and a content per trigger with the same value. Without a value the first enabled trigger is selected. Tabs itself is unchanged.",
         ),
       ],
       [

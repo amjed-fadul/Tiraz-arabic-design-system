@@ -640,3 +640,36 @@ it("keeps each overlay family as one entry with real compound exports, examples 
     expect(prop.note).toMatch(/data-bounded|width/i);
   }
 });
+
+it("keeps Tabs, Accordion and TaskRows as one entry each with real compound exports and examples", () => {
+  const registry = readRegistry();
+  for (const [id, prefix, parts, example] of [
+    ["tabs", "Tabs", ["Root", "List", "Trigger", "Content"], "Tabs"],
+    [
+      "accordion",
+      "Accordion",
+      ["Root", "Section", "Trigger", "Content"],
+      "Accordion",
+    ],
+    ["task-rows", "TaskRows", ["Root", "Row", "Empty"], "TaskRows"],
+  ] as const) {
+    const entries = registry.components.filter(
+      (entry: { id: string }) => entry.id === id,
+    );
+    expect(entries).toHaveLength(1);
+    expect(entries[0].exports).toEqual(
+      expect.arrayContaining([
+        prefix,
+        `${prefix}Props`,
+        ...parts.flatMap((part) => [
+          `${prefix}${part}`,
+          `${prefix}${part}Props`,
+        ]),
+      ]),
+    );
+    expect(entries[0].examples).toContain(
+      `ai/examples/${example}CompoundExample.tsx`,
+    );
+    expect(entries[0].inheritedProps).toMatch(/Compound parts/);
+  }
+});

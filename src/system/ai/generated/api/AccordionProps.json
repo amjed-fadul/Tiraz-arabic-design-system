@@ -3,7 +3,7 @@
   "exportName": "AccordionProps",
   "kind": "type",
   "source": "Accordion.tsx",
-  "sourceHash": "031f4e14f65056fd9818dcb81919bae7f112d52c648be4c3d287b543f32afafa",
+  "sourceHash": "4a4db3f62e5cf3a7e9a121739d7c5d868e3afb80c89154c97bcf914911bcc387",
   "type": "AccordionProps",
   "typeParameters": [],
   "props": {
@@ -51,6 +51,10 @@
   },
   "branches": [],
   "relatedTypes": {
-    "AccordionItem": "AccordionItem.json"
+    "AccordionContentProps": "AccordionContentProps.json",
+    "AccordionItem": "AccordionItem.json",
+    "AccordionRootProps": "AccordionRootProps.json",
+    "AccordionSectionProps": "AccordionSectionProps.json",
+    "AccordionTriggerProps": "AccordionTriggerProps.json"
   }
 }

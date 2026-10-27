@@ -226,6 +226,20 @@ in the content. The menu stays nonmodal; Escape and Tab close it and return focu
 the trigger, and `onSelect` fires once for Enter, Space and click. The convenience
 DropdownMenu keeps its items array and wraps each item in a plain div.
 
+For compound tabs, put a `TabsList` of `TabsTrigger` (`value`, `disabled`, label as
+children) and one `TabsContent` (`value`) per trigger inside `TabsRoot`, which takes
+`label`, `value`, `defaultValue`, `onValueChange` and `variant`. Values must be unique
+and nonempty and match between trigger and content; without `value` or `defaultValue`
+the first enabled trigger is selected. For compound accordions, put `AccordionSection`
+(`value`, `disabled`) with one `AccordionTrigger` (label as children) and one
+`AccordionContent` inside `AccordionRoot`; the part is a Section because `AccordionItem`
+is the exported record type. For compound task rows, put `TaskRowsRow` (`id`, `title`,
+`summary`, `state`, details as children) directly in `TaskRowsRoot` (the `TaskRows` props
+except `items` and `emptyState`) and `TaskRowsEmpty` alone when there are no tasks. A
+row's number comes from its place among the root's children. Controlled roots accept
+each change request, which is made once. `Tabs`, `Accordion` and `TaskRows` render the
+same markup through these parts.
+
 Select, DatePicker and DropdownMenuContent accept `collisionBoundary` to keep their
 popup inside an embedded surface. A nonempty boundary sets `data-bounded` and limits
 the popup's width and height by Popper's available room; for DatePicker this covers

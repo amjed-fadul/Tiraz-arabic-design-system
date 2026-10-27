@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AccordionSectionProps",
+  "kind": "type",
+  "source": "Accordion.tsx",
+  "sourceHash": "4a4db3f62e5cf3a7e9a121739d7c5d868e3afb80c89154c97bcf914911bcc387",
+  "type": "AccordionSectionProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Compose one AccordionTrigger and one AccordionContent."
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "value": {
+      "type": "string",
+      "required": true,
+      "description": "Stable, unique, nonempty value."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AccordionContentProps": "AccordionContentProps.json",
+    "AccordionItem": "AccordionItem.json",
+    "AccordionProps": "AccordionProps.json",
+    "AccordionRootProps": "AccordionRootProps.json",
+    "AccordionTriggerProps": "AccordionTriggerProps.json"
+  }
+}

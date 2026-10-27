@@ -3,15 +3,15 @@
   "exportName": "TaskRows",
   "kind": "component",
   "source": "TaskRows.tsx",
-  "sourceHash": "7e02db2ca04fd901c5c8ab2d4a6b24cf48b531831ca6b7fffb46fb550d04bf2e",
-  "type": "({ items, label, appearance, expandedIds, defaultExpandedIds, onExpandedChange, stateLabels, emptyState, labels, className, ...props }: TaskRowsProps) => JSX.Element",
-  "description": "Execution state is supplied by the application; only disclosure state can be internal.",
+  "sourceHash": "c519cf0bdcdd0b6923788052a2d9f211f864a59a2e897773546fb946a30bbf12",
+  "type": "({ items, emptyState, ...root }: TaskRowsProps) => JSX.Element",
+  "description": "Original convenience API, rendered through the compound parts.",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [
         {
-          "name": "{\n  items,\n  label,\n  appearance = \"capsules\",\n  expandedIds,\n  defaultExpandedIds = [],\n  onExpandedChange,\n  stateLabels,\n  emptyState,\n  labels,\n  className = \"\",\n  ...props\n}",
+          "name": "{ items, emptyState, ...root }",
           "type": "TaskRowsProps",
           "required": true
         }
@@ -1465,14 +1465,13 @@
     }
   },
   "branches": [],
-  "defaults": {
-    "appearance": "\"capsules\"",
-    "defaultExpandedIds": "[]",
-    "className": "\"\""
-  },
+  "defaults": {},
   "relatedTypes": {
     "TaskRowItem": "TaskRowItem.json",
+    "TaskRowsEmptyProps": "TaskRowsEmptyProps.json",
     "TaskRowsProps": "TaskRowsProps.json",
+    "TaskRowsRootProps": "TaskRowsRootProps.json",
+    "TaskRowsRowProps": "TaskRowsRowProps.json",
     "TaskState": "TaskState.json"
   }
 }

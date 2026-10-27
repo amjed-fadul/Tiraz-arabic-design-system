@@ -3,9 +3,9 @@
   "exportName": "Accordion",
   "kind": "component",
   "source": "Accordion.tsx",
-  "sourceHash": "031f4e14f65056fd9818dcb81919bae7f112d52c648be4c3d287b543f32afafa",
+  "sourceHash": "4a4db3f62e5cf3a7e9a121739d7c5d868e3afb80c89154c97bcf914911bcc387",
   "type": "({ items, value, defaultValue, onValueChange, collapsible, headingLevel, className, }: AccordionProps) => JSX.Element",
-  "description": "One vertical disclosure open at a time. Keyboard behavior belongs to Radix.",
+  "description": "Original convenience API, rendered through the compound parts.",
   "signatures": [
     {
       "typeParameters": [],
@@ -69,7 +69,11 @@
     "className": "\"\""
   },
   "relatedTypes": {
+    "AccordionContentProps": "AccordionContentProps.json",
     "AccordionItem": "AccordionItem.json",
-    "AccordionProps": "AccordionProps.json"
+    "AccordionProps": "AccordionProps.json",
+    "AccordionRootProps": "AccordionRootProps.json",
+    "AccordionSectionProps": "AccordionSectionProps.json",
+    "AccordionTriggerProps": "AccordionTriggerProps.json"
   }
 }

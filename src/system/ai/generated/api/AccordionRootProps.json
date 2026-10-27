@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AccordionRootProps",
+  "kind": "type",
+  "source": "Accordion.tsx",
+  "sourceHash": "4a4db3f62e5cf3a7e9a121739d7c5d868e3afb80c89154c97bcf914911bcc387",
+  "type": "AccordionRootProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "collapsible": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "defaultValue": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Initial uncontrolled section; omission starts closed."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    "onValueChange": {
+      "type": "((value: string) => void) | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Controlled open section; empty string means none. Pair with onValueChange."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "AccordionContentProps": "AccordionContentProps.json",
+    "AccordionItem": "AccordionItem.json",
+    "AccordionProps": "AccordionProps.json",
+    "AccordionSectionProps": "AccordionSectionProps.json",
+    "AccordionTriggerProps": "AccordionTriggerProps.json"
+  }
+}

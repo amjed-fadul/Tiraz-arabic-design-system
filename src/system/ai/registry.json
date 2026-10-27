@@ -21,11 +21,43 @@
       "source": "Accordion.tsx"
     },
     {
+      "name": "AccordionContent",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionContentProps",
+      "source": "Accordion.tsx"
+    },
+    {
       "name": "AccordionItem",
       "source": "Accordion.tsx"
     },
     {
       "name": "AccordionProps",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionRoot",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionRootProps",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionSection",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionSectionProps",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionTrigger",
+      "source": "Accordion.tsx"
+    },
+    {
+      "name": "AccordionTriggerProps",
       "source": "Accordion.tsx"
     },
     {
@@ -1233,7 +1265,39 @@
       "source": "Tabs.tsx"
     },
     {
+      "name": "TabsContent",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsContentProps",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsList",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsListProps",
+      "source": "Tabs.tsx"
+    },
+    {
       "name": "TabsProps",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsRoot",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsRootProps",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsTrigger",
+      "source": "Tabs.tsx"
+    },
+    {
+      "name": "TabsTriggerProps",
       "source": "Tabs.tsx"
     },
     {
@@ -1257,7 +1321,31 @@
       "source": "TaskRows.tsx"
     },
     {
+      "name": "TaskRowsEmpty",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowsEmptyProps",
+      "source": "TaskRows.tsx"
+    },
+    {
       "name": "TaskRowsProps",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowsRoot",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowsRootProps",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowsRow",
+      "source": "TaskRows.tsx"
+    },
+    {
+      "name": "TaskRowsRowProps",
       "source": "TaskRows.tsx"
     },
     {
@@ -5029,7 +5117,18 @@
       "source": "TaskRows.tsx",
       "kind": "part",
       "usedBy": [],
-      "exports": ["TaskRows", "TaskRowsProps", "TaskRowItem", "TaskState"],
+      "exports": [
+        "TaskRows",
+        "TaskRowsProps",
+        "TaskRowItem",
+        "TaskState",
+        "TaskRowsRoot",
+        "TaskRowsRootProps",
+        "TaskRowsRow",
+        "TaskRowsRowProps",
+        "TaskRowsEmpty",
+        "TaskRowsEmptyProps"
+      ],
       "purpose": "Expandable agent-task execution rows with application-supplied states, as capsules, a connected list or plain rows on a host's paper.",
       "props": [
         {
@@ -5096,7 +5195,7 @@
           "default": "undefined"
         }
       ],
-      "inheritedProps": "Omit<ComponentPropsWithRef<ul>, children>. Native attributes/ref/events are forwarded to the ul; label supplies aria-label.",
+      "inheritedProps": "Omit<ComponentPropsWithRef<ul>, children>. Native attributes/ref/events are forwarded to the ul; label supplies aria-label. Compound parts: TaskRowsRoot takes the same props as TaskRows except items and emptyState, plus children; TaskRowsRow takes id, title, summary, state and children (the detail content); TaskRowsEmpty takes optional children that replace the default empty state. Every compound prop is a plain value except children and the change callback.",
       "state": "Execution state is always application-owned. Internal expansion starts from defaultExpandedIds; expandedIds/onExpandedChange controls multiple rows. Disclosure never alters execution.",
       "accessibility": [
         "Native named ul, stable keyed rows; native disclosure buttons with aria-expanded, aria-controls and labeled panels. Title/summary are noninteractive strings. Detail actions are outside triggers.",
@@ -5104,9 +5203,13 @@
       ],
       "limitations": [
         "Supply stable unique nonempty IDs. No agent runtime, networking, library timers, automatic progression, sorting or persistence.",
-        "No completion checklist, assignees, ToolCall or ToolChips. The labeled example alone owns Run/Replay/retry timers and guards/cancels older runs on replay/unmount."
+        "No completion checklist, assignees, ToolCall or ToolChips. The labeled example alone owns Run/Replay/retry timers and guards/cancels older runs on replay/unmount.",
+        "Compose TaskRowsRow children (or one TaskRowsEmpty when there are no tasks) inside a TaskRowsRoot. A row's number, shown by a pending icon, is its place among the root's children, so put rows directly in the root; a Fragment counts as one child. TaskRowsEmpty shows the default empty title from labels.empty unless it has children. TaskRows renders the same markup through these parts."
       ],
-      "examples": ["ai/examples/TaskRowsExamples.tsx"]
+      "examples": [
+        "ai/examples/TaskRowsExamples.tsx",
+        "ai/examples/TaskRowsCompoundExample.tsx"
+      ]
     },
     {
       "id": "notification-list",
@@ -6391,7 +6494,19 @@
       "api": "Tabs",
       "source": "Tabs.tsx",
       "usedBy": ["decision-inbox"],
-      "exports": ["Tabs", "TabsProps", "TabItem"],
+      "exports": [
+        "Tabs",
+        "TabsProps",
+        "TabItem",
+        "TabsRoot",
+        "TabsRootProps",
+        "TabsList",
+        "TabsListProps",
+        "TabsTrigger",
+        "TabsTriggerProps",
+        "TabsContent",
+        "TabsContentProps"
+      ],
       "purpose": "Switch between related content panels.",
       "useWhen": "Related dashboard views under one meaningful group label.",
       "alternative": "Use DropdownMenu for commands; navigation links for unrelated routes (not supplied).",
@@ -6444,11 +6559,11 @@
           "default": ""
         }
       ],
-      "inheritedProps": "None beyond TabsProps. Radix Root/List/Trigger/Content props are not spread through this wrapper.",
+      "inheritedProps": "None beyond TabsProps for the convenience Tabs. Radix Root/List/Trigger/Content props are not spread through this wrapper. Compound parts: TabsRoot takes label, value, defaultValue, onValueChange, variant, className and children; TabsList takes children; TabsTrigger takes value, disabled and children (the label); TabsContent takes value and children. Every compound prop is a plain value except children and onValueChange.",
       "exclusions": [
         "No orientation, activationMode, asChild, forceMount, id or arbitrary native/Radix prop passthrough."
       ],
-      "state": "value controls selection; otherwise internal state initializes from defaultValue or first enabled item.",
+      "state": "value controls selection; otherwise internal state initializes from defaultValue or first enabled item. TabsRoot without value or defaultValue selects its first enabled TabsTrigger once the triggers mount, without a change request. onValueChange requests each pointer, arrow-key, Home/End, Enter or Space selection once and never overrides a controlled owner.",
       "events": [
         "onValueChange receives selected value; local state also updates."
       ],
@@ -6456,12 +6571,16 @@
         "Required label; each item label is a meaningful ReactNode. Radix supplies roles, keyboard navigation, disabled behavior and panel linkage. Test direction-aware arrows and focus."
       ],
       "limitations": [
-        "Horizontal only, Radix default automatic activation; no routing, lazy data loading, or library enforcement of unique/valid values."
+        "Horizontal only, Radix default automatic activation; no routing, lazy data loading, or library enforcement of unique/valid values.",
+        "Compose one TabsList of TabsTrigger children and one TabsContent per trigger inside a TabsRoot, with matching unique nonempty values; the library does not check them. Tabs renders the same markup through these parts."
       ],
       "providers": [
         "SystemProvider provides direction, density and scoped CSS."
       ],
-      "examples": ["ai/examples/usage.tsx"]
+      "examples": [
+        "ai/examples/usage.tsx",
+        "ai/examples/TabsCompoundExample.tsx"
+      ]
     },
     {
       "id": "switch",
@@ -8347,7 +8466,19 @@
       "id": "accordion",
       "api": "Accordion",
       "source": "Accordion.tsx",
-      "exports": ["Accordion", "AccordionProps", "AccordionItem"],
+      "exports": [
+        "Accordion",
+        "AccordionProps",
+        "AccordionItem",
+        "AccordionRoot",
+        "AccordionRootProps",
+        "AccordionSection",
+        "AccordionSectionProps",
+        "AccordionTrigger",
+        "AccordionTriggerProps",
+        "AccordionContent",
+        "AccordionContentProps"
+      ],
       "purpose": "One vertical disclosure open at a time.",
       "useWhen": "Reveal details below persistent headings.",
       "alternative": "Use Tabs for switching related content views.",
@@ -8400,16 +8531,20 @@
           "default": ""
         }
       ],
-      "inheritedProps": "None beyond AccordionProps. No arbitrary Radix Root props.",
-      "state": "Controlled value/onValueChange or internal state initialized once from defaultValue. Radix owns change requests and keyboard behavior. No initial selection is manufactured.",
+      "inheritedProps": "None beyond AccordionProps for the convenience Accordion. No arbitrary Radix Root props. Compound parts: AccordionRoot takes value, defaultValue, onValueChange, collapsible, headingLevel, className and children; AccordionSection takes value, disabled and children; AccordionTrigger takes children (the label); AccordionContent takes children. Every compound prop is a plain value except children and onValueChange.",
+      "state": "Controlled value/onValueChange or internal state initialized once from defaultValue. Radix owns change requests and keyboard behavior. No initial selection is manufactured. AccordionRoot takes the same controlled and uncontrolled value props and requests each change once.",
       "accessibility": [
         "Radix single/vertical primitive supplies heading/button/panel linkage, disabled items, ArrowUp/Down, Home/End and Enter/Space. Native headings match headingLevel. Closed panels become inert and aria-hidden immediately during exit animation. Motion respects application and OS reduction."
       ],
       "limitations": [
-        "No nested, multi-open, horizontal, data loading or router API. Caller supplies valid stable values."
+        "No nested, multi-open, horizontal, data loading or router API. Caller supplies valid stable values.",
+        "Compose AccordionSection (unique nonempty value) holding one AccordionTrigger and one AccordionContent inside an AccordionRoot. The part is named Section because AccordionItem is the exported record type. Accordion renders the same markup through these parts."
       ],
       "dependencies": ["@radix-ui/react-accordion"],
-      "examples": ["ai/examples/StructureExamples.tsx"]
+      "examples": [
+        "ai/examples/StructureExamples.tsx",
+        "ai/examples/AccordionCompoundExample.tsx"
+      ]
     },
     {
       "id": "breadcrumbs",

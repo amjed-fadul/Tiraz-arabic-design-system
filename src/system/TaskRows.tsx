@@ -1,4 +1,13 @@
-import { useId, useLayoutEffect, useRef, useState } from "react";
+import {
+  Children,
+  createContext,
+  isValidElement,
+  useContext,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { ChevronDown } from "lucide-react";
 import { Badge } from "./Badge";
@@ -34,19 +43,50 @@ export type TaskRowsProps = Omit<ComponentPropsWithRef<"ul">, "children"> & {
   /** The default empty state's title. */
   labels?: { empty?: string };
 };
-function TaskRow({
-  item,
-  number,
-  expanded,
-  onToggle,
-  stateLabel,
-}: {
-  item: TaskRowItem;
-  number: number;
-  expanded: boolean;
-  onToggle: () => void;
-  stateLabel: string;
-}) {
+export type TaskRowsRootProps = Omit<TaskRowsProps, "items" | "emptyState"> & {
+  /** TaskRowsRow children, or one TaskRowsEmpty when there are no tasks. */
+  children: ReactNode;
+};
+export interface TaskRowsRowProps {
+  /** Unique, stable application ID. */
+  id: string;
+  title: string;
+  /** Short, noninteractive summary or count. */
+  summary?: string;
+  state: TaskState;
+  /** Application-owned detail content/actions, outside the disclosure button. */
+  children: ReactNode;
+}
+export interface TaskRowsEmptyProps {
+  /** Replaces the default empty state. */
+  children?: ReactNode;
+}
+
+const TaskRowsContext = createContext<{
+  expanded: readonly string[];
+  toggle: (id: string) => void;
+  words: Record<TaskState, string>;
+  emptyTitle: string;
+} | null>(null);
+// A row's place in its list, counted over the root's children.
+const PositionContext = createContext(0);
+function useTaskRows(part: string) {
+  const context = useContext(TaskRowsContext);
+  if (!context) throw new Error(`${part} requires TaskRowsRoot.`);
+  return context;
+}
+
+/** One expandable task. Its children are the detail content. */
+export function TaskRowsRow({
+  id,
+  title,
+  summary,
+  state,
+  children,
+}: TaskRowsRowProps) {
+  const { expanded: open, toggle, words } = useTaskRows("TaskRowsRow");
+  const number = useContext(PositionContext);
+  const expanded = open.includes(id);
   const uid = useId();
   const titleId = `${uid}-title`,
     panelId = `${uid}-panel`;
@@ -54,7 +94,7 @@ function TaskRow({
   const panel = useRef<HTMLDivElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
   const previous = useRef(expanded);
-  const stateChanged = useChanged(item.state);
+  const stateChanged = useChanged(state);
   useLayoutEffect(() => {
     const focused = lastFocus.current,
       doc = panel.current?.ownerDocument;
@@ -70,48 +110,44 @@ function TaskRow({
     previous.current = expanded;
   }, [expanded]);
   return (
-    <li
-      className="tz-agent-task"
-      data-state={item.state}
-      data-expanded={expanded}
-    >
+    <li className="tz-agent-task" data-state={state} data-expanded={expanded}>
       <button
         ref={trigger}
         type="button"
         className="tz-agent-task-trigger"
         aria-expanded={expanded}
         aria-controls={panelId}
-        onClick={onToggle}
+        onClick={() => toggle(id)}
       >
         <StatusIcon
           className="tz-agent-task-indicator"
-          state={item.state}
+          state={state}
           number={number}
           tone="ai"
         />
         <bdi id={titleId} className="tz-agent-task-title">
-          {item.title}
+          {title}
         </bdi>
-        {item.summary != null && (
-          <bdi className="tz-agent-task-summary">{item.summary}</bdi>
+        {summary != null && (
+          <bdi className="tz-agent-task-summary">{summary}</bdi>
         )}
         <Badge
-          key={item.state}
+          key={state}
           className="tz-agent-task-state"
           data-changed={stateChanged || undefined}
           tone={
-            item.state === "completed"
+            state === "completed"
               ? "success"
-              : item.state === "failed"
+              : state === "failed"
                 ? "error"
-                : item.state === "running"
+                : state === "running"
                   ? "ai"
-                  : item.state === "needs-you"
+                  : state === "needs-you"
                     ? "warning"
                     : "neutral"
           }
         >
-          {stateLabel}
+          {words[state]}
         </Badge>
         <ChevronDown className="tz-agent-task-chevron" aria-hidden="true" />
       </button>
@@ -138,26 +174,32 @@ function TaskRow({
         }}
       >
         <div className="tz-agent-task-panel-clip">
-          <div className="tz-agent-task-content">{item.content}</div>
+          <div className="tz-agent-task-content">{children}</div>
         </div>
       </div>
     </li>
   );
 }
+
+/** The empty state: the root's default title, or your children. */
+export function TaskRowsEmpty({ children }: TaskRowsEmptyProps) {
+  const { emptyTitle } = useTaskRows("TaskRowsEmpty");
+  return <li>{children ?? <EmptyState title={emptyTitle} />}</li>;
+}
+
 /** Execution state is supplied by the application; only disclosure state can be internal. */
-export function TaskRows({
-  items,
+export function TaskRowsRoot({
   label,
   appearance = "capsules",
   expandedIds,
   defaultExpandedIds = [],
   onExpandedChange,
   stateLabels,
-  emptyState,
   labels,
   className = "",
+  children,
   ...props
-}: TaskRowsProps) {
+}: TaskRowsRootProps) {
   const { config } = useSystem();
   const [localIds, setLocalIds] =
     useState<readonly string[]>(defaultExpandedIds);
@@ -166,42 +208,50 @@ export function TaskRows({
   // The step words every pattern shares (§18), any of them replaceable.
   const shared = useToolLabels();
   const words: Record<TaskState, string> = { ...shared, ...stateLabels };
+  const emptyTitle =
+    labels?.empty ?? (ar ? "لا توجد مهام بعد" : "No agent tasks");
+  const toggle = (id: string) => {
+    const next = expanded.includes(id)
+      ? expanded.filter((open) => open !== id)
+      : [...expanded, id];
+    if (expandedIds === undefined) setLocalIds(next);
+    onExpandedChange?.(next);
+  };
   return (
-    <ul
-      {...props}
-      role="list"
-      aria-label={label}
-      data-appearance={appearance}
-      className={`tz-task-rows ${className}`}
-    >
+    <TaskRowsContext.Provider value={{ expanded, toggle, words, emptyTitle }}>
+      <ul
+        {...props}
+        role="list"
+        aria-label={label}
+        data-appearance={appearance}
+        className={`tz-task-rows ${className}`}
+      >
+        {Children.toArray(children).map((child, index) => (
+          <PositionContext.Provider
+            key={isValidElement(child) ? child.key : index}
+            value={index + 1}
+          >
+            {child}
+          </PositionContext.Provider>
+        ))}
+      </ul>
+    </TaskRowsContext.Provider>
+  );
+}
+
+/** Original convenience API, rendered through the compound parts. */
+export function TaskRows({ items, emptyState, ...root }: TaskRowsProps) {
+  return (
+    <TaskRowsRoot {...root}>
       {items.length === 0 ? (
-        <li>
-          {emptyState ?? (
-            <EmptyState
-              title={
-                labels?.empty ?? (ar ? "لا توجد مهام بعد" : "No agent tasks")
-              }
-            />
-          )}
-        </li>
+        <TaskRowsEmpty>{emptyState}</TaskRowsEmpty>
       ) : (
-        items.map((item, index) => (
-          <TaskRow
-            key={item.id}
-            item={item}
-            number={index + 1}
-            expanded={expanded.includes(item.id)}
-            stateLabel={words[item.state]}
-            onToggle={() => {
-              const next = expanded.includes(item.id)
-                ? expanded.filter((id) => id !== item.id)
-                : [...expanded, item.id];
-              if (expandedIds === undefined) setLocalIds(next);
-              onExpandedChange?.(next);
-            }}
-          />
+        items.map(({ content, ...item }) => (
+          <TaskRowsRow key={item.id} {...item}>
+            {content}
+          </TaskRowsRow>
         ))
       )}
-    </ul>
+    </TaskRowsRoot>
   );
 }

@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  background: #e9eceb;
+  color: #17221d;
+  font: 16px system-ui;
+}
+main {
+  padding: 24px;
+}
+.panels {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.panel {
+  width: 460px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.panel > .tiraz-system {
+  display: grid;
+  gap: 20px;
+}
+output {
+  display: block;
+  font:
+    12px ui-monospace,
+    monospace;
+  color: #3e4d45;
+}

@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "exportName": "TaskRowsRow",
+  "kind": "component",
+  "source": "TaskRows.tsx",
+  "sourceHash": "c519cf0bdcdd0b6923788052a2d9f211f864a59a2e897773546fb946a30bbf12",
+  "type": "({ id, title, summary, state, children, }: TaskRowsRowProps) => JSX.Element",
+  "description": "One expandable task. Its children are the detail content.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  id,\n  title,\n  summary,\n  state,\n  children,\n}",
+          "type": "TaskRowsRowProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "Application-owned detail content/actions, outside the disclosure button."
+    },
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique, stable application ID."
+    },
+    "state": {
+      "type": "TaskState",
+      "required": true,
+      "members": [
+        "\"running\"",
+        "\"failed\"",
+        "\"completed\"",
+        "\"pending\"",
+        "\"needs-you\""
+      ]
+    },
+    "summary": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Short, noninteractive summary or count."
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "TaskRowItem": "TaskRowItem.json",
+    "TaskRowsEmptyProps": "TaskRowsEmptyProps.json",
+    "TaskRowsProps": "TaskRowsProps.json",
+    "TaskRowsRootProps": "TaskRowsRootProps.json",
+    "TaskRowsRowProps": "TaskRowsRowProps.json",
+    "TaskState": "TaskState.json"
+  }
+}

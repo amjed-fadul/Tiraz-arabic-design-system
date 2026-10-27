@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AccordionRoot",
+  "kind": "component",
+  "source": "Accordion.tsx",
+  "sourceHash": "4a4db3f62e5cf3a7e9a121739d7c5d868e3afb80c89154c97bcf914911bcc387",
+  "type": "({ value, defaultValue, onValueChange, collapsible, headingLevel, className, children, }: AccordionRootProps) => JSX.Element",
+  "description": "One vertical disclosure open at a time. Keyboard behavior belongs to Radix.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  value,\n  defaultValue,\n  onValueChange,\n  collapsible = false,\n  headingLevel = 3,\n  className = \"\",\n  children,\n}",
+          "type": "AccordionRootProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "className": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "collapsible": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "defaultValue": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Initial uncontrolled section; omission starts closed."
+    },
+    "headingLevel": {
+      "type": "2 | 3 | 4 | 5 | 6 | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ]
+    },
+    "onValueChange": {
+      "type": "((value: string) => void) | undefined",
+      "required": false
+    },
+    "value": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Controlled open section; empty string means none. Pair with onValueChange."
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "collapsible": "false",
+    "headingLevel": "3",
+    "className": "\"\""
+  },
+  "relatedTypes": {
+    "AccordionContentProps": "AccordionContentProps.json",
+    "AccordionItem": "AccordionItem.json",
+    "AccordionProps": "AccordionProps.json",
+    "AccordionRootProps": "AccordionRootProps.json",
+    "AccordionSectionProps": "AccordionSectionProps.json",
+    "AccordionTriggerProps": "AccordionTriggerProps.json"
+  }
+}

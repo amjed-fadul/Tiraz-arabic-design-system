@@ -875,6 +875,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
+        "يمكن استخدام TaskRows مباشرة، أو تركيب TaskRowsRoot وTaskRowsRow وTaskRowsEmpty.",
+        "Use TaskRows directly, or compose TaskRowsRoot, TaskRowsRow and TaskRowsEmpty.",
+      ],
+      [
         "فتح الصف أو إغلاقه لا يغيّر تنفيذ المهمة، ويمكن فتح عدة صفوف معًا.",
         "Opening or closing a row never changes the task, and several rows can be open at once.",
       ],
@@ -1592,6 +1596,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
+        "يمكن استخدام Tabs مباشرة، أو تركيب TabsRoot وTabsList وTabsTrigger وTabsContent.",
+        "Use Tabs directly, or compose TabsRoot, TabsList, TabsTrigger and TabsContent.",
+      ],
+      [
         "تتبع الأسهم اتجاه الواجهة، فتنعكس في RTL.",
         "Arrow keys follow the interface direction, so they mirror in RTL.",
       ],
@@ -1924,6 +1932,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       },
     ],
     notice: [
+      [
+        "يمكن استخدام Accordion مباشرة، أو تركيب AccordionRoot وAccordionSection وAccordionTrigger وAccordionContent.",
+        "Use Accordion directly, or compose AccordionRoot, AccordionSection, AccordionTrigger and AccordionContent.",
+      ],
       [
         "افتراضيًا لا يغلق الضغط على العنوان القسم المفتوح نفسه. فعّل collapsible ليغلقه المستخدم.",
         "By default pressing the open section's own heading does not close it. Turn on collapsible to let people close it.",

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AccordionContent",
+  "kind": "component",
+  "source": "Accordion.tsx",
+  "sourceHash": "4a4db3f62e5cf3a7e9a121739d7c5d868e3afb80c89154c97bcf914911bcc387",
+  "type": "({ children }: AccordionContentProps) => JSX.Element",
+  "description": "The panel; closed panels are inert and hidden from assistive technology.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ children }",
+          "type": "AccordionContentProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "AccordionContentProps": "AccordionContentProps.json",
+    "AccordionItem": "AccordionItem.json",
+    "AccordionProps": "AccordionProps.json",
+    "AccordionRootProps": "AccordionRootProps.json",
+    "AccordionSectionProps": "AccordionSectionProps.json",
+    "AccordionTriggerProps": "AccordionTriggerProps.json"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "exportName": "AccordionTrigger",
+  "kind": "component",
+  "source": "Accordion.tsx",
+  "sourceHash": "4a4db3f62e5cf3a7e9a121739d7c5d868e3afb80c89154c97bcf914911bcc387",
+  "type": "({ children }: AccordionTriggerProps) => JSX.Element",
+  "description": "The heading and its button; children are the label.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ children }",
+          "type": "AccordionTriggerProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The visible label; keep nested controls out of it."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "AccordionContentProps": "AccordionContentProps.json",
+    "AccordionItem": "AccordionItem.json",
+    "AccordionProps": "AccordionProps.json",
+    "AccordionRootProps": "AccordionRootProps.json",
+    "AccordionSectionProps": "AccordionSectionProps.json",
+    "AccordionTriggerProps": "AccordionTriggerProps.json"
+  }
+}

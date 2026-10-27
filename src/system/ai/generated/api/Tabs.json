@@ -3,8 +3,9 @@
   "exportName": "Tabs",
   "kind": "component",
   "source": "Tabs.tsx",
-  "sourceHash": "6ee6d6a6de54a77b979e0ab07120868dcd0a80a4f929e411ec724cdcfb01a997",
+  "sourceHash": "3bc5a88a13ac1d95354738c18d89b8b477f90eb0a062bdfaab8ffe0564c247df",
   "type": "({ items, label, value, defaultValue, onValueChange, variant, className, }: TabsProps) => JSX.Element",
+  "description": "Original convenience API, rendered through the compound parts.",
   "signatures": [
     {
       "typeParameters": [],
@@ -61,6 +62,10 @@
   },
   "relatedTypes": {
     "TabItem": "TabItem.json",
-    "TabsProps": "TabsProps.json"
+    "TabsContentProps": "TabsContentProps.json",
+    "TabsListProps": "TabsListProps.json",
+    "TabsProps": "TabsProps.json",
+    "TabsRootProps": "TabsRootProps.json",
+    "TabsTriggerProps": "TabsTriggerProps.json"
   }
 }
