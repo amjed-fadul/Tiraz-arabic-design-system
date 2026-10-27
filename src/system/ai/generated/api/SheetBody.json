@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SheetBody",
+  "kind": "component",
+  "source": "Sheet.tsx",
+  "sourceHash": "fb9c3565123fba85daba932781121f597f316e45eef213dd7633242d1badecca",
+  "type": "({ children }: SheetBodyProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ children }",
+          "type": "SheetBodyProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "SheetBodyProps": "SheetBodyProps.json",
+    "SheetContentProps": "SheetContentProps.json",
+    "SheetFooterProps": "SheetFooterProps.json",
+    "SheetProps": "SheetProps.json",
+    "SheetRootProps": "SheetRootProps.json",
+    "SheetTriggerProps": "SheetTriggerProps.json"
+  }
+}

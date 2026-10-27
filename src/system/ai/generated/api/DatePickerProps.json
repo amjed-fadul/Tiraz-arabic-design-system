@@ -3,12 +3,12 @@
   "exportName": "DatePickerProps",
   "kind": "type",
   "source": "DatePicker.tsx",
-  "sourceHash": "ac38236f154d2141e4ebb3bbbed17a79b8150a54ed3cab3656a864894baa3b02",
+  "sourceHash": "1ad86bd1d490d1b054482b7b46b99f22c52fd44a2c74315d9e132c7e5b47034e",
   "type": "DatePickerProps",
   "typeParameters": [],
   "members": [
-    "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label: string; helper?: string; error?: string; field?: never; }",
-    "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label?: never; helper?: never; error?: never; field?: FieldControlProps; }"
+    "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; collisionBoundary?: CollisionBoundary; } & { label: string; helper?: string; error?: string; field?: never; }",
+    "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; collisionBoundary?: CollisionBoundary; } & { label?: never; helper?: never; error?: never; field?: FieldControlProps; }"
   ],
   "props": {
     "about": {
@@ -435,6 +435,11 @@
     "className": {
       "type": "string | undefined",
       "required": false
+    },
+    "collisionBoundary": {
+      "type": "Boundary | Boundary[] | undefined",
+      "required": false,
+      "description": "Bounds the calendar's and year menu's placement and width."
     },
     "color": {
       "type": "string | undefined",
@@ -1519,7 +1524,7 @@
   },
   "branches": [
     {
-      "type": "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label: string; helper?: string; error?: string; field?: never; }",
+      "type": "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; collisionBoundary?: CollisionBoundary; } & { label: string; helper?: string; error?: string; field?: never; }",
       "props": {
         "about": {
           "type": "string | undefined",
@@ -1945,6 +1950,11 @@
         "className": {
           "type": "string | undefined",
           "required": false
+        },
+        "collisionBoundary": {
+          "type": "Boundary | Boundary[] | undefined",
+          "required": false,
+          "description": "Bounds the calendar's and year menu's placement and width."
         },
         "color": {
           "type": "string | undefined",
@@ -3029,7 +3039,7 @@
       }
     },
     {
-      "type": "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; } & { label?: never; helper?: never; error?: never; field?: FieldControlProps; }",
+      "type": "Omit<DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>, \"children\" | \"value\" | \"type\" | \"defaultValue\" | \"onChange\"> & { value?: string; defaultValue?: string; onValueChange?: (value: string) => void; min?: string; max?: string; locale?: \"ar\" | \"en\"; yearRange?: readonly [number, number]; placeholder?: string; size?: \"sm\" | \"md\"; invalid?: boolean; collisionBoundary?: CollisionBoundary; } & { label?: never; helper?: never; error?: never; field?: FieldControlProps; }",
       "props": {
         "about": {
           "type": "string | undefined",
@@ -3455,6 +3465,11 @@
         "className": {
           "type": "string | undefined",
           "required": false
+        },
+        "collisionBoundary": {
+          "type": "Boundary | Boundary[] | undefined",
+          "required": false,
+          "description": "Bounds the calendar's and year menu's placement and width."
         },
         "color": {
           "type": "string | undefined",

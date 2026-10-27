@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DropdownMenuContent",
+  "kind": "component",
+  "source": "DropdownMenu.tsx",
+  "sourceHash": "3fc591a1913468a0dcc046458420bd4f9f947a2ca29cb7e14030a610f20be1f6",
+  "type": "({ children, align, collisionBoundary, }: DropdownMenuContentProps) => JSX.Element | null",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  children,\n  align = \"start\",\n  collisionBoundary,\n}",
+          "type": "DropdownMenuContentProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element | null"
+    }
+  ],
+  "props": {
+    "align": {
+      "type": "\"end\" | \"start\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"end\"",
+        "\"start\""
+      ]
+    },
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "collisionBoundary": {
+      "type": "Boundary | Boundary[] | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "align": "\"start\""
+  },
+  "relatedTypes": {
+    "DropdownMenuContentProps": "DropdownMenuContentProps.json",
+    "DropdownMenuItemProps": "DropdownMenuItemProps.json",
+    "DropdownMenuProps": "DropdownMenuProps.json",
+    "DropdownMenuRootProps": "DropdownMenuRootProps.json",
+    "DropdownMenuTriggerProps": "DropdownMenuTriggerProps.json",
+    "MenuItem": "MenuItem.json"
+  }
+}

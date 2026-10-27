@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SheetFooterProps",
+  "kind": "type",
+  "source": "Sheet.tsx",
+  "sourceHash": "fb9c3565123fba85daba932781121f597f316e45eef213dd7633242d1badecca",
+  "type": "SheetFooterProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SheetBodyProps": "SheetBodyProps.json",
+    "SheetContentProps": "SheetContentProps.json",
+    "SheetProps": "SheetProps.json",
+    "SheetRootProps": "SheetRootProps.json",
+    "SheetTriggerProps": "SheetTriggerProps.json"
+  }
+}

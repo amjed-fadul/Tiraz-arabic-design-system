@@ -3,8 +3,9 @@
   "exportName": "Modal",
   "kind": "component",
   "source": "Modal.tsx",
-  "sourceHash": "3c74172865db35841d7a2f2924370fa00b36b216883c4fe269a353858bbeb715",
+  "sourceHash": "5e1afb294052825df1f076b38be5e03691d83da6dac671040e1cd572b0ac68e3",
   "type": "({ trigger, title, description, closeLabel, children, footer, open, onOpenChange, initialFocusRef, }: ModalProps) => JSX.Element",
+  "description": "Original convenience API, rendered through the compound parts.",
   "signatures": [
     {
       "typeParameters": [],
@@ -64,6 +65,11 @@
   "branches": [],
   "defaults": {},
   "relatedTypes": {
-    "ModalProps": "ModalProps.json"
+    "ModalBodyProps": "ModalBodyProps.json",
+    "ModalContentProps": "ModalContentProps.json",
+    "ModalFooterProps": "ModalFooterProps.json",
+    "ModalProps": "ModalProps.json",
+    "ModalRootProps": "ModalRootProps.json",
+    "ModalTriggerProps": "ModalTriggerProps.json"
   }
 }

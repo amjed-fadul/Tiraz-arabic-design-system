@@ -3,7 +3,7 @@
   "exportName": "SelectProps",
   "kind": "type",
   "source": "Select.tsx",
-  "sourceHash": "308bd96233805a89af728fbdba3e28d703a7fee7ac003004d3c22426fb34d930",
+  "sourceHash": "e7131fa35cded7d4574abce7f6e658cb5ac07ad879924d1b0352c7fdc2ceb263",
   "type": "SelectProps",
   "typeParameters": [],
   "props": {
@@ -435,6 +435,11 @@
     "className": {
       "type": "string | undefined",
       "required": false
+    },
+    "collisionBoundary": {
+      "type": "Boundary | Boundary[] | undefined",
+      "required": false,
+      "description": "Bounds the popup's placement and width, as in an embedded surface."
     },
     "color": {
       "type": "string | undefined",

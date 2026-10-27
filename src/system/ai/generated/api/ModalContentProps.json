@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModalContentProps",
+  "kind": "type",
+  "source": "Modal.tsx",
+  "sourceHash": "5e1afb294052825df1f076b38be5e03691d83da6dac671040e1cd572b0ac68e3",
+  "type": "ModalContentProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "initialFocusRef": {
+      "type": "RefObject<HTMLElement | null> | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ModalBodyProps": "ModalBodyProps.json",
+    "ModalFooterProps": "ModalFooterProps.json",
+    "ModalProps": "ModalProps.json",
+    "ModalRootProps": "ModalRootProps.json",
+    "ModalTriggerProps": "ModalTriggerProps.json"
+  }
+}

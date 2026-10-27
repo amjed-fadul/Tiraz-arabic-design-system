@@ -3,7 +3,7 @@
   "exportName": "ModalProps",
   "kind": "type",
   "source": "Modal.tsx",
-  "sourceHash": "3c74172865db35841d7a2f2924370fa00b36b216883c4fe269a353858bbeb715",
+  "sourceHash": "5e1afb294052825df1f076b38be5e03691d83da6dac671040e1cd572b0ac68e3",
   "type": "ModalProps",
   "typeParameters": [],
   "props": {
@@ -50,5 +50,11 @@
     }
   },
   "branches": [],
-  "relatedTypes": {}
+  "relatedTypes": {
+    "ModalBodyProps": "ModalBodyProps.json",
+    "ModalContentProps": "ModalContentProps.json",
+    "ModalFooterProps": "ModalFooterProps.json",
+    "ModalRootProps": "ModalRootProps.json",
+    "ModalTriggerProps": "ModalTriggerProps.json"
+  }
 }

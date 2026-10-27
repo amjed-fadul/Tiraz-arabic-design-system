@@ -3,7 +3,7 @@
   "exportName": "DropdownMenuProps",
   "kind": "type",
   "source": "DropdownMenu.tsx",
-  "sourceHash": "e78166594ec6fe060cc4924653c82afa1f054be8167feb49f6133e364ba960de",
+  "sourceHash": "3fc591a1913468a0dcc046458420bd4f9f947a2ca29cb7e14030a610f20be1f6",
   "type": "DropdownMenuProps",
   "typeParameters": [],
   "props": {
@@ -40,6 +40,10 @@
   },
   "branches": [],
   "relatedTypes": {
+    "DropdownMenuContentProps": "DropdownMenuContentProps.json",
+    "DropdownMenuItemProps": "DropdownMenuItemProps.json",
+    "DropdownMenuRootProps": "DropdownMenuRootProps.json",
+    "DropdownMenuTriggerProps": "DropdownMenuTriggerProps.json",
     "MenuItem": "MenuItem.json"
   }
 }

@@ -450,6 +450,13 @@
 .tz-menu[data-state="closed"] {
   animation: tz-menu-out var(--motion-exit) var(--ease-exit) forwards;
 }
+/* With a collision boundary the menu may not outgrow the room Popper leaves it. */
+.tz-menu[data-bounded] {
+  max-inline-size: min(
+    calc(100vw - 24px),
+    var(--radix-dropdown-menu-content-available-width)
+  );
+}
 /* Floating layers grow out of their trigger: the origin follows Radix's
    placement and the short offset points back toward the anchor. */
 :is(.tz-menu, .tz-tooltip, .tz-datepicker-popup) {
@@ -1010,6 +1017,18 @@ input.tz-input:read-only {
 }
 .tz-select-popup[data-state="closed"] {
   animation: tz-menu-out var(--motion-exit) var(--ease-exit) forwards;
+}
+/* The same for Select and the DatePicker year menu; the calendar popup
+   already reads the available popover width and height. */
+.tz-select-popup[data-bounded] {
+  min-inline-size: min(
+    var(--radix-select-trigger-width),
+    var(--radix-select-content-available-width)
+  );
+  max-inline-size: min(
+    calc(100vw - 24px),
+    var(--radix-select-content-available-width)
+  );
 }
 .tz-select-viewport {
   padding: var(--space-1);

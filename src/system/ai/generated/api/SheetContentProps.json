@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SheetContentProps",
+  "kind": "type",
+  "source": "Sheet.tsx",
+  "sourceHash": "fb9c3565123fba85daba932781121f597f316e45eef213dd7633242d1badecca",
+  "type": "SheetContentProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "side": {
+      "type": "\"left\" | \"right\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"left\"",
+        "\"right\""
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "SheetBodyProps": "SheetBodyProps.json",
+    "SheetFooterProps": "SheetFooterProps.json",
+    "SheetProps": "SheetProps.json",
+    "SheetRootProps": "SheetRootProps.json",
+    "SheetTriggerProps": "SheetTriggerProps.json"
+  }
+}

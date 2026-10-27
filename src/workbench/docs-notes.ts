@@ -2309,6 +2309,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
         "There are no submenus. A shortcut written beside an item is only a label and registers nothing.",
       ],
       [
+        "يمكن استخدام DropdownMenu مباشرة، أو تركيب DropdownMenuRoot وDropdownMenuTrigger وDropdownMenuContent وعناصرها.",
+        "Use DropdownMenu directly, or compose DropdownMenuRoot, DropdownMenuTrigger, DropdownMenuContent and its items.",
+      ],
+      [
         "تنقل الكتابة التركيز إلى العنصر المطابق، ويغلق Tab القائمة بدل أن يتنقل داخلها.",
         "Typing jumps to a matching item, and Tab closes the menu rather than moving through it.",
       ],
@@ -2338,6 +2342,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       },
     ],
     notice: [
+      [
+        "يمكن استخدام Sheet مباشرة، أو تركيب SheetRoot وSheetTrigger وSheetContent وSheetBody وSheetFooter.",
+        "Use Sheet directly, or compose SheetRoot, SheetTrigger, SheetContent, SheetBody and SheetFooter.",
+      ],
       [
         "تفتح اللوحة على اليمين في RTL وعلى اليسار في LTR ما لم تحدّد side.",
         "The sheet opens on the right in RTL and on the left in LTR unless you set side.",
@@ -2372,6 +2380,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       },
     ],
     notice: [
+      [
+        "يمكن استخدام Modal مباشرة، أو تركيب ModalRoot وModalTrigger وModalContent وModalBody وModalFooter.",
+        "Use Modal directly, or compose ModalRoot, ModalTrigger, ModalContent, ModalBody and ModalFooter.",
+      ],
       [
         "يبقى Tab داخل النافذة، ويغلقها Escape أو النقر خارجها، ويعود التركيز إلى الزر الذي فتحها.",
         "Tab stays inside the dialog. Escape or a click outside closes it, and focus returns to the button that opened it.",

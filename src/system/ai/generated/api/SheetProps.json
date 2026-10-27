@@ -3,7 +3,7 @@
   "exportName": "SheetProps",
   "kind": "type",
   "source": "Sheet.tsx",
-  "sourceHash": "caf4979d4c25c4b787da11fe75958dc74874be5649eb6c1796c24c49b5348bd0",
+  "sourceHash": "fb9c3565123fba85daba932781121f597f316e45eef213dd7633242d1badecca",
   "type": "SheetProps",
   "typeParameters": [],
   "props": {
@@ -55,5 +55,11 @@
     }
   },
   "branches": [],
-  "relatedTypes": {}
+  "relatedTypes": {
+    "SheetBodyProps": "SheetBodyProps.json",
+    "SheetContentProps": "SheetContentProps.json",
+    "SheetFooterProps": "SheetFooterProps.json",
+    "SheetRootProps": "SheetRootProps.json",
+    "SheetTriggerProps": "SheetTriggerProps.json"
+  }
 }

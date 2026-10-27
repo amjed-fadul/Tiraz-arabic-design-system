@@ -3,7 +3,7 @@
   "exportName": "SelectOption",
   "kind": "type",
   "source": "Select.tsx",
-  "sourceHash": "308bd96233805a89af728fbdba3e28d703a7fee7ac003004d3c22426fb34d930",
+  "sourceHash": "e7131fa35cded7d4574abce7f6e658cb5ac07ad879924d1b0352c7fdc2ceb263",
   "type": "SelectOption",
   "typeParameters": [],
   "props": {

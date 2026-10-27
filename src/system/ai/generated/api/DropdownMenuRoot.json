@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DropdownMenuRoot",
+  "kind": "component",
+  "source": "DropdownMenu.tsx",
+  "sourceHash": "3fc591a1913468a0dcc046458420bd4f9f947a2ca29cb7e14030a610f20be1f6",
+  "type": "({ children, open, defaultOpen, onOpenChange, }: DropdownMenuRootProps) => JSX.Element",
+  "description": "Compose one trigger and one content per root.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  children,\n  open,\n  defaultOpen = false,\n  onOpenChange,\n}",
+          "type": "DropdownMenuRootProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "defaultOpen": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {
+    "defaultOpen": "false"
+  },
+  "relatedTypes": {
+    "DropdownMenuContentProps": "DropdownMenuContentProps.json",
+    "DropdownMenuItemProps": "DropdownMenuItemProps.json",
+    "DropdownMenuProps": "DropdownMenuProps.json",
+    "DropdownMenuRootProps": "DropdownMenuRootProps.json",
+    "DropdownMenuTriggerProps": "DropdownMenuTriggerProps.json",
+    "MenuItem": "MenuItem.json"
+  }
+}

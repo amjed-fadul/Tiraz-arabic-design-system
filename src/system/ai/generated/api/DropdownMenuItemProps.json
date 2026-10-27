@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DropdownMenuItemProps",
+  "kind": "type",
+  "source": "DropdownMenu.tsx",
+  "sourceHash": "3fc591a1913468a0dcc046458420bd4f9f947a2ca29cb7e14030a610f20be1f6",
+  "type": "DropdownMenuItemProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "destructive": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "disabled": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "icon": {
+      "type": "ReactNode",
+      "required": false
+    },
+    "onSelect": {
+      "type": "(() => void) | undefined",
+      "required": false
+    },
+    "shortcut": {
+      "type": "string | undefined",
+      "required": false
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "DropdownMenuContentProps": "DropdownMenuContentProps.json",
+    "DropdownMenuProps": "DropdownMenuProps.json",
+    "DropdownMenuRootProps": "DropdownMenuRootProps.json",
+    "DropdownMenuTriggerProps": "DropdownMenuTriggerProps.json",
+    "MenuItem": "MenuItem.json"
+  }
+}

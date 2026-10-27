@@ -207,7 +207,29 @@ and collisionPadding bound placement and available width separately from the
 portal host. Test transformed and narrow surfaces in a browser. Hover warming
 remains shared across all roots (400ms); deliberate dismissal cools it.
 
-Modal requires title, description and translated closeLabel; trigger/children and optional footer mirror Sheet. initialFocusRef may select a focusable descendant; otherwise Radix chooses its first focusable element. Controlled open requires onOpenChange to update it; omit open for internal usage. There is no defaultOpen. For either mode, a footer may use @radix-ui/react-dialog Close asChild with Button. Tab stays contained, Escape/outside dismiss and the mounted trigger receives focus again. Menus/Select/Tooltip must retain the nearest Modal container; test dismissal of each layer before the dialog. Do not add stacked/nested dialog examples or a manager.
+Modal requires title, description and translated closeLabel; trigger/children and optional footer mirror Sheet. initialFocusRef may select a focusable descendant; otherwise Radix chooses its first focusable element. Controlled open requires onOpenChange to update it; omit open for internal usage. The convenience Modal has no defaultOpen; `ModalRoot` accepts it. For either mode, a footer may use @radix-ui/react-dialog Close asChild with Button. Tab stays contained, Escape/outside dismiss and the mounted trigger receives focus again. Menus/Select/Tooltip must retain the nearest Modal container; test dismissal of each layer before the dialog. Do not add stacked/nested dialog examples or a manager.
+
+For compound dialogs, compose one `ModalTrigger` and one `ModalContent` inside
+`ModalRoot` (`SheetRoot`, `SheetTrigger`, `SheetContent` likewise), and put
+`ModalBody` and an optional `ModalFooter` (`SheetBody`, `SheetFooter`) inside the
+content. The content still requires `title`, `description` and a translated
+`closeLabel`; the default trigger is a native `type="button"` button and `asChild`
+uses one focusable child. `open` is controlled, `defaultOpen` only initializes
+uncontrolled state and `onOpenChange` requests each change once. `SheetContent` takes
+`side`. Modal and Sheet render the same markup through these parts, so a footer still
+uses Radix Close asChild or the owner's state to dismiss.
+
+For compound menus, compose `DropdownMenuTrigger` and `DropdownMenuContent` inside
+`DropdownMenuRoot` and put `DropdownMenuItem` (label as children, with `onSelect`,
+`disabled`, `destructive`, `shortcut`, `icon`) and `DropdownMenuSeparator` directly
+in the content. The menu stays nonmodal; Escape and Tab close it and return focus to
+the trigger, and `onSelect` fires once for Enter, Space and click. The convenience
+DropdownMenu keeps its items array and wraps each item in a plain div.
+
+Select, DatePicker and DropdownMenuContent accept `collisionBoundary` to keep their
+popup inside an embedded surface. A nonempty boundary sets `data-bounded` and limits
+the popup's width and height by Popper's available room; for DatePicker this covers
+the calendar and the year menu. Omit it and nothing changes.
 
 EmptyState(title, description?, illustration?, action?) leaves content and actions to the application. Omit illustration, use one exported geometric SVG or supply a custom decorative node. The slot is aria-hidden; never place interactive controls there. Text conveys meaning, action conveys its actual result. Use the three original exports NoRecordsIllustration, NoSearchResultsIllustration and GettingStartedIllustration with tokens in either theme. [EmptyStateExamples](examples/EmptyStateExamples.tsx) reveals a guide and returns with Back; it does not create a customer, persist values or pretend to call a service.
 

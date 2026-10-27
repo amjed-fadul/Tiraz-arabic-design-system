@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "exportName": "DropdownMenuSeparator",
+  "kind": "component",
+  "source": "DropdownMenu.tsx",
+  "sourceHash": "3fc591a1913468a0dcc046458420bd4f9f947a2ca29cb7e14030a610f20be1f6",
+  "type": "() => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [],
+      "returns": "JSX.Element"
+    }
+  ],
+  "defaults": {},
+  "relatedTypes": {
+    "DropdownMenuContentProps": "DropdownMenuContentProps.json",
+    "DropdownMenuItemProps": "DropdownMenuItemProps.json",
+    "DropdownMenuProps": "DropdownMenuProps.json",
+    "DropdownMenuRootProps": "DropdownMenuRootProps.json",
+    "DropdownMenuTriggerProps": "DropdownMenuTriggerProps.json",
+    "MenuItem": "MenuItem.json"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModalRootProps",
+  "kind": "type",
+  "source": "Modal.tsx",
+  "sourceHash": "5e1afb294052825df1f076b38be5e03691d83da6dac671040e1cd572b0ac68e3",
+  "type": "ModalRootProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "defaultOpen": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false
+    },
+    "open": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ModalBodyProps": "ModalBodyProps.json",
+    "ModalContentProps": "ModalContentProps.json",
+    "ModalFooterProps": "ModalFooterProps.json",
+    "ModalProps": "ModalProps.json",
+    "ModalTriggerProps": "ModalTriggerProps.json"
+  }
+}

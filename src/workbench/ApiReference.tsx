@@ -2241,6 +2241,14 @@ export function ApiReference({
           "name submits the full date or empty string; disabled omits it. Hidden submission has no native required validation; the application blocks invalid forms. Uncontrolled reset restores initial value without callback and respects cancellation; controlled reset needs onReset.",
         ),
       ],
+      [
+        "collisionBoundary",
+        "Element | null | (Element | null)[]",
+        t(
+          "حدود اختيارية للتقويم وقائمة السنة معًا. تضيف الحدود غير الفارغة data-bounded وتقيّد موضعهما وعرضهما وارتفاعهما بالمساحة المتاحة. دونها لا يتغير شيء.",
+          "Optional boundary for the calendar and year menu together. A nonempty boundary adds data-bounded and limits their placement, width and height to the available room. Omitted, nothing changes.",
+        ),
+      ],
     ],
     "file-dropzone": [
       [
@@ -2841,6 +2849,14 @@ export function ApiReference({
         ),
       ],
       [
+        "ModalRoot / ModalTrigger / ModalContent / ModalBody / ModalFooter",
+        "compound API",
+        t(
+          "جذر واحد، ومشغّل واحد، ومحتوى واحد يضم الجسم والتذييل. يحافظ asChild على العنصر التفاعلي الأصلي، وتقبل الجذور open وdefaultOpen وonOpenChange. يبقى Modal كما هو.",
+          "One root, one trigger and one content holding the body and footer. asChild preserves the original focusable element; the root accepts open, defaultOpen and onOpenChange. Modal itself is unchanged.",
+        ),
+      ],
+      [
         "nested overlays / viewport",
         "Scoped portal / internal scrolling",
         t(
@@ -3250,8 +3266,16 @@ export function ApiReference({
         "ref / id / className / style / ARIA / data-* / button events",
         "Ref<HTMLButtonElement> / native button props",
         t(
-          "يشير ref إلى زر الفتح. تُستبدل children/type/value/defaultValue/onChange، وتذهب name/form إلى العنصر الأصلي. لا تتيح هذه الواجهة open/defaultOpen ولا تخصيص القائمة المنبثقة.",
-          "ref targets trigger. children/type/value/defaultValue/onChange are replaced; name/form target native form participation. No open/defaultOpen or popup customization API.",
+          "يشير ref إلى زر الفتح. تُستبدل children/type/value/defaultValue/onChange، وتذهب name/form إلى العنصر الأصلي. لا تتيح هذه الواجهة open/defaultOpen ولا تنسيق القائمة المنبثقة؛ تحدّد collisionBoundary موضعها وحجمها فقط.",
+          "ref targets trigger. children/type/value/defaultValue/onChange are replaced; name/form target native form participation. No open/defaultOpen or popup styling API; collisionBoundary only bounds its placement and size.",
+        ),
+      ],
+      [
+        "collisionBoundary",
+        "Element | null | (Element | null)[]",
+        t(
+          "حدود اختيارية لموضع القائمة وحجمها داخل سطح مدمج. تضيف الحدود غير الفارغة data-bounded وتقيّد عرض القائمة وارتفاعها بالمساحة المتاحة. دونها يبقى السلوك والمخطط كما هما.",
+          "Optional boundary for placing and sizing the popup in an embedded surface. A nonempty boundary adds data-bounded and limits width and height to the available room. Omitted, behavior and markup are unchanged.",
         ),
       ],
       [
@@ -3446,6 +3470,14 @@ export function ApiReference({
           "Do not add these props. Compose trigger/items and use alignment instead.",
         ),
       ],
+      [
+        "DropdownMenuRoot / DropdownMenuTrigger / DropdownMenuContent / DropdownMenuItem / DropdownMenuSeparator",
+        "compound API",
+        t(
+          "جذر ومشغّل ومحتوى، ثم عناصر وفواصل داخل المحتوى. يحافظ asChild على العنصر الأصلي، وتقبل الجذور open وdefaultOpen وonOpenChange، ويقبل المحتوى align وcollisionBoundary. يبقى DropdownMenu كما هو.",
+          "A root, trigger and content, with items and separators inside the content. asChild preserves the original element; the root accepts open, defaultOpen and onOpenChange and the content accepts align and collisionBoundary. DropdownMenu itself is unchanged.",
+        ),
+      ],
     ],
     sheet: [
       [
@@ -3478,6 +3510,14 @@ export function ApiReference({
         t(
           "إذا حذفتها تظهر اللوحة يمينًا في RTL ويسارًا في LTR. لا تتيح API تعديل العرض.",
           "When omitted: right in RTL, left in LTR. Width is not an API prop.",
+        ),
+      ],
+      [
+        "SheetRoot / SheetTrigger / SheetContent / SheetBody / SheetFooter",
+        "compound API",
+        t(
+          "جذر واحد، ومشغّل واحد، ومحتوى واحد يضم الجسم والتذييل، ويقبل المحتوى side. يحافظ asChild على العنصر التفاعلي الأصلي، وتقبل الجذور open وdefaultOpen وonOpenChange. يبقى Sheet كما هو.",
+          "One root, one trigger and one content holding the body and footer; the content accepts side. asChild preserves the original focusable element; the root accepts open, defaultOpen and onOpenChange. Sheet itself is unchanged.",
         ),
       ],
       [

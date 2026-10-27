@@ -238,3 +238,50 @@ it("publishes compound Tooltip and optional portal contracts without removing co
   );
   expect(api("SystemProvider").props.portalContainer.required).toBe(false);
 });
+
+it("publishes compound Modal, Sheet and DropdownMenu contracts with plain-value props", () => {
+  const parts = [
+    "ModalRoot",
+    "ModalTrigger",
+    "ModalContent",
+    "ModalBody",
+    "ModalFooter",
+    "SheetRoot",
+    "SheetTrigger",
+    "SheetContent",
+    "SheetBody",
+    "SheetFooter",
+    "DropdownMenuRoot",
+    "DropdownMenuTrigger",
+    "DropdownMenuContent",
+    "DropdownMenuItem",
+    "DropdownMenuSeparator",
+  ];
+  for (const name of parts) {
+    expect(api(name).kind).toBe("component");
+    expect(document("manifest.json").publicExports).toContain(name);
+  }
+  for (const name of ["ModalContent", "SheetContent"]) {
+    for (const prop of ["title", "description", "closeLabel", "children"])
+      expect(api(name).props[prop].required).toBe(true);
+  }
+  expect(api("ModalContent").props.initialFocusRef.required).toBe(false);
+  expect(api("SheetContent").props.side.required).toBe(false);
+  for (const name of ["ModalRoot", "SheetRoot", "DropdownMenuRoot"]) {
+    for (const prop of ["open", "defaultOpen", "onOpenChange"])
+      expect(api(name).props[prop].required).toBe(false);
+  }
+  for (const name of ["ModalTrigger", "SheetTrigger", "DropdownMenuTrigger"])
+    expect(api(name).props.asChild.required).toBe(false);
+  expect(api("DropdownMenuContent").props.align.required).toBe(false);
+  expect(api("DropdownMenuContent").props.collisionBoundary.required).toBe(
+    false,
+  );
+  for (const prop of ["destructive", "shortcut", "icon", "disabled"])
+    expect(api("DropdownMenuItem").props[prop].required).toBe(false);
+  expect(api("Modal").props.trigger.required).toBe(true);
+  expect(api("Sheet").props.side.required).toBe(false);
+  expect(api("DropdownMenu").props.items.required).toBe(true);
+  for (const name of ["Select", "DatePicker"])
+    expect(api(name).props.collisionBoundary.required).toBe(false);
+});

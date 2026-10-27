@@ -3,8 +3,9 @@
   "exportName": "Sheet",
   "kind": "component",
   "source": "Sheet.tsx",
-  "sourceHash": "caf4979d4c25c4b787da11fe75958dc74874be5649eb6c1796c24c49b5348bd0",
+  "sourceHash": "fb9c3565123fba85daba932781121f597f316e45eef213dd7633242d1badecca",
   "type": "({ trigger, title, description, closeLabel, children, footer, open, onOpenChange, side, }: SheetProps) => JSX.Element",
+  "description": "Original convenience API, rendered through the compound parts.",
   "signatures": [
     {
       "typeParameters": [],
@@ -69,6 +70,11 @@
   "branches": [],
   "defaults": {},
   "relatedTypes": {
-    "SheetProps": "SheetProps.json"
+    "SheetBodyProps": "SheetBodyProps.json",
+    "SheetContentProps": "SheetContentProps.json",
+    "SheetFooterProps": "SheetFooterProps.json",
+    "SheetProps": "SheetProps.json",
+    "SheetRootProps": "SheetRootProps.json",
+    "SheetTriggerProps": "SheetTriggerProps.json"
   }
 }

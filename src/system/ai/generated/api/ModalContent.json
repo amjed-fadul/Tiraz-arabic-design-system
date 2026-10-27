@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModalContent",
+  "kind": "component",
+  "source": "Modal.tsx",
+  "sourceHash": "5e1afb294052825df1f076b38be5e03691d83da6dac671040e1cd572b0ac68e3",
+  "type": "({ title, description, closeLabel, children, initialFocusRef, }: ModalContentProps) => JSX.Element | null",
+  "description": "Overlay, dialog, header and scroll area; compose ModalBody and ModalFooter.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  title,\n  description,\n  closeLabel,\n  children,\n  initialFocusRef,\n}",
+          "type": "ModalContentProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element | null"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "initialFocusRef": {
+      "type": "RefObject<HTMLElement | null> | undefined",
+      "required": false
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ModalBodyProps": "ModalBodyProps.json",
+    "ModalContentProps": "ModalContentProps.json",
+    "ModalFooterProps": "ModalFooterProps.json",
+    "ModalProps": "ModalProps.json",
+    "ModalRootProps": "ModalRootProps.json",
+    "ModalTriggerProps": "ModalTriggerProps.json"
+  }
+}

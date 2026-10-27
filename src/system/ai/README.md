@@ -78,6 +78,30 @@ and does not intercept Escape. The 400ms hover warm window remains global across
 Tooltip roots for compatibility. Supply `collisionBoundary` to bound placement and
 available width in an embedded surface. Hosts and boundaries are independent.
 
+`ModalRoot`, `ModalTrigger`, `ModalContent`, `ModalBody` and `ModalFooter`, the
+matching `Sheet` parts and `DropdownMenuRoot`, `DropdownMenuTrigger`,
+`DropdownMenuContent`, `DropdownMenuItem` and `DropdownMenuSeparator` compose the
+same overlays part by part. Use one root, one trigger and one content per root. A
+trigger is a native `type="button"` button forwarding `ref`, or with `asChild` the
+one focusable child forwarding events, ARIA and ref. Roots take `open`,
+`defaultOpen` and `onOpenChange`; a controlled owner must accept each change
+request, which is made once. `ModalContent` and `SheetContent` take `title`,
+`description` and `closeLabel` and render the backdrop, dialog, header and close
+button; put the body and optional footer parts inside. `SheetContent` takes `side`
+(default: right in Arabic, left in English). `DropdownMenuContent` takes `align` and
+`collisionBoundary`; `DropdownMenuItem` takes its label as children plus
+`onSelect`, `disabled`, `destructive`, `shortcut` and `icon`. The existing `Modal`,
+`Sheet` and `DropdownMenu` keep their props and render the same markup through
+these parts. See the [Modal](examples/ModalCompoundExample.tsx),
+[Sheet](examples/SheetCompoundExample.tsx) and
+[DropdownMenu](examples/DropdownMenuCompoundExample.tsx) compound examples.
+
+`Select`, `DatePicker` (its calendar and year menu) and `DropdownMenuContent` accept
+`collisionBoundary`, the installed Popper type. A nonempty boundary sets
+`data-bounded` on the popup and limits its width and height to the room left inside
+the boundary; omitted, the viewport applies and the markup is unchanged. Supply it
+for an embedded surface, and test narrow bounds in Arabic and English.
+
 The current provider accepts optional CSS overrides `--tiraz-action` and
 `--tiraz-radius`, falling back to `config.accent` and `config.radius`. Other
 semantic tokens can be overridden in CSS normally. Put user theme rules after
@@ -269,7 +293,7 @@ AvatarGroup composes members with stable unique id, name and optional src/fallba
 
 Tooltip accepts a focusable trigger and short string content. It preserves refs, handlers, names and external description IDs; hover waits 500ms, keyboard focus opens immediately, Escape dismisses it before a surrounding dialog. Use the already installed @radix-ui/react-popper positioning primitive (verified 1.4.0); source consumers need it explicitly along with the dependencies above. It portals into the nearest SystemProvider/Sheet/Modal.
 
-Modal uses the same installed Radix Dialog as Sheet, with required trigger, title, description, closeLabel and children; footer and initialFocusRef are optional. Omit open for internal state, or update controlled open in onOpenChange. There is no defaultOpen. Use Radix Dialog.Close asChild for footer dismissal in either mode. Keep its trigger mounted. Nested non-dialog overlays stay scoped inside content. Use one centered dialog; no stack or global manager.
+Modal uses the same installed Radix Dialog as Sheet, with required trigger, title, description, closeLabel and children; footer and initialFocusRef are optional. Omit open for internal state, or update controlled open in onOpenChange. The convenience Modal has no defaultOpen; `ModalRoot` accepts it. Use Radix Dialog.Close asChild for footer dismissal in either mode. Keep its trigger mounted. Nested non-dialog overlays stay scoped inside content. Use one centered dialog; no stack or global manager.
 
 EmptyState requires title; description, illustration and action are optional. Custom illustration content is decorative and must contain no focusable controls. NoRecordsIllustration, NoSearchResultsIllustration and GettingStartedIllustration are original text-free token-based SVG exports. [EmptyStateExamples](examples/EmptyStateExamples.tsx) shows all three and an application action that reveals a small guide with a working Back action. Omit illustration for text-only content. EmptyState performs no data operation.
 

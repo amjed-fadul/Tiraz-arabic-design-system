@@ -599,3 +599,44 @@ it("keeps Tooltip as one family with real compound exports and controlled state 
   );
   expect(tooltip[0].state).toMatch(/controlled/i);
 });
+
+it("keeps each overlay family as one entry with real compound exports, examples and bounded popup props", () => {
+  const registry = readRegistry();
+  const family = (id: string) => {
+    const entries = registry.components.filter(
+      (entry: { id: string }) => entry.id === id,
+    );
+    expect(entries).toHaveLength(1);
+    return entries[0];
+  };
+  const parts = (prefix: string, extra: readonly string[] = []) =>
+    ["Root", "Trigger", "Content", ...extra].flatMap((part) => [
+      `${prefix}${part}`,
+      `${prefix}${part}Props`,
+    ]);
+  for (const [id, prefix, extra, example] of [
+    ["modal", "Modal", ["Body", "Footer"], "ModalCompoundExample"],
+    ["sheet", "Sheet", ["Body", "Footer"], "SheetCompoundExample"],
+    ["dropdown", "DropdownMenu", ["Item"], "DropdownMenuCompoundExample"],
+  ] as const) {
+    const entry = family(id);
+    expect(entry.exports).toEqual(
+      expect.arrayContaining([
+        prefix,
+        `${prefix}Props`,
+        ...parts(prefix, extra),
+      ]),
+    );
+    expect(entry.examples).toContain(`ai/examples/${example}.tsx`);
+    expect(entry.state).toMatch(/defaultOpen/);
+    expect(entry.inheritedProps).toMatch(/asChild/);
+  }
+  expect(family("dropdown").exports).toContain("DropdownMenuSeparator");
+  for (const id of ["select", "date-picker"]) {
+    const prop = family(id).props.find(
+      (entry: { name: string }) => entry.name === "collisionBoundary",
+    );
+    expect(prop.required).toBe(false);
+    expect(prop.note).toMatch(/data-bounded|width/i);
+  }
+});

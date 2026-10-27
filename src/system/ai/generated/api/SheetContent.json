@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "exportName": "SheetContent",
+  "kind": "component",
+  "source": "Sheet.tsx",
+  "sourceHash": "fb9c3565123fba85daba932781121f597f316e45eef213dd7633242d1badecca",
+  "type": "({ title, description, closeLabel, children, side, }: SheetContentProps) => JSX.Element | null",
+  "description": "Overlay, panel and header; compose SheetBody and SheetFooter.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  title,\n  description,\n  closeLabel,\n  children,\n  side,\n}",
+          "type": "SheetContentProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element | null"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "side": {
+      "type": "\"left\" | \"right\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"left\"",
+        "\"right\""
+      ]
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "SheetBodyProps": "SheetBodyProps.json",
+    "SheetContentProps": "SheetContentProps.json",
+    "SheetFooterProps": "SheetFooterProps.json",
+    "SheetProps": "SheetProps.json",
+    "SheetRootProps": "SheetRootProps.json",
+    "SheetTriggerProps": "SheetTriggerProps.json"
+  }
+}

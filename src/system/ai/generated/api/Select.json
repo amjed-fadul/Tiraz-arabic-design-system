@@ -3,14 +3,14 @@
   "exportName": "Select",
   "kind": "component",
   "source": "Select.tsx",
-  "sourceHash": "308bd96233805a89af728fbdba3e28d703a7fee7ac003004d3c22426fb34d930",
-  "type": "({ options, value, defaultValue, onValueChange, placeholder, name, form, autoComplete, disabled, required, size, invalid, field, className, ...props }: SelectProps) => JSX.Element",
+  "sourceHash": "e7131fa35cded7d4574abce7f6e658cb5ac07ad879924d1b0352c7fdc2ceb263",
+  "type": "({ options, value, defaultValue, onValueChange, placeholder, name, form, autoComplete, disabled, required, size, invalid, field, collisionBoundary, className, ...props }: SelectProps) => JSX.Element",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [
         {
-          "name": "{\n  options,\n  value,\n  defaultValue = \"\",\n  onValueChange,\n  placeholder,\n  name,\n  form,\n  autoComplete,\n  disabled,\n  required,\n  size = \"sm\",\n  invalid,\n  field,\n  className = \"\",\n  ...props\n}",
+          "name": "{\n  options,\n  value,\n  defaultValue = \"\",\n  onValueChange,\n  placeholder,\n  name,\n  form,\n  autoComplete,\n  disabled,\n  required,\n  size = \"sm\",\n  invalid,\n  field,\n  collisionBoundary,\n  className = \"\",\n  ...props\n}",
           "type": "SelectProps",
           "required": true
         }
@@ -447,6 +447,11 @@
     "className": {
       "type": "string | undefined",
       "required": false
+    },
+    "collisionBoundary": {
+      "type": "Boundary | Boundary[] | undefined",
+      "required": false,
+      "description": "Bounds the popup's placement and width, as in an embedded surface."
     },
     "color": {
       "type": "string | undefined",

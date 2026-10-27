@@ -509,7 +509,43 @@
       "source": "DropdownMenu.tsx"
     },
     {
+      "name": "DropdownMenuContent",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuContentProps",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuItem",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuItemProps",
+      "source": "DropdownMenu.tsx"
+    },
+    {
       "name": "DropdownMenuProps",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuRoot",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuRootProps",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuSeparator",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuTrigger",
+      "source": "DropdownMenu.tsx"
+    },
+    {
+      "name": "DropdownMenuTriggerProps",
       "source": "DropdownMenu.tsx"
     },
     {
@@ -741,7 +777,47 @@
       "source": "Modal.tsx"
     },
     {
+      "name": "ModalBody",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalBodyProps",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalContent",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalContentProps",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalFooter",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalFooterProps",
+      "source": "Modal.tsx"
+    },
+    {
       "name": "ModalProps",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalRoot",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalRootProps",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalTrigger",
+      "source": "Modal.tsx"
+    },
+    {
+      "name": "ModalTriggerProps",
       "source": "Modal.tsx"
     },
     {
@@ -889,7 +965,47 @@
       "source": "Sheet.tsx"
     },
     {
+      "name": "SheetBody",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetBodyProps",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetContent",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetContentProps",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetFooter",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetFooterProps",
+      "source": "Sheet.tsx"
+    },
+    {
       "name": "SheetProps",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetRoot",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetRootProps",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetTrigger",
+      "source": "Sheet.tsx"
+    },
+    {
+      "name": "SheetTriggerProps",
       "source": "Sheet.tsx"
     },
     {
@@ -5539,6 +5655,13 @@
           "type": "Ref<HTMLButtonElement>",
           "required": false,
           "default": "undefined"
+        },
+        {
+          "name": "collisionBoundary",
+          "type": "Element | null | (Element | null)[]",
+          "required": false,
+          "default": "undefined",
+          "note": "Optional clipping boundary for the calendar and its year menu. A nonempty boundary sets data-bounded on both and limits their width and height to the room left inside it; omitted, the viewport applies and the markup is unchanged."
         }
       ],
       "inheritedProps": "Native button attributes/ref/events except value/defaultValue/type/children/onChange; name/form belong to hidden submission input.",
@@ -6452,7 +6575,20 @@
       "id": "dropdown",
       "api": "DropdownMenu",
       "source": "DropdownMenu.tsx",
-      "exports": ["DropdownMenu", "DropdownMenuProps", "MenuItem"],
+      "exports": [
+        "DropdownMenu",
+        "DropdownMenuProps",
+        "MenuItem",
+        "DropdownMenuRoot",
+        "DropdownMenuRootProps",
+        "DropdownMenuTrigger",
+        "DropdownMenuTriggerProps",
+        "DropdownMenuContent",
+        "DropdownMenuContentProps",
+        "DropdownMenuItem",
+        "DropdownMenuItemProps",
+        "DropdownMenuSeparator"
+      ],
       "purpose": "Present contextual commands.",
       "useWhen": "Several actions behind a focusable trigger.",
       "alternative": "Use Select for choosing one form value; Tabs for related views.",
@@ -6492,11 +6628,11 @@
           "default": "undefined"
         }
       ],
-      "inheritedProps": "None beyond DropdownMenuProps. Trigger uses Radix asChild; props configured on the trigger element remain its own API.",
+      "inheritedProps": "None beyond DropdownMenuProps for the convenience DropdownMenu; its trigger uses Radix asChild. Compound parts: DropdownMenuRoot takes open, defaultOpen and onOpenChange; DropdownMenuTrigger accepts native button props and ref plus asChild; DropdownMenuContent takes children, align and collisionBoundary; DropdownMenuItem takes children (label), onSelect, disabled, destructive, shortcut and icon; DropdownMenuSeparator takes none.",
       "exclusions": [
-        "No defaultOpen, modal, side, collision settings, content className, arbitrary native props or Radix submenu/checkbox/radio item API."
+        "The convenience DropdownMenu has no defaultOpen, modal, side, collision settings, content className, arbitrary native props or Radix submenu/checkbox/radio item API. DropdownMenuRoot adds defaultOpen, DropdownMenuTrigger native button props and DropdownMenuContent collisionBoundary; the menu stays nonmodal with no side, className or submenus."
       ],
-      "state": "open controls visibility when supplied; otherwise local state starts false. Pair controlled open with onOpenChange updating caller.",
+      "state": "open controls visibility when supplied; otherwise local state starts false (DropdownMenuRoot accepts defaultOpen to start it open). Pair controlled open with onOpenChange updating caller. Selection, Escape and Tab each request closing once through onOpenChange.",
       "events": [
         "onOpenChange; MenuItem.onSelect() invokes application action (no event argument in public type)."
       ],
@@ -6504,18 +6640,35 @@
         "Name trigger and all commands. Arrow keys, Home/End, typeahead, Enter, Escape and Tab dismissal are supported; focus returns to trigger. Preserve early-opening keyboard focus and real hover."
       ],
       "limitations": [
-        "Nonmodal menu; no nested submenus. Shortcut text is decorative and registers no shortcut. Long content scrolls within available viewport height."
+        "Nonmodal menu; no nested submenus. Shortcut text is decorative and registers no shortcut. Long content scrolls within available viewport height.",
+        "Compose DropdownMenuItem and DropdownMenuSeparator directly in DropdownMenuContent; the convenience DropdownMenu wraps each item in a plain div and renders the same markup through these parts."
       ],
       "providers": [
         "SystemProvider supplies direction and portal container; nested menus inside Sheet portal into Sheet content to remain within modal focus scope."
       ],
-      "examples": ["ai/examples/usage.tsx"]
+      "examples": [
+        "ai/examples/usage.tsx",
+        "ai/examples/DropdownMenuCompoundExample.tsx"
+      ]
     },
     {
       "id": "sheet",
       "api": "Sheet",
       "source": "Sheet.tsx",
-      "exports": ["Sheet", "SheetProps"],
+      "exports": [
+        "Sheet",
+        "SheetProps",
+        "SheetRoot",
+        "SheetRootProps",
+        "SheetTrigger",
+        "SheetTriggerProps",
+        "SheetContent",
+        "SheetContentProps",
+        "SheetBody",
+        "SheetBodyProps",
+        "SheetFooter",
+        "SheetFooterProps"
+      ],
       "purpose": "Show modal details or a focused editing task.",
       "useWhen": "A detail view or small form without leaving the dashboard.",
       "alternative": "Use DropdownMenu for a short command list; ordinary inline content for nonmodal tasks.",
@@ -6581,11 +6734,11 @@
           "values": ["right", "left"]
         }
       ],
-      "inheritedProps": "None beyond SheetProps. Radix Dialog props are curated, not spread.",
+      "inheritedProps": "None beyond SheetProps for the convenience Sheet. Compound parts: SheetRoot takes open, defaultOpen and onOpenChange; SheetTrigger accepts native button props and ref plus asChild; SheetContent takes title, description, closeLabel, children and side; SheetBody and SheetFooter take children.",
       "exclusions": [
-        "No defaultOpen, modal=false, asChild, content className, native attrs or custom focus-event passthrough."
+        "The convenience Sheet has no defaultOpen, modal=false, asChild, content className, native attrs or custom focus-event passthrough. SheetRoot adds defaultOpen and SheetTrigger adds asChild with native button props; modal stays true."
       ],
-      "state": "open/onOpenChange controls visibility; otherwise Radix internal state starts closed. Draft save/cancel semantics belong to the application.",
+      "state": "open/onOpenChange controls visibility and requests each change once without overriding the owner; otherwise Radix internal state starts closed. SheetRoot accepts defaultOpen only to initialize uncontrolled state; the convenience Sheet does not. Draft save/cancel semantics belong to the application.",
       "events": [
         "onOpenChange for trigger, Escape, backdrop or close dismissal."
       ],
@@ -6594,12 +6747,16 @@
       ],
       "limitations": [
         "Modal only; width is styled by library CSS. No built-in form validation, data persistence or dirty-dismiss confirmation.",
-        "An active Toast can receive Escape first; do not assume every Escape closes this Sheet."
+        "An active Toast can receive Escape first; do not assume every Escape closes this Sheet.",
+        "Compose exactly one SheetTrigger and one SheetContent in a SheetRoot, with SheetBody and SheetFooter inside the content. Sheet renders the same markup through these parts."
       ],
       "providers": [
         "SystemProvider config/portal container; Sheet supplies descendants the current config with its content as portal container."
       ],
-      "examples": ["ai/examples/usage.tsx"]
+      "examples": [
+        "ai/examples/usage.tsx",
+        "ai/examples/SheetCompoundExample.tsx"
+      ]
     },
     {
       "id": "toast",
@@ -6966,6 +7123,13 @@
           "type": "Ref<HTMLButtonElement>",
           "required": false,
           "default": "undefined"
+        },
+        {
+          "name": "collisionBoundary",
+          "type": "Element | null | (Element | null)[]",
+          "required": false,
+          "default": "undefined",
+          "note": "Optional clipping boundary. A nonempty boundary sets data-bounded and limits the popup's width and height to the room left inside it; omitted, the viewport applies and the markup is unchanged."
         }
       ],
       "inheritedProps": "ComponentPropsWithRef<button> except children/value/defaultValue/onChange/type, plus explicit SelectProps. Native trigger style/ARIA/data/events are supported; ref targets trigger. name/form/autoComplete target Radix native select.",
@@ -7845,7 +8009,20 @@
       "id": "modal",
       "api": "Modal",
       "source": "Modal.tsx",
-      "exports": ["Modal", "ModalProps"],
+      "exports": [
+        "Modal",
+        "ModalProps",
+        "ModalRoot",
+        "ModalRootProps",
+        "ModalTrigger",
+        "ModalTriggerProps",
+        "ModalContent",
+        "ModalContentProps",
+        "ModalBody",
+        "ModalBodyProps",
+        "ModalFooter",
+        "ModalFooterProps"
+      ],
       "purpose": "Show one centered dialog for a focused task.",
       "useWhen": "Show one centered dialog for a focused task.",
       "alternative": "Use Sheet for side detail or inline content for an ordinary task.",
@@ -7907,19 +8084,23 @@
           "note": "Focusable descendant; otherwise Radix initial focus applies."
         }
       ],
-      "inheritedProps": "None; matches the small Sheet contract with optional initialFocusRef.",
-      "state": "Omit open for internal state; when controlled update open in onOpenChange.",
+      "inheritedProps": "None beyond ModalProps for the convenience Modal. Compound parts: ModalRoot takes open, defaultOpen and onOpenChange; ModalTrigger accepts native button props and ref plus asChild; ModalContent takes title, description, closeLabel, children and initialFocusRef; ModalBody and ModalFooter take children. Every compound prop is a plain value except children and initialFocusRef.",
+      "state": "Omit open for internal state; when controlled update open in onOpenChange, which requests each change once and never overrides the owner. The convenience Modal has no defaultOpen; ModalRoot accepts defaultOpen only to initialize uncontrolled state.",
       "events": ["onOpenChange"],
       "accessibility": [
         "See source and ai/composition.md for naming, descriptions, focus and decorative-content requirements."
       ],
       "limitations": [
-        "One dialog only; no defaultOpen, nesting, stacks or manager."
+        "One dialog only; no nesting, stacks or manager.",
+        "Compose exactly one ModalTrigger and one ModalContent in a ModalRoot, with ModalBody and ModalFooter inside the content. Modal renders the same markup through these parts."
       ],
       "providers": [
         "SystemProvider for shared tokens/direction; overlays portal into the nearest provider or dialog."
       ],
-      "examples": ["ai/examples/OverlayExamples.tsx"]
+      "examples": [
+        "ai/examples/OverlayExamples.tsx",
+        "ai/examples/ModalCompoundExample.tsx"
+      ]
     },
     {
       "id": "empty-state",

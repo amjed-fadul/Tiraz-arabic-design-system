@@ -18,6 +18,8 @@ import { Button } from "./Button";
 import { Field } from "./Field";
 import type { FieldControlProps } from "./Field";
 import { associateControl, mergeDescriptionIds } from "./control-associations";
+import { isBounded } from "./collision-boundary";
+import type { CollisionBoundary } from "./collision-boundary";
 import { useEntryReset } from "./useEntryReset";
 import { useSystem, usePortalDestination } from "./useSystem";
 import { numberLocale } from "./config";
@@ -38,6 +40,8 @@ export type DatePickerProps = Omit<
   /** The trigger's height and the size of the Today and Clear buttons. */
   size?: "sm" | "md";
   invalid?: boolean;
+  /** Bounds the calendar's and year menu's placement and width. */
+  collisionBoundary?: CollisionBoundary;
 } & (
     | { label: string; helper?: string; error?: string; field?: never }
     | {
@@ -50,9 +54,10 @@ export type DatePickerProps = Omit<
 const YearChoices = createContext<{
   range?: readonly [number, number];
   container: HTMLElement | null;
+  collisionBoundary?: CollisionBoundary;
 }>({ container: null });
 function NavigationYears(props: DropdownProps) {
-  const { range, container } = useContext(YearChoices);
+  const { range, container, collisionBoundary } = useContext(YearChoices);
   const portal = useSelectPortal(container);
   const { config } = useSystem();
   const year = Number(props.value);
@@ -102,7 +107,9 @@ function NavigationYears(props: DropdownProps) {
             className="tz-select-popup tz-date-years-popup"
             position="popper"
             sideOffset={4}
+            collisionBoundary={collisionBoundary}
             collisionPadding={8}
+            data-bounded={isBounded(collisionBoundary) || undefined}
             dir={config.direction}
           >
             <YearSelect.Viewport className="tz-select-viewport tz-date-years-viewport">
@@ -165,6 +172,7 @@ export function DatePicker({
   field,
   size = "sm",
   invalid,
+  collisionBoundary,
   disabled,
   name,
   form,
@@ -315,12 +323,18 @@ export function DatePicker({
               dir={config.direction}
               sideOffset={6}
               align="start"
+              collisionBoundary={collisionBoundary}
               collisionPadding={8}
+              data-bounded={isBounded(collisionBoundary) || undefined}
               hideWhenDetached
               aria-label={label ?? (arabic ? "اختيار التاريخ" : "Choose date")}
             >
               <YearChoices.Provider
-                value={{ range: yearRange, container: popup }}
+                value={{
+                  range: yearRange,
+                  container: popup,
+                  collisionBoundary,
+                }}
               >
                 <DayPicker
                   captionLayout="dropdown"

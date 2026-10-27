@@ -4,6 +4,8 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import { useSelectValue } from "./useSelectValue";
 import type { ComponentPropsWithRef } from "react";
 import { associateControl } from "./control-associations";
+import { isBounded } from "./collision-boundary";
+import type { CollisionBoundary } from "./collision-boundary";
 import type { FieldControlProps } from "./Field";
 import { useGlide } from "./useGlide";
 import { useSystem, usePortalDestination } from "./useSystem";
@@ -26,6 +28,8 @@ export type SelectProps = Omit<
   size?: "sm" | "md";
   invalid?: boolean;
   field?: FieldControlProps;
+  /** Bounds the popup's placement and width, as in an embedded surface. */
+  collisionBoundary?: CollisionBoundary;
 };
 export function Select({
   options,
@@ -41,6 +45,7 @@ export function Select({
   size = "sm",
   invalid,
   field,
+  collisionBoundary,
   className = "",
   ...props
 }: SelectProps) {
@@ -104,7 +109,9 @@ export function Select({
               className="tz-select-popup"
               position="popper"
               sideOffset={5}
+              collisionBoundary={collisionBoundary}
               collisionPadding={12}
+              data-bounded={isBounded(collisionBoundary) || undefined}
               dir={config.direction}
             >
               <Primitive.ScrollUpButton className="tz-select-scroll">

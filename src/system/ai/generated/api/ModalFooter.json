@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ModalFooter",
+  "kind": "component",
+  "source": "Modal.tsx",
+  "sourceHash": "5e1afb294052825df1f076b38be5e03691d83da6dac671040e1cd572b0ac68e3",
+  "type": "({ children }: ModalFooterProps) => JSX.Element",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ children }",
+          "type": "ModalFooterProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ModalBodyProps": "ModalBodyProps.json",
+    "ModalContentProps": "ModalContentProps.json",
+    "ModalFooterProps": "ModalFooterProps.json",
+    "ModalProps": "ModalProps.json",
+    "ModalRootProps": "ModalRootProps.json",
+    "ModalTriggerProps": "ModalTriggerProps.json"
+  }
+}
