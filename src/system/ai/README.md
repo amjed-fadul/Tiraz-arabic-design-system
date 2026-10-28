@@ -115,6 +115,27 @@ parts. See the [Tabs](examples/TabsCompoundExample.tsx),
 [Accordion](examples/AccordionCompoundExample.tsx) and
 [TaskRows](examples/TaskRowsCompoundExample.tsx) compound examples.
 
+`FilterBarRoot`, `FilterBarSearch` and `FilterBarChip` compose FilterBar part by part, so
+the `search` slot and the `filters` records become children. `FilterBarRoot` takes the
+`FilterBar` props except `search` and `filters` (`label`, `clearLabel`, `disabled`,
+`onClearAll`, the native div attributes and ref) plus children. `FilterBarSearch`
+holds the search control as children. `FilterBarChip` takes the filter record's `id`,
+`label`, `removeLabel` and an optional `onRemove`. Put each chip directly inside the
+root, wherever it is authored: chips collect in the active region and everything else
+stays, in order, among the controls (a chip inside a Fragment or your own wrapper is not
+found). `FilterBar` keeps its props and renders the same markup through these parts.
+The declarative `Toast` takes `open`, `onOpenChange`, `title`, `description`, `tone`
+and `duration` and renders nowhere itself: place it anywhere inside `ToastProvider`,
+whose `label` and `closeLabel` name its viewport and close button. While `open` is
+true it shows the toast `toast()` would show, with the same announcement, and it asks
+`onOpenChange(false)` once when it times out or is dismissed; the owner must then set
+`open` to false, and a toast whose owner ignores the request stays. Changing the
+message while open updates the toast; opening again shows a new toast with a new
+timer. The three-message cap applies to `toast()` only, so a declarative toast stays
+while it is open. `useToast().toast` is unchanged. See the
+[FilterBar](examples/FilterBarCompoundExample.tsx) and
+[Toast](examples/ToastCompoundExample.tsx) compound examples.
+
 `Select`, `DatePicker` (its calendar and year menu) and `DropdownMenuContent` accept
 `collisionBoundary`, the installed Popper type. A nonempty boundary sets
 `data-bounded` on the popup and limits its width and height to the room left inside
@@ -143,7 +164,7 @@ contracts before choosing callback and label props.
 
 Tiraz is an Arabic-first, source-owned React dashboard library with **seventy-nine**
 component families: Button, Chip, Tabs, Switch, DropdownMenu, Sheet, Toast, Field, Input, Select, Table, DataTable, Badge, Checkbox, RadioGroup, Textarea, Avatar, AvatarGroup, Tooltip, Modal, EmptyState, Alert, Skeleton, Progress, Spinner, Card, Accordion, Breadcrumbs, Pagination, LineChart, AreaChart, BarChart, DonutChart, Sidebar, TagInput, FilterBar, InputCopy, FileDropzone, ColorPicker, Slider, OTPInput, DatePicker, Steps, Timeline, TaskRows, NotificationList, FileTree, LoadingState, ThinkingIndicator, ThinkingState, ToolCall, ToolChips, CodeBlock, Markdown, StreamingText, ChatThread, ChatComposer, PromptBar, ImageResult, Sources / InlineCitation, InsightCards, SelectionActions, ContextMeter, ModelSelector, AskUserQuestions, ApprovalCard, ApprovalFlow, TaskStarter, CitedAnswer, DataAnswer, AgentTask, DecisionInbox, SuggestedEdits, ImageGeneration, DraftReview, ChangeSummary, AssistantControls, Terminal and ChatApp.
-Toast is an imperative hook/provider family, not an exported `Toast` component.
+Toast is a provider family: `useToast().toast(message)` shows a message from code, and the declarative `Toast` part shows one while its `open` prop is true.
 Input is the normal starting point for text entry; use optional label/helper/error
 props for a complete labeled control. Field remains a public lower-level composition
 helper and is documented under Input rather than a standalone navigation page.

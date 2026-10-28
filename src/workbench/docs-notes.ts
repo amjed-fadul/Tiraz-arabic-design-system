@@ -1738,6 +1738,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
     ],
     notice: [
       [
+        "يمكن استخدام FilterBar مباشرة، أو تركيب FilterBarRoot وFilterBarSearch وFilterBarChip.",
+        "Use FilterBar directly, or compose FilterBarRoot, FilterBarSearch and FilterBarChip.",
+      ],
+      [
         "لا يصفّي الشريط بيانات ولا يعدّ نتائج. تتولّى ذلك أنت في تطبيقك.",
         "The bar does not filter data or count results. Your app does both.",
       ],
@@ -2178,6 +2182,10 @@ export const docsNotes: Partial<Record<ComponentId, PageNotes>> = {
       },
     ],
     notice: [
+      [
+        "استدعِ toast من الشيفرة، أو اعرض Toast ما دامت open صحيحة وأغلقه عند طلب onOpenChange.",
+        "Call toast from code, or render a Toast while open is true and close it when onOpenChange asks.",
+      ],
       [
         "يتوقف العدّ التنازلي عند المرور أو التركيز، ولا يظهر أكثر من ثلاثة تنبيهات معًا، فيُسقَط الأقدم.",
         "The countdown pauses on hover or focus. No more than three toasts show together, and the oldest is dropped.",

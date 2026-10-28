@@ -2444,6 +2444,14 @@ export function ApiReference({
         ),
       ],
       [
+        "FilterBarRoot / FilterBarSearch / FilterBarChip",
+        "compound API",
+        t(
+          "جذر بخصائص FilterBar عدا search وfilters، وFilterBarSearch يضم حقل البحث، وFilterBarChip لكل عامل نشط يحمل id وlabel وremoveLabel وonRemove. تُجمع الرقاقات في منطقة العوامل النشطة أينما كُتبت. يبقى FilterBar كما هو.",
+          "A root with the FilterBar props except search and filters, a FilterBarSearch holding the search control, and a FilterBarChip per active filter with id, label, removeLabel and onRemove. Chips collect in the active region wherever they are authored. FilterBar itself is unchanged.",
+        ),
+      ],
+      [
         "filters",
         "FilterBarFilter[] · []",
         t(
@@ -3587,11 +3595,19 @@ export function ApiReference({
         ),
       ],
       [
-        "open / ref / placement / className",
+        "Toast",
+        "declarative part",
+        t(
+          "يعرض تنبيهًا ما دامت open صحيحة، ويطلب onOpenChange(false) مرة واحدة عند انتهاء المدة أو الإغلاق، فأغلقه أنت. ضعه داخل ToastProvider. يبقى useToast كما هو.",
+          "Shows a toast while open is true and asks onOpenChange(false) once when it times out or is dismissed, so you close it. Place it inside ToastProvider. useToast is unchanged.",
+        ),
+      ],
+      [
+        "ref / placement / className",
         "Not exposed",
         t(
-          "يدير المكوّن الطابور والإغلاق بنفسه. لا توجد خاصية لتحديد موضع التنبيه.",
-          "Queue and dismissal are internal. Placement is not a configurable prop.",
+          "يدير toast الطابور والإغلاق بنفسه. لا توجد خاصية لتحديد موضع التنبيه.",
+          "toast() manages its own queue and dismissal. Placement is not a configurable prop.",
         ),
       ],
     ],

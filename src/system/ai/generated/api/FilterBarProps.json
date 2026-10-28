@@ -3,7 +3,7 @@
   "exportName": "FilterBarProps",
   "kind": "type",
   "source": "FilterBar.tsx",
-  "sourceHash": "fb940ef9e3c60e155cf54d51e93927fb7ba550be589bf80ba49764e743e9aed9",
+  "sourceHash": "b00bf18054b0526c6b8c2eeee7452c51146d57d67c247e4c382f5d4c7d07b3f0",
   "type": "FilterBarProps",
   "typeParameters": [],
   "props": {
@@ -1437,6 +1437,9 @@
   },
   "branches": [],
   "relatedTypes": {
-    "FilterBarFilter": "FilterBarFilter.json"
+    "FilterBarChipProps": "FilterBarChipProps.json",
+    "FilterBarFilter": "FilterBarFilter.json",
+    "FilterBarRootProps": "FilterBarRootProps.json",
+    "FilterBarSearchProps": "FilterBarSearchProps.json"
   }
 }

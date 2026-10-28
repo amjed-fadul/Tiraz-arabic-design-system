@@ -59,8 +59,19 @@ export type {
 } from "./Sidebar";
 export { TagInput } from "./TagInput";
 export type { TagInputProps, TagInputLabels } from "./TagInput";
-export { FilterBar } from "./FilterBar";
-export type { FilterBarProps, FilterBarFilter } from "./FilterBar";
+export {
+  FilterBar,
+  FilterBarRoot,
+  FilterBarSearch,
+  FilterBarChip,
+} from "./FilterBar";
+export type {
+  FilterBarProps,
+  FilterBarFilter,
+  FilterBarRootProps,
+  FilterBarSearchProps,
+  FilterBarChipProps,
+} from "./FilterBar";
 export { InputCopy } from "./InputCopy";
 export type { InputCopyProps, InputCopyLabels } from "./InputCopy";
 

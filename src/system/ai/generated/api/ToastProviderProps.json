@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ToastProviderProps",
+  "kind": "type",
+  "source": "Toast.tsx",
+  "sourceHash": "20a980f0854198bf113ef0a986b01508813d11ca687e3fef1a5bec566b22a643",
+  "type": "ToastProviderProps",
+  "typeParameters": [],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true
+    },
+    "closeLabel": {
+      "type": "string",
+      "required": true,
+      "description": "Nonempty localized accessible name of each close button."
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "description": "Localized name of the notification viewport."
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ToastProps": "ToastProps.json"
+  }
+}

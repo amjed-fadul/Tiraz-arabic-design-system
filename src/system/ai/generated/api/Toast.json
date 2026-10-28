@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "exportName": "Toast",
+  "kind": "component",
+  "source": "Toast.tsx",
+  "sourceHash": "20a980f0854198bf113ef0a986b01508813d11ca687e3fef1a5bec566b22a643",
+  "type": "({ open, onOpenChange, title, description, tone, duration, }: ToastProps) => ReactNode",
+  "description": "A toast shown while `open`, with the same UI and announcement as toast().\nPut it anywhere inside ToastProvider; it renders into the provider's viewport.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  open,\n  onOpenChange,\n  title,\n  description,\n  tone,\n  duration,\n}",
+          "type": "ToastProps",
+          "required": true
+        }
+      ],
+      "returns": "ReactNode"
+    }
+  ],
+  "props": {
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "duration": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false,
+      "description": "Called with false, once per request, when the toast times out or is dismissed."
+    },
+    "open": {
+      "type": "boolean",
+      "required": true,
+      "members": [
+        "false",
+        "true"
+      ],
+      "description": "Shown while true. Pair with onOpenChange and set it to false on request."
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tone": {
+      "type": "\"error\" | \"success\" | \"info\" | \"warning\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"error\"",
+        "\"success\"",
+        "\"info\"",
+        "\"warning\""
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ToastMessage": "ToastMessage.json",
+    "ToastProps": "ToastProps.json",
+    "ToastProviderProps": "ToastProviderProps.json"
+  }
+}

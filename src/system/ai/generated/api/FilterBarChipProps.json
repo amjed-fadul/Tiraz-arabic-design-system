@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FilterBarChipProps",
+  "kind": "type",
+  "source": "FilterBar.tsx",
+  "sourceHash": "b00bf18054b0526c6b8c2eeee7452c51146d57d67c247e4c382f5d4c7d07b3f0",
+  "type": "FilterBarChipProps",
+  "typeParameters": [],
+  "props": {
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique, stable application ID."
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "onRemove": {
+      "type": "(() => void) | undefined",
+      "required": false,
+      "description": "Called once when the chip's remove button is activated."
+    },
+    "removeLabel": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "FilterBarFilter": "FilterBarFilter.json",
+    "FilterBarProps": "FilterBarProps.json",
+    "FilterBarRootProps": "FilterBarRootProps.json",
+    "FilterBarSearchProps": "FilterBarSearchProps.json"
+  }
+}

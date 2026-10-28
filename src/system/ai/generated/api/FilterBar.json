@@ -3,15 +3,15 @@
   "exportName": "FilterBar",
   "kind": "component",
   "source": "FilterBar.tsx",
-  "sourceHash": "fb940ef9e3c60e155cf54d51e93927fb7ba550be589bf80ba49764e743e9aed9",
-  "type": "({ label, search, children, filters, onClearAll, clearLabel, disabled, ref, className, ...props }: FilterBarProps) => JSX.Element",
-  "description": "A named group of application controls and removable active filters.",
+  "sourceHash": "b00bf18054b0526c6b8c2eeee7452c51146d57d67c247e4c382f5d4c7d07b3f0",
+  "type": "({ search, children, filters, ...root }: FilterBarProps) => JSX.Element",
+  "description": "Original convenience API, rendered through the compound parts.",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [
         {
-          "name": "{\n  label,\n  search,\n  children,\n  filters = [],\n  onClearAll,\n  clearLabel,\n  disabled,\n  ref,\n  className = \"\",\n  ...props\n}",
+          "name": "{\n  search,\n  children,\n  filters = [],\n  ...root\n}",
           "type": "FilterBarProps",
           "required": true
         }
@@ -1450,11 +1450,13 @@
   },
   "branches": [],
   "defaults": {
-    "filters": "[]",
-    "className": "\"\""
+    "filters": "[]"
   },
   "relatedTypes": {
+    "FilterBarChipProps": "FilterBarChipProps.json",
     "FilterBarFilter": "FilterBarFilter.json",
-    "FilterBarProps": "FilterBarProps.json"
+    "FilterBarProps": "FilterBarProps.json",
+    "FilterBarRootProps": "FilterBarRootProps.json",
+    "FilterBarSearchProps": "FilterBarSearchProps.json"
   }
 }

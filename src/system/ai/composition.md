@@ -77,8 +77,9 @@ Compose patterns the way the examples do. Put them in a ChatThread as messages i
   replace keyboard/focus handlers. Test navigation during opening motion as
   well as after settling, genuine pointer hover, scrolling and Escape/Tab.
 - Put ToastProvider inside the intended SystemProvider. Invoke useToast from
-  below ToastProvider; otherwise it throws. At most three active notices are
-  shown. Hover/focus pauses expiry; essential errors must also remain available
+  below ToastProvider; otherwise it throws. At most three active notices from
+  toast() are shown; a declarative Toast stays while its `open` is true.
+  Hover/focus pauses expiry; essential errors must also remain available
   in persistent, associated application text. Avoid immediately removing the
   trigger that should receive restored focus. An active Toast is a Radix
   dismissable layer: Escape can close it before an open Sheet even when focus
@@ -239,6 +240,16 @@ except `items` and `emptyState`) and `TaskRowsEmpty` alone when there are no tas
 row's number comes from its place among the root's children. Controlled roots accept
 each change request, which is made once. `Tabs`, `Accordion` and `TaskRows` render the
 same markup through these parts.
+
+For a compound filter bar, put `FilterBarSearch` (the search control as children),
+your own controls and one `FilterBarChip` (`id`, `label`, `removeLabel`, `onRemove`) per
+active filter directly inside `FilterBarRoot`, which takes the `FilterBar` props except
+`search` and `filters`, including `onClearAll`. Chips may be authored anywhere among the
+children: they collect in the active region and the other children keep their order. For
+a declarative toast, render `Toast` (`open`, `onOpenChange`, `title`, `description`,
+`tone`, `duration`) inside `ToastProvider` and set `open` to false when `onOpenChange`
+asks; it asks once on timeout or dismissal and shows the same toast and announcement as
+`toast()`. `FilterBar` and `useToast().toast` keep their markup and behavior.
 
 Select, DatePicker and DropdownMenuContent accept `collisionBoundary` to keep their
 popup inside an embedded surface. A nonempty boundary sets `data-bounded` and limits

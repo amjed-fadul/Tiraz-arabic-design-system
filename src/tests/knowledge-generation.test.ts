@@ -331,3 +331,64 @@ it("publishes compound Tabs, Accordion and TaskRows contracts with plain-value p
   expect(api("Accordion").props.items.required).toBe(true);
   expect(api("TaskRows").props.items.required).toBe(true);
 });
+
+it("publishes compound FilterBar and declarative Toast contracts with plain-value props", () => {
+  for (const name of [
+    "FilterBarRoot",
+    "FilterBarSearch",
+    "FilterBarChip",
+    "Toast",
+  ]) {
+    expect(api(name).kind).toBe("component");
+    expect(document("manifest.json").publicExports).toContain(name);
+  }
+  for (const name of [
+    "FilterBarRootProps",
+    "FilterBarSearchProps",
+    "FilterBarChipProps",
+    "ToastProps",
+    "ToastProviderProps",
+  ])
+    expect(document("manifest.json").publicExports).toContain(name);
+  const root = api("FilterBarRoot").props;
+  expect(root).not.toHaveProperty("search");
+  expect(root).not.toHaveProperty("filters");
+  expect(root.label.required).toBe(true);
+  expect(root.children.required).toBe(true);
+  for (const prop of ["onClearAll", "clearLabel", "disabled"])
+    expect(root[prop].required).toBe(false);
+  expect(api("FilterBarSearch").props.children.required).toBe(true);
+  const chip = api("FilterBarChip").props;
+  expect(Object.keys(chip).sort()).toEqual([
+    "id",
+    "label",
+    "onRemove",
+    "removeLabel",
+  ]);
+  for (const prop of ["id", "label", "removeLabel"])
+    expect(chip[prop].required).toBe(true);
+  expect(chip.onRemove.required).toBe(false);
+  const toast = api("Toast").props;
+  expect(Object.keys(toast).sort()).toEqual([
+    "description",
+    "duration",
+    "onOpenChange",
+    "open",
+    "title",
+    "tone",
+  ]);
+  for (const prop of ["open", "title"]) expect(toast[prop].required).toBe(true);
+  for (const prop of ["onOpenChange", "description", "tone", "duration"])
+    expect(toast[prop].required).toBe(false);
+  expect(toast.tone.members).toEqual(
+    expect.arrayContaining(['"success"', '"error"', '"info"', '"warning"']),
+  );
+  const provider = api("ToastProvider").props;
+  expect(Object.keys(provider).sort()).toEqual([
+    "children",
+    "closeLabel",
+    "label",
+  ]);
+  expect(api("FilterBar").props.filters.required).toBe(false);
+  expect(api("FilterBar").props.search.required).toBe(false);
+});

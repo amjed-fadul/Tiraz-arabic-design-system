@@ -653,11 +653,35 @@
       "source": "FilterBar.tsx"
     },
     {
+      "name": "FilterBarChip",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarChipProps",
+      "source": "FilterBar.tsx"
+    },
+    {
       "name": "FilterBarFilter",
       "source": "FilterBar.tsx"
     },
     {
       "name": "FilterBarProps",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarRoot",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarRootProps",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarSearch",
+      "source": "FilterBar.tsx"
+    },
+    {
+      "name": "FilterBarSearchProps",
       "source": "FilterBar.tsx"
     },
     {
@@ -1421,11 +1445,23 @@
       "source": "Timeline.tsx"
     },
     {
+      "name": "Toast",
+      "source": "Toast.tsx"
+    },
+    {
       "name": "ToastMessage",
       "source": "useToast.ts"
     },
     {
+      "name": "ToastProps",
+      "source": "Toast.tsx"
+    },
+    {
       "name": "ToastProvider",
+      "source": "Toast.tsx"
+    },
+    {
+      "name": "ToastProviderProps",
       "source": "Toast.tsx"
     },
     {
@@ -6160,8 +6196,21 @@
       "id": "filter-bar",
       "api": "FilterBar",
       "source": "FilterBar.tsx",
-      "exports": ["FilterBar", "FilterBarProps", "FilterBarFilter"],
-      "examples": ["ai/examples/FilterBarExamples.tsx"],
+      "exports": [
+        "FilterBar",
+        "FilterBarProps",
+        "FilterBarFilter",
+        "FilterBarRoot",
+        "FilterBarRootProps",
+        "FilterBarSearch",
+        "FilterBarSearchProps",
+        "FilterBarChip",
+        "FilterBarChipProps"
+      ],
+      "examples": [
+        "ai/examples/FilterBarExamples.tsx",
+        "ai/examples/FilterBarCompoundExample.tsx"
+      ],
       "providers": [
         "SystemProvider for shared direction, theme, accent, density, typography, corners and reduced motion."
       ],
@@ -6218,13 +6267,14 @@
           "default": "undefined"
         }
       ],
-      "inheritedProps": "Native div attributes/ref except aria-label. Root role=group; label supplies its accessible name. search is a ReactNode slot and children is a controls slot; reuse existing control APIs. FilterBarFilter: required unique stable id:string, label:string, removeLabel:string, onRemove:()=>void.",
+      "inheritedProps": "Native div attributes/ref except aria-label. Root role=group; label supplies its accessible name. search is a ReactNode slot and children is a controls slot; reuse existing control APIs. FilterBarFilter: required unique stable id:string, label:string, removeLabel:string, onRemove:()=>void. Compound parts: FilterBarRoot takes the same props as FilterBar except search and filters, plus children (onClearAll, clearLabel and disabled stay on the root); FilterBarSearch takes children (the search control); FilterBarChip takes id, label, removeLabel and an optional onRemove. Every compound prop is a plain value except children and the event callbacks.",
       "state": "Application owns filters, search, filtering, result counts and reset logic. filters defaults empty. Optional Clear all renders only while filters exist; clearLabel defaults by provider direction. disabled prevents removal/Clear only; application disables composed controls.",
       "accessibility": [
         "Chips have explicit remove names, labels wrap and controls wrap responsively. Focus moves to next remove action, first available control or root group before removal. Clear all returns focus to a control/group."
       ],
       "limitations": [
-        "No filtering engine, data fetching, persistence, control API duplication or toolbar keyboard model."
+        "No filtering engine, data fetching, persistence, control API duplication or toolbar keyboard model.",
+        "Compose FilterBarSearch, your own controls and FilterBarChip children inside a FilterBarRoot. Put each chip directly in the root, wherever it is authored: chips collect in the active region and the other children keep their order among the controls; a chip inside a Fragment or your own wrapper component is not found. Clear all appears only while a chip exists. FilterBar renders the same markup through these parts."
       ]
     },
     {
@@ -6881,7 +6931,14 @@
       "id": "toast",
       "api": "ToastProvider",
       "source": "Toast.tsx",
-      "exports": ["ToastProvider", "useToast", "ToastMessage"],
+      "exports": [
+        "ToastProvider",
+        "useToast",
+        "ToastMessage",
+        "Toast",
+        "ToastProps",
+        "ToastProviderProps"
+      ],
       "purpose": "Announce transient success/error/info feedback.",
       "useWhen": "Outcome of a completed action; secondary information.",
       "alternative": "Use persistent inline text for essential errors/instructions, Sheet for a decision needing action. No Alert/Dialog family is supplied.",
@@ -6907,23 +6964,30 @@
           "note": "Nonempty localized accessible close name."
         }
       ],
-      "inheritedProps": "None beyond the three provider props. ToastMessage controls individual notices.",
+      "inheritedProps": "None beyond the three provider props. ToastMessage controls individual notices. Declarative part: Toast takes open, onOpenChange, title, description, tone and duration (the ToastMessage fields) and renders into the ToastProvider's viewport, which keeps using its label and closeLabel. Every Toast prop is a plain value except onOpenChange.",
       "exclusions": [
-        "No public Toast component, open/onOpenChange, provider duration prop, arbitrary Radix attrs or action slot."
+        "No provider duration prop, arbitrary Radix attrs or action slot. Toast has no ref, className or placement."
       ],
-      "state": "useToast().toast(message) adds an internally managed notice; automatic/manual dismissal. At most three active messages; older active messages are dropped, not queued indefinitely.",
-      "events": ["toast(message): void; message fields described in records."],
+      "state": "useToast().toast(message) adds an internally managed notice; automatic/manual dismissal. At most three active messages from toast(); older active messages are dropped, not queued indefinitely. A declarative Toast is controlled: it shows the same notice while open is true and asks onOpenChange(false) once when it times out or is dismissed; the owner must set open to false, and a Toast whose owner does not stays shown. Changing title, description, tone or duration while open updates the notice; opening again shows a new notice with a new timer. A declarative Toast is not dropped by the three-message cap.",
+      "events": [
+        "toast(message): void; message fields described in records.",
+        "Toast onOpenChange(false): requested once per timeout or dismissal."
+      ],
       "accessibility": [
         "useToast must run in a descendant of ToastProvider (not in the same component before it returns the provider); outside it throws. Place ToastProvider inside SystemProvider. Keep important feedback available persistently too; inspect announcements manually."
       ],
       "limitations": [
         "Default duration 5000 ms, info tone; hover/focus pauses expiry. F8 viewport navigation, manual close and down swipe supported. Scoped inline viewport, not a global portal. No guarantee that automated checks prove accessibility.",
-        "An active Toast participates in Radix dismissable-layer ordering: Escape can dismiss it before a Sheet even when focus is inside the Sheet. Check layer dismissal and restoration separately."
+        "An active Toast participates in Radix dismissable-layer ordering: Escape can dismiss it before a Sheet even when focus is inside the Sheet. Check layer dismissal and restoration separately.",
+        "Render Toast anywhere inside ToastProvider (outside it throws); it renders nothing itself. Without onOpenChange an open Toast cannot time out or be dismissed visually. useToast().toast keeps its markup and behavior."
       ],
       "providers": [
         "SystemProvider for styling/config; ToastProvider for useToast callers."
       ],
-      "examples": ["ai/examples/usage.tsx"]
+      "examples": [
+        "ai/examples/usage.tsx",
+        "ai/examples/ToastCompoundExample.tsx"
+      ]
     },
     {
       "events": [],

@@ -673,3 +673,38 @@ it("keeps Tabs, Accordion and TaskRows as one entry each with real compound expo
     expect(entries[0].inheritedProps).toMatch(/Compound parts/);
   }
 });
+
+it("keeps FilterBar and Toast as one entry each with real compound exports and examples", () => {
+  const registry = readRegistry();
+  for (const [id, exports, example, text] of [
+    [
+      "filter-bar",
+      [
+        "FilterBar",
+        "FilterBarProps",
+        "FilterBarRoot",
+        "FilterBarRootProps",
+        "FilterBarSearch",
+        "FilterBarSearchProps",
+        "FilterBarChip",
+        "FilterBarChipProps",
+      ],
+      "FilterBarCompoundExample",
+      /Compound parts/,
+    ],
+    [
+      "toast",
+      ["ToastProvider", "ToastProviderProps", "Toast", "ToastProps"],
+      "ToastCompoundExample",
+      /Declarative part/,
+    ],
+  ] as const) {
+    const entries = registry.components.filter(
+      (entry: { id: string }) => entry.id === id,
+    );
+    expect(entries).toHaveLength(1);
+    expect(entries[0].exports).toEqual(expect.arrayContaining([...exports]));
+    expect(entries[0].examples).toContain(`ai/examples/${example}.tsx`);
+    expect(entries[0].inheritedProps).toMatch(text);
+  }
+});

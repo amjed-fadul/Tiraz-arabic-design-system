@@ -3,15 +3,15 @@
   "exportName": "ToastProvider",
   "kind": "component",
   "source": "Toast.tsx",
-  "sourceHash": "9f47a1ab2c9f3abab5589b6b59d431fd0f882dfd7a06bc912323b0522b2d31b2",
-  "type": "({ children, closeLabel, label, }: { children: ReactNode; closeLabel: string; label: string; }) => JSX.Element",
+  "sourceHash": "20a980f0854198bf113ef0a986b01508813d11ca687e3fef1a5bec566b22a643",
+  "type": "({ children, closeLabel, label, }: ToastProviderProps) => JSX.Element",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [
         {
           "name": "{\n  children,\n  closeLabel,\n  label,\n}",
-          "type": "{ children: ReactNode; closeLabel: string; label: string; }",
+          "type": "ToastProviderProps",
           "required": true
         }
       ],
@@ -25,16 +25,20 @@
     },
     "closeLabel": {
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Nonempty localized accessible name of each close button."
     },
     "label": {
       "type": "string",
-      "required": true
+      "required": true,
+      "description": "Localized name of the notification viewport."
     }
   },
   "branches": [],
   "defaults": {},
   "relatedTypes": {
-    "ToastMessage": "ToastMessage.json"
+    "ToastMessage": "ToastMessage.json",
+    "ToastProps": "ToastProps.json",
+    "ToastProviderProps": "ToastProviderProps.json"
   }
 }

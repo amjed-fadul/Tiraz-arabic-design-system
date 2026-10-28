@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FilterBarChip",
+  "kind": "component",
+  "source": "FilterBar.tsx",
+  "sourceHash": "b00bf18054b0526c6b8c2eeee7452c51146d57d67c247e4c382f5d4c7d07b3f0",
+  "type": "({ label, removeLabel, onRemove, }: FilterBarChipProps) => JSX.Element",
+  "description": "One removable active filter. Put it directly inside FilterBarRoot.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  label,\n  removeLabel,\n  onRemove,\n}",
+          "type": "FilterBarChipProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "id": {
+      "type": "string",
+      "required": true,
+      "description": "Unique, stable application ID."
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "onRemove": {
+      "type": "(() => void) | undefined",
+      "required": false,
+      "description": "Called once when the chip's remove button is activated."
+    },
+    "removeLabel": {
+      "type": "string",
+      "required": true
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "FilterBarChipProps": "FilterBarChipProps.json",
+    "FilterBarFilter": "FilterBarFilter.json",
+    "FilterBarProps": "FilterBarProps.json",
+    "FilterBarRootProps": "FilterBarRootProps.json",
+    "FilterBarSearchProps": "FilterBarSearchProps.json"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ToastProps",
+  "kind": "type",
+  "source": "Toast.tsx",
+  "sourceHash": "20a980f0854198bf113ef0a986b01508813d11ca687e3fef1a5bec566b22a643",
+  "type": "ToastProps",
+  "typeParameters": [],
+  "props": {
+    "description": {
+      "type": "string | undefined",
+      "required": false
+    },
+    "duration": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "onOpenChange": {
+      "type": "((open: boolean) => void) | undefined",
+      "required": false,
+      "description": "Called with false, once per request, when the toast times out or is dismissed."
+    },
+    "open": {
+      "type": "boolean",
+      "required": true,
+      "members": [
+        "false",
+        "true"
+      ],
+      "description": "Shown while true. Pair with onOpenChange and set it to false on request."
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "tone": {
+      "type": "\"error\" | \"success\" | \"info\" | \"warning\" | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "\"error\"",
+        "\"success\"",
+        "\"info\"",
+        "\"warning\""
+      ]
+    }
+  },
+  "branches": [],
+  "relatedTypes": {
+    "ToastMessage": "ToastMessage.json",
+    "ToastProviderProps": "ToastProviderProps.json"
+  }
+}

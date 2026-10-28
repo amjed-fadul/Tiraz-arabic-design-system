@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "exportName": "FilterBarSearch",
+  "kind": "component",
+  "source": "FilterBar.tsx",
+  "sourceHash": "b00bf18054b0526c6b8c2eeee7452c51146d57d67c247e4c382f5d4c7d07b3f0",
+  "type": "({ children }: FilterBarSearchProps) => JSX.Element",
+  "description": "The search slot of the controls row; its children are the search control.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{ children }",
+          "type": "FilterBarSearchProps",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "children": {
+      "type": "ReactNode",
+      "required": true,
+      "description": "The search control, such as an Input."
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "FilterBarChipProps": "FilterBarChipProps.json",
+    "FilterBarFilter": "FilterBarFilter.json",
+    "FilterBarProps": "FilterBarProps.json",
+    "FilterBarRootProps": "FilterBarRootProps.json",
+    "FilterBarSearchProps": "FilterBarSearchProps.json"
+  }
+}
