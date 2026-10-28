@@ -53,7 +53,7 @@ root, but `config` retains ownership of `--action`, `--radius` and `colorScheme`
 Use the supported `--tiraz-action` and `--tiraz-radius` CSS hooks for theme
 overrides. `SystemProviderProps` is exported for typed integrations.
 
-This local `0.1.3-preview.3` prerelease has not been published to npm. Package updates do not
+This local `0.1.3-preview.4` prerelease has not been published to npm. Package updates do not
 rewrite copied source; source owners can review and incorporate the provider
 change separately.
 
@@ -61,7 +61,7 @@ Maintainers can verify a built archive without publishing it:
 
 ```sh
 npm run pack:package
-npm run verify:package -- ./amjedfadul-tiraz-0.1.3-preview.3.tgz
+npm run verify:package -- ./amjedfadul-tiraz-0.1.3-preview.4.tgz
 ```
 
 The verifier installs the archive into a temporary app, checks its public types,
