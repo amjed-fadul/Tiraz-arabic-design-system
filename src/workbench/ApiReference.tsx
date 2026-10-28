@@ -138,8 +138,8 @@ export function ApiReference({
         "value / onValueChange / onSubmit",
         "string / (value) => void / (value, context: ContextItem[]) => void | Promise<void> · required",
         t(
-          "يدير تطبيقك المسودة. يصلك نصها كما كُتب مع السجلات المرفقة عند Enter أو زر الإرسال. إذا رُفض الوعد بقيت المسودة وظهر السبب نصًّا. أثناء الإرسال يصير الحقل للقراءة فقط، وتتعطّل الاقتراحات ويُمنع التكرار.",
-          "Your app owns the draft. Enter or Send hands you its text as written with the attached records. A rejected promise keeps the draft and shows the reason as text. While sending, the text area is read-only, the suggestions are disabled and a repeat is blocked.",
+          "يدير تطبيقك المسودة. يصلك نصها كما كُتب مع السجلات المرفقة عند Enter أو زر الإرسال، ويكفي أن تأخذ الدالة المسودة وحدها: onSubmit(value). إذا رُفض الوعد بقيت المسودة وظهر السبب نصًّا. أثناء الإرسال يصير الحقل للقراءة فقط، وتتعطّل الاقتراحات ويُمنع التكرار.",
+          "Your app owns the draft. Enter or Send hands you its text as written with the attached records; a handler may take only the draft, onSubmit(value). A rejected promise keeps the draft and shows the reason as text. While sending, the text area is read-only, the suggestions are disabled and a repeat is blocked.",
         ),
       ],
       [
@@ -1448,15 +1448,23 @@ export function ApiReference({
     "chat-thread": [
       [
         "messages",
-        "ChatMessage[] · required",
+        "ChatMessage[] · optional with children",
         t(
           "لكل رسالة معرّف فريد ثابت ودور user أو assistant ومحتوى ReactNode. يمكنك تمرير identity وavatar وactions من تطبيقك. وتأخذ status بإحدى القيم streaming وcompleted وstopped وfailed: تكتب الرسالة الموقوفة «أُوقف الرد»، وتعرض الفاشلة error نصًا دائمًا مع «أعد المحاولة» تستدعي onRetry.",
           "Unique stable id, user/assistant role and ReactNode content; optional host-supplied identity, avatar and actions. status is streaming, completed, stopped or failed: a stopped message says so, and a failed one keeps error as text with Retry calling onRetry.",
         ),
       ],
       [
+        "children",
+        "ChatThreadMessage parts",
+        t(
+          "بدل messages ضع أجزاء ChatThreadMessage أبناءً مباشرين: تُمرَّر id وrole وidentity وstatus وerror وonRetry قيمًا بسيطة، ومحتوى الرسالة هو الأبناء. تبقى الصورة الرمزية وactions في messages.",
+          "Instead of messages, put ChatThreadMessage parts directly inside: id, role, identity, status, error and onRetry are plain values and the message content is the children. Avatars and actions stay in messages.",
+        ),
+      ],
+      [
         "ChatThreadMessage",
-        "{ message: ChatMessage } · article props",
+        "{ message: ChatMessage } or { id, role, … } + children · article props",
         t(
           "يرسم رسالة واحدة كما يرسمها ChatThread، ويعمل خارج أي محادثة. تتبع data-status قيمة status.",
           "Draws one message the way ChatThread does, and works outside a thread. Its data-status follows status.",
@@ -1772,7 +1780,7 @@ export function ApiReference({
     "tool-chips": [
       [
         "label / items",
-        "string / readonly ToolChipItem[] · required",
+        "string · required / readonly ToolChipItem[]",
         t(
           "يسمّي label القائمة. لكل عنصر معرّف ثابت وتسمية وحالة، وعدد اختياري.",
           "Named list; stable id, concise label, state and optional nonnegative count per item.",
@@ -1782,6 +1790,14 @@ export function ApiReference({
         "labels",
         "Partial<ToolLabels>",
         t("تستبدل أي كلمة حالة.", "Replaces any state word."),
+      ],
+      [
+        "ToolChip",
+        "ToolChipItem fields + onActivate · children of ToolChips",
+        t(
+          "بدل items ضع أجزاء ToolChip داخل ToolChips: الحقول نفسها قيمًا بسيطة مع onActivate خاص بكل شريحة. لا تصبح الشريحة زرًا إلا بوجود onActivate.",
+          "Instead of items, put ToolChip parts inside ToolChips: the same fields as plain values, with each chip's own onActivate. A chip is a button only with onActivate.",
+        ),
       ],
       [
         "items[].onActivate",
@@ -2508,15 +2524,23 @@ export function ApiReference({
       ],
       [
         "SidebarItem / SidebarAction",
-        "native a / button props/ref · label, icon, count?",
+        "native a / button props/ref · label, icon or iconName, count?",
         t(
           "SidebarItem رابط لوجهة، وSidebarAction زر لإجراء. يعلن active الصفحة الحالية، وcount نص اختياري للزينة.",
           "Destination links and action buttons. Item active announces current page; count is optional decorative text.",
         ),
       ],
       [
+        "iconName",
+        "SidebarIconName · one of sidebarIconNames",
+        t(
+          "اسم بسيط من قائمة مغلقة (٣٦ اسمًا للتنقل والملفات والحساب والمحادثة) يحلّ محل icon في العنصر والإجراء والتوسيع. مرّر أحدهما فقط وإلا حدث خطأ.",
+          "A plain name from a closed list (36 names for navigation, files, account and chat) in place of icon on an item, action or disclosure. Pass exactly one of the two or it throws.",
+        ),
+      ],
+      [
         "SidebarDisclosure",
-        "native button props/ref · label, icon, children",
+        "native button props/ref · label, icon or iconName, children",
         t(
           "يدعم مستوى واحدًا عبر open/defaultOpen/onOpenChange. يحدد تطبيقك activeChild. عند الضغط عليه والشريط مطوي، يوسّع التنقّل ويفتح العناصر الفرعية.",
           "One level. open/defaultOpen/onOpenChange. Caller supplies activeChild. From the rail: expands Sidebar and opens children.",

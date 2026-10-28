@@ -392,3 +392,70 @@ it("publishes compound FilterBar and declarative Toast contracts with plain-valu
   expect(api("FilterBar").props.filters.required).toBe(false);
   expect(api("FilterBar").props.search.required).toBe(false);
 });
+
+it("publishes plain-value ChatThread and ToolChip parts, the TaskStarter submit form and the Sidebar iconName", () => {
+  const exported = document("manifest.json").publicExports;
+  for (const name of [
+    "ChatThreadMessagePartProps",
+    "ToolChip",
+    "ToolChipProps",
+    "SidebarIconName",
+    "sidebarIconNames",
+  ])
+    expect(exported).toContain(name);
+  // ChatThread parts: plain values, with the content as children.
+  const message = api("ChatThreadMessagePartProps").props;
+  for (const prop of ["id", "role"]) expect(message[prop].required).toBe(true);
+  for (const prop of ["identity", "status", "error", "onRetry", "children"])
+    expect(message[prop].required).toBe(false);
+  for (const prop of ["avatar", "actions"])
+    expect(message).not.toHaveProperty(prop);
+  expect(message.role.members).toEqual(
+    expect.arrayContaining(['"user"', '"assistant"']),
+  );
+  expect(message.identity.type).toBe("string | undefined");
+  expect(message.error.type).toBe("string | undefined");
+  expect(api("ChatThreadMessage").branches).toHaveLength(2);
+  expect(api("ChatThread").props.messages.required).toBe(false);
+  expect(api("ChatThread").props.children.required).toBe(false);
+  // ToolChip: the item's fields, plain apart from onActivate.
+  expect(api("ToolChip").kind).toBe("component");
+  const chip = api("ToolChip").props;
+  expect(Object.keys(chip).sort()).toEqual([
+    "controls",
+    "count",
+    "expanded",
+    "id",
+    "label",
+    "onActivate",
+    "state",
+  ]);
+  for (const prop of ["id", "label", "state"])
+    expect(chip[prop].required).toBe(true);
+  for (const prop of ["count", "onActivate", "controls", "expanded"])
+    expect(chip[prop].required).toBe(false);
+  expect(api("ToolChips").props.items.required).toBe(false);
+  expect(api("ToolChips").props.children.required).toBe(false);
+  // TaskStarter keeps its signature and documents the one-argument form.
+  const submit = api("TaskStarter").props.onSubmit;
+  expect(submit.type).toBe(
+    "(value: string, context: ContextItem[]) => void | Promise<void>",
+  );
+  expect(submit.required).toBe(true);
+  expect(submit.description).toMatch(/onSubmit\(value\)/);
+  // Sidebar icons: a closed set, and exactly one of icon and iconName.
+  const names = api("SidebarIconName").members;
+  expect(names.length).toBeGreaterThanOrEqual(30);
+  expect(names.length).toBeLessThanOrEqual(40);
+  for (const name of ["SidebarItem", "SidebarAction", "SidebarDisclosure"]) {
+    const { branches, props } = api(name);
+    expect(props.iconName.required).toBe(false);
+    expect(branches).toHaveLength(2);
+    const [byNode, byName] = branches;
+    expect(byNode.props.icon.required).toBe(true);
+    expect(byNode.props.iconName.type).toBe("undefined");
+    expect(byName.props.iconName.required).toBe(true);
+    expect(byName.props.icon.type).toBe("undefined");
+    expect(byName.props.iconName.members).toEqual(names);
+  }
+});

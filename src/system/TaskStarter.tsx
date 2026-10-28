@@ -80,7 +80,11 @@ export interface TaskStarterProps {
   agentPresentation?: AgentPresentation;
   value: string;
   onValueChange: (value: string) => void;
-  /** As the entry beneath: a rejected promise keeps the draft and shows the error. */
+  /**
+   * As the entry beneath: a rejected promise keeps the draft and shows the
+   * error. A handler may take only the draft, `onSubmit(value)`: the host owns
+   * `context` already. A copy of it is passed second for handlers that want it.
+   */
   onSubmit: (value: string, context: ContextItem[]) => void | Promise<void>;
   context?: readonly ContextItem[];
   onRemoveContext?: (id: string) => void;

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "exportName": "ToolChip",
+  "kind": "component",
+  "source": "ToolChips.tsx",
+  "sourceHash": "06487756c69421f0f4edfab4500c6a2e504d0752b0422f9a8f2eb766ec6ea738",
+  "type": "({ label, state, count, onActivate, controls, expanded, }: ToolChipProps) => JSX.Element",
+  "description": "One chip of a ToolChips list. It becomes a button only with `onActivate`.",
+  "signatures": [
+    {
+      "typeParameters": [],
+      "parameters": [
+        {
+          "name": "{\n  label,\n  state,\n  count,\n  onActivate,\n  controls,\n  expanded,\n}",
+          "type": "ToolChipItem",
+          "required": true
+        }
+      ],
+      "returns": "JSX.Element"
+    }
+  ],
+  "props": {
+    "controls": {
+      "type": "string | undefined",
+      "required": false,
+      "description": "Optional ID and state of connected host details."
+    },
+    "count": {
+      "type": "number | undefined",
+      "required": false
+    },
+    "expanded": {
+      "type": "boolean | undefined",
+      "required": false,
+      "members": [
+        "undefined",
+        "false",
+        "true"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "onActivate": {
+      "type": "(() => void) | undefined",
+      "required": false,
+      "description": "Present only when the host connects a real action."
+    },
+    "state": {
+      "type": "ToolCallState",
+      "required": true,
+      "members": [
+        "\"running\"",
+        "\"failed\"",
+        "\"completed\"",
+        "\"pending\"",
+        "\"needs-you\""
+      ]
+    }
+  },
+  "branches": [],
+  "defaults": {},
+  "relatedTypes": {
+    "ToolCallState": "ToolCallState.json",
+    "ToolChipItem": "ToolChipItem.json",
+    "ToolChipProps": "ToolChipProps.json",
+    "ToolChipsProps": "ToolChipsProps.json"
+  }
+}

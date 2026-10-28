@@ -3,15 +3,15 @@
   "exportName": "ChatThread",
   "kind": "component",
   "source": "ChatThread.tsx",
-  "sourceHash": "c3c5ca5906b56dd7aa8e36780a903f0a48a4b5b8c5eb278a9de251ed1b046cc5",
-  "type": "({ messages, label, followOutput, ref, onScroll, className, ...props }: ChatThreadProps) => JSX.Element",
+  "sourceHash": "6fccb73355f8c37e498b0bce1cd0f198ca36fab5f3209b7c0a5c40fb94b5004e",
+  "type": "({ messages, children, label, followOutput, ref, onScroll, className, ...props }: ChatThreadProps) => JSX.Element",
   "description": "Keyed presentation only. Caller supplies immutable updates and stable message IDs.",
   "signatures": [
     {
       "typeParameters": [],
       "parameters": [
         {
-          "name": "{\n  messages,\n  label,\n  followOutput = false,\n  ref,\n  onScroll,\n  className = \"\",\n  ...props\n}",
+          "name": "{\n  messages = [],\n  children,\n  label,\n  followOutput = false,\n  ref,\n  onScroll,\n  className = \"\",\n  ...props\n}",
           "type": "ChatThreadProps",
           "required": true
         }
@@ -441,6 +441,11 @@
       "type": "string | undefined",
       "required": false
     },
+    "children": {
+      "type": "ReactNode",
+      "required": false,
+      "description": "ChatThreadMessage parts, as an alternative to `messages`. Put each part\ndirectly inside the thread; any other child is drawn after the messages."
+    },
     "className": {
       "type": "string | undefined",
       "required": false
@@ -616,8 +621,8 @@
       "required": false
     },
     "messages": {
-      "type": "ChatMessage[]",
-      "required": true
+      "type": "ChatMessage[] | undefined",
+      "required": false
     },
     "nonce": {
       "type": "string | undefined",
@@ -1438,11 +1443,13 @@
   },
   "branches": [],
   "defaults": {
+    "messages": "[]",
     "followOutput": "false",
     "className": "\"\""
   },
   "relatedTypes": {
     "ChatMessage": "ChatMessage.json",
+    "ChatThreadMessagePartProps": "ChatThreadMessagePartProps.json",
     "ChatThreadMessageProps": "ChatThreadMessageProps.json",
     "ChatThreadProps": "ChatThreadProps.json"
   }

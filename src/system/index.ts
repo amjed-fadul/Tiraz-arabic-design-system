@@ -49,6 +49,8 @@ export {
   SidebarToggle,
   SidebarDisclosure,
 } from "./Sidebar";
+export { sidebarIconNames } from "./sidebar-icons";
+export type { SidebarIconName } from "./sidebar-icons";
 export type {
   SidebarProps,
   SidebarGroupProps,
@@ -124,8 +126,8 @@ export type { ThinkingStateProps } from "./ThinkingState";
 export { ToolCall } from "./ToolCall";
 export type { ToolCallProps, ToolCallState } from "./ToolCall";
 export type { ToolLabels } from "./useToolLabels";
-export { ToolChips } from "./ToolChips";
-export type { ToolChipsProps, ToolChipItem } from "./ToolChips";
+export { ToolChips, ToolChip } from "./ToolChips";
+export type { ToolChipsProps, ToolChipProps, ToolChipItem } from "./ToolChips";
 export { StatusIcon } from "./StatusIcon";
 export type { StatusIconProps, StatusIconState } from "./StatusIcon";
 export { AIMark } from "./AIMark";
@@ -157,6 +159,7 @@ export { ChatThread, ChatThreadMessage } from "./ChatThread";
 export type {
   ChatThreadProps,
   ChatThreadMessageProps,
+  ChatThreadMessagePartProps,
   ChatMessage,
 } from "./ChatThread";
 export { ChatComposer } from "./ChatComposer";

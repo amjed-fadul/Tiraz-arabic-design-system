@@ -708,3 +708,45 @@ it("keeps FilterBar and Toast as one entry each with real compound exports and e
     expect(entries[0].inheritedProps).toMatch(text);
   }
 });
+
+it("keeps ChatThread, ToolChips, TaskStarter and Sidebar as one entry each with their plain-value additions and examples", () => {
+  const registry = readRegistry();
+  for (const [id, exports, example, text] of [
+    [
+      "chat-thread",
+      ["ChatThread", "ChatThreadMessage", "ChatThreadMessagePartProps"],
+      "ChatThreadCompoundExample",
+      /Compound parts/,
+    ],
+    [
+      "tool-chips",
+      ["ToolChips", "ToolChipsProps", "ToolChip", "ToolChipProps"],
+      "ToolChipsCompoundExample",
+      /Compound parts/,
+    ],
+    ["task-starter", ["TaskStarter"], "TaskStarterSubmitExample", undefined],
+    [
+      "sidebar",
+      ["SidebarItem", "SidebarIconName", "sidebarIconNames"],
+      "SidebarIconNameExample",
+      /iconName/,
+    ],
+  ] as const) {
+    const entries = registry.components.filter(
+      (entry: { id: string }) => entry.id === id,
+    );
+    expect(entries).toHaveLength(1);
+    expect(entries[0].exports).toEqual(expect.arrayContaining([...exports]));
+    expect(entries[0].examples).toContain(`ai/examples/${example}.tsx`);
+    if (text) expect(entries[0].inheritedProps).toMatch(text);
+  }
+  const prop = (id: string, name: string) =>
+    registry.components
+      .find((entry: { id: string }) => entry.id === id)
+      .props.find((entry: { name: string }) => entry.name === name);
+  expect(prop("chat-thread", "messages").required).toBe(false);
+  expect(prop("chat-thread", "children").required).toBe(false);
+  expect(prop("tool-chips", "items").required).toBe(false);
+  expect(prop("tool-chips", "children").required).toBe(false);
+  expect(prop("task-starter", "onSubmit").note).toMatch(/onSubmit\(value\)/);
+});

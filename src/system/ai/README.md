@@ -136,6 +136,26 @@ while it is open. `useToast().toast` is unchanged. See the
 [FilterBar](examples/FilterBarCompoundExample.tsx) and
 [Toast](examples/ToastCompoundExample.tsx) compound examples.
 
+`ChatThread` and `ToolChips` also take their items as children, and two APIs gain a
+plain-value form. `ChatThread` accepts `ChatThreadMessage` parts instead of `messages`
+(or after them): a part takes `id`, `role`, optional `identity`, `status`, `error` and
+`onRetry` as plain values, with the message content as children. Its `id` is the
+message's application ID, never a DOM id. Avatars, `actions` and node-valued fields stay
+in the `messages` API, and `ChatThreadMessage({ message })` keeps drawing one record.
+`ToolChips` accepts `ToolChip` parts (`id`, `label`, `state`, optional `count`,
+`controls`, `expanded` and its own `onActivate`) instead of `items`; only a chip with
+`onActivate` is a button, as before. Put each part directly inside its parent. `TaskStarter`'s
+`onSubmit` may take only the draft, `onSubmit(value)`, because the host already owns
+`context`; the two-argument form still works. `SidebarItem`, `SidebarAction` and
+`SidebarDisclosure` accept `iconName`, a plain string from `sidebarIconNames` (type
+`SidebarIconName`, 36 names for navigation, files, account, conversation and common
+actions), instead of an `icon` node. Pass exactly one of the two; both, neither or a
+name outside the list throws. Existing usage and markup are unchanged. See the
+[ChatThread](examples/ChatThreadCompoundExample.tsx),
+[ToolChips](examples/ToolChipsCompoundExample.tsx),
+[TaskStarter](examples/TaskStarterSubmitExample.tsx) and
+[Sidebar icon](examples/SidebarIconNameExample.tsx) examples.
+
 `Select`, `DatePicker` (its calendar and year menu) and `DropdownMenuContent` accept
 `collisionBoundary`, the installed Popper type. A nonempty boundary sets
 `data-bounded` on the popup and limits its width and height to the room left inside
@@ -463,7 +483,8 @@ inline-start in your layout (right in Arabic, left in English). Compact defaults
 consume existing tokens and IBM Plex Sans Arabic; no additional dependency.
 
 Use SidebarGroup(heading?) and SidebarItem(label, icon, href, active?, count?) for
-native destinations. SidebarAction is a native button for commands. Count is
+native destinations. `iconName` (from `sidebarIconNames`) replaces `icon` where only
+plain values are available; pass exactly one. SidebarAction is a native button for commands. Count is
 static/decorative; numeric counts follow config.numerals and strings render as
 supplied. Put essential count meaning in aria-label. All native attributes
 and React 19 refs survive. SidebarLabel hides branding/account text in the rail
@@ -471,7 +492,7 @@ and makes it inert; keep essential actions outside it. SidebarToggle requires
 translated collapseLabel and expandLabel. collapsed/onCollapsedChange controls
 the root; otherwise defaultCollapsed initializes internal state once (false).
 
-SidebarDisclosure(label, icon, children) supports one level. open/onOpenChange
+SidebarDisclosure(label, icon or iconName, children) supports one level. open/onOpenChange
 controls it or defaultOpen initializes internal state. Supply activeChild when a
 child is current. Activating a rail parent requests root expansion and opens its
 children; controlled roots/disclosures must update both state callbacks. Hidden
@@ -794,7 +815,7 @@ FileTree displays application-supplied files and folders with stable unique IDs;
 
 ## Start a task
 
-`TaskStarter` starts any request from the page the person is on; [TaskStarterExamples](examples/TaskStarterExamples.tsx) plays the host. Required: `value`, `onValueChange` and `onSubmit(value, context)`, which may return a promise; a rejected one keeps the draft and shows the entry's failure line. The entry follows its draft’s text direction automatically and behaves like ChatComposer's: Enter submits, Shift+Enter adds a line, input-method composition never submits, a pending send blocks a second, and Backspace in an empty text area leaves the chips alone.
+`TaskStarter` starts any request from the page the person is on; [TaskStarterExamples](examples/TaskStarterExamples.tsx) plays the host. Required: `value`, `onValueChange` and `onSubmit(value, context)` (or `onSubmit(value)`, since the host owns `context`), which may return a promise; a rejected one keeps the draft and shows the entry's failure line. The entry follows its draft’s text direction automatically and behaves like ChatComposer's: Enter submits, Shift+Enter adds a line, input-method composition never submits, a pending send blocks a second, and Backspace in an empty text area leaves the chips alone.
 
 The host passes `context` (`ContextItem[]`: `id`, `label`, optional `kind` and `icon`), shown as chips that `onRemoveContext` removes. Attach and dictate buttons appear with `onAttach` and `onVoice`; both are intents, and nothing uploads or listens. With `mentionOptions` and `onAddContext(id)`, typing "@" at the start of the text or after a space, or pressing the @ button, opens a list of the records not yet attached whose names hold what follows the "@", matched the way Arabic is typed (so «@اكتوبر» finds «أكتوبر»). The text area stays focused as a combobox: arrow keys move, Enter chooses and Escape closes only the list. Without options, `onMention(query)` lets the host open its own picker. `modes` with `mode` and `onModeChange`, and `models` with `model` and `onModelChange`, fill the mode menu (radio items; `modeMenuOpen` with `onModeMenuOpenChange` controls it), and `contextUsage` (ContextMeter's props) adds a ring and a "context used" line. `suggestions` with `onSuggestion(id)` stay visible while the person types, and the host fills the draft; `recent` with `onOpenRecent` lists earlier tasks with a status pill and time. `greeting`, `title`, `disabled` with `disabledReason`, `headingLevel`, `labels` and `appearance` complete it.
 
@@ -947,7 +968,8 @@ the operation waits for the person; the host sets it.
 ToolChips takes a named list of items (stable id, label, state, optional count) and
 the same partial `labels`. Informational items are spans. onActivate creates a button;
 connect it to real behavior before supplying controls/expanded. No built-in details
-are implied.
+are implied. `ToolChip` parts inside ToolChips take the same fields and their own
+`onActivate` instead of `items`.
 ToolCall, ToolChips and TaskRows draw their status with StatusIcon, which is also
 exported: state is pending, running, needs-you, completed, failed, stopped or
 skipped; number gives a pending ring its position (digits follow config.numerals),
@@ -1069,7 +1091,8 @@ ChatThread renders messages with unique stable `id`, `role` (user/assistant),
 message notes «أُوقف الرد»; a failed one keeps «تعذّر إكمال الرد» and your `error` as
 persistent text, not a live region, with «أعد المحاولة» calling `onRetry`, after which
 focus moves to the message. `ChatThreadMessage({ message })` draws one message on its
-own, and ChatThread draws each of its messages through it. Compose Markdown
+own, and ChatThread draws each of its messages through it; `ChatThreadMessage` with `id`,
+`role` and children is the same message as a part. Compose Markdown
 for static rich content, StreamingText for host-updated text, ThinkingIndicator
 for activity and, as one message, any pattern in `appearance="plain"`. Supply
 decorative Avatar when identity is already adjacent. Keep

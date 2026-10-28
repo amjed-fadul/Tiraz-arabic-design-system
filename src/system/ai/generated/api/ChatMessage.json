@@ -3,7 +3,7 @@
   "exportName": "ChatMessage",
   "kind": "type",
   "source": "ChatThread.tsx",
-  "sourceHash": "c3c5ca5906b56dd7aa8e36780a903f0a48a4b5b8c5eb278a9de251ed1b046cc5",
+  "sourceHash": "6fccb73355f8c37e498b0bce1cd0f198ca36fab5f3209b7c0a5c40fb94b5004e",
   "type": "ChatMessage",
   "typeParameters": [],
   "props": {
@@ -60,6 +60,7 @@
   },
   "branches": [],
   "relatedTypes": {
+    "ChatThreadMessagePartProps": "ChatThreadMessagePartProps.json",
     "ChatThreadMessageProps": "ChatThreadMessageProps.json",
     "ChatThreadProps": "ChatThreadProps.json"
   }

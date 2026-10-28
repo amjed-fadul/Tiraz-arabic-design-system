@@ -3,7 +3,7 @@
   "exportName": "ToolChipItem",
   "kind": "type",
   "source": "ToolChips.tsx",
-  "sourceHash": "81ca883453bb45e0fd1dcbcb8ec25f7a95e54af2355c8d6965aca66482ea96cf",
+  "sourceHash": "06487756c69421f0f4edfab4500c6a2e504d0752b0422f9a8f2eb766ec6ea738",
   "type": "ToolChipItem",
   "typeParameters": [],
   "props": {
@@ -53,6 +53,7 @@
   "branches": [],
   "relatedTypes": {
     "ToolCallState": "ToolCallState.json",
+    "ToolChipProps": "ToolChipProps.json",
     "ToolChipsProps": "ToolChipsProps.json"
   }
 }

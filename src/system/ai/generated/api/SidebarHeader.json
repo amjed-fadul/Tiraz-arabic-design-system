@@ -3,7 +3,7 @@
   "exportName": "SidebarHeader",
   "kind": "component",
   "source": "Sidebar.tsx",
-  "sourceHash": "17cfa40b9148fca741219ce177d6fba2af526d23c8041fa9b3fadec68f94512a",
+  "sourceHash": "1f8a62245c8ec2ad0f797324f2718bce89c906ebc6aaca8cff3ad9a64d1f7049",
   "type": "({ className, ...props }: ComponentPropsWithRef<\"div\">) => JSX.Element",
   "signatures": [
     {

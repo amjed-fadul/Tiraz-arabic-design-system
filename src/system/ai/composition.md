@@ -251,6 +251,14 @@ a declarative toast, render `Toast` (`open`, `onOpenChange`, `title`, `descripti
 asks; it asks once on timeout or dismissal and shows the same toast and announcement as
 `toast()`. `FilterBar` and `useToast().toast` keep their markup and behavior.
 
+For plain-value chat, put `ChatThreadMessage` parts (`id`, `role`, `identity`, `status`,
+`error`, `onRetry`, content as children) directly inside `ChatThread` instead of
+`messages`; avatars and `actions` stay in `messages`. For tool activity, put `ToolChip`
+parts (`id`, `label`, `state`, `count`, `controls`, `expanded`, `onActivate`) inside
+`ToolChips` instead of `items`. `TaskStarter` may take `onSubmit(value)` alone when the
+host owns `context`. Sidebar parts may take `iconName` from `sidebarIconNames` in place
+of `icon`, exactly one of the two. The original forms keep their markup and behavior.
+
 Select, DatePicker and DropdownMenuContent accept `collisionBoundary` to keep their
 popup inside an embedded surface. A nonempty boundary sets `data-bounded` and limits
 the popup's width and height by Popper's available room; for DatePicker this covers
@@ -350,6 +358,8 @@ focus moves to its visible parent/toggle, and labels use existing Tooltip.
 Reuse this navigation inside Sheet on mobile, with mounted trigger and the
 post-restoration destination focus handoff described above. No new overlay system.
 See SidebarExamples for working local notes and account details.
+Where the icons come from a plain-value source, pass `iconName` (one of
+`sidebarIconNames`) instead of an `icon` node; see SidebarIconNameExample.
 
 Compose branding and account icon/avatar + SidebarLabel inside SidebarIdentity
 (native div attributes/ref). SidebarHeader places identity and toggle on opposite

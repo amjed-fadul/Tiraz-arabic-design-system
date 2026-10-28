@@ -1,10 +1,12 @@
 import {
+  Children,
+  isValidElement,
   useCallback,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
 } from "react";
-import type { ComponentPropsWithRef, ReactNode } from "react";
+import type { ComponentPropsWithRef, ReactElement, ReactNode } from "react";
 import { Button } from "./Button";
 import { useArrivals } from "./useArrivals";
 import { useSystem } from "./useSystem";
@@ -35,23 +37,65 @@ const messageCopy = {
     retry: "Try again",
   },
 };
-export type ChatThreadMessageProps = Omit<
-  ComponentPropsWithRef<"article">,
-  "children"
-> & {
+type ArticleProps = Omit<ComponentPropsWithRef<"article">, "children">;
+/** One message from a record, as `messages` holds it. A native `id` and `role` stay native. */
+type ChatThreadMessageRecordProps = ArticleProps & {
   message: ChatMessage;
+  children?: never;
 };
+/**
+ * One message as a part, for `ChatThread` children or alone. Every prop is a
+ * plain value apart from the content, which is the children, and `onRetry`.
+ * Avatars and `actions` are nodes and stay in the `messages` API.
+ */
+export type ChatThreadMessagePartProps = Omit<ArticleProps, "id" | "role"> & {
+  /** The message's unique, stable application ID. It is never a DOM id. */
+  id: string;
+  role: ChatMessage["role"];
+  /** Who is speaking, as text, in the message's header. */
+  identity?: string;
+  status?: ChatMessage["status"];
+  /** Why a failed reply failed, kept as text beside the partial reply. */
+  error?: string;
+  /** Offers «أعد المحاولة» on a failed reply. */
+  onRetry?: () => void;
+  /** The message content. */
+  children?: ReactNode;
+  message?: never;
+};
+export type ChatThreadMessageProps =
+  ChatThreadMessageRecordProps | ChatThreadMessagePartProps;
 /**
  * One message, as ChatThread draws it: identity, content and actions, with the
  * note of a stopped reply or the error of a failed one beside it. It works
- * alone, for a message shown outside a thread.
+ * alone, for a message shown outside a thread. Give it a `message` record, or
+ * its fields as props with the content as children.
  */
-export function ChatThreadMessage({
+export function ChatThreadMessage(props: ChatThreadMessageProps) {
+  if (props.message) return <MessageView {...props} />;
+  const { id, role, identity, status, error, onRetry, children, ...article } =
+    props;
+  return (
+    <MessageView
+      {...article}
+      message={{
+        id,
+        role,
+        identity,
+        content: children,
+        status,
+        error,
+        onRetry,
+      }}
+    />
+  );
+}
+function MessageView({
   message,
   className = "",
   ref,
   ...props
-}: ChatThreadMessageProps) {
+}: ChatThreadMessageRecordProps) {
   const copy =
     messageCopy[useSystem().config.direction === "rtl" ? "ar" : "en"];
   const root = useRef<HTMLElement>(null);
@@ -106,13 +150,25 @@ export function ChatThreadMessage({
   );
 }
 export type ChatThreadProps = Omit<ComponentPropsWithRef<"div">, "children"> & {
-  messages: ChatMessage[];
+  messages?: ChatMessage[];
+  /**
+   * ChatThreadMessage parts, as an alternative to `messages`. Put each part
+   * directly inside the thread; any other child is drawn after the messages.
+   */
+  children?: ReactNode;
   label?: string;
   followOutput?: boolean;
 };
+const isPart = (
+  child: ReactNode,
+): child is ReactElement<ChatThreadMessageProps> =>
+  isValidElement(child) && child.type === ChatThreadMessage;
+const partId = ({ message, id }: ChatThreadMessageProps) =>
+  message ? message.id : id;
 /** Keyed presentation only. Caller supplies immutable updates and stable message IDs. */
 export function ChatThread({
-  messages,
+  messages = [],
+  children,
   label,
   followOutput = false,
   ref,
@@ -121,8 +177,12 @@ export function ChatThread({
   ...props
 }: ChatThreadProps) {
   const ar = useSystem().config.direction === "rtl";
+  const parts = Children.toArray(children);
   // Messages on the first render are history; only later ones enter.
-  const arrivals = useArrivals(messages.map((message) => message.id));
+  const arrivals = useArrivals([
+    ...messages.map((message) => message.id),
+    ...parts.filter(isPart).map((part) => partId(part.props)),
+  ]);
   const root = useRef<HTMLDivElement>(null),
     content = useRef<HTMLDivElement>(null),
     nearBottom = useRef(true);
@@ -180,6 +240,21 @@ export function ChatThread({
             }}
           />
         ))}
+        {parts.map((part) => {
+          if (!isPart(part)) return part;
+          const id = partId(part.props);
+          return (
+            <ChatThreadMessage
+              {...part.props}
+              key={part.key}
+              data-fresh={arrivals.fresh(id) || undefined}
+              onAnimationEnd={(event) => {
+                part.props.onAnimationEnd?.(event);
+                if (event.target === event.currentTarget) arrivals.settle(id);
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );

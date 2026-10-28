@@ -8,6 +8,8 @@ import {
 } from "react";
 import type { ComponentPropsWithRef, ReactNode } from "react";
 import { ChevronDown, PanelLeftClose, PanelLeftOpen } from "lucide-react";
+import { sidebarIcons } from "./sidebar-icons";
+import type { SidebarIconName } from "./sidebar-icons";
 import { Tooltip } from "./Tooltip";
 import { useSystem } from "./useSystem";
 import { Tick } from "./Tick";
@@ -171,8 +173,31 @@ export function SidebarGroup({
 }
 interface ItemContent {
   label: string;
-  icon: ReactNode;
   count?: string | number;
+}
+/** Exactly one of the two: an icon node, or a name from `sidebarIconNames`. */
+type ItemIcon =
+  | { icon: ReactNode; iconName?: never }
+  | { icon?: never; iconName: SidebarIconName };
+/** The icon to draw. `icon` may still be an explicit `null` for none. */
+function itemIcon(
+  part: string,
+  props: { icon?: ReactNode; iconName?: SidebarIconName | null },
+): ReactNode {
+  const { icon, iconName } = props;
+  if (iconName == null) {
+    if (!("icon" in props))
+      throw new Error(`${part} needs an icon or an iconName.`);
+    return icon;
+  }
+  if (icon !== undefined)
+    throw new Error(`${part}: pass icon or iconName, not both.`);
+  if (!Object.hasOwn(sidebarIcons, iconName))
+    throw new Error(
+      `${part}: unknown iconName "${iconName}". Use one of sidebarIconNames.`,
+    );
+  const Icon = sidebarIcons[iconName];
+  return <Icon size={18} />;
 }
 /** Numeric counts follow the system numerals; string counts are shown as supplied. */
 function SidebarCount({ count }: { count: string | number }) {
@@ -189,7 +214,7 @@ function SidebarCount({ count }: { count: string | number }) {
     </span>
   );
 }
-function contents({ label, icon, count }: ItemContent) {
+function contents({ label, icon, count }: ItemContent & { icon: ReactNode }) {
   return (
     <>
       <span className="tz-sidebar-icon" aria-hidden="true">
@@ -200,18 +225,22 @@ function contents({ label, icon, count }: ItemContent) {
     </>
   );
 }
-export interface SidebarItemProps
-  extends Omit<ComponentPropsWithRef<"a">, "children">, ItemContent {
-  active?: boolean;
-}
-export function SidebarItem({
-  label,
-  icon,
-  count,
-  active = false,
-  className = "",
-  ...props
-}: SidebarItemProps) {
+export type SidebarItemProps = Omit<ComponentPropsWithRef<"a">, "children"> &
+  ItemContent &
+  ItemIcon & {
+    active?: boolean;
+  };
+export function SidebarItem(item: SidebarItemProps) {
+  const {
+    label,
+    icon: _icon,
+    iconName: _iconName,
+    count,
+    active = false,
+    className = "",
+    ...props
+  } = item;
+  const icon = itemIcon("SidebarItem", item);
   const { collapsed } = useContext(SidebarContext);
   const link = (
     <a
@@ -227,16 +256,23 @@ export function SidebarItem({
   );
   return <Tooltip trigger={link} content={collapsed ? label : ""} />;
 }
-export interface SidebarActionProps
-  extends Omit<ComponentPropsWithRef<"button">, "children">, ItemContent {}
-export function SidebarAction({
-  label,
-  icon,
-  count,
-  className = "",
-  type = "button",
-  ...props
-}: SidebarActionProps) {
+export type SidebarActionProps = Omit<
+  ComponentPropsWithRef<"button">,
+  "children"
+> &
+  ItemContent &
+  ItemIcon;
+export function SidebarAction(action: SidebarActionProps) {
+  const {
+    label,
+    icon: _icon,
+    iconName: _iconName,
+    count,
+    className = "",
+    type = "button",
+    ...props
+  } = action;
+  const icon = itemIcon("SidebarAction", action);
   const { collapsed } = useContext(SidebarContext);
   const button = (
     <button
@@ -291,29 +327,36 @@ export function SidebarToggle({
     />
   );
 }
-export interface SidebarDisclosureProps
-  extends Omit<ComponentPropsWithRef<"button">, "children">, ItemContent {
-  children: ReactNode;
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  /** Caller supplies whether a descendant is the current destination. */
-  activeChild?: boolean;
-}
-export function SidebarDisclosure({
-  label,
-  icon,
-  count,
-  children,
-  open: controlled,
-  defaultOpen = false,
-  onOpenChange,
-  activeChild = false,
-  onClick,
-  className = "",
-  type = "button",
-  ...props
-}: SidebarDisclosureProps) {
+export type SidebarDisclosureProps = Omit<
+  ComponentPropsWithRef<"button">,
+  "children"
+> &
+  ItemContent &
+  ItemIcon & {
+    children: ReactNode;
+    open?: boolean;
+    defaultOpen?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    /** Caller supplies whether a descendant is the current destination. */
+    activeChild?: boolean;
+  };
+export function SidebarDisclosure(disclosure: SidebarDisclosureProps) {
+  const {
+    label,
+    icon: _icon,
+    iconName: _iconName,
+    count,
+    children,
+    open: controlled,
+    defaultOpen = false,
+    onOpenChange,
+    activeChild = false,
+    onClick,
+    className = "",
+    type = "button",
+    ...props
+  } = disclosure;
+  const icon = itemIcon("SidebarDisclosure", disclosure);
   const { collapsed, setCollapsed } = useContext(SidebarContext);
   const [internal, setInternal] = useState(defaultOpen);
   const open = controlled ?? internal;

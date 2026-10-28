@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tiraz compound AI verification</title>
+    <style>
+      body {
+        margin: 0;
+        background: #e9eceb;
+        color: #17221d;
+        font: 16px system-ui;
+      }
+      main {
+        padding: 24px;
+      }
+      .panels {
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+      }
+      .panel {
+        width: 520px;
+        display: grid;
+        gap: 16px;
+        align-content: start;
+      }
+      .panel > .tiraz-system {
+        display: grid;
+        gap: 16px;
+      }
+      .pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+      .thread {
+        block-size: 220px;
+        display: grid;
+      }
+      .rail {
+        block-size: 240px;
+        display: flex;
+      }
+      .row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      output {
+        display: block;
+        font:
+          12px ui-monospace,
+          monospace;
+        color: #3e4d45;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./compound-ai.tsx"></script>
+  </body>
+</html>

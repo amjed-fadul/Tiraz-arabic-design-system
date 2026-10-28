@@ -1,0 +1,294 @@
+{
+  "schemaVersion": 1,
+  "exportName": "sidebarIconNames",
+  "kind": "value",
+  "source": "sidebar-icons.ts",
+  "sourceHash": "6773e03430f536f1abfd2767f4ec15d635b60b15a4063ab7eddce590d78a6584",
+  "type": "readonly [\"home\", \"dashboard\", \"inbox\", \"search\", \"bell\", \"calendar\", \"bookmark\", \"star\", \"clock\", \"history\", \"help\", \"file\", \"file-text\", \"folder\", \"image\", \"archive\", \"download\", \"upload\", \"link\", \"settings\", \"user\", \"users\", \"lock\", \"credit-card\", \"building\", \"chat\", \"mail\", \"sparkles\", \"chart\", \"tasks\", \"database\", \"code\", \"tag\", \"globe\", \"plus\", \"trash\"]",
+  "description": "The icons `iconName` can name: navigation, files, account and settings,\nconversation and common actions. Tiraz draws each one itself.",
+  "props": {
+    "0": {
+      "type": "\"home\"",
+      "required": true
+    },
+    "1": {
+      "type": "\"dashboard\"",
+      "required": true
+    },
+    "2": {
+      "type": "\"inbox\"",
+      "required": true
+    },
+    "3": {
+      "type": "\"search\"",
+      "required": true
+    },
+    "4": {
+      "type": "\"bell\"",
+      "required": true
+    },
+    "5": {
+      "type": "\"calendar\"",
+      "required": true
+    },
+    "6": {
+      "type": "\"bookmark\"",
+      "required": true
+    },
+    "7": {
+      "type": "\"star\"",
+      "required": true
+    },
+    "8": {
+      "type": "\"clock\"",
+      "required": true
+    },
+    "9": {
+      "type": "\"history\"",
+      "required": true
+    },
+    "10": {
+      "type": "\"help\"",
+      "required": true
+    },
+    "11": {
+      "type": "\"file\"",
+      "required": true
+    },
+    "12": {
+      "type": "\"file-text\"",
+      "required": true
+    },
+    "13": {
+      "type": "\"folder\"",
+      "required": true
+    },
+    "14": {
+      "type": "\"image\"",
+      "required": true
+    },
+    "15": {
+      "type": "\"archive\"",
+      "required": true
+    },
+    "16": {
+      "type": "\"download\"",
+      "required": true
+    },
+    "17": {
+      "type": "\"upload\"",
+      "required": true
+    },
+    "18": {
+      "type": "\"link\"",
+      "required": true
+    },
+    "19": {
+      "type": "\"settings\"",
+      "required": true
+    },
+    "20": {
+      "type": "\"user\"",
+      "required": true
+    },
+    "21": {
+      "type": "\"users\"",
+      "required": true
+    },
+    "22": {
+      "type": "\"lock\"",
+      "required": true
+    },
+    "23": {
+      "type": "\"credit-card\"",
+      "required": true
+    },
+    "24": {
+      "type": "\"building\"",
+      "required": true
+    },
+    "25": {
+      "type": "\"chat\"",
+      "required": true
+    },
+    "26": {
+      "type": "\"mail\"",
+      "required": true
+    },
+    "27": {
+      "type": "\"sparkles\"",
+      "required": true
+    },
+    "28": {
+      "type": "\"chart\"",
+      "required": true
+    },
+    "29": {
+      "type": "\"tasks\"",
+      "required": true
+    },
+    "30": {
+      "type": "\"database\"",
+      "required": true
+    },
+    "31": {
+      "type": "\"code\"",
+      "required": true
+    },
+    "32": {
+      "type": "\"tag\"",
+      "required": true
+    },
+    "33": {
+      "type": "\"globe\"",
+      "required": true
+    },
+    "34": {
+      "type": "\"plus\"",
+      "required": true
+    },
+    "35": {
+      "type": "\"trash\"",
+      "required": true
+    },
+    "__@iterator@97": {
+      "type": "() => ArrayIterator<\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">",
+      "required": true
+    },
+    "__@unscopables@100": {
+      "type": "{ readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: boolean | undefined; toLocaleString?: boolean | undefined; concat?: boolean | undefined; join?: boolean | undefined; slice?: boolean | undefined; indexOf?: boolean | undefined; lastIndexOf?: boolean | undefined; every?: boolean | undefined; some?: boolean | undefined; forEach?: boolean | undefined; map?: boolean | undefined; filter?: boolean | undefined; reduce?: boolean | undefined; reduceRight?: boolean | undefined; find?: boolean | undefined; findIndex?: boolean | undefined; entries?: boolean | undefined; keys?: boolean | undefined; values?: boolean | undefined; includes?: boolean | undefined; flatMap?: boolean | undefined; flat?: boolean | undefined; at?: boolean | undefined; findLast?: boolean | undefined; findLastIndex?: boolean | undefined; toReversed?: boolean | undefined; toSorted?: boolean | undefined; toSpliced?: boolean | undefined; with?: boolean | undefined; [Symbol.iterator]?: boolean | undefined; readonly [Symbol.unscopables]?: boolean | undefined; }",
+      "required": true
+    },
+    "at": {
+      "type": "(index: number) => \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\" | undefined",
+      "required": true
+    },
+    "concat": {
+      "type": "{ (...items: ConcatArray<\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">[]): (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]; (...items: (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\" | ConcatArray<\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">)[]): (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]; }",
+      "required": true
+    },
+    "entries": {
+      "type": "() => ArrayIterator<[number, \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"]>",
+      "required": true
+    },
+    "every": {
+      "type": "{ <S extends \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">(predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => value is S, thisArg?: any): this is readonly S[]; (predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => unknown, thisArg?: any): boolean; }",
+      "required": true
+    },
+    "filter": {
+      "type": "{ <S extends \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">(predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => value is S, thisArg?: any): S[]; (predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => unknown, thisArg?: any): (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]; }",
+      "required": true
+    },
+    "find": {
+      "type": "{ <S extends \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">(predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, obj: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, obj: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => unknown, thisArg?: any): \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\" | undefined; }",
+      "required": true
+    },
+    "findIndex": {
+      "type": "(predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, obj: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => unknown, thisArg?: any) => number",
+      "required": true
+    },
+    "findLast": {
+      "type": "{ <S extends \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">(predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => value is S, thisArg?: any): S | undefined; (predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => unknown, thisArg?: any): \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\" | undefined; }",
+      "required": true
+    },
+    "findLastIndex": {
+      "type": "(predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => unknown, thisArg?: any) => number",
+      "required": true
+    },
+    "flat": {
+      "type": "<A, D extends number = 1>(this: A, depth?: D | undefined) => FlatArray<A, D>[]",
+      "required": true
+    },
+    "flatMap": {
+      "type": "<U, This = undefined>(callback: (this: This, value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => U | readonly U[], thisArg?: This | undefined) => U[]",
+      "required": true
+    },
+    "forEach": {
+      "type": "(callbackfn: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => void, thisArg?: any) => void",
+      "required": true
+    },
+    "includes": {
+      "type": "(searchElement: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", fromIndex?: number) => boolean",
+      "required": true
+    },
+    "indexOf": {
+      "type": "(searchElement: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", fromIndex?: number) => number",
+      "required": true
+    },
+    "join": {
+      "type": "(separator?: string) => string",
+      "required": true
+    },
+    "keys": {
+      "type": "() => ArrayIterator<number>",
+      "required": true
+    },
+    "lastIndexOf": {
+      "type": "(searchElement: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", fromIndex?: number) => number",
+      "required": true
+    },
+    "length": {
+      "type": "36",
+      "required": true
+    },
+    "map": {
+      "type": "<U>(callbackfn: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => U, thisArg?: any) => U[]",
+      "required": true
+    },
+    "reduce": {
+      "type": "{ (callbackfn: (previousValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentIndex: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"): \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"; (callbackfn: (previousValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentIndex: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", initialValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"): \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"; <U>(callbackfn: (previousValue: U, currentValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentIndex: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => U, initialValue: U): U; }",
+      "required": true
+    },
+    "reduceRight": {
+      "type": "{ (callbackfn: (previousValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentIndex: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"): \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"; (callbackfn: (previousValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentIndex: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", initialValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"): \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"; <U>(callbackfn: (previousValue: U, currentValue: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", currentIndex: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => U, initialValue: U): U; }",
+      "required": true
+    },
+    "slice": {
+      "type": "(start?: number, end?: number) => (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]",
+      "required": true
+    },
+    "some": {
+      "type": "(predicate: (value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", index: number, array: readonly (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]) => unknown, thisArg?: any) => boolean",
+      "required": true
+    },
+    "toLocaleString": {
+      "type": "{ (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormatOptions): string; }",
+      "required": true
+    },
+    "toReversed": {
+      "type": "() => (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]",
+      "required": true
+    },
+    "toSorted": {
+      "type": "(compareFn?: ((a: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\", b: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\") => number) | undefined) => (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]",
+      "required": true
+    },
+    "toSpliced": {
+      "type": "{ (start: number, deleteCount: number, ...items: (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]): (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]; (start: number, deleteCount?: number): (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]; }",
+      "required": true
+    },
+    "toString": {
+      "type": "() => string",
+      "required": true
+    },
+    "values": {
+      "type": "() => ArrayIterator<\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\">",
+      "required": true
+    },
+    "with": {
+      "type": "(index: number, value: \"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\") => (\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\")[]",
+      "required": true
+    }
+  },
+  "branches": [],
+  "indexSignatures": [
+    {
+      "key": "number",
+      "value": "\"code\" | \"help\" | \"search\" | \"link\" | \"image\" | \"download\" | \"file\" | \"home\" | \"user\" | \"dashboard\" | \"inbox\" | \"bell\" | \"calendar\" | \"bookmark\" | \"star\" | \"clock\" | \"history\" | \"file-text\" | \"folder\" | \"archive\" | \"upload\" | \"settings\" | \"users\" | \"lock\" | \"credit-card\" | \"building\" | \"chat\" | \"mail\" | \"sparkles\" | \"chart\" | \"tasks\" | \"database\" | \"tag\" | \"globe\" | \"plus\" | \"trash\"",
+      "readonly": true
+    }
+  ],
+  "relatedTypes": {
+    "SidebarIconName": "SidebarIconName.json"
+  }
+}

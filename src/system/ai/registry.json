@@ -333,6 +333,10 @@
       "source": "ChatThread.tsx"
     },
     {
+      "name": "ChatThreadMessagePartProps",
+      "source": "ChatThread.tsx"
+    },
+    {
       "name": "ChatThreadMessageProps",
       "source": "ChatThread.tsx"
     },
@@ -1105,6 +1109,10 @@
       "source": "Sidebar.tsx"
     },
     {
+      "name": "SidebarIconName",
+      "source": "sidebar-icons.ts"
+    },
+    {
       "name": "SidebarIdentity",
       "source": "Sidebar.tsx"
     },
@@ -1477,7 +1485,15 @@
       "source": "ToolCall.tsx"
     },
     {
+      "name": "ToolChip",
+      "source": "ToolChips.tsx"
+    },
+    {
       "name": "ToolChipItem",
+      "source": "ToolChips.tsx"
+    },
+    {
+      "name": "ToolChipProps",
       "source": "ToolChips.tsx"
     },
     {
@@ -1559,6 +1575,10 @@
     {
       "name": "numberLocale",
       "source": "config.ts"
+    },
+    {
+      "name": "sidebarIconNames",
+      "source": "sidebar-icons.ts"
     },
     {
       "name": "useReducedMotion",
@@ -1712,7 +1732,7 @@
           "name": "onSubmit",
           "type": "(value: string, context: ContextItem[]) => void | Promise<void>",
           "required": true,
-          "note": "Enter or Send hands over the draft exactly as written and a copy of the attached records. A rejected promise keeps the draft and shows the reason as text under the entry, only while the text still equals the failed draft. While the promise is pending the text area is read-only, send shows progress, a repeat is blocked and the suggestions are disabled."
+          "note": "Enter or Send hands over the draft exactly as written and a copy of the attached records. A rejected promise keeps the draft and shows the reason as text under the entry, only while the text still equals the failed draft. While the promise is pending the text area is read-only, send shows progress, a repeat is blocked and the suggestions are disabled. A handler may take only the draft, onSubmit(value): the host already owns context, and the copy passed second is ignored by a one-parameter function. The two-parameter form keeps working."
         },
         {
           "name": "context",
@@ -1909,7 +1929,10 @@
         "@radix-ui/react-dropdown-menu@2.2.0",
         "@radix-ui/react-popper@1.4.0"
       ],
-      "examples": ["ai/examples/TaskStarterExamples.tsx"]
+      "examples": [
+        "ai/examples/TaskStarterExamples.tsx",
+        "ai/examples/TaskStarterSubmitExample.tsx"
+      ]
     },
     {
       "id": "cited-answer",
@@ -4367,13 +4390,21 @@
         "ChatThreadProps",
         "ChatMessage",
         "ChatThreadMessage",
-        "ChatThreadMessageProps"
+        "ChatThreadMessageProps",
+        "ChatThreadMessagePartProps"
       ],
       "props": [
         {
           "name": "messages",
           "type": "ChatMessage[]",
-          "required": true
+          "required": false,
+          "note": "The conversation as records. Optional: give ChatThreadMessage children instead, or both (messages come first). A record's avatar, actions and node-valued identity and error exist only here."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "note": "ChatThreadMessage parts, as an alternative to messages. Put each part directly inside the thread (a part inside a Fragment or your own wrapper is not drawn as a message); any other child is drawn after the messages."
         },
         {
           "name": "label",
@@ -4395,11 +4426,15 @@
       ],
       "limitations": [
         "No persistence, backend, virtualization or orchestration. Host sets bounded height. followOutput defaults false; when true follows only within 48px of bottom and pauses for an active text selection in the thread. No window scrolling.",
-        "Partial Markdown syntax may replace affected nodes; stable IDs do not guarantee selection inside reinterpreted syntax."
+        "Partial Markdown syntax may replace affected nodes; stable IDs do not guarantee selection inside reinterpreted syntax.",
+        "Parts and records can be mixed (messages first), but a part needs a unique id like a record: arrival entrance tracks ids, and only parts that are direct children of the thread are drawn as messages."
       ],
-      "inheritedProps": "Native div attributes/ref. label supplies accessible region name.",
+      "inheritedProps": "Native div attributes/ref. label supplies accessible region name. Compound parts: ChatThreadMessage also takes its fields as plain props with the content as children: required id (the message's application ID, never a DOM id) and role (user or assistant), optional identity (text), status, error (text) and onRetry, plus native article attributes and ref. Avatars and actions are nodes and stay in messages[]. With a message prop it keeps the record form, where a native id and role remain native. ChatThread draws both forms through the same message markup.",
       "alternative": "ChatThread for messages, ChatComposer for multiline replies, PromptBar for compact task entry.",
-      "examples": ["ai/examples/ChatExamples.tsx"]
+      "examples": [
+        "ai/examples/ChatExamples.tsx",
+        "ai/examples/ChatThreadCompoundExample.tsx"
+      ]
     },
     {
       "id": "chat-composer",
@@ -4843,7 +4878,13 @@
       "source": "ToolChips.tsx",
       "kind": "part",
       "usedBy": [],
-      "exports": ["ToolChips", "ToolChipsProps", "ToolChipItem"],
+      "exports": [
+        "ToolChips",
+        "ToolChipsProps",
+        "ToolChipItem",
+        "ToolChip",
+        "ToolChipProps"
+      ],
       "props": [
         {
           "name": "label",
@@ -4851,9 +4892,16 @@
           "required": true
         },
         {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "note": "ToolChip parts, as an alternative to items."
+        },
+        {
           "name": "items",
           "type": "readonly ToolChipItem[]",
-          "required": true
+          "required": false,
+          "note": "The chips as records. Optional: give ToolChip children instead, or both (items come first)."
         },
         {
           "name": "labels",
@@ -4862,19 +4910,23 @@
           "note": "Replaces any state word."
         }
       ],
-      "inheritedProps": "Native attributes, style, className and ref on ul; children and semantics are managed internally.",
+      "inheritedProps": "Native attributes, style, className and ref on ul; semantics are managed internally. Compound parts: ToolChip takes the ToolChipItem fields as plain values (required id, label and state; optional count, controls and expanded) plus its own onActivate, and renders one list item. Every ToolChip prop is a plain value except onActivate. ToolChips draws items and ToolChip children through the same markup.",
       "state": "Host supplies execution state, data, durations and retry/activation callbacks. Only ToolCall disclosure may be internal.",
       "accessibility": [
         "Native buttons; collapsed details are inert and aria-hidden immediately. Controlled collapse restores panel focus without stealing deliberate moves.",
         "ToolCall announces only label/state; no duration or animation chatter. Use announcement=off when the host owns announcements.",
         "ToolChips is a named list. Only items with onActivate become buttons; controls/expanded describe real host details.",
-        "Code and output scroll internally. System and OS reduced motion suppress animation."
+        "Code and output scroll internally. System and OS reduced motion suppress animation.",
+        "A ToolChip becomes a button only with its own onActivate, as an item does; controls and expanded describe real host details and are ignored without onActivate. ToolChip must be inside ToolChips and throws outside it."
       ],
       "limitations": [
         "No tool execution, network, permission system, orchestration engine, execution timers or private model reasoning."
       ],
       "alternative": "ToolCall details one operation. ToolChips summarizes activity. TaskRows tracks broader tasks. ThinkingState summarizes user-facing activity.",
-      "examples": ["ai/examples/ToolActivityExamples.tsx"]
+      "examples": [
+        "ai/examples/ToolActivityExamples.tsx",
+        "ai/examples/ToolChipsCompoundExample.tsx"
+      ]
     },
     {
       "id": "loading-state",
@@ -6383,7 +6435,9 @@
         "SidebarActionProps",
         "SidebarToggleProps",
         "SidebarDisclosureProps",
-        "SidebarIdentity"
+        "SidebarIdentity",
+        "sidebarIconNames",
+        "SidebarIconName"
       ],
       "purpose": "Compact composable navigation surface with expanded and icon rail states.",
       "useWhen": "Persistent desktop navigation or the same content composed inside an existing Sheet on mobile.",
@@ -6426,7 +6480,7 @@
           "default": "undefined"
         }
       ],
-      "inheritedProps": "Sidebar accepts native aside props/ref. SidebarHeader/Footer native div, SidebarContent native nav (supply aria-label), SidebarLabel native span. SidebarGroup native div plus optional heading:string. SidebarItem native anchor excluding children plus required label:string, icon:ReactNode, optional count:string|number, active:boolean=false; real href supplied by caller. SidebarAction native button excluding children plus label, icon, count. SidebarToggle native button plus required collapseLabel/expandLabel strings. SidebarDisclosure native button excluding children plus required label/icon/children, optional count, activeChild=false, open/defaultOpen=false/onOpenChange. All native attributes/events/ref/className/style remain on the underlying element. Buttons default type=button. Preventing default in click cancels built-in toggle/disclosure behavior. SidebarIdentity is a native div/ref for icon/avatar + SidebarLabel composition; header aligns identity/toggle in a row, then stacks them in the rail. Footer identity centers the actual avatar box in the rail.",
+      "inheritedProps": "Sidebar accepts native aside props/ref. SidebarHeader/Footer native div, SidebarContent native nav (supply aria-label), SidebarLabel native span. SidebarGroup native div plus optional heading:string. SidebarItem native anchor excluding children plus required label:string and exactly one of icon:ReactNode or iconName:SidebarIconName, optional count:string|number, active:boolean=false; real href supplied by caller. SidebarAction native button excluding children plus label, exactly one of icon or iconName, count. SidebarToggle native button plus required collapseLabel/expandLabel strings. SidebarDisclosure native button excluding children plus required label/children and exactly one of icon or iconName, optional count, activeChild=false, open/defaultOpen=false/onOpenChange. All native attributes/events/ref/className/style remain on the underlying element. Buttons default type=button. Preventing default in click cancels built-in toggle/disclosure behavior. SidebarIdentity is a native div/ref for icon/avatar + SidebarLabel composition; header aligns identity/toggle in a row, then stacks them in the rail. Footer identity centers the actual avatar box in the rail. iconName is a plain string from the closed list sidebarIconNames (type SidebarIconName), drawn by Tiraz as an 18px lucide icon in the same icon slot as an icon node; icon stays supported and is unchanged. Passing both, or neither (an explicit icon={null} counts as set), throws; so does a name outside the list.",
       "state": "collapsed/onCollapsedChange controls root; omission initializes internal state from defaultCollapsed once. Disclosure open/onOpenChange or internal defaultOpen. Rail disclosure requests root expansion and opens children. Both controlled callbacks must update caller state. Previously open children reappear when root expands. activeChild is explicit caller state, not inferred from routing or DOM.",
       "accessibility": [
         "Native links preserve browser destination/modifier behavior; required label supplies accessible name independent of hidden text. Counts and icons are decorative (numeric counts follow config.numerals; string counts render as supplied); include essential count meaning in an explicit aria-label if needed. Existing Tooltip supplies rail labels.",
@@ -6438,9 +6492,13 @@
       "limitations": [
         "One disclosure level supported. No routing, permission, workspace switching, shell, mobile overlay or persistence framework.",
         "Give every interactive rail item an icon. Host positions Sidebar on the right for RTL, left for LTR. Header/footer are arbitrary composition slots; use SidebarLabel to hide text.",
-        "Counts truncate visually and do not convey essential meaning on their own."
+        "Counts truncate visually and do not convey essential meaning on their own.",
+        "iconName covers a small closed set (navigation, files, account and settings, conversation and common actions); use an icon node for anything else. Validate names from data against sidebarIconNames."
       ],
-      "examples": ["ai/examples/SidebarExamples.tsx"]
+      "examples": [
+        "ai/examples/SidebarExamples.tsx",
+        "ai/examples/SidebarIconNameExample.tsx"
+      ]
     },
     {
       "id": "button",
