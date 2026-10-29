@@ -41,8 +41,20 @@ export function entrySection(entry: LibraryEntry): NavigationSection {
     return entry.category;
   return aiGroups.has(entry.category) ? "ai" : "components";
 }
+const workspaceEntry: LibraryEntry = {
+  key: "contextual-workspace",
+  name: ["مساحة عمل سياقية", "Contextual workspace"],
+  description: [
+    "طلب مع لوحات سياق ووكلاء متصلة",
+    "A request with connected context and agent panels",
+  ],
+  category: "delegate",
+  route: { kind: "workspace" },
+};
 export const navigationEntries: readonly LibraryEntry[] = [
-  ...libraryEntries,
+  ...libraryEntries.flatMap((entry) =>
+    entry.key === "task-starter" ? [entry, workspaceEntry] : [entry],
+  ),
   ...illustrations.map((item) => ({
     key: item.id,
     name: item.name,
@@ -54,6 +66,7 @@ export const navigationEntries: readonly LibraryEntry[] = [
 export function navigationSection(
   route: SiteRoute,
 ): NavigationSection | undefined {
+  if (route.kind === "workspace") return "ai";
   if (route.kind === "screen") return "screens";
   if (route.kind === "illustrations") return "illustrations";
   if (route.kind === "library")
@@ -91,7 +104,9 @@ export function galleryEntries(
   if (!category || category === "components")
     return sectionEntries("components", language);
   if (category === "ai" || category === "screens")
-    return sectionEntries(category, language);
+    return sectionEntries(category, language).filter(
+      (item) => item.route.kind !== "workspace",
+    );
   if (category === "all") return libraryEntries;
   return navigationGroups.some((group) => group.id === category)
     ? libraryEntries.filter((item) => item.category === category)

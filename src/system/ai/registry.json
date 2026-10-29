@@ -1645,7 +1645,10 @@
         "@radix-ui/react-dropdown-menu@2.2.0",
         "@radix-ui/react-popper@1.4.0"
       ],
-      "examples": ["ai/examples/TaskStarterExamples.tsx"]
+      "examples": [
+        "ai/examples/TaskStarterExamples.tsx",
+        "ai/examples/AgentWorkspaceExample.tsx"
+      ]
     },
     {
       "id": "cited-answer",
@@ -2215,7 +2218,10 @@
       ],
       "alternative": "Use ApprovalCard for a single yes or no, TaskRows for a list of tasks without a run, or a table for many tasks at a glance.",
       "dependencies": [],
-      "examples": ["ai/examples/AgentTaskExamples.tsx"]
+      "examples": [
+        "ai/examples/AgentTaskExamples.tsx",
+        "ai/examples/AgentWorkspaceExample.tsx"
+      ]
     },
     {
       "id": "decision-inbox",
@@ -4222,7 +4228,10 @@
       ],
       "inheritedProps": "Native textarea attributes/ref except controlled value/defaultValue/onChange/onSubmit/rows/children. className/style target wrapper. disabled/readOnly guard submission. dir defaults to the provider direction rather than auto; the host can override it explicitly.",
       "alternative": "ChatComposer for multiline conversation replies; PromptBar for compact task prompts; Textarea for ordinary forms.",
-      "examples": ["ai/examples/ChatExamples.tsx"]
+      "examples": [
+        "ai/examples/ChatExamples.tsx",
+        "ai/examples/AgentWorkspaceExample.tsx"
+      ]
     },
     {
       "id": "prompt-bar",

@@ -89,6 +89,7 @@ it("keeps section headings in the sidebar and lists every curated page exactly o
           !(item.id in nestedParts),
       ),
       ...screens,
+      { name: ["مساحة عمل سياقية", "Contextual workspace"] },
     ]
       .map((item) => item.name[1])
       .sort(),

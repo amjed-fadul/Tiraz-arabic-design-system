@@ -1,0 +1,873 @@
+.tz-workspace {
+  container: agent-workspace / inline-size;
+  inline-size: 100%;
+  min-inline-size: 0;
+  font-size: var(--text-label);
+}
+/* The conversation and the composer share one column. Panels never join its
+   flow: rails beside it in wide containers, a dock over it in narrow ones. */
+.tz-workspace-stage {
+  --workspace-layout: dock;
+  --dock-space: 2.75rem;
+  --history: 32rem;
+  /* Where the composer waits before the first request, from the stage's top. */
+  --welcome-entry: 5rem;
+  position: relative;
+  isolation: isolate;
+  inline-size: min(38rem, 100%);
+  margin-inline: auto;
+}
+@container agent-workspace (min-width: 50rem) {
+  .tz-workspace-stage {
+    --workspace-layout: rails;
+    --dock-space: 0px;
+    --rail-gap: clamp(1.25rem, 3cqi, 2.5rem);
+    --rail: clamp(11rem, (100cqi - 38rem) / 2 - var(--rail-gap), 15rem);
+    inline-size: min(38rem, 100cqi - 2 * (var(--rail) + var(--rail-gap)));
+  }
+}
+.tz-workspace-history {
+  block-size: var(--history);
+  overflow: auto;
+  overscroll-behavior: contain;
+  overflow-anchor: none;
+  padding-block-end: var(--dock-space);
+  box-sizing: border-box;
+}
+/* A thin thumb on no track, shown only while the pointer or focus is in the
+   box. Its space is kept on both sides, so the column never shifts or leans
+   when scrolling becomes possible. */
+.tz-workspace-history,
+.tz-workspace-peek {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  scrollbar-gutter: stable both-edges;
+}
+.tz-workspace-history:is(:hover, :focus-visible),
+.tz-workspace-peek:hover {
+  scrollbar-color: color-mix(in srgb, var(--text-muted) 40%, transparent)
+    transparent;
+}
+/* Messages settle on the composer and history grows upward. */
+.tz-workspace-history > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-block-size: 100%;
+}
+.tz-workspace-turn {
+  display: grid;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+}
+.tz-workspace-turn + .tz-workspace-turn {
+  border-block-start: 1px solid var(--border);
+}
+.tz-workspace-entry {
+  position: relative;
+  padding-block-start: var(--space-3);
+}
+/* The first view: a welcome near the top and the composer right under it. The
+   frame keeps its height; the first send lets the composer glide down. */
+.tz-workspace-stage[data-fresh="true"] .tz-workspace-entry {
+  transform: translateY(calc(var(--welcome-entry) - var(--history)));
+}
+.tz-workspace-welcome {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(var(--welcome-entry) - 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+.tz-workspace-composer > .tz-tray-paper {
+  padding: 0;
+}
+.tz-workspace-composer .tz-chat-entry {
+  inline-size: 100%;
+}
+/* The composer's top row, on the tray: the model, then effort at the far end. */
+.tz-workspace-composer > .tz-tray-header {
+  flex-wrap: nowrap;
+  gap: var(--space-2);
+  padding: 2px 2px 6px;
+}
+.tz-workspace-composer .tz-model-trigger {
+  min-inline-size: 0;
+  max-inline-size: 12rem;
+}
+.tz-workspace-messages {
+  display: grid;
+  gap: var(--space-3);
+}
+.tz-workspace-messages .tz-chat-message {
+  padding: 0;
+}
+.tz-workspace-messages .tz-chat-content {
+  font-size: var(--text-label);
+  line-height: var(--leading-reading);
+}
+.tz-workspace-messages .tz-chat-content p {
+  margin: 0;
+}
+.tz-workspace-messages .tz-chat-message[data-role="user"] {
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-well);
+  border-radius: var(--radius-paper);
+}
+.tz-workspace-request-settings {
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+}
+.tz-workspace-message-avatar {
+  inline-size: 24px;
+  block-size: 24px;
+  display: inline-flex;
+}
+.tz-workspace-message-avatar > * {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+.tz-workspace-result ol {
+  list-style: decimal;
+  margin-block: var(--space-3);
+  padding-inline-start: var(--space-5);
+}
+.tz-workspace-result li + li {
+  margin-block-start: var(--space-2);
+}
+.tz-workspace-result small {
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+}
+.tz-workspace-turn-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--space-8);
+}
+.tz-workspace-turn-status {
+  flex: 1;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+}
+.tz-workspace-worklog {
+  flex: 1;
+  min-inline-size: 0;
+}
+.tz-workspace-worklog > summary {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  font-variant-numeric: tabular-nums;
+}
+.tz-workspace-turn-meta .tz-button {
+  font-size: var(--text-micro);
+}
+
+/* Rails. Each slot is placed by the example's script, which centers the stack
+   on the composer, and glides when a neighbour opens, grows or closes. */
+.tz-workspace-rail {
+  position: absolute;
+  inset-block: 0;
+  inline-size: var(--rail);
+  pointer-events: none;
+}
+.tz-workspace-rail[hidden] {
+  display: none;
+}
+.tz-workspace-rail[data-workspace-rail="start"] {
+  --to-composer: 1;
+  --composer-edge: right;
+  inset-inline-end: calc(100% + var(--rail-gap));
+}
+.tz-workspace-rail[data-workspace-rail="end"] {
+  --to-composer: -1;
+  --composer-edge: left;
+  inset-inline-start: calc(100% + var(--rail-gap));
+}
+.tz-workspace-rail[data-workspace-rail="start"]:dir(rtl) {
+  --to-composer: -1;
+  --composer-edge: left;
+}
+.tz-workspace-rail[data-workspace-rail="end"]:dir(rtl) {
+  --to-composer: 1;
+  --composer-edge: right;
+}
+.tz-workspace-slot {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(var(--y, 0));
+  pointer-events: auto;
+}
+/* A chip hugs the composer side of its rail, so its thread stays short. */
+[data-workspace-rail="start"] > .tz-workspace-slot {
+  align-items: flex-end;
+}
+[data-workspace-rail="end"] > .tz-workspace-slot {
+  align-items: flex-start;
+}
+.tz-workspace-slot[data-placed] {
+  transition: transform var(--motion-panel) var(--ease-out);
+}
+.tz-workspace-threads {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: -1;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tz-workspace-threads [data-open="false"] {
+  display: none;
+}
+/* Pipes: a channel in the composer tray's colour with a defined edge, so each
+   card reads as plumbed into the composer. */
+.tz-workspace-pipe-edge path {
+  stroke: var(--border-strong);
+  stroke-width: 8;
+}
+.tz-workspace-pipe-core path {
+  stroke: var(--surface-tray);
+  stroke-width: 5;
+}
+.tz-workspace-pipe-core [data-state="running"] {
+  stroke: color-mix(in srgb, var(--ai) 12%, var(--surface-tray));
+}
+.tz-workspace-pipe-edge [data-state="needs-input"] {
+  stroke: var(--attention);
+}
+.tz-workspace-pipe-edge [data-state="error"] {
+  stroke: var(--danger);
+}
+.tz-workspace-pipe-flow path {
+  stroke: var(--ai);
+  stroke-width: 1.5;
+  opacity: 0;
+}
+.tz-workspace-pipe-flow [data-state="running"] {
+  opacity: 1;
+}
+/* Sockets: a ring where the pipe meets a card or leaves the composer. Its dot
+   shows the state at that end. */
+.tz-workspace-sockets {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+.tz-workspace-sockets [data-open="false"] {
+  display: none;
+}
+.tz-workspace-socket circle:first-child {
+  fill: var(--surface);
+  stroke: var(--border-strong);
+  stroke-width: 1.5;
+}
+.tz-workspace-socket circle:last-child {
+  fill: var(--border-strong);
+}
+.tz-workspace-socket[data-state="running"] circle:first-child {
+  stroke: var(--ai);
+}
+.tz-workspace-socket:is([data-state="running"], [data-state="complete"])
+  circle:last-child {
+  fill: var(--ai);
+}
+.tz-workspace-socket[data-state="needs-input"] circle {
+  stroke: var(--attention);
+}
+.tz-workspace-socket[data-state="needs-input"] circle:last-child {
+  fill: var(--attention);
+}
+.tz-workspace-socket[data-state="error"] circle {
+  stroke: var(--danger);
+}
+.tz-workspace-socket[data-state="error"] circle:last-child {
+  fill: var(--danger);
+}
+
+/* Cards */
+.tz-workspace-panel {
+  position: relative;
+  inline-size: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
+  background: var(--surface);
+  box-shadow: var(--shadow-paper);
+  border-radius: var(--radius-paper);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  overflow-wrap: anywhere;
+  transform-origin: var(--composer-edge, center) center;
+}
+.tz-workspace-panel:focus {
+  outline: none;
+}
+.tz-workspace-panel:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-workspace-panel-heading {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tz-workspace-panel-heading h4 {
+  flex: 1;
+  margin: 0;
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-meta);
+}
+.tz-workspace-panel-heading .tz-button {
+  min-inline-size: 24px;
+  block-size: 24px;
+  padding: 0;
+  margin-inline-end: calc(var(--space-1) * -1);
+}
+.tz-workspace-panel-icon {
+  display: inline-flex;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.tz-workspace-task-avatar {
+  display: inline-flex;
+  inline-size: 24px;
+  block-size: 24px;
+  flex-shrink: 0;
+}
+.tz-workspace-task-avatar > * {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+.tz-workspace-panel-body {
+  display: grid;
+  gap: var(--space-1);
+  padding-block-start: var(--space-2);
+}
+.tz-workspace-panel-body p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-workspace-state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+}
+.tz-workspace-state::before {
+  content: "";
+  inline-size: 4px;
+  block-size: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.tz-workspace-state-time {
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.tz-workspace-state[data-state="running"] {
+  color: var(--ai);
+}
+.tz-workspace-state[data-state="needs-input"] {
+  color: var(--attention);
+}
+.tz-workspace-state[data-state="error"] {
+  color: var(--danger);
+}
+.tz-workspace-panel[data-state="running"] .tz-workspace-panel-icon {
+  color: var(--ai);
+}
+/* An agent does one thing: one line that fills when it is done. While it runs
+   it carries a sheen, never a guessed fraction. */
+.tz-workspace-agent-bar {
+  position: relative;
+  display: block;
+  block-size: 4px;
+  margin-block-start: var(--space-1);
+  border-radius: 2px;
+  background: var(--surface-well);
+  box-shadow: inset 0 0 0 1px var(--border);
+  overflow: hidden;
+}
+.tz-workspace-agent-bar[data-state="running"] {
+  background: color-mix(in srgb, var(--ai) 30%, var(--surface-well));
+  box-shadow: none;
+}
+.tz-workspace-agent-bar[data-state="complete"] {
+  background: var(--ai);
+  box-shadow: none;
+}
+.tz-workspace-agent-bar[data-state="needs-input"] {
+  background: var(--attention);
+  box-shadow: none;
+}
+.tz-workspace-agent-bar[data-state="error"] {
+  background: var(--danger);
+  box-shadow: none;
+}
+.tz-workspace-agent-bar[data-state="stopped"] {
+  background: var(--border-strong);
+  box-shadow: none;
+}
+
+/* Disclosure: a plus that folds into a minus at the row's far end, and open
+   content hanging from a thin thread. No triangles. */
+.tz-workspace summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px var(--space-1);
+  margin-inline: calc(var(--space-1) * -1);
+  border-radius: var(--radius-control);
+  list-style: none;
+  cursor: pointer;
+}
+.tz-workspace summary::-webkit-details-marker {
+  display: none;
+}
+.tz-workspace summary:hover {
+  background: var(--surface-well);
+  color: var(--text);
+}
+.tz-workspace summary:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+.tz-workspace-reveal {
+  position: relative;
+  flex: none;
+  inline-size: 9px;
+  block-size: 9px;
+  margin-inline-start: auto;
+  color: var(--text-muted);
+}
+.tz-workspace-reveal::before,
+.tz-workspace-reveal::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(50% - 0.75px);
+  block-size: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+}
+.tz-workspace-reveal::after {
+  transform: rotate(90deg);
+}
+details[open] > summary > .tz-workspace-reveal::after {
+  transform: rotate(0deg);
+}
+summary:hover > .tz-workspace-reveal {
+  color: var(--text);
+}
+.tz-workspace details[open] > :not(summary) {
+  margin-inline-start: 3px;
+  padding-inline-start: var(--space-2);
+  border-inline-start: 2px solid var(--border);
+}
+
+/* The reply's work log: each agent's one task and how long it took. */
+.tz-workspace-worklog ol {
+  display: grid;
+  gap: var(--space-1);
+  margin: var(--space-2) 0 var(--space-1);
+  padding-block: 2px;
+  list-style: none;
+}
+.tz-workspace-worklog li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-2);
+  font-size: var(--text-micro);
+  color: var(--text-secondary);
+}
+.tz-workspace-worklog li p {
+  grid-column: 2 / -1;
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-micro);
+}
+.tz-workspace-step-mark {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 14px;
+  block-size: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--border-strong);
+}
+[data-state="complete"] > .tz-workspace-step-mark {
+  background: var(--ai);
+  box-shadow: none;
+  color: var(--surface);
+}
+[data-state="running"] > .tz-workspace-step-mark {
+  box-shadow: inset 0 0 0 1.5px var(--ai);
+}
+[data-state="running"] > .tz-workspace-step-mark::after {
+  content: "";
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: var(--ai);
+}
+[data-state="needs-input"] > .tz-workspace-step-mark {
+  box-shadow: inset 0 0 0 1.5px var(--attention);
+}
+[data-state="error"] > .tz-workspace-step-mark {
+  background: var(--danger);
+  box-shadow: none;
+  color: var(--surface);
+}
+.tz-workspace-step-who {
+  margin-inline-end: var(--space-1);
+  color: var(--text);
+  font-weight: var(--weight-medium);
+}
+.tz-workspace-step-time {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+[data-state="running"] > .tz-workspace-step-time {
+  color: var(--ai);
+}
+
+.tz-workspace-evidence {
+  border-block-start: 1px solid var(--border);
+  margin-block-start: var(--space-1);
+  padding-block-start: var(--space-2);
+}
+.tz-workspace-evidence details + details {
+  margin-block-start: 2px;
+}
+.tz-workspace-evidence summary {
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.tz-workspace-evidence details p {
+  margin-block: var(--space-1) var(--space-2);
+  font-size: var(--text-micro);
+}
+
+/* Chips: a closed panel, still on its thread. */
+.tz-workspace-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  max-inline-size: 100%;
+  block-size: 28px;
+  padding-inline: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  box-shadow: var(--shadow-chip);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--text-micro);
+  white-space: nowrap;
+  cursor: pointer;
+  transform-origin: var(--composer-edge, center) center;
+}
+.tz-workspace-chip:hover {
+  background: var(--surface-well);
+}
+.tz-workspace-chip:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.tz-workspace-chip[aria-expanded="true"] {
+  background: var(--action-soft);
+  box-shadow: inset 0 0 0 1px var(--action-border);
+  color: var(--action);
+}
+.tz-workspace-chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 16px;
+  block-size: 16px;
+  color: var(--text-secondary);
+}
+.tz-workspace-chip-icon > * {
+  max-inline-size: 100%;
+  max-block-size: 100%;
+}
+.tz-workspace-chip-state {
+  inline-size: 5px;
+  block-size: 5px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+.tz-workspace-chip[data-state="running"] .tz-workspace-chip-state {
+  background: var(--ai);
+}
+.tz-workspace-chip[data-state="complete"] .tz-workspace-chip-state {
+  background: var(--text-muted);
+}
+.tz-workspace-chip[data-state="needs-input"] .tz-workspace-chip-state {
+  background: var(--attention);
+}
+.tz-workspace-chip[data-state="error"] .tz-workspace-chip-state {
+  background: var(--danger);
+}
+
+/* Dock: chips plugged into the composer's top edge; a card opens above them,
+   over the conversation. */
+.tz-workspace-dock {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(100% - var(--space-3));
+  z-index: 1;
+}
+.tz-workspace-dock-chips {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  scrollbar-width: none;
+}
+/* More chips than fit scroll sideways; the far edge fades to say so. */
+.tz-workspace-dock-chips {
+  padding-inline-end: var(--space-6);
+  mask-image: linear-gradient(
+    to right,
+    #000 calc(100% - var(--space-6)),
+    transparent
+  );
+}
+.tz-workspace-dock-chips:dir(rtl) {
+  mask-image: linear-gradient(
+    to left,
+    #000 calc(100% - var(--space-6)),
+    transparent
+  );
+}
+.tz-workspace-dock .tz-workspace-chip {
+  flex-shrink: 0;
+  transform-origin: center bottom;
+}
+.tz-workspace-dock .tz-workspace-chip::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: calc(50% - 1px);
+  inline-size: 2px;
+  block-size: 8px;
+  background: var(--border-strong);
+}
+.tz-workspace-peek {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: calc(100% + var(--space-2));
+  max-block-size: 22rem;
+  overflow-y: auto;
+  border-radius: var(--radius-paper);
+  box-shadow: var(--shadow-overlay);
+}
+.tz-workspace-peek .tz-workspace-panel {
+  box-shadow: none;
+  transform-origin: center bottom;
+}
+
+/* Motion: the thread is drawn out from the composer, then the card comes into
+   focus at its end. A closing card plays back toward the composer. */
+@media (prefers-reduced-motion: no-preference) {
+  .tz-workspace-entry {
+    transition: transform calc(var(--motion-panel) * 1.5) var(--ease-drawer);
+  }
+  .tz-workspace-pipe-edge [data-open="true"],
+  .tz-workspace-pipe-core [data-open="true"] {
+    stroke-dasharray: 1;
+    animation: tz-workspace-draw 260ms var(--ease-out) both;
+  }
+  .tz-workspace-socket[data-open="true"] circle:first-child {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: tz-workspace-socket var(--motion-enter) var(--ease-spring) 220ms
+      both;
+  }
+  .tz-workspace-socket[data-state="running"] circle:last-child {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: tz-workspace-pulse var(--motion-loop-turn) var(--ease-in-out)
+      infinite;
+  }
+  .tz-workspace-slot > .tz-workspace-panel {
+    animation: tz-workspace-emerge var(--motion-panel) var(--ease-out) 90ms both;
+  }
+  .tz-workspace-slot > .tz-workspace-chip {
+    animation: tz-workspace-emerge var(--motion-enter) var(--ease-out) both;
+  }
+  .tz-workspace-dock .tz-workspace-chip {
+    animation: tz-workspace-rise var(--motion-enter) var(--ease-out) both;
+  }
+  .tz-workspace-peek {
+    animation: tz-workspace-rise var(--motion-panel) var(--ease-out) both;
+  }
+  .tz-workspace-pipe-flow [data-state="running"] {
+    stroke-dasharray: 2 8;
+    animation: tz-workspace-travel var(--motion-loop-progress) linear infinite;
+  }
+  .tz-workspace-agent-bar[data-state="running"]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--ai) 85%, transparent),
+      transparent
+    );
+    animation: tz-workspace-sheen var(--motion-loop-shimmer) var(--ease-in-out)
+      infinite;
+  }
+  [data-state="running"] > .tz-workspace-step-mark::after {
+    animation: tz-workspace-pulse var(--motion-loop-turn) var(--ease-in-out)
+      infinite;
+  }
+  .tz-workspace-reveal::after {
+    transition: transform var(--motion-state) var(--ease-out);
+  }
+}
+@keyframes tz-workspace-sheen {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes tz-workspace-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+}
+/* Opening and closing glide where the browser can animate to auto height. */
+@supports (interpolate-size: allow-keywords) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tz-workspace {
+      interpolate-size: allow-keywords;
+    }
+    .tz-workspace details::details-content {
+      block-size: 0;
+      overflow: clip;
+      transition:
+        block-size var(--motion-collapse) var(--ease-out),
+        content-visibility var(--motion-collapse) allow-discrete;
+    }
+    .tz-workspace details[open]::details-content {
+      block-size: auto;
+    }
+  }
+}
+@keyframes tz-workspace-socket {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+@keyframes tz-workspace-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes tz-workspace-emerge {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateX(calc(var(--to-composer, 0) * 16px)) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+@keyframes tz-workspace-rise {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+@keyframes tz-workspace-travel {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tz-workspace-slot[data-placed] {
+    transition: none;
+  }
+}
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-slot[data-placed],
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-entry {
+  transition: none;
+}
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-panel,
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-chip,
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-peek,
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-threads path,
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-socket circle,
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-agent-bar::after,
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-step-mark::after {
+  animation: none;
+}
+.tiraz-system[data-reduced-motion="true"]
+  .tz-workspace
+  details::details-content,
+.tiraz-system[data-reduced-motion="true"] .tz-workspace-reveal::after {
+  transition: none;
+}
+@media (forced-colors: active) {
+  .tz-workspace-panel,
+  .tz-workspace-chip {
+    border: 1px solid CanvasText;
+  }
+  .tz-workspace-pipe-edge path,
+  .tz-workspace-socket circle {
+    stroke: CanvasText;
+  }
+  .tz-workspace-pipe-core path {
+    stroke: Canvas;
+  }
+  .tz-workspace-agent-bar {
+    background: GrayText;
+  }
+  .tz-workspace-agent-bar[data-state="complete"],
+  .tz-workspace-agent-bar[data-state="running"] {
+    background: Highlight;
+  }
+}
