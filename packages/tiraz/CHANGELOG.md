@@ -2,6 +2,13 @@
 
 What changed in each Tiraz release, and how to update source you copied into your app. Generated from `source/system/ai/changelog.json`; full notes at https://tiraz.dev/changelog.
 
+## 12 November 2026
+
+### 0.1.3-preview.6
+
+- **CLI** now lists what changed for your installed components, and any manual steps, when you run `tiraz update`. _(Added)_
+- **Package** ships a `CHANGELOG.md` and `ai/changelog.json` that list each release's changes, files and manual steps for people and agents. _(Added)_
+
 ## 28 October 2026
 
 ### 0.1.3-preview.5

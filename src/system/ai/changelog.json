@@ -3,6 +3,32 @@
   "format": "tiraz-changelog",
   "releases": [
     {
+      "version": "0.1.3-preview.6",
+      "date": "2026-11-12",
+      "published": false,
+      "changes": [
+        {
+          "components": [],
+          "area": "cli",
+          "type": "added",
+          "summary": {
+            "en": "now lists what changed for your installed components, and any manual steps, when you run `tiraz update`.",
+            "ar": "يعرض الآن ما تغيّر في مكوّناتك المثبّتة، والخطوات اليدوية إن وُجدت، عند تشغيل `tiraz update`."
+          }
+        },
+        {
+          "components": [],
+          "area": "package",
+          "type": "added",
+          "summary": {
+            "en": "ships a `CHANGELOG.md` and `ai/changelog.json` that list each release's changes, files and manual steps for people and agents.",
+            "ar": "تضم الآن `CHANGELOG.md` و`ai/changelog.json`، وفيهما تغييرات كل إصدار وملفاته وخطواته اليدوية للمطوّرين والوكلاء."
+          },
+          "files": ["ai/changelog.json"]
+        }
+      ]
+    },
+    {
       "version": "0.1.3-preview.5",
       "date": "2026-10-28",
       "published": true,
