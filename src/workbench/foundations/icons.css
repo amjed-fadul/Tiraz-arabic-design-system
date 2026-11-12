@@ -1,0 +1,85 @@
+.foundation-page .icons-code {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface-subtle);
+  font-size: var(--text-meta);
+  line-height: 1.6;
+  text-align: left;
+}
+.foundation-page .icons-code:focus-visible {
+  outline: 2px solid var(--focus-ring, var(--action));
+  outline-offset: 2px;
+}
+.foundation-page .icons-code code {
+  white-space: pre;
+}
+.foundation-page .icons-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.icons-sample {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface-subtle);
+  color: var(--text);
+}
+.icons-sample svg {
+  flex: none;
+}
+.icons-sample .icons-note {
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.icons-sample[data-tone="muted"] {
+  color: var(--text-muted);
+}
+.icons-sample[data-tone="action"] {
+  color: var(--action);
+}
+.icons-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-start: var(--space-4);
+}
+.foundation-page .icons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 8.5rem), 1fr));
+  gap: var(--space-2);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.icons-cell {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  padding: var(--space-3) var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-panel);
+  background: var(--surface-subtle);
+  color: var(--text);
+}
+.icons-cell code {
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  text-align: center;
+}
