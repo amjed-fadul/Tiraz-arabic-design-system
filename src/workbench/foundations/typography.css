@@ -69,3 +69,11 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+/* Both sample lines align to the page's start, whatever their own direction
+   (match-parent is not honoured here, so the opposite-script line is pinned). */
+.foundation-page[dir="rtl"] .type-specimen > p[dir="ltr"] {
+  text-align: right;
+}
+.foundation-page[dir="ltr"] .type-specimen > p[dir="rtl"] {
+  text-align: left;
+}

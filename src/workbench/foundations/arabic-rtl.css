@@ -100,3 +100,9 @@
 .foundation-page .arabic-mixed {
   margin-block-start: var(--space-4);
 }
+/* Scrollable regions take keyboard focus; show where it is. */
+.arabic-table-wrap:focus-visible,
+.arabic-code:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}

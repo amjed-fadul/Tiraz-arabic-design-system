@@ -83,9 +83,16 @@ export function ShapePage({ language, navigate }: FoundationPageProps) {
                   style={{ borderRadius: `var(${token})` }}
                 />
                 <code dir="ltr">{token}</code>
-                <span className="shape-value" dir="ltr">
-                  {values[token] ?? "—"}
-                </span>
+                {/* The pill radius is a huge number by design; say what it does. */}
+                {token === "--radius-pill" ? (
+                  <span className="shape-value">
+                    {t("دائري بالكامل", "Fully rounded")}
+                  </span>
+                ) : (
+                  <span className="shape-value" dir="ltr">
+                    {values[token] ?? "—"}
+                  </span>
+                )}
                 <span className="shape-use">{t(ar, en)}</span>
               </li>
             ))}

@@ -154,8 +154,15 @@ export function ArabicRtlPage({ language, navigate }: FoundationPageProps) {
         </h2>
         <p>
           {t(
-            "يعتمد طِراز على خصائص منطقية مثل بداية السطر ونهايته، فينعكس التخطيط وحده عند تغيّر الاتجاه. ضع lang وdir على عنصر يحيط بالتطبيق كله.",
-            "Tiraz uses logical properties such as inline start and end, so layout mirrors on its own when direction changes. Put lang and dir on an ancestor that wraps the whole app.",
+            "يعتمد طِراز على خصائص منطقية مثل بداية السطر ونهايته، فينعكس التخطيط وحده عند تغيّر الاتجاه. ضع ",
+            "Tiraz uses logical properties such as inline start and end, so layout mirrors on its own when direction changes. Put ",
+          )}
+          <code>lang</code>
+          {t(" و", " and ")}
+          <code>dir</code>
+          {t(
+            " على عنصر يحيط بالتطبيق كله.",
+            " on an ancestor that wraps the whole app.",
           )}
         </p>
         <pre className="arabic-code" dir="ltr" tabIndex={0}>
@@ -185,8 +192,13 @@ export function ArabicRtlPage({ language, navigate }: FoundationPageProps) {
         <h2 id={`${id}-icons`}>{t("الأيقونات", "Icons")}</h2>
         <p>
           {t(
-            "تنعكس الأيقونات التي تدل على اتجاه، كالأسهم والأقواس والسابق والتالي، عبر الصنف tz-mirror-rtl. أما البحث والتحقق والساعة وتشغيل الوسائط فلا تنعكس.",
-            "Icons that point somewhere flip: arrows, chevrons, back and next. Tiraz does it with the tz-mirror-rtl class. Search, check, clock and media play keep their shape.",
+            "تنعكس الأيقونات التي تدل على اتجاه، كالأسهم والأقواس والسابق والتالي، عبر الصنف ",
+            "Icons that point somewhere flip: arrows, chevrons, back and next. Tiraz does it with the ",
+          )}
+          <code>tz-mirror-rtl</code>
+          {t(
+            ". أما البحث والتحقق والساعة وتشغيل الوسائط فلا تنعكس.",
+            " class. Search, check, clock and media play keep their shape.",
           )}
         </p>
         <div className="arabic-pair">
@@ -229,7 +241,13 @@ export function ArabicRtlPage({ language, navigate }: FoundationPageProps) {
           {t("الإعداد الحالي: ", "Current setting: ")}
           <code>{numerals}</code>
         </p>
-        <div className="arabic-table-wrap">
+        {/* Scrolls sideways on phones, so keyboards must be able to reach it. */}
+        <div
+          className="arabic-table-wrap"
+          role="region"
+          aria-labelledby={`${id}-numbers`}
+          tabIndex={0}
+        >
           <table className="arabic-table">
             <thead>
               <tr>
