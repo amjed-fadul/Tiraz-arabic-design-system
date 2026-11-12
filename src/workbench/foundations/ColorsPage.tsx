@@ -240,9 +240,11 @@ export function ColorsPage({ language, navigate }: FoundationPageProps) {
           })}
         </ul>
         <p>
+          {t("اللون المميّز يحدّد ", "The accent drives ")}
+          <code>--action</code>
           {t(
-            "اللون المميّز يحدّد --action ودرجاته الخافتة وحالة التمرير والحد. غيّره من الإعدادات.",
-            "The accent drives --action and its soft, hover and border variants. Change it in Settings.",
+            " ودرجاته الخافتة وحالة التمرير والحد. غيّره من الإعدادات.",
+            " and its soft, hover and border variants. Change it in Settings.",
           )}
         </p>
       </section>
