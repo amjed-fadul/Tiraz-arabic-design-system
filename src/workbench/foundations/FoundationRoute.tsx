@@ -3,6 +3,8 @@ import { ArabicRtlPage } from "./ArabicRtlPage";
 import { ColorsPage } from "./ColorsPage";
 import type { FoundationPageProps } from "./FoundationPage";
 import { GetStartedPage } from "./GetStartedPage";
+import { IconsPage } from "./IconsPage";
+import { MotionPage } from "./MotionPage";
 import { ShapePage } from "./ShapePage";
 import { SpacingPage } from "./SpacingPage";
 import { TypographyPage } from "./TypographyPage";
@@ -16,6 +18,8 @@ const pages: Record<
   typography: TypographyPage,
   spacing: SpacingPage,
   shape: ShapePage,
+  motion: MotionPage,
+  icons: IconsPage,
   "arabic-rtl": ArabicRtlPage,
 };
 

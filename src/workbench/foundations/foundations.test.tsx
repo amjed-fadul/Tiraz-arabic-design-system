@@ -51,6 +51,8 @@ it.each([
       "Typography",
       "Spacing",
       "Shape and elevation",
+      "Motion",
+      "Icons",
       "Arabic and RTL",
       "Changelog",
     ],
@@ -65,6 +67,8 @@ it.each([
       "الخطوط",
       "المسافات",
       "الأشكال والظلال",
+      "الحركة",
+      "الأيقونات",
       "العربية والاتجاه",
       "سجل التغييرات",
     ],
@@ -100,7 +104,8 @@ it("keeps Installation on /start and titles the document", () => {
 it.each([
   ["get-started", undefined, "Installation"],
   ["colors", "Installation", "Typography"],
-  ["arabic-rtl", "Shape and elevation", "Changelog"],
+  ["motion", "Shape and elevation", "Icons"],
+  ["arabic-rtl", "Icons", "Changelog"],
 ] as const)("%s links Previous %s and Next %s", async (id, prev, next) => {
   at(`/foundations/${id}`);
   const pager = screen.getByRole("navigation", {

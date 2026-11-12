@@ -9,6 +9,8 @@ import { DropIcon } from "@phosphor-icons/react/dist/csr/Drop";
 import { TextAaIcon } from "@phosphor-icons/react/dist/csr/TextAa";
 import { RulerIcon } from "@phosphor-icons/react/dist/csr/Ruler";
 import { ShapesIcon } from "@phosphor-icons/react/dist/csr/Shapes";
+import { WindIcon } from "@phosphor-icons/react/dist/csr/Wind";
+import { SmileyIcon } from "@phosphor-icons/react/dist/csr/Smiley";
 import { TranslateIcon } from "@phosphor-icons/react/dist/csr/Translate";
 import { PaletteIcon } from "@phosphor-icons/react/dist/csr/Palette";
 import { SparkleIcon } from "@phosphor-icons/react/dist/csr/Sparkle";
@@ -46,6 +48,8 @@ const foundationIcons = {
   typography: TextAaIcon,
   spacing: RulerIcon,
   shape: ShapesIcon,
+  motion: WindIcon,
+  icons: SmileyIcon,
   "arabic-rtl": TranslateIcon,
   changelog: ClockCounterClockwiseIcon,
 } as const satisfies Record<string, typeof RocketLaunchIcon>;

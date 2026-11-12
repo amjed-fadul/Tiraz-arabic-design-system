@@ -41,6 +41,16 @@ export const foundationOrder: readonly FoundationEntry[] = [
     route: { kind: "foundation", id: "shape" },
   },
   {
+    key: "motion",
+    name: ["الحركة", "Motion"],
+    route: { kind: "foundation", id: "motion" },
+  },
+  {
+    key: "icons",
+    name: ["الأيقونات", "Icons"],
+    route: { kind: "foundation", id: "icons" },
+  },
+  {
     key: "arabic-rtl",
     name: ["العربية والاتجاه", "Arabic and RTL"],
     route: { kind: "foundation", id: "arabic-rtl" },

@@ -19,6 +19,8 @@ export const foundationIds = [
   "typography",
   "spacing",
   "shape",
+  "motion",
+  "icons",
   "arabic-rtl",
 ] as const;
 export type FoundationId = (typeof foundationIds)[number];
