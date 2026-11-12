@@ -53,6 +53,7 @@ import { themeStyle } from "./theme-customization";
 import { Inspector } from "./Inspector";
 import { Playground } from "./Playground";
 import { PreviewFrame } from "./PreviewFrame";
+import { AgentWorkspaceDocs } from "./AgentWorkspaceDocs";
 import { canReplayPlayground } from "./demo-capabilities";
 import { demoStates, propsOf, stateOf, translateStates } from "./demo-states";
 import { docsNotes } from "./docs-notes";
@@ -428,26 +429,28 @@ export function Workbench() {
   const code = generateCode(active, model, systemConfig, language, brandColors),
     prompt = generatePrompt(active, model, systemConfig, language, brandColors);
   const pageName =
-    route.kind === "library"
-      ? galleryName(route.category)
-      : route.kind === "start"
-        ? (["التثبيت", "Installation"] as const)
-        : route.kind === "changelog"
-          ? (["سجل التغييرات", "Changelog"] as const)
-          : route.kind === "foundation"
-            ? foundationOrder.find(
-                (entry) =>
-                  entry.route.kind === "foundation" &&
-                  entry.route.id === route.id,
-              )!.name
-            : route.kind === "illustrations"
-              ? (illustrations.find((item) => item.id === route.id)?.name ??
-                (["الرسوم التوضيحية", "Illustrations"] as const))
-              : route.kind === "not-found"
-                ? (["الصفحة غير موجودة", "Page not found"] as const)
-                : screenSlug
-                  ? screens.find((item) => item.slug === screenSlug)!.name
-                  : current.name;
+    route.kind === "workspace"
+      ? (["مساحة عمل سياقية", "Contextual workspace"] as const)
+      : route.kind === "library"
+        ? galleryName(route.category)
+        : route.kind === "start"
+          ? (["التثبيت", "Installation"] as const)
+          : route.kind === "changelog"
+            ? (["سجل التغييرات", "Changelog"] as const)
+            : route.kind === "foundation"
+              ? foundationOrder.find(
+                  (entry) =>
+                    entry.route.kind === "foundation" &&
+                    entry.route.id === route.id,
+                )!.name
+              : route.kind === "illustrations"
+                ? (illustrations.find((item) => item.id === route.id)?.name ??
+                  (["الرسوم التوضيحية", "Illustrations"] as const))
+                : route.kind === "not-found"
+                  ? (["الصفحة غير موجودة", "Page not found"] as const)
+                  : screenSlug
+                    ? screens.find((item) => item.slug === screenSlug)!.name
+                    : current.name;
   const pageTitle = localize(pageName, language);
   useEffect(() => {
     document.title = `${language === "ar" ? "طِراز" : "Tiraz"} · ${pageTitle}`;
@@ -1164,6 +1167,8 @@ export function Workbench() {
                   category={route.category}
                   navigate={navigate}
                 />
+              ) : route.kind === "workspace" ? (
+                <AgentWorkspaceDocs language={language} config={systemConfig} />
               ) : route.kind === "start" ? (
                 <QuickStart language={language} />
               ) : route.kind === "changelog" ? (
@@ -1361,6 +1366,20 @@ export function Workbench() {
                     prompt={prompt}
                     language={language}
                   />
+                  {active === "task-starter" && (
+                    <p className="agent-workspace-related">
+                      <SiteLink
+                        route={{ kind: "workspace" }}
+                        navigate={navigate}
+                      >
+                        {t(
+                          "استكشف مساحة العمل السياقية",
+                          "Explore Contextual workspace",
+                        )}{" "}
+                        →
+                      </SiteLink>
+                    </p>
+                  )}
                   {notes && (
                     <section
                       className="guidelines-section"

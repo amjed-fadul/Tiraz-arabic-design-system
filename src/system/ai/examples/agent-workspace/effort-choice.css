@@ -1,0 +1,137 @@
+/* Example-owned tier aliases. They express effort, never execution status. */
+.tz-example-effort {
+  --effort-quick: var(--chart-sage);
+  --effort-balanced: var(--chart-blue);
+  --effort-deep: #89621f;
+  --effort-thorough: var(--chart-plum);
+  --effort-ink: var(--effort-quick);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  block-size: 28px;
+  margin-inline-start: auto;
+  padding-inline: var(--space-2) 4px;
+  border-radius: var(--radius-control);
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  cursor: ew-resize;
+  touch-action: none;
+  user-select: none;
+}
+.tiraz-system[data-theme="dark"] .tz-example-effort {
+  --effort-deep: #e7bd76;
+}
+.tz-example-effort[data-level="1"] {
+  --effort-ink: var(--effort-balanced);
+}
+.tz-example-effort[data-level="2"] {
+  --effort-ink: var(--effort-deep);
+}
+.tz-example-effort[data-level="3"] {
+  --effort-ink: var(--effort-thorough);
+}
+.tz-example-effort:hover,
+.tz-example-effort[data-dragging="true"] {
+  background: var(--surface-well);
+  color: var(--text);
+}
+.tz-example-effort:has(.tz-example-effort-input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+/* Every name shares one cell, so the widest sets the width and nothing jumps. */
+.tz-example-effort-name {
+  display: grid;
+  justify-items: end;
+}
+.tz-example-effort-name > span {
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.tz-example-effort-name > [data-current="true"] {
+  visibility: visible;
+}
+/* Four segments: gaps cut the fill, so the level reads at a glance. */
+.tz-example-effort-track {
+  position: relative;
+  inline-size: 64px;
+  block-size: 12px;
+  border-radius: 4px;
+  background: var(--surface-well);
+  box-shadow: inset 0 0 0 1px var(--border);
+  overflow: hidden;
+}
+.tz-example-effort-fill {
+  position: absolute;
+  inset: 2px;
+  border-radius: 2px;
+  background: var(--effort-ink);
+  transform: scaleX(var(--fill, 0.5));
+  transform-origin: left center;
+}
+.tz-example-effort-track:dir(rtl) .tz-example-effort-fill {
+  transform-origin: right center;
+}
+.tz-example-effort-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent calc(25% - 1px),
+    var(--surface-tray) calc(25% - 1px) calc(25% + 1px),
+    transparent calc(25% + 1px) calc(50% - 1px),
+    var(--surface-tray) calc(50% - 1px) calc(50% + 1px),
+    transparent calc(50% + 1px) calc(75% - 1px),
+    var(--surface-tray) calc(75% - 1px) calc(75% + 1px),
+    transparent calc(75% + 1px)
+  );
+}
+/* The native range stays focusable for the keyboard; the meter takes the pointer. */
+.tz-example-effort-input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.tz-example-effort[data-disabled="true"] {
+  opacity: var(--disabled-opacity);
+  cursor: default;
+}
+.tz-example-effort[data-disabled="true"]:hover {
+  background: none;
+  color: var(--text-secondary);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tz-example-effort:not([data-dragging="true"]) .tz-example-effort-fill {
+    transition:
+      transform var(--motion-state) var(--ease-out),
+      background-color var(--motion-state) var(--ease-out);
+  }
+  .tz-example-effort-name > [data-current="true"] {
+    animation: tz-example-effort-swap var(--motion-enter) var(--ease-out);
+  }
+}
+@keyframes tz-example-effort-swap {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+}
+.tiraz-system[data-reduced-motion="true"] .tz-example-effort-fill,
+.tiraz-system[data-reduced-motion="true"] .tz-example-effort-name > span {
+  transition: none;
+  animation: none;
+}
+@media (forced-colors: active) {
+  .tz-example-effort-track {
+    border: 1px solid CanvasText;
+  }
+  .tz-example-effort-fill {
+    background: Highlight;
+  }
+}

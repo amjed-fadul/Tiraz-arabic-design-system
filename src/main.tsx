@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, Suspense } from "react";
 import type { ComponentType } from "react";
 import { createRoot } from "react-dom/client";
 import "@fontsource/ibm-plex-sans-arabic/400.css";
@@ -20,11 +20,14 @@ import { TeamSettings } from "./examples/team-settings/TeamSettings";
 import { SalesPipeline } from "./examples/sales-pipeline/SalesPipeline";
 import { screenPath } from "./examples/frame/screen";
 import { Workbench } from "./workbench/Workbench";
+import { StandaloneWorkspace } from "./workbench/StandaloneWorkspace";
 import { StandalonePlayground } from "./workbench/StandalonePlayground";
 import { navigationCatalog } from "./workbench/catalog";
 import { SiteAnalytics } from "./SiteAnalytics";
+import { LazyAgentComposerStudy } from "./experiments/agent-composer/LazyAgentComposerStudy";
 // Standalone example screens.
 const routes: { path: string; component: ComponentType }[] = [
+  { path: "/examples/contextual-workspace", component: StandaloneWorkspace },
   { path: screenPath("dashboard"), component: Dashboard },
   { path: screenPath("month-end-close"), component: MonthEndClose },
   { path: screenPath("invoices"), component: Invoices },
@@ -45,7 +48,11 @@ const playground = navigationCatalog.find(
 );
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {Page ? (
+    {path === "/experiments/agent-composer" ? (
+      <Suspense fallback={null}>
+        <LazyAgentComposerStudy />
+      </Suspense>
+    ) : Page ? (
       <Page />
     ) : playground ? (
       <StandalonePlayground component={playground.id} />

@@ -831,6 +831,70 @@ The host passes `context` (`ContextItem[]`: `id`, `label`, optional `kind` and `
 
 States: empty, writing, choosing a mode, submitting (the text area is read-only and Send shows progress) and disabled. The pattern's one polite region speaks a record joining or leaving `context`, never the context it mounts with, and says «السياق: يقترب من الامتلاء» (`labels.contextStatus`) once each time the ring's status word changes. Set `announcement="off"` when the host owns announcements; context updates and submission errors then keep their visible text and input descriptions without live regions. Counts agree in Arabic («سجلّان مرفقان») and digits follow config.numerals. `appearance="plain"` is the composer inside a conversation. Its entry, ModelSelector and ContextMeter gained props for it; see Chat foundations and Selection, context and model controls.
 
+### Contextual agent workspace
+
+[AgentWorkspaceExample](examples/AgentWorkspaceExample.tsx) is a source-owned
+composition with its own Contextual workspace documentation page. It composes
+`ChatComposer`, `ChatThreadMessage`, `ModelSelector`, `Button` and `Tray`.
+It is not a new exported family or a TaskStarter variant. The composer keeps
+TaskStarter’s 38rem maximum width; messages and results appear above it.
+
+Activity panels hang off the composer, never inside the conversation, so opening,
+filling or closing one moves no message. Three agents each do one thing: the
+explorer traces the flow, the analyst reads the test notes alongside it, and the
+reviewer starts once both report. The sample run lasts about 26 seconds: Khayt plans for 2.5 seconds («Planning the review»), then the agents start one after another, report what they are doing along the way, and evidence arrives item by item. In wide containers Reading, Research and Checks
+sit in a rail on the composer’s leading side and the agents on its trailing side; each stack centers on the composer and is connected to it by a pipe
+in the composer tray's colour, with a socket where it leaves the composer and
+where it meets each card, and glides when a neighbour opens, grows or closes. Below
+50rem the panels wait as chips plugged into the composer’s top edge; a chip opens
+one card over the conversation. Actual host events attach a panel on its first
+activity. Completed and stopped panels stay open until closed; closing leaves a
+chip on the same thread that reopens it, returns focus to that chip and never
+stops execution. A closed panel never reopens on its own.
+
+Before the first request the composer waits near the top of the canvas under a
+short welcome, so it is in view as soon as the canvas is. The conversation's
+space stays reserved beneath it: the frame keeps its height, the first send lets
+the composer glide down to its place, and the page scrolls with it, so the
+composer stays where the person is looking while the conversation opens above.
+
+The latest reply’s panels are attached. Each reply keeps its own panel choices;
+an earlier reply offers Show activity, which reattaches its panels and moves focus
+to them. Messages settle on the composer and history grows upward; the bounded
+conversation follows output only when already near the bottom and not selecting
+text. Automatic activity never moves keyboard focus. With reduced motion, panels
+appear and leave without animation.
+
+The model and effort sit in the composer's top row, on the tray. Effort is a
+compact meter: the level's name and a four-segment track. Dragging anywhere on it
+moves the fill with the pointer, changes the name as each stop is crossed and
+settles on the nearest stop; a native range underneath carries the keyboard
+(arrows, Home, End, mirrored in RTL), the name «Effort» and the value, with the
+tradeoff as its description. Product levels must map to supported model
+parameters. Its example-local aliases use chart sage, blue and plum plus an ochre
+light/dark pair; these are tier colors, not success/warning meanings. No new
+public tokens or decorative gradients.
+
+Work time comes from host timestamps (`at` on each event), never from a guess.
+The reply reads «Worked for 26s · 3 agents» (or the live status and a ticking
+time while it runs, or «Stopped after …»); it opens onto each agent's task with
+its duration. Each agent card shows its role, state and elapsed time, the one
+thing it is doing, and a single line that fills when it is done and carries a
+sheen while it runs, never a guessed fraction. Expandable rows end in a plus that
+folds into a minus, and open content hangs from a thin thread; there are no
+disclosure triangles. An empty entry follows the page direction; typed text sets
+its own. Optional `agentAvatar` accepts a decorative node for each agent card and
+chip; the docs supply Khayt. Copying the source
+requires no mascot or workbench files.
+
+The example’s `agent-workspace/` helpers travel with editable source. The local
+fixture emits ordered events and sample evidence; it never calls a model, reads
+files or performs a search. Replace it with the authenticated application runtime,
+keep request settings immutable during a run, and ignore stale events on stop or
+replacement. Model/tool permissions, real outputs, approval requests, error recovery
+and cancellation acknowledgements remain host responsibilities. The effort meter,
+agent cards and composer-attached panels are example parts, not public APIs.
+
 ## Cited answer
 
 `CitedAnswer` answers a question and shows where each claim came from; [CitedAnswerExamples](examples/CitedAnswerExamples.tsx) plays the host. The host owns `status` (`thinking`, `writing`, `completed`, `failed` or `stopped`), the growing `content` (Markdown with `[n]` markers in ASCII, Arabic-Indic or Persian digits; `[1, 3]` or `[٢، ٣]` cites several, as adjacent chips), the `sources` it cites and every time. `sources` are `SourceReference`s whose `number` matches the markers; a marker with no source for any of its numbers stays as written, so supply every source the text cites. `thinking={{ elapsed, searched, steps }}` adds the thinking panel (`elapsed` in seconds, the sources found so far, and steps that are `pending`, `running` or `completed`); the first three sources show as chips, and a «+N» button shows the rest. It is open while thinking and folds when writing starts, unless the host controls it with `thinkingOpen` and `onThinkingOpenChange`. A stop or a failure before a word was written stops the panel too: it reads «أُوقف بعد ٦ث» or «تعثّر بعد ٦ث» and its thread stays still, so pass only the sources and steps that had arrived, and mark no unfinished step completed. Update `elapsed` at most once a second.

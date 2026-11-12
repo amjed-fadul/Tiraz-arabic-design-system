@@ -8,6 +8,32 @@
       "published": false,
       "changes": [
         {
+          "components": ["task-starter"],
+          "label": "AgentWorkspaceExample",
+          "type": "added",
+          "summary": {
+            "en": "is a new example of a contextual agent workspace you can copy: panels hang off the composer, three single-task agents, and an effort control.",
+            "ar": "مثال جديد لمساحة عمل سياقية مع المساعد يمكنك نسخها: لوحات تتدلّى من مربع الكتابة، وثلاثة وكلاء لكلٍّ منهم مهمة واحدة، وتحكّم في مستوى الجهد."
+          },
+          "files": [
+            "ai/examples/AgentWorkspaceExample.tsx",
+            "ai/examples/agent-workspace/EffortChoice.tsx",
+            "ai/examples/agent-workspace/WorkspacePanel.tsx",
+            "ai/examples/agent-workspace/WorkspaceRails.tsx",
+            "ai/examples/agent-workspace/WorkspaceTurn.tsx",
+            "ai/examples/agent-workspace/activity-runtime.ts",
+            "ai/examples/agent-workspace/demo-host.ts",
+            "ai/examples/agent-workspace/effort-choice.css",
+            "ai/examples/agent-workspace/useActivityPanels.ts",
+            "ai/examples/agent-workspace/useWorkspacePanels.ts",
+            "ai/examples/agent-workspace/work-time.ts",
+            "ai/examples/agent-workspace/workspace-copy.ts",
+            "ai/examples/agent-workspace/workspace.css",
+            "ai/registry.json",
+            "ai/README.md"
+          ]
+        },
+        {
           "components": [],
           "area": "cli",
           "type": "added",

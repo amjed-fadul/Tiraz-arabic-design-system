@@ -1,0 +1,84 @@
+.agent-workspace-docs {
+  margin-block: var(--space-10);
+  scroll-margin-block-start: var(--space-8);
+}
+.agent-workspace-docs .section-title-row {
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.agent-workspace-docs-label,
+.agent-workspace-docs-note {
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.agent-workspace-docs-intro {
+  max-inline-size: 72ch;
+  margin-block: var(--space-2) var(--space-5);
+  color: var(--text-secondary);
+  font-size: var(--text-body);
+  line-height: var(--leading-reading);
+}
+.agent-workspace-docs-note {
+  margin-block: var(--space-3) var(--space-6);
+}
+.agent-workspace-docs-parts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  margin: 0;
+}
+.agent-workspace-docs-parts dt {
+  font-size: var(--text-label);
+  font-weight: 600;
+  margin-block-end: var(--space-2);
+}
+.agent-workspace-docs-parts dd {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-reading);
+}
+@media (width < 760px) {
+  .agent-workspace-docs-parts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.site-workspace .agent-workspace-docs {
+  margin-block: 0;
+}
+.agent-workspace-related a {
+  color: var(--action);
+  font-size: var(--text-label);
+}
+.workspace-preview {
+  min-block-size: 100vh;
+  padding: var(--space-6);
+  background: var(--surface-page);
+}
+.workspace-preview-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-inline-size: 80rem;
+  margin: 0 auto var(--space-10);
+}
+.workspace-preview-header a {
+  color: var(--text);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+}
+.workspace-preview-header h1 {
+  flex: 1;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}
+@media (width < 600px) {
+  .workspace-preview {
+    padding: var(--space-3);
+  }
+  .workspace-preview-header {
+    gap: var(--space-1);
+  }
+}

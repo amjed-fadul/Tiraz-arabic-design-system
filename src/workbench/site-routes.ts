@@ -32,6 +32,7 @@ export type SiteRoute =
   | { kind: "start" }
   | { kind: "changelog" }
   | { kind: "foundation"; id: FoundationId }
+  | { kind: "workspace" }
   | { kind: "illustrations"; id?: IllustrationId }
   | { kind: "not-found" };
 
@@ -43,6 +44,8 @@ export function routePath(route: SiteRoute): string {
       return `/library/components/${route.id}`;
     case "screen":
       return `/library/screens/${route.slug}`;
+    case "workspace":
+      return "/library/contextual-workspace";
     case "start":
       return "/start";
     case "changelog":
@@ -74,6 +77,7 @@ export function readSiteRoute(
     ].includes(path)
   )
     return { kind: "library", category: "screens" };
+  if (path === "/library/contextual-workspace") return { kind: "workspace" };
   if (path === "/library")
     return {
       kind: "library",

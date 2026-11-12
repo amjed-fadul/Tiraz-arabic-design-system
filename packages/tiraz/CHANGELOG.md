@@ -6,6 +6,7 @@ What changed in each Tiraz release, and how to update source you copied into you
 
 ### 0.1.3-preview.6
 
+- **AgentWorkspaceExample** is a new example of a contextual agent workspace you can copy: panels hang off the composer, three single-task agents, and an effort control. _(Added)_
 - **CLI** now lists what changed for your installed components, and any manual steps, when you run `tiraz update`. _(Added)_
 - **Package** ships a `CHANGELOG.md` and `ai/changelog.json` that list each release's changes, files and manual steps for people and agents. _(Added)_
 
