@@ -39,7 +39,7 @@ export function GetStartedPage({ language, navigate }: FoundationPageProps) {
       navigate={navigate}
       title={t("ابدأ هنا", "Get started")}
       lede={t(
-        "نظام تصميم لـ React يبدأ من العربية، تنسخه إلى تطبيقك وتملكه.",
+        "نظام تصميم لتطبيقات React يبدأ من العربية، تنسخه إلى تطبيقك وتملكه.",
         "An Arabic-first React design system that you copy into your app and own.",
       )}
     >
