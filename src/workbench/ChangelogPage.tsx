@@ -50,9 +50,13 @@ const typeLabels: Record<Change["type"], readonly [string, string]> = {
   deprecated: ["أُهمل", "Deprecated"],
   removed: ["أُزيل", "Removed"],
 };
-const latestStable = releases.find(
-  (release) => release.published && !release.version.includes("-"),
-)?.version;
+/** Releases grouped by day, keeping the authored newest-first order. */
+const days: { date: string; releases: Release[] }[] = [];
+for (const release of releases) {
+  const last = days.at(-1);
+  if (last?.date === release.date) last.releases.push(release);
+  else days.push({ date: release.date, releases: [release] });
+}
 
 /** Renders `code` spans inside authored text. */
 function Rich({ text }: { text: string }) {
@@ -118,38 +122,12 @@ export function ChangelogPage({
 }) {
   const t = words(language);
   const locale = numberLocale({ numerals: "arab" }, language);
-  // Day-first English keeps "28 Oct 2026" unambiguous.
   const date = new Intl.DateTimeFormat(language === "ar" ? locale : "en-GB", {
     day: "numeric",
-    month: "short",
+    month: "long",
     year: "numeric",
     timeZone: "UTC",
   });
-  const number = new Intl.NumberFormat(locale);
-  const channel = (release: Release) =>
-    !release.published
-      ? t("غير منشور على npm", "Not on npm")
-      : release.version.includes("-")
-        ? t("معاينة", "Preview")
-        : release.version === latestStable
-          ? t("الأحدث", "Latest")
-          : t("مستقر", "Stable");
-  const updateLine = (steps: number) => {
-    if (steps === 0)
-      return t(
-        "نفّذ `tiraz update`. لا خطوات يدوية.",
-        "Run `tiraz update`. No manual steps.",
-      );
-    if (language === "en")
-      return `Run \`tiraz update\`. ${steps === 1 ? "1 manual step" : `${steps} manual steps`}.`;
-    const count =
-      steps === 1
-        ? "خطوة يدوية واحدة"
-        : steps === 2
-          ? "خطوتان يدويتان"
-          : `${number.format(steps)} ${steps <= 10 ? "خطوات يدوية" : "خطوة يدوية"}`;
-    return `نفّذ \`tiraz update\`. ${count}.`;
-  };
   return (
     <article className="changelog-page" dir={language === "ar" ? "rtl" : "ltr"}>
       <header className="changelog-intro">
@@ -161,66 +139,62 @@ export function ChangelogPage({
           )}
         </p>
       </header>
-      {releases.map((release, index) => {
-        const steps = release.changes.reduce(
-          (sum, change) => sum + (change.steps?.length ?? 0),
-          0,
-        );
-        return (
-          <section
-            key={release.version}
-            id={release.version}
-            className="changelog-release"
-            aria-labelledby={`changelog-${release.version}`}
-          >
-            <h2 id={`changelog-${release.version}`}>
-              <span className="changelog-version" dir="ltr">
+      {days.map((day) => (
+        <section
+          key={day.date}
+          id={day.date}
+          className="changelog-day"
+          aria-labelledby={`changelog-${day.date}`}
+        >
+          <h2 id={`changelog-${day.date}`}>
+            {date.format(new Date(`${day.date}T00:00:00Z`))}
+          </h2>
+          {day.releases.map((release) => (
+            <div
+              key={release.version}
+              id={release.version}
+              className="changelog-release"
+            >
+              <h3 className="changelog-version" dir="ltr">
                 {release.version}
-              </span>
-              <span className="changelog-meta">
-                {date.format(new Date(`${release.date}T00:00:00Z`))} ·{" "}
-                {channel(release)}
-              </span>
-            </h2>
-            {index < releases.length - 1 && (
-              <p className="changelog-update">
-                <Rich text={updateLine(steps)} />
-              </p>
-            )}
-            <ul className="changelog-changes">
-              {release.changes.map((change, changeIndex) => (
-                <li key={changeIndex}>
-                  <p className="changelog-change">
-                    <strong className="changelog-label">
-                      <ChangeLabel
-                        change={change}
-                        language={language}
-                        navigate={navigate}
-                      />
-                    </strong>{" "}
-                    <Rich text={change.summary[language]} />
-                  </p>
-                  <p className="changelog-types">
-                    {change.breaking && (
-                      <span className="changelog-type changelog-breaking">
-                        {t("تغيير جذري", "Breaking")}
-                      </span>
-                    )}
-                    <span className="changelog-type">
-                      {t(...typeLabels[change.type])}
-                    </span>
-                  </p>
-                  {change.steps?.map((step, stepIndex) => (
-                    <p key={stepIndex} className="changelog-step">
-                      <Rich text={step[language]} />
-                    </p>
-                  ))}
-                </li>
-              ))}
-            </ul>
-          </section>
-        );
-      })}
+              </h3>
+              <ul className="changelog-changes">
+                {release.changes.map((change, changeIndex) => (
+                  <li key={changeIndex}>
+                    <div className="changelog-item">
+                      <p className="changelog-change">
+                        <strong className="changelog-label">
+                          <ChangeLabel
+                            change={change}
+                            language={language}
+                            navigate={navigate}
+                          />
+                        </strong>{" "}
+                        <Rich text={change.summary[language]} />
+                      </p>
+                      <p className="changelog-types">
+                        {change.breaking && (
+                          <span className="changelog-type changelog-breaking">
+                            {t("تغيير جذري", "Breaking")}
+                          </span>
+                        )}
+                        <span className="changelog-type">
+                          {t(...typeLabels[change.type])}
+                        </span>
+                      </p>
+                      {change.steps?.map((step, stepIndex) => (
+                        <p key={stepIndex} className="changelog-step">
+                          <Rich text={step[language]} />
+                        </p>
+                      ))}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </section>
+      ))}
     </article>
   );
 }

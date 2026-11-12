@@ -37,26 +37,52 @@ it("opens the page from the Getting started sidebar link", async () => {
   ).toBeVisible();
 });
 
-it("lists the newest release with channel and date, linking component names", () => {
+it("groups releases under date headings, linking component names", () => {
   at("/changelog");
-  const newest = release("0.1.3-preview.5");
-  expect(within(newest).getByRole("heading", { level: 2 }).textContent).toMatch(
-    /0\.1\.3-preview\.5\s*28 Oct 2026 · Preview/,
+  const day = document.getElementById("2026-10-28") as HTMLElement;
+  expect(within(day).getByRole("heading", { level: 2 }).textContent).toBe(
+    "28 October 2026",
   );
-  expect(newest.textContent).toContain("Run tiraz update. No manual steps.");
+  const newest = release("0.1.3-preview.5");
+  expect(day).toContainElement(newest);
+  expect(within(newest).getByRole("heading", { level: 3 }).textContent).toBe(
+    "0.1.3-preview.5",
+  );
   expect(
     within(newest).getByRole("link", { name: "ChatThread" }),
   ).toHaveAttribute("href", "/library/components/chat-thread");
   expect(newest.querySelector("code")).not.toBeNull();
 });
 
-it("shows the manual step of 0.1.2 and no update line for the oldest release", () => {
+it("puts the three releases of 27 October under one date, newest first", () => {
   at("/changelog");
-  expect(release("0.1.2").textContent).toContain(
-    "Run tiraz update. 1 manual step.",
-  );
+  const day = document.getElementById("2026-10-27") as HTMLElement;
+  expect(
+    within(day)
+      .getAllByRole("heading", { level: 2 })
+      .map((h) => h.textContent),
+  ).toEqual(["27 October 2026"]);
+  expect(
+    within(day)
+      .getAllByRole("heading", { level: 3 })
+      .map((h) => h.textContent),
+  ).toEqual(["0.1.3-preview.3", "0.1.3-preview.2", "0.1.3-preview.1"]);
+});
+
+it("renders changes as list items and drops channel and update lines", () => {
+  at("/changelog");
+  const items = release("0.1.3-preview.5").querySelectorAll("li");
+  expect(items.length).toBeGreaterThan(0);
+  for (const item of items) expect(item.parentElement?.tagName).toBe("UL");
+  const text = document.querySelector(".changelog-page")!.textContent!;
+  expect(text).not.toMatch(/Preview|Latest|Stable|Not on npm/);
+  expect(text).not.toContain("Run tiraz update");
+  expect(text).not.toMatch(/manual steps?\./);
+});
+
+it("keeps the manual step notes of 0.1.2", () => {
+  at("/changelog");
   expect(release("0.1.2").querySelector(".changelog-step")).not.toBeNull();
-  expect(release("0.1.0").querySelector(".changelog-update")).toBeNull();
 });
 
 it("renders Arabic labels in a right-to-left page", () => {
@@ -67,5 +93,6 @@ it("renders Arabic labels in a right-to-left page", () => {
   const page = document.querySelector(".changelog-page")!;
   expect(page).toHaveAttribute("dir", "rtl");
   expect(page.textContent).toContain("أُضيف");
-  expect(release("0.1.2").textContent).toContain("خطوة يدوية واحدة");
+  expect(page.textContent).toContain("٢٨ أكتوبر ٢٠٢٦");
+  expect(page.textContent).not.toContain("نفّذ");
 });

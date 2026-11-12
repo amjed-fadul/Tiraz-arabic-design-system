@@ -107,44 +107,31 @@ export function validateChangelog(
     );
 }
 
-function channel(release, latestStable) {
-  if (!release.published) return "Not on npm";
-  if (semver.prerelease(release.version)) return "Preview";
-  return release === latestStable ? "Latest" : "Stable";
-}
-
 export function renderChangelogMarkdown(changelog, { registry }) {
   const names = new Map(
     registry.components.map((component) => [component.id, component.api]),
-  );
-  const latestStable = changelog.releases.find(
-    (release) => release.published && !semver.prerelease(release.version),
   );
   const lines = [
     "# Changelog",
     "",
     "What changed in each Tiraz release, and how to update source you copied into your app. Generated from `source/system/ai/changelog.json`; full notes at https://tiraz.dev/changelog.",
   ];
+  const format = new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+  let currentDate;
   for (const release of changelog.releases) {
-    const stepCount = release.changes.reduce(
-      (total, change) => total + (change.steps?.length ?? 0),
-      0,
-    );
-    const steps =
-      stepCount === 0
-        ? "No manual steps."
-        : stepCount === 1
-          ? "1 manual step."
-          : `${stepCount} manual steps.`;
-    lines.push(
-      "",
-      `## ${release.version} — ${release.date}`,
-      "",
-      release === changelog.releases.at(-1)
-        ? `_${channel(release, latestStable)}_`
-        : `_${channel(release, latestStable)} · Run \`tiraz update\`. ${steps}_`,
-      "",
-    );
+    if (release.date !== currentDate) {
+      currentDate = release.date;
+      lines.push(
+        "",
+        `## ${format.format(new Date(`${release.date}T00:00:00Z`))}`,
+      );
+    }
+    lines.push("", `### ${release.version}`, "");
     for (const change of release.changes) {
       const subject =
         change.label ??

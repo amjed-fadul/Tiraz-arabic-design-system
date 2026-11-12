@@ -25,35 +25,33 @@
   max-inline-size: 62ch;
   color: var(--text-secondary);
 }
-.changelog-page .changelog-release {
+.changelog-page .changelog-day {
   padding-block: var(--space-8);
   border-block-start: 1px solid var(--border);
   scroll-margin-block-start: calc(var(--space-10) * 3);
 }
-.changelog-page .changelog-release h2 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-1) var(--space-3);
+.changelog-page .changelog-day h2 {
   margin: 0;
   font-family: var(--font);
   font-size: var(--text-heading);
   font-weight: var(--weight-semibold);
   letter-spacing: normal;
-  overflow-wrap: anywhere;
 }
-.changelog-page .changelog-version {
+.changelog-page .changelog-release {
+  scroll-margin-block-start: calc(var(--space-10) * 3);
+}
+.changelog-page .changelog-release h3 {
+  margin: var(--space-5) 0 var(--space-2);
+  color: var(--text-secondary);
+  font-family: var(--font);
+  font-size: var(--text-label);
+  font-weight: var(--weight-semibold);
+  letter-spacing: normal;
   font-variant-numeric: tabular-nums;
+  text-align: start;
 }
-.changelog-page .changelog-meta {
-  color: var(--text-muted);
-  font-size: var(--text-label);
-  font-weight: var(--weight-regular, 400);
-}
-.changelog-page .changelog-update {
-  margin-block-start: var(--space-2);
-  color: var(--text-muted);
-  font-size: var(--text-label);
+.changelog-page .changelog-day h2 + .changelog-release h3 {
+  margin-block-start: var(--space-4);
 }
 .changelog-page code {
   font-family: var(--font-mono, ui-monospace, monospace);
@@ -62,22 +60,26 @@
 }
 .changelog-page .changelog-changes {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-3);
   max-inline-size: 46rem;
-  margin: var(--space-6) 0 0;
+  margin: 0;
   padding: 0;
-  list-style: none;
+  padding-inline-start: var(--space-5);
+  list-style: disc;
+}
+.changelog-page .changelog-changes > li::marker {
+  color: var(--text-muted);
 }
 /* Text on the start side, a steady column of type labels on the end side;
    manual steps sit under the text. */
-.changelog-page .changelog-changes > li {
+.changelog-page .changelog-changes .changelog-item {
   display: grid;
   /* A fixed label column keeps text and step edges aligned in every release. */
   grid-template-columns: minmax(0, 1fr) 6rem;
   column-gap: var(--space-5);
   align-items: baseline;
 }
-.changelog-page .changelog-changes > li > .changelog-step {
+.changelog-page .changelog-item > .changelog-step {
   grid-column: 1;
 }
 .changelog-page .changelog-types {
@@ -88,7 +90,7 @@
 }
 /* Phones: labels move under the text instead of squeezing it. */
 @media (max-width: 30rem) {
-  .changelog-page .changelog-changes > li {
+  .changelog-page .changelog-item {
     grid-template-columns: minmax(0, 1fr);
   }
   .changelog-page .changelog-types {

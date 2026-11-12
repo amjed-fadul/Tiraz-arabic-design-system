@@ -185,15 +185,13 @@ describe("changelog", () => {
     ],
   ])("rejects %s", (_name, edit, message) => rejects(edit, message));
 
-  it("renders headings, derived lines, labels and manual steps", () => {
+  it("renders date headings, version headings, labels and manual steps", () => {
     const markdown = renderChangelogMarkdown(fixture(), inputs);
     expect(markdown).toMatch(/^# Changelog\n/);
-    expect(markdown).toContain("## 0.2.0-preview.1 — 2026-11-01");
-    expect(markdown).toContain(
-      "_Preview · Run `tiraz update`. 1 manual step._",
-    );
-    expect(markdown).toContain("\n_Latest_\n");
-    expect(markdown).not.toContain("_Latest ·");
+    expect(markdown).toContain("## 1 November 2026\n\n### 0.2.0-preview.1\n");
+    expect(markdown).toContain("## 1 October 2026\n\n### 0.1.0\n");
+    expect(markdown).not.toMatch(/Preview|Latest|Stable|Not on npm/);
+    expect(markdown).not.toContain("Run `tiraz update`");
     expect(markdown).toContain("- **Tip** has compound parts. _(Added)_");
     expect(markdown).toContain(
       "- **TaskRows** Empty state moved. _(Changed)_ _(Breaking)_",
@@ -205,13 +203,21 @@ describe("changelog", () => {
     expect(markdown).not.toContain("Tooltip.tsx");
   });
 
-  it("labels unpublished releases and pluralises manual steps", () => {
-    const changelog = fixture();
-    changelog.releases[0].published = false;
-    (changelog.releases[0].changes[0] as Change).steps = [both("One more.")];
-    const markdown = renderChangelogMarkdown(changelog, inputs);
-    expect(markdown).toContain(
-      "_Not on npm · Run `tiraz update`. 2 manual steps._",
-    );
+  it("groups releases of one day under a single date heading", () => {
+    const { changelog } = loadChangelogInputs();
+    const markdown = renderChangelogMarkdown(changelog, {
+      registry: loadChangelogInputs().registry,
+    });
+    const section = markdown
+      .split("\n## ")
+      .find((part) => part.startsWith("27 October 2026"))!;
+    expect(markdown).toContain("\n## 27 October 2026\n");
+    expect(markdown.match(/^## 27 October 2026$/gm)).toHaveLength(1);
+    expect(section.match(/^### /gm)).toHaveLength(3);
+    expect(section.match(/^### .*$/gm)).toEqual([
+      "### 0.1.3-preview.3",
+      "### 0.1.3-preview.2",
+      "### 0.1.3-preview.1",
+    ]);
   });
 });
