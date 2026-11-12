@@ -8,11 +8,12 @@ export const changelogOutput = "packages/tiraz/CHANGELOG.md";
 
 const types = ["added", "changed", "fixed", "deprecated", "removed"];
 const areas = ["provider", "tokens", "cli", "mascot", "package", "library"];
-const areaNames = {
-  provider: "Provider",
+/** Display label for library-wide changes, by area. */
+export const areaLabels = {
+  provider: "SystemProvider",
   tokens: "Tokens",
   cli: "CLI",
-  mascot: "Mascot",
+  mascot: "Khayt",
   package: "Package",
   library: "Library",
 };
@@ -77,6 +78,8 @@ export function validateChangelog(
           );
       } else if (change.area !== undefined)
         fail(`${where} may set area only when components is empty.`);
+      if (change.label !== undefined && !text(change.label))
+        fail(`${where} label must be a non-empty string.`);
       bilingual(change.summary, `${where} summary`);
       const steps = change.steps ?? [];
       if (!Array.isArray(steps)) fail(`${where} steps must be an array.`);
@@ -137,13 +140,17 @@ export function renderChangelogMarkdown(changelog, { registry }) {
       "",
       `## ${release.version} — ${release.date}`,
       "",
-      `_${channel(release, latestStable)} · Run \`tiraz update\`. ${steps}_`,
+      release === changelog.releases.at(-1)
+        ? `_${channel(release, latestStable)}_`
+        : `_${channel(release, latestStable)} · Run \`tiraz update\`. ${steps}_`,
       "",
     );
     for (const change of release.changes) {
-      const subject = change.components.length
-        ? change.components.map((id) => names.get(id)).join(", ")
-        : areaNames[change.area];
+      const subject =
+        change.label ??
+        (change.components.length
+          ? change.components.map((id) => names.get(id)).join(", ")
+          : areaLabels[change.area]);
       const label = `${change.type[0].toUpperCase()}${change.type.slice(1)}`;
       lines.push(
         `- **${subject}** ${change.summary.en} _(${label})_${change.breaking ? " _(Breaking)_" : ""}`,

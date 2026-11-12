@@ -49,8 +49,9 @@ const fixture = (): Changelog => ({
       changes: [
         {
           components: ["tooltip"],
+          label: "Tip",
           type: "added",
-          summary: both("Compound parts added."),
+          summary: both("has compound parts."),
           files: ["Tooltip.tsx"],
         },
         {
@@ -168,6 +169,11 @@ describe("changelog", () => {
       /en and ar/,
     ],
     [
+      "an empty label",
+      (c: Changelog) => (c.releases[0].changes[0].label = " "),
+      /label must be/,
+    ],
+    [
       "an unknown type",
       (c: Changelog) => (c.releases[0].changes[0].type = "improved"),
       /unknown type/,
@@ -186,10 +192,9 @@ describe("changelog", () => {
     expect(markdown).toContain(
       "_Preview · Run `tiraz update`. 1 manual step._",
     );
-    expect(markdown).toContain(
-      "_Latest · Run `tiraz update`. No manual steps._",
-    );
-    expect(markdown).toContain("- **Tooltip** Compound parts added. _(Added)_");
+    expect(markdown).toContain("\n_Latest_\n");
+    expect(markdown).not.toContain("_Latest ·");
+    expect(markdown).toContain("- **Tip** has compound parts. _(Added)_");
     expect(markdown).toContain(
       "- **TaskRows** Empty state moved. _(Changed)_ _(Breaking)_",
     );

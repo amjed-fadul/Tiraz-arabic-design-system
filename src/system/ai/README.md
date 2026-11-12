@@ -52,7 +52,7 @@ Read `ai/changelog.json` before updating source you copied. Releases are listed
 newest first. Each change names its `components` (registry ids; empty means a
 library-wide change with an `area`), a `type`, a one-sentence `summary`, the
 `files` it touched and, when copied source needs hand edits, `steps`. A change
-marked `breaking` always has steps. Do the manual steps by hand; `tiraz update`
+marked `breaking` always has steps; an optional `label` overrides the registry name shown for it. Do the manual steps by hand; `tiraz update`
 merges source but never performs them. Entries carry `en` and `ar` text. The
 same notes are at https://tiraz.dev/changelog.
 

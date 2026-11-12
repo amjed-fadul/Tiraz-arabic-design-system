@@ -11,8 +11,8 @@
           "components": ["chat-thread"],
           "type": "added",
           "summary": {
-            "en": "ChatThread accepts ChatThreadMessage parts as children, with plain-value props such as id, role, status and onRetry, as an alternative to the messages array; the existing messages form is unchanged.",
-            "ar": "يقبل ChatThread أجزاء ChatThreadMessage كعناصر فرعية بخصائص بسيطة مثل id وrole وstatus وonRetry كبديل لمصفوفة messages، ويبقى الاستخدام الحالي عبر messages كما هو."
+            "en": "accepts `ChatThreadMessage` parts as children. Existing use is unchanged.",
+            "ar": "يقبل الآن أجزاء `ChatThreadMessage` عناصرَ فرعية. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["ChatThread.tsx", "index.ts"]
         },
@@ -20,8 +20,8 @@
           "components": ["tool-chips"],
           "type": "added",
           "summary": {
-            "en": "ToolChips accepts ToolChip parts as children, each with its own onActivate, as an alternative to the items array; the existing items form is unchanged.",
-            "ar": "يقبل ToolChips أجزاء ToolChip كعناصر فرعية، لكل منها onActivate الخاص به، كبديل لمصفوفة items، ويبقى الاستخدام الحالي عبر items كما هو."
+            "en": "accepts `ToolChip` parts as children. Existing use is unchanged.",
+            "ar": "يقبل الآن أجزاء `ToolChip` عناصرَ فرعية. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["ToolChips.tsx", "index.ts"]
         },
@@ -29,8 +29,8 @@
           "components": ["task-starter"],
           "type": "changed",
           "summary": {
-            "en": "TaskStarter documents that onSubmit may take only the draft, as onSubmit(value); the type and behavior are unchanged.",
-            "ar": "يوثّق TaskStarter أن onSubmit يمكن أن يستقبل المسودة وحدها على شكل onSubmit(value)؛ النوع والسلوك دون تغيير."
+            "en": "documents `onSubmit(value)`: the handler may take just the draft. Behavior is unchanged.",
+            "ar": "يوضّح أن `onSubmit(value)` تكفيه المسودة وحدها. السلوك لم يتغيّر."
           },
           "files": ["TaskStarter.tsx"]
         },
@@ -38,8 +38,8 @@
           "components": ["sidebar"],
           "type": "added",
           "summary": {
-            "en": "SidebarItem, SidebarAction and SidebarDisclosure accept iconName, a plain string from the sidebarIconNames list, as an alternative to icon; existing icon usage is unchanged.",
-            "ar": "يقبل SidebarItem وSidebarAction وSidebarDisclosure الخاصية iconName، وهي نص بسيط من قائمة sidebarIconNames، كبديل لـ icon، ويبقى استخدام icon الحالي كما هو."
+            "en": "accepts `iconName`, a plain string, instead of an `icon` node. Existing use is unchanged.",
+            "ar": "يقبل الآن `iconName` نصًّا بسيطًا بدل عقدة `icon`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["Sidebar.tsx", "sidebar-icons.ts", "index.ts"]
         }
@@ -54,17 +54,28 @@
           "components": ["filter-bar"],
           "type": "added",
           "summary": {
-            "en": "FilterBar gains compound parts FilterBarRoot, FilterBarSearch and FilterBarChip with plain-value props; the existing FilterBar props are unchanged.",
-            "ar": "يحصل FilterBar على أجزاء مركّبة هي FilterBarRoot وFilterBarSearch وFilterBarChip بخصائص بسيطة، وتبقى خصائص FilterBar الحالية كما هي."
+            "en": "has compound parts `FilterBarRoot`, `FilterBarSearch` and `FilterBarChip`. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة: `FilterBarRoot` و`FilterBarSearch` و`FilterBarChip`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["FilterBar.tsx", "index.ts"]
         },
         {
           "components": ["toast"],
+          "label": "Toast",
           "type": "added",
           "summary": {
-            "en": "A declarative Toast part takes open, onOpenChange, title, description, tone and duration and works anywhere inside ToastProvider; ToastProviderProps is now exported and toast() is unchanged.",
-            "ar": "يتوفر جزء Toast تصريحي يأخذ open وonOpenChange وtitle وdescription وtone وduration ويعمل داخل ToastProvider في أي موضع؛ كما صار ToastProviderProps مُصدَّرًا، ولا تغيير على toast()."
+            "en": "can be declared as a `Toast` part inside `ToastProvider`. `toast()` is unchanged.",
+            "ar": "يمكن الآن تعريفه جزءًا `Toast` داخل `ToastProvider`. الدالة `toast()` لم تتغيّر."
+          },
+          "files": ["Toast.tsx", "index.ts"]
+        },
+        {
+          "components": ["toast"],
+          "label": "ToastProviderProps",
+          "type": "added",
+          "summary": {
+            "en": "is now exported.",
+            "ar": "صار مُصدَّرًا."
           },
           "files": ["Toast.tsx", "index.ts"]
         }
@@ -79,8 +90,8 @@
           "components": ["tabs"],
           "type": "added",
           "summary": {
-            "en": "Tabs gains compound parts TabsRoot, TabsList, TabsTrigger and TabsContent; the existing Tabs props and markup are unchanged.",
-            "ar": "يحصل Tabs على أجزاء مركّبة هي TabsRoot وTabsList وTabsTrigger وTabsContent، وتبقى خصائص Tabs الحالية وبنيته كما هي."
+            "en": "has compound parts such as `TabsRoot` and `TabsTrigger`. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة مثل `TabsRoot` و`TabsTrigger`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["Tabs.tsx", "index.ts"]
         },
@@ -88,8 +99,8 @@
           "components": ["accordion"],
           "type": "added",
           "summary": {
-            "en": "Accordion gains compound parts AccordionRoot, AccordionSection, AccordionTrigger and AccordionContent; the existing Accordion props and markup are unchanged.",
-            "ar": "يحصل Accordion على أجزاء مركّبة هي AccordionRoot وAccordionSection وAccordionTrigger وAccordionContent، وتبقى خصائص Accordion الحالية وبنيته كما هي."
+            "en": "has compound parts such as `AccordionRoot` and `AccordionSection`. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة مثل `AccordionRoot` و`AccordionSection`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["Accordion.tsx", "index.ts"]
         },
@@ -97,8 +108,8 @@
           "components": ["task-rows"],
           "type": "added",
           "summary": {
-            "en": "TaskRows gains compound parts TaskRowsRoot, TaskRowsRow and TaskRowsEmpty; the new TaskRowsRoot takes its empty state as a TaskRowsEmpty child rather than an emptyState prop, and the existing TaskRows is unchanged.",
-            "ar": "يحصل TaskRows على أجزاء مركّبة هي TaskRowsRoot وTaskRowsRow وTaskRowsEmpty؛ يأخذ TaskRowsRoot الجديد حالته الفارغة كعنصر TaskRowsEmpty بدل الخاصية emptyState، ويبقى TaskRows الحالي دون تغيير."
+            "en": "has compound parts, with the empty state set by a `TaskRowsEmpty` child. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة، وتُحدَّد حالته الفارغة بعنصر فرعي `TaskRowsEmpty`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["TaskRows.tsx", "index.ts"]
         }
@@ -113,8 +124,8 @@
           "components": ["select", "date-picker"],
           "type": "added",
           "summary": {
-            "en": "Select and DatePicker accept an optional collisionBoundary that limits their popup size and placement to an embedded surface; omitted, behavior is unchanged.",
-            "ar": "يقبل Select وDatePicker الخاصية الاختيارية collisionBoundary التي تحصر حجم النافذة المنبثقة وموضعها داخل سطح مضمَّن، وعند عدم تمريرها لا يتغير السلوك."
+            "en": "accept an optional `collisionBoundary` to keep popups inside an embedded surface.",
+            "ar": "يقبلان الآن `collisionBoundary` اختياريًّا لإبقاء النوافذ المنبثقة داخل سطح مضمَّن."
           },
           "files": [
             "Select.tsx",
@@ -127,8 +138,8 @@
           "components": ["modal"],
           "type": "added",
           "summary": {
-            "en": "Modal gains compound parts (Root, Trigger, Content, Body and Footer); the existing Modal props and markup are unchanged.",
-            "ar": "يحصل Modal على أجزاء مركّبة (Root وTrigger وContent وBody وFooter)، وتبقى خصائص Modal الحالية وبنيته كما هي."
+            "en": "has compound parts `Root`, `Trigger` and `Content`. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة: `Root` و`Trigger` و`Content`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["Modal.tsx"]
         },
@@ -136,8 +147,8 @@
           "components": ["sheet"],
           "type": "added",
           "summary": {
-            "en": "Sheet gains compound parts (Root, Trigger, Content, Body and Footer); the existing Sheet props and markup are unchanged.",
-            "ar": "يحصل Sheet على أجزاء مركّبة (Root وTrigger وContent وBody وFooter)، وتبقى خصائص Sheet الحالية وبنيته كما هي."
+            "en": "has compound parts `Root`, `Trigger` and `Content`. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة: `Root` و`Trigger` و`Content`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["Sheet.tsx"]
         },
@@ -145,8 +156,8 @@
           "components": ["dropdown"],
           "type": "added",
           "summary": {
-            "en": "DropdownMenu gains compound parts (Root, Trigger, Content, Item and Separator); the existing DropdownMenu props and markup are unchanged.",
-            "ar": "يحصل DropdownMenu على أجزاء مركّبة (Root وTrigger وContent وItem وSeparator)، وتبقى خصائص DropdownMenu الحالية وبنيته كما هي."
+            "en": "has compound parts `Root`, `Trigger` and `Content`. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة: `Root` و`Trigger` و`Content`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["DropdownMenu.tsx"]
         }
@@ -161,8 +172,8 @@
           "components": ["tooltip"],
           "type": "added",
           "summary": {
-            "en": "Tooltip gains compound parts TooltipRoot, TooltipTrigger and TooltipContent, with open, defaultOpen and onOpenChange; the existing Tooltip trigger and content props still work.",
-            "ar": "يحصل Tooltip على أجزاء مركّبة هي TooltipRoot وTooltipTrigger وTooltipContent مع open وdefaultOpen وonOpenChange، ولا تزال خصائص trigger وcontent الحالية تعمل."
+            "en": "has compound parts `TooltipRoot`, `TooltipTrigger` and `TooltipContent`. Existing use is unchanged.",
+            "ar": "صار له أجزاء مركّبة: `TooltipRoot` و`TooltipTrigger` و`TooltipContent`. الاستخدام الحالي لم يتغيّر."
           },
           "files": ["Tooltip.tsx", "components.css"]
         },
@@ -171,8 +182,8 @@
           "area": "provider",
           "type": "added",
           "summary": {
-            "en": "SystemProvider accepts portalContainer so popups and dialogs render inside an embedded host element; omitted, overlays keep their original destination.",
-            "ar": "يقبل SystemProvider الخاصية portalContainer لتُعرض النوافذ المنبثقة والحوارات داخل عنصر مضيف مضمَّن، وعند عدم تمريرها تبقى الوجهة الأصلية للطبقات كما هي."
+            "en": "accepts `portalContainer` to render popups and dialogs inside an embedded host. Omitted, nothing changes.",
+            "ar": "يقبل الآن `portalContainer` لعرض النوافذ المنبثقة والحوارات داخل عنصر مضيف مضمَّن. بدونه لا يتغيّر شيء."
           },
           "files": [
             "Provider.tsx",
@@ -202,8 +213,8 @@
           "area": "cli",
           "type": "added",
           "summary": {
-            "en": "tiraz add installs selected components instead of the whole library, and a user-owned tiraz.theme.css holds your colors, fonts and radius and is never overwritten.",
-            "ar": "يثبّت الأمر tiraz add المكوّنات التي تختارها بدل المكتبة كاملة، ويحتفظ ملف tiraz.theme.css الذي تملكه بألوانك وخطوطك ونصف القطر ولا يُستبدل أبدًا."
+            "en": "installs only the components you pick with `tiraz add`.",
+            "ar": "صار يثبّت المكوّنات التي تختارها فقط عبر `tiraz add`."
           }
         },
         {
@@ -211,16 +222,25 @@
           "area": "cli",
           "type": "added",
           "summary": {
-            "en": "tiraz update previews, prepares and applies reviewed merges of new Tiraz source into your copied components, keeping your local edits.",
-            "ar": "يعاين الأمر tiraz update دمج مصدر Tiraz الجديد في مكوّناتك المنسوخة ويجهّزه ويطبّقه بعد المراجعة، مع الحفاظ على تعديلاتك المحلية."
+            "en": "keeps your colors, fonts and radius in `tiraz.theme.css`, which it never overwrites.",
+            "ar": "صار يحفظ ألوانك وخطوطك ونصف القطر في `tiraz.theme.css`، ولا يستبدله أبدًا."
+          }
+        },
+        {
+          "components": [],
+          "area": "cli",
+          "type": "added",
+          "summary": {
+            "en": "updates copied components with `tiraz update`, merging new source and keeping your edits.",
+            "ar": "صار يحدّث المكوّنات المنسوخة عبر `tiraz update`، فيدمج المصدر الجديد ويحتفظ بتعديلاتك."
           }
         },
         {
           "components": ["chip"],
           "type": "added",
           "summary": {
-            "en": "New Chip component for shared filter and navigation chips.",
-            "ar": "مكوّن Chip جديد لرقائق التصفية والتنقل المشتركة."
+            "en": "is a new component for filter and navigation chips.",
+            "ar": "مكوّن جديد لرقائق التصفية والتنقل."
           },
           "files": ["Chip.tsx", "components.css", "index.ts"]
         },
@@ -229,8 +249,8 @@
           "area": "provider",
           "type": "added",
           "summary": {
-            "en": "SystemProvider accepts className, style and lang on its root for application layout and section language; omitted, the root is unchanged.",
-            "ar": "يقبل SystemProvider الخصائص className وstyle وlang على جذره لتخطيط التطبيق ولغة القسم، وعند عدم تمريرها يبقى الجذر كما هو."
+            "en": "accepts `className`, `style` and `lang` on its root. Omitted, nothing changes.",
+            "ar": "يقبل الآن `className` و`style` و`lang` على جذره. بدونها لا يتغيّر شيء."
           },
           "files": ["Provider.tsx"]
         }
@@ -254,13 +274,13 @@
           ],
           "type": "fixed",
           "summary": {
-            "en": "Text no longer sits slightly above center in buttons, badges, tabs, inputs, selects, menu items, sidebar labels and tags; component APIs are unchanged.",
-            "ar": "لم يعد النص مرفوعًا قليلًا عن المنتصف في الأزرار والشارات والتبويبات وحقول الإدخال وقوائم الاختيار وعناصر القوائم وعناوين الشريط الجانبي والوسوم؛ واجهات المكوّنات دون تغيير."
+            "en": "no longer lift text above center. APIs are unchanged.",
+            "ar": "لم تعد ترفع النص فوق المنتصف. الواجهات لم تتغيّر."
           },
           "steps": [
             {
-              "en": "In your copied components.css, remove the old --optical-lift overrides, keeping your own changes.",
-              "ar": "في ملف components.css المنسوخ لديك، احذف تجاوزات --optical-lift القديمة مع الإبقاء على تعديلاتك."
+              "en": "Remove the old `--optical-lift` overrides from your copied `components.css`, keeping your own changes.",
+              "ar": "احذف تجاوزات `--optical-lift` القديمة من `components.css` المنسوخ، مع الإبقاء على تعديلاتك."
             }
           ],
           "files": ["components.css"]
@@ -277,13 +297,13 @@
           "area": "mascot",
           "type": "changed",
           "summary": {
-            "en": "The Khayt working state is now the Mini weaving loop; agent colors, pause behavior and reduced motion work with the same props.",
-            "ar": "صارت حالة working لـ Khayt هي حلقة النسج المصغّرة؛ وتعمل ألوان الوكيل والإيقاف المؤقت والحركة المخفّفة بالخصائص نفسها."
+            "en": "now weaves in the Mini loop while working. Props are unchanged.",
+            "ar": "صار ينسج في حلقة Mini المصغّرة أثناء العمل. الخصائص لم تتغيّر."
           },
           "steps": [
             {
-              "en": "If you copied the mascot source, compare and port source/mascot/khayt-motion.ts and khayt-renderer.ts from the package, keeping your own changes.",
-              "ar": "إذا نسخت مصدر الماسكوت، قارن الملفين source/mascot/khayt-motion.ts وkhayt-renderer.ts من الحزمة وانقلهما مع الإبقاء على تعديلاتك."
+              "en": "If you copied the mascot source, port `source/mascot/khayt-motion.ts` and `khayt-renderer.ts` from the package, keeping your own changes.",
+              "ar": "إذا نسخت مصدر الماسكوت، فانقل `source/mascot/khayt-motion.ts` و`khayt-renderer.ts` من الحزمة مع الإبقاء على تعديلاتك."
             }
           ]
         },
@@ -291,8 +311,8 @@
           "components": ["tabs"],
           "type": "fixed",
           "summary": {
-            "en": "The Tabs active indicator is placed correctly inside scaled or transformed ancestors.",
-            "ar": "يوضع مؤشر التبويب النشط في Tabs بشكل صحيح داخل العناصر الأب المكبّرة أو المحوَّلة."
+            "en": "keeps its active indicator in place inside scaled or transformed parents.",
+            "ar": "يُبقي مؤشر التبويب النشط في موضعه داخل العناصر الأب المكبّرة أو المحوَّلة."
           },
           "files": ["Tabs.tsx"]
         },
@@ -301,8 +321,8 @@
           "area": "library",
           "type": "added",
           "summary": {
-            "en": "Business patterns CustomerEditSheet, PreferenceSettings and InvoiceActions (with nested invoice actions) and the useAsyncAction hook.",
-            "ar": "أنماط الأعمال CustomerEditSheet وPreferenceSettings وInvoiceActions (مع إجراءات الفاتورة المتداخلة) وخطاف useAsyncAction."
+            "en": "adds the `CustomerEditSheet`, `PreferenceSettings` and `InvoiceActions` business patterns.",
+            "ar": "أضافت أنماط الأعمال `CustomerEditSheet` و`PreferenceSettings` و`InvoiceActions`."
           },
           "files": [
             "patterns/CustomerEditSheet.tsx",
@@ -320,8 +340,8 @@
           "area": "package",
           "type": "added",
           "summary": {
-            "en": "The package ships an AI guide, a component registry and generated API and source-hash facts with its editable source.",
-            "ar": "تتضمن الحزمة دليلًا للذكاء الاصطناعي وسجلًّا للمكوّنات وحقائق مولَّدة عن الواجهات وتجزئات المصدر مع المصدر القابل للتعديل."
+            "en": "now ships an AI guide, a component registry and generated API facts.",
+            "ar": "صارت تشحن دليلًا للذكاء الاصطناعي وسجلًّا للمكوّنات وحقائق مولَّدة عن الواجهات."
           }
         }
       ]
@@ -336,8 +356,8 @@
           "area": "library",
           "type": "added",
           "summary": {
-            "en": "First release: about 80 components and patterns (forms, data, navigation, overlays, feedback, charts, AI parts and task-level AI patterns), an Arabic numerals setting, the Khayt mascot and a source installer.",
-            "ar": "الإصدار الأول: نحو 80 مكوّنًا ونمطًا (النماذج والبيانات والتنقل والطبقات والتغذية الراجعة والرسوم البيانية وأجزاء الذكاء الاصطناعي وأنماطه على مستوى المهمة)، مع إعداد الأرقام العربية وماسكوت Khayt وأداة تثبيت المصدر."
+            "en": "is the first release: about 80 components and patterns, Khayt and a source installer.",
+            "ar": "هي الإصدار الأول: نحو 80 مكوّنًا ونمطًا، وماسكوت Khayt، وأداة تثبيت المصدر."
           }
         }
       ]
