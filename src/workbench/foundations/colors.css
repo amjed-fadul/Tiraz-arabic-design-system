@@ -1,0 +1,33 @@
+.accent-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-3);
+  padding: 0;
+  list-style: none;
+}
+.accent-swatch {
+  display: block;
+  inline-size: 28px;
+  block-size: 28px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 16%, transparent);
+}
+.accent-swatch[data-current="true"] {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+.contrast-badge {
+  flex: none;
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  background: var(--action-soft);
+  color: var(--action);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.contrast-badge[data-failed="true"] {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
