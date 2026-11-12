@@ -2,6 +2,7 @@ import { useEffect, useId, useLayoutEffect, useRef } from "react";
 import { CaretDownIcon } from "@phosphor-icons/react/dist/csr/CaretDown";
 import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
+import { ClockCounterClockwiseIcon } from "@phosphor-icons/react/dist/csr/ClockCounterClockwise";
 import { RocketLaunchIcon } from "@phosphor-icons/react/dist/csr/RocketLaunch";
 import { PaletteIcon } from "@phosphor-icons/react/dist/csr/Palette";
 import { SparkleIcon } from "@phosphor-icons/react/dist/csr/Sparkle";
@@ -245,6 +246,22 @@ export function ComponentNavigation({
                   aria-hidden="true"
                 />
                 <span>{t("ابدأ هنا", "Start here")}</span>
+              </SiteLink>
+            </h2>
+            <h2 className="component-nav-heading">
+              <SiteLink
+                className="component-nav-section"
+                route={{ kind: "changelog" }}
+                navigate={navigate}
+                aria-current={route.kind === "changelog" ? "page" : undefined}
+              >
+                <ClockCounterClockwiseIcon
+                  className="component-nav-section-icon"
+                  size={20}
+                  weight="duotone"
+                  aria-hidden="true"
+                />
+                <span>{t("سجل التغييرات", "Changelog")}</span>
               </SiteLink>
             </h2>
           </nav>

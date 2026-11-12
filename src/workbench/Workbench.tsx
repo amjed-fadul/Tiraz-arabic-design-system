@@ -66,6 +66,7 @@ import { DocsDrawer } from "./DocsDrawer";
 import { ComponentNavigation } from "./ComponentNavigation";
 import { navigationSection, galleryName } from "./navigation-model";
 import type { NavigationSection } from "./navigation-model";
+import { ChangelogPage } from "./ChangelogPage";
 import { destination, readSiteRoute, routePath } from "./site-routes";
 import type { SiteRoute } from "./site-routes";
 import { SiteLink } from "./SiteLink";
@@ -429,14 +430,16 @@ export function Workbench() {
       ? galleryName(route.category)
       : route.kind === "start"
         ? (["ابدأ هنا", "Start here"] as const)
-        : route.kind === "illustrations"
-          ? (illustrations.find((item) => item.id === route.id)?.name ??
-            (["الرسوم التوضيحية", "Illustrations"] as const))
-          : route.kind === "not-found"
-            ? (["الصفحة غير موجودة", "Page not found"] as const)
-            : screenSlug
-              ? screens.find((item) => item.slug === screenSlug)!.name
-              : current.name;
+        : route.kind === "changelog"
+          ? (["سجل التغييرات", "Changelog"] as const)
+          : route.kind === "illustrations"
+            ? (illustrations.find((item) => item.id === route.id)?.name ??
+              (["الرسوم التوضيحية", "Illustrations"] as const))
+            : route.kind === "not-found"
+              ? (["الصفحة غير موجودة", "Page not found"] as const)
+              : screenSlug
+                ? screens.find((item) => item.slug === screenSlug)!.name
+                : current.name;
   const pageTitle = localize(pageName, language);
   useEffect(() => {
     document.title = `${language === "ar" ? "طِراز" : "Tiraz"} · ${pageTitle}`;
@@ -1155,6 +1158,8 @@ export function Workbench() {
                 />
               ) : route.kind === "start" ? (
                 <QuickStart language={language} />
+              ) : route.kind === "changelog" ? (
+                <ChangelogPage language={language} navigate={navigate} />
               ) : route.kind === "illustrations" ? (
                 <IllustrationsPage
                   key={route.id ?? "gallery"}

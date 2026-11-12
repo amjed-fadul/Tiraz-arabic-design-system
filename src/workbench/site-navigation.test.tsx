@@ -332,18 +332,19 @@ it("puts Start here first, section disclosures next and Illustrations last, with
   const side = screen.getByRole("complementary", { name: "Components" });
   const headings = within(side).getAllByRole("heading", { level: 2 });
   expect(headings[0]).toHaveTextContent("Start here");
-  expect(headings[1]).toHaveTextContent("Screens");
+  expect(headings[1]).toHaveTextContent("Changelog");
+  expect(headings[2]).toHaveTextContent("Screens");
   expect(within(side).queryByRole("link", { name: "Library" })).toBeNull();
   expect(headings.at(-1)).toHaveTextContent("Illustrations");
   expect(
     within(side).queryByRole("button", { name: "Assistant workspace" }),
   ).toBeNull();
   expect(within(side).queryByRole("button", { current: "page" })).toBeNull();
-  await userEvent.click(within(headings[1]).getByRole("button"));
+  await userEvent.click(within(headings[2]).getByRole("button"));
   expect(window.location.pathname + window.location.search).toBe(
     "/library?category=screens",
   );
-  expect(within(headings[1]).getByRole("button")).toHaveFocus();
+  expect(within(headings[2]).getByRole("button")).toHaveFocus();
 });
 
 it.each([

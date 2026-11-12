@@ -1,0 +1,103 @@
+.changelog-page {
+  inline-size: 100%;
+  max-inline-size: 52rem;
+  margin-inline: auto;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--text-reading);
+  line-height: var(--leading-reading);
+}
+.changelog-page .changelog-intro {
+  margin-block-end: var(--space-10);
+}
+.changelog-page .changelog-intro h1 {
+  margin: 0 0 var(--space-4);
+  font-family: var(--font);
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-title);
+  letter-spacing: normal;
+}
+.changelog-page p {
+  margin: 0;
+}
+.changelog-page .changelog-intro p {
+  max-inline-size: 62ch;
+  color: var(--text-secondary);
+}
+.changelog-page .changelog-release {
+  padding-block: var(--space-8);
+  border-block-start: 1px solid var(--border);
+  scroll-margin-block-start: calc(var(--space-10) * 3);
+}
+.changelog-page .changelog-release h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin: 0;
+  font-family: var(--font);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-semibold);
+  letter-spacing: normal;
+  overflow-wrap: anywhere;
+}
+.changelog-page .changelog-version {
+  font-variant-numeric: tabular-nums;
+}
+.changelog-page .changelog-meta {
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  font-weight: var(--weight-regular, 400);
+}
+.changelog-page .changelog-update {
+  margin-block-start: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-label);
+}
+.changelog-page code {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+.changelog-page .changelog-changes {
+  display: grid;
+  gap: var(--space-3);
+  max-inline-size: 62ch;
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.changelog-page .changelog-label {
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+.changelog-page .changelog-label a {
+  color: inherit;
+  text-decoration-color: var(--border);
+  text-underline-offset: 0.2em;
+}
+.changelog-page .changelog-label a:hover {
+  text-decoration-color: currentcolor;
+}
+.changelog-page .changelog-change {
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+.changelog-page .changelog-type {
+  margin-inline-start: var(--space-2);
+  color: var(--text-muted);
+  font-size: var(--text-label);
+  white-space: nowrap;
+}
+.changelog-page .changelog-breaking {
+  color: var(--danger);
+}
+.changelog-page .changelog-step {
+  margin-block-start: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-inline-start: 2px solid var(--danger);
+  color: var(--text-secondary);
+  font-size: var(--text-label);
+  overflow-wrap: anywhere;
+}

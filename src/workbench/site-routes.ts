@@ -19,6 +19,7 @@ export type SiteRoute =
   | { kind: "component"; id: ComponentId }
   | { kind: "screen"; slug: ScreenSlug }
   | { kind: "start" }
+  | { kind: "changelog" }
   | { kind: "illustrations"; id?: IllustrationId }
   | { kind: "not-found" };
 
@@ -32,6 +33,8 @@ export function routePath(route: SiteRoute): string {
       return `/library/screens/${route.slug}`;
     case "start":
       return "/start";
+    case "changelog":
+      return "/changelog";
     case "illustrations":
       return `/illustrations${route.id ? `/${route.id}` : ""}`;
     case "not-found":
@@ -74,6 +77,7 @@ export function readSiteRoute(
   if (screen) return { kind: "screen", slug: screen.slug };
   if (path === "/start" || path === "/docs" || path.startsWith("/docs/"))
     return { kind: "start" };
+  if (path === "/changelog") return { kind: "changelog" };
   if (path === "/illustrations") return { kind: "illustrations" };
   const illustration = illustrationIds.find(
     (id) => path === `/illustrations/${id}`,
@@ -82,7 +86,7 @@ export function readSiteRoute(
   return { kind: "not-found" };
 }
 export function destination(route: SiteRoute) {
-  return route.kind === "start"
+  return route.kind === "start" || route.kind === "changelog"
     ? "start"
     : route.kind === "illustrations"
       ? "illustrations"

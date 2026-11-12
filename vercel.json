@@ -20,6 +20,10 @@
       "destination": "/workbench.html"
     },
     {
+      "source": "/changelog/:path*",
+      "destination": "/workbench.html"
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/workbench.html"
     },
