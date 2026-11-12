@@ -1,0 +1,129 @@
+.motion-principles {
+  margin: var(--space-3) 0 0;
+  padding-inline-start: var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+}
+.motion-group {
+  margin-block-start: var(--space-6);
+}
+.motion-group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.motion-group-head h3 {
+  margin: 0;
+}
+.motion-rows {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--border);
+}
+.motion-row {
+  display: grid;
+  grid-template-columns: 13rem 7rem minmax(0, 1fr);
+  grid-template-areas: "token value use";
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+  padding-block: var(--space-3);
+  border-block-end: 1px solid var(--border);
+  font-size: var(--text-body);
+  line-height: var(--leading-meta);
+}
+.motion-row > code {
+  grid-area: token;
+  justify-self: start;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+.motion-value {
+  grid-area: value;
+  justify-self: start;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.motion-use {
+  grid-area: use;
+  min-inline-size: 0;
+}
+.motion-eases .motion-row {
+  grid-template-columns: 13rem 3.5rem 15rem minmax(0, 1fr);
+  grid-template-areas: "token curve value use";
+}
+.motion-curve {
+  grid-area: curve;
+  display: block;
+  inline-size: 3rem;
+  block-size: 3rem;
+  overflow: visible;
+}
+.motion-curve-box {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.motion-curve-line {
+  fill: none;
+  stroke: var(--action);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.motion-demo {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+}
+.motion-track {
+  position: relative;
+  block-size: 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--wash);
+}
+.motion-dot {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--action);
+  transition-property: inset-inline-start;
+}
+.motion-track[data-on="true"] .motion-dot {
+  inset-inline-start: calc(100% - 0.75rem);
+}
+.motion-track[data-gap="true"] .motion-dot {
+  inset-inline-start: calc(100% - 0.75rem);
+  opacity: 0.15;
+  transition-property: opacity;
+}
+.motion-track[data-gap="true"][data-on="true"] .motion-dot {
+  opacity: 1;
+}
+.motion-ease {
+  margin: var(--space-2) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.motion-state strong {
+  font-weight: var(--weight-medium);
+}
+@media (max-width: 40rem) {
+  .motion-row,
+  .motion-eases .motion-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "token value" "use use";
+  }
+  .motion-eases .motion-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas: "token curve value" "use use use";
+  }
+}
