@@ -20,8 +20,10 @@ The top group becomes **Foundations / الأسس**, in this order:
 4. Typography / الخطوط (`/foundations/typography`)
 5. Spacing / المسافات (`/foundations/spacing`)
 6. Shape and elevation / الأشكال والظلال (`/foundations/shape`)
-7. Arabic and RTL / العربية والاتجاه (`/foundations/arabic-rtl`)
-8. Changelog / سجل التغييرات (unchanged route `/changelog`)
+7. Motion / الحركة (`/foundations/motion`) — added in wave 2
+8. Icons / الأيقونات (`/foundations/icons`) — added in wave 2
+9. Arabic and RTL / العربية والاتجاه (`/foundations/arabic-rtl`)
+10. Changelog / سجل التغييرات (unchanged route `/changelog`)
 
 A small muted "Library / المكتبة" label sits above the existing Screens,
 Components, AI interfaces and Illustrations sections. Nothing else in the sidebar
@@ -76,9 +78,16 @@ row stacks.
   dates); mixed Arabic/English text and `bdi`; Arabic typography (IBM Plex Sans
   Arabic, leading). Each with a small live example.
 
+- **Motion** (wave 2): principles from the token comments; interaction
+  durations with live values and a reduced-motion-safe demo; easing curves;
+  loops; what reduced motion changes.
+- **Icons** (wave 2): Lucide, the sizes and stroke Tiraz uses, currentColor,
+  accessibility (aria-hidden, named icon-only buttons), a link to Arabic and RTL
+  for mirroring, the closed `sidebarIconNames` grid, and the AI mark.
+
 ## Non-goals
 
-Motion and Icons pages (next wave); editing tokens from these pages (the
+Editing tokens from these pages (the
 settings panel already does that); a playground or API table on foundation pages.
 
 ## Tasks

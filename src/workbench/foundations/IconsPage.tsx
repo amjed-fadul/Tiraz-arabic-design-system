@@ -1,6 +1,7 @@
 import { useId } from "react";
 import { Check, Search, Settings, Trash2 } from "lucide-react";
 import { AIMark, Button, sidebarIconNames } from "../../system";
+import { numberLocale } from "../../system/config";
 import { sidebarIcons } from "../../system/sidebar-icons";
 import { words } from "../i18n";
 import { SiteLink } from "../SiteLink";
@@ -14,6 +15,9 @@ const importSnippet = `import { Settings } from "lucide-react";
 
 export function IconsPage({ language, navigate }: FoundationPageProps) {
   const t = words(language);
+  const number = new Intl.NumberFormat(
+    numberLocale({ numerals: "arab" }, language),
+  );
   const id = useId();
   const sizes: { size: number; use: string }[] = [
     {
@@ -193,7 +197,7 @@ export function IconsPage({ language, navigate }: FoundationPageProps) {
             "، وهي نص من قائمة مغلقة من ",
             ", a plain string from a closed list of ",
           )}
-          {sidebarIconNames.length}
+          {number.format(sidebarIconNames.length)}
           {t(
             " اسمًا ترسمها طِراز بنفسها، بدل تمرير عقدة ",
             " names that Tiraz draws itself, in place of an ",
@@ -225,7 +229,7 @@ export function IconsPage({ language, navigate }: FoundationPageProps) {
             "An eight-point star that marks the assistant's presence, in the AI color on a soft tile. Tiraz's AI interfaces use it, such as thinking, approvals and the decision inbox. It comes in three sizes: ",
           )}
           <code>xs</code>
-          {", "}
+          {t("، ", ", ")}
           <code>sm</code>
           {t(" و", " and ")}
           <code>md</code>
