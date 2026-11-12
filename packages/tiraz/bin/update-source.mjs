@@ -21,6 +21,10 @@ import {
   withSourceLock,
 } from "./source-files.mjs";
 import { hasMarkers, isText, mergeSource } from "./merge-source.mjs";
+import {
+  formatChangelogNotes,
+  selectChangelogNotes,
+} from "./changelog-notes.mjs";
 
 const sections = [
   "dependencies",
@@ -529,6 +533,32 @@ async function restoreBackup(root, id) {
   );
 }
 
+async function changelogNotes(packageRoot, plan, release) {
+  try {
+    const system = resolve(packageRoot, "source/system/ai");
+    const changelog = JSON.parse(
+      await readFile(resolve(system, "changelog.json"), "utf8"),
+    );
+    const registry = JSON.parse(
+      await readFile(resolve(system, "registry.json"), "utf8"),
+    );
+    const components =
+      plan.installed.mode === "components" ? plan.installed.components : null;
+    const releases = selectChangelogNotes(changelog, {
+      from: plan.installed.version,
+      to: release.version,
+      components,
+    });
+    return formatChangelogNotes(releases, {
+      from: plan.installed.version,
+      to: release.version,
+      registry,
+    });
+  } catch {
+    return [];
+  }
+}
+
 export async function updateSource({
   packageRoot,
   release,
@@ -542,6 +572,11 @@ export async function updateSource({
   if (restore) return restoreBackup(root, restore);
   const plan = await planUpdate(root, packageRoot, release, from);
   console.log(`Tiraz source: ${plan.installed.version} → ${release.version}`);
+  const notes = await changelogNotes(packageRoot, plan, release);
+  if (notes.length) {
+    for (const line of notes) console.log(line);
+    console.log("");
+  }
   for (const entry of plan.entries)
     if (entry.status !== "current")
       console.log(
