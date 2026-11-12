@@ -57,7 +57,7 @@ export function SpacingPage({ language, navigate }: FoundationPageProps) {
       current="spacing"
       language={language}
       navigate={navigate}
-      title={t("المسافات والتخطيط", "Spacing and layout")}
+      title={t("المسافات", "Spacing")}
       lede={t(
         "مقياس المسافات الذي تُبنى عليه كل الفراغات في طِراز.",
         "The spacing scale every gap in Tiraz is built from.",

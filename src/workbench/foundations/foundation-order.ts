@@ -32,7 +32,7 @@ export const foundationOrder: readonly FoundationEntry[] = [
   },
   {
     key: "spacing",
-    name: ["المسافات والتخطيط", "Spacing and layout"],
+    name: ["المسافات", "Spacing"],
     route: { kind: "foundation", id: "spacing" },
   },
   {

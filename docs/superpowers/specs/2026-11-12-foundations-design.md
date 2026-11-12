@@ -18,7 +18,7 @@ The top group becomes **Foundations / الأسس**, in this order:
 2. Installation / التثبيت — the existing Start here page, renamed; `/start` stays
 3. Colors / الألوان (`/foundations/colors`)
 4. Typography / الخطوط (`/foundations/typography`)
-5. Spacing and layout / المسافات والتخطيط (`/foundations/spacing`)
+5. Spacing / المسافات (`/foundations/spacing`)
 6. Shape and elevation / الأشكال والظلال (`/foundations/shape`)
 7. Arabic and RTL / العربية والاتجاه (`/foundations/arabic-rtl`)
 8. Changelog / سجل التغييرات (unchanged route `/changelog`)
@@ -64,7 +64,7 @@ row stacks.
   (display, title, heading, subheading, reading, body, label, meta, micro,
   figure, figure-small): an Arabic line and an English line at real size, with
   token, size, line height, weight and use. Note the Large type setting.
-- **Spacing and layout:** the `--space-*` scale as bars with values; control
+- **Spacing:** the `--space-*` scale as bars with values (control sizes and density were removed at the owner's request). Previously planned: control
   sizes (`--control-height`, `--control-small`, paddings); density
   (compact/comfortable) and what it changes.
 - **Shape and elevation:** radius scale derived from `--radius` (small, item,

@@ -7,8 +7,8 @@ const css = readFileSync("src/system/tokens.css", "utf8");
 const scale = [1, 2, 3, 4, 5, 6, 8, 10].map((n) => `--space-${n}`);
 
 it.each([
-  ["en", "Spacing and layout"],
-  ["ar", "المسافات والتخطيط"],
+  ["en", "Spacing"],
+  ["ar", "المسافات"],
 ] as const)("renders the %s title", (language, title) => {
   render(<SpacingPage language={language} navigate={() => {}} />);
   expect(screen.getByRole("heading", { level: 1, name: title })).toBeTruthy();
