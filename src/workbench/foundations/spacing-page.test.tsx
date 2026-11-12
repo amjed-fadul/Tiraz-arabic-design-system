@@ -5,14 +5,6 @@ import { SpacingPage } from "./SpacingPage";
 
 const css = readFileSync("src/system/tokens.css", "utf8");
 const scale = [1, 2, 3, 4, 5, 6, 8, 10].map((n) => `--space-${n}`);
-const controls = [
-  "--control-height",
-  "--control-small",
-  "--control-padding",
-  "--control-small-padding",
-  "--control-gap",
-  "--row-gap",
-];
 
 it.each([
   ["en", "Spacing and layout"],
@@ -22,13 +14,13 @@ it.each([
   expect(screen.getByRole("heading", { level: 1, name: title })).toBeTruthy();
 });
 
-it("shows a bar per spacing and control token, all of which exist", () => {
+it("shows one bar per spacing token, all of which exist, and no control or density sections", () => {
   const { container } = render(
     <SpacingPage language="en" navigate={() => {}} />,
   );
   const bars = [...container.querySelectorAll<HTMLElement>("[data-token]")];
   const named = bars.map((bar) => bar.dataset.token ?? "");
-  for (const token of [...scale, ...controls]) expect(named).toContain(token);
+  expect(named).toEqual(scale);
   expect(container.querySelectorAll(".space-row")).toHaveLength(bars.length);
   expect(container.querySelectorAll(".space-bar")).toHaveLength(bars.length);
   const claimed = [...container.querySelectorAll("code")]
@@ -36,4 +28,6 @@ it("shows a bar per spacing and control token, all of which exist", () => {
     .filter((text) => text.startsWith("--"));
   for (const token of new Set(claimed))
     expect(css, token).toMatch(new RegExp(`${token}:`));
+  expect(screen.queryByRole("heading", { name: "Control sizes" })).toBeNull();
+  expect(screen.queryByRole("heading", { name: "Density" })).toBeNull();
 });
