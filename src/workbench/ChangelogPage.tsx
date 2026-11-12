@@ -155,8 +155,9 @@ export function ChangelogPage({
               id={release.version}
               className="changelog-release"
             >
-              <h3 className="changelog-version" dir="ltr">
-                {release.version}
+              <h3 className="changelog-version">
+                {/* LTR text, aligned to the page's start in both directions. */}
+                <bdi dir="ltr">{release.version}</bdi>
               </h3>
               <ul className="changelog-changes">
                 {release.changes.map((change, changeIndex) => (

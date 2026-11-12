@@ -90,7 +90,7 @@
 }
 /* Phones: labels move under the text instead of squeezing it. */
 @media (max-width: 30rem) {
-  .changelog-page .changelog-item {
+  .changelog-page .changelog-changes .changelog-item {
     grid-template-columns: minmax(0, 1fr);
   }
   .changelog-page .changelog-types {
