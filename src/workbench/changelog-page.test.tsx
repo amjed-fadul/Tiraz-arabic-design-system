@@ -23,9 +23,9 @@ it("parses and prints the /changelog route", () => {
   ).toEqual({ kind: "changelog" });
 });
 
-it("opens the page from the Getting started sidebar link", async () => {
+it("opens the page from the Foundations sidebar link", async () => {
   at("/start");
-  const nav = screen.getByRole("navigation", { name: "Getting started" });
+  const nav = screen.getByRole("navigation", { name: "Foundations" });
   await userEvent.click(within(nav).getByRole("link", { name: "Changelog" }));
   expect(window.location.pathname).toBe("/changelog");
   expect(within(nav).getByRole("link", { name: "Changelog" })).toHaveAttribute(

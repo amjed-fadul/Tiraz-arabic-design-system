@@ -231,7 +231,7 @@ it.each(["ar", "en"] as const)(
       const flow = title.closest(".docs-navigation-scroll");
       expect(flow).toContainElement(
         nav.getByRole("link", {
-          name: language === "ar" ? "ابدأ هنا" : "Start here",
+          name: language === "ar" ? "ابدأ هنا" : "Get started",
         }),
       );
       for (const sectionName of names)

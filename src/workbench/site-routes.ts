@@ -13,6 +13,15 @@ export const illustrationIds = [
   "no-search-results",
   "getting-started",
 ] as const;
+export const foundationIds = [
+  "get-started",
+  "colors",
+  "typography",
+  "spacing",
+  "shape",
+  "arabic-rtl",
+] as const;
+export type FoundationId = (typeof foundationIds)[number];
 export type IllustrationId = (typeof illustrationIds)[number];
 export type SiteRoute =
   | { kind: "library"; category?: string }
@@ -20,6 +29,7 @@ export type SiteRoute =
   | { kind: "screen"; slug: ScreenSlug }
   | { kind: "start" }
   | { kind: "changelog" }
+  | { kind: "foundation"; id: FoundationId }
   | { kind: "illustrations"; id?: IllustrationId }
   | { kind: "not-found" };
 
@@ -35,6 +45,8 @@ export function routePath(route: SiteRoute): string {
       return "/start";
     case "changelog":
       return "/changelog";
+    case "foundation":
+      return `/foundations/${route.id}`;
     case "illustrations":
       return `/illustrations${route.id ? `/${route.id}` : ""}`;
     case "not-found":
@@ -78,6 +90,9 @@ export function readSiteRoute(
   if (path === "/start" || path === "/docs" || path.startsWith("/docs/"))
     return { kind: "start" };
   if (path === "/changelog") return { kind: "changelog" };
+  if (path === "/foundations") return { kind: "foundation", id: "get-started" };
+  const foundation = foundationIds.find((id) => path === `/foundations/${id}`);
+  if (foundation) return { kind: "foundation", id: foundation };
   if (path === "/illustrations") return { kind: "illustrations" };
   const illustration = illustrationIds.find(
     (id) => path === `/illustrations/${id}`,
@@ -86,7 +101,9 @@ export function readSiteRoute(
   return { kind: "not-found" };
 }
 export function destination(route: SiteRoute) {
-  return route.kind === "start" || route.kind === "changelog"
+  return route.kind === "start" ||
+    route.kind === "changelog" ||
+    route.kind === "foundation"
     ? "start"
     : route.kind === "illustrations"
       ? "illustrations"

@@ -67,6 +67,8 @@ import { ComponentNavigation } from "./ComponentNavigation";
 import { navigationSection, galleryName } from "./navigation-model";
 import type { NavigationSection } from "./navigation-model";
 import { ChangelogPage } from "./ChangelogPage";
+import { FoundationRoute } from "./foundations/FoundationRoute";
+import { foundationOrder } from "./foundations/foundation-order";
 import { destination, readSiteRoute, routePath } from "./site-routes";
 import type { SiteRoute } from "./site-routes";
 import { SiteLink } from "./SiteLink";
@@ -429,17 +431,23 @@ export function Workbench() {
     route.kind === "library"
       ? galleryName(route.category)
       : route.kind === "start"
-        ? (["ابدأ هنا", "Start here"] as const)
+        ? (["التثبيت", "Installation"] as const)
         : route.kind === "changelog"
           ? (["سجل التغييرات", "Changelog"] as const)
-          : route.kind === "illustrations"
-            ? (illustrations.find((item) => item.id === route.id)?.name ??
-              (["الرسوم التوضيحية", "Illustrations"] as const))
-            : route.kind === "not-found"
-              ? (["الصفحة غير موجودة", "Page not found"] as const)
-              : screenSlug
-                ? screens.find((item) => item.slug === screenSlug)!.name
-                : current.name;
+          : route.kind === "foundation"
+            ? foundationOrder.find(
+                (entry) =>
+                  entry.route.kind === "foundation" &&
+                  entry.route.id === route.id,
+              )!.name
+            : route.kind === "illustrations"
+              ? (illustrations.find((item) => item.id === route.id)?.name ??
+                (["الرسوم التوضيحية", "Illustrations"] as const))
+              : route.kind === "not-found"
+                ? (["الصفحة غير موجودة", "Page not found"] as const)
+                : screenSlug
+                  ? screens.find((item) => item.slug === screenSlug)!.name
+                  : current.name;
   const pageTitle = localize(pageName, language);
   useEffect(() => {
     document.title = `${language === "ar" ? "طِراز" : "Tiraz"} · ${pageTitle}`;
@@ -1160,6 +1168,12 @@ export function Workbench() {
                 <QuickStart language={language} />
               ) : route.kind === "changelog" ? (
                 <ChangelogPage language={language} navigate={navigate} />
+              ) : route.kind === "foundation" ? (
+                <FoundationRoute
+                  id={route.id}
+                  language={language}
+                  navigate={navigate}
+                />
               ) : route.kind === "illustrations" ? (
                 <IllustrationsPage
                   key={route.id ?? "gallery"}

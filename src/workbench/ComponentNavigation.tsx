@@ -4,6 +4,12 @@ import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGl
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { ClockCounterClockwiseIcon } from "@phosphor-icons/react/dist/csr/ClockCounterClockwise";
 import { RocketLaunchIcon } from "@phosphor-icons/react/dist/csr/RocketLaunch";
+import { DownloadSimpleIcon } from "@phosphor-icons/react/dist/csr/DownloadSimple";
+import { DropIcon } from "@phosphor-icons/react/dist/csr/Drop";
+import { TextAaIcon } from "@phosphor-icons/react/dist/csr/TextAa";
+import { RulerIcon } from "@phosphor-icons/react/dist/csr/Ruler";
+import { ShapesIcon } from "@phosphor-icons/react/dist/csr/Shapes";
+import { TranslateIcon } from "@phosphor-icons/react/dist/csr/Translate";
 import { PaletteIcon } from "@phosphor-icons/react/dist/csr/Palette";
 import { SparkleIcon } from "@phosphor-icons/react/dist/csr/Sparkle";
 import { SquaresFourIcon } from "@phosphor-icons/react/dist/csr/SquaresFour";
@@ -16,6 +22,7 @@ import type { Language } from "./i18n";
 import { label, localize, words } from "./i18n";
 import { SiteLink } from "./SiteLink";
 import type { Navigate } from "./SiteLink";
+import { foundationOrder } from "./foundations/foundation-order";
 import { routePath } from "./site-routes";
 import type { SiteRoute } from "./site-routes";
 import {
@@ -31,6 +38,17 @@ const sections = [
   { id: "ai", Icon: SparkleIcon },
   { id: "illustrations", Icon: PaletteIcon },
 ] as const;
+
+const foundationIcons = {
+  "get-started": RocketLaunchIcon,
+  installation: DownloadSimpleIcon,
+  colors: DropIcon,
+  typography: TextAaIcon,
+  spacing: RulerIcon,
+  shape: ShapesIcon,
+  "arabic-rtl": TranslateIcon,
+  changelog: ClockCounterClockwiseIcon,
+} as const satisfies Record<string, typeof RocketLaunchIcon>;
 
 export function ComponentNavigation({
   language,
@@ -231,40 +249,38 @@ export function ComponentNavigation({
       >
         {panel("search")}
         <div className="docs-navigation-map">
-          <nav aria-label={t("البداية", "Getting started")}>
-            <h2 className="component-nav-heading">
-              <SiteLink
-                className="component-nav-section"
-                route={{ kind: "start" }}
-                navigate={navigate}
-                aria-current={route.kind === "start" ? "page" : undefined}
-              >
-                <RocketLaunchIcon
-                  className="component-nav-section-icon"
-                  size={20}
-                  weight="duotone"
-                  aria-hidden="true"
-                />
-                <span>{t("ابدأ هنا", "Start here")}</span>
-              </SiteLink>
-            </h2>
-            <h2 className="component-nav-heading">
-              <SiteLink
-                className="component-nav-section"
-                route={{ kind: "changelog" }}
-                navigate={navigate}
-                aria-current={route.kind === "changelog" ? "page" : undefined}
-              >
-                <ClockCounterClockwiseIcon
-                  className="component-nav-section-icon"
-                  size={20}
-                  weight="duotone"
-                  aria-hidden="true"
-                />
-                <span>{t("سجل التغييرات", "Changelog")}</span>
-              </SiteLink>
-            </h2>
+          <nav aria-labelledby={`${id}-foundations`}>
+            <p id={`${id}-foundations`} className="docs-navigation-label">
+              {t("الأسس", "Foundations")}
+            </p>
+            <ul className="docs-navigation-foundations">
+              {foundationOrder.map((item) => {
+                const Icon =
+                  foundationIcons[item.key as keyof typeof foundationIcons];
+                return (
+                  <li key={item.key}>
+                    <SiteLink
+                      className="component-nav-section"
+                      route={item.route}
+                      navigate={navigate}
+                      aria-current={
+                        routePath(item.route) === path ? "page" : undefined
+                      }
+                    >
+                      <Icon
+                        className="component-nav-section-icon"
+                        size={20}
+                        weight="duotone"
+                        aria-hidden="true"
+                      />
+                      <span>{localize(item.name, language)}</span>
+                    </SiteLink>
+                  </li>
+                );
+              })}
+            </ul>
           </nav>
+          <p className="docs-navigation-label">{t("المكتبة", "Library")}</p>
           {sections.map(({ id: key, Icon }) => (
             <div
               key={key}

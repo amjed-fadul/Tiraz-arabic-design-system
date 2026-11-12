@@ -24,6 +24,10 @@
       "destination": "/workbench.html"
     },
     {
+      "source": "/foundations/:path*",
+      "destination": "/workbench.html"
+    },
+    {
       "source": "/docs/:path*",
       "destination": "/workbench.html"
     },

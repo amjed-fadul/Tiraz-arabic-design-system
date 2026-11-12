@@ -60,7 +60,6 @@ it("keeps section headings in the sidebar and lists every curated page exactly o
   render(<Workbench />);
   const nav = within(screen.getByRole("navigation", { name: "Components" }));
   for (const name of [
-    "Start here",
     "Screens",
     "Components",
     "AI interfaces",

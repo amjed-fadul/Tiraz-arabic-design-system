@@ -42,7 +42,7 @@ it("opens a component URL instead of a saved page, with curated navigation and r
 it("restores explicit routes on Back and keeps language/theme across destinations", async () => {
   persist(storageKeys.documentation, { language: "en", active: "button" });
   at("/library/components/chat-thread");
-  await userEvent.click(screen.getByRole("link", { name: "Start here" }));
+  await userEvent.click(screen.getByRole("link", { name: "Installation" }));
   expect(window.location.pathname).toBe("/start");
   expect(
     screen.getByRole("heading", {
@@ -321,7 +321,7 @@ it("keeps navigation hidden when moving between destinations", async () => {
   expect(screen.getByRole("main")).toHaveFocus();
 });
 
-it("puts Start here first, section disclosures next and Illustrations last, with no Library row or top navigation", async () => {
+it("puts Foundations first, section disclosures next and Illustrations last, with no Library row or top navigation", async () => {
   persist(storageKeys.documentation, { language: "en" });
   at("/start");
   expect(
@@ -331,27 +331,25 @@ it("puts Start here first, section disclosures next and Illustrations last, with
   expect(within(header).getAllByRole("link")).toHaveLength(1);
   const side = screen.getByRole("complementary", { name: "Components" });
   const headings = within(side).getAllByRole("heading", { level: 2 });
-  expect(headings[0]).toHaveTextContent("Start here");
-  expect(headings[1]).toHaveTextContent("Changelog");
-  expect(headings[2]).toHaveTextContent("Screens");
+  expect(headings[0]).toHaveTextContent("Screens");
   expect(within(side).queryByRole("link", { name: "Library" })).toBeNull();
   expect(headings.at(-1)).toHaveTextContent("Illustrations");
   expect(
     within(side).queryByRole("button", { name: "Assistant workspace" }),
   ).toBeNull();
   expect(within(side).queryByRole("button", { current: "page" })).toBeNull();
-  await userEvent.click(within(headings[2]).getByRole("button"));
+  await userEvent.click(within(headings[0]).getByRole("button"));
   expect(window.location.pathname + window.location.search).toBe(
     "/library?category=screens",
   );
-  expect(within(headings[2]).getByRole("button")).toHaveFocus();
+  expect(within(headings[0]).getByRole("button")).toHaveFocus();
 });
 
 it.each([
-  ["/library", "ar", "المكوّنات", "ابدأ هنا"],
-  ["/library", "en", "Components", "Start here"],
-  ["/illustrations", "ar", "المكوّنات", "ابدأ هنا"],
-  ["/illustrations", "en", "Components", "Start here"],
+  ["/library", "ar", "المكوّنات", "التثبيت"],
+  ["/library", "en", "Components", "Installation"],
+  ["/illustrations", "ar", "المكوّنات", "التثبيت"],
+  ["/illustrations", "en", "Components", "Installation"],
 ] as const)(
   "keeps section names accessible and menu items text-only on %s in %s",
   (path, language, name, startName) => {
@@ -365,7 +363,7 @@ it.each([
       nav.querySelector(".component-nav-items svg, .component-nav-items img"),
     ).toBeNull();
     const start = screen.getByRole("navigation", {
-      name: language === "ar" ? "البداية" : "Getting started",
+      name: language === "ar" ? "الأسس" : "Foundations",
     });
     expect(
       within(start).getByRole("link", { name: startName }),
@@ -382,7 +380,7 @@ it.each([
 );
 
 it.each(["/docs", "/docs/installation", "/docs/rtl"])(
-  "sends old guide URL %s to Start here",
+  "sends old guide URL %s to Installation",
   (path) => {
     at(path);
     expect(window.location.pathname).toBe("/start");

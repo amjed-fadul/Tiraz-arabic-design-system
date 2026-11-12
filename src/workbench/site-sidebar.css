@@ -333,3 +333,22 @@
     outline: 1px solid Highlight;
   }
 }
+/* Foundations group: a muted label over a plain list of links. */
+.docs-navigation-label {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  color: var(--text-muted);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-meta);
+}
+.docs-navigation-map > .docs-navigation-label {
+  margin-block-start: var(--space-3);
+}
+.docs-navigation-foundations {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
