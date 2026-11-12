@@ -1,0 +1,55 @@
+.shape-radii,
+.shape-shadows {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.shape-radius,
+.shape-shadow {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+}
+.shape-sample {
+  display: block;
+  inline-size: 100%;
+  block-size: 4.5rem;
+  margin-block-end: var(--space-2);
+  border: 1.5px solid var(--border-strong);
+  background: var(--wash);
+}
+.shape-value {
+  font-variant-numeric: tabular-nums;
+}
+.shape-use {
+  color: var(--text-secondary);
+}
+.shape-stage {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 6rem;
+  margin-block-end: var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--surface-page);
+  border: 1px solid var(--border);
+}
+.shape-paper {
+  display: block;
+  inline-size: 60%;
+  block-size: 3rem;
+  border-radius: var(--radius-item);
+  background: var(--surface);
+}
+.shape-radius code,
+.shape-shadow code {
+  color: var(--text);
+  font-weight: var(--weight-medium);
+}
