@@ -12,6 +12,12 @@ approved continuous documentation layout and one-line prompt/Copy row unless
 the user requests a design change. Preserve the approved Night loom landing.
 Public packaging lives in `packages/tiraz`; `npm run build:package` builds its
 runtime, declarations and editable source. The repository root stays private.
+Record every library change (components, provider, tokens, CLI, mascot) in
+`src/system/ai/changelog.json` under the release being prepared: one short
+predicate per component, the files touched, and manual steps when copied source
+needs hand edits. `npm run changelog:build` regenerates
+`packages/tiraz/CHANGELOG.md`; the docs Changelog page and `tiraz update` read
+the same file.
 
 Use focused tests for the change, then the existing tests (including generated
 example compilation), build, lint and formatting. Inspect rendered interaction

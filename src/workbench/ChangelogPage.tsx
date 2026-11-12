@@ -198,15 +198,17 @@ export function ChangelogPage({
                         navigate={navigate}
                       />
                     </strong>{" "}
-                    <Rich text={change.summary[language]} />{" "}
-                    <span className="changelog-type">
-                      {t(...typeLabels[change.type])}
-                    </span>
+                    <Rich text={change.summary[language]} />
+                  </p>
+                  <p className="changelog-types">
                     {change.breaking && (
                       <span className="changelog-type changelog-breaking">
                         {t("تغيير جذري", "Breaking")}
                       </span>
                     )}
+                    <span className="changelog-type">
+                      {t(...typeLabels[change.type])}
+                    </span>
                   </p>
                   {change.steps?.map((step, stepIndex) => (
                     <p key={stepIndex} className="changelog-step">

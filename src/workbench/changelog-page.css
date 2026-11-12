@@ -62,11 +62,38 @@
 }
 .changelog-page .changelog-changes {
   display: grid;
-  gap: var(--space-3);
-  max-inline-size: 62ch;
-  margin: var(--space-5) 0 0;
+  gap: var(--space-4);
+  max-inline-size: 46rem;
+  margin: var(--space-6) 0 0;
   padding: 0;
   list-style: none;
+}
+/* Text on the start side, a steady column of type labels on the end side;
+   manual steps sit under the text. */
+.changelog-page .changelog-changes > li {
+  display: grid;
+  /* A fixed label column keeps text and step edges aligned in every release. */
+  grid-template-columns: minmax(0, 1fr) 6rem;
+  column-gap: var(--space-5);
+  align-items: baseline;
+}
+.changelog-page .changelog-changes > li > .changelog-step {
+  grid-column: 1;
+}
+.changelog-page .changelog-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+  justify-content: flex-end;
+}
+/* Phones: labels move under the text instead of squeezing it. */
+@media (max-width: 30rem) {
+  .changelog-page .changelog-changes > li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .changelog-page .changelog-types {
+    justify-content: flex-start;
+  }
 }
 .changelog-page .changelog-label {
   font-weight: var(--weight-semibold);
@@ -85,7 +112,6 @@
   overflow-wrap: anywhere;
 }
 .changelog-page .changelog-type {
-  margin-inline-start: var(--space-2);
   color: var(--text-muted);
   font-size: var(--text-label);
   white-space: nowrap;
@@ -95,9 +121,12 @@
 }
 .changelog-page .changelog-step {
   margin-block-start: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  border-inline-start: 2px solid var(--danger);
-  color: var(--text-secondary);
+  padding: var(--space-2) var(--space-3);
+  border-inline-start: 2px solid var(--attention);
+  border-start-end-radius: var(--radius-sm, 4px);
+  border-end-end-radius: var(--radius-sm, 4px);
+  background: var(--attention-soft);
+  color: var(--text);
   font-size: var(--text-label);
   overflow-wrap: anywhere;
 }
