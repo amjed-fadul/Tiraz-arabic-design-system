@@ -254,20 +254,41 @@ it.each([
     expect(sidebar().getAllByRole("link")).toHaveLength(11);
     expect(screen.queryByRole("button", { name: dismiss })).toBeNull();
     unmount();
+    // The next screen keeps the sidebar the visitor opened.
     render(
       <ScreenFrame slug="customer-profile">
         <ScreenHeader />
       </ScreenFrame>,
     );
-    expect(screen.getByRole("button", { name: show })).toHaveAttribute(
-      "aria-expanded",
-      "false",
-    );
+    expect(screen.queryByRole("button", { name: show })).toBeNull();
+    expect(sidebar().getAllByRole("link")).toHaveLength(11);
     expect(screen.queryByRole("button", { name: note })).toBeNull();
     // Learning the sidebar must not consume the separate customization guide.
     expect(localStorage.getItem("tiraz.customize-hint.v1")).toBeNull();
   },
 );
+
+it("keeps the sidebar closed on later screens once the visitor closes it", async () => {
+  window.history.replaceState(null, "", "/examples/invoices?lang=en");
+  const user = userEvent.setup();
+  const first = render(
+    <ScreenFrame slug="invoices">
+      <ScreenHeader />
+    </ScreenFrame>,
+  );
+  await user.click(screen.getByRole("button", { name: "Show navigation" }));
+  await user.click(screen.getByRole("button", { name: "Hide navigation" }));
+  first.unmount();
+  render(
+    <ScreenFrame slug="sales-pipeline">
+      <ScreenHeader />
+    </ScreenFrame>,
+  );
+  expect(
+    screen.getByRole("button", { name: "Show navigation" }),
+  ).toHaveAttribute("aria-expanded", "false");
+  expect(localStorage.getItem("tiraz.screen-navigation.v1")).toBe("closed");
+});
 
 it("dismisses the sidebar guide without opening navigation and remembers it", async () => {
   localStorage.setItem("tiraz.customize-hint.v1", "seen");

@@ -59,6 +59,16 @@ function screenOf(link: Element): ScreenSlug | undefined {
   return screens.find((item) => screenPath(item.slug) === path)?.slug;
 }
 
+const navigationKey = "tiraz.screen-navigation.v1";
+/** Closed unless this browser last left the screens sidebar open. */
+function readNavigationHidden() {
+  try {
+    return localStorage.getItem(navigationKey) !== "open";
+  } catch {
+    return true;
+  }
+}
+
 /**
  * The shell every example screen renders in: a Sidebar of the screens, a bar
  * with the language and theme buttons, and main, the size container `screen`.
@@ -90,8 +100,22 @@ export function ScreenFrame({
     () => ({ ...defaultConfig, direction, theme, accent }),
     [direction, theme, accent],
   );
-  // Start with the full content width, including the agent panel.
-  const [navigationHidden, setNavigationHidden] = useState(true);
+  // A first visit starts with the full content width, including the agent
+  // panel. Once someone opens the sidebar it stays open on every screen until
+  // they close it again; the choice lives in this browser only.
+  const [navigationHidden, setHidden] = useState(readNavigationHidden);
+  const setNavigationHidden = (
+    update: boolean | ((hidden: boolean) => boolean),
+  ) =>
+    setHidden((hidden) => {
+      const next = typeof update === "function" ? update(hidden) : update;
+      try {
+        localStorage.setItem(navigationKey, next ? "closed" : "open");
+      } catch {
+        /* Keep the choice for this page when storage is unavailable. */
+      }
+      return next;
+    });
   const navigationId = useId();
   const navigationToggle = useRef<HTMLDivElement>(null);
   const navigationPanel = useRef<HTMLDivElement>(null);
