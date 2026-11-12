@@ -55,7 +55,8 @@
     "styles.css",
     "fonts.css",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "sideEffects": [
     "**/*.css"

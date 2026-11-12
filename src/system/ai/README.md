@@ -46,6 +46,16 @@ and no npm installation is run automatically. Review the backup id after apply;
 needs host type checks, tests and rendered Arabic/English verification. Follow the
 package README for conflict choices, baseline bootstrap and interrupted recovery.
 
+## Before updating copied source
+
+Read `ai/changelog.json` before updating source you copied. Releases are listed
+newest first. Each change names its `components` (registry ids; empty means a
+library-wide change with an `area`), a `type`, a one-sentence `summary`, the
+`files` it touched and, when copied source needs hand edits, `steps`. A change
+marked `breaking` always has steps. Do the manual steps by hand; `tiraz update`
+merges source but never performs them. Entries carry `en` and `ar` text. The
+same notes are at https://tiraz.dev/changelog.
+
 The development provider also accepts optional `className`, `style` and `lang`
 on its existing `.tiraz-system` root; `SystemProviderProps` is exported.
 Use these for application layout and section language. Omitting them preserves

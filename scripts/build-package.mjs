@@ -3,6 +3,7 @@ import { spawnSync } from "node:child_process";
 import { basename, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildKnowledge, writeOrCheck } from "./knowledge.mjs";
+import { writeOrCheckChangelog } from "./changelog.mjs";
 import { writeComponentCatalog } from "./component-catalog.mjs";
 
 // This is a release artifact, including when spawned by Vitest (NODE_ENV=test).
@@ -11,6 +12,7 @@ const { build } = await import("vite");
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 writeOrCheck(buildKnowledge());
+writeOrCheckChangelog();
 const target = resolve(root, "packages/tiraz");
 const manifest = JSON.parse(
   await readFile(resolve(target, "package.json"), "utf8"),
